@@ -24,11 +24,13 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\BraceTransformer
+ *
+ * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
  */
 final class BraceTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
@@ -50,6 +52,8 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
                 CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
                 CT::T_GROUP_IMPORT_BRACE_OPEN,
                 CT::T_GROUP_IMPORT_BRACE_CLOSE,
+                CT::T_PROPERTY_HOOK_BRACE_OPEN,
+                CT::T_PROPERTY_HOOK_BRACE_CLOSE,
             ]
         );
     }
@@ -159,7 +163,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideProcess80Cases
      *
@@ -167,24 +171,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
      */
     public function testProcess80(string $source, array $expectedTokens = []): void
     {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            [
-                T_CURLY_OPEN,
-                CT::T_CURLY_CLOSE,
-                T_DOLLAR_OPEN_CURLY_BRACES,
-                CT::T_DOLLAR_CLOSE_CURLY_BRACES,
-                CT::T_DYNAMIC_PROP_BRACE_OPEN,
-                CT::T_DYNAMIC_PROP_BRACE_CLOSE,
-                CT::T_DYNAMIC_VAR_BRACE_OPEN,
-                CT::T_DYNAMIC_VAR_BRACE_CLOSE,
-                CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
-                CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
-                CT::T_GROUP_IMPORT_BRACE_OPEN,
-                CT::T_GROUP_IMPORT_BRACE_CLOSE,
-            ]
-        );
+        $this->testProcess($source, $expectedTokens);
     }
 
     public static function provideProcess80Cases(): iterable
@@ -199,7 +186,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider providePre84ProcessCases
      *
@@ -223,6 +210,8 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
                 CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
                 CT::T_GROUP_IMPORT_BRACE_OPEN,
                 CT::T_GROUP_IMPORT_BRACE_CLOSE,
+                CT::T_PROPERTY_HOOK_BRACE_OPEN,
+                CT::T_PROPERTY_HOOK_BRACE_CLOSE,
             ]
         );
     }
@@ -295,6 +284,201 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
+     * @param _TransformerTestExpectedTokens $expectedTokens
+     *
+     * @dataProvider provideStarting84ProcessCases
+     *
+     * @requires PHP 8.4
+     */
+    public function testStarting84Process(string $source, array $expectedTokens = []): void
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            [
+                T_CURLY_OPEN,
+                CT::T_CURLY_CLOSE,
+                T_DOLLAR_OPEN_CURLY_BRACES,
+                CT::T_DOLLAR_CLOSE_CURLY_BRACES,
+                CT::T_DYNAMIC_PROP_BRACE_OPEN,
+                CT::T_DYNAMIC_PROP_BRACE_CLOSE,
+                CT::T_DYNAMIC_VAR_BRACE_OPEN,
+                CT::T_DYNAMIC_VAR_BRACE_CLOSE,
+                CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
+                CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
+                CT::T_GROUP_IMPORT_BRACE_OPEN,
+                CT::T_GROUP_IMPORT_BRACE_CLOSE,
+                CT::T_PROPERTY_HOOK_BRACE_OPEN,
+                CT::T_PROPERTY_HOOK_BRACE_CLOSE,
+            ]
+        );
+    }
+
+    /**
+     * @return iterable<array{string, array<int, int>}>
+     */
+    public static function provideStarting84ProcessCases(): iterable
+    {
+        yield 'property hooks: property without default value' => [
+            <<<'PHP'
+                <?php
+                class PropertyHooks
+                {
+                    public string $bar { // << this one
+                        set(string $value) {
+                            $this->bar = strtolower($value);
+                        }
+                    } // << this one
+                }
+                PHP,
+            [
+                13 => CT::T_PROPERTY_HOOK_BRACE_OPEN,
+                40 => CT::T_PROPERTY_HOOK_BRACE_CLOSE,
+            ],
+        ];
+
+        yield 'property hooks: property with default value (string)' => [
+            <<<'PHP'
+                <?php
+                class PropertyHooks
+                {
+                    public string $bar = "example" { // << this one
+                        set(string $value) {
+                            $this->bar = strtolower($value);
+                        }
+                    } // << this one
+                }
+                PHP,
+            [
+                17 => CT::T_PROPERTY_HOOK_BRACE_OPEN,
+                44 => CT::T_PROPERTY_HOOK_BRACE_CLOSE,
+            ],
+        ];
+
+        yield 'property hooks: property with default value (array)' => [
+            <<<'PHP'
+                <?php
+                class PropertyHooks
+                {
+                    public $bar = [1,2,3] { // << this one
+                        set($value) {
+                            $this->bar = $value;
+                        }
+                    } // << this one
+                }
+                PHP,
+            [
+                21 => CT::T_PROPERTY_HOOK_BRACE_OPEN,
+                43 => CT::T_PROPERTY_HOOK_BRACE_CLOSE,
+            ],
+        ];
+
+        yield 'property hooks: property with default value (namespaced)' => [
+            <<<'PHP'
+                <?php
+                class PropertyHooks
+                {
+                    public $bar = DateTimeInterface::ISO8601 { // << this one
+                        set($value) {
+                            $this->bar = $value;
+                        }
+                    } // << this one
+                }
+                PHP,
+            [
+                17 => CT::T_PROPERTY_HOOK_BRACE_OPEN,
+                39 => CT::T_PROPERTY_HOOK_BRACE_CLOSE,
+            ],
+        ];
+
+        yield 'property hooks: property with setter attributes' => [
+            <<<'PHP'
+                <?php
+                class PropertyHooks
+                {
+                    public string $bar { // << this one
+                        #[A]
+                        #[B]
+                        set(string $value) {
+                            $this->bar = strtolower($value);
+                        }
+                    } // << this one
+                }
+                PHP,
+            [
+                13 => CT::T_PROPERTY_HOOK_BRACE_OPEN,
+                48 => CT::T_PROPERTY_HOOK_BRACE_CLOSE,
+            ],
+        ];
+
+        yield 'property hooks: property with short setter' => [
+            <<<'PHP'
+                <?php
+                class PropertyHooks
+                {
+                    public string $bar { // << this one
+                        set {
+                            $this->bar = strtolower($value);
+                        }
+                    } // << this one
+                }
+                PHP,
+            [
+                13 => CT::T_PROPERTY_HOOK_BRACE_OPEN,
+                35 => CT::T_PROPERTY_HOOK_BRACE_CLOSE,
+            ],
+        ];
+
+        yield 'property hooks: property with short getter' => [
+            <<<'PHP'
+                <?php
+                class PropertyHooks
+                {
+                    public string $bar { // << this one
+                        get => ucwords(mb_strtolower($this->bar));
+                    } // << this one
+                }
+                PHP,
+            [
+                13 => CT::T_PROPERTY_HOOK_BRACE_OPEN,
+                32 => CT::T_PROPERTY_HOOK_BRACE_CLOSE,
+            ],
+        ];
+
+        yield 'property hooks: some more curly braces within hook' => [
+            <<<'PHP'
+                <?php
+                class PropertyHooks
+                {
+                    public $callable { // << this one
+                        set($value) {
+                            if (is_callable($value)) {
+                                $this->callable = $value;
+                            } else {
+                                $this->callable = static function (): void {
+                                    $foo = new class implements \Stringable {
+                                        public function __toString(): string {
+                                            echo 'Na';
+                                        }
+                                    };
+
+                                    for ($i = 0; $i < 8; $i++) {
+                                        echo (string) $foo;
+                                    }
+                                };
+                            }
+                        }
+                    } // << this one
+                }
+                PHP,
+            [
+                11 => CT::T_PROPERTY_HOOK_BRACE_OPEN,
+                143 => CT::T_PROPERTY_HOOK_BRACE_CLOSE,
+            ],
+        ];
+    }
+
+    /**
      * @dataProvider provideNotDynamicClassConstantFetchCases
      */
     public function testNotDynamicClassConstantFetch(string $source): void
@@ -339,7 +523,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideDynamicClassConstantFetchCases
      *
@@ -437,7 +621,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideDynamicClassConstantFetchPhp83Cases
      *

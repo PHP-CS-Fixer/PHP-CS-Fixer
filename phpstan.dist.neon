@@ -9,6 +9,7 @@ parameters:
     paths:
         - src
         - tests
+        - php-cs-fixer
         - dev-tools/phpstan/src
     excludePaths:
         - tests/Fixtures
@@ -59,8 +60,10 @@ parameters:
         -
             message: '#^Method PhpCsFixer\\Tests\\.+::provide.+Cases\(\) return type has no value type specified in iterable type iterable\.$#'
             path: tests
-            count: 265
+            count: 254
     tipsOfTheDay: false
+    symfony:
+        consoleApplicationLoader: dev-tools/phpstan/console-application.php
     tmpDir: dev-tools/phpstan/cache
 
 services:

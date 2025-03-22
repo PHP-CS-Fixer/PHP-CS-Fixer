@@ -36,11 +36,15 @@ final class TokensAnalyzer
      */
     private Tokens $tokens;
 
-    private ?GotoLabelAnalyzer $gotoLabelAnalyzer = null;
+    /**
+     * @readonly
+     */
+    private GotoLabelAnalyzer $gotoLabelAnalyzer;
 
     public function __construct(Tokens $tokens)
     {
         $this->tokens = $tokens;
+        $this->gotoLabelAnalyzer = new GotoLabelAnalyzer();
     }
 
     /**
@@ -452,10 +456,6 @@ final class TokensAnalyzer
 
         // check for goto label
         if ($this->tokens[$nextIndex]->equals(':')) {
-            if (null === $this->gotoLabelAnalyzer) {
-                $this->gotoLabelAnalyzer = new GotoLabelAnalyzer();
-            }
-
             if ($this->gotoLabelAnalyzer->belongsToGoToLabel($this->tokens, $nextIndex)) {
                 return false;
             }
@@ -852,6 +852,12 @@ final class TokensAnalyzer
                     'token' => $token,
                     'type' => 'property',
                 ];
+
+                continue;
+            }
+
+            if ($token->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
+                $index = $this->tokens->getNextTokenOfKind($index, [[CT::T_PROPERTY_HOOK_BRACE_CLOSE]]);
 
                 continue;
             }

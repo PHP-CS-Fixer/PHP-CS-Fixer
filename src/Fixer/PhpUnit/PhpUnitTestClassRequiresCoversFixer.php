@@ -50,11 +50,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      *
-     * Must run before PhpdocSeparationFixer.
+     * Must run before PhpUnitAttributesFixer, PhpdocSeparationFixer.
      */
     public function getPriority(): int
     {
-        return 0;
+        return 9;
     }
 
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
@@ -80,6 +80,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             [
                 'phpunit\framework\attributes\coversclass',
                 'phpunit\framework\attributes\coversnothing',
+                'phpunit\framework\attributes\coversmethod',
+                'phpunit\framework\attributes\coversfunction',
             ],
         );
     }

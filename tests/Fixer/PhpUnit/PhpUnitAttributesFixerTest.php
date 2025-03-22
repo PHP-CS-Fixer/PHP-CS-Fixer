@@ -491,10 +491,40 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
             '@requires OSFAMILY Windows',
         );
 
-        yield 'handle RequiresPhp' => self::createCase(
+        yield 'handle RequiresPhp with only version' => self::createCase(
             ['class', 'method'],
-            "#[RequiresPhp('8.1.20')]",
+            "#[RequiresPhp('>= 8.1.20')]",
             '@requires PHP 8.1.20',
+        );
+
+        yield 'handle RequiresPhp with caret' => self::createCase(
+            ['class', 'method'],
+            "#[RequiresPhp('^8.1.21')]",
+            '@requires PHP ^8.1.21',
+        );
+
+        yield 'handle RequiresPhp with less than' => self::createCase(
+            ['class', 'method'],
+            "#[RequiresPhp('<8.1.22')]",
+            '@requires PHP <8.1.22',
+        );
+
+        yield 'handle RequiresPhp with less than and space' => self::createCase(
+            ['class', 'method'],
+            "#[RequiresPhp('< 8.1.23')]",
+            '@requires PHP < 8.1.23',
+        );
+
+        yield 'handle RequiresPhp with alternative versions' => self::createCase(
+            ['class', 'method'],
+            "#[RequiresPhp('6|8')]",
+            '@requires PHP 6|8',
+        );
+
+        yield 'handle RequiresPhp with alpha versions' => self::createCase(
+            ['class', 'method'],
+            "#[RequiresPhp('>= 5.4.0-alpha1')]",
+            '@requires PHP 5.4.0-alpha1',
         );
 
         yield 'handle RequiresPhpExtension' => self::createCase(
@@ -503,10 +533,22 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
             '@requires extension mysqli >= 8.3.0',
         );
 
+        yield 'handle RequiresPhpExtension with only version' => self::createCase(
+            ['class', 'method'],
+            "#[RequiresPhpExtension('mysqli', '>= 8.3.0')]",
+            '@requires extension mysqli 8.3.0',
+        );
+
         yield 'handle RequiresPhpunit' => self::createCase(
             ['class', 'method'],
             "#[RequiresPhpunit('^10.1.0')]",
             '@requires PHPUnit ^10.1.0',
+        );
+
+        yield 'handle RequiresPhpunit with only version' => self::createCase(
+            ['class', 'method'],
+            "#[RequiresPhpunit('>= 11.1.1')]",
+            '@requires PHPUnit 11.1.1',
         );
 
         yield 'handle RequiresSetting' => self::createCase(

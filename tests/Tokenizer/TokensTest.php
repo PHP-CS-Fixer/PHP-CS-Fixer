@@ -662,8 +662,7 @@ final class TokensTest extends TestCase
         array $findTokens,
         bool $caseSensitive = true
     ): void {
-        $source =
-            '<?php
+        $source = '<?php
                 $a = function ($b) {
                     return $b;
                 };
@@ -1160,8 +1159,7 @@ echo $a;',
 
     public function testAssertTokensAfterChanging(): void
     {
-        $template =
-            '<?php class SomeClass {
+        $template = '<?php class SomeClass {
                     %s//
 
                     public function __construct($name)
@@ -1753,7 +1751,7 @@ $bar;',
             $sets[$j] = $set;
         }
 
-        yield 'overlapping inserts of bunch of comments ' => [
+        yield 'overlapping inserts of bunch of comments' => [
             Tokens::fromCode(\sprintf("<?php\n%s/* line #1 */\n%s/* line #2 */\n%s/* line #3 */%s", $sets[0]['content'], $sets[1]['content'], $sets[2]['content'], $sets[3]['content'])),
             Tokens::fromCode("<?php\n/* line #1 */\n/* line #2 */\n/* line #3 */"),
             [1 => $sets[0]['tokens'], 3 => $sets[1]['tokens'], 5 => $sets[2]['tokens'], 6 => $sets[3]['tokens']],
@@ -1774,6 +1772,36 @@ $bar;',
         $this->expectExceptionMessage('Invalid param $startIndex - not a proper block "start".');
 
         $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+    }
+
+    public function testBlockEdgeCachingOffsetSetPruneEvenIfTokenEquals(): void
+    {
+        $tokens = Tokens::fromArray([
+            new Token([T_OPEN_TAG, '<?php ']),
+            new Token([T_VARIABLE, '$a']),
+            new Token('='),
+            new Token([T_WHITESPACE, ' ']),
+            new Token([CT::T_ARRAY_SQUARE_BRACE_OPEN, '[']),
+            new Token([T_WHITESPACE, ' ']),
+            new Token([CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']']),
+            new Token(';'),
+        ]);
+
+        self::assertSame(6, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 4));
+        self::assertSame(4, $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 6));
+
+        $tokens->overrideRange(3, 6, [
+            new Token([CT::T_ARRAY_SQUARE_BRACE_OPEN, '[']),
+            $tokens[4],
+            new Token([CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']']),
+            $tokens[6],
+        ]);
+
+        self::assertSame(5, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 4));
+        self::assertSame(4, $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5));
+
+        self::assertSame(6, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 3));
+        self::assertSame(3, $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 6));
     }
 
     public function testBlockEdgeCachingClearAt(): void
@@ -1854,6 +1882,30 @@ $bar;',
 
         $tokens[1] = new Token([T_VARIABLE, '$x']);
         self::assertTrue($tokens->isTokenKindFound(T_VARIABLE));
+    }
+
+    public function testSettingSizeThrowsException(): void
+    {
+        $tokens = new Tokens();
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Changing tokens collection size explicitly is not allowed.');
+
+        $tokens->setSize(3);
+    }
+
+    public function testSettingSizeInTryCatchBlockDoesNotChangeSize(): void
+    {
+        $tokens = Tokens::fromCode('<?php $x = true;');
+        $size = $tokens->getSize();
+
+        try {
+            $tokens->setSize(5);
+        } catch (\RuntimeException $exception) {
+            self::assertSame('Changing tokens collection size explicitly is not allowed.', $exception->getMessage());
+        }
+
+        self::assertSame($size, $tokens->getSize());
     }
 
     private function getBlockEdgeCachingTestTokens(): Tokens

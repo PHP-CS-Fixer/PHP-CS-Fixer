@@ -108,6 +108,8 @@ interface ConfigInterface
 
     /**
      * Sets the path to the cache file.
+     *
+     * @param non-empty-string $cacheFile
      */
     public function setCacheFile(string $cacheFile): self;
 

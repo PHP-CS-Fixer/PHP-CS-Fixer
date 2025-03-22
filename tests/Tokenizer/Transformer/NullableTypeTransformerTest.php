@@ -23,11 +23,13 @@ use PhpCsFixer\Tokenizer\CT;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\NullableTypeTransformer
+ *
+ * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
  */
 final class NullableTypeTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
@@ -122,7 +124,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideProcess80Cases
      *
@@ -130,13 +132,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
      */
     public function testProcess80(array $expectedTokens, string $source): void
     {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            [
-                CT::T_NULLABLE_TYPE,
-            ]
-        );
+        $this->testProcess($source, $expectedTokens);
     }
 
     public static function provideProcess80Cases(): iterable
@@ -171,7 +167,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideProcess81Cases
      *
@@ -179,13 +175,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
      */
     public function testProcess81(array $expectedTokens, string $source): void
     {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            [
-                CT::T_NULLABLE_TYPE,
-            ]
-        );
+        $this->testProcess($source, $expectedTokens);
     }
 
     public static function provideProcess81Cases(): iterable
@@ -211,7 +201,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideProcess83Cases
      *
@@ -219,13 +209,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
      */
     public function testProcess83(array $expectedTokens, string $source): void
     {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            [
-                CT::T_NULLABLE_TYPE,
-            ]
-        );
+        $this->testProcess($source, $expectedTokens);
     }
 
     public static function provideProcess83Cases(): iterable

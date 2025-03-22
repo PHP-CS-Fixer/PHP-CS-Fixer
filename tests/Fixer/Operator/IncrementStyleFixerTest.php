@@ -42,25 +42,6 @@ final class IncrementStyleFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFixPostIncrementCases
-     */
-    public function testFixPostIncrement(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure(['style' => IncrementStyleFixer::STYLE_POST]);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<array{0: string, 1?: string}>
-     */
-    public static function provideFixPostIncrementCases(): iterable
-    {
-        foreach (self::provideFixPreIncrementCases() as $case) {
-            yield array_reverse($case);
-        }
-    }
-
-    /**
      * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixPreIncrementCases(): iterable
@@ -204,6 +185,25 @@ final class IncrementStyleFixerTest extends AbstractFixerTestCase
             '<?php if ($foo) ++$a;',
             '<?php if ($foo) $a++;',
         ];
+    }
+
+    /**
+     * @dataProvider provideFixPostIncrementCases
+     */
+    public function testFixPostIncrement(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure(['style' => IncrementStyleFixer::STYLE_POST]);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
+    public static function provideFixPostIncrementCases(): iterable
+    {
+        foreach (self::provideFixPreIncrementCases() as $case) {
+            yield array_reverse($case);
+        }
     }
 
     /**

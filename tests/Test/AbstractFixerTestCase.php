@@ -49,7 +49,6 @@ use PhpCsFixer\Tests\Fixer\FunctionNotation\MethodArgumentSpaceFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\NativeFunctionInvocationFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\ReturnTypeDeclarationFixerTest;
 use PhpCsFixer\Tests\Fixer\Import\GlobalNamespaceImportFixerTest;
-use PhpCsFixer\Tests\Fixer\Import\OrderedImportsFixerTest;
 use PhpCsFixer\Tests\Fixer\Import\SingleImportPerStatementFixerTest;
 use PhpCsFixer\Tests\Fixer\LanguageConstruct\FunctionToConstantFixerTest;
 use PhpCsFixer\Tests\Fixer\LanguageConstruct\SingleSpaceAroundConstructFixerTest;
@@ -64,7 +63,6 @@ use PhpCsFixer\Tests\Fixer\Phpdoc\AlignMultilineCommentFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\GeneralPhpdocTagRenameFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\NoBlankLinesAfterPhpdocFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocAddMissingParamAnnotationFixerTest;
-use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoAliasTagFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoEmptyReturnFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoPackageFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocOrderByValueFixerTest;
@@ -88,7 +86,6 @@ use PhpCsFixer\Tests\Fixer\Semicolon\SemicolonAfterInstructionFixerTest;
 use PhpCsFixer\Tests\Fixer\Semicolon\SpaceAfterSemicolonFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\BlankLineBeforeStatementFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\IndentationTypeFixerTest;
-use PhpCsFixer\Tests\Fixer\Whitespace\NoExtraBlankLinesFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\NoSpacesAroundOffsetFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\SpacesInsideParenthesesFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\StatementIndentationFixerTest;
@@ -100,7 +97,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
- * @template TFixer of AbstractFixer
+ * @template TFixer of FixerInterface
  *
  * @internal
  */
@@ -108,15 +105,12 @@ abstract class AbstractFixerTestCase extends TestCase
 {
     use AssertTokensTrait;
 
-    /**
-     * @var null|LinterInterface
-     */
-    protected $linter;
+    protected ?LinterInterface $linter = null;
 
     /**
      * @var null|TFixer
      */
-    protected $fixer;
+    protected ?FixerInterface $fixer = null;
 
     /**
      * do not modify this structure without prior discussion.
@@ -134,6 +128,7 @@ abstract class AbstractFixerTestCase extends TestCase
      */
     private array $allowedFixersWithoutDefaultCodeSample = [
         'general_phpdoc_annotation_remove' => true,
+        'general_attribute_remove' => true,
         'general_phpdoc_tag_rename' => true,
     ];
 
@@ -498,14 +493,11 @@ abstract class AbstractFixerTestCase extends TestCase
             NoClosingTagFixerTest::class,
             NoEmptyCommentFixerTest::class,
             NoEmptyStatementFixerTest::class,
-            NoExtraBlankLinesFixerTest::class,
             NoSpacesAroundOffsetFixerTest::class,
             NoUnneededControlParenthesesFixerTest::class,
             NoUselessConcatOperatorFixerTest::class,
             NoUselessElseFixerTest::class,
-            OrderedImportsFixerTest::class,
             PhpdocAddMissingParamAnnotationFixerTest::class,
-            PhpdocNoAliasTagFixerTest::class,
             PhpdocNoEmptyReturnFixerTest::class,
             PhpdocNoPackageFixerTest::class,
             PhpdocOrderByValueFixerTest::class,
@@ -532,7 +524,7 @@ abstract class AbstractFixerTestCase extends TestCase
             YodaStyleFixerTest::class,
         ];
 
-        $names = ['Fix', 'Fix74Deprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'WithWhitespacesConfig', 'InvalidConfiguration'];
+        $names = ['Fix', 'FixDeprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'WithWhitespacesConfig', 'InvalidConfiguration'];
         $methodNames = ['testConfigure'];
         foreach ($names as $name) {
             $methodNames[] = 'test'.$name;
@@ -571,7 +563,7 @@ abstract class AbstractFixerTestCase extends TestCase
     /**
      * @return TFixer
      */
-    protected function createFixer(): AbstractFixer
+    protected function createFixer(): FixerInterface
     {
         $fixerClassName = preg_replace('/^(PhpCsFixer)\\\Tests(\\\.+)Test$/', '$1$2', static::class);
 
@@ -616,7 +608,7 @@ abstract class AbstractFixerTestCase extends TestCase
             self::assertThat(
                 $tokens->generateCode(),
                 new IsIdenticalString($expected),
-                'Code build on input code must match expected code.'
+                'Code built on input code must match expected code.'
             );
             self::assertTrue($tokens->isChanged(), 'Tokens collection built on input code must be marked as changed after fixing.');
 
@@ -645,7 +637,7 @@ abstract class AbstractFixerTestCase extends TestCase
         self::assertThat(
             $tokens->generateCode(),
             new IsIdenticalString($expected),
-            'Code build on expected code must not change.'
+            'Code built on expected code must not change.'
         );
         self::assertFalse($tokens->isChanged(), 'Tokens collection built on expected code must not be marked as changed after fixing.');
     }

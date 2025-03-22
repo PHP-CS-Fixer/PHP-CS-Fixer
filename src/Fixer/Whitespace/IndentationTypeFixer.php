@@ -30,10 +30,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
-    /**
-     * @var string
-     */
-    private $indent;
+    private string $indent;
 
     public function getDefinition(): FixerDefinitionInterface
     {

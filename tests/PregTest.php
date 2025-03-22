@@ -47,32 +47,6 @@ final class PregTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{0: string, 1: null|bool, 2?: string, 3?: string}>
-     */
-    public static function providePatternValidationCases(): iterable
-    {
-        yield 'invalid_blank' => ['', null, PregException::class];
-
-        yield 'invalid_open' => ["\1", null, PregException::class, "/'\x01' found/"];
-
-        yield 'valid_control_character_delimiter' => ["\1\1", true];
-
-        yield 'invalid_control_character_modifier' => ["\1\1\1", null, PregException::class, '/ Unknown modifier|Invalid PCRE pattern /'];
-
-        yield 'valid_slate' => ['//', true];
-
-        yield 'valid_paired' => ['()', true];
-
-        yield 'paired_non_utf8_only' => ["((*UTF8)\xFF)", null, PregException::class, '/UTF-8/'];
-
-        yield 'valid_paired_non_utf8_only' => ["(\xFF)", true];
-
-        yield 'php_version_dependent' => ['([\R])', false, PregException::class, '/Compilation failed: escape sequence is invalid/'];
-
-        yield 'null_byte_injection' => ['()'."\0", null, PregException::class, '/NUL( byte)? is not a valid modifier|Null byte in regex/'];
-    }
-
-    /**
      * @dataProvider providePatternValidationCases
      *
      * @param null|class-string<\Throwable> $expectedException
@@ -157,6 +131,32 @@ final class PregTest extends TestCase
         }
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1: null|bool, 2?: string, 3?: string}>
+     */
+    public static function providePatternValidationCases(): iterable
+    {
+        yield 'invalid_blank' => ['', null, PregException::class];
+
+        yield 'invalid_open' => ["\1", null, PregException::class, "/'\x01' found/"];
+
+        yield 'valid_control_character_delimiter' => ["\1\1", true];
+
+        yield 'invalid_control_character_modifier' => ["\1\1\1", null, PregException::class, '/ Unknown modifier|Invalid PCRE pattern /'];
+
+        yield 'valid_slate' => ['//', true];
+
+        yield 'valid_paired' => ['()', true];
+
+        yield 'paired_non_utf8_only' => ["((*UTF8)\xFF)", null, PregException::class, '/UTF-8/'];
+
+        yield 'valid_paired_non_utf8_only' => ["(\xFF)", true];
+
+        yield 'php_version_dependent' => ['([\R])', false, PregException::class, '/Compilation failed: escape sequence is invalid/'];
+
+        yield 'null_byte_injection' => ['()'."\0", null, PregException::class, '/NUL( byte)? is not a valid modifier|Null byte in regex/'];
+    }
+
     public function testMatchAllFailing(): void
     {
         $this->expectException(PregException::class);
@@ -223,22 +223,6 @@ final class PregTest extends TestCase
         self::assertSame($expectedResult, $actualResult);
     }
 
-    /**
-     * @return iterable<array{string, string}>
-     */
-    public static function provideCommonCases(): iterable
-    {
-        yield ['/u/u', 'u'];
-
-        yield ['/u/u', 'u/u'];
-
-        yield ['/./', \chr(224).'bc'];
-
-        yield ['/à/', 'àbc'];
-
-        yield ['/'.\chr(224).'|í/', 'àbc'];
-    }
-
     public function testSplitFailing(): void
     {
         $this->expectException(PregException::class);
@@ -256,6 +240,22 @@ final class PregTest extends TestCase
         $actualResult = Preg::split($pattern, $subject);
 
         self::assertSame($expectedResult, $actualResult);
+    }
+
+    /**
+     * @return iterable<array{string, string}>
+     */
+    public static function provideCommonCases(): iterable
+    {
+        yield ['/u/u', 'u'];
+
+        yield ['/u/u', 'u/u'];
+
+        yield ['/./', \chr(224).'bc'];
+
+        yield ['/à/', 'àbc'];
+
+        yield ['/'.\chr(224).'|í/', 'àbc'];
     }
 
     public function testCorrectnessForUtf8String(): void
