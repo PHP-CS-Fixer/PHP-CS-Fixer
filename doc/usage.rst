@@ -56,7 +56,13 @@ which will use the intersection of the paths from the config file and from the a
 
     php php-cs-fixer.phar fix --path-mode=intersection /path/to/dir
 
-The ``--format`` option for the output format. Supported formats are ``txt`` (default one), ``checkstyle``, ``gitlab``, ``json``, ``junit`` and ``xml``.
+The ``--format`` option for the output format. Supported formats are ``@auto`` (default one on v4+), ``txt`` (default one on v3), ``checkstyle``, ``gitlab``, ``json``, ``junit`` and ``xml``.
+
+* ``@auto`` aims to auto-select best reporter for given CI or local execution (resolution into best format is outside of BC promise and is future-ready)
+
+  * ``gitlab`` for GitLab
+
+* ``@auto,{format}`` takes ``@auto`` under CI, and {format} otherwise
 
 NOTE: the output for the following formats are generated in accordance with schemas
 

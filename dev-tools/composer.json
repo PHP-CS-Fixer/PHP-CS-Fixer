@@ -13,8 +13,8 @@
         "phpstan/extension-installer": "^1.4.3",
         "phpstan/phpstan": "^2.1.8",
         "phpstan/phpstan-phpunit": "^2.0.4",
-        "phpstan/phpstan-strict-rules": "^2.0.3",
-        "phpstan/phpstan-symfony": "^2.0.2"
+        "phpstan/phpstan-strict-rules": "^2.0.4",
+        "phpstan/phpstan-symfony": "^2.0.3"
     },
     "config": {
         "allow-plugins": {
