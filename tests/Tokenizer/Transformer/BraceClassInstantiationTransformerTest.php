@@ -435,13 +435,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     }
 
     /**
-<<<<<<< HEAD
-     * @param array<int, int> $expectedTokens
-     * @param list<int>       $observedKinds
-=======
      * @param _TransformerTestExpectedTokens            $expectedTokens
      * @param _TransformerTestObservedKindsOrPrototypes $observedKinds
->>>>>>> master
      *
      * @dataProvider provideProcessPhp81Cases
      *
