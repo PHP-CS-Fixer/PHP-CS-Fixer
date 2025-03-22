@@ -20,6 +20,7 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
@@ -452,6 +453,8 @@ abstract class AbstractFixerTestCase extends TestCase
                 $option->getDescription(),
                 'Option description cannot contain word "DEPRECATED"'
             );
+
+            self::assertOptionDefault($option, $this->fixer);
         }
     }
 
@@ -701,6 +704,34 @@ abstract class AbstractFixerTestCase extends TestCase
         self::assertCorrectCasing($descriptionWithExcludedNames, 'PHPDoc', $fixerName, $descriptionType);
         self::assertCorrectCasing($descriptionWithExcludedNames, 'PHPUnit', $fixerName, $descriptionType);
         self::assertFalse(strpos($descriptionType, '``'), \sprintf('[%s] The %s must no contain sequential backticks.', $fixerName, $descriptionType));
+    }
+
+    private static function assertOptionDefault(FixerOptionInterface $option, FixerInterface $fixer): void
+    {
+        if (!$option->hasDefault()) {
+            return;
+        }
+
+        $allowedValues = $option->getAllowedValues();
+
+        if (!is_countable($allowedValues) || 1 !== \count($allowedValues)) {
+            return;
+        }
+
+        $allowedValueSubset = reset($allowedValues);
+
+        if (
+            !$allowedValueSubset instanceof AllowedValueSubset
+            || \count($option->getDefault()) !== \count($allowedValueSubset->getAllowedValues())
+        ) {
+            return;
+        }
+
+        self::assertSame(
+            $option->getDefault(),
+            $allowedValueSubset->getAllowedValues(),
+            \sprintf('[%s] `%s` has default and allowed sets of the same size, so they must be the same.', $fixer->getName(), $option->getName())
+        );
     }
 
     /**
