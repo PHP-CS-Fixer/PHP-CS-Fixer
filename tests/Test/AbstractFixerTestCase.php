@@ -718,7 +718,7 @@ abstract class AbstractFixerTestCase extends TestCase
             return;
         }
 
-        $allowedValueSubset = reset($allowedValues);
+        $allowedValueSubset = $allowedValues[0];
 
         if (
             !$allowedValueSubset instanceof AllowedValueSubset
