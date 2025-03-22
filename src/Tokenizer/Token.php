@@ -251,6 +251,8 @@ final class Token
      * Get token's content.
      *
      * It shall be used only for getting the content of token, not for checking it against excepted value.
+     *
+     * @return non-empty-string
      */
     public function getContent(): string
     {
