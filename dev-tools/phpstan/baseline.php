@@ -2036,12 +2036,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Linter/CachingLinter.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Preg\\:\\:replace\\(\\) should return string but returns list\\<string\\>\\|string\\.$#',
-	'identifier' => 'return.type',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Preg.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$offset of function substr expects int, int\\|false given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -2778,24 +2772,6 @@ $ignoreErrors[] = [
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/FixerFactoryTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$pattern of static method PhpCsFixer\\\\Preg\\:\\:replace\\(\\) expects string, list\\<string\\>\\|string given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/PregTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$pattern of static method PhpCsFixer\\\\Preg\\:\\:replaceCallback\\(\\) expects string, list\\<string\\>\\|string given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/PregTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$subject of static method PhpCsFixer\\\\Preg\\:\\:replaceCallback\\(\\) expects string, list\\<string\\>\\|string given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/PregTest.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Offset string might not exist on array\\<string, PhpCsFixer\\\\Fixer\\\\FixerInterface\\>\\.$#',

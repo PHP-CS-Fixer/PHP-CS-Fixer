@@ -186,12 +186,9 @@ final class PregTest extends TestCase
     }
 
     /**
-     * @param list<string>|string $pattern
-     * @param list<string>|string $subject
-     *
      * @dataProvider provideCommonCases
      */
-    public function testReplace($pattern, $subject): void
+    public function testReplace(string $pattern, string $subject): void
     {
         $expectedResult = preg_replace($pattern, 'foo', $subject);
         $actualResult = Preg::replace($pattern, 'foo', $subject);
@@ -208,12 +205,9 @@ final class PregTest extends TestCase
     }
 
     /**
-     * @param list<string>|string $pattern
-     * @param list<string>|string $subject
-     *
      * @dataProvider provideCommonCases
      */
-    public function testReplaceCallback($pattern, $subject): void
+    public function testReplaceCallback(string $pattern, string $subject): void
     {
         $callback = static fn (array $x): string => implode('-', $x);
 
