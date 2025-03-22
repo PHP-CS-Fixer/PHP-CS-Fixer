@@ -699,6 +699,31 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
                 'keep_annotations' => true,
             ],
         ];
+
+        yield 'data provider with trailing parentheses' => [
+            <<<'PHP'
+                <?php
+                class TheTest extends \PHPUnit\Framework\TestCase {
+                    /**
+                     */
+                    #[\PHPUnit\Framework\Attributes\DataProvider('provideFooCases')]
+                    #[\PHPUnit\Framework\Attributes\DataProviderExternal(AnotherTest::class, 'provideBarCases')]
+                    public function testFoo($x) { self::assertTrue($x); }
+                    public static function provideFooCases() { yield [true]; }
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class TheTest extends \PHPUnit\Framework\TestCase {
+                    /**
+                     * @dataProvider provideFooCases()
+                     * @dataProvider AnotherTest::provideBarCases()
+                     */
+                    public function testFoo($x) { self::assertTrue($x); }
+                    public static function provideFooCases() { yield [true]; }
+                }
+                PHP,
+        ];
     }
 
     /**
