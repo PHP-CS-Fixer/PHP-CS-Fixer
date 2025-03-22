@@ -101,8 +101,6 @@ final class Preg
     }
 
     /**
-     * @param string $subject
-     *
      * @param-out int $count
      *
      * @return ($subject is non-empty-string ? ($replacement is non-empty-string ? non-empty-string : string) : string)
