@@ -106,21 +106,21 @@ abstract class AbstractFixerTestCase extends TestCase
 {
     use AssertTokensTrait;
 
+    /**
+     * do not modify this structure without prior discussion.
+     *
+     * @var array<string, array<string, bool>>
+     */
+    private const ALLOWED_REQUIRED_OPTIONS = [
+        'header_comment' => ['header' => true],
+    ];
+
     protected ?LinterInterface $linter = null;
 
     /**
      * @var null|TFixer
      */
     protected ?FixerInterface $fixer = null;
-
-    /**
-     * do not modify this structure without prior discussion.
-     *
-     * @var array<string, array<string, bool>>
-     */
-    private array $allowedRequiredOptions = [
-        'header_comment' => ['header' => true],
-    ];
 
     /**
      * do not modify this structure without prior discussion.
@@ -266,7 +266,7 @@ abstract class AbstractFixerTestCase extends TestCase
             if (isset($configSamplesProvided['default'])) {
                 self::assertSame('default', array_key_first($configSamplesProvided), \sprintf('[%s] First sample must be for the default configuration.', $fixerName));
             } elseif (!isset($this->allowedFixersWithoutDefaultCodeSample[$fixerName])) {
-                self::assertArrayHasKey($fixerName, $this->allowedRequiredOptions, \sprintf('[%s] Has no sample for default configuration.', $fixerName));
+                self::assertArrayHasKey($fixerName, self::ALLOWED_REQUIRED_OPTIONS, \sprintf('[%s] Has no sample for default configuration.', $fixerName));
             }
 
             if (\count($configSamplesProvided) < 2) {
@@ -433,28 +433,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
         foreach ($configurationDefinition->getOptions() as $option) {
             self::assertInstanceOf(FixerOptionInterface::class, $option);
-            self::assertNotEmpty($option->getDescription());
-            self::assertValidDescription($this->fixer->getName(), 'option:'.$option->getName(), $option->getDescription());
-
-            self::assertSame(
-                !isset($this->allowedRequiredOptions[$this->fixer->getName()][$option->getName()]),
-                $option->hasDefault(),
-                \sprintf(
-                    $option->hasDefault()
-                        ? 'Option `%s` of fixer `%s` is wrongly listed in `$allowedRequiredOptions` structure, as it is not required. If you just changed that option to not be required anymore, please adjust mentioned structure.'
-                        : 'Option `%s` of fixer `%s` shall not be required. If you want to introduce new required option please adjust `$allowedRequiredOptions` structure.',
-                    $option->getName(),
-                    $this->fixer->getName()
-                )
-            );
-
-            self::assertStringNotContainsString(
-                'DEPRECATED',
-                $option->getDescription(),
-                'Option description cannot contain word "DEPRECATED"'
-            );
-
-            self::assertOptionDefault($option, $this->fixer);
+            self::assertOption($option, $this->fixer);
         }
     }
 
@@ -706,8 +685,29 @@ abstract class AbstractFixerTestCase extends TestCase
         self::assertFalse(strpos($descriptionType, '``'), \sprintf('[%s] The %s must no contain sequential backticks.', $fixerName, $descriptionType));
     }
 
-    private static function assertOptionDefault(FixerOptionInterface $option, FixerInterface $fixer): void
+    private static function assertOption(FixerOptionInterface $option, FixerInterface $fixer): void
     {
+        self::assertNotEmpty($option->getDescription());
+        self::assertValidDescription($fixer->getName(), 'option:'.$option->getName(), $option->getDescription());
+
+        self::assertSame(
+            !isset(self::ALLOWED_REQUIRED_OPTIONS[$fixer->getName()][$option->getName()]),
+            $option->hasDefault(),
+            \sprintf(
+                $option->hasDefault()
+                    ? 'Option `%s` of fixer `%s` is wrongly listed in `ALLOWED_REQUIRED_OPTIONS` structure, as it is not required. If you just changed that option to not be required anymore, please adjust mentioned structure.'
+                    : 'Option `%s` of fixer `%s` shall not be required. If you want to introduce new required option please adjust `ALLOWED_REQUIRED_OPTIONS` structure.',
+                $option->getName(),
+                $fixer->getName()
+            )
+        );
+
+        self::assertStringNotContainsString(
+            'DEPRECATED',
+            $option->getDescription(),
+            'Option description cannot contain word "DEPRECATED"'
+        );
+
         if (!$option->hasDefault()) {
             return;
         }
