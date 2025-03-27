@@ -324,9 +324,9 @@ use Bar;
      */
     private function sortAlphabetically(array $first, array $second): int
     {
-        // Replace backslashes by spaces before sorting for correct sort order
-        $firstNamespace = str_replace('\\', ' ', $this->prepareNamespace($first['namespace']));
-        $secondNamespace = str_replace('\\', ' ', $this->prepareNamespace($second['namespace']));
+        // Replace backslashes by spaces and remove opening braces before sorting for correct sort order
+        $firstNamespace = str_replace(['\\', '{'], [' ', ''], $this->prepareNamespace($first['namespace']));
+        $secondNamespace = str_replace(['\\', '{'], [' ', ''], $this->prepareNamespace($second['namespace']));
 
         return true === $this->configuration['case_sensitive']
             ? $firstNamespace <=> $secondNamespace
