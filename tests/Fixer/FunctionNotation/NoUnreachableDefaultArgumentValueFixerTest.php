@@ -278,7 +278,7 @@ $bar) {}',
     /**
      * @dataProvider provideFix84Cases
      *
-     * @requires PHP >= 8.4
+     * @requires PHP 8.4
      */
     public function testFix84(string $expected, ?string $input = null): void
     {
