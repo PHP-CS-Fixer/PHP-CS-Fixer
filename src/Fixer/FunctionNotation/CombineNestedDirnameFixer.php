@@ -81,7 +81,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
             $firstArgumentEnd = $dirnameInfo['end'];
             $dirnameInfoArray = [$dirnameInfo];
 
-            while ($dirnameInfo = $this->getDirnameInfo($tokens, $prev, $firstArgumentEnd)) {
+            while (($dirnameInfo = $this->getDirnameInfo($tokens, $prev, $firstArgumentEnd)) !== false) {
                 $dirnameInfoArray[] = $dirnameInfo;
                 $prev = $tokens->getPrevMeaningfulToken($dirnameInfo['indices'][0]);
 

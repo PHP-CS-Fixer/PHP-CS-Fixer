@@ -741,6 +741,24 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
 }
 ',
         ];
+
+        yield [
+            <<<'PHP'
+                <?php
+                if ($x) {//
+
+                    f();
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                if ($x)//
+                {
+
+                    f();
+                }
+                PHP,
+        ];
     }
 
     /**

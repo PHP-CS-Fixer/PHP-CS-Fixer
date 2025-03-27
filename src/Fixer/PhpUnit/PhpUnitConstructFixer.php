@@ -127,9 +127,9 @@ final class FooTest extends \PHPUnit_Framework_TestCase {
     {
         $assertMethods = [
             'assertEquals',
-            'assertSame',
             'assertNotEquals',
             'assertNotSame',
+            'assertSame',
         ];
 
         return new FixerConfigurationResolver([

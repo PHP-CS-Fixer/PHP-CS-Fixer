@@ -207,7 +207,7 @@ final class DocumentationTest extends TestCase
         }
 
         $lastFormat = array_pop($formats);
-        $expectedContent = 'Supported formats are ``txt`` (default one), ';
+        $expectedContent = 'Supported formats are ``@auto`` (default one on v4+), ``txt`` (default one on v3), ';
 
         foreach ($formats as $format) {
             $expectedContent .= '``'.$format.'``, ';
