@@ -3,6 +3,25 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.74.0
+---------------------
+
+* feat: add `--format=@auto` (#8513)
+* fix: `BracesPositionFixer` - do not create two consecutive whitespace tokens (#8496)
+* fix: `MbStrFunctionsFixer` - fix imports with leading backslash (#8507)
+* fix: `NoUnreachableDefaultArgumentValueFixer` - do not crash on property hook (#8512)
+* fix: `OrderedImportsFixer` - do not take the braces part in grouped imports into account (#8459)
+* fix: `OrderedImportsFixer` - fix syntax error with grouped use statement and multiple use with comma (#8483)
+* fix: `PhpUnitAttributesFixer` - handle parentheses after data provider method name (#8510)
+* fix: `PhpUnitMethodCasingFixer` - do not touch anonymous class (#8463)
+* chore: make options that have default and allowed sets the same size the same array (#8529)
+* chore: update return type of `FixerOptionInterface::getAllowedValues` (#8530)
+* chore: `Preg` - improve types (#8527)
+* CI: fix code coverage job (#8520)
+* CI: try MacOS job without ParaUnit (#8528)
+* deps: update PHPStan (#8531)
+* deps: upgrade `PHPStan/*` (#8524)
+
 Changelog for v3.73.1
 ---------------------
 
