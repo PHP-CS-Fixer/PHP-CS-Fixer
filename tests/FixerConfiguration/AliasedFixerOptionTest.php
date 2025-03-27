@@ -142,7 +142,7 @@ final class AliasedFixerOptionTest extends TestCase
     }
 
     /**
-     * @param null|list<null|(callable(mixed): bool)|scalar> $allowedValues
+     * @param null|non-empty-list<null|(callable(mixed): bool)|scalar> $allowedValues
      *
      * @dataProvider provideGetAllowedValuesCases
      */

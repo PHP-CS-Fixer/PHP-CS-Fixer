@@ -23,6 +23,8 @@
         <exclude name="PHPCompatibility.FunctionUse.NewFunctions.array_is_listFound"/>
         <!-- we use it to test code using high PHP version -->
         <exclude name="PHPCompatibility.Numbers.RemovedHexadecimalNumericStrings.Found"/>
+        <!-- we have explicit handling of different hash algo depends on PHP version -->
+        <exclude name="PHPCompatibility.ParameterValues.NewHashAlgorithms.xxh128Found"/>
         <exclude-pattern>tests/Fixtures/**/*</exclude-pattern>
     </rule>
     <rule ref="PHPCompatibilitySymfonyPolyfillPHP80"/>

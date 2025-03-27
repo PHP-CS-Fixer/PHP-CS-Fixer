@@ -818,9 +818,7 @@ final class OrderedAttributesFixerTest extends AbstractFixerTestCase
      */
     public function testFix81(string $expected, ?string $input = null, array $configuration = []): void
     {
-        $this->fixer->configure($configuration);
-
-        $this->doTest($expected, $input);
+        $this->testFix($expected, $input, $configuration);
     }
 
     /**

@@ -158,11 +158,7 @@ try {
      */
     public function testFix80(string $expected, ?string $input = null, ?array $config = null): void
     {
-        if (null !== $config) {
-            $this->fixer->configure($config);
-        }
-
-        $this->doTest($expected, $input);
+        $this->testFix($expected, $input, $config);
     }
 
     /**
@@ -561,11 +557,7 @@ try {
      */
     public function testFix81(string $expected, ?string $input = null, ?array $config = null): void
     {
-        if (null !== $config) {
-            $this->fixer->configure($config);
-        }
-
-        $this->doTest($expected, $input);
+        $this->testFix($expected, $input, $config);
     }
 
     /**
@@ -618,11 +610,7 @@ try {
      */
     public function testFix82(string $expected, ?string $input = null, ?array $config = null): void
     {
-        if (null !== $config) {
-            $this->fixer->configure($config);
-        }
-
-        $this->doTest($expected, $input);
+        $this->testFix($expected, $input, $config);
     }
 
     /**

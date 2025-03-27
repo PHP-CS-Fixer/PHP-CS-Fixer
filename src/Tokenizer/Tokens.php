@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer;
 
 use PhpCsFixer\Console\Application;
+use PhpCsFixer\Hasher;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
@@ -75,7 +76,7 @@ class Tokens extends \SplFixedArray
     private array $blockEndCache = [];
 
     /**
-     * An MD5 hash of the code string.
+     * An hash of the code string.
      *
      * @var ?non-empty-string
      */
@@ -203,7 +204,7 @@ class Tokens extends \SplFixedArray
      */
     public static function fromCode(string $code): self
     {
-        $codeHash = self::calculateCodeHash($code);
+        $codeHash = self::calculateHash($code);
 
         if (self::hasCache($codeHash)) {
             $tokens = self::getCache($codeHash);
@@ -573,7 +574,7 @@ class Tokens extends \SplFixedArray
     {
         $code = $this->generatePartialCode(0, \count($this) - 1);
         if (null === $this->codeHash) {
-            $this->changeCodeHash(self::calculateCodeHash($code)); // ensure code hash is calculated, so it's registered in cache
+            $this->changeCodeHash(self::calculateHash($code)); // ensure code hash is calculated, so it's registered in cache
         }
 
         return $code;
@@ -603,7 +604,7 @@ class Tokens extends \SplFixedArray
     {
         if (null === $this->codeHash) {
             $code = $this->generatePartialCode(0, \count($this) - 1);
-            $this->changeCodeHash(self::calculateCodeHash($code)); // ensure code hash is calculated, so it's registered in cache
+            $this->changeCodeHash(self::calculateHash($code)); // ensure code hash is calculated, so it's registered in cache
         }
 
         return $this->codeHash;
@@ -617,7 +618,7 @@ class Tokens extends \SplFixedArray
     public function getCollectionHash(): string
     {
         if (null === $this->collectionHash) {
-            $this->collectionHash = md5(
+            $this->collectionHash = self::calculateHash(
                 $this->getCodeHash()
                 .'#'
                 .\count($this)
@@ -1128,7 +1129,7 @@ class Tokens extends \SplFixedArray
         $this->blockStartCache = [];
         $this->blockEndCache = [];
 
-        $this->changeCodeHash(self::calculateCodeHash($code)); // ensure code hash is calculated, so it's registered in cache
+        $this->changeCodeHash(self::calculateHash($code)); // ensure code hash is calculated, so it's registered in cache
     }
 
     public function toJson(): string
@@ -1450,13 +1451,11 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * Calculate hash for code.
-     *
      * @return non-empty-string
      */
-    private static function calculateCodeHash(string $code): string
+    private static function calculateHash(string $code): string
     {
-        return CodeHasher::calculateCodeHash($code);
+        return Hasher::calculate($code);
     }
 
     /**
