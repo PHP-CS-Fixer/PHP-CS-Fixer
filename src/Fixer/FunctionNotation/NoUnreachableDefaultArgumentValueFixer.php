@@ -116,6 +116,12 @@ function example($foo = "two words", $bar) {}
                 continue;
             }
 
+            if ($token->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_CLOSE)) {
+                $i = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PROPERTY_HOOK, $i);
+
+                continue;
+            }
+
             if ($token->isGivenKind(T_VARIABLE) && !$this->isEllipsis($tokens, $i)) {
                 return $i;
             }
