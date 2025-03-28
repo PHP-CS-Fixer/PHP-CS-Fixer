@@ -98,7 +98,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
      * {@inheritdoc}
      *
      * Must run before FullyQualifiedStrictTypesFixer, NoEmptyPhpdocFixer, PhpdocSeparationFixer, PhpdocTrimConsecutiveBlankLineSeparationFixer, PhpdocTrimFixer.
-     * Must run after PhpUnitDataProviderNameFixer, PhpUnitDataProviderReturnTypeFixer, PhpUnitDataProviderStaticFixer, PhpUnitSizeClassFixer, PhpUnitTestClassRequiresCoversFixer.
+     * Must run after PhpUnitSizeClassFixer, PhpUnitTestClassRequiresCoversFixer.
      */
     public function getPriority(): int
     {
