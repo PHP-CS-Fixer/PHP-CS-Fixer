@@ -82,16 +82,12 @@ final class NewExpressionParenthesesFixerTest extends AbstractFixerTestCase
             '<?php (new class { public function __construct() { (new class {})->bar; } })->bar;',
         ];
 
-        yield ['<?php (new class {})->bar;', null, ['anonymous_class' => null]];
-
-        yield ['<?php new class {}->bar;', null, ['anonymous_class' => null]];
-
-        yield ['<?php (new class {})->bar;', null, ['anonymous_class' => true]];
+        yield ['<?php (new class {})->bar;', null, ['use_parentheses' => true]];
 
         yield [
             '<?php (new class {})->bar;',
             '<?php new class {}->bar;',
-            ['anonymous_class' => true],
+            ['use_parentheses' => true],
         ];
 
         // regular class name
@@ -141,16 +137,12 @@ final class NewExpressionParenthesesFixerTest extends AbstractFixerTestCase
 
         yield ['<?php (new Foo)->bar;'];
 
-        yield ['<?php (new Foo())->bar;', null, ['named_class' => null]];
-
-        yield ['<?php new Foo()->bar;', null, ['named_class' => null]];
-
-        yield ['<?php (new Foo())->bar;', null, ['named_class' => true]];
+        yield ['<?php (new Foo())->bar;', null, ['use_parentheses' => true]];
 
         yield [
             '<?php (new Foo())->bar;',
             '<?php new Foo()->bar;',
-            ['named_class' => true],
+            ['use_parentheses' => true],
         ];
 
         // $variable class name
@@ -204,16 +196,12 @@ final class NewExpressionParenthesesFixerTest extends AbstractFixerTestCase
             '<?php (new $obj[1][2]())->bar;',
         ];
 
-        yield ['<?php (new $class)->bar;', null, ['named_class' => null]];
-
-        yield ['<?php new $class->bar;', null, ['named_class' => null]];
-
-        yield ['<?php (new $class)->bar;', null, ['named_class' => true]];
+        yield ['<?php (new $class)->bar;', null, ['use_parentheses' => true]];
 
         yield [
             '<?php (new $class())->bar;',
             '<?php new $class()->bar;',
-            ['named_class' => true],
+            ['use_parentheses' => true],
         ];
 
         // (expression) class name
@@ -233,16 +221,12 @@ final class NewExpressionParenthesesFixerTest extends AbstractFixerTestCase
 
         yield ['<?php (new (foo()))->bar;'];
 
-        yield ['<?php (new (foo()))->bar;', null, ['named_class' => null]];
-
-        yield ['<?php new (foo())()->bar;', null, ['named_class' => null]];
-
-        yield ['<?php (new (foo()))->bar;', null, ['named_class' => true]];
+        yield ['<?php (new (foo()))->bar;', null, ['use_parentheses' => true]];
 
         yield [
             '<?php (new (foo())())->bar;',
             '<?php new (foo())()->bar;',
-            ['named_class' => true],
+            ['use_parentheses' => true],
         ];
     }
 }

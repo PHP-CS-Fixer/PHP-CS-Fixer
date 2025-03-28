@@ -8,23 +8,13 @@ parentheses.
 Configuration
 -------------
 
-``anonymous_class``
+``use_parentheses``
 ~~~~~~~~~~~~~~~~~~~
 
-Whether ``new`` named class expressions with a further call should be wrapped in
-parentheses or not.
+Whether ``new`` expressions with a further call should be wrapped in parentheses
+or not.
 
-Allowed types: ``bool`` and ``null``
-
-Default value: ``false``
-
-``named_class``
-~~~~~~~~~~~~~~~
-
-Whether ``new`` anonymous class expressions with a further call should be
-wrapped in parentheses or not.
-
-Allowed types: ``bool`` and ``null``
+Allowed types: ``bool``
 
 Default value: ``false``
 
@@ -62,7 +52,7 @@ Example #2
 Example #3
 ~~~~~~~~~~
 
-With configuration: ``['named_class' => true]``.
+With configuration: ``['use_parentheses' => true]``.
 
 .. code-block:: diff
 
@@ -76,7 +66,7 @@ With configuration: ``['named_class' => true]``.
 Example #4
 ~~~~~~~~~~
 
-With configuration: ``['anonymous_class' => true]``.
+With configuration: ``['use_parentheses' => true]``.
 
 .. code-block:: diff
 
