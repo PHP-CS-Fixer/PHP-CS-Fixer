@@ -47,7 +47,7 @@ final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<string, mixed>
+     * @return iterable<string, array{mixed}>
      */
     public static function provideConfigureRejectsInvalidControlStatementCases(): iterable
     {

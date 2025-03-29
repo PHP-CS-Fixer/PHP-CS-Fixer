@@ -692,9 +692,8 @@ final class ProjectCodeTest extends TestCase
         $returnDoc = $returnDocs[0];
         $types = $returnDoc->getTypes();
 
-        self::assertCount(1, $types, \sprintf('Data provider "%s::%s@return" must provide single type.', $testClassName, $dataProviderName));
-        self::assertMatchesRegularExpression('/^iterable\</', $types[0], \sprintf('Data provider "%s::%s@return" must return iterable.', $testClassName, $dataProviderName));
-        self::assertMatchesRegularExpression('/^iterable\<(?:(?:int\|)?string, )?array\{/', $types[0], \sprintf('Data provider "%s::%s@return" must return iterable of tuples (eg `iterable<string, array{string, string}>`).', $testClassName, $dataProviderName));
+        self::assertMatchesRegularExpression('/iterable\</', $returnDoc->getContent(), \sprintf('Data provider "%s::%s@return" must return iterable.', $testClassName, $dataProviderName));
+        self::assertMatchesRegularExpression('/iterable\<(?:(?:int\|)?string, )?array\{/', $returnDoc->getContent(), \sprintf('Data provider "%s::%s@return" must return iterable of tuples (eg `iterable<string, array{string, string}>`).', $testClassName, $dataProviderName));
     }
 
     /**

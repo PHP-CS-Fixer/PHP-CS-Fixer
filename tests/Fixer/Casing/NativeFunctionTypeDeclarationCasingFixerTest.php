@@ -45,6 +45,9 @@ final class NativeFunctionTypeDeclarationCasingFixerTest extends AbstractFixerTe
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, null|string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield from NativeTypeDeclarationCasingFixerTest::provideFixCases();
