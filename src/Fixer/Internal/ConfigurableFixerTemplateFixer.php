@@ -36,7 +36,6 @@ use PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocTagRenameFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocOrderByValueFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocReturnSelfReferenceFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocTagTypeFixer;
-use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -62,7 +61,7 @@ use PhpCsFixer\Utils;
  *
  * @warning Does not support PHPUnit attributes
  */
-final class ConfigurableFixerTemplateFixer extends AbstractFixer implements InternalFixerInterface, WhitespacesAwareFixerInterface
+final class ConfigurableFixerTemplateFixer extends AbstractFixer implements InternalFixerInterface
 {
     public function getName(): string
     {
