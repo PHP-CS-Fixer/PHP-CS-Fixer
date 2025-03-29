@@ -44,6 +44,9 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
         );
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: _TransformerTestExpectedTokens}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield [
@@ -135,6 +138,9 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
         $this->testProcess($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<array{_TransformerTestExpectedTokens, string}>
+     */
     public static function provideProcess80Cases(): iterable
     {
         yield [
@@ -178,6 +184,9 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
         $this->testProcess($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<array{_TransformerTestExpectedTokens, string}>
+     */
     public static function provideProcess81Cases(): iterable
     {
         yield [
@@ -212,6 +221,9 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
         $this->testProcess($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<array{_TransformerTestExpectedTokens, string}>
+     */
     public static function provideProcess83Cases(): iterable
     {
         yield 'nullable class constant' => [

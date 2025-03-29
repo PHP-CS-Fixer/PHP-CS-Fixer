@@ -603,6 +603,9 @@ final class TypeExpressionTest extends TestCase
         self::assertSame($expectedCommonType, $expression->getCommonType());
     }
 
+    /**
+     * @return iterable<array{0: string, 1: null|string, 2?: null|NamespaceAnalysis, 3?: list<NamespaceUseAnalysis>}>
+     */
     public static function provideGetCommonTypeCases(): iterable
     {
         $globalNamespace = new NamespaceAnalysis('', '', 0, 999, 0, 999);

@@ -43,6 +43,9 @@ final class ArgumentsAnalyzerTest extends TestCase
         self::assertSame($arguments, $analyzer->getArguments($tokens, $openIndex, $closeIndex));
     }
 
+    /**
+     * @return iterable<array{string, int, int, array<int, int>}>
+     */
     public static function provideArgumentsCases(): iterable
     {
         yield ['<?php function(){};', 2, 3, []];
@@ -99,6 +102,9 @@ final class ArgumentsAnalyzerTest extends TestCase
         $this->testArguments($code, $openIndex, $closeIndex, $arguments);
     }
 
+    /**
+     * @return iterable<array{string, int, int, array<int, int>}>
+     */
     public static function provideArguments80Cases(): iterable
     {
         yield ['<?php class Foo { public function __construct(public ?string $param = null) {} }', 12, 23, [13 => 22]];
@@ -124,6 +130,9 @@ final class ArgumentsAnalyzerTest extends TestCase
         $this->testArguments($code, $openIndex, $closeIndex, $arguments);
     }
 
+    /**
+     * @return iterable<array{string, int, int, array<int, int>}>
+     */
     public static function provideArguments81Cases(): iterable
     {
         yield ['<?php function setFoo(\A\B&C $param1, C&D $param2){}', 4, 20, [5 => 12, 14 => 19]];

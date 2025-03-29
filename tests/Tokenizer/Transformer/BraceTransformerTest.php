@@ -58,6 +58,9 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
         );
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: _TransformerTestExpectedTokens}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield 'curly open/close I' => [
@@ -174,6 +177,9 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
         $this->testProcess($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<array{string, _TransformerTestExpectedTokens}>
+     */
     public static function provideProcess80Cases(): iterable
     {
         yield 'dynamic nullable property brace open/close' => [
@@ -541,6 +547,9 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
         );
     }
 
+    /**
+     * @return iterable<array{_TransformerTestExpectedTokens, string}>
+     */
     public static function provideDynamicClassConstantFetchCases(): iterable
     {
         yield 'simple' => [

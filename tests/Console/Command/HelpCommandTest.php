@@ -36,6 +36,9 @@ final class HelpCommandTest extends TestCase
         self::assertSame($expected, HelpCommand::getDisplayableAllowedValues($input));
     }
 
+    /**
+     * @return iterable<array{null|mixed, FixerOption}>
+     */
     public static function provideGetDisplayableAllowedValuesCases(): iterable
     {
         yield [null, new FixerOption('foo', 'bar', false, null, ['int'])];

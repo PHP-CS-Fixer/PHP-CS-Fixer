@@ -88,6 +88,9 @@ final class TagComparatorTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<array{list<list<string>>, string, string, bool}>
+     */
     public static function provideComparatorTogetherWithDefinedGroupsCases(): iterable
     {
         yield [[['param', 'return']], 'return', 'return', true];

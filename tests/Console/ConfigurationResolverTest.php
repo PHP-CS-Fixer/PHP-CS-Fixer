@@ -351,6 +351,9 @@ final class ConfigurationResolverTest extends TestCase
         self::assertSame($expectedPaths, $resolver->getPath());
     }
 
+    /**
+     * @return iterable<array{array<int, string>, string, array<int, string>}>
+     */
     public static function provideResolvePathCases(): iterable
     {
         yield [
@@ -397,6 +400,9 @@ final class ConfigurationResolverTest extends TestCase
         $resolver->getPath();
     }
 
+    /**
+     * @return iterable<array{list<string>, string}>
+     */
     public static function provideRejectInvalidPathCases(): iterable
     {
         yield [
@@ -549,6 +555,9 @@ final class ConfigurationResolverTest extends TestCase
         self::assertSame($expected, $intersectionItems);
     }
 
+    /**
+     * @return iterable<array{0: array<array-key, string>|\Exception, 1: null|Finder, 2: list<string>, 3: string, 4?: string}>
+     */
     public static function provideResolveIntersectionOfPathsCases(): iterable
     {
         $dir = __DIR__.'/../Fixtures/ConfigurationResolverPathsIntersection';
@@ -729,6 +738,9 @@ final class ConfigurationResolverTest extends TestCase
         self::assertSame($expectedResult, $resolver->configFinderIsOverridden());
     }
 
+    /**
+     * @return iterable<array{array<string, mixed>, bool}>
+     */
     public static function provideConfigFinderIsOverriddenCases(): iterable
     {
         $root = __DIR__.'/../..';
@@ -1133,6 +1145,9 @@ final class ConfigurationResolverTest extends TestCase
         $resolver->getRules();
     }
 
+    /**
+     * @return iterable<array{string, list<string>}>
+     */
     public static function provideResolveRenamedRulesWithUnknownRulesCases(): iterable
     {
         yield 'with config' => [
@@ -1317,6 +1332,9 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         $resolver->getFixers();
     }
 
+    /**
+     * @return iterable<array{array<string, mixed>|bool}>
+     */
     public static function provideDeprecatedFixerConfiguredCases(): iterable
     {
         yield [true];
