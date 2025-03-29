@@ -73,6 +73,9 @@ final class DescribeCommandTest extends TestCase
         self::assertSame(0, $commandTester->getStatusCode());
     }
 
+    /**
+     * @return iterable<array{string, null|list<string>}>
+     */
     public static function provideDescribeCommandCases(): iterable
     {
         yield [

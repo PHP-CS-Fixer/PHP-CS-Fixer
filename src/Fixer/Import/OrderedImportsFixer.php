@@ -324,9 +324,9 @@ use Bar;
      */
     private function sortAlphabetically(array $first, array $second): int
     {
-        // Replace backslashes by spaces before sorting for correct sort order
-        $firstNamespace = str_replace('\\', ' ', $this->prepareNamespace($first['namespace']));
-        $secondNamespace = str_replace('\\', ' ', $this->prepareNamespace($second['namespace']));
+        // Replace backslashes by spaces and remove opening braces before sorting for correct sort order
+        $firstNamespace = str_replace(['\\', '{'], [' ', ''], $this->prepareNamespace($first['namespace']));
+        $secondNamespace = str_replace(['\\', '{'], [' ', ''], $this->prepareNamespace($second['namespace']));
 
         return true === $this->configuration['case_sensitive']
             ? $firstNamespace <=> $secondNamespace
@@ -602,16 +602,25 @@ use Bar;
 
             if ($use['group']) {
                 // a group import must start with `use` and cannot be part of comma separated import list
-                $prev = $tokens->getPrevMeaningfulToken($index);
-                if ($tokens[$prev]->equals(',')) {
-                    $tokens[$prev] = new Token(';');
-                    $tokens->insertAt($prev + 1, new Token([T_USE, 'use']));
+                self::fixCommaToUse($tokens, $tokens->getPrevMeaningfulToken($index));
 
-                    if (!$tokens[$prev + 2]->isWhitespace()) {
-                        $tokens->insertAt($prev + 2, new Token([T_WHITESPACE, ' ']));
-                    }
-                }
+                $closeGroupIndex = $tokens->getNextTokenOfKind($index, [[CT::T_GROUP_IMPORT_BRACE_CLOSE]]);
+                self::fixCommaToUse($tokens, $tokens->getNextMeaningfulToken($closeGroupIndex));
             }
+        }
+    }
+
+    private static function fixCommaToUse(Tokens $tokens, int $index): void
+    {
+        if (!$tokens[$index]->equals(',')) {
+            return;
+        }
+
+        $tokens[$index] = new Token(';');
+        $tokens->insertAt($index + 1, new Token([T_USE, 'use']));
+
+        if (!$tokens[$index + 2]->isWhitespace()) {
+            $tokens->insertAt($index + 2, new Token([T_WHITESPACE, ' ']));
         }
     }
 }

@@ -261,6 +261,9 @@ final class AnnotationTest extends TestCase
         self::assertSame($expected, $tag->getTypes());
     }
 
+    /**
+     * @return iterable<array{list<string>, string}>
+     */
     public static function provideTypeParsingCases(): iterable
     {
         yield [
@@ -534,6 +537,9 @@ final class AnnotationTest extends TestCase
         self::assertSame($output, $line->getContent());
     }
 
+    /**
+     * @return iterable<array{list<string>, list<string>, string, string}>
+     */
     public static function provideTypesCases(): iterable
     {
         yield [['Foo', 'null'], ['Bar[]'], '     * @param Foo|null $foo', '     * @param Bar[] $foo'];
@@ -564,6 +570,9 @@ final class AnnotationTest extends TestCase
         self::assertSame($expected, $tag->getNormalizedTypes());
     }
 
+    /**
+     * @return iterable<array{list<string>, string}>
+     */
     public static function provideNormalizedTypesCases(): iterable
     {
         yield [['null', 'string'], '* @param StRiNg|NuLl $foo'];
@@ -636,6 +645,9 @@ final class AnnotationTest extends TestCase
         self::assertSame($expectedCommonType, $result->getCommonType());
     }
 
+    /**
+     * @return iterable<array{string, null|NamespaceAnalysis, list<NamespaceUseAnalysis>, null|string}>
+     */
     public static function provideGetTypeExpressionCases(): iterable
     {
         $appNamespace = new NamespaceAnalysis('App', 'App', 0, 999, 0, 999);

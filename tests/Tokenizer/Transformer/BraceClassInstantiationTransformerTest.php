@@ -44,6 +44,9 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         );
     }
 
+    /**
+     * @return iterable<array{string, _TransformerTestExpectedTokens, _TransformerTestExpectedTokens}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield [
@@ -400,6 +403,9 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         );
     }
 
+    /**
+     * @return iterable<array{_TransformerTestExpectedTokens, _TransformerTestExpectedTokens, string}>
+     */
     public static function provideProcessPhp80Cases(): iterable
     {
         yield [
@@ -451,6 +457,9 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         );
     }
 
+    /**
+     * @return iterable<array{_TransformerTestExpectedTokens, _TransformerTestExpectedTokens, string}>
+     */
     public static function provideProcessPhp81Cases(): iterable
     {
         yield [
