@@ -45,6 +45,9 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
         $this->fixer->configure($configuration);
     }
 
+    /**
+     * @return iterable<array{string, array<mixed>}>
+     */
     public static function provideInvalidConfigurationCases(): iterable
     {
         yield 'not supported function' => [
