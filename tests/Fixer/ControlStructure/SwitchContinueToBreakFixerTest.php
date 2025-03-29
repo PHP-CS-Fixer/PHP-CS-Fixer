@@ -33,6 +33,9 @@ final class SwitchContinueToBreakFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'alternative syntax |' => [
@@ -424,8 +427,10 @@ case $b:
                     continue;
             }
             ',
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
 switch ($a) {
 case $b:
     while (false) {
@@ -442,7 +447,7 @@ case $b:
 
             break 1_0;
 }}}}}}}}}}',
-                '<?php
+            '<?php
 switch ($a) {
 case $b:
     while (false) {
@@ -459,7 +464,6 @@ case $b:
 
             continue 1_0;
 }}}}}}}}}}',
-            ],
         ];
     }
 }
