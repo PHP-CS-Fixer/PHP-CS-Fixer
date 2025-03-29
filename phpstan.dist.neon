@@ -55,7 +55,7 @@ parameters:
         -
             message: '#^Method PhpCsFixer\\Tests\\.+::provide.+Cases\(\) return type has no value type specified in iterable type iterable\.$#'
             path: tests
-            count: 254
+            count: 251
     tipsOfTheDay: false
     symfony:
         consoleApplicationLoader: dev-tools/phpstan/console-application.php
