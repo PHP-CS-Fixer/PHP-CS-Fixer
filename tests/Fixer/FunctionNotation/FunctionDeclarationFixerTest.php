@@ -73,6 +73,9 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string, 2?: array<string, string>}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -525,6 +528,9 @@ foo#
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: null|string, 2?: array<string, bool|string>}>
+     */
     public static function provideFixPhp80Cases(): iterable
     {
         yield [

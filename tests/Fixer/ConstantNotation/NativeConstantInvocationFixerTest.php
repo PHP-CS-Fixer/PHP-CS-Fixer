@@ -78,6 +78,9 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
         ]);
     }
 
+    /**
+     * @return iterable<array{mixed, string}>
+     */
     public static function provideInvalidConfigurationElementCases(): iterable
     {
         yield 'null' => [
