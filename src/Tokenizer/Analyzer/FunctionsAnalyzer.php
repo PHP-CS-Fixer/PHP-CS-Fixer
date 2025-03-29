@@ -78,6 +78,14 @@ final class FunctionsAnalyzer
 
         $functionName = strtolower($tokens[$index]->getContent());
 
+        if ('set' === $functionName) {
+            $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesisIndex);
+            $afterCloseParenthesisIndex = $tokens->getNextMeaningfulToken($closeParenthesisIndex);
+            if ($tokens[$afterCloseParenthesisIndex]->equalsAny(['{', [T_DOUBLE_ARROW]])) {
+                return false;
+            }
+        }
+
         if ($tokens->isChanged() || $tokens->getCodeHash() !== $this->functionsAnalysis['tokens']) {
             $this->buildFunctionsAnalysis($tokens);
         }

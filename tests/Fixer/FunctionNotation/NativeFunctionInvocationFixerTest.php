@@ -736,7 +736,7 @@ echo strlen($a);
      */
     public static function provideFix84Cases(): iterable
     {
-        yield 'property hook' => [
+        yield 'property hooks' => [
             <<<'PHP'
                 <?php
                 class Foo
