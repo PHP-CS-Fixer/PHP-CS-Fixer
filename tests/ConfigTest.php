@@ -219,6 +219,9 @@ final class ConfigTest extends TestCase
         self::assertSame($expected, $config->getCustomFixers());
     }
 
+    /**
+     * @return iterable<array{list<FixerInterface>, iterable<FixerInterface>}>
+     */
     public static function provideRegisterCustomFixersCases(): iterable
     {
         $fixers = [

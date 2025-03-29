@@ -52,6 +52,9 @@ final class CommentsAnalyzerTest extends TestCase
         self::assertFalse($analyzer->isHeaderComment($tokens, $index));
     }
 
+    /**
+     * @return iterable<array{string, int, list<int>}>
+     */
     public static function provideCommentsCases(): iterable
     {
         yield 'discover all 4 comments for the 1st comment with slash' => [

@@ -121,6 +121,9 @@ final class RuleSetTest extends TestCase
         self::assertNotInstanceOf(DeprecatedFixerInterface::class, $fixer, \sprintf('RuleSet "%s" contains deprecated rule "%s".', $setName, $ruleName));
     }
 
+    /**
+     * @return iterable<array{string, string, array<string, mixed>|true}>
+     */
     public static function provideAllRulesFromSetsCases(): iterable
     {
         foreach (RuleSets::getSetDefinitionNames() as $setName) {
@@ -259,6 +262,9 @@ final class RuleSetTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<array{array<string, array<string, mixed>|bool>, bool}>
+     */
     public static function provideRiskyRulesInSetCases(): iterable
     {
         foreach (RuleSets::getSetDefinitionNames() as $name) {

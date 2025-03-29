@@ -198,6 +198,9 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
         );
     }
 
+    /**
+     * @return iterable<array{string, list<string>, list<string>, list<string>, string}>
+     */
     public static function provideIntegrationCases(): iterable
     {
         yield 'random-changes' => [

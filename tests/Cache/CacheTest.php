@@ -120,6 +120,9 @@ final class CacheTest extends TestCase
         Cache::fromJson($json);
     }
 
+    /**
+     * @return iterable<array{array<string, mixed>}>
+     */
     public static function provideFromJsonThrowsInvalidArgumentExceptionIfJsonIsMissingKeyCases(): iterable
     {
         $data = [

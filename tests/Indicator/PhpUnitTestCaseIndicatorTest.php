@@ -168,6 +168,9 @@ class Foo extends A implements TestInterface, SomethingElse
         self::assertSame($expectedIndexes, $classes);
     }
 
+    /**
+     * @return iterable<array{list<array{int, int}>, string}>
+     */
     public static function provideFindPhpUnitClassesCases(): iterable
     {
         yield 'empty' => [
