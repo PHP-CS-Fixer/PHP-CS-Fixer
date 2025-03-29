@@ -255,7 +255,7 @@ abstract class A
     }
 
     /**
-     * @return iterable<string, array<array{0: string, 1?: string}>>
+     * @return iterable<string, list<array{0: string, 1?: string}>>
      */
     private static function provideAllCases(): iterable
     {

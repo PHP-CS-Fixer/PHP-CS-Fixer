@@ -46,7 +46,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, array<mixed>}>
+     * @return iterable<array{string, array<array-key, mixed>}>
      */
     public static function provideInvalidConfigurationCases(): iterable
     {

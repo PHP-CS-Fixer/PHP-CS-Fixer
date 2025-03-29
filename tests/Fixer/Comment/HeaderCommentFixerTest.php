@@ -805,7 +805,7 @@ echo 1;'
     }
 
     /**
-     * @return iterable<array{array<mixed>, string}>
+     * @return iterable<array{array<array-key, mixed>, string}>
      */
     public static function provideMisconfigurationCases(): iterable
     {
