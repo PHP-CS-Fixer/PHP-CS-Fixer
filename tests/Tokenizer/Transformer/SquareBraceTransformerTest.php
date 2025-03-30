@@ -63,7 +63,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<array{string, list<int>, bool}>
+     * @return iterable<int, array{string, list<int>, bool}>
      */
     public static function provideIsShortArrayCases(): iterable
     {

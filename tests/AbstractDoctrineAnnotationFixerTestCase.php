@@ -40,7 +40,7 @@ abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTest
     }
 
     /**
-     * @return iterable<array{array<string, mixed>}>
+     * @return iterable<int, array{array<string, mixed>}>
      */
     public static function provideConfigureWithInvalidConfigurationCases(): iterable
     {

@@ -695,7 +695,7 @@ enum Foo: string
     }
 
     /**
-     * @return iterable<array{array<int, array{classIndex: int, type: string}>, string}>
+     * @return iterable<string, array{array<int, array{classIndex: int, type: string}>, string}>
      */
     public static function provideGetClassyElements82Cases(): iterable
     {
@@ -734,7 +734,7 @@ enum Foo: string
     }
 
     /**
-     * @return iterable<array{array<int, array{classIndex: int, type: _ClassyElementType}>, string}>
+     * @return iterable<string, array{array<int, array{classIndex: int, type: _ClassyElementType}>, string}>
      */
     public static function provideGetClassyElements84Cases(): iterable
     {
@@ -772,7 +772,7 @@ enum Foo: string
     }
 
     /**
-     * @return iterable<array{array<int, bool>, string}>
+     * @return iterable<int, array{array<int, bool>, string}>
      */
     public static function provideIsAnonymousClassCases(): iterable
     {
@@ -820,7 +820,7 @@ enum Foo: string
     }
 
     /**
-     * @return iterable<array{array<int, bool>, string}>
+     * @return iterable<int, array{array<int, bool>, string}>
      */
     public static function provideIsAnonymousClass80Cases(): iterable
     {
@@ -848,7 +848,7 @@ enum Foo: string
     }
 
     /**
-     * @return iterable<array{array<int, bool>, string}>
+     * @return iterable<int, array{array<int, bool>, string}>
      */
     public static function provideIsAnonymousClass81Cases(): iterable
     {
@@ -871,7 +871,7 @@ enum Foo: string
     }
 
     /**
-     * @return iterable<array{array<int, bool>, string}>
+     * @return iterable<string, array{array<int, bool>, string}>
      */
     public static function provideIsAnonymousClass83Cases(): iterable
     {
@@ -906,7 +906,7 @@ enum Foo: string
     }
 
     /**
-     * @return iterable<array{array<int, bool>, string}>
+     * @return iterable<int, array{array<int, bool>, string}>
      */
     public static function provideIsLambdaCases(): iterable
     {
@@ -1027,7 +1027,7 @@ preg_replace_callback(
     }
 
     /**
-     * @return iterable<array{array<int, bool>, string}>
+     * @return iterable<int, array{array<int, bool>, string}>
      */
     public static function provideIsLambda80Cases(): iterable
     {
@@ -1532,7 +1532,7 @@ abstract class Baz
     }
 
     /**
-     * @return iterable<array{array<int, bool>, string}>
+     * @return iterable<int, array{array<int, bool>, string}>
      */
     public static function provideIsConstantInvocationPhp82Cases(): iterable
     {
@@ -1568,7 +1568,7 @@ abstract class Baz
     }
 
     /**
-     * @return iterable<array{array<int, bool>, string}>
+     * @return iterable<int, array{array<int, bool>, string}>
      */
     public static function provideIsConstantInvocationPhp83Cases(): iterable
     {
@@ -1727,7 +1727,7 @@ abstract class Baz
     }
 
     /**
-     * @return iterable<array{array<int, bool>, string}>
+     * @return iterable<string, array{array<int, bool>, string}>
      */
     public static function provideIsUnarySuccessorOperatorPre84Cases(): iterable
     {
@@ -1770,7 +1770,7 @@ abstract class Baz
     }
 
     /**
-     * @return iterable<array{list<int>, string}>
+     * @return iterable<int, array{list<int>, string}>
      */
     public static function provideIsUnaryPredecessorOperatorCases(): iterable
     {
@@ -1898,7 +1898,7 @@ abstract class Baz
     }
 
     /**
-     * @return iterable<array{array<int, bool|int>, string}>
+     * @return iterable<int, array{array<int, bool|int>, string}>
      */
     public static function provideIsBinaryOperatorCases(): iterable
     {
@@ -2101,7 +2101,7 @@ $b;',
     }
 
     /**
-     * @return iterable<array{string, array<int, bool>}>
+     * @return iterable<int, array{string, array<int, bool>}>
      */
     public static function provideIsArrayCases(): iterable
     {
@@ -2194,7 +2194,7 @@ $b;',
     }
 
     /**
-     * @return iterable<array{list<int>, string}>
+     * @return iterable<int, array{list<int>, string}>
      */
     public static function provideIsBinaryOperator80Cases(): iterable
     {
@@ -2237,7 +2237,7 @@ $b;',
     }
 
     /**
-     * @return iterable<array{list<int>, string}>
+     * @return iterable<string, array{list<int>, string}>
      */
     public static function provideIsBinaryOperator81Cases(): iterable
     {
@@ -2300,7 +2300,7 @@ $b;',
     }
 
     /**
-     * @return iterable<array{list<int>, string}>
+     * @return iterable<int, array{list<int>, string}>
      */
     public static function provideIsBinaryOperatorPre84Cases(): iterable
     {
@@ -2334,7 +2334,7 @@ $b;',
     }
 
     /**
-     * @return iterable<array{string, int}>
+     * @return iterable<int, array{string, int}>
      */
     public static function provideArrayExceptionsCases(): iterable
     {
@@ -2368,7 +2368,7 @@ $b;',
     }
 
     /**
-     * @return iterable<array{bool, string, int}>
+     * @return iterable<int, array{bool, string, int}>
      */
     public static function provideIsBlockMultilineCases(): iterable
     {
@@ -2419,7 +2419,7 @@ $b;',
     }
 
     /**
-     * @return iterable<array{string, int, array{visibility: ?int, static: bool, abstract: bool, final: bool}}>
+     * @return iterable<int, array{string, int, array{visibility: ?int, static: bool, abstract: bool, final: bool}}>
      */
     public static function provideGetFunctionPropertiesCases(): iterable
     {
@@ -2586,7 +2586,7 @@ class TestClass {
     }
 
     /**
-     * @return iterable<array{string, array<int, bool>}>
+     * @return iterable<string, array{string, array<int, bool>}>
      */
     public static function provideIsEnumCaseCases(): iterable
     {
@@ -2712,7 +2712,7 @@ enum Suit: string
     }
 
     /**
-     * @return iterable<array{0: array<int, list<int>>|list<int>, 1: string, 2?: bool}>
+     * @return iterable<int, array{0: array<int, list<int>>|list<int>, 1: string, 2?: bool}>
      */
     public static function provideGetImportUseIndexesCases(): iterable
     {
@@ -2905,7 +2905,7 @@ class MyTestWithAnonymousClass extends TestCase
     }
 
     /**
-     * @return iterable<array{bool, string, int}>
+     * @return iterable<int, array{bool, string, int}>
      */
     public static function provideIsSuperGlobalCases(): iterable
     {
@@ -2965,7 +2965,7 @@ class MyTestWithAnonymousClass extends TestCase
     }
 
     /**
-     * @return iterable<array{array<string, null|int>, int, string}>
+     * @return iterable<string, array{array<string, null|int>, int, string}>
      */
     public static function provideGetClassyModifiersCases(): iterable
     {
@@ -2995,7 +2995,7 @@ class MyTestWithAnonymousClass extends TestCase
     }
 
     /**
-     * @return iterable<array{array<string, null|int>, int, string}>
+     * @return iterable<string, array{array<string, null|int>, int, string}>
      */
     public static function provideGetClassyModifiersOnPhp82Cases(): iterable
     {
@@ -3072,7 +3072,7 @@ class MyTestWithAnonymousClass extends TestCase
     }
 
     /**
-     * @return iterable<array{array<int, int>, string}>
+     * @return iterable<string, array{array<int, int>, string}>
      */
     public static function provideGetLastTokenIndexOfArrowFunctionCases(): iterable
     {

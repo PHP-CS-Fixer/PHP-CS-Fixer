@@ -297,7 +297,7 @@ function Foo(INTEGER $a) {}
     }
 
     /**
-     * @return iterable<int|string, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideFix80Cases(): iterable
     {

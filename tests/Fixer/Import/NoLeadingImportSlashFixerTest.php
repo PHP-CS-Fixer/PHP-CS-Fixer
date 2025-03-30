@@ -36,7 +36,7 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -228,7 +228,7 @@ use const \some\Z\{ConstX,ConstY,ConstZ,};
     }
 
     /**
-     * @return iterable<int|string, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideFixPre80Cases(): iterable
     {

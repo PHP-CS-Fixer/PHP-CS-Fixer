@@ -35,7 +35,7 @@ final class DeclareStrictTypesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -203,7 +203,7 @@ $a = 456;
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideWithWhitespacesConfigCases(): iterable
     {

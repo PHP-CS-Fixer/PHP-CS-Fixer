@@ -45,7 +45,7 @@ final class TagComparatorTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, string, bool}>
+     * @return iterable<int, array{string, string, bool}>
      */
     public static function provideComparatorTogetherCases(): iterable
     {
@@ -89,7 +89,7 @@ final class TagComparatorTest extends TestCase
     }
 
     /**
-     * @return iterable<array{list<list<string>>, string, string, bool}>
+     * @return iterable<int, array{list<list<string>>, string, string, bool}>
      */
     public static function provideComparatorTogetherWithDefinedGroupsCases(): iterable
     {

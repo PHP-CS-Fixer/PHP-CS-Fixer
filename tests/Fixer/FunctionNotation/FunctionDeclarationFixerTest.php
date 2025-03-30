@@ -74,7 +74,7 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string, 2?: array<string, string>}>
+     * @return iterable<int, array{0: string, 1?: null|string, 2?: array<string, string>}>
      */
     public static function provideFixCases(): iterable
     {
@@ -529,7 +529,7 @@ foo#
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string, 2?: array<string, bool|string>}>
+     * @return iterable<int, array{0: string, 1?: null|string, 2?: array<string, bool|string>}>
      */
     public static function provideFixPhp80Cases(): iterable
     {

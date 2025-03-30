@@ -39,7 +39,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string}>
+     * @return iterable<int, array{0: string, 1?: null|string}>
      */
     public static function provideFixWithBracesCases(): iterable
     {
@@ -297,7 +297,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string}>
+     * @return iterable<int, array{0: string, 1?: null|string}>
      */
     public static function provideFixWithoutBracesCases(): iterable
     {
@@ -572,7 +572,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFix82Cases(): iterable
     {

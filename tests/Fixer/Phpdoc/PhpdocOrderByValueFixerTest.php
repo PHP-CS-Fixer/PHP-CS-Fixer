@@ -48,7 +48,7 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{mixed}>
+     * @return iterable<string, array{mixed}>
      */
     public static function provideConfigureRejectsInvalidControlStatementCases(): iterable
     {

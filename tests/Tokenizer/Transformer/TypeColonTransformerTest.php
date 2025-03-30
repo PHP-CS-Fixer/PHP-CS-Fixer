@@ -45,7 +45,7 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: _TransformerTestExpectedTokens}>
+     * @return iterable<int, array{0: string, 1?: _TransformerTestExpectedTokens}>
      */
     public static function provideProcessCases(): iterable
     {
@@ -127,7 +127,7 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<array{string, _TransformerTestExpectedTokens}>
+     * @return iterable<int, array{string, _TransformerTestExpectedTokens}>
      */
     public static function provideProcess81Cases(): iterable
     {
