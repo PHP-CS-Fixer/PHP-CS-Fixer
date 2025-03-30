@@ -266,7 +266,7 @@ switch ($a) {
 ',
         ];
 
-        yield [
+        yield 'nested while without {}' => [
             '<?php
 switch(foo()) {
     case 1: while(bar($i))continue;break;
@@ -316,7 +316,7 @@ switch($a) {
 ',
         ];
 
-        yield 'nested while, do not fix' => [
+        yield 'nested while with {}, do not fix' => [
             '<?php
 switch(foo()) {
     case 1: while(bar($i)){ --$i; echo 1; continue;}break;
