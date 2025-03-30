@@ -412,7 +412,7 @@ case $b:
 }}}}}}}}}}',
         ];
 
-        yield 'numeric literal separator' => [
+        yield 'underscore constant' => [
             '<?php
             switch($a) {
                 case "a":
@@ -429,7 +429,7 @@ case $b:
             ',
         ];
 
-        yield [
+        yield 'numeric literal separator' => [
             '<?php
 switch ($a) {
 case $b:
