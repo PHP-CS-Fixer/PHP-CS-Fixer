@@ -45,7 +45,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     }
 
     /**
-     * @return iterable<array{string, _TransformerTestExpectedTokens, _TransformerTestExpectedTokens}>
+     * @return iterable<int, array{string, _TransformerTestExpectedTokens, _TransformerTestExpectedTokens}>
      */
     public static function provideProcessCases(): iterable
     {
@@ -404,7 +404,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     }
 
     /**
-     * @return iterable<array{_TransformerTestExpectedTokens, _TransformerTestExpectedTokens, string}>
+     * @return iterable<int, array{_TransformerTestExpectedTokens, _TransformerTestExpectedTokens, string}>
      */
     public static function provideProcessPhp80Cases(): iterable
     {
@@ -458,7 +458,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     }
 
     /**
-     * @return iterable<array{_TransformerTestExpectedTokens, _TransformerTestExpectedTokens, string}>
+     * @return iterable<int, array{_TransformerTestExpectedTokens, _TransformerTestExpectedTokens, string}>
      */
     public static function provideProcessPhp81Cases(): iterable
     {
@@ -517,7 +517,7 @@ function test2($param = (new Foo)) {}
     }
 
     /**
-     * @return iterable<array{string, _TransformerTestExpectedTokens, _TransformerTestObservedKindsOrPrototypes}>
+     * @return iterable<int, array{string, _TransformerTestExpectedTokens, _TransformerTestObservedKindsOrPrototypes}>
      */
     public static function provideProcessPrePhp84Cases(): iterable
     {

@@ -220,7 +220,7 @@ final class ConfigTest extends TestCase
     }
 
     /**
-     * @return iterable<array{list<FixerInterface>, iterable<FixerInterface>}>
+     * @return iterable<int, array{list<FixerInterface>, iterable<FixerInterface>}>
      */
     public static function provideRegisterCustomFixersCases(): iterable
     {

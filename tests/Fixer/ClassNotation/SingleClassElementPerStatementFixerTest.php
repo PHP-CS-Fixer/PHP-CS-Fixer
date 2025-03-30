@@ -857,7 +857,7 @@ echo Foo::A, Foo::B;
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -889,7 +889,7 @@ class Foo
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFix81Cases(): iterable
     {
@@ -983,7 +983,7 @@ var_dump(Foo::A.Foo::B);",
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFix82Cases(): iterable
     {

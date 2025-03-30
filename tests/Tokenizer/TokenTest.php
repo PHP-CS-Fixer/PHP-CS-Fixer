@@ -40,7 +40,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @return iterable<array{mixed}>
+     * @return iterable<int, array{mixed}>
      */
     public static function provideConstructorValidationCases(): iterable
     {
@@ -86,7 +86,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @return iterable<array{Token, bool}>
+     * @return iterable<int, array{Token, bool}>
      */
     public static function provideIsCastCases(): iterable
     {
@@ -118,7 +118,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @return iterable<array{Token, bool}>
+     * @return iterable<int, array{Token, bool}>
      */
     public static function provideIsClassyCases(): iterable
     {
@@ -152,7 +152,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @return iterable<array{Token, bool}>
+     * @return iterable<int, array{Token, bool}>
      */
     public static function provideIsCommentCases(): iterable
     {
@@ -179,7 +179,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @return iterable<array{Token, bool}>
+     * @return iterable<int, array{Token, bool}>
      */
     public static function provideIsObjectOperatorCases(): iterable
     {
@@ -235,7 +235,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: null|int, 1: string, 2?: bool}>
+     * @return iterable<int, array{0: null|int, 1: string, 2?: bool}>
      */
     public static function provideIsMagicConstantCases(): iterable
     {
@@ -274,7 +274,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @return iterable<array{Token, bool}>
+     * @return iterable<int, array{Token, bool}>
      */
     public static function provideIsNativeConstantCases(): iterable
     {
@@ -307,7 +307,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: Token, 1: bool, 2?: string}>
+     * @return iterable<int, array{0: Token, 1: bool, 2?: string}>
      */
     public static function provideIsWhitespaceCases(): iterable
     {
@@ -351,7 +351,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: mixed, 1: null|int, 2: null|string, 3: null|bool, 4?: string}>
+     * @return iterable<int, array{0: mixed, 1: null|int, 2: null|string, 3: null|bool, 4?: string}>
      */
     public static function provideCreatingTokenCases(): iterable
     {
@@ -385,7 +385,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: Token, 1: bool, 2: array{0: int, 1?: string}|string|Token, 3?: bool}>
+     * @return iterable<int, array{0: Token, 1: bool, 2: array{0: int, 1?: string}|string|Token, 3?: bool}>
      */
     public static function provideEqualsCases(): iterable
     {
@@ -476,7 +476,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: bool, 1: list<array{0: int, 1?: string}|string|Token>, 2?: bool}>
+     * @return iterable<int, array{0: bool, 1: list<array{0: int, 1?: string}|string|Token>, 2?: bool}>
      */
     public static function provideEqualsAnyCases(): iterable
     {
@@ -514,7 +514,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @return iterable<array{bool, array<int, bool>|bool, int}>
+     * @return iterable<int, array{bool, array<int, bool>|bool, int}>
      */
     public static function provideIsKeyCaseSensitiveCases(): iterable
     {
@@ -552,7 +552,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @return iterable<array{null|string, int}>
+     * @return iterable<int, array{null|string, int}>
      */
     public static function provideTokenGetNameForIdCases(): iterable
     {
@@ -581,7 +581,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @return iterable<array{Token, null|string}>
+     * @return iterable<int, array{Token, null|string}>
      */
     public static function provideGetNameCases(): iterable
     {
@@ -612,7 +612,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @return iterable<array{Token, array<string, mixed>}>
+     * @return iterable<int, array{Token, array<string, mixed>}>
      */
     public static function provideToArrayCases(): iterable
     {

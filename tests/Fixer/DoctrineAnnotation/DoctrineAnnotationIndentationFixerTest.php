@@ -49,7 +49,7 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string}>
+     * @return iterable<int, array{0: string, 1?: null|string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -369,7 +369,7 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string}>
+     * @return iterable<int, array{0: string, 1?: null|string}>
      */
     public static function provideFixWithIndentedMixedLinesCases(): iterable
     {

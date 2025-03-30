@@ -77,7 +77,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1: null|array<int, Token>, 2: list<array{0: int, 1?: string}|string|Token>, 3?: int, 4?: int, 5?: array<int, bool>|bool}>
+     * @return iterable<int, array{0: string, 1: null|array<int, Token>, 2: list<array{0: int, 1?: string}|string|Token>, 3?: int, 4?: int, 5?: array<int, bool>|bool}>
      */
     public static function provideFindSequenceCases(): iterable
     {
@@ -312,7 +312,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, list<mixed>}>
+     * @return iterable<int, array{string, list<mixed>}>
      */
     public static function provideFindSequenceExceptionCases(): iterable
     {
@@ -377,7 +377,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @return iterable<array{bool, string}>
+     * @return iterable<int, array{bool, string}>
      */
     public static function provideMonolithicPhpDetectionCases(): iterable
     {
@@ -565,7 +565,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, list<int>, list<Token>}>
+     * @return iterable<int, array{string, list<int>, list<Token>}>
      */
     public static function provideClearTokenAndMergeSurroundingWhitespaceCases(): iterable
     {
@@ -692,7 +692,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @return iterable<array{null|int, int, int, list<array{int}|string|Token>}>
+     * @return iterable<int, array{null|int, int, int, list<array{int}|string|Token>}>
      */
     public static function provideTokenOfKindSiblingCases(): iterable
     {
@@ -738,7 +738,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, string, int, int}>
+     * @return iterable<int, array{int, string, int, int}>
      */
     public static function provideFindBlockEndCases(): iterable
     {
@@ -782,7 +782,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, string, int, int}>
+     * @return iterable<int, array{int, string, int, int}>
      */
     public static function provideFindBlockEnd80Cases(): iterable
     {
@@ -810,7 +810,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, string, int, int}>
+     * @return iterable<int, array{int, string, int, int}>
      */
     public static function provideFindBlockEnd82Cases(): iterable
     {
@@ -884,7 +884,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, string, int, int}>
+     * @return iterable<int, array{int, string, int, int}>
      */
     public static function provideFindBlockEndPre84Cases(): iterable
     {
@@ -995,7 +995,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @return iterable<array{Token, bool}>
+     * @return iterable<int, array{Token, bool}>
      */
     public static function provideIsEmptyCases(): iterable
     {
@@ -1037,7 +1037,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, string, int, int, string}>
+     * @return iterable<int, array{string, string, int, int, string}>
      */
     public static function provideEnsureWhitespaceAtIndexCases(): iterable
     {
@@ -1215,7 +1215,7 @@ echo $a;',
     }
 
     /**
-     * @return iterable<array{0: int, 1: null|string, 2: string, 3?: string}>
+     * @return iterable<int, array{0: int, 1: null|string, 2: string, 3?: string}>
      */
     public static function provideRemoveLeadingWhitespaceCases(): iterable
     {
@@ -1289,7 +1289,7 @@ echo $a;',
     }
 
     /**
-     * @return iterable<array{0: int, 1: null|string, 2: string, 3?: string}>
+     * @return iterable<int, array{0: int, 1: null|string, 2: string, 3?: string}>
      */
     public static function provideRemoveTrailingWhitespaceCases(): iterable
     {
@@ -1380,7 +1380,7 @@ $bar;',
     }
 
     /**
-     * @return iterable<array{null|array{type: Tokens::BLOCK_TYPE_*, isStart: bool}, string, int}>
+     * @return iterable<int, array{null|array{type: Tokens::BLOCK_TYPE_*, isStart: bool}, string, int}>
      */
     public static function provideDetectBlockTypeCases(): iterable
     {

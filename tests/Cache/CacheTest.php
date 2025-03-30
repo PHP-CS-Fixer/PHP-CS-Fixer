@@ -121,7 +121,7 @@ final class CacheTest extends TestCase
     }
 
     /**
-     * @return iterable<array{array<string, mixed>}>
+     * @return iterable<int, array{array<string, mixed>}>
      */
     public static function provideFromJsonThrowsInvalidArgumentExceptionIfJsonIsMissingKeyCases(): iterable
     {
@@ -163,7 +163,7 @@ final class CacheTest extends TestCase
     }
 
     /**
-     * @return iterable<array{Signature}>
+     * @return iterable<int, array{Signature}>
      */
     public static function provideCanConvertToAndFromJsonCases(): iterable
     {

@@ -1049,7 +1049,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideWithWhitespacesConfigCases(): iterable
     {
@@ -1092,7 +1092,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
     }
 
     /**
-     * @return iterable<array{string, 1?: ?string}>
+     * @return iterable<int, array{string, 1?: ?string}>
      */
     public static function provideFix80Cases(): iterable
     {

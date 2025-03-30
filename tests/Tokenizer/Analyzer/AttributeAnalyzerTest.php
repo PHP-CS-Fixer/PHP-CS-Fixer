@@ -65,7 +65,7 @@ final class AttributeAnalyzerTest extends TestCase
     /**
      * Test case requires to having "Foo" as it will be searched for to test its index.
      *
-     * @return iterable<array{bool, string}>
+     * @return iterable<int, array{bool, string}>
      */
     public static function provideIsAttributeCases(): iterable
     {

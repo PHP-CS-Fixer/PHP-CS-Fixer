@@ -40,7 +40,7 @@ final class EchoTagSyntaxFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string, 2?: bool}>
+     * @return iterable<int, array{0: string, 1?: string, 2?: bool}>
      */
     public static function provideLongToShortFormatCases(): iterable
     {
@@ -119,7 +119,7 @@ final class EchoTagSyntaxFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, string, string}>
+     * @return iterable<int, array{string, string, string}>
      */
     public static function provideShortToLongFormatCases(): iterable
     {

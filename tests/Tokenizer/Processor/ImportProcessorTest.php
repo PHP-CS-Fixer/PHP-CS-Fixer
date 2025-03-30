@@ -47,7 +47,7 @@ final class ImportProcessorTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: string}>
+     * @return iterable<int, array{0: string}>
      */
     public static function provideTokenizeNameCases(): iterable
     {

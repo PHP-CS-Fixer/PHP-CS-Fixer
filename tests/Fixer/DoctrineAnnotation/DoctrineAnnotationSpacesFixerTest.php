@@ -63,7 +63,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string}>
+     * @return iterable<int, array{0: string, 1?: null|string}>
      */
     public static function provideFixAllCases(): iterable
     {
@@ -379,7 +379,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string}>
+     * @return iterable<int, array{0: string, 1?: null|string}>
      */
     public static function provideFixAroundParenthesesOnlyCases(): iterable
     {
@@ -636,7 +636,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string}>
+     * @return iterable<int, array{0: string, 1?: null|string}>
      */
     public static function provideFixAroundCommasOnlyCases(): iterable
     {
@@ -905,7 +905,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string}>
+     * @return iterable<int, array{0: string, 1?: null|string}>
      */
     public static function provideFixWithSpaceBeforeArgumentAssignmentOnlyCases(): iterable
     {
@@ -956,7 +956,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string}>
+     * @return iterable<int, array{0: string, 1?: null|string}>
      */
     public static function provideFixWithoutSpaceBeforeArgumentAssignmentOnlyCases(): iterable
     {
@@ -1007,7 +1007,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string}>
+     * @return iterable<int, array{0: string, 1?: null|string}>
      */
     public static function provideFixWithSpaceAfterArgumentAssignmentOnlyCases(): iterable
     {
@@ -1058,7 +1058,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string}>
+     * @return iterable<int, array{0: string, 1?: null|string}>
      */
     public static function provideFixWithoutSpaceAfterArgumentAssignmentOnlyCases(): iterable
     {
@@ -1109,7 +1109,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string}>
+     * @return iterable<int, array{0: string, 1?: null|string}>
      */
     public static function provideFixWithSpaceBeforeArrayAssignmentEqualOnlyCases(): iterable
     {
@@ -1160,7 +1160,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string}>
+     * @return iterable<int, array{0: string, 1?: null|string}>
      */
     public static function provideFixWithoutSpaceBeforeArrayAssignmentEqualOnlyCases(): iterable
     {
@@ -1211,7 +1211,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string}>
+     * @return iterable<int, array{0: string, 1?: null|string}>
      */
     public static function provideFixWithSpaceAfterArrayAssignmentEqualOnlyCases(): iterable
     {
@@ -1262,7 +1262,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string}>
+     * @return iterable<int, array{0: string, 1?: null|string}>
      */
     public static function provideFixWithoutSpaceAfterArrayAssignmentEqualOnlyCases(): iterable
     {
@@ -1313,7 +1313,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string}>
+     * @return iterable<int, array{0: string, 1?: null|string}>
      */
     public static function provideFixWithSpaceBeforeArrayAssignmentColonOnlyCases(): iterable
     {
@@ -1364,7 +1364,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string}>
+     * @return iterable<int, array{0: string, 1?: null|string}>
      */
     public static function provideFixWithoutSpaceBeforeArrayAssignmentColonOnlyCases(): iterable
     {
@@ -1415,7 +1415,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string}>
+     * @return iterable<int, array{0: string, 1?: null|string}>
      */
     public static function provideFixWithSpaceAfterArrayAssignmentColonOnlyCases(): iterable
     {
@@ -1466,7 +1466,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string}>
+     * @return iterable<int, array{0: string, 1?: null|string}>
      */
     public static function provideFixWithoutSpaceAfterArrayAssignmentColonOnlyCases(): iterable
     {
@@ -1513,7 +1513,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideElementDiscoveringCases(): iterable
     {

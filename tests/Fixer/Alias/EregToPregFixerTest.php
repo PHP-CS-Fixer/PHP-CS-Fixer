@@ -146,7 +146,7 @@ final class EregToPregFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideFix81Cases(): iterable
     {

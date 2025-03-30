@@ -86,7 +86,7 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideThatSrcClassHaveTestClassCases(): iterable
     {
@@ -237,7 +237,7 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideThatSrcClassesNotAbuseInterfacesCases(): iterable
     {
@@ -514,7 +514,7 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideThereIsNoPregFunctionUsedDirectlyCases(): iterable
     {
@@ -946,7 +946,7 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function providePhpUnitFixerExtendsAbstractPhpUnitFixerCases(): iterable
     {

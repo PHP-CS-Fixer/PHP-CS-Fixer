@@ -173,7 +173,7 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<array{list<Token>, string}>
+     * @return iterable<int, array{list<Token>, string}>
      */
     public static function providePriorityCases(): iterable
     {

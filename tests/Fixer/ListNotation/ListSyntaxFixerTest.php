@@ -209,7 +209,7 @@ $a;#
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFixToShortSyntaxPhp72Cases(): iterable
     {
@@ -229,7 +229,7 @@ $a;#
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixToLongSyntaxPhp72Cases(): iterable
     {
@@ -246,7 +246,7 @@ $a;#
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFixToShortSyntaxPhp73Cases(): iterable
     {
@@ -276,7 +276,7 @@ $a;#
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixToLongSyntaxPhp73Cases(): iterable
     {

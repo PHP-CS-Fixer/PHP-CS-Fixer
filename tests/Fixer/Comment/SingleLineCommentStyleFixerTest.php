@@ -255,7 +255,7 @@ second line*/',
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideHashCases(): iterable
     {
@@ -333,7 +333,7 @@ second line*/',
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideAllCases(): iterable
     {
