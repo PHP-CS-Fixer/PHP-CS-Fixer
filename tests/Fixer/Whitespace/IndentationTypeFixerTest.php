@@ -279,7 +279,7 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
 \t     */",
         ];
 
-        yield [
+        yield 'do not touch whitespace that is not indentation' => [
             "<?php
 function myFunction() {
 \t\$foo        = 1;
@@ -308,7 +308,7 @@ function myFunction() {
     }
 
     /**
-     * @return iterable<int, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideMessyWhitespacesReversedCases(): iterable
     {
