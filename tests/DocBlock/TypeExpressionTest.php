@@ -105,7 +105,7 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: null|list<string>}>
+     * @return iterable<array{0: string, 1?: null|list<string>}>
      */
     public static function provideGetTypesCases(): iterable
     {
@@ -339,7 +339,7 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @return iterable<int|string, array{string}>
+     * @return iterable<array{string}>
      */
     public static function provideParseInvalidExceptionCases(): iterable
     {

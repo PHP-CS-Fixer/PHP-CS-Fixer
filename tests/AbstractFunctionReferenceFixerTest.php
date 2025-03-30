@@ -58,7 +58,7 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: null|list<int>, 1: string, 2: string, 3?: int}>
+     * @return iterable<string, array{0: null|list<int>, 1: string, 2: string, 3?: int}>
      */
     public static function provideAbstractFunctionReferenceFixerCases(): iterable
     {

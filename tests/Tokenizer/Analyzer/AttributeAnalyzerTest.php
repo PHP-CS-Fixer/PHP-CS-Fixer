@@ -156,7 +156,7 @@ final class AttributeAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1: int, 2: list<AttributeAnalysis>}>
+     * @return iterable<string, array{0: string, 1: int, 2: list<AttributeAnalysis>}>
      */
     public static function provideGetAttributeDeclarationsCases(): iterable
     {
@@ -354,7 +354,7 @@ final class AttributeAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1: int, 2: list<AttributeAnalysis>}>
+     * @return iterable<string, array{0: string, 1: int, 2: list<AttributeAnalysis>}>
      */
     public static function provideGetAttributeDeclarations81Cases(): iterable
     {

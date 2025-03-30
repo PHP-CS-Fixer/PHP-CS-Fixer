@@ -695,7 +695,7 @@ enum Foo: string
     }
 
     /**
-     * @return iterable<array{array<int, array{classIndex: int, type: string}>, string}>
+     * @return iterable<string, array{array<int, array{classIndex: int, type: string}>, string}>
      */
     public static function provideGetClassyElements82Cases(): iterable
     {
@@ -734,7 +734,7 @@ enum Foo: string
     }
 
     /**
-     * @return iterable<array{array<int, array{classIndex: int, type: _ClassyElementType}>, string}>
+     * @return iterable<string, array{array<int, array{classIndex: int, type: _ClassyElementType}>, string}>
      */
     public static function provideGetClassyElements84Cases(): iterable
     {
@@ -871,7 +871,7 @@ enum Foo: string
     }
 
     /**
-     * @return iterable<array{array<int, bool>, string}>
+     * @return iterable<string, array{array<int, bool>, string}>
      */
     public static function provideIsAnonymousClass83Cases(): iterable
     {
@@ -1727,7 +1727,7 @@ abstract class Baz
     }
 
     /**
-     * @return iterable<array{array<int, bool>, string}>
+     * @return iterable<string, array{array<int, bool>, string}>
      */
     public static function provideIsUnarySuccessorOperatorPre84Cases(): iterable
     {
@@ -2237,7 +2237,7 @@ $b;',
     }
 
     /**
-     * @return iterable<array{list<int>, string}>
+     * @return iterable<string, array{list<int>, string}>
      */
     public static function provideIsBinaryOperator81Cases(): iterable
     {
@@ -2586,7 +2586,7 @@ class TestClass {
     }
 
     /**
-     * @return iterable<array{string, array<int, bool>}>
+     * @return iterable<string, array{string, array<int, bool>}>
      */
     public static function provideIsEnumCaseCases(): iterable
     {
@@ -2965,7 +2965,7 @@ class MyTestWithAnonymousClass extends TestCase
     }
 
     /**
-     * @return iterable<array{array<string, null|int>, int, string}>
+     * @return iterable<string, array{array<string, null|int>, int, string}>
      */
     public static function provideGetClassyModifiersCases(): iterable
     {
@@ -2995,7 +2995,7 @@ class MyTestWithAnonymousClass extends TestCase
     }
 
     /**
-     * @return iterable<array{array<string, null|int>, int, string}>
+     * @return iterable<string, array{array<string, null|int>, int, string}>
      */
     public static function provideGetClassyModifiersOnPhp82Cases(): iterable
     {
@@ -3072,7 +3072,7 @@ class MyTestWithAnonymousClass extends TestCase
     }
 
     /**
-     * @return iterable<array{array<int, int>, string}>
+     * @return iterable<string, array{array<int, int>, string}>
      */
     public static function provideGetLastTokenIndexOfArrowFunctionCases(): iterable
     {

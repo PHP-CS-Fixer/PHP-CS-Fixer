@@ -556,7 +556,7 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: array<array-key, string>|\Exception, 1: null|Finder, 2: list<string>, 3: string, 4?: string}>
+     * @return iterable<string, array{0: array<array-key, string>|\Exception, 1: null|Finder, 2: list<string>, 3: string, 4?: string}>
      */
     public static function provideResolveIntersectionOfPathsCases(): iterable
     {
@@ -949,7 +949,7 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: bool, 1: bool, 2: bool, 3: bool}>
+     * @return iterable<string, array{0: bool, 1: bool, 2: bool, 3: bool}>
      */
     public static function provideResolveUsingCacheForRuntimesCases(): iterable
     {

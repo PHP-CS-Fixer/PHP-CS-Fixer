@@ -46,7 +46,7 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<array{string, _TransformerTestExpectedTokens}>
+     * @return iterable<string, array{string, _TransformerTestExpectedTokens}>
      */
     public static function provideProcessCases(): iterable
     {
@@ -440,7 +440,7 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
     }
 
     /**
-     * @return iterable<array{_TransformerTestExpectedTokens, string}>
+     * @return iterable<string, array{_TransformerTestExpectedTokens, string}>
      */
     public static function provideFix81Cases(): iterable
     {
@@ -503,7 +503,7 @@ class Foo
     }
 
     /**
-     * @return iterable<array{string, _TransformerTestExpectedTokens}>
+     * @return iterable<string, array{string, _TransformerTestExpectedTokens}>
      */
     public static function provideProcess81Cases(): iterable
     {
@@ -528,7 +528,7 @@ class Foo
     }
 
     /**
-     * @return iterable<array{string, _TransformerTestExpectedTokens}>
+     * @return iterable<string, array{string, _TransformerTestExpectedTokens}>
      */
     public static function provideProcess82Cases(): iterable
     {
@@ -618,7 +618,7 @@ class Dnf
     }
 
     /**
-     * @return iterable<array{string, _TransformerTestExpectedTokens}>
+     * @return iterable<string, array{string, _TransformerTestExpectedTokens}>
      */
     public static function provideProcess83Cases(): iterable
     {

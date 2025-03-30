@@ -667,7 +667,7 @@ class Foo
     }
 
     /**
-     * @return iterable<int|string, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     private static function provideBothWays80Cases(): iterable
     {
@@ -752,7 +752,7 @@ class Foo
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     private static function provideBothWays82Cases(): iterable
     {

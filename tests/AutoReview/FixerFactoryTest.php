@@ -139,7 +139,7 @@ final class FixerFactoryTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, list<string>}>
+     * @return iterable<string, array{string, list<string>}>
      */
     public static function provideFixersPriorityCasesHaveIntegrationTestCases(): iterable
     {

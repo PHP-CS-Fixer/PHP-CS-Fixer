@@ -2234,7 +2234,7 @@ enum Cards: string
     }
 
     /**
-     * @return iterable<array{array<array-key, mixed>}>
+     * @return iterable<string, array{array<array-key, mixed>}>
      */
     public static function provideInvalidConfigurationCases(): iterable
     {

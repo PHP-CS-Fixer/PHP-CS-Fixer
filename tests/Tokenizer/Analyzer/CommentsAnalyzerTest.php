@@ -53,7 +53,7 @@ final class CommentsAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, int, list<int>}>
+     * @return iterable<string, array{string, int, list<int>}>
      */
     public static function provideCommentsCases(): iterable
     {

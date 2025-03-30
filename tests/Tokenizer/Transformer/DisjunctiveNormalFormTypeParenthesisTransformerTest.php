@@ -39,7 +39,7 @@ final class DisjunctiveNormalFormTypeParenthesisTransformerTest extends Abstract
     }
 
     /**
-     * @return iterable<array{string, _TransformerTestExpectedTokens}>
+     * @return iterable<string, array{string, _TransformerTestExpectedTokens}>
      */
     public static function provideProcessCases(): iterable
     {
@@ -343,7 +343,7 @@ return new static();
     }
 
     /**
-     * @return iterable<array{string, _TransformerTestExpectedTokens}>
+     * @return iterable<string, array{string, _TransformerTestExpectedTokens}>
      */
     public static function provideProcess83Cases(): iterable
     {

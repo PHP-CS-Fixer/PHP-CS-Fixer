@@ -63,7 +63,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{array<string, mixed>, string}>
+     * @return iterable<string, array{array<string, mixed>, string}>
      */
     public static function provideInvalidConfigurationCases(): iterable
     {
@@ -1035,7 +1035,7 @@ extends
     }
 
     /**
-     * @return iterable<int|string, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     private static function provideClassyImplementsCases(): iterable
     {

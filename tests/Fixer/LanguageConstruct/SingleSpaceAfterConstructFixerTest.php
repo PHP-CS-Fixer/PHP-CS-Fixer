@@ -47,7 +47,7 @@ final class SingleSpaceAfterConstructFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{mixed}>
+     * @return iterable<string, array{mixed}>
      */
     public static function provideConfigureRejectsInvalidControlStatementCases(): iterable
     {
@@ -1953,7 +1953,7 @@ Foo {}',
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixWithNewCases(): iterable
     {
@@ -3257,7 +3257,7 @@ baz(); }',
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideCommentsCases(): iterable
     {
@@ -3459,7 +3459,7 @@ class Point {
     }
 
     /**
-     * @return iterable<int|string, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideFix81Cases(): iterable
     {

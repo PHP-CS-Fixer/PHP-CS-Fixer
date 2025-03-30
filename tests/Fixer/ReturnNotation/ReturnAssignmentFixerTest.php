@@ -1273,7 +1273,7 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
     }
 
     /**
-     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     * @return iterable<string, array{0: non-empty-string, 1?: non-empty-string}>
      */
     public static function provideDoNotFix80Cases(): iterable
     {
@@ -1362,7 +1362,7 @@ function foo(&$c) {
     }
 
     /**
-     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     * @return iterable<string, array{0: non-empty-string, 1?: non-empty-string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -1415,7 +1415,7 @@ function foo(&$c) {
     }
 
     /**
-     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     * @return iterable<string, array{0: non-empty-string, 1?: non-empty-string}>
      */
     public static function provideFixPhp83Cases(): iterable
     {

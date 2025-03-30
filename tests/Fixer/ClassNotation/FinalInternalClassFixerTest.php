@@ -368,7 +368,7 @@ $a = new class{};',
     }
 
     /**
-     * @return iterable<array{array<string, mixed>, string, 2?: string}>
+     * @return iterable<string, array{array<string, mixed>, string, 2?: string}>
      */
     public static function provideInvalidConfigurationCases(): iterable
     {
@@ -413,7 +413,7 @@ $a = new class{};',
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1: null|string, 2: array{consider_absent_docblock_as_internal_class? : bool, exclude?: list<string>, include?: list<string>}}>
+     * @return iterable<string, array{0: string, 1: null|string, 2: array{consider_absent_docblock_as_internal_class? : bool, exclude?: list<string>, include?: list<string>}}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -620,7 +620,7 @@ class Foo {}',
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1: null|string, 2: array{consider_absent_docblock_as_internal_class? : bool, exclude?: list<string>, include?: list<string>}}>
+     * @return iterable<string, array{0: string, 1: null|string, 2: array{consider_absent_docblock_as_internal_class? : bool, exclude?: list<string>, include?: list<string>}}>
      */
     public static function provideFix82Cases(): iterable
     {

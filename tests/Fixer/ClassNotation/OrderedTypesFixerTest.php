@@ -162,7 +162,7 @@ try {
     }
 
     /**
-     * @return iterable<int|string, array{string, 1?: ?string, 2?: array<string, mixed>}>
+     * @return iterable<array{string, 1?: ?string, 2?: array<string, mixed>}>
      */
     public static function provideFix80Cases(): iterable
     {

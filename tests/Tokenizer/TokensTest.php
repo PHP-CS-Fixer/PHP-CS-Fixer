@@ -1567,7 +1567,7 @@ $bar;',
     }
 
     /**
-     * @return iterable<int|string, array{null|int, int, int, string}>
+     * @return iterable<array{null|int, int, int, string}>
      */
     public static function provideGetMeaningfulTokenSiblingCases(): iterable
     {
@@ -1617,7 +1617,7 @@ $bar;',
     }
 
     /**
-     * @return iterable<array{string, array<int, Token>}>
+     * @return iterable<string, array{string, array<int, Token>}>
      */
     public static function provideInsertSlicesAtMultiplePlacesCases(): iterable
     {
@@ -1679,7 +1679,7 @@ $bar;',
     }
 
     /**
-     * @return iterable<array{Tokens, Tokens, array<int, list<Token>|Token|Tokens>}>
+     * @return iterable<string, array{Tokens, Tokens, array<int, list<Token>|Token|Tokens>}>
      */
     public static function provideInsertSlicesCases(): iterable
     {

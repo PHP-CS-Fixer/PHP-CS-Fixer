@@ -122,7 +122,7 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, string, array<string, mixed>|true}>
+     * @return iterable<string, array{string, string, array<string, mixed>|true}>
      */
     public static function provideAllRulesFromSetsCases(): iterable
     {
@@ -263,7 +263,7 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @return iterable<array{array<string, array<string, mixed>|bool>, bool}>
+     * @return iterable<string, array{array<string, array<string, mixed>|bool>, bool}>
      */
     public static function provideRiskyRulesInSetCases(): iterable
     {

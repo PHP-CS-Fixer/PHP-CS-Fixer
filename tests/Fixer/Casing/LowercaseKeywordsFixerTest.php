@@ -117,7 +117,7 @@ class Point {
     }
 
     /**
-     * @return iterable<int|string, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideFix81Cases(): iterable
     {

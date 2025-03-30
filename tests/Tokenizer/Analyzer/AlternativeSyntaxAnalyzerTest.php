@@ -44,7 +44,7 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{list<int>, string}>
+     * @return iterable<string, array{list<int>, string}>
      */
     public static function provideBelongsToAlternativeSyntaxCases(): iterable
     {

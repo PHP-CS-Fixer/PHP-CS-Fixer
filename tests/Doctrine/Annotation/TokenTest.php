@@ -79,7 +79,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, int|list<int>}>
+     * @return iterable<string, array{int, int|list<int>}>
      */
     public static function provideIsTypeReturnsTrueCases(): iterable
     {
@@ -112,7 +112,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, int|list<int>}>
+     * @return iterable<string, array{int, int|list<int>}>
      */
     public static function provideIsTypeReturnsFalseCases(): iterable
     {

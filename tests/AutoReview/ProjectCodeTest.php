@@ -835,9 +835,9 @@ final class ProjectCodeTest extends TestCase
      *
      * @param class-string<TestCase> $testClassName
      */
-    public function testThatDataFromDataProvidersIsNotDuplicated(string $testClassName, string $dataProviderName): void
+    public function testDataFromDataProviders(string $testClassName, string $dataProviderName): void
     {
-        $exceptions = [ // should only shrink
+        $exceptionsForDuplicatesCheck = [ // should only shrink
             'PhpCsFixer\Tests\AutoReview\CommandTest::provideCommandHasNameConstCases',
             'PhpCsFixer\Tests\AutoReview\DocumentationTest::provideFixerDocumentationFileIsUpToDateCases',
             'PhpCsFixer\Tests\AutoReview\FixerFactoryTest::providePriorityIntegrationTestFilesAreListedInPriorityGraphCases',
@@ -847,21 +847,27 @@ final class ProjectCodeTest extends TestCase
             'PhpCsFixer\Tests\Fixer\Basic\EncodingFixerTest::provideFixCases',
             'PhpCsFixer\Tests\UtilsTest::provideStableSortCases',
         ];
-        if (\in_array($testClassName.'::'.$dataProviderName, $exceptions, true)) {
-            $this->addToAssertionCount(1);
-
-            return;
-        }
 
         $dataProvider = new \ReflectionMethod($testClassName, $dataProviderName);
 
+        $docComment = $dataProvider->getDocComment();
+        self::assertNotFalse($docComment, \sprintf('Data provider %s::%s is missing PHPDoc.', $testClassName, $dataProviderName));
+        self::assertSame(1, substr_count($docComment, '@return'));
+
         $duplicates = [];
+        $keyTypes = [];
         $alreadyFoundCases = [];
         foreach ($dataProvider->invoke($dataProvider->getDeclaringClass()->newInstanceWithoutConstructor()) as $candidateKey => $candidateData) {
-            $candidateData = serialize($candidateData);
+            $keyTypes[get_debug_type($candidateKey)] = true;
+
+            if (\in_array($testClassName.'::'.$dataProviderName, $exceptionsForDuplicatesCheck, true)) {
+                continue;
+            }
+
+            $serializedCandidateData = serialize($candidateData);
             $foundInDuplicates = false;
             foreach ($alreadyFoundCases as $caseKey => $caseData) {
-                if ($candidateData === $caseData) {
+                if ($serializedCandidateData === $caseData) {
                     $duplicates[] = \sprintf(
                         'Duplicate in %s::%s: %s and %s.'.PHP_EOL,
                         $testClassName,
@@ -875,6 +881,31 @@ final class ProjectCodeTest extends TestCase
             if (!$foundInDuplicates) {
                 $alreadyFoundCases[$candidateKey] = $candidateData;
             }
+        }
+
+        self::assertTrue(1 === \count($keyTypes) || 2 === \count($keyTypes));
+
+        if (1 === \count($keyTypes) && 'string' === array_keys($keyTypes)[0]) {
+            // all data provider's keys are string - type must be present
+            self::assertStringContainsString(
+                '@return iterable<string, array{',
+                $docComment,
+                \sprintf('Data provider %s::%s iterable key "string" must be present.', $testClassName, $dataProviderName)
+            );
+        } else {
+            // data provider's keys are of both types - int and string - type must be omitted
+            $types = array_keys($keyTypes);
+            sort($types);
+            if (1 === \count($types)) {
+                self::assertSame(['int'], $types);
+            } else {
+                self::assertSame(['int', 'string'], $types);
+            }
+            self::assertStringContainsString(
+                '@return iterable<array{',
+                $docComment,
+                \sprintf('Data provider %s::%s iterable must not have key type.', $testClassName, $dataProviderName)
+            );
         }
 
         self::assertSame([], $duplicates);
