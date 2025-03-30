@@ -693,7 +693,7 @@ final class ProjectCodeTest extends TestCase
         $content = $returnDoc->getContent();
 
         self::assertMatchesRegularExpression('/iterable\</', $content, \sprintf('Data provider "%s::%s@return" must return iterable.', $testClassName, $dataProviderName));
-        self::assertMatchesRegularExpression('/iterable\<(?:(?:int\|)?string, )?array\{/', $content, \sprintf('Data provider "%s::%s@return" must return iterable of tuples (eg `iterable<string, array{string, string}>`).', $testClassName, $dataProviderName));
+        self::assertMatchesRegularExpression('/iterable\<(?:(int|string|int\|string), )?array\{/', $content, \sprintf('Data provider "%s::%s@return" must return iterable of tuples (eg `iterable<string, array{string, string}>`).', $testClassName, $dataProviderName));
     }
 
     /**
