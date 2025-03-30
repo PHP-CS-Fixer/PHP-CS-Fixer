@@ -497,7 +497,7 @@ $a#
     }
 
     /**
-     * @return iterable<int, array{string}>
+     * @return iterable<array{string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -522,7 +522,7 @@ $foo1b = function() use ($bar, ) {};
     }
 
     /**
-     * @return iterable<int, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideFix81Cases(): iterable
     {

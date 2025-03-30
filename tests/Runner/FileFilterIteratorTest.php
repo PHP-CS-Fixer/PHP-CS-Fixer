@@ -61,7 +61,7 @@ final class FileFilterIteratorTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{int}>
+     * @return iterable<array{int}>
      */
     public static function provideAcceptCases(): iterable
     {

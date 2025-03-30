@@ -520,7 +520,7 @@ use some\a\ClassA; use function some\a\fn_a; use const some\c;
     }
 
     /**
-     * @return iterable<int, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideWithWhitespacesConfigCases(): iterable
     {

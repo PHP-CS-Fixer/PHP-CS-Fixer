@@ -298,7 +298,7 @@ final class PhpUnitNamespacedFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int, array{string}>
+     * @return iterable<array{string}>
      */
     public static function provideFix81Cases(): iterable
     {

@@ -43,7 +43,7 @@ final class NewVersionCheckerTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{int, null|string}>
+     * @return iterable<array{int, null|string}>
      */
     public static function provideGetLatestVersionOfMajorCases(): iterable
     {
@@ -72,7 +72,7 @@ final class NewVersionCheckerTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{string, string, int}>
+     * @return iterable<array{string, string, int}>
      */
     public static function provideCompareVersionsCases(): iterable
     {

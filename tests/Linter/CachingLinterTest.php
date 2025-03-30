@@ -42,7 +42,7 @@ final class CachingLinterTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{bool}>
+     * @return iterable<array{bool}>
      */
     public static function provideIsAsyncCases(): iterable
     {

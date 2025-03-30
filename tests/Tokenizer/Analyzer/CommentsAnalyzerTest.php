@@ -177,7 +177,7 @@ $bar;',
     }
 
     /**
-     * @return iterable<int, array{string, int}>
+     * @return iterable<array{string, int}>
      */
     public static function provideHeaderCommentCases(): iterable
     {
@@ -204,7 +204,7 @@ $bar;',
     }
 
     /**
-     * @return iterable<int, array{string, int}>
+     * @return iterable<array{string, int}>
      */
     public static function provideNotHeaderCommentCases(): iterable
     {
@@ -244,7 +244,7 @@ $bar;',
     }
 
     /**
-     * @return iterable<int, array{string}>
+     * @return iterable<array{string}>
      */
     public static function providePhpdocCandidateCases(): iterable
     {
@@ -364,7 +364,7 @@ $bar;',
     }
 
     /**
-     * @return iterable<int, array{string}>
+     * @return iterable<array{string}>
      */
     public static function provideNotPhpdocCandidateCases(): iterable
     {

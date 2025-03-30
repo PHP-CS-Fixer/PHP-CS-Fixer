@@ -74,7 +74,7 @@ final class DescribeCommandTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{string, null|list<string>}>
+     * @return iterable<array{string, null|list<string>}>
      */
     public static function provideDescribeCommandCases(): iterable
     {

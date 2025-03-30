@@ -316,7 +316,7 @@ final class FixerFactoryTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{RuleSet}>
+     * @return iterable<array{RuleSet}>
      */
     public static function provideConflictingFixersCases(): iterable
     {
@@ -500,7 +500,7 @@ final class FixerFactoryTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{float|int|\stdClass|string}>
+     * @return iterable<array{float|int|\stdClass|string}>
      */
     public static function provideConfigureFixerWithNonArrayCases(): iterable
     {

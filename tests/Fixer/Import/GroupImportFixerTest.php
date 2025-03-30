@@ -535,7 +535,7 @@ use const Foo\Y;
     }
 
     /**
-     * @return iterable<int, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideFixPre80Cases(): iterable
     {

@@ -38,7 +38,7 @@ final class ConfigurableFixerTemplateFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int, array{}>
+     * @return iterable<array{}>
      */
     public static function provideFixCases(): iterable
     {

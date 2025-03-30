@@ -36,7 +36,7 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -107,7 +107,7 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int, array{string}>
+     * @return iterable<array{string}>
      */
     public static function provideFixPre80Cases(): iterable
     {

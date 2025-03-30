@@ -135,7 +135,7 @@ Integration of %s.
     }
 
     /**
-     * @return iterable<int, array{string}>
+     * @return iterable<array{string}>
      */
     public static function provideSetDefinitionNameCases(): iterable
     {
@@ -175,7 +175,7 @@ Integration of %s.
     }
 
     /**
-     * @return iterable<int, array{string}>
+     * @return iterable<array{string}>
      */
     public static function providePHPUnitMigrationTargetVersionsCases(): iterable
     {

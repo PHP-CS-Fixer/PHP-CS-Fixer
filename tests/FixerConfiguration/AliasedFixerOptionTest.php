@@ -38,7 +38,7 @@ final class AliasedFixerOptionTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{string}>
+     * @return iterable<array{string}>
      */
     public static function provideGetNameCases(): iterable
     {
@@ -58,7 +58,7 @@ final class AliasedFixerOptionTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{string}>
+     * @return iterable<array{string}>
      */
     public static function provideGetDescriptionCases(): iterable
     {
@@ -76,7 +76,7 @@ final class AliasedFixerOptionTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{bool, AliasedFixerOption}>
+     * @return iterable<array{bool, AliasedFixerOption}>
      */
     public static function provideHasDefaultCases(): iterable
     {
@@ -102,7 +102,7 @@ final class AliasedFixerOptionTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{string}>
+     * @return iterable<array{string}>
      */
     public static function provideGetDefaultCases(): iterable
     {
@@ -133,7 +133,7 @@ final class AliasedFixerOptionTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{null|list<string>}>
+     * @return iterable<array{null|list<string>}>
      */
     public static function provideGetAllowedTypesCases(): iterable
     {
@@ -157,7 +157,7 @@ final class AliasedFixerOptionTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{null|non-empty-list<null|(callable(mixed): bool)|scalar>}>
+     * @return iterable<array{null|non-empty-list<null|(callable(mixed): bool)|scalar>}>
      */
     public static function provideGetAllowedValuesCases(): iterable
     {
@@ -198,7 +198,7 @@ final class AliasedFixerOptionTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{string}>
+     * @return iterable<array{string}>
      */
     public static function provideGetAliasCases(): iterable
     {

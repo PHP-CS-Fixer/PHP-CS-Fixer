@@ -164,7 +164,7 @@ use C\{D,E,};
     }
 
     /**
-     * @return iterable<int, array{string, _TransformerTestExpectedTokens}>
+     * @return iterable<array{string, _TransformerTestExpectedTokens}>
      */
     public static function provideProcessPhp81Cases(): iterable
     {

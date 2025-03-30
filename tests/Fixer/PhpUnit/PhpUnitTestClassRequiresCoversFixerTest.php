@@ -272,7 +272,7 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
     }
 
     /**
-     * @return iterable<int, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideWithWhitespacesConfigCases(): iterable
     {

@@ -38,7 +38,7 @@ final class AllowedValueSubsetTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{list<string>, list<string>}>
+     * @return iterable<array{list<string>, list<string>}>
      */
     public static function provideGetAllowedValuesAreSortedCases(): iterable
     {
@@ -66,7 +66,7 @@ final class AllowedValueSubsetTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{mixed, bool}>
+     * @return iterable<array{mixed, bool}>
      */
     public static function provideInvokeCases(): iterable
     {

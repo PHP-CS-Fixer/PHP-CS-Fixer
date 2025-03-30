@@ -37,7 +37,7 @@ final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -226,7 +226,7 @@ final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideFixPre80Cases(): iterable
     {
@@ -269,7 +269,7 @@ intval#
     }
 
     /**
-     * @return iterable<int, array{string}>
+     * @return iterable<array{string}>
      */
     public static function provideFix81Cases(): iterable
     {

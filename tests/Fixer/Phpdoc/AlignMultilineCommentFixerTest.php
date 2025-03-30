@@ -196,7 +196,7 @@ class A
     }
 
     /**
-     * @return iterable<int, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideDocLikeMultilineCommentsCases(): iterable
     {
@@ -247,7 +247,7 @@ class A
     }
 
     /**
-     * @return iterable<int, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideMixedContentMultilineCommentsCases(): iterable
     {

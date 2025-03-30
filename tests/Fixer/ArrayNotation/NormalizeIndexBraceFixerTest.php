@@ -38,7 +38,7 @@ final class NormalizeIndexBraceFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideFixCases(): iterable
     {

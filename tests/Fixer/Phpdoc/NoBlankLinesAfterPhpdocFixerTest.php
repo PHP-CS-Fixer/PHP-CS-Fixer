@@ -171,7 +171,7 @@ final class NoBlankLinesAfterPhpdocFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int, array{string}>
+     * @return iterable<array{string}>
      */
     public static function provideLineBeforeIncludeOrRequireIsNotRemovedCases(): iterable
     {
@@ -385,7 +385,7 @@ class Foo {}'
     }
 
     /**
-     * @return iterable<int, array{string}>
+     * @return iterable<array{string}>
      */
     public static function provideInlineTypehintingDocsBeforeFlowBreakCases(): iterable
     {

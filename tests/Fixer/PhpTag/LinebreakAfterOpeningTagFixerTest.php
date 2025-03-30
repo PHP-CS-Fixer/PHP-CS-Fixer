@@ -123,7 +123,7 @@ $foo = $bar;
     }
 
     /**
-     * @return iterable<int, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideWithWhitespacesConfigCases(): iterable
     {

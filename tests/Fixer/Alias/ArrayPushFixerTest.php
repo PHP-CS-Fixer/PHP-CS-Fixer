@@ -281,7 +281,7 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideFixPre80Cases(): iterable
     {
@@ -307,7 +307,7 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int, array{string}>
+     * @return iterable<array{string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -354,7 +354,7 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideFixPre84Cases(): iterable
     {

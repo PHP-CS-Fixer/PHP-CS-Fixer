@@ -256,7 +256,7 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideFixPre80Cases(): iterable
     {

@@ -43,7 +43,7 @@ final class TransformerTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{TransformerInterface, TransformerInterface}>
+     * @return iterable<array{TransformerInterface, TransformerInterface}>
      */
     public static function provideTransformerPriorityCases(): iterable
     {
@@ -117,7 +117,7 @@ final class TransformerTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{TransformerInterface}>
+     * @return iterable<array{TransformerInterface}>
      */
     public static function provideTransformerPriorityIsListedCases(): iterable
     {

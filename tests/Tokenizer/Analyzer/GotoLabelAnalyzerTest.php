@@ -116,7 +116,7 @@ Bar3:
     }
 
     /**
-     * @return iterable<int, array{string, list<int>}>
+     * @return iterable<array{string, list<int>}>
      */
     public static function provideGotoLabel80Cases(): iterable
     {

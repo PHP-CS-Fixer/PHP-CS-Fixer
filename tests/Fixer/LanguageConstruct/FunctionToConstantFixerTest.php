@@ -291,7 +291,7 @@ get_called_class#1
     }
 
     /**
-     * @return iterable<int, array{array{functions: mixed}, string}>
+     * @return iterable<array{array{functions: mixed}, string}>
      */
     public static function provideInvalidConfigurationKeysCases(): iterable
     {

@@ -71,7 +71,7 @@ final class CTTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{string, int}>
+     * @return iterable<array{string, int}>
      */
     public static function provideConstantsCases(): iterable
     {

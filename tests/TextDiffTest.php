@@ -63,7 +63,7 @@ final class TextDiffTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{string, string, bool}>
+     * @return iterable<array{string, string, bool}>
      */
     public static function provideDiffReportingDecoratedCases(): iterable
     {
