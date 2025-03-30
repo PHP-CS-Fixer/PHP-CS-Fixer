@@ -885,22 +885,19 @@ final class ProjectCodeTest extends TestCase
 
         self::assertTrue(1 === \count($keyTypes) || 2 === \count($keyTypes));
 
-        if (1 === \count($keyTypes) && 'string' === array_keys($keyTypes)[0]) {
+        if (1 === \count($keyTypes)) {
+            $type = array_keys($keyTypes)[0];
             // all data provider's keys are string - type must be present
             self::assertStringContainsString(
-                '@return iterable<string, array{',
+                "@return iterable<{$type}, array{",
                 $docComment,
-                \sprintf('Data provider %s::%s iterable key "string" must be present.', $testClassName, $dataProviderName)
+                \sprintf('Data provider %s::%s iterable key "%s" must be present.', $testClassName, $dataProviderName, $type)
             );
         } else {
             // data provider's keys are of both types - int and string - type must be omitted
             $types = array_keys($keyTypes);
             sort($types);
-            if (1 === \count($types)) {
-                self::assertSame(['int'], $types);
-            } else {
-                self::assertSame(['int', 'string'], $types);
-            }
+            self::assertSame(['int', 'string'], $types);
             self::assertStringContainsString(
                 '@return iterable<array{',
                 $docComment,
