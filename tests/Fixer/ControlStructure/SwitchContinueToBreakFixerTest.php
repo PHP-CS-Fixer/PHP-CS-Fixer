@@ -281,10 +281,15 @@ switch(foo()) {
 ',
         ];
 
-        yield 'nested while with {}, do not fix' => [
+        yield 'nested while with {}' => [
             '<?php
 switch(foo()) {
     case 1: while(bar($i)){ --$i; echo 1; continue;}break;
+    default: echo 8;
+}',
+            '<?php
+switch(foo()) {
+    case 1: while(bar($i)){ --$i; echo 1; continue;}continue;
     default: echo 8;
 }',
         ];
