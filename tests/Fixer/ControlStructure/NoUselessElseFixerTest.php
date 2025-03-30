@@ -698,6 +698,9 @@ else?><?php echo 5;',
         self::assertSame($expected, $result);
     }
 
+    /**
+     * @return iterable<array{list<int>, string, int}>
+     */
     public static function provideBlockDetectionCases(): iterable
     {
         $source = '<?php
@@ -828,6 +831,9 @@ else?><?php echo 5;',
         }
     }
 
+    /**
+     * @return iterable<array{array<int, bool>, string}>
+     */
     public static function provideIsInConditionWithoutBracesCases(): iterable
     {
         yield [

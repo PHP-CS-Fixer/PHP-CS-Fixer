@@ -132,6 +132,9 @@ final class AliasedFixerOptionTest extends TestCase
         self::assertSame($allowedTypes, $option->getAllowedTypes());
     }
 
+    /**
+     * @return iterable<array{null|list<string>}>
+     */
     public static function provideGetAllowedTypesCases(): iterable
     {
         yield [null];
@@ -142,7 +145,7 @@ final class AliasedFixerOptionTest extends TestCase
     }
 
     /**
-     * @param null|list<null|(callable(mixed): bool)|scalar> $allowedValues
+     * @param null|non-empty-list<null|(callable(mixed): bool)|scalar> $allowedValues
      *
      * @dataProvider provideGetAllowedValuesCases
      */
@@ -153,6 +156,9 @@ final class AliasedFixerOptionTest extends TestCase
         self::assertSame($allowedValues, $option->getAllowedValues());
     }
 
+    /**
+     * @return iterable<array{null|non-empty-list<null|(callable(mixed): bool)|scalar>}>
+     */
     public static function provideGetAllowedValuesCases(): iterable
     {
         yield [null];

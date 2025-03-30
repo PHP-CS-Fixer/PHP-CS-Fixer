@@ -45,6 +45,9 @@ final class NamespaceOperatorTransformerTest extends AbstractTransformerTestCase
         );
     }
 
+    /**
+     * @return iterable<array{string, _TransformerTestExpectedTokens}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield [

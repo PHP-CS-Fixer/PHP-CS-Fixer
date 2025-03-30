@@ -274,4 +274,34 @@ $bar) {}',
             '<?php strlen( ... );',
         ];
     }
+
+    /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->testFix($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield 'do not crash' => [<<<'PHP'
+            <?php class Foo
+            {
+                public function __construct(
+                    public string $myVar {
+                        set(string $value) {
+                            $this->myVar = $value;
+                        }
+                    },
+                ) {}
+            }
+            PHP
+        ];
+    }
 }

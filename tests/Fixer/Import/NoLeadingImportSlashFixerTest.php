@@ -228,7 +228,7 @@ use const \some\Z\{ConstX,ConstY,ConstZ,};
     }
 
     /**
-     * @return iterable<int|string, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideFixPre80Cases(): iterable
     {

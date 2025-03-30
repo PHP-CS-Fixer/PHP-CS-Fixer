@@ -91,7 +91,7 @@ final class ProcessFactoryTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: array<string, mixed>, 1: RunnerConfig, 2: string}>
+     * @return iterable<string, array{0: array<string, mixed>, 1: RunnerConfig, 2: string}>
      */
     public static function provideCreateCases(): iterable
     {

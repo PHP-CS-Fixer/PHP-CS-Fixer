@@ -36,7 +36,25 @@ final class FunctionsAnalyzerTest extends TestCase
      */
     public function testIsGlobalFunctionCall(string $code, array $indices): void
     {
-        self::assertIsGlobalFunctionCall($indices, $code);
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new FunctionsAnalyzer();
+        $calculatedIndices = [];
+
+        foreach ($tokens as $index => $token) {
+            if ($analyzer->isGlobalFunctionCall($tokens, $index)) {
+                $calculatedIndices[] = $index;
+            }
+        }
+
+        self::assertSame(
+            $indices,
+            $calculatedIndices,
+            \sprintf(
+                'Global function calls found at positions: [%s], expected at [%s].',
+                implode(', ', $calculatedIndices),
+                implode(', ', $indices)
+            )
+        );
     }
 
     /**
@@ -270,7 +288,7 @@ A();
      */
     public function testIsGlobalFunctionCallPre80(string $code, array $indices): void
     {
-        self::assertIsGlobalFunctionCall($indices, $code);
+        $this->testIsGlobalFunctionCall($code, $indices);
     }
 
     /**
@@ -296,9 +314,12 @@ A();
      */
     public function testIsGlobalFunctionCallPhp80(string $code, array $indices): void
     {
-        self::assertIsGlobalFunctionCall($indices, $code);
+        $this->testIsGlobalFunctionCall($code, $indices);
     }
 
+    /**
+     * @return iterable<array{string, list<int>}>
+     */
     public static function provideIsGlobalFunctionCallPhp80Cases(): iterable
     {
         yield [
@@ -340,15 +361,17 @@ class Foo {}
      *
      * @requires PHP 8.1
      */
-    public function testIsGlobalFunctionCallPhp81(array $indices, string $code): void
+    public function testIsGlobalFunctionCallPhp81(string $code, array $indices): void
     {
-        self::assertIsGlobalFunctionCall($indices, $code);
+        $this->testIsGlobalFunctionCall($code, $indices);
     }
 
+    /**
+     * @return iterable<array{string, list<int>}>
+     */
     public static function provideIsGlobalFunctionCallPhp81Cases(): iterable
     {
         yield 'first class callable cases' => [
-            [],
             '<?php
 strlen(...);
 \strlen(...);
@@ -368,11 +391,12 @@ $b = new class(){};
 $a = new #[foo]
 class(){};
 ',
+            [],
         ];
 
         yield [
-            [1, 20],
             '<?php foo("bar"); enum A { function Foo(){ foo(); } }',
+            [1, 20],
         ];
     }
 
@@ -800,6 +824,9 @@ class(){};
         $this->testFunctionArgumentInfo($code, $methodIndex, $expected);
     }
 
+    /**
+     * @return iterable<array{string, int, array<string, ArgumentAnalysis>}>
+     */
     public static function provideFunctionArgumentInfoPhp80Cases(): iterable
     {
         yield ['<?php function($aa,){};', 1, [
@@ -825,31 +852,5 @@ class(){};
                 null
             ),
         ]];
-    }
-
-    /**
-     * @param list<int> $expectedIndices
-     */
-    private static function assertIsGlobalFunctionCall(array $expectedIndices, string $code): void
-    {
-        $tokens = Tokens::fromCode($code);
-        $analyzer = new FunctionsAnalyzer();
-        $actualIndices = [];
-
-        foreach ($tokens as $index => $token) {
-            if ($analyzer->isGlobalFunctionCall($tokens, $index)) {
-                $actualIndices[] = $index;
-            }
-        }
-
-        self::assertSame(
-            $expectedIndices,
-            $actualIndices,
-            \sprintf(
-                'Global function calls found at positions: [%s], expected at [%s].',
-                implode(', ', $actualIndices),
-                implode(', ', $expectedIndices)
-            )
-        );
     }
 }

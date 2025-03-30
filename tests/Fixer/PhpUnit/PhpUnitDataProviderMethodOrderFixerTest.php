@@ -39,7 +39,7 @@ final class PhpUnitDataProviderMethodOrderFixerTest extends AbstractFixerTestCas
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string, 2?: array<string, string>}>
+     * @return iterable<string, array{0: string, 1?: null|string, 2?: array<string, string>}>
      */
     public static function provideFixCases(): iterable
     {
@@ -364,7 +364,7 @@ final class PhpUnitDataProviderMethodOrderFixerTest extends AbstractFixerTestCas
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string, 2?: array<string, string>}>
+     * @return iterable<string, array{0: string, 1?: string, 2?: array<string, string>}>
      */
     public static function provideFix80Cases(): iterable
     {

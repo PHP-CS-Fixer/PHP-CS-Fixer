@@ -63,7 +63,7 @@ final class NoTrailingCommaInSinglelineFixer extends AbstractFixer implements Co
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $elements = ['arguments', 'array_destructuring', 'array', 'group_import'];
+        $elements = ['arguments', 'array', 'array_destructuring', 'group_import'];
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('elements', 'Which elements to fix.'))

@@ -353,6 +353,9 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         $this->fixer->configure($wrongConfig);
     }
 
+    /**
+     * @return iterable<array{array<array-key, mixed>, string}>
+     */
     public static function provideInvalidConfigurationCases(): iterable
     {
         yield [
