@@ -2197,6 +2197,41 @@ enum Cards: string
     }
 
     /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->testFix($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield 'asymmetric visibility' => [
+            <<<'PHP'
+                <?php class Foo {
+                    public public(set) Bar $a;
+
+                    public protected(set) Bar $b;
+
+                    public private(set) Baz $c;
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo {
+                    public public(set) Bar $a;
+                    public protected(set) Bar $b;
+                    public private(set) Baz $c;
+                }
+                PHP,
+        ];
+    }
+
+    /**
      * @dataProvider provideWithWhitespacesConfigCases
      */
     public function testWithWhitespacesConfig(string $expected, ?string $input = null): void
