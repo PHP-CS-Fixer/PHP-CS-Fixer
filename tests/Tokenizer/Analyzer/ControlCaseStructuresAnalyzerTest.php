@@ -343,7 +343,7 @@ endswitch ?>',
     }
 
     /**
-     * @return iterable<array{array<int, AbstractControlCaseStructuresAnalysis>, string, list<int>}>
+     * @return iterable<int, array{array<int, AbstractControlCaseStructuresAnalysis>, string, list<int>}>
      */
     public static function provideFindControlStructuresPhp81Cases(): iterable
     {

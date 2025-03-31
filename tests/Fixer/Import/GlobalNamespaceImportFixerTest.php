@@ -1186,7 +1186,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideMultipleNamespacesCases(): iterable
     {

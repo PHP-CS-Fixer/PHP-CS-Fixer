@@ -645,7 +645,7 @@ AB# <- this is the name
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -682,7 +682,7 @@ AB# <- this is the name
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFix81Cases(): iterable
     {
@@ -781,7 +781,7 @@ var_dump(Foo::CAT->test());',
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFix82Cases(): iterable
     {

@@ -584,7 +584,7 @@ $a# 5
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideTestAssertCountCasingCases(): iterable
     {
@@ -666,7 +666,7 @@ $a# 5
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideFix81Cases(): iterable
     {

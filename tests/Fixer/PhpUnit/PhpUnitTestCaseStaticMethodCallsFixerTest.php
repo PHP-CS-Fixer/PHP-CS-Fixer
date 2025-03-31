@@ -553,7 +553,7 @@ class MyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideFix81Cases(): iterable
     {

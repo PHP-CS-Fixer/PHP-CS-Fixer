@@ -543,7 +543,7 @@ use const C\D; // bar
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFix80Cases(): iterable
     {

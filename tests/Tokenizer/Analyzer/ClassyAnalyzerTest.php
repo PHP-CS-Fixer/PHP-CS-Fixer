@@ -191,7 +191,7 @@ final class ClassyAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, array<int, bool>}>
+     * @return iterable<int, array{string, array<int, bool>}>
      */
     public static function provideIsClassyInvocation80Cases(): iterable
     {

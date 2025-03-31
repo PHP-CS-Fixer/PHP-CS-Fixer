@@ -98,7 +98,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, string}>
+     * @return iterable<int, array{int, string}>
      */
     public static function provideGetContentCases(): iterable
     {
@@ -119,7 +119,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, int}>
+     * @return iterable<int, array{int, int}>
      */
     public static function provideStartCases(): iterable
     {
@@ -140,7 +140,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, int}>
+     * @return iterable<int, array{int, int}>
      */
     public static function provideEndCases(): iterable
     {
@@ -161,7 +161,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, string}>
+     * @return iterable<int, array{int, string}>
      */
     public static function provideGetTagCases(): iterable
     {
@@ -185,7 +185,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, int, int}>
+     * @return iterable<int, array{int, int, int}>
      */
     public static function provideRemoveCases(): iterable
     {
@@ -207,7 +207,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideRemoveEdgeCasesCases(): iterable
     {
@@ -262,7 +262,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<array{list<string>, string}>
+     * @return iterable<int, array{list<string>, string}>
      */
     public static function provideTypeParsingCases(): iterable
     {
@@ -538,7 +538,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<array{list<string>, list<string>, string, string}>
+     * @return iterable<int, array{list<string>, list<string>, string, string}>
      */
     public static function provideTypesCases(): iterable
     {
@@ -571,7 +571,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<array{list<string>, string}>
+     * @return iterable<int, array{list<string>, string}>
      */
     public static function provideNormalizedTypesCases(): iterable
     {
@@ -646,7 +646,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, null|NamespaceAnalysis, list<NamespaceUseAnalysis>, null|string}>
+     * @return iterable<int, array{string, null|NamespaceAnalysis, list<NamespaceUseAnalysis>, null|string}>
      */
     public static function provideGetTypeExpressionCases(): iterable
     {
@@ -670,7 +670,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, null|string}>
+     * @return iterable<int, array{string, null|string}>
      */
     public static function provideGetVariableNameCases(): iterable
     {

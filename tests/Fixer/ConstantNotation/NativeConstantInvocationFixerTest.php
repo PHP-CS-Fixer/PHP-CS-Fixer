@@ -151,7 +151,7 @@ final class NativeConstantInvocationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixWithDefaultConfigurationCases(): iterable
     {
@@ -260,7 +260,7 @@ try {
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFixWithConfiguredCustomIncludeCases(): iterable
     {
@@ -291,7 +291,7 @@ try {
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFixWithConfiguredOnlyIncludeCases(): iterable
     {
@@ -321,7 +321,7 @@ try {
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFixWithConfiguredExcludeCases(): iterable
     {
@@ -567,7 +567,7 @@ echo M_PI;
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideFixPhp80Cases(): iterable
     {
@@ -595,7 +595,7 @@ echo M_PI;
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideFixPhp81Cases(): iterable
     {
@@ -619,7 +619,7 @@ echo M_PI;
     }
 
     /**
-     * @return iterable<array{0: string}>
+     * @return iterable<int, array{0: string}>
      */
     public static function provideFixPhp82Cases(): iterable
     {
@@ -640,7 +640,7 @@ echo M_PI;
     }
 
     /**
-     * @return iterable<array{0: string, 1: string}>
+     * @return iterable<int, array{0: string, 1: string}>
      */
     public static function provideFixPhp83Cases(): iterable
     {

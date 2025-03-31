@@ -36,7 +36,7 @@ final class PhpdocTrimFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideFixCases(): iterable
     {

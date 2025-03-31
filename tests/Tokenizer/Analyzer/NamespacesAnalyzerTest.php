@@ -45,7 +45,7 @@ final class NamespacesAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, list<NamespaceAnalysis>}>
+     * @return iterable<int, array{string, list<NamespaceAnalysis>}>
      */
     public static function provideNamespacesCases(): iterable
     {
@@ -129,7 +129,7 @@ final class NamespacesAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, int, NamespaceAnalysis}>
+     * @return iterable<int, array{string, int, NamespaceAnalysis}>
      */
     public static function provideGetNamespaceAtCases(): iterable
     {

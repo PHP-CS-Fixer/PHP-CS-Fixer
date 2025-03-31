@@ -242,7 +242,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixWithNullLastCases(): iterable
     {
@@ -388,7 +388,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixWithAlphaAlgorithmCases(): iterable
     {
@@ -592,7 +592,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixWithAlphaAlgorithmAndNullAlwaysFirstCases(): iterable
     {
@@ -733,7 +733,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixWithAlphaAlgorithmAndNullAlwaysLastCases(): iterable
     {
@@ -876,7 +876,7 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFixWithCaseSensitiveCases(): iterable
     {

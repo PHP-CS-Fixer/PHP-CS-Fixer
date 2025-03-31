@@ -39,7 +39,7 @@ final class CommandTest extends TestCase
     }
 
     /**
-     * @return iterable<array{Command}>
+     * @return iterable<int, array{Command}>
      */
     public static function provideCommandHasNameConstCases(): iterable
     {

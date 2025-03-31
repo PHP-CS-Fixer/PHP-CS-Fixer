@@ -37,7 +37,7 @@ final class HelpCommandTest extends TestCase
     }
 
     /**
-     * @return iterable<array{null|mixed, FixerOption}>
+     * @return iterable<int, array{null|mixed, FixerOption}>
      */
     public static function provideGetDisplayableAllowedValuesCases(): iterable
     {
