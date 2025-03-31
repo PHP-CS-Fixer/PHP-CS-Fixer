@@ -405,7 +405,7 @@ class(){};
      *
      * @dataProvider provideIsGlobalFunctionCallPhp84Cases
      *
-     * @requires PHP >= 8.4
+     * @requires PHP 8.4
      */
     public function testIsGlobalFunctionCallPhp84(string $code, array $indices): void
     {
@@ -413,7 +413,7 @@ class(){};
     }
 
     /**
-     * @return iterable<array{string, list<int>}>
+     * @return iterable<string, array{string, list<int>}>
      */
     public static function provideIsGlobalFunctionCallPhp84Cases(): iterable
     {
