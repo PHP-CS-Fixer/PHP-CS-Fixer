@@ -2199,7 +2199,7 @@ enum Cards: string
     /**
      * @dataProvider provideFix84Cases
      *
-     * @requires PHP >= 8.4
+     * @requires PHP 8.4
      */
     public function testFix84(string $expected, ?string $input = null): void
     {
@@ -2207,7 +2207,7 @@ enum Cards: string
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<string, array{0: string, 1?: string}>
      */
     public static function provideFix84Cases(): iterable
     {
