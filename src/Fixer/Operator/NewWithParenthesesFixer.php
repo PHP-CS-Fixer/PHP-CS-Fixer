@@ -67,11 +67,11 @@ final class NewWithParenthesesFixer extends AbstractFixer implements Configurabl
     /**
      * {@inheritdoc}
      *
-     * Must run before ClassDefinitionFixer.
+     * Must run before ClassDefinitionFixer, NewExpressionParenthesesFixer.
      */
     public function getPriority(): int
     {
-        return 37;
+        return 38;
     }
 
     public function isCandidate(Tokens $tokens): bool
