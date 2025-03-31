@@ -351,7 +351,7 @@ use Space\Models\ {
     }
 
     /**
-     * @return iterable<int|string, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideFixPrePHP80Cases(): iterable
     {

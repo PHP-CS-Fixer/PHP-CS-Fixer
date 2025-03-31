@@ -35,6 +35,9 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -289,8 +292,10 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                     }
                 }
                 ',
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     switch ($a) {
                         case 42:
                             break;
@@ -303,7 +308,7 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                             }
                     }
                     ',
-                '<?php
+            '<?php
                     switch ($a) {
                         case 42   :
                             break;
@@ -316,7 +321,6 @@ final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
                             }
                     }
                     ',
-            ],
         ];
 
         yield [

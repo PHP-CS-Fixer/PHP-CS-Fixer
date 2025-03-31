@@ -42,7 +42,7 @@ final class CastSpacesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{array<string, int|string>, string}>
+     * @return iterable<string, array{array<string, int|string>, string}>
      */
     public static function provideInvalidConfigurationCases(): iterable
     {

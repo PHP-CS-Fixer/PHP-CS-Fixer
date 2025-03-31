@@ -39,6 +39,9 @@ final class TokenTest extends TestCase
         new Token($input);
     }
 
+    /**
+     * @return iterable<array{mixed}>
+     */
     public static function provideConstructorValidationCases(): iterable
     {
         yield [null];
@@ -347,6 +350,9 @@ final class TokenTest extends TestCase
         self::assertSame($expectedIsArray, $token->isArray());
     }
 
+    /**
+     * @return iterable<array{0: mixed, 1: null|int, 2: null|string, 3: null|bool, 4?: string}>
+     */
     public static function provideCreatingTokenCases(): iterable
     {
         yield [[T_FOREACH, 'foreach'], T_FOREACH, 'foreach', true];
@@ -378,6 +384,9 @@ final class TokenTest extends TestCase
         self::assertSame($equals, $token->equals($other, $caseSensitive));
     }
 
+    /**
+     * @return iterable<array{0: Token, 1: bool, 2: array{0: int, 1?: string}|string|Token, 3?: bool}>
+     */
     public static function provideEqualsCases(): iterable
     {
         $brace = self::getBraceToken();
@@ -466,6 +475,9 @@ final class TokenTest extends TestCase
         self::assertSame($equalsAny, $token->equalsAny($other, $caseSensitive));
     }
 
+    /**
+     * @return iterable<array{0: bool, 1: list<array{0: int, 1?: string}|string|Token>, 2?: bool}>
+     */
     public static function provideEqualsAnyCases(): iterable
     {
         $brace = self::getBraceToken();
@@ -501,6 +513,9 @@ final class TokenTest extends TestCase
         self::assertSame($isKeyCaseSensitive, Token::isKeyCaseSensitive($caseSensitive, $key));
     }
 
+    /**
+     * @return iterable<array{bool, array<int, bool>|bool, int}>
+     */
     public static function provideIsKeyCaseSensitiveCases(): iterable
     {
         yield [true, true, 0];
@@ -596,6 +611,9 @@ final class TokenTest extends TestCase
         self::assertSame($expected, $token->toArray());
     }
 
+    /**
+     * @return iterable<array{Token, array<string, mixed>}>
+     */
     public static function provideToArrayCases(): iterable
     {
         yield [

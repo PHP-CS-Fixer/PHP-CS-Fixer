@@ -39,6 +39,9 @@ final class AttributeTransformerTest extends AbstractTransformerTestCase
         $this->doTest($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<array{string, _TransformerTestExpectedTokens}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield ['<?php class Foo {

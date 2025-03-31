@@ -50,6 +50,9 @@ final class DotsOutputTest extends TestCase
         self::assertSame($expectedOutput, $output->fetch());
     }
 
+    /**
+     * @return iterable<array{list<array{0: FileProcessed::STATUS_*, 1?: int}>, string, int}>
+     */
     public static function provideDotsProgressOutputCases(): iterable
     {
         yield [

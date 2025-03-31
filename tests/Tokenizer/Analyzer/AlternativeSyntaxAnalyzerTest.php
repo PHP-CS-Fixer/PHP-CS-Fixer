@@ -43,6 +43,9 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
         }
     }
 
+    /**
+     * @return iterable<string, array{list<int>, string}>
+     */
     public static function provideBelongsToAlternativeSyntaxCases(): iterable
     {
         yield 'declare' => [

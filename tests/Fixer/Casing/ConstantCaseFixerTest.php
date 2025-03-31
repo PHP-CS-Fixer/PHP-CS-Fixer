@@ -320,7 +320,7 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<string, array{string, string}>
      */
     public static function provideFix83Cases(): iterable
     {

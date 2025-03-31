@@ -37,6 +37,9 @@ final class AllowedValueSubsetTest extends TestCase
         self::assertSame($expected, $subset->getAllowedValues());
     }
 
+    /**
+     * @return iterable<array{list<string>, list<string>}>
+     */
     public static function provideGetAllowedValuesAreSortedCases(): iterable
     {
         yield [
@@ -62,6 +65,9 @@ final class AllowedValueSubsetTest extends TestCase
         self::assertSame($expectedResult, $subset($inputValue));
     }
 
+    /**
+     * @return iterable<array{mixed, bool}>
+     */
     public static function provideInvokeCases(): iterable
     {
         yield [
