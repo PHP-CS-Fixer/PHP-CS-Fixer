@@ -234,7 +234,7 @@ final class A
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -286,7 +286,7 @@ final class A
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFix82Cases(): iterable
     {

@@ -561,7 +561,7 @@ try {
     }
 
     /**
-     * @return iterable<array{string, 1: ?string, 2?: array<string, mixed>}>
+     * @return iterable<int, array{string, 1: ?string, 2?: array<string, mixed>}>
      */
     public static function provideFix81Cases(): iterable
     {
@@ -614,7 +614,7 @@ try {
     }
 
     /**
-     * @return iterable<array{string, 1: ?string, 2?: array<string, mixed>}>
+     * @return iterable<int, array{string, 1: ?string, 2?: array<string, mixed>}>
      */
     public static function provideFix82Cases(): iterable
     {

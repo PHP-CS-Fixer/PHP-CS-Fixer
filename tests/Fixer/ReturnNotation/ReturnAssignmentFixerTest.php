@@ -34,7 +34,7 @@ final class ReturnAssignmentFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     * @return iterable<int, array{0: non-empty-string, 1?: non-empty-string}>
      */
     public static function provideFixNestedFunctionsCases(): iterable
     {
@@ -1306,7 +1306,7 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
     }
 
     /**
-     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     * @return iterable<int, array{0: non-empty-string, 1?: non-empty-string}>
      */
     public static function provideRepetitiveFixCases(): iterable
     {

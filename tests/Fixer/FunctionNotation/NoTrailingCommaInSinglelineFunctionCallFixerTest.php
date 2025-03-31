@@ -214,7 +214,7 @@ $g["e"](1,); // foo',
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -239,7 +239,7 @@ $foo1b = function() use ($bar, ) {};
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFix81Cases(): iterable
     {

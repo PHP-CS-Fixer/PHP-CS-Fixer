@@ -36,7 +36,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideNoEmptyStatementsCases(): iterable
     {
@@ -465,7 +465,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -569,7 +569,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideCasesWithShortOpenTagCases(): iterable
     {
@@ -588,7 +588,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixMultipleSemicolonsCases(): iterable
     {
@@ -663,7 +663,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFix81Cases(): iterable
     {

@@ -122,7 +122,7 @@ final class NoUselessSprintfFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixPre80Cases(): iterable
     {

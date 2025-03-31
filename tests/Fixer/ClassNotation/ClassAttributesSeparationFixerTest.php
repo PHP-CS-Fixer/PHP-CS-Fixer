@@ -2169,7 +2169,7 @@ enum Cards: string
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFix82Cases(): iterable
     {
@@ -2242,7 +2242,7 @@ enum Cards: string
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideWithWhitespacesConfigCases(): iterable
     {
@@ -2297,7 +2297,7 @@ enum Cards: string
     }
 
     /**
-     * @return iterable<array{int, string, int}>
+     * @return iterable<int, array{int, string, int}>
      */
     public static function provideCommentBlockStartDetectionCases(): iterable
     {

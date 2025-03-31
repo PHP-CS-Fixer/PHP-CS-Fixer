@@ -173,7 +173,7 @@ final class FixerFactoryTest extends TestCase
     }
 
     /**
-     * @return iterable<array{\DirectoryIterator}>
+     * @return iterable<int, array{\DirectoryIterator}>
      */
     public static function providePriorityIntegrationTestFilesAreListedInPriorityGraphCases(): iterable
     {

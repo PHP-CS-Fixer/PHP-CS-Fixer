@@ -130,7 +130,7 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{array<array-key, mixed>, string}>
+     * @return iterable<int, array{array<array-key, mixed>, string}>
      */
     public static function provideInvalidConfigurationCases(): iterable
     {

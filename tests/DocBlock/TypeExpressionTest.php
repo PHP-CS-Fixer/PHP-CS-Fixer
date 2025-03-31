@@ -56,7 +56,7 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideGetConstTypesCases(): iterable
     {
@@ -105,7 +105,7 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|list<string>}>
+     * @return iterable<int, array{0: string, 1?: null|list<string>}>
      */
     public static function provideGetTypesCases(): iterable
     {
@@ -497,7 +497,7 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: null|'&'|'|', 1: string}>
+     * @return iterable<int, array{0: null|'&'|'|', 1: string}>
      */
     public static function provideGetTypesGlueCases(): iterable
     {
@@ -519,7 +519,7 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: bool, 1: string}>
+     * @return iterable<int, array{0: bool, 1: string}>
      */
     public static function provideIsCompositeTypeCases(): iterable
     {
@@ -545,7 +545,7 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: bool, 1: string}>
+     * @return iterable<int, array{0: bool, 1: string}>
      */
     public static function provideIsUnionTypeCases(): iterable
     {
@@ -577,7 +577,7 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: bool, 1: string}>
+     * @return iterable<int, array{0: bool, 1: string}>
      */
     public static function provideIsIntersectionTypeCases(): iterable
     {
@@ -604,7 +604,7 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1: null|string, 2?: null|NamespaceAnalysis, 3?: list<NamespaceUseAnalysis>}>
+     * @return iterable<int, array{0: string, 1: null|string, 2?: null|NamespaceAnalysis, 3?: list<NamespaceUseAnalysis>}>
      */
     public static function provideGetCommonTypeCases(): iterable
     {
@@ -745,7 +745,7 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, bool}>
+     * @return iterable<int, array{string, bool}>
      */
     public static function provideAllowsNullCases(): iterable
     {

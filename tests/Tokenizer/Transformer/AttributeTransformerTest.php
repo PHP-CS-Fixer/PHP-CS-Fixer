@@ -40,7 +40,7 @@ final class AttributeTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<array{string, _TransformerTestExpectedTokens}>
+     * @return iterable<int, array{string, _TransformerTestExpectedTokens}>
      */
     public static function provideProcessCases(): iterable
     {
@@ -195,7 +195,7 @@ class User
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideNotChangeCases(): iterable
     {

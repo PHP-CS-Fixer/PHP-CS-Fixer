@@ -89,7 +89,7 @@ final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixWithBreakCases(): iterable
     {
@@ -195,7 +195,7 @@ while (true) {
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFixWithCaseCases(): iterable
     {
@@ -236,7 +236,7 @@ switch ($a) {
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixWithContinueCases(): iterable
     {
@@ -334,7 +334,7 @@ while (true) {
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixWithDeclareCases(): iterable
     {
@@ -373,7 +373,7 @@ declare(ticks=1);',
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFixWithDefaultCases(): iterable
     {
@@ -419,7 +419,7 @@ switch ($a1) {
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixWithDoCases(): iterable
     {
@@ -455,7 +455,7 @@ do {
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixWithExitCases(): iterable
     {
@@ -516,7 +516,7 @@ if ($foo === $bar) {
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFixWithForCases(): iterable
     {
@@ -546,7 +546,7 @@ if ($foo === $bar) {
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixWithGotoCases(): iterable
     {
@@ -602,7 +602,7 @@ if ($foo === $bar) {
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixWithIfCases(): iterable
     {
@@ -653,7 +653,7 @@ if ($foo) { }',
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFixWithForEachCases(): iterable
     {
@@ -683,7 +683,7 @@ if ($foo) { }',
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixWithIncludeCases(): iterable
     {
@@ -716,7 +716,7 @@ include "foo.php";',
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixWithIncludeOnceCases(): iterable
     {
@@ -749,7 +749,7 @@ include_once "foo.php";',
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixWithRequireCases(): iterable
     {
@@ -782,7 +782,7 @@ require "foo.php";',
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixWithRequireOnceCases(): iterable
     {
@@ -996,7 +996,7 @@ function foo()
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFixWithReturnAndMessyWhitespacesCases(): iterable
     {
@@ -1029,7 +1029,7 @@ function foo()
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixWithSwitchCases(): iterable
     {
@@ -1071,7 +1071,7 @@ switch ($foo) {
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixWithThrowCases(): iterable
     {
@@ -1110,7 +1110,7 @@ if (false) {
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixWithTryCases(): iterable
     {
@@ -1155,7 +1155,7 @@ try {
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixWithWhileCases(): iterable
     {
@@ -1214,7 +1214,7 @@ do {
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixWithYieldCases(): iterable
     {
@@ -1376,7 +1376,7 @@ function foo() {
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixWithYieldFromCases(): iterable
     {
@@ -1440,7 +1440,7 @@ function foo() {
     }
 
     /**
-     * @return iterable<array{0: _AutogeneratedInputConfiguration['statements'], 1?: string, 2?: string}>
+     * @return iterable<int, array{0: _AutogeneratedInputConfiguration['statements'], 1?: string, 2?: string}>
      */
     public static function provideFixWithMultipleConfigStatementsCases(): iterable
     {
@@ -1660,7 +1660,7 @@ enum UserStatus: string {
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixWithDocCommentCases(): iterable
     {

@@ -511,7 +511,7 @@ EOT
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideFix80Cases(): iterable
     {

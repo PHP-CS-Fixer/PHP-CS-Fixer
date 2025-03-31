@@ -292,7 +292,7 @@ A();
     }
 
     /**
-     * @return iterable<array{string, list<int>}>
+     * @return iterable<int, array{string, list<int>}>
      */
     public static function provideIsGlobalFunctionCallPre80Cases(): iterable
     {
@@ -318,7 +318,7 @@ A();
     }
 
     /**
-     * @return iterable<array{string, list<int>}>
+     * @return iterable<int, array{string, list<int>}>
      */
     public static function provideIsGlobalFunctionCallPhp80Cases(): iterable
     {
@@ -458,7 +458,7 @@ class(){};
     }
 
     /**
-     * @return iterable<array{string, int, array<string, ArgumentAnalysis>}>
+     * @return iterable<int, array{string, int, array<string, ArgumentAnalysis>}>
      */
     public static function provideFunctionArgumentInfoCases(): iterable
     {
@@ -648,7 +648,7 @@ class(){};
     }
 
     /**
-     * @return iterable<array{string, int, array<string, ArgumentAnalysis>}>
+     * @return iterable<int, array{string, int, array<string, ArgumentAnalysis>}>
      */
     public static function provideFunctionArgumentInfoPre80Cases(): iterable
     {
@@ -692,7 +692,7 @@ class(){};
     }
 
     /**
-     * @return iterable<array{string, int, null|TypeAnalysis}>
+     * @return iterable<int, array{string, int, null|TypeAnalysis}>
      */
     public static function provideFunctionReturnTypeInfoCases(): iterable
     {
@@ -726,7 +726,7 @@ class(){};
     }
 
     /**
-     * @return iterable<array{string, int, null|TypeAnalysis}>
+     * @return iterable<int, array{string, int, null|TypeAnalysis}>
      */
     public static function provideFunctionReturnTypeInfoPre80Cases(): iterable
     {
@@ -766,7 +766,7 @@ class(){};
     }
 
     /**
-     * @return iterable<array{string, list<int>}>
+     * @return iterable<int, array{string, list<int>}>
      */
     public static function provideIsTheSameClassCallCases(): iterable
     {
@@ -840,7 +840,7 @@ class(){};
     }
 
     /**
-     * @return iterable<array{string, list<int>}>
+     * @return iterable<int, array{string, list<int>}>
      */
     public static function provideIsTheSameClassCall80Cases(): iterable
     {
@@ -869,7 +869,7 @@ class(){};
     }
 
     /**
-     * @return iterable<array{string, int, array<string, ArgumentAnalysis>}>
+     * @return iterable<int, array{string, int, array<string, ArgumentAnalysis>}>
      */
     public static function provideFunctionArgumentInfoPhp80Cases(): iterable
     {

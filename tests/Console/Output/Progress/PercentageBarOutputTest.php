@@ -51,7 +51,7 @@ final class PercentageBarOutputTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: list<array{0: FileProcessed::STATUS_*, 1?: int}>, 1: string, 2: int}>
+     * @return iterable<int, array{0: list<array{0: FileProcessed::STATUS_*, 1?: int}>, 1: string, 2: int}>
      */
     public static function providePercentageBarProgressOutputCases(): iterable
     {

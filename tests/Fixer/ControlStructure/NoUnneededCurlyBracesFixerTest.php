@@ -171,7 +171,7 @@ final class NoUnneededCurlyBracesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixNamespaceCases(): iterable
     {

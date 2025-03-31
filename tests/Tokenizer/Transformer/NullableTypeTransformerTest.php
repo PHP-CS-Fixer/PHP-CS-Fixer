@@ -45,7 +45,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: _TransformerTestExpectedTokens}>
+     * @return iterable<int, array{0: string, 1?: _TransformerTestExpectedTokens}>
      */
     public static function provideProcessCases(): iterable
     {
@@ -139,7 +139,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<array{_TransformerTestExpectedTokens, string}>
+     * @return iterable<int, array{_TransformerTestExpectedTokens, string}>
      */
     public static function provideProcess80Cases(): iterable
     {
@@ -185,7 +185,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<array{_TransformerTestExpectedTokens, string}>
+     * @return iterable<int, array{_TransformerTestExpectedTokens, string}>
      */
     public static function provideProcess81Cases(): iterable
     {

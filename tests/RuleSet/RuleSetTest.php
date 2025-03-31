@@ -372,7 +372,7 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function providePhpUnitTargetVersionHasSetCases(): iterable
     {
