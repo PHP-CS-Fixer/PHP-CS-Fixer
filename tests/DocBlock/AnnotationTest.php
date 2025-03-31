@@ -98,7 +98,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, string}>
+     * @return iterable<int, array{int, string}>
      */
     public static function provideGetContentCases(): iterable
     {
@@ -119,7 +119,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, int}>
+     * @return iterable<int, array{int, int}>
      */
     public static function provideStartCases(): iterable
     {
@@ -140,7 +140,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, int}>
+     * @return iterable<int, array{int, int}>
      */
     public static function provideEndCases(): iterable
     {
@@ -161,7 +161,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, string}>
+     * @return iterable<int, array{int, string}>
      */
     public static function provideGetTagCases(): iterable
     {
@@ -185,7 +185,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, int, int}>
+     * @return iterable<int, array{int, int, int}>
      */
     public static function provideRemoveCases(): iterable
     {
@@ -207,7 +207,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideRemoveEdgeCasesCases(): iterable
     {
@@ -261,6 +261,9 @@ final class AnnotationTest extends TestCase
         self::assertSame($expected, $tag->getTypes());
     }
 
+    /**
+     * @return iterable<int, array{list<string>, string}>
+     */
     public static function provideTypeParsingCases(): iterable
     {
         yield [
@@ -534,6 +537,9 @@ final class AnnotationTest extends TestCase
         self::assertSame($output, $line->getContent());
     }
 
+    /**
+     * @return iterable<int, array{list<string>, list<string>, string, string}>
+     */
     public static function provideTypesCases(): iterable
     {
         yield [['Foo', 'null'], ['Bar[]'], '     * @param Foo|null $foo', '     * @param Bar[] $foo'];
@@ -564,6 +570,9 @@ final class AnnotationTest extends TestCase
         self::assertSame($expected, $tag->getNormalizedTypes());
     }
 
+    /**
+     * @return iterable<int, array{list<string>, string}>
+     */
     public static function provideNormalizedTypesCases(): iterable
     {
         yield [['null', 'string'], '* @param StRiNg|NuLl $foo'];
@@ -636,6 +645,9 @@ final class AnnotationTest extends TestCase
         self::assertSame($expectedCommonType, $result->getCommonType());
     }
 
+    /**
+     * @return iterable<int, array{string, null|NamespaceAnalysis, list<NamespaceUseAnalysis>, null|string}>
+     */
     public static function provideGetTypeExpressionCases(): iterable
     {
         $appNamespace = new NamespaceAnalysis('App', 'App', 0, 999, 0, 999);
@@ -658,7 +670,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, null|string}>
+     * @return iterable<int, array{string, null|string}>
      */
     public static function provideGetVariableNameCases(): iterable
     {

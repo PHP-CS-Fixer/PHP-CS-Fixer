@@ -56,7 +56,7 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixWithoutSpaceCases(): iterable
     {
@@ -168,7 +168,7 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFixWithSpaceCases(): iterable
     {

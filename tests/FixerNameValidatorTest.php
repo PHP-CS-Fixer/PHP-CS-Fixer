@@ -36,7 +36,7 @@ final class FixerNameValidatorTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, bool, bool}>
+     * @return iterable<int, array{string, bool, bool}>
      */
     public static function provideIsValidCases(): iterable
     {

@@ -34,7 +34,7 @@ final class PhpdocListTypeFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, 1?: string}>
+     * @return iterable<int, array{string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {

@@ -39,6 +39,9 @@ final class AttributeTransformerTest extends AbstractTransformerTestCase
         $this->doTest($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<int, array{string, _TransformerTestExpectedTokens}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield ['<?php class Foo {
@@ -192,7 +195,7 @@ class User
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideNotChangeCases(): iterable
     {

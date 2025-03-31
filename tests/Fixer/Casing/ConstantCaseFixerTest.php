@@ -41,7 +41,7 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, 1?: null|string, 2?: array{syntax?: string}}>
+     * @return iterable<int, array{string, 1?: null|string, 2?: array{syntax?: string}}>
      */
     public static function provideFixCases(): iterable
     {
@@ -320,7 +320,7 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<string, array{string, string}>
      */
     public static function provideFix83Cases(): iterable
     {

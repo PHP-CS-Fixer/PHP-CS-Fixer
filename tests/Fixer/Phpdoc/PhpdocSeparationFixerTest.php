@@ -541,7 +541,7 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideInheritDocCases(): iterable
     {

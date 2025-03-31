@@ -41,7 +41,7 @@ final class NonPrintableCharacterFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, null|string, array{use_escape_sequences_in_strings: bool}}>
+     * @return iterable<int, array{string, null|string, array{use_escape_sequences_in_strings: bool}}>
      */
     public static function provideFixCases(): iterable
     {

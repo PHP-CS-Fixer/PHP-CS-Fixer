@@ -44,7 +44,7 @@ final class MultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixerTe
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixMultiLineWhitespaceCases(): iterable
     {
@@ -301,7 +301,7 @@ $seconds = $minutes
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideMessyWhitespacesMultiLineWhitespaceCases(): iterable
     {
@@ -321,7 +321,7 @@ $seconds = $minutes
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideSemicolonForChainedCallsFixCases(): iterable
     {
@@ -1184,7 +1184,7 @@ switch ($foo) {
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideMessyWhitespacesSemicolonForChainedCallsCases(): iterable
     {

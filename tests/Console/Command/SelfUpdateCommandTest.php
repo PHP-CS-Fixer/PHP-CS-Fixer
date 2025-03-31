@@ -81,7 +81,7 @@ final class SelfUpdateCommandTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideCommandNameCases(): iterable
     {
@@ -118,6 +118,9 @@ final class SelfUpdateCommandTest extends TestCase
         self::assertSame(0, $commandTester->getStatusCode());
     }
 
+    /**
+     * @return iterable<int, array{string, null|string, array<string, bool|string>, bool, string, string}>
+     */
     public static function provideExecuteCases(): iterable
     {
         $currentVersion = Application::VERSION;
@@ -256,6 +259,9 @@ final class SelfUpdateCommandTest extends TestCase
         self::assertSame(1, $commandTester->getStatusCode());
     }
 
+    /**
+     * @return iterable<int, array{bool, bool, array<string, bool|string>, bool}>
+     */
     public static function provideExecuteWhenNotAbleToGetLatestVersionsCases(): iterable
     {
         yield [false, false, [], true];
@@ -317,6 +323,9 @@ final class SelfUpdateCommandTest extends TestCase
         self::assertSame(1, $commandTester->getStatusCode());
     }
 
+    /**
+     * @return iterable<int, array{array<string, bool|string>, bool}>
+     */
     public static function provideExecuteWhenNotInstalledAsPharCases(): iterable
     {
         yield [[], true];
