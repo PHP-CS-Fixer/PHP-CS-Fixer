@@ -42,7 +42,7 @@ final class Token
     private bool $isArray;
 
     /**
-     * @param array{int, string}|string $token token prototype
+     * @param _PhpTokenPrototype $token token prototype
      */
     public function __construct($token)
     {
@@ -131,8 +131,8 @@ final class Token
      *
      * If tokens are arrays, then only keys defined in parameter token are checked.
      *
-     * @param array{0: int, 1?: string}|string|Token $other         token or it's prototype
-     * @param bool                                   $caseSensitive perform a case sensitive comparison
+     * @param _PhpTokenPrototypePartial|Token $other         token or it's prototype
+     * @param bool                            $caseSensitive perform a case sensitive comparison
      */
     public function equals($other, bool $caseSensitive = true): bool
     {
@@ -192,8 +192,8 @@ final class Token
     /**
      * Check if token is equals to one of given.
      *
-     * @param list<array{0: int, 1?: string}|string|Token> $others        array of tokens or token prototypes
-     * @param bool                                         $caseSensitive perform a case sensitive comparison
+     * @param list<_PhpTokenPrototypePartial|Token> $others        array of tokens or token prototypes
+     * @param bool                                  $caseSensitive perform a case sensitive comparison
      */
     public function equalsAny(array $others, bool $caseSensitive = true): bool
     {
@@ -231,7 +231,7 @@ final class Token
     }
 
     /**
-     * @return array{int, non-empty-string}|string
+     * @return _PhpTokenPrototype
      */
     public function getPrototype()
     {
@@ -251,6 +251,8 @@ final class Token
      * Get token's content.
      *
      * It shall be used only for getting the content of token, not for checking it against excepted value.
+     *
+     * @return non-empty-string
      */
     public function getContent(): string
     {

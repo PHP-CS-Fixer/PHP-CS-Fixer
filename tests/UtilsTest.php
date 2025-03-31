@@ -133,7 +133,7 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @param array{int, string}|string $input token prototype
+     * @param _PhpTokenPrototype $input token prototype
      *
      * @dataProvider provideCalculateTrailingWhitespaceIndentCases
      */
@@ -145,7 +145,7 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, array{int, string}|string}>
+     * @return iterable<array{string, _PhpTokenPrototype}>
      */
     public static function provideCalculateTrailingWhitespaceIndentCases(): iterable
     {
