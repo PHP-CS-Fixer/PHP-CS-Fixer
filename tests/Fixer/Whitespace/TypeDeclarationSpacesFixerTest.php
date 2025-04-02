@@ -39,7 +39,7 @@ final class TypeDeclarationSpacesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, 1?: ?string}>
+     * @return iterable<int, array{string, 1?: ?string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -367,7 +367,7 @@ class Point
     }
 
     /**
-     * @return iterable<array{string, 1?: ?string}>
+     * @return iterable<int, array{string, 1?: ?string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -416,7 +416,7 @@ class Foo
     }
 
     /**
-     * @return iterable<array{string, 1?: ?string}>
+     * @return iterable<int, array{string, 1?: ?string}>
      */
     public static function provideFix81Cases(): iterable
     {
@@ -442,7 +442,7 @@ class Foo
     }
 
     /**
-     * @return iterable<array{string, 1?: ?string}>
+     * @return iterable<int, array{string, 1?: ?string}>
      */
     public static function provideFix82Cases(): iterable
     {
@@ -469,7 +469,7 @@ class Foo
     }
 
     /**
-     * @return iterable<array{string, 1?: ?string}>
+     * @return iterable<int, array{string, 1?: ?string}>
      */
     public static function provideFix83Cases(): iterable
     {

@@ -140,7 +140,7 @@ final class LineTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, string}>
+     * @return iterable<int, array{int, string}>
      */
     public static function provideLinesCases(): iterable
     {
@@ -161,7 +161,7 @@ final class LineTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, bool}>
+     * @return iterable<int, array{int, bool}>
      */
     public static function provideUsefulCases(): iterable
     {
@@ -182,7 +182,7 @@ final class LineTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, bool}>
+     * @return iterable<int, array{int, bool}>
      */
     public static function provideTagCases(): iterable
     {

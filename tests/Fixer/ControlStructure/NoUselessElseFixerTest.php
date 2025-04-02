@@ -37,7 +37,7 @@ final class NoUselessElseFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideCloseTagCases(): iterable
     {
@@ -145,7 +145,7 @@ else?><?php echo 5;',
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixIfElseIfElseCases(): iterable
     {
@@ -266,7 +266,7 @@ else?><?php echo 5;',
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixIfElseCases(): iterable
     {
@@ -327,7 +327,7 @@ else?><?php echo 5;',
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFixNestedIfCases(): iterable
     {
@@ -366,7 +366,7 @@ else?><?php echo 5;',
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFixEmptyElseCases(): iterable
     {
@@ -464,7 +464,7 @@ else?><?php echo 5;',
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideNegativeCases(): iterable
     {
@@ -698,6 +698,9 @@ else?><?php echo 5;',
         self::assertSame($expected, $result);
     }
 
+    /**
+     * @return iterable<int, array{list<int>, string, int}>
+     */
     public static function provideBlockDetectionCases(): iterable
     {
         $source = '<?php
@@ -748,7 +751,7 @@ else?><?php echo 5;',
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideConditionsWithoutBracesCases(): iterable
     {
@@ -803,7 +806,7 @@ else?><?php echo 5;',
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideConditionsWithoutBraces80Cases(): iterable
     {
@@ -828,6 +831,9 @@ else?><?php echo 5;',
         }
     }
 
+    /**
+     * @return iterable<int, array{array<int, bool>, string}>
+     */
     public static function provideIsInConditionWithoutBracesCases(): iterable
     {
         yield [

@@ -62,6 +62,9 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
         }
     }
 
+    /**
+     * @return iterable<string, array{0: list<Token>, 1?: list<Token>}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield 'string' => [
@@ -169,6 +172,9 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
         self::assertTokens(Tokens::fromArray($expected), $tokens);
     }
 
+    /**
+     * @return iterable<int, array{list<Token>, string}>
+     */
     public static function providePriorityCases(): iterable
     {
         yield [

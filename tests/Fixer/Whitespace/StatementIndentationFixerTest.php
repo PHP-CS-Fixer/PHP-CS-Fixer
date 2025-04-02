@@ -40,7 +40,7 @@ final class StatementIndentationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: ?string, 2?: array<string, mixed>}>
+     * @return iterable<string, array{0: string, 1?: ?string, 2?: array<string, mixed>}>
      */
     public static function provideFixCases(): iterable
     {
@@ -1504,7 +1504,7 @@ $foo = [
     }
 
     /**
-     * @return iterable<array{0: string, 1?: ?string, 2?: array<string, mixed>}>
+     * @return iterable<string, array{0: string, 1?: ?string, 2?: array<string, mixed>}>
      */
     public static function provideFixWithTabsCases(): iterable
     {
@@ -1536,7 +1536,7 @@ if ($foo) {
     }
 
     /**
-     * @return iterable<array{0: string, 1?: ?string, 2?: array<string, mixed>}>
+     * @return iterable<string, array{0: string, 1?: ?string, 2?: array<string, mixed>}>
      */
     public static function provideFixPhp80Cases(): iterable
     {
@@ -1609,7 +1609,7 @@ class Foo {
     }
 
     /**
-     * @return iterable<array{0: string, 1?: ?string, 2?: array<string, mixed>}>
+     * @return iterable<string, array{0: string, 1?: ?string, 2?: array<string, mixed>}>
      */
     public static function provideFixPhp81Cases(): iterable
     {
@@ -1697,7 +1697,7 @@ class Foo
     }
 
     /**
-     * @return iterable<array{0: string, 1?: ?string}>
+     * @return iterable<string, array{0: string, 1?: ?string}>
      */
     public static function provideFixPhp84Cases(): iterable
     {

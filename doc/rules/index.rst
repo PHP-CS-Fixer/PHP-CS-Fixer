@@ -575,6 +575,9 @@ Operator
 - `long_to_shorthand_operator <./operator/long_to_shorthand_operator.rst>`_ *(risky)*
 
   Shorthand notation for operators should be used if possible.
+- `new_expression_parentheses <./operator/new_expression_parentheses.rst>`_
+
+  All ``new`` expressions with a further call must (not) be wrapped in parentheses.
 - `new_with_braces <./operator/new_with_braces.rst>`_ *(deprecated)*
 
   All instances created with ``new`` keyword must (not) be followed by braces.

@@ -47,6 +47,9 @@ final class ConstructorPromotionTransformerTest extends AbstractTransformerTestC
         );
     }
 
+    /**
+     * @return iterable<int, array{_TransformerTestExpectedTokens, string}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield [
@@ -146,6 +149,9 @@ class Point {
         );
     }
 
+    /**
+     * @return iterable<string, array{_TransformerTestExpectedTokens, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'readonly' => [
