@@ -557,7 +557,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
         if ($this->fixer instanceof AbstractProxyFixer) {
             self::assertSame(
-                [] !== array_filter(
+                array_any(
                     \Closure::bind(static fn (AbstractProxyFixer $fixer): array => $fixer->createProxyFixers(), null, AbstractProxyFixer::class)($this->fixer),
                     static fn (FixerInterface $fixer): bool => $fixer instanceof WhitespacesAwareFixerInterface,
                 ),
