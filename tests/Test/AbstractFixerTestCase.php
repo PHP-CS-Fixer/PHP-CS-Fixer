@@ -16,10 +16,12 @@ namespace PhpCsFixer\Tests\Test;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\AbstractProxyFixer;
+use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
@@ -539,6 +541,39 @@ abstract class AbstractFixerTestCase extends TestCase
             [],
             $extraMethods,
             \sprintf('Methods "%s" should not be present in %s.', implode('". "', $extraMethods), static::class),
+        );
+    }
+
+    public function testImplementingWhitespacesAwareFixerInterface(): void
+    {
+        $tokens = Tokens::fromCode((string) file_get_contents((string) $this->getFixerReflection()->getFileName()));
+
+        if ($this->fixer instanceof AbstractPhpUnitFixer) {
+            // AbstractPhpUnitFixer is using `$this->whitespacesConfig` and we cannot verify it is needed for the child class
+            $this->addToAssertionCount(1);
+
+            return;
+        }
+
+        if ($this->fixer instanceof AbstractProxyFixer) {
+            self::assertSame(
+                [] !== array_filter(
+                    \Closure::bind(static fn (AbstractProxyFixer $fixer): array => $fixer->createProxyFixers(), null, AbstractProxyFixer::class)($this->fixer),
+                    static fn (FixerInterface $fixer): bool => $fixer instanceof WhitespacesAwareFixerInterface,
+                ),
+                $this->fixer instanceof WhitespacesAwareFixerInterface,
+            );
+
+            return;
+        }
+
+        self::assertSame(
+            null !== $tokens->findSequence([
+                [T_VARIABLE, '$this'],
+                [T_OBJECT_OPERATOR],
+                [T_STRING, 'whitespacesConfig'],
+            ]),
+            $this->fixer instanceof WhitespacesAwareFixerInterface,
         );
     }
 
