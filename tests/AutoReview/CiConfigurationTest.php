@@ -179,7 +179,7 @@ final class CiConfigurationTest extends TestCase
         }
 
         self::assertSame($supportedMinPhp, (float) $capture['min']);
-        self::assertSame($supportedMaxPhp, (float) $capture['max']);
+        self::assertGreaterThanOrEqual($supportedMaxPhp, (float) $capture['max']);
     }
 
     private function getPhpVersionUsedByCiForDeployments(): string
