@@ -886,6 +886,7 @@ final class FixerFactoryTest extends TestCase
             ],
             'protected_to_private' => [
                 'ordered_class_elements',
+                'static_private_method',
             ],
             'psr_autoloading' => [
                 'self_accessor',
@@ -951,6 +952,9 @@ final class FixerFactoryTest extends TestCase
             ],
             'statement_indentation' => [
                 'heredoc_indentation',
+            ],
+            'static_private_method' => [
+                'static_lambda',
             ],
             'strict_comparison' => [
                 'binary_operator_spaces',
