@@ -825,6 +825,16 @@ var_dump(Foo::CAT->test());',
                 }
                 PHP,
         ];
+
+        yield 'abstract property hooks' => [
+            <<<'PHP'
+                <?php
+                abstract class Foo
+                {
+                    abstract protected string $bar { get => "a"; set; }
+                }
+                PHP,
+        ];
     }
 
     /**
