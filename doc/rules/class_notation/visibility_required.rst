@@ -2,9 +2,10 @@
 Rule ``visibility_required``
 ============================
 
-Visibility MUST be declared on all properties and methods; ``abstract`` and
-``final`` MUST be declared before the visibility; ``static`` MUST be declared
-after the visibility.
+Classes, properties, and methods keyword modifiers MUST be in the following
+order: Inheritance modifier (abstract or final), Visibility modifier (public,
+protected, or private), Scope modifier (static), Mutation modifier (readonly),
+Type declaration, Name.
 
 Configuration
 -------------
