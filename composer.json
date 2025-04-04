@@ -43,6 +43,7 @@
         "symfony/polyfill-mbstring": "^1.31",
         "symfony/polyfill-php80": "^1.31",
         "symfony/polyfill-php81": "^1.31",
+        "symfony/polyfill-php84": "^1.31",
         "symfony/process": "^5.4 || ^6.4 || ^7.2",
         "symfony/stopwatch": "^5.4 || ^6.4 || ^7.0"
     },
@@ -174,7 +175,7 @@
             "Composer\\Config::disableProcessTimeout",
             "paraunit run --testsuite unit"
         ],
-        "unused-deps": "@php dev-tools/vendor/bin/composer-unused --excludePackage=composer/xdebug-handler"
+        "unused-deps": "@php dev-tools/vendor/bin/composer-unused --excludePackage=composer/xdebug-handler --excludePackage=symfony/polyfill-php84"
     },
     "scripts-descriptions": {
         "auto-review": "Execute Auto-review",
