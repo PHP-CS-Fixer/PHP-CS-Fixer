@@ -108,6 +108,7 @@ final class NoMultipleStatementsPerLineFixerTest extends AbstractFixerTestCase
     public string $readable { get; }
     public string $writeable { set; }
     public string $both { get; set; }
+    public string $differentCasing { GET; Set; }
 }',
         ];
     }
