@@ -72,7 +72,7 @@ jobs:
         run: composer php-compatibility
 
       - name: Check - composer-unused
-        run: ./dev-tools/vendor/bin/composer-unused --no-progress --excludePackage=composer/xdebug-handler
+        run: ./dev-tools/vendor/bin/composer-unused --no-progress --excludePackage=composer/xdebug-handler --excludePackage=symfony/polyfill-php84
 
       - name: Check - composer-require-checker
         run: ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file .composer-require-checker.json
