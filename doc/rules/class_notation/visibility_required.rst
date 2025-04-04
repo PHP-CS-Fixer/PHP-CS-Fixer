@@ -2,9 +2,10 @@
 Rule ``visibility_required``
 ============================
 
-Visibility MUST be declared on all properties and methods; ``abstract`` and
-``final`` MUST be declared before the visibility; ``static`` MUST be declared
-after the visibility.
+Classes, properties, and methods keyword modifiers MUST be in the following
+order: Inheritance modifier (abstract or final), Visibility modifier (public,
+protected, or private), Scope modifier (static), Mutation modifier (readonly),
+Type declaration, Name.
 
 Configuration
 -------------
@@ -58,6 +59,39 @@ With configuration: ``['elements' => ['const']]``.
     {
    -    const SAMPLE = 1;
    +    public const SAMPLE = 1;
+    }
+
+Example #3
+~~~~~~~~~~
+
+*Default* configuration.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    abstract class ClassName
+    {
+   -    protected abstract string $bar { get => "a"; set; }
+   +    abstract protected string $bar { get => "a"; set; }
+
+   -    readonly final protected string $foo;
+   +    final protected readonly string $foo;
+
+   -    protected final int $beep;
+   +    final protected int $beep;
+
+   -    static public final function bar() {}
+   +    final public static function bar() {}
+
+   -    protected abstract function zim();
+   +    abstract protected function zim();
+    }
+
+    readonly final class ValueObject
+    {
+        // ...
     }
 
 Rule sets

@@ -814,6 +814,39 @@ var_dump(Foo::CAT->test());',
      */
     public static function provideFix84Cases(): iterable
     {
+        yield 'fixing multiple keyword modifiers' => [
+            <<<'PHP'
+                <?php
+                abstract class ClassName
+                {
+                    abstract protected string $bar { get => "a"; set; }
+
+                    final protected readonly string $foo;
+
+                    final protected int $beep;
+
+                    final public static function bar() {}
+
+                    abstract protected function zim();
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                abstract class ClassName
+                {
+                    protected abstract string $bar { get => "a"; set; }
+
+                    readonly final protected string $foo;
+
+                    protected final int $beep;
+
+                    static public final function bar() {}
+
+                    protected abstract function zim();
+                }
+                PHP,
+        ];
+
         yield 'property hooks' => [
             <<<'PHP'
                 <?php
