@@ -14,7 +14,7 @@
         "phpstan/phpstan": "^2.1.11",
         "phpstan/phpstan-phpunit": "^2.0.6",
         "phpstan/phpstan-strict-rules": "^2.0.4",
-        "phpstan/phpstan-symfony": "^2.0.3"
+        "phpstan/phpstan-symfony": "^2.0.4"
     },
     "config": {
         "allow-plugins": {
