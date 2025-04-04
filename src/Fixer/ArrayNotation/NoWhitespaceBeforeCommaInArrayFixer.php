@@ -73,6 +73,9 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer implements
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
+            if ($tokens[$index]->isIgnoredFor($this)) {
+                continue;
+            }
             if ($tokens[$index]->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
                 $this->fixSpacing($index, $tokens);
             }
