@@ -60,6 +60,39 @@ With configuration: ``['elements' => ['const']]``.
    +    public const SAMPLE = 1;
     }
 
+Example #3
+~~~~~~~~~~
+
+*Default* configuration.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    abstract class ClassName
+    {
+   -    protected abstract string $bar { get => "a"; set; }
+   +    abstract protected string $bar { get => "a"; set; }
+
+   -    readonly final protected string $foo;
+   +    final protected readonly string $foo;
+
+   -    protected final int $beep;
+   +    final protected int $beep;
+
+   -    static public final function bar() {}
+   +    final public static function bar() {}
+
+   -    protected abstract function zim();
+   +    abstract protected function zim();
+    }
+
+    readonly final class ValueObject
+    {
+        // ...
+    }
+
 Rule sets
 ---------
 

@@ -22,8 +22,11 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -50,6 +53,71 @@ final class VisibilityRequiredFixer extends AbstractFixer implements Configurabl
 
     public function getDefinition(): FixerDefinitionInterface
     {
+        $getCodeSampleByVersion = static function (): CodeSampleInterface {
+            if (\PHP_VERSION_ID >= 8_04_00) {
+                return new VersionSpecificCodeSample(
+                    '<?php
+abstract class ClassName
+{
+    protected abstract string $bar { get => "a"; set; }
+
+    readonly final protected string $foo;
+
+    protected final int $beep;
+
+    static public final function bar() {}
+
+    protected abstract function zim();
+}
+
+readonly final class ValueObject
+{
+    // ...
+}
+',
+                    new VersionSpecification(8_04_00)
+                );
+            }
+
+            if (\PHP_VERSION_ID >= 8_03_00) {
+                return new VersionSpecificCodeSample(
+                    '<?php
+abstract class ClassName
+{
+    readonly protected string $foo;
+
+    protected int $beep;
+
+    static public final function bar() {}
+
+    protected abstract function zim();
+}
+
+readonly final class ValueObject
+{
+    // ...
+}
+',
+                    new VersionSpecification(8_02_00)
+                );
+            }
+
+            return new CodeSample(
+                '<?php
+abstract class ClassName
+{
+    protected string $foo;
+
+    protected int $beep;
+
+    static public final function bar() {}
+
+    protected abstract function zim();
+}
+',
+            );
+        };
+
         return new FixerDefinition(
             'Visibility MUST be declared on all properties and methods; `abstract` and `final` MUST be declared before the visibility; `static` MUST be declared after the visibility.',
             [
@@ -75,6 +143,7 @@ class Sample
 ',
                     ['elements' => ['const']]
                 ),
+                $getCodeSampleByVersion(),
             ]
         );
     }
