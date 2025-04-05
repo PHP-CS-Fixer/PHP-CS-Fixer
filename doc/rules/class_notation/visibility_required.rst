@@ -32,20 +32,111 @@ Example #1
    --- Original
    +++ New
     <?php
-    class Sample
+    abstract class ClassName
     {
-   -    var $a;
-   -    static protected $var_foo2;
-   +    public $a;
-   +    protected static $var_foo2;
+   -    const SAMPLE = 1;
+   +    public const SAMPLE = 1;
 
-   -    function A()
-   +    public function A()
-        {
-        }
+   -    var $a;
+   +    public $a;
+
+        protected string $foo;
+
+   -    static protected int $beep;
+   +    protected static int $beep;
+
+   -    static public final function bar() {}
+   +    final public static function bar() {}
+
+   -    protected abstract function zim();
+   +    abstract protected function zim();
+
+   -    function zex() {}
+   +    public function zex() {}
     }
 
 Example #2
+~~~~~~~~~~
+
+*Default* configuration.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    abstract class ClassName
+    {
+   -    const SAMPLE = 1;
+   +    public const SAMPLE = 1;
+
+   -    var $a;
+   +    public $a;
+
+   -    readonly protected string $foo;
+   +    protected readonly string $foo;
+
+   -    static protected int $beep;
+   +    protected static int $beep;
+
+   -    static public final function bar() {}
+   +    final public static function bar() {}
+
+   -    protected abstract function zim();
+   +    abstract protected function zim();
+
+   -    function zex() {}
+   +    public function zex() {}
+    }
+
+    readonly final class ValueObject
+    {
+        // ...
+    }
+
+Example #3
+~~~~~~~~~~
+
+*Default* configuration.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    abstract class ClassName
+    {
+   -    const SAMPLE = 1;
+   +    public const SAMPLE = 1;
+
+   -    var $a;
+   +    public $a;
+
+   -    protected abstract string $bar { get => "a"; set; }
+   +    abstract protected string $bar { get => "a"; set; }
+
+   -    readonly final protected string $foo;
+   +    final protected readonly string $foo;
+
+   -    static protected final int $beep;
+   +    final protected static int $beep;
+
+   -    static public final function bar() {}
+   +    final public static function bar() {}
+
+   -    protected abstract function zim();
+   +    abstract protected function zim();
+
+   -    function zex() {}
+   +    public function zex() {}
+    }
+
+    readonly final class ValueObject
+    {
+        // ...
+    }
+
+Example #4
 ~~~~~~~~~~
 
 With configuration: ``['elements' => ['const']]``.
@@ -59,91 +150,6 @@ With configuration: ``['elements' => ['const']]``.
     {
    -    const SAMPLE = 1;
    +    public const SAMPLE = 1;
-    }
-
-Example #3
-~~~~~~~~~~
-
-*Default* configuration.
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-    <?php
-        abstract class ClassName
-        {
-            protected string $foo;
-
-            protected int $beep;
-
-   -        static public final function bar() {}
-   +        final public static function bar() {}
-
-   -        protected abstract function zim();
-   +        abstract protected function zim();
-        }
-
-Example #4
-~~~~~~~~~~
-
-*Default* configuration.
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-    <?php
-    abstract class ClassName
-    {
-   -    readonly protected string $foo;
-   +    protected readonly string $foo;
-
-        protected int $beep;
-
-   -    static public final function bar() {}
-   +    final public static function bar() {}
-
-   -    protected abstract function zim();
-   +    abstract protected function zim();
-    }
-
-    readonly final class ValueObject
-    {
-        // ...
-    }
-
-Example #5
-~~~~~~~~~~
-
-*Default* configuration.
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-    <?php
-    abstract class ClassName
-    {
-   -    protected abstract string $bar { get => "a"; set; }
-   +    abstract protected string $bar { get => "a"; set; }
-
-   -    readonly final protected string $foo;
-   +    final protected readonly string $foo;
-
-   -    protected final int $beep;
-   +    final protected int $beep;
-
-   -    static public final function bar() {}
-   +    final public static function bar() {}
-
-   -    protected abstract function zim();
-   +    abstract protected function zim();
-    }
-
-    readonly final class ValueObject
-    {
-        // ...
     }
 
 Rule sets

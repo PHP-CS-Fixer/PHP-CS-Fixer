@@ -57,51 +57,41 @@ final class VisibilityRequiredFixer extends AbstractFixer implements Configurabl
             [
                 new CodeSample(
                     '<?php
-class Sample
-{
-    var $a;
-    static protected $var_foo2;
-
-    function A()
-    {
-    }
-}
-'
-                ),
-                new CodeSample(
-                    '<?php
-class Sample
+abstract class ClassName
 {
     const SAMPLE = 1;
+
+    var $a;
+
+    protected string $foo;
+
+    static protected int $beep;
+
+    static public final function bar() {}
+
+    protected abstract function zim();
+
+    function zex() {}
 }
-',
-                    ['elements' => ['const']]
-                ),
-                new CodeSample(
-                    '<?php
-    abstract class ClassName
-    {
-        protected string $foo;
-
-        protected int $beep;
-
-        static public final function bar() {}
-
-        protected abstract function zim();
-    }
 ',
                 ),
                 new VersionSpecificCodeSample(
                     '<?php
 abstract class ClassName
 {
+    const SAMPLE = 1;
+
+    var $a;
+
     readonly protected string $foo;
 
-    protected int $beep;
+    static protected int $beep;
 
     static public final function bar() {}
 
     protected abstract function zim();
+
+    function zex() {}
 }
 
 readonly final class ValueObject
@@ -115,15 +105,21 @@ readonly final class ValueObject
                     '<?php
 abstract class ClassName
 {
+    const SAMPLE = 1;
+
+    var $a;
+
     protected abstract string $bar { get => "a"; set; }
 
     readonly final protected string $foo;
 
-    protected final int $beep;
+    static protected final int $beep;
 
     static public final function bar() {}
 
     protected abstract function zim();
+
+    function zex() {}
 }
 
 readonly final class ValueObject
@@ -132,6 +128,15 @@ readonly final class ValueObject
 }
 ',
                     new VersionSpecification(8_04_00)
+                ),
+                new CodeSample(
+                    '<?php
+class Sample
+{
+    const SAMPLE = 1;
+}
+',
+                    ['elements' => ['const']]
                 ),
             ]
         );
