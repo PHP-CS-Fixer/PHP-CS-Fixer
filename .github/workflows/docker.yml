@@ -27,6 +27,7 @@ jobs:
           - docker-service: 'php-8.1'
           - docker-service: 'php-8.2'
           - docker-service: 'php-8.3'
+          - docker-service: 'php-8.4'
           - docker-service: 'sphinx-lint'
           - docker-service: 'markdown-lint'
 
