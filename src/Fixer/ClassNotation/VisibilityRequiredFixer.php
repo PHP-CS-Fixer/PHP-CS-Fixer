@@ -79,7 +79,7 @@ readonly final class ValueObject
                 );
             }
 
-            if (\PHP_VERSION_ID >= 8_03_00) {
+            if (\PHP_VERSION_ID >= 8_02_00) {
                 return new VersionSpecificCodeSample(
                     '<?php
 abstract class ClassName
