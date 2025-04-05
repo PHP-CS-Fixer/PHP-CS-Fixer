@@ -118,9 +118,33 @@ Example #5
 
 *Default* configuration.
 
-.. error::
-   Cannot generate diff for code sample #5 of rule visibility_required:
-   the sample is not suitable for current version of PHP (8.3.19).
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    abstract class ClassName
+    {
+   -    protected abstract string $bar { get => "a"; set; }
+   +    abstract protected string $bar { get => "a"; set; }
+
+   -    readonly final protected string $foo;
+   +    final protected readonly string $foo;
+
+   -    protected final int $beep;
+   +    final protected int $beep;
+
+   -    static public final function bar() {}
+   +    final public static function bar() {}
+
+   -    protected abstract function zim();
+   +    abstract protected function zim();
+    }
+
+    readonly final class ValueObject
+    {
+        // ...
+    }
 
 Rule sets
 ---------
