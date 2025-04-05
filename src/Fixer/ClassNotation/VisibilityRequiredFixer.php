@@ -24,6 +24,8 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -51,20 +53,81 @@ final class VisibilityRequiredFixer extends AbstractFixer implements Configurabl
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Visibility MUST be declared on all properties and methods; `abstract` and `final` MUST be declared before the visibility; `static` MUST be declared after the visibility.',
+            'Classes, constants, properties, and methods keyword modifiers MUST be in the following order: inheritance modifier (`abstract` or `final`), visibility modifier (`public`, `protected`, or `private`), scope modifier (`static`), mutation modifier (`readonly`), type declaration, name.',
             [
                 new CodeSample(
                     '<?php
-class Sample
+abstract class ClassName
 {
-    var $a;
-    static protected $var_foo2;
+    const SAMPLE = 1;
 
-    function A()
-    {
-    }
+    var $a;
+
+    protected string $foo;
+
+    static protected int $beep;
+
+    static public final function bar() {}
+
+    protected abstract function zim();
+
+    function zex() {}
 }
-'
+',
+                ),
+                new VersionSpecificCodeSample(
+                    '<?php
+abstract class ClassName
+{
+    const SAMPLE = 1;
+
+    var $a;
+
+    readonly protected string $foo;
+
+    static protected int $beep;
+
+    static public final function bar() {}
+
+    protected abstract function zim();
+
+    function zex() {}
+}
+
+readonly final class ValueObject
+{
+    // ...
+}
+',
+                    new VersionSpecification(8_02_00)
+                ),
+                new VersionSpecificCodeSample(
+                    '<?php
+abstract class ClassName
+{
+    const SAMPLE = 1;
+
+    var $a;
+
+    protected abstract string $bar { get => "a"; set; }
+
+    readonly final protected string $foo;
+
+    static protected final int $beep;
+
+    static public final function bar() {}
+
+    protected abstract function zim();
+
+    function zex() {}
+}
+
+readonly final class ValueObject
+{
+    // ...
+}
+',
+                    new VersionSpecification(8_04_00)
                 ),
                 new CodeSample(
                     '<?php
