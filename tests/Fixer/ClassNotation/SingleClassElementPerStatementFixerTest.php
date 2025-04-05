@@ -16,7 +16,6 @@ namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
-use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @author Javier Spagnoletti <phansys@gmail.com>
@@ -834,16 +833,11 @@ echo Foo::A, Foo::B;
                 }
             ',
         ];
-    }
 
-    public function testWithWhitespacesConfig(): void
-    {
-        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
-
-        $this->doTest(
+        yield 'tabs and Windows line breaks' => [
             "<?php\r\n\tclass Foo {\r\n\t\tconst AAA=0;\r\n\t\tconst BBB=1;\r\n\t}",
             "<?php\r\n\tclass Foo {\r\n\t\tconst AAA=0, BBB=1;\r\n\t}",
-        );
+        ];
     }
 
     /**
