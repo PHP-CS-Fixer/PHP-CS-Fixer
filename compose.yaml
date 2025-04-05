@@ -9,7 +9,7 @@ services:
     working_dir: /fixer
     volumes:
       - .:/fixer
-    environment:
+    environment: &default_environment
       PHP_IDE_CONFIG: serverName=php-cs-fixer
       PHP_CS_FIXER_ALLOW_XDEBUG: 1
 
