@@ -238,7 +238,7 @@ Class Notation
   Each trait ``use`` must be done as single statement.
 - `visibility_required <./class_notation/visibility_required.rst>`_
 
-  Classes, properties, and methods keyword modifiers MUST be in the following order: Inheritance modifier (abstract or final), Visibility modifier (public, protected, or private), Scope modifier (static), Mutation modifier (readonly), Type declaration, Name.
+  Classes, constants, properties, and methods keyword modifiers MUST be in the following order: inheritance modifier (``abstract`` or ``final``), visibility modifier (``public``, ``protected``, or ``private``), scope modifier (``static``), mutation modifier (``readonly``), type declaration, name.
 
 Class Usage
 -----------
