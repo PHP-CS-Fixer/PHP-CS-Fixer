@@ -119,7 +119,7 @@ abstract class ClassName
         };
 
         return new FixerDefinition(
-            'Classes, properties, and methods keyword modifiers MUST be in the following order: Inheritance modifier (abstract or final), Visibility modifier (public, protected, or private), Scope modifier (static), Mutation modifier (readonly), Type declaration, Name.',
+            'Classes, constants, properties, and methods keyword modifiers MUST be in the following order: inheritance modifier (`abstract` or `final`), visibility modifier (`public`, `protected`, or `private`), scope modifier (`static`), mutation modifier (`readonly`), type declaration, name.',
             [
                 new CodeSample(
                     '<?php
