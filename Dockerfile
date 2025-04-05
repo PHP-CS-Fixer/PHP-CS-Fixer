@@ -52,7 +52,9 @@ RUN if [ ! -z "$DOCKER_GROUP_ID" ] && [ ! getent group "${DOCKER_GROUP_ID}" > /d
     fi \
     && apk add git \
     && sync \
-    && install-php-extensions pcov xdebug-${PHP_XDEBUG_VERSION} \
+    && install-php-extensions xdebug-${PHP_XDEBUG_VERSION} \
+    # @see: https://github.com/krakjoe/pcov/pull/111
+    && if [ "${PHP_VERSION:0:3}" != "8.4" ]; then install-php-extensions pcov; fi \
     && curl --location --output /usr/local/bin/xdebug https://github.com/julienfalque/xdebug/releases/download/v2.0.0/xdebug \
     && chmod +x /usr/local/bin/xdebug
 

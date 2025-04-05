@@ -1,0 +1,44 @@
+--TEST--
+PHP 8.4 test.
+--RULESET--
+{
+    "@PhpCsFixer": true,
+    "@PHP84Migration": true
+}
+--REQUIREMENTS--
+{"php": 80400}
+--EXPECT--
+<?php
+
+class PropertyHooks
+{
+    public string $foo = 'default value' {
+        get => $this->foo.($this->modified ? ' (modified)' : '');
+        set => strtolower($value);
+    }
+
+    public string $bar {
+        set(string $value) {
+            $this->foo = strtolower($value);
+        }
+    }
+}
+
+--INPUT--
+<?php
+
+class PropertyHooks
+{
+    public     string       $foo    =     'default value' {
+        get      =>      $this->foo . ($this->modified     ?      ' (modified)' : '')
+        ;
+        set => 
+        strtolower( $value );
+    }
+    
+    public string $bar {
+        set(    string $value    ) {
+            $this -> foo = strtolower($value);
+        }
+    }
+}
