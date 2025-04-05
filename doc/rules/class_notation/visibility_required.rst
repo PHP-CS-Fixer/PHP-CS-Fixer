@@ -71,16 +71,35 @@ Example #3
    --- Original
    +++ New
     <?php
+        abstract class ClassName
+        {
+            protected string $foo;
+
+            protected int $beep;
+
+   -        static public final function bar() {}
+   +        final public static function bar() {}
+
+   -        protected abstract function zim();
+   +        abstract protected function zim();
+        }
+
+Example #4
+~~~~~~~~~~
+
+*Default* configuration.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
     abstract class ClassName
     {
-   -    protected abstract string $bar { get => "a"; set; }
-   +    abstract protected string $bar { get => "a"; set; }
+   -    readonly protected string $foo;
+   +    protected readonly string $foo;
 
-   -    readonly final protected string $foo;
-   +    final protected readonly string $foo;
-
-   -    protected final int $beep;
-   +    final protected int $beep;
+        protected int $beep;
 
    -    static public final function bar() {}
    +    final public static function bar() {}
@@ -93,6 +112,15 @@ Example #3
     {
         // ...
     }
+
+Example #5
+~~~~~~~~~~
+
+*Default* configuration.
+
+.. error::
+   Cannot generate diff for code sample #5 of rule visibility_required:
+   the sample is not suitable for current version of PHP (8.3.19).
 
 Rule sets
 ---------
