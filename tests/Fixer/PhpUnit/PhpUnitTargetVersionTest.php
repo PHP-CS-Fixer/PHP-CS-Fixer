@@ -44,7 +44,7 @@ final class PhpUnitTargetVersionTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: bool, 1: string, 2: string, 3?: string}>
+     * @return iterable<int, array{0: bool, 1: string, 2: string, 3?: string}>
      */
     public static function provideFulfillsCases(): iterable
     {

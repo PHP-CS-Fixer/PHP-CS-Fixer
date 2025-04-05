@@ -63,7 +63,7 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideCamelCaseToUnderscoreCases(): iterable
     {
@@ -145,7 +145,7 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, array{int, string}|string}>
+     * @return iterable<int, array{string, array{int, string}|string}>
      */
     public static function provideCalculateTrailingWhitespaceIndentCases(): iterable
     {
@@ -191,7 +191,7 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @return iterable<array{list<mixed>, list<mixed>, callable, callable}>
+     * @return iterable<int, array{list<mixed>, list<mixed>, callable, callable}>
      */
     public static function provideStableSortCases(): iterable
     {
@@ -271,7 +271,7 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1: list<string>, 2?: string}>
+     * @return iterable<int, array{0: string, 1: list<string>, 2?: string}>
      */
     public static function provideNaturalLanguageJoinCases(): iterable
     {
@@ -363,7 +363,7 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, list<string>}>
+     * @return iterable<int, array{string, list<string>}>
      */
     public static function provideNaturalLanguageJoinWithBackticksCases(): iterable
     {
@@ -430,7 +430,7 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, mixed}>
+     * @return iterable<int, array{string, mixed}>
      */
     public static function provideToStringCases(): iterable
     {

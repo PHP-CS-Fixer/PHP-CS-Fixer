@@ -160,6 +160,7 @@ jobs:
             php-version: '8.4'
             job-description: 'tests on macOS'
             run-tests: 'yes'
+            AVOID_PARAUNIT: 'yes' # macOS job is having weird issue on CI under ParaUnit
             FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
 
           # TEMPORARY: Only for quick 8.4 feedback
@@ -172,6 +173,20 @@ jobs:
             php-version: '8.4'
             job-description: 'unit test'
             run-84-unit-tests: 'yes'
+
+          - operating-system: 'ubuntu-24.04'
+            php-version: '8.4'
+            job-description: 'tests using PHPUnit 12'
+            install-phpunit-12: 'yes'
+            run-tests: 'yes'
+            PHP_CS_FIXER_IGNORE_ENV: 1
+
+          - operating-system: 'ubuntu-24.04'
+            php-version: '8.4'
+            job-description: 'code coverage'
+            run-tests: 'yes'
+            collect-code-coverage: 'yes'
+            PHP_CS_FIXER_IGNORE_ENV: 1
 
     name: PHP ${{ matrix.php-version }} ${{ matrix.job-description }}
 
@@ -218,8 +233,24 @@ jobs:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
         run: php php-cs-fixer fix --rules=no_unreachable_default_argument_value,nullable_type_declaration_for_default_null_value --diff vendor
 
-      - name: Run tests
-        if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes'
+      - name: Install PHPUnit 12
+        if: matrix.run-tests == 'yes' && matrix.install-phpunit-12 == 'yes'
+        env:
+          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
+          FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
+        run: |
+          composer require --dev --with-all-dependencies phpunit/phpunit:^12.0.2
+          php php-cs-fixer fix --quiet --rules=php_unit_attributes
+
+      - name: Run tests (via PHPUnit)
+        if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes' && matrix.AVOID_PARAUNIT == 'yes'
+        env:
+          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
+          FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
+        run: vendor/bin/phpunit --testsuite unit,integration
+
+      - name: Run tests (via ParaUnit)
+        if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes' && matrix.AVOID_PARAUNIT != 'yes'
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
@@ -236,6 +267,7 @@ jobs:
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
         env:
           FAST_LINT_TEST_CASES: 1
+          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
         run: vendor/bin/paraunit coverage --testsuite unit --pass-through=--exclude-group=covers-nothing --clover=build/logs/clover.xml
 
       - name: Run mutation tests (Infection)

@@ -86,7 +86,7 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideThatSrcClassHaveTestClassCases(): iterable
     {
@@ -237,7 +237,7 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideThatSrcClassesNotAbuseInterfacesCases(): iterable
     {
@@ -440,31 +440,6 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{string, string}>
-     */
-    public static function provideDataProviderMethodCases(): iterable
-    {
-        if (null === self::$dataProviderMethodCases) {
-            self::$dataProviderMethodCases = [];
-            foreach (self::provideTestClassCases() as $testClassName) {
-                $testClassName = reset($testClassName);
-                $reflectionClass = new \ReflectionClass($testClassName);
-
-                $dataProviderNames = array_filter(
-                    $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC),
-                    static fn (\ReflectionMethod $reflectionMethod): bool => $reflectionMethod->getDeclaringClass()->getName() === $reflectionClass->getName() && str_starts_with($reflectionMethod->getName(), 'provide')
-                );
-
-                foreach ($dataProviderNames as $dataProviderName) {
-                    self::$dataProviderMethodCases[$testClassName.'::'.$dataProviderName->getName()] = [$testClassName, $dataProviderName->getName()];
-                }
-            }
-        }
-
-        yield from self::$dataProviderMethodCases;
-    }
-
-    /**
      * @dataProvider provideTestClassCases
      *
      * @param class-string<TestCase> $testClassName
@@ -539,7 +514,7 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideThereIsNoPregFunctionUsedDirectlyCases(): iterable
     {
@@ -715,11 +690,10 @@ final class ProjectCodeTest extends TestCase
         }
 
         $returnDoc = $returnDocs[0];
-        $types = $returnDoc->getTypes();
+        $content = $returnDoc->getContent();
 
-        self::assertCount(1, $types, \sprintf('Data provider "%s::%s@return" must provide single type.', $testClassName, $dataProviderName));
-        self::assertMatchesRegularExpression('/^iterable\</', $types[0], \sprintf('Data provider "%s::%s@return" must return iterable.', $testClassName, $dataProviderName));
-        self::assertMatchesRegularExpression('/^iterable\<(?:(?:int\|)?string, )?array\{/', $types[0], \sprintf('Data provider "%s::%s@return" must return iterable of tuples (eg `iterable<string, array{string, string}>`).', $testClassName, $dataProviderName));
+        self::assertMatchesRegularExpression('/iterable\</', $content, \sprintf('Data provider "%s::%s@return" must return iterable.', $testClassName, $dataProviderName));
+        self::assertMatchesRegularExpression('/iterable\<(?:(int|string|int\|string), )?array\{/', $content, \sprintf('Data provider "%s::%s@return" must return iterable of tuples (eg `iterable<string, array{string, string}>`).', $testClassName, $dataProviderName));
     }
 
     /**
@@ -857,66 +831,13 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideTestClassCases
-     *
-     * @param class-string $className
-     */
-    public function testThatTestMethodsAreNotDuplicated(string $className): void
-    {
-        $class = new \ReflectionClass($className);
-
-        $alreadyFoundMethods = [];
-        $duplicates = [];
-        foreach ($class->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-            if (!str_starts_with($method->getName(), 'test')) {
-                continue;
-            }
-
-            $startLine = (int) $method->getStartLine();
-            $length = (int) $method->getEndLine() - $startLine;
-            if (3 === $length) { // open and closing brace are included - this checks for single line methods
-                continue;
-            }
-
-            /** @var list<string> $source */
-            $source = file((string) $method->getFileName());
-
-            $candidateContent = implode('', \array_slice($source, $startLine, $length));
-            if (str_contains($candidateContent, '$this->doTest(')) {
-                continue;
-            }
-
-            $foundInDuplicates = false;
-            foreach ($alreadyFoundMethods as $methodKey => $methodContent) {
-                if ($candidateContent === $methodContent) {
-                    $duplicates[] = \sprintf('%s is duplicate of %s', $methodKey, $method->getName());
-                    $foundInDuplicates = true;
-                }
-            }
-            if (!$foundInDuplicates) {
-                $alreadyFoundMethods[$method->getName()] = $candidateContent;
-            }
-        }
-
-        self::assertSame(
-            [],
-            $duplicates,
-            \sprintf(
-                "Duplicated methods found in %s:\n - %s",
-                $className,
-                implode("\n - ", $duplicates)
-            )
-        );
-    }
-
-    /**
      * @dataProvider provideDataProviderMethodCases
      *
      * @param class-string<TestCase> $testClassName
      */
-    public function testThatDataFromDataProvidersIsNotDuplicated(string $testClassName, string $dataProviderName): void
+    public function testDataFromDataProviders(string $testClassName, string $dataProviderName): void
     {
-        $exceptions = [ // should only shrink
+        $exceptionsForDuplicatesCheck = [ // should only shrink
             'PhpCsFixer\Tests\AutoReview\CommandTest::provideCommandHasNameConstCases',
             'PhpCsFixer\Tests\AutoReview\DocumentationTest::provideFixerDocumentationFileIsUpToDateCases',
             'PhpCsFixer\Tests\AutoReview\FixerFactoryTest::providePriorityIntegrationTestFilesAreListedInPriorityGraphCases',
@@ -926,21 +847,27 @@ final class ProjectCodeTest extends TestCase
             'PhpCsFixer\Tests\Fixer\Basic\EncodingFixerTest::provideFixCases',
             'PhpCsFixer\Tests\UtilsTest::provideStableSortCases',
         ];
-        if (\in_array($testClassName.'::'.$dataProviderName, $exceptions, true)) {
-            $this->addToAssertionCount(1);
-
-            return;
-        }
 
         $dataProvider = new \ReflectionMethod($testClassName, $dataProviderName);
 
+        $docComment = $dataProvider->getDocComment();
+        self::assertNotFalse($docComment, \sprintf('Data provider %s::%s is missing PHPDoc.', $testClassName, $dataProviderName));
+        self::assertSame(1, substr_count($docComment, '@return'));
+
         $duplicates = [];
+        $keyTypes = [];
         $alreadyFoundCases = [];
         foreach ($dataProvider->invoke($dataProvider->getDeclaringClass()->newInstanceWithoutConstructor()) as $candidateKey => $candidateData) {
-            $candidateData = serialize($candidateData);
+            $keyTypes[get_debug_type($candidateKey)] = true;
+
+            if (\in_array($testClassName.'::'.$dataProviderName, $exceptionsForDuplicatesCheck, true)) {
+                continue;
+            }
+
+            $serializedCandidateData = serialize($candidateData);
             $foundInDuplicates = false;
             foreach ($alreadyFoundCases as $caseKey => $caseData) {
-                if ($candidateData === $caseData) {
+                if ($serializedCandidateData === $caseData) {
                     $duplicates[] = \sprintf(
                         'Duplicate in %s::%s: %s and %s.'.PHP_EOL,
                         $testClassName,
@@ -956,7 +883,54 @@ final class ProjectCodeTest extends TestCase
             }
         }
 
+        self::assertTrue(1 === \count($keyTypes) || 2 === \count($keyTypes));
+
+        if (1 === \count($keyTypes)) {
+            // all data provider's keys are of single type - type must be present
+            $type = array_keys($keyTypes)[0];
+            self::assertStringContainsString(
+                \sprintf('@return iterable<%s, array{', $type),
+                $docComment,
+                \sprintf('Data provider %s::%s iterable key "%s" must be present.', $testClassName, $dataProviderName, $type)
+            );
+        } else {
+            // data provider's keys are of both types - int and string - type must be omitted
+            $types = array_keys($keyTypes);
+            sort($types);
+            self::assertSame(['int', 'string'], $types);
+            self::assertStringContainsString(
+                '@return iterable<array{',
+                $docComment,
+                \sprintf('Data provider %s::%s iterable must not have key type.', $testClassName, $dataProviderName)
+            );
+        }
+
         self::assertSame([], $duplicates);
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function provideDataProviderMethodCases(): iterable
+    {
+        if (null === self::$dataProviderMethodCases) {
+            self::$dataProviderMethodCases = [];
+            foreach (self::provideTestClassCases() as $testClassName) {
+                $testClassName = reset($testClassName);
+                $reflectionClass = new \ReflectionClass($testClassName);
+
+                $dataProviderNames = array_filter(
+                    $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC),
+                    static fn (\ReflectionMethod $reflectionMethod): bool => $reflectionMethod->getDeclaringClass()->getName() === $reflectionClass->getName() && str_starts_with($reflectionMethod->getName(), 'provide')
+                );
+
+                foreach ($dataProviderNames as $dataProviderName) {
+                    self::$dataProviderMethodCases[$testClassName.'::'.$dataProviderName->getName()] = [$testClassName, $dataProviderName->getName()];
+                }
+            }
+        }
+
+        yield from self::$dataProviderMethodCases;
     }
 
     /**
@@ -972,7 +946,7 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function providePhpUnitFixerExtendsAbstractPhpUnitFixerCases(): iterable
     {

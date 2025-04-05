@@ -38,7 +38,7 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixNamedWithDefaultConfigurationCases(): iterable
     {
@@ -332,7 +332,7 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixNamedWithoutParenthesesCases(): iterable
     {
@@ -627,7 +627,7 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixAnonymousWithDefaultConfigurationCases(): iterable
     {
@@ -699,7 +699,7 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixAnonymousWithoutParenthesesCases(): iterable
     {
@@ -763,7 +763,7 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFixPre80Cases(): iterable
     {
@@ -794,7 +794,7 @@ final class NewWithParenthesesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -846,7 +846,7 @@ $a = new ($foo."ar");',
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFix81Cases(): iterable
     {

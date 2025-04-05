@@ -37,7 +37,7 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -235,7 +235,7 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int|string, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideMessyWhitespacesCases(): iterable
     {
@@ -279,7 +279,7 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
 \t     */",
         ];
 
-        yield [
+        yield 'do not touch whitespace that is not indentation' => [
             "<?php
 function myFunction() {
 \t\$foo        = 1;
@@ -332,7 +332,7 @@ function myFunction() {
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideDoubleSpaceIndentCases(): iterable
     {

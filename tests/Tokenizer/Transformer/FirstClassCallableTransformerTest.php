@@ -38,6 +38,9 @@ final class FirstClassCallableTransformerTest extends AbstractTransformerTestCas
         $this->doTest($source, $expectedTokens, [CT::T_FIRST_CLASS_CALLABLE]);
     }
 
+    /**
+     * @return iterable<string, array{_TransformerTestExpectedTokens, string}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield 'set' => [

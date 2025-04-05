@@ -6,6 +6,7 @@
     beStrictAboutChangesToGlobalState="true"
     beStrictAboutOutputDuringTests="true"
     bootstrap="./vendor/autoload.php"
+    cacheDirectory="./dev-tools/phpunit/cache"
     colors="true"
     columns="max"
     defaultTimeLimit="10"

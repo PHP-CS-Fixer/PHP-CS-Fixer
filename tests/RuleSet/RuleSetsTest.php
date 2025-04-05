@@ -134,6 +134,16 @@ Integration of %s.
         ));
     }
 
+    /**
+     * @return iterable<int, array{string}>
+     */
+    public static function provideSetDefinitionNameCases(): iterable
+    {
+        $setDefinitionNames = RuleSets::getSetDefinitionNames();
+
+        return array_map(static fn (string $setDefinitionName): array => [$setDefinitionName], $setDefinitionNames);
+    }
+
     public function testSetDefinitionsItselfIsSorted(): void
     {
         $setDefinition = array_keys(RuleSets::getSetDefinitions());
@@ -141,16 +151,6 @@ Integration of %s.
         natsort($sortedSetDefinition);
 
         self::assertSame($sortedSetDefinition, $setDefinition);
-    }
-
-    /**
-     * @return iterable<array{string}>
-     */
-    public static function provideSetDefinitionNameCases(): iterable
-    {
-        $setDefinitionNames = RuleSets::getSetDefinitionNames();
-
-        return array_map(static fn (string $setDefinitionName): array => [$setDefinitionName], $setDefinitionNames);
     }
 
     /**
@@ -175,7 +175,7 @@ Integration of %s.
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function providePHPUnitMigrationTargetVersionsCases(): iterable
     {
@@ -196,7 +196,7 @@ Integration of %s.
 
         foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
             if ('target' === $option->getName()) {
-                /** @var list<PhpUnitTargetVersion::VERSION_*> */
+                /** @var non-empty-list<PhpUnitTargetVersion::VERSION_*> */
                 $allowedValues = $option->getAllowedValues();
 
                 $allowedVersionsForFixer = array_diff(

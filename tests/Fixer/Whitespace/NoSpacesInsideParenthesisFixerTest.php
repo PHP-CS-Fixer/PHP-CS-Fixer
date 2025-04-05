@@ -35,31 +35,8 @@ final class NoSpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function testLeaveNewLinesAlone(): void
-    {
-        $expected = <<<'EOF'
-            <?php
-
-            class Foo
-            {
-                private function bar()
-                {
-                    if (foo(
-                        'foo' ,
-                        'bar'    ,
-                        [1, 2, 3],
-                        'baz' // a comment just to mix things up
-                    )) {
-                        return 1;
-                    };
-                }
-            }
-            EOF;
-        $this->doTest($expected);
-    }
-
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -140,6 +117,29 @@ $a = $b->test(  // do not remove space
         ];
     }
 
+    public function testLeaveNewLinesAlone(): void
+    {
+        $expected = <<<'EOF'
+            <?php
+
+            class Foo
+            {
+                private function bar()
+                {
+                    if (foo(
+                        'foo' ,
+                        'bar'    ,
+                        [1, 2, 3],
+                        'baz' // a comment just to mix things up
+                    )) {
+                        return 1;
+                    };
+                }
+            }
+            EOF;
+        $this->doTest($expected);
+    }
+
     /**
      * @dataProvider provideFix80Cases
      *
@@ -151,7 +151,7 @@ $a = $b->test(  // do not remove space
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFix80Cases(): iterable
     {

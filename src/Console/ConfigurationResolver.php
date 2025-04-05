@@ -56,6 +56,23 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @phpstan-type _Options array{
+ *      allow-risky: null|string,
+ *      cache-file: null|string,
+ *      config: null|string,
+ *      diff: null|string,
+ *      dry-run: null|bool,
+ *      format: null|string,
+ *      path: list<string>,
+ *      path-mode: self::PATH_MODE_*,
+ *      rules: null|string,
+ *      sequential: null|string,
+ *      show-progress: null|string,
+ *      stop-on-violation: null|bool,
+ *      using-cache: null|string,
+ *      verbosity: null|string,
+ *  }
  */
 final class ConfigurationResolver
 {
@@ -88,7 +105,7 @@ final class ConfigurationResolver
     private ToolInfoInterface $toolInfo;
 
     /**
-     * @var array<string, mixed>
+     * @var _Options
      */
     private array $options = [
         'allow-risky' => null,
@@ -371,7 +388,7 @@ final class ConfigurationResolver
     public function getProgressType(): string
     {
         if (null === $this->progress) {
-            if ('txt' === $this->getFormat()) {
+            if ('txt' === $this->resolveFormat()) {
                 $progressType = $this->options['show-progress'];
 
                 if (null === $progressType) {
@@ -401,7 +418,7 @@ final class ConfigurationResolver
             $reporterFactory = new ReporterFactory();
             $reporterFactory->registerBuiltInReporters();
 
-            $format = $this->getFormat();
+            $format = $this->resolveFormat();
 
             try {
                 $this->reporter = $reporterFactory->getReporter($format);
@@ -557,10 +574,25 @@ final class ConfigurationResolver
         return $this->fixerFactory;
     }
 
-    private function getFormat(): string
+    private function resolveFormat(): string
     {
         if (null === $this->format) {
-            $this->format = $this->options['format'] ?? $this->getConfig()->getFormat();
+            $formatCandidate = $this->options['format'] ?? $this->getConfig()->getFormat();
+            $parts = explode(',', $formatCandidate);
+
+            if (\count($parts) > 2) {
+                throw new InvalidConfigurationException(\sprintf('The format "%s" is invalid.', $formatCandidate));
+            }
+
+            $this->format = $parts[0];
+
+            if ('@auto' === $this->format) {
+                $this->format = $parts[1] ?? 'txt';
+
+                if (filter_var(getenv('GITLAB_CI'), FILTER_VALIDATE_BOOL)) {
+                    $this->format = 'gitlab';
+                }
+            }
         }
 
         return $this->format;
@@ -889,13 +921,12 @@ final class ConfigurationResolver
         $this->options[$name] = $value;
     }
 
+    /**
+     * @param key-of<_Options> $optionName
+     */
     private function resolveOptionBooleanValue(string $optionName): bool
     {
         $value = $this->options[$optionName];
-
-        if (!\is_string($value)) {
-            throw new InvalidConfigurationException(\sprintf('Expected boolean or string value for option "%s".', $optionName));
-        }
 
         if ('yes' === $value) {
             return true;
@@ -905,7 +936,7 @@ final class ConfigurationResolver
             return false;
         }
 
-        throw new InvalidConfigurationException(\sprintf('Expected "yes" or "no" for option "%s", got "%s".', $optionName, $value));
+        throw new InvalidConfigurationException(\sprintf('Expected "yes" or "no" for option "%s", got "%s".', $optionName, \is_object($value) ? \get_class($value) : (\is_scalar($value) ? $value : \gettype($value))));
     }
 
     private static function separatedContextLessInclude(string $path): ConfigInterface

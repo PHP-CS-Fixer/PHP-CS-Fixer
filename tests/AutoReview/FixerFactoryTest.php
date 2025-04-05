@@ -138,6 +138,9 @@ final class FixerFactoryTest extends TestCase
         self::assertCount(0, $missingIntegrationsTests, \sprintf("There shall be an integration test. How do you know that priority set up is good, if there is no integration test to check it?\nMissing:\n- %s", implode("\n- ", $missingIntegrationsTests)));
     }
 
+    /**
+     * @return iterable<string, array{string, list<string>}>
+     */
     public static function provideFixersPriorityCasesHaveIntegrationTestCases(): iterable
     {
         foreach (self::getFixersPriorityGraph() as $fixerName => $edges) {
@@ -170,7 +173,7 @@ final class FixerFactoryTest extends TestCase
     }
 
     /**
-     * @return iterable<array{\DirectoryIterator}>
+     * @return iterable<int, array{\DirectoryIterator}>
      */
     public static function providePriorityIntegrationTestFilesAreListedInPriorityGraphCases(): iterable
     {
@@ -523,6 +526,9 @@ final class FixerFactoryTest extends TestCase
                 'no_singleline_whitespace_before_semicolons',
                 'standardize_increment',
             ],
+            'mb_str_functions' => [
+                'native_function_invocation',
+            ],
             'method_argument_space' => [
                 'array_indentation',
                 'statement_indentation',
@@ -561,6 +567,7 @@ final class FixerFactoryTest extends TestCase
             ],
             'new_with_parentheses' => [
                 'class_definition',
+                'new_expression_parentheses',
             ],
             'no_alias_functions' => [
                 'implode_call',
@@ -655,6 +662,7 @@ final class FixerFactoryTest extends TestCase
             ],
             'no_unneeded_control_parentheses' => [
                 'concat_space',
+                'new_expression_parentheses',
                 'no_trailing_whitespace',
             ],
             'no_unneeded_curly_braces' => [
@@ -724,6 +732,7 @@ final class FixerFactoryTest extends TestCase
             'ordered_class_elements' => [
                 'class_attributes_separation',
                 'no_blank_lines_after_class_opening',
+                'php_unit_data_provider_method_order',
                 'space_after_semicolon',
             ],
             'ordered_imports' => [
@@ -734,12 +743,17 @@ final class FixerFactoryTest extends TestCase
             ],
             'php_unit_attributes' => [
                 'fully_qualified_strict_types',
+                'no_empty_phpdoc',
                 'phpdoc_separation',
                 'phpdoc_trim',
                 'phpdoc_trim_consecutive_blank_line_separation',
             ],
             'php_unit_construct' => [
                 'php_unit_dedicate_assert',
+            ],
+            'php_unit_data_provider_method_order' => [
+                'class_attributes_separation',
+                'no_blank_lines_after_class_opening',
             ],
             'php_unit_data_provider_name' => [
                 'php_unit_attributes',
@@ -770,6 +784,7 @@ final class FixerFactoryTest extends TestCase
                 'php_unit_expectation',
             ],
             'php_unit_size_class' => [
+                'php_unit_attributes',
                 'phpdoc_separation',
             ],
             'php_unit_test_annotation' => [
@@ -781,6 +796,7 @@ final class FixerFactoryTest extends TestCase
                 'self_static_accessor',
             ],
             'php_unit_test_class_requires_covers' => [
+                'php_unit_attributes',
                 'phpdoc_separation',
             ],
             'phpdoc_add_missing_param_annotation' => [

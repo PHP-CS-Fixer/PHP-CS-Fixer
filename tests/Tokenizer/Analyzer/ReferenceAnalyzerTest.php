@@ -53,7 +53,7 @@ final class ReferenceAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideReferenceCases(): iterable
     {
@@ -103,7 +103,7 @@ class Foo {
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideNonReferenceCases(): iterable
     {
@@ -163,7 +163,7 @@ class Foo {
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideNonReferencePre84Cases(): iterable
     {

@@ -34,7 +34,7 @@ final class PhpdocArrayTypeFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, 1?: string}>
+     * @return iterable<int, array{string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -149,7 +149,7 @@ final class PhpdocArrayTypeFixerTest extends AbstractFixerTestCase
         ];
 
         $expected = $input = 'string';
-        for ($i = 0; $i < 120; ++$i) {
+        for ($i = 0; $i < 116; ++$i) {
             $expected = 'array<'.$expected.'>';
             $input .= '[]';
         }

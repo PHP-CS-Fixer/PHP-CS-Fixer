@@ -52,6 +52,9 @@ final class CommentsAnalyzerTest extends TestCase
         self::assertFalse($analyzer->isHeaderComment($tokens, $index));
     }
 
+    /**
+     * @return iterable<string, array{string, int, list<int>}>
+     */
     public static function provideCommentsCases(): iterable
     {
         yield 'discover all 4 comments for the 1st comment with slash' => [
@@ -174,7 +177,7 @@ $bar;',
     }
 
     /**
-     * @return iterable<array{string, int}>
+     * @return iterable<int, array{string, int}>
      */
     public static function provideHeaderCommentCases(): iterable
     {
@@ -201,7 +204,7 @@ $bar;',
     }
 
     /**
-     * @return iterable<array{string, int}>
+     * @return iterable<int, array{string, int}>
      */
     public static function provideNotHeaderCommentCases(): iterable
     {
@@ -241,7 +244,7 @@ $bar;',
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function providePhpdocCandidateCases(): iterable
     {
@@ -320,6 +323,32 @@ $bar;',
         yield ['<?php /* Before anonymous function */ fn($x) => $x + 1;'];
 
         yield ['<?php /* @var int $x */ [$x] = [2];'];
+
+        yield ['<?php /* @var string $x */ $x ??= $y;'];
+
+        yield ['<?php /* @var string $x */ $x .= $y;'];
+
+        yield ['<?php /* @var int $x */ $x &= 1;'];
+
+        yield ['<?php /* @var int $x */ $x |= 1;'];
+
+        yield ['<?php /* @var int $x */ $x ^= 1;'];
+
+        yield ['<?php /* @var int $x */ $x >>= 1;'];
+
+        yield ['<?php /* @var int $x */ $x <<= 1;'];
+
+        yield ['<?php /* @var float $x */ $x += 10;'];
+
+        yield ['<?php /* @var float $x */ $x -= 10;'];
+
+        yield ['<?php /* @var float $x */ $x *= 10;'];
+
+        yield ['<?php /* @var float $x */ $x /= 10;'];
+
+        yield ['<?php /* @var float $x */ $x %= 10;'];
+
+        yield ['<?php /* @var float $x */ $x **= 10;'];
     }
 
     /**
@@ -335,7 +364,7 @@ $bar;',
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideNotPhpdocCandidateCases(): iterable
     {

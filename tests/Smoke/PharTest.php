@@ -150,7 +150,7 @@ final class PharTest extends AbstractSmokeTestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideReportCases(): iterable
     {

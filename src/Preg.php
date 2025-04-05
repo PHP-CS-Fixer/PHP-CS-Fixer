@@ -101,13 +101,13 @@ final class Preg
     }
 
     /**
-     * @param array<array-key, string>|string $subject
-     *
      * @param-out int $count
+     *
+     * @return ($subject is non-empty-string ? ($replacement is non-empty-string ? non-empty-string : string) : string)
      *
      * @throws PregException
      */
-    public static function replace(string $pattern, string $replacement, $subject, int $limit = -1, ?int &$count = null): string
+    public static function replace(string $pattern, string $replacement, string $subject, int $limit = -1, ?int &$count = null): string
     {
         $result = @preg_replace(self::addUtf8Modifier($pattern), $replacement, $subject, $limit, $count);
         if (null !== $result && PREG_NO_ERROR === preg_last_error()) {

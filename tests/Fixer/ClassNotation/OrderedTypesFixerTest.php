@@ -158,15 +158,11 @@ try {
      */
     public function testFix80(string $expected, ?string $input = null, ?array $config = null): void
     {
-        if (null !== $config) {
-            $this->fixer->configure($config);
-        }
-
-        $this->doTest($expected, $input);
+        $this->testFix($expected, $input, $config);
     }
 
     /**
-     * @return iterable<int|string, array{string, 1?: ?string, 2?: array<string, mixed>}>
+     * @return iterable<array{string, 1?: ?string, 2?: array<string, mixed>}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -561,15 +557,11 @@ try {
      */
     public function testFix81(string $expected, ?string $input = null, ?array $config = null): void
     {
-        if (null !== $config) {
-            $this->fixer->configure($config);
-        }
-
-        $this->doTest($expected, $input);
+        $this->testFix($expected, $input, $config);
     }
 
     /**
-     * @return iterable<array{string, 1: ?string, 2?: array<string, mixed>}>
+     * @return iterable<int, array{string, 1: ?string, 2?: array<string, mixed>}>
      */
     public static function provideFix81Cases(): iterable
     {
@@ -618,15 +610,11 @@ try {
      */
     public function testFix82(string $expected, ?string $input = null, ?array $config = null): void
     {
-        if (null !== $config) {
-            $this->fixer->configure($config);
-        }
-
-        $this->doTest($expected, $input);
+        $this->testFix($expected, $input, $config);
     }
 
     /**
-     * @return iterable<array{string, 1: ?string, 2?: array<string, mixed>}>
+     * @return iterable<int, array{string, 1: ?string, 2?: array<string, mixed>}>
      */
     public static function provideFix82Cases(): iterable
     {
