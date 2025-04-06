@@ -49,7 +49,6 @@ use PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationIndentationFixer
 use PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\FunctionDeclarationFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\MethodArgumentSpaceFixerTest;
-use PhpCsFixer\Tests\Fixer\FunctionNotation\NativeFunctionInvocationFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\ReturnTypeDeclarationFixerTest;
 use PhpCsFixer\Tests\Fixer\Import\GlobalNamespaceImportFixerTest;
 use PhpCsFixer\Tests\Fixer\Import\SingleImportPerStatementFixerTest;
@@ -470,7 +469,6 @@ abstract class AbstractFixerTestCase extends TestCase
             MethodArgumentSpaceFixerTest::class,
             MultilineWhitespaceBeforeSemicolonsFixerTest::class,
             NativeConstantInvocationFixerTest::class,
-            NativeFunctionInvocationFixerTest::class,
             NewWithParenthesesFixerTest::class,
             NoBlankLinesAfterPhpdocFixerTest::class,
             NoBreakCommentFixerTest::class,
