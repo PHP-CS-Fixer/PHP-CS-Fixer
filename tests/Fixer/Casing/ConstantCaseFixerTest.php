@@ -219,7 +219,7 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
      */
     public static function provideFix80Cases(): iterable
     {
-        yield ' nullsafe operator' => ['<?php class Foo { public function Bar() { return $this?->False; } }'];
+        yield 'nullsafe operator' => ['<?php class Foo { public function Bar() { return $this?->False; } }'];
     }
 
     /**
