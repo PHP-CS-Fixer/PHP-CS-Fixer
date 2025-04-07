@@ -84,7 +84,6 @@ use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixerTest;
 use PhpCsFixer\Tests\Fixer\ReturnNotation\ReturnAssignmentFixerTest;
 use PhpCsFixer\Tests\Fixer\Semicolon\MultilineWhitespaceBeforeSemicolonsFixerTest;
 use PhpCsFixer\Tests\Fixer\Semicolon\NoEmptyStatementFixerTest;
-use PhpCsFixer\Tests\Fixer\Semicolon\SemicolonAfterInstructionFixerTest;
 use PhpCsFixer\Tests\Fixer\Semicolon\SpaceAfterSemicolonFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\BlankLineBeforeStatementFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\IndentationTypeFixerTest;
@@ -496,7 +495,6 @@ abstract class AbstractFixerTestCase extends TestCase
             PhpUnitTestCaseStaticMethodCallsFixerTest::class,
             ReturnAssignmentFixerTest::class,
             ReturnTypeDeclarationFixerTest::class,
-            SemicolonAfterInstructionFixerTest::class,
             SingleImportPerStatementFixerTest::class,
             SingleLineCommentStyleFixerTest::class,
             SingleSpaceAroundConstructFixerTest::class,
