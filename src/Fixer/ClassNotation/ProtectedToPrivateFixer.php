@@ -96,21 +96,21 @@ final class Sample
                 continue;
             }
 
-            $previous = $index;
-            $isProtected = false;
+            $previousIndex = $index;
+            $protectedIndex = null;
             $isFinal = false;
 
             do {
-                $previous = $tokens->getPrevMeaningfulToken($previous);
+                $previousIndex = $tokens->getPrevMeaningfulToken($previousIndex);
 
-                if ($tokens[$previous]->isGivenKind(T_PROTECTED)) {
-                    $isProtected = $previous;
-                } elseif ($tokens[$previous]->isGivenKind(T_FINAL)) {
-                    $isFinal = $previous;
+                if ($tokens[$previousIndex]->isGivenKind(T_PROTECTED)) {
+                    $protectedIndex = $previousIndex;
+                } elseif ($tokens[$previousIndex]->isGivenKind(T_FINAL) && 'const' === $element['type']) {
+                    $isFinal = true;
                 }
-            } while ($tokens[$previous]->isGivenKind($modifierKinds));
+            } while ($tokens[$previousIndex]->isGivenKind($modifierKinds));
 
-            if (false === $isProtected) {
+            if (null === $protectedIndex) {
                 continue;
             }
 
@@ -118,8 +118,7 @@ final class Sample
                 continue; // Final constants cannot be private
             }
 
-            $element['protected_index'] = $isProtected;
-            $tokens[$element['protected_index']] = new Token([T_PRIVATE, 'private']);
+            $tokens[$protectedIndex] = new Token([T_PRIVATE, 'private']);
         }
     }
 
