@@ -80,6 +80,12 @@ final class Sample
             $modifierKinds[] = T_READONLY;
         }
 
+        if (\defined('T_PRIVATE_SET')) { // @TODO: drop condition when PHP 8.4+ is required
+            $modifierKinds[] = T_PRIVATE_SET;
+            $modifierKinds[] = T_PROTECTED_SET;
+            $modifierKinds[] = T_PUBLIC_SET;
+        }
+
         $classesCandidate = [];
         $classElementTypes = ['method' => true, 'property' => true, 'const' => true];
 
@@ -98,6 +104,7 @@ final class Sample
 
             $previousIndex = $index;
             $protectedIndex = null;
+            $protectedSetIndex = null;
             $isFinal = false;
 
             do {
@@ -105,20 +112,23 @@ final class Sample
 
                 if ($tokens[$previousIndex]->isGivenKind(T_PROTECTED)) {
                     $protectedIndex = $previousIndex;
+                } elseif (\defined('T_PROTECTED_SET') && $tokens[$previousIndex]->isGivenKind(T_PROTECTED_SET)) { // @TODO: drop condition when PHP 8.4+ is required
+                    $protectedSetIndex = $previousIndex;
                 } elseif ($tokens[$previousIndex]->isGivenKind(T_FINAL) && 'const' === $element['type']) {
                     $isFinal = true;
                 }
             } while ($tokens[$previousIndex]->isGivenKind($modifierKinds));
 
-            if (null === $protectedIndex) {
-                continue;
-            }
-
             if ($isFinal && 'const' === $element['type']) {
                 continue; // Final constants cannot be private
             }
 
-            $tokens[$protectedIndex] = new Token([T_PRIVATE, 'private']);
+            if (null !== $protectedIndex) {
+                $tokens[$protectedIndex] = new Token([T_PRIVATE, 'private']);
+            }
+            if (null !== $protectedSetIndex) {
+                $tokens[$protectedSetIndex] = new Token([T_PRIVATE_SET, 'private(set)']);
+            }
         }
     }
 
