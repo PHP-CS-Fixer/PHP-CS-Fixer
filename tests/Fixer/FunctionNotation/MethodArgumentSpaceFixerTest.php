@@ -1326,20 +1326,308 @@ function foo($foo, #[
     Foo\Buzz(a: \'astral\', b: 1234),
 ] $bar) {}',
         ];
+
+        yield 'multi-line parameters constructor' => [
+            '<?php
+class MyClass
+{
+    public function __construct(
+        private string $foo,
+        private ?string $bar = null
+    ) {}
+}',
+            '<?php
+class MyClass
+{
+    public function __construct(private string $foo, private ?string $bar = null) {}
+}',
+            ['multiline_constructor' => true],
+        ];
+
+        yield 'uppercase constructor' => [
+            '<?php
+class MyClass
+{
+    public function __CONSTRUCT(
+        private string $foo,
+        private ?string $bar = null
+    ) {}
+}',
+            '<?php
+class MyClass
+{
+    public function __CONSTRUCT(private string $foo, private ?string $bar = null) {}
+}',
+            ['multiline_constructor' => true],
+        ];
+
+        yield 'mixed-case constructor' => [
+            '<?php
+class MyClass
+{
+    public function __CoNsTRuCt(
+        private string $foo,
+        private ?string $bar = null
+    ) {}
+}',
+            '<?php
+class MyClass
+{
+    public function __CoNsTRuCt(private string $foo, private ?string $bar = null) {}
+}',
+            ['multiline_constructor' => true],
+        ];
+
+        yield 'multi-line constructor without expected transformation' => [
+            '<?php
+class MyClass
+{
+    public function __construct(
+        private string $foo,
+        private ?string $bar = null
+    ) {}
+}',
+        ];
+
+        yield 'constructor with parent call - no transformation expected' => [
+            '<?php
+class MyClass extends BlaClass
+{
+    public function __construct() {
+        parent::__construct();
+    }
+}',
+            null,
+            ['multiline_constructor' => true],
+        ];
+
+        yield 'constructor with comment' => [
+            '<?php
+class MyClass extends BlaClass
+{
+    public function __construct(/** some comment */) {}
+}',
+            null,
+            ['multiline_constructor' => true],
+        ];
+
+        yield 'constructor with parent call and params' => [
+            '<?php
+class MyClass extends BlaClass
+{
+    public function __construct() {
+        $foo = "";
+        $bar = 1;
+        parent::__construct(
+            $foo,
+            $bar
+        );
+    }
+}',
+            '<?php
+class MyClass extends BlaClass
+{
+    public function __construct() {
+        $foo = "";
+        $bar = 1;
+        parent::__construct($foo, $bar);
+    }
+}',
+            ['multiline_constructor' => true],
+        ];
+
+        yield 'constructor with mixed-case' => [
+            '<?php
+class MyClass
+{
+    private string $foo;
+    private ?string $bar = null;
+
+    public function __construct(
+        string $foo,
+        ?string $bar = null
+    ) {
+        $this->foo = $foo;
+        $this->bar = $bar;
+    }
+}',
+            '<?php
+class MyClass
+{
+    private string $foo;
+    private ?string $bar = null;
+
+    public function __construct(string $foo, ?string $bar = null) {
+        $this->foo = $foo;
+        $this->bar = $bar;
+    }
+}',
+            ['multiline_constructor' => true],
+        ];
+
+        yield 'constructor with attributes and multi-line parameters' => [
+            '<?php
+class MyClass
+{
+    public function __construct(
+        #[Foo]
+        private string $foo,
+        #[Bar]
+        private ?string $bar = null
+    ) {}
+}',
+            '<?php
+class MyClass
+{
+    public function __construct(#[Foo] private string $foo, #[Bar] private ?string $bar = null) {}
+}',
+            ['multiline_constructor' => true],
+        ];
+
+        yield 'constructor with multiple attributes and multi-line parameters' => [
+            '<?php
+class MyClass
+{
+    public function __construct(
+        #[Foo\Bar, Foo\Baz, Foo\Buzz(a: \'bar\', b: 1234), ]
+        private string $foo,
+        #[\Foo\Bar]
+        private ?string $bar = null
+    ) {}
+}',
+            '<?php
+class MyClass
+{
+    public function __construct(#[Foo\Bar,Foo\Baz,Foo\Buzz(a: \'bar\', b: 1234),] private string $foo, #[\Foo\Bar] private ?string $bar = null) {}
+}',
+            ['multiline_constructor' => true],
+        ];
+
+        yield 'multiline_constructor false' => [
+            '<?php
+class MyClass
+{
+    public function __construct(#[Foo\Bar, Foo\Baz, Foo\Buzz(a: \'foo\', b: 1234), ] private string $foo, #[\Foo\Bar] private ?string $bar = null) {}
+}',
+            null,
+            [
+                'multiline_constructor' => false,
+            ],
+        ];
+
+        yield 'anonymous class constructor with comment' => [
+            '<?php
+function doSomething() {
+    return new class extends SomeClass
+    {
+        public function __construct(/** some comment */) {}
+    };
+}',
+            null,
+            ['multiline_constructor' => true],
+        ];
+
+        yield 'anonymous class constructor with parent call and params' => [
+            '<?php
+function doSomething() {
+    return new class extends SomeClass
+    {
+        public function __construct() {
+            $foo = "";
+            $bar = 1;
+            parent::__construct(
+                $foo,
+                $bar
+            );
+        }
+    };
+}',
+            '<?php
+function doSomething() {
+    return new class extends SomeClass
+    {
+        public function __construct() {
+            $foo = "";
+            $bar = 1;
+            parent::__construct($foo, $bar);
+        }
+    };
+}',
+            ['multiline_constructor' => true],
+        ];
+
+        yield 'anonymous class inside closure with constructor' => [
+            '<?php
+$closure = function() use ($dependency) {
+    return new class($dependency) extends SomeClass
+    {
+        public function __construct(
+            private Baz $baz
+        ) {
+            parent::__construct();
+        }
+    };
+};',
+            '<?php
+$closure = function() use ($dependency) {
+    return new class($dependency) extends SomeClass
+    {
+        public function __construct(private Baz $baz) {
+            parent::__construct();
+        }
+    };
+};',
+            ['multiline_constructor' => true],
+        ];
+
+        yield 'anonymous class implementing interface with constructor' => [
+            '<?php
+$obj = new class implements SomeInterface {
+    public function __construct(
+        private Baz $baz,
+        private string $bar,
+        private array $bav = []
+    ) {}
+};',
+            '<?php
+$obj = new class implements SomeInterface {
+    public function __construct(private Baz $baz, private string $bar, private array $bav = []) {}
+};',
+            ['multiline_constructor' => true],
+        ];
+
+        yield 'abstract class with mixed visibility properties in constructor' => [
+            '<?php
+abstract class SomeClass {
+    public function __construct(
+        private string $baz,
+        protected array $bar = [],
+        public bool $bav = true
+    ) {}
+}',
+            '<?php
+abstract class SomeClass {
+    public function __construct(private string $baz, protected array $bar = [], public bool $bav = true) {}
+}',
+            ['multiline_constructor' => true],
+        ];
     }
 
     /**
+     * @param _AutogeneratedInputConfiguration $configuration
+     *
      * @dataProvider provideFix81Cases
      *
      * @requires PHP 8.1
      */
-    public function testFix81(string $expected, ?string $input = null): void
+    public function testFix81(string $expected, ?string $input = null, array $configuration = []): void
     {
+        $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<int, array{string, string}>
+     * @return iterable<int, array{0: string, 1?: null|string, 2?: _AutogeneratedInputConfiguration}>
      */
     public static function provideFix81Cases(): iterable
     {
@@ -1351,6 +1639,22 @@ function foo($foo, #[
             '<?php
 [Foo::class, \'method\']( ...
 ) ?>',
+        ];
+
+        yield [
+            '<?php
+$obj = new class {
+    public function __construct(
+        private readonly string $baz,
+        private readonly int $bar,
+        private readonly bool $bav = false
+    ) {}
+};',
+            '<?php
+$obj = new class {
+    public function __construct(private readonly string $baz, private readonly int $bar, private readonly bool $bav = false) {}
+};',
+            ['multiline_constructor' => true],
         ];
     }
 }

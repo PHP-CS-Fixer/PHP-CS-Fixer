@@ -43,6 +43,15 @@ Allowed types: ``bool``
 
 Default value: ``false``
 
+``multiline_constructor``
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Ensure constructor parameters are fully multiline.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 ``on_multiline``
 ~~~~~~~~~~~~~~~~
 
@@ -281,6 +290,25 @@ With configuration: ``['after_heredoc' => true]``.
    +        EOD,
         'bar'
     );
+
+Example #12
+~~~~~~~~~~~
+
+With configuration: ``['multiline_constructor' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    class MyClass
+    {
+   -    public function __construct(string $id, ?string $name = null) {}
+   +    public function __construct(
+   +        string $id,
+   +        ?string $name = null
+   +    ) {}
+    }
 
 Rule sets
 ---------
