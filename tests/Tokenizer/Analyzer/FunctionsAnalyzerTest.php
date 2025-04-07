@@ -277,6 +277,22 @@ A();
             '<?php foo("bar"); class A { function Foo(){ foo(); } }',
             [1, 20],
         ];
+
+        yield 'functions that can be confused with a property hook' => [
+            <<<'PHP'
+                <?php
+                $array = [
+                    1 => 2,
+                    set() => 3,
+                    $foo . set() => 3,
+                ];
+                $x = set(set(), set());
+                set();
+                if (true) { set(); }
+                set();
+                PHP,
+            [14, 27, 43, 45, 50, 56, 69, 76],
+        ];
     }
 
     /**
@@ -420,27 +436,54 @@ class(){};
         yield 'property hooks' => [
             <<<'PHP'
                 <?php
-                class Foo
+                class GetFirst
                 {
-                    public string $a = '' {
-                        get => $this->a;
-                        set(string $a) => strtolower($a);
+                    public string $bothWithDoubleArrow = '' {
+                        get => '';
+                        set(string $x) => $x;
                     }
-                    public string $b = '' {
-                        get => $this->b;
-                        set(string $b) { $this->b = strtoupper($b); }
+                    public string $getWithDoubleArrow = '' {
+                        get => '';
+                        set(string $x) { ''; }
                     }
-                    public string $c = '' {
-                        GET => $this->c;
-                        SET(string $c) { $this->c = strrev($c); }
+                    public string $setWithDoubleArrow = '' {
+                        get { ''; }
+                        set(string $x) => $x;
+                    }
+                    public string $bothWithBraces = '' {
+                        get { ''; }
+                        set(string $x) { ''; }
+                    }
+                    public string $setUppercase = '' {
+                        get { ''; }
+                        SET(string $x) { ''; }
+                    }
+                }
+                class SetFirst
+                {
+                    public string $bothWithDoubleArrow = '' {
+                        set(string $x) => $x;
+                        get => '';
+                    }
+                    public string $getWithDoubleArrow = '' {
+                        set(string $x) { ''; }
+                        get => '';
+                    }
+                    public string $setWithDoubleArrow = '' {
+                        set(string $x) => $x;
+                        get { ''; }
+                    }
+                    public string $bothWithBraces = '' {
+                        set(string $x) { ''; }
+                        get { ''; }
+                    }
+                    public string $setUppercase = '' {
+                        SET(string $x) { ''; }
+                        get { ''; }
                     }
                 }
                 PHP,
-            [
-                37, // strtolower
-                81, // strtoupper
-                127, // strrev
-            ],
+            [],
         ];
     }
 
