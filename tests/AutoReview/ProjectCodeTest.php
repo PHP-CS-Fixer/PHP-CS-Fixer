@@ -27,7 +27,6 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitNamespacedFixer;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
-use PhpCsFixer\Tests\ExecutorWithoutErrorHandlerTest;
 use PhpCsFixer\Tests\PregTest;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tests\Test\AbstractIntegrationTestCase;
@@ -529,10 +528,7 @@ final class ProjectCodeTest extends TestCase
         }
 
         foreach (self::getTestClasses() as $className) {
-            if (
-                PregTest::class === $className
-                || ExecutorWithoutErrorHandlerTest::class === $className // @TODO: remove this exception
-            ) {
+            if (PregTest::class === $className) {
                 continue;
             }
 
