@@ -27,7 +27,7 @@ final class ExecutorWithoutErrorHandlerTest extends TestCase
     public function testWithError(): void
     {
         $this->expectException(ExecutorWithoutErrorHandlerException::class);
-        $this->expectExceptionMessageMatches('/Failed to open stream: No such file or directory/');
+        $this->expectExceptionMessageMatches('/failed to open stream: No such file or directory/i');
 
         ExecutorWithoutErrorHandler::execute(static fn () => fopen(__DIR__.'/404', 'r'));
     }
