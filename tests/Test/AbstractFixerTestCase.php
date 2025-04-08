@@ -60,7 +60,6 @@ use PhpCsFixer\Tests\Fixer\Operator\BinaryOperatorSpacesFixerTest;
 use PhpCsFixer\Tests\Fixer\Operator\ConcatSpaceFixerTest;
 use PhpCsFixer\Tests\Fixer\Operator\IncrementStyleFixerTest;
 use PhpCsFixer\Tests\Fixer\Operator\NewWithParenthesesFixerTest;
-use PhpCsFixer\Tests\Fixer\Operator\NoUselessConcatOperatorFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\AlignMultilineCommentFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\GeneralPhpdocTagRenameFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\NoBlankLinesAfterPhpdocFixerTest;
@@ -476,7 +475,6 @@ abstract class AbstractFixerTestCase extends TestCase
             NoEmptyStatementFixerTest::class,
             NoSpacesAroundOffsetFixerTest::class,
             NoUnneededControlParenthesesFixerTest::class,
-            NoUselessConcatOperatorFixerTest::class,
             NoUselessElseFixerTest::class,
             PhpdocAddMissingParamAnnotationFixerTest::class,
             PhpdocNoEmptyReturnFixerTest::class,
