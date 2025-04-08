@@ -20,6 +20,7 @@ use PhpCsFixer\Documentation\FixerDocumentGenerator;
 use PhpCsFixer\Documentation\RuleSetDocumentationGenerator;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Finder\Finder;
@@ -57,9 +58,9 @@ final class DocumentationTest extends TestCase
         self::assertFileExists($path);
 
         $expected = $generator->generateFixerDocumentation($fixer);
-        $actual = file_get_contents($path);
+        $actual = (string) file_get_contents($path);
 
-        $expected = preg_replace_callback(
+        $expected = Preg::replaceCallback(
             '/
                 # an example
                 (?<before>
@@ -82,16 +83,17 @@ final class DocumentationTest extends TestCase
                 )
             /x',
             static function (array $matches) use ($actual): string {
+                /** @var array{before: string, after: string} $matches */
                 $before = preg_quote($matches['before'], '/');
                 $after = preg_quote($matches['after'], '/');
 
                 $replacement = '[UNAVAILABLE EXAMPLE DIFF]';
 
-                if (1 === preg_match("/{$before}(\\.\\. code-block:: diff.*?){$after}/s", $actual, $actualMatches)) {
+                if (Preg::match("/{$before}(\\.\\. code-block:: diff.*?){$after}/s", $actual, $actualMatches)) {
                     $replacement = $actualMatches[1];
                 }
 
-                return $matches[1].$replacement.$matches[2];
+                return $matches['before'].$replacement.$matches['after'];
             },
             $expected
         );

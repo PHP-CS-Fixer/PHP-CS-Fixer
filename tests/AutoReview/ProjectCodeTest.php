@@ -532,7 +532,6 @@ final class ProjectCodeTest extends TestCase
             if (
                 PregTest::class === $className
                 || ExecutorWithoutErrorHandlerTest::class === $className // @TODO: remove this exception
-                || DocumentationTest::class === $className // @TODO: remove this exception
             ) {
                 continue;
             }
