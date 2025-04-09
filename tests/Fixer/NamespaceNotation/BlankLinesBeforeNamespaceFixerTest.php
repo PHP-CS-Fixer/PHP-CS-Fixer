@@ -96,14 +96,14 @@ final class BlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideInvalidConfigurationCases
      */
-    public function testInvalidConfiguration($configuration): void
+    public function testInvalidConfiguration(array $configuration): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->fixer->configure($configuration);
     }
 
     /**
-     * @return iterable<string, array<mixed>>
+     * @return iterable<string, array{mixed}>
      */
     public static function provideInvalidConfigurationCases(): iterable
     {
