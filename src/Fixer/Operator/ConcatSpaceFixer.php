@@ -81,6 +81,9 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+            if ($tokens[$index]->isIgnoredFor($this)) {
+                continue;
+            }
             if ($tokens[$index]->equals('.')) {
                 if ('one' === $this->configuration['spacing']) {
                     $this->fixConcatenationToSingleSpace($tokens, $index);

@@ -1,0 +1,21 @@
+--TEST--
+Ignore array_syntax in different blocks.
+--RULESET--
+{"array_syntax": true}
+--EXPECT--
+ <?php
+ $array = [
+     1,
+     // phpcsfixer-ignore
+     2,
+ ];
+ // phpcsfixer-end-ignore
+
+--INPUT--
+ <?php
+ $array = array(
+     1,
+     // phpcsfixer-ignore
+     2,
+ );
+ // phpcsfixer-end-ignore
