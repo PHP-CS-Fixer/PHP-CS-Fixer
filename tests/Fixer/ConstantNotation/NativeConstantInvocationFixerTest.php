@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\ConstantNotation;
 
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
@@ -391,7 +392,7 @@ try {
     public function testDoNotIncludeUserConstantsUnlessExplicitlyListed(): void
     {
         $uniqueConstantName = uniqid(self::class);
-        $uniqueConstantName = preg_replace('/\W+/', '_', $uniqueConstantName);
+        $uniqueConstantName = Preg::replace('/\W+/', '_', $uniqueConstantName);
         $uniqueConstantName = strtoupper($uniqueConstantName);
 
         $dontFixMe = 'DONTFIXME_'.$uniqueConstantName;

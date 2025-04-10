@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
@@ -219,7 +220,7 @@ final class UtilsTest extends TestCase
         yield [
             ['bar1', 'baz1', 'foo1', 'bar2', 'baz2', 'foo2'],
             ['foo1', 'foo2', 'bar1', 'bar2', 'baz1', 'baz2'],
-            static fn ($element) => preg_replace('/([a-z]+)(\d+)/', '$2$1', $element),
+            static fn ($element) => Preg::replace('/([a-z]+)(\d+)/', '$2$1', $element),
             'strcmp',
         ];
     }
