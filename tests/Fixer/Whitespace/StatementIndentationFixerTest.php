@@ -1489,6 +1489,18 @@ $foo = [
                     return false;
                 PHP,
         ];
+
+        yield 'functions "set" and "get" (like property hooks, but not)' => [
+            <<<'PHP'
+                <?php if ($x) {
+                    set();
+                } elseif ($y) {
+                    SET();
+                } else {
+                    get();
+                }
+                PHP,
+        ];
     }
 
     /**
