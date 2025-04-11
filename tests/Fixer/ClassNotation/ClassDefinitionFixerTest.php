@@ -620,7 +620,8 @@ $a = new class implements
     }
 
     /**
-     * @param _ClassyDefinitionInfo $expected
+     * @param 'numberOfExtends'|'numberOfImplements' $label
+     * @param _ClassyDefinitionInfo                  $expected
      *
      * @dataProvider provideClassyInheritanceInfoCases
      */
@@ -714,7 +715,8 @@ namespace {
     }
 
     /**
-     * @param _ClassyDefinitionInfo $expected
+     * @param 'numberOfExtends'|'numberOfImplements' $label
+     * @param _ClassyDefinitionInfo                  $expected
      *
      * @dataProvider provideClassyInheritanceInfoPre80Cases
      *
@@ -907,7 +909,8 @@ namespace {
     }
 
     /**
-     * @param _ClassyDefinitionInfo $expected
+     * @param 'numberOfExtends'|'numberOfImplements' $label
+     * @param _ClassyDefinitionInfo                  $expected
      */
     private function doTestClassyInheritanceInfo(string $source, string $label, array $expected): void
     {
