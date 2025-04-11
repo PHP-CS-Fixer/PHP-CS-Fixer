@@ -782,32 +782,8 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\ClassDefinitionFixer\\:\\:getClassyDefinitionInfo\\(\\) should return array\\{start\\: int, classy\\: int, open\\: int, extends\\: array\\{start\\: int, numberOfExtends\\: int, multiLine\\: bool\\}\\|false, implements\\: array\\{start\\: int, numberOfImplements\\: int, multiLine\\: bool\\}\\|false, anonymousClass\\: bool, final\\: int\\|false, abstract\\: int\\|false, \\.\\.\\.\\} but returns array\\{classy\\: int, open\\: int\\|null, extends\\: array\\<string, bool\\|int\\>\\|false, implements\\: array\\<string, bool\\|int\\>\\|false, anonymousClass\\: bool, final\\: int\\|false, abstract\\: int\\|false, readonly\\: int\\|false, \\.\\.\\.\\}\\.$#',
+	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\ClassDefinitionFixer\\:\\:getClassyInheritanceInfo\\(\\) should return array\\{start\\: int, numberOfExtends\\: int, multiLine\\: bool\\}\\|array\\{start\\: int, numberOfImplements\\: int, multiLine\\: bool\\} but returns non\\-empty\\-array\\<\'multiLine\'\\|\'numberOfExtends\'\\|\'numberOfImplements\'\\|\'start\', bool\\|int\\>\\.$#',
 	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset \'multiLine\' might not exist on non\\-empty\\-array\\<string, bool\\|int\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset string might not exist on non\\-empty\\-array\\<string, bool\\|int\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, bool\\|int given\\.$#',
-	'identifier' => 'booleanNot.exprNotBoolean',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only numeric types are allowed in pre\\-increment, bool\\|int given\\.$#',
-	'identifier' => 'preInc.nonNumeric',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
 ];
