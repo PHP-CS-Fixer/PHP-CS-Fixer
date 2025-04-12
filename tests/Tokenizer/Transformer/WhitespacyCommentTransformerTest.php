@@ -44,7 +44,7 @@ final class WhitespacyCommentTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<array{string, array<int, _PhpTokenArray>}>
+     * @return iterable<int, array{string, array<int, _PhpTokenArray>}>
      */
     public static function provideProcessCases(): iterable
     {

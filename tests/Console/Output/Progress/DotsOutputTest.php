@@ -51,7 +51,7 @@ final class DotsOutputTest extends TestCase
     }
 
     /**
-     * @return iterable<array{list<array{0: FileProcessed::STATUS_*, 1?: int}>, string, int}>
+     * @return iterable<int, array{list<array{0: FileProcessed::STATUS_*, 1?: int}>, string, int}>
      */
     public static function provideDotsProgressOutputCases(): iterable
     {

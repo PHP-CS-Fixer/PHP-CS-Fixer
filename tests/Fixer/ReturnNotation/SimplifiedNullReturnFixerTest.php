@@ -36,7 +36,7 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     * @return iterable<int, array{0: non-empty-string, 1?: non-empty-string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -159,7 +159,7 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     * @return iterable<int, array{0: non-empty-string, 1?: non-empty-string}>
      */
     public static function provideFix80Cases(): iterable
     {

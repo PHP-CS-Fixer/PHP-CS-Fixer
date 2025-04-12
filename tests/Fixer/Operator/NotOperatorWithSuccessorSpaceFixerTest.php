@@ -36,7 +36,7 @@ final class NotOperatorWithSuccessorSpaceFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int|string, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideFixCases(): iterable
     {

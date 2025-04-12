@@ -48,7 +48,7 @@ final class ConstructorPromotionTransformerTest extends AbstractTransformerTestC
     }
 
     /**
-     * @return iterable<array{_TransformerTestExpectedTokens, string}>
+     * @return iterable<int, array{_TransformerTestExpectedTokens, string}>
      */
     public static function provideProcessCases(): iterable
     {
@@ -150,7 +150,7 @@ class Point {
     }
 
     /**
-     * @return iterable<array{_TransformerTestExpectedTokens, string}>
+     * @return iterable<string, array{_TransformerTestExpectedTokens, string}>
      */
     public static function provideFix81Cases(): iterable
     {

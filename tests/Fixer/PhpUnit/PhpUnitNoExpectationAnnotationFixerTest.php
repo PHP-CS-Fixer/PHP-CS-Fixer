@@ -713,7 +713,7 @@ final class PhpUnitNoExpectationAnnotationFixerTest extends AbstractFixerTestCas
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideWithWhitespacesConfigCases(): iterable
     {

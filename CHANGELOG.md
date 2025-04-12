@@ -3,6 +3,21 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.75.0
+---------------------
+
+* feat: `ClassAttributesSeparationFixer` - add support for asymmetric visibility (#8518)
+* fix: `NativeFunctionInvocationFixer` - fix for property hooks (#8540)
+* chore: add return types for data providers for fixers (#8542)
+* chore: add return types for data providers for non-fixers (#8543)
+* chore: add return types for remaining data providers (#8544)
+* chore: make data providers key type `int` if all the keys are strings (#8550)
+* chore: make data providers key type `string` if all the keys are strings (#8545)
+* chore: SwitchContinueToBreakFixerTest - improve test case descriptions/typehint (#8546)
+* chore: `FunctionsAnalyzerTest` cleanup (#8539)
+* deps: bump the phpstan group in /dev-tools with 2 updates (#8537)
+* test: ProjectCodeTest::testDataProvidersDeclaredReturnType - allow for int as iterable keys (#8548)
+
 Changelog for v3.74.0
 ---------------------
 

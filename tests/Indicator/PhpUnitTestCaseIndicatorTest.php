@@ -50,7 +50,7 @@ final class PhpUnitTestCaseIndicatorTest extends TestCase
     }
 
     /**
-     * @return iterable<int|string, array{bool, Tokens, int}>
+     * @return iterable<array{bool, Tokens, int}>
      */
     public static function provideIsPhpUnitClassCases(): iterable
     {
@@ -169,7 +169,7 @@ class Foo extends A implements TestInterface, SomethingElse
     }
 
     /**
-     * @return iterable<array{list<array{int, int}>, string}>
+     * @return iterable<string, array{list<array{int, int}>, string}>
      */
     public static function provideFindPhpUnitClassesCases(): iterable
     {

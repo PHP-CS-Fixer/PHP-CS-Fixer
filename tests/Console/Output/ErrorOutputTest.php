@@ -83,7 +83,7 @@ Files that were not fixed due to errors reported during %s:
     }
 
     /**
-     * @return iterable<array{Error, int, int, int, string}>
+     * @return iterable<int, array{Error, int, int, int, string}>
      */
     public static function provideErrorOutputCases(): iterable
     {

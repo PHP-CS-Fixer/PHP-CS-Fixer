@@ -36,7 +36,7 @@ final class LowercaseKeywordsFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -67,7 +67,7 @@ final class LowercaseKeywordsFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -117,7 +117,7 @@ class Point {
     }
 
     /**
-     * @return iterable<int|string, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideFix81Cases(): iterable
     {

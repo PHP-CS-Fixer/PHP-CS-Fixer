@@ -292,7 +292,7 @@ A();
     }
 
     /**
-     * @return iterable<array{string, list<int>}>
+     * @return iterable<int, array{string, list<int>}>
      */
     public static function provideIsGlobalFunctionCallPre80Cases(): iterable
     {
@@ -318,7 +318,7 @@ A();
     }
 
     /**
-     * @return iterable<array{string, list<int>}>
+     * @return iterable<int, array{string, list<int>}>
      */
     public static function provideIsGlobalFunctionCallPhp80Cases(): iterable
     {
@@ -401,6 +401,50 @@ class(){};
     }
 
     /**
+     * @param list<int> $indices
+     *
+     * @dataProvider provideIsGlobalFunctionCallPhp84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testIsGlobalFunctionCallPhp84(string $code, array $indices): void
+    {
+        $this->testIsGlobalFunctionCall($code, $indices);
+    }
+
+    /**
+     * @return iterable<string, array{string, list<int>}>
+     */
+    public static function provideIsGlobalFunctionCallPhp84Cases(): iterable
+    {
+        yield 'property hooks' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public string $a = '' {
+                        get => $this->a;
+                        set(string $a) => strtolower($a);
+                    }
+                    public string $b = '' {
+                        get => $this->b;
+                        set(string $b) { $this->b = strtoupper($b); }
+                    }
+                    public string $c = '' {
+                        GET => $this->c;
+                        SET(string $c) { $this->c = strrev($c); }
+                    }
+                }
+                PHP,
+            [
+                37, // strtolower
+                81, // strtoupper
+                127, // strrev
+            ],
+        ];
+    }
+
+    /**
      * @param array<string, ArgumentAnalysis> $expected
      *
      * @dataProvider provideFunctionArgumentInfoCases
@@ -414,7 +458,7 @@ class(){};
     }
 
     /**
-     * @return iterable<array{string, int, array<string, ArgumentAnalysis>}>
+     * @return iterable<int, array{string, int, array<string, ArgumentAnalysis>}>
      */
     public static function provideFunctionArgumentInfoCases(): iterable
     {
@@ -604,7 +648,7 @@ class(){};
     }
 
     /**
-     * @return iterable<array{string, int, array<string, ArgumentAnalysis>}>
+     * @return iterable<int, array{string, int, array<string, ArgumentAnalysis>}>
      */
     public static function provideFunctionArgumentInfoPre80Cases(): iterable
     {
@@ -648,7 +692,7 @@ class(){};
     }
 
     /**
-     * @return iterable<array{string, int, null|TypeAnalysis}>
+     * @return iterable<int, array{string, int, null|TypeAnalysis}>
      */
     public static function provideFunctionReturnTypeInfoCases(): iterable
     {
@@ -682,7 +726,7 @@ class(){};
     }
 
     /**
-     * @return iterable<array{string, int, null|TypeAnalysis}>
+     * @return iterable<int, array{string, int, null|TypeAnalysis}>
      */
     public static function provideFunctionReturnTypeInfoPre80Cases(): iterable
     {
@@ -722,7 +766,7 @@ class(){};
     }
 
     /**
-     * @return iterable<array{string, list<int>}>
+     * @return iterable<int, array{string, list<int>}>
      */
     public static function provideIsTheSameClassCallCases(): iterable
     {
@@ -796,7 +840,7 @@ class(){};
     }
 
     /**
-     * @return iterable<array{string, list<int>}>
+     * @return iterable<int, array{string, list<int>}>
      */
     public static function provideIsTheSameClassCall80Cases(): iterable
     {
@@ -825,7 +869,7 @@ class(){};
     }
 
     /**
-     * @return iterable<array{string, int, array<string, ArgumentAnalysis>}>
+     * @return iterable<int, array{string, int, array<string, ArgumentAnalysis>}>
      */
     public static function provideFunctionArgumentInfoPhp80Cases(): iterable
     {

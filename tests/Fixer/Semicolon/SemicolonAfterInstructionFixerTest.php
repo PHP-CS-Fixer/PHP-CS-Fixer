@@ -34,7 +34,7 @@ final class SemicolonAfterInstructionFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -93,6 +93,11 @@ A is equal to 5
 A is equal to 5
 <?php } ?>',
         ];
+
+        yield 'open tag with echo' => [
+            "<?= '1_'; ?> <?php ?><?= 1; ?>",
+            "<?= '1_' ?> <?php ?><?= 1; ?>",
+        ];
     }
 
     /**
@@ -106,7 +111,7 @@ A is equal to 5
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFixPre80Cases(): iterable
     {
@@ -114,17 +119,5 @@ A is equal to 5
             '<?php $a = [1,2,3]; echo $a{1}; ?>',
             '<?php $a = [1,2,3]; echo $a{1} ?>',
         ];
-    }
-
-    public function testOpenWithEcho(): void
-    {
-        if (!\ini_get('short_open_tag')) {
-            self::markTestSkipped('The short_open_tag option is required to be enabled.');
-        }
-
-        $this->doTest(
-            "<?= '1_'; ?> <?php ?><?= 1; ?>",
-            "<?= '1_' ?> <?php ?><?= 1; ?>"
-        );
     }
 }

@@ -841,7 +841,7 @@ $first = true;// needed because by default first docblock is never fixed.
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFix80Cases(): iterable
     {

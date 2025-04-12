@@ -103,7 +103,7 @@ final class ArgumentsAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, int, int, array<int, int>}>
+     * @return iterable<int, array{string, int, int, array<int, int>}>
      */
     public static function provideArguments80Cases(): iterable
     {
@@ -131,7 +131,7 @@ final class ArgumentsAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, int, int, array<int, int>}>
+     * @return iterable<int, array{string, int, int, array<int, int>}>
      */
     public static function provideArguments81Cases(): iterable
     {
@@ -150,7 +150,7 @@ final class ArgumentsAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, int, int, ArgumentAnalysis}>
+     * @return iterable<int, array{string, int, int, ArgumentAnalysis}>
      */
     public static function provideArgumentInfoCases(): iterable
     {
@@ -293,7 +293,7 @@ final class ArgumentsAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, int, int, ArgumentAnalysis}>
+     * @return iterable<int, array{string, int, int, ArgumentAnalysis}>
      */
     public static function provideArgumentInfo80Cases(): iterable
     {
@@ -343,7 +343,7 @@ final class ArgumentsAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, int, int, ArgumentAnalysis}>
+     * @return iterable<int, array{string, int, int, ArgumentAnalysis}>
      */
     public static function provideArgumentInfo81Cases(): iterable
     {

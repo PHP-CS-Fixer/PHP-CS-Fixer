@@ -36,7 +36,7 @@ final class CombineNestedDirnameFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -135,7 +135,7 @@ final class CombineNestedDirnameFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideFix81Cases(): iterable
     {

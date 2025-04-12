@@ -37,7 +37,7 @@ final class ProcessLinterProcessBuilderTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, string, string}>
+     * @return iterable<string, array{string, string, string}>
      */
     public static function providePrepareCommandOnPhpOnLinuxOrMacCases(): iterable
     {
@@ -57,7 +57,7 @@ final class ProcessLinterProcessBuilderTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, string, string}>
+     * @return iterable<string, array{string, string, string}>
      */
     public static function providePrepareCommandOnPhpOnWindowsCases(): iterable
     {

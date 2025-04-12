@@ -48,7 +48,7 @@ final class ImportTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<array{string, _TransformerTestExpectedTokens}>
+     * @return iterable<int, array{string, _TransformerTestExpectedTokens}>
      */
     public static function provideProcessCases(): iterable
     {

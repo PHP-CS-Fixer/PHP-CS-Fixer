@@ -39,7 +39,7 @@ final class FirstClassCallableTransformerTest extends AbstractTransformerTestCas
     }
 
     /**
-     * @return iterable<array{_TransformerTestExpectedTokens, string}>
+     * @return iterable<string, array{_TransformerTestExpectedTokens, string}>
      */
     public static function provideProcessCases(): iterable
     {

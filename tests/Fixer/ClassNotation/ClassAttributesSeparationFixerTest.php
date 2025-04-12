@@ -2169,7 +2169,7 @@ enum Cards: string
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFix82Cases(): iterable
     {
@@ -2197,6 +2197,41 @@ enum Cards: string
     }
 
     /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->testFix($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield 'asymmetric visibility' => [
+            <<<'PHP'
+                <?php class Foo {
+                    public public(set) Bar $a;
+
+                    public protected(set) Bar $b;
+
+                    public private(set) Baz $c;
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo {
+                    public public(set) Bar $a;
+                    public protected(set) Bar $b;
+                    public private(set) Baz $c;
+                }
+                PHP,
+        ];
+    }
+
+    /**
      * @dataProvider provideWithWhitespacesConfigCases
      */
     public function testWithWhitespacesConfig(string $expected, ?string $input = null): void
@@ -2207,7 +2242,7 @@ enum Cards: string
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideWithWhitespacesConfigCases(): iterable
     {
@@ -2234,7 +2269,7 @@ enum Cards: string
     }
 
     /**
-     * @return iterable<array{array<array-key, mixed>}>
+     * @return iterable<string, array{array<array-key, mixed>}>
      */
     public static function provideInvalidConfigurationCases(): iterable
     {
@@ -2262,7 +2297,7 @@ enum Cards: string
     }
 
     /**
-     * @return iterable<array{int, string, int}>
+     * @return iterable<int, array{int, string, int}>
      */
     public static function provideCommentBlockStartDetectionCases(): iterable
     {

@@ -59,7 +59,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: _TransformerTestExpectedTokens}>
+     * @return iterable<string, array{0: string, 1?: _TransformerTestExpectedTokens}>
      */
     public static function provideProcessCases(): iterable
     {
@@ -178,7 +178,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<array{string, _TransformerTestExpectedTokens}>
+     * @return iterable<string, array{string, _TransformerTestExpectedTokens}>
      */
     public static function provideProcess80Cases(): iterable
     {
@@ -223,7 +223,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<array{string, array<int, int>}>
+     * @return iterable<string, array{string, array<int, int>}>
      */
     public static function providePre84ProcessCases(): iterable
     {
@@ -321,7 +321,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<array{string, array<int, int>}>
+     * @return iterable<string, array{string, array<int, int>}>
      */
     public static function provideStarting84ProcessCases(): iterable
     {
@@ -482,6 +482,23 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
                 143 => CT::T_PROPERTY_HOOK_BRACE_CLOSE,
             ],
         ];
+
+        yield 'property hooks: casing' => [
+            <<<'PHP'
+                <?php
+                class PropertyHooks
+                {
+                    public string $bar { // << this one
+                        Get => strtolower($this->bar);
+                        SET => strtoupper($value);
+                    } // << this one
+                }
+                PHP,
+            [
+                13 => CT::T_PROPERTY_HOOK_BRACE_OPEN,
+                39 => CT::T_PROPERTY_HOOK_BRACE_CLOSE,
+            ],
+        ];
     }
 
     /**
@@ -548,7 +565,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<array{_TransformerTestExpectedTokens, string}>
+     * @return iterable<string, array{_TransformerTestExpectedTokens, string}>
      */
     public static function provideDynamicClassConstantFetchCases(): iterable
     {
@@ -649,7 +666,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<array{array<int, int>, string}>
+     * @return iterable<string, array{array<int, int>, string}>
      */
     public static function provideDynamicClassConstantFetchPhp83Cases(): iterable
     {

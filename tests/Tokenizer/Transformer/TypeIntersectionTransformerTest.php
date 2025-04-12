@@ -417,7 +417,7 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
     }
 
     /**
-     * @return iterable<array{string, _TransformerTestExpectedTokens}>
+     * @return iterable<string, array{string, _TransformerTestExpectedTokens}>
      */
     public static function provideProcess82Cases(): iterable
     {
@@ -531,7 +531,7 @@ class Dnf
     }
 
     /**
-     * @return iterable<array{string, _TransformerTestExpectedTokens}>
+     * @return iterable<string, array{string, _TransformerTestExpectedTokens}>
      */
     public static function provideProcess83Cases(): iterable
     {
