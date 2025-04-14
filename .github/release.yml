@@ -1,0 +1,38 @@
+changelog:
+  categories:
+    - title: Reverts 🔙
+      labels:
+        - type/revert
+    - title: Breaking Changes 🛠
+      labels:
+        - type/BC
+    - title: New Features 🎉
+      labels:
+        - type/feat
+    - title: Bug Fixes 🐛
+      labels:
+        - type/fix
+    - title: Documentation 📚
+      labels:
+        - type/docs
+    - title: DX 🔧
+      labels:
+        - type/DX
+    - title: Tests 🧪
+      labels:
+        - type/test
+    - title: CI/CD 📦
+      labels:
+        - type/CI
+    - title: Refactoring 💎
+      labels:
+        - type/refactor
+    - title: Chore 🧹
+      labels:
+        - type/chore
+    - title: Dependency Updates ⬆️
+      labels:
+        - type/deps
+    - title: Other Changes
+      labels:
+        - "*"
