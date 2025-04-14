@@ -135,7 +135,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
             [
                 'not in a class' => ['<?php $this->assertEquals(NULL, $foo);'],
                 'not phpunit class' => ['<?php class Foo { public function testFoo(){ $this->assertEquals(NULL, $foo); }}'],
-                'multiple candidates in multiple classes ' => [
+                'multiple candidates in multiple classes' => [
                     '<?php
                         class FooTest1 extends PHPUnit_Framework_TestCase { public function testFoo(){ $this->assertNull($foo); }}
                         class FooTest2 extends PHPUnit_Framework_TestCase { public function testFoo(){ $this->assertNull($foo); }}

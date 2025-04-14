@@ -1193,7 +1193,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
             '<?php $n = [("".foo(1+2)),3];',
         ];
 
-        yield 'x,y) = ' => [
+        yield 'x,y) =' => [
             '<?php $m = [$x, $y];',
             '<?php $m = [$x,($y)];',
         ];
@@ -1488,7 +1488,7 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
             ',
         ];
 
-        yield 'do not fix ' => [
+        yield 'do not fix 2' => [
             '<?php
                 SomeClass::{$method}(
                     $variableA,
@@ -1496,11 +1496,11 @@ final class NoUnneededControlParenthesesFixerTest extends AbstractFixerTestCase
                 );',
         ];
 
-        yield 'do not fix 2' => [
+        yield 'do not fix 3' => [
             '<?php SomeClass::{$method}(2) + 1;',
         ];
 
-        yield 'do not fix 3' => [
+        yield 'do not fix 4' => [
             '<?php $object::{$method}(...$args);',
         ];
 
