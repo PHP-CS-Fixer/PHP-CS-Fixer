@@ -134,7 +134,6 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
                     'assert-if-false',
                     'assert-if-true',
                     'throws',
-                    'author',
                     'see',
                 ],
             ],
