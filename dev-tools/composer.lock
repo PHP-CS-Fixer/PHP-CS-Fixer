@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3159c75ad0674f3780fd8dd721eace91",
+    "content-hash": "20abfabe8e69d1d1afb069b0d1d065cb",
     "packages": [
         {
             "name": "composer-unused/contracts",
@@ -166,16 +166,16 @@
         },
         {
             "name": "ergebnis/composer-normalize",
-            "version": "2.46.0",
+            "version": "2.47.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ergebnis/composer-normalize.git",
-                "reference": "6d4dc58cb098507397116c921ad3bd68f44c2849"
+                "reference": "ed24b9f8901f8fbafeca98f662eaca39427f0544"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ergebnis/composer-normalize/zipball/6d4dc58cb098507397116c921ad3bd68f44c2849",
-                "reference": "6d4dc58cb098507397116c921ad3bd68f44c2849"
+                "url": "https://api.github.com/repos/ergebnis/composer-normalize/zipball/ed24b9f8901f8fbafeca98f662eaca39427f0544",
+                "reference": "ed24b9f8901f8fbafeca98f662eaca39427f0544"
             },
             "require": {
                 "composer-plugin-api": "^2.0.0",
