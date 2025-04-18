@@ -24,6 +24,7 @@ use PhpCsFixer\Console\SelfUpdate\GithubClientInterface;
 use PhpCsFixer\Console\SelfUpdate\NewVersionChecker;
 use PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface;
 use PhpCsFixer\PharCheckerInterface;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfoInterface;
 use Symfony\Component\Console\Command\Command;
@@ -366,7 +367,7 @@ final class SelfUpdateCommandTest extends TestCase
     private static function assertDisplay(string $expectedDisplay, CommandTester $commandTester): void
     {
         if (!$commandTester->getOutput()->isDecorated()) {
-            $expectedDisplay = preg_replace("/\033\\[(\\d+;)*\\d+m/", '', $expectedDisplay);
+            $expectedDisplay = Preg::replace("/\033\\[(\\d+;)*\\d+m/", '', $expectedDisplay);
         }
 
         self::assertSame(
@@ -431,7 +432,7 @@ final class SelfUpdateCommandTest extends TestCase
 
     private static function getCurrentMajorVersion(): int
     {
-        return (int) preg_replace('/^v?(\d+).*$/', '$1', Application::VERSION);
+        return (int) Preg::replace('/^v?(\d+).*$/', '$1', Application::VERSION);
     }
 
     private static function getNewMinorReleaseVersion(): string
@@ -484,7 +485,7 @@ final class SelfUpdateCommandTest extends TestCase
 
             public function getLatestVersionOfMajor(int $majorVersion): ?string
             {
-                TestCase::assertSame((int) preg_replace('/^v?(\d+).*$/', '$1', Application::VERSION), $majorVersion);
+                TestCase::assertSame((int) Preg::replace('/^v?(\d+).*$/', '$1', Application::VERSION), $majorVersion);
 
                 if ($this->latestMinorVersionSuccess) {
                     return $this->latestMinorVersion;

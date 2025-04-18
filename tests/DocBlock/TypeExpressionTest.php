@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\DocBlock;
 
 use PhpCsFixer\DocBlock\TypeExpression;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
@@ -1201,7 +1202,7 @@ final class TypeExpressionTest extends TestCase
         // pruned in FIFO fashion, so to clear the cache, replace all existing
         // cache slots with dummy regexes
         for ($i = 0; $i < 4_096; ++$i) {
-            preg_match('/^'.$i.'/', '');
+            Preg::match('/^'.$i.'/', '');
         }
     }
 

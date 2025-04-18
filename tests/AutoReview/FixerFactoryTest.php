@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\Test\IntegrationCaseFactory;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Finder\SplFileInfo;
@@ -157,9 +158,8 @@ final class FixerFactoryTest extends TestCase
 
         self::assertTrue($file->isFile(), \sprintf('Expected only files in the priority integration test directory, got "%s".', $fileName));
         self::assertFalse($file->isLink(), \sprintf('No (sym)links expected the priority integration test directory, got "%s".', $fileName));
-        self::assertSame(
-            1,
-            preg_match('#^([a-z][a-z0-9_]*),([a-z][a-z_]*)(?:_\d{1,3})?\.test(-(in|out)\.php)?$#', $fileName, $matches),
+        self::assertTrue(
+            Preg::match('#^([a-z][a-z0-9_]*),([a-z][a-z_]*)(?:_\d{1,3})?\.test(-(in|out)\.php)?$#', $fileName, $matches),
             \sprintf('File with unexpected name "%s" in the priority integration test directory.', $fileName)
         );
 

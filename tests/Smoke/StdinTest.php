@@ -73,7 +73,7 @@ final class StdinTest extends AbstractSmokeTestCase
 
     private function unifyFooter(string $output): string
     {
-        return preg_replace(
+        return Preg::replace(
             '/Found \d+ of \d+ files that can be fixed in \d+\.\d+ seconds, \d+\.\d+ MB memory used/',
             'Footer',
             $output

@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Smoke;
 
 use Keradus\CliExecutor\CommandExecutor;
 use PhpCsFixer\Console\Application;
+use PhpCsFixer\Preg;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -125,7 +126,7 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
         unlink($tmpArtifactPath);
         $this->fs->mkdir($tmpArtifactPath);
 
-        $fakeVersion = preg_replace('/\-.+/', '', Application::VERSION, 1).'-alpha987654321';
+        $fakeVersion = Preg::replace('/\-.+/', '', Application::VERSION, 1).'-alpha987654321';
 
         $tmpPath = $this->createFakeComposerProject([
             'repositories' => [
