@@ -236,6 +236,9 @@ Class Notation
 - `single_trait_insert_per_statement <./class_notation/single_trait_insert_per_statement.rst>`_
 
   Each trait ``use`` must be done as single statement.
+- `static_private_method <./class_notation/static_private_method.rst>`_ *(risky)*
+
+  Converts private methods to ``static`` where possible.
 - `visibility_required <./class_notation/visibility_required.rst>`_
 
   Classes, constants, properties, and methods MUST have visibility declared, and keyword modifiers MUST be in the following order: inheritance modifier (``abstract`` or ``final``), visibility modifier (``public``, ``protected``, or ``private``), scope modifier (``static``), mutation modifier (``readonly``), type declaration, name.
