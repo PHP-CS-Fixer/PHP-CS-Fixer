@@ -21,9 +21,9 @@ use PhpCsFixer\Linter\LintingResultInterface;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @internal
- *
  * @author ntzm
+ *
+ * @internal
  *
  * @covers \PhpCsFixer\Linter\CachingLinter
  */

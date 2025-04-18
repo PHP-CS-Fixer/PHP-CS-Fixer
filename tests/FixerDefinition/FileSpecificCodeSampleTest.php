@@ -18,9 +18,9 @@ use PhpCsFixer\FixerDefinition\FileSpecificCodeSample;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @internal
- *
  * @author Andreas Möller <am@localheinz.com>
+ *
+ * @internal
  *
  * @covers \PhpCsFixer\FixerDefinition\FileSpecificCodeSample
  */

@@ -19,11 +19,11 @@ use PhpCsFixer\Preg;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
- * @internal
+ * @author Boris Gorbylev <ekho@ekho.name>
  *
  * @readonly
  *
- * @author Boris Gorbylev <ekho@ekho.name>
+ * @internal
  */
 final class JunitReporter implements ReporterInterface
 {

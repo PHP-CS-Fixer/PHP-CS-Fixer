@@ -19,9 +19,9 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @internal
- *
  * @author Dave van der Brugge <dmvdbrugge@gmail.com>
+ *
+ * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformers
  */

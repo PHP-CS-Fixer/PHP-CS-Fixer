@@ -18,9 +18,9 @@ use org\bovigo\vfs\vfsStream;
 use PhpCsFixer\FileReader;
 
 /**
- * @internal
- *
  * @author ntzm
+ *
+ * @internal
  *
  * @covers \PhpCsFixer\FileReader
  */

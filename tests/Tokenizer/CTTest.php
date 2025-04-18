@@ -18,9 +18,9 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\CT;
 
 /**
- * @internal
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\CT
  */

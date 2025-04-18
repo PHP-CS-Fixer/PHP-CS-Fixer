@@ -18,11 +18,11 @@ use SebastianBergmann\Diff\Differ;
 use SebastianBergmann\Diff\Output\StrictUnifiedDiffOutputBuilder;
 
 /**
- * @internal
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @readonly
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @internal
  */
 final class FullDiffer implements DifferInterface
 {

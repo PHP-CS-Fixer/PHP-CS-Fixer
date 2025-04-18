@@ -18,9 +18,9 @@ use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\ProcessLinter;
 
 /**
- * @internal
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  *
  * @covers \PhpCsFixer\Linter\ProcessLinter
  * @covers \PhpCsFixer\Linter\ProcessLintingResult

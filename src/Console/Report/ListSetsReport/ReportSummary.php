@@ -17,11 +17,11 @@ namespace PhpCsFixer\Console\Report\ListSetsReport;
 use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
 
 /**
- * @internal
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @readonly
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @internal
  */
 final class ReportSummary
 {

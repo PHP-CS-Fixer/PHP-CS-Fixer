@@ -21,9 +21,9 @@ use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @internal
- *
  * @author VeeWee <toonverwerft@gmail.com>
+ *
+ * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer
  */

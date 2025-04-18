@@ -17,9 +17,9 @@ namespace PhpCsFixer\Runner\Parallel;
 use Throwable;
 
 /**
- * @internal
- *
  * @author Greg Korba <gre@codito.dev>
+ *
+ * @internal
  */
 final class WorkerException extends \RuntimeException
 {

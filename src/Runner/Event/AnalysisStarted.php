@@ -19,9 +19,9 @@ use Symfony\Contracts\EventDispatcher\Event;
 /**
  * Event that is fired when Fixer starts analysis.
  *
- * @internal
- *
  * @author Greg Korba <greg@codito.dev>
+ *
+ * @internal
  */
 final class AnalysisStarted extends Event
 {

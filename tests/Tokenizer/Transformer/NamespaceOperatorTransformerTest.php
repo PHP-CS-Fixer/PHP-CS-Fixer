@@ -18,9 +18,9 @@ use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
 
 /**
- * @internal
- *
  * @author Gregor Harlan <gharlan@web.de>
+ *
+ * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\NamespaceOperatorTransformer
  *

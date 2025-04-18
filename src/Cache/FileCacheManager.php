@@ -28,9 +28,9 @@ use PhpCsFixer\Hasher;
  *  - file is new
  *  - file changed
  *
- * @internal
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 final class FileCacheManager implements CacheManagerInterface
 {

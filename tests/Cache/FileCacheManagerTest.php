@@ -25,9 +25,9 @@ use PhpCsFixer\Hasher;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @internal
- *
  * @author Andreas Möller <am@localheinz.com>
+ *
+ * @internal
  *
  * @covers \PhpCsFixer\Cache\FileCacheManager
  */

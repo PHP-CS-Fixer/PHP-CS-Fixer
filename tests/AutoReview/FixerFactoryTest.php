@@ -21,9 +21,9 @@ use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
- * @internal
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  *
  * @coversNothing
  *

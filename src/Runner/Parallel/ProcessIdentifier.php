@@ -17,11 +17,11 @@ namespace PhpCsFixer\Runner\Parallel;
 /**
  * Represents identifier of single process that is handled within parallel run.
  *
- * @internal
+ * @author Greg Korba <greg@codito.dev>
  *
  * @readonly
  *
- * @author Greg Korba <greg@codito.dev>
+ * @internal
  */
 final class ProcessIdentifier
 {

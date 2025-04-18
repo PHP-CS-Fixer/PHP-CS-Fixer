@@ -19,9 +19,9 @@ use PhpCsFixer\Tokenizer\Analyzer\CommentsAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @internal
- *
  * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\CommentsAnalyzer
  */

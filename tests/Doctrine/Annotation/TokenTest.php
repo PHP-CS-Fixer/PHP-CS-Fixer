@@ -19,9 +19,9 @@ use PhpCsFixer\Doctrine\Annotation\Token;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @internal
- *
  * @author Andreas Möller <am@localheinz.com>
+ *
+ * @internal
  *
  * @covers \PhpCsFixer\Doctrine\Annotation\Token
  */

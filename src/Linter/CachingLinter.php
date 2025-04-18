@@ -17,9 +17,9 @@ namespace PhpCsFixer\Linter;
 use PhpCsFixer\Hasher;
 
 /**
- * @internal
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 final class CachingLinter implements LinterInterface
 {

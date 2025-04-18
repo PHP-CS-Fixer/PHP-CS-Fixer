@@ -17,9 +17,9 @@ namespace PhpCsFixer\Tests\Test;
 use PhpCsFixer\RuleSet\RuleSet;
 
 /**
- * @internal
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 final class IntegrationCase
 {

@@ -17,11 +17,11 @@ namespace PhpCsFixer\Runner;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 
 /**
- * @internal
+ * @author Greg Korba <greg@codito.dev>
  *
  * @readonly
  *
- * @author Greg Korba <greg@codito.dev>
+ * @internal
  */
 final class RunnerConfig
 {

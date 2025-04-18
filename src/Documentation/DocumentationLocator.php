@@ -19,9 +19,9 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Utils;
 
 /**
- * @internal
- *
  * @readonly
+ *
+ * @internal
  */
 final class DocumentationLocator
 {

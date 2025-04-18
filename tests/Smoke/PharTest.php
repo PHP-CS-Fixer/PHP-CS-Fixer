@@ -21,9 +21,9 @@ use PhpCsFixer\Console\Command\DescribeCommand;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * @internal
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  *
  * @coversNothing
  *

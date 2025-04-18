@@ -22,9 +22,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * Transform `?` operator into CT::T_NULLABLE_TYPE in `function foo(?Bar $b) {}`.
  *
- * @internal
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 final class NullableTypeTransformer extends AbstractTransformer
 {

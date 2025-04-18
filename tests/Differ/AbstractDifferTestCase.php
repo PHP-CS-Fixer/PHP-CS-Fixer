@@ -18,9 +18,9 @@ use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @internal
- *
  * @author Andreas Möller <am@localheinz.com>
+ *
+ * @internal
  */
 abstract class AbstractDifferTestCase extends TestCase
 {

@@ -24,9 +24,9 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
 
 /**
- * @internal
- *
  * @author Andreas Möller <am@localheinz.com>
+ *
+ * @internal
  *
  * @covers \PhpCsFixer\Cache\Cache
  */

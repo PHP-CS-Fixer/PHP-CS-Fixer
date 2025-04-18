@@ -17,9 +17,9 @@ namespace PhpCsFixer\Tests;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
 /**
- * @internal
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 abstract class TestCase extends BaseTestCase
 {

@@ -19,9 +19,9 @@ use PhpCsFixer\Console\Application;
 /**
  * Obtain information about using version of tool.
  *
- * @internal
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 final class ToolInfo implements ToolInfoInterface
 {

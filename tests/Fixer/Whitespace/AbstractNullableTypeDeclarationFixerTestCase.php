@@ -18,13 +18,13 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @internal
+ * @author Jack Cherng <jfcherng@gmail.com>
  *
  * @template TFixer of AbstractFixer
  *
- * @extends AbstractFixerTestCase<TFixer>
+ * @internal
  *
- * @author Jack Cherng <jfcherng@gmail.com>
+ * @extends AbstractFixerTestCase<TFixer>
  */
 abstract class AbstractNullableTypeDeclarationFixerTestCase extends AbstractFixerTestCase
 {

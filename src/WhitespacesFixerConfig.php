@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer;
 
 /**
- * @readonly
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @readonly
  */
 final class WhitespacesFixerConfig
 {

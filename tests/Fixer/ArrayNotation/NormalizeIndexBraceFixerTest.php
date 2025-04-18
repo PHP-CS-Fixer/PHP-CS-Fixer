@@ -17,6 +17,8 @@ namespace PhpCsFixer\Tests\Fixer\ArrayNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ArrayNotation\NormalizeIndexBraceFixer
@@ -24,8 +26,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @requires PHP <8.0
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ArrayNotation\NormalizeIndexBraceFixer>
- *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class NormalizeIndexBraceFixerTest extends AbstractFixerTestCase
 {

@@ -19,9 +19,9 @@ use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @internal
- *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
+ *
+ * @internal
  *
  * @covers \PhpCsFixer\DocBlock\Line
  */

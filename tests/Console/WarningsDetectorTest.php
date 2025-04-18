@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfoInterface;
 
 /**
- * @internal
- *
  * @author ntzm
+ *
+ * @internal
  *
  * @covers \PhpCsFixer\Console\WarningsDetector
  */

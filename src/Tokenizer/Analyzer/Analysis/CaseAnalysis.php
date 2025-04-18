@@ -15,11 +15,11 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
 
 /**
- * @internal
+ * @author Kuba Werłos <werlos@gmail.com>
  *
  * @readonly
  *
- * @author Kuba Werłos <werlos@gmail.com>
+ * @internal
  */
 final class CaseAnalysis
 {

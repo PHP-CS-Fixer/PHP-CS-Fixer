@@ -20,9 +20,9 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 
 /**
- * @deprecated
- *
  * @author Jack Cherng <jfcherng@gmail.com>
+ *
+ * @deprecated
  */
 final class CompactNullableTypehintFixer extends AbstractProxyFixer implements DeprecatedFixerInterface
 {

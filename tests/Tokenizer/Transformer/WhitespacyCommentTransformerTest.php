@@ -18,9 +18,9 @@ use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @internal
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\WhitespacyCommentTransformer
  */

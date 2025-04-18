@@ -20,10 +20,10 @@ use PhpCsFixer\DocBlock\TagComparator;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @internal
- *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Jakub Kwaśniewski <jakub@zero-85.pl>
+ *
+ * @internal
  *
  * @covers \PhpCsFixer\DocBlock\TagComparator
  */

@@ -25,9 +25,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class FixerConfigurationResolver implements FixerConfigurationResolverInterface
 {
     /**
-     * @readonly
-     *
      * @var list<FixerOptionInterface>
+     *
+     * @readonly
      */
     private array $options;
 

@@ -17,9 +17,9 @@ namespace PhpCsFixer\Tokenizer;
 use PhpCsFixer\Utils;
 
 /**
- * @internal
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 abstract class AbstractTransformer implements TransformerInterface
 {

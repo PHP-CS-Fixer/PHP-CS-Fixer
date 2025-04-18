@@ -21,9 +21,9 @@ use PhpCsFixer\RuleSet\Sets\SymfonyRiskySet;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @internal
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 abstract class AbstractReporterTestCase extends TestCase
 {

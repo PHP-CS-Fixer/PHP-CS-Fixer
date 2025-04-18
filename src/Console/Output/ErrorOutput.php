@@ -22,9 +22,9 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * @internal
- *
  * @readonly
+ *
+ * @internal
  */
 final class ErrorOutput
 {

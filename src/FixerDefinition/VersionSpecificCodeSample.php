@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\FixerDefinition;
 
 /**
- * @readonly
- *
  * @author Andreas Möller <am@localheinz.com>
+ *
+ * @readonly
  */
 final class VersionSpecificCodeSample implements VersionSpecificCodeSampleInterface
 {

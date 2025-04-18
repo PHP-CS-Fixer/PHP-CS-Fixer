@@ -22,9 +22,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * Transform `array` typehint from T_ARRAY into CT::T_ARRAY_TYPEHINT.
  *
- * @internal
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 final class ArrayTypehintTransformer extends AbstractTransformer
 {

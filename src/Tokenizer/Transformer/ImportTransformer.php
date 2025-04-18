@@ -26,9 +26,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  * - T_CONST into CT::T_CONST_IMPORT
  * - T_FUNCTION into CT::T_FUNCTION_IMPORT
  *
- * @internal
- *
  * @author Gregor Harlan <gharlan@web.de>
+ *
+ * @internal
  */
 final class ImportTransformer extends AbstractTransformer
 {

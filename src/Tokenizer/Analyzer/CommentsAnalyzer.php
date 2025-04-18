@@ -20,9 +20,9 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @internal
- *
  * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @internal
  */
 final class CommentsAnalyzer
 {

@@ -17,9 +17,9 @@ namespace PhpCsFixer\Cache;
 use PhpCsFixer\Utils;
 
 /**
- * @internal
- *
  * @author Andreas Möller <am@localheinz.com>
+ *
+ * @internal
  */
 final class Cache implements CacheInterface
 {

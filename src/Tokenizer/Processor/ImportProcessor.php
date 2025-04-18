@@ -20,9 +20,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @readonly
- *
  * @author Greg Korba <greg@codito.dev>
+ *
+ * @readonly
  */
 final class ImportProcessor
 {

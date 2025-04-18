@@ -34,9 +34,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
 
 /**
- * @internal
- *
  * @readonly
+ *
+ * @internal
  */
 final class FixerDocumentGenerator
 {

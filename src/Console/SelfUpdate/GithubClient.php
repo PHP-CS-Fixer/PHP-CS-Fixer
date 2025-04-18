@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\Console\SelfUpdate;
 
 /**
- * @internal
- *
  * @readonly
+ *
+ * @internal
  */
 final class GithubClient implements GithubClientInterface
 {

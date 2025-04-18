@@ -17,9 +17,9 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\WordMatcher;
 
 /**
- * @internal
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  *
  * @covers \PhpCsFixer\WordMatcher
  */

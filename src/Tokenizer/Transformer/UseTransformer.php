@@ -24,9 +24,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  * - CT::T_USE_TRAIT for imports,
  * - CT::T_USE_LAMBDA for lambda variable uses.
  *
- * @internal
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 final class UseTransformer extends AbstractTransformer
 {

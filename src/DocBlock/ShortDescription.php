@@ -17,9 +17,9 @@ namespace PhpCsFixer\DocBlock;
 /**
  * This class represents a short description (aka summary) of a docblock.
  *
- * @internal
- *
  * @readonly
+ *
+ * @internal
  */
 final class ShortDescription
 {

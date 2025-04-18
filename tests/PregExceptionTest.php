@@ -17,9 +17,9 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\PregException;
 
 /**
- * @internal
- *
  * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @internal
  *
  * @covers \PhpCsFixer\PregException
  */

@@ -19,9 +19,9 @@ use PhpCsFixer\DocBlock\Tag;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @internal
- *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
+ *
+ * @internal
  *
  * @covers \PhpCsFixer\DocBlock\Tag
  */

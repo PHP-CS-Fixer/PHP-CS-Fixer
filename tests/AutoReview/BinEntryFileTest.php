@@ -17,9 +17,9 @@ namespace PhpCsFixer\Tests\AutoReview;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @internal
- *
  * @author Victor Bocharsky <bocharsky.bw@gmail.com>
+ *
+ * @internal
  *
  * @coversNothing
  *

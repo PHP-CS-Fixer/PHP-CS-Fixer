@@ -19,9 +19,9 @@ use PhpCsFixer\Cache\DirectoryInterface;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @internal
- *
  * @author Andreas Möller <am@localheinz.com>
+ *
+ * @internal
  *
  * @covers \PhpCsFixer\Cache\Directory
  */

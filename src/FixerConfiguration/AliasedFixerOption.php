@@ -15,11 +15,11 @@ declare(strict_types=1);
 namespace PhpCsFixer\FixerConfiguration;
 
 /**
- * @internal
+ * @author ntzm
  *
  * @readonly
  *
- * @author ntzm
+ * @internal
  */
 final class AliasedFixerOption implements FixerOptionInterface
 {

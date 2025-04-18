@@ -18,9 +18,9 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
 
 /**
- * @deprecated use `@PER-CS` instead
- *
  * @internal
+ *
+ * @deprecated use `@PER-CS` instead
  *
  * @TODO 4.0 remove me
  *

@@ -17,9 +17,9 @@ namespace PhpCsFixer\Tests\Differ;
 use PhpCsFixer\Differ\NullDiffer;
 
 /**
- * @internal
- *
  * @author Andreas Möller <am@localheinz.com>
+ *
+ * @internal
  *
  * @covers \PhpCsFixer\Differ\NullDiffer
  */

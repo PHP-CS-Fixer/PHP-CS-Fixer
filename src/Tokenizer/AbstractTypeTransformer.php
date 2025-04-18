@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer;
 
 /**
- * @internal
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 abstract class AbstractTypeTransformer extends AbstractTransformer
 {

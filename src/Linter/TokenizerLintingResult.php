@@ -15,11 +15,11 @@ declare(strict_types=1);
 namespace PhpCsFixer\Linter;
 
 /**
- * @internal
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @readonly
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @internal
  */
 final class TokenizerLintingResult implements LintingResultInterface
 {

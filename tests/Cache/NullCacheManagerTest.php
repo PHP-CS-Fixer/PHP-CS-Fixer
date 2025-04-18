@@ -19,9 +19,9 @@ use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @internal
- *
  * @author Andreas Möller <am@localheinz.com>
+ *
+ * @internal
  *
  * @covers \PhpCsFixer\Cache\NullCacheManager
  */

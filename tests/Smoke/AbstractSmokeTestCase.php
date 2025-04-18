@@ -17,9 +17,9 @@ namespace PhpCsFixer\Tests\Smoke;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @internal
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  *
  * @requires OS Linux|Darwin
  *

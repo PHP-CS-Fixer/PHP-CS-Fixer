@@ -20,9 +20,9 @@ use Keradus\CliExecutor\ScriptExecutor;
 use PhpCsFixer\Console\Application;
 
 /**
- * @internal
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  *
  * @requires OS Linux|Darwin
  *

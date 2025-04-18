@@ -23,9 +23,9 @@ use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Filesystem\Exception\IOException;
 
 /**
- * @internal
- *
  * @author Andreas Möller <am@localheinz.com>
+ *
+ * @internal
  *
  * @covers \PhpCsFixer\Cache\FileHandler
  */

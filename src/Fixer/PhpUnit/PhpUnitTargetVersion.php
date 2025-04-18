@@ -17,9 +17,9 @@ namespace PhpCsFixer\Fixer\PhpUnit;
 use Composer\Semver\Comparator;
 
 /**
- * @internal
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 final class PhpUnitTargetVersion
 {

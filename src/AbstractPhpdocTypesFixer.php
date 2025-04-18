@@ -23,9 +23,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * This abstract fixer provides a base for fixers to fix types in PHPDoc.
  *
- * @internal
- *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
+ *
+ * @internal
  */
 abstract class AbstractPhpdocTypesFixer extends AbstractFixer
 {

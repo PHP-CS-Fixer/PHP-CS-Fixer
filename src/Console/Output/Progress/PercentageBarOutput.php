@@ -21,9 +21,9 @@ use Symfony\Component\Console\Helper\ProgressBar;
 /**
  * Output writer to show the progress of a FixCommand using progress bar (percentage).
  *
- * @internal
- *
  * @readonly
+ *
+ * @internal
  */
 final class PercentageBarOutput implements ProgressOutputInterface
 {

@@ -18,19 +18,19 @@ namespace PhpCsFixer\DocBlock;
  * This class is responsible for comparing tags to see if they should be kept
  * together, or kept apart.
  *
- * @deprecated
- *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Jakub Kwaśniewski <jakub@zero-85.pl>
+ *
+ * @deprecated
  */
 final class TagComparator
 {
     /**
      * Groups of tags that should be allowed to immediately follow each other.
      *
-     * @internal
-     *
      * @var list<list<string>>
+     *
+     * @internal
      */
     public const DEFAULT_GROUPS = [
         ['deprecated', 'link', 'see', 'since'],

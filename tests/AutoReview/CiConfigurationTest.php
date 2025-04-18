@@ -21,9 +21,9 @@ use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * @internal
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  *
  * @coversNothing
  *

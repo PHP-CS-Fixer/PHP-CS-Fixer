@@ -23,9 +23,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  * Transform braced class instantiation braces in `(new Foo())` into CT::T_BRACE_CLASS_INSTANTIATION_OPEN
  * and CT::T_BRACE_CLASS_INSTANTIATION_CLOSE.
  *
- * @internal
- *
  * @author Sebastiaans Stok <s.stok@rollerscapes.net>
+ *
+ * @internal
  */
 final class BraceClassInstantiationTransformer extends AbstractTransformer
 {

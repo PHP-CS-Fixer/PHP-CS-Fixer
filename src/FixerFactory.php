@@ -31,9 +31,9 @@ use Symfony\Component\Finder\SplFileInfo;
  *
  * Finally factory creates a ready to use group of fixers.
  *
- * @internal
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 final class FixerFactory
 {

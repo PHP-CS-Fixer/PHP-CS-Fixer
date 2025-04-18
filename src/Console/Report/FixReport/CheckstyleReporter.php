@@ -18,11 +18,11 @@ use PhpCsFixer\Console\Application;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
- * @internal
+ * @author Kévin Gomez <contact@kevingomez.fr>
  *
  * @readonly
  *
- * @author Kévin Gomez <contact@kevingomez.fr>
+ * @internal
  */
 final class CheckstyleReporter implements ReporterInterface
 {

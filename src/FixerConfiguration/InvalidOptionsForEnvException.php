@@ -17,8 +17,8 @@ namespace PhpCsFixer\FixerConfiguration;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
- * @internal
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 final class InvalidOptionsForEnvException extends InvalidOptionsException {}

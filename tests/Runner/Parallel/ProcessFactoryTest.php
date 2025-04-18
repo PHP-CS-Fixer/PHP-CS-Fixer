@@ -29,9 +29,9 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputDefinition;
 
 /**
- * @internal
- *
  * @author Greg Korba <greg@codito.dev>
+ *
+ * @internal
  *
  * @covers \PhpCsFixer\Runner\Parallel\ProcessFactory
  */

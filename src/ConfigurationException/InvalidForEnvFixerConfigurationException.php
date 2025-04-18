@@ -15,8 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\ConfigurationException;
 
 /**
- * @internal
- *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @internal
  */
 final class InvalidForEnvFixerConfigurationException extends InvalidFixerConfigurationException {}
