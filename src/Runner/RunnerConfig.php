@@ -19,9 +19,9 @@ use PhpCsFixer\Runner\Parallel\ParallelConfig;
 /**
  * @author Greg Korba <greg@codito.dev>
  *
- * @readonly
- *
  * @internal
+ *
+ * @readonly
  */
 final class RunnerConfig
 {

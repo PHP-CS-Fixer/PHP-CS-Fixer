@@ -20,9 +20,9 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
- * @readonly
- *
  * @internal
+ *
+ * @readonly
  */
 final class DiffConsoleFormatter
 {

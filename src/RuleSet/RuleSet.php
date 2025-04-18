@@ -22,9 +22,9 @@ use PhpCsFixer\Utils;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
- * @readonly
- *
  * @internal
+ *
+ * @readonly
  */
 final class RuleSet implements RuleSetInterface
 {
