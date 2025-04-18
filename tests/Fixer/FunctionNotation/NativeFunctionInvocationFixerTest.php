@@ -498,6 +498,14 @@ namespace {
                 'include' => [NativeFunctionInvocationFixer::SET_ALL],
             ],
         ];
+
+        yield [
+            '<?php return [\set() => 42];',
+            '<?php return [set() => 42];',
+            [
+                'include' => ['@all'],
+            ],
+        ];
     }
 
     /**
