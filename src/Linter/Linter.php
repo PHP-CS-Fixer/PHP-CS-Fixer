@@ -19,9 +19,9 @@ namespace PhpCsFixer\Linter;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
- * @readonly
- *
  * @internal
+ *
+ * @readonly
  */
 final class Linter implements LinterInterface
 {

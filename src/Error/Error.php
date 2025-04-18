@@ -19,9 +19,9 @@ namespace PhpCsFixer\Error;
  *
  * @author Andreas Möller <am@localheinz.com>
  *
- * @readonly
- *
  * @internal
+ *
+ * @readonly
  */
 final class Error implements \JsonSerializable
 {

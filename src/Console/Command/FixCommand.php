@@ -45,9 +45,9 @@ use Symfony\Component\Stopwatch\Stopwatch;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
- * @final
- *
  * @internal
+ *
+ * @final
  */
 #[AsCommand(name: 'fix', description: 'Fixes a directory or a file.')]
 /* final */ class FixCommand extends Command

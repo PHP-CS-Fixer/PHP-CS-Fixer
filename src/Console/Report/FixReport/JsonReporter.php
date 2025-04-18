@@ -20,9 +20,9 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
  *
- * @readonly
- *
  * @internal
+ *
+ * @readonly
  */
 final class JsonReporter implements ReporterInterface
 {

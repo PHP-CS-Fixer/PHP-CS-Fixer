@@ -28,9 +28,9 @@ final class TagComparator
     /**
      * Groups of tags that should be allowed to immediately follow each other.
      *
-     * @var list<list<string>>
-     *
      * @internal
+     *
+     * @var list<list<string>>
      */
     public const DEFAULT_GROUPS = [
         ['deprecated', 'link', 'see', 'since'],

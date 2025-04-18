@@ -255,7 +255,7 @@ Integration of %s.
      */
     private function doSort(array &$data, string $path): void
     {
-        if ('ordered_imports.imports_order' === $path) { // order matters
+        if (\in_array($path, ['ordered_imports.imports_order', 'phpdoc_order.order'], true)) { // order matters
             return;
         }
 

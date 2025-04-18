@@ -96,9 +96,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
- * @template TFixer of FixerInterface
- *
  * @internal
+ *
+ * @template TFixer of FixerInterface
  */
 abstract class AbstractFixerTestCase extends TestCase
 {
