@@ -163,6 +163,20 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
                 14 => CT::T_CURLY_CLOSE,
             ],
         ];
+
+        yield 'functions "set" and "get" (like property hooks, but not)' => [
+            <<<'PHP'
+                <?php if ($x) {
+                    set();
+                } elseif ($y) {
+                    SET();
+                } else {
+                    get();
+                }
+
+                PHP,
+            [],
+        ];
     }
 
     /**
