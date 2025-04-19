@@ -651,9 +651,9 @@ class Tokens extends \SplFixedArray
      *
      * This method is shorthand for getTokenOfKindSibling method.
      *
-     * @param int                           $index         token index
-     * @param list<array{int}|string|Token> $tokens        possible tokens
-     * @param bool                          $caseSensitive perform a case sensitive comparison
+     * @param int                                   $index         token index
+     * @param list<_PhpTokenPrototypePartial|Token> $tokens        possible tokens
+     * @param bool                                  $caseSensitive perform a case sensitive comparison
      */
     public function getNextTokenOfKind(int $index, array $tokens = [], bool $caseSensitive = true): ?int
     {
@@ -698,9 +698,9 @@ class Tokens extends \SplFixedArray
      * Get index for closest previous token of given kind.
      * This method is shorthand for getTokenOfKindSibling method.
      *
-     * @param int                           $index         token index
-     * @param list<array{int}|string|Token> $tokens        possible tokens
-     * @param bool                          $caseSensitive perform a case sensitive comparison
+     * @param int                                   $index         token index
+     * @param list<_PhpTokenPrototypePartial|Token> $tokens        possible tokens
+     * @param bool                                  $caseSensitive perform a case sensitive comparison
      */
     public function getPrevTokenOfKind(int $index, array $tokens = [], bool $caseSensitive = true): ?int
     {
@@ -710,14 +710,15 @@ class Tokens extends \SplFixedArray
     /**
      * Get index for closest sibling token of given kind.
      *
-     * @param int                           $index         token index
-     * @param -1|1                          $direction
-     * @param list<array{int}|string|Token> $tokens        possible tokens
-     * @param bool                          $caseSensitive perform a case sensitive comparison
+     * @param int                                   $index         token index
+     * @param -1|1                                  $direction
+     * @param list<_PhpTokenPrototypePartial|Token> $tokens        possible tokens
+     * @param bool                                  $caseSensitive perform a case sensitive comparison
      */
     public function getTokenOfKindSibling(int $index, int $direction, array $tokens = [], bool $caseSensitive = true): ?int
     {
         $tokens = array_filter($tokens, fn ($token): bool => $this->isTokenKindFound($this->extractTokenKind($token)));
+        $tokens = array_values($tokens);
 
         if (0 === \count($tokens)) {
             return null;
@@ -738,9 +739,9 @@ class Tokens extends \SplFixedArray
     /**
      * Get index for closest sibling token not of given kind.
      *
-     * @param int                           $index     token index
-     * @param -1|1                          $direction
-     * @param list<array{int}|string|Token> $tokens    possible tokens
+     * @param int                                   $index     token index
+     * @param -1|1                                  $direction
+     * @param list<_PhpTokenPrototypePartial|Token> $tokens    possible tokens
      */
     public function getTokenNotOfKindSibling(int $index, int $direction, array $tokens = []): ?int
     {
@@ -1108,6 +1109,8 @@ class Tokens extends \SplFixedArray
         }
 
         $this->updateSizeToZero(); // clear memory
+
+        /** @var list<_PhpTokenPrototype> $tokens */
         $tokens = token_get_all($code, TOKEN_PARSE);
         $this->updateSizeByIncreasingToNewSize(\count($tokens)); // pre-allocate collection size
 
@@ -1533,9 +1536,9 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * @param array{int}|string|Token $token token prototype
+     * @param _PhpTokenPrototypePartial|Token $token token prototype
      *
-     * @return int|string
+     * @return int|non-empty-string
      */
     private function extractTokenKind($token)
     {

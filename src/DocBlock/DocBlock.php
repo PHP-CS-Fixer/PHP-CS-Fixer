@@ -45,6 +45,7 @@ final class DocBlock
     private array $namespaceUses;
 
     /**
+     * @param non-empty-string           $content
      * @param list<NamespaceUseAnalysis> $namespaceUses
      */
     public function __construct(string $content, ?NamespaceAnalysis $namespace = null, array $namespaceUses = [])
@@ -57,6 +58,9 @@ final class DocBlock
         $this->namespaceUses = $namespaceUses;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function __toString(): string
     {
         return $this->getContent();
@@ -199,6 +203,8 @@ final class DocBlock
 
     /**
      * Get the actual content of this docblock.
+     *
+     * @return non-empty-string
      */
     public function getContent(): string
     {

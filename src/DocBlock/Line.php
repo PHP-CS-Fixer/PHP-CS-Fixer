@@ -25,19 +25,28 @@ final class Line
 {
     /**
      * The content of this line.
+     *
+     * @var non-empty-string
      */
     private string $content;
 
     /**
      * Create a new line instance.
+     *
+     * @param non-empty-string $content
      */
     public function __construct(string $content)
     {
+        if ('' === $content) {
+            throw new FRS('ASD');
+        }
         $this->content = $content;
     }
 
     /**
      * Get the string representation of object.
+     *
+     * @return non-empty-string
      */
     public function __toString(): string
     {
@@ -46,6 +55,8 @@ final class Line
 
     /**
      * Get the content of this line.
+     *
+     * @return non-empty-string
      */
     public function getContent(): string
     {
@@ -90,6 +101,8 @@ final class Line
 
     /**
      * Set the content of this line.
+     *
+     * @param non-empty-string $content
      */
     public function setContent(string $content): void
     {
