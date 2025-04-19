@@ -30,7 +30,7 @@ final class LineTest extends TestCase
     /**
      * This represents the content an entire docblock.
      */
-    private static string $sample = '/**
+    private const SAMPLE = '/**
      * Test docblock.
      *
      * @param string $hello
@@ -49,7 +49,7 @@ final class LineTest extends TestCase
     /**
      * This represents the content of each line.
      *
-     * @var list<string>
+     * @var list<non-empty-string>
      */
     private static array $content = [
         "/**\n",
@@ -117,10 +117,12 @@ final class LineTest extends TestCase
 
     /**
      * @dataProvider provideLinesCases
+     *
+     * @param non-empty-string $content
      */
     public function testPosAndContent(int $pos, string $content): void
     {
-        $doc = new DocBlock(self::$sample);
+        $doc = new DocBlock(self::SAMPLE);
         $line = $doc->getLine($pos);
 
         self::assertSame($content, $line->getContent());
@@ -132,7 +134,7 @@ final class LineTest extends TestCase
      */
     public function testStartOrEndPos(int $pos): void
     {
-        $doc = new DocBlock(self::$sample);
+        $doc = new DocBlock(self::SAMPLE);
         $line = $doc->getLine($pos);
 
         self::assertSame(0 === $pos, $line->isTheStart());
@@ -140,7 +142,7 @@ final class LineTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{int, string}>
+     * @return iterable<int, array{int, non-empty-string}>
      */
     public static function provideLinesCases(): iterable
     {
@@ -154,7 +156,7 @@ final class LineTest extends TestCase
      */
     public function testUseful(int $pos, bool $useful): void
     {
-        $doc = new DocBlock(self::$sample);
+        $doc = new DocBlock(self::SAMPLE);
         $line = $doc->getLine($pos);
 
         self::assertSame($useful, $line->containsUsefulContent());
@@ -175,7 +177,7 @@ final class LineTest extends TestCase
      */
     public function testTag(int $pos, bool $tag): void
     {
-        $doc = new DocBlock(self::$sample);
+        $doc = new DocBlock(self::SAMPLE);
         $line = $doc->getLine($pos);
 
         self::assertSame($tag, $line->containsATag());
