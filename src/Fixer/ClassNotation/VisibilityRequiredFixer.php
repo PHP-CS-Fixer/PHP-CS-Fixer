@@ -176,6 +176,11 @@ class Sample
 
         $propertyTypeDeclarationKinds = [T_STRING, T_NS_SEPARATOR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE];
 
+        if (\defined('T_PRIVATE_SET')) { // @TODO: drop condition when PHP 8.4+ is required
+            $propertyKindsAsymmetric = [T_PRIVATE_SET, T_PROTECTED_SET, T_PUBLIC_SET];
+            array_push($propertyTypeDeclarationKinds, ...$propertyKindsAsymmetric);
+        }
+
         if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
             $propertyReadOnlyType = T_READONLY;
             $propertyTypeDeclarationKinds[] = T_READONLY;
