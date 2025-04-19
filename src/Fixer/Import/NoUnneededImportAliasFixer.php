@@ -40,6 +40,7 @@ final class NoUnneededImportAliasFixer extends AbstractFixer
      * {@inheritdoc}
      *
      * Must run before NoSinglelineWhitespaceBeforeSemicolonsFixer.
+     * Must run after PhpUnitNamespacedFixer.
      */
     public function getPriority(): int
     {

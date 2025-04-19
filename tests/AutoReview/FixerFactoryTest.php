@@ -779,6 +779,9 @@ final class FixerFactoryTest extends TestCase
                 'final_internal_class',
                 'phpdoc_separation',
             ],
+            'php_unit_namespaced' => [
+                'no_unneeded_import_alias',
+            ],
             'php_unit_no_expectation_annotation' => [
                 'no_empty_phpdoc',
                 'php_unit_expectation',

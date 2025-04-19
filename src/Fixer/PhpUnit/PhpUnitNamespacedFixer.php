@@ -90,6 +90,16 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         return $tokens->isTokenKindFound(T_STRING);
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run before NoUnneededImportAliasFixer.
+     */
+    public function getPriority(): int
+    {
+        return 2;
+    }
+
     public function isRisky(): bool
     {
         return true;
