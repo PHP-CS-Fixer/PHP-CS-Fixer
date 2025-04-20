@@ -36,7 +36,7 @@ final class EncodingFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string, 2?: \SplFileInfo}>
+     * @return iterable<int, array{0: string, 1?: string, 2?: \SplFileInfo}>
      */
     public static function provideFixCases(): iterable
     {

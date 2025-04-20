@@ -16,10 +16,12 @@ namespace PhpCsFixer\Tests\Test;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\AbstractProxyFixer;
+use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
@@ -47,19 +49,16 @@ use PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationIndentationFixer
 use PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\FunctionDeclarationFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\MethodArgumentSpaceFixerTest;
-use PhpCsFixer\Tests\Fixer\FunctionNotation\NativeFunctionInvocationFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\ReturnTypeDeclarationFixerTest;
 use PhpCsFixer\Tests\Fixer\Import\GlobalNamespaceImportFixerTest;
 use PhpCsFixer\Tests\Fixer\Import\SingleImportPerStatementFixerTest;
 use PhpCsFixer\Tests\Fixer\LanguageConstruct\FunctionToConstantFixerTest;
 use PhpCsFixer\Tests\Fixer\LanguageConstruct\SingleSpaceAroundConstructFixerTest;
 use PhpCsFixer\Tests\Fixer\ListNotation\ListSyntaxFixerTest;
-use PhpCsFixer\Tests\Fixer\NamespaceNotation\BlankLinesBeforeNamespaceFixerTest;
 use PhpCsFixer\Tests\Fixer\Operator\BinaryOperatorSpacesFixerTest;
 use PhpCsFixer\Tests\Fixer\Operator\ConcatSpaceFixerTest;
 use PhpCsFixer\Tests\Fixer\Operator\IncrementStyleFixerTest;
 use PhpCsFixer\Tests\Fixer\Operator\NewWithParenthesesFixerTest;
-use PhpCsFixer\Tests\Fixer\Operator\NoUselessConcatOperatorFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\AlignMultilineCommentFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\GeneralPhpdocTagRenameFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\NoBlankLinesAfterPhpdocFixerTest;
@@ -83,7 +82,6 @@ use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixerTest;
 use PhpCsFixer\Tests\Fixer\ReturnNotation\ReturnAssignmentFixerTest;
 use PhpCsFixer\Tests\Fixer\Semicolon\MultilineWhitespaceBeforeSemicolonsFixerTest;
 use PhpCsFixer\Tests\Fixer\Semicolon\NoEmptyStatementFixerTest;
-use PhpCsFixer\Tests\Fixer\Semicolon\SemicolonAfterInstructionFixerTest;
 use PhpCsFixer\Tests\Fixer\Semicolon\SpaceAfterSemicolonFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\BlankLineBeforeStatementFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\IndentationTypeFixerTest;
@@ -448,7 +446,6 @@ abstract class AbstractFixerTestCase extends TestCase
             AlignMultilineCommentFixerTest::class,
             BinaryOperatorSpacesFixerTest::class,
             BlankLineBeforeStatementFixerTest::class,
-            BlankLinesBeforeNamespaceFixerTest::class,
             ClassAttributesSeparationFixerTest::class,
             ClassDefinitionFixerTest::class,
             ConcatSpaceFixerTest::class,
@@ -468,7 +465,6 @@ abstract class AbstractFixerTestCase extends TestCase
             MethodArgumentSpaceFixerTest::class,
             MultilineWhitespaceBeforeSemicolonsFixerTest::class,
             NativeConstantInvocationFixerTest::class,
-            NativeFunctionInvocationFixerTest::class,
             NewWithParenthesesFixerTest::class,
             NoBlankLinesAfterPhpdocFixerTest::class,
             NoBreakCommentFixerTest::class,
@@ -477,7 +473,6 @@ abstract class AbstractFixerTestCase extends TestCase
             NoEmptyStatementFixerTest::class,
             NoSpacesAroundOffsetFixerTest::class,
             NoUnneededControlParenthesesFixerTest::class,
-            NoUselessConcatOperatorFixerTest::class,
             NoUselessElseFixerTest::class,
             PhpdocAddMissingParamAnnotationFixerTest::class,
             PhpdocNoEmptyReturnFixerTest::class,
@@ -496,7 +491,6 @@ abstract class AbstractFixerTestCase extends TestCase
             PhpUnitTestCaseStaticMethodCallsFixerTest::class,
             ReturnAssignmentFixerTest::class,
             ReturnTypeDeclarationFixerTest::class,
-            SemicolonAfterInstructionFixerTest::class,
             SingleImportPerStatementFixerTest::class,
             SingleLineCommentStyleFixerTest::class,
             SingleSpaceAroundConstructFixerTest::class,
@@ -539,6 +533,39 @@ abstract class AbstractFixerTestCase extends TestCase
             [],
             $extraMethods,
             \sprintf('Methods "%s" should not be present in %s.', implode('". "', $extraMethods), static::class),
+        );
+    }
+
+    public function testImplementingWhitespacesAwareFixerInterface(): void
+    {
+        $tokens = Tokens::fromCode((string) file_get_contents((string) $this->getFixerReflection()->getFileName()));
+
+        if ($this->fixer instanceof AbstractPhpUnitFixer) {
+            // AbstractPhpUnitFixer is using `$this->whitespacesConfig` and we cannot verify it is needed for the child class
+            $this->addToAssertionCount(1);
+
+            return;
+        }
+
+        if ($this->fixer instanceof AbstractProxyFixer) {
+            self::assertSame(
+                array_any(
+                    \Closure::bind(static fn (AbstractProxyFixer $fixer): array => $fixer->createProxyFixers(), null, AbstractProxyFixer::class)($this->fixer),
+                    static fn (FixerInterface $fixer): bool => $fixer instanceof WhitespacesAwareFixerInterface,
+                ),
+                $this->fixer instanceof WhitespacesAwareFixerInterface,
+            );
+
+            return;
+        }
+
+        self::assertSame(
+            null !== $tokens->findSequence([
+                [T_VARIABLE, '$this'],
+                [T_OBJECT_OPERATOR],
+                [T_STRING, 'whitespacesConfig'],
+            ]),
+            $this->fixer instanceof WhitespacesAwareFixerInterface,
         );
     }
 

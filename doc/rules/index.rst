@@ -241,7 +241,7 @@ Class Notation
   Converts private methods to ``static`` where possible.
 - `visibility_required <./class_notation/visibility_required.rst>`_
 
-  Visibility MUST be declared on all properties and methods; ``abstract`` and ``final`` MUST be declared before the visibility; ``static`` MUST be declared after the visibility.
+  Classes, constants, properties, and methods MUST have visibility declared, and keyword modifiers MUST be in the following order: inheritance modifier (``abstract`` or ``final``), visibility modifier (``public``, ``protected``, or ``private``), scope modifier (``static``), mutation modifier (``readonly``), type declaration, name.
 
 Class Usage
 -----------
@@ -578,6 +578,9 @@ Operator
 - `long_to_shorthand_operator <./operator/long_to_shorthand_operator.rst>`_ *(risky)*
 
   Shorthand notation for operators should be used if possible.
+- `new_expression_parentheses <./operator/new_expression_parentheses.rst>`_
+
+  All ``new`` expressions with a further call must (not) be wrapped in parentheses.
 - `new_with_braces <./operator/new_with_braces.rst>`_ *(deprecated)*
 
   All instances created with ``new`` keyword must (not) be followed by braces.

@@ -57,6 +57,7 @@
         "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.6",
         "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.6",
         "phpunit/phpunit": "^9.6.22 || ^10.5.45 || ^11.5.12",
+        "symfony/polyfill-php84": "^1.31",
         "symfony/var-dumper": "^5.4.48 || ^6.4.18 || ^7.2.3",
         "symfony/yaml": "^5.4.45 || ^6.4.18 || ^7.2.3"
     },

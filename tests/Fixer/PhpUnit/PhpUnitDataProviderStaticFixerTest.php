@@ -39,7 +39,7 @@ final class PhpUnitDataProviderStaticFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string, 2?: array<string, bool>}>
+     * @return iterable<string, array{0: string, 1?: null|string, 2?: array<string, bool>}>
      */
     public static function provideFixCases(): iterable
     {
@@ -208,7 +208,7 @@ class FooTest extends TestCase {
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<string, array{string, string}>
      */
     public static function provideFix80Cases(): iterable
     {

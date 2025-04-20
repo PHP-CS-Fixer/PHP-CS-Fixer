@@ -244,7 +244,7 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1: string, 2: string, 3?: string}>
+     * @return iterable<int, array{0: string, 1: string, 2: string, 3?: string}>
      */
     public static function provideResolveConfigFileChooseFileCases(): iterable
     {
@@ -351,6 +351,9 @@ final class ConfigurationResolverTest extends TestCase
         self::assertSame($expectedPaths, $resolver->getPath());
     }
 
+    /**
+     * @return iterable<int, array{array<int, string>, string, array<int, string>}>
+     */
     public static function provideResolvePathCases(): iterable
     {
         yield [
@@ -397,6 +400,9 @@ final class ConfigurationResolverTest extends TestCase
         $resolver->getPath();
     }
 
+    /**
+     * @return iterable<int, array{list<string>, string}>
+     */
     public static function provideRejectInvalidPathCases(): iterable
     {
         yield [
@@ -549,6 +555,9 @@ final class ConfigurationResolverTest extends TestCase
         self::assertSame($expected, $intersectionItems);
     }
 
+    /**
+     * @return iterable<string, array{0: array<array-key, string>|\Exception, 1: null|Finder, 2: list<string>, 3: string, 4?: string}>
+     */
     public static function provideResolveIntersectionOfPathsCases(): iterable
     {
         $dir = __DIR__.'/../Fixtures/ConfigurationResolverPathsIntersection';
@@ -729,6 +738,9 @@ final class ConfigurationResolverTest extends TestCase
         self::assertSame($expectedResult, $resolver->configFinderIsOverridden());
     }
 
+    /**
+     * @return iterable<int, array{array<string, mixed>, bool}>
+     */
     public static function provideConfigFinderIsOverriddenCases(): iterable
     {
         $root = __DIR__.'/../..';
@@ -829,7 +841,7 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
-     * @return iterable<array{bool, bool, null|string}>
+     * @return iterable<int, array{bool, bool, null|string}>
      */
     public static function provideResolveBooleanOptionCases(): iterable
     {
@@ -937,7 +949,7 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: bool, 1: bool, 2: bool, 3: bool}>
+     * @return iterable<string, array{0: bool, 1: bool, 2: bool, 3: bool}>
      */
     public static function provideResolveUsingCacheForRuntimesCases(): iterable
     {
@@ -1133,6 +1145,9 @@ final class ConfigurationResolverTest extends TestCase
         $resolver->getRules();
     }
 
+    /**
+     * @return iterable<array{string, list<string>}>
+     */
     public static function provideResolveRenamedRulesWithUnknownRulesCases(): iterable
     {
         yield 'with config' => [
@@ -1244,7 +1259,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
     }
 
     /**
-     * @return iterable<array{string, null|bool}>
+     * @return iterable<int, array{string, null|bool}>
      */
     public static function provideResolveDifferCases(): iterable
     {
@@ -1317,6 +1332,9 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         $resolver->getFixers();
     }
 
+    /**
+     * @return iterable<int, array{array<string, mixed>|bool}>
+     */
     public static function provideDeprecatedFixerConfiguredCases(): iterable
     {
         yield [true];
@@ -1352,7 +1370,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
     }
 
     /**
-     * @return iterable<array{0: string, 1: list<string>}>
+     * @return iterable<int, array{0: string, 1: list<string>}>
      */
     public static function provideDeprecatedRuleSetConfiguredCases(): iterable
     {
@@ -1392,7 +1410,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
     }
 
     /**
-     * @return iterable<array{null|string, string, string}>
+     * @return iterable<int, array{null|string, string, string}>
      */
     public static function provideGetDirectoryCases(): iterable
     {
@@ -1427,7 +1445,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
     }
 
     /**
-     * @return iterable<array{0: class-string, 1: string, 2?: array<string,string>}>
+     * @return iterable<int, array{0: class-string, 1: string, 2?: array<string,string>}>
      */
     public static function provideGetReporterCases(): iterable
     {

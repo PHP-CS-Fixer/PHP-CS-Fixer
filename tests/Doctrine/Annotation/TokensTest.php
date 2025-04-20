@@ -54,7 +54,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, null|string}>
+     * @return iterable<int, array{string, null|string}>
      */
     public static function provideOffSetOtherThanTokenCases(): iterable
     {

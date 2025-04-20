@@ -44,6 +44,9 @@ final class ClassConstantTransformerTest extends AbstractTransformerTestCase
         );
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: _TransformerTestExpectedTokens}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield [
