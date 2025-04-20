@@ -935,4 +935,66 @@ function test2($param = new Foo) {}
 ',
         ];
     }
+
+
+    /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testFix84(string $expected, ?string $input = null, array $configuration = []): void
+    {
+        $this->fixer->configure($configuration);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @dataProvider provideFix84CasesWithoutParentheseCases
+     *
+     * @requires PHP 8.4
+     */
+    public function testFix84WithoutParentheseCases(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure(['anonymous_class' => false, 'named_class' => false]);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<int, array{string, string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield [
+            '<?php
+            class A {public function test(): void {}}
+
+            new A()->test();
+            (new A())->test();
+            ',
+            '<?php
+            class A {public function test(): void {}}
+
+            new A()->test();
+            (new A)->test();
+            '
+        ];
+
+        yield [
+            '<?php
+            class A {public function test(): void {}}
+
+            new A()->test();
+            (new A)->test();
+            ',
+            '<?php
+            class A {public function test(): void {}}
+
+            new A()->test();
+            (new A())->test();
+            ',
+            ['anonymous_class' => false, 'named_class' => false]
+        ];
+
+    }
+
 }
