@@ -55,12 +55,10 @@ use PhpCsFixer\Tests\Fixer\Import\SingleImportPerStatementFixerTest;
 use PhpCsFixer\Tests\Fixer\LanguageConstruct\FunctionToConstantFixerTest;
 use PhpCsFixer\Tests\Fixer\LanguageConstruct\SingleSpaceAroundConstructFixerTest;
 use PhpCsFixer\Tests\Fixer\ListNotation\ListSyntaxFixerTest;
-use PhpCsFixer\Tests\Fixer\NamespaceNotation\BlankLinesBeforeNamespaceFixerTest;
 use PhpCsFixer\Tests\Fixer\Operator\BinaryOperatorSpacesFixerTest;
 use PhpCsFixer\Tests\Fixer\Operator\ConcatSpaceFixerTest;
 use PhpCsFixer\Tests\Fixer\Operator\IncrementStyleFixerTest;
 use PhpCsFixer\Tests\Fixer\Operator\NewWithParenthesesFixerTest;
-use PhpCsFixer\Tests\Fixer\Operator\NoUselessConcatOperatorFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\AlignMultilineCommentFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\GeneralPhpdocTagRenameFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\NoBlankLinesAfterPhpdocFixerTest;
@@ -84,7 +82,6 @@ use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixerTest;
 use PhpCsFixer\Tests\Fixer\ReturnNotation\ReturnAssignmentFixerTest;
 use PhpCsFixer\Tests\Fixer\Semicolon\MultilineWhitespaceBeforeSemicolonsFixerTest;
 use PhpCsFixer\Tests\Fixer\Semicolon\NoEmptyStatementFixerTest;
-use PhpCsFixer\Tests\Fixer\Semicolon\SemicolonAfterInstructionFixerTest;
 use PhpCsFixer\Tests\Fixer\Semicolon\SpaceAfterSemicolonFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\BlankLineBeforeStatementFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\IndentationTypeFixerTest;
@@ -449,7 +446,6 @@ abstract class AbstractFixerTestCase extends TestCase
             AlignMultilineCommentFixerTest::class,
             BinaryOperatorSpacesFixerTest::class,
             BlankLineBeforeStatementFixerTest::class,
-            BlankLinesBeforeNamespaceFixerTest::class,
             ClassAttributesSeparationFixerTest::class,
             ClassDefinitionFixerTest::class,
             ConcatSpaceFixerTest::class,
@@ -477,7 +473,6 @@ abstract class AbstractFixerTestCase extends TestCase
             NoEmptyStatementFixerTest::class,
             NoSpacesAroundOffsetFixerTest::class,
             NoUnneededControlParenthesesFixerTest::class,
-            NoUselessConcatOperatorFixerTest::class,
             NoUselessElseFixerTest::class,
             PhpdocAddMissingParamAnnotationFixerTest::class,
             PhpdocNoEmptyReturnFixerTest::class,
@@ -496,7 +491,6 @@ abstract class AbstractFixerTestCase extends TestCase
             PhpUnitTestCaseStaticMethodCallsFixerTest::class,
             ReturnAssignmentFixerTest::class,
             ReturnTypeDeclarationFixerTest::class,
-            SemicolonAfterInstructionFixerTest::class,
             SingleImportPerStatementFixerTest::class,
             SingleLineCommentStyleFixerTest::class,
             SingleSpaceAroundConstructFixerTest::class,
