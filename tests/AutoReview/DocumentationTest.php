@@ -58,7 +58,8 @@ final class DocumentationTest extends TestCase
         self::assertFileExists($path);
 
         $expected = $generator->generateFixerDocumentation($fixer);
-        $actual = (string) file_get_contents($path);
+        $actual = file_get_contents($path);
+        assert($actual !== false);
 
         $expected = Preg::replaceCallback(
             '/
