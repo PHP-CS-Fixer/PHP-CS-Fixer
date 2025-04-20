@@ -51,6 +51,17 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *  single_line: bool,
  *  space_before_parenthesis: bool,
  * }
+ * @phpstan-type _ClassyDefinitionInfo array{
+ *      start: int,
+ *      classy: int,
+ *      open: int,
+ *      extends: false|_ClassExtendsInfo,
+ *      implements: false|_ClassImplementsInfo,
+ *      anonymousClass: bool,
+ *      final: false|int,
+ *      abstract: false|int,
+ *      readonly: false|int,
+ *  }
  */
 final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
@@ -206,9 +217,9 @@ $foo = new class(){};
 
         $classDefInfo['open'] = $this->fixClassyDefinitionOpenSpacing($tokens, $classDefInfo);
 
-        if ($classDefInfo['implements']) {
+        if (false !== $classDefInfo['implements']) {
             $end = $classDefInfo['implements']['start'];
-        } elseif ($classDefInfo['extends']) {
+        } elseif (false !== $classDefInfo['extends']) {
             $end = $classDefInfo['extends']['start'];
         } else {
             $end = $tokens->getPrevNonWhitespace($classDefInfo['open']);
@@ -279,17 +290,7 @@ $foo = new class(){};
     }
 
     /**
-     * @param array{
-     *      start: int,
-     *      classy: int,
-     *      open: int,
-     *      extends: false|_ClassExtendsInfo,
-     *      implements: false|_ClassImplementsInfo,
-     *      anonymousClass: bool,
-     *      final: false|int,
-     *      abstract: false|int,
-     *      readonly: false|int,
-     *  } $classDefInfo
+     * @param _ClassyDefinitionInfo $classDefInfo
      */
     private function fixClassyDefinitionOpenSpacing(Tokens $tokens, array $classDefInfo): int
     {
@@ -325,17 +326,7 @@ $foo = new class(){};
     }
 
     /**
-     * @return array{
-     *     start: int,
-     *     classy: int,
-     *     open: int,
-     *     extends: false|_ClassExtendsInfo,
-     *     implements: false|_ClassImplementsInfo,
-     *     anonymousClass: bool,
-     *     final: false|int,
-     *     abstract: false|int,
-     *     readonly: false|int,
-     * }
+     * @return _ClassyDefinitionInfo
      */
     private function getClassyDefinitionInfo(Tokens $tokens, int $classyIndex): array
     {
@@ -385,28 +376,33 @@ $foo = new class(){};
     }
 
     /**
-     * @return array<string, 1>|array{start: int, multiLine: bool}
+     * @param 'numberOfExtends'|'numberOfImplements' $label
+     *
+     * @return ($label is 'numberOfExtends' ? _ClassExtendsInfo : _ClassImplementsInfo)
      */
     private function getClassyInheritanceInfo(Tokens $tokens, int $startIndex, string $label): array
     {
-        $implementsInfo = ['start' => $startIndex, $label => 1, 'multiLine' => false];
+        $start = $startIndex;
+        $count = 1;
+        $multiline = false;
+
         ++$startIndex;
         $endIndex = $tokens->getNextTokenOfKind($startIndex, ['{', [T_IMPLEMENTS], [T_EXTENDS]]);
         $endIndex = $tokens[$endIndex]->equals('{') ? $tokens->getPrevNonWhitespace($endIndex) : $endIndex;
 
         for ($i = $startIndex; $i < $endIndex; ++$i) {
             if ($tokens[$i]->equals(',')) {
-                ++$implementsInfo[$label];
+                ++$count;
 
                 continue;
             }
 
-            if (!$implementsInfo['multiLine'] && str_contains($tokens[$i]->getContent(), "\n")) {
-                $implementsInfo['multiLine'] = true;
+            if (!$multiline && str_contains($tokens[$i]->getContent(), "\n")) {
+                $multiline = true;
             }
         }
 
-        return $implementsInfo;
+        return ['start' => $start, $label => $count, 'multiLine' => $multiline];
     }
 
     private function makeClassyDefinitionSingleLine(Tokens $tokens, int $startIndex, int $endIndex): void
