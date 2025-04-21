@@ -59,7 +59,7 @@ final class DocumentationTest extends TestCase
 
         $expected = $generator->generateFixerDocumentation($fixer);
         $actual = file_get_contents($path);
-        assert($actual !== false);
+        \assert(false !== $actual);
 
         $expected = Preg::replaceCallback(
             '/
