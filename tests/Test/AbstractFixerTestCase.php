@@ -58,7 +58,6 @@ use PhpCsFixer\Tests\Fixer\ListNotation\ListSyntaxFixerTest;
 use PhpCsFixer\Tests\Fixer\Operator\BinaryOperatorSpacesFixerTest;
 use PhpCsFixer\Tests\Fixer\Operator\ConcatSpaceFixerTest;
 use PhpCsFixer\Tests\Fixer\Operator\IncrementStyleFixerTest;
-use PhpCsFixer\Tests\Fixer\Operator\NewWithParenthesesFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\AlignMultilineCommentFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\GeneralPhpdocTagRenameFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\NoBlankLinesAfterPhpdocFixerTest;
@@ -465,7 +464,6 @@ abstract class AbstractFixerTestCase extends TestCase
             MethodArgumentSpaceFixerTest::class,
             MultilineWhitespaceBeforeSemicolonsFixerTest::class,
             NativeConstantInvocationFixerTest::class,
-            NewWithParenthesesFixerTest::class,
             NoBlankLinesAfterPhpdocFixerTest::class,
             NoBreakCommentFixerTest::class,
             NoClosingTagFixerTest::class,
