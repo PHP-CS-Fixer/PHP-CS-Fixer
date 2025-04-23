@@ -553,6 +553,9 @@ final class FixerFactoryTest extends TestCase
                 'heredoc_indentation',
                 'string_implicit_backslashes',
             ],
+            'multiline_promoted_properties' => [
+                'trailing_comma_in_multiline',
+            ],
             'multiline_whitespace_before_semicolons' => [
                 'space_after_semicolon',
             ],
