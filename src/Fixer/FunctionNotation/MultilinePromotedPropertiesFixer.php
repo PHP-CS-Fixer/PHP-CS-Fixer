@@ -92,7 +92,7 @@ final class MultilinePromotedPropertiesFixer extends AbstractFixer implements Co
     /**
      * {@inheritdoc}
      *
-     * Must run before TrailingCommaInMultilineFixer.
+     * Must run before BracesPositionFixer, TrailingCommaInMultilineFixer.
      */
     public function getPriority(): int
     {
