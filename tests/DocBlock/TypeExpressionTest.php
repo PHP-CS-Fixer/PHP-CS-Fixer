@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\DocBlock;
 
 use PhpCsFixer\DocBlock\TypeExpression;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
@@ -56,7 +57,7 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideGetConstTypesCases(): iterable
     {
@@ -105,7 +106,7 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: null|list<string>}>
+     * @return iterable<int, array{0: string, 1?: null|list<string>}>
      */
     public static function provideGetTypesCases(): iterable
     {
@@ -339,7 +340,7 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @return iterable<int|string, array{string}>
+     * @return iterable<array{string}>
      */
     public static function provideParseInvalidExceptionCases(): iterable
     {
@@ -497,7 +498,7 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: null|'&'|'|', 1: string}>
+     * @return iterable<int, array{0: null|'&'|'|', 1: string}>
      */
     public static function provideGetTypesGlueCases(): iterable
     {
@@ -519,7 +520,7 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: bool, 1: string}>
+     * @return iterable<int, array{0: bool, 1: string}>
      */
     public static function provideIsCompositeTypeCases(): iterable
     {
@@ -545,7 +546,7 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: bool, 1: string}>
+     * @return iterable<int, array{0: bool, 1: string}>
      */
     public static function provideIsUnionTypeCases(): iterable
     {
@@ -577,7 +578,7 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: bool, 1: string}>
+     * @return iterable<int, array{0: bool, 1: string}>
      */
     public static function provideIsIntersectionTypeCases(): iterable
     {
@@ -603,6 +604,9 @@ final class TypeExpressionTest extends TestCase
         self::assertSame($expectedCommonType, $expression->getCommonType());
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1: null|string, 2?: null|NamespaceAnalysis, 3?: list<NamespaceUseAnalysis>}>
+     */
     public static function provideGetCommonTypeCases(): iterable
     {
         $globalNamespace = new NamespaceAnalysis('', '', 0, 999, 0, 999);
@@ -742,7 +746,7 @@ final class TypeExpressionTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, bool}>
+     * @return iterable<int, array{string, bool}>
      */
     public static function provideAllowsNullCases(): iterable
     {
@@ -1198,7 +1202,7 @@ final class TypeExpressionTest extends TestCase
         // pruned in FIFO fashion, so to clear the cache, replace all existing
         // cache slots with dummy regexes
         for ($i = 0; $i < 4_096; ++$i) {
-            preg_match('/^'.$i.'/', '');
+            Preg::match('/^'.$i.'/', '');
         }
     }
 

@@ -62,6 +62,9 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
         }
     }
 
+    /**
+     * @return iterable<int, array{string, list<int>, bool}>
+     */
     public static function provideIsShortArrayCases(): iterable
     {
         yield ['<?php $a=[];', [3], false];
@@ -102,6 +105,9 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
         );
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: _TransformerTestExpectedTokens}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield 'Array offset only.' => [
@@ -401,27 +407,7 @@ class Test
                 18 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
             ],
         ];
-    }
 
-    /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
-     *
-     * @dataProvider provideProcess72Cases
-     */
-    public function testProcess72(string $source, array $expectedTokens): void
-    {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            [
-                CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-            ]
-        );
-    }
-
-    public static function provideProcess72Cases(): iterable
-    {
         yield [
             '<?php [&$a, $b] = $a;',
             [

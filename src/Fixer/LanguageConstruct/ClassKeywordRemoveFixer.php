@@ -97,7 +97,7 @@ $className = Baz::class;
             }
 
             $import = '';
-            while ($index = $tokens->getNextMeaningfulToken($index)) {
+            while (($index = $tokens->getNextMeaningfulToken($index)) !== null) {
                 if ($tokens[$index]->equalsAny([';', [CT::T_GROUP_IMPORT_BRACE_OPEN]]) || $tokens[$index]->isGivenKind(T_AS)) {
                     break;
                 }

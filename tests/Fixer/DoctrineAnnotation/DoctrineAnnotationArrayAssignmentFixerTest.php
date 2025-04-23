@@ -47,7 +47,7 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string}>
+     * @return iterable<int, array{0: string, 1?: null|string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -114,7 +114,7 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string}>
+     * @return iterable<int, array{0: string, 1?: null|string}>
      */
     public static function provideFixWithColonCases(): iterable
     {
@@ -183,7 +183,7 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFix81Cases(): iterable
     {
@@ -230,6 +230,57 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
      */
     readonly Foo $foo;
 }',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield 'asymmetric visibility' => [
+            <<<'PHP'
+                <?php class Entity {
+                    /**
+                     * @Foo({foo = "foo"})
+                     */
+                    public public(set) Foo $foo;
+                    /**
+                     * @Bar({bar = "bar"})
+                     */
+                    public protected(set) Bar $bar;
+                    /**
+                     * @Baz({baz = "baz"})
+                     */
+                    protected private(set) Baz $baz;
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Entity {
+                    /**
+                     * @Foo({foo : "foo"})
+                     */
+                    public public(set) Foo $foo;
+                    /**
+                     * @Bar({bar : "bar"})
+                     */
+                    public protected(set) Bar $bar;
+                    /**
+                     * @Baz({baz : "baz"})
+                     */
+                    protected private(set) Baz $baz;
+                }
+                PHP,
         ];
     }
 }

@@ -21,7 +21,6 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @internal
  *
- * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
  * @covers \PhpCsFixer\Fixer\Alias\MbStrFunctionsFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\MbStrFunctionsFixer>
@@ -37,7 +36,7 @@ final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -83,6 +82,27 @@ final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
         yield [
             '<?php $a = mb_str_split($a);',
             '<?php $a = str_split($a);',
+        ];
+
+        yield [
+            <<<'PHP'
+                <?php
+                namespace Foo;
+                use function Bar\strlen;
+                use function mb_strtolower;
+                use function mb_strtoupper;
+                use function \mb_str_split;
+                return strlen($x) > 10 ? mb_strtolower($x) : mb_strtoupper($x);
+                PHP,
+            <<<'PHP'
+                <?php
+                namespace Foo;
+                use function Bar\strlen;
+                use function strtolower;
+                use function strtoupper;
+                use function \str_split;
+                return strlen($x) > 10 ? strtolower($x) : strtoupper($x);
+                PHP,
         ];
     }
 

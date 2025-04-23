@@ -3,6 +3,90 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.75.0
+---------------------
+
+* feat: `ClassAttributesSeparationFixer` - add support for asymmetric visibility (#8518)
+* fix: `NativeFunctionInvocationFixer` - fix for property hooks (#8540)
+* chore: add return types for data providers for fixers (#8542)
+* chore: add return types for data providers for non-fixers (#8543)
+* chore: add return types for remaining data providers (#8544)
+* chore: make data providers key type `int` if all the keys are strings (#8550)
+* chore: make data providers key type `string` if all the keys are strings (#8545)
+* chore: SwitchContinueToBreakFixerTest - improve test case descriptions/typehint (#8546)
+* chore: `FunctionsAnalyzerTest` cleanup (#8539)
+* deps: bump the phpstan group in /dev-tools with 2 updates (#8537)
+* test: ProjectCodeTest::testDataProvidersDeclaredReturnType - allow for int as iterable keys (#8548)
+
+Changelog for v3.74.0
+---------------------
+
+* feat: add `--format=@auto` (#8513)
+* fix: `BracesPositionFixer` - do not create two consecutive whitespace tokens (#8496)
+* fix: `MbStrFunctionsFixer` - fix imports with leading backslash (#8507)
+* fix: `NoUnreachableDefaultArgumentValueFixer` - do not crash on property hook (#8512)
+* fix: `OrderedImportsFixer` - do not take the braces part in grouped imports into account (#8459)
+* fix: `OrderedImportsFixer` - fix syntax error with grouped use statement and multiple use with comma (#8483)
+* fix: `PhpUnitAttributesFixer` - handle parentheses after data provider method name (#8510)
+* fix: `PhpUnitMethodCasingFixer` - do not touch anonymous class (#8463)
+* chore: make options that have default and allowed sets the same size the same array (#8529)
+* chore: update return type of `FixerOptionInterface::getAllowedValues` (#8530)
+* chore: `Preg` - improve types (#8527)
+* CI: fix code coverage job (#8520)
+* CI: try MacOS job without ParaUnit (#8528)
+* deps: update PHPStan (#8531)
+* deps: upgrade `PHPStan/*` (#8524)
+
+Changelog for v3.73.1
+---------------------
+
+* fix: `OrderedClassElementsFixer` - do not crash on property hook (#8517)
+
+Changelog for v3.73.0
+---------------------
+
+* feat: add support for asymmetric visibility to Doctrine's fixers (#8415)
+* fix: `GeneralPhpdocTagRenameFixer` - do not rename keys in array shape definition (#8477)
+* fix: `MethodArgumentSpaceFixer` - handle when nested in HTML (#8503)
+* chore: update `checkbashisms` to 2.25.5 (#8519)
+* DX: cleanup `NoExtraBlankLinesFixerTest` (#8505)
+* DX: for duplicated test methods check methods without parameters (#8508)
+* DX: remove more duplicated test methods (#8506)
+* refactor: `Tokenizer` hash metode using `xxHash` (#8491)
+* refactor: `TokensAnalyzerTest` - better test `isArray` and `isArrayMultiLine` (#8504)
+* test: run code coverage on PHP 8.4 (#8448)
+
+Changelog for v3.72.0
+---------------------
+
+* feat: `StatementIndentationFixer` - handle property hooks (#8492)
+* fix: `MbStrFunctionsFixer` - fix imports (#8474)
+* fix: `TrailingCommaInMultilineFixer` - handle empty match body (#8480)
+* fix: `VisibilityRequiredFixer` - handle property hooks (#8495)
+* deps: upgrade few dev-deps (#8490)
+* deps: Upgrade PHPStan to 2.1.8 (#8489)
+* DX: add trailing comma to multiline auto-generated types (#8499)
+* refactor: generalize CodeHasher into Hasher (#8500)
+* refactor: Runner - unify paths used when using parallel runner (#8488)
+* refactor: use Hasher instead of md5 directly (#8501)
+
+Changelog for v3.71.0
+---------------------
+
+* feat: OrderedImportsFixer - deprecate length sorting algorithm (#8473)
+* fix: `BinaryOperatorSpacesFixer` - do not break alignment of UTF-8 array keys (#8484)
+* fix: `PhpdocAlignFixer` - align correctly type with UTF8 characters (#8486)
+* fix: `SingleSpaceAroundConstructFixer` - handle alternative syntax (#8317)
+* fix: `StatementIndentationFixer` - return in braceless if (#8479)
+* chore: update type in `SingleSpaceAroundConstructFixerTest::provideFixWithElseIfCases` (#8481)
+* chore: update type in `SingleSpaceAroundConstructFixerTest::provideFixWithIfCases` (#8482)
+* deps: bump phpstan/phpstan from 2.1.6 to 2.1.7 in /dev-tools in the phpstan group (#8485)
+* DX: cleanup `PhpdocNoAliasTagFixerTest` (#8476)
+* refactor: add `FullyQualifiedNameAnalyzer` (#8048)
+* refactor: codeHash - update when it's (re-)generated (#8470)
+* refactor: `SwitchAnalyzer` - improve performance (#8407)
+* test: NameQualifiedTransformerTest - correct test case (#8471)
+
 Changelog for v3.70.2
 ---------------------
 

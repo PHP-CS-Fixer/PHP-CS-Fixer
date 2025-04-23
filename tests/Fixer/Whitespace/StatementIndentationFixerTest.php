@@ -40,7 +40,7 @@ final class StatementIndentationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: ?string, 2?: array<string, mixed>}>
+     * @return iterable<string, array{0: string, 1?: ?string, 2?: array<string, mixed>}>
      */
     public static function provideFixCases(): iterable
     {
@@ -1478,6 +1478,17 @@ $foo = [
                 }
                 PHP,
         ];
+
+        yield 'braceless if with return' => [
+            <<<'PHP'
+                <?php
+                if (1 == 2)
+                    return;
+
+                if (1 == 2)
+                    return false;
+                PHP,
+        ];
     }
 
     /**
@@ -1493,7 +1504,7 @@ $foo = [
     }
 
     /**
-     * @return iterable<array{0: string, 1?: ?string, 2?: array<string, mixed>}>
+     * @return iterable<string, array{0: string, 1?: ?string, 2?: array<string, mixed>}>
      */
     public static function provideFixWithTabsCases(): iterable
     {
@@ -1525,7 +1536,7 @@ if ($foo) {
     }
 
     /**
-     * @return iterable<array{0: string, 1?: ?string, 2?: array<string, mixed>}>
+     * @return iterable<string, array{0: string, 1?: ?string, 2?: array<string, mixed>}>
      */
     public static function provideFixPhp80Cases(): iterable
     {
@@ -1598,7 +1609,7 @@ class Foo {
     }
 
     /**
-     * @return iterable<array{0: string, 1?: ?string, 2?: array<string, mixed>}>
+     * @return iterable<string, array{0: string, 1?: ?string, 2?: array<string, mixed>}>
      */
     public static function provideFixPhp81Cases(): iterable
     {
@@ -1672,6 +1683,45 @@ class Foo
   readonly public
        int $bar;
 }',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPhp84Cases
+     *
+     * @requires PHP >= 8.4
+     */
+    public function testFixPhp84(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: ?string}>
+     */
+    public static function provideFixPhp84Cases(): iterable
+    {
+        yield 'property hooks' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public int $i {
+                        set {
+                            $this->i = max($value, 0);
+                        }
+                    }
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public int $i {
+                        set {
+                            $this->i = max($value, 0);
+                            }
+                    }
+                }
+                PHP,
         ];
     }
 }

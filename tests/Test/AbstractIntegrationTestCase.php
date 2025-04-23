@@ -371,7 +371,14 @@ abstract class AbstractIntegrationTestCase extends TestCase
         $errorStr = '';
         foreach ($errors as $error) {
             $source = $error->getSource();
-            $errorStr .= \sprintf("%d: %s%s\n", $error->getType(), $error->getFilePath(), null === $source ? '' : ' '.$source->getMessage()."\n\n".$source->getTraceAsString());
+            $errorStr .= \sprintf(
+                "\n\n[%s] %s\n\nDIFF:\n\n%s\n\nAPPLIED FIXERS:\n\n%s\n\nSTACKTRACE:\n\n%s\n",
+                $error->getFilePath(),
+                null === $source ? '' : $source->getMessage(),
+                $error->getDiff(),
+                implode(', ', $error->getAppliedFixers()),
+                $source->getTraceAsString()
+            );
         }
 
         return $errorStr;

@@ -44,6 +44,9 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
         );
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: _TransformerTestExpectedTokens}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield [
@@ -132,15 +135,12 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
      */
     public function testProcess80(array $expectedTokens, string $source): void
     {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            [
-                CT::T_NULLABLE_TYPE,
-            ]
-        );
+        $this->testProcess($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<int, array{_TransformerTestExpectedTokens, string}>
+     */
     public static function provideProcess80Cases(): iterable
     {
         yield [
@@ -181,15 +181,12 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
      */
     public function testProcess81(array $expectedTokens, string $source): void
     {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            [
-                CT::T_NULLABLE_TYPE,
-            ]
-        );
+        $this->testProcess($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<int, array{_TransformerTestExpectedTokens, string}>
+     */
     public static function provideProcess81Cases(): iterable
     {
         yield [
@@ -221,15 +218,12 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
      */
     public function testProcess83(array $expectedTokens, string $source): void
     {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            [
-                CT::T_NULLABLE_TYPE,
-            ]
-        );
+        $this->testProcess($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<string, array{_TransformerTestExpectedTokens, string}>
+     */
     public static function provideProcess83Cases(): iterable
     {
         yield 'nullable class constant' => [

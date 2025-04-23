@@ -21,6 +21,7 @@ use PhpCsFixer\Cache\DirectoryInterface;
 use PhpCsFixer\Cache\FileCacheManager;
 use PhpCsFixer\Cache\FileHandlerInterface;
 use PhpCsFixer\Cache\SignatureInterface;
+use PhpCsFixer\Hasher;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -101,7 +102,7 @@ final class FileCacheManagerTest extends TestCase
 
         $cachedSignature = $this->createSignatureDouble(true);
         $signature = $this->createSignatureDouble(true);
-        $cache = $this->createCacheDouble($cachedSignature, [$file => md5('<?php echo "Hello, old world!";')]);
+        $cache = $this->createCacheDouble($cachedSignature, [$file => Hasher::calculate('<?php echo "Hello, old world!";')]);
         $handler = $this->createFileHandlerDouble($cache, $this->getFile());
 
         $manager = new FileCacheManager($handler, $signature);
@@ -116,7 +117,7 @@ final class FileCacheManagerTest extends TestCase
 
         $cachedSignature = $this->createSignatureDouble(true);
         $signature = $this->createSignatureDouble(true);
-        $cache = $this->createCacheDouble($cachedSignature, [$file => md5($fileContent)]);
+        $cache = $this->createCacheDouble($cachedSignature, [$file => Hasher::calculate($fileContent)]);
         $handler = $this->createFileHandlerDouble($cache, $this->getFile());
 
         $manager = new FileCacheManager($handler, $signature);
@@ -134,7 +135,7 @@ final class FileCacheManagerTest extends TestCase
         $cachedSignature = $this->createSignatureDouble(true);
         $signature = $this->createSignatureDouble(true);
 
-        $cache = $this->createCacheDouble($cachedSignature, [$relativePathToFile => md5('<?php echo "Old!"')]);
+        $cache = $this->createCacheDouble($cachedSignature, [$relativePathToFile => Hasher::calculate('<?php echo "Old!"')]);
         $handler = $this->createFileHandlerDouble($cache, $this->getFile());
 
         $manager = new FileCacheManager($handler, $signature, false, $directory);
@@ -162,7 +163,7 @@ final class FileCacheManagerTest extends TestCase
         unset($manager);
 
         self::assertTrue($cache->has($file));
-        self::assertSame(md5($fileContent), $cache->get($file));
+        self::assertSame(Hasher::calculate($fileContent), $cache->get($file));
         self::assertSame(1, AccessibleObject::create($handler)->writeCallCount);
     }
 
@@ -186,7 +187,7 @@ final class FileCacheManagerTest extends TestCase
         $manager->setFile($file, $fileContent);
 
         self::assertTrue($cache->has($file));
-        self::assertSame(md5($fileContent), $cache->get($file));
+        self::assertSame(Hasher::calculate($fileContent), $cache->get($file));
     }
 
     public function testSetFileClearsHashDuringDryRunIfCachedHashIsDifferent(): void
@@ -200,7 +201,7 @@ final class FileCacheManagerTest extends TestCase
         $cachedSignature = $this->createSignatureDouble(true);
         $signature = $this->createSignatureDouble(true);
 
-        $cache = $this->createCacheDouble($cachedSignature, [$file => md5($previousFileContent)]);
+        $cache = $this->createCacheDouble($cachedSignature, [$file => Hasher::calculate($previousFileContent)]);
         $handler = $this->createFileHandlerDouble($cache, $cacheFile);
 
         $manager = new FileCacheManager($handler, $signature, $isDryRun);
@@ -229,7 +230,7 @@ final class FileCacheManagerTest extends TestCase
         $manager->setFile($file, $fileContent);
 
         self::assertTrue($cache->has($relativePathToFile));
-        self::assertSame(md5($fileContent), $cache->get($relativePathToFile));
+        self::assertSame(Hasher::calculate($fileContent), $cache->get($relativePathToFile));
     }
 
     private function getFile(): string

@@ -16,10 +16,13 @@ namespace PhpCsFixer\Tests\Test;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\AbstractProxyFixer;
+use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
@@ -46,24 +49,19 @@ use PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationIndentationFixer
 use PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\FunctionDeclarationFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\MethodArgumentSpaceFixerTest;
-use PhpCsFixer\Tests\Fixer\FunctionNotation\NativeFunctionInvocationFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\ReturnTypeDeclarationFixerTest;
 use PhpCsFixer\Tests\Fixer\Import\GlobalNamespaceImportFixerTest;
 use PhpCsFixer\Tests\Fixer\Import\SingleImportPerStatementFixerTest;
 use PhpCsFixer\Tests\Fixer\LanguageConstruct\FunctionToConstantFixerTest;
 use PhpCsFixer\Tests\Fixer\LanguageConstruct\SingleSpaceAroundConstructFixerTest;
 use PhpCsFixer\Tests\Fixer\ListNotation\ListSyntaxFixerTest;
-use PhpCsFixer\Tests\Fixer\NamespaceNotation\BlankLinesBeforeNamespaceFixerTest;
 use PhpCsFixer\Tests\Fixer\Operator\BinaryOperatorSpacesFixerTest;
 use PhpCsFixer\Tests\Fixer\Operator\ConcatSpaceFixerTest;
 use PhpCsFixer\Tests\Fixer\Operator\IncrementStyleFixerTest;
-use PhpCsFixer\Tests\Fixer\Operator\NewWithParenthesesFixerTest;
-use PhpCsFixer\Tests\Fixer\Operator\NoUselessConcatOperatorFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\AlignMultilineCommentFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\GeneralPhpdocTagRenameFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\NoBlankLinesAfterPhpdocFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocAddMissingParamAnnotationFixerTest;
-use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoAliasTagFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoEmptyReturnFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoPackageFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocOrderByValueFixerTest;
@@ -83,11 +81,9 @@ use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixerTest;
 use PhpCsFixer\Tests\Fixer\ReturnNotation\ReturnAssignmentFixerTest;
 use PhpCsFixer\Tests\Fixer\Semicolon\MultilineWhitespaceBeforeSemicolonsFixerTest;
 use PhpCsFixer\Tests\Fixer\Semicolon\NoEmptyStatementFixerTest;
-use PhpCsFixer\Tests\Fixer\Semicolon\SemicolonAfterInstructionFixerTest;
 use PhpCsFixer\Tests\Fixer\Semicolon\SpaceAfterSemicolonFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\BlankLineBeforeStatementFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\IndentationTypeFixerTest;
-use PhpCsFixer\Tests\Fixer\Whitespace\NoExtraBlankLinesFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\NoSpacesAroundOffsetFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\SpacesInsideParenthesesFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\StatementIndentationFixerTest;
@@ -107,21 +103,21 @@ abstract class AbstractFixerTestCase extends TestCase
 {
     use AssertTokensTrait;
 
+    /**
+     * do not modify this structure without prior discussion.
+     *
+     * @var array<string, array<string, bool>>
+     */
+    private const ALLOWED_REQUIRED_OPTIONS = [
+        'header_comment' => ['header' => true],
+    ];
+
     protected ?LinterInterface $linter = null;
 
     /**
      * @var null|TFixer
      */
     protected ?FixerInterface $fixer = null;
-
-    /**
-     * do not modify this structure without prior discussion.
-     *
-     * @var array<string, array<string, bool>>
-     */
-    private array $allowedRequiredOptions = [
-        'header_comment' => ['header' => true],
-    ];
 
     /**
      * do not modify this structure without prior discussion.
@@ -267,7 +263,7 @@ abstract class AbstractFixerTestCase extends TestCase
             if (isset($configSamplesProvided['default'])) {
                 self::assertSame('default', array_key_first($configSamplesProvided), \sprintf('[%s] First sample must be for the default configuration.', $fixerName));
             } elseif (!isset($this->allowedFixersWithoutDefaultCodeSample[$fixerName])) {
-                self::assertArrayHasKey($fixerName, $this->allowedRequiredOptions, \sprintf('[%s] Has no sample for default configuration.', $fixerName));
+                self::assertArrayHasKey($fixerName, self::ALLOWED_REQUIRED_OPTIONS, \sprintf('[%s] Has no sample for default configuration.', $fixerName));
             }
 
             if (\count($configSamplesProvided) < 2) {
@@ -434,26 +430,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
         foreach ($configurationDefinition->getOptions() as $option) {
             self::assertInstanceOf(FixerOptionInterface::class, $option);
-            self::assertNotEmpty($option->getDescription());
-            self::assertValidDescription($this->fixer->getName(), 'option:'.$option->getName(), $option->getDescription());
-
-            self::assertSame(
-                !isset($this->allowedRequiredOptions[$this->fixer->getName()][$option->getName()]),
-                $option->hasDefault(),
-                \sprintf(
-                    $option->hasDefault()
-                        ? 'Option `%s` of fixer `%s` is wrongly listed in `$allowedRequiredOptions` structure, as it is not required. If you just changed that option to not be required anymore, please adjust mentioned structure.'
-                        : 'Option `%s` of fixer `%s` shall not be required. If you want to introduce new required option please adjust `$allowedRequiredOptions` structure.',
-                    $option->getName(),
-                    $this->fixer->getName()
-                )
-            );
-
-            self::assertStringNotContainsString(
-                'DEPRECATED',
-                $option->getDescription(),
-                'Option description cannot contain word "DEPRECATED"'
-            );
+            self::assertOption($option, $this->fixer);
         }
     }
 
@@ -468,7 +445,6 @@ abstract class AbstractFixerTestCase extends TestCase
             AlignMultilineCommentFixerTest::class,
             BinaryOperatorSpacesFixerTest::class,
             BlankLineBeforeStatementFixerTest::class,
-            BlankLinesBeforeNamespaceFixerTest::class,
             ClassAttributesSeparationFixerTest::class,
             ClassDefinitionFixerTest::class,
             ConcatSpaceFixerTest::class,
@@ -488,20 +464,15 @@ abstract class AbstractFixerTestCase extends TestCase
             MethodArgumentSpaceFixerTest::class,
             MultilineWhitespaceBeforeSemicolonsFixerTest::class,
             NativeConstantInvocationFixerTest::class,
-            NativeFunctionInvocationFixerTest::class,
-            NewWithParenthesesFixerTest::class,
             NoBlankLinesAfterPhpdocFixerTest::class,
             NoBreakCommentFixerTest::class,
             NoClosingTagFixerTest::class,
             NoEmptyCommentFixerTest::class,
             NoEmptyStatementFixerTest::class,
-            NoExtraBlankLinesFixerTest::class,
             NoSpacesAroundOffsetFixerTest::class,
             NoUnneededControlParenthesesFixerTest::class,
-            NoUselessConcatOperatorFixerTest::class,
             NoUselessElseFixerTest::class,
             PhpdocAddMissingParamAnnotationFixerTest::class,
-            PhpdocNoAliasTagFixerTest::class,
             PhpdocNoEmptyReturnFixerTest::class,
             PhpdocNoPackageFixerTest::class,
             PhpdocOrderByValueFixerTest::class,
@@ -518,7 +489,6 @@ abstract class AbstractFixerTestCase extends TestCase
             PhpUnitTestCaseStaticMethodCallsFixerTest::class,
             ReturnAssignmentFixerTest::class,
             ReturnTypeDeclarationFixerTest::class,
-            SemicolonAfterInstructionFixerTest::class,
             SingleImportPerStatementFixerTest::class,
             SingleLineCommentStyleFixerTest::class,
             SingleSpaceAroundConstructFixerTest::class,
@@ -528,7 +498,7 @@ abstract class AbstractFixerTestCase extends TestCase
             YodaStyleFixerTest::class,
         ];
 
-        $names = ['Fix', 'Fix74Deprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'WithWhitespacesConfig', 'InvalidConfiguration'];
+        $names = ['Fix', 'FixDeprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'WithWhitespacesConfig', 'InvalidConfiguration'];
         $methodNames = ['testConfigure'];
         foreach ($names as $name) {
             $methodNames[] = 'test'.$name;
@@ -561,6 +531,39 @@ abstract class AbstractFixerTestCase extends TestCase
             [],
             $extraMethods,
             \sprintf('Methods "%s" should not be present in %s.', implode('". "', $extraMethods), static::class),
+        );
+    }
+
+    public function testImplementingWhitespacesAwareFixerInterface(): void
+    {
+        $tokens = Tokens::fromCode((string) file_get_contents((string) $this->getFixerReflection()->getFileName()));
+
+        if ($this->fixer instanceof AbstractPhpUnitFixer) {
+            // AbstractPhpUnitFixer is using `$this->whitespacesConfig` and we cannot verify it is needed for the child class
+            $this->addToAssertionCount(1);
+
+            return;
+        }
+
+        if ($this->fixer instanceof AbstractProxyFixer) {
+            self::assertSame(
+                array_any(
+                    \Closure::bind(static fn (AbstractProxyFixer $fixer): array => $fixer->createProxyFixers(), null, AbstractProxyFixer::class)($this->fixer),
+                    static fn (FixerInterface $fixer): bool => $fixer instanceof WhitespacesAwareFixerInterface,
+                ),
+                $this->fixer instanceof WhitespacesAwareFixerInterface,
+            );
+
+            return;
+        }
+
+        self::assertSame(
+            null !== $tokens->findSequence([
+                [T_VARIABLE, '$this'],
+                [T_OBJECT_OPERATOR],
+                [T_STRING, 'whitespacesConfig'],
+            ]),
+            $this->fixer instanceof WhitespacesAwareFixerInterface,
         );
     }
 
@@ -707,6 +710,55 @@ abstract class AbstractFixerTestCase extends TestCase
         self::assertFalse(strpos($descriptionType, '``'), \sprintf('[%s] The %s must no contain sequential backticks.', $fixerName, $descriptionType));
     }
 
+    private static function assertOption(FixerOptionInterface $option, FixerInterface $fixer): void
+    {
+        self::assertNotEmpty($option->getDescription());
+        self::assertValidDescription($fixer->getName(), 'option:'.$option->getName(), $option->getDescription());
+
+        self::assertSame(
+            !isset(self::ALLOWED_REQUIRED_OPTIONS[$fixer->getName()][$option->getName()]),
+            $option->hasDefault(),
+            \sprintf(
+                $option->hasDefault()
+                    ? 'Option `%s` of fixer `%s` is wrongly listed in `ALLOWED_REQUIRED_OPTIONS` structure, as it is not required. If you just changed that option to not be required anymore, please adjust mentioned structure.'
+                    : 'Option `%s` of fixer `%s` shall not be required. If you want to introduce new required option please adjust `ALLOWED_REQUIRED_OPTIONS` structure.',
+                $option->getName(),
+                $fixer->getName()
+            )
+        );
+
+        self::assertStringNotContainsString(
+            'DEPRECATED',
+            $option->getDescription(),
+            'Option description cannot contain word "DEPRECATED"'
+        );
+
+        if (!$option->hasDefault()) {
+            return;
+        }
+
+        $allowedValues = $option->getAllowedValues();
+
+        if (null === $allowedValues) {
+            return;
+        }
+
+        $allowedValueSubset = $allowedValues[0];
+
+        if (
+            !$allowedValueSubset instanceof AllowedValueSubset
+            || \count($option->getDefault()) !== \count($allowedValueSubset->getAllowedValues())
+        ) {
+            return;
+        }
+
+        self::assertSame(
+            $option->getDefault(),
+            $allowedValueSubset->getAllowedValues(),
+            \sprintf('[%s] `%s` has default and allowed sets of the same size, so they must be the same.', $fixer->getName(), $option->getName())
+        );
+    }
+
     /**
      * @param list<array{0: int, 1?: string}> $sequence
      *
@@ -717,7 +769,7 @@ abstract class AbstractFixerTestCase extends TestCase
         $lastIndex = 0;
         $sequences = [];
 
-        while ($found = $tokens->findSequence($sequence, $lastIndex)) {
+        while (($found = $tokens->findSequence($sequence, $lastIndex)) !== null) {
             $keys = array_keys($found);
             $sequences[] = $found;
             $lastIndex = $keys[2];

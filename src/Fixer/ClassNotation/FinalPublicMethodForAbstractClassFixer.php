@@ -83,7 +83,7 @@ abstract class AbstractMachine
     {
         $abstracts = array_keys($tokens->findGivenKind(T_ABSTRACT));
 
-        while ($abstractIndex = array_pop($abstracts)) {
+        foreach (array_reverse($abstracts) as $abstractIndex) {
             $classIndex = $tokens->getNextTokenOfKind($abstractIndex, [[T_CLASS], [T_FUNCTION]]);
             if (!$tokens[$classIndex]->isGivenKind(T_CLASS)) {
                 continue;

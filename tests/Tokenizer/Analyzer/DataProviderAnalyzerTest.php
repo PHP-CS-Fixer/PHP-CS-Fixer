@@ -43,7 +43,7 @@ final class DataProviderAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{list<DataProviderAnalysis>, string}>
+     * @return iterable<string, array{list<DataProviderAnalysis>, string}>
      */
     public static function provideGettingDataProvidersCases(): iterable
     {
@@ -197,7 +197,7 @@ final class DataProviderAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{list<DataProviderAnalysis>, string}>
+     * @return iterable<string, array{list<DataProviderAnalysis>, string}>
      */
     public static function provideGettingDataProviders80Cases(): iterable
     {
