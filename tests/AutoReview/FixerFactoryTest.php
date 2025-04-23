@@ -548,6 +548,9 @@ final class FixerFactoryTest extends TestCase
             'modernize_types_casting' => [
                 'no_unneeded_control_parentheses',
             ],
+            'multiline_promoted_properties' => [
+                'trailing_comma_in_multiline',
+            ],
             'multiline_string_to_heredoc' => [
                 'escape_implicit_backslashes',
                 'heredoc_indentation',
