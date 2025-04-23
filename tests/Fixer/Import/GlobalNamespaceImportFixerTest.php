@@ -993,6 +993,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 namespace X;
                 use Foo;
                 use Bar;
+                use IteratorAggregate;
 
                 new \Foo();
                 new \Bar();
@@ -1004,12 +1005,18 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                  * @return array<string, ?\Bar<int, \foo>>|null
                  */
                 function abc($foo, \Bar $bar = null) {}
+
+                /**
+                 * @implements \IteratorAggregate<\Foo>
+                 */
+                class Qux implements \IteratorAggregate {}
                 EXPECTED,
             <<<'INPUT'
                 <?php
                 namespace X;
                 use Foo;
                 use Bar;
+                use IteratorAggregate;
 
                 new Foo();
                 new Bar();
@@ -1021,6 +1028,11 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                  * @return array<string, ?Bar<int, foo>>|null
                  */
                 function abc($foo, Bar $bar = null) {}
+
+                /**
+                 * @implements IteratorAggregate<Foo>
+                 */
+                class Qux implements IteratorAggregate {}
                 INPUT,
         ];
 
