@@ -1002,11 +1002,13 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 /**
                  * @param \Foo|string $foo
                  * @param null|\Bar[] $bar
+                 * @param-out \Foo $foo
                  * @return array<string, ?\Bar<int, \foo>>|null
                  */
                 function abc($foo, \Bar $bar = null) {}
 
                 /**
+                 * @extends \Foo<\Bar>
                  * @implements \IteratorAggregate<\Foo>
                  */
                 class Qux implements \IteratorAggregate {}
@@ -1025,11 +1027,13 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
                 /**
                  * @param Foo|string $foo
                  * @param null|Bar[] $bar
+                 * @param-out Foo $foo
                  * @return array<string, ?Bar<int, foo>>|null
                  */
                 function abc($foo, Bar $bar = null) {}
 
                 /**
+                 * @extends Foo<Bar>
                  * @implements IteratorAggregate<Foo>
                  */
                 class Qux implements IteratorAggregate {}
