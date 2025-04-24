@@ -27,6 +27,7 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitNamespacedFixer;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tests\PregTest;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tests\Test\AbstractIntegrationTestCase;
 use PhpCsFixer\Tests\TestCase;
@@ -514,17 +515,25 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{string}>
+     * @return iterable<string, array{string}>
      */
     public static function provideThereIsNoPregFunctionUsedDirectlyCases(): iterable
     {
-        return array_map(
-            static fn (string $item): array => [$item],
-            array_filter(
-                self::getSrcClasses(),
-                static fn (string $className): bool => Preg::class !== $className,
-            ),
-        );
+        foreach (self::getSrcClasses() as $className) {
+            if (Preg::class === $className) {
+                continue;
+            }
+
+            yield $className => [$className];
+        }
+
+        foreach (self::getTestClasses() as $className) {
+            if (PregTest::class === $className) {
+                continue;
+            }
+
+            yield $className => [$className];
+        }
     }
 
     /**
@@ -1057,8 +1066,8 @@ final class ProjectCodeTest extends TestCase
     private function getFilePathForClass(string $className): string
     {
         $file = $className;
-        $file = preg_replace('#^PhpCsFixer\\\Tests\\\#', 'tests\\', $file);
-        $file = preg_replace('#^PhpCsFixer\\\#', 'src\\', $file);
+        $file = Preg::replace('#^PhpCsFixer\\\Tests\\\#', 'tests\\', $file);
+        $file = Preg::replace('#^PhpCsFixer\\\#', 'src\\', $file);
 
         return str_replace('\\', \DIRECTORY_SEPARATOR, $file).'.php';
     }
@@ -1091,7 +1100,7 @@ final class ProjectCodeTest extends TestCase
     private function getUsedDataProviderMethodNames(string $testClassName): iterable
     {
         foreach ($this->getAnnotationsOfTestClass($testClassName, 'dataProvider') as $methodName => $dataProviderAnnotation) {
-            if (1 === preg_match('/@dataProvider\s+(?P<methodName>\w+)/', $dataProviderAnnotation->getContent(), $matches)) {
+            if (Preg::match('/@dataProvider\s+(?P<methodName>\w+)/', $dataProviderAnnotation->getContent(), $matches)) {
                 yield $methodName => $matches['methodName'];
             }
         }

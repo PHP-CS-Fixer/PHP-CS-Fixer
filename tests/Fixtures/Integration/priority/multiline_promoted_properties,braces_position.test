@@ -1,0 +1,26 @@
+--TEST--
+Integration of fixers: multiline_promoted_properties,braces_position.
+--RULESET--
+{"braces_position": true, "multiline_promoted_properties": true}
+--REQUIREMENTS--
+{"php": 80000}
+--EXPECT--
+<?php
+class Foo
+{
+    public function __construct(
+        private array $x
+    ) {
+        $this->y = 42;
+    }
+}
+
+--INPUT--
+<?php
+class Foo
+{
+    public function __construct(private array $x)
+    {
+        $this->y = 42;
+    }
+}

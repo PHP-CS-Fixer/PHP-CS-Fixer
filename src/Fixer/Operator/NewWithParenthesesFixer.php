@@ -210,6 +210,13 @@ final class NewWithParenthesesFixer extends AbstractFixer implements Configurabl
             return;
         }
 
+        // Check if there's an object operator after the closing parenthesis
+        // Preserve parentheses in expressions like "new A()->method()" as per RFC
+        $afterClosingIndex = $tokens->getNextMeaningfulToken($closingIndex);
+        if ($tokens[$afterClosingIndex]->isObjectOperator()) {
+            return;
+        }
+
         $tokens->clearTokenAndMergeSurroundingWhitespace($closingIndex);
         $tokens->clearTokenAndMergeSurroundingWhitespace($index);
     }
