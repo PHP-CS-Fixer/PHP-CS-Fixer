@@ -335,8 +335,8 @@ $a#
 
         yield 'assertFalse with instanceof' => [
             self::generateTest('
-                self::assertInstanceOf(Foo::class, $a);
-                self::assertNotInstanceOf(Foo::class, $b);
+                self::assertNotInstanceOf(Foo::class, $a);
+                self::assertInstanceOf(Foo::class, $b);
             '),
             self::generateTest('
                 self::assertFalse($a instanceof Foo);
