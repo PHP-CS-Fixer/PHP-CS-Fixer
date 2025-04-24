@@ -117,11 +117,6 @@ jobs:
             run-tests: 'yes'
             execute-flex-with-symfony-version: '^7' # explicit check for Symfony 7.x compatibility
 
-          - operating-system: 'ubuntu-24.04'
-            php-version: '8.3'
-            job-description: 'mutation tests'
-            run-mutation-tests: 'yes'
-
           - operating-system: 'windows-latest'
             php-version: '8.3'
             job-description: 'Fixer on Windows'
@@ -171,6 +166,12 @@ jobs:
             job-description: 'code coverage'
             run-tests: 'yes'
             collect-code-coverage: 'yes'
+            PHP_CS_FIXER_IGNORE_ENV: 1
+
+          - operating-system: 'ubuntu-24.04'
+            php-version: '8.4'
+            job-description: 'mutation tests'
+            run-mutation-tests: 'yes'
             PHP_CS_FIXER_IGNORE_ENV: 1
 
     name: PHP ${{ matrix.php-version }} ${{ matrix.job-description }}
@@ -260,6 +261,7 @@ jobs:
         if: github.event_name == 'pull_request' && matrix.run-mutation-tests == 'yes'
         env:
           FAST_LINT_TEST_CASES: 1
+          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
         run: |
           git fetch origin $GITHUB_BASE_REF
           vendor/bin/infection --threads=max --map-source-class-to-test --git-diff-lines --git-diff-base=origin/$GITHUB_BASE_REF --ignore-msi-with-no-mutations --only-covered
