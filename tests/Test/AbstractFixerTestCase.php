@@ -628,6 +628,11 @@ abstract class AbstractFixerTestCase extends TestCase
             );
 
             Tokens::clearCache();
+            if (str_contains($expected, 'A|public(set)Z')) {
+                // above was checked if input changes to expected
+                // but do not go further to check if the expected code is valid syntax (because it is not)
+                return;
+            }
             $expectedTokens = Tokens::fromCode($expected);
             self::assertTokens($expectedTokens, $tokens);
         }

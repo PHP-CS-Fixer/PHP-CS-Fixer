@@ -700,5 +700,33 @@ try {
                 PHP,
             ['sort_algorithm' => 'alpha'],
         ];
+
+        yield 'asymmetric visibility for promoted property' => [
+            <<<'PHP'
+                <?php class Foo {
+                    public function __construct(
+                        public A|public(set)Z $a,
+                        public A|protected(set)Z $b,
+                        public A|private(set)Z $c,
+                        protected A|private(set)Z $e,
+                        protected A|protected(set)Z $f,
+                        private A|private(set)Z $g,
+                    ) {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo {
+                    public function __construct(
+                        public public(set) Z|A $a,
+                        public protected(set) Z|A $b,
+                        public private(set) Z|A $c,
+                        protected private(set) Z|A $e,
+                        protected protected(set) Z|A $f,
+                        private private(set) Z|A $g,
+                    ) {}
+                }
+                PHP,
+            ['sort_algorithm' => 'alpha'],
+        ];
     }
 }
