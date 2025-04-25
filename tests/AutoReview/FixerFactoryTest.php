@@ -246,7 +246,7 @@ final class FixerFactoryTest extends TestCase
                 if (\count($others) > 0) {
                     $shortClassNames = [];
 
-                    foreach ($others as $other => $foo) {
+                    foreach (array_keys($others) as $other) {
                         $shortClassNames[$other] = $fixers[$other]['short_classname'];
                     }
 
@@ -292,11 +292,7 @@ final class FixerFactoryTest extends TestCase
         $factory->registerBuiltInFixers();
         $fixers = $factory->getFixers();
 
-        $fixerNamesWithTests = [];
-
-        foreach (self::getFixerWithFixedPosition() as $fixerName => $priority) {
-            $fixerNamesWithTests[$fixerName] = true;
-        }
+        $fixerNamesWithTests = array_map(static fn () => true, self::getFixerWithFixedPosition());
 
         foreach ([
             self::getFixersPriorityGraph(),
@@ -321,7 +317,7 @@ final class FixerFactoryTest extends TestCase
             }
         }
 
-        foreach ($knownIssues as $knownIssue => $true) {
+        foreach (array_keys($knownIssues) as $knownIssue) {
             if (isset($missing[$knownIssue])) {
                 unset($missing[$knownIssue]);
             } else {
