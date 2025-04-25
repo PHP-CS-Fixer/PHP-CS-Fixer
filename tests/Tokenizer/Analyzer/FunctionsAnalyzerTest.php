@@ -30,29 +30,29 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class FunctionsAnalyzerTest extends TestCase
 {
     /**
-     * @param list<int> $indices
+     * @param list<int> $expectedIndices
      *
      * @dataProvider provideIsGlobalFunctionCallCases
      */
-    public function testIsGlobalFunctionCall(string $code, array $indices): void
+    public function testIsGlobalFunctionCall(string $code, array $expectedIndices): void
     {
         $tokens = Tokens::fromCode($code);
         $analyzer = new FunctionsAnalyzer();
-        $calculatedIndices = [];
 
-        foreach ($tokens as $index => $token) {
+        $calculatedIndices = [];
+        foreach (array_keys($tokens->toArray()) as $index) {
             if ($analyzer->isGlobalFunctionCall($tokens, $index)) {
                 $calculatedIndices[] = $index;
             }
         }
 
         self::assertSame(
-            $indices,
+            $expectedIndices,
             $calculatedIndices,
             \sprintf(
                 'Global function calls found at positions: [%s], expected at [%s].',
                 implode(', ', $calculatedIndices),
-                implode(', ', $indices)
+                implode(', ', $expectedIndices)
             )
         );
     }
