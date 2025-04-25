@@ -95,6 +95,10 @@ final class ArgumentsAnalyzer
             if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
                 $skipTypes[] = T_READONLY;
             }
+
+            if (\defined('T_PRIVATE_SET')) { // @TODO: drop condition when PHP 8.4+ is required
+                array_push($skipTypes, T_PRIVATE_SET, T_PROTECTED_SET, T_PUBLIC_SET);
+            }
         }
 
         $info = [

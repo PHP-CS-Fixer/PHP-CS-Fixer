@@ -705,12 +705,12 @@ try {
             <<<'PHP'
                 <?php class Foo {
                     public function __construct(
-                        public A|public(set)Z $a,
-                        public A|protected(set)Z $b,
-                        public A|private(set)Z $c,
-                        protected A|private(set)Z $e,
-                        protected A|protected(set)Z $f,
-                        private A|private(set)Z $g,
+                        public public(set) A|Z $a,
+                        public protected(set) A|Z $b,
+                        public private(set) A|Z $c,
+                        protected private(set) A|Z $e,
+                        protected protected(set) A|Z $f,
+                        private private(set) A|Z $g,
                     ) {}
                 }
                 PHP,

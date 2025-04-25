@@ -933,8 +933,8 @@ class(){};
                     20,
                     null,
                     new TypeAnalysis(
-                        'public(set)bool',
-                        16,
+                        'bool',
+                        18,
                         18,
                     ),
                 ),
@@ -943,8 +943,8 @@ class(){};
                     31,
                     null,
                     new TypeAnalysis(
-                        'protected(set)int|null',
-                        25,
+                        'int|null',
+                        27,
                         29,
                     ),
                 ),
@@ -953,8 +953,8 @@ class(){};
                     41,
                     null,
                     new TypeAnalysis(
-                        'private(set)?string',
-                        36,
+                        '?string',
+                        38,
                         39,
                     ),
                 ),

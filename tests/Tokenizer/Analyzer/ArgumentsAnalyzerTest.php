@@ -402,8 +402,8 @@ class Foo
                 20,
                 null,
                 new TypeAnalysis(
-                    'public(set)Bar',
-                    16,
+                    'Bar',
+                    18,
                     18,
                 ),
             ),
@@ -425,8 +425,8 @@ class Foo
                 20,
                 null,
                 new TypeAnalysis(
-                    'protected(set)Bar',
-                    16,
+                    'Bar',
+                    18,
                     18,
                 ),
             ),
@@ -448,8 +448,8 @@ class Foo
                 20,
                 null,
                 new TypeAnalysis(
-                    'private(set)Bar',
-                    16,
+                    'Bar',
+                    18,
                     18,
                 ),
             ),
