@@ -198,11 +198,6 @@ echo 1;
                 }
                 $currentHeaderComment = $tokens[$headerCurrentIndex]->getContent();
 
-                $lines = implode("\n", array_map(
-                    static fn (string $line): string => ' *' === $line ? '' : (str_starts_with($line, ' * ') ? substr($line, 3) : $line),
-                    \array_slice(explode("\n", $currentHeaderComment), 1, -1),
-                ));
-
                 if ($this->doesTokenFulfillValidator($tokens[$headerCurrentIndex])) {
                     $headerAsComment = $currentHeaderComment;
                 }
