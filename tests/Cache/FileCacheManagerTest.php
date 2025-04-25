@@ -127,7 +127,6 @@ final class FileCacheManagerTest extends TestCase
 
     public function testNeedFixingUsesRelativePathToFile(): void
     {
-        $cacheFile = $this->getFile();
         $file = '/foo/bar/baz/src/hello.php';
         $relativePathToFile = 'src/hello.php';
 
