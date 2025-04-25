@@ -125,7 +125,6 @@ final class MultilinePromotedPropertiesFixer extends AbstractFixer implements Co
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $methodArgumentSpaceFixer = new MethodArgumentSpaceFixer();
 
         foreach ($tokensAnalyzer->getClassyElements() as $index => $element) {
             if ('method' !== $element['type']) {
