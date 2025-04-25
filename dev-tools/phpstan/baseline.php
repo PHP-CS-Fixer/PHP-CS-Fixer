@@ -1058,13 +1058,13 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/IncludeFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset 1 might not exist on array\\{0\\?\\: string, 1\\?\\: string, 2\\?\\: non\\-falsy\\-string\\}\\.$#',
+	'message' => '#^Offset 1 might not exist on list\\{0\\?\\: string, 1\\?\\: string, 2\\?\\: non\\-falsy\\-string\\}\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/NoBreakCommentFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset 2 might not exist on array\\{0\\?\\: string, 1\\?\\: string, 2\\?\\: non\\-falsy\\-string\\}\\.$#',
+	'message' => '#^Offset 2 might not exist on list\\{0\\?\\: string, 1\\?\\: string, 2\\?\\: non\\-falsy\\-string\\}\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/NoBreakCommentFixer.php',
@@ -1652,7 +1652,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/NoSuperfluousPhpdocTagsFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset 1 might not exist on array\\{0\\?\\: string, 1\\?\\: string\\}\\.$#',
+	'message' => '#^Offset 1 might not exist on list\\{0\\?\\: string, 1\\?\\: string\\}\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocAddMissingParamAnnotationFixer.php',
@@ -2282,12 +2282,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/AutoReview/DocumentationTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$subject of function preg_match expects string, string\\|false given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/AutoReview/DocumentationTest.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#3 \\$length of function substr expects int\\|null, int\\<0, max\\>\\|false given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -2648,12 +2642,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/Fixer/ClassNotation/ClassDefinitionFixerTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an elseif condition, int\\|false given\\.$#',
-	'identifier' => 'elseif.condNotBoolean',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Fixer/FunctionNotation/MethodArgumentSpaceFixerTest.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Generator expects value type array\\{0\\: string, 1\\: string\\|null, 2\\?\\: array\\<string, bool\\>\\}, array\\{0\\: string, 1\\?\\: string\\} given\\.$#',
 	'identifier' => 'generator.valueType',
 	'count' => 1,
@@ -2688,12 +2676,6 @@ $ignoreErrors[] = [
 	'identifier' => 'booleanNot.exprNotBoolean',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/Fixer/Semicolon/NoEmptyStatementFixerTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, string\\|false given\\.$#',
-	'identifier' => 'booleanNot.exprNotBoolean',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Fixer/Semicolon/SemicolonAfterInstructionFixerTest.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Call to new PhpCsFixer\\\\FixerConfiguration\\\\AliasedFixerOption\\(\\) on a separate line has no effect\\.$#',

@@ -97,6 +97,16 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
         );
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run after MultilinePromotedPropertiesFixer.
+     */
+    public function getPriority(): int
+    {
+        return 0;
+    }
+
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN, '(', CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN]);

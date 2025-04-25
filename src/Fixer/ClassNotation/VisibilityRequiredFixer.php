@@ -24,6 +24,8 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -51,20 +53,81 @@ final class VisibilityRequiredFixer extends AbstractFixer implements Configurabl
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Visibility MUST be declared on all properties and methods; `abstract` and `final` MUST be declared before the visibility; `static` MUST be declared after the visibility.',
+            'Classes, constants, properties, and methods MUST have visibility declared, and keyword modifiers MUST be in the following order: inheritance modifier (`abstract` or `final`), visibility modifier (`public`, `protected`, or `private`), scope modifier (`static`), mutation modifier (`readonly`), type declaration, name.',
             [
                 new CodeSample(
                     '<?php
-class Sample
+abstract class ClassName
 {
-    var $a;
-    static protected $var_foo2;
+    const SAMPLE = 1;
 
-    function A()
-    {
-    }
+    var $a;
+
+    protected string $foo;
+
+    static protected int $beep;
+
+    static public final function bar() {}
+
+    protected abstract function zim();
+
+    function zex() {}
 }
-'
+',
+                ),
+                new VersionSpecificCodeSample(
+                    '<?php
+abstract class ClassName
+{
+    const SAMPLE = 1;
+
+    var $a;
+
+    readonly protected string $foo;
+
+    static protected int $beep;
+
+    static public final function bar() {}
+
+    protected abstract function zim();
+
+    function zex() {}
+}
+
+readonly final class ValueObject
+{
+    // ...
+}
+',
+                    new VersionSpecification(8_02_00)
+                ),
+                new VersionSpecificCodeSample(
+                    '<?php
+abstract class ClassName
+{
+    const SAMPLE = 1;
+
+    var $a;
+
+    protected abstract string $bar { get => "a"; set; }
+
+    readonly final protected string $foo;
+
+    static protected final int $beep;
+
+    static public final function bar() {}
+
+    protected abstract function zim();
+
+    function zex() {}
+}
+
+readonly final class ValueObject
+{
+    // ...
+}
+',
+                    new VersionSpecification(8_04_00)
                 ),
                 new CodeSample(
                     '<?php
@@ -112,6 +175,11 @@ class Sample
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         $propertyTypeDeclarationKinds = [T_STRING, T_NS_SEPARATOR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE];
+
+        if (\defined('T_PRIVATE_SET')) { // @TODO: drop condition when PHP 8.4+ is required
+            $propertyKindsAsymmetric = [T_PRIVATE_SET, T_PROTECTED_SET, T_PUBLIC_SET];
+            array_push($propertyTypeDeclarationKinds, ...$propertyKindsAsymmetric);
+        }
 
         if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
             $propertyReadOnlyType = T_READONLY;

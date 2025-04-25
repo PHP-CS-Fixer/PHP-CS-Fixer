@@ -1,0 +1,19 @@
+--TEST--
+Integration of fixers: multiline_promoted_properties,trailing_comma_in_multiline.
+--RULESET--
+{"multiline_promoted_properties": true, "trailing_comma_in_multiline": {"elements": ["parameters"]}}
+--REQUIREMENTS--
+{"php": 80000}
+--EXPECT--
+<?php
+class Foo {
+    public function __construct(
+        private array $x,
+    ) {}
+}
+
+--INPUT--
+<?php
+class Foo {
+    public function __construct(private array $x) {}
+}

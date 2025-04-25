@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
@@ -42,7 +43,7 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
 
         if (str_contains($expected, "\t")) {
             $indent = "\t";
-        } elseif (preg_match('/\n  \S/', $expected)) {
+        } elseif (Preg::match('/\n  \S/', $expected)) {
             $indent = '  ';
         }
 

@@ -183,7 +183,7 @@ final class BraceTransformer extends AbstractTransformer
         if (!$tokens[$nextIndex]->equalsAny([
             [T_STRING, 'get'],
             [T_STRING, 'set'],
-        ])) {
+        ], false)) {
             return;
         }
 
