@@ -163,7 +163,7 @@ $bar = function () { $result = true;
      * {@inheritdoc}
      *
      * Must run before SingleLineEmptyBodyFixer, StatementIndentationFixer.
-     * Must run after ControlStructureBracesFixer, NoMultipleStatementsPerLineFixer.
+     * Must run after ControlStructureBracesFixer, MultilinePromotedPropertiesFixer, NoMultipleStatementsPerLineFixer.
      */
     public function getPriority(): int
     {
