@@ -190,6 +190,14 @@ ENUM Suit {
             <<<'PHP'
                 <?php class Foo
                 {
+                    public(set) Bar $a;
+                    protected(set) Bar $b;
+                    private(set) Baz $c;
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo
+                {
                     PUBLIC(SET) Bar $a;
                     PROTECTED(SET) Bar $b;
                     PRIVATE(SET) Baz $c;
