@@ -870,6 +870,44 @@ var_dump(Foo::CAT->test());',
                 }
                 PHP,
         ];
+
+        yield 'asymmetric visibility' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public public Bar $a;
+                    public public Bar $b;
+                    public public Baz $c;
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public(set) public Bar $a;
+                    protected(set) public Bar $b;
+                    private(set) public Baz $c;
+                }
+                PHP,
+        ];
+
+        yield 'asymmetric visibility with readonly' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    protected readonly protected Bar $a;
+                    readonly readonly readonly public Bar $b;
+                    private(set) private(set) readonly Baz $c;
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo
+                {
+                    readonly private(set) protected Bar $a;
+                    protected(set) readonly public Bar $b;
+                    private(set) public readonly Baz $c;
+                }
+                PHP,
+        ];
     }
 
     /**

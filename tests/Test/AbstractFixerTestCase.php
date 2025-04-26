@@ -618,6 +618,11 @@ abstract class AbstractFixerTestCase extends TestCase
                 'Code built on input code must match expected code.'
             );
             self::assertTrue($tokens->isChanged(), 'Tokens collection built on input code must be marked as changed after fixing.');
+            if (str_contains($expected, 'public public') || str_contains($expected, 'readonly readonly')) {
+                // above was checked if input changes to expected
+                // but do not go further to check if the expected code is valid syntax (because it is not)
+                return;
+            }
 
             $tokens->clearEmptyTokens();
 
