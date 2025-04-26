@@ -875,9 +875,9 @@ var_dump(Foo::CAT->test());',
             <<<'PHP'
                 <?php class Foo
                 {
-                    public public Bar $a;
-                    public public Bar $b;
-                    public public Baz $c;
+                    public public(set) Bar $a;
+                    public protected(set) Bar $b;
+                    public private(set) Baz $c;
                 }
                 PHP,
             <<<'PHP'
@@ -894,9 +894,9 @@ var_dump(Foo::CAT->test());',
             <<<'PHP'
                 <?php class Foo
                 {
-                    protected readonly protected Bar $a;
-                    readonly readonly readonly public Bar $b;
-                    private(set) private(set) readonly Baz $c;
+                    protected private(set) readonly Bar $a;
+                    public protected(set) readonly Bar $b;
+                    public private(set) readonly Baz $c;
                 }
                 PHP,
             <<<'PHP'

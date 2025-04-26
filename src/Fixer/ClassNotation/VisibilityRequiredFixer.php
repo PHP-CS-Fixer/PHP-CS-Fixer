@@ -56,6 +56,7 @@ final class VisibilityRequiredFixer extends AbstractFixer implements Configurabl
             'Classes, constants, properties, and methods MUST have visibility declared, and keyword modifiers MUST be in the following order:'
                 .' inheritance modifier (`abstract` or `final`),'
                 .' visibility modifier (`public`, `protected`, or `private`),'
+                .' set-visibility modifier (`public(set)`, `protected(set)`, or `private(set)`),'
                 .' scope modifier (`static`),'
                 .' mutation modifier (`readonly`),'
                 .' type declaration, name.',
@@ -182,8 +183,10 @@ class Sample
         $propertyTypeDeclarationKinds = [T_STRING, T_NS_SEPARATOR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE];
 
         if (\defined('T_PRIVATE_SET')) { // @TODO: drop condition when PHP 8.4+ is required
-            $propertyKindsAsymmetric = [T_PRIVATE_SET, T_PROTECTED_SET, T_PUBLIC_SET];
-            array_push($propertyTypeDeclarationKinds, ...$propertyKindsAsymmetric);
+            $visibilitySetKinds = [T_PRIVATE_SET, T_PROTECTED_SET, T_PUBLIC_SET];
+            array_push($propertyTypeDeclarationKinds, ...$visibilitySetKinds);
+        } else {
+            $visibilitySetKinds = [];
         }
 
         if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
@@ -203,6 +206,7 @@ class Sample
 
             $abstractFinalIndex = null;
             $visibilityIndex = null;
+            $visibilitySetIndex = null;
             $staticIndex = null;
             $typeIndex = null;
             $readOnlyIndex = null;
@@ -218,6 +222,8 @@ class Sample
                     $staticIndex = $prevIndex;
                 } elseif ($tokens[$prevIndex]->isGivenKind($propertyReadOnlyType)) {
                     $readOnlyIndex = $prevIndex;
+                } elseif ($tokens[$prevIndex]->isGivenKind($visibilitySetKinds)) {
+                    $visibilitySetIndex = $prevIndex;
                 } elseif ($tokens[$prevIndex]->isGivenKind($propertyTypeDeclarationKinds)) {
                     $typeIndex = $prevIndex;
                 } else {
@@ -242,6 +248,14 @@ class Sample
                     $index = $swapIndex;
                 } else {
                     $this->moveTokenAndEnsureSingleSpaceFollows($tokens, $swapIndex, $index);
+                }
+            }
+
+            if (null !== $visibilitySetIndex) {
+                if ($this->isKeywordPlacedProperly($tokens, $visibilitySetIndex, $index)) {
+                    $index = $visibilitySetIndex;
+                } else {
+                    $this->moveTokenAndEnsureSingleSpaceFollows($tokens, $visibilitySetIndex, $index);
                 }
             }
 
