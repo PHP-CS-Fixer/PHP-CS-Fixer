@@ -87,7 +87,7 @@ abstract class AbstractSetTestCase extends TestCase
     {
         $sawRule = false;
 
-        foreach ($setRules as $rule => $config) {
+        foreach (array_keys($setRules) as $rule) {
             self::assertIsString($rule, $setName);
 
             if (str_starts_with($rule, '@')) {
