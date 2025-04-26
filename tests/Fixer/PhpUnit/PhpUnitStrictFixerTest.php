@@ -113,7 +113,7 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
         }
 
         // Only method calls with 2 or 3 arguments should be fixed.
-        foreach (self::getMethodsMap() as $candidate => $fix) {
+        foreach (array_keys(self::getMethodsMap()) as $candidate) {
             yield \sprintf('do not change call to "%s" without arguments.', $candidate) => [
                 self::generateTest(\sprintf('$this->%s();', $candidate)),
             ];
