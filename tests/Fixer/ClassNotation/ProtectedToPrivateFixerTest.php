@@ -186,6 +186,14 @@ final class Foo2 {
             <<<'PHP'
                 <?php final class Foo {
                     public function __construct(
+                        private null|Bar $x,
+                        private ?Bar $u,
+                    ) {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php final class Foo {
+                    public function __construct(
                         protected null|Bar $x,
                         protected ?Bar $u,
                     ) {}

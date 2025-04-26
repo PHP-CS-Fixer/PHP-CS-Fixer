@@ -68,7 +68,8 @@ final class Sample
             return true;
         }
 
-        return $tokens->isAllTokenKindsFound([T_CLASS, T_FINAL, T_PROTECTED]);
+        return $tokens->isAllTokenKindsFound([T_CLASS, T_FINAL])
+            && $tokens->isAnyTokenKindsFound([T_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -81,7 +82,7 @@ final class Sample
         }
 
         $classesCandidate = [];
-        $classElementTypes = ['method' => true, 'property' => true, 'const' => true];
+        $classElementTypes = ['method' => true, 'property' => true, 'promoted_property' => true, 'const' => true];
 
         foreach ($this->tokensAnalyzer->getClassyElements() as $index => $element) {
             $classIndex = $element['classIndex'];
@@ -96,30 +97,33 @@ final class Sample
                 continue;
             }
 
-            $previous = $index;
-            $isProtected = false;
+            $previousIndex = $index;
+            $protectedIndex = null;
+            $protectedPromotedIndex = null;
             $isFinal = false;
 
             do {
-                $previous = $tokens->getPrevMeaningfulToken($previous);
+                $previousIndex = $tokens->getPrevMeaningfulToken($previousIndex);
 
-                if ($tokens[$previous]->isGivenKind(T_PROTECTED)) {
-                    $isProtected = $previous;
-                } elseif ($tokens[$previous]->isGivenKind(T_FINAL)) {
-                    $isFinal = $previous;
+                if ($tokens[$previousIndex]->isGivenKind(T_PROTECTED)) {
+                    $protectedIndex = $previousIndex;
+                } elseif ($tokens[$previousIndex]->isGivenKind(CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED)) {
+                    $protectedPromotedIndex = $previousIndex;
+                } elseif ($tokens[$previousIndex]->isGivenKind(T_FINAL)) {
+                    $isFinal = true;
                 }
-            } while ($tokens[$previous]->isGivenKind($modifierKinds));
-
-            if (false === $isProtected) {
-                continue;
-            }
+            } while ($tokens[$previousIndex]->isGivenKind($modifierKinds));
 
             if ($isFinal && 'const' === $element['type']) {
                 continue; // Final constants cannot be private
             }
 
-            $element['protected_index'] = $isProtected;
-            $tokens[$element['protected_index']] = new Token([T_PRIVATE, 'private']);
+            if (null !== $protectedIndex) {
+                $tokens[$protectedIndex] = new Token([T_PRIVATE, 'private']);
+            }
+            if (null !== $protectedPromotedIndex) {
+                $tokens[$protectedPromotedIndex] = new Token([CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE, 'private']);
+            }
         }
     }
 
