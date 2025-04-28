@@ -571,7 +571,7 @@ class Sample
                 $elementEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $tokens->getNextTokenOfKind($element['index'], ['{']));
             }
         } else { // 'const', 'property', enum-'case', or 'method' of an interface
-            $elementEndIndex = $tokens->getNextTokenOfKind($element['index'], [';']);
+            $elementEndIndex = $tokens->getNextTokenOfKind($element['index'], [';', '{']);
         }
 
         $singleLineElement = true;
