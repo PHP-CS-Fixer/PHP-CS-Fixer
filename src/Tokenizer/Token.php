@@ -321,6 +321,7 @@ final class Token
                 'T_NAMESPACE', 'T_MATCH', 'T_NEW', 'T_PRINT', 'T_PRIVATE', 'T_PROTECTED', 'T_PUBLIC', 'T_REQUIRE',
                 'T_REQUIRE_ONCE', 'T_RETURN', 'T_STATIC', 'T_SWITCH', 'T_THROW', 'T_TRAIT', 'T_TRY',
                 'T_UNSET', 'T_USE', 'T_VAR', 'T_WHILE', 'T_YIELD', 'T_YIELD_FROM', 'T_READONLY', 'T_ENUM',
+                'T_PUBLIC_SET', 'T_PROTECTED_SET', 'T_PRIVATE_SET',
             ]) + [
                 CT::T_ARRAY_TYPEHINT => CT::T_ARRAY_TYPEHINT,
                 CT::T_CLASS_CONSTANT => CT::T_CLASS_CONSTANT,
