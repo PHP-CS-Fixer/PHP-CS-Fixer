@@ -904,20 +904,6 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
                     public function __construct(
                         public Car $car {
                             set(Car $car)
-                    {
-                                $this->car = $car;
-                                $this->car->parked();
-                            }
-                        },
-                    ) {}
-                }
-                PHP,
-            <<<'PHP'
-                <?php class CarPark
-                {
-                    public function __construct(
-                        public Car $car {
-                            set(Car $car)
                             {
                                 $this->car = $car;
                                 $this->car->parked();
