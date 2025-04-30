@@ -234,7 +234,7 @@ $bar = function () { $result = true;
             } elseif ($token->isGivenKind(T_FUNCTION)) {
                 $openBraceIndex = $tokens->getNextTokenOfKind($index, ['{', ';']);
 
-                if ($tokens[$openBraceIndex]->equals(';')) {
+                if (!$tokens[$openBraceIndex]->equals('{')) {
                     continue;
                 }
 
