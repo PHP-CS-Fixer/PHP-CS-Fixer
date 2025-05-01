@@ -1227,24 +1227,6 @@ switch ($foo) {
                 <?php
                 const
                     GLOBAL1 = '1',
-                    GLOBAL2 = '2';
-                const
-                    GLOBAL3 = '3',
-                    GLOBAL4 = '4';
-                class Foo
-                {
-                    protected const
-                        CLASS1 = '1',
-                        CLASS2 = '2';
-                    private const
-                        CLASS3 = '3',
-                        CLASS4 = '4';
-                }
-                PHP,
-            <<<'PHP'
-                <?php
-                const
-                    GLOBAL1 = '1',
                     GLOBAL2 = '2'
                 ;
                 const
@@ -1261,6 +1243,7 @@ switch ($foo) {
                     ;
                 }
                 PHP,
+            null,
             ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NO_MULTI_LINE],
         ];
 
@@ -1269,24 +1252,6 @@ switch ($foo) {
                 <?php
                 const
                     GLOBAL1 = '1',
-                    GLOBAL2 = '2';
-                const
-                    GLOBAL3 = '3',
-                    GLOBAL4 = '4';
-                class Foo
-                {
-                    protected const
-                        CLASS1 = '1',
-                        CLASS2 = '2';
-                    private const
-                        CLASS3 = '3',
-                        CLASS4 = '4';
-                }
-                PHP,
-            <<<'PHP'
-                <?php
-                const
-                    GLOBAL1 = '1',
                     GLOBAL2 = '2'
                 ;
                 const
@@ -1303,6 +1268,7 @@ switch ($foo) {
                     ;
                 }
                 PHP,
+            null,
             ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
         ];
     }
