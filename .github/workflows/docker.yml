@@ -6,8 +6,8 @@ on:
       - master
   pull_request:
     paths:
-      - compose.yaml
       - Dockerfile
+      - docker-bake.hcl
       - docker/**
       - .github/workflows/docker.yml
   # Allow running on demand using Github UI
@@ -15,25 +15,47 @@ on:
   schedule:
     - cron: 0 5 * * *
 
-jobs:
-  docker-compose-build:
-    name: Compose build ${{ matrix.docker-service }}
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - docker-service: php-7.4
-          - docker-service: php-8.0
-          - docker-service: php-8.1
-          - docker-service: php-8.2
-          - docker-service: php-8.3
-          - docker-service: php-8.4
-          - docker-service: sphinx-lint
-          - docker-service: markdown-lint
+permissions:
+  contents: read
 
+jobs:
+  sphinx-lint:
+    uses: ./.github/workflows/sphinx.yml
+
+  markdown-lint:
+    uses: ./.github/workflows/markdown.yml
+
+  prepare:
+    name: Retrieve Bake Targets ${{ github.ref_name }}
+    runs-on: ubuntu-latest
+    outputs:
+      targets: ${{ steps.generate.outputs.targets }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: List targets
+        id: generate
+        uses: docker/bake-action/subaction/list-targets@v6
+        with:
+          files: |
+            ./docker-bake.hcl
 
-      - name: Docker Compose build
-        run: docker compose build --no-cache --pull ${{ matrix.docker-service }}
+  docker-build:
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target: ${{ fromJson(needs.prepare.outputs.targets) }}
+
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        uses: docker/bake-action@v6
+        with:
+          push: false
+          files: |
+            ./docker-bake.hcl
+          targets: ${{ matrix.target }}

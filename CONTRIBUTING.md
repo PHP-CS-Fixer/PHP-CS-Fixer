@@ -31,7 +31,7 @@ A *config* knows about the code style rules and the files and directories that m
 * Make changes. Please remember that **all** changes have to be covered by tests.
    * if you work on a bug fix, please start with reproducing the problem by adding failing test case(s). When you have failing test case(s), you can [create pull request](#opening-a-pull-request) just to reproduce fail in the CI. Then you can provide fix _in the subsequent commits_, it will make code review easier. It's allowed to modify existing test cases in bug fix pull request, but *only if* current behavior is proved to be invalid.
    * if you work on existing fixers then don't change existing test cases, because these are contract between the maintainers and users (they ensure how tool works). Add new test cases that cover provided changes - preferred way of defining test cases is with [data provider](https://docs.phpunit.de/en/10.0/writing-tests-for-phpunit.html#data-providers) which uses `yield` with proper case description as a key (e.g. `yield 'Some specific scenario' => ['some', 'example', 'data'];`). Codebase may still contain test cases in different format, and it's totally acceptable to use `yield` approach next to existing `return` usages.
-* Update documentation: `composer docs`. This requires the highest version of PHP supported by PHP CS Fixer. If it is not installed on your system, you can run it in a Docker container instead: `docker compose run php-8.2 php dev-tools/doc.php`.
+* Update documentation: `composer docs`. This requires the highest version of PHP supported by PHP CS Fixer. If it is not installed on your system, you can run it in a Docker container instead: `docker run fixer:php8.3 php dev-tools/doc.php`.
 * Run QA suite: `composer qa`.
 * Fix project itself (if needed): `composer cs:fix`.
 
@@ -57,36 +57,34 @@ You can do some things to increase the chance that your pull request is accepted
 
 This project provides a Docker setup that allows working on it using any of the PHP versions supported by the tool.
 
-To use it, you first need to install [Docker](https://docs.docker.com/get-docker/) ([Docker Compose](https://docs.docker.com/compose/) is a built-in plugin of the main tool).
-
-Next, copy [`compose.override.dist.yaml`](./compose.override.dist.yaml) to `compose.override.yaml` and edit it to your needs. The relevant parameters that might require some tweaking have comments to help you.
+To use it, you first need to install [Docker](https://docs.docker.com/get-started/get-docker/) ([Docker Build](https://docs.docker.com/build/) is a built-in plugin of the main tool).
 
 You can then build the images:
 
 ```console
-docker compose build --parallel
+docker buildx bake
 ```
 
 Now you can run commands needed to work on the project. For example, say you want to run PHPUnit tests on PHP 8.2:
 
 ```console
-docker compose run php-8.2 vendor/bin/phpunit
+docker run fixer:php8.2 vendor/bin/phpunit
 ```
 
 Sometimes it can be more convenient to have a shell inside the container:
 
 ```console
-docker compose run php-7.4 sh
+docker run fixer:php7.4 sh
 /fixer vendor/bin/phpunit
 ```
 
 The images come with an [`xdebug` script](github.com/julienfalque/xdebug/) that allows running any PHP command with Xdebug enabled to help debug problems.
 
 ```console
-docker compose run php-8.2 xdebug vendor/bin/phpunit
+docker run fixer:php8.2 xdebug vendor/bin/phpunit
 ```
 
-If you're using PhpStorm, you need to create a [server](https://www.jetbrains.com/help/phpstorm/servers.html) with a name that matches the `PHP_IDE_CONFIG` environment variable defined in the Docker Compose configuration files, which is `php-cs-fixer` by default.
+If you're using PhpStorm, you need to create a [server](https://www.jetbrains.com/help/phpstorm/servers.html) with a name that matches the `PHP_IDE_CONFIG` environment variable defined in the [Dockerfile](Dockerfile), which is `php-cs-fixer` by default.
 
 All images use port 9003 for debug connections.
 
@@ -100,4 +98,5 @@ There is a [cookbook](doc/cookbook_fixers.rst) with basic instructions on how to
 * [PSR-2: Coding Style Guide](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
 * [PSR-4: Autoloading Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md)
 * [PSR-5: PHPDoc (draft)](https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md)
+* [PSR-12: Extended Coding Style Guide](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-12-extended-coding-style-guide.md)
 * [Symfony Coding Standards](https://symfony.com/doc/current/contributing/code/standards.html)

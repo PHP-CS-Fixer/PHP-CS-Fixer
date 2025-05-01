@@ -9,6 +9,7 @@ on:
     paths:
       - '*.md'
       - '**/*.md'
+  workflow_call:
 
 permissions:
   contents: read
@@ -23,14 +24,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 1
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Configure Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.2'
-          bundler-cache: true
-      - name: Install markdownlint
-        run: gem install mdl
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Check markdown files
-        run: mdl --git-recurse .
+        uses: docker/bake-action@v6
+        with:
+          files: |
+            ./docker-bake.hcl
+          targets: markdown-lint

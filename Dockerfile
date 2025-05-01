@@ -1,48 +1,72 @@
-ARG PHP_VERSION=8.4
+# syntax=docker/dockerfile:1
+
 ARG ALPINE_VERSION=3.21
+ARG PHP_VERSION=8.4
 
-FROM alpine:3.21.3 AS sphinx-lint
+FROM python:3-alpine AS sphinx-lint
+SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
+WORKDIR /fixer
+RUN --mount=type=cache,target=/var/cache/apk \
+    --mount=type=bind,target=.,rw <<EOF
+    apk add 'git>=2.47'
+    pip install --no-cache-dir 'sphinx-lint>=1'
+    mkdir /out
+    git ls-files --cached -z -- '*.rst' | cpio -pdm -p /out
+    python -m sphinxlint --enable all --disable trailing-whitespace --max-line-length 2000 /out
+EOF
 
-RUN apk add python3 py3-pip git \
-    && pip install --break-system-packages sphinx-lint
+FROM scratch AS sphinx-lint-update
+COPY --from=sphinx-lint /out /
 
-# This must be the same AS in CI's job, but `--null` must be changed to `-0` (Alpine)
-CMD git ls-files --cached -z -- '*.rst' \
-    | xargs -0 -- python3 -m sphinxlint --enable all --disable trailing-whitespace --max-line-length 2000
+# hadolint ignore=DL3007
+FROM registry.gitlab.com/pipeline-components/markdownlint:latest AS markdown-lint
+WORKDIR /fixer
+SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
+RUN --mount=type=bind,target=.,rw <<EOF
+    mdl --git-recurse -v .
+    mkdir /out
+    find . -name '*.md' | cpio -pdm /out
+EOF
+
+FROM scratch AS markdown-lint-update
+COPY --from=markdown-lint /out /
 
 FROM php:${PHP_VERSION}-cli-alpine${ALPINE_VERSION} AS base
 
-RUN curl --location --output /usr/local/bin/install-php-extensions https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions \
-    && chmod +x /usr/local/bin/install-php-extensions \
-    && install-php-extensions pcntl
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/install-php-extensions
+RUN install-php-extensions pcntl
 
 FROM base AS base-dev
-
-# https://blog.codito.dev/2022/11/composer-binary-only-docker-images/
-# https://github.com/composer/docker/pull/250
-COPY --from=composer/composer:2-bin /composer /usr/local/bin/composer
+COPY --from=composer:2 --chmod=0755 /usr/bin/composer /usr/local/bin/composer
 
 FROM base-dev AS vendor
-COPY composer.json /fixer/composer.json
+COPY --link --chmod=0644 composer.json /fixer/composer.json
 WORKDIR /fixer
-RUN composer remove --dev infection/infection --no-update \
-    && composer install --prefer-dist --no-dev --optimize-autoloader --no-scripts
+RUN <<EOF
+    composer remove --dev infection/infection --no-update
+    composer install --prefer-dist --no-dev --optimize-autoloader --no-scripts
+EOF
 
 FROM base AS dist
-
-RUN mkdir /code
-WORKDIR /code
-COPY src /fixer/src
-COPY php-cs-fixer /fixer/php-cs-fixer
+WORKDIR /fixer
 # Only take the dependencies (not composer itself) into the container
-COPY --from=vendor /fixer/vendor /fixer/vendor
+COPY --from=vendor /fixer/vendor ./vendor
+COPY --link src ./src
+COPY --link --chmod=0755 php-cs-fixer ./
 RUN ln -s /fixer/php-cs-fixer /usr/local/bin/php-cs-fixer
+WORKDIR /code
 ENTRYPOINT ["/usr/local/bin/php-cs-fixer"]
 
 FROM base-dev AS dev
-ARG DOCKER_USER_ID
-ARG DOCKER_GROUP_ID
-ARG PHP_XDEBUG_VERSION
+ARG DOCKER_USER_ID=1000
+ARG DOCKER_GROUP_ID=1000
+ARG PHP_XDEBUG_VERSION=3.4.2
+ARG XDEBUG_MODE
+ENV PHP_CS_FIXER_ALLOW_XDEBUG=1
+ENV PHP_IDE_CONFIG=serverName=php-cs-fixer
+ENV XDEBUG_MODE=${XDEBUG_MODE}
+
+EXPOSE 9003
 
 RUN if [ ! -z "$DOCKER_GROUP_ID" ] && [ ! getent group "${DOCKER_GROUP_ID}" > /dev/null ]; \
         then addgroup -S -g "${DOCKER_GROUP_ID}" devs; \
@@ -56,4 +80,4 @@ RUN if [ ! -z "$DOCKER_GROUP_ID" ] && [ ! getent group "${DOCKER_GROUP_ID}" > /d
     && curl --location --output /usr/local/bin/xdebug https://github.com/julienfalque/xdebug/releases/download/v2.0.0/xdebug \
     && chmod +x /usr/local/bin/xdebug
 
-COPY docker/php/* /usr/local/etc/php/conf.d/
+COPY --link --chmod=0644 docker/php/* /usr/local/etc/php/conf.d/

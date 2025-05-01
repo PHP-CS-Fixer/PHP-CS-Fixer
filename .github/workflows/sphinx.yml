@@ -7,6 +7,7 @@ on:
   push:
     paths:
       - '**/*.rst'
+  workflow_call:
 
 permissions:
   contents: read
@@ -21,17 +22,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 1
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-sphinx-lint
-      - name: Install sphinx-lint
-        run: |
-          pip install --user sphinx-lint
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Check Sphinx document sources
-        run: |
-          git ls-files --cached -z -- '*.rst' \
-            | xargs --null -- python -m sphinxlint --enable all --disable trailing-whitespace --max-line-length 2000
+        uses: docker/bake-action@v6
+        with:
+          files: |
+            ./docker-bake.hcl
+          targets: sphinx-lint

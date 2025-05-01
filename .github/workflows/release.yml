@@ -10,32 +10,36 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  docker-images:
-    name: Docker with PHP ${{ matrix.php-version }}, Fixer ${{ github.ref_name }}
+  prepare:
+    name: Retrieve Bake Targets ${{ github.ref_name }}
     if: github.repository == 'PHP-CS-Fixer/PHP-CS-Fixer'
     runs-on: ubuntu-latest
+    outputs:
+      targets: ${{ steps.generate.outputs.targets }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: List targets
+        id: generate
+        uses: docker/bake-action/subaction/list-targets@v6
+        with:
+          files: |
+            ./docker-bake.hcl
+          target: release
+
+  docker-images:
+    needs: prepare
+    runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        include:
-          - php-version: '7.4'
-            alpine-version: '3.16'
-          - php-version: '8.0'
-            alpine-version: '3.16'
-          - php-version: '8.1'
-            alpine-version: '3.21'
-          - php-version: '8.2'
-            alpine-version: '3.21'
-          - php-version: '8.3'
-            alpine-version: '3.21'
+        target: ${{ fromJson(needs.prepare.outputs.targets) }}
 
     permissions:
       contents: read
       packages: write
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -53,13 +57,18 @@ jobs:
         run: |
           echo IMAGE_NAME_LOWER=$(echo ${{ env.IMAGE_NAME }} | tr '[:upper:]' '[:lower:]') >> ${GITHUB_ENV}
 
+      - name: Get PHP version from target of ${{ matrix.target }}
+        id: php
+        run: |
+          echo PHP_VERSION=$(docker buildx bake --print | jq -r ".target.\"${{ matrix.target }}\".args.PHP_VERSION") >> ${GITHUB_ENV}
+
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
         with:
           flavor: |
             latest=false
-            suffix=-php${{ matrix.php-version }}
+            suffix=-php${{ env.PHP_VERSION }}
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_LOWER }}
           tags: |
             type=semver,pattern={{version}}
@@ -67,15 +76,10 @@ jobs:
             type=semver,pattern={{major}}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v6
+        uses: docker/bake-action@v6
         with:
-          context: .
-          platforms: linux/amd64,linux/arm64
-          file: Dockerfile
-          target: dist
-          build-args: |
-            PHP_VERSION=${{ matrix.php-version }}
-            ALPINE_VERSION=${{ matrix.alpine-version }}
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          files: |
+            ./docker-bake.hcl
+            cwd://${{ steps.meta.outputs.bake-file }}
+          targets: ${{ matrix.target }}
