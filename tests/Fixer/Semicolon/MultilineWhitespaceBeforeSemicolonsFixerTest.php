@@ -39,17 +39,12 @@ final class MultilineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixerTe
      *
      * @dataProvider provideFixCases
      */
-    public function testFix(
-        string $expected,
-        ?string $input = null,
-        array $configuration = [],
-        bool $useTabsAndWindowsNewlines = false
-    ): void {
+    public function testFix(string $expected, ?string $input = null, array $configuration = [], bool $useTabsAndWindowsNewlines = false): void
+    {
         $this->fixer->configure($configuration);
         if ($useTabsAndWindowsNewlines) {
             $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
         }
-
         $this->doTest($expected, $input);
     }
 
@@ -302,7 +297,7 @@ $seconds = $minutes
         yield [
             '<?php echo(1); // test',
             "<?php echo(1) // test\r\n;",
-            [],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NO_MULTI_LINE],
             true,
         ];
 
@@ -1258,7 +1253,8 @@ switch ($foo) {
                 $foo?->method1()
                     ?->method2()
                     ?->method3();
-                ', ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+                ',
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
         ];
     }
 }
