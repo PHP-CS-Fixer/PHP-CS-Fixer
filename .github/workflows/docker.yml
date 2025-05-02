@@ -3,13 +3,13 @@ name: Docker
 on:
   push:
     branches:
-      - "master"
+      - master
   pull_request:
     paths:
-      - "compose.yaml"
-      - "Dockerfile"
-      - "docker/**"
-      - ".github/workflows/docker.yml"
+      - compose.yaml
+      - Dockerfile
+      - 'docker/**'
+      - .github/workflows/docker.yml
   # Allow running on demand using Github UI
   workflow_dispatch:
   schedule:
