@@ -43,7 +43,6 @@ use PhpCsFixer\Tests\Fixer\ControlStructure\NoBreakCommentFixerTest;
 use PhpCsFixer\Tests\Fixer\ControlStructure\NoUnneededControlParenthesesFixerTest;
 use PhpCsFixer\Tests\Fixer\ControlStructure\NoUselessElseFixerTest;
 use PhpCsFixer\Tests\Fixer\ControlStructure\YodaStyleFixerTest;
-use PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationArrayAssignmentFixerTest;
 use PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationBracesFixerTest;
 use PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\FunctionDeclarationFixerTest;
@@ -450,7 +449,6 @@ abstract class AbstractFixerTestCase extends TestCase
             BlankLineBeforeStatementFixerTest::class,
             ClassDefinitionFixerTest::class,
             ConcatSpaceFixerTest::class,
-            DoctrineAnnotationArrayAssignmentFixerTest::class,
             DoctrineAnnotationBracesFixerTest::class,
             DoctrineAnnotationSpacesFixerTest::class,
             EchoTagSyntaxFixerTest::class,
