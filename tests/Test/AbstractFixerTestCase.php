@@ -440,8 +440,8 @@ abstract class AbstractFixerTestCase extends TestCase
 
         /** @var array<class-string, list<string>> */
         $allowedExtraMethods = [
-            ClassAttributesSeparationFixerTest::class => ['CommentBlockStartDetection'],
-            NoEmptyCommentFixerTest::class => ['GetCommentBlock'],
+            ClassAttributesSeparationFixerTest::class => ['testCommentBlockStartDetection'],
+            NoEmptyCommentFixerTest::class => ['testGetCommentBlock'],
         ];
 
         // should only shrink, baseline of classes violating method naming
@@ -519,9 +519,9 @@ abstract class AbstractFixerTestCase extends TestCase
 
         if (isset($allowedExtraMethods[static::class])) {
             $expectedExtraMethods = [];
-            foreach ($allowedExtraMethods[static::class] as $name) {
-                $expectedExtraMethods[] = 'test'.$name;
-                $expectedExtraMethods[] = 'provide'.$name.'Cases';
+            foreach ($allowedExtraMethods[static::class] as $method) {
+                $expectedExtraMethods[] = $method;
+                $expectedExtraMethods[] = 'provide'.substr($method, 4).'Cases';
             }
             self::assertSame($expectedExtraMethods, $extraMethods);
         } elseif (\in_array(static::class, $exceptionClasses, true)) {
