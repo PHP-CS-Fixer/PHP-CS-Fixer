@@ -52,7 +52,6 @@ use PhpCsFixer\Tests\Fixer\FunctionNotation\MethodArgumentSpaceFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\ReturnTypeDeclarationFixerTest;
 use PhpCsFixer\Tests\Fixer\Import\GlobalNamespaceImportFixerTest;
 use PhpCsFixer\Tests\Fixer\Import\SingleImportPerStatementFixerTest;
-use PhpCsFixer\Tests\Fixer\LanguageConstruct\FunctionToConstantFixerTest;
 use PhpCsFixer\Tests\Fixer\LanguageConstruct\SingleSpaceAroundConstructFixerTest;
 use PhpCsFixer\Tests\Fixer\ListNotation\ListSyntaxFixerTest;
 use PhpCsFixer\Tests\Fixer\Operator\BinaryOperatorSpacesFixerTest;
@@ -458,7 +457,6 @@ abstract class AbstractFixerTestCase extends TestCase
             DoctrineAnnotationSpacesFixerTest::class,
             EchoTagSyntaxFixerTest::class,
             FunctionDeclarationFixerTest::class,
-            FunctionToConstantFixerTest::class,
             GeneralPhpdocTagRenameFixerTest::class,
             GlobalNamespaceImportFixerTest::class,
             HeaderCommentFixerTest::class,
