@@ -28,30 +28,23 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideFixVarCases
+     * @dataProvider provideFixCases
      */
-    public function testFixVar(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
-    }
 
-    /**
-     * @dataProvider provideFixVarCases
-     */
-    public function testFixType(string $expected, ?string $input = null): void
-    {
         $expected = str_replace('@var', '@type', $expected);
         if (null !== $input) {
             $input = str_replace('@var', '@type', $input);
         }
-
         $this->doTest($expected, $input);
     }
 
     /**
      * @return iterable<array{0: string, 1?: string}>
      */
-    public static function provideFixVarCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield 'testFixVar' => [
             <<<'EOF'
