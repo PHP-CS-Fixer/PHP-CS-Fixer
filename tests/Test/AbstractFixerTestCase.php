@@ -58,7 +58,6 @@ use PhpCsFixer\Tests\Fixer\Phpdoc\GeneralPhpdocTagRenameFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\NoBlankLinesAfterPhpdocFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocAddMissingParamAnnotationFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoEmptyReturnFixerTest;
-use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoPackageFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocOrderByValueFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocOrderFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocParamOrderFixerTest;
@@ -465,7 +464,6 @@ abstract class AbstractFixerTestCase extends TestCase
             NoUselessElseFixerTest::class,
             PhpdocAddMissingParamAnnotationFixerTest::class,
             PhpdocNoEmptyReturnFixerTest::class,
-            PhpdocNoPackageFixerTest::class,
             PhpdocOrderByValueFixerTest::class,
             PhpdocOrderFixerTest::class,
             PhpdocParamOrderFixerTest::class,
