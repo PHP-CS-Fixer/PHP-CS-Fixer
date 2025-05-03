@@ -43,16 +43,12 @@ use PhpCsFixer\Tests\Fixer\ControlStructure\NoBreakCommentFixerTest;
 use PhpCsFixer\Tests\Fixer\ControlStructure\NoUnneededControlParenthesesFixerTest;
 use PhpCsFixer\Tests\Fixer\ControlStructure\NoUselessElseFixerTest;
 use PhpCsFixer\Tests\Fixer\ControlStructure\YodaStyleFixerTest;
-use PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationArrayAssignmentFixerTest;
-use PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationBracesFixerTest;
-use PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationIndentationFixerTest;
 use PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\FunctionDeclarationFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\MethodArgumentSpaceFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\ReturnTypeDeclarationFixerTest;
 use PhpCsFixer\Tests\Fixer\Import\GlobalNamespaceImportFixerTest;
 use PhpCsFixer\Tests\Fixer\Import\SingleImportPerStatementFixerTest;
-use PhpCsFixer\Tests\Fixer\LanguageConstruct\FunctionToConstantFixerTest;
 use PhpCsFixer\Tests\Fixer\LanguageConstruct\SingleSpaceAroundConstructFixerTest;
 use PhpCsFixer\Tests\Fixer\ListNotation\ListSyntaxFixerTest;
 use PhpCsFixer\Tests\Fixer\Operator\BinaryOperatorSpacesFixerTest;
@@ -72,7 +68,6 @@ use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocSeparationFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocSummaryFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocTrimFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocTypesOrderFixerTest;
-use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocVarWithoutNameFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpTag\EchoTagSyntaxFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpTag\NoClosingTagFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitConstructFixerTest;
@@ -439,21 +434,23 @@ abstract class AbstractFixerTestCase extends TestCase
             self::markTestSkipped('Not worth refactoring tests for deprecated fixers.');
         }
 
+        /** @var array<class-string, list<string>> */
+        $allowedExtraMethods = [
+            ClassAttributesSeparationFixerTest::class => ['testCommentBlockStartDetection'],
+            NoEmptyCommentFixerTest::class => ['testGetCommentBlock'],
+        ];
+
         // should only shrink, baseline of classes violating method naming
+        /** @var list<class-string> */
         $exceptionClasses = [
             AlignMultilineCommentFixerTest::class,
             BinaryOperatorSpacesFixerTest::class,
             BlankLineBeforeStatementFixerTest::class,
-            ClassAttributesSeparationFixerTest::class,
             ClassDefinitionFixerTest::class,
             ConcatSpaceFixerTest::class,
-            DoctrineAnnotationArrayAssignmentFixerTest::class,
-            DoctrineAnnotationBracesFixerTest::class,
-            DoctrineAnnotationIndentationFixerTest::class,
             DoctrineAnnotationSpacesFixerTest::class,
             EchoTagSyntaxFixerTest::class,
             FunctionDeclarationFixerTest::class,
-            FunctionToConstantFixerTest::class,
             GeneralPhpdocTagRenameFixerTest::class,
             GlobalNamespaceImportFixerTest::class,
             HeaderCommentFixerTest::class,
@@ -465,7 +462,6 @@ abstract class AbstractFixerTestCase extends TestCase
             NoBlankLinesAfterPhpdocFixerTest::class,
             NoBreakCommentFixerTest::class,
             NoClosingTagFixerTest::class,
-            NoEmptyCommentFixerTest::class,
             NoEmptyStatementFixerTest::class,
             NoSpacesAroundOffsetFixerTest::class,
             NoUnneededControlParenthesesFixerTest::class,
@@ -481,7 +477,6 @@ abstract class AbstractFixerTestCase extends TestCase
             PhpdocSummaryFixerTest::class,
             PhpdocTrimFixerTest::class,
             PhpdocTypesOrderFixerTest::class,
-            PhpdocVarWithoutNameFixerTest::class,
             PhpUnitConstructFixerTest::class,
             PhpUnitDedicateAssertFixerTest::class,
             PhpUnitTestCaseStaticMethodCallsFixerTest::class,
@@ -507,29 +502,36 @@ abstract class AbstractFixerTestCase extends TestCase
 
         $extraMethods = array_map(
             static fn (\ReflectionMethod $method): string => $method->getName(),
-            array_filter(
+            array_values(array_filter(
                 $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC),
                 static fn (\ReflectionMethod $method): bool => $method->getDeclaringClass()->getName() === $reflectionClass->getName()
                     && !\in_array($method->getName(), $methodNames, true)
-            )
+            ))
         );
 
-        if (\in_array(static::class, $exceptionClasses, true)) { // @phpstan-ignore-line this can evaluate to true, but PHPStan doesn't recognise that (yet?)
+        if (isset($allowedExtraMethods[static::class])) {
+            $expectedExtraMethods = [];
+            foreach ($allowedExtraMethods[static::class] as $method) {
+                $expectedExtraMethods[] = $method;
+                $expectedExtraMethods[] = 'provide'.substr($method, 4).'Cases';
+            }
+            self::assertSame($expectedExtraMethods, $extraMethods);
+        } elseif (\in_array(static::class, $exceptionClasses, true)) {
             self::assertNotSame(
                 [],
                 $extraMethods,
                 \sprintf('Class "%s" have correct method names, remove it from exceptions list.', static::class),
             );
             self::markTestSkipped('Not covered yet.');
+        } else {
+            self::assertTrue(method_exists($this, 'testFix'), \sprintf('Method testFix does not exist in %s.', static::class));
+            self::assertTrue(method_exists($this, 'provideFixCases'), \sprintf('Method provideFixCases does not exist in %s.', static::class));
+            self::assertSame(
+                [],
+                $extraMethods,
+                \sprintf('Methods "%s" should not be present in %s.', implode('". "', $extraMethods), static::class),
+            );
         }
-
-        self::assertTrue(method_exists($this, 'testFix'), \sprintf('Method testFix does not exist in %s.', static::class));
-        self::assertTrue(method_exists($this, 'provideFixCases'), \sprintf('Method provideFixCases does not exist in %s.', static::class));
-        self::assertSame(
-            [],
-            $extraMethods,
-            \sprintf('Methods "%s" should not be present in %s.', implode('". "', $extraMethods), static::class),
-        );
     }
 
     public function testImplementingWhitespacesAwareFixerInterface(): void
