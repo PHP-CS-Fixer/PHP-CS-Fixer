@@ -8,12 +8,12 @@ on:
     paths:
       - compose.yaml
       - Dockerfile
-      - 'docker/**'
+      - docker/**
       - .github/workflows/docker.yml
   # Allow running on demand using Github UI
   workflow_dispatch:
   schedule:
-    - cron: "0 5 * * *"
+    - cron: 0 5 * * *
 
 jobs:
   docker-compose-build:

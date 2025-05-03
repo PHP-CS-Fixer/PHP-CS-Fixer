@@ -6,7 +6,7 @@ on:
   # Allow running on demand using Github UI
   workflow_dispatch:
   schedule:
-    - cron: "0 12 * * *"
+    - cron: 0 12 * * *
 
 env:
   CLOSE_MESSAGE: >-
