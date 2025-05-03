@@ -1,6 +1,8 @@
 extends: relaxed
 
 rules:
-  line-length:
-    max: 180
-    level: warning
+  line-length: disable
+  quoted-strings:
+    quote-type: single
+    required: only-when-needed
+  trailing-spaces: enable
