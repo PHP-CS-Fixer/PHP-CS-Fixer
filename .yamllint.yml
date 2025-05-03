@@ -1,6 +1,8 @@
 extends: relaxed
 
 rules:
+  indentation:
+    spaces: 2
   line-length: disable
   quoted-strings:
     quote-type: single
