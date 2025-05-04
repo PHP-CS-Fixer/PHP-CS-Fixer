@@ -85,7 +85,7 @@ final class TypeAnalysisTest extends TestCase
 
         yield ['object', true];
 
-        yield ['resource', true];
+        yield ['resource', false];
 
         yield ['self', true];
 
