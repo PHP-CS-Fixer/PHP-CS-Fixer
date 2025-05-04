@@ -2711,7 +2711,6 @@ function foo($a) {}',
             <<<'PHP'
                 <?php
                 namespace Foo;
-                use App\Resource;
                 class Resource
                 {
                     public function bar(): string
@@ -2720,17 +2719,7 @@ function foo($a) {}',
                     }
                 }
                 PHP,
-            <<<'PHP'
-                <?php
-                namespace Foo;
-                class Resource
-                {
-                    public function bar(): string
-                    {
-                        return \App\Resource::class;
-                    }
-                }
-                PHP,
+            null,
             ['import_symbols' => true],
         ];
     }

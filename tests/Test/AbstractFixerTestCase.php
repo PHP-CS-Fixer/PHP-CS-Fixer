@@ -624,11 +624,7 @@ abstract class AbstractFixerTestCase extends TestCase
             self::assertTokens($expectedTokens, $tokens);
         }
 
-        if (str_contains($expected, 'return \App\Resource::class;') && '1' !== getenv('FAST_LINT_TEST_CASES')) {
-            self::assertNotNull($this->lintSource($expected));
-        } else {
-            self::assertNull($this->lintSource($expected));
-        }
+        self::assertNull($this->lintSource($expected));
 
         Tokens::clearCache();
         $tokens = Tokens::fromCode($expected);

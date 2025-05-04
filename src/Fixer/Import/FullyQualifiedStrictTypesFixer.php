@@ -433,6 +433,10 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             return false;
         }
 
+        if ('resource' === strtolower($symbol)) {
+            return false;
+        }
+
         if ((new TypeAnalysis($symbol))->isReservedType()) {
             return true;
         }
