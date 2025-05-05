@@ -43,7 +43,6 @@ use PhpCsFixer\Tests\Fixer\ControlStructure\NoBreakCommentFixerTest;
 use PhpCsFixer\Tests\Fixer\ControlStructure\NoUnneededControlParenthesesFixerTest;
 use PhpCsFixer\Tests\Fixer\ControlStructure\NoUselessElseFixerTest;
 use PhpCsFixer\Tests\Fixer\ControlStructure\YodaStyleFixerTest;
-use PhpCsFixer\Tests\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\FunctionDeclarationFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\MethodArgumentSpaceFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\ReturnTypeDeclarationFixerTest;
@@ -55,11 +54,9 @@ use PhpCsFixer\Tests\Fixer\Operator\BinaryOperatorSpacesFixerTest;
 use PhpCsFixer\Tests\Fixer\Operator\ConcatSpaceFixerTest;
 use PhpCsFixer\Tests\Fixer\Operator\IncrementStyleFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\AlignMultilineCommentFixerTest;
-use PhpCsFixer\Tests\Fixer\Phpdoc\GeneralPhpdocTagRenameFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\NoBlankLinesAfterPhpdocFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocAddMissingParamAnnotationFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoEmptyReturnFixerTest;
-use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoPackageFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocOrderByValueFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocOrderFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocParamOrderFixerTest;
@@ -75,7 +72,6 @@ use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitDedicateAssertFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixerTest;
 use PhpCsFixer\Tests\Fixer\ReturnNotation\ReturnAssignmentFixerTest;
 use PhpCsFixer\Tests\Fixer\Semicolon\NoEmptyStatementFixerTest;
-use PhpCsFixer\Tests\Fixer\Semicolon\SpaceAfterSemicolonFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\BlankLineBeforeStatementFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\IndentationTypeFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\NoSpacesAroundOffsetFixerTest;
@@ -448,10 +444,8 @@ abstract class AbstractFixerTestCase extends TestCase
             BlankLineBeforeStatementFixerTest::class,
             ClassDefinitionFixerTest::class,
             ConcatSpaceFixerTest::class,
-            DoctrineAnnotationSpacesFixerTest::class,
             EchoTagSyntaxFixerTest::class,
             FunctionDeclarationFixerTest::class,
-            GeneralPhpdocTagRenameFixerTest::class,
             GlobalNamespaceImportFixerTest::class,
             HeaderCommentFixerTest::class,
             IncrementStyleFixerTest::class,
@@ -468,7 +462,6 @@ abstract class AbstractFixerTestCase extends TestCase
             NoUselessElseFixerTest::class,
             PhpdocAddMissingParamAnnotationFixerTest::class,
             PhpdocNoEmptyReturnFixerTest::class,
-            PhpdocNoPackageFixerTest::class,
             PhpdocOrderByValueFixerTest::class,
             PhpdocOrderFixerTest::class,
             PhpdocParamOrderFixerTest::class,
@@ -485,7 +478,6 @@ abstract class AbstractFixerTestCase extends TestCase
             SingleImportPerStatementFixerTest::class,
             SingleLineCommentStyleFixerTest::class,
             SingleSpaceAroundConstructFixerTest::class,
-            SpaceAfterSemicolonFixerTest::class,
             SpacesInsideParenthesesFixerTest::class,
             StatementIndentationFixerTest::class,
             YodaStyleFixerTest::class,
