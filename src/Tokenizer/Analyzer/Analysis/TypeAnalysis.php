@@ -74,7 +74,7 @@ final class TypeAnalysis implements StartEndTokenAwareAnalysis
 
     public function isReservedType(): bool
     {
-        /** @var list<string> */
+        /** @var ?array<string, true> */
         static $reservedTypes;
         if (null === $reservedTypes) {
             $reservedTypes = [
