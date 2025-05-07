@@ -32,9 +32,9 @@ final class ProcessPool
     private ServerInterface $server;
 
     /**
-     * @var null|(callable(): void)
-     *
      * @readonly
+     *
+     * @var null|(callable(): void)
      */
     private $onServerClose;
 

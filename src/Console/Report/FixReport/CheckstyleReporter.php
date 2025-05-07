@@ -20,9 +20,9 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 /**
  * @author Kévin Gomez <contact@kevingomez.fr>
  *
- * @readonly
- *
  * @internal
+ *
+ * @readonly
  */
 final class CheckstyleReporter implements ReporterInterface
 {

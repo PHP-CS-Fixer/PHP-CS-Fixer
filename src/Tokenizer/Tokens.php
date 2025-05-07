@@ -30,11 +30,11 @@ use PhpCsFixer\Utils;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
+ * @final
+ *
  * @extends \SplFixedArray<Token>
  *
  * @method Token offsetGet($offset)
- *
- * @final
  */
 class Tokens extends \SplFixedArray
 {
@@ -611,9 +611,9 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * @return non-empty-string
-     *
      * @internal
+     *
+     * @return non-empty-string
      */
     public function getCollectionHash(): string
     {

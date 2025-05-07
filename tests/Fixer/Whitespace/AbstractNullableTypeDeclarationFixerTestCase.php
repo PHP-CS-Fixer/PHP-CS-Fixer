@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @author Jack Cherng <jfcherng@gmail.com>
  *
- * @template TFixer of AbstractFixer
- *
  * @internal
+ *
+ * @template TFixer of AbstractFixer
  *
  * @extends AbstractFixerTestCase<TFixer>
  */

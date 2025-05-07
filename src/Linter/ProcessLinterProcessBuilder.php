@@ -19,9 +19,9 @@ use Symfony\Component\Process\Process;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
- * @readonly
- *
  * @internal
+ *
+ * @readonly
  */
 final class ProcessLinterProcessBuilder
 {

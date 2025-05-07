@@ -18,9 +18,9 @@ namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
  * @author VeeWee <toonverwerft@gmail.com>
  * @author Greg Korba <greg@codito.dev>
  *
- * @readonly
- *
  * @internal
+ *
+ * @readonly
  *
  * @phpstan-type _ImportType 'class'|'constant'|'function'
  */

@@ -17,9 +17,9 @@ namespace PhpCsFixer\FixerDefinition;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
- * @readonly
- *
  * @internal
+ *
+ * @readonly
  */
 final class FileSpecificCodeSample implements FileSpecificCodeSampleInterface
 {

@@ -17,9 +17,9 @@ namespace PhpCsFixer\FixerConfiguration;
 /**
  * @author ntzm
  *
- * @readonly
- *
  * @internal
+ *
+ * @readonly
  */
 final class AliasedFixerOption implements FixerOptionInterface
 {
