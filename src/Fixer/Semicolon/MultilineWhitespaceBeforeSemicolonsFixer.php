@@ -115,6 +115,12 @@ $object->method1()
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
         for ($index = 0, $count = \count($tokens); $index < $count; ++$index) {
+            if ($tokens[$index]->isGivenKind(T_CONST)) {
+                $index = $tokens->getNextTokenOfKind($index, [';']);
+
+                continue;
+            }
+
             if (!$tokens[$index]->equals(';')) {
                 continue;
             }
