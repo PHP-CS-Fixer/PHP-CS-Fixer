@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class WhitespacyCommentTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param array<int, array{int, string}> $expectedTokens
+     * @param array<int, _PhpTokenArray> $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
@@ -44,7 +44,7 @@ final class WhitespacyCommentTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<int, array{string, array<int, array{int, string}>}>
+     * @return iterable<int, array{string, array<int, _PhpTokenArray>}>
      */
     public static function provideProcessCases(): iterable
     {
