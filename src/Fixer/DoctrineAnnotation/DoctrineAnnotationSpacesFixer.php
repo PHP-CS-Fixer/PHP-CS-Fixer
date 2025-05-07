@@ -160,7 +160,7 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
 
                     continue;
                 }
-            } elseif ($tokens[$index]->isType(DocLexer::T_AT)) {
+            } elseif ($token->isType(DocLexer::T_AT)) {
                 $endIndex = $tokens->getAnnotationEnd($index);
                 if (null !== $endIndex) {
                     $inAnnotationUntilIndex = $endIndex + 1;
@@ -209,7 +209,7 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
 
                     continue;
                 }
-            } elseif ($tokens[$index]->isType(DocLexer::T_AT)) {
+            } elseif ($token->isType(DocLexer::T_AT)) {
                 $endIndex = $tokens->getAnnotationEnd($index);
                 if (null !== $endIndex) {
                     $inAnnotationUntilIndex = $endIndex;
@@ -255,13 +255,13 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
                 continue;
             }
 
-            if ($tokens[$index]->isType(DocLexer::T_AT)) {
+            if ($token->isType(DocLexer::T_AT)) {
                 $scopes[] = DocLexer::T_CLOSE_PARENTHESIS;
 
                 continue;
             }
 
-            if ($tokens[$index]->isType(DocLexer::T_OPEN_CURLY_BRACES)) {
+            if ($token->isType(DocLexer::T_OPEN_CURLY_BRACES)) {
                 $scopes[] = DocLexer::T_CLOSE_CURLY_BRACES;
 
                 continue;

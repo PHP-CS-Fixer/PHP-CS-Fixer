@@ -259,7 +259,7 @@ use Space\Models\ {
             $tokens->insertAt($i + 1, new Token([T_WHITESPACE, ' ']));
 
             foreach ($leadingTokens as $offset => $leadingToken) {
-                $tokens->insertAt($i + 2 + $offset, clone $leadingTokens[$offset]);
+                $tokens->insertAt($i + 2 + $offset, clone $leadingToken);
             }
 
             $indent = WhitespacesAnalyzer::detectIndent($tokens, $index);
