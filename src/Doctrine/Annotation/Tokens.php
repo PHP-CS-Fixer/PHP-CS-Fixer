@@ -22,7 +22,7 @@ use PhpCsFixer\Tokenizer\Token as PhpToken;
  *
  * @internal
  *
- * @extends \SplFixedArray<Token>
+ * @extends \SplFixedlist<Token>
  */
 final class Tokens extends \SplFixedArray
 {
