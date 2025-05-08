@@ -36,6 +36,7 @@ use PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocTagRenameFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocOrderByValueFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocReturnSelfReferenceFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocTagTypeFixer;
+use PhpCsFixer\Fixer\Semicolon\MultilineWhitespaceBeforeSemicolonsFixer;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
@@ -286,6 +287,8 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                 } elseif ($fixer instanceof PhpdocTagTypeFixer && 'tags' === $optionName) {
                     // nothing to do
                 } elseif ($fixer instanceof OrderedImportsFixer && 'sort_algorithm' === $optionName) {
+                    // nothing to do
+                } elseif ($fixer instanceof MultilineWhitespaceBeforeSemicolonsFixer && 'strategy' === $optionName) {
                     // nothing to do
                 } else {
                     throw new \LogicException(\sprintf('How to handle normalized types of "%s.%s"? Explicit instructions needed!', $fixer->getName(), $optionName));
