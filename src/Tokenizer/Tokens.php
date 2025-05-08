@@ -30,7 +30,7 @@ use PhpCsFixer\Utils;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
- * @extends \SplFixedlist<Token>
+ * @extends \SplFixedArray<Token>
  *
  * @method Token offsetGet($offset)
  *
