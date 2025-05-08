@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Semicolon;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Console\Application;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ConfigurableFixerTrait;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
@@ -28,6 +30,8 @@ use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Utils;
+use Symfony\Component\OptionsResolver\Options;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
@@ -51,6 +55,11 @@ final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imple
      * @internal
      */
     public const STRATEGY_NO_MULTI_LINE = 'no_multi_line';
+
+    /**
+     * @internal
+     */
+    public const STRATEGY_NEWLINE_FOR_CHAINED_METHOD_CALLS = 'newline_for_chained_method_calls';
 
     /**
      * @internal
@@ -83,6 +92,14 @@ $object->method1()
     ->method2()
     ->method(3);
 ',
+                    ['strategy' => self::STRATEGY_NEWLINE_FOR_CHAINED_METHOD_CALLS]
+                ),
+                new CodeSample(
+                    '<?php
+                return
+                    is_empty($_GET)
+                    || is_empty($_POST);
+',
                     ['strategy' => self::STRATEGY_NEWLINE_FOR_CHAINED_CALLS]
                 ),
             ]
@@ -107,13 +124,26 @@ $object->method1()
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
+        $fixerName = $this->getName();
+
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder(
                 'strategy',
                 'Forbid multi-line whitespace or move the semicolon to the new line for chained calls.'
             ))
-                ->setAllowedValues([self::STRATEGY_NO_MULTI_LINE, self::STRATEGY_NEWLINE_FOR_CHAINED_CALLS, self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS])
+                ->setAllowedValues([self::STRATEGY_NO_MULTI_LINE, self::STRATEGY_NEWLINE_FOR_CHAINED_METHOD_CALLS, self::STRATEGY_NEWLINE_FOR_CHAINED_CALLS, self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS])
                 ->setDefault(self::STRATEGY_NO_MULTI_LINE)
+                ->setNormalizer(static function (Options $options, ?string $value) use ($fixerName): ?string {
+                    if (self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS === $value) {
+                        Utils::triggerDeprecation(new InvalidFixerConfigurationException($fixerName, \sprintf(
+                            'Option "strategy:%s" is deprecated and will be removed in version %d.0.',
+                            self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS,
+                            Application::getMajorVersion() + 1,
+                        )));
+                    }
+
+                    return $value;
+                })
                 ->getOption(),
         ]);
     }
@@ -130,11 +160,21 @@ $object->method1()
             $previousIndex = $index - 1;
             $previous = $tokens[$previousIndex];
 
-            $indent = $this->findWhitespaceBeforeFirstCall($index, $tokens);
+            if (self::STRATEGY_NEWLINE_FOR_CHAINED_CALLS === $this->configuration['strategy']) {
+                $indent = $this->findWhitespaceBeforeFirstCall($index, $tokens);
+            } else {
+                $indent = $this->findWhitespaceBeforeMethodFirstCall($index, $tokens);
+            }
+
             if (
-                (
-                    self::STRATEGY_NEWLINE_FOR_CHAINED_CALLS === $this->configuration['strategy']
-                    || self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS === $this->configuration['strategy']
+                in_array(
+                    $this->configuration['strategy'],
+                    [
+                        self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS,
+                        self::STRATEGY_NEWLINE_FOR_CHAINED_CALLS,
+                        self::STRATEGY_NEWLINE_FOR_CHAINED_METHOD_CALLS,
+                    ],
+                    true
                 )
                 && null !== $indent
             ) {
@@ -231,7 +271,32 @@ $object->method1()
      *          ->anotherCall();
      * ..
      */
-    private function findWhitespaceBeforeFirstCall(int $index, Tokens $tokens): ?string
+    private function findWhitespaceBeforeMethodFirstCall(int $index, Tokens $tokens): ?string
+    {
+        $isMultilineCall = false;
+        $prevIndex = $tokens->getPrevMeaningfulToken($index);
+
+        while (!$tokens[$prevIndex]->equalsAny([';', ':', '{', '}', [T_OPEN_TAG], [T_OPEN_TAG_WITH_ECHO], [T_ELSE]])) {
+            $index = $prevIndex;
+            $prevIndex = $tokens->getPrevMeaningfulToken($index);
+
+            $blockType = Tokens::detectBlockType($tokens[$index]);
+            if (null !== $blockType && !$blockType['isStart']) {
+                $prevIndex = $tokens->findBlockStart($blockType['type'], $index);
+
+                continue;
+            }
+
+            if ($tokens[$index]->isObjectOperator() || $tokens[$index]->isGivenKind(T_DOUBLE_COLON)) {
+                $prevIndex = $tokens->getPrevMeaningfulToken($index);
+                $isMultilineCall = $isMultilineCall || $tokens->isPartialCodeMultiline($prevIndex, $index);
+            }
+        }
+
+        return $isMultilineCall ? WhitespacesAnalyzer::detectIndent($tokens, $index) : null;
+    }
+
+    private function findWhitespaceBeforeFirstCall(?int $index, Tokens $tokens): ?string
     {
         $isMultilineCall = false;
 
@@ -246,6 +311,10 @@ $object->method1()
         }
 
         while (true) {
+            if ($index === null) {
+                break;
+            }
+
             if ($tokens[$index]->equalsAny($statementBreakTokens)) {
                 break;
             }

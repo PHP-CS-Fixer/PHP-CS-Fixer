@@ -1200,6 +1200,7 @@ switch ($foo) {
               ;
 }
 ',
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1229,12 +1230,15 @@ switch ($foo) {
                     ? "foo"
                     : "bar";
             ',
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
             '<?php
                 return is_empty($_GET) ? "foo" : "bar";
             ',
+            null,
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1247,6 +1251,7 @@ switch ($foo) {
                 return is_empty($_GET)
                     ? "foo" : "bar";
             ',
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1265,6 +1270,7 @@ switch ($foo) {
                         BAR = "bar";
                 }
             ',
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1273,6 +1279,8 @@ switch ($foo) {
                     const BAR = "bar";
                 }
             ',
+            null,
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1281,6 +1289,8 @@ switch ($foo) {
                     const BAR = "bar", FOO = "foo";
                 }
             ',
+            null,
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1295,12 +1305,15 @@ switch ($foo) {
                     is_empty($_GET)
                     || is_empty($_POST);
             ',
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
             '<?php
                 return is_empty($_GET) || is_empty($_POST) ;
             ',
+            null,
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1317,12 +1330,15 @@ switch ($foo) {
                     . "split line"
                     . "string";
             ',
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
             '<?php
                 return "this is not a" . "split line" . "string";
             ',
+            null,
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1331,6 +1347,8 @@ switch ($foo) {
                     "this is not a" . "split line" . "string"
                 ;
             ',
+            null,
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1338,7 +1356,9 @@ switch ($foo) {
                 $foo->foo($bar->something()
                     ->else()
                 );
-            '
+            ',
+            null,
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1348,7 +1368,9 @@ switch ($foo) {
                         ->something()
                         ->else()
                 );
-            '
+            ',
+            null,
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1356,7 +1378,9 @@ switch ($foo) {
                 echo "this is a
                     split line
                     string";
-            '
+            ',
+            null,
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1364,7 +1388,9 @@ switch ($foo) {
                 return "this is a
                     split line
                     string";
-            '
+            ',
+            null,
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1372,7 +1398,9 @@ switch ($foo) {
                 return "this is a" . $nice . "
                     split line
                     string";
-            '
+            ',
+            null,
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1388,7 +1416,8 @@ switch ($foo) {
                     $nice . "
                     split line
                     string";
-            '
+            ',
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1398,6 +1427,8 @@ switch ($foo) {
                     + 3
                 ;
             ',
+            null,
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1408,6 +1439,8 @@ switch ($foo) {
                     - 4
                 ;
             ',
+            null,
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1419,6 +1452,8 @@ switch ($foo) {
                     * 5
                 ;
             ',
+            null,
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1431,6 +1466,8 @@ switch ($foo) {
                     / 6
                 ;
             ',
+            null,
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1438,7 +1475,9 @@ switch ($foo) {
                 return $this->isFoo() ||
                     $this->isBar()
                 ;
-            '
+            ',
+            null,
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1447,7 +1486,9 @@ switch ($foo) {
                     doThing()->
                     doAnother()
                 ;
-            '
+            ',
+            null,
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1456,7 +1497,9 @@ switch ($foo) {
                     doThing()::
                     doAnother()
                 ;
-            '
+            ',
+            null,
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1468,6 +1511,8 @@ switch ($foo) {
                     protected $bar;
                 }
             ',
+            null,
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1485,6 +1530,7 @@ switch ($foo) {
                     ->bar()
                     ;
             ',
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1497,6 +1543,8 @@ class {};
 $b = new
 #[X]
 class {};',
+            null,
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1509,6 +1557,8 @@ class {};',
 
              }
             ',
+            null,
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
