@@ -1226,11 +1226,12 @@ class Tokens extends \SplFixedArray
     /**
      * @param int $start start index
      * @param int $end   end index
+     * @param list<int> $tokens array of kinds
      */
     public function isPartialCodeMultiline(int $start, int $end, array $tokens = []): bool
     {
         for ($i = $start; $i <= $end; ++$i) {
-            if (!empty($tokens) && !$this[$i]->isGivenKind($tokens)) {
+            if ($tokens !== [] && !$this[$i]->isGivenKind($tokens)) {
                 continue;
             }
 
