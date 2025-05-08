@@ -14,7 +14,7 @@ Configuration
 Forbid multi-line whitespace or move the semicolon to the new line for chained
 calls.
 
-Allowed values: ``'new_line_for_chained_calls'`` and ``'no_multi_line'``
+Allowed values: ``'new_line_for_chained_calls'``, ``'newline_for_chained_calls'``, ``'newline_for_chained_method_calls'`` and ``'no_multi_line'``
 
 Default value: ``'no_multi_line'``
 
@@ -40,7 +40,7 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
-With configuration: ``['strategy' => 'new_line_for_chained_calls']``.
+With configuration: ``['strategy' => 'newline_for_chained_method_calls']``.
 
 .. code-block:: diff
 
@@ -53,6 +53,22 @@ With configuration: ``['strategy' => 'new_line_for_chained_calls']``.
    +    ->method(3)
    +;
 
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['strategy' => 'newline_for_chained_calls']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+                    return
+                        is_empty($_GET)
+   -                    || is_empty($_POST);
+   +                    || is_empty($_POST)
+   +                ;
+
 Rule sets
 ---------
 
@@ -60,7 +76,7 @@ The rule is part of the following rule set:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 
-  ``['strategy' => 'new_line_for_chained_calls']``
+  ``['strategy' => 'newline_for_chained_method_calls']``
 
 
 References
