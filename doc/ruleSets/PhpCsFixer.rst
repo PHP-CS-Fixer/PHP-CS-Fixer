@@ -31,7 +31,7 @@ Rules
 - `multiline_comment_opening_closing <./../rules/comment/multiline_comment_opening_closing.rst>`_
 - `multiline_whitespace_before_semicolons <./../rules/semicolon/multiline_whitespace_before_semicolons.rst>`_ with config:
 
-  ``['strategy' => 'new_line_for_chained_calls']``
+  ``['strategy' => 'newline_for_chained_calls']``
 
 - `no_extra_blank_lines <./../rules/whitespace/no_extra_blank_lines.rst>`_ with config:
 

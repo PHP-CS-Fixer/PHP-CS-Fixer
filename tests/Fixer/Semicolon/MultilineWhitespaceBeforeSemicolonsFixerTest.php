@@ -315,7 +315,7 @@ $seconds = $minutes
                         ->method1()
                         ->method2();
                 ?>',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -336,7 +336,7 @@ $seconds = $minutes
 
 
 ',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -361,7 +361,7 @@ $seconds = $minutes
                     $this
                         ->method1()
                         ->method2();',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -376,7 +376,7 @@ $seconds = $minutes
                     $service
                         ->method2();
                 ?>',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -395,7 +395,7 @@ $seconds = $minutes
                         ->method3()
                         ->method4();
                 ?>',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -422,7 +422,7 @@ $seconds = $minutes
                         )
                         ->method4();
                 ?>',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -443,7 +443,7 @@ $seconds = $minutes
                         ->method3()
                             ->method4();
                 ?>',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -466,7 +466,7 @@ $seconds = $minutes
                         ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
                         ->method4(1, "a", $f);
                 ?>',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -489,7 +489,7 @@ $seconds = $minutes
                         ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
                         ->method4(1, "a", $f); /* this is a comment */
                 ?>',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -498,7 +498,7 @@ $seconds = $minutes
                     $service->method2()->method3();
                 ?>',
             null,
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -507,7 +507,7 @@ $seconds = $minutes
                     $service->method2()->method3() ;
                 ?>',
             null,
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -532,7 +532,7 @@ $seconds = $minutes
                             ;
                         });
                 ?>',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -564,7 +564,7 @@ $seconds = $minutes
                                 ));
                         });
                 ?>',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -587,7 +587,7 @@ $seconds = $minutes
                         ])
                         ->method2(4, Type::class);
 ',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -602,7 +602,7 @@ $this
                         ->method1()
                         ->method2();
                 ?>',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -619,7 +619,7 @@ $this
                         ::method1()
                         ->method2();
                 ?>',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -640,7 +640,7 @@ $this
 
 
 ',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -665,7 +665,7 @@ $this
                     $this
                         ->method1()
                         ->method2();',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -680,7 +680,7 @@ $this
                     Service
                         ::method2();
                 ?>',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -699,7 +699,7 @@ $this
                         ->method3()
                         ->method4();
                 ?>',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -726,7 +726,7 @@ $this
                         )
                         ->method4();
                 ?>',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -747,7 +747,7 @@ $this
                         ->method3()
                             ->method4();
                 ?>',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -770,7 +770,7 @@ $this
                         ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
                         ->method4(1, "a", $f);
                 ?>',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -793,7 +793,7 @@ $this
                         ->method3([1, 2, 3], ["a" => "b", "c" => 1, "d" => true])
                         ->method4(1, "a", $f); /* this is a comment */
                 ?>',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -802,7 +802,7 @@ $this
                     Service::method2()->method3();
                 ?>',
             null,
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -811,7 +811,7 @@ $this
                     Service::method2()->method3() ;
                 ?>',
             null,
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -836,7 +836,7 @@ $this
                             ;
                         });
                 ?>',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -868,7 +868,7 @@ $this
                                 ));
                         });
                 ?>',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -891,7 +891,7 @@ $this
                         ])
                         ->method2(4, Type::class);
 ',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -906,7 +906,7 @@ Service
                         ::method1()
                         ->method2();
                 ?>',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -938,7 +938,7 @@ Service
                             ->baz();
                     }
                 ?>',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -966,7 +966,7 @@ Service
                             ->baz();
                     }
                 ?>',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -981,7 +981,7 @@ $object
     ->methodA()
     ->methodB();
 ',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -994,19 +994,19 @@ $object
     ->methodA()
     ->methodB();
 ',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
             "<?php\n\$this\n    ->one()\n    ->two(2, )\n;",
             "<?php\n\$this\n    ->one()\n    ->two(2, );",
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
             "<?php\n\$this\n    ->one(1, )\n    ->two()\n;",
             "<?php\n\$this\n    ->one(1, )\n    ->two();",
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1028,7 +1028,7 @@ $object
                         ->method2()
                         ->method3()->method4();
                 ?>',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1050,7 +1050,7 @@ $object
                         ->method2()
                         ->method3()->method4();
                 ?>',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1072,7 +1072,7 @@ $object
                         ->method2()
                         ->method3()->method4();
                 ?>',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1094,7 +1094,7 @@ $object
                         ->method2()
                         ->method3()->method4();
                 ?>',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1110,7 +1110,7 @@ $this
     ->setDescription(\'Generates the README\')
     ;
 ',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1121,7 +1121,7 @@ $this
 ;
 ',
             null,
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1136,7 +1136,7 @@ $this
                         ->method1()
                         ->method2();
                 ',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1151,7 +1151,7 @@ $this
                         ->method1()
                         ->method2();
                 ',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1163,7 +1163,7 @@ $this
                     ];
                 ',
             null,
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1183,7 +1183,7 @@ switch ($foo) {
               ;
 }
 ',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1214,7 +1214,7 @@ switch ($foo) {
                 $x->foo()
                     ->bar();$y = 42;
                 PHP,
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
 
         yield [
@@ -1514,21 +1514,21 @@ class {};',
         yield [
             "<?php\r\n\r\n   \$this\r\n\t->method1()\r\n\t\t->method2()\r\n   ;",
             "<?php\r\n\r\n   \$this\r\n\t->method1()\r\n\t\t->method2();",
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
             true,
         ];
 
         yield [
             "<?php\r\n\r\n\t\$this->method1()\r\n\t\t->method2()\r\n\t\t->method(3)\r\n\t;",
             "<?php\r\n\r\n\t\$this->method1()\r\n\t\t->method2()\r\n\t\t->method(3);",
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
             true,
         ];
 
         yield [
             "<?php\r\n\r\n\t\$data   =  \$service\r\n\t ->method2(function (\$a) {\r\n\t\t\t\$a->otherCall()\r\n\t\t\t\t->a()\r\n\t\t\t\t->b(array_merge([\r\n\t\t\t\t\t\t1 => 1,\r\n\t\t\t\t\t\t2 => 2,\r\n\t\t\t\t\t], \$this->getOtherArray()\r\n\t\t\t\t))\r\n\t\t\t;\r\n\t\t})\r\n\t;\r\n?>",
             "<?php\r\n\r\n\t\$data   =  \$service\r\n\t ->method2(function (\$a) {\r\n\t\t\t\$a->otherCall()\r\n\t\t\t\t->a()\r\n\t\t\t\t->b(array_merge([\r\n\t\t\t\t\t\t1 => 1,\r\n\t\t\t\t\t\t2 => 2,\r\n\t\t\t\t\t], \$this->getOtherArray()\r\n\t\t\t\t));\r\n\t\t});\r\n?>",
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
             true,
         ];
     }
@@ -1564,7 +1564,7 @@ class {};',
                     ?->method2()
                     ?->method3();
                 ',
-            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
+            ['strategy' => MultilineWhitespaceBeforeSemicolonsFixer::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
         ];
     }
 }
