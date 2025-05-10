@@ -8,7 +8,7 @@ updates:
     schedule:
       interval: weekly
       day: friday
-      time: 12:30
+      time: '12:30'
       timezone: Europe/Warsaw
     versioning-strategy: increase
     groups:
@@ -22,7 +22,7 @@ updates:
     schedule:
       interval: weekly
       day: friday
-      time: 12:30
+      time: '12:30'
       timezone: Europe/Warsaw
   - package-ecosystem: github-actions
     directory: /
@@ -31,5 +31,5 @@ updates:
     schedule:
       interval: weekly
       day: friday
-      time: 12:30
+      time: '12:30'
       timezone: Europe/Warsaw
