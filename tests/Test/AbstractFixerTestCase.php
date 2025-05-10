@@ -42,7 +42,6 @@ use PhpCsFixer\Tests\Fixer\ConstantNotation\NativeConstantInvocationFixerTest;
 use PhpCsFixer\Tests\Fixer\ControlStructure\NoBreakCommentFixerTest;
 use PhpCsFixer\Tests\Fixer\ControlStructure\NoUnneededControlParenthesesFixerTest;
 use PhpCsFixer\Tests\Fixer\ControlStructure\NoUselessElseFixerTest;
-use PhpCsFixer\Tests\Fixer\ControlStructure\YodaStyleFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\FunctionDeclarationFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\MethodArgumentSpaceFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\ReturnTypeDeclarationFixerTest;
@@ -480,7 +479,6 @@ abstract class AbstractFixerTestCase extends TestCase
             SingleSpaceAroundConstructFixerTest::class,
             SpacesInsideParenthesesFixerTest::class,
             StatementIndentationFixerTest::class,
-            YodaStyleFixerTest::class,
         ];
 
         $names = ['Fix', 'FixDeprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'WithWhitespacesConfig', 'InvalidConfiguration'];
