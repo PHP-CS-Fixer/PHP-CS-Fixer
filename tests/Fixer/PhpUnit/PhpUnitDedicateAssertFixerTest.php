@@ -332,6 +332,17 @@ $a#
                 $this->assertTrue(!$y instanceof SomeClass, $message);
             '),
         ];
+
+        yield 'assertFalse with instanceof' => [
+            self::generateTest('
+                self::assertNotInstanceOf(Foo::class, $a);
+                self::assertInstanceOf(Foo::class, $b);
+            '),
+            self::generateTest('
+                self::assertFalse($a instanceof Foo);
+                self::assertFalse(!$b instanceof Foo);
+            '),
+        ];
     }
 
     /**
