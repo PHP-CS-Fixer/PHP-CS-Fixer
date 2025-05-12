@@ -61,7 +61,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
      *
      * @dataProvider provideInvalidConfigurationCases
      */
-    public function testInvalidConfiguration($configuration, string $expectedExceptionMessage): void
+    public function testInvalidConfiguration(array $configuration, string $expectedExceptionMessage): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
