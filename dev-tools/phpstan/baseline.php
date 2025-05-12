@@ -788,6 +788,30 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Offset \'multiLine\' might not exist on non\\-empty\\-array\\<\'multiLine\'\\|\'numberOfExtends\'\\|\'numberOfImplements\'\\|\'start\', bool\\|int\\>\\.$#',
+	'identifier' => 'offsetAccess.notFound',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Offset \'numberOfExtends\'\\|\'numberOfImplements\' might not exist on non\\-empty\\-array\\<\'multiLine\'\\|\'numberOfExtends\'\\|\'numberOfImplements\'\\|\'start\', bool\\|int\\>\\.$#',
+	'identifier' => 'offsetAccess.notFound',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Only booleans are allowed in a negated boolean, bool\\|int given\\.$#',
+	'identifier' => 'booleanNot.exprNotBoolean',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Only numeric types are allowed in pre\\-increment, bool\\|int given\\.$#',
+	'identifier' => 'preInc.nonNumeric',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Only numeric types are allowed in \\+, int\\|false given on the left side\\.$#',
 	'identifier' => 'plus.leftNonNumeric',
 	'count' => 1,

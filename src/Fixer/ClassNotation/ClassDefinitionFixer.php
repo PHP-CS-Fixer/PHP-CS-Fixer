@@ -382,9 +382,7 @@ $foo = new class(){};
      */
     private function getClassyInheritanceInfo(Tokens $tokens, int $startIndex, string $label): array
     {
-        $start = $startIndex;
-        $count = 1;
-        $multiline = false;
+        $implementsInfo = ['start' => $startIndex, $label => 1, 'multiLine' => false];
 
         ++$startIndex;
         $endIndex = $tokens->getNextTokenOfKind($startIndex, ['{', [T_IMPLEMENTS], [T_EXTENDS]]);
@@ -392,17 +390,17 @@ $foo = new class(){};
 
         for ($i = $startIndex; $i < $endIndex; ++$i) {
             if ($tokens[$i]->equals(',')) {
-                ++$count;
+                ++$implementsInfo[$label];
 
                 continue;
             }
 
-            if (!$multiline && str_contains($tokens[$i]->getContent(), "\n")) {
-                $multiline = true;
+            if (!$implementsInfo['multiLine'] && str_contains($tokens[$i]->getContent(), "\n")) {
+                $implementsInfo['multiLine'] = true;
             }
         }
 
-        return ['start' => $start, $label => $count, 'multiLine' => $multiline];
+        return $implementsInfo;
     }
 
     private function makeClassyDefinitionSingleLine(Tokens $tokens, int $startIndex, int $endIndex): void
