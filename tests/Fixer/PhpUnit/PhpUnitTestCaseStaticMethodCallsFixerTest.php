@@ -57,7 +57,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
     }
 
     /**
-     * @param array<mixed> $configuration
+     * @param array<array-key, mixed> $configuration
      *
      * @dataProvider provideInvalidConfigurationCases
      */
