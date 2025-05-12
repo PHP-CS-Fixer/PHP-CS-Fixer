@@ -806,18 +806,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an elseif condition, array\\<string, bool\\|int\\>\\|false given\\.$#',
-	'identifier' => 'elseif.condNotBoolean',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in an if condition, array\\<string, bool\\|int\\>\\|false given\\.$#',
-	'identifier' => 'if.condNotBoolean',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Only numeric types are allowed in pre\\-increment, bool\\|int given\\.$#',
 	'identifier' => 'preInc.nonNumeric',
 	'count' => 1,
@@ -2628,18 +2616,6 @@ $ignoreErrors[] = [
 	'identifier' => 'return.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/Fixer/Basic/EncodingFixerTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset \'classy\' might not exist on array\\<string, mixed\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Fixer/ClassNotation/ClassDefinitionFixerTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset \'start\' might not exist on array\\<string, mixed\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 3,
-	'path' => __DIR__ . '/../../tests/Fixer/ClassNotation/ClassDefinitionFixerTest.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Generator expects value type array\\{0\\: string, 1\\: string\\|null, 2\\?\\: array\\<string, bool\\>\\}, array\\{0\\: string, 1\\?\\: string\\} given\\.$#',
