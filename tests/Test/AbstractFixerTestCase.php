@@ -75,7 +75,6 @@ use PhpCsFixer\Tests\Fixer\Whitespace\BlankLineBeforeStatementFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\IndentationTypeFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\NoSpacesAroundOffsetFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\SpacesInsideParenthesesFixerTest;
-use PhpCsFixer\Tests\Fixer\Whitespace\StatementIndentationFixerTest;
 use PhpCsFixer\Tests\Test\Assert\AssertTokensTrait;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
@@ -478,7 +477,6 @@ abstract class AbstractFixerTestCase extends TestCase
             SingleLineCommentStyleFixerTest::class,
             SingleSpaceAroundConstructFixerTest::class,
             SpacesInsideParenthesesFixerTest::class,
-            StatementIndentationFixerTest::class,
         ];
 
         $names = ['Fix', 'FixDeprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'WithWhitespacesConfig', 'InvalidConfiguration'];
