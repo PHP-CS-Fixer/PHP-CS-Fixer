@@ -424,8 +424,9 @@ abstract class AbstractFixerTestCase extends TestCase
 
         /** @var array<class-string, list<string>> */
         $allowedExtraMethods = [
-            ClassAttributesSeparationFixerTest::class => ['testCommentBlockStartDetection'],
-            NoEmptyCommentFixerTest::class => ['testGetCommentBlock'],
+            ClassAttributesSeparationFixerTest::class => ['testCommentBlockStartDetection', 'provideCommentBlockStartDetectionCases'],
+            NoEmptyCommentFixerTest::class => ['testGetCommentBlock', 'provideGetCommentBlockCases'],
+            PhpUnitTestCaseStaticMethodCallsFixerTest::class => ['testFixerContainsAllPhpunitStaticMethodsInItsList'],
         ];
 
         // should only shrink, baseline of classes violating method naming
@@ -464,7 +465,6 @@ abstract class AbstractFixerTestCase extends TestCase
             PhpdocTypesOrderFixerTest::class,
             PhpUnitConstructFixerTest::class,
             PhpUnitDedicateAssertFixerTest::class,
-            PhpUnitTestCaseStaticMethodCallsFixerTest::class,
         ];
 
         $names = ['Fix', 'FixDeprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'WithWhitespacesConfig', 'InvalidConfiguration'];
@@ -486,12 +486,7 @@ abstract class AbstractFixerTestCase extends TestCase
         );
 
         if (isset($allowedExtraMethods[static::class])) {
-            $expectedExtraMethods = [];
-            foreach ($allowedExtraMethods[static::class] as $method) {
-                $expectedExtraMethods[] = $method;
-                $expectedExtraMethods[] = 'provide'.substr($method, 4).'Cases';
-            }
-            self::assertSame($expectedExtraMethods, $extraMethods);
+            self::assertSame($allowedExtraMethods[static::class], $extraMethods);
         } elseif (\in_array(static::class, $exceptionClasses, true)) {
             self::assertNotSame(
                 [],
