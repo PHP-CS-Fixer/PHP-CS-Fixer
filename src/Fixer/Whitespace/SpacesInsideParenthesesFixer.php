@@ -107,7 +107,7 @@ function foo(\$bar, \$baz)
                     continue;
                 }
 
-                $blockType = Tokens::detectBlockType($tokens[$index]);
+                $blockType = Tokens::detectBlockType($token);
                 $endIndex = $tokens->findBlockEnd($blockType['type'], $index);
 
                 // remove space after opening `(`
@@ -128,7 +128,7 @@ function foo(\$bar, \$baz)
                     continue;
                 }
 
-                $blockType = Tokens::detectBlockType($tokens[$index]);
+                $blockType = Tokens::detectBlockType($token);
                 $endParenthesisIndex = $tokens->findBlockEnd($blockType['type'], $index);
 
                 // if not other content than spaces in block remove spaces

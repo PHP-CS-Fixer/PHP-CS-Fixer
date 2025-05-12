@@ -2229,6 +2229,22 @@ enum Cards: string
                 }
                 PHP,
         ];
+
+        yield 'property hooks' => [
+            <<<'PHP'
+                <?php class Foo {
+                    private int $a { set(int $a) {} }
+
+                    private int $b { set(int $b) {} }
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo {
+                    private int $a { set(int $a) {} }
+                    private int $b { set(int $b) {} }
+                }
+                PHP,
+        ];
     }
 
     /**

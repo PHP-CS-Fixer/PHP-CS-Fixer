@@ -3,13 +3,13 @@ name: Sphinx
 on:
   pull_request:
     paths:
-      - "**/*.rst"
+      - '**/*.rst'
   push:
     paths:
-      - "**/*.rst"
+      - '**/*.rst'
 
 permissions:
-  contents: "read"
+  contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
