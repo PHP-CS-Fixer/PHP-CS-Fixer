@@ -42,13 +42,11 @@ use PhpCsFixer\Tests\Fixer\ConstantNotation\NativeConstantInvocationFixerTest;
 use PhpCsFixer\Tests\Fixer\ControlStructure\NoBreakCommentFixerTest;
 use PhpCsFixer\Tests\Fixer\ControlStructure\NoUnneededControlParenthesesFixerTest;
 use PhpCsFixer\Tests\Fixer\ControlStructure\NoUselessElseFixerTest;
-use PhpCsFixer\Tests\Fixer\ControlStructure\YodaStyleFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\FunctionDeclarationFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\MethodArgumentSpaceFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\ReturnTypeDeclarationFixerTest;
 use PhpCsFixer\Tests\Fixer\Import\GlobalNamespaceImportFixerTest;
 use PhpCsFixer\Tests\Fixer\Import\SingleImportPerStatementFixerTest;
-use PhpCsFixer\Tests\Fixer\LanguageConstruct\SingleSpaceAroundConstructFixerTest;
 use PhpCsFixer\Tests\Fixer\ListNotation\ListSyntaxFixerTest;
 use PhpCsFixer\Tests\Fixer\Operator\BinaryOperatorSpacesFixerTest;
 use PhpCsFixer\Tests\Fixer\Operator\ConcatSpaceFixerTest;
@@ -75,8 +73,6 @@ use PhpCsFixer\Tests\Fixer\Semicolon\NoEmptyStatementFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\BlankLineBeforeStatementFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\IndentationTypeFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\NoSpacesAroundOffsetFixerTest;
-use PhpCsFixer\Tests\Fixer\Whitespace\SpacesInsideParenthesesFixerTest;
-use PhpCsFixer\Tests\Fixer\Whitespace\StatementIndentationFixerTest;
 use PhpCsFixer\Tests\Test\Assert\AssertTokensTrait;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
@@ -477,10 +473,6 @@ abstract class AbstractFixerTestCase extends TestCase
             ReturnTypeDeclarationFixerTest::class,
             SingleImportPerStatementFixerTest::class,
             SingleLineCommentStyleFixerTest::class,
-            SingleSpaceAroundConstructFixerTest::class,
-            SpacesInsideParenthesesFixerTest::class,
-            StatementIndentationFixerTest::class,
-            YodaStyleFixerTest::class,
         ];
 
         $names = ['Fix', 'FixDeprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'WithWhitespacesConfig', 'InvalidConfiguration'];
