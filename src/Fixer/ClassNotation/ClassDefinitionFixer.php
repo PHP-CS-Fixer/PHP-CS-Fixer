@@ -376,14 +376,11 @@ $foo = new class(){};
     }
 
     /**
-     * @param 'numberOfExtends'|'numberOfImplements' $label
-     *
-     * @return ($label is 'numberOfExtends' ? _ClassExtendsInfo : _ClassImplementsInfo)
+     * @return array<string, 1>|array{start: int, multiLine: bool}
      */
     private function getClassyInheritanceInfo(Tokens $tokens, int $startIndex, string $label): array
     {
         $implementsInfo = ['start' => $startIndex, $label => 1, 'multiLine' => false];
-
         ++$startIndex;
         $endIndex = $tokens->getNextTokenOfKind($startIndex, ['{', [T_IMPLEMENTS], [T_EXTENDS]]);
         $endIndex = $tokens[$endIndex]->equals('{') ? $tokens->getPrevNonWhitespace($endIndex) : $endIndex;
