@@ -37,7 +37,6 @@ use PhpCsFixer\Tests\Fixer\ClassNotation\ClassAttributesSeparationFixerTest;
 use PhpCsFixer\Tests\Fixer\ClassNotation\ClassDefinitionFixerTest;
 use PhpCsFixer\Tests\Fixer\Comment\HeaderCommentFixerTest;
 use PhpCsFixer\Tests\Fixer\Comment\NoEmptyCommentFixerTest;
-use PhpCsFixer\Tests\Fixer\Comment\SingleLineCommentStyleFixerTest;
 use PhpCsFixer\Tests\Fixer\ConstantNotation\NativeConstantInvocationFixerTest;
 use PhpCsFixer\Tests\Fixer\ControlStructure\NoBreakCommentFixerTest;
 use PhpCsFixer\Tests\Fixer\ControlStructure\NoUnneededControlParenthesesFixerTest;
@@ -472,7 +471,6 @@ abstract class AbstractFixerTestCase extends TestCase
             ReturnAssignmentFixerTest::class,
             ReturnTypeDeclarationFixerTest::class,
             SingleImportPerStatementFixerTest::class,
-            SingleLineCommentStyleFixerTest::class,
         ];
 
         $names = ['Fix', 'FixDeprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'WithWhitespacesConfig', 'InvalidConfiguration'];
