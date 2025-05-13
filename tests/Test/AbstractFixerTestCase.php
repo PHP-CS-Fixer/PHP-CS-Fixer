@@ -62,7 +62,6 @@ use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocTrimFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocTypesOrderFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpTag\EchoTagSyntaxFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpTag\NoClosingTagFixerTest;
-use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitConstructFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixerTest;
 use PhpCsFixer\Tests\Fixer\Semicolon\NoEmptyStatementFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\BlankLineBeforeStatementFixerTest;
@@ -462,7 +461,6 @@ abstract class AbstractFixerTestCase extends TestCase
             PhpdocSummaryFixerTest::class,
             PhpdocTrimFixerTest::class,
             PhpdocTypesOrderFixerTest::class,
-            PhpUnitConstructFixerTest::class,
         ];
 
         $names = ['Fix', 'FixDeprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'WithWhitespacesConfig', 'InvalidConfiguration'];
