@@ -726,21 +726,6 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                 ],
             ],
         ];
-        $input = <<<'EOF'
-            <?php
-            /**
-             * Hello there!
-             *
-             * @author John Doe
-             * @custom Test!
-             * @throws Exception|RuntimeException foo
-             * @param string $foo
-             * @param bool   $bar Bar
-             *
-             * @return int  Return the number of changes.
-             */
-
-            EOF;
 
         yield 'laravel' => [
             <<<'EOF'
@@ -760,7 +745,21 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  */
 
                 EOF,
-            $input,
+            <<<'EOF'
+                <?php
+                /**
+                 * Hello there!
+                 *
+                 * @author John Doe
+                 * @custom Test!
+                 * @throws Exception|RuntimeException foo
+                 * @param string $foo
+                 * @param bool   $bar Bar
+                 *
+                 * @return int  Return the number of changes.
+                 */
+
+                EOF,
             ['groups' => [
                 ['param', 'return'],
                 ['throws'],
@@ -787,7 +786,21 @@ final class PhpdocSeparationFixerTest extends AbstractFixerTestCase
                  */
 
                 EOF,
-            $input,
+            <<<'EOF'
+                <?php
+                /**
+                 * Hello there!
+                 *
+                 * @author John Doe
+                 * @custom Test!
+                 * @throws Exception|RuntimeException foo
+                 * @param string $foo
+                 * @param bool   $bar Bar
+                 *
+                 * @return int  Return the number of changes.
+                 */
+
+                EOF,
             ['groups' => [['author', 'throws', 'custom'], ['return', 'param']]],
         ];
 
