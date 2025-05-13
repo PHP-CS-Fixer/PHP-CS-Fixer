@@ -59,7 +59,6 @@ use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocReturnSelfReferenceFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocSeparationFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocSummaryFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocTrimFixerTest;
-use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocTypesOrderFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpTag\EchoTagSyntaxFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpTag\NoClosingTagFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixerTest;
@@ -460,7 +459,6 @@ abstract class AbstractFixerTestCase extends TestCase
             PhpdocSeparationFixerTest::class,
             PhpdocSummaryFixerTest::class,
             PhpdocTrimFixerTest::class,
-            PhpdocTypesOrderFixerTest::class,
         ];
 
         $names = ['Fix', 'FixDeprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'WithWhitespacesConfig', 'InvalidConfiguration'];
