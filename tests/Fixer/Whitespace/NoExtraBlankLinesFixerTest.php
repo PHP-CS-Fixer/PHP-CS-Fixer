@@ -522,6 +522,55 @@ class Foo {}',
 
 class Foo {}',
         ];
+
+        yield 'comma' => [
+            <<<'PHP'
+                <?php
+                foo(
+                    0,
+                    'arg1'
+                );
+                return [
+                    'a',
+                    'b',
+                    'c'
+                ];
+                PHP,
+            <<<'PHP'
+                <?php
+                foo(
+                    0,
+
+                    'arg1'
+                );
+                return [
+                    'a',
+
+                    'b',
+
+
+
+
+                    'c'
+                ];
+                PHP,
+            ['tokens' => ['comma']],
+        ];
+
+        yield 'comma - do not change outside of element' => [
+            <<<'PHP'
+                <?php
+                $foo = [1, 2];
+
+                $bar = array(3, 4);
+
+                [$x, $y] = getXY();
+
+                baz();
+                PHP,
+            null,
+            ['tokens' => ['comma']],
+        ];
     }
 
     /**
