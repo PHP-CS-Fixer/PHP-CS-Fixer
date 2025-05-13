@@ -1824,7 +1824,6 @@ class User3
     #[Assert\Email(["message" => "Foo"])]
  private $email;
 }',
-
             '<?php
 class User3
 {

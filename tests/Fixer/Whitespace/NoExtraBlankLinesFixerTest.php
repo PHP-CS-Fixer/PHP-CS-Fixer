@@ -474,7 +474,6 @@ $c
         }
     }',
             null,
-
             ['tokens' => ['parenthesis_brace_block']],
         ];
 
@@ -1082,7 +1081,6 @@ use const some\Z\{ConstX,ConstY,ConstZ,};
                 $a = new Baz();
                 $a = new Qux();
                 PHP,
-
             <<<'PHP'
                 <?php
 

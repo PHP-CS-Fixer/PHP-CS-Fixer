@@ -70,6 +70,7 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
                     'attribute',
                     'break',
                     'case',
+                    'comma',
                     'continue',
                     'curly_brace_block',
                     'default',

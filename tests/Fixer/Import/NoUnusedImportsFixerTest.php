@@ -323,7 +323,6 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
                 $c = new D();
                 $e = new BarE();
                 EOF,
-
             <<<'EOF'
                 <?php
 
@@ -632,7 +631,6 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
                 <?php
 
                 EOF,
-
             <<<'EOF'
                 <?php
                 use Bar\Finder;
