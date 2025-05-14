@@ -52,7 +52,6 @@ use PhpCsFixer\Tests\Fixer\Phpdoc\NoBlankLinesAfterPhpdocFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpTag\EchoTagSyntaxFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpTag\NoClosingTagFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixerTest;
-use PhpCsFixer\Tests\Fixer\Semicolon\NoEmptyStatementFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\BlankLineBeforeStatementFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\IndentationTypeFixerTest;
 use PhpCsFixer\Tests\Test\Assert\AssertTokensTrait;
@@ -436,10 +435,9 @@ abstract class AbstractFixerTestCase extends TestCase
             NoBlankLinesAfterPhpdocFixerTest::class,
             NoBreakCommentFixerTest::class,
             NoClosingTagFixerTest::class,
-            NoEmptyStatementFixerTest::class,
         ];
 
-        $names = ['Fix', 'FixDeprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'WithWhitespacesConfig', 'InvalidConfiguration'];
+        $names = ['Fix', 'FixDeprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'WithShortOpenTag', 'WithWhitespacesConfig', 'InvalidConfiguration'];
         $methodNames = ['testConfigure'];
         foreach ($names as $name) {
             $methodNames[] = 'test'.$name;
