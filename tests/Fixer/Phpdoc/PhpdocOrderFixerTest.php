@@ -45,7 +45,7 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<string, array{array<mixed>, string}>
+     * @return iterable<string, array{array<array-key, mixed>, string}>
      */
     public static function provideInvalidConfigurationCases(): iterable
     {
