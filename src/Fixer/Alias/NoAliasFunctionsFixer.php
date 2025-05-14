@@ -50,12 +50,9 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableF
     private const SETS = [
         '@internal' => [
             'diskfreespace' => 'disk_free_space',
-
             'dns_check_record' => 'checkdnsrr',
             'dns_get_mx' => 'getmxrr',
-
             'session_commit' => 'session_write_close',
-
             'stream_register_wrapper' => 'stream_wrapper_register',
             'set_file_buffer' => 'stream_set_write_buffer',
             'socket_set_blocking' => 'stream_set_blocking',
@@ -63,7 +60,6 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableF
             'socket_set_timeout' => 'stream_set_timeout',
             'socket_getopt' => 'socket_get_option',
             'socket_setopt' => 'socket_set_option',
-
             'chop' => 'rtrim',
             'close' => 'closedir',
             'doubleval' => 'floatval',
@@ -84,7 +80,6 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableF
             'strchr' => 'strstr',
             'user_error' => 'trigger_error',
         ],
-
         '@IMAP' => [
             'imap_create' => 'imap_createmailbox',
             'imap_fetchtext' => 'imap_body',
@@ -95,31 +90,25 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableF
             'imap_scan' => 'imap_listscan',
             'imap_scanmailbox' => 'imap_listscan',
         ],
-
         '@ldap' => [
             'ldap_close' => 'ldap_unbind',
             'ldap_modify' => 'ldap_mod_replace',
         ],
-
         '@mysqli' => [
             'mysqli_execute' => 'mysqli_stmt_execute',
             'mysqli_set_opt' => 'mysqli_options',
             'mysqli_escape_string' => 'mysqli_real_escape_string',
         ],
-
         '@pg' => [
             'pg_exec' => 'pg_query',
         ],
-
         '@oci' => [
             'oci_free_cursor' => 'oci_free_statement',
         ],
-
         '@odbc' => [
             'odbc_do' => 'odbc_exec',
             'odbc_field_precision' => 'odbc_field_len',
         ],
-
         '@mbreg' => [
             'mbereg' => 'mb_ereg',
             'mbereg_match' => 'mb_ereg_match',
@@ -136,32 +125,25 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableF
             'mbregex_encoding' => 'mb_regex_encoding',
             'mbsplit' => 'mb_split',
         ],
-
         '@openssl' => [
             'openssl_get_publickey' => 'openssl_pkey_get_public',
             'openssl_get_privatekey' => 'openssl_pkey_get_private',
         ],
-
         '@sodium' => [
             'sodium_crypto_scalarmult_base' => 'sodium_crypto_box_publickey_from_secretkey',
         ],
-
         '@exif' => [
             'read_exif_data' => 'exif_read_data',
         ],
-
         '@ftp' => [
             'ftp_quit' => 'ftp_close',
         ],
-
         '@posix' => [
             'posix_errno' => 'posix_get_last_error',
         ],
-
         '@pcntl' => [
             'pcntl_errno' => 'pcntl_get_last_error',
         ],
-
         '@time' => [
             'mktime' => ['time', 0],
             'gmmktime' => ['time', 0],

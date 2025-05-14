@@ -352,7 +352,6 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         'stringEndsWith' => true,
         'stringEqualsStringIgnoringLineEndings' => true,
         'stringStartsWith' => true,
-
         // TestCase methods
         'any' => true,
         'at' => true,

@@ -281,7 +281,6 @@ Fixing examples cannot be demonstrated on the current PHP version.
 * @PhpCsFixer with default config
 * @Symfony with default config").'
 $/s',
-
             true,
             false,
             new BinaryOperatorSpacesFixer(),

@@ -338,14 +338,12 @@ final class Runner
 
                     throw new ParallelisationException('Unsupported action: '.($workerResponse['action'] ?? 'n/a'));
                 },
-
                 // [REACT] Handle errors encountered during worker's execution
                 static function (\Throwable $error) use ($processPool): void {
                     $processPool->endAll();
 
                     throw new ParallelisationException($error->getMessage(), $error->getCode(), $error);
                 },
-
                 // [REACT] Handle worker's shutdown
                 static function ($exitCode, string $output) use ($processPool, $identifier): void {
                     $processPool->endProcessIfKnown($identifier);

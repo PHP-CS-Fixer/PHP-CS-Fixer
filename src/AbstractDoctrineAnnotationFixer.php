@@ -101,7 +101,6 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
                     'staticvar',
                     'staticVar',
                     'throw',
-
                     // PHPDocumentor 2
                     'api',
                     'author',
@@ -133,7 +132,6 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
                     'uses',
                     'var',
                     'version',
-
                     // PHPUnit
                     'after',
                     'afterClass',
@@ -165,27 +163,20 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
                     'testdox',
                     'ticket',
                     'uses',
-
                     // PHPCheckStyle
                     'SuppressWarnings',
-
                     // PHPStorm
                     'noinspection',
-
                     // PEAR
                     'package_version',
-
                     // PlantUML
                     'enduml',
                     'startuml',
-
                     // Psalm
                     'psalm',
-
                     // PHPStan
                     'phpstan',
                     'template',
-
                     // other
                     'fix',
                     'FIXME',

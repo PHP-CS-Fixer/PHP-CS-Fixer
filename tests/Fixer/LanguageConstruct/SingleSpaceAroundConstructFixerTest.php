@@ -407,7 +407,6 @@ class Foo
         Bar::baz as/* foo */bar;
     }
 }',
-
             [
                 'constructs_preceded_by_a_single_space' => [],
                 'constructs_followed_by_a_single_space' => ['as'],
