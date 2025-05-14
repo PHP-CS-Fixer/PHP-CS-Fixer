@@ -414,6 +414,7 @@ abstract class AbstractFixerTestCase extends TestCase
         $allowedExtraMethods = [
             ClassAttributesSeparationFixerTest::class => ['testCommentBlockStartDetection', 'provideCommentBlockStartDetectionCases'],
             NoEmptyCommentFixerTest::class => ['testGetCommentBlock', 'provideGetCommentBlockCases'],
+            NoUselessElseFixerTest::class => ['testBlockDetection', 'provideBlockDetectionCases', 'testIsInConditionWithoutBraces', 'provideIsInConditionWithoutBracesCases'],
             PhpUnitTestCaseStaticMethodCallsFixerTest::class => ['testFixerContainsAllPhpunitStaticMethodsInItsList'],
         ];
 
@@ -440,7 +441,6 @@ abstract class AbstractFixerTestCase extends TestCase
             NoEmptyStatementFixerTest::class,
             NoSpacesAroundOffsetFixerTest::class,
             NoUnneededControlParenthesesFixerTest::class,
-            NoUselessElseFixerTest::class,
         ];
 
         $names = ['Fix', 'FixDeprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'WithWhitespacesConfig', 'InvalidConfiguration'];
