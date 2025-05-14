@@ -39,7 +39,6 @@ use PhpCsFixer\Tests\Fixer\Comment\HeaderCommentFixerTest;
 use PhpCsFixer\Tests\Fixer\Comment\NoEmptyCommentFixerTest;
 use PhpCsFixer\Tests\Fixer\ConstantNotation\NativeConstantInvocationFixerTest;
 use PhpCsFixer\Tests\Fixer\ControlStructure\NoBreakCommentFixerTest;
-use PhpCsFixer\Tests\Fixer\ControlStructure\NoUnneededControlParenthesesFixerTest;
 use PhpCsFixer\Tests\Fixer\ControlStructure\NoUselessElseFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\FunctionDeclarationFixerTest;
 use PhpCsFixer\Tests\Fixer\FunctionNotation\MethodArgumentSpaceFixerTest;
@@ -440,7 +439,6 @@ abstract class AbstractFixerTestCase extends TestCase
             NoClosingTagFixerTest::class,
             NoEmptyStatementFixerTest::class,
             NoSpacesAroundOffsetFixerTest::class,
-            NoUnneededControlParenthesesFixerTest::class,
         ];
 
         $names = ['Fix', 'FixDeprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'WithWhitespacesConfig', 'InvalidConfiguration'];
