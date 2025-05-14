@@ -50,7 +50,6 @@ use PhpCsFixer\Tests\Fixer\Operator\IncrementStyleFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\AlignMultilineCommentFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\NoBlankLinesAfterPhpdocFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpTag\EchoTagSyntaxFixerTest;
-use PhpCsFixer\Tests\Fixer\PhpTag\NoClosingTagFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\BlankLineBeforeStatementFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\IndentationTypeFixerTest;
@@ -434,7 +433,6 @@ abstract class AbstractFixerTestCase extends TestCase
             NativeConstantInvocationFixerTest::class,
             NoBlankLinesAfterPhpdocFixerTest::class,
             NoBreakCommentFixerTest::class,
-            NoClosingTagFixerTest::class,
         ];
 
         $names = ['Fix', 'FixDeprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'WithShortOpenTag', 'WithWhitespacesConfig', 'InvalidConfiguration'];
