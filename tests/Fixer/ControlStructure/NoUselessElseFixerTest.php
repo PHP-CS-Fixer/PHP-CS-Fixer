@@ -615,7 +615,7 @@ else?><?php echo 5;',
     }
 
     /**
-     * @return iterable<string, array{string}>
+     * @return iterable<array{string}>
      */
     public static function provideFix80Cases(): iterable
     {
