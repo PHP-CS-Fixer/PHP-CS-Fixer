@@ -53,7 +53,6 @@ use PhpCsFixer\Tests\Fixer\Phpdoc\NoBlankLinesAfterPhpdocFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocAddMissingParamAnnotationFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocNoEmptyReturnFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocOrderByValueFixerTest;
-use PhpCsFixer\Tests\Fixer\Phpdoc\PhpdocOrderFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpTag\EchoTagSyntaxFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpTag\NoClosingTagFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixerTest;
@@ -448,7 +447,6 @@ abstract class AbstractFixerTestCase extends TestCase
             PhpdocAddMissingParamAnnotationFixerTest::class,
             PhpdocNoEmptyReturnFixerTest::class,
             PhpdocOrderByValueFixerTest::class,
-            PhpdocOrderFixerTest::class,
         ];
 
         $names = ['Fix', 'FixDeprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'WithWhitespacesConfig', 'InvalidConfiguration'];
