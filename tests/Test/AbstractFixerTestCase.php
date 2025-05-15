@@ -37,7 +37,6 @@ use PhpCsFixer\Tests\Fixer\ClassNotation\ClassAttributesSeparationFixerTest;
 use PhpCsFixer\Tests\Fixer\ClassNotation\ClassDefinitionFixerTest;
 use PhpCsFixer\Tests\Fixer\Comment\NoEmptyCommentFixerTest;
 use PhpCsFixer\Tests\Fixer\ControlStructure\NoUselessElseFixerTest;
-use PhpCsFixer\Tests\Fixer\FunctionNotation\FunctionDeclarationFixerTest;
 use PhpCsFixer\Tests\Fixer\Operator\BinaryOperatorSpacesFixerTest;
 use PhpCsFixer\Tests\Fixer\Operator\ConcatSpaceFixerTest;
 use PhpCsFixer\Tests\Fixer\Phpdoc\AlignMultilineCommentFixerTest;
@@ -414,7 +413,6 @@ abstract class AbstractFixerTestCase extends TestCase
             ClassDefinitionFixerTest::class,
             ConcatSpaceFixerTest::class,
             EchoTagSyntaxFixerTest::class,
-            FunctionDeclarationFixerTest::class,
         ];
 
         $names = ['Fix', 'FixDeprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'WithShortOpenTag', 'WithWhitespacesConfig', 'InvalidConfiguration'];
