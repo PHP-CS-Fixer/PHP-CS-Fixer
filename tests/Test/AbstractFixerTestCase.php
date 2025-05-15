@@ -469,7 +469,8 @@ abstract class AbstractFixerTestCase extends TestCase
      */
     protected function createFixer(): FixerInterface
     {
-        $fixerClassName = preg_replace('/^(PhpCsFixer)\\\Tests(\\\.+)Test$/', '$1$2', static::class);
+        /** @var class-string<TFixer> $fixerClassName */
+        $fixerClassName = Preg::replace('/^(PhpCsFixer)\\\Tests(\\\.+)Test$/', '$1$2', static::class);
 
         return new $fixerClassName();
     }
@@ -598,7 +599,7 @@ abstract class AbstractFixerTestCase extends TestCase
         // becomes:
         // "Option `_` and `_` are allowed."
         // so values in backticks are excluded from check
-        $descriptionWithExcludedNames = preg_replace('/`([^`]+)`/', '`_`', $description);
+        $descriptionWithExcludedNames = Preg::replace('/`([^`]+)`/', '`_`', $description);
 
         self::assertMatchesRegularExpression('/^[A-Z`].+\.$/s', $description, \sprintf('[%s] The %s must start with capital letter or a ` and end with dot.', $fixerName, $descriptionType));
         self::assertStringNotContainsString('phpdocs', $descriptionWithExcludedNames, \sprintf('[%s] `PHPDoc` must not be in the plural in %s.', $fixerName, $descriptionType));
