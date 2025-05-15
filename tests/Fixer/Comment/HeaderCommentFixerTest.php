@@ -929,7 +929,7 @@ enum Foo {}',
     }
 
     /**
-     * @return iterable<array{null|array<array-key, mixed>, string}>
+     * @return iterable<int, array{null|array<array-key, mixed>, string}>
      */
     public static function provideInvalidConfigurationCases(): iterable
     {
