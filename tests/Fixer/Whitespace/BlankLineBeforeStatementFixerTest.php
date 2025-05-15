@@ -1264,11 +1264,7 @@ class Foo {
      */
     public function testFix80(string $expected, ?string $input = null): void
     {
-        $this->fixer->configure([
-            'statements' => ['default'],
-        ]);
-
-        $this->doTest($expected, $input);
+        $this->testFix($expected, $input, ['statements' => ['default']]);
     }
 
     /**
@@ -1300,11 +1296,7 @@ class Foo {
      */
     public function testFix81(string $expected, ?string $input = null): void
     {
-        $this->fixer->configure([
-            'statements' => ['case'],
-        ]);
-
-        $this->doTest($expected, $input);
+        $this->testFix($expected, $input, ['statements' => ['case']]);
     }
 
     /**
