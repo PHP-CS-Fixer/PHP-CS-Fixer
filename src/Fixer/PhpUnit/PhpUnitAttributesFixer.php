@@ -155,15 +155,13 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
 
                 $presentAttributes[$annotationName] ??= self::isAttributeAlreadyPresent($fullyQualifiedNameAnalyzer, $tokens, $index, $tokensToInsert);
 
-                if ($presentAttributes[$annotationName]) {
-                    continue;
-                }
-
                 if ([] === $tokensToInsert) {
                     continue;
                 }
 
-                $tokens->insertSlices([$index + 1 => $tokensToInsert]);
+                if (!$presentAttributes[$annotationName]) {
+                    $tokens->insertSlices([$index + 1 => $tokensToInsert]);
+                }
 
                 if (!$this->configuration['keep_annotations']) {
                     $annotation->remove();
