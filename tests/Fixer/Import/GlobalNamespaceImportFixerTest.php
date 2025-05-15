@@ -45,7 +45,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
      */
     public static function provideFixCases(): iterable
     {
-        yield 'import_constants - non-global names' => [
+        yield 'import_constants (true) - non-global names' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -55,7 +55,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_constants' => true],
         ];
 
-        yield 'import_constants - name already used [1]' => [
+        yield 'import_constants (true) - name already used [1]' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -65,7 +65,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_constants' => true],
         ];
 
-        yield 'import_constants - name already used [2]' => [
+        yield 'import_constants (true) - name already used [2]' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -76,7 +76,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_constants' => true],
         ];
 
-        yield 'import_constants - name already used [3]' => [
+        yield 'import_constants (true) - name already used [3]' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -87,7 +87,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_constants' => true],
         ];
 
-        yield 'import_constants - without namespace / do not import' => [
+        yield 'import_constants (true) - without namespace / do not import' => [
             <<<'INPUT'
                 <?php
                 echo \FOO, \BAR, \FOO;
@@ -96,7 +96,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_constants' => true],
         ];
 
-        yield 'import_constants - with namespace' => [
+        yield 'import_constants (true) - with namespace' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -112,7 +112,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_constants' => true],
         ];
 
-        yield 'import_constants - with namespace with {} syntax' => [
+        yield 'import_constants (true) - with namespace with {} syntax' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test {
@@ -130,7 +130,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_constants' => true],
         ];
 
-        yield 'import_constants - ignore other imported types' => [
+        yield 'import_constants (true) - ignore other imported types' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -148,7 +148,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_constants' => true],
         ];
 
-        yield 'import_constants - respect already imported names [1]' => [
+        yield 'import_constants (true) - respect already imported names [1]' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -165,7 +165,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_constants' => true],
         ];
 
-        yield 'import_constants - respect already imported names [2]' => [
+        yield 'import_constants (true) - respect already imported names [2]' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -182,7 +182,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_constants' => true],
         ];
 
-        yield 'import_constants - handle case sensitivity' => [
+        yield 'import_constants (true) - handle case sensitivity' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -202,7 +202,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_constants' => true],
         ];
 
-        yield 'import_constants - handle aliased imports' => [
+        yield 'import_constants (true) - handle aliased imports' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -219,7 +219,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_constants' => true],
         ];
 
-        yield 'import_constants - ignore class constants' => [
+        yield 'import_constants (true) - ignore class constants' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -240,7 +240,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_constants' => true],
         ];
 
-        yield 'import_constants - global namespace' => [
+        yield 'import_constants (true) - global namespace' => [
             <<<'INPUT'
                 <?php
                 echo \FOO, \BAR;
@@ -260,7 +260,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_constants' => true],
         ];
 
-        yield 'import_functions - non-global names' => [
+        yield 'import_functions (true) - non-global names' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -272,7 +272,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_functions' => true],
         ];
 
-        yield 'import_functions - name already used [1]' => [
+        yield 'import_functions (true) - name already used [1]' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -284,7 +284,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_functions' => true],
         ];
 
-        yield 'import_functions - name already used [2]' => [
+        yield 'import_functions (true) - name already used [2]' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -295,7 +295,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_functions' => true],
         ];
 
-        yield 'import_functions - name already used [3]' => [
+        yield 'import_functions (true) - name already used [3]' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -306,7 +306,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_functions' => true],
         ];
 
-        yield 'import_functions - without namespace / do not import' => [
+        yield 'import_functions (true) - without namespace / do not import' => [
             <<<'INPUT'
                 <?php
                 \foo();
@@ -317,7 +317,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_functions' => true],
         ];
 
-        yield 'import_functions - with namespace' => [
+        yield 'import_functions (true) - with namespace' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -335,7 +335,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_functions' => true],
         ];
 
-        yield 'import_functions - with namespace with {} syntax' => [
+        yield 'import_functions (true) - with namespace with {} syntax' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test {
@@ -355,7 +355,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_functions' => true],
         ];
 
-        yield 'import_functions - ignore other imported types' => [
+        yield 'import_functions (true) - ignore other imported types' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -375,7 +375,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_functions' => true],
         ];
 
-        yield 'import_functions - respect already imported names [1]' => [
+        yield 'import_functions (true) - respect already imported names [1]' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -394,7 +394,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_functions' => true],
         ];
 
-        yield 'import_functions - respect already imported names [2]' => [
+        yield 'import_functions (true) - respect already imported names [2]' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -415,7 +415,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_functions' => true],
         ];
 
-        yield 'import_functions - handle aliased imports' => [
+        yield 'import_functions (true) - handle aliased imports' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -434,7 +434,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_functions' => true],
         ];
 
-        yield 'import_functions - ignore class methods' => [
+        yield 'import_functions (true) - ignore class methods' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -455,7 +455,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_functions' => true],
         ];
 
-        yield 'import_functions - name already used' => [
+        yield 'import_functions (true) - name already used' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -474,7 +474,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_functions' => true],
         ];
 
-        yield 'import_classes - non-global names' => [
+        yield 'import_classes (true) - non-global names' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -489,7 +489,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => true],
         ];
 
-        yield 'import_classes - name already used [1]' => [
+        yield 'import_classes (true) - name already used [1]' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -503,7 +503,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => true],
         ];
 
-        yield 'import_classes - name already used [2]' => [
+        yield 'import_classes (true) - name already used [2]' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -516,7 +516,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => true],
         ];
 
-        yield 'import_classes - name already used [3]' => [
+        yield 'import_classes (true) - name already used [3]' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -529,7 +529,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => true],
         ];
 
-        yield 'import_classes - name already used [4]' => [
+        yield 'import_classes (true) - name already used [4]' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -544,7 +544,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => true],
         ];
 
-        yield 'import_classes - without namespace / do not import' => [
+        yield 'import_classes (true) - without namespace / do not import' => [
             <<<'INPUT'
                 <?php
                 /** @var \Foo $foo */
@@ -556,7 +556,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => true],
         ];
 
-        yield 'import_classes - with namespace' => [
+        yield 'import_classes (true) - with namespace' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -583,7 +583,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => true],
         ];
 
-        yield 'import_classes - with namespace with {} syntax' => [
+        yield 'import_classes (true) - with namespace with {} syntax' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test {
@@ -603,7 +603,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => true],
         ];
 
-        yield 'import_classes - phpdoc only' => [
+        yield 'import_classes (true) - phpdoc only' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -622,7 +622,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => true],
         ];
 
-        yield 'import_classes - ignore other imported types' => [
+        yield 'import_classes (true) - ignore other imported types' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -642,7 +642,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => true],
         ];
 
-        yield 'import_classes - respect already imported names [1]' => [
+        yield 'import_classes (true) - respect already imported names [1]' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -661,7 +661,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => true],
         ];
 
-        yield 'import_classes - respect already imported names [2]' => [
+        yield 'import_classes (true) - respect already imported names [2]' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -682,7 +682,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => true],
         ];
 
-        yield 'import_classes - respect already imported names [3]' => [
+        yield 'import_classes (true) - respect already imported names [3]' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -708,7 +708,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => true],
         ];
 
-        yield 'import_classes - handle aliased imports' => [
+        yield 'import_classes (true) - handle aliased imports' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -733,7 +733,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => true],
         ];
 
-        yield 'import_classes - handle typehints' => [
+        yield 'import_classes (true) - handle typehints' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -754,7 +754,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => true],
         ];
 
-        yield 'import_classes - handle typehints 2' => [
+        yield 'import_classes (true) - handle typehints 2' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -774,7 +774,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => true],
         ];
 
-        yield 'import_classes - try catch' => [
+        yield 'import_classes (true) - try catch' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -793,7 +793,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => true],
         ];
 
-        yield 'import_classes - try catch with comments' => [
+        yield 'import_classes (true) - try catch with comments' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -812,7 +812,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => true],
         ];
 
-        yield 'import_constants - already fqn or sub namespace' => [
+        yield 'import_constants (false) - already fqn or sub namespace' => [
             <<<'EXPECTED'
                 <?php
                 use const FOO;
@@ -823,7 +823,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_constants' => false],
         ];
 
-        yield 'import_constants - handle all occurrences' => [
+        yield 'import_constants (false) - handle all occurrences' => [
             <<<'EXPECTED'
                 <?php
                 namespace X;
@@ -841,7 +841,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_constants' => false],
         ];
 
-        yield 'import_constants - ignore other imports and non-imported names' => [
+        yield 'import_constants (false) - ignore other imports and non-imported names' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -861,7 +861,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_constants' => false],
         ];
 
-        yield 'import_functions - already fqn or sub namespace' => [
+        yield 'import_functions (false) - already fqn or sub namespace' => [
             <<<'EXPECTED'
                 <?php
                 use function foo;
@@ -873,7 +873,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_functions' => false],
         ];
 
-        yield 'import_functions - handle all occurrences' => [
+        yield 'import_functions (false) - handle all occurrences' => [
             <<<'EXPECTED'
                 <?php
                 namespace X;
@@ -895,7 +895,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_functions' => false],
         ];
 
-        yield 'import_functions - ignore other imports and non-imported names' => [
+        yield 'import_functions (false) - ignore other imports and non-imported names' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -917,7 +917,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_functions' => false],
         ];
 
-        yield 'import_classes - already fqn or sub namespace' => [
+        yield 'import_classes (false) - already fqn or sub namespace' => [
             <<<'EXPECTED'
                 <?php
                 use Foo;
@@ -936,7 +936,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => false],
         ];
 
-        yield 'import_classes - handle all occurrences' => [
+        yield 'import_classes (false) - handle all occurrences' => [
             <<<'EXPECTED'
                 <?php
                 namespace X;
@@ -990,7 +990,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => false],
         ];
 
-        yield 'import_classes - ignore other imports and non-imported names' => [
+        yield 'import_classes (false) - ignore other imports and non-imported names' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -1012,7 +1012,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => false],
         ];
 
-        yield 'import_classes(false) - try catch' => [
+        yield 'import_classes (false) - try catch' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -1032,7 +1032,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => false],
         ];
 
-        yield 'import_classes(true) - try catch with comments' => [
+        yield 'import_classes (false) - try catch with comments' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -1052,7 +1052,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => false],
         ];
 
-        yield 'import_classes - key in PHPDoc\'s array shape matching class name' => [
+        yield 'import_classes (false) - key in PHPDoc\'s array shape matching class name' => [
             '<?php
                 namespace Foo;
                 use Exception;
@@ -1108,7 +1108,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
      */
     public static function provideFix80Cases(): iterable
     {
-        yield 'import_classes(true) - try catch without variable' => [
+        yield 'import_classes (true) - try catch without variable' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -1127,7 +1127,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => true],
         ];
 
-        yield 'import_classes(true) - try catch without variable and comments' => [
+        yield 'import_classes (true) - try catch without variable and comments' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -1146,7 +1146,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => true],
         ];
 
-        yield 'import_classes(false) - try catch without variable' => [
+        yield 'import_classes (false) - try catch without variable' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
@@ -1166,7 +1166,7 @@ final class GlobalNamespaceImportFixerTest extends AbstractFixerTestCase
             ['import_classes' => false],
         ];
 
-        yield 'import_classes(false) - try catch without variable and comments' => [
+        yield 'import_classes (false) - try catch without variable and comments' => [
             <<<'EXPECTED'
                 <?php
                 namespace Test;
