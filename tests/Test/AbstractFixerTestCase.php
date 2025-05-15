@@ -37,7 +37,6 @@ use PhpCsFixer\Tests\Fixer\ClassNotation\ClassAttributesSeparationFixerTest;
 use PhpCsFixer\Tests\Fixer\ClassNotation\ClassDefinitionFixerTest;
 use PhpCsFixer\Tests\Fixer\Comment\NoEmptyCommentFixerTest;
 use PhpCsFixer\Tests\Fixer\ControlStructure\NoUselessElseFixerTest;
-use PhpCsFixer\Tests\Fixer\Phpdoc\AlignMultilineCommentFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixerTest;
 use PhpCsFixer\Tests\Test\Assert\AssertTokensTrait;
 use PhpCsFixer\Tests\TestCase;
@@ -401,12 +400,6 @@ abstract class AbstractFixerTestCase extends TestCase
             PhpUnitTestCaseStaticMethodCallsFixerTest::class => ['testFixerContainsAllPhpunitStaticMethodsInItsList'],
         ];
 
-        // should only shrink, baseline of classes violating method naming
-        /** @var list<class-string> */
-        $exceptionClasses = [
-            AlignMultilineCommentFixerTest::class,
-        ];
-
         $names = ['Fix', 'FixDeprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'WithShortOpenTag', 'WithWhitespacesConfig', 'InvalidConfiguration'];
         $methodNames = ['testConfigure'];
         foreach ($names as $name) {
@@ -427,13 +420,6 @@ abstract class AbstractFixerTestCase extends TestCase
 
         if (isset($allowedExtraMethods[static::class])) {
             self::assertSame($allowedExtraMethods[static::class], $extraMethods);
-        } elseif (\in_array(static::class, $exceptionClasses, true)) {
-            self::assertNotSame(
-                [],
-                $extraMethods,
-                \sprintf('Class "%s" have correct method names, remove it from exceptions list.', static::class),
-            );
-            self::markTestSkipped('Not covered yet.');
         } else {
             self::assertTrue(method_exists($this, 'testFix'), \sprintf('Method testFix does not exist in %s.', static::class));
             self::assertTrue(method_exists($this, 'provideFixCases'), \sprintf('Method provideFixCases does not exist in %s.', static::class));
