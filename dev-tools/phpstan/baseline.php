@@ -2840,12 +2840,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/Test/AbstractIntegrationCaseFactory.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in a negated boolean, int\\|false given\\.$#',
-	'identifier' => 'booleanNot.exprNotBoolean',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Test/AbstractIntegrationCaseFactory.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Only booleans are allowed in a ternary operator condition, string\\|false given\\.$#',
 	'identifier' => 'ternary.condNotBoolean',
 	'count' => 1,

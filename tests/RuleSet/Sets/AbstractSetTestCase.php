@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\RuleSet\Sets;
 
 use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
@@ -43,7 +44,7 @@ abstract class AbstractSetTestCase extends TestCase
         self::assertStringEndsWith('.', $setDescription, \sprintf('Ruleset description of "%s" must end with ".", got "%s".', $setName, $setDescription));
         self::assertRules($setRules, $factory, $setName);
 
-        if (1 === preg_match('/(\d+)(\d)Migration/', \get_class($set), $matches)) {
+        if (Preg::match('/(\d+)(\d)Migration/', \get_class($set), $matches)) {
             self::assertStringEndsWith(
                 \sprintf(' %d.%d compatibility.', $matches[1], $matches[2]),
                 $setDescription,
@@ -75,7 +76,8 @@ abstract class AbstractSetTestCase extends TestCase
 
     protected static function getSet(): RuleSetDescriptionInterface
     {
-        $setClassName = preg_replace('/^(PhpCsFixer)\\\Tests(\\\.+)Test$/', '$1$2', static::class);
+        $setClassName = Preg::replace('/^(PhpCsFixer)\\\Tests(\\\.+)Test$/', '$1$2', static::class);
+        \assert(is_a($setClassName, RuleSetDescriptionInterface::class, true));
 
         return new $setClassName();
     }
