@@ -896,9 +896,7 @@ echo 1;',
      */
     public function testFix81(array $configuration, string $expected, ?string $input = null): void
     {
-        $this->fixer->configure($configuration);
-
-        $this->doTest($expected, $input);
+        $this->testFix($configuration, $expected, $input);
     }
 
     /**
