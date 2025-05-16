@@ -348,6 +348,7 @@ class Foo {
     }
 
     /**
+     * @param non-empty-string                         $content
      * @param _DocumentElement&array{type: 'function'} $element
      * @param null|non-empty-string                    $namespace
      * @param array<string, string>                    $shortNames
@@ -405,6 +406,7 @@ class Foo {
     }
 
     /**
+     * @param non-empty-string                         $content
      * @param _DocumentElement&array{type: 'property'} $element
      * @param null|non-empty-string                    $namespace
      * @param array<string, string>                    $shortNames
@@ -435,6 +437,7 @@ class Foo {
     }
 
     /**
+     * @param non-empty-string                       $content
      * @param _DocumentElement&array{type: 'classy'} $element
      */
     private function fixClassDocComment(string $content, array $element): string
@@ -685,6 +688,11 @@ class Foo {
         return $normalized;
     }
 
+    /**
+     * @param non-empty-string $docComment
+     *
+     * @return non-empty-string
+     */
     private function removeSuperfluousInheritDoc(string $docComment): string
     {
         return Preg::replace('~

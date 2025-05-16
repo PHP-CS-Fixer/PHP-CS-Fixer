@@ -27,6 +27,8 @@ final class ShortDescriptionTest extends TestCase
 {
     /**
      * @dataProvider provideGetEndCases
+     *
+     * @param non-empty-string $input
      */
     public function testGetEnd(?int $expected, string $input): void
     {
@@ -37,7 +39,7 @@ final class ShortDescriptionTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{null|int, string}>
+     * @return iterable<int, array{null|int, non-empty-string}>
      */
     public static function provideGetEndCases(): iterable
     {
