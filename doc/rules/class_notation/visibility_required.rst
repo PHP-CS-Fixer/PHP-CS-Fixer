@@ -5,8 +5,9 @@ Rule ``visibility_required``
 Classes, constants, properties, and methods MUST have visibility declared, and
 keyword modifiers MUST be in the following order: inheritance modifier
 (``abstract`` or ``final``), visibility modifier (``public``, ``protected``, or
-``private``), scope modifier (``static``), mutation modifier (``readonly``),
-type declaration, name.
+``private``), set-visibility modifier (``public(set)``, ``protected(set)``, or
+``private(set)``), scope modifier (``static``), mutation modifier
+(``readonly``), type declaration, name.
 
 Configuration
 -------------
