@@ -1719,5 +1719,16 @@ class A
                 }
                 PHP,
         ];
+
+        yield 'property hook for abstract property' => [
+            <<<'PHP'
+                <?php abstract class Foo
+                {
+                    abstract string $a { get; }
+                    abstract public string $b { get; }
+                    abstract protected string $c { get; }
+                }
+                PHP,
+        ];
     }
 }
