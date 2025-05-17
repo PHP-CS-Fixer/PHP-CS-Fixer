@@ -1,0 +1,26 @@
+--TEST--
+PHPStan comment after anonymous class opening brace must stay.
+--RULESET--
+{"@PhpCsFixer": true, "@PhpCsFixer:risky": true}
+--EXPECT--
+<?php
+
+use Ns\Foo;
+
+$a = new class extends Foo { // comment1
+};
+
+$b = new class extends Foo { // comment1
+    public function m(): void {}
+};
+
+--INPUT--
+<?php
+
+$a = new class() extends Ns\Foo { // comment1
+};
+
+$b = new class() extends Ns\Foo { // comment1
+public function m(): void {
+}
+};

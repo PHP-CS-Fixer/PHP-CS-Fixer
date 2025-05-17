@@ -302,7 +302,13 @@ class Sample
                 $nonWhiteAbove = $this->findCommentBlockStart($tokens, $nonWhiteAbove, $elementAboveEnd);
                 $nonWhiteAboveComment = $tokens->getPrevNonWhitespace($nonWhiteAbove);
 
-                $this->correctLineBreaks($tokens, $nonWhiteAboveComment, $nonWhiteAbove, $nonWhiteAboveComment === $class['open'] ? 1 : 2);
+                if ($nonWhiteAboveComment === $class['open']) {
+                    if ($tokens[$nonWhiteAboveComment - 1]->isWhitespace() && substr_count($tokens[$nonWhiteAboveComment - 1]->getContent(), "\n") > 0) {
+                        $this->correctLineBreaks($tokens, $nonWhiteAboveComment, $nonWhiteAbove, 1);
+                    }
+                } else {
+                    $this->correctLineBreaks($tokens, $nonWhiteAboveComment, $nonWhiteAbove, 2);
+                }
             } else {
                 // 2. The comment belongs to the code above the element,
                 //    make sure there is a blank line above the element (i.e. 2 line breaks)
