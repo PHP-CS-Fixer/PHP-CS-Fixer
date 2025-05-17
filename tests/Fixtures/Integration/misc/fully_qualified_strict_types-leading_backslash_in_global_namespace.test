@@ -28,6 +28,9 @@ try {
 } catch (\Exception $e) {
 }
 
+/** @param int<min, max> $v */
+function intMinMax($v) {}
+
 --INPUT--
 <?php
 
@@ -45,3 +48,6 @@ function foo($dateTime, $v, $method, $fx) {
 
 try { fx(); } catch (Exception $e) {
 }
+
+/** @param int<min, max> $v */
+function intMinMax ($v) {}

@@ -671,7 +671,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         $typeExpression = $typeExpression->mapTypes(function (TypeExpression $type) use ($uses, $namespaceName) {
             $currentTypeValue = $type->toString();
 
-            if ($type->isCompositeType() || !Preg::match('/^'.self::REGEX_CLASS.'$/', $currentTypeValue)) {
+            if ($type->isCompositeType() || !Preg::match('/^'.self::REGEX_CLASS.'$/', $currentTypeValue) || \in_array($currentTypeValue, ['min', 'max'], true)) {
                 return $type;
             }
 
