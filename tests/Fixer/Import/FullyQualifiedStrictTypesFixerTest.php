@@ -2533,7 +2533,10 @@ function foo($dateTime, $fx) {}',
  * @psalm-param \Closure(): (callable(): \Closure) $fx
  * @return list<int>
  */
-function foo($v, $method, $fx) {}',
+function foo($v, $method, $fx) {}
+
+/** @param int<min, max> $v */
+function intMinMax($v) {}',
             '<?php
 
 /**
@@ -2544,7 +2547,10 @@ function foo($v, $method, $fx) {}',
  * @psalm-param Closure(): (callable(): Closure) $fx
  * @return list<int>
  */
-function foo($v, $method, $fx) {}',
+function foo($v, $method, $fx) {}
+
+/** @param int<min, max> $v */
+function intMinMax($v) {}',
             ['leading_backslash_in_global_namespace' => true],
         ];
 
