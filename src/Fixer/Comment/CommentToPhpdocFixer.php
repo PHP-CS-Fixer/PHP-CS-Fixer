@@ -124,6 +124,10 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
                 continue;
             }
 
+            if (Preg::match('~(?:#|//|/\*+|\R(?:\s*\*)?)\s*\@(?=\w+-(ignore|suppress))([a-zA-Z0-9_\\\-]+)(?=\s|\(|$)~', $tokens[$index]->getContent())) {
+                continue;
+            }
+
             $commentIndices = $commentsAnalyzer->getCommentBlockIndices($tokens, $index);
 
             if ($this->isCommentCandidate($tokens, $commentIndices)) {
