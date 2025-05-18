@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractPhpdocTypesFixer;
-use PhpCsFixer\DocBlock\TypeExpression;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -66,10 +65,6 @@ final class PhpdocListTypeFixer extends AbstractPhpdocTypesFixer
 
     protected function normalize(string $type): string
     {
-        return Preg::replaceCallback(
-            '/'.TypeExpression::REGEX_IDENTIFIER.'(?=<(?:[^,<]|<[^>]+>)+(>|{|\())/i',
-            static fn (array $matches) => 'array' !== strtolower($matches[0]) ? $matches[0] : 'list',
-            $type
-        );
+        return Preg::replace('/(?<!\w)array(?=<(?:[^,<]|<[^>]+>)+(>|{|\())/i', 'list', $type);
     }
 }

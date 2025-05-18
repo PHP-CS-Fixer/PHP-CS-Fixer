@@ -1436,12 +1436,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Operator/BinaryOperatorSpacesFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset 0 might not exist on array\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Fixer/Phpdoc/PhpdocListTypeFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Fixer\\\\PhpUnit\\\\PhpUnitAttributesFixer\\:\\:createAttributeTokens\\(\\) should return list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\> but returns non\\-empty\\-array\\<int\\|string, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
