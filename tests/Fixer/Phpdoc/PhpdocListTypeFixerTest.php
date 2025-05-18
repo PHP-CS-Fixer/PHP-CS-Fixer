@@ -94,5 +94,9 @@ final class PhpdocListTypeFixerTest extends AbstractFixerTestCase
             '<?php /** @var list<int<1, 10>> */',
             '<?php /** @var array<int<1, 10>> */',
         ];
+
+        yield [
+            '<?php /** @var \SplFixedArray<Foo> */',
+        ];
     }
 }
