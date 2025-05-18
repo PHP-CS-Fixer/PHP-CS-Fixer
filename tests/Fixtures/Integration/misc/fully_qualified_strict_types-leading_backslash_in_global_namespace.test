@@ -11,13 +11,12 @@ Integration of fixers: fully_qualified_strict_types /w leading_backslash_in_glob
 /**
  * @param \DateTime $dateTime
  * @param int       $v
- *
- * @phpstan-param positive-int $v
- *
  * @param \'GET\'|\'POST\' $method
  * @param \Closure $fx
  *
  * @psalm-param \Closure(): (callable(): \Closure) $fx
+ *
+ * @phpstan-param positive-int $v
  *
  * @return list<int>
  */
