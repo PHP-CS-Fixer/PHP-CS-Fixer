@@ -418,14 +418,16 @@ var names are case-insensitive */ return $a   ;}
                         return $a;
                     }
                 ',
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     function a($foos) {
                         return array_map(function ($foo) {
                             return (string) $foo;
                         }, $foos);
                     }',
-                '<?php
+            '<?php
                     function a($foos) {
                         $bars = array_map(function ($foo) {
                             return (string) $foo;
@@ -433,19 +435,19 @@ var names are case-insensitive */ return $a   ;}
 
                         return $bars;
                     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     function a($foos) {
                         return ($foos = [\'bar\']);
                     }',
-                '<?php
+            '<?php
                     function a($foos) {
                         $bars = ($foos = [\'bar\']);
 
                         return $bars;
                     }',
-            ],
         ];
 
         yield [
