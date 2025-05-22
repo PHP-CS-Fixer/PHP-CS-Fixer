@@ -423,9 +423,19 @@ final class PhpUnitDataProviderMethodOrderFixerTest extends AbstractFixerTestCas
             ['placement' => 'before'],
         ];
 
-        yield 'data provider defined by an attribute' => [ // update expected once https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/8197 is merged
+        yield 'data provider defined by an attribute' => [
             <<<'PHP'
                 <?php
+                use PHPUnit\Framework\Attributes\DataProvider;
+                class FooTest extends TestCase {
+                    #[DataProvider('provideFooCases')]
+                    public function testFoo(): void {}
+                    public function provideFooCases(): iterable {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\Attributes\DataProvider;
                 class FooTest extends TestCase {
                     public function provideFooCases(): iterable {}
                     #[DataProvider('provideFooCases')]
