@@ -26,7 +26,7 @@ use PhpCsFixer\Tokenizer\TransformerInterface;
  *
  * @internal
  *
- * @phpstan-type _TransformerTestExpectedTokens array<int, int|string>
+ * @phpstan-type _TransformerTestExpectedTokens array<int, int>
  * @phpstan-type _TransformerTestObservedKindsOrPrototypes list<int|string>
  */
 abstract class AbstractTransformerTestCase extends TestCase
@@ -193,7 +193,7 @@ abstract class AbstractTransformerTestCase extends TestCase
     }
 
     /**
-     * @param list<array{0: int, 1?: string}> $prototypes
+     * @param list<_PhpTokenArrayPartial> $prototypes
      */
     private function countTokenPrototypes(Tokens $tokens, array $prototypes): int
     {
