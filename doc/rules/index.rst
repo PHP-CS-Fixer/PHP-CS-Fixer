@@ -179,6 +179,9 @@ Cast Notation
 Class Notation
 --------------
 
+- `class_attributes_new_line <./class_notation/class_attributes_new_line.rst>`_
+
+  Class attributes should be on their own line.
 - `class_attributes_separation <./class_notation/class_attributes_separation.rst>`_
 
   Class, trait and interface elements must be separated with one or none blank line.
