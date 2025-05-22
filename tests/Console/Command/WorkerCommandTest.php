@@ -51,7 +51,7 @@ final class WorkerCommandTest extends TestCase
         self::expectException(ParallelisationException::class);
         self::expectExceptionMessage('Missing parallelisation options');
 
-        $commandTester = $this->doTestExecute(['--port' => 12_345]);
+        $this->doTestExecute(['--port' => 12_345]);
     }
 
     public function testMissingPortCausesFailure(): void
@@ -59,7 +59,7 @@ final class WorkerCommandTest extends TestCase
         self::expectException(ParallelisationException::class);
         self::expectExceptionMessage('Missing parallelisation options');
 
-        $commandTester = $this->doTestExecute(['--identifier' => ProcessIdentifier::create()->toString()]);
+        $this->doTestExecute(['--identifier' => ProcessIdentifier::create()->toString()]);
     }
 
     public function testWorkerCantConnectToServerWhenExecutedDirectly(): void
