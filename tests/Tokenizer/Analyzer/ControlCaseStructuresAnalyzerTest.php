@@ -180,7 +180,6 @@ switch ($foo) {
                 switch ($bar) : case "a": return "b"; case "c"; return "d"; case "e": return "f"; endswitch;
                 return;
                 case 100: return false; endswitch ?>  <?php echo 1;',
-            1,
         ];
 
         $expected = [

@@ -225,7 +225,7 @@ jobs:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
         run: |
-          composer require --dev --with-all-dependencies phpunit/phpunit:^12.0.2
+          composer require --dev --with-all-dependencies phpunit/phpunit:^12.1.5
           php php-cs-fixer fix --quiet --rules=php_unit_attributes
 
       - name: Run tests (via PHPUnit)
