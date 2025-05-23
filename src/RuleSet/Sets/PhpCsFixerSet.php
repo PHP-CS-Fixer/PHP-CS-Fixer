@@ -114,11 +114,6 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             'phpdoc_no_empty_return' => true,
             'phpdoc_order' => [
                 'order' => [
-                    'deprecated',
-                    'internal',
-                    'final',
-                    'readonly',
-                    'immutable',
                     'type',
                     'template',
                     'template-covariant',
