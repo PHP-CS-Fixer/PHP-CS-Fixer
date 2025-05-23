@@ -62,7 +62,7 @@ Rules
 - `phpdoc_no_empty_return <./../rules/phpdoc/phpdoc_no_empty_return.rst>`_
 - `phpdoc_order <./../rules/phpdoc/phpdoc_order.rst>`_ with config:
 
-  ``['order' => ['deprecated', 'internal', 'final', 'readonly', 'immutable', 'type', 'template', 'template-covariant', 'template-extends', 'extends', 'implements', 'property', 'method', 'param', 'return', 'var', 'assert', 'assert-if-false', 'assert-if-true', 'throws', 'see']]``
+  ``['order' => ['type', 'template', 'template-covariant', 'template-extends', 'extends', 'implements', 'property', 'method', 'var', 'param', 'return', 'assert', 'assert-if-false', 'assert-if-true', 'throws']]``
 
 - `phpdoc_order_by_value <./../rules/phpdoc/phpdoc_order_by_value.rst>`_
 - `phpdoc_types_order <./../rules/phpdoc/phpdoc_types_order.rst>`_
