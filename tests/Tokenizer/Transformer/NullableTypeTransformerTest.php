@@ -258,6 +258,9 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
     {
         yield 'asymmetric visibility' => [
             [
+                18 => CT::T_NULLABLE_TYPE,
+                28 => CT::T_NULLABLE_TYPE,
+                38 => CT::T_NULLABLE_TYPE,
             ],
             <<<'PHP'
                 <?php

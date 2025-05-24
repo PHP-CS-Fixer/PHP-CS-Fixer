@@ -67,6 +67,10 @@ final class NullableTypeTransformer extends AbstractTransformer
             if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
                 $types[] = [T_READONLY];
             }
+
+            if (\defined('T_PRIVATE_SET')) { // @TODO: drop condition when PHP 8.4+ is required
+                array_push($types, [T_PRIVATE_SET], [T_PROTECTED_SET], [T_PUBLIC_SET]);
+            }
         }
 
         $prevIndex = $tokens->getPrevMeaningfulToken($index);

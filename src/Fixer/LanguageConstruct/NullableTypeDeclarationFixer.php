@@ -209,6 +209,10 @@ class ValueObject
             $propertyModifiers[] = T_READONLY; // @TODO: Drop condition when PHP 8.1+ is required
         }
 
+        if (\defined('T_PRIVATE_SET')) { // @TODO: drop condition when PHP 8.4+ is required
+            array_push($propertyModifiers, T_PRIVATE_SET, T_PROTECTED_SET, T_PUBLIC_SET);
+        }
+
         do {
             $index = $tokens->getPrevMeaningfulToken($index);
         } while (!$tokens[$index]->isGivenKind($propertyModifiers));

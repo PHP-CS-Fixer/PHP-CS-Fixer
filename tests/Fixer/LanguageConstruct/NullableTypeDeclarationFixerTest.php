@@ -373,12 +373,13 @@ class Foo
             PHP;
 
         yield 'asymmetric visibility - fix to `?`' => [
+            $codeWithQuestionMarks,
             $codeWithNullUnionType,
         ];
 
         yield 'asymmetric visibility - fix to `null`' => [
+            $codeWithNullUnionType,
             $codeWithQuestionMarks,
-            null,
             ['syntax' => 'union'],
         ];
     }
