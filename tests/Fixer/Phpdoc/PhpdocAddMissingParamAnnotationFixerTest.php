@@ -594,9 +594,9 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
             <<<'PHP'
                 <?php class Foo {
                     /**
-                     * @param public(set)bool $a
-                     * @param protected(set)bool $b
-                     * @param private(set)bool $c
+                     * @param bool $a
+                     * @param bool $b
+                     * @param bool $c
                      */
                     public function __construct(
                         public public(set) bool $a,
