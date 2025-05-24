@@ -238,4 +238,37 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
             ',
         ];
     }
+
+    /**
+     * @param _TransformerTestExpectedTokens $expectedTokens
+     *
+     * @dataProvider provideProcess84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testProcess84(array $expectedTokens, string $source): void
+    {
+        $this->testProcess($source, $expectedTokens);
+    }
+
+    /**
+     * @return iterable<string, array{_TransformerTestExpectedTokens, string}>
+     */
+    public static function provideProcess84Cases(): iterable
+    {
+        yield 'asymmetric visibility' => [
+            [
+            ],
+            <<<'PHP'
+                <?php
+                class Foo {
+                    public function __construct(
+                        public public(set) ?Bar $x,
+                        public protected(set) ?Bar $y,
+                        public private(set) ?Bar $z,
+                    ) {}
+                }
+                PHP,
+        ];
+    }
 }
