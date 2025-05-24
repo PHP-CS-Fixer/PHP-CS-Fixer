@@ -1006,11 +1006,11 @@ var_dump(Foo::A.Foo::B);",
             <<<'PHP'
                 <?php trait Foo {
                     public public(set) int $a;
-                    public $b;
+                    public public(set) int $b;
                     public protected(set) int $c;
-                    public $d;
+                    public protected(set) int $d;
                     public private(set) int $e;
-                    public $f;
+                    public private(set) int $f;
                 }
                 PHP,
             <<<'PHP'
