@@ -217,6 +217,10 @@ final class Example
             if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
                 $tokenKinds[] = T_READONLY;
             }
+
+            if (\defined('T_PRIVATE_SET')) { // @TODO: drop condition when PHP 8.4+ is required
+                array_push($tokenKinds, T_PRIVATE_SET, T_PROTECTED_SET, T_PUBLIC_SET);
+            }
         } else {
             $tokenKinds = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_CONST];
         }
