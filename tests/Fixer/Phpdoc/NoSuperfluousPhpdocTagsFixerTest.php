@@ -3217,6 +3217,20 @@ class Foo {
                 <?php class Foo
                 {
                     /**
+                     */
+                    public public(set) bool $a;
+                    /**
+                     */
+                    public protected(set) bool $b;
+                    /**
+                     */
+                    public private(set) bool $c;
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo
+                {
+                    /**
                      * @var bool
                      */
                     public public(set) bool $a;
@@ -3233,6 +3247,18 @@ class Foo {
         ];
 
         yield 'asymmetric visibility in promoted property' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    /**
+                     */
+                    public function __construct(
+                        public public(set) bool $a,
+                        public protected(set) bool $b,
+                        public private(set) bool $c,
+                    ) {}
+                }
+                PHP,
             <<<'PHP'
                 <?php class Foo
                 {

@@ -292,6 +292,10 @@ class Foo {
             $modifierKinds[] = T_READONLY;
         }
 
+        if (\defined('T_PRIVATE_SET')) { // @TODO: drop condition when PHP 8.4+ is required
+            array_push($modifierKinds, T_PRIVATE_SET, T_PROTECTED_SET, T_PUBLIC_SET);
+        }
+
         $element = [
             'modifiers' => [],
             'types' => [],
@@ -523,6 +527,10 @@ class Foo {
             $type = '';
 
             if (\defined('T_READONLY') && $tokens[$index]->isGivenKind(T_READONLY)) { // @TODO: simplify condition when PHP 8.1+ is required
+                $index = $tokens->getNextMeaningfulToken($index);
+            }
+
+            if (\defined('T_PRIVATE_SET') && $tokens[$index]->isGivenKind([T_PRIVATE_SET, T_PROTECTED_SET, T_PUBLIC_SET])) { // @TODO: drop condition when PHP 8.4+ is required
                 $index = $tokens->getNextMeaningfulToken($index);
             }
 
