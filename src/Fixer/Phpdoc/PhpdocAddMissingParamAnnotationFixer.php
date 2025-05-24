@@ -253,7 +253,8 @@ function f9(string $foo, $bar, $baz) {}
                     CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
                     CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
                 ])
-                || (\defined('T_READONLY') && $token->isGivenKind(T_READONLY))
+                || (\defined('T_READONLY') && $token->isGivenKind(T_READONLY)) // @TODO: simplify condition when PHP 8.1+ is required
+                || (\defined('T_PRIVATE_SET') && $token->isGivenKind([T_PRIVATE_SET, T_PROTECTED_SET, T_PUBLIC_SET])) // @TODO: simplify condition when PHP 8.4+ is required
             ) {
                 continue;
             }
