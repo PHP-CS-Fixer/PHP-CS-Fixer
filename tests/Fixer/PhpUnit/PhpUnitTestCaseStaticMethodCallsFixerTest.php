@@ -550,6 +550,20 @@ class MyTest extends \PHPUnit_Framework_TestCase
     }
 }',
         ];
+
+        yield 'anonymous class extending TestCase' => [
+            <<<'PHP'
+                <?php
+                $myTest = new class () extends \PHPUnit_Framework_TestCase
+                {
+                    public function testSomething()
+                    {
+                        self::assertTrue(true);
+                        static::assertTrue(true);
+                    }
+                };
+                PHP,
+        ];
     }
 
     /**
