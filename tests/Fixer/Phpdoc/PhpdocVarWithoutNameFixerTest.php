@@ -673,6 +673,19 @@ class A
             <<<'PHP'
                 <?php class Foo
                 {
+                    /** @var bool */
+                    public(set) bool $a;
+
+                    /** @var bool */
+                    protected(set) bool $b;
+
+                    /** @var bool */
+                    private(set) bool $c;
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo
+                {
                     /** @var bool $a */
                     public(set) bool $a;
 

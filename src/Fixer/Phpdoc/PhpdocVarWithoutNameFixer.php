@@ -93,6 +93,10 @@ final class Foo
                 $propertyModifierKinds[] = T_READONLY;
             }
 
+            if (\defined('T_PRIVATE_SET')) { // @TODO: drop condition when PHP 8.4+ is required
+                array_push($propertyModifierKinds, T_PRIVATE_SET, T_PROTECTED_SET, T_PUBLIC_SET);
+            }
+
             if (!$tokens[$nextIndex]->isGivenKind($propertyModifierKinds)) {
                 continue;
             }
