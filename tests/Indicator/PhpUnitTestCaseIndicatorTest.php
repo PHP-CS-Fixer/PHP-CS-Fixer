@@ -237,6 +237,7 @@ class Foo extends A implements TestInterface, SomethingElse
 
         yield 'anonymous class extending TestCase' => [
             [
+                [17, 18],
             ],
             <<<'PHP'
                 <?php

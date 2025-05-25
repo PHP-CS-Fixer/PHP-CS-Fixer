@@ -558,6 +558,17 @@ class MyTest extends \PHPUnit_Framework_TestCase
                 {
                     public function testSomething()
                     {
+                        static::assertTrue(true);
+                        static::assertTrue(true);
+                    }
+                };
+                PHP,
+            <<<'PHP'
+                <?php
+                $myTest = new class () extends \PHPUnit_Framework_TestCase
+                {
+                    public function testSomething()
+                    {
                         self::assertTrue(true);
                         static::assertTrue(true);
                     }
