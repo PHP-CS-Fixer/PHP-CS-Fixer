@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tokenizer\Analyzer;
 
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -29,6 +30,26 @@ final class CommentsAnalyzer
     private const TYPE_HASH = 1;
     private const TYPE_DOUBLE_SLASH = 2;
     private const TYPE_SLASH_ASTERISK = 3;
+    private const SKIP_TYPES = [
+        T_PRIVATE,
+        T_PROTECTED,
+        T_PUBLIC,
+        T_VAR,
+        T_FUNCTION,
+        T_FN,
+        T_ABSTRACT,
+        T_CONST,
+        T_NAMESPACE,
+        T_REQUIRE,
+        T_REQUIRE_ONCE,
+        T_INCLUDE,
+        T_INCLUDE_ONCE,
+        T_FINAL,
+        CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
+        CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
+        CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE,
+        FCT::T_READONLY,
+    ];
 
     public function isHeaderComment(Tokens $tokens, int $index): bool
     {
@@ -167,44 +188,16 @@ final class CommentsAnalyzer
      */
     private function isStructuralElement(Tokens $tokens, int $index): bool
     {
-        static $skip;
-
-        if (null === $skip) {
-            $skip = [
-                T_PRIVATE,
-                T_PROTECTED,
-                T_PUBLIC,
-                T_VAR,
-                T_FUNCTION,
-                T_FN,
-                T_ABSTRACT,
-                T_CONST,
-                T_NAMESPACE,
-                T_REQUIRE,
-                T_REQUIRE_ONCE,
-                T_INCLUDE,
-                T_INCLUDE_ONCE,
-                T_FINAL,
-                CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
-                CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
-                CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE,
-            ];
-
-            if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
-                $skip[] = T_READONLY;
-            }
-        }
-
         $token = $tokens[$index];
 
-        if ($token->isClassy() || $token->isGivenKind($skip)) {
+        if ($token->isClassy() || $token->isGivenKind(self::SKIP_TYPES)) {
             return true;
         }
 
-        if ($token->isGivenKind(T_CASE) && \defined('T_ENUM')) {
-            $caseParent = $tokens->getPrevTokenOfKind($index, [[T_ENUM], [T_SWITCH]]);
+        if ($token->isGivenKind(T_CASE)) {
+            $enumParent = $tokens->getPrevTokenOfKind($index, [[FCT::T_ENUM], [T_SWITCH]]);
 
-            return $tokens[$caseParent]->isGivenKind([T_ENUM]);
+            return $tokens[$enumParent]->isGivenKind([FCT::T_ENUM]);
         }
 
         if ($token->isGivenKind(T_STATIC)) {
@@ -356,12 +349,9 @@ final class CommentsAnalyzer
         do {
             $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
 
-            // @TODO: drop condition when PHP 8.0+ is required
-            if (\defined('T_ATTRIBUTE')) {
-                while (null !== $nextIndex && $tokens[$nextIndex]->isGivenKind(T_ATTRIBUTE)) {
-                    $nextIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $nextIndex);
-                    $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
-                }
+            while (null !== $nextIndex && $tokens[$nextIndex]->isGivenKind(FCT::T_ATTRIBUTE)) {
+                $nextIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $nextIndex);
+                $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
             }
         } while (null !== $nextIndex && $tokens[$nextIndex]->equals('('));
 
