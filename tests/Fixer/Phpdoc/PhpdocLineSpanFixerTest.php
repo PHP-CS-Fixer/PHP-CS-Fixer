@@ -948,6 +948,23 @@ class Foo
             <<<'PHP'
                 <?php class Foo
                 {
+                    /**
+                     * @var bool
+                     */
+                    public public(set) bool $a;
+                    /**
+                     * @var bool
+                     */
+                    public protected(set) bool $b;
+                    /**
+                     * @var bool
+                     */
+                    public private(set) bool $c;
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo
+                {
                     /** @var bool */
                     public public(set) bool $a;
                     /** @var bool */

@@ -160,6 +160,10 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
             $propertyPartKinds[] = T_READONLY;
         }
 
+        if (\defined('T_PRIVATE_SET')) { // @TODO: drop condition when PHP 8.4+ is required
+            array_push($propertyPartKinds, T_PRIVATE_SET, T_PROTECTED_SET, T_PUBLIC_SET);
+        }
+
         do {
             $index = $tokens->getPrevNonWhitespace($index);
 
