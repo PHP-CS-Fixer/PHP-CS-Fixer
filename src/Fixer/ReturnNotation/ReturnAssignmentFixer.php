@@ -454,7 +454,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
      */
     private function isOpenBraceOfMatch(Tokens $tokens, int $index): ?int
     {
-        if (!\defined('T_MATCH') || !$tokens->isTokenKindFound(T_MATCH)) { // @TODO: drop condition when PHP 8.0+ is required
+        if (!$tokens->isTokenKindFound(CT::T_MATCH)) {
             return null;
         }
 
@@ -467,7 +467,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
         $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
         $index = $tokens->getPrevMeaningfulToken($index);
 
-        return $tokens[$index]->isGivenKind(T_MATCH) ? $index : null;
+        return $tokens[$index]->isGivenKind(CT::T_MATCH) ? $index : null;
     }
 
     private function isUsedInCatchOrFinally(Tokens $tokens, int $returnVarIndex, int $functionOpenIndex, int $functionCloseIndex): bool

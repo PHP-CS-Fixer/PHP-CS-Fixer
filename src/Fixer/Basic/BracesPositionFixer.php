@@ -70,6 +70,8 @@ final class BracesPositionFixer extends AbstractFixer implements ConfigurableFix
      */
     public const SAME_LINE = 'same_line';
 
+    private const CONTROL_STRUCTURE_KINDS = [T_DECLARE, T_DO, T_ELSE, T_ELSEIF, T_FINALLY, T_FOR, T_FOREACH, T_IF, T_WHILE, T_TRY, T_CATCH, T_SWITCH, CT::T_MATCH];
+
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -208,11 +210,6 @@ $bar = function () { $result = true;
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $classyTokens = Token::getClassyTokenKinds();
-        $controlStructureTokens = [T_DECLARE, T_DO, T_ELSE, T_ELSEIF, T_FINALLY, T_FOR, T_FOREACH, T_IF, T_WHILE, T_TRY, T_CATCH, T_SWITCH];
-        // @TODO: drop condition when PHP 8.0+ is required
-        if (\defined('T_MATCH')) {
-            $controlStructureTokens[] = T_MATCH;
-        }
 
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
@@ -244,7 +241,7 @@ $bar = function () { $result = true;
                 } else {
                     $positionOption = 'functions_opening_brace';
                 }
-            } elseif ($token->isGivenKind($controlStructureTokens)) {
+            } elseif ($token->isGivenKind(self::CONTROL_STRUCTURE_KINDS)) {
                 $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
                 $openBraceIndex = $tokens->getNextMeaningfulToken($parenthesisEndIndex);
 

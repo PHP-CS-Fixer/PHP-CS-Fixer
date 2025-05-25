@@ -106,7 +106,7 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
         'instanceof' => T_INSTANCEOF,
         'insteadof' => T_INSTEADOF,
         'interface' => T_INTERFACE,
-        'match' => null,
+        'match' => CT::T_MATCH,
         'named_argument' => CT::T_NAMED_ARGUMENT_COLON,
         'namespace' => T_NAMESPACE,
         'new' => T_NEW,
@@ -242,10 +242,6 @@ yield  from  baz();
 
     protected function configurePostNormalisation(): void
     {
-        if (\defined('T_MATCH')) { // @TODO: drop condition when PHP 8.0+ is required
-            self::$tokenMapFollowedByASingleSpace['match'] = T_MATCH;
-        }
-
         if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
             self::$tokenMapFollowedByASingleSpace['readonly'] = T_READONLY;
         }

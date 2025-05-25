@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Tokenizer;
 
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Transformer\ForwardCompatibilityTransformer;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -67,7 +68,16 @@ final class CTTest extends TestCase
     public function testConstants(string $name, int $value): void
     {
         self::assertGreaterThan(10_000, $value);
-        self::assertFalse(\defined($name), 'The CT name must not use native T_* name.');
+
+        $forwardCompatibilityTransformerTokens = \Closure::bind(static fn (ForwardCompatibilityTransformer $forwardCompatibilityTransformer): array => array_keys($forwardCompatibilityTransformer->map), null, ForwardCompatibilityTransformer::class)(new ForwardCompatibilityTransformer());
+
+        if (\defined($name)) {
+            self::assertContains(
+                \constant($name),
+                $forwardCompatibilityTransformerTokens,
+                \sprintf('The CT can use native T_* name only in %s.', ForwardCompatibilityTransformer::class),
+            );
+        }
     }
 
     /**

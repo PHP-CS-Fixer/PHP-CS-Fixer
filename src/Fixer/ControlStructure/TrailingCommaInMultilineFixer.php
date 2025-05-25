@@ -183,7 +183,7 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
                 continue;
             }
 
-            if ($fixMatch && $tokens[$prevIndex]->isGivenKind(T_MATCH)) {
+            if ($fixMatch && $tokens[$prevIndex]->isGivenKind(CT::T_MATCH)) {
                 $this->fixBlock($tokens, $tokens->getNextTokenOfKind($index, ['{']));
 
                 continue;

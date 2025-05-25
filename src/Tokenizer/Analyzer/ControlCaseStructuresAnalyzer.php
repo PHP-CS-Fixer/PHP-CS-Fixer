@@ -20,6 +20,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\DefaultAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\EnumAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\MatchAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 final class ControlCaseStructuresAnalyzer
@@ -83,7 +84,7 @@ final class ControlCaseStructuresAnalyzer
 
                     $stack[$depth]['open'] = $tokens->getNextMeaningfulToken($index);
                     $stack[$depth]['alternative_syntax'] = $tokens[$stack[$depth]['open']]->equals(':');
-                } elseif (\defined('T_MATCH') && $token->isGivenKind(T_MATCH)) { // @TODO: drop condition when PHP 8.0+ is required
+                } elseif ($token->isGivenKind(CT::T_MATCH)) {
                     $index = $tokens->getNextMeaningfulToken($index);
                     $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
@@ -226,7 +227,7 @@ final class ControlCaseStructuresAnalyzer
             );
         }
 
-        if (\defined('T_MATCH') && T_MATCH === $analysis['kind']) { // @TODO: drop condition when PHP 8.0+ is required
+        if (CT::T_MATCH === $analysis['kind']) {
             return new MatchAnalysis(
                 $analysis['index'],
                 $analysis['open'],
@@ -285,7 +286,7 @@ final class ControlCaseStructuresAnalyzer
             return $tokens->getNextTokenOfKind($index, [':', ';']);
         }
 
-        if (\defined('T_MATCH') && T_MATCH === $kind) { // @TODO: drop condition when PHP 8.0+ is required
+        if (CT::T_MATCH === $kind) {
             return $tokens->getNextTokenOfKind($index, [[T_DOUBLE_ARROW]]);
         }
 
@@ -297,11 +298,7 @@ final class ControlCaseStructuresAnalyzer
      */
     private static function getTypesWithCaseOrDefault(): array
     {
-        $supportedTypes = [T_SWITCH];
-
-        if (\defined('T_MATCH')) { // @TODO: drop condition when PHP 8.0+ is required
-            $supportedTypes[] = T_MATCH;
-        }
+        $supportedTypes = [T_SWITCH, CT::T_MATCH];
 
         if (\defined('T_ENUM')) { // @TODO: drop condition when PHP 8.1+ is required
             $supportedTypes[] = T_ENUM;

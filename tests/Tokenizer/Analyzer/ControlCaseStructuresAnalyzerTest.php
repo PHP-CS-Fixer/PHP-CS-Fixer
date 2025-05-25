@@ -22,6 +22,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\EnumAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\MatchAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\ControlCaseStructuresAnalyzer;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -395,7 +396,7 @@ $expressionResult = match ($condition) {
                     57 => $matchAnalysis,
                 ],
                 $code,
-                [T_MATCH],
+                [CT::T_MATCH],
             ];
         }
     }

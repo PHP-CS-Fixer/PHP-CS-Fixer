@@ -48,6 +48,28 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
 
     use Indentation;
 
+    private const BLOCK_SIGNATURE_FIRST_TOKENS = [
+        T_USE,
+        T_IF,
+        T_ELSE,
+        T_ELSEIF,
+        T_FOR,
+        T_FOREACH,
+        T_WHILE,
+        T_DO,
+        T_SWITCH,
+        T_CASE,
+        T_DEFAULT,
+        T_TRY,
+        T_CLASS,
+        T_INTERFACE,
+        T_TRAIT,
+        T_EXTENDS,
+        T_IMPLEMENTS,
+        T_CONST,
+        CT::T_MATCH,
+    ];
+
     private AlternativeSyntaxAnalyzer $alternativeSyntaxAnalyzer;
 
     private bool $bracesFixerCompatibility;
@@ -137,26 +159,6 @@ if ($foo) {
     {
         $this->alternativeSyntaxAnalyzer = new AlternativeSyntaxAnalyzer();
 
-        $blockSignatureFirstTokens = [
-            T_USE,
-            T_IF,
-            T_ELSE,
-            T_ELSEIF,
-            T_FOR,
-            T_FOREACH,
-            T_WHILE,
-            T_DO,
-            T_SWITCH,
-            T_CASE,
-            T_DEFAULT,
-            T_TRY,
-            T_CLASS,
-            T_INTERFACE,
-            T_TRAIT,
-            T_EXTENDS,
-            T_IMPLEMENTS,
-            T_CONST,
-        ];
         $controlStructurePossibiblyWithoutBracesTokens = [
             T_IF,
             T_ELSE,
@@ -166,9 +168,6 @@ if ($foo) {
             T_WHILE,
             T_DO,
         ];
-        if (\defined('T_MATCH')) { // @TODO: drop condition when PHP 8.0+ is required
-            $blockSignatureFirstTokens[] = T_MATCH;
-        }
 
         $blockFirstTokens = ['{', [CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN], [CT::T_USE_TRAIT], [CT::T_GROUP_IMPORT_BRACE_OPEN], [CT::T_PROPERTY_HOOK_BRACE_OPEN]];
         if (\defined('T_ATTRIBUTE')) { // @TODO: drop condition when PHP 8.0+ is required
@@ -317,7 +316,7 @@ if ($foo) {
             }
 
             $isPropertyStart = $this->isPropertyStart($tokens, $index);
-            if ($isPropertyStart || $token->isGivenKind($blockSignatureFirstTokens)) {
+            if ($isPropertyStart || $token->isGivenKind(self::BLOCK_SIGNATURE_FIRST_TOKENS)) {
                 $lastWhitespaceIndex = null;
                 $closingParenthesisIndex = null;
 

@@ -61,6 +61,9 @@ final class CT
     public const T_PROPERTY_HOOK_BRACE_OPEN = 10_040;
     public const T_PROPERTY_HOOK_BRACE_CLOSE = 10_041;
 
+    // @TODO: drop constant when PHP 8.0+ is required
+    public const T_MATCH = 10_042;
+
     private function __construct() {}
 
     /**
