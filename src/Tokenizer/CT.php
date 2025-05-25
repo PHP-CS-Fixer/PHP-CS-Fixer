@@ -60,6 +60,9 @@ final class CT
     public const T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE = 10_039;
     public const T_PROPERTY_HOOK_BRACE_OPEN = 10_040;
     public const T_PROPERTY_HOOK_BRACE_CLOSE = 10_041;
+    public const T_PUBLIC_SET = 10_042; // @TODO: drop constant when PHP 8.4+ is required
+    public const T_PROTECTED_SET = 10_043; // @TODO: drop constant when PHP 8.4+ is required
+    public const T_PRIVATE_SET = 10_044; // @TODO: drop constant when PHP 8.4+ is required
 
     private function __construct() {}
 

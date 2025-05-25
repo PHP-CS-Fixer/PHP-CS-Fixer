@@ -216,16 +216,10 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
             return true;
         }
 
-        $modifierKinds = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_NS_SEPARATOR, T_STRING, CT::T_NULLABLE_TYPE];
+        $modifierKinds = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_NS_SEPARATOR, T_STRING, CT::T_NULLABLE_TYPE, CT::T_PRIVATE_SET, CT::T_PROTECTED_SET, CT::T_PUBLIC_SET];
 
         if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
             $modifierKinds[] = T_READONLY;
-        }
-
-        if (\defined('T_PRIVATE_SET')) { // @TODO: drop condition when PHP 8.4+ is required
-            $modifierKinds[] = T_PRIVATE_SET;
-            $modifierKinds[] = T_PROTECTED_SET;
-            $modifierKinds[] = T_PUBLIC_SET;
         }
 
         while ($tokens[$index]->isGivenKind($modifierKinds)) {

@@ -237,16 +237,10 @@ interface Bar
     private function fixPropertyType(Tokens $tokens, int $index): void
     {
         $propertyIndex = $index;
-        $propertyModifiers = [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_STATIC, T_VAR];
+        $propertyModifiers = [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_STATIC, T_VAR, CT::T_PRIVATE_SET, CT::T_PROTECTED_SET, CT::T_PUBLIC_SET];
 
         if (\defined('T_READONLY')) {
             $propertyModifiers[] = T_READONLY; // @TODO drop condition when PHP 8.1 is supported
-        }
-
-        if (\defined('T_PRIVATE_SET')) { // @TODO: drop condition when PHP 8.4+ is required
-            $propertyModifiers[] = T_PRIVATE_SET;
-            $propertyModifiers[] = T_PROTECTED_SET;
-            $propertyModifiers[] = T_PUBLIC_SET;
         }
 
         do {

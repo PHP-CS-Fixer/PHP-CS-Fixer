@@ -331,6 +331,9 @@ final class Token
                 CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC => CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
                 CT::T_FUNCTION_IMPORT => CT::T_FUNCTION_IMPORT,
                 CT::T_NAMESPACE_OPERATOR => CT::T_NAMESPACE_OPERATOR,
+                CT::T_PRIVATE_SET => CT::T_PRIVATE_SET,
+                CT::T_PROTECTED_SET => CT::T_PROTECTED_SET,
+                CT::T_PUBLIC_SET => CT::T_PUBLIC_SET,
                 CT::T_USE_LAMBDA => CT::T_USE_LAMBDA,
                 CT::T_USE_TRAIT => CT::T_USE_TRAIT,
             ];
