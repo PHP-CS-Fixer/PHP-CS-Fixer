@@ -384,7 +384,7 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
     /**
      * @param _TransformerTestExpectedTokens $expectedTokens
      *
-     * @dataProvider provideProcess82Cases
+     * @dataProvider provideProcess81Cases
      *
      * @requires PHP 8.1
      */
