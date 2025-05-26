@@ -378,26 +378,22 @@ $expressionResult = match ($condition) {
             [T_SWITCH],
         ];
 
-        if (\defined('T_ENUM')) { // @TODO: drop condition when PHP 8.1+ is required - sadly PHPUnit still calls the provider even if requires condition is not matched
-            yield [
-                [
-                    1 => $switchAnalysis,
-                    28 => $enumAnalysis,
-                ],
-                $code,
-                [T_SWITCH, T_ENUM],
-            ];
-        }
+        yield [
+            [
+                1 => $switchAnalysis,
+                28 => $enumAnalysis,
+            ],
+            $code,
+            [T_SWITCH, T_ENUM],
+        ];
 
-        if (\defined('T_MATCH')) { // @TODO: drop condition when PHP 8.0+ is required - sadly PHPUnit still calls the provider even if requires condition is not matched
-            yield [
-                [
-                    57 => $matchAnalysis,
-                ],
-                $code,
-                [T_MATCH],
-            ];
-        }
+        yield [
+            [
+                57 => $matchAnalysis,
+            ],
+            $code,
+            [T_MATCH],
+        ];
     }
 
     public function testNoSupportedControlStructure(): void
