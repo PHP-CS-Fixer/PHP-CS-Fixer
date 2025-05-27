@@ -498,7 +498,7 @@ final class ProjectCodeTest extends TestCase
         self::assertNotContains(
             'defined',
             $this->extractFunctionNamesCalledInClass($className),
-            \sprintf('Class %s must not use "defined()", use %s.', $className, FCT::class)
+            \sprintf('Class %s must not use "defined()", use "%s" to use newly introduced Token kinds.', $className, FCT::class)
         );
     }
 
