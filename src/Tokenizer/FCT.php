@@ -77,7 +77,7 @@ if (\PHP_VERSION_ID >= 8_04_00) {
 } elseif (\PHP_VERSION_ID >= 8_00_00) {
     abstract class FCT_interim extends FCT_PHP_since_8_00 {}
 } else {
-    abstract class FCT_interim extends FCT_PHP_before_8_00 {}
+    abstract class FCT_interim extends FCT_PHP_ancient {}
 }
 
 /**
