@@ -18,8 +18,6 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\FCT;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\FCT
