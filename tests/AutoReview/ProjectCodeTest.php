@@ -31,6 +31,8 @@ use PhpCsFixer\Tests\PregTest;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tests\Test\AbstractIntegrationTestCase;
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tests\Tokenizer\CTTest;
+use PhpCsFixer\Tests\Tokenizer\FCTTest;
 use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -484,12 +486,13 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider provideSrcClassCases
+     * @dataProvider provideTestClassCases
      *
      * @param class-string $className
      */
     public function testThereIsNoUsageOfDefined(string $className): void
     {
-        if (FCT::class === $className) {
+        if (\in_array($className, [FCT::class, CTTest::class, FCTTest::class], true)) {
             $this->expectNotToPerformAssertions();
 
             return;
@@ -754,11 +757,8 @@ final class ProjectCodeTest extends TestCase
             T_STRING,
             T_USE,
             T_WHITESPACE,
+            FCT::T_READONLY,
         ];
-
-        if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
-            $headerTypes[] = T_READONLY;
-        }
 
         $tokens = $this->createTokensForClass($className);
         $classyIndex = null;
@@ -774,7 +774,7 @@ final class ProjectCodeTest extends TestCase
                 break;
             }
 
-            if (\defined('T_ATTRIBUTE') && $tokens[$index]->isGivenKind(T_ATTRIBUTE)) {
+            if ($tokens[$index]->isGivenKind(FCT::T_ATTRIBUTE)) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
 
                 continue;

@@ -365,10 +365,8 @@ class PsrAutoloadingFixer {}
             'T_TRAIT' => 'trait',
             'T_TRAIT_C' => '__trait__',
         ] as $tokenType => $tokenValue) {
-            if (\defined($tokenType)) {
-                $cases[] = $tokenValue.'.php';
-                $cases[] = strtoupper($tokenValue).'.php';
-            }
+            $cases[] = $tokenValue.'.php';
+            $cases[] = strtoupper($tokenValue).'.php';
         }
 
         yield from array_map(static fn ($case): array => [

@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 
 /**
  * @internal
@@ -67,29 +68,6 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
                 const B1 = D::X & C;
             ',
         ];
-
-        if (\defined('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG')) { // @TODO: drop condition when PHP 8.1+ is required
-            yield 'ensure T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG is not modified' => [
-                '<?php $a = $b&$c;',
-                [
-                    6 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
-                ],
-            ];
-
-            yield 'do not fix, close/open' => [
-                '<?php fn() => 0 ?><?php $a = FOO|BAR|BAZ&$x;',
-                [
-                    20 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
-                ],
-            ];
-
-            yield 'do not fix, foreach' => [
-                '<?php while(foo()){} $a = FOO|BAR|BAZ&$x;',
-                [
-                    19 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
-                ],
-            ];
-        }
 
         yield 'arrow function' => [
             '<?php $a = fn(int&null $item): int&null => $item * 2;',
@@ -400,6 +378,45 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
                 28 => CT::T_TYPE_INTERSECTION,
                 35 => CT::T_TYPE_INTERSECTION,
                 40 => CT::T_TYPE_INTERSECTION,
+            ],
+        ];
+    }
+
+    /**
+     * @param _TransformerTestExpectedTokens $expectedTokens
+     *
+     * @dataProvider provideProcess81Cases
+     *
+     * @requires PHP 8.1
+     */
+    public function testProcess81(string $source, array $expectedTokens): void
+    {
+        $this->doTest($source, $expectedTokens);
+    }
+
+    /**
+     * @return iterable<string, array{string, _TransformerTestExpectedTokens}>
+     */
+    public static function provideProcess81Cases(): iterable
+    {
+        yield 'ensure T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG is not modified' => [
+            '<?php $a = $b&$c;',
+            [
+                6 => FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
+            ],
+        ];
+
+        yield 'do not fix, close/open' => [
+            '<?php fn() => 0 ?><?php $a = FOO|BAR|BAZ&$x;',
+            [
+                20 => FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
+            ],
+        ];
+
+        yield 'do not fix, foreach' => [
+            '<?php while(foo()){} $a = FOO|BAR|BAZ&$x;',
+            [
+                19 => FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
             ],
         ];
     }
