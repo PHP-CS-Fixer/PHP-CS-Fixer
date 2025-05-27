@@ -39,9 +39,14 @@ final class FCTTest extends TestCase
 
     public function testClassIsInternal(): void
     {
+        $docComment = (new \ReflectionClass(FCT::class))->getDocComment();
+        if (false === $docComment) {
+            $docComment = '';
+        }
+
         self::assertStringContainsString(
             "\n * @internal\n",
-            (new \ReflectionClass(FCT::class))->getDocComment()
+            $docComment
         );
     }
 
