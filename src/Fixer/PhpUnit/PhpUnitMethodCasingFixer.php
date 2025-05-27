@@ -187,7 +187,7 @@ class MyTest extends \PhpUnit\FrameWork\TestCase
             return true;
         }
 
-        if (\defined('T_ATTRIBUTE') && $this->isTestAttributePresent($tokens, $index)) {
+        if ($this->isTestAttributePresent($tokens, $index)) {
             return true;
         }
 

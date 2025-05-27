@@ -694,22 +694,6 @@ final class TokenTest extends TestCase
         ];
     }
 
-    /**
-     * @requires PHP < 8.1
-     */
-    public function testGetClassyTokenKindsPre81(): void
-    {
-        self::assertSame([T_CLASS, T_TRAIT, T_INTERFACE], Token::getClassyTokenKinds());
-    }
-
-    /**
-     * @requires PHP >= 8.1
-     */
-    public function testGetClassyTokenKinds81(): void
-    {
-        self::assertSame([T_CLASS, T_TRAIT, T_INTERFACE, T_ENUM], Token::getClassyTokenKinds());
-    }
-
     private static function getBraceToken(): Token
     {
         return new Token(self::getBraceTokenPrototype());
