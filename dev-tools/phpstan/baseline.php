@@ -2192,12 +2192,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/AutoReview/CiConfigurationTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$code of static method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:fromCode\\(\\) expects string, string\\|false given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 2,
-	'path' => __DIR__ . '/../../tests/AutoReview/CiConfigurationTest.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Offset string might not exist on array\\<Symfony\\\\Component\\\\Console\\\\Command\\\\Command\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 3,

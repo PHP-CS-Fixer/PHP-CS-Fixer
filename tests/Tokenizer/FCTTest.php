@@ -72,22 +72,28 @@ final class FCTTest extends TestCase
         }
     }
 
-    /**
-     * @requires PHP 8.4
-     */
     public function testHighestSupportedPhpVersionHaveOnlyPositiveValues(): void
     {
+        if (self::convertPhpVersionIdToMajorMinorFormat((string) \PHP_VERSION_ID) !== max(self::getAllPhpVersionsUsedByCiForTests())) {
+            $this->expectNotToPerformAssertions();
+
+            return;
+        }
+
         foreach (self::EXPECTED_CONSTANTS as $constantName) {
             $constant = new \ReflectionClassConstant(FCT::class, $constantName);
             self::assertGreaterThan(0, $constant->getValue());
         }
     }
 
-    /**
-     * @requires PHP < 8.0
-     */
     public function testLowestSupportedPhpVersionHaveOnlyNegativeValues(): void
     {
+        if (self::convertPhpVersionIdToMajorMinorFormat((string) \PHP_VERSION_ID) !== min(self::getAllPhpVersionsUsedByCiForTests())) {
+            $this->expectNotToPerformAssertions();
+
+            return;
+        }
+
         foreach (self::EXPECTED_CONSTANTS as $constantName) {
             $constant = new \ReflectionClassConstant(FCT::class, $constantName);
             self::assertLessThan(0, $constant->getValue());
