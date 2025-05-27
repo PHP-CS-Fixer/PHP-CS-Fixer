@@ -22,6 +22,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\EnumAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\MatchAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\ControlCaseStructuresAnalyzer;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -384,7 +385,7 @@ $expressionResult = match ($condition) {
                 28 => $enumAnalysis,
             ],
             $code,
-            [T_SWITCH, T_ENUM],
+            [T_SWITCH, FCT::T_ENUM],
         ];
 
         yield [
@@ -392,7 +393,7 @@ $expressionResult = match ($condition) {
                 57 => $matchAnalysis,
             ],
             $code,
-            [T_MATCH],
+            [FCT::T_MATCH],
         ];
     }
 
