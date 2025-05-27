@@ -31,9 +31,9 @@ final class FCTTest extends TestCase
         'T_ENUM',
         'T_MATCH',
         'T_NULLSAFE_OBJECT_OPERATOR',
-        'T_PUBLIC_SET',
-        'T_PROTECTED_SET',
         'T_PRIVATE_SET',
+        'T_PROTECTED_SET',
+        'T_PUBLIC_SET',
         'T_READONLY',
     ];
 
@@ -47,9 +47,12 @@ final class FCTTest extends TestCase
 
     public function testAllConstantsArePresentInEveryPhpVersionRuntime(): void
     {
+        $consts = array_keys((new \ReflectionClass(FCT::class))->getConstants());
+        sort($consts);
+
         self::assertSame(
             self::EXPECTED_CONSTANTS,
-            array_keys((new \ReflectionClass(FCT::class))->getConstants())
+            $consts
         );
     }
 
