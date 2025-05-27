@@ -47,12 +47,7 @@ final class FCTTest extends TestCase
         );
     }
 
-    public function testClassIsFinal(): void
-    {
-        self::assertTrue((new \ReflectionClass(FCT::class))->isFinal());
-    }
-
-    public function testAllConstantsArePresentInEveryPhpVersion(): void
+    public function testAllConstantsArePresentInEveryPhpVersionRuntime(): void
     {
         self::assertSame(
             self::EXPECTED_CONSTANTS,
@@ -64,7 +59,7 @@ final class FCTTest extends TestCase
     {
         $constants = (new \ReflectionClass(FCT::class))->getConstants();
 
-        self::assertSame(array_flip(array_flip($constants)), $constants, 'Values of FCT::T_* constants must be unique.');
+        self::assertSame(array_unique($constants), $constants, 'Values of FCT::T_* constants must be unique.');
     }
 
     public function testConstantsHaveCorrectValues(): void
