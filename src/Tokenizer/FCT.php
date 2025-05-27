@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tokenizer;
 
-abstract class FCT_PHP_ancient
+abstract class FCTxPHPAncient
 {
     public const T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG = -1;
     public const T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG = -2;
@@ -29,7 +29,7 @@ abstract class FCT_PHP_ancient
 }
 
 // TODO: PHP 8.0+, when mentioned PHP version is required, remove the class and consts from FCT classes
-abstract class FCT_PHP_since_8_00 extends FCT_PHP_ancient
+abstract class FCTxPHPSince8x00 extends FCTxPHPAncient
 {
     /** @final */
     public const T_ATTRIBUTE = T_ATTRIBUTE;
@@ -42,7 +42,7 @@ abstract class FCT_PHP_since_8_00 extends FCT_PHP_ancient
 }
 
 // TODO: PHP 8.1+, when mentioned PHP version is required, remove the class and consts from FCT classes
-abstract class FCT_PHP_since_8_01 extends FCT_PHP_since_8_00
+abstract class FCTxPHPSince8x01 extends FCTxPHPSince8x00
 {
     /** @final */
     public const T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG = T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG;
@@ -58,7 +58,7 @@ abstract class FCT_PHP_since_8_01 extends FCT_PHP_since_8_00
 }
 
 // TODO: PHP 8.4+, when mentioned PHP version is required, remove the class and consts from FCT classes
-abstract class FCT_PHP_since_8_04 extends FCT_PHP_since_8_01
+abstract class FCTxPHPSince8x04 extends FCTxPHPSince8x01
 {
     /** @final */
     public const T_PUBLIC_SET = T_PUBLIC_SET;
@@ -71,13 +71,13 @@ abstract class FCT_PHP_since_8_04 extends FCT_PHP_since_8_01
 }
 
 if (\PHP_VERSION_ID >= 8_04_00) {
-    abstract class FCT_interim extends FCT_PHP_since_8_04 {}
+    abstract class FCTInterim extends FCTxPHPSince8x04 {}
 } elseif (\PHP_VERSION_ID >= 8_01_00) {
-    abstract class FCT_interim extends FCT_PHP_since_8_01 {}
+    abstract class FCTInterim extends FCTxPHPSince8x01 {}
 } elseif (\PHP_VERSION_ID >= 8_00_00) {
-    abstract class FCT_interim extends FCT_PHP_since_8_00 {}
+    abstract class FCTInterim extends FCTxPHPSince8x00 {}
 } else {
-    abstract class FCT_interim extends FCT_PHP_ancient {}
+    abstract class FCTInterim extends FCTxPHPAncient {}
 }
 
 /**
@@ -88,4 +88,4 @@ if (\PHP_VERSION_ID >= 8_04_00) {
  *
  * @internal
  */
-final class FCT extends FCT_interim {}
+final class FCT extends FCTInterim {}
