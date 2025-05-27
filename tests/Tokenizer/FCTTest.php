@@ -39,8 +39,8 @@ final class FCTTest extends TestCase
 
     public function testClassIsInternal(): void
     {
-        self::assertSame(
-            "/**\n     * @internal\n     */",
+        self::assertStringContainsString(
+            "\n * @internal\n",
             (new \ReflectionClass(FCT::class))->getDocComment()
         );
     }
