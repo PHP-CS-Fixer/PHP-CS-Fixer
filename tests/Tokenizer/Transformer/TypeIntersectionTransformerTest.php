@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 
 /**
  * @internal
@@ -401,21 +402,21 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
         yield 'ensure T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG is not modified' => [
             '<?php $a = $b&$c;',
             [
-                6 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
+                6 => FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
             ],
         ];
 
         yield 'do not fix, close/open' => [
             '<?php fn() => 0 ?><?php $a = FOO|BAR|BAZ&$x;',
             [
-                20 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
+                20 => FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
             ],
         ];
 
         yield 'do not fix, foreach' => [
             '<?php while(foo()){} $a = FOO|BAR|BAZ&$x;',
             [
-                19 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
+                19 => FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
             ],
         ];
     }
