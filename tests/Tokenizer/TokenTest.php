@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Tokenizer;
 
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 
 /**
@@ -180,7 +181,7 @@ final class TokenTest extends TestCase
      */
     public static function provideIsComment81Cases(): iterable
     {
-        yield [new Token([T_ATTRIBUTE, '#[', 1]), false];
+        yield [new Token([FCT::T_ATTRIBUTE, '#[', 1]), false];
     }
 
     /**
@@ -222,7 +223,7 @@ final class TokenTest extends TestCase
      */
     public static function provideIsObjectOperator80Cases(): iterable
     {
-        yield [new Token([T_NULLSAFE_OBJECT_OPERATOR, '?->']), true];
+        yield [new Token([FCT::T_NULLSAFE_OBJECT_OPERATOR, '?->']), true];
     }
 
     public function testIsGivenKind(): void
@@ -486,17 +487,17 @@ final class TokenTest extends TestCase
      */
     public static function provideEquals81Cases(): iterable
     {
-        yield [new Token('&'), true, new Token([T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, '&'])];
+        yield [new Token('&'), true, new Token([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, '&'])];
 
-        yield [new Token('&'), true, new Token([T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG, '&'])];
+        yield [new Token('&'), true, new Token([FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG, '&'])];
 
-        yield [new Token([T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, '&']), true, '&'];
+        yield [new Token([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, '&']), true, '&'];
 
-        yield [new Token([T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, '&']), true, new Token([T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, '&'])];
+        yield [new Token([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, '&']), true, new Token([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, '&'])];
 
-        yield [new Token([T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG, '&']), true, '&'];
+        yield [new Token([FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG, '&']), true, '&'];
 
-        yield [new Token([T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG, '&']), true, new Token([T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG, '&'])];
+        yield [new Token([FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG, '&']), true, new Token([FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG, '&'])];
     }
 
     public function testEqualsAnyDefaultIsCaseSensitive(): void
