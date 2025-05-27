@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tokenizer;
 
+/**
+ * @internal
+ */
 abstract class FCTxPHPAncient
 {
     public const T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG = -1;
@@ -28,7 +31,11 @@ abstract class FCTxPHPAncient
     public const T_READONLY = -10;
 }
 
-// TODO: PHP 8.0+, when mentioned PHP version is required, remove the class and consts from FCT classes
+/**
+ * @TODO PHP 8.0+, when mentioned PHP version is required, remove the class and consts from FCT classes
+ *
+ * @internal
+ */
 abstract class FCTxPHPSince8x00 extends FCTxPHPAncient
 {
     /** @final */
@@ -41,7 +48,11 @@ abstract class FCTxPHPSince8x00 extends FCTxPHPAncient
     public const T_NULLSAFE_OBJECT_OPERATOR = T_NULLSAFE_OBJECT_OPERATOR;
 }
 
-// TODO: PHP 8.1+, when mentioned PHP version is required, remove the class and consts from FCT classes
+/**
+ * @TODO PHP 8.1+, when mentioned PHP version is required, remove the class and consts from FCT classes
+ *
+ * @internal
+ */
 abstract class FCTxPHPSince8x01 extends FCTxPHPSince8x00
 {
     /** @final */
@@ -57,7 +68,11 @@ abstract class FCTxPHPSince8x01 extends FCTxPHPSince8x00
     public const T_READONLY = T_READONLY;
 }
 
-// TODO: PHP 8.4+, when mentioned PHP version is required, remove the class and consts from FCT classes
+/**
+ * @TODO PHP 8.4+, when mentioned PHP version is required, remove the class and consts from FCT classes
+ *
+ * @internal
+ */
 abstract class FCTxPHPSince8x04 extends FCTxPHPSince8x01
 {
     /** @final */
@@ -71,12 +86,16 @@ abstract class FCTxPHPSince8x04 extends FCTxPHPSince8x01
 }
 
 if (\PHP_VERSION_ID >= 8_04_00) {
+    /** @internal */
     abstract class FCTInterim extends FCTxPHPSince8x04 {}
 } elseif (\PHP_VERSION_ID >= 8_01_00) {
+    /** @internal */
     abstract class FCTInterim extends FCTxPHPSince8x01 {}
 } elseif (\PHP_VERSION_ID >= 8_00_00) {
+    /** @internal */
     abstract class FCTInterim extends FCTxPHPSince8x00 {}
 } else {
+    /** @internal */
     abstract class FCTInterim extends FCTxPHPAncient {}
 }
 
