@@ -26,6 +26,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -52,17 +53,17 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
     use ConfigurableFixerTrait;
 
     /**
-     * @var array<string, null|int>
+     * @var array<string, int>
      */
-    private static array $tokenMapContainASingleSpace = [
+    private const TOKEN_MAP_CONTAIN_A_SINGLE_SPACE = [
         // for now, only one case - but we are ready to extend it, when we learn about new cases to cover
         'yield_from' => T_YIELD_FROM,
     ];
 
     /**
-     * @var array<string, null|int>
+     * @var array<string, int>
      */
-    private static array $tokenMapPrecededByASingleSpace = [
+    private const TOKEN_MAP_PRECEDED_BY_A_SINGLE_SPACE = [
         'as' => T_AS,
         'else' => T_ELSE,
         'elseif' => T_ELSEIF,
@@ -70,9 +71,9 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
     ];
 
     /**
-     * @var array<string, null|int>
+     * @var array<string, int>
      */
-    private static array $tokenMapFollowedByASingleSpace = [
+    private const TOKEN_MAP_FOLLOWED_BY_A_SINGLE_SPACE = [
         'abstract' => T_ABSTRACT,
         'as' => T_AS,
         'attribute' => CT::T_ATTRIBUTE_CLOSE,
@@ -89,7 +90,7 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
         'echo' => T_ECHO,
         'else' => T_ELSE,
         'elseif' => T_ELSEIF,
-        'enum' => null,
+        'enum' => FCT::T_ENUM,
         'extends' => T_EXTENDS,
         'final' => T_FINAL,
         'finally' => T_FINALLY,
@@ -106,7 +107,7 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
         'instanceof' => T_INSTANCEOF,
         'insteadof' => T_INSTEADOF,
         'interface' => T_INTERFACE,
-        'match' => null,
+        'match' => FCT::T_MATCH,
         'named_argument' => CT::T_NAMED_ARGUMENT_COLON,
         'namespace' => T_NAMESPACE,
         'new' => T_NEW,
@@ -117,7 +118,7 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
         'private' => T_PRIVATE,
         'protected' => T_PROTECTED,
         'public' => T_PUBLIC,
-        'readonly' => null,
+        'readonly' => FCT::T_READONLY,
         'require' => T_REQUIRE,
         'require_once' => T_REQUIRE_ONCE,
         'return' => T_RETURN,
@@ -242,40 +243,22 @@ yield  from  baz();
 
     protected function configurePostNormalisation(): void
     {
-        if (\defined('T_MATCH')) { // @TODO: drop condition when PHP 8.0+ is required
-            self::$tokenMapFollowedByASingleSpace['match'] = T_MATCH;
-        }
-
-        if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
-            self::$tokenMapFollowedByASingleSpace['readonly'] = T_READONLY;
-        }
-
-        if (\defined('T_ENUM')) { // @TODO: drop condition when PHP 8.1+ is required
-            self::$tokenMapFollowedByASingleSpace['enum'] = T_ENUM;
-        }
-
         $this->fixTokenMapContainASingleSpace = [];
 
         foreach ($this->configuration['constructs_contain_a_single_space'] as $key) {
-            if (null !== self::$tokenMapContainASingleSpace[$key]) {
-                $this->fixTokenMapContainASingleSpace[$key] = self::$tokenMapContainASingleSpace[$key];
-            }
+            $this->fixTokenMapContainASingleSpace[$key] = self::TOKEN_MAP_CONTAIN_A_SINGLE_SPACE[$key];
         }
 
         $this->fixTokenMapPrecededByASingleSpace = [];
 
         foreach ($this->configuration['constructs_preceded_by_a_single_space'] as $key) {
-            if (null !== self::$tokenMapPrecededByASingleSpace[$key]) {
-                $this->fixTokenMapPrecededByASingleSpace[$key] = self::$tokenMapPrecededByASingleSpace[$key];
-            }
+            $this->fixTokenMapPrecededByASingleSpace[$key] = self::TOKEN_MAP_PRECEDED_BY_A_SINGLE_SPACE[$key];
         }
 
         $this->fixTokenMapFollowedByASingleSpace = [];
 
         foreach ($this->configuration['constructs_followed_by_a_single_space'] as $key) {
-            if (null !== self::$tokenMapFollowedByASingleSpace[$key]) {
-                $this->fixTokenMapFollowedByASingleSpace[$key] = self::$tokenMapFollowedByASingleSpace[$key];
-            }
+            $this->fixTokenMapFollowedByASingleSpace[$key] = self::TOKEN_MAP_FOLLOWED_BY_A_SINGLE_SPACE[$key];
         }
 
         if (isset($this->fixTokenMapFollowedByASingleSpace['public'])) {
@@ -376,14 +359,11 @@ yield  from  baz();
 
             if ($tokens[$whitespaceTokenIndex]->isWhitespace() && str_contains($tokens[$whitespaceTokenIndex]->getContent(), "\n")) {
                 $nextNextToken = $tokens[$whitespaceTokenIndex + 1];
-                if (\defined('T_ATTRIBUTE')) { // @TODO: drop condition and else when PHP 8.0+ is required
-                    if ($nextNextToken->isGivenKind(T_ATTRIBUTE)) {
-                        continue;
-                    }
-                } else {
-                    if ($nextNextToken->isComment() && str_starts_with($nextNextToken->getContent(), '#[')) {
-                        continue;
-                    }
+                if (
+                    $nextNextToken->isGivenKind(FCT::T_ATTRIBUTE)
+                    || $nextNextToken->isComment() && str_starts_with($nextNextToken->getContent(), '#[')
+                ) {
+                    continue;
                 }
 
                 if ($nextNextToken->isGivenKind(T_DOC_COMMENT)) {
@@ -397,9 +377,9 @@ yield  from  baz();
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $tokenMapContainASingleSpaceKeys = array_keys(self::$tokenMapContainASingleSpace);
-        $tokenMapPrecededByASingleSpaceKeys = array_keys(self::$tokenMapPrecededByASingleSpace);
-        $tokenMapFollowedByASingleSpaceKeys = array_keys(self::$tokenMapFollowedByASingleSpace);
+        $tokenMapContainASingleSpaceKeys = array_keys(self::TOKEN_MAP_CONTAIN_A_SINGLE_SPACE);
+        $tokenMapPrecededByASingleSpaceKeys = array_keys(self::TOKEN_MAP_PRECEDED_BY_A_SINGLE_SPACE);
+        $tokenMapFollowedByASingleSpaceKeys = array_keys(self::TOKEN_MAP_FOLLOWED_BY_A_SINGLE_SPACE);
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('constructs_contain_a_single_space', 'List of constructs which must contain a single space.'))

@@ -3112,7 +3112,7 @@ class MyTestWithAnonymousClass extends TestCase
 
         $indices = [];
 
-        foreach (array_keys($expectations) as $index) {
+        foreach ($expectations as $index => $expectedEndIndex) {
             $indices[$index] = $tokensAnalyzer->getLastTokenIndexOfArrowFunction($index);
         }
 

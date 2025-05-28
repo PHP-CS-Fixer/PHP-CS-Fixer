@@ -28,9 +28,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideNoEmptyStatementsCases
+     * @dataProvider provideFixCases
      */
-    public function testNoEmptyStatements(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -38,7 +38,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
     /**
      * @return iterable<int, array{0: string, 1?: string}>
      */
-    public static function provideNoEmptyStatementsCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield [
             '<?php
@@ -454,21 +454,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
             '<?php if ($foo2) {}',
             '<?php if ($foo2) {1;}',
         ];
-    }
 
-    /**
-     * @dataProvider provideFixCases
-     */
-    public function testFix(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<int, array{0: string, 1?: string}>
-     */
-    public static function provideFixCases(): iterable
-    {
         yield [
             '<?php
                     use function Functional\map;
@@ -554,44 +540,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     };
                 ',
         ];
-    }
 
-    /**
-     * @dataProvider provideCasesWithShortOpenTagCases
-     */
-    public function testCasesWithShortOpenTag(string $expected, ?string $input = null): void
-    {
-        if (!\ini_get('short_open_tag')) {
-            self::markTestSkipped('No short tag tests possible.');
-        }
-
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<int, array{string, string}>
-     */
-    public static function provideCasesWithShortOpenTagCases(): iterable
-    {
-        yield [
-            '<? ',
-            '<? ;',
-        ];
-    }
-
-    /**
-     * @dataProvider provideFixMultipleSemicolonsCases
-     */
-    public function testFixMultipleSemicolons(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<int, array{0: string, 1?: string}>
-     */
-    public static function provideFixMultipleSemicolonsCases(): iterable
-    {
         yield [
             '<?php $foo = 2 ; //
                     '.'
@@ -649,6 +598,29 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                             echo 9;
                     }
                 ',
+        ];
+    }
+
+    /**
+     * @dataProvider provideWithShortOpenTagCases
+     */
+    public function testWithShortOpenTag(string $expected, ?string $input = null): void
+    {
+        if (!\ini_get('short_open_tag')) {
+            self::markTestSkipped('No short tag tests possible.');
+        }
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<int, array{string, string}>
+     */
+    public static function provideWithShortOpenTagCases(): iterable
+    {
+        yield [
+            '<? ',
+            '<? ;',
         ];
     }
 

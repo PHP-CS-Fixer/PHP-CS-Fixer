@@ -9,10 +9,10 @@ services:
     extra_hosts:
       # Allow container to connect to host to use XDebug step debugging.
       # This is not needed when using Docker Desktop as it supports this natively.
-      - 'host.docker.internal:host-gateway'
+      - host.docker.internal:host-gateway
     environment:
       XDEBUG_MODE: ${XDEBUG_MODE:-off}
-      XDEBUG_CONFIG: 'idekey=${XDEBUG_IDEKEY:-PHPSTORM} client_host=${XDEBUG_CLIENT_HOST:-host.docker.internal}'
+      XDEBUG_CONFIG: idekey=${XDEBUG_IDEKEY:-PHPSTORM} client_host=${XDEBUG_CLIENT_HOST:-host.docker.internal}
   php-8.0:
     <<: *php
   php-8.1:

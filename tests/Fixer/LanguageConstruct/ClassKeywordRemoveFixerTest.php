@@ -270,6 +270,9 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
                 echo ClassB::class;
                 echo C::class;
                 ',
+        ];
+
+        yield [
             "<?php
                 namespace {
                     var_dump('Foo');

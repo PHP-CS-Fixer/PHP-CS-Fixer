@@ -18,6 +18,7 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -48,9 +49,8 @@ final class AttributeAnalyzer
     public static function isAttribute(Tokens $tokens, int $index): bool
     {
         if (
-            !\defined('T_ATTRIBUTE') // attributes not available, PHP version lower than 8.0
-            || !$tokens[$index]->isGivenKind(T_STRING) // checked token is not a string
-            || !$tokens->isAnyTokenKindsFound([T_ATTRIBUTE]) // no attributes in the tokens collection
+            !$tokens[$index]->isGivenKind(T_STRING) // checked token is not a string
+            || !$tokens->isAnyTokenKindsFound([FCT::T_ATTRIBUTE]) // no attributes in the tokens collection
         ) {
             return false;
         }

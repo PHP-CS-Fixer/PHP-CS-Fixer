@@ -31,6 +31,7 @@ use PhpCsFixer\Tests\PregTest;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tests\Test\AbstractIntegrationTestCase;
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -483,6 +484,26 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider provideSrcClassCases
+     *
+     * @param class-string $className
+     */
+    public function testThereIsNoUsageOfDefined(string $className): void
+    {
+        if (FCT::class === $className) {
+            $this->expectNotToPerformAssertions();
+
+            return;
+        }
+
+        self::assertNotContains(
+            'defined',
+            $this->extractFunctionNamesCalledInClass($className),
+            \sprintf('Class %s must not use "defined()", use "%s" to use newly introduced Token kinds.', $className, FCT::class)
+        );
+    }
+
+    /**
+     * @dataProvider provideSrcClassCases
      * @dataProvider provideTestClassCases
      *
      * @param class-string $className
@@ -527,7 +548,7 @@ final class ProjectCodeTest extends TestCase
             yield $className => [$className];
         }
 
-        foreach (self::getTestClasses() as $className) {
+        foreach (self::getTestsDirectoryClasses('*.php') as $className) {
             if (PregTest::class === $className) {
                 continue;
             }
@@ -713,6 +734,12 @@ final class ProjectCodeTest extends TestCase
      */
     public function testAllCodeContainSingleClassy(string $className): void
     {
+        if (FCT::class === $className) {
+            $this->expectNotToPerformAssertions();
+
+            return;
+        }
+
         $headerTypes = [
             T_ABSTRACT,
             T_AS,
@@ -823,7 +850,7 @@ final class ProjectCodeTest extends TestCase
     public function testAllTestsForShortOpenTagAreHandled(): void
     {
         $testClassesWithShortOpenTag = array_filter(
-            self::getTestClasses(),
+            self::getTestsDirectoryClasses('*Test.php'),
             fn (string $className): bool => str_contains($this->getFileContentForClass($className), 'short_open_tag') && self::class !== $className
         );
         $testFilesWithShortOpenTag = array_map(
@@ -1036,7 +1063,7 @@ final class ProjectCodeTest extends TestCase
     public static function provideTestClassCases(): iterable
     {
         if (null === self::$testClassCases) {
-            $cases = self::getTestClasses();
+            $cases = self::getTestsDirectoryClasses('*Test.php');
 
             self::$testClassCases = array_combine(
                 $cases,
@@ -1178,27 +1205,28 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @return list<class-string<TestCase>>
+     * @return ($pattern is '*Test.php' ? list<class-string<TestCase>> : list<class-string>)
      */
-    private static function getTestClasses(): array
+    private static function getTestsDirectoryClasses(string $pattern): array
     {
-        static $classes;
+        /** @var array<string, list<class-string>> $classes */
+        static $classes = [];
 
-        if (null !== $classes) {
-            return $classes;
+        if (isset($classes[$pattern])) {
+            return $classes[$pattern];
         }
 
         $finder = Finder::create()
             ->files()
-            ->name('*Test.php')
+            ->name($pattern)
             ->in(__DIR__.'/..')
             ->exclude([
                 'Fixtures',
             ])
         ;
 
-        /** @var list<class-string<TestCase>> $classes */
-        $classes = array_map(
+        /** @var ($pattern is '*Test.php' ? list<class-string<TestCase>> : list<class-string>) $foundClasses */
+        $foundClasses = array_map(
             static fn (SplFileInfo $file): string => \sprintf(
                 'PhpCsFixer\Tests\%s%s%s',
                 strtr($file->getRelativePath(), \DIRECTORY_SEPARATOR, '\\'),
@@ -1208,9 +1236,9 @@ final class ProjectCodeTest extends TestCase
             iterator_to_array($finder, false)
         );
 
-        sort($classes);
+        sort($foundClasses);
 
-        return $classes;
+        return $classes[$pattern] = $foundClasses;
     }
 
     /**

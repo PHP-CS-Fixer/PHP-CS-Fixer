@@ -83,7 +83,6 @@ final class TokensAnalyzer
             throw new \InvalidArgumentException(\sprintf('Not an "classy" at given index %d.', $index));
         }
 
-        $readOnlyPossible = \defined('T_READONLY'); // @TODO: drop condition when PHP 8.2+ is required
         $modifiers = ['final' => null, 'abstract' => null, 'readonly' => null];
 
         while (true) {
@@ -93,7 +92,7 @@ final class TokensAnalyzer
                 $modifiers['final'] = $index;
             } elseif ($this->tokens[$index]->isGivenKind(T_ABSTRACT)) {
                 $modifiers['abstract'] = $index;
-            } elseif ($readOnlyPossible && $this->tokens[$index]->isGivenKind(T_READONLY)) {
+            } elseif ($this->tokens[$index]->isGivenKind(FCT::T_READONLY)) {
                 $modifiers['readonly'] = $index;
             } else { // no need to skip attributes as it is not possible on PHP8.2
                 break;
@@ -292,7 +291,7 @@ final class TokensAnalyzer
 
         $index = $this->tokens->getPrevMeaningfulToken($index);
 
-        if (\defined('T_READONLY') && $this->tokens[$index]->isGivenKind(T_READONLY)) { // @TODO: drop condition when PHP 8.1+ is required
+        if ($this->tokens[$index]->isGivenKind(FCT::T_READONLY)) {
             $index = $this->tokens->getPrevMeaningfulToken($index);
         }
 
@@ -398,8 +397,7 @@ final class TokensAnalyzer
 
         if (
             $this->tokens[$prevIndex]->isGivenKind(T_CASE)
-            && \defined('T_ENUM')
-            && $this->tokens->isAllTokenKindsFound([T_ENUM])
+            && $this->tokens->isAllTokenKindsFound([FCT::T_ENUM])
         ) {
             $enumSwitchIndex = $this->tokens->getPrevTokenOfKind($index, [[T_SWITCH], [T_ENUM]]);
 
@@ -712,7 +710,7 @@ final class TokensAnalyzer
             ));
         }
 
-        if (!\defined('T_ENUM') || !$tokens->isTokenKindFound(T_ENUM)) {
+        if (!$tokens->isTokenKindFound(FCT::T_ENUM)) {
             return false;
         }
 
