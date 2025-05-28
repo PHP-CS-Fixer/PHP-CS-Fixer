@@ -29,6 +29,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -253,7 +254,7 @@ function f9(string $foo, $bar, $baz) {}
                     CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
                     CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
                 ])
-                || (\defined('T_READONLY') && $token->isGivenKind(T_READONLY))
+                || $token->isGivenKind(FCT::T_READONLY)
             ) {
                 continue;
             }
