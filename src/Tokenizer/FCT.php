@@ -29,9 +29,9 @@ namespace PhpCsFixer\Tokenizer;
 final class FCT
 {
     // PHP 8.0+
-    public const T_ATTRIBUTE = \PHP_VERSION_ID >= 8_01_00 ? T_ATTRIBUTE : -801;
-    public const T_MATCH = \PHP_VERSION_ID >= 8_01_00 ? T_MATCH : -802;
-    public const T_NULLSAFE_OBJECT_OPERATOR = \PHP_VERSION_ID >= 8_01_00 ? T_NULLSAFE_OBJECT_OPERATOR : -803;
+    public const T_ATTRIBUTE = \PHP_VERSION_ID >= 8_00_00 ? T_ATTRIBUTE : -801;
+    public const T_MATCH = \PHP_VERSION_ID >= 8_00_00 ? T_MATCH : -802;
+    public const T_NULLSAFE_OBJECT_OPERATOR = \PHP_VERSION_ID >= 8_00_00 ? T_NULLSAFE_OBJECT_OPERATOR : -803;
 
     // PHP 8.1+
     public const T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG = \PHP_VERSION_ID >= 8_01_00 ? T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG : -811;
