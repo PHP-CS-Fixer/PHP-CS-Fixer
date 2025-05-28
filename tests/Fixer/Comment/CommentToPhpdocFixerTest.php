@@ -350,5 +350,54 @@ final class CommentToPhpdocFixerTest extends AbstractFixerTestCase
             '<?php /* header comment */ $foo = true; class Foo { /** @phpstan-use Bar<Baz> $bar */ use Bar; }',
             '<?php /* header comment */ $foo = true; class Foo { /* @phpstan-use Bar<Baz> $bar */ use Bar; }',
         ];
+
+        yield [
+            '<?php
+            $foo = new class extends Foo { // @phpstan-ignore method.internal
+                /** @foo */
+                public function m(): void {}
+            };
+',
+            '<?php
+            $foo = new class extends Foo { // @phpstan-ignore method.internal
+                // @foo
+                public function m(): void {}
+            };
+',
+        ];
+
+        yield [
+            '<?php
+            $foo = new class extends Foo { // @psalm-suppress all
+                /** @foo */
+                public function m(): void {}
+            };
+',
+            '<?php
+            $foo = new class extends Foo { // @psalm-suppress all
+                // @foo
+                public function m(): void {}
+            };
+',
+        ];
+
+        yield [
+            <<<'EOT'
+                <?php
+                $foo = new class extends Foo { /**
+                 * @phpstan-return void
+                 * @foo
+                 */
+                    public function m(): void {}
+                };
+                EOT,
+            <<<'EOT'
+                <?php
+                $foo = new class extends Foo { // @phpstan-return void
+                    // @foo
+                    public function m(): void {}
+                };
+                EOT,
+        ];
     }
 }

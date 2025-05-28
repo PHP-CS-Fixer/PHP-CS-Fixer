@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "433ec5d73f72e45be12dee1f1eb11b98",
+    "content-hash": "8cac39cae9ce2c02c95d326f6c746f2b",
     "packages": [
         {
             "name": "composer-unused/contracts",
@@ -883,16 +883,16 @@
         },
         {
             "name": "phpmd/phpmd",
-            "version": "2.15.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpmd/phpmd.git",
-                "reference": "74a1f56e33afad4128b886e334093e98e1b5e7c0"
+                "reference": "060224255325b81d1c7ff297f2d64d84b26b91b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpmd/phpmd/zipball/74a1f56e33afad4128b886e334093e98e1b5e7c0",
-                "reference": "74a1f56e33afad4128b886e334093e98e1b5e7c0"
+                "url": "https://api.github.com/repos/phpmd/phpmd/zipball/060224255325b81d1c7ff297f2d64d84b26b91b1",
+                "reference": "060224255325b81d1c7ff297f2d64d84b26b91b1"
             },
             "require": {
                 "composer/xdebug-handler": "^1.0 || ^2.0 || ^3.0",
@@ -1991,11 +1991,18 @@
             "version": "10.9999999.9999999.9999999-dev",
             "alias": "9.99.0",
             "alias_normalized": "9.99.0.0"
+        },
+        {
+            "package": "phpmd/phpmd",
+            "version": "9999999-dev",
+            "alias": "2.16.0",
+            "alias_normalized": "2.16.0.0"
         }
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "phpcompatibility/php-compatibility": 20
+        "phpcompatibility/php-compatibility": 20,
+        "phpmd/phpmd": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

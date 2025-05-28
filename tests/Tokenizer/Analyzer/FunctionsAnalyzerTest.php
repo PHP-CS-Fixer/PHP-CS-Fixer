@@ -40,7 +40,7 @@ final class FunctionsAnalyzerTest extends TestCase
         $analyzer = new FunctionsAnalyzer();
 
         $calculatedIndices = [];
-        foreach (array_keys($tokens->toArray()) as $index) {
+        foreach ($tokens as $index => $token) {
             if ($analyzer->isGlobalFunctionCall($tokens, $index)) {
                 $calculatedIndices[] = $index;
             }

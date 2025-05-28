@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Test;
 
+use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSet;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -27,7 +28,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     public function create(SplFileInfo $file): IntegrationCase
     {
         try {
-            if (!preg_match(
+            if (!Preg::match(
                 '/^
                             --TEST--           \r?\n(?<title>          .*?)
                        \s   --RULESET--        \r?\n(?<ruleset>        .*?)
