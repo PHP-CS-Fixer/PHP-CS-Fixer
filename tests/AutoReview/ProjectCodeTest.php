@@ -31,6 +31,7 @@ use PhpCsFixer\Tests\PregTest;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tests\Test\AbstractIntegrationTestCase;
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -483,6 +484,26 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider provideSrcClassCases
+     *
+     * @param class-string $className
+     */
+    public function testThereIsNoUsageOfDefined(string $className): void
+    {
+        if (FCT::class === $className) {
+            $this->expectNotToPerformAssertions();
+
+            return;
+        }
+
+        self::assertNotContains(
+            'defined',
+            $this->extractFunctionNamesCalledInClass($className),
+            \sprintf('Class %s must not use "defined()", use "%s" to use newly introduced Token kinds.', $className, FCT::class)
+        );
+    }
+
+    /**
+     * @dataProvider provideSrcClassCases
      * @dataProvider provideTestClassCases
      *
      * @param class-string $className
@@ -713,6 +734,12 @@ final class ProjectCodeTest extends TestCase
      */
     public function testAllCodeContainSingleClassy(string $className): void
     {
+        if (FCT::class === $className) {
+            $this->expectNotToPerformAssertions();
+
+            return;
+        }
+
         $headerTypes = [
             T_ABSTRACT,
             T_AS,
