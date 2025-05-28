@@ -25,6 +25,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -405,16 +406,13 @@ $foo = new class(){};
         for ($i = $endIndex; $i >= $startIndex; --$i) {
             if ($tokens[$i]->isWhitespace()) {
                 if (str_contains($tokens[$i]->getContent(), "\n")) {
-                    if (\defined('T_ATTRIBUTE')) { // @TODO: drop condition and else when PHP 8.0+ is required
-                        if ($tokens[$i - 1]->isGivenKind(CT::T_ATTRIBUTE_CLOSE) || $tokens[$i + 1]->isGivenKind(T_ATTRIBUTE)) {
-                            continue;
-                        }
-                    } else {
-                        if (($tokens[$i - 1]->isComment() && str_ends_with($tokens[$i - 1]->getContent(), ']'))
-                            || ($tokens[$i + 1]->isComment() && str_starts_with($tokens[$i + 1]->getContent(), '#['))
-                        ) {
-                            continue;
-                        }
+                    if ($tokens[$i - 1]->isGivenKind(CT::T_ATTRIBUTE_CLOSE) || $tokens[$i + 1]->isGivenKind(FCT::T_ATTRIBUTE)) {
+                        continue;
+                    }
+                    if (($tokens[$i - 1]->isComment() && str_ends_with($tokens[$i - 1]->getContent(), ']'))
+                        || ($tokens[$i + 1]->isComment() && str_starts_with($tokens[$i + 1]->getContent(), '#['))
+                    ) {
+                        continue;
                     }
 
                     if ($tokens[$i - 1]->isGivenKind(T_DOC_COMMENT) || $tokens[$i + 1]->isGivenKind(T_DOC_COMMENT)) {
