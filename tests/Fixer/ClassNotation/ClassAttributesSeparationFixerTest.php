@@ -78,8 +78,7 @@ public function Foo(){}
         ];
 
         yield 'comment' => [
-            '<?php class A {
-/* function comment */
+            '<?php class A {/* function comment */
 public function Bar(){}
 }',
             '<?php class A {/* function comment */public function Bar(){}
@@ -222,6 +221,36 @@ public function A(){}
                 public function H(){}
                 public function B7(){}
                 private function C(){}
+                };',
+        ];
+
+        yield [
+            '<?php class Foo extends X\Y { // @phpstan-ignore method.internal
+                // regular comment
+                };',
+        ];
+
+        yield [
+            '<?php class Foo extends X\Y { // @phpstan-ignore method.internal
+                public $p;
+                };',
+        ];
+
+        yield [
+            '<?php $a = new class extends X\Y { // @phpstan-ignore method.internal
+                public function m(){}
+                };',
+        ];
+
+        yield [
+            '<?php class Foo extends X\Y
+                {
+ // @phpstan-ignore method.internal
+                public $p;
+                };',
+            '<?php class Foo extends X\Y
+                { // @phpstan-ignore method.internal
+                public $p;
                 };',
         ];
 
@@ -2226,6 +2255,22 @@ enum Cards: string
                     public public(set) Bar $a;
                     public protected(set) Bar $b;
                     public private(set) Baz $c;
+                }
+                PHP,
+        ];
+
+        yield 'property hooks' => [
+            <<<'PHP'
+                <?php class Foo {
+                    private int $a { set(int $a) {} }
+
+                    private int $b { set(int $b) {} }
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo {
+                    private int $a { set(int $a) {} }
+                    private int $b { set(int $b) {} }
                 }
                 PHP,
         ];

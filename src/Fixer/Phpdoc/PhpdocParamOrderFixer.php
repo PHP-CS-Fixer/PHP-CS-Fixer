@@ -88,7 +88,7 @@ function m($a, array $b, Foo $c) {}
                 return;
             }
 
-            $doc = new DocBlock($tokens[$index]->getContent());
+            $doc = new DocBlock($token->getContent());
             $paramAnnotations = $doc->getAnnotationsOfType(self::PARAM_TAG);
 
             if ([] === $paramAnnotations) {

@@ -25,6 +25,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -51,6 +52,17 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *  single_line: bool,
  *  space_before_parenthesis: bool,
  * }
+ * @phpstan-type _ClassyDefinitionInfo array{
+ *      start: int,
+ *      classy: int,
+ *      open: int,
+ *      extends: false|_ClassExtendsInfo,
+ *      implements: false|_ClassImplementsInfo,
+ *      anonymousClass: bool,
+ *      final: false|int,
+ *      abstract: false|int,
+ *      readonly: false|int,
+ *  }
  */
 final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
@@ -206,9 +218,9 @@ $foo = new class(){};
 
         $classDefInfo['open'] = $this->fixClassyDefinitionOpenSpacing($tokens, $classDefInfo);
 
-        if ($classDefInfo['implements']) {
+        if (false !== $classDefInfo['implements']) {
             $end = $classDefInfo['implements']['start'];
-        } elseif ($classDefInfo['extends']) {
+        } elseif (false !== $classDefInfo['extends']) {
             $end = $classDefInfo['extends']['start'];
         } else {
             $end = $tokens->getPrevNonWhitespace($classDefInfo['open']);
@@ -279,17 +291,7 @@ $foo = new class(){};
     }
 
     /**
-     * @param array{
-     *      start: int,
-     *      classy: int,
-     *      open: int,
-     *      extends: false|_ClassExtendsInfo,
-     *      implements: false|_ClassImplementsInfo,
-     *      anonymousClass: bool,
-     *      final: false|int,
-     *      abstract: false|int,
-     *      readonly: false|int,
-     *  } $classDefInfo
+     * @param _ClassyDefinitionInfo $classDefInfo
      */
     private function fixClassyDefinitionOpenSpacing(Tokens $tokens, array $classDefInfo): int
     {
@@ -325,17 +327,7 @@ $foo = new class(){};
     }
 
     /**
-     * @return array{
-     *     start: int,
-     *     classy: int,
-     *     open: int,
-     *     extends: false|_ClassExtendsInfo,
-     *     implements: false|_ClassImplementsInfo,
-     *     anonymousClass: bool,
-     *     final: false|int,
-     *     abstract: false|int,
-     *     readonly: false|int,
-     * }
+     * @return _ClassyDefinitionInfo
      */
     private function getClassyDefinitionInfo(Tokens $tokens, int $classyIndex): array
     {
@@ -414,16 +406,13 @@ $foo = new class(){};
         for ($i = $endIndex; $i >= $startIndex; --$i) {
             if ($tokens[$i]->isWhitespace()) {
                 if (str_contains($tokens[$i]->getContent(), "\n")) {
-                    if (\defined('T_ATTRIBUTE')) { // @TODO: drop condition and else when PHP 8.0+ is required
-                        if ($tokens[$i - 1]->isGivenKind(CT::T_ATTRIBUTE_CLOSE) || $tokens[$i + 1]->isGivenKind(T_ATTRIBUTE)) {
-                            continue;
-                        }
-                    } else {
-                        if (($tokens[$i - 1]->isComment() && str_ends_with($tokens[$i - 1]->getContent(), ']'))
-                            || ($tokens[$i + 1]->isComment() && str_starts_with($tokens[$i + 1]->getContent(), '#['))
-                        ) {
-                            continue;
-                        }
+                    if ($tokens[$i - 1]->isGivenKind(CT::T_ATTRIBUTE_CLOSE) || $tokens[$i + 1]->isGivenKind(FCT::T_ATTRIBUTE)) {
+                        continue;
+                    }
+                    if (($tokens[$i - 1]->isComment() && str_ends_with($tokens[$i - 1]->getContent(), ']'))
+                        || ($tokens[$i + 1]->isComment() && str_starts_with($tokens[$i + 1]->getContent(), '#['))
+                    ) {
+                        continue;
                     }
 
                     if ($tokens[$i - 1]->isGivenKind(T_DOC_COMMENT) || $tokens[$i + 1]->isGivenKind(T_DOC_COMMENT)) {

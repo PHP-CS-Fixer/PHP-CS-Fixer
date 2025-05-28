@@ -27,6 +27,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -71,6 +72,12 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
             'Document',
             'ODM\Document',
         ],
+    ];
+    private const CLASS_CANDIDATE_ACCEPT_TYPES = [
+        CT::T_ATTRIBUTE_CLOSE,
+        T_DOC_COMMENT,
+        T_COMMENT, // Skip comments
+        FCT::T_READONLY,
     ];
 
     private bool $checkAttributes;
@@ -233,21 +240,10 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         $decisions = [];
         $currentIndex = $index;
 
-        $acceptTypes = [
-            CT::T_ATTRIBUTE_CLOSE,
-            T_DOC_COMMENT,
-            T_COMMENT, // Skip comments
-        ];
-
-        if (\defined('T_READONLY')) {
-            // Skip readonly classes for PHP 8.2+
-            $acceptTypes[] = T_READONLY;
-        }
-
         while (null !== $currentIndex) {
             $currentIndex = $tokens->getPrevNonWhitespace($currentIndex);
 
-            if (!$tokens[$currentIndex]->isGivenKind($acceptTypes)) {
+            if (!$tokens[$currentIndex]->isGivenKind(self::CLASS_CANDIDATE_ACCEPT_TYPES)) {
                 break;
             }
 

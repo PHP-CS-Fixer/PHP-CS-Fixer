@@ -20,6 +20,7 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -38,6 +39,9 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
+    private const CLASS_MODIFIERS = [T_ABSTRACT, T_FINAL, FCT::T_READONLY];
+    private const MODIFIER_KINDS = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_NS_SEPARATOR, T_STRING, CT::T_NULLABLE_TYPE, FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET];
+
     /**
      * @var array<int, array{classIndex: int, token: Token, type: string}>
      */
@@ -198,37 +202,19 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
 
     private function nextElementAcceptsDoctrineAnnotations(Tokens $tokens, int $index): bool
     {
-        $classModifiers = [T_ABSTRACT, T_FINAL];
-
-        if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.2+ is required
-            $classModifiers[] = T_READONLY;
-        }
-
         do {
             $index = $tokens->getNextMeaningfulToken($index);
 
             if (null === $index) {
                 return false;
             }
-        } while ($tokens[$index]->isGivenKind($classModifiers));
+        } while ($tokens[$index]->isGivenKind(self::CLASS_MODIFIERS));
 
         if ($tokens[$index]->isGivenKind(T_CLASS)) {
             return true;
         }
 
-        $modifierKinds = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_NS_SEPARATOR, T_STRING, CT::T_NULLABLE_TYPE];
-
-        if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
-            $modifierKinds[] = T_READONLY;
-        }
-
-        if (\defined('T_PRIVATE_SET')) { // @TODO: drop condition when PHP 8.4+ is required
-            $modifierKinds[] = T_PRIVATE_SET;
-            $modifierKinds[] = T_PROTECTED_SET;
-            $modifierKinds[] = T_PUBLIC_SET;
-        }
-
-        while ($tokens[$index]->isGivenKind($modifierKinds)) {
+        while ($tokens[$index]->isGivenKind(self::MODIFIER_KINDS)) {
             $index = $tokens->getNextMeaningfulToken($index);
         }
 

@@ -25,6 +25,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\DataProviderAnalyzer;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -178,7 +179,7 @@ class FooTest extends TestCase {
     private function getDataProviderNameForUsageIndex(Tokens $tokens, int $index): string
     {
         do {
-            if (\defined('T_ATTRIBUTE') && $tokens[$index]->isGivenKind(T_ATTRIBUTE)) {
+            if ($tokens[$index]->isGivenKind(FCT::T_ATTRIBUTE)) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
             }
             $index = $tokens->getNextMeaningfulToken($index);

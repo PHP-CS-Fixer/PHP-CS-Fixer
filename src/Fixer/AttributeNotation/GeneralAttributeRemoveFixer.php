@@ -25,6 +25,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -80,7 +81,7 @@ function foo() {}
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return \defined('T_ATTRIBUTE') && $tokens->isTokenKindFound(T_ATTRIBUTE);
+        return $tokens->isTokenKindFound(FCT::T_ATTRIBUTE);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void

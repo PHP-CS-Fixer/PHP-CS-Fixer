@@ -246,7 +246,7 @@ final class FixerFactoryTest extends TestCase
                 if (\count($others) > 0) {
                     $shortClassNames = [];
 
-                    foreach (array_keys($others) as $other) {
+                    foreach ($others as $other => $true) {
                         $shortClassNames[$other] = $fixers[$other]['short_classname'];
                     }
 
@@ -317,7 +317,7 @@ final class FixerFactoryTest extends TestCase
             }
         }
 
-        foreach (array_keys($knownIssues) as $knownIssue) {
+        foreach ($knownIssues as $knownIssue => $true) {
             if (isset($missing[$knownIssue])) {
                 unset($missing[$knownIssue]);
             } else {
