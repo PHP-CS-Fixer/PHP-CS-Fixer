@@ -51,7 +51,7 @@ final class WorkerCommandTest extends TestCase
         self::expectException(ParallelisationException::class);
         self::expectExceptionMessage('Missing parallelisation options');
 
-        $commandTester = $this->doTestExecute(['--port' => 12_345]);
+        $this->doTestExecute(['--port' => 12_345]);
     }
 
     public function testMissingPortCausesFailure(): void
@@ -59,7 +59,7 @@ final class WorkerCommandTest extends TestCase
         self::expectException(ParallelisationException::class);
         self::expectExceptionMessage('Missing parallelisation options');
 
-        $commandTester = $this->doTestExecute(['--identifier' => ProcessIdentifier::create()->toString()]);
+        $this->doTestExecute(['--identifier' => ProcessIdentifier::create()->toString()]);
     }
 
     public function testWorkerCantConnectToServerWhenExecutedDirectly(): void
@@ -117,9 +117,8 @@ final class WorkerCommandTest extends TestCase
         $server->on(
             'connection',
             static function (ConnectionInterface $connection) use (&$workerScope): void {
-                $jsonInvalidUtf8Ignore = \defined('JSON_INVALID_UTF8_IGNORE') ? JSON_INVALID_UTF8_IGNORE : 0;
-                $decoder = new Decoder($connection, true, 512, $jsonInvalidUtf8Ignore);
-                $encoder = new Encoder($connection, $jsonInvalidUtf8Ignore);
+                $decoder = new Decoder($connection, true, 512, JSON_INVALID_UTF8_IGNORE);
+                $encoder = new Encoder($connection, JSON_INVALID_UTF8_IGNORE);
 
                 $decoder->on(
                     'data',
