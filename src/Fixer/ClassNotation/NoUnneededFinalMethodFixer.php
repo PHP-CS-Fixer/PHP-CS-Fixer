@@ -23,6 +23,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -90,11 +91,7 @@ class Bar
             return false;
         }
 
-        if (\defined('T_ENUM') && $tokens->isTokenKindFound(T_ENUM)) { // @TODO: drop condition when PHP 8.1+ is required
-            return true;
-        }
-
-        return $tokens->isTokenKindFound(T_CLASS);
+        return $tokens->isAnyTokenKindsFound([T_CLASS, FCT::T_ENUM]);
     }
 
     public function isRisky(): bool
@@ -159,7 +156,7 @@ class Bar
             $classIndex = $element['classIndex'];
 
             if (!\array_key_exists($classIndex, $enums)) {
-                $enums[$classIndex] = \defined('T_ENUM') && $tokens[$classIndex]->isGivenKind(T_ENUM); // @TODO: drop condition when PHP 8.1+ is required
+                $enums[$classIndex] = $tokens[$classIndex]->isGivenKind(FCT::T_ENUM);
             }
 
             $element['method_final_index'] = null;

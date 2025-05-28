@@ -33,7 +33,7 @@ final class AttributeAnalyzerTest extends TestCase
     public function testNotAnAttribute(): void
     {
         $tokens = Tokens::fromCode('<?php class Foo { private $bar; }');
-        foreach ($tokens as $index => $token) {
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             self::assertFalse(AttributeAnalyzer::isAttribute($tokens, $index));
         }
     }

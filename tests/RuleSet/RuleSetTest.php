@@ -112,9 +112,11 @@ final class RuleSetTest extends TestCase
     }
 
     /**
+     * @param array<string, mixed>|true $ruleConfig
+     *
      * @dataProvider provideAllRulesFromSetsCases
      */
-    public function testThatThereIsNoDeprecatedFixerInRuleSet(string $setName, string $ruleName): void
+    public function testThatThereIsNoDeprecatedFixerInRuleSet(string $setName, string $ruleName, $ruleConfig): void
     {
         $fixer = TestCaseUtils::getFixerByName($ruleName);
 

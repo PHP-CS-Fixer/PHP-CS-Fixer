@@ -222,15 +222,14 @@ final class Runner
 
         // [REACT] Handle worker's handshake (init connection)
         $server->on('connection', static function (ConnectionInterface $connection) use ($processPool, $getFileChunk): void {
-            $jsonInvalidUtf8Ignore = \defined('JSON_INVALID_UTF8_IGNORE') ? JSON_INVALID_UTF8_IGNORE : 0;
             $decoder = new Decoder(
                 $connection,
                 true,
                 512,
-                $jsonInvalidUtf8Ignore,
+                JSON_INVALID_UTF8_IGNORE,
                 self::PARALLEL_BUFFER_SIZE
             );
-            $encoder = new Encoder($connection, $jsonInvalidUtf8Ignore);
+            $encoder = new Encoder($connection, JSON_INVALID_UTF8_IGNORE);
 
             // [REACT] Bind connection when worker's process requests "hello" action (enables 2-way communication)
             $decoder->on('data', static function (array $data) use ($processPool, $getFileChunk, $decoder, $encoder): void {

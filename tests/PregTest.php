@@ -31,7 +31,7 @@ final class PregTest extends TestCase
         $this->expectException(PregException::class);
         $this->expectExceptionMessage('Preg::match(): Invalid PCRE pattern ""');
 
-        Preg::match('', 'foo', $matches);
+        Preg::match('', 'foo');
     }
 
     /**
@@ -162,7 +162,7 @@ final class PregTest extends TestCase
         $this->expectException(PregException::class);
         $this->expectExceptionMessage('Preg::matchAll(): Invalid PCRE pattern ""');
 
-        Preg::matchAll('', 'foo', $matches);
+        Preg::matchAll('', 'foo');
     }
 
     /**

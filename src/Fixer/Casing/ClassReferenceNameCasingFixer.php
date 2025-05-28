@@ -21,11 +21,28 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 final class ClassReferenceNameCasingFixer extends AbstractFixer
 {
+    private const NOT_BEFORE_KINDS = [
+        CT::T_USE_TRAIT,
+        T_AS,
+        T_CASE, // PHP 8.1 trait enum-case
+        T_CLASS,
+        T_CONST,
+        T_DOUBLE_ARROW,
+        T_DOUBLE_COLON,
+        T_FUNCTION,
+        T_INTERFACE,
+        T_OBJECT_OPERATOR,
+        T_TRAIT,
+        FCT::T_NULLSAFE_OBJECT_OPERATOR,
+        FCT::T_ENUM,
+    ];
+
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -66,32 +83,7 @@ final class ClassReferenceNameCasingFixer extends AbstractFixer
 
     private function getClassReference(Tokens $tokens, NamespaceAnalysis $namespace): \Generator
     {
-        static $notBeforeKinds;
         static $blockKinds;
-
-        if (null === $notBeforeKinds) {
-            $notBeforeKinds = [
-                CT::T_USE_TRAIT,
-                T_AS,
-                T_CASE, // PHP 8.1 trait enum-case
-                T_CLASS,
-                T_CONST,
-                T_DOUBLE_ARROW,
-                T_DOUBLE_COLON,
-                T_FUNCTION,
-                T_INTERFACE,
-                T_OBJECT_OPERATOR,
-                T_TRAIT,
-            ];
-
-            if (\defined('T_NULLSAFE_OBJECT_OPERATOR')) {  // @TODO: drop condition when PHP 8.0+ is required
-                $notBeforeKinds[] = T_NULLSAFE_OBJECT_OPERATOR;
-            }
-
-            if (\defined('T_ENUM')) { // @TODO: drop condition when PHP 8.1+ is required
-                $notBeforeKinds[] = T_ENUM;
-            }
-        }
 
         if (null === $blockKinds) {
             $blockKinds = ['before' => [','], 'after' => [',']];
@@ -130,7 +122,7 @@ final class ClassReferenceNameCasingFixer extends AbstractFixer
                 if ($tokens[$prevIndex]->isGivenKind(T_STRING)) {
                     continue;
                 }
-            } elseif ($tokens[$prevIndex]->isGivenKind($notBeforeKinds)) {
+            } elseif ($tokens[$prevIndex]->isGivenKind(self::NOT_BEFORE_KINDS)) {
                 continue;
             }
 

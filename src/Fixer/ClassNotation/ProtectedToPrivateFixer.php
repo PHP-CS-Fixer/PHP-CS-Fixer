@@ -19,6 +19,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -28,6 +29,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class ProtectedToPrivateFixer extends AbstractFixer
 {
+    private const MODIFIER_KINDS = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_NS_SEPARATOR, T_STRING, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, T_STATIC, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET];
     private TokensAnalyzer $tokensAnalyzer;
 
     public function getDefinition(): FixerDefinitionInterface
@@ -54,7 +56,7 @@ final class Sample
     /**
      * {@inheritdoc}
      *
-     * Must run before OrderedClassElementsFixer.
+     * Must run before OrderedClassElementsFixer, StaticPrivateMethodFixer.
      * Must run after FinalClassFixer, FinalInternalClassFixer.
      */
     public function getPriority(): int
@@ -64,27 +66,16 @@ final class Sample
 
     public function isCandidate(Tokens $tokens): bool
     {
-        if (\defined('T_ENUM') && $tokens->isAllTokenKindsFound([T_ENUM, T_PROTECTED])) { // @TODO: drop condition when PHP 8.1+ is required
-            return true;
-        }
-
-        return $tokens->isAllTokenKindsFound([T_CLASS, T_FINAL, T_PROTECTED]);
+        return $tokens->isTokenKindFound(T_PROTECTED)
+            && (
+                $tokens->isAllTokenKindsFound([T_CLASS, T_FINAL])
+                || $tokens->isTokenKindFound(FCT::T_ENUM)
+            );
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $this->tokensAnalyzer = new TokensAnalyzer($tokens);
-        $modifierKinds = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_NS_SEPARATOR, T_STRING, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, T_STATIC, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION];
-
-        if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
-            $modifierKinds[] = T_READONLY;
-        }
-
-        if (\defined('T_PRIVATE_SET')) { // @TODO: drop condition when PHP 8.4+ is required
-            $modifierKinds[] = T_PRIVATE_SET;
-            $modifierKinds[] = T_PROTECTED_SET;
-            $modifierKinds[] = T_PUBLIC_SET;
-        }
 
         $classesCandidate = [];
         $classElementTypes = ['method' => true, 'property' => true, 'const' => true];
@@ -112,12 +103,12 @@ final class Sample
 
                 if ($tokens[$previousIndex]->isGivenKind(T_PROTECTED)) {
                     $protectedIndex = $previousIndex;
-                } elseif (\defined('T_PROTECTED_SET') && $tokens[$previousIndex]->isGivenKind(T_PROTECTED_SET)) { // @TODO: drop condition when PHP 8.4+ is required
+                } elseif ($tokens[$previousIndex]->isGivenKind(FCT::T_PROTECTED_SET)) {
                     $protectedSetIndex = $previousIndex;
                 } elseif ($tokens[$previousIndex]->isGivenKind(T_FINAL) && 'const' === $element['type']) {
                     $isFinal = true;
                 }
-            } while ($tokens[$previousIndex]->isGivenKind($modifierKinds));
+            } while ($tokens[$previousIndex]->isGivenKind(self::MODIFIER_KINDS));
 
             if ($isFinal && 'const' === $element['type']) {
                 continue; // Final constants cannot be private
@@ -143,7 +134,7 @@ final class Sample
      */
     private function isClassCandidate(Tokens $tokens, int $classIndex): bool
     {
-        if (\defined('T_ENUM') && $tokens[$classIndex]->isGivenKind(T_ENUM)) { // @TODO: drop condition when PHP 8.1+ is required
+        if ($tokens[$classIndex]->isGivenKind(FCT::T_ENUM)) {
             return true;
         }
 

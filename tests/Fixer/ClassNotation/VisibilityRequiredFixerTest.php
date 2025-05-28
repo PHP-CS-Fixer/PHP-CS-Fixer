@@ -825,6 +825,12 @@ var_dump(Foo::CAT->test());',
 
                     final protected int $beep;
 
+                    final public private(set) int $counter1;
+
+                    public protected(set) int $counter2;
+
+                    public public(set) int $counter3;
+
                     final public static function bar() {}
 
                     abstract protected function zim();
@@ -839,6 +845,12 @@ var_dump(Foo::CAT->test());',
                     readonly final protected string $foo;
 
                     protected final int $beep;
+
+                    final public private(set) int $counter1;
+
+                    public protected(set) int $counter2;
+
+                    public public(set) int $counter3;
 
                     static public final function bar() {}
 

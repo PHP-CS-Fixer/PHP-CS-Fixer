@@ -1,0 +1,26 @@
+--TEST--
+PHPStan comment after anonymous class opening brace must stay on the same line.
+--RULESET--
+{"@PhpCsFixer": true, "@PhpCsFixer:risky": true}
+--EXPECT--
+<?php
+
+use Ns\Foo;
+
+$a = new class extends Foo { // @phpstan-ignore method.internal
+};
+
+$b = new class extends Foo { // @phpstan-ignore method.internal
+    public function m(): void {}
+};
+
+--INPUT--
+<?php
+
+$a = new class() extends Ns\Foo { // @phpstan-ignore method.internal
+};
+
+$b = new class() extends Ns\Foo { // @phpstan-ignore method.internal
+public function m(): void {
+}
+};
