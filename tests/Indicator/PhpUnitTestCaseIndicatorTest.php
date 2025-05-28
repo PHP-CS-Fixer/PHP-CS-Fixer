@@ -234,5 +234,15 @@ class Foo extends A implements TestInterface, SomethingElse
                 }
             ',
         ];
+
+        yield 'anonymous class extending TestCase' => [
+            [
+                [17, 18],
+            ],
+            <<<'PHP'
+                <?php
+                $myTest = new class () extends \PHPUnit_Framework_TestCase {};
+                PHP,
+        ];
     }
 }
