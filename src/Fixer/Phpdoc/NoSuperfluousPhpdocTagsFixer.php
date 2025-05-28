@@ -31,6 +31,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -71,6 +72,20 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
     private const NO_TYPE_INFO = [
         'types' => [],
         'allows_null' => true,
+    ];
+    private const SYMBOL_KINDS = [T_CLASS, T_INTERFACE, FCT::T_ENUM];
+
+    private const MODIFIER_KINDS = [
+        T_PRIVATE,
+        T_PROTECTED,
+        T_PUBLIC,
+        T_ABSTRACT,
+        T_FINAL,
+        T_STATIC,
+        FCT::T_READONLY,
+        FCT::T_PRIVATE_SET,
+        FCT::T_PROTECTED_SET,
+        FCT::T_PUBLIC_SET,
     ];
 
     public function getDefinition(): FixerDefinitionInterface
@@ -175,11 +190,6 @@ class Foo {
             $shortNames[strtolower($namespaceUseAnalysis->getShortName())] = strtolower($namespaceUseAnalysis->getFullName());
         }
 
-        $symbolKinds = [T_CLASS, T_INTERFACE];
-        if (\defined('T_ENUM')) { // @TODO drop the condition when requiring PHP 8.1+
-            $symbolKinds[] = T_ENUM;
-        }
-
         foreach ($tokens as $index => $token) {
             if ($index === $currentSymbolEndIndex) {
                 $currentSymbol = null;
@@ -192,7 +202,7 @@ class Foo {
                 continue;
             }
 
-            if ($token->isGivenKind($symbolKinds)) {
+            if ($token->isGivenKind(self::SYMBOL_KINDS)) {
                 $currentSymbol = $tokens[$tokens->getNextMeaningfulToken($index)]->getContent();
                 $currentSymbolEndIndex = $tokens->findBlockEnd(
                     Tokens::BLOCK_TYPE_CURLY_BRACE,
@@ -270,15 +280,6 @@ class Foo {
      */
     private function findDocumentedElement(Tokens $tokens, int $docCommentIndex): ?array
     {
-        $modifierKinds = [
-            T_PRIVATE,
-            T_PROTECTED,
-            T_PUBLIC,
-            T_ABSTRACT,
-            T_FINAL,
-            T_STATIC,
-        ];
-
         $typeKinds = [
             CT::T_NULLABLE_TYPE,
             CT::T_ARRAY_TYPEHINT,
@@ -288,14 +289,6 @@ class Foo {
             T_NS_SEPARATOR,
         ];
 
-        if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
-            $modifierKinds[] = T_READONLY;
-        }
-
-        if (\defined('T_PRIVATE_SET')) { // @TODO: drop condition when PHP 8.4+ is required
-            array_push($modifierKinds, T_PRIVATE_SET, T_PROTECTED_SET, T_PUBLIC_SET);
-        }
-
         $element = [
             'modifiers' => [],
             'types' => [],
@@ -303,8 +296,7 @@ class Foo {
 
         $index = $tokens->getNextMeaningfulToken($docCommentIndex);
 
-        // @TODO: drop condition when PHP 8.0+ is required
-        if (null !== $index && \defined('T_ATTRIBUTE') && $tokens[$index]->isGivenKind(T_ATTRIBUTE)) {
+        if (null !== $index && $tokens[$index]->isGivenKind(FCT::T_ATTRIBUTE)) {
             do {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
                 $index = $tokens->getNextMeaningfulToken($index);
@@ -337,7 +329,7 @@ class Foo {
                 return $element;
             }
 
-            if ($tokens[$index]->isGivenKind($modifierKinds)) {
+            if ($tokens[$index]->isGivenKind(self::MODIFIER_KINDS)) {
                 $element['modifiers'][$index] = $tokens[$index];
             } elseif ($tokens[$index]->isGivenKind($typeKinds)) {
                 $element['types'][$index] = $tokens[$index];
@@ -526,7 +518,7 @@ class Foo {
         while (true) {
             $type = '';
 
-            if (\defined('T_READONLY') && $tokens[$index]->isGivenKind(T_READONLY)) { // @TODO: simplify condition when PHP 8.1+ is required
+            if ($tokens[$index]->isGivenKind(FCT::T_READONLY)) {
                 $index = $tokens->getNextMeaningfulToken($index);
             }
 

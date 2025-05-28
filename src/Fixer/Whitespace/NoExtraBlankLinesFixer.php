@@ -28,6 +28,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\SwitchAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -388,12 +389,10 @@ switch($a) {
 
     private function fixAfterCaseToken(int $index): void
     {
-        if (\defined('T_ENUM')) { // @TODO: drop condition when PHP 8.1+ is required
-            $enumSwitchIndex = $this->tokens->getPrevTokenOfKind($index, [[T_SWITCH], [T_ENUM]]);
+        $enumSwitchIndex = $this->tokens->getPrevTokenOfKind($index, [[T_SWITCH], [FCT::T_ENUM]]);
 
-            if (!$this->tokens[$enumSwitchIndex]->isGivenKind(T_SWITCH)) {
-                return;
-            }
+        if (!$this->tokens[$enumSwitchIndex]->isGivenKind(T_SWITCH)) {
+            return;
         }
 
         $this->removeEmptyLinesAfterLineWithTokenAt($index);

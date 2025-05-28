@@ -24,6 +24,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -60,7 +61,7 @@ final class AttributeEmptyParenthesesFixer extends AbstractFixer implements Conf
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return \defined('T_ATTRIBUTE') && $tokens->isTokenKindFound(T_ATTRIBUTE);
+        return $tokens->isTokenKindFound(FCT::T_ATTRIBUTE);
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
