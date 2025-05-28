@@ -29,6 +29,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\FullyQualifiedNameAnalyzer;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\OptionsResolver\Options;
@@ -122,7 +123,7 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return \defined('T_ATTRIBUTE') && $tokens->isTokenKindFound(T_ATTRIBUTE);
+        return $tokens->isTokenKindFound(FCT::T_ATTRIBUTE);
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
