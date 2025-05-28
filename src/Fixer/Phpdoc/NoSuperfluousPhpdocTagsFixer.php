@@ -518,11 +518,7 @@ class Foo {
         while (true) {
             $type = '';
 
-            if ($tokens[$index]->isGivenKind(FCT::T_READONLY)) {
-                $index = $tokens->getNextMeaningfulToken($index);
-            }
-
-            if (\defined('T_PRIVATE_SET') && $tokens[$index]->isGivenKind([T_PRIVATE_SET, T_PROTECTED_SET, T_PUBLIC_SET])) { // @TODO: drop condition when PHP 8.4+ is required
+            if ($tokens[$index]->isGivenKind([FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET])) {
                 $index = $tokens->getNextMeaningfulToken($index);
             }
 
