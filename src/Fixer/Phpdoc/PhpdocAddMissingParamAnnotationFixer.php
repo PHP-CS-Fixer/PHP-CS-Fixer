@@ -29,6 +29,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -252,9 +253,11 @@ function f9(string $foo, $bar, $baz) {}
                     CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE,
                     CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
                     CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
+                    FCT::T_READONLY,
+                    FCT::T_PRIVATE_SET,
+                    FCT::T_PROTECTED_SET,
+                    FCT::T_PUBLIC_SET,
                 ])
-                || (\defined('T_READONLY') && $token->isGivenKind(T_READONLY)) // @TODO: simplify condition when PHP 8.1+ is required
-                || (\defined('T_PRIVATE_SET') && $token->isGivenKind([T_PRIVATE_SET, T_PROTECTED_SET, T_PUBLIC_SET])) // @TODO: simplify condition when PHP 8.4+ is required
             ) {
                 continue;
             }

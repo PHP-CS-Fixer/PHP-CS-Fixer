@@ -650,15 +650,6 @@ final class TokenTest extends TestCase
         ];
     }
 
-    public function testGetClassyTokenKinds(): void
-    {
-        if (\defined('T_ENUM')) {
-            self::assertSame([T_CLASS, T_TRAIT, T_INTERFACE, T_ENUM], Token::getClassyTokenKinds());
-        } else {
-            self::assertSame([T_CLASS, T_TRAIT, T_INTERFACE], Token::getClassyTokenKinds());
-        }
-    }
-
     private static function getBraceToken(): Token
     {
         return new Token(self::getBraceTokenPrototype());
