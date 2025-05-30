@@ -574,4 +574,48 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
             }',
         ];
     }
+
+    /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->testFix($expected, $input, ['only_untyped' => false]);
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield 'asymmetric visibility' => [
+            <<<'PHP'
+                <?php class Foo {
+                    /**
+                     * @param bool $a
+                     * @param bool $b
+                     * @param bool $c
+                     */
+                    public function __construct(
+                        public public(set) bool $a,
+                        public protected(set) bool $b,
+                        public private(set) bool $c,
+                    ) {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo {
+                    /**
+                     */
+                    public function __construct(
+                        public public(set) bool $a,
+                        public protected(set) bool $b,
+                        public private(set) bool $c,
+                    ) {}
+                }
+                PHP,
+        ];
+    }
 }
