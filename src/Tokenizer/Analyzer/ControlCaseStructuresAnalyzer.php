@@ -20,10 +20,17 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\DefaultAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\EnumAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\MatchAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 final class ControlCaseStructuresAnalyzer
 {
+    private const SUPPORTED_TYPES_WITH_CASE_OR_DEFAULT = [
+        T_SWITCH,
+        FCT::T_MATCH,
+        FCT::T_ENUM,
+    ];
+
     /**
      * @param list<int> $types Token types of interest of which analyzes must be returned
      *
@@ -35,10 +42,8 @@ final class ControlCaseStructuresAnalyzer
             return; // quick skip
         }
 
-        $typesWithCaseOrDefault = self::getTypesWithCaseOrDefault();
-
         foreach ($types as $type) {
-            if (!\in_array($type, $typesWithCaseOrDefault, true)) {
+            if (!\in_array($type, self::SUPPORTED_TYPES_WITH_CASE_OR_DEFAULT, true)) {
                 throw new \InvalidArgumentException(\sprintf('Unexpected type "%d".', $type));
             }
         }
@@ -63,7 +68,7 @@ final class ControlCaseStructuresAnalyzer
         $isTypeOfInterest = false;
 
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind($typesWithCaseOrDefault)) {
+            if ($token->isGivenKind(self::SUPPORTED_TYPES_WITH_CASE_OR_DEFAULT)) {
                 ++$depth;
 
                 $stack[$depth] = [
@@ -83,12 +88,12 @@ final class ControlCaseStructuresAnalyzer
 
                     $stack[$depth]['open'] = $tokens->getNextMeaningfulToken($index);
                     $stack[$depth]['alternative_syntax'] = $tokens[$stack[$depth]['open']]->equals(':');
-                } elseif (\defined('T_MATCH') && $token->isGivenKind(T_MATCH)) { // @TODO: drop condition when PHP 8.0+ is required
+                } elseif ($token->isGivenKind(FCT::T_MATCH)) {
                     $index = $tokens->getNextMeaningfulToken($index);
                     $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
                     $stack[$depth]['open'] = $tokens->getNextMeaningfulToken($index);
-                } elseif (\defined('T_ENUM') && $token->isGivenKind(T_ENUM)) {
+                } elseif ($token->isGivenKind(FCT::T_ENUM)) {
                     $stack[$depth]['open'] = $tokens->getNextTokenOfKind($index, ['{']);
                 }
 
@@ -217,7 +222,7 @@ final class ControlCaseStructuresAnalyzer
             );
         }
 
-        if (\defined('T_ENUM') && T_ENUM === $analysis['kind']) {
+        if (FCT::T_ENUM === $analysis['kind']) {
             return new EnumAnalysis(
                 $analysis['index'],
                 $analysis['open'],
@@ -226,7 +231,7 @@ final class ControlCaseStructuresAnalyzer
             );
         }
 
-        if (\defined('T_MATCH') && T_MATCH === $analysis['kind']) { // @TODO: drop condition when PHP 8.0+ is required
+        if (FCT::T_MATCH === $analysis['kind']) {
             return new MatchAnalysis(
                 $analysis['index'],
                 $analysis['open'],
@@ -272,7 +277,7 @@ final class ControlCaseStructuresAnalyzer
             return $index;
         }
 
-        if (\defined('T_ENUM') && T_ENUM === $kind) {
+        if (FCT::T_ENUM === $kind) {
             return $tokens->getNextTokenOfKind($index, ['=', ';']);
         }
 
@@ -285,28 +290,10 @@ final class ControlCaseStructuresAnalyzer
             return $tokens->getNextTokenOfKind($index, [':', ';']);
         }
 
-        if (\defined('T_MATCH') && T_MATCH === $kind) { // @TODO: drop condition when PHP 8.0+ is required
+        if (FCT::T_MATCH === $kind) {
             return $tokens->getNextTokenOfKind($index, [[T_DOUBLE_ARROW]]);
         }
 
         throw new \InvalidArgumentException(\sprintf('Unexpected default for type "%d".', $kind));
-    }
-
-    /**
-     * @return list<int>
-     */
-    private static function getTypesWithCaseOrDefault(): array
-    {
-        $supportedTypes = [T_SWITCH];
-
-        if (\defined('T_MATCH')) { // @TODO: drop condition when PHP 8.0+ is required
-            $supportedTypes[] = T_MATCH;
-        }
-
-        if (\defined('T_ENUM')) { // @TODO: drop condition when PHP 8.1+ is required
-            $supportedTypes[] = T_ENUM;
-        }
-
-        return $supportedTypes;
     }
 }

@@ -31,6 +31,7 @@ use PhpCsFixer\Tests\PregTest;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tests\Test\AbstractIntegrationTestCase;
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -479,6 +480,20 @@ final class ProjectCodeTest extends TestCase
                 \sprintf('Unexpected @covers "%s" for "%s".', $classMatch, $testClassName)
             );
         }
+    }
+
+    /**
+     * @dataProvider provideSrcClassCases
+     *
+     * @param class-string $className
+     */
+    public function testThereIsNoUsageOfDefined(string $className): void
+    {
+        self::assertNotContains(
+            'defined',
+            $this->extractFunctionNamesCalledInClass($className),
+            \sprintf('Class %s must not use "defined()", use "%s" to use newly introduced Token kinds.', $className, FCT::class)
+        );
     }
 
     /**

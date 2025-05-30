@@ -24,6 +24,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
@@ -386,7 +387,7 @@ Custom values:
                     continue;
                 }
 
-                if (\defined('T_READONLY') && $token->isGivenKind(T_READONLY)) { // @TODO: drop condition when PHP 8.1+ is required
+                if ($token->isGivenKind(FCT::T_READONLY)) {
                     $element['readonly'] = true;
                 }
 

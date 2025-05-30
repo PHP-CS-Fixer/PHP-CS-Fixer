@@ -28,6 +28,7 @@ use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -72,6 +73,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
     public const SPACING_ONE = 'one';
 
     private const SPACING_ONLY_IF_META = 'only_if_meta';
+    private const MODIFIER_TYPES = [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_ABSTRACT, T_FINAL, T_STATIC, T_STRING, T_NS_SEPARATOR, T_VAR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE, FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET];
 
     /**
      * @var array<string, string>
@@ -522,24 +524,12 @@ class Sample
      */
     private function getFirstTokenIndexOfClassElement(Tokens $tokens, array $class, array $element): int
     {
-        $modifierTypes = [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_ABSTRACT, T_FINAL, T_STATIC, T_STRING, T_NS_SEPARATOR, T_VAR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE];
-
-        if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
-            $modifierTypes[] = T_READONLY;
-        }
-
-        if (\defined('T_PRIVATE_SET')) { // @TODO: drop condition when PHP 8.4+ is required
-            $modifierTypes[] = T_PRIVATE_SET;
-            $modifierTypes[] = T_PROTECTED_SET;
-            $modifierTypes[] = T_PUBLIC_SET;
-        }
-
         $firstElementAttributeIndex = $element['index'];
 
         do {
             $nonWhiteAbove = $tokens->getPrevMeaningfulToken($firstElementAttributeIndex);
 
-            if (null !== $nonWhiteAbove && $tokens[$nonWhiteAbove]->isGivenKind($modifierTypes)) {
+            if (null !== $nonWhiteAbove && $tokens[$nonWhiteAbove]->isGivenKind(self::MODIFIER_TYPES)) {
                 $firstElementAttributeIndex = $nonWhiteAbove;
             } else {
                 break;
