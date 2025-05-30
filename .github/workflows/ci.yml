@@ -205,10 +205,6 @@ jobs:
           PHP_CS_FIXER_FUTURE_MODE: 1
         run: php php-cs-fixer fix --diff --config .php-cs-fixer.php-highest.php
 
-      - name: Custom PHPUnit config for code coverage
-        if: matrix.collect-code-coverage == 'yes' || matrix.run-mutation-tests
-        run: sed -e 's/enforceTimeLimit="true"/enforceTimeLimit="false"/g' -e 's/coverage/source/g' phpunit.xml.dist > phpunit.xml
-
       - name: Disable time limit for tests under Windows # due to https://github.com/sebastianbergmann/phpunit/issues/5589
         if: matrix.operating-system == 'windows-latest'
         run: (Get-Content phpunit.xml.dist) -replace 'enforceTimeLimit="true"', 'enforceTimeLimit="false"' | Out-File phpunit.xml
