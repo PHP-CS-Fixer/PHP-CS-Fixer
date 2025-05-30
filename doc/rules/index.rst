@@ -76,6 +76,9 @@ Attribute Notation
 - `attribute_empty_parentheses <./attribute_notation/attribute_empty_parentheses.rst>`_
 
   PHP attributes declared without arguments must (not) be followed by empty parentheses.
+- `attributes_new_line <./attribute_notation/attributes_new_line.rst>`_
+
+  Attributes should be on their own line.
 - `general_attribute_remove <./attribute_notation/general_attribute_remove.rst>`_
 
   Removes configured attributes by their respective FQN.
@@ -179,9 +182,6 @@ Cast Notation
 Class Notation
 --------------
 
-- `class_attributes_new_line <./class_notation/class_attributes_new_line.rst>`_
-
-  Class attributes should be on their own line.
 - `class_attributes_separation <./class_notation/class_attributes_separation.rst>`_
 
   Class, trait and interface elements must be separated with one or none blank line.
