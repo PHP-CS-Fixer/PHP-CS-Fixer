@@ -221,6 +221,7 @@ abstract class AbstractFixerTestCase extends TestCase
                 self::fail(\sprintf('[%s] Configurable fixer only provides a default configuration sample and none for its configuration options.', $fixerName));
             }
 
+            // @phpstan-ignore-next-line method.notFound
             $options = $this->fixer->getConfigurationDefinition()->getOptions();
 
             foreach ($options as $option) {

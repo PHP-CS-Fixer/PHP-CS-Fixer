@@ -44,7 +44,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Cache/Signature.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Config\\:\\:getFinder\\(\\) should return PhpCsFixer\\\\Finder but returns array\\<mixed, mixed\\>\\|iterable\\<SplFileInfo\\>\\|Traversable\\.$#',
+	'message' => '#^Method PhpCsFixer\\\\Config\\:\\:getFinder\\(\\) should return PhpCsFixer\\\\Finder but returns iterable\\<SplFileInfo\\>\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Config.php',
@@ -74,8 +74,20 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Console/Command/CheckCommand.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\CheckCommand\\:\\:\\$defaultDescription overrides @final property PhpCsFixer\\\\Console\\\\Command\\\\FixCommand\\:\\:\\$defaultDescription\\.$#',
+	'identifier' => 'property.parentPropertyFinalByPhpDoc',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Console/Command/CheckCommand.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\CheckCommand\\:\\:\\$defaultName has no type specified\\.$#',
 	'identifier' => 'missingType.property',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Console/Command/CheckCommand.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\CheckCommand\\:\\:\\$defaultName overrides @final property PhpCsFixer\\\\Console\\\\Command\\\\FixCommand\\:\\:\\$defaultName\\.$#',
+	'identifier' => 'property.parentPropertyFinalByPhpDoc',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Console/Command/CheckCommand.php',
 ];
@@ -1998,6 +2010,12 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Linter/CachingLinter.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method PhpCsFixer\\\\Preg\\:\\:split\\(\\) should return list\\<string\\> but returns list\\<array\\{string, int\\<0, max\\>\\}\\|string\\>\\.$#',
+	'identifier' => 'return.type',
+	'count' => 2,
+	'path' => __DIR__ . '/../../src/Preg.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$offset of function substr expects int, int\\|false given\\.$#',
