@@ -1994,24 +1994,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Linter/CachingLinter.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Preg\\:\\:split\\(\\) should return list\\<string\\> but returns list\\<array\\{string, int\\<0, max\\>\\}\\|string\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 2,
-	'path' => __DIR__ . '/../../src/Preg.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$offset of function substr expects int, int\\|false given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Preg.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$length of function substr expects int\\|null, int\\|false given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Preg.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Call to static method PhpCsFixer\\\\Preg\\:\\:match\\(\\) with arguments \'\\#\\^@PHP\\(\\[\\\\\\\\d\\]\\{2\\}…\', string and array\\{\\} will always evaluate to false\\.$#',
 	'identifier' => 'staticMethod.impossibleType',
 	'count' => 1,
