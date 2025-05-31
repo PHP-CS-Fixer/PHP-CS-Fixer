@@ -10,8 +10,10 @@
     colors="true"
     columns="max"
     defaultTimeLimit="10"
+    displayDetailsOnTestsThatTriggerDeprecations="true"
     enforceTimeLimit="true"
     executionOrder="defects"
+    failOnDeprecation="true"
     failOnRisky="true"
     failOnWarning="true"
     timeoutForSmallTests="10"
@@ -41,7 +43,7 @@
         </testsuite>
     </testsuites>
 
-    <source>
+    <source ignoreSuppressionOfDeprecations="true" ignoreSelfDeprecations="true">
         <include>
             <directory>./src</directory>
         </include>
