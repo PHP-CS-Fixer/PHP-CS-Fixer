@@ -1,7 +1,7 @@
+.DS_Store
 /.env
 /.php-cs-fixer.php
 /box.json
-/compose.override.yaml
 /composer.lock
 /dev-tools/bin/
 /dev-tools/infection/
