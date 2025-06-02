@@ -271,7 +271,7 @@ final class ConfigurationResolver
     public function getDiffer(): DifferInterface
     {
         if (null === $this->differ) {
-            if ('gitlab' === $this->getFormat()) {
+            if ('gitlab' === $this->resolveFormat()) {
                 $this->differ = new UnifiedDiffer([
                     'contextLines' => 0,
                 ]);
