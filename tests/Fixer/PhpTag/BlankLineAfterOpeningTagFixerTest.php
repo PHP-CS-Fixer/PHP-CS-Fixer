@@ -38,7 +38,7 @@ final class BlankLineAfterOpeningTagFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -163,6 +163,22 @@ $foo = $bar;
                 echo 1;
                 EOD,
         ];
+
+        yield 'file starting with multi-line comment' => [
+            <<<'PHP'
+                <?php
+
+                /**
+                 * @author yes
+                 */
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
+                 * @author yes
+                 */
+                PHP,
+        ];
     }
 
     /**
@@ -176,7 +192,7 @@ $foo = $bar;
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideWithWhitespacesConfigCases(): iterable
     {

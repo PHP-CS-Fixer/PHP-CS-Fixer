@@ -114,7 +114,7 @@ The following example shows how to use all ``PhpCsFixer`` rules but without the 
     return (new PhpCsFixer\Config())
         ->setRules([
             '@PhpCsFixer' => true,
-            'comment_type' => false,
+            'align_multiline_comment' => false,
         ])
         ->setFinder($finder)
     ;

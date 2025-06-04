@@ -25,7 +25,7 @@ use PhpCsFixer\Console\Output\Progress\ProgressOutputFactory;
 use PhpCsFixer\Console\Output\Progress\ProgressOutputType;
 use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Error\ErrorsManager;
-use PhpCsFixer\FixerFileProcessedEvent;
+use PhpCsFixer\Runner\Event\FileProcessed;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\ToolInfoInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -52,10 +52,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
 #[AsCommand(name: 'fix', description: 'Fixes a directory or a file.')]
 /* final */ class FixCommand extends Command
 {
-    /** @var string */
     protected static $defaultName = 'fix';
 
-    /** @var string */
     protected static $defaultDescription = 'Fixes a directory or a file.';
 
     private EventDispatcherInterface $eventDispatcher;
@@ -102,7 +100,11 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
                 <info>$ php %command.full_name% --path-mode=intersection /path/to/dir</info>
 
-            The <comment>--format</comment> option for the output format. Supported formats are `txt` (default one), `json`, `xml`, `checkstyle`, `junit` and `gitlab`.
+            The <comment>--format</comment> option for the output format. Supported formats are `@auto` (default one on v4+), `txt` (default one on v3), `json`, `xml`, `checkstyle`, `junit` and `gitlab`.
+
+            * `@auto` aims to auto-select best reporter for given CI or local execution (resolution into best format is outside of BC promise and is future-ready)
+              * `gitlab` for GitLab
+            * `@auto,{format}` takes `@auto` under CI, and {format} otherwise
 
             NOTE: the output for the following formats are generated in accordance with schemas
 
@@ -333,11 +335,11 @@ use Symfony\Component\Stopwatch\Stopwatch;
             $resolver->getConfigFile()
         );
 
-        $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, [$progressOutput, 'onFixerFileProcessed']);
+        $this->eventDispatcher->addListener(FileProcessed::NAME, [$progressOutput, 'onFixerFileProcessed']);
         $this->stopwatch->start('fixFiles');
         $changed = $runner->fix();
         $this->stopwatch->stop('fixFiles');
-        $this->eventDispatcher->removeListener(FixerFileProcessedEvent::NAME, [$progressOutput, 'onFixerFileProcessed']);
+        $this->eventDispatcher->removeListener(FileProcessed::NAME, [$progressOutput, 'onFixerFileProcessed']);
 
         $progressOutput->printLegend();
 
@@ -390,6 +392,6 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
     protected function isDryRun(InputInterface $input): bool
     {
-        return $input->getOption('dry-run');
+        return $input->getOption('dry-run'); // @phpstan-ignore symfonyConsole.optionNotFound (Because PHPStan doesn't recognise the method is overridden in the child class and this parameter is _not_ used in the child class.)
     }
 }

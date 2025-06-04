@@ -44,6 +44,9 @@ final class NamespacesAnalyzerTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<int, array{string, list<NamespaceAnalysis>}>
+     */
     public static function provideNamespacesCases(): iterable
     {
         yield ['<?php // no namespaces', [
@@ -126,7 +129,7 @@ final class NamespacesAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, int, NamespaceAnalysis}>
+     * @return iterable<int, array{string, int, NamespaceAnalysis}>
      */
     public static function provideGetNamespaceAtCases(): iterable
     {

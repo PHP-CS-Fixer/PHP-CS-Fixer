@@ -48,6 +48,9 @@ final class ControlCaseStructuresAnalyzerTest extends TestCase
         }
     }
 
+    /**
+     * @return iterable<array{0: array<int, AbstractControlCaseStructuresAnalysis>, 1: string, 2?: int}>
+     */
     public static function provideFindControlStructuresCases(): iterable
     {
         yield 'two cases' => [
@@ -177,7 +180,6 @@ switch ($foo) {
                 switch ($bar) : case "a": return "b"; case "c"; return "d"; case "e": return "f"; endswitch;
                 return;
                 case 100: return false; endswitch ?>  <?php echo 1;',
-            1,
         ];
 
         $expected = [
@@ -339,6 +341,9 @@ endswitch ?>',
         }
     }
 
+    /**
+     * @return iterable<int, array{array<int, AbstractControlCaseStructuresAnalysis>, string, list<int>}>
+     */
     public static function provideFindControlStructuresPhp81Cases(): iterable
     {
         $switchAnalysis = new SwitchAnalysis(1, 6, 26, [new CaseAnalysis(8, 11)], new DefaultAnalysis(18, 19));

@@ -39,7 +39,7 @@ final class ParallelConfigTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: int, 1: int, 2: int}>
+     * @return iterable<int, array{0: int, 1: int, 2: int}>
      */
     public static function provideExceptionIsThrownOnNegativeValuesCases(): iterable
     {

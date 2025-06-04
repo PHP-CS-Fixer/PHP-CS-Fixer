@@ -2,7 +2,7 @@
 Rule ``phpdoc_no_empty_return``
 ===============================
 
-``@return void`` and ``@return null`` annotations should be omitted from PHPDoc.
+``@return void`` and ``@return null`` annotations must be removed from PHPDoc.
 
 Examples
 --------

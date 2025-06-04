@@ -6,6 +6,7 @@
     beStrictAboutChangesToGlobalState="true"
     beStrictAboutOutputDuringTests="true"
     bootstrap="./vendor/autoload.php"
+    cacheDirectory="./dev-tools/phpunit/cache"
     colors="true"
     columns="max"
     defaultTimeLimit="10"
@@ -36,16 +37,15 @@
         <testsuite name="short-open-tag">
             <file>./tests/Fixer/PhpTag/NoClosingTagFixerTest.php</file>
             <file>./tests/Fixer/Semicolon/NoEmptyStatementFixerTest.php</file>
-            <file>./tests/Fixer/Semicolon/SemicolonAfterInstructionFixerTest.php</file>
             <file>./tests/Tokenizer/TokensTest.php</file>
         </testsuite>
     </testsuites>
 
-    <coverage>
+    <source>
         <include>
             <directory>./src</directory>
         </include>
-    </coverage>
+    </source>
 
     <extensions>
         <bootstrap class="Paraunit\Configuration\ParaunitExtension"/>

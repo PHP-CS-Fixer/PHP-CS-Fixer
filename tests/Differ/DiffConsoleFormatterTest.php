@@ -39,7 +39,7 @@ final class DiffConsoleFormatterTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, bool, string, string, string}>
+     * @return iterable<int, array{string, bool, string, string, string}>
      */
     public static function provideDiffConsoleFormatterCases(): iterable
     {
@@ -100,26 +100,26 @@ final class DiffConsoleFormatterTest extends TestCase
         ];
 
         yield [
-            mb_convert_encoding("<fg=red>--- Original</fg=red>\n<fg=green>+ausgefüllt</fg=green>", 'ISO-8859-1'),
+            (string) mb_convert_encoding("<fg=red>--- Original</fg=red>\n<fg=green>+ausgefüllt</fg=green>", 'ISO-8859-1'),
             true,
             '%s',
-            mb_convert_encoding("--- Original\n+ausgefüllt", 'ISO-8859-1'),
+            (string) mb_convert_encoding("--- Original\n+ausgefüllt", 'ISO-8859-1'),
             '%s',
         ];
 
         yield [
-            mb_convert_encoding("<fg=red>--- Original</fg=red>\n<fg=green>+++ New</fg=green>\n<fg=cyan>@@ @@</fg=cyan>\n<fg=red>-ausgefüllt</fg=red>", 'ISO-8859-1'),
+            (string) mb_convert_encoding("<fg=red>--- Original</fg=red>\n<fg=green>+++ New</fg=green>\n<fg=cyan>@@ @@</fg=cyan>\n<fg=red>-ausgefüllt</fg=red>", 'ISO-8859-1'),
             true,
             '%s',
-            mb_convert_encoding("--- Original\n+++ New\n@@ @@\n-ausgefüllt", 'ISO-8859-1'),
+            (string) mb_convert_encoding("--- Original\n+++ New\n@@ @@\n-ausgefüllt", 'ISO-8859-1'),
             '%s',
         ];
 
         yield [
-            mb_convert_encoding("--- Original\n+++ New\n@@ @@\n-ausgefüllt", 'ISO-8859-1'),
+            (string) mb_convert_encoding("--- Original\n+++ New\n@@ @@\n-ausgefüllt", 'ISO-8859-1'),
             false,
             '%s',
-            mb_convert_encoding("--- Original\n+++ New\n@@ @@\n-ausgefüllt", 'ISO-8859-1'),
+            (string) mb_convert_encoding("--- Original\n+++ New\n@@ @@\n-ausgefüllt", 'ISO-8859-1'),
             '%s',
         ];
     }

@@ -47,7 +47,7 @@ final class TagTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, string, string}>
+     * @return iterable<int, array{string, string, string}>
      */
     public static function provideNameCases(): iterable
     {
@@ -83,7 +83,7 @@ final class TagTest extends TestCase
     }
 
     /**
-     * @return iterable<array{bool, string}>
+     * @return iterable<int, array{bool, string}>
      */
     public static function provideValidCases(): iterable
     {

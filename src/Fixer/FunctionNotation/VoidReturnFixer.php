@@ -21,6 +21,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -30,10 +31,20 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class VoidReturnFixer extends AbstractFixer
 {
+    private const PREVIOUS_TOKENS = [
+        T_ABSTRACT,
+        T_FINAL,
+        T_PRIVATE,
+        T_PROTECTED,
+        T_PUBLIC,
+        T_STATIC,
+        FCT::T_ATTRIBUTE,
+    ];
+
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Add `void` return type to functions with missing or empty return statements, but priority is given to `@return` annotations. Requires PHP >= 7.1.',
+            'Add `void` return type to functions with missing or empty return statements, but priority is given to `@return` annotations.',
             [
                 new CodeSample(
                     "<?php\nfunction foo(\$a) {};\n"
@@ -224,26 +235,13 @@ final class VoidReturnFixer extends AbstractFixer
      */
     private function findReturnAnnotations(Tokens $tokens, int $index): array
     {
-        $previousTokens = [
-            T_ABSTRACT,
-            T_FINAL,
-            T_PRIVATE,
-            T_PROTECTED,
-            T_PUBLIC,
-            T_STATIC,
-        ];
-
-        if (\defined('T_ATTRIBUTE')) { // @TODO: drop condition when PHP 8.0+ is required
-            $previousTokens[] = T_ATTRIBUTE;
-        }
-
         do {
             $index = $tokens->getPrevNonWhitespace($index);
 
             if ($tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
                 $index = $tokens->getPrevTokenOfKind($index, [[T_ATTRIBUTE]]);
             }
-        } while ($tokens[$index]->isGivenKind($previousTokens));
+        } while ($tokens[$index]->isGivenKind(self::PREVIOUS_TOKENS));
 
         if (!$tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
             return [];

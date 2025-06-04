@@ -20,7 +20,7 @@ use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Config;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Error\ErrorsManager;
-use PhpCsFixer\FixerFileProcessedEvent;
+use PhpCsFixer\Runner\Event\FileProcessed;
 use PhpCsFixer\Runner\Parallel\ParallelAction;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\Runner\Parallel\ParallelisationException;
@@ -49,10 +49,8 @@ final class WorkerCommand extends Command
     /** @var string Prefix used before JSON-encoded error printed in the worker's process */
     public const ERROR_PREFIX = 'WORKER_ERROR::';
 
-    /** @var string */
     protected static $defaultName = 'worker';
 
-    /** @var string */
     protected static $defaultDescription = 'Internal command for running fixers in parallel';
 
     private ToolInfoInterface $toolInfo;
@@ -60,7 +58,7 @@ final class WorkerCommand extends Command
     private ErrorsManager $errorsManager;
     private EventDispatcherInterface $eventDispatcher;
 
-    /** @var list<FixerFileProcessedEvent> */
+    /** @var list<FileProcessed> */
     private array $events;
 
     public function __construct(ToolInfoInterface $toolInfo)
@@ -114,9 +112,8 @@ final class WorkerCommand extends Command
             ->then(
                 /** @codeCoverageIgnore */
                 function (ConnectionInterface $connection) use ($loop, $runner, $identifier): void {
-                    $jsonInvalidUtf8Ignore = \defined('JSON_INVALID_UTF8_IGNORE') ? JSON_INVALID_UTF8_IGNORE : 0;
-                    $out = new Encoder($connection, $jsonInvalidUtf8Ignore);
-                    $in = new Decoder($connection, true, 512, $jsonInvalidUtf8Ignore);
+                    $out = new Encoder($connection, JSON_INVALID_UTF8_IGNORE);
+                    $in = new Decoder($connection, true, 512, JSON_INVALID_UTF8_IGNORE);
 
                     // [REACT] Initialise connection with the parallelisation operator
                     $out->write(['action' => ParallelAction::WORKER_HELLO, 'identifier' => $identifier]);
@@ -154,10 +151,10 @@ final class WorkerCommand extends Command
                         /** @var iterable<int, string> $files */
                         $files = $json['files'];
 
-                        foreach ($files as $absolutePath) {
+                        foreach ($files as $path) {
                             // Reset events because we want to collect only those coming from analysed files chunk
                             $this->events = [];
-                            $runner->setFileIterator(new \ArrayIterator([new \SplFileInfo($absolutePath)]));
+                            $runner->setFileIterator(new \ArrayIterator([new \SplFileInfo($path)]));
                             $analysisResult = $runner->fix();
 
                             if (1 !== \count($this->events)) {
@@ -170,11 +167,11 @@ final class WorkerCommand extends Command
 
                             $out->write([
                                 'action' => ParallelAction::WORKER_RESULT,
-                                'file' => $absolutePath,
+                                'file' => $path,
                                 'fileHash' => $this->events[0]->getFileHash(),
                                 'status' => $this->events[0]->getStatus(),
                                 'fixInfo' => array_pop($analysisResult),
-                                'errors' => $this->errorsManager->forPath($absolutePath),
+                                'errors' => $this->errorsManager->forPath($path),
                             ]);
                         }
 
@@ -204,7 +201,7 @@ final class WorkerCommand extends Command
         }
 
         // There's no one single source of truth when it comes to fixing single file, we need to collect statuses from events.
-        $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, function (FixerFileProcessedEvent $event): void {
+        $this->eventDispatcher->addListener(FileProcessed::NAME, function (FileProcessed $event): void {
             $this->events[] = $event;
         });
 

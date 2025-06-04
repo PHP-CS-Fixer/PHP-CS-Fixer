@@ -24,19 +24,6 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class AllowedValueSubsetTest extends TestCase
 {
-    public static function provideGetAllowedValuesAreSortedCases(): iterable
-    {
-        yield [
-            ['bar', 'foo'],
-            ['foo', 'bar'],
-        ];
-
-        yield [
-            ['bar', 'Foo'],
-            ['Foo', 'bar'],
-        ];
-    }
-
     /**
      * @param list<string> $expected
      * @param list<string> $input
@@ -51,6 +38,22 @@ final class AllowedValueSubsetTest extends TestCase
     }
 
     /**
+     * @return iterable<int, array{list<string>, list<string>}>
+     */
+    public static function provideGetAllowedValuesAreSortedCases(): iterable
+    {
+        yield [
+            ['bar', 'foo'],
+            ['foo', 'bar'],
+        ];
+
+        yield [
+            ['bar', 'Foo'],
+            ['Foo', 'bar'],
+        ];
+    }
+
+    /**
      * @param mixed $inputValue
      *
      * @dataProvider provideInvokeCases
@@ -62,6 +65,9 @@ final class AllowedValueSubsetTest extends TestCase
         self::assertSame($expectedResult, $subset($inputValue));
     }
 
+    /**
+     * @return iterable<int, array{mixed, bool}>
+     */
     public static function provideInvokeCases(): iterable
     {
         yield [

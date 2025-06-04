@@ -36,7 +36,7 @@ final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -165,7 +165,7 @@ final class Foo
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -194,7 +194,7 @@ final class Foo2 {
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFix81Cases(): iterable
     {

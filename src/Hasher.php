@@ -12,14 +12,14 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tokenizer;
+namespace PhpCsFixer;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */
-final class CodeHasher
+final class Hasher
 {
     private function __construct()
     {
@@ -27,12 +27,12 @@ final class CodeHasher
     }
 
     /**
-     * Calculate hash for code.
-     *
      * @return non-empty-string
      */
-    public static function calculateCodeHash(string $code): string
+    public static function calculate(string $code): string
     {
-        return md5($code);
+        return \PHP_VERSION_ID >= 8_01_00
+            ? hash('xxh128', $code)
+            : md5($code);
     }
 }

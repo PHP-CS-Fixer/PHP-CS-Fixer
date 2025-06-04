@@ -18,6 +18,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -48,11 +49,7 @@ final class SingleLineEmptyBodyFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        if (\defined('T_ENUM') && $tokens->isTokenKindFound(T_ENUM)) { // @TODO: drop condition when PHP 8.1+ is required
-            return true;
-        }
-
-        return $tokens->isAnyTokenKindsFound([T_INTERFACE, T_CLASS, T_FUNCTION, T_TRAIT]);
+        return $tokens->isAnyTokenKindsFound([T_INTERFACE, T_CLASS, T_FUNCTION, T_TRAIT, FCT::T_ENUM]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void

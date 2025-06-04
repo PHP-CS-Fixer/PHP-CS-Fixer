@@ -18,11 +18,13 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\FullyQualifiedNameAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
-use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -31,6 +33,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 abstract class AbstractPhpUnitFixer extends AbstractFixer
 {
+    private const DOC_BLOCK_MODIFIERS = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_COMMENT, FCT::T_ATTRIBUTE, FCT::T_READONLY];
+    private const ATTRIBUTE_MODIFIERS = [T_FINAL, FCT::T_READONLY];
+
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAllTokenKindsFound([T_CLASS, T_STRING]);
@@ -49,23 +54,13 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
 
     final protected function getDocBlockIndex(Tokens $tokens, int $index): int
     {
-        $modifiers = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_COMMENT];
-
-        if (\defined('T_ATTRIBUTE')) { // @TODO: drop condition when PHP 8.0+ is required
-            $modifiers[] = T_ATTRIBUTE;
-        }
-
-        if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.2+ is required
-            $modifiers[] = T_READONLY;
-        }
-
         do {
             $index = $tokens->getPrevNonWhitespace($index);
 
             if ($tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
                 $index = $tokens->getPrevTokenOfKind($index, [[T_ATTRIBUTE]]);
             }
-        } while ($tokens[$index]->isGivenKind($modifiers));
+        } while ($tokens[$index]->isGivenKind(self::DOC_BLOCK_MODIFIERS));
 
         return $index;
     }
@@ -145,6 +140,27 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
         }
     }
 
+    final protected function isTestAttributePresent(Tokens $tokens, int $index): bool
+    {
+        $attributeIndex = $tokens->getPrevTokenOfKind($index, ['{', [FCT::T_ATTRIBUTE]]);
+        if (!$tokens[$attributeIndex]->isGivenKind(FCT::T_ATTRIBUTE)) {
+            return false;
+        }
+
+        $fullyQualifiedNameAnalyzer = new FullyQualifiedNameAnalyzer($tokens);
+
+        foreach (AttributeAnalyzer::collect($tokens, $attributeIndex) as $attributeAnalysis) {
+            foreach ($attributeAnalysis->getAttributes() as $attribute) {
+                $attributeName = strtolower($fullyQualifiedNameAnalyzer->getFullyQualifiedName($attribute['name'], $attribute['start'], NamespaceUseAnalysis::TYPE_CLASS));
+                if ('phpunit\framework\attributes\test' === $attributeName) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     private function createDocBlock(Tokens $tokens, int $docBlockIndex, string $annotation): void
     {
         $lineEnd = $this->whitespacesConfig->getLineEnding();
@@ -189,6 +205,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
         $lines = $this->addInternalAnnotation($doc, $tokens, $docBlockIndex, $annotation);
         $lines = implode('', $lines);
 
+        $tokens->getNamespaceDeclarations();
         $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $lines]);
     }
 
@@ -201,52 +218,25 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
             return false;
         }
 
-        $modifiers = [T_FINAL];
-        if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.2+ is required
-            $modifiers[] = T_READONLY;
-        }
-
         do {
             $index = $tokens->getPrevMeaningfulToken($index);
-        } while ($tokens[$index]->isGivenKind($modifiers));
+        } while ($tokens[$index]->isGivenKind(self::ATTRIBUTE_MODIFIERS));
         if (!$tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
             return false;
         }
         $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
 
+        $fullyQualifiedNameAnalyzer = new FullyQualifiedNameAnalyzer($tokens);
+
         foreach (AttributeAnalyzer::collect($tokens, $index) as $attributeAnalysis) {
             foreach ($attributeAnalysis->getAttributes() as $attribute) {
-                if (\in_array(ltrim(self::getFullyQualifiedName($tokens, $attribute['name']), '\\'), $preventingAttributes, true)) {
+                if (\in_array(strtolower($fullyQualifiedNameAnalyzer->getFullyQualifiedName($attribute['name'], $attribute['start'], NamespaceUseAnalysis::TYPE_CLASS)), $preventingAttributes, true)) {
                     return true;
                 }
             }
         }
 
         return false;
-    }
-
-    private static function getFullyQualifiedName(Tokens $tokens, string $name): string
-    {
-        $name = strtolower($name);
-
-        $names = [];
-        foreach ((new NamespaceUsesAnalyzer())->getDeclarationsFromTokens($tokens) as $namespaceUseAnalysis) {
-            $names[strtolower($namespaceUseAnalysis->getShortName())] = strtolower($namespaceUseAnalysis->getFullName());
-        }
-
-        foreach ($names as $shortName => $fullName) {
-            if ($name === $shortName) {
-                return $fullName;
-            }
-
-            if (!str_starts_with($name, $shortName.'\\')) {
-                continue;
-            }
-
-            return $fullName.substr($name, \strlen($shortName));
-        }
-
-        return $name;
     }
 
     /**

@@ -20,6 +20,7 @@ use PhpCsFixer\Documentation\FixerDocumentGenerator;
 use PhpCsFixer\Documentation\RuleSetDocumentationGenerator;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Finder\Finder;
@@ -42,6 +43,9 @@ final class DocumentationTest extends TestCase
         // @TODO 4.0 Remove this expectations
         $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
         $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
+        if ('ordered_imports' === $fixer->getName()) {
+            $this->expectDeprecation('[ordered_imports] Option "sort_algorithm:length" is deprecated and will be removed in version 4.0.');
+        }
         if ('nullable_type_declaration_for_default_null_value' === $fixer->getName()) {
             $this->expectDeprecation('Option "use_nullable_type_declaration" for rule "nullable_type_declaration_for_default_null_value" is deprecated and will be removed in version 4.0. Behaviour will follow default one.');
         }
@@ -55,8 +59,9 @@ final class DocumentationTest extends TestCase
 
         $expected = $generator->generateFixerDocumentation($fixer);
         $actual = file_get_contents($path);
+        \assert(false !== $actual);
 
-        $expected = preg_replace_callback(
+        $expected = Preg::replaceCallback(
             '/
                 # an example
                 (?<before>
@@ -79,16 +84,17 @@ final class DocumentationTest extends TestCase
                 )
             /x',
             static function (array $matches) use ($actual): string {
+                /** @var array{before: string, after: string} $matches */
                 $before = preg_quote($matches['before'], '/');
                 $after = preg_quote($matches['after'], '/');
 
                 $replacement = '[UNAVAILABLE EXAMPLE DIFF]';
 
-                if (1 === preg_match("/{$before}(\\.\\. code-block:: diff.*?){$after}/s", $actual, $actualMatches)) {
+                if (Preg::match("/{$before}(\\.\\. code-block:: diff.*?){$after}/s", $actual, $actualMatches)) {
                     $replacement = $actualMatches[1];
                 }
 
-                return $matches[1].$replacement.$matches[2];
+                return $matches['before'].$replacement.$matches['after'];
             },
             $expected
         );
@@ -204,7 +210,7 @@ final class DocumentationTest extends TestCase
         }
 
         $lastFormat = array_pop($formats);
-        $expectedContent = 'Supported formats are ``txt`` (default one), ';
+        $expectedContent = 'Supported formats are ``@auto`` (default one on v4+), ``txt`` (default one on v3), ';
 
         foreach ($formats as $format) {
             $expectedContent .= '``'.$format.'``, ';

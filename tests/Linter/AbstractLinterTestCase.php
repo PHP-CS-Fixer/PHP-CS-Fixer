@@ -59,7 +59,7 @@ abstract class AbstractLinterTestCase extends TestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideLintFileCases(): iterable
     {
@@ -95,7 +95,7 @@ abstract class AbstractLinterTestCase extends TestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideLintSourceCases(): iterable
     {

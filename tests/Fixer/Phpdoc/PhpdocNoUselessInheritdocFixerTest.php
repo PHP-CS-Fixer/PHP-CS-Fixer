@@ -34,7 +34,7 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string, 2?: string}>
+     * @return iterable<int, array{0: string, 1?: string, 2?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -274,26 +274,6 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     use T;
 
                     /** @inheritdoc */
-                    public function importFromTrait()
-                    {
-                    }
-                }
-                ',
-            '<?php
-                class B
-                {
-                    /** @inheritDoc */
-                    public function falseImportFromTrait()
-                    {
-                    }
-                }
-
-                /** @inheritDoc */
-                class A
-                {
-                    use T;
-
-                    /** @inheritDoc */
                     public function importFromTrait()
                     {
                     }

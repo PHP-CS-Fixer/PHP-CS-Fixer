@@ -29,10 +29,8 @@ final class LineTest extends TestCase
 {
     /**
      * This represents the content an entire docblock.
-     *
-     * @var string
      */
-    private static $sample = '/**
+    private static string $sample = '/**
      * Test docblock.
      *
      * @param string $hello
@@ -53,7 +51,7 @@ final class LineTest extends TestCase
      *
      * @var list<string>
      */
-    private static $content = [
+    private static array $content = [
         "/**\n",
         "     * Test docblock.\n",
         "     *\n",
@@ -76,7 +74,7 @@ final class LineTest extends TestCase
      *
      * @var list<bool>
      */
-    private static $useful = [
+    private static array $useful = [
         false,
         true,
         false,
@@ -99,7 +97,7 @@ final class LineTest extends TestCase
      *
      * @var list<bool>
      */
-    private static $tag = [
+    private static array $tag = [
         false,
         false,
         false,
@@ -132,7 +130,7 @@ final class LineTest extends TestCase
     /**
      * @dataProvider provideLinesCases
      */
-    public function testStartOrEndPos(int $pos): void
+    public function testStartOrEndPos(int $pos, string $content): void
     {
         $doc = new DocBlock(self::$sample);
         $line = $doc->getLine($pos);
@@ -142,7 +140,7 @@ final class LineTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, string}>
+     * @return iterable<int, array{int, string}>
      */
     public static function provideLinesCases(): iterable
     {
@@ -163,7 +161,7 @@ final class LineTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, bool}>
+     * @return iterable<int, array{int, bool}>
      */
     public static function provideUsefulCases(): iterable
     {
@@ -184,7 +182,7 @@ final class LineTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, bool}>
+     * @return iterable<int, array{int, bool}>
      */
     public static function provideTagCases(): iterable
     {

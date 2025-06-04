@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Test;
 
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -30,10 +31,7 @@ use PhpCsFixer\Tokenizer\TransformerInterface;
  */
 abstract class AbstractTransformerTestCase extends TestCase
 {
-    /**
-     * @var null|TransformerInterface
-     */
-    protected $transformer;
+    protected ?TransformerInterface $transformer = null;
 
     protected function setUp(): void
     {
@@ -212,7 +210,8 @@ abstract class AbstractTransformerTestCase extends TestCase
 
     private function createTransformer(): TransformerInterface
     {
-        $transformerClassName = preg_replace('/^(PhpCsFixer)\\\Tests(\\\.+)Test$/', '$1$2', static::class);
+        $transformerClassName = Preg::replace('/^(PhpCsFixer)\\\Tests(\\\.+)Test$/', '$1$2', static::class);
+        \assert(is_a($transformerClassName, TransformerInterface::class, true));
 
         return new $transformerClassName();
     }

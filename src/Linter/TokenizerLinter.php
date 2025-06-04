@@ -15,13 +15,15 @@ declare(strict_types=1);
 namespace PhpCsFixer\Linter;
 
 use PhpCsFixer\FileReader;
-use PhpCsFixer\Tokenizer\CodeHasher;
+use PhpCsFixer\Hasher;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * Handle PHP code linting.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @readonly
  *
  * @internal
  */
@@ -44,7 +46,7 @@ final class TokenizerLinter implements LinterInterface
             // During that process, it might throw a ParseError or CompileError.
             // If it won't, cache of tokenized version of source will be kept, which is great for Runner.
             // Yet, first we need to clear already existing cache to not hit it and lint the code indeed.
-            $codeHash = CodeHasher::calculateCodeHash($source);
+            $codeHash = Hasher::calculate($source);
             Tokens::clearCache($codeHash);
             Tokens::fromCode($source);
 

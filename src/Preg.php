@@ -101,13 +101,13 @@ final class Preg
     }
 
     /**
-     * @param array<array-key, string>|string $subject
-     *
      * @param-out int $count
+     *
+     * @return ($subject is non-empty-string ? ($replacement is non-empty-string ? non-empty-string : string) : string)
      *
      * @throws PregException
      */
-    public static function replace(string $pattern, string $replacement, $subject, int $limit = -1, ?int &$count = null): string
+    public static function replace(string $pattern, string $replacement, string $subject, int $limit = -1, ?int &$count = null): string
     {
         $result = @preg_replace(self::addUtf8Modifier($pattern), $replacement, $subject, $limit, $count);
         if (null !== $result && PREG_NO_ERROR === preg_last_error()) {
@@ -143,7 +143,7 @@ final class Preg
     }
 
     /**
-     * @return list<string>
+     * @return ($flags is PREG_SPLIT_OFFSET_CAPTURE ? list<array{string, int<0, max>}> : list<string>)
      *
      * @throws PregException
      */
@@ -176,6 +176,7 @@ final class Preg
         $delimiter = $pattern[0];
 
         $endDelimiterPosition = strrpos($pattern, $delimiter);
+        \assert(\is_int($endDelimiterPosition));
 
         return substr($pattern, 0, $endDelimiterPosition).str_replace('u', '', substr($pattern, $endDelimiterPosition));
     }

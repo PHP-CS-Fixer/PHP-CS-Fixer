@@ -29,7 +29,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Use `null` coalescing operator `??` where possible. Requires PHP >= 7.0.',
+            'Use `null` coalescing operator `??` where possible.',
             [
                 new CodeSample(
                     "<?php\n\$sample = isset(\$a) ? \$a : \$b;\n"
@@ -57,7 +57,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
     {
         $issetIndices = array_keys($tokens->findGivenKind(T_ISSET));
 
-        while ($issetIndex = array_pop($issetIndices)) {
+        foreach (array_reverse($issetIndices) as $issetIndex) {
             $this->fixIsset($tokens, $issetIndex);
         }
     }

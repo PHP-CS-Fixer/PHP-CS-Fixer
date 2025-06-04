@@ -18,6 +18,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -26,6 +27,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class FunctionsAnalyzer
 {
+    private const POSSIBLE_KINDS = [
+        T_DOUBLE_COLON, T_FUNCTION, CT::T_NAMESPACE_OPERATOR, T_NEW, CT::T_RETURN_REF, T_STRING, T_OBJECT_OPERATOR, FCT::T_NULLSAFE_OBJECT_OPERATOR, FCT::T_ATTRIBUTE];
+
     /**
      * @var array{tokens: string, imports: list<NamespaceUseAnalysis>, declarations: list<int>}
      */
@@ -40,9 +44,9 @@ final class FunctionsAnalyzer
             return false;
         }
 
-        $nextIndex = $tokens->getNextMeaningfulToken($index);
+        $openParenthesisIndex = $tokens->getNextMeaningfulToken($index);
 
-        if (!$tokens[$nextIndex]->equals('(')) {
+        if (!$tokens[$openParenthesisIndex]->equals('(')) {
             return false;
         }
 
@@ -54,26 +58,26 @@ final class FunctionsAnalyzer
             $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
         }
 
-        $possibleKind = [
-            T_DOUBLE_COLON, T_FUNCTION, CT::T_NAMESPACE_OPERATOR, T_NEW, CT::T_RETURN_REF, T_STRING,
-            ...Token::getObjectOperatorKinds(),
-        ];
-
-        // @TODO: drop condition when PHP 8.0+ is required
-        if (\defined('T_ATTRIBUTE')) {
-            $possibleKind[] = T_ATTRIBUTE;
-        }
-
-        if ($tokens[$prevIndex]->isGivenKind($possibleKind)) {
+        if ($tokens[$prevIndex]->isGivenKind(self::POSSIBLE_KINDS)) {
             return false;
         }
 
-        if ($tokens[$tokens->getNextMeaningfulToken($nextIndex)]->isGivenKind(CT::T_FIRST_CLASS_CALLABLE)) {
+        if ($tokens[$tokens->getNextMeaningfulToken($openParenthesisIndex)]->isGivenKind(CT::T_FIRST_CLASS_CALLABLE)) {
             return false;
         }
 
         if ($previousIsNamespaceSeparator) {
             return true;
+        }
+
+        $functionName = strtolower($tokens[$index]->getContent());
+
+        if ('set' === $functionName) {
+            $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesisIndex);
+            $afterCloseParenthesisIndex = $tokens->getNextMeaningfulToken($closeParenthesisIndex);
+            if ($tokens[$afterCloseParenthesisIndex]->equalsAny(['{', [T_DOUBLE_ARROW]])) {
+                return false;
+            }
         }
 
         if ($tokens->isChanged() || $tokens->getCodeHash() !== $this->functionsAnalysis['tokens']) {
@@ -96,8 +100,6 @@ final class FunctionsAnalyzer
             }
         }
 
-        $call = strtolower($tokens[$index]->getContent());
-
         // check if the call is to a function declared in the same namespace as the call is done,
         // if the call is already in the global namespace than declared functions are in the same
         // global namespace and don't need checking
@@ -109,7 +111,7 @@ final class FunctionsAnalyzer
                     continue;
                 }
 
-                if (strtolower($tokens[$functionNameIndex]->getContent()) === $call) {
+                if (strtolower($tokens[$functionNameIndex]->getContent()) === $functionName) {
                     return false;
                 }
             }
@@ -121,7 +123,7 @@ final class FunctionsAnalyzer
                 continue;
             }
 
-            if ($call !== strtolower($functionUse->getShortName())) {
+            if ($functionName !== strtolower($functionUse->getShortName())) {
                 continue;
             }
 

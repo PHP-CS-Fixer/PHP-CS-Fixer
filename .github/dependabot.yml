@@ -1,0 +1,35 @@
+version: 2
+
+updates:
+  - package-ecosystem: composer
+    directory: /dev-tools/
+    commit-message:
+      prefix: deps
+    schedule:
+      interval: weekly
+      day: friday
+      time: '12:30'
+      timezone: Europe/Warsaw
+    versioning-strategy: increase
+    groups:
+      phpstan:
+        patterns:
+          - phpstan/*
+  - package-ecosystem: docker
+    directory: /
+    commit-message:
+      prefix: deps
+    schedule:
+      interval: weekly
+      day: friday
+      time: '12:30'
+      timezone: Europe/Warsaw
+  - package-ecosystem: github-actions
+    directory: /
+    commit-message:
+      prefix: deps
+    schedule:
+      interval: weekly
+      day: friday
+      time: '12:30'
+      timezone: Europe/Warsaw

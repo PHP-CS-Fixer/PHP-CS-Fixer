@@ -30,7 +30,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Replace multiple nested calls of `dirname` by only one call with second `$level` parameter. Requires PHP >= 7.0.',
+            'Replace multiple nested calls of `dirname` by only one call with second `$level` parameter.',
             [
                 new CodeSample(
                     "<?php\ndirname(dirname(dirname(\$path)));\n"
@@ -81,7 +81,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
             $firstArgumentEnd = $dirnameInfo['end'];
             $dirnameInfoArray = [$dirnameInfo];
 
-            while ($dirnameInfo = $this->getDirnameInfo($tokens, $prev, $firstArgumentEnd)) {
+            while (($dirnameInfo = $this->getDirnameInfo($tokens, $prev, $firstArgumentEnd)) !== false) {
                 $dirnameInfoArray[] = $dirnameInfo;
                 $prev = $tokens->getPrevMeaningfulToken($dirnameInfo['indices'][0]);
 

@@ -85,9 +85,7 @@ final class PregMatchTypeSpecifyingExtension implements StaticMethodTypeSpecifyi
             return new SpecifiedTypes();
         }
 
-        $overwrite = false;
         if ($context->false()) {
-            $overwrite = true;
             $context = $context->negate();
         }
 
@@ -95,9 +93,7 @@ final class PregMatchTypeSpecifyingExtension implements StaticMethodTypeSpecifyi
             $matchesArg->value,
             $matchedType,
             $context,
-            $overwrite,
             $scope,
-            $node,
         );
     }
 }
