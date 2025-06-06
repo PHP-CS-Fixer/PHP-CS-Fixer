@@ -252,6 +252,41 @@ final class LowercaseStaticReferenceFixerTest extends AbstractFixerTestCase
                     }
                 }',
         ];
+
+        yield [
+            <<<'PHP'
+                <?php
+                class Foo {
+                    public    self $a;
+                    protected self $b;
+                    private   self $c;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo {
+                    public    SELF $a;
+                    protected SELF $b;
+                    private   SELF $c;
+                }
+                PHP,
+        ];
+
+        yield [
+            <<<'PHP'
+                <?php
+                define("SELF", "foo");
+                define("PARENT", "bar");
+                bar(SELF);
+                echo PARENT;
+                class Foo {
+                    public static function f()
+                    {
+                        return SELF;
+                    }
+                }
+                PHP,
+        ];
     }
 
     /**
