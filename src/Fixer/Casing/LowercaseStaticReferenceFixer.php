@@ -78,30 +78,44 @@ class Foo extends Bar
                 continue;
             }
 
-            $newContent = strtolower($token->getContent());
-            if ($token->getContent() === $newContent) {
-                continue; // case is already correct
-            }
-
-            $prevIndex = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$prevIndex]->isGivenKind([T_CONST, T_DOUBLE_COLON, T_FUNCTION, T_NAMESPACE, T_NS_SEPARATOR, T_STATIC, T_STRING, CT::T_ARRAY_TYPEHINT, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE]) || $tokens[$prevIndex]->isObjectOperator()) {
+            if (!self::isTokenToFix($tokens, $index)) {
                 continue;
             }
 
-            $nextIndex = $tokens->getNextMeaningfulToken($index);
-            if ($tokens[$nextIndex]->isGivenKind([T_FUNCTION, T_NS_SEPARATOR, T_PRIVATE, T_PROTECTED, T_PUBLIC, T_STRING, CT::T_NULLABLE_TYPE])) {
-                continue;
-            }
-
-            if ('static' === $newContent && $tokens[$nextIndex]->isGivenKind(T_VARIABLE)) {
-                continue;
-            }
-
-            if ($tokens[$prevIndex]->isGivenKind(T_CASE) && !$tokens[$nextIndex]->isGivenKind(T_PAAMAYIM_NEKUDOTAYIM)) {
-                continue;
-            }
-
-            $tokens[$index] = new Token([$token->getId(), $newContent]);
+            $tokens[$index] = new Token([$token->getId(), strtolower($token->getContent())]);
         }
+    }
+
+    private static function isTokenToFix(Tokens $tokens, int $index): bool
+    {
+        if ($tokens[$index]->getContent() === strtolower($tokens[$index]->getContent())) {
+            return false; // case is already correct
+        }
+
+        $nextIndex = $tokens->getNextMeaningfulToken($index);
+        if ($tokens[$nextIndex]->isGivenKind(T_DOUBLE_COLON)) {
+            return true;
+        }
+        if (!$tokens[$nextIndex]->isGivenKind([T_VARIABLE, CT::T_TYPE_ALTERNATION]) && !$tokens[$nextIndex]->equalsAny(['(', ')', '{', ';'])) {
+            return false;
+        }
+
+        $prevIndex = $tokens->getPrevMeaningfulToken($index);
+        if ($tokens[$prevIndex]->isGivenKind(T_INSTANCEOF)) {
+            return true;
+        }
+        if (!$tokens[$prevIndex]->isGivenKind([T_CASE, T_NEW, T_PRIVATE, T_PROTECTED, T_PUBLIC, CT::T_NULLABLE_TYPE, CT::T_TYPE_COLON, CT::T_TYPE_ALTERNATION]) && !$tokens[$prevIndex]->equalsAny(['(', '{'])) {
+            return false;
+        }
+
+        if ($tokens[$prevIndex]->equals('(') && $tokens[$nextIndex]->equals(')')) {
+            return false;
+        }
+
+        if ('static' === strtolower($tokens[$index]->getContent()) && $tokens[$nextIndex]->isGivenKind(T_VARIABLE)) {
+            return false;
+        }
+
+        return true;
     }
 }
