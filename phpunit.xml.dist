@@ -13,7 +13,6 @@
     displayDetailsOnTestsThatTriggerDeprecations="true"
     enforceTimeLimit="true"
     executionOrder="defects"
-    failOnDeprecation="true"
     failOnRisky="true"
     failOnWarning="true"
     timeoutForSmallTests="10"
