@@ -42,7 +42,7 @@
         </testsuite>
     </testsuites>
 
-    <source ignoreSuppressionOfDeprecations="true" ignoreSelfDeprecations="true">
+    <source ignoreSelfDeprecations="true">
         <include>
             <directory>./src</directory>
         </include>
