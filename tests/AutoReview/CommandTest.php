@@ -35,6 +35,8 @@ final class CommandTest extends TestCase
      */
     public function testCommandHasNameConst(Command $command): void
     {
+        $this->expectDeprecation('Since symfony/console 7.3: Method "Symfony\Component\Console\Command\Command::getDefaultName()" is deprecated and will be removed in Symfony 8.0, use the #[AsCommand] attribute instead.');
+
         self::assertNotNull($command::getDefaultName());
     }
 
