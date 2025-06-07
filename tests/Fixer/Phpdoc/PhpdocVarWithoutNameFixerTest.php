@@ -653,4 +653,49 @@ class A
 ',
         ];
     }
+
+    /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield 'asymmetric visibility' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    /** @var bool */
+                    public(set) bool $a;
+
+                    /** @var bool */
+                    protected(set) bool $b;
+
+                    /** @var bool */
+                    private(set) bool $c;
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo
+                {
+                    /** @var bool $a */
+                    public(set) bool $a;
+
+                    /** @var bool $b */
+                    protected(set) bool $b;
+
+                    /** @var bool $c */
+                    private(set) bool $c;
+                }
+                PHP,
+        ];
+    }
 }
