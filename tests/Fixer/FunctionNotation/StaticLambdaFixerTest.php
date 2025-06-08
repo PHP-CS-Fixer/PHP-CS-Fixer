@@ -332,5 +332,41 @@ $b->abc();
                     }
                 ',
         ];
+
+        yield 'anonymous function returning defining class that uses `$this`' => [
+            <<<'PHP'
+                <?php
+                $f = function () {
+                    class C extends P {
+                        public function f() { return $this->f2(); }
+                    }
+                };
+                PHP,
+        ];
+
+        yield 'anonymous function defining trait that uses `$this`' => [
+            <<<'PHP'
+                <?php
+                $f = function () {
+                    trait T {
+                        public function f() { return $this->f2(); }
+                    }
+                };
+                PHP,
+        ];
+
+        yield 'anonymous function using anonymous class that uses `$this`' => [
+            <<<'PHP'
+                <?php
+                $f = function () {
+                    $o = new class { function f() { return $this->x; } };
+                    return $o->f();
+                };
+                PHP,
+        ];
+
+        yield 'arrow function returning anonymous class that uses `$this`' => [
+            '<?php return fn () => new class { function f() { return $this->x; } };',
+        ];
     }
 }
