@@ -336,6 +336,14 @@ $b->abc();
         yield 'anonymous function returning defining class that uses `$this`' => [
             <<<'PHP'
                 <?php
+                $f = static function () {
+                    class C extends P {
+                        public function f() { return $this->f2(); }
+                    }
+                };
+                PHP,
+            <<<'PHP'
+                <?php
                 $f = function () {
                     class C extends P {
                         public function f() { return $this->f2(); }
@@ -345,6 +353,14 @@ $b->abc();
         ];
 
         yield 'anonymous function defining trait that uses `$this`' => [
+            <<<'PHP'
+                <?php
+                $f = static function () {
+                    trait T {
+                        public function f() { return $this->f2(); }
+                    }
+                };
+                PHP,
             <<<'PHP'
                 <?php
                 $f = function () {
@@ -358,6 +374,13 @@ $b->abc();
         yield 'anonymous function using anonymous class that uses `$this`' => [
             <<<'PHP'
                 <?php
+                $f = static function () {
+                    $o = new class { function f() { return $this->x; } };
+                    return $o->f();
+                };
+                PHP,
+            <<<'PHP'
+                <?php
                 $f = function () {
                     $o = new class { function f() { return $this->x; } };
                     return $o->f();
@@ -366,6 +389,7 @@ $b->abc();
         ];
 
         yield 'arrow function returning anonymous class that uses `$this`' => [
+            '<?php return static fn () => new class { function f() { return $this->x; } };',
             '<?php return fn () => new class { function f() { return $this->x; } };',
         ];
     }

@@ -122,6 +122,13 @@ final class StaticLambdaFixer extends AbstractFixer
                 return true;
             }
 
+            if ($tokens[$i]->isClassy()) {
+                $openBraceIndex = $tokens->getNextTokenOfKind($i, ['{']);
+                $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openBraceIndex);
+
+                continue;
+            }
+
             if ($tokens[$i]->equals('$')) {
                 $nextIndex = $tokens->getNextMeaningfulToken($i);
 
