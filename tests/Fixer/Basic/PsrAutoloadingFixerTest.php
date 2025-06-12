@@ -353,7 +353,7 @@ class PsrAutoloadingFixer {}
             $cases[] = $keyword.'.php';
         }
 
-        foreach (['__CLASS__', '__DIR__', '__FILE__', '__FUNCTION__', '__LINE__', '__METHOD__', '__NAMESPACE__'] as $magicConstant) {
+        foreach (['__CLASS__', '__DIR__', '__FILE__', '__FUNCTION__', '__LINE__', '__METHOD__', '__NAMESPACE__', '__TRAIT__'] as $magicConstant) {
             $cases[] = $magicConstant.'.php';
             $cases[] = strtolower($magicConstant).'.php';
         }
@@ -363,7 +363,6 @@ class PsrAutoloadingFixer {}
             'T_FINALLY' => 'finally',
             'T_INSTEADOF' => 'insteadof',
             'T_TRAIT' => 'trait',
-            'T_TRAIT_C' => '__trait__',
         ] as $tokenType => $tokenValue) {
             if (\defined($tokenType)) {
                 $cases[] = $tokenValue.'.php';
