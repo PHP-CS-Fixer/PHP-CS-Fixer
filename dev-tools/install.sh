@@ -22,7 +22,6 @@ mkdir -p bin
 VERSION_SC="stable"
 
 echo λλλ checkbashisms
-rm -f bin/checkbashisms
 if [ ! -x bin/checkbashisms ]; then
     wget -qO- https://formulae.brew.sh/api/formula/checkbashisms.json \
         | jq -r .urls.stable.url \
