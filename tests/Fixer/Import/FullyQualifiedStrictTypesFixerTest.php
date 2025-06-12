@@ -2712,6 +2712,22 @@ function foo($a) {}',
                 PHP,
             ['import_symbols' => true],
         ];
+
+        yield 'usage of class Resource from other namespace' => [
+            <<<'PHP'
+                <?php
+                namespace Foo;
+                class Resource
+                {
+                    public function bar(): string
+                    {
+                        return \App\Resource::class;
+                    }
+                }
+                PHP,
+            null,
+            ['import_symbols' => true],
+        ];
     }
 
     /**
@@ -2750,7 +2766,7 @@ function foo($a) {}',
             '<?php function foo(): \A|\B|\C {}',
         ];
 
-        yield 'aaa' => [
+        yield [
             '<?php function foo(): A | B | C {}',
             '<?php function foo(): \A | \B | \C {}',
         ];
