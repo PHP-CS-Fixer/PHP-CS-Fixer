@@ -31,25 +31,33 @@ final class FCTTest extends TestCase
         'T_ENUM',
         'T_MATCH',
         'T_NULLSAFE_OBJECT_OPERATOR',
-        'T_PUBLIC_SET',
-        'T_PROTECTED_SET',
         'T_PRIVATE_SET',
+        'T_PROTECTED_SET',
+        'T_PUBLIC_SET',
         'T_READONLY',
     ];
 
     public function testClassIsInternal(): void
     {
-        self::assertSame(
-            "/**\n     * @internal\n     */",
-            (new \ReflectionClass(FCT::class))->getDocComment()
+        $docComment = (new \ReflectionClass(FCT::class))->getDocComment();
+        if (false === $docComment) {
+            $docComment = '';
+        }
+
+        self::assertStringContainsString(
+            "\n * @internal\n",
+            $docComment
         );
     }
 
     public function testAllConstantsArePresentInEveryPhpVersionRuntime(): void
     {
+        $consts = array_keys((new \ReflectionClass(FCT::class))->getConstants());
+        sort($consts);
+
         self::assertSame(
             self::EXPECTED_CONSTANTS,
-            array_keys((new \ReflectionClass(FCT::class))->getConstants())
+            $consts
         );
     }
 

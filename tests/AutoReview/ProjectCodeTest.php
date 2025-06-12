@@ -492,12 +492,6 @@ final class ProjectCodeTest extends TestCase
      */
     public function testThereIsNoUsageOfDefined(string $className): void
     {
-        if (\in_array($className, [FCT::class, CTTest::class, FCTTest::class], true)) {
-            $this->expectNotToPerformAssertions();
-
-            return;
-        }
-
         self::assertNotContains(
             'defined',
             $this->extractFunctionNamesCalledInClass($className),
@@ -737,12 +731,6 @@ final class ProjectCodeTest extends TestCase
      */
     public function testAllCodeContainSingleClassy(string $className): void
     {
-        if (FCT::class === $className) {
-            $this->expectNotToPerformAssertions();
-
-            return;
-        }
-
         $headerTypes = [
             T_ABSTRACT,
             T_AS,

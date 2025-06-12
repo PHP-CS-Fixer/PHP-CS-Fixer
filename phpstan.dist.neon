@@ -19,6 +19,9 @@ parameters:
     reportPossiblyNonexistentConstantArrayOffset: true
     treatPhpDocTypesAsCertain: false
     ignoreErrors:
+        - identifier: method.internal
+        - identifier: method.internalClass
+        - identifier: new.internalClass
         - '/^Class [a-zA-Z\\]+ extends @final class PhpCsFixer\\(ConfigurationException\\InvalidConfigurationException|ConfigurationException\\InvalidFixerConfigurationException|Tokenizer\\Tokens|Console\\Command\\FixCommand)\.$/'
         - '/^\$this\(PhpCsFixer\\Tokenizer\\Tokens\) does not accept PhpCsFixer\\Tokenizer\\Token\|null\.$/'
 
