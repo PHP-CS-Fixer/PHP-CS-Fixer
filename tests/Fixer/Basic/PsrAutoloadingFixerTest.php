@@ -359,14 +359,6 @@ class PsrAutoloadingFixer {}
             $cases[] = strtolower($magicConstant).'.php';
         }
 
-        foreach ([
-        ] as $tokenType => $tokenValue) {
-            if (\defined($tokenType)) {
-                $cases[] = $tokenValue.'.php';
-                $cases[] = strtoupper($tokenValue).'.php';
-            }
-        }
-
         yield from array_map(static fn ($case): array => [
             '<?php
 namespace Aaa;
