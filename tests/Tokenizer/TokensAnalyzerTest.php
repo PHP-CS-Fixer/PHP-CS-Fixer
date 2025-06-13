@@ -508,6 +508,54 @@ final class TokensAnalyzerTest extends TestCase
     /**
      * @param array<int, array{classIndex: int, type: string}> $expected
      *
+     * @dataProvider provideGetClassyElements80Cases
+     *
+     * @requires PHP >= 8.0
+     */
+    public function testGetClassyElements80(array $expected, string $source): void
+    {
+        $this->testGetClassyElements($expected, $source);
+    }
+
+    /**
+     * @return iterable<string, array{array<int, array{classIndex: int, type: string}>, string}>
+     */
+    public static function provideGetClassyElements80Cases(): iterable
+    {
+        yield 'promoted properties' => [
+            [
+                9 => [
+                    'classIndex' => 1,
+                    'type' => 'method',
+                ],
+                18 => [
+                    'classIndex' => 1,
+                    'type' => 'promoted_property',
+                ],
+                26 => [
+                    'classIndex' => 1,
+                    'type' => 'promoted_property',
+                ],
+                37 => [
+                    'classIndex' => 1,
+                    'type' => 'promoted_property',
+                ],
+            ],
+            <<<'PHP'
+                <?php class Foo {
+                    public function __construct(
+                        public bool $b,
+                        protected ?int $i,
+                        private bool|int|string $x,
+                    ) {}
+                }
+                PHP,
+        ];
+    }
+
+    /**
+     * @param array<int, array{classIndex: int, type: string}> $expected
+     *
      * @dataProvider provideGetClassyElements81Cases
      *
      * @requires PHP 8.1
