@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Console\Command;
 
+use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\FixCommand;
@@ -138,6 +139,65 @@ final class FixCommandTest extends TestCase
         self::assertStringContainsString('Parallel runner is an experimental feature and may be unstable, use it at your own risk. Feedback highly appreciated!', $cmdTester->getDisplay());
         self::assertStringContainsString('(header_comment)', $cmdTester->getDisplay());
         self::assertSame(8, $cmdTester->getStatusCode());
+    }
+
+    public function testUnsupportedVersionWarningRun(): void
+    {
+        if (\PHP_VERSION_ID < 80_400) {
+            self::markTestSkipped('This test requires PHP 8.4 or higher.');
+        }
+
+        $pathToDistConfig = __DIR__.'/../../../.php-cs-fixer.dist.php';
+        $configWithFixedParallelConfig = <<<PHP
+            <?php
+
+            \$config = require '{$pathToDistConfig}';
+
+            return \$config;
+            PHP;
+        $tmpFile = tempnam(sys_get_temp_dir(), 'php-cs-fixer-parallel-config-').'.php';
+        file_put_contents($tmpFile, $configWithFixedParallelConfig);
+
+        $cmdTester = $this->doTestExecute(
+            [
+                '--config' => $tmpFile,
+                'path' => [__DIR__],
+            ]
+        );
+
+        self::assertStringContainsString('PHP CS Fixer currently supports PHP syntax only up to PHP '.ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED, $cmdTester->getDisplay());
+        self::assertStringContainsString('Add Config::setFailOnUnsupportedVersion(true) to turn this into an error.', $cmdTester->getDisplay());
+        self::assertSame(0, $cmdTester->getStatusCode());
+    }
+
+    public function testUnsupportedVersionErrorRun(): void
+    {
+        if (\PHP_VERSION_ID < 80_400) {
+            self::markTestSkipped('This test requires PHP 8.4 or higher.');
+        }
+
+        $pathToDistConfig = __DIR__.'/../../../.php-cs-fixer.dist.php';
+        $configWithFixedParallelConfig = <<<PHP
+            <?php
+
+            \$config = require '{$pathToDistConfig}';
+            \$config->setFailOnUnsupportedVersion(true);
+
+            return \$config;
+            PHP;
+        $tmpFile = tempnam(sys_get_temp_dir(), 'php-cs-fixer-parallel-config-').'.php';
+        file_put_contents($tmpFile, $configWithFixedParallelConfig);
+
+        $cmdTester = $this->doTestExecute(
+            [
+                '--config' => $tmpFile,
+                'path' => [__DIR__],
+            ]
+        );
+
+        self::assertStringContainsString('PHP CS Fixer currently supports PHP syntax only up to PHP '.ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED, $cmdTester->getDisplay());
+        self::assertStringContainsString('Remove Config::setFailOnUnsupportedVersion(true) to turn this into a warning.', $cmdTester->getDisplay());
+        self::assertSame(1, $cmdTester->getStatusCode());
     }
 
     /**
