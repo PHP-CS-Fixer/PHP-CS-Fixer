@@ -143,8 +143,8 @@ final class FixCommandTest extends TestCase
 
     public function testUnsupportedVersionWarningRun(): void
     {
-        if (\PHP_VERSION_ID < 80_400) {
-            self::markTestSkipped('This test requires PHP 8.4 or higher.');
+        if (version_compare(PHP_VERSION, ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED .'.99', '<=')) {
+            self::markTestSkipped('This test requires version of PHP higher than '.ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED);
         }
 
         $pathToDistConfig = __DIR__.'/../../../.php-cs-fixer.dist.php';
@@ -171,8 +171,8 @@ final class FixCommandTest extends TestCase
 
     public function testUnsupportedVersionErrorRun(): void
     {
-        if (\PHP_VERSION_ID < 80_400) {
-            self::markTestSkipped('This test requires PHP 8.4 or higher.');
+        if (version_compare(PHP_VERSION, ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED .'.99', '<=')) {
+            self::markTestSkipped('This test requires version of PHP higher than '.ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED);
         }
 
         $pathToDistConfig = __DIR__.'/../../../.php-cs-fixer.dist.php';
