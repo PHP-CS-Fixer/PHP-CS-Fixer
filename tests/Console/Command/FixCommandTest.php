@@ -141,11 +141,6 @@ final class FixCommandTest extends TestCase
         self::assertSame(8, $cmdTester->getStatusCode());
     }
 
-    /**
-     * @requires PHP 8.4
-     *
-     * @covers \PhpCsFixer\Console\Command\FixCommand
-     */
     public function testUnsupportedVersionWarningRun(): void
     {
         if (\PHP_VERSION_ID < 80_400) {
@@ -174,11 +169,6 @@ final class FixCommandTest extends TestCase
         self::assertStringContainsString('Add Config::setFailOnUnsupportedVersion(true) to turn this into an error.', $cmdTester->getDisplay());
     }
 
-    /**
-     * @requires PHP 8.4
-     *
-     * @covers \PhpCsFixer\Console\Command\FixCommand
-     */
     public function testUnsupportedVersionErrorRun(): void
     {
         if (\PHP_VERSION_ID < 80_400) {
