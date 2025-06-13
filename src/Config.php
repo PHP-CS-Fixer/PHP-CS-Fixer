@@ -71,6 +71,8 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
 
     private bool $usingCache = true;
 
+    private bool $failOnUnsupportedVersion = false;
+
     public function __construct(string $name = 'default')
     {
         // @TODO 4.0 cleanup
@@ -89,6 +91,11 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
             $this->parallelConfig = ParallelConfigFactory::detect();
         } else {
             $this->parallelConfig = ParallelConfigFactory::sequential();
+        }
+
+        // @TODO 4.0 cleanup
+        if (false !== getenv('PHP_CS_FIXER_IGNORE_ENV')) {
+            $this->failOnUnsupportedVersion = false === filter_var(getenv('PHP_CS_FIXER_IGNORE_ENV'), FILTER_VALIDATE_BOOL);
         }
     }
 
@@ -163,6 +170,11 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
     public function getUsingCache(): bool
     {
         return $this->usingCache;
+    }
+
+    public function getFailOnUnsupportedVersion(): bool
+    {
+        return $this->failOnUnsupportedVersion;
     }
 
     public function registerCustomFixers(iterable $fixers): ConfigInterface
@@ -256,6 +268,13 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
     public function setUsingCache(bool $usingCache): ConfigInterface
     {
         $this->usingCache = $usingCache;
+
+        return $this;
+    }
+
+    public function setFailOnUnsupportedVersion(bool $failOnUnsupportedVersion): ConfigInterface
+    {
+        $this->failOnUnsupportedVersion = $failOnUnsupportedVersion;
 
         return $this;
     }

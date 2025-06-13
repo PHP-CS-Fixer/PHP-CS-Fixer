@@ -263,6 +263,30 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
         if (null !== $stdErr) {
             $stdErr->writeln(Application::getAboutWithRuntime(true));
+
+            if (version_compare(PHP_VERSION, ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED, '>')) {
+                $message = \sprintf(
+                    'PHP CS Fixer currently supports PHP syntax only up to PHP %s, current PHP version: %s. Use at your own risk.',
+                    ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED,
+                    PHP_VERSION
+                );
+
+                if ($resolver->getConfig()->getFailOnUnsupportedVersion()) {
+                    $message .= ' Remove Config::setFailOnUnsupportedVersion(true) to turn this into a warning.';
+                    $stdErr->writeln(\sprintf(
+                        $stdErr->isDecorated() ? '<bg=red;fg=white;>%s</>' : '%s',
+                        $message
+                    ));
+
+                    return 1;
+                }
+                $message .= ' Add Config::setFailOnUnsupportedVersion(true) to turn this into an error.';
+                $stdErr->writeln(\sprintf(
+                    $stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s',
+                    $message
+                ));
+            }
+
             $isParallel = $resolver->getParallelConfig()->getMaxProcesses() > 1;
 
             $stdErr->writeln(\sprintf(

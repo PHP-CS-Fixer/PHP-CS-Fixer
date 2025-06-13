@@ -22,6 +22,8 @@ use PhpCsFixer\Fixer\FixerInterface;
  */
 interface ConfigInterface
 {
+    public const PHP_VERSION_SYNTAX_SUPPORTED = '8.3';
+
     /**
      * Returns the path to the cache file.
      *
@@ -98,6 +100,11 @@ interface ConfigInterface
     public function getUsingCache(): bool;
 
     /**
+     * Returns true if execution should fail on unsupported PHP version.
+     */
+    public function getFailOnUnsupportedVersion(): bool;
+
+    /**
      * Adds a suite of custom fixers.
      *
      * Name of custom fixer should follow `VendorName/rule_name` convention.
@@ -159,4 +166,6 @@ interface ConfigInterface
     public function setRules(array $rules): self;
 
     public function setUsingCache(bool $usingCache): self;
+
+    public function setFailOnUnsupportedVersion(bool $failOnUnsupportedVersion): self;
 }
