@@ -76,7 +76,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 'covers',
                 'coversDefaultClass',
                 'coversNothing',
-                'coversTrait'
+                'coversTrait',
             ],
             [
                 'phpunit\framework\attributes\coversclass',
