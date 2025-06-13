@@ -2194,7 +2194,7 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$code of static method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:fromCode\\(\\) expects string, string\\|false given\\.$#',
 	'identifier' => 'argument.type',
-	'count' => 2,
+	'count' => 1,
 	'path' => __DIR__ . '/../../tests/AutoReview/CiConfigurationTest.php',
 ];
 $ignoreErrors[] = [
