@@ -299,7 +299,7 @@ abstract class AbstractFixerTestCase extends TestCase
             throw new \RuntimeException('Cannot determine sourcefile for class.');
         }
 
-        $tokens = Tokens::fromCode(file_get_contents($filePath));
+        $tokens = Tokens::fromCode((string) file_get_contents($filePath));
 
         $sequences = $this->findAllTokenSequences($tokens, [[T_VARIABLE, '$tokens'], [T_OBJECT_OPERATOR], [T_STRING]]);
 

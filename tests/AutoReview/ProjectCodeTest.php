@@ -853,6 +853,8 @@ final class ProjectCodeTest extends TestCase
         );
 
         $phpunitXmlContent = file_get_contents(__DIR__.'/../../phpunit.xml.dist');
+        self::assertIsString($phpunitXmlContent);
+
         $phpunitFiles = (array) simplexml_load_string($phpunitXmlContent)->xpath('testsuites/testsuite[@name="short-open-tag"]')[0]->file;
 
         sort($testFilesWithShortOpenTag);
@@ -1107,7 +1109,7 @@ final class ProjectCodeTest extends TestCase
      */
     private function getFileContentForClass(string $className): string
     {
-        return file_get_contents($this->getFilePathForClass($className));
+        return (string) file_get_contents($this->getFilePathForClass($className));
     }
 
     /**

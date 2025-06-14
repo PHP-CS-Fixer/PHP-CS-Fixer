@@ -169,8 +169,7 @@ final class CiConfigurationTest extends TestCase
     {
         $matchResult = Preg::match(
             '/<config name="testVersion" value="(?<min>\d+\.\d+)-(?<max>\d+\.\d+)"\/>/',
-            // @phpstan-ignore argument.type (This is file that is always present in the project, it won't return `false`)
-            file_get_contents(__DIR__.'/../../dev-tools/php-compatibility/phpcs-php-compatibility.xml'),
+            (string) file_get_contents(__DIR__.'/../../dev-tools/php-compatibility/phpcs-php-compatibility.xml'),
             $capture
         );
 
@@ -211,7 +210,7 @@ final class CiConfigurationTest extends TestCase
 
     private function getMaxPhpVersionFromEntryFile(): string
     {
-        $tokens = Tokens::fromCode(file_get_contents(__DIR__.'/../../php-cs-fixer'));
+        $tokens = Tokens::fromCode((string) file_get_contents(__DIR__.'/../../php-cs-fixer'));
         $sequence = $tokens->findSequence([
             [T_STRING, 'PHP_VERSION_ID'],
             [T_IS_GREATER_OR_EQUAL],
@@ -230,7 +229,7 @@ final class CiConfigurationTest extends TestCase
 
     private function getMinPhpVersionFromEntryFile(): string
     {
-        $tokens = Tokens::fromCode(file_get_contents(__DIR__.'/../../php-cs-fixer'));
+        $tokens = Tokens::fromCode((string) file_get_contents(__DIR__.'/../../php-cs-fixer'));
         $sequence = $tokens->findSequence([
             [T_STRING, 'PHP_VERSION_ID'],
             '<',
