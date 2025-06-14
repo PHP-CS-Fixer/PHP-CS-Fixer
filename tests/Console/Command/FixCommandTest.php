@@ -181,6 +181,7 @@ final class FixCommandTest extends TestCase
             <?php
 
             \$config = require '{$pathToDistConfig}';
+            \$config->setFailOnUnsupportedVersion(true);
 
             return \$config;
             PHP;
