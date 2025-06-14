@@ -29,6 +29,7 @@ use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Differ\UnifiedDiffer;
+use PhpCsFixer\FailOnUnsupportedVersionConfigInterface;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
@@ -121,6 +122,7 @@ final class ConfigurationResolver
         'show-progress' => null,
         'stop-on-violation' => null,
         'using-cache' => null,
+        'fail-on-unsupported-version' => null,
         'verbosity' => null,
     ];
 
@@ -154,6 +156,8 @@ final class ConfigurationResolver
     private ?RuleSet $ruleSet = null;
 
     private ?bool $usingCache = null;
+
+    private ?bool $failOnUnsupportedVersion = null;
 
     private ?FixerFactory $fixerFactory = null;
 
@@ -469,6 +473,20 @@ final class ConfigurationResolver
         $this->usingCache = $this->usingCache && $this->isCachingAllowedForRuntime();
 
         return $this->usingCache;
+    }
+
+    public function getFailOnUnsupportedVersion(): bool
+    {
+        if (null === $this->failOnUnsupportedVersion) {
+            $config = $this->getConfig();
+            if (null === $this->options['fail-on-unsupported-version'] && $config instanceof FailOnUnsupportedVersionConfigInterface) {
+                $this->failOnUnsupportedVersion = $config->getFailOnUnsupportedVersion();
+            } else {
+                $this->failOnUnsupportedVersion = $this->resolveOptionBooleanValue('fail-on-unsupported-version');
+            }
+        }
+
+        return $this->failOnUnsupportedVersion;
     }
 
     /**
