@@ -25,6 +25,7 @@ use PhpCsFixer\Console\Output\Progress\ProgressOutputFactory;
 use PhpCsFixer\Console\Output\Progress\ProgressOutputType;
 use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Error\ErrorsManager;
+use PhpCsFixer\FailOnUnsupportedVersionConfigInterface;
 use PhpCsFixer\Runner\Event\FileProcessed;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\ToolInfoInterface;
@@ -271,8 +272,9 @@ use Symfony\Component\Stopwatch\Stopwatch;
                     PHP_VERSION
                 );
 
-                if ($resolver->getConfig()->getFailOnUnsupportedVersion()) {
-                    $message .= ' Remove Config::setFailOnUnsupportedVersion(true) to turn this into a warning.';
+                $config = $resolver->getConfig();
+                if ($config instanceof FailOnUnsupportedVersionConfigInterface && $config->getFailOnUnsupportedVersion()) {
+                    $message .= ' Add Config::setFailOnUnsupportedVersion(false) to turn this into a warning.';
                     $stdErr->writeln(\sprintf(
                         $stdErr->isDecorated() ? '<bg=red;fg=white;>%s</>' : '%s',
                         $message
@@ -280,7 +282,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
                     return 1;
                 }
-                $message .= ' Add Config::setFailOnUnsupportedVersion(true) to turn this into an error.';
+                $message .= ' Remove Config::setFailOnUnsupportedVersion(false) to turn this into an error.';
                 $stdErr->writeln(\sprintf(
                     $stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s',
                     $message

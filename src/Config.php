@@ -23,7 +23,7 @@ use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class Config implements ConfigInterface, ParallelAwareConfigInterface
+class Config implements ConfigInterface, ParallelAwareConfigInterface, FailOnUnsupportedVersionConfigInterface
 {
     /**
      * @var non-empty-string
@@ -71,7 +71,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
 
     private bool $usingCache = true;
 
-    private bool $failOnUnsupportedVersion = false;
+    private bool $failOnUnsupportedVersion = true;
 
     public function __construct(string $name = 'default')
     {

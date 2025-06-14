@@ -120,14 +120,6 @@ final class CustomConfig implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getFailOnUnsupportedVersion(): bool
-    {
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function registerCustomFixers(iterable $fixers): ConfigInterface
     {
         return $this;
@@ -209,14 +201,6 @@ final class CustomConfig implements ConfigInterface
      * {@inheritdoc}
      */
     public function setUsingCache(bool $usingCache): ConfigInterface
-    {
-        return $this;
-    }
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function setFailOnUnsupportedVersion(bool $failOnUnsupportedVersion): ConfigInterface
     {
         return $this;
     }
