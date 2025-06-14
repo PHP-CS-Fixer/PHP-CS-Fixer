@@ -22,6 +22,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\EnumAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\MatchAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\ControlCaseStructuresAnalyzer;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -378,26 +379,22 @@ $expressionResult = match ($condition) {
             [T_SWITCH],
         ];
 
-        if (\defined('T_ENUM')) { // @TODO: drop condition when PHP 8.1+ is required - sadly PHPUnit still calls the provider even if requires condition is not matched
-            yield [
-                [
-                    1 => $switchAnalysis,
-                    28 => $enumAnalysis,
-                ],
-                $code,
-                [T_SWITCH, T_ENUM],
-            ];
-        }
+        yield [
+            [
+                1 => $switchAnalysis,
+                28 => $enumAnalysis,
+            ],
+            $code,
+            [T_SWITCH, FCT::T_ENUM],
+        ];
 
-        if (\defined('T_MATCH')) { // @TODO: drop condition when PHP 8.0+ is required - sadly PHPUnit still calls the provider even if requires condition is not matched
-            yield [
-                [
-                    57 => $matchAnalysis,
-                ],
-                $code,
-                [T_MATCH],
-            ];
-        }
+        yield [
+            [
+                57 => $matchAnalysis,
+            ],
+            $code,
+            [FCT::T_MATCH],
+        ];
     }
 
     public function testNoSupportedControlStructure(): void
