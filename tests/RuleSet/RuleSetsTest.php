@@ -108,7 +108,7 @@ Integration of %s.
 ';
         self::assertStringStartsWith(
             \sprintf($template, $setDefinitionName, $setDefinitionName),
-            file_get_contents($file)
+            (string) file_get_contents($file)
         );
     }
 

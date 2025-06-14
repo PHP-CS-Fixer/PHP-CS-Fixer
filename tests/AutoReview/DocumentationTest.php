@@ -59,7 +59,7 @@ final class DocumentationTest extends TestCase
 
         $expected = $generator->generateFixerDocumentation($fixer);
         $actual = file_get_contents($path);
-        \assert(false !== $actual);
+        self::assertIsString($actual);
 
         $expected = Preg::replaceCallback(
             '/
@@ -173,7 +173,7 @@ final class DocumentationTest extends TestCase
 
     public function testInstallationDocHasCorrectMinimumVersion(): void
     {
-        $composerJsonContent = file_get_contents(__DIR__.'/../../composer.json');
+        $composerJsonContent = (string) file_get_contents(__DIR__.'/../../composer.json');
         $composerJson = json_decode($composerJsonContent, true, 512, JSON_THROW_ON_ERROR);
         $phpVersion = $composerJson['require']['php'];
         $minimumVersion = ltrim(substr($phpVersion, 0, strpos($phpVersion, ' ')), '^');
@@ -183,7 +183,7 @@ final class DocumentationTest extends TestCase
 
         self::assertStringContainsString(
             $minimumVersionInformation,
-            file_get_contents($installationDocPath),
+            (string) file_get_contents($installationDocPath),
             \sprintf('Files %s needs to contain information "%s"', $installationDocPath, $minimumVersionInformation)
         );
     }
