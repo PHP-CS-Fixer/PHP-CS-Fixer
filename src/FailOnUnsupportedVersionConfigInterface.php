@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer;
 
 /**
- * @TODO 4.0 Include parallel runner config in main ConfigInterface
+ * @TODO 4.0 Include in main ConfigInterface
  */
 interface FailOnUnsupportedVersionConfigInterface extends ConfigInterface
 {
