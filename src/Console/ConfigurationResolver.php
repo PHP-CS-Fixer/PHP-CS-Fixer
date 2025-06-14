@@ -72,6 +72,7 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  *      show-progress: null|string,
  *      stop-on-violation: null|bool,
  *      using-cache: null|string,
+ *      fail-on-unsupported-version: null|bool,
  *      verbosity: null|string,
  *  }
  */
