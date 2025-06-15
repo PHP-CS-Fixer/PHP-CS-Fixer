@@ -175,8 +175,8 @@ final class Token
     /**
      * Check if token is equals to one of given.
      *
-     * @param list<array{0: int, 1?: string}|string|Token> $others        array of tokens or token prototypes
-     * @param bool                                         $caseSensitive perform a case sensitive comparison
+     * @param array<array-key, array{0: int, 1?: string}|string|Token> $others        array of tokens or token prototypes
+     * @param bool                                                     $caseSensitive perform a case sensitive comparison
      */
     public function equalsAny(array $others, bool $caseSensitive = true): bool
     {
