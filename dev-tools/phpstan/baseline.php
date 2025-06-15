@@ -2078,18 +2078,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Utils.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Tests\\\\AutoReview\\\\CiConfigurationTest\\:\\:getPhpVersionsUsedForBuildingLocalImages\\(\\) should return list\\<numeric\\-string\\> but returns array\\<string\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/AutoReview/CiConfigurationTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Tests\\\\AutoReview\\\\CiConfigurationTest\\:\\:getPhpVersionsUsedForBuildingOfficialImages\\(\\) should return list\\<numeric\\-string\\> but returns array\\<mixed\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/AutoReview/CiConfigurationTest.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Offset string might not exist on array\\<Symfony\\\\Component\\\\Console\\\\Command\\\\Command\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 3,
@@ -2114,79 +2102,13 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/AutoReview/FixerFactoryTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Tests\\\\AutoReview\\\\ProjectCodeTest\\:\\:extractFunctionNamesCalledInClass\\(\\) should return list\\<string\\> but returns array\\<int, string\\>\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/AutoReview/ProjectCodeTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$callback of function array_map expects \\(callable\\(PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\)\\: mixed\\)\\|null, Closure\\(PhpCsFixer\\\\Tokenizer\\\\Token\\)\\: string given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/AutoReview/ProjectCodeTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$callback of function array_filter expects \\(callable\\(PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\)\\: bool\\)\\|null, Closure\\(PhpCsFixer\\\\Tokenizer\\\\Token\\)\\: bool given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/AutoReview/ProjectCodeTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset \'message\' might not exist on array\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Console/Report/FixReport/GitlabReporterTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset \'property\' might not exist on array\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Console/Report/FixReport/GitlabReporterTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset \'message\' might not exist on array\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Console/Report/FixReport/JsonReporterTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset \'property\' might not exist on array\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Console/Report/FixReport/JsonReporterTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset \'message\' might not exist on array\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Console/Report/ListSetsReport/JsonReporterTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset \'property\' might not exist on array\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Console/Report/ListSetsReport/JsonReporterTest.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Offset int\\<0, max\\> might not exist on list\\<int\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/DocBlock/AnnotationTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Generator expects value type array\\{0\\: string, 1\\?\\: string\\}, list\\<string\\> given\\.$#',
-	'identifier' => 'generator.valueType',
-	'count' => 5,
-	'path' => __DIR__ . '/../../tests/Fixer/PhpUnit/PhpUnitDataProviderReturnTypeFixerTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Generator expects value type array\\{string, string\\}, list\\<string\\> given\\.$#',
-	'identifier' => 'generator.valueType',
-	'count' => 2,
-	'path' => __DIR__ . '/../../tests/Fixer/PhpUnit/PhpUnitDataProviderReturnTypeFixerTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Tests\\\\Fixer\\\\PhpUnit\\\\PhpUnitDataProviderReturnTypeFixerTest\\:\\:mapToTemplate\\(\\) should return list\\<string\\> but returns array\\<int\\|string, string\\>\\.$#',
+	'message' => '#^Method PhpCsFixer\\\\Tests\\\\Fixer\\\\PhpUnit\\\\PhpUnitDataProviderReturnTypeFixerTest\\:\\:mapToTemplate\\(\\) should return array\\{0\\: string, 1\\?\\: string\\} but returns array\\<int\\|string, string\\>\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/Fixer/PhpUnit/PhpUnitDataProviderReturnTypeFixerTest.php',
@@ -2202,18 +2124,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/Test/AbstractFixerTestCase.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$sequence of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:findSequence\\(\\) expects non\\-empty\\-list\\<array\\{0\\: int, 1\\?\\: string\\}\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\>, list\\<array\\{0\\: int, 1\\?\\: string\\}\\> given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Test/AbstractFixerTestCase.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$prototypes of method PhpCsFixer\\\\Tests\\\\Test\\\\AbstractTransformerTestCase\\:\\:countTokenPrototypes\\(\\) expects list\\<array\\{0\\: int, 1\\?\\: string\\}\\>, array\\<int\\<0, max\\>, array\\{int\\}\\|string\\> given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Test/AbstractTransformerTestCase.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Offset 0 might not exist on list\\<int\\<0, max\\>\\>\\.$#',
