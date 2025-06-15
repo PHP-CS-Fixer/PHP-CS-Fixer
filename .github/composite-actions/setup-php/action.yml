@@ -22,5 +22,5 @@ runs:
         php-version: ${{ inputs.version }}
         coverage: ${{ inputs.coverage }}
         tools: composer, ${{ inputs.tools }}
-        extensions: none, ctype, curl, dom, json, mbstring, opcache, openssl, simplexml, tokenizer, xml, xmlwriter, zip
+        extensions: none, ctype, curl, dom, iconv, json, mbstring, opcache, openssl, simplexml, tokenizer, xml, xmlwriter, zip
         ini-values: zend.assertions=1
