@@ -68,6 +68,7 @@ final class ListFilesCommandTest extends TestCase
             self::$filesystem->dumpFile($tmpFile, '<?php function a() {  }');
 
             $tmpFile = realpath($tmpFile);
+            self::assertIsString($tmpFile);
             self::assertFileExists($tmpFile);
 
             $commandTester = $this->doTestExecute([

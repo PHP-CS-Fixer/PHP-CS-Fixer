@@ -1775,6 +1775,11 @@ $bar;',
             $sets[$j] = $set;
         }
 
+        \assert(\array_key_exists(0, $sets));
+        \assert(\array_key_exists(1, $sets));
+        \assert(\array_key_exists(2, $sets));
+        \assert(\array_key_exists(3, $sets));
+
         yield 'overlapping inserts of bunch of comments' => [
             Tokens::fromCode(\sprintf("<?php\n%s/* line #1 */\n%s/* line #2 */\n%s/* line #3 */%s", $sets[0]['content'], $sets[1]['content'], $sets[2]['content'], $sets[3]['content'])),
             Tokens::fromCode("<?php\n/* line #1 */\n/* line #2 */\n/* line #3 */"),
@@ -1997,6 +2002,7 @@ $bar;',
         self::assertSame(array_keys($expected), array_keys($input), 'Both arrays need to have same keys.');
 
         foreach ($expected as $index => $expectedToken) {
+            \assert(\array_key_exists($index, $input));
             self::assertTrue(
                 $expectedToken->equals($input[$index]),
                 \sprintf('The token at index %d should be %s, got %s', $index, $expectedToken->toJson(), $input[$index]->toJson())

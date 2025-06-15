@@ -29,6 +29,8 @@ final class ComposerFileTest extends TestCase
     public function testScriptsHaveDescriptions(): void
     {
         $composerJson = self::readComposerJson();
+        self::assertArrayHasKey('scripts', $composerJson);
+        self::assertArrayHasKey('scripts-descriptions', $composerJson);
 
         $scripts = array_keys($composerJson['scripts']);
         $descriptions = array_keys($composerJson['scripts-descriptions']);
@@ -40,6 +42,8 @@ final class ComposerFileTest extends TestCase
     public function testScriptsAliasesDescriptionsFollowThePattern(): void
     {
         $composerJson = self::readComposerJson();
+        self::assertArrayHasKey('scripts', $composerJson);
+        self::assertArrayHasKey('scripts-descriptions', $composerJson);
 
         $scripts = array_keys($composerJson['scripts']);
 

@@ -2581,6 +2581,7 @@ class TestClass {
                 continue;
             }
 
+            \assert(\array_key_exists($index, $expected));
             self::assertSame($expected[$index], $tokensAnalyzer->isEnumCase($index));
         }
     }

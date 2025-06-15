@@ -91,6 +91,7 @@ final class DocumentationTest extends TestCase
                 $replacement = '[UNAVAILABLE EXAMPLE DIFF]';
 
                 if (Preg::match("/{$before}(\\.\\. code-block:: diff.*?){$after}/s", $actual, $actualMatches)) {
+                    \assert(\array_key_exists(1, $actualMatches));
                     $replacement = $actualMatches[1];
                 }
 
@@ -180,6 +181,7 @@ final class DocumentationTest extends TestCase
 
         $minimumVersionInformation = \sprintf('PHP needs to be a minimum version of PHP %s.', $minimumVersion);
         $installationDocPath = realpath(__DIR__.'/../../doc/installation.rst');
+        self::assertIsString($installationDocPath);
 
         self::assertStringContainsString(
             $minimumVersionInformation,

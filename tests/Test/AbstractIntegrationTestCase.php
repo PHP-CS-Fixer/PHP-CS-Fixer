@@ -165,9 +165,10 @@ abstract class AbstractIntegrationTestCase extends TestCase
     {
         $dir = static::getFixturesDir();
         $fixturesDir = realpath($dir);
+        \assert(\is_string($fixturesDir));
 
         if (!is_dir($fixturesDir)) {
-            throw new \UnexpectedValueException(\sprintf('Given fixture dir "%s" is not a directory.', \is_string($fixturesDir) ? $fixturesDir : $dir));
+            throw new \UnexpectedValueException(\sprintf('Given fixture dir "%s" is not a directory.', $fixturesDir));
         }
 
         $factory = static::createIntegrationCaseFactory();
