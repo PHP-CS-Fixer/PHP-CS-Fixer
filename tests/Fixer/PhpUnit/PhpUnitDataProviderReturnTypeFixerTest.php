@@ -205,7 +205,7 @@ class FooTest extends TestCase {
     }
 
     /**
-     * @return iterable<string, array{string, string}>
+     * @return iterable<string, array{string, 1?: string}>
      */
     public static function provideFixPre80Cases(): iterable
     {
@@ -260,7 +260,9 @@ class FooTest extends TestCase {
     }
 
     /**
-     * @return list<string>
+     * @param array{string, 1?: string} ...$types
+     *
+     * @return array{string, 1?: string}
      */
     private static function mapToTemplate(string ...$types): array
     {

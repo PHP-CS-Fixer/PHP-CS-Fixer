@@ -1081,14 +1081,16 @@ final class ProjectCodeTest extends TestCase
     /**
      * @param class-string $className
      *
-     * @return list<string>
+     * @return array<array-key, string>
      */
     private function extractFunctionNamesCalledInClass(string $className): array
     {
-        $tokens = $this->createTokensForClass($className);
+        /** @var list<Token> $tokens */
+        $tokens = $this->createTokensForClass($className)->toArray();
 
+        /** @var list<Token> $stringTokens */
         $stringTokens = array_filter(
-            $tokens->toArray(),
+            $tokens,
             static fn (Token $token): bool => $token->isGivenKind(T_STRING)
         );
 

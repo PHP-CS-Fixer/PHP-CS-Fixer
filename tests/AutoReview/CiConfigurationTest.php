@@ -146,8 +146,8 @@ final class CiConfigurationTest extends TestCase
     }
 
     /**
-     * @param list<numeric-string> $supportedVersions
-     * @param list<numeric-string> $ciVersions
+     * @param list<numeric-string>     $supportedVersions
+     * @param array<array-key, string> $ciVersions
      */
     private static function assertSupportedPhpVersionsAreCoveredByCiJobs(array $supportedVersions, array $ciVersions): void
     {
@@ -273,7 +273,7 @@ final class CiConfigurationTest extends TestCase
     }
 
     /**
-     * @return list<numeric-string>
+     * @return array<array-key, string>
      */
     private function getPhpVersionsUsedForBuildingOfficialImages(): array
     {
@@ -286,7 +286,7 @@ final class CiConfigurationTest extends TestCase
     }
 
     /**
-     * @return list<numeric-string>
+     * @return array<array-key, string>
      */
     private function getPhpVersionsUsedForBuildingLocalImages(): array
     {
