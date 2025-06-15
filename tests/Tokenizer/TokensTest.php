@@ -355,6 +355,8 @@ final class TokensTest extends TestCase
             PHP;
 
         $tokens = Tokens::fromCode($source);
+
+        // @phpstan-ignore-next-line offsetAccess.notFound
         [$fooIndex, $barIndex] = array_keys($tokens->findGivenKind(T_PUBLIC));
 
         $tokens->clearRange($fooIndex, $barIndex - 1);
