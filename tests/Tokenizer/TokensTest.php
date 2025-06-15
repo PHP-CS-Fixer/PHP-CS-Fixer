@@ -49,9 +49,9 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @param null|array<int, Token>                       $expected
-     * @param list<array{0: int, 1?: string}|string|Token> $sequence
-     * @param bool|list<bool>                              $caseSensitive
+     * @param null|array<int, Token>                                 $expected
+     * @param non-empty-list<array{0: int, 1?: string}|string|Token> $sequence
+     * @param bool|list<bool>                                        $caseSensitive
      *
      * @dataProvider provideFindSequenceCases
      */
@@ -297,7 +297,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @param list<mixed> $sequence sequence of token prototypes
+     * @param non-empty-list<array{0: int, 1?: string}|string|Token> $sequence sequence of token prototypes
      *
      * @dataProvider provideFindSequenceExceptionCases
      */
@@ -1597,7 +1597,7 @@ $bar;',
     /**
      * @dataProvider provideInsertSlicesAtMultiplePlacesCases
      *
-     * @param array<int, Token> $slices
+     * @param list<Token> $slices
      */
     public function testInsertSlicesAtMultiplePlaces(string $expected, array $slices): void
     {
