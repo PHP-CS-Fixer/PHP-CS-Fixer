@@ -564,7 +564,7 @@ final class ConfigurationResolverTest extends TestCase
     {
         $dir = __DIR__.'/../Fixtures/ConfigurationResolverPathsIntersection';
         $cb = static fn (array $items): array => array_map(
-            static fn (string $item): string => realpath($dir.'/'.$item),
+            static fn (string $item): string => (string) realpath($dir.'/'.$item),
             $items
         );
 

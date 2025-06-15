@@ -64,7 +64,7 @@ final class ListFilesCommandTest extends TestCase
     {
         try {
             $tmpDir = __DIR__.'/../../Fixtures/ListFilesTest/using-getcwd';
-            $tmpFile = $tmpDir.'/'.ltrim(getcwd(), '/').'-out.php';
+            $tmpFile = $tmpDir.'/'.ltrim((string) getcwd(), '/').'-out.php';
             self::$filesystem->dumpFile($tmpFile, '<?php function a() {  }');
 
             $tmpFile = realpath($tmpFile);
@@ -74,7 +74,7 @@ final class ListFilesCommandTest extends TestCase
             $commandTester = $this->doTestExecute([
                 '--config' => __DIR__.'/../../Fixtures/ListFilesTest/.php-cs-fixer.using-getcwd.php',
             ]);
-            $expectedPath = str_replace('/', \DIRECTORY_SEPARATOR, './'.Path::makeRelative($tmpFile, getcwd()));
+            $expectedPath = str_replace('/', \DIRECTORY_SEPARATOR, './'.Path::makeRelative($tmpFile, (string) getcwd()));
             self::assertSame(0, $commandTester->getStatusCode());
             self::assertSame(escapeshellarg($expectedPath).PHP_EOL, $commandTester->getDisplay());
         } finally {

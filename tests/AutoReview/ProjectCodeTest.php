@@ -374,7 +374,7 @@ final class ProjectCodeTest extends TestCase
     public function testThatTestClassesAreInternal(string $testClassName): void
     {
         $rc = new \ReflectionClass($testClassName);
-        $doc = new DocBlock($rc->getDocComment());
+        $doc = new DocBlock((string) $rc->getDocComment());
 
         self::assertNotEmpty(
             $doc->getAnnotationsOfType('internal'),
