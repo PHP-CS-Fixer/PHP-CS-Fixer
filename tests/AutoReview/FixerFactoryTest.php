@@ -208,9 +208,9 @@ final class FixerFactoryTest extends TestCase
     public function testFixersPriorityComment(): void
     {
         $fixersPhpDocIssues = [];
-        $fixers = self::getAllFixers();
+        $fixers = [];
 
-        foreach ($fixers as $name => $fixer) {
+        foreach (self::getAllFixers() as $name => $fixer) {
             $reflection = new \ReflectionObject($fixer);
             $fixers[$name] = ['reflection' => $reflection, 'short_classname' => $reflection->getShortName()];
         }

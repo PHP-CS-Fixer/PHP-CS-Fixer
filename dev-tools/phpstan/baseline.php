@@ -2090,24 +2090,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/AutoReview/ComposerFileTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'reflection\' on array\\{reflection\\: ReflectionObject, short_classname\\: string\\}\\|PhpCsFixer\\\\Fixer\\\\FixerInterface\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/AutoReview/FixerFactoryTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Cannot access offset \'short_classname\' on array\\{reflection\\: ReflectionObject, short_classname\\: string\\}\\|PhpCsFixer\\\\Fixer\\\\FixerInterface\\.$#',
-	'identifier' => 'offsetAccess.nonOffsetAccessible',
-	'count' => 3,
-	'path' => __DIR__ . '/../../tests/AutoReview/FixerFactoryTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Offset int\\<0, max\\> might not exist on list\\<int\\>\\.$#',
-	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/DocBlock/AnnotationTest.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method PhpCsFixer\\\\Tests\\\\Fixer\\\\PhpUnit\\\\PhpUnitDataProviderReturnTypeFixerTest\\:\\:mapToTemplate\\(\\) should return array\\{0\\: string, 1\\?\\: string\\} but returns array\\<int\\|string, string\\>\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
