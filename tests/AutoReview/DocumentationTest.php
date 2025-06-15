@@ -177,7 +177,7 @@ final class DocumentationTest extends TestCase
         $composerJsonContent = (string) file_get_contents(__DIR__.'/../../composer.json');
         $composerJson = json_decode($composerJsonContent, true, 512, JSON_THROW_ON_ERROR);
         $phpVersion = $composerJson['require']['php'];
-        $minimumVersion = ltrim(substr($phpVersion, 0, strpos($phpVersion, ' ')), '^');
+        $minimumVersion = ltrim(substr($phpVersion, 0, (int) strpos($phpVersion, ' ')), '^');
 
         $minimumVersionInformation = \sprintf('PHP needs to be a minimum version of PHP %s.', $minimumVersion);
         $installationDocPath = realpath(__DIR__.'/../../doc/installation.rst');

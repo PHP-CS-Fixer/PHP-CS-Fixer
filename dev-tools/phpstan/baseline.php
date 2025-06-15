@@ -2114,12 +2114,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/AutoReview/ComposerFileTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$length of function substr expects int\\|null, int\\<0, max\\>\\|false given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/AutoReview/DocumentationTest.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot access offset \'reflection\' on array\\{reflection\\: ReflectionObject, short_classname\\: string\\}\\|PhpCsFixer\\\\Fixer\\\\FixerInterface\\.$#',
 	'identifier' => 'offsetAccess.nonOffsetAccessible',
 	'count' => 1,
@@ -2144,40 +2138,10 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/AutoReview/ProjectCodeTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$content of class PhpCsFixer\\\\DocBlock\\\\DocBlock constructor expects string, string\\|false given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/AutoReview/ProjectCodeTest.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$callback of function array_filter expects \\(callable\\(PhpCsFixer\\\\Tokenizer\\\\Token\\|null\\)\\: bool\\)\\|null, Closure\\(PhpCsFixer\\\\Tokenizer\\\\Token\\)\\: bool given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/AutoReview/ProjectCodeTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#3 \\$cwd of class PhpCsFixer\\\\Console\\\\ConfigurationResolver constructor expects string, string\\|false given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 3,
-	'path' => __DIR__ . '/../../tests/ConfigTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$string of function ltrim expects string, string\\|false given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Console/Command/ListFilesCommandTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#2 \\$basePath of static method Symfony\\\\Component\\\\Filesystem\\\\Path\\:\\:makeRelative\\(\\) expects string, string\\|false given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Console/Command/ListFilesCommandTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Anonymous function should return non\\-empty\\-string but returns non\\-empty\\-string\\|false\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Console/ConfigurationResolverTest.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Offset \'message\' might not exist on array\\.$#',
@@ -2256,12 +2220,6 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../tests/Test/AbstractFixerTestCase.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$string of function strlen expects string, string\\|false given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/Test/AbstractIntegrationTestCase.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#2 \\$prototypes of method PhpCsFixer\\\\Tests\\\\Test\\\\AbstractTransformerTestCase\\:\\:countTokenPrototypes\\(\\) expects list\\<array\\{0\\: int, 1\\?\\: string\\}\\>, array\\<int\\<0, max\\>, array\\{int\\}\\|string\\> given\\.$#',

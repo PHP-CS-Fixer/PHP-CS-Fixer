@@ -179,7 +179,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
                 continue;
             }
 
-            $relativePath = substr($file->getPathname(), \strlen(realpath(__DIR__.'/../../')) + 1);
+            $relativePath = substr($file->getPathname(), \strlen((string) realpath(__DIR__.'/../../')) + 1);
 
             yield $relativePath => [$factory->create($file)];
         }
