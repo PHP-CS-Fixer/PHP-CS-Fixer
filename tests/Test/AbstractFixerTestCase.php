@@ -671,6 +671,7 @@ abstract class AbstractFixerTestCase extends TestCase
         while (($found = $tokens->findSequence($sequence, $lastIndex)) !== null) {
             $keys = array_keys($found);
             $sequences[] = $found;
+            \assert(\array_key_exists(2, $keys));
             $lastIndex = $keys[2];
         }
 

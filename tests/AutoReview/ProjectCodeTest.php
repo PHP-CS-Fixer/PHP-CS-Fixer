@@ -632,6 +632,7 @@ final class ProjectCodeTest extends TestCase
             ];
 
             for ($i = \count($parameters) - 1; $i >= 0; --$i) {
+                \assert(\array_key_exists($i, $parameters));
                 $name = $parameters[$i]->getName();
 
                 if (isset($expected[$name])) {
@@ -855,7 +856,14 @@ final class ProjectCodeTest extends TestCase
         $phpunitXmlContent = file_get_contents(__DIR__.'/../../phpunit.xml.dist');
         self::assertIsString($phpunitXmlContent);
 
-        $phpunitFiles = (array) simplexml_load_string($phpunitXmlContent)->xpath('testsuites/testsuite[@name="short-open-tag"]')[0]->file;
+        $phpunitXml = simplexml_load_string($phpunitXmlContent);
+        self::assertNotFalse($phpunitXml);
+
+        $shortOpenTag = $phpunitXml->xpath('testsuites/testsuite[@name="short-open-tag"]');
+        self::assertIsArray($shortOpenTag);
+        self::assertArrayHasKey(0, $shortOpenTag);
+
+        $phpunitFiles = (array) $shortOpenTag[0]->file;
 
         sort($testFilesWithShortOpenTag);
         sort($phpunitFiles);

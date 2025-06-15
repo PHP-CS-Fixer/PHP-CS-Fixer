@@ -549,6 +549,8 @@ final class ConfigurationResolverTest extends TestCase
             iterator_to_array($resolver->getFinder(), false)
         );
 
+        self::assertIsArray($expected);
+
         sort($expected);
         sort($intersectionItems);
 

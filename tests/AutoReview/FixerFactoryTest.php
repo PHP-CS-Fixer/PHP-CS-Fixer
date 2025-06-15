@@ -41,8 +41,10 @@ final class FixerFactoryTest extends TestCase
 
         foreach (self::getFixerWithFixedPosition() as $fixerName => $offset) {
             if ($offset < 0) {
+                \assert(\array_key_exists(\count($fixers) + $offset, $fixers));
                 self::assertSame($fixerName, $fixers[\count($fixers) + $offset]->getName(), $fixerName);
             } else {
+                \assert(\array_key_exists($offset, $fixers));
                 self::assertSame($fixerName, $fixers[$offset]->getName(), $fixerName);
             }
         }
@@ -59,9 +61,11 @@ final class FixerFactoryTest extends TestCase
 
         foreach ($graphs as $graph) {
             foreach ($graph as $fixerName => $edges) {
+                \assert(\array_key_exists($fixerName, $fixers));
                 $first = $fixers[$fixerName];
 
                 foreach ($edges as $edge) {
+                    \assert(\array_key_exists($edge, $fixers));
                     $second = $fixers[$edge];
 
                     self::assertLessThan($first->getPriority(), $second->getPriority(), \sprintf('"%s" should have less priority than "%s"', $edge, $fixerName));
@@ -112,6 +116,8 @@ final class FixerFactoryTest extends TestCase
             }
 
             $file = realpath($file);
+            self::assertIsString($file);
+
             $factory = new IntegrationCaseFactory();
             $test = $factory->create(new SplFileInfo($file, './', __DIR__));
             $rules = $test->getRuleset()->getRules();
@@ -240,6 +246,8 @@ final class FixerFactoryTest extends TestCase
         }
 
         foreach ($graph as $fixerName => $edges) {
+            \assert(\array_key_exists($fixerName, $fixers));
+
             $expectedMessage = "/**\n     * {@inheritdoc}\n     *";
 
             foreach ($edges as $label => $others) {
@@ -247,6 +255,7 @@ final class FixerFactoryTest extends TestCase
                     $shortClassNames = [];
 
                     foreach ($others as $other => $true) {
+                        \assert(\array_key_exists($other, $fixers));
                         $shortClassNames[$other] = $fixers[$other]['short_classname'];
                     }
 
