@@ -85,7 +85,7 @@ final class DoctrineAnnotationBracesFixer extends AbstractDoctrineAnnotationFixe
     private function addBracesToAnnotations(Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$tokens[$index]->isType(DocLexer::T_AT)) {
+            if (!$token->isType(DocLexer::T_AT)) {
                 continue;
             }
 

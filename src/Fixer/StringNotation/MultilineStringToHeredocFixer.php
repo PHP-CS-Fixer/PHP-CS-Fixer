@@ -67,23 +67,11 @@ final class MultilineStringToHeredocFixer extends AbstractFixer
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $inHeredoc = false;
         $complexStringStartIndex = null;
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind([T_START_HEREDOC, T_END_HEREDOC])) {
-                $inHeredoc = $token->isGivenKind(T_START_HEREDOC) || !$token->isGivenKind(T_END_HEREDOC);
-
-                continue;
-            }
-
             if (null === $complexStringStartIndex) {
                 if ($token->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
                     $this->convertStringToHeredoc($tokens, $index, $index);
-
-                    // skip next 2 added tokens if replaced
-                    if ($tokens[$index]->isGivenKind(T_START_HEREDOC)) {
-                        $inHeredoc = true;
-                    }
                 } elseif ($token->equalsAny(['"', 'b"', 'B"'])) {
                     $complexStringStartIndex = $index;
                 }

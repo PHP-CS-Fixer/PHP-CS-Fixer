@@ -279,26 +279,6 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     }
                 }
                 ',
-            '<?php
-                class B
-                {
-                    /** @inheritDoc */
-                    public function falseImportFromTrait()
-                    {
-                    }
-                }
-
-                /** @inheritDoc */
-                class A
-                {
-                    use T;
-
-                    /** @inheritDoc */
-                    public function importFromTrait()
-                    {
-                    }
-                }
-                ',
         ];
 
         yield [

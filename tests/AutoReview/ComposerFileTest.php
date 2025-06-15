@@ -70,7 +70,7 @@ final class ComposerFileTest extends TestCase
      */
     private static function readComposerJson(): array
     {
-        $composerJsonContent = file_get_contents(__DIR__.'/../../composer.json');
+        $composerJsonContent = (string) file_get_contents(__DIR__.'/../../composer.json');
 
         return json_decode($composerJsonContent, true, 512, JSON_THROW_ON_ERROR);
     }

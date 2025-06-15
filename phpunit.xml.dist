@@ -41,11 +41,11 @@
         </testsuite>
     </testsuites>
 
-    <coverage>
+    <source>
         <include>
             <directory>./src</directory>
         </include>
-    </coverage>
+    </source>
 
     <extensions>
         <bootstrap class="Paraunit\Configuration\ParaunitExtension"/>

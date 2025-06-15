@@ -290,7 +290,10 @@ abstract class AbstractIntegrationTestCase extends TestCase
         }
 
         self::assertNotEmpty($changed, \sprintf('Expected changes made to test "%s" in "%s".', $case->getTitle(), $case->getFileName()));
+
         $fixedInputCode = file_get_contents($tmpFile);
+        self::assertIsString($fixedInputCode);
+
         self::assertThat(
             $fixedInputCode,
             new IsIdenticalString($expected),
@@ -321,7 +324,9 @@ abstract class AbstractIntegrationTestCase extends TestCase
 
             Tokens::clearCache();
             $runner->fix();
+
             $fixedInputCodeWithReversedFixers = file_get_contents($tmpFile);
+            self::assertIsString($fixedInputCodeWithReversedFixers);
 
             static::assertRevertedOrderFixing($case, $fixedInputCode, $fixedInputCodeWithReversedFixers);
         }
@@ -390,7 +395,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
 
         if (null === $linter) {
             $linter = new CachingLinter(
-                getenv('FAST_LINT_TEST_CASES') ? new Linter() : new ProcessLinter()
+                '1' === getenv('FAST_LINT_TEST_CASES') ? new Linter() : new ProcessLinter()
             );
         }
 

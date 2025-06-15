@@ -31,6 +31,7 @@ use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Processor\ImportProcessor;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -69,6 +70,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
 
     private const REGEX_CLASS = '(?:\\\?+'.TypeExpression::REGEX_IDENTIFIER
         .'(\\\\'.TypeExpression::REGEX_IDENTIFIER.')*+)';
+    private const CLASSY_KINDS = [T_CLASS, T_INTERFACE, T_TRAIT, FCT::T_ENUM];
 
     /**
      * @var array{
@@ -228,7 +230,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     {
         return $tokens->isAnyTokenKindsFound([
             CT::T_USE_TRAIT,
-            ...(\defined('T_ATTRIBUTE') ? [T_ATTRIBUTE] : []), // @TODO: drop condition when PHP 8.0+ is required
+            FCT::T_ATTRIBUTE,
             T_CATCH,
             T_DOUBLE_COLON,
             T_DOC_COMMENT,
@@ -318,11 +320,6 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             foreach (true === $this->configuration['import_symbols'] ? [true, false] : [false] as $discoverSymbolsPhase) {
                 $this->discoveredSymbols = $discoverSymbolsPhase ? [] : null;
 
-                $classyKinds = [T_CLASS, T_INTERFACE, T_TRAIT];
-                if (\defined('T_ENUM')) { // @TODO: drop condition when PHP 8.1+ is required
-                    $classyKinds[] = T_ENUM;
-                }
-
                 $openedCurlyBrackets = 0;
                 $this->reservedIdentifiersByLevel = [];
 
@@ -334,7 +331,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                     } if ($tokens[$index]->equals('}')) {
                         unset($this->reservedIdentifiersByLevel[$openedCurlyBrackets]);
                         --$openedCurlyBrackets;
-                    } elseif ($discoverSymbolsPhase && $tokens[$index]->isGivenKind($classyKinds)) {
+                    } elseif ($discoverSymbolsPhase && $tokens[$index]->isGivenKind(self::CLASSY_KINDS)) {
                         $this->fixNextName($tokens, $index, $uses, $namespaceName);
                     } elseif ($tokens[$index]->isGivenKind(T_FUNCTION)) {
                         $this->fixFunction($functionsAnalyzer, $tokens, $index, $uses, $namespaceName);
@@ -351,9 +348,9 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                         if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(T_STRING)) {
                             $this->fixPrevName($tokens, $index, $uses, $namespaceName);
                         }
-                    } elseif (\defined('T_ATTRIBUTE') && $tokens[$index]->isGivenKind(T_ATTRIBUTE)) { // @TODO: drop const check when PHP 8.0+ is required
+                    } elseif ($tokens[$index]->isGivenKind(FCT::T_ATTRIBUTE)) {
                         $this->fixAttribute($tokens, $index, $uses, $namespaceName);
-                    } elseif ($discoverSymbolsPhase && !\defined('T_ATTRIBUTE') && $tokens[$index]->isComment() && Preg::match('/#\[\s*('.self::REGEX_CLASS.')/', $tokens[$index]->getContent(), $matches)) { // @TODO: drop when PHP 8.0+ is required
+                    } elseif ($discoverSymbolsPhase && $tokens[$index]->isComment() && Preg::match('/#\[\s*('.self::REGEX_CLASS.')/', $tokens[$index]->getContent(), $matches)) { // @TODO: drop when PHP 8.0+ is required
                         /** @var class-string $attributeClass */
                         $attributeClass = $matches[1];
                         $this->determineShortType($attributeClass, 'class', $uses, $namespaceName);
@@ -671,7 +668,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         $typeExpression = $typeExpression->mapTypes(function (TypeExpression $type) use ($uses, $namespaceName) {
             $currentTypeValue = $type->toString();
 
-            if ($type->isCompositeType() || !Preg::match('/^'.self::REGEX_CLASS.'$/', $currentTypeValue)) {
+            if ($type->isCompositeType() || !Preg::match('/^'.self::REGEX_CLASS.'$/', $currentTypeValue) || \in_array($currentTypeValue, ['min', 'max'], true)) {
                 return $type;
             }
 

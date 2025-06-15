@@ -141,7 +141,7 @@ final class NoEmptyCommentFixer extends AbstractFixer
     {
         $lineCount = 0;
         for ($i = $whiteStart; $i < $whiteEnd; ++$i) {
-            $lineCount += Preg::matchAll('/\R/u', $tokens[$i]->getContent(), $matches);
+            $lineCount += Preg::matchAll('/\R/u', $tokens[$i]->getContent());
         }
 
         return $lineCount;
