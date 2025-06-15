@@ -2570,12 +2570,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../tests/Fixer/PhpUnit/PhpUnitDataProviderReturnTypeFixerTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Call to new PhpCsFixer\\\\FixerConfiguration\\\\AliasedFixerOption\\(\\) on a separate line has no effect\\.$#',
-	'identifier' => 'new.resultUnused',
-	'count' => 1,
-	'path' => __DIR__ . '/../../tests/FixerConfiguration/AliasedFixerOptionTest.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Offset string might not exist on array\\<string, array\\<string, mixed\\>\\|true\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,

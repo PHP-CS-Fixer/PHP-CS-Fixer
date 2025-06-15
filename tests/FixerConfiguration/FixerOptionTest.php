@@ -100,9 +100,6 @@ final class FixerOptionTest extends TestCase
         self::assertInstanceOf(\Closure::class, $option->getNormalizer());
     }
 
-    /**
-     * This ⬇️ test checks throwing \LogicException.
-     */
     public function testRequiredWithDefaultValue(): void
     {
         $this->expectException(\LogicException::class);
