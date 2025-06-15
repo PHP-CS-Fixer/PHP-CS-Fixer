@@ -1112,12 +1112,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/ImplodeCallFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$others of method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:equalsAny\\(\\) expects list\\<array\\{0\\: int, 1\\?\\: string\\}\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\>, array\\<int, array\\<int, int\\|string\\>\\> given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/FunctionNotation/PhpdocToReturnTypeFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Offset string might not exist on array\\<string, PhpCsFixer\\\\Tokenizer\\\\Analyzer\\\\Analysis\\\\ArgumentAnalysis\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
@@ -2044,12 +2038,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Offset non\\-empty\\-string might not exist on array\\<non\\-empty\\-string, PhpCsFixer\\\\Tokenizer\\\\Tokens\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$others of method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:equalsAny\\(\\) expects list\\<array\\{0\\: int, 1\\?\\: string\\}\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\>, non\\-empty\\-array\\<int\\<0, max\\>, array\\{int\\}\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\> given\\.$#',
-	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
 ];
