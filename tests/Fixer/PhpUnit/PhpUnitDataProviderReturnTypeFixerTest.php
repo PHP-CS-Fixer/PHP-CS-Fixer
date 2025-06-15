@@ -281,6 +281,7 @@ class FooTest extends TestCase {
     public function notProvider(): array {}
 }';
 
+        // @phpstan-ignore-next-line return.type
         return array_map(
             static fn (string $type): string => \sprintf($template, $type),
             $types
