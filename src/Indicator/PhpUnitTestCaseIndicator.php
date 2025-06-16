@@ -28,12 +28,6 @@ final class PhpUnitTestCaseIndicator
             throw new \LogicException(\sprintf('No "T_CLASS" at given index %d, got "%s".', $index, $tokens[$index]->getName()));
         }
 
-        $index = $tokens->getNextMeaningfulToken($index);
-
-        if (!$tokens[$index]->isGivenKind(T_STRING)) {
-            return false;
-        }
-
         $extendsIndex = $tokens->getNextTokenOfKind($index, ['{', [T_EXTENDS]]);
 
         if (!$tokens[$extendsIndex]->isGivenKind(T_EXTENDS)) {
