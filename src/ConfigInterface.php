@@ -22,6 +22,7 @@ use PhpCsFixer\Fixer\FixerInterface;
  */
 interface ConfigInterface
 {
+    /** @internal */
     public const PHP_VERSION_SYNTAX_SUPPORTED = '8.3';
 
     /**
