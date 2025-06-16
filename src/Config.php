@@ -23,7 +23,7 @@ use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class Config implements ConfigInterface, ParallelAwareConfigInterface, FailOnUnsupportedVersionConfigInterface
+class Config implements ConfigInterface, ParallelAwareConfigInterface, UnsupportedPhpVersionAllowedConfigInterface
 {
     /**
      * @var non-empty-string
@@ -71,7 +71,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, FailOnUns
 
     private bool $usingCache = true;
 
-    private bool $failOnUnsupportedVersion = true;
+    private bool $isUnsupportedPhpVersionAllowed = false;
 
     public function __construct(string $name = 'default')
     {
@@ -95,7 +95,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, FailOnUns
 
         // @TODO 4.0 cleanup
         if (false !== getenv('PHP_CS_FIXER_IGNORE_ENV')) {
-            $this->failOnUnsupportedVersion = false === filter_var(getenv('PHP_CS_FIXER_IGNORE_ENV'), FILTER_VALIDATE_BOOL);
+            $this->isUnsupportedPhpVersionAllowed = filter_var(getenv('PHP_CS_FIXER_IGNORE_ENV'), FILTER_VALIDATE_BOOL);
         }
     }
 
@@ -172,9 +172,9 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, FailOnUns
         return $this->usingCache;
     }
 
-    public function getFailOnUnsupportedVersion(): bool
+    public function getUnsupportedPhpVersionAllowed(): bool
     {
-        return $this->failOnUnsupportedVersion;
+        return $this->isUnsupportedPhpVersionAllowed;
     }
 
     public function registerCustomFixers(iterable $fixers): ConfigInterface
@@ -272,9 +272,9 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, FailOnUns
         return $this;
     }
 
-    public function setFailOnUnsupportedVersion(bool $failOnUnsupportedVersion): ConfigInterface
+    public function setUnsupportedPhpVersionAllowed(bool $isUnsupportedPhpVersionAllowed): ConfigInterface
     {
-        $this->failOnUnsupportedVersion = $failOnUnsupportedVersion;
+        $this->isUnsupportedPhpVersionAllowed = $isUnsupportedPhpVersionAllowed;
 
         return $this;
     }

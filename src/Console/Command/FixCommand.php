@@ -212,7 +212,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified.'),
                 new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'List of rules that should be run against configured paths.'),
                 new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Should cache be used (can be `yes` or `no`).'),
-                new InputOption('fail-on-unsupported-version', '', InputOption::VALUE_REQUIRED, 'Should the command refuse to run on unsupported PHP version (can be `yes` or `no`).'),
+                new InputOption('allow-unsupported-php-version', '', InputOption::VALUE_REQUIRED, 'Should the command refuse to run on unsupported PHP version (can be `yes` or `no`).'),
                 new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file.'),
                 new InputOption('diff', '', InputOption::VALUE_NONE, 'Prints diff for each file.'),
                 new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats.'),
@@ -244,7 +244,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 'path' => $input->getArgument('path'),
                 'path-mode' => $input->getOption('path-mode'),
                 'using-cache' => $input->getOption('using-cache'),
-                'fail-on-unsupported-version' => $input->getOption('fail-on-unsupported-version'),
+                'allow-unsupported-php-version' => $input->getOption('allow-unsupported-php-version'),
                 'cache-file' => $input->getOption('cache-file'),
                 'format' => $input->getOption('format'),
                 'diff' => $input->getOption('diff'),
@@ -273,8 +273,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
                     PHP_VERSION
                 );
 
-                if ($resolver->getFailOnUnsupportedVersion()) {
-                    $message .= ' Add Config::setFailOnUnsupportedVersion(false) to turn this into a warning.';
+                if (!$resolver->getUnsupportedPhpVersionAllowed()) {
+                    $message .= ' Add Config::setUnsupportedPhpVersionAllowed(true) to turn this into a warning.';
                     $stdErr->writeln(\sprintf(
                         $stdErr->isDecorated() ? '<bg=red;fg=white;>%s</>' : '%s',
                         $message
@@ -282,7 +282,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
                     return 1;
                 }
-                $message .= ' Remove Config::setFailOnUnsupportedVersion(false) to turn this into an error.';
+                $message .= ' Remove Config::setUnsupportedPhpVersionAllowed(true) to turn this into an error.';
                 $stdErr->writeln(\sprintf(
                     $stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s',
                     $message

@@ -29,7 +29,6 @@ use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Differ\UnifiedDiffer;
-use PhpCsFixer\FailOnUnsupportedVersionConfigInterface;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
@@ -43,6 +42,7 @@ use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\ToolInfoInterface;
+use PhpCsFixer\UnsupportedPhpVersionAllowedConfigInterface;
 use PhpCsFixer\Utils;
 use PhpCsFixer\WhitespacesFixerConfig;
 use PhpCsFixer\WordMatcher;
@@ -72,7 +72,7 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  *      show-progress: null|string,
  *      stop-on-violation: null|bool,
  *      using-cache: null|string,
- *      fail-on-unsupported-version: null|bool,
+ *      allow-unsupported-php-version: null|bool,
  *      verbosity: null|string,
  *  }
  */
@@ -123,7 +123,7 @@ final class ConfigurationResolver
         'show-progress' => null,
         'stop-on-violation' => null,
         'using-cache' => null,
-        'fail-on-unsupported-version' => null,
+        'allow-unsupported-php-version' => null,
         'verbosity' => null,
     ];
 
@@ -158,7 +158,7 @@ final class ConfigurationResolver
 
     private ?bool $usingCache = null;
 
-    private ?bool $failOnUnsupportedVersion = null;
+    private ?bool $isUnsupportedPhpVersionAllowed = null;
 
     private ?FixerFactory $fixerFactory = null;
 
@@ -476,18 +476,18 @@ final class ConfigurationResolver
         return $this->usingCache;
     }
 
-    public function getFailOnUnsupportedVersion(): bool
+    public function getUnsupportedPhpVersionAllowed(): bool
     {
-        if (null === $this->failOnUnsupportedVersion) {
+        if (null === $this->isUnsupportedPhpVersionAllowed) {
             $config = $this->getConfig();
-            if (null === $this->options['fail-on-unsupported-version'] && $config instanceof FailOnUnsupportedVersionConfigInterface) {
-                $this->failOnUnsupportedVersion = $config->getFailOnUnsupportedVersion();
+            if (null === $this->options['allow-unsupported-php-version'] && $config instanceof UnsupportedPhpVersionAllowedConfigInterface) {
+                $this->isUnsupportedPhpVersionAllowed = $config->getUnsupportedPhpVersionAllowed();
             } else {
-                $this->failOnUnsupportedVersion = $this->resolveOptionBooleanValue('fail-on-unsupported-version');
+                $this->isUnsupportedPhpVersionAllowed = $this->resolveOptionBooleanValue('allow-unsupported-php-version');
             }
         }
 
-        return $this->failOnUnsupportedVersion;
+        return $this->isUnsupportedPhpVersionAllowed;
     }
 
     /**

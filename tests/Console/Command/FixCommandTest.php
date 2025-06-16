@@ -152,7 +152,7 @@ final class FixCommandTest extends TestCase
             <?php
 
             \$config = require '{$pathToDistConfig}';
-            \$config->setFailOnUnsupportedVersion(false);
+            \$config->setUnsupportedPhpVersionAllowed(true);
 
             return \$config;
             PHP;
@@ -167,7 +167,7 @@ final class FixCommandTest extends TestCase
         );
 
         self::assertStringContainsString('PHP CS Fixer currently supports PHP syntax only up to PHP '.ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED, $cmdTester->getDisplay());
-        self::assertStringContainsString('Remove Config::setFailOnUnsupportedVersion(false) to turn this into an error.', $cmdTester->getDisplay());
+        self::assertStringContainsString('Remove Config::setUnsupportedPhpVersionAllowed(true) to turn this into an error.', $cmdTester->getDisplay());
     }
 
     public function testUnsupportedVersionErrorRun(): void
@@ -181,7 +181,7 @@ final class FixCommandTest extends TestCase
             <?php
 
             \$config = require '{$pathToDistConfig}';
-            \$config->setFailOnUnsupportedVersion(true);
+            \$config->setUnsupportedPhpVersionAllowed(false);
 
             return \$config;
             PHP;
@@ -196,7 +196,7 @@ final class FixCommandTest extends TestCase
         );
 
         self::assertStringContainsString('PHP CS Fixer currently supports PHP syntax only up to PHP '.ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED, $cmdTester->getDisplay());
-        self::assertStringContainsString('Add Config::setFailOnUnsupportedVersion(false) to turn this into a warning.', $cmdTester->getDisplay());
+        self::assertStringContainsString('Add Config::setUnsupportedPhpVersionAllowed(true) to turn this into a warning.', $cmdTester->getDisplay());
         self::assertSame(1, $cmdTester->getStatusCode());
     }
 

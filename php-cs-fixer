@@ -43,7 +43,7 @@ set_error_handler(static function (int $severity, string $message, string $file,
     }
 
     if (false !== getenv('PHP_CS_FIXER_IGNORE_ENV')) {
-        fwrite(STDERR, "Setting PHP_CS_FIXER_IGNORE_ENV environment variable is deprecated and will be removed in 4.0, use failOnUnsupportedVersion config instead.\n");
+        fwrite(STDERR, "Setting PHP_CS_FIXER_IGNORE_ENV environment variable is deprecated and will be removed in 4.0, use unsupportedPhpVersionAllowed config instead.\n");
     }
 
     foreach (['json', 'tokenizer'] as $extension) {

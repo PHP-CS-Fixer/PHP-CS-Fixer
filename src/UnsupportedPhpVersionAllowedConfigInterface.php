@@ -17,12 +17,12 @@ namespace PhpCsFixer;
 /**
  * @TODO 4.0 Include in main ConfigInterface
  */
-interface FailOnUnsupportedVersionConfigInterface extends ConfigInterface
+interface UnsupportedPhpVersionAllowedConfigInterface extends ConfigInterface
 {
     /**
      * Returns true if execution should fail on unsupported PHP version.
      */
-    public function getFailOnUnsupportedVersion(): bool;
+    public function getUnsupportedPhpVersionAllowed(): bool;
 
-    public function setFailOnUnsupportedVersion(bool $failOnUnsupportedVersion): ConfigInterface;
+    public function setUnsupportedPhpVersionAllowed(bool $isUnsupportedPhpVersionAllowed): ConfigInterface;
 }
