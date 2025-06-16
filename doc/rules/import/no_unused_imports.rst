@@ -4,11 +4,34 @@ Rule ``no_unused_imports``
 
 Unused ``use`` statements must be removed.
 
+Configuration
+-------------
+
+``comments_match_case``
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether to treat comments as case-sensitive.
+
+Allowed values: ``false`` and ``true``
+
+Default value: ``false``
+
+``comments_search_annotations_only``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether to analyze only annotations when considering comments.
+
+Allowed values: ``false`` and ``true``
+
+Default value: ``false``
+
 Examples
 --------
 
 Example #1
 ~~~~~~~~~~
+
+*Default* configuration.
 
 .. code-block:: diff
 
@@ -18,6 +41,39 @@ Example #1
     use \DateTime;
    -use \Exception;
 
+    new DateTime();
+
+Example #2
+~~~~~~~~~~
+
+With configuration: ``['comments_match_case' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    use \DateTime;
+   -use \Exception;
+
+    // Any exception will be ignored
+    new DateTime();
+
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['comments_search_annotations_only' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    use \DateTime;
+   -use \Exception;
+   -use \Throwable;
+
+    // Throwable is the exception to the rule
     new DateTime();
 
 Rule sets
