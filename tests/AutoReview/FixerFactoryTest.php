@@ -764,16 +764,9 @@ final class FixerFactoryTest extends TestCase
                 'class_attributes_separation',
                 'no_blank_lines_after_class_opening',
             ],
-            'php_unit_data_provider_name' => [
-                'php_unit_attributes',
-            ],
             'php_unit_data_provider_return_type' => [
-                'php_unit_attributes',
                 'return_to_yield_from',
                 'return_type_declaration',
-            ],
-            'php_unit_data_provider_static' => [
-                'php_unit_attributes',
             ],
             'php_unit_dedicate_assert' => [
                 'no_unused_imports',
