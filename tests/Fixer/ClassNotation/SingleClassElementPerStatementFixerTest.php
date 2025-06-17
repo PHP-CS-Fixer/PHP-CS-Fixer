@@ -987,6 +987,42 @@ var_dump(Foo::A.Foo::B);",
         ];
     }
 
+    /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield 'asymmetric visibility' => [
+            <<<'PHP'
+                <?php trait Foo {
+                    public public(set) int $a;
+                    public public(set) int $b;
+                    public protected(set) int $c;
+                    public protected(set) int $d;
+                    public private(set) int $e;
+                    public private(set) int $f;
+                }
+                PHP,
+            <<<'PHP'
+                <?php trait Foo {
+                    public public(set) int $a, $b;
+                    public protected(set) int $c, $d;
+                    public private(set) int $e, $f;
+                }
+                PHP,
+        ];
+    }
+
     public function testInvalidConfiguration(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
