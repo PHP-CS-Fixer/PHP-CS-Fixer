@@ -480,8 +480,10 @@ final class ConfigurationResolver
     {
         if (null === $this->isUnsupportedPhpVersionAllowed) {
             $config = $this->getConfig();
-            if (null === $this->options['allow-unsupported-php-version'] && $config instanceof UnsupportedPhpVersionAllowedConfigInterface) {
-                $this->isUnsupportedPhpVersionAllowed = $config->getUnsupportedPhpVersionAllowed();
+            if (null === $this->options['allow-unsupported-php-version']) {
+                $this->isUnsupportedPhpVersionAllowed = $config instanceof UnsupportedPhpVersionAllowedConfigInterface
+                    ? $config->getUnsupportedPhpVersionAllowed()
+                    : false;
             } else {
                 $this->isUnsupportedPhpVersionAllowed = $this->resolveOptionBooleanValue('allow-unsupported-php-version');
             }

@@ -20,7 +20,7 @@ namespace PhpCsFixer;
 interface UnsupportedPhpVersionAllowedConfigInterface extends ConfigInterface
 {
     /**
-     * Returns true if execution should fail on unsupported PHP version.
+     * Returns true if execution should be allowed on unsupported PHP version whose syntax is not yet supported by the fixer.
      */
     public function getUnsupportedPhpVersionAllowed(): bool;
 

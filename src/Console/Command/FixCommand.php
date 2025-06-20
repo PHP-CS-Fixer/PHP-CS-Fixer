@@ -268,7 +268,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
             if (version_compare(PHP_VERSION, ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED.'.99', '>')) {
                 $message = \sprintf(
-                    'PHP CS Fixer currently supports PHP syntax only up to PHP %s, current PHP version: %s. Use at your own risk.',
+                    'PHP CS Fixer currently supports PHP syntax only up to PHP %s, current PHP version: %s. Execution may be unstable. You may experience code modified in a wrong way. Please report such cases at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer.',
                     ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED,
                     PHP_VERSION
                 );
