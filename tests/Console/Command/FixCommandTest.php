@@ -141,6 +141,9 @@ final class FixCommandTest extends TestCase
         self::assertSame(8, $cmdTester->getStatusCode());
     }
 
+    /**
+     * @large
+     */
     public function testUnsupportedVersionWarningRun(): void
     {
         if (version_compare(PHP_VERSION, ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED.'.99', '<=')) {
