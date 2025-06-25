@@ -268,13 +268,13 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
             if (version_compare(PHP_VERSION, ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED.'.99', '>')) {
                 $message = \sprintf(
-                    'PHP CS Fixer currently supports PHP syntax only up to PHP %s, current PHP version: %s. Execution may be unstable. You may experience code modified in a wrong way. Please report such cases at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer.',
+                    'PHP CS Fixer currently supports PHP syntax only up to PHP %s, current PHP version: %s.',
                     ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED,
                     PHP_VERSION
                 );
 
                 if (!$resolver->getUnsupportedPhpVersionAllowed()) {
-                    $message .= ' Add Config::setUnsupportedPhpVersionAllowed(true) to turn this into a warning.';
+                    $message .= ' Add Config::setUnsupportedPhpVersionAllowed(true) to to allow executions on unsupported PHP versions. Such execution may be unstable and you may experience code modified in a wrong way.';
                     $stdErr->writeln(\sprintf(
                         $stdErr->isDecorated() ? '<bg=red;fg=white;>%s</>' : '%s',
                         $message
@@ -282,7 +282,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
                     return 1;
                 }
-                $message .= ' Remove Config::setUnsupportedPhpVersionAllowed(true) to turn this into an error.';
+                $message .= ' Execution may be unstable. You may experience code modified in a wrong way. Please report such cases at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer. Remove Config::setUnsupportedPhpVersionAllowed(true) to allow executions only on supported PHP versions.';
                 $stdErr->writeln(\sprintf(
                     $stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s',
                     $message
