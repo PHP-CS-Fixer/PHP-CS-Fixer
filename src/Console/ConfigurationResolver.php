@@ -479,8 +479,8 @@ final class ConfigurationResolver
     public function getUnsupportedPhpVersionAllowed(): bool
     {
         if (null === $this->isUnsupportedPhpVersionAllowed) {
-            $config = $this->getConfig();
             if (null === $this->options['allow-unsupported-php-version']) {
+                $config = $this->getConfig();
                 $this->isUnsupportedPhpVersionAllowed = $config instanceof UnsupportedPhpVersionAllowedConfigInterface
                     ? $config->getUnsupportedPhpVersionAllowed()
                     : false;
