@@ -274,7 +274,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 );
 
                 if (!$resolver->getUnsupportedPhpVersionAllowed()) {
-                    $message .= ' Add Config::setUnsupportedPhpVersionAllowed(true) to to allow executions on unsupported PHP versions. Such execution may be unstable and you may experience code modified in a wrong way.';
+                    $message .= ' Add Config::setUnsupportedPhpVersionAllowed(true) to allow executions on unsupported PHP versions. Such execution may be unstable and you may experience code modified in a wrong way.';
                     $stdErr->writeln(\sprintf(
                         $stdErr->isDecorated() ? '<bg=red;fg=white;>%s</>' : '%s',
                         $message
