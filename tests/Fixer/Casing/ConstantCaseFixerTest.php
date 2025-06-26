@@ -101,9 +101,9 @@ final class ConstantCaseFixerTest extends AbstractFixerTestCase
 
         yield ['<?php $foo instanceof True; $foo instanceof False; $foo instanceof Null;'];
 
-        yield ['<?php return null\Foo::class;', '<?php return Null\Foo::class;'];
+        yield ['<?php return Null\Foo::class;'];
 
-        yield ['<?php return null\Foo::bar();', '<?php return Null\Foo::bar();'];
+        yield ['<?php return Null\Foo::bar();'];
 
         yield [
             '<?php
