@@ -254,52 +254,16 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Console/Output/ErrorOutput.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Console\\\\Report\\\\FixReport\\\\CheckstyleReporter\\:\\:generate\\(\\) should return string but returns string\\|false\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/Report/FixReport/CheckstyleReporter.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$text of static method Symfony\\\\Component\\\\Console\\\\Formatter\\\\OutputFormatter\\:\\:escape\\(\\) expects string, string\\|false given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/Report/FixReport/CheckstyleReporter.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$diffs of static method PhpCsFixer\\\\Console\\\\Report\\\\FixReport\\\\GitlabReporter\\:\\:getLines\\(\\) expects list\\<SebastianBergmann\\\\Diff\\\\Diff\\>, array\\<SebastianBergmann\\\\Diff\\\\Diff\\> given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Console/Report/FixReport/GitlabReporter.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Console\\\\Report\\\\FixReport\\\\JunitReporter\\:\\:generate\\(\\) should return string but returns string\\|false\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/Report/FixReport/JunitReporter.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$text of static method Symfony\\\\Component\\\\Console\\\\Formatter\\\\OutputFormatter\\:\\:escape\\(\\) expects string, string\\|false given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/Report/FixReport/JunitReporter.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$reporter of method PhpCsFixer\\\\Console\\\\Report\\\\FixReport\\\\ReporterFactory\\:\\:registerReporter\\(\\) expects PhpCsFixer\\\\Console\\\\Report\\\\FixReport\\\\ReporterInterface, object given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Console/Report/FixReport/ReporterFactory.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Console\\\\Report\\\\FixReport\\\\XmlReporter\\:\\:generate\\(\\) should return string but returns string\\|false\\.$#',
-	'identifier' => 'return.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/Report/FixReport/XmlReporter.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$text of static method Symfony\\\\Component\\\\Console\\\\Formatter\\\\OutputFormatter\\:\\:escape\\(\\) expects string, string\\|false given\\.$#',
-	'identifier' => 'argument.type',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Console/Report/FixReport/XmlReporter.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$reporter of method PhpCsFixer\\\\Console\\\\Report\\\\ListSetsReport\\\\ReporterFactory\\:\\:registerReporter\\(\\) expects PhpCsFixer\\\\Console\\\\Report\\\\ListSetsReport\\\\ReporterInterface, object given\\.$#',
