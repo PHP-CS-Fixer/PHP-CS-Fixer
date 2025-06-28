@@ -79,6 +79,7 @@ final class XmlReporter implements ReporterInterface
         if (false === $result) {
             throw new \RuntimeException('Failed to generate XML output');
         }
+
         return $reportSummary->isDecoratedOutput() ? OutputFormatter::escape($result) : $result;
     }
 
