@@ -105,7 +105,7 @@ final class Transformers
 
             $instance = new $class();
 
-            assert($instance instanceof TransformerInterface);
+            \assert($instance instanceof TransformerInterface);
 
             yield $instance;
         }
