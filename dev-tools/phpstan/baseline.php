@@ -2060,12 +2060,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Tokenizer/Transformer/NameQualifiedTransformer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Generator expects value type PhpCsFixer\\\\Tokenizer\\\\TransformerInterface, object given\\.$#',
-	'identifier' => 'generator.valueType',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Tokenizer/Transformers.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$json of function json_decode expects string, string\\|false given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
