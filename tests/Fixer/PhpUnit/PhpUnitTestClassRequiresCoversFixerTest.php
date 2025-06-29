@@ -484,6 +484,15 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
                 class FooTest extends \PHPUnit_Framework_TestCase {}
                 PHP,
         ];
+
+        yield 'already with attribute CoversTrait' => [
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\Attributes\CoversTrait;
+                #[CoversTrait('Bar')]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
     }
 
     /**
