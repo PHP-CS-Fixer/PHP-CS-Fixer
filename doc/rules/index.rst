@@ -392,7 +392,7 @@ Function Notation
 - `method_argument_space <./function_notation/method_argument_space.rst>`_
 
   In method arguments and method call, there MUST NOT be a space before each comma and there MUST be one space after each comma. Argument lists MAY be split across multiple lines, where each subsequent line is indented once. When doing so, the first item in the list MUST be on the next line, and there MUST be only one argument per line.
-- `multiline_promoted_properties <./function_notation/multiline_promoted_properties.rst>`_
+- `multiline_promoted_properties <./function_notation/multiline_promoted_properties.rst>`_ *(experimental)*
 
   Promoted properties must be on separate lines.
 - `native_function_invocation <./function_notation/native_function_invocation.rst>`_ *(risky)*
