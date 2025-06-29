@@ -56,8 +56,8 @@ final class EncodingFixerTest extends AbstractFixerTestCase
         $inputFile = null !== $inputFilename ? new \SplFileInfo(__DIR__.'/../../Fixtures/FixerTest/encoding/'.$inputFilename) : null;
 
         return [
-            file_get_contents($expectedFile->getRealPath()),
-            null !== $inputFile ? file_get_contents($inputFile->getRealPath()) : null,
+            (string) file_get_contents($expectedFile->getRealPath()),
+            null !== $inputFile ? (string) file_get_contents($inputFile->getRealPath()) : null,
             $inputFile ?? $expectedFile,
         ];
     }

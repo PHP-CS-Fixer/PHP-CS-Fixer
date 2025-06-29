@@ -65,7 +65,7 @@ function deactivateCompleted()
         ];
 
         yield [
-            mb_convert_encoding('
+            (string) mb_convert_encoding('
 <?php
 /**
  * Test à

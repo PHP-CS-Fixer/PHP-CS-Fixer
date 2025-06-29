@@ -69,6 +69,7 @@ final class RuleSetTest extends TestCase
             return; // rule doesn't need configuration.
         }
 
+        \assert(\array_key_exists($ruleName, $fixers));
         $fixer = $fixers[$ruleName];
         self::assertInstanceOf(ConfigurableFixerInterface::class, $fixer, \sprintf('RuleSet "%s" contains configuration for rule "%s" which cannot be configured.', $setName, $ruleName));
 
