@@ -28,6 +28,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\AlternativeSyntaxAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -47,6 +48,38 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
     use ConfigurableFixerTrait;
 
     use Indentation;
+    private const BLOCK_SIGNATURE_FIRST_TOKENS = [
+        T_USE,
+        T_IF,
+        T_ELSE,
+        T_ELSEIF,
+        T_FOR,
+        T_FOREACH,
+        T_WHILE,
+        T_DO,
+        T_SWITCH,
+        T_CASE,
+        T_DEFAULT,
+        T_TRY,
+        T_CLASS,
+        T_INTERFACE,
+        T_TRAIT,
+        T_EXTENDS,
+        T_IMPLEMENTS,
+        T_CONST,
+        FCT::T_MATCH,
+    ];
+    private const CONTROL_STRUCTURE_POSSIBIBLY_WITHOUT_BRACES_TOKENS = [
+        T_IF,
+        T_ELSE,
+        T_ELSEIF,
+        T_FOR,
+        T_FOREACH,
+        T_WHILE,
+        T_DO,
+    ];
+    private const BLOCK_FIRST_TOKENS = ['{', [CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN], [CT::T_USE_TRAIT], [CT::T_GROUP_IMPORT_BRACE_OPEN], [CT::T_PROPERTY_HOOK_BRACE_OPEN], [FCT::T_ATTRIBUTE]];
+    private const PROPERTY_KEYWORDS = [T_VAR, T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC, FCT::T_READONLY];
 
     private AlternativeSyntaxAnalyzer $alternativeSyntaxAnalyzer;
 
@@ -137,44 +170,6 @@ if ($foo) {
     {
         $this->alternativeSyntaxAnalyzer = new AlternativeSyntaxAnalyzer();
 
-        $blockSignatureFirstTokens = [
-            T_USE,
-            T_IF,
-            T_ELSE,
-            T_ELSEIF,
-            T_FOR,
-            T_FOREACH,
-            T_WHILE,
-            T_DO,
-            T_SWITCH,
-            T_CASE,
-            T_DEFAULT,
-            T_TRY,
-            T_CLASS,
-            T_INTERFACE,
-            T_TRAIT,
-            T_EXTENDS,
-            T_IMPLEMENTS,
-            T_CONST,
-        ];
-        $controlStructurePossibiblyWithoutBracesTokens = [
-            T_IF,
-            T_ELSE,
-            T_ELSEIF,
-            T_FOR,
-            T_FOREACH,
-            T_WHILE,
-            T_DO,
-        ];
-        if (\defined('T_MATCH')) { // @TODO: drop condition when PHP 8.0+ is required
-            $blockSignatureFirstTokens[] = T_MATCH;
-        }
-
-        $blockFirstTokens = ['{', [CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN], [CT::T_USE_TRAIT], [CT::T_GROUP_IMPORT_BRACE_OPEN], [CT::T_PROPERTY_HOOK_BRACE_OPEN]];
-        if (\defined('T_ATTRIBUTE')) { // @TODO: drop condition when PHP 8.0+ is required
-            $blockFirstTokens[] = [T_ATTRIBUTE];
-        }
-
         $endIndex = \count($tokens) - 1;
         if ($tokens[$endIndex]->isWhitespace()) {
             --$endIndex;
@@ -230,7 +225,7 @@ if ($foo) {
             }
 
             if (
-                $token->equalsAny($blockFirstTokens)
+                $token->equalsAny(self::BLOCK_FIRST_TOKENS)
                 || ($token->equals('(') && !$tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_ARRAY))
                 || isset($alternativeBlockStarts[$index])
                 || isset($caseBlockStarts[$index])
@@ -317,7 +312,7 @@ if ($foo) {
             }
 
             $isPropertyStart = $this->isPropertyStart($tokens, $index);
-            if ($isPropertyStart || $token->isGivenKind($blockSignatureFirstTokens)) {
+            if ($isPropertyStart || $token->isGivenKind(self::BLOCK_SIGNATURE_FIRST_TOKENS)) {
                 $lastWhitespaceIndex = null;
                 $closingParenthesisIndex = null;
 
@@ -345,7 +340,7 @@ if ($foo) {
                         break;
                     }
 
-                    if (!$token->isGivenKind($controlStructurePossibiblyWithoutBracesTokens)) {
+                    if (!$token->isGivenKind(self::CONTROL_STRUCTURE_POSSIBIBLY_WITHOUT_BRACES_TOKENS)) {
                         continue;
                     }
 
@@ -723,21 +718,16 @@ if ($foo) {
      */
     private function isPropertyStart(Tokens $tokens, int $index): bool
     {
-        $propertyKeywords = [T_VAR, T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC];
-        if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
-            $propertyKeywords[] = T_READONLY;
-        }
-
         $nextIndex = $tokens->getNextMeaningfulToken($index);
         if (
             null === $nextIndex
-            || $tokens[$nextIndex]->isGivenKind($propertyKeywords)
+            || $tokens[$nextIndex]->isGivenKind(self::PROPERTY_KEYWORDS)
             || $tokens[$nextIndex]->isGivenKind([T_CONST, T_FUNCTION])
         ) {
             return false;
         }
 
-        while ($tokens[$index]->isGivenKind($propertyKeywords)) {
+        while ($tokens[$index]->isGivenKind(self::PROPERTY_KEYWORDS)) {
             if ($tokens[$index]->isGivenKind([T_VAR, T_PUBLIC, T_PROTECTED, T_PRIVATE])) {
                 return true;
             }

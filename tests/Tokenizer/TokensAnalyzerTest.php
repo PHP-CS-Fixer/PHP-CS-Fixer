@@ -2581,6 +2581,7 @@ class TestClass {
                 continue;
             }
 
+            \assert(\array_key_exists($index, $expected));
             self::assertSame($expected[$index], $tokensAnalyzer->isEnumCase($index));
         }
     }
@@ -3064,7 +3065,7 @@ class MyTestWithAnonymousClass extends TestCase
 
         $indices = [];
 
-        foreach (array_keys($expectations) as $index) {
+        foreach ($expectations as $index => $expectedEndIndex) {
             $indices[$index] = $tokensAnalyzer->getLastTokenIndexOfArrowFunction($index);
         }
 

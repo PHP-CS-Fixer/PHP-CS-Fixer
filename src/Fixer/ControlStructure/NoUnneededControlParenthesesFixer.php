@@ -25,6 +25,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -112,6 +113,40 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         T_REQUIRE_ONCE,
         T_INCLUDE,
         T_INCLUDE_ONCE,
+    ];
+    private const KNOWN_NEGATIVE_PRE_TYPES = [
+        [CT::T_CLASS_CONSTANT],
+        [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
+        [CT::T_RETURN_REF],
+        [CT::T_USE_LAMBDA],
+        [T_ARRAY],
+        [T_CATCH],
+        [T_CLASS],
+        [T_DECLARE],
+        [T_ELSEIF],
+        [T_EMPTY],
+        [T_EXIT],
+        [T_EVAL],
+        [T_FN],
+        [T_FOREACH],
+        [T_FOR],
+        [T_FUNCTION],
+        [T_HALT_COMPILER],
+        [T_IF],
+        [T_ISSET],
+        [T_LIST],
+        [T_STRING],
+        [T_SWITCH],
+        [T_STATIC],
+        [T_UNSET],
+        [T_VARIABLE],
+        [T_WHILE],
+        // handled by the `include` rule
+        [T_REQUIRE],
+        [T_REQUIRE_ONCE],
+        [T_INCLUDE],
+        [T_INCLUDE_ONCE],
+        [FCT::T_MATCH],
     ];
 
     /**
@@ -226,7 +261,7 @@ while ($y) { continue (2); }
 
             // do a cheap check for negative case: `foo(1,2)`
 
-            if ($this->isKnownNegativePre($tokens[$beforeOpenIndex])) {
+            if ($tokens[$beforeOpenIndex]->equalsAny(self::KNOWN_NEGATIVE_PRE_TYPES)) {
                 continue;
             }
 
@@ -388,7 +423,7 @@ while ($y) { continue (2); }
         }
 
         if ($boundariesMoved) {
-            if ($this->isKnownNegativePre($tokens[$beforeOpenIndex])) {
+            if ($tokens[$beforeOpenIndex]->equalsAny(self::KNOWN_NEGATIVE_PRE_TYPES)) {
                 return false;
             }
 
@@ -600,54 +635,6 @@ while ($y) { continue (2); }
         $block = Tokens::detectBlockType($tokens[$index]);
 
         return null !== $block && $isStart === $block['isStart'] && \in_array($block['type'], self::BLOCK_TYPES, true) ? $block : null;
-    }
-
-    // cheap check on a tokens type before `(` of which we know the `(` will never be superfluous
-    private function isKnownNegativePre(Token $token): bool
-    {
-        static $knownNegativeTypes;
-
-        if (null === $knownNegativeTypes) {
-            $knownNegativeTypes = [
-                [CT::T_CLASS_CONSTANT],
-                [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
-                [CT::T_RETURN_REF],
-                [CT::T_USE_LAMBDA],
-                [T_ARRAY],
-                [T_CATCH],
-                [T_CLASS],
-                [T_DECLARE],
-                [T_ELSEIF],
-                [T_EMPTY],
-                [T_EXIT],
-                [T_EVAL],
-                [T_FN],
-                [T_FOREACH],
-                [T_FOR],
-                [T_FUNCTION],
-                [T_HALT_COMPILER],
-                [T_IF],
-                [T_ISSET],
-                [T_LIST],
-                [T_STRING],
-                [T_SWITCH],
-                [T_STATIC],
-                [T_UNSET],
-                [T_VARIABLE],
-                [T_WHILE],
-                // handled by the `include` rule
-                [T_REQUIRE],
-                [T_REQUIRE_ONCE],
-                [T_INCLUDE],
-                [T_INCLUDE_ONCE],
-            ];
-
-            if (\defined('T_MATCH')) { // @TODO: drop condition and add directly in `$knownNegativeTypes` above when PHP 8.0+ is required
-                $knownNegativeTypes[] = T_MATCH;
-            }
-        }
-
-        return $token->equalsAny($knownNegativeTypes);
     }
 
     private function containsOperation(Tokens $tokens, int $startIndex, int $endIndex): bool

@@ -31,6 +31,9 @@ use PhpCsFixer\Tests\PregTest;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tests\Test\AbstractIntegrationTestCase;
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tests\Tokenizer\CTTest;
+use PhpCsFixer\Tests\Tokenizer\FCTTest;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -371,7 +374,7 @@ final class ProjectCodeTest extends TestCase
     public function testThatTestClassesAreInternal(string $testClassName): void
     {
         $rc = new \ReflectionClass($testClassName);
-        $doc = new DocBlock($rc->getDocComment());
+        $doc = new DocBlock((string) $rc->getDocComment());
 
         self::assertNotEmpty(
             $doc->getAnnotationsOfType('internal'),
@@ -487,6 +490,27 @@ final class ProjectCodeTest extends TestCase
      *
      * @param class-string $className
      */
+    public function testThereIsNoUsageOfDefined(string $className): void
+    {
+        if (CTTest::class === $className || FCTTest::class === $className) {
+            $this->expectNotToPerformAssertions();
+
+            return;
+        }
+
+        self::assertNotContains(
+            'defined',
+            $this->extractFunctionNamesCalledInClass($className),
+            \sprintf('Class %s must not use "defined()", use "%s" to use newly introduced Token kinds.', $className, FCT::class)
+        );
+    }
+
+    /**
+     * @dataProvider provideSrcClassCases
+     * @dataProvider provideTestClassCases
+     *
+     * @param class-string $className
+     */
     public function testThereIsNoUsageOfExtract(string $className): void
     {
         $calledFunctions = $this->extractFunctionNamesCalledInClass($className);
@@ -527,7 +551,7 @@ final class ProjectCodeTest extends TestCase
             yield $className => [$className];
         }
 
-        foreach (self::getTestClasses() as $className) {
+        foreach (self::getTestsDirectoryClasses('*.php') as $className) {
             if (PregTest::class === $className) {
                 continue;
             }
@@ -608,6 +632,7 @@ final class ProjectCodeTest extends TestCase
             ];
 
             for ($i = \count($parameters) - 1; $i >= 0; --$i) {
+                \assert(\array_key_exists($i, $parameters));
                 $name = $parameters[$i]->getName();
 
                 if (isset($expected[$name])) {
@@ -727,11 +752,8 @@ final class ProjectCodeTest extends TestCase
             T_STRING,
             T_USE,
             T_WHITESPACE,
+            FCT::T_READONLY,
         ];
-
-        if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
-            $headerTypes[] = T_READONLY;
-        }
 
         $tokens = $this->createTokensForClass($className);
         $classyIndex = null;
@@ -747,7 +769,7 @@ final class ProjectCodeTest extends TestCase
                 break;
             }
 
-            if (\defined('T_ATTRIBUTE') && $tokens[$index]->isGivenKind(T_ATTRIBUTE)) {
+            if ($tokens[$index]->isGivenKind(FCT::T_ATTRIBUTE)) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
 
                 continue;
@@ -800,7 +822,7 @@ final class ProjectCodeTest extends TestCase
 
         $methodsWithInheritdoc = array_filter(
             $rc->getMethods(),
-            static fn (\ReflectionMethod $rm): bool => false !== $rm->getDocComment() && stripos($rm->getDocComment(), '@inheritdoc')
+            static fn (\ReflectionMethod $rm): bool => false !== $rm->getDocComment() && false !== stripos($rm->getDocComment(), '@inheritdoc')
         );
 
         $methodsWithInheritdoc = array_map(
@@ -823,7 +845,7 @@ final class ProjectCodeTest extends TestCase
     public function testAllTestsForShortOpenTagAreHandled(): void
     {
         $testClassesWithShortOpenTag = array_filter(
-            self::getTestClasses(),
+            self::getTestsDirectoryClasses('*Test.php'),
             fn (string $className): bool => str_contains($this->getFileContentForClass($className), 'short_open_tag') && self::class !== $className
         );
         $testFilesWithShortOpenTag = array_map(
@@ -832,7 +854,16 @@ final class ProjectCodeTest extends TestCase
         );
 
         $phpunitXmlContent = file_get_contents(__DIR__.'/../../phpunit.xml.dist');
-        $phpunitFiles = (array) simplexml_load_string($phpunitXmlContent)->xpath('testsuites/testsuite[@name="short-open-tag"]')[0]->file;
+        self::assertIsString($phpunitXmlContent);
+
+        $phpunitXml = simplexml_load_string($phpunitXmlContent);
+        self::assertNotFalse($phpunitXml);
+
+        $shortOpenTag = $phpunitXml->xpath('testsuites/testsuite[@name="short-open-tag"]');
+        self::assertIsArray($shortOpenTag);
+        self::assertArrayHasKey(0, $shortOpenTag);
+
+        $phpunitFiles = (array) $shortOpenTag[0]->file;
 
         sort($testFilesWithShortOpenTag);
         sort($phpunitFiles);
@@ -1036,7 +1067,7 @@ final class ProjectCodeTest extends TestCase
     public static function provideTestClassCases(): iterable
     {
         if (null === self::$testClassCases) {
-            $cases = self::getTestClasses();
+            $cases = self::getTestsDirectoryClasses('*Test.php');
 
             self::$testClassCases = array_combine(
                 $cases,
@@ -1050,14 +1081,16 @@ final class ProjectCodeTest extends TestCase
     /**
      * @param class-string $className
      *
-     * @return list<string>
+     * @return array<array-key, string>
      */
     private function extractFunctionNamesCalledInClass(string $className): array
     {
-        $tokens = $this->createTokensForClass($className);
+        /** @var list<Token> $tokens */
+        $tokens = $this->createTokensForClass($className)->toArray();
 
+        /** @var list<Token> $stringTokens */
         $stringTokens = array_filter(
-            $tokens->toArray(),
+            $tokens,
             static fn (Token $token): bool => $token->isGivenKind(T_STRING)
         );
 
@@ -1086,7 +1119,7 @@ final class ProjectCodeTest extends TestCase
      */
     private function getFileContentForClass(string $className): string
     {
-        return file_get_contents($this->getFilePathForClass($className));
+        return (string) file_get_contents($this->getFilePathForClass($className));
     }
 
     /**
@@ -1178,27 +1211,28 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @return list<class-string<TestCase>>
+     * @return ($pattern is '*Test.php' ? list<class-string<TestCase>> : list<class-string>)
      */
-    private static function getTestClasses(): array
+    private static function getTestsDirectoryClasses(string $pattern): array
     {
-        static $classes;
+        /** @var array<string, list<class-string>> $classes */
+        static $classes = [];
 
-        if (null !== $classes) {
-            return $classes;
+        if (isset($classes[$pattern])) {
+            return $classes[$pattern];
         }
 
         $finder = Finder::create()
             ->files()
-            ->name('*Test.php')
+            ->name($pattern)
             ->in(__DIR__.'/..')
             ->exclude([
                 'Fixtures',
             ])
         ;
 
-        /** @var list<class-string<TestCase>> $classes */
-        $classes = array_map(
+        /** @var ($pattern is '*Test.php' ? list<class-string<TestCase>> : list<class-string>) $foundClasses */
+        $foundClasses = array_map(
             static fn (SplFileInfo $file): string => \sprintf(
                 'PhpCsFixer\Tests\%s%s%s',
                 strtr($file->getRelativePath(), \DIRECTORY_SEPARATOR, '\\'),
@@ -1208,9 +1242,9 @@ final class ProjectCodeTest extends TestCase
             iterator_to_array($finder, false)
         );
 
-        sort($classes);
+        sort($foundClasses);
 
-        return $classes;
+        return $classes[$pattern] = $foundClasses;
     }
 
     /**
