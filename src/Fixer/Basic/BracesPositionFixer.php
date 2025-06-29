@@ -228,9 +228,9 @@ $bar = function () { $result = true;
                     $positionOption = 'classes_opening_brace';
                 }
             } elseif ($token->isGivenKind(T_FUNCTION)) {
-                $openBraceIndex = $tokens->getNextTokenOfKind($index, ['{', ';']);
+                $openBraceIndex = $tokens->getNextTokenOfKind($index, ['{', ';', [CT::T_PROPERTY_HOOK_BRACE_OPEN]]);
 
-                if ($tokens[$openBraceIndex]->equals(';')) {
+                if (!$tokens[$openBraceIndex]->equals('{')) {
                     continue;
                 }
 
