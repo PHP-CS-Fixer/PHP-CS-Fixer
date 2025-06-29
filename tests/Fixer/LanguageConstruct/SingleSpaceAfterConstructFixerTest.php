@@ -522,31 +522,25 @@ Foo {}',
         yield [
             '<?php $foo = new class {};',
             '<?php $foo = new class  {};',
-            ['constructs' => ['class']],
         ];
 
         yield [
             '<?php $foo = new class {};',
             '<?php $foo = new class{};',
-            ['constructs' => ['class']],
         ];
 
         yield [
             '<?php $foo = new class /* foo */{};',
             '<?php $foo = new class/* foo */{};',
-            ['constructs' => ['class']],
         ];
 
         yield [
             '<?php $foo = new class /* foo */{};',
             '<?php $foo = new class  /* foo */{};',
-            ['constructs' => ['class']],
         ];
 
         yield [
             '<?php $foo = new class(){};',
-            null,
-            ['constructs' => ['class']],
         ];
 
         yield [
@@ -554,8 +548,6 @@ Foo {}',
                     $a ? new class(){ public function foo() { echo 1; }}
                     : 1
                 ;',
-            null,
-            ['constructs' => ['return']],
         ];
     }
 

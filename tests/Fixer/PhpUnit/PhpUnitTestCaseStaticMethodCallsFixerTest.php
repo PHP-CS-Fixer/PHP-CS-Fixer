@@ -56,20 +56,33 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
         ));
     }
 
-    public function testWrongConfigTypeForMethodsKey(): void
+    /**
+     * @param array<array-key, mixed> $configuration
+     *
+     * @dataProvider provideInvalidConfigurationCases
+     */
+    public function testInvalidConfiguration(array $configuration, string $expectedExceptionMessage): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessage('[php_unit_test_case_static_method_calls] Invalid configuration: The option "methods" with value array is expected to be of type "string[]", but one of the elements is of type "int".');
+        $this->expectExceptionMessage($expectedExceptionMessage);
 
-        $this->fixer->configure(['methods' => [123 => 1]]); // @phpstan-ignore-line
+        $this->fixer->configure($configuration);
     }
 
-    public function testWrongConfigTypeForMethodsValue(): void
+    /**
+     * @return iterable<string, array{mixed, string}>
+     */
+    public static function provideInvalidConfigurationCases(): iterable
     {
-        $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessage('[php_unit_test_case_static_method_calls] Invalid configuration: The option "methods" with value array is expected to be of type "string[]", but one of the elements is of type "int".');
+        yield 'wrong type fo methods key' => [
+            ['methods' => [123 => 1]],
+            '[php_unit_test_case_static_method_calls] Invalid configuration: The option "methods" with value array is expected to be of type "string[]", but one of the elements is of type "int".',
+        ];
 
-        $this->fixer->configure(['methods' => ['assertSame' => 123]]); // @phpstan-ignore-line
+        yield 'wrong type fo methods value' => [
+            ['methods' => ['assertSame' => 123]],
+            '[php_unit_test_case_static_method_calls] Invalid configuration: The option "methods" with value array is expected to be of type "string[]", but one of the elements is of type "int".',
+        ];
     }
 
     /**
@@ -504,11 +517,8 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
                     }
                 }',
         ];
-    }
 
-    public function testAnonymousClassFixing(): void
-    {
-        $this->doTest(
+        yield 'anonymous class' => [
             '<?php
 class MyTest extends \PHPUnit_Framework_TestCase
 {
@@ -538,8 +548,8 @@ class MyTest extends \PHPUnit_Framework_TestCase
             }
         };
     }
-}'
-        );
+}',
+        ];
     }
 
     /**

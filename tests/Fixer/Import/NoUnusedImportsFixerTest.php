@@ -980,7 +980,7 @@ $b = $a-->ABC::Test;
         ];
 
         yield 'constants_in_the_global_namespace_should_not_be_removed' => [
-            $expected = <<<'EOF'
+            <<<'EOF'
                 <?php
 
                 namespace Foo;

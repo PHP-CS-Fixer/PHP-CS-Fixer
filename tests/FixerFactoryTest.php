@@ -243,6 +243,7 @@ final class FixerFactoryTest extends TestCase
                     throw new \InvalidArgumentException(\sprintf('Rule "%s" is not in the set.', $rule));
                 }
 
+                // @phpstan-ignore-next-line offsetAccess.notFound The offset existence was check in the `if` above
                 if (true === $this->getRules()[$rule]) {
                     return null;
                 }
