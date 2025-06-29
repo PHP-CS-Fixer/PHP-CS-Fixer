@@ -345,6 +345,37 @@ echo DocumentStats::DRAFT->getStatusName();
         ];
     }
 
+    /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP >= 8.4
+     */
+    public function testFix84(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield 'asymmetric visibility' => [
+            '<?php
+            final class Foo {
+                public private(set) int $a;
+                private private(set) int $b;
+                private private(set) int $c;
+            }',
+            '<?php
+            final class Foo {
+                public protected(set) int $a;
+                protected protected(set) int $b;
+                protected private(set) int $c;
+            }',
+        ];
+    }
+
     private static function getAttributesAndMethods(bool $original): string
     {
         $attributesAndMethodsOriginal = '

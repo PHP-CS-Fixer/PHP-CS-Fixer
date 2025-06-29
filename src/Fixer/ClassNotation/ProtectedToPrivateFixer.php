@@ -29,7 +29,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class ProtectedToPrivateFixer extends AbstractFixer
 {
-    private const MODIFIER_KINDS = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_NS_SEPARATOR, T_STRING, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, T_STATIC, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, FCT::T_READONLY];
+    private const MODIFIER_KINDS = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_NS_SEPARATOR, T_STRING, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, T_STATIC, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET];
     private TokensAnalyzer $tokensAnalyzer;
 
     public function getDefinition(): FixerDefinitionInterface
@@ -93,30 +93,33 @@ final class Sample
                 continue;
             }
 
-            $previous = $index;
-            $isProtected = false;
+            $previousIndex = $index;
+            $protectedIndex = null;
+            $protectedSetIndex = null;
             $isFinal = false;
 
             do {
-                $previous = $tokens->getPrevMeaningfulToken($previous);
+                $previousIndex = $tokens->getPrevMeaningfulToken($previousIndex);
 
-                if ($tokens[$previous]->isGivenKind(T_PROTECTED)) {
-                    $isProtected = $previous;
-                } elseif ($tokens[$previous]->isGivenKind(T_FINAL)) {
-                    $isFinal = $previous;
+                if ($tokens[$previousIndex]->isGivenKind(T_PROTECTED)) {
+                    $protectedIndex = $previousIndex;
+                } elseif ($tokens[$previousIndex]->isGivenKind(FCT::T_PROTECTED_SET)) {
+                    $protectedSetIndex = $previousIndex;
+                } elseif ($tokens[$previousIndex]->isGivenKind(T_FINAL) && 'const' === $element['type']) {
+                    $isFinal = true;
                 }
-            } while ($tokens[$previous]->isGivenKind(self::MODIFIER_KINDS));
-
-            if (false === $isProtected) {
-                continue;
-            }
+            } while ($tokens[$previousIndex]->isGivenKind(self::MODIFIER_KINDS));
 
             if ($isFinal && 'const' === $element['type']) {
                 continue; // Final constants cannot be private
             }
 
-            $element['protected_index'] = $isProtected;
-            $tokens[$element['protected_index']] = new Token([T_PRIVATE, 'private']);
+            if (null !== $protectedIndex) {
+                $tokens[$protectedIndex] = new Token([T_PRIVATE, 'private']);
+            }
+            if (null !== $protectedSetIndex) {
+                $tokens[$protectedSetIndex] = new Token([T_PRIVATE_SET, 'private(set)']);
+            }
         }
     }
 

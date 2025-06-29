@@ -1010,12 +1010,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ProtectedToPrivateFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Only booleans are allowed in &&, int\\|false\\|null given on the left side\\.$#',
-	'identifier' => 'booleanAnd.leftNotBoolean',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ProtectedToPrivateFixer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Argument of an invalid type array\\<int\\<0, max\\>, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|PhpCsFixer\\\\Tokenizer\\\\Token supplied for foreach, only iterables are supported\\.$#',
 	'identifier' => 'foreach.nonIterable',
 	'count' => 1,
