@@ -45,6 +45,7 @@ final class ControlCaseStructuresAnalyzerTest extends TestCase
         self::assertCount(\count($expectedAnalyses), $analyses);
 
         foreach ($expectedAnalyses as $index => $expectedAnalysis) {
+            \assert(\array_key_exists($index, $analyses));
             self::assertAnalysis($expectedAnalysis, $analyses[$index]);
         }
     }
@@ -338,6 +339,7 @@ endswitch ?>',
         self::assertCount(\count($expectedAnalyses), $analyses);
 
         foreach ($expectedAnalyses as $index => $expectedAnalysis) {
+            \assert(\array_key_exists($index, $analyses));
             self::assertAnalysis($expectedAnalysis, $analyses[$index]);
         }
     }

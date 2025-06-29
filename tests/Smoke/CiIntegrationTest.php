@@ -110,6 +110,13 @@ final class CiIntegrationTest extends AbstractSmokeTestCase
         ));
 
         $integrationScript = explode("\n", str_replace('vendor/bin/', './../../../', (string) file_get_contents(__DIR__.'/../../ci-integration.sh')));
+
+        self::assertArrayHasKey(3, $integrationScript);
+        self::assertArrayHasKey(4, $integrationScript);
+        self::assertArrayHasKey(5, $integrationScript);
+        self::assertArrayHasKey(6, $integrationScript);
+        self::assertArrayHasKey(7, $integrationScript);
+
         $steps = [
             "COMMIT_RANGE=\"master..{$branchName}\"",
             "{$integrationScript[3]}\n{$integrationScript[4]}",
@@ -162,6 +169,8 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
 ';
 
         $expectedResult3FilesLineAfterDotsIndex = strpos($expectedResult3FilesLine, ' ');
+        self::assertIsInt($expectedResult3FilesLineAfterDotsIndex);
+
         $expectedResult3FilesDots = substr($expectedResult3FilesLine, 0, $expectedResult3FilesLineAfterDotsIndex);
         $expectedResult3FilesPercentage = substr($expectedResult3FilesLine, $expectedResult3FilesLineAfterDotsIndex);
 

@@ -354,6 +354,7 @@ final class SelfUpdateCommandTest extends TestCase
 
         $commandTester = new CommandTester($command);
 
+        \assert(\array_key_exists('argv', $_SERVER));
         $realPath = $_SERVER['argv'][0];
         $_SERVER['argv'][0] = $this->getToolPath();
 

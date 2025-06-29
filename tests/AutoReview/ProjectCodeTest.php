@@ -374,7 +374,7 @@ final class ProjectCodeTest extends TestCase
     public function testThatTestClassesAreInternal(string $testClassName): void
     {
         $rc = new \ReflectionClass($testClassName);
-        $doc = new DocBlock($rc->getDocComment());
+        $doc = new DocBlock((string) $rc->getDocComment());
 
         self::assertNotEmpty(
             $doc->getAnnotationsOfType('internal'),
@@ -632,6 +632,7 @@ final class ProjectCodeTest extends TestCase
             ];
 
             for ($i = \count($parameters) - 1; $i >= 0; --$i) {
+                \assert(\array_key_exists($i, $parameters));
                 $name = $parameters[$i]->getName();
 
                 if (isset($expected[$name])) {
@@ -855,7 +856,14 @@ final class ProjectCodeTest extends TestCase
         $phpunitXmlContent = file_get_contents(__DIR__.'/../../phpunit.xml.dist');
         self::assertIsString($phpunitXmlContent);
 
-        $phpunitFiles = (array) simplexml_load_string($phpunitXmlContent)->xpath('testsuites/testsuite[@name="short-open-tag"]')[0]->file;
+        $phpunitXml = simplexml_load_string($phpunitXmlContent);
+        self::assertNotFalse($phpunitXml);
+
+        $shortOpenTag = $phpunitXml->xpath('testsuites/testsuite[@name="short-open-tag"]');
+        self::assertIsArray($shortOpenTag);
+        self::assertArrayHasKey(0, $shortOpenTag);
+
+        $phpunitFiles = (array) $shortOpenTag[0]->file;
 
         sort($testFilesWithShortOpenTag);
         sort($phpunitFiles);
@@ -1073,14 +1081,16 @@ final class ProjectCodeTest extends TestCase
     /**
      * @param class-string $className
      *
-     * @return list<string>
+     * @return array<array-key, string>
      */
     private function extractFunctionNamesCalledInClass(string $className): array
     {
-        $tokens = $this->createTokensForClass($className);
+        /** @var list<Token> $tokens */
+        $tokens = $this->createTokensForClass($className)->toArray();
 
+        /** @var list<Token> $stringTokens */
         $stringTokens = array_filter(
-            $tokens->toArray(),
+            $tokens,
             static fn (Token $token): bool => $token->isGivenKind(T_STRING)
         );
 

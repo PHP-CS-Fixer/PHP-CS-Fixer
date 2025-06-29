@@ -125,6 +125,7 @@ Integration of %s.
      */
     public function testSetDefinitionsAreSorted(string $setDefinitionName): void
     {
+        \assert(\array_key_exists($setDefinitionName, RuleSets::getSetDefinitions()));
         $setDefinition = RuleSets::getSetDefinitions()[$setDefinitionName]->getRules();
         $sortedSetDefinition = $setDefinition;
         $this->sort($sortedSetDefinition);

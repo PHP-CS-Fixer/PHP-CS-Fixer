@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\AutoReview;
 
+use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -146,8 +147,8 @@ final class CiConfigurationTest extends TestCase
     }
 
     /**
-     * @param list<numeric-string> $supportedVersions
-     * @param list<numeric-string> $ciVersions
+     * @param list<numeric-string>     $supportedVersions
+     * @param array<array-key, string> $ciVersions
      */
     private static function assertSupportedPhpVersionsAreCoveredByCiJobs(array $supportedVersions, array $ciVersions): void
     {
@@ -210,21 +211,7 @@ final class CiConfigurationTest extends TestCase
 
     private function getMaxPhpVersionFromEntryFile(): string
     {
-        $tokens = Tokens::fromCode((string) file_get_contents(__DIR__.'/../../php-cs-fixer'));
-        $sequence = $tokens->findSequence([
-            [T_STRING, 'PHP_VERSION_ID'],
-            [T_IS_GREATER_OR_EQUAL],
-            [T_INT_CAST],
-            [T_CONSTANT_ENCAPSED_STRING],
-        ]);
-
-        if (null === $sequence) {
-            throw new \LogicException("Can't find version - perhaps entry file was modified?");
-        }
-
-        $phpVerId = trim(end($sequence)->getContent(), '\'');
-
-        return $this->convertPhpVerIdToNiceVer((string) ((int) $phpVerId - 100));
+        return ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED;
     }
 
     private function getMinPhpVersionFromEntryFile(): string
@@ -273,7 +260,7 @@ final class CiConfigurationTest extends TestCase
     }
 
     /**
-     * @return list<numeric-string>
+     * @return array<array-key, string>
      */
     private function getPhpVersionsUsedForBuildingOfficialImages(): array
     {
@@ -286,7 +273,7 @@ final class CiConfigurationTest extends TestCase
     }
 
     /**
-     * @return list<numeric-string>
+     * @return array<array-key, string>
      */
     private function getPhpVersionsUsedForBuildingLocalImages(): array
     {

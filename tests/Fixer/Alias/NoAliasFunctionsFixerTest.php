@@ -269,6 +269,7 @@ abstract class A
         $sets = array_keys($sets);
 
         foreach ($sets as $set) {
+            \assert(\array_key_exists($set, $allAliases));
             $aliases = $allAliases[$set];
             $cases = [];
 

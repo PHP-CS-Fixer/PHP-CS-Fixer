@@ -212,6 +212,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified.'),
                 new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'List of rules that should be run against configured paths.'),
                 new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Should cache be used (can be `yes` or `no`).'),
+                new InputOption('allow-unsupported-php-version', '', InputOption::VALUE_REQUIRED, 'Should the command refuse to run on unsupported PHP version (can be `yes` or `no`).'),
                 new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file.'),
                 new InputOption('diff', '', InputOption::VALUE_NONE, 'Prints diff for each file.'),
                 new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats.'),
@@ -243,6 +244,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 'path' => $input->getArgument('path'),
                 'path-mode' => $input->getOption('path-mode'),
                 'using-cache' => $input->getOption('using-cache'),
+                'allow-unsupported-php-version' => $input->getOption('allow-unsupported-php-version'),
                 'cache-file' => $input->getOption('cache-file'),
                 'format' => $input->getOption('format'),
                 'diff' => $input->getOption('diff'),
@@ -263,6 +265,30 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
         if (null !== $stdErr) {
             $stdErr->writeln(Application::getAboutWithRuntime(true));
+
+            if (version_compare(PHP_VERSION, ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED.'.99', '>')) {
+                $message = \sprintf(
+                    'PHP CS Fixer currently supports PHP syntax only up to PHP %s, current PHP version: %s.',
+                    ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED,
+                    PHP_VERSION
+                );
+
+                if (!$resolver->getUnsupportedPhpVersionAllowed()) {
+                    $message .= ' Add Config::setUnsupportedPhpVersionAllowed(true) to allow executions on unsupported PHP versions. Such execution may be unstable and you may experience code modified in a wrong way.';
+                    $stdErr->writeln(\sprintf(
+                        $stdErr->isDecorated() ? '<bg=red;fg=white;>%s</>' : '%s',
+                        $message
+                    ));
+
+                    return 1;
+                }
+                $message .= ' Execution may be unstable. You may experience code modified in a wrong way. Please report such cases at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer. Remove Config::setUnsupportedPhpVersionAllowed(true) to allow executions only on supported PHP versions.';
+                $stdErr->writeln(\sprintf(
+                    $stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s',
+                    $message
+                ));
+            }
+
             $isParallel = $resolver->getParallelConfig()->getMaxProcesses() > 1;
 
             $stdErr->writeln(\sprintf(

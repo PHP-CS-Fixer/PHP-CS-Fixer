@@ -56,7 +56,12 @@ final class CheckstyleReporter implements ReporterInterface
 
         $dom->formatOutput = true;
 
-        return $reportSummary->isDecoratedOutput() ? OutputFormatter::escape($dom->saveXML()) : $dom->saveXML();
+        $result = $dom->saveXML();
+        if (false === $result) {
+            throw new \RuntimeException('Failed to generate XML output');
+        }
+
+        return $reportSummary->isDecoratedOutput() ? OutputFormatter::escape($result) : $result;
     }
 
     private function createError(\DOMDocument $dom, string $appliedFixer): \DOMElement
