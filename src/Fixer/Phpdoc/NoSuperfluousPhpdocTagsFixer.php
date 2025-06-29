@@ -83,6 +83,9 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
         T_FINAL,
         T_STATIC,
         FCT::T_READONLY,
+        FCT::T_PRIVATE_SET,
+        FCT::T_PROTECTED_SET,
+        FCT::T_PUBLIC_SET,
     ];
 
     public function getDefinition(): FixerDefinitionInterface
@@ -515,7 +518,7 @@ class Foo {
         while (true) {
             $type = '';
 
-            if ($tokens[$index]->isGivenKind(FCT::T_READONLY)) {
+            if ($tokens[$index]->isGivenKind([FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET])) {
                 $index = $tokens->getNextMeaningfulToken($index);
             }
 
