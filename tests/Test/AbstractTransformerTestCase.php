@@ -118,14 +118,17 @@ abstract class AbstractTransformerTestCase extends TestCase
         $tokens = new TokensWithObservedTransformers();
         $tokens->setCode($source);
 
+        $prototypes = array_map(
+            static fn ($kindOrPrototype) => \is_int($kindOrPrototype) ? [$kindOrPrototype] : $kindOrPrototype,
+            array_unique([...$observedKindsOrPrototypes, ...$expectedTokens])
+        );
+        \assert(array_is_list($prototypes));
+
         self::assertSame(
             \count($expectedTokens),
             $this->countTokenPrototypes(
                 $tokens,
-                array_map(
-                    static fn ($kindOrPrototype) => \is_int($kindOrPrototype) ? [$kindOrPrototype] : $kindOrPrototype,
-                    array_unique([...$observedKindsOrPrototypes, ...$expectedTokens])
-                )
+                $prototypes
             ),
             'Number of expected tokens does not match actual token count.'
         );
@@ -194,7 +197,7 @@ abstract class AbstractTransformerTestCase extends TestCase
     }
 
     /**
-     * @param array<int, array{0: int, 1?: string}|string> $prototypes
+     * @param list<array{0: int, 1?: string}|string> $prototypes
      */
     private function countTokenPrototypes(Tokens $tokens, array $prototypes): int
     {
