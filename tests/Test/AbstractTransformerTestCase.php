@@ -145,6 +145,7 @@ abstract class AbstractTransformerTestCase extends TestCase
 
         foreach ($tokens->observedModificationsPerTransformer as $appliedTransformerName => $modificationsOfTransformer) {
             foreach ($modificationsOfTransformer as $modification) {
+                self::assertIsInt($modification);
                 $customTokenName = Token::getNameForId($modification);
 
                 if ($appliedTransformerName === $transformerName) {
@@ -193,7 +194,7 @@ abstract class AbstractTransformerTestCase extends TestCase
     }
 
     /**
-     * @param list<array{0: int, 1?: string}> $prototypes
+     * @param array<int, array{0: int, 1?: string}|string> $prototypes
      */
     private function countTokenPrototypes(Tokens $tokens, array $prototypes): int
     {

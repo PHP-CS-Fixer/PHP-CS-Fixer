@@ -103,7 +103,11 @@ final class Transformers
             $relativeNamespace = $file->getRelativePath();
             $class = __NAMESPACE__.'\Transformer\\'.('' !== $relativeNamespace ? $relativeNamespace.'\\' : '').$file->getBasename('.php');
 
-            yield new $class();
+            $instance = new $class();
+
+            \assert($instance instanceof TransformerInterface);
+
+            yield $instance;
         }
     }
 }

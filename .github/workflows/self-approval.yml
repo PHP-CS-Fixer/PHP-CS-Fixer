@@ -37,4 +37,5 @@ jobs:
         if: steps.marker.outputs.indicator_value == 'yes'
         run: |
           gh pr review --approve "$PR_URL"
+          gh pr edit "$PR_URL" --add-label "status/self-approved"
           echo "Approval from GH Bot - PR is now mergeable, use it wisely!"

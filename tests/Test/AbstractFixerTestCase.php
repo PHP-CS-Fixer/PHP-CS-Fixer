@@ -221,6 +221,7 @@ abstract class AbstractFixerTestCase extends TestCase
                 self::fail(\sprintf('[%s] Configurable fixer only provides a default configuration sample and none for its configuration options.', $fixerName));
             }
 
+            // @phpstan-ignore-next-line method.notFound
             $options = $this->fixer->getConfigurationDefinition()->getOptions();
 
             foreach ($options as $option) {
@@ -298,7 +299,7 @@ abstract class AbstractFixerTestCase extends TestCase
             throw new \RuntimeException('Cannot determine sourcefile for class.');
         }
 
-        $tokens = Tokens::fromCode(file_get_contents($filePath));
+        $tokens = Tokens::fromCode((string) file_get_contents($filePath));
 
         $sequences = $this->findAllTokenSequences($tokens, [[T_VARIABLE, '$tokens'], [T_OBJECT_OPERATOR], [T_STRING]]);
 
@@ -521,6 +522,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
             self::assertSameSize(
                 $tokens,
+                // @phpstan-ignore-next-line argument.type as all elements in `$tokens->toArray()` always objects of `Token`
                 array_unique(array_map(static fn (Token $token): string => spl_object_hash($token), $tokens->toArray())),
                 'Token items inside Tokens collection must be unique.'
             );
@@ -585,7 +587,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
         if (null === $linter) {
             $linter = new CachingLinter(
-                getenv('FAST_LINT_TEST_CASES') ? new Linter() : new ProcessLinter()
+                '1' === getenv('FAST_LINT_TEST_CASES') ? new Linter() : new ProcessLinter()
             );
         }
 
@@ -658,7 +660,7 @@ abstract class AbstractFixerTestCase extends TestCase
     }
 
     /**
-     * @param list<array{0: int, 1?: string}> $sequence
+     * @param non-empty-list<array{0: int, 1?: string}> $sequence
      *
      * @return list<non-empty-array<int, Token>>
      */
@@ -670,6 +672,7 @@ abstract class AbstractFixerTestCase extends TestCase
         while (($found = $tokens->findSequence($sequence, $lastIndex)) !== null) {
             $keys = array_keys($found);
             $sequences[] = $found;
+            \assert(\array_key_exists(2, $keys));
             $lastIndex = $keys[2];
         }
 
