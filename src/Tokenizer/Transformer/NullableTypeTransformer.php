@@ -44,6 +44,9 @@ final class NullableTypeTransformer extends AbstractTransformer
         [T_STATIC],
         [T_CONST],
         [FCT::T_READONLY],
+        [FCT::T_PRIVATE_SET],
+        [FCT::T_PROTECTED_SET],
+        [FCT::T_PUBLIC_SET],
     ];
 
     public function getPriority(): int
