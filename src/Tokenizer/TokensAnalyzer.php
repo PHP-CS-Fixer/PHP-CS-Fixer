@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer;
  *
  * @internal
  *
- * @phpstan-type _ClassyElementType 'case'|'const'|'method'|'property'|'trait_import'
+ * @phpstan-type _ClassyElementType 'case'|'const'|'method'|'property'|'promoted_property'|'trait_import'
  */
 final class TokensAnalyzer
 {
@@ -866,6 +866,20 @@ final class TokensAnalyzer
                     'token' => $token,
                     'type' => 'method',
                 ];
+                $functionNameIndex = $this->tokens->getNextMeaningfulToken($index);
+                if ('__construct' === $this->tokens[$functionNameIndex]->getContent()) {
+                    foreach ($this->tokens->findGivenKind([CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE]) as $kindElements) {
+                        foreach (array_keys($kindElements) as $promotedPropertyVisibilityIndex) {
+                            /** @var int $promotedPropertyVariableIndex */
+                            $promotedPropertyVariableIndex = $this->tokens->getNextTokenOfKind($promotedPropertyVisibilityIndex, [[T_VARIABLE]]);
+                            $elements[$promotedPropertyVariableIndex] = [
+                                'classIndex' => $classIndex,
+                                'token' => $this->tokens[$promotedPropertyVariableIndex],
+                                'type' => 'promoted_property',
+                            ];
+                        }
+                    }
+                }
             } elseif ($token->isGivenKind(T_CONST)) {
                 $elements[$index] = [
                     'classIndex' => $classIndex,

@@ -165,11 +165,11 @@ final class Foo
     }
 
     /**
-     * @return iterable<int, array{string, string}>
+     * @return iterable<string, array{0: string, 1?: string}>
      */
     public static function provideFix80Cases(): iterable
     {
-        yield [
+        yield 'type union' => [
             '<?php
 final class Foo2 {
     private int|float $a;
@@ -180,6 +180,25 @@ final class Foo2 {
     protected int|float $a;
 }
 ',
+        ];
+
+        yield 'promoted properties' => [
+            <<<'PHP'
+                <?php final class Foo {
+                    public function __construct(
+                        private null|Bar $x,
+                        private ?Bar $u,
+                    ) {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php final class Foo {
+                    public function __construct(
+                        protected null|Bar $x,
+                        protected ?Bar $u,
+                    ) {}
+                }
+                PHP,
         ];
     }
 

@@ -66,7 +66,7 @@ final class Sample
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_PROTECTED)
+        return $tokens->isAnyTokenKindsFound([T_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED])
             && (
                 $tokens->isAllTokenKindsFound([T_CLASS, T_FINAL])
                 || $tokens->isTokenKindFound(FCT::T_ENUM)
@@ -78,7 +78,7 @@ final class Sample
         $this->tokensAnalyzer = new TokensAnalyzer($tokens);
 
         $classesCandidate = [];
-        $classElementTypes = ['method' => true, 'property' => true, 'const' => true];
+        $classElementTypes = ['method' => true, 'property' => true, 'promoted_property' => true, 'const' => true];
 
         foreach ($this->tokensAnalyzer->getClassyElements() as $index => $element) {
             $classIndex = $element['classIndex'];
@@ -95,6 +95,7 @@ final class Sample
 
             $previousIndex = $index;
             $protectedIndex = null;
+            $protectedPromotedIndex = null;
             $protectedSetIndex = null;
             $isFinal = false;
 
@@ -103,9 +104,11 @@ final class Sample
 
                 if ($tokens[$previousIndex]->isGivenKind(T_PROTECTED)) {
                     $protectedIndex = $previousIndex;
+                } elseif ($tokens[$previousIndex]->isGivenKind(CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED)) {
+                    $protectedPromotedIndex = $previousIndex;
                 } elseif ($tokens[$previousIndex]->isGivenKind(FCT::T_PROTECTED_SET)) {
                     $protectedSetIndex = $previousIndex;
-                } elseif ($tokens[$previousIndex]->isGivenKind(T_FINAL) && 'const' === $element['type']) {
+                } elseif ($tokens[$previousIndex]->isGivenKind(T_FINAL)) {
                     $isFinal = true;
                 }
             } while ($tokens[$previousIndex]->isGivenKind(self::MODIFIER_KINDS));
@@ -116,6 +119,9 @@ final class Sample
 
             if (null !== $protectedIndex) {
                 $tokens[$protectedIndex] = new Token([T_PRIVATE, 'private']);
+            }
+            if (null !== $protectedPromotedIndex) {
+                $tokens[$protectedPromotedIndex] = new Token([CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE, 'private']);
             }
             if (null !== $protectedSetIndex) {
                 $tokens[$protectedSetIndex] = new Token([T_PRIVATE_SET, 'private(set)']);
