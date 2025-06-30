@@ -369,17 +369,24 @@ echo DocumentStats::DRAFT->getStatusName();
      *
      * @requires PHP >= 8.4
      */
-    public function testFix84(string $expected, string $input): void
+    public function testFix84(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<string, array{string, string}>
+     * @return iterable<string, array{string, 1?: string}>
      */
     public static function provideFix84Cases(): iterable
     {
-        yield 'asymmetric visibility' => [
+        yield 'asymmetric visibility with only set visibility' => [
+            '<?php
+            final class Foo {
+                protected(set) int $a;
+            }',
+        ];
+
+        yield 'asymmetric visibility with both visibilities' => [
             '<?php
             final class Foo {
                 public private(set) int $a;
