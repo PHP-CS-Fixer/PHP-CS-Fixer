@@ -180,7 +180,6 @@ function foo() { yield  from  baz(); }
                         ],
                     ]
                 ),
-
                 new CodeSample(
                     '<?php
 

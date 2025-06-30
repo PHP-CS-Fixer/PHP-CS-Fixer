@@ -279,7 +279,6 @@ if (true) {
      * Foo
      */
 ',
-
             "<?php
 \t/*
 \t * Foo
