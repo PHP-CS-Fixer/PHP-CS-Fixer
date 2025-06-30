@@ -49,9 +49,9 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @param null|array<int, Token>                       $expected
-     * @param list<array{0: int, 1?: string}|string|Token> $sequence
-     * @param bool|list<bool>                              $caseSensitive
+     * @param null|array<int, Token>                                 $expected
+     * @param non-empty-list<array{0: int, 1?: string}|string|Token> $sequence
+     * @param bool|list<bool>                                        $caseSensitive
      *
      * @dataProvider provideFindSequenceCases
      */
@@ -297,7 +297,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @param list<mixed> $sequence sequence of token prototypes
+     * @param non-empty-list<array{0: int, 1?: string}|string|Token> $sequence sequence of token prototypes
      *
      * @dataProvider provideFindSequenceExceptionCases
      */
@@ -355,6 +355,8 @@ final class TokensTest extends TestCase
             PHP;
 
         $tokens = Tokens::fromCode($source);
+
+        // @phpstan-ignore-next-line offsetAccess.notFound
         [$fooIndex, $barIndex] = array_keys($tokens->findGivenKind(T_PUBLIC));
 
         $tokens->clearRange($fooIndex, $barIndex - 1);
@@ -1597,7 +1599,7 @@ $bar;',
     /**
      * @dataProvider provideInsertSlicesAtMultiplePlacesCases
      *
-     * @param array<int, Token> $slices
+     * @param list<Token> $slices
      */
     public function testInsertSlicesAtMultiplePlaces(string $expected, array $slices): void
     {
@@ -1774,6 +1776,11 @@ $bar;',
 
             $sets[$j] = $set;
         }
+
+        \assert(\array_key_exists(0, $sets));
+        \assert(\array_key_exists(1, $sets));
+        \assert(\array_key_exists(2, $sets));
+        \assert(\array_key_exists(3, $sets));
 
         yield 'overlapping inserts of bunch of comments' => [
             Tokens::fromCode(\sprintf("<?php\n%s/* line #1 */\n%s/* line #2 */\n%s/* line #3 */%s", $sets[0]['content'], $sets[1]['content'], $sets[2]['content'], $sets[3]['content'])),
@@ -1997,6 +2004,7 @@ $bar;',
         self::assertSame(array_keys($expected), array_keys($input), 'Both arrays need to have same keys.');
 
         foreach ($expected as $index => $expectedToken) {
+            \assert(\array_key_exists($index, $input));
             self::assertTrue(
                 $expectedToken->equals($input[$index]),
                 \sprintf('The token at index %d should be %s, got %s', $index, $expectedToken->toJson(), $input[$index]->toJson())

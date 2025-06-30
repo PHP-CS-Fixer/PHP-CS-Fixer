@@ -253,8 +253,11 @@ function f9(string $foo, $bar, $baz) {}
                     CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE,
                     CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
                     CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
+                    FCT::T_READONLY,
+                    FCT::T_PRIVATE_SET,
+                    FCT::T_PROTECTED_SET,
+                    FCT::T_PUBLIC_SET,
                 ])
-                || $token->isGivenKind(FCT::T_READONLY)
             ) {
                 continue;
             }

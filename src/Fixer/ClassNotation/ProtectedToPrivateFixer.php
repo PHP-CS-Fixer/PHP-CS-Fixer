@@ -29,7 +29,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class ProtectedToPrivateFixer extends AbstractFixer
 {
-    private const MODIFIER_KINDS = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_NS_SEPARATOR, T_STRING, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, T_STATIC, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, FCT::T_READONLY];
+    private const MODIFIER_KINDS = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_NS_SEPARATOR, T_STRING, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, T_STATIC, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET];
     private TokensAnalyzer $tokensAnalyzer;
 
     public function getDefinition(): FixerDefinitionInterface
@@ -96,6 +96,7 @@ final class Sample
             $previousIndex = $index;
             $protectedIndex = null;
             $protectedPromotedIndex = null;
+            $protectedSetIndex = null;
             $isFinal = false;
 
             do {
@@ -105,6 +106,8 @@ final class Sample
                     $protectedIndex = $previousIndex;
                 } elseif ($tokens[$previousIndex]->isGivenKind(CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED)) {
                     $protectedPromotedIndex = $previousIndex;
+                } elseif ($tokens[$previousIndex]->isGivenKind(FCT::T_PROTECTED_SET)) {
+                    $protectedSetIndex = $previousIndex;
                 } elseif ($tokens[$previousIndex]->isGivenKind(T_FINAL)) {
                     $isFinal = true;
                 }
@@ -119,6 +122,9 @@ final class Sample
             }
             if (null !== $protectedPromotedIndex) {
                 $tokens[$protectedPromotedIndex] = new Token([CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE, 'private']);
+            }
+            if (null !== $protectedSetIndex) {
+                $tokens[$protectedSetIndex] = new Token([T_PRIVATE_SET, 'private(set)']);
             }
         }
     }
