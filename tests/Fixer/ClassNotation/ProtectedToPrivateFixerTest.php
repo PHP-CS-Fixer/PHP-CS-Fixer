@@ -379,7 +379,18 @@ echo DocumentStats::DRAFT->getStatusName();
      */
     public static function provideFix84Cases(): iterable
     {
-        yield 'asymmetric visibility' => [
+        yield 'asymmetric visibility with only set visibility' => [
+            '<?php
+            final class Foo {
+                private(set) int $a;
+            }',
+            '<?php
+            final class Foo {
+                protected(set) int $a;
+            }',
+        ];
+
+        yield 'asymmetric visibility with both visibilities' => [
             '<?php
             final class Foo {
                 public private(set) int $a;

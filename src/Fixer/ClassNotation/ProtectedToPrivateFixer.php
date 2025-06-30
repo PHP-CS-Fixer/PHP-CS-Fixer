@@ -66,7 +66,7 @@ final class Sample
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED])
+        return $tokens->isAnyTokenKindsFound([T_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, FCT::T_PROTECTED_SET])
             && (
                 $tokens->isAllTokenKindsFound([T_CLASS, T_FINAL])
                 || $tokens->isTokenKindFound(FCT::T_ENUM)
