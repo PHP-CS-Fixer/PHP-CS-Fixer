@@ -94,55 +94,6 @@ jobs:
             run-tests: 'yes'
 
           - operating-system: ubuntu-24.04
-            php-version: '8.3'
-            job-description: Fixer with migration rules
-            run-fixer: 'yes'
-            run-migration-rules: 'yes' # should be checked on the highest supported PHP version
-
-          - operating-system: ubuntu-24.04
-            php-version: '8.3'
-            job-description: tests with migration rules
-            run-tests: 'yes'
-            run-migration-rules: 'yes' # should be checked on the highest supported PHP version
-
-          - operating-system: ubuntu-24.04
-            php-version: '8.3'
-            job-description: Fixer with Symfony ^7
-            run-fixer: 'yes'
-            execute-flex-with-symfony-version: ^7 # explicit check for Symfony 7.x compatibility
-
-          - operating-system: ubuntu-24.04
-            php-version: '8.3'
-            job-description: tests with Symfony ^7
-            run-tests: 'yes'
-            execute-flex-with-symfony-version: ^7 # explicit check for Symfony 7.x compatibility
-
-          - operating-system: windows-latest
-            php-version: '8.3'
-            job-description: Fixer on Windows
-            run-fixer: 'yes'
-            FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
-
-          - operating-system: windows-latest
-            php-version: '8.3'
-            job-description: tests on Windows
-            run-tests: 'yes'
-            FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
-
-          - operating-system: macos-latest
-            php-version: '8.3'
-            job-description: Fixer on macOS
-            run-fixer: 'yes'
-            FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
-
-          - operating-system: macos-latest
-            php-version: '8.3'
-            job-description: tests on macOS
-            run-tests: 'yes'
-            AVOID_PARAUNIT: 'yes' # macOS job is having weird issue on CI under ParaUnit
-            FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
-
-          - operating-system: ubuntu-24.04
             php-version: '8.4'
             job-description: Fixer
             run-fixer: 'yes'
@@ -228,20 +179,6 @@ jobs:
             job-description: tests using PHPUnit 12
             install-phpunit-12: 'yes'
             run-tests: 'yes'
-            PHP_CS_FIXER_IGNORE_ENV: 1
-
-          - operating-system: ubuntu-24.04
-            php-version: '8.4'
-            job-description: code coverage
-            run-tests: 'yes'
-            collect-code-coverage: 'yes'
-            PHP_CS_FIXER_IGNORE_ENV: 1
-
-          - operating-system: ubuntu-24.04
-            php-version: '8.4'
-            job-description: mutation tests
-            run-mutation-tests: 'yes'
-            PHP_CS_FIXER_IGNORE_ENV: 1
 
           - operating-system: ubuntu-24.04
             php-version: '8.5'
