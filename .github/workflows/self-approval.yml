@@ -19,7 +19,7 @@ jobs:
     env:
       PR_URL: ${{github.event.pull_request.html_url}}
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      MARKER: "self-approval"
+      MARKER: self-approval
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -37,4 +37,5 @@ jobs:
         if: steps.marker.outputs.indicator_value == 'yes'
         run: |
           gh pr review --approve "$PR_URL"
+          gh pr edit "$PR_URL" --add-label "status/self-approved"
           echo "Approval from GH Bot - PR is now mergeable, use it wisely!"

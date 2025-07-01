@@ -549,6 +549,8 @@ final class ConfigurationResolverTest extends TestCase
             iterator_to_array($resolver->getFinder(), false)
         );
 
+        self::assertIsArray($expected);
+
         sort($expected);
         sort($intersectionItems);
 
@@ -562,7 +564,7 @@ final class ConfigurationResolverTest extends TestCase
     {
         $dir = __DIR__.'/../Fixtures/ConfigurationResolverPathsIntersection';
         $cb = static fn (array $items): array => array_map(
-            static fn (string $item): string => realpath($dir.'/'.$item),
+            static fn (string $item): string => (string) realpath($dir.'/'.$item),
             $items
         );
 
@@ -1215,7 +1217,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
         $options = $definition->getOptions();
         self::assertSame(
-            ['path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'format', 'stop-on-violation', 'show-progress', 'sequential'],
+            ['path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'allow-unsupported-php-version', 'cache-file', 'diff', 'format', 'stop-on-violation', 'show-progress', 'sequential'],
             array_keys($options),
             'Expected options mismatch, possibly test needs updating.'
         );

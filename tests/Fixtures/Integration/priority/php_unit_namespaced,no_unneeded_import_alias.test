@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: php_unit_namespaced,no_unneeded_import_alias.
+--RULESET--
+{"php_unit_namespaced": true, "no_unneeded_import_alias": true}
+--EXPECT--
+<?php
+use PHPUnit\Framework\MockObject\MockObject  ;
+
+--INPUT--
+<?php
+use PHPUnit_Framework_MockObject_MockObject as MockObject;

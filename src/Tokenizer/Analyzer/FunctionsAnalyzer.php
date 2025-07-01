@@ -18,6 +18,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -26,6 +27,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class FunctionsAnalyzer
 {
+    private const POSSIBLE_KINDS = [
+        T_DOUBLE_COLON, T_FUNCTION, CT::T_NAMESPACE_OPERATOR, T_NEW, CT::T_RETURN_REF, T_STRING, T_OBJECT_OPERATOR, FCT::T_NULLSAFE_OBJECT_OPERATOR, FCT::T_ATTRIBUTE];
+
     /**
      * @var array{tokens: string, imports: list<NamespaceUseAnalysis>, declarations: list<int>}
      */
@@ -54,17 +58,7 @@ final class FunctionsAnalyzer
             $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
         }
 
-        $possibleKind = [
-            T_DOUBLE_COLON, T_FUNCTION, CT::T_NAMESPACE_OPERATOR, T_NEW, CT::T_RETURN_REF, T_STRING,
-            ...Token::getObjectOperatorKinds(),
-        ];
-
-        // @TODO: drop condition when PHP 8.0+ is required
-        if (\defined('T_ATTRIBUTE')) {
-            $possibleKind[] = T_ATTRIBUTE;
-        }
-
-        if ($tokens[$prevIndex]->isGivenKind($possibleKind)) {
+        if ($tokens[$prevIndex]->isGivenKind(self::POSSIBLE_KINDS)) {
             return false;
         }
 

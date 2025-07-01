@@ -27,6 +27,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -69,6 +70,7 @@ final class BracesPositionFixer extends AbstractFixer implements ConfigurableFix
      * @internal
      */
     public const SAME_LINE = 'same_line';
+    private const CONTROL_STRUCTURE_TOKENS = [T_DECLARE, T_DO, T_ELSE, T_ELSEIF, T_FINALLY, T_FOR, T_FOREACH, T_IF, T_WHILE, T_TRY, T_CATCH, T_SWITCH, FCT::T_MATCH];
 
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -163,7 +165,7 @@ $bar = function () { $result = true;
      * {@inheritdoc}
      *
      * Must run before SingleLineEmptyBodyFixer, StatementIndentationFixer.
-     * Must run after ControlStructureBracesFixer, NoMultipleStatementsPerLineFixer.
+     * Must run after ControlStructureBracesFixer, MultilinePromotedPropertiesFixer, NoMultipleStatementsPerLineFixer.
      */
     public function getPriority(): int
     {
@@ -208,12 +210,6 @@ $bar = function () { $result = true;
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $classyTokens = Token::getClassyTokenKinds();
-        $controlStructureTokens = [T_DECLARE, T_DO, T_ELSE, T_ELSEIF, T_FINALLY, T_FOR, T_FOREACH, T_IF, T_WHILE, T_TRY, T_CATCH, T_SWITCH];
-        // @TODO: drop condition when PHP 8.0+ is required
-        if (\defined('T_MATCH')) {
-            $controlStructureTokens[] = T_MATCH;
-        }
-
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         $allowSingleLineUntil = null;
@@ -232,9 +228,9 @@ $bar = function () { $result = true;
                     $positionOption = 'classes_opening_brace';
                 }
             } elseif ($token->isGivenKind(T_FUNCTION)) {
-                $openBraceIndex = $tokens->getNextTokenOfKind($index, ['{', ';']);
+                $openBraceIndex = $tokens->getNextTokenOfKind($index, ['{', ';', [CT::T_PROPERTY_HOOK_BRACE_OPEN]]);
 
-                if ($tokens[$openBraceIndex]->equals(';')) {
+                if (!$tokens[$openBraceIndex]->equals('{')) {
                     continue;
                 }
 
@@ -244,7 +240,7 @@ $bar = function () { $result = true;
                 } else {
                     $positionOption = 'functions_opening_brace';
                 }
-            } elseif ($token->isGivenKind($controlStructureTokens)) {
+            } elseif ($token->isGivenKind(self::CONTROL_STRUCTURE_TOKENS)) {
                 $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
                 $openBraceIndex = $tokens->getNextMeaningfulToken($parenthesisEndIndex);
 

@@ -24,6 +24,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
@@ -89,7 +90,9 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
         'property_public' => ['property', 'public'],
         'property_protected' => ['property', 'protected'],
         'property_private' => ['property', 'private'],
+        'property_public_abstract' => ['property_abstract', 'property_public'],
         'property_public_readonly' => ['property_readonly', 'property_public'],
+        'property_protected_abstract' => ['property_abstract', 'property_protected'],
         'property_protected_readonly' => ['property_readonly', 'property_protected'],
         'property_private_readonly' => ['property_readonly', 'property_private'],
         'property_public_static' => ['property_static', 'property_public'],
@@ -386,7 +389,7 @@ Custom values:
                     continue;
                 }
 
-                if (\defined('T_READONLY') && $token->isGivenKind(T_READONLY)) { // @TODO: drop condition when PHP 8.1+ is required
+                if ($token->isGivenKind(FCT::T_READONLY)) {
                     $element['readonly'] = true;
                 }
 
