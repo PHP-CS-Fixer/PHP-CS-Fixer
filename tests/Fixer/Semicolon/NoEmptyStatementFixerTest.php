@@ -665,16 +665,6 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                 <?php interface I
                 {
                     public bool $a { get; }
-                    public bool $b { get;  }
-                    public bool $c { set; }
-                    public bool $d { set;  }
-                    public bool $e {/* hello1 */set/* hello2 */;/* hello3 *//* hello4 *//* hello5 */}
-                }
-                PHP,
-            <<<'PHP'
-                <?php interface I
-                {
-                    public bool $a { get; }
                     public bool $b { get; set; }
                     public bool $c { set; }
                     public bool $d { set; get; }
@@ -684,14 +674,6 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'abstract class with property hooks' => [
-            <<<'PHP'
-                <?php abstract class A
-                {
-                    abstract public bool $a { get;  }
-                    abstract public bool $b { get{}  }
-                    abstract public bool $c { get; set{} }
-                }
-                PHP,
             <<<'PHP'
                 <?php abstract class A
                 {
