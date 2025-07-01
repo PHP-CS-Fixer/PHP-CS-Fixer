@@ -350,30 +350,6 @@ switch($a) { // pass the `is candidate` check
                             case 'a':
                             case 'b':
                                 return self::C1;
-                                // no break
-                            case 'c':
-                                return self::C2;
-                            case 'd':
-                            case 'e':
-                                return self::C3;
-                            default:
-                                throw new Exception();
-                        }
-                    }
-                }
-                PHP,
-            <<<'PHP'
-                <?php enum Foo: int
-                {
-                    case C1 = 1;
-                    case C2 = 2;
-                    case C3 = 3;
-                    public static function f(string $s): self
-                    {
-                        switch ($s) {
-                            case 'a':
-                            case 'b':
-                                return self::C1;
                             case 'c':
                                 return self::C2;
                             case 'd':
@@ -657,7 +633,20 @@ switch ($foo) {
                                 break;
                             }
                         };
-                        // "no break" should be added here
+                        // no break
+                    case 2;
+                        bar();
+                }
+                PHP,
+            <<<'PHP'
+                            <?php
+                switch ($foo) {
+                    case 1;
+                        $foo = function ($bar): void {
+                            foreach ($bar as $baz) {
+                                break;
+                            }
+                        };
                     case 2;
                         bar();
                 }

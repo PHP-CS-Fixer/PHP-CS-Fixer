@@ -541,12 +541,12 @@ abstract class AbstractFixerTestCase extends TestCase
             $this->fixer->fix($file, $tokens);
         }
 
-        // self::assertThat(
-        //     $tokens->generateCode(),
-        //     new IsIdenticalString($expected),
-        //     'Code built on expected code must not change.'
-        // );
-        // self::assertFalse($tokens->isChanged(), 'Tokens collection built on expected code must not be marked as changed after fixing.');
+        self::assertThat(
+            $tokens->generateCode(),
+            new IsIdenticalString($expected),
+            'Code built on expected code must not change.'
+        );
+        self::assertFalse($tokens->isChanged(), 'Tokens collection built on expected code must not be marked as changed after fixing.');
     }
 
     protected function lintSource(string $source): ?string
