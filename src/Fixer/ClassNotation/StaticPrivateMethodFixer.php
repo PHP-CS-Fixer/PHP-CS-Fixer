@@ -91,20 +91,25 @@ class Foo
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $end = \count($tokens) - 3; // min. number of tokens to form a class candidate to fix
-        for ($index = $end; $index > 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_CLASS)) {
-                continue;
+
+        do {
+            $anythingChanged = false;
+
+            $end = \count($tokens) - 3; // min. number of tokens to form a class candidate to fix
+            for ($index = $end; $index > 0; --$index) {
+                if (!$tokens[$index]->isGivenKind(T_CLASS)) {
+                    continue;
+                }
+
+                $classOpen = $tokens->getNextTokenOfKind($index, ['{']);
+                $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
+
+                $anythingChanged |= $this->fixClass($tokens, $tokensAnalyzer, $classOpen, $classClose);
             }
-
-            $classOpen = $tokens->getNextTokenOfKind($index, ['{']);
-            $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
-
-            $this->fixClass($tokens, $tokensAnalyzer, $classOpen, $classClose);
-        }
+        } while ($anythingChanged);
     }
 
-    private function fixClass(Tokens $tokens, TokensAnalyzer $tokensAnalyzer, int $classOpen, int $classClose): void
+    private function fixClass(Tokens $tokens, TokensAnalyzer $tokensAnalyzer, int $classOpen, int $classClose): bool
     {
         $fixedMethods = [];
         foreach ($this->getClassMethods($tokens, $classOpen, $classClose) as $methodData) {
@@ -122,7 +127,7 @@ class Foo
         }
 
         if (0 === \count($fixedMethods)) {
-            return;
+            return false;
         }
 
         $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
@@ -131,6 +136,8 @@ class Foo
 
             $this->fixReferencesInFunction($tokens, $tokensAnalyzer, $methodOpen, $methodClose, $fixedMethods);
         }
+
+        return true;
     }
 
     private function skipMethod(Tokens $tokens, TokensAnalyzer $tokensAnalyzer, int $functionKeywordIndex, int $methodOpen, int $methodClose): bool
