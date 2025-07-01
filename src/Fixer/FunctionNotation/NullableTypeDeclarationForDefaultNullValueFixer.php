@@ -53,6 +53,9 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
         CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
         CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
         CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE,
+        FCT::T_PUBLIC_SET,
+        FCT::T_PROTECTED_SET,
+        FCT::T_PRIVATE_SET,
         FCT::T_READONLY,
     ];
 

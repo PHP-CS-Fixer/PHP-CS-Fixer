@@ -477,7 +477,7 @@ class Foo
                         public protected(set) ?int $a = null,
                         protected protected(set) ?int $b = null,
                         protected private(set) ?int $c = null,
-                        protected(set) ?int $d = null,
+                        public(set) ?int $d = null,
                         protected(set) ?int $e = null,
                         private(set) ?int $f = null,
                     ) {}
@@ -492,28 +492,16 @@ class Foo
                 <?php
                 class Foo {
                     public function __construct(
-                        public protected(set) int $a = null,
-                        protected protected(set) int $b = null,
-                        protected private(set) int $c = null,
-                        protected(set) int $d = null,
-                        protected(set) int $e = null,
-                        private(set) int $f = null,
-                    ) {}
-                }
-                PHP,
-            <<<'PHP'
-                <?php
-                class Foo {
-                    public function __construct(
                         public protected(set) ?int $a = null,
                         protected protected(set) ?int $b = null,
                         protected private(set) ?int $c = null,
-                        protected(set) ?int $d = null,
+                        public(set) ?int $d = null,
                         protected(set) ?int $e = null,
                         private(set) ?int $f = null,
                     ) {}
                 }
                 PHP,
+            null,
             ['use_nullable_type_declaration' => false],
         ];
     }
