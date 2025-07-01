@@ -362,6 +362,99 @@ switch($a) { // pass the `is candidate` check
                 }
                 PHP,
         ];
+
+        yield 'enum with exit' => [
+            <<<'PHP'
+                <?php
+                enum MyEnum: string
+                {
+                    case A = 'a';
+
+                    public static function forHost(string $host): self
+                    {
+                        switch ($host) {
+                            case 'hub.a':
+                            case 'hub.b':
+                                exit(1);
+                            default:
+                                throw new Exception('Unknown host: ' . $host);
+                        }
+                    }
+                }
+                PHP,
+        ];
+
+        yield 'enum with continue' => [
+            <<<'PHP'
+                <?php
+                enum MyEnum: string
+                {
+                    case A = 'a';
+
+                    public static function forHost(array $hosts): self
+                    {
+                        foreach($hosts as $host) {
+                            switch ($host) {
+                                case 'hub.a':
+                                case 'hub.b':
+                                    continue 2;
+                                default:
+                                    throw new Exception('Unknown host: ' . $host);
+                            }
+                        }
+
+                    }
+                }
+                PHP,
+        ];
+
+        yield 'enum with break' => [
+            <<<'PHP'
+                <?php
+                enum MyEnum: string
+                {
+                    case A = 'a';
+
+                    public static function forHost(array $hosts): self
+                    {
+                        foreach($hosts as $host) {
+                            switch ($host) {
+                                case 'hub.a':
+                                case 'hub.b':
+                                    break 2;
+                                default:
+                                    throw new Exception('Unknown host: ' . $host);
+                            }
+                        }
+
+                    }
+                }
+                PHP,
+        ];
+
+        yield 'enum with throw' => [
+            <<<'PHP'
+                <?php
+                enum MyEnum: string
+                {
+                    case A = 'a';
+
+                    public static function forHost(array $hosts): self
+                    {
+                        foreach($hosts as $host) {
+                            switch ($host) {
+                                case 'hub.a':
+                                case 'hub.b':
+                                    throw new RuntimeException('boo');
+                                default:
+                                    throw new Exception('Unknown host: ' . $host);
+                            }
+                        }
+
+                    }
+                }
+                PHP,
+        ];
     }
 
     /**
