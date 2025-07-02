@@ -94,8 +94,8 @@ jobs:
             run-tests: 'yes'
 
           - operating-system: ubuntu-24.04
-            php-version: '8.3'
-            job-description: Fixer with migration rules
+            php-version: {{ env.PHP_MAX }}
+            job-description: FRS Fixer with migration rules
             run-fixer: 'yes'
             run-migration-rules: 'yes' # should be checked on the highest supported PHP version
 
