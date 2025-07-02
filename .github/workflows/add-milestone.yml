@@ -1,0 +1,50 @@
+name: Add milestone
+
+on:
+  issues:
+    types: [labeled]
+  pull_request:
+    types: [labeled]
+
+jobs:
+  add-to-milestone:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+
+    steps:
+      - name: Add to milestone "PHP 8.4 initial compatibility" if label is "topic/PHP8.4"
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labelName = 'topic/PHP8.4';
+            const milestoneTitle = 'PHP 8.4 initial compatibility';
+
+            const payload = context.payload;
+            const labeled = payload.label.name === labelName;
+            if (!labeled) return;
+
+            const repo = context.repo.repo;
+            const owner = context.repo.owner;
+
+            const milestones = await github.rest.issues.listMilestones({
+              owner,
+              repo,
+              state: 'open',
+            });
+
+            const milestone = milestones.data.find(m => m.title === milestoneTitle);
+            if (!milestone) {
+              core.setFailed(`Milestone "${milestoneTitle}" not found.`);
+              return;
+            }
+
+            const issueNumber = context.issue.number;
+
+            await github.rest.issues.update({
+              owner,
+              repo,
+              issue_number: issueNumber,
+              milestone: milestone.number,
+            });
