@@ -128,6 +128,16 @@ final class PhpUnitTestCaseAnalyzerTest extends TestCase
             ',
         ];
 
+        yield 'anonymous class extending TestCase' => [
+            [
+                [17, 18],
+            ],
+            <<<'PHP'
+                <?php
+                $myTest = new class () extends \PHPUnit_Framework_TestCase {};
+                PHP,
+        ];
+
         yield 'extends Test' => [
             [
                 [11, 12],
