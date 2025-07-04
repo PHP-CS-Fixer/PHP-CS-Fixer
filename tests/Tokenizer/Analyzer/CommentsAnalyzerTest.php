@@ -352,6 +352,28 @@ $bar;',
     }
 
     /**
+     * @dataProvider providePhpdocCandidate84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testPhpdocCandidate84(string $code): void
+    {
+        $this->testPhpdocCandidate($code);
+    }
+
+    /**
+     * @return iterable<int, array{string}>
+     */
+    public static function providePhpdocCandidate84Cases(): iterable
+    {
+        yield ['<?php class Foo { /* comment */ public(set) int $i; }'];
+
+        yield ['<?php class Foo { /* comment */ protected(set) int $i; }'];
+
+        yield ['<?php class Foo { /* comment */ private(set) int $i; }'];
+    }
+
+    /**
      * @dataProvider provideNotPhpdocCandidateCases
      */
     public function testNotPhpdocCandidate(string $code): void

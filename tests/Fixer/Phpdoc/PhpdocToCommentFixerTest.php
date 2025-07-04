@@ -968,16 +968,6 @@ enum Foo: int
         yield 'asymmetric visibility' => [
             <<<'PHP'
                 <?php class Foo {
-                    /* @var int */
-                    public(set) int $a;
-                    /* @var int */
-                    protected(set) int $b;
-                    /* @var int */
-                    private(set) int $c;
-                }
-                PHP,
-            <<<'PHP'
-                <?php class Foo {
                     /** @var int */
                     public(set) int $a;
                     /** @var int */
