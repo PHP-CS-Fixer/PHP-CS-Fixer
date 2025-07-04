@@ -318,7 +318,6 @@ class Foo {}',
 
         yield 'windows style' => [
             "<?php\r\n    /**     * Constant!     */\n    \$foo = 123;",
-
             "<?php\r\n    /**     * Constant!     */\r\n\r\n\r\n    \$foo = 123;",
         ];
 

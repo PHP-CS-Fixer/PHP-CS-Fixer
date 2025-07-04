@@ -881,4 +881,37 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
                 }',
         ];
     }
+
+    /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield 'property hook in promoted property' => [
+            <<<'PHP'
+                <?php class CarPark
+                {
+                    public function __construct(
+                        public Car $car {
+                            set(Car $car)
+                            {
+                                $this->car = $car;
+                                $this->car->parked();
+                            }
+                        },
+                    ) {}
+                }
+                PHP,
+        ];
+    }
 }

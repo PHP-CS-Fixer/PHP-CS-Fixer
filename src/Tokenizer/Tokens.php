@@ -229,77 +229,68 @@ class Tokens extends \SplFixedArray
      */
     public static function getBlockEdgeDefinitions(): array
     {
-        static $definitions = null;
-        if (null === $definitions) {
-            $definitions = [
-                self::BLOCK_TYPE_CURLY_BRACE => [
-                    'start' => '{',
-                    'end' => '}',
-                ],
-                self::BLOCK_TYPE_PARENTHESIS_BRACE => [
-                    'start' => '(',
-                    'end' => ')',
-                ],
-                self::BLOCK_TYPE_INDEX_SQUARE_BRACE => [
-                    'start' => '[',
-                    'end' => ']',
-                ],
-                self::BLOCK_TYPE_ARRAY_SQUARE_BRACE => [
-                    'start' => [CT::T_ARRAY_SQUARE_BRACE_OPEN, '['],
-                    'end' => [CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']'],
-                ],
-                self::BLOCK_TYPE_DYNAMIC_PROP_BRACE => [
-                    'start' => [CT::T_DYNAMIC_PROP_BRACE_OPEN, '{'],
-                    'end' => [CT::T_DYNAMIC_PROP_BRACE_CLOSE, '}'],
-                ],
-                self::BLOCK_TYPE_DYNAMIC_VAR_BRACE => [
-                    'start' => [CT::T_DYNAMIC_VAR_BRACE_OPEN, '{'],
-                    'end' => [CT::T_DYNAMIC_VAR_BRACE_CLOSE, '}'],
-                ],
-                self::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE => [
-                    'start' => [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN, '{'],
-                    'end' => [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE, '}'],
-                ],
-                self::BLOCK_TYPE_GROUP_IMPORT_BRACE => [
-                    'start' => [CT::T_GROUP_IMPORT_BRACE_OPEN, '{'],
-                    'end' => [CT::T_GROUP_IMPORT_BRACE_CLOSE, '}'],
-                ],
-                self::BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE => [
-                    'start' => [CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '['],
-                    'end' => [CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']'],
-                ],
-                self::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION => [
-                    'start' => [CT::T_BRACE_CLASS_INSTANTIATION_OPEN, '('],
-                    'end' => [CT::T_BRACE_CLASS_INSTANTIATION_CLOSE, ')'],
-                ],
-                self::BLOCK_TYPE_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS => [
-                    'start' => [CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, '('],
-                    'end' => [CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE, ')'],
-                ],
-                self::BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE => [
-                    'start' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN, '{'],
-                    'end' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE, '}'],
-                ],
-                self::BLOCK_TYPE_COMPLEX_STRING_VARIABLE => [
-                    'start' => [T_DOLLAR_OPEN_CURLY_BRACES, '${'],
-                    'end' => [CT::T_DOLLAR_CLOSE_CURLY_BRACES, '}'],
-                ],
-                self::BLOCK_TYPE_PROPERTY_HOOK => [
-                    'start' => [CT::T_PROPERTY_HOOK_BRACE_OPEN, '{'],
-                    'end' => [CT::T_PROPERTY_HOOK_BRACE_CLOSE, '}'],
-                ],
-            ];
-
-            // @TODO: drop condition when PHP 8.0+ is required
-            if (\defined('T_ATTRIBUTE')) {
-                $definitions[self::BLOCK_TYPE_ATTRIBUTE] = [
-                    'start' => [T_ATTRIBUTE, '#['],
-                    'end' => [CT::T_ATTRIBUTE_CLOSE, ']'],
-                ];
-            }
-        }
-
-        return $definitions;
+        return [
+            self::BLOCK_TYPE_CURLY_BRACE => [
+                'start' => '{',
+                'end' => '}',
+            ],
+            self::BLOCK_TYPE_PARENTHESIS_BRACE => [
+                'start' => '(',
+                'end' => ')',
+            ],
+            self::BLOCK_TYPE_INDEX_SQUARE_BRACE => [
+                'start' => '[',
+                'end' => ']',
+            ],
+            self::BLOCK_TYPE_ARRAY_SQUARE_BRACE => [
+                'start' => [CT::T_ARRAY_SQUARE_BRACE_OPEN, '['],
+                'end' => [CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']'],
+            ],
+            self::BLOCK_TYPE_DYNAMIC_PROP_BRACE => [
+                'start' => [CT::T_DYNAMIC_PROP_BRACE_OPEN, '{'],
+                'end' => [CT::T_DYNAMIC_PROP_BRACE_CLOSE, '}'],
+            ],
+            self::BLOCK_TYPE_DYNAMIC_VAR_BRACE => [
+                'start' => [CT::T_DYNAMIC_VAR_BRACE_OPEN, '{'],
+                'end' => [CT::T_DYNAMIC_VAR_BRACE_CLOSE, '}'],
+            ],
+            self::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE => [
+                'start' => [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN, '{'],
+                'end' => [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE, '}'],
+            ],
+            self::BLOCK_TYPE_GROUP_IMPORT_BRACE => [
+                'start' => [CT::T_GROUP_IMPORT_BRACE_OPEN, '{'],
+                'end' => [CT::T_GROUP_IMPORT_BRACE_CLOSE, '}'],
+            ],
+            self::BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE => [
+                'start' => [CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '['],
+                'end' => [CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']'],
+            ],
+            self::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION => [
+                'start' => [CT::T_BRACE_CLASS_INSTANTIATION_OPEN, '('],
+                'end' => [CT::T_BRACE_CLASS_INSTANTIATION_CLOSE, ')'],
+            ],
+            self::BLOCK_TYPE_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS => [
+                'start' => [CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, '('],
+                'end' => [CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE, ')'],
+            ],
+            self::BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE => [
+                'start' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN, '{'],
+                'end' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE, '}'],
+            ],
+            self::BLOCK_TYPE_COMPLEX_STRING_VARIABLE => [
+                'start' => [T_DOLLAR_OPEN_CURLY_BRACES, '${'],
+                'end' => [CT::T_DOLLAR_CLOSE_CURLY_BRACES, '}'],
+            ],
+            self::BLOCK_TYPE_PROPERTY_HOOK => [
+                'start' => [CT::T_PROPERTY_HOOK_BRACE_OPEN, '{'],
+                'end' => [CT::T_PROPERTY_HOOK_BRACE_CLOSE, '}'],
+            ],
+            self::BLOCK_TYPE_ATTRIBUTE => [
+                'start' => [FCT::T_ATTRIBUTE, '#['],
+                'end' => [CT::T_ATTRIBUTE_CLOSE, ']'],
+            ],
+        ];
     }
 
     /**
@@ -717,7 +708,12 @@ class Tokens extends \SplFixedArray
      */
     public function getTokenOfKindSibling(int $index, int $direction, array $tokens = [], bool $caseSensitive = true): ?int
     {
-        $tokens = array_filter($tokens, fn ($token): bool => $this->isTokenKindFound($this->extractTokenKind($token)));
+        $tokens = array_values(
+            array_filter(
+                $tokens,
+                fn ($token): bool => $this->isTokenKindFound($this->extractTokenKind($token))
+            )
+        );
 
         if (0 === \count($tokens)) {
             return null;

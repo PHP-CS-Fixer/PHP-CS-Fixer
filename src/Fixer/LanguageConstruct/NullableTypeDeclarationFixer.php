@@ -28,6 +28,7 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -51,6 +52,7 @@ final class NullableTypeDeclarationFixer extends AbstractFixer implements Config
 
     private const OPTION_SYNTAX_UNION = 'union';
     private const OPTION_SYNTAX_QUESTION_MARK = 'question_mark';
+    private const PROPERTY_MODIFIERS = [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_STATIC, T_VAR, FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET];
 
     private int $candidateTokenKind;
 
@@ -203,15 +205,9 @@ class ValueObject
     private function normalizePropertyType(Tokens $tokens, int $index): void
     {
         $propertyEndIndex = $index;
-        $propertyModifiers = [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_STATIC, T_VAR];
-
-        if (\defined('T_READONLY')) {
-            $propertyModifiers[] = T_READONLY; // @TODO: Drop condition when PHP 8.1+ is required
-        }
-
         do {
             $index = $tokens->getPrevMeaningfulToken($index);
-        } while (!$tokens[$index]->isGivenKind($propertyModifiers));
+        } while (!$tokens[$index]->isGivenKind(self::PROPERTY_MODIFIERS));
 
         $propertyType = $this->collectTypeAnalysis($tokens, $index, $propertyEndIndex);
 

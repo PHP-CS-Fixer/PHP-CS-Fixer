@@ -151,7 +151,7 @@ if (true) {
      */
     public function testWithShortOpenTag(string $expected, ?string $input = null): void
     {
-        if (!\ini_get('short_open_tag')) {
+        if ('1' !== \ini_get('short_open_tag')) {
             self::markTestSkipped('The short_open_tag option is required to be enabled.');
         }
 

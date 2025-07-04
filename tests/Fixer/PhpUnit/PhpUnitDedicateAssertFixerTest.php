@@ -333,6 +333,17 @@ $a#
             '),
         ];
 
+        yield 'assertFalse with instanceof' => [
+            self::generateTest('
+                self::assertNotInstanceOf(Foo::class, $a);
+                self::assertInstanceOf(Foo::class, $b);
+            '),
+            self::generateTest('
+                self::assertFalse($a instanceof Foo);
+                self::assertFalse(!$b instanceof Foo);
+            '),
+        ];
+
         yield 'not a method call' => [
             self::generateTest('echo $this->assertTrue;'),
         ];

@@ -386,12 +386,14 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      */
     private function fixAssertTrueFalseInstanceof(Tokens $tokens, array $assertCall, int $testIndex): bool
     {
+        $isPositiveAssertion = 'asserttrue' === $assertCall['loweredName'];
+
         if ($tokens[$testIndex]->equals('!')) {
             $variableIndex = $tokens->getNextMeaningfulToken($testIndex);
-            $positive = false;
+            $isPositiveCondition = false;
         } else {
             $variableIndex = $testIndex;
-            $positive = true;
+            $isPositiveCondition = true;
         }
 
         if (!$tokens[$variableIndex]->isGivenKind(T_VARIABLE)) {
@@ -437,8 +439,12 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 }
             }
 
+            $name = $isPositiveAssertion && $isPositiveCondition || !$isPositiveAssertion && !$isPositiveCondition
+                ? 'assertInstanceOf'
+                : 'assertNotInstanceOf';
+
             $tokens->insertSlices($newTokens);
-            $tokens[$assertCall['index']] = new Token([T_STRING, $positive ? 'assertInstanceOf' : 'assertNotInstanceOf']);
+            $tokens[$assertCall['index']] = new Token([T_STRING, $name]);
         }
 
         return true;

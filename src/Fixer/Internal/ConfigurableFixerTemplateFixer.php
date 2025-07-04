@@ -50,6 +50,7 @@ use PhpCsFixer\Tests\AbstractProxyFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\AbstractNullableTypeDeclarationFixerTestCase;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
@@ -63,6 +64,8 @@ use PhpCsFixer\Utils;
  */
 final class ConfigurableFixerTemplateFixer extends AbstractFixer implements InternalFixerInterface
 {
+    private const MODIFIERS = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_COMMENT, FCT::T_ATTRIBUTE, FCT::T_READONLY];
+
     public function getName(): string
     {
         return 'PhpCsFixerInternal/'.parent::getName();
@@ -425,23 +428,13 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
 
     private function getDocBlockIndex(Tokens $tokens, int $index): int
     {
-        $modifiers = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_COMMENT];
-
-        if (\defined('T_ATTRIBUTE')) { // @TODO: drop condition when PHP 8.0+ is required
-            $modifiers[] = T_ATTRIBUTE;
-        }
-
-        if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.2+ is required
-            $modifiers[] = T_READONLY;
-        }
-
         do {
             $index = $tokens->getPrevNonWhitespace($index);
 
             if ($tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
                 $index = $tokens->getPrevTokenOfKind($index, [[T_ATTRIBUTE]]);
             }
-        } while ($tokens[$index]->isGivenKind($modifiers));
+        } while ($tokens[$index]->isGivenKind(self::MODIFIERS));
 
         return $index;
     }
