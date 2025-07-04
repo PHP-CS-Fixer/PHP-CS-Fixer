@@ -3,8 +3,12 @@ name: Add milestone
 on:
   issues:
     types: [labeled]
-  pull_request:
+  pull_request_target:
     types: [labeled]
+
+permissions:
+  pull-requests: write
+  contents: write
 
 jobs:
   add-to-milestone:
@@ -13,9 +17,6 @@ jobs:
     env:
       PR_URL: ${{github.event.pull_request.html_url}}
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-    permissions:
-      issues: write
-      pull-requests: write
 
     steps:
       - run: gh pr edit "$PR_URL" --milestone 'PHP 8.4 initial compatibility'
