@@ -645,7 +645,7 @@ AB# <- this is the name
     }
 
     /**
-     * @return iterable<int, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -668,6 +668,24 @@ AB# <- this is the name
         yield [
             '<?php class Foo { public static null|array $foo; }',
             '<?php class Foo { static null|array $foo; }',
+        ];
+
+        yield 'promoted properties' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public function __construct(
+                        public string $a,
+                        protected string $b,
+                        private string $c,
+                    ) {}
+                }
+                PHP,
+        ];
+
+        yield 'promoted property without visibility' => [
+            // promoted property should have visibility added
+            '<?php class Foo { public function __construct(readonly string $bar) { } }',
         ];
     }
 
