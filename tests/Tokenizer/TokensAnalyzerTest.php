@@ -569,24 +569,6 @@ final class TokensAnalyzerTest extends TestCase
                 }
                 PHP,
         ];
-
-        yield 'promoted property without visibility' => [
-            [
-                9 => [
-                    'classIndex' => 1,
-                    'type' => 'method',
-                ],
-                17 => [
-                    'classIndex' => 1,
-                    'type' => 'promoted_property',
-                ],
-            ],
-            <<<'PHP'
-                <?php class Foo {
-                    public function __construct(readonly bool $b) {}
-                }
-                PHP,
-        ];
     }
 
     /**
@@ -763,6 +745,24 @@ enum Foo: string
     }
 }
             ',
+        ];
+
+        yield 'promoted property without visibility' => [
+            [
+                9 => [
+                    'classIndex' => 1,
+                    'type' => 'method',
+                ],
+                17 => [
+                    'classIndex' => 1,
+                    'type' => 'promoted_property',
+                ],
+            ],
+            <<<'PHP'
+                <?php class Foo {
+                    public function __construct(readonly bool $b) {}
+                }
+                PHP,
         ];
     }
 
