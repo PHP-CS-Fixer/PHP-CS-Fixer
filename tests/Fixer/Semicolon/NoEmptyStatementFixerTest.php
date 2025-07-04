@@ -644,4 +644,44 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
             '<?php enum Foo{};',
         ];
     }
+
+    /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, 1?: string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield 'interface with property hooks' => [
+            <<<'PHP'
+                <?php interface I
+                {
+                    public bool $a { get; }
+                    public bool $b { get; set; }
+                    public bool $c { set; }
+                    public bool $d { set; get; }
+                    public bool $e {/* hello1 */set/* hello2 */;/* hello3 */get/* hello4 */;/* hello5 */}
+                }
+                PHP,
+        ];
+
+        yield 'abstract class with property hooks' => [
+            <<<'PHP'
+                <?php abstract class A
+                {
+                    abstract public bool $a { get; set; }
+                    abstract public bool $b { get{} set; }
+                    abstract public bool $c { get; set{} }
+                }
+                PHP,
+        ];
+    }
 }
