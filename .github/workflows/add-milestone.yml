@@ -9,6 +9,7 @@ on:
 jobs:
   add-to-milestone:
     runs-on: ubuntu-latest
+    if: ${{ github.event.label.name == 'topic/PHP8.4' }}
     permissions:
       issues: write
       pull-requests: write
