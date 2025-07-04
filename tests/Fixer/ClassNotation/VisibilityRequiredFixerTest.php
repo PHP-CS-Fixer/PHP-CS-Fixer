@@ -682,11 +682,6 @@ AB# <- this is the name
                 }
                 PHP,
         ];
-
-        yield 'promoted property without visibility' => [
-            // promoted property should have visibility added
-            '<?php class Foo { public function __construct(readonly string $bar) { } }',
-        ];
     }
 
     /**
@@ -700,7 +695,7 @@ AB# <- this is the name
     }
 
     /**
-     * @return iterable<int, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFix81Cases(): iterable
     {
@@ -785,6 +780,11 @@ enum Foo {
 }
 
 var_dump(Foo::CAT->test());',
+        ];
+
+        yield 'promoted property without visibility' => [
+            '<?php class Foo { public function __construct(public readonly string $bar) { } }',
+            '<?php class Foo { public function __construct(readonly string $bar) { } }',
         ];
     }
 
