@@ -1,0 +1,18 @@
+name: Add milestone
+
+on:
+  issues:
+    types: [labeled]
+  pull_request:
+    types: [labeled]
+
+jobs:
+  add-to-milestone:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.label.name == 'topic/PHP8.4' }}
+    permissions:
+      issues: write
+      pull-requests: write
+
+    steps:
+      - run: gh pr edit "$PR_URL" --milestone 'PHP 8.4 initial compatibility'
