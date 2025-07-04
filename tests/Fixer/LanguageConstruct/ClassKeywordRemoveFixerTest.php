@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Sullivan Senechal <soullivaneuh@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\LanguageConstruct\ClassKeywordRemoveFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\ClassKeywordRemoveFixer>
+ *
+ * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
 final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
 {
