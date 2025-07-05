@@ -175,11 +175,13 @@ class Sample
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
+        $elements = ['const', 'method', 'property'];
+
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('elements', 'The structural elements to fix (PHP >= 7.1 required for `const`).'))
                 ->setAllowedTypes(['string[]'])
-                ->setAllowedValues([new AllowedValueSubset($this->elements)])
-                ->setDefault($this->elements)
+                ->setAllowedValues([new AllowedValueSubset($elements)])
+                ->setDefault($elements)
                 ->getOption(),
         ]);
     }
