@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Varga Bence <vbence@czentral.org>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\NoSpacesAfterFunctionNameFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\NoSpacesAfterFunctionNameFixer>
+ *
+ * @author Varga Bence <vbence@czentral.org>
  */
 final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
 {

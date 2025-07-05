@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Kuba Werłos <werlos@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\ImplodeCallFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\ImplodeCallFixer>
+ *
+ * @author Kuba Werłos <werlos@gmail.com>
  */
 final class ImplodeCallFixerTest extends AbstractFixerTestCase
 {

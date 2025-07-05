@@ -23,14 +23,14 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Gert de Pagter <BackEndTea@gmail.com>
- *
  * @phpstan-type _UnsetInfo array{
  *     startIndex: int,
  *     endIndex: int,
  *     isToTransform: bool,
  *     isFirst: bool,
  * }
+ *
+ * @author Gert de Pagter <BackEndTea@gmail.com>
  */
 final class NoUnsetOnPropertyFixer extends AbstractFixer
 {

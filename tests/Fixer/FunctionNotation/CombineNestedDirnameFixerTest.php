@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Gregor Harlan
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\CombineNestedDirnameFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\CombineNestedDirnameFixer>
+ *
+ * @author Gregor Harlan
  */
 final class CombineNestedDirnameFixerTest extends AbstractFixerTestCase
 {

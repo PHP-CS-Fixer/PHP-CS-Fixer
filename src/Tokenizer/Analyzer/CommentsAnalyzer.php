@@ -49,6 +49,9 @@ final class CommentsAnalyzer
         CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
         CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE,
         FCT::T_READONLY,
+        FCT::T_PUBLIC_SET,
+        FCT::T_PROTECTED_SET,
+        FCT::T_PRIVATE_SET,
     ];
 
     public function isHeaderComment(Tokens $tokens, int $index): bool

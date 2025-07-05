@@ -330,9 +330,9 @@ final class Token
     /**
      * Generate array containing all predefined constants that exists in PHP version in use.
      *
-     * @see https://php.net/manual/en/language.constants.predefined.php
-     *
      * @return array<int, int>
+     *
+     * @see https://php.net/manual/en/language.constants.predefined.php
      */
     public static function getMagicConstants(): array
     {
