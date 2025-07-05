@@ -52,12 +52,6 @@ final class PhpUnitTestCaseAnalyzer
             return false;
         }
 
-        $index = $tokens->getNextMeaningfulToken($index);
-
-        if (!$tokens[$index]->isGivenKind(T_STRING)) {
-            return false;
-        }
-
         $extendsIndex = $tokens->getNextTokenOfKind($index, ['{', [T_EXTENDS]]);
 
         if (!$tokens[$extendsIndex]->isGivenKind(T_EXTENDS)) {

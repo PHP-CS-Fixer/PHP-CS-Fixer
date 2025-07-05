@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Semicolon;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Semicolon\NoEmptyStatementFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Semicolon\NoEmptyStatementFixer>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 {
