@@ -500,7 +500,7 @@ final class StaticPrivateMethodFixerTest extends AbstractFixerTestCase
                 PHP,
         ];
 
-        yield 'sequential calls' => [
+        yield 'nested calls' => [
             <<<'PHP'
                 <?php class Foo {
                     public function the_function() { return self::function_0(); }
