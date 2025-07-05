@@ -897,6 +897,25 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
      */
     public static function provideFix84Cases(): iterable
     {
+        yield 'property hook' => [
+            <<<'PHP'
+                <?php class C
+                {
+                    private int $i {
+                        get => 2;
+                    }
+                }
+                PHP,
+            <<<'PHP'
+                <?php class C
+                {
+                    private int $i    {
+                        get => 2;
+                    }
+                }
+                PHP,
+        ];
+
         yield 'property hook in promoted property' => [
             <<<'PHP'
                 <?php class CarPark

@@ -70,7 +70,8 @@ final class BracesPositionFixer extends AbstractFixer implements ConfigurableFix
      * @internal
      */
     public const SAME_LINE = 'same_line';
-    private const CONTROL_STRUCTURE_TOKENS = [T_DECLARE, T_DO, T_ELSE, T_ELSEIF, T_FINALLY, T_FOR, T_FOREACH, T_IF, T_WHILE, T_TRY, T_CATCH, T_SWITCH, FCT::T_MATCH];
+
+    private const SAME_LINE_PREV_OPEN_BRACE_TOKENS = [T_DECLARE, T_DO, T_ELSE, T_ELSEIF, T_FINALLY, T_FOR, T_FOREACH, T_IF, T_WHILE, T_TRY, T_CATCH, T_SWITCH, T_VARIABLE, FCT::T_MATCH];
 
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -240,11 +241,11 @@ $bar = function () { $result = true;
                 } else {
                     $positionOption = 'functions_opening_brace';
                 }
-            } elseif ($token->isGivenKind(self::CONTROL_STRUCTURE_TOKENS)) {
+            } elseif ($token->isGivenKind(self::SAME_LINE_PREV_OPEN_BRACE_TOKENS)) {
                 $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
                 $openBraceIndex = $tokens->getNextMeaningfulToken($parenthesisEndIndex);
 
-                if (!$tokens[$openBraceIndex]->equals('{')) {
+                if (!$tokens[$openBraceIndex]->equalsAny(['{', [CT::T_PROPERTY_HOOK_BRACE_OPEN]])) {
                     continue;
                 }
 
@@ -253,7 +254,8 @@ $bar = function () { $result = true;
                 continue;
             }
 
-            $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openBraceIndex);
+            $blockType = Tokens::detectBlockType($tokens[$openBraceIndex]);
+            $closeBraceIndex = $tokens->findBlockEnd($blockType['type'], $openBraceIndex);
 
             $addNewlinesInsideBraces = true;
             if ($allowSingleLine || $allowSingleLineIfEmpty || $index < $allowSingleLineUntil) {
