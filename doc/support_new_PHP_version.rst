@@ -39,7 +39,7 @@ Here, we want to first understand explicit or implicit Tokenizer changes:
 - explicit change is when new PHP token is introduced - in such case we cover it under `Forward Compatibility Tokens <./../src/Tokenizer/FCT.php>`_ to simplify cross-php-version handling.
 - implicit change is when PHP token is now having more possible contexts - in such case we separate it with dedicated `Custom Tokens <./../src/Tokenizer/CT.php>`_. Doing it after declaring the official support for vY would be a BC breaker.
 
-Then, we want to ensure compatibility. With high amount of rules, it's not-likely to check every single combination of rules and vY syntax, so we focus to run newly introduced syntax as integration test against ruleset of `@PhpCsFixer: true, PHPvYMigration:true` (`example <./../tests/Fixtures/Integration/php_compat/>`_).
+Then, we want to ensure compatibility. With high amount of rules, it's not-likely to check every single combination of rules and vY syntax, so we focus to run newly introduced syntax as integration test against ruleset of "@PhpCsFixer: true, PHPvYMigration:true" (`example <./../tests/Fixtures/Integration/php_compat/>`_).
 
 On that moment, we claim initial support for vY is completed and PHP CS Fixer can run on vY runtime as-is.
 Any newly discovered incompatibility should be reported as a bug.
