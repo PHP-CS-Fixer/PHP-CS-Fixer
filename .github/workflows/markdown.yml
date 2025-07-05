@@ -3,15 +3,15 @@ name: Markdown
 on:
   pull_request:
     paths:
-      - "*.md"
-      - "**/*.md"
+      - '*.md'
+      - '**/*.md'
   push:
     paths:
-      - "*.md"
-      - "**/*.md"
+      - '*.md'
+      - '**/*.md'
 
 permissions:
-  contents: "read"
+  contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

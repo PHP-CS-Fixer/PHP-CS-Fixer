@@ -45,6 +45,16 @@ final class StaticLambdaFixer extends AbstractFixer
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run after StaticPrivateMethodFixer.
+     */
+    public function getPriority(): int
+    {
+        return parent::getPriority();
+    }
+
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $analyzer = new TokensAnalyzer($tokens);
@@ -110,6 +120,13 @@ final class StaticLambdaFixer extends AbstractFixer
                 T_EVAL,                       // "$c = eval('return $this;');" case
             ])) {
                 return true;
+            }
+
+            if ($tokens[$i]->isClassy()) {
+                $openBraceIndex = $tokens->getNextTokenOfKind($i, ['{']);
+                $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openBraceIndex);
+
+                continue;
             }
 
             if ($tokens[$i]->equals('$')) {

@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Test;
 
+use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSet;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -27,7 +28,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     public function create(SplFileInfo $file): IntegrationCase
     {
         try {
-            if (!preg_match(
+            if (!Preg::match(
                 '/^
                             --TEST--           \r?\n(?<title>          .*?)
                        \s   --RULESET--        \r?\n(?<ruleset>        .*?)
@@ -80,6 +81,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
      */
     protected function determineConfig(SplFileInfo $file, ?string $config): array
     {
+        /** @var array{indent: non-empty-string, lineEnding: non-empty-string} $parsed */
         $parsed = $this->parseJson($config, [
             'indent' => '    ',
             'lineEnding' => "\n",
@@ -109,6 +111,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
      */
     protected function determineRequirements(SplFileInfo $file, ?string $config): array
     {
+        /** @var array{php: int, "php<": int, os: list<string>} $parsed */
         $parsed = $this->parseJson($config, [
             'php' => \PHP_VERSION_ID,
             'php<' => PHP_INT_MAX,
@@ -162,6 +165,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
      */
     protected function determineSettings(SplFileInfo $file, ?string $config): array
     {
+        /** @var array{checkPriority: bool, deprecations: list<string>} $parsed */
         $parsed = $this->parseJson($config, [
             'checkPriority' => true,
             'deprecations' => [],

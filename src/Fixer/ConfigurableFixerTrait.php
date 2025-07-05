@@ -26,12 +26,12 @@ use Symfony\Component\OptionsResolver\Exception\ExceptionInterface;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @template TFixerInputConfig of array<string, mixed>
  * @template TFixerComputedConfig of array<string, mixed>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 trait ConfigurableFixerTrait
 {

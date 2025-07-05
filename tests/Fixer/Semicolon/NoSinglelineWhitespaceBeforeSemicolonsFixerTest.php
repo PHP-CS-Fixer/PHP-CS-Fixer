@@ -17,15 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\Semicolon;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author John Kelly <wablam@gmail.com>
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Semicolon\NoSinglelineWhitespaceBeforeSemicolonsFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Semicolon\NoSinglelineWhitespaceBeforeSemicolonsFixer>
+ *
+ * @author John Kelly <wablam@gmail.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class NoSinglelineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixerTestCase
 {

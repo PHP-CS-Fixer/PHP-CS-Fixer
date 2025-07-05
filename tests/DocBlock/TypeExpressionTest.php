@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\DocBlock;
 
 use PhpCsFixer\DocBlock\TypeExpression;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
@@ -64,7 +65,6 @@ final class TypeExpressionTest extends TestCase
             'null',
             'true',
             'FALSE',
-
             '123',
             '+123',
             '-123',
@@ -77,7 +77,6 @@ final class TypeExpressionTest extends TestCase
             '0b01_01_01',
             '-0X7_Fb_4',
             '18_446_744_073_709_551_616', // 64-bit unsigned long + 1, larger than PHP_INT_MAX
-
             '123.4',
             '.123',
             '123.',
@@ -94,7 +93,6 @@ final class TypeExpressionTest extends TestCase
             '123E+80',
             '8.2023437675747321', // greater precision than 64-bit double
             '-0.0',
-
             '\'\'',
             '\'foo\'',
             '\'\\\\\'',
@@ -1201,7 +1199,7 @@ final class TypeExpressionTest extends TestCase
         // pruned in FIFO fashion, so to clear the cache, replace all existing
         // cache slots with dummy regexes
         for ($i = 0; $i < 4_096; ++$i) {
-            preg_match('/^'.$i.'/', '');
+            Preg::match('/^'.$i.'/', '');
         }
     }
 
