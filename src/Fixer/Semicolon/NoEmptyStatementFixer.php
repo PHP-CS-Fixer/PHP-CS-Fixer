@@ -18,6 +18,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
@@ -91,6 +92,11 @@ final class NoEmptyStatementFixer extends AbstractFixer
             if ($tokens[$previousMeaningfulIndex]->equals('}')) {
                 $this->fixSemicolonAfterCurlyBraceClose($tokens, $index, $previousMeaningfulIndex);
 
+                continue;
+            }
+
+            $nextIndex = $tokens->getNextMeaningfulToken($index);
+            if (null !== $nextIndex && $tokens[$nextIndex]->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_CLOSE)) {
                 continue;
             }
 

@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Operator;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Haralan Dobrev <hkdobrev@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Operator\LogicalOperatorsFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\LogicalOperatorsFixer>
+ *
+ * @author Haralan Dobrev <hkdobrev@gmail.com>
  */
 final class LogicalOperatorsFixerTest extends AbstractFixerTestCase
 {
