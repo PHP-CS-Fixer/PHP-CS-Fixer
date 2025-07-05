@@ -728,6 +728,42 @@ enum Foo: string
 }
             ',
         ];
+
+        yield 'readonly promoted property' => [
+            [
+                9 => [
+                    'classIndex' => 1,
+                    'type' => 'method',
+                ],
+                19 => [
+                    'classIndex' => 1,
+                    'type' => 'promoted_property',
+                ],
+            ],
+            <<<'PHP'
+                <?php class Foo {
+                    public function __construct(public readonly bool $b) {}
+                }
+                PHP,
+        ];
+
+        yield 'promoted property without visibility' => [
+            [
+                9 => [
+                    'classIndex' => 1,
+                    'type' => 'method',
+                ],
+                17 => [
+                    'classIndex' => 1,
+                    'type' => 'promoted_property',
+                ],
+            ],
+            <<<'PHP'
+                <?php class Foo {
+                    public function __construct(readonly bool $b) {}
+                }
+                PHP,
+        ];
     }
 
     /**
