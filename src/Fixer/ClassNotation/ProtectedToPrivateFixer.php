@@ -78,7 +78,7 @@ final class Sample
         $this->tokensAnalyzer = new TokensAnalyzer($tokens);
 
         $classesCandidate = [];
-        $classElementTypes = ['method' => true, 'property' => true, 'promoted_property' => true, 'const' => true];
+        $classElementTypes = ['method' => true, 'property' => true, 'const' => true];
 
         foreach ($this->tokensAnalyzer->getClassyElements() as $index => $element) {
             $classIndex = $element['classIndex'];

@@ -24,7 +24,7 @@ use PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer;
  *
  * @internal
  *
- * @phpstan-type _ClassyElementType 'case'|'const'|'method'|'property'|'promoted_property'|'trait_import'
+ * @phpstan-type _ClassyElementType 'case'|'const'|'method'|'property'|'trait_import'
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>
@@ -875,7 +875,7 @@ final class TokensAnalyzer
                             $elements[$promotedPropertyVariableIndex] = [
                                 'classIndex' => $classIndex,
                                 'token' => $this->tokens[$promotedPropertyVariableIndex],
-                                'type' => 'promoted_property',
+                                'type' => 'property',
                             ];
                         }
                     }

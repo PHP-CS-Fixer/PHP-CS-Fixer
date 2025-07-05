@@ -530,15 +530,15 @@ final class TokensAnalyzerTest extends TestCase
                 ],
                 18 => [
                     'classIndex' => 1,
-                    'type' => 'promoted_property',
+                    'type' => 'property',
                 ],
                 26 => [
                     'classIndex' => 1,
-                    'type' => 'promoted_property',
+                    'type' => 'property',
                 ],
                 37 => [
                     'classIndex' => 1,
-                    'type' => 'promoted_property',
+                    'type' => 'property',
                 ],
             ],
             <<<'PHP'
