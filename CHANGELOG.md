@@ -3,6 +3,26 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.77.0
+---------------------
+
+* chore: add automatically to milestone "PHP 8.4 initial compatibility" if label is "topic/PHP8.4" (#8770)
+* chore: Add CS commit to .git-blame-ignore-revs
+* chore: fix adding automatically to milestone "PHP 8.4 initial compatibility" if label is "topic/PHP8.4" (#8775)
+* chore: fix adding automatically to milestone "PHP 8.4 initial compatibility" if label is "topic/PHP8.4" (#8776)
+* chore: move all indicators to analyzers (#8772)
+* chore: move PHP-compat integration tests (#8781)
+* chore: partially apply NoExtraBlankLinesFixer:tokens.comma (#8762)
+* chore: reconfigure phpdoc_order in local config (#8220)
+* feat: PhpdocOrderFixer - extend support for phpstan and psalm annotations (#8777)
+* feat: support anonymous classes extending `TestCase` in PHPUnit fixers (#8707)
+* feat: `CommentToPhpdocFixer` and `PhpdocToCommentFixer` - support asymmetric visibility (#8774)
+* feat: `NoEmptyStatementFixer` - support abstract property hooks (#8766)
+* feat: `NullableTypeDeclarationForDefaultNullValueFixer` - support asymmetric visibility in the constructor (#8604)
+* feat: `ProtectedToPrivateFixer` - add support for promoted properties (#8608)
+* fix: `PhpUnitAttributesFixer` - correctly remove annotations when configured `['keep_annotations' => false]` (#8577)
+* fix: `ProtectedToPrivateFixer` - fix asymmetric visibility with only set visibility (#8763)
+
 Changelog for v3.76.0
 ---------------------
 
