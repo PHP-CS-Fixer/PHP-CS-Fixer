@@ -92,7 +92,7 @@ class PropertyHooks
         \strtolower( $value );
     }
     
-    final    public    string    $bar {
+    final    public    string    $bar    {
         set(    string $value    ) {
             $this -> foo = strtolower($value);
         }
