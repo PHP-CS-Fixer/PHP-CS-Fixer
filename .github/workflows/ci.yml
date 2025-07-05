@@ -142,18 +142,6 @@ jobs:
             AVOID_PARAUNIT: 'yes' # macOS job is having weird issue on CI under ParaUnit
             FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
 
-          # @TODO TEMPORARY: Only for quick 8.4 feedback
-          - operating-system: ubuntu-24.04
-            php-version: '8.4'
-            job-description: integration test
-            run-84-integration-tests: 'yes'
-
-          # @TODO TEMPORARY: Only for quick 8.4 feedback
-          - operating-system: ubuntu-24.04
-            php-version: '8.4'
-            job-description: unit test
-            run-84-unit-tests: 'yes'
-
           - operating-system: ubuntu-24.04
             php-version: '8.4'
             job-description: tests using PHPUnit 12
@@ -291,20 +279,6 @@ jobs:
         env:
           PHP_CS_FIXER_FUTURE_MODE: 1
         run: php php-cs-fixer check --diff -vvv --config .php-cs-fixer.php-lowest.php
-
-      # @TODO TEMPORARY: Only for quick 8.4 feedback
-      - name: Run `@group php8.4` unit tests
-        if: matrix.run-84-unit-tests == 'yes'
-        env:
-          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
-          FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
-        # We use PHPUnit here instead of ParaUnit because it displays diff and since we limit tests to group `php8.4` we don't need parallelisation.
-        run: vendor/bin/phpunit --group=php8.4 --colors=always
-
-      # @TODO TEMPORARY: Only for quick 8.4 feedback
-      - name: Run PHP 8.4 integration test
-        if: matrix.run-84-integration-tests == 'yes'
-        run: php vendor/bin/phpunit tests/IntegrationTest.php --filter=PHP8_4.test --color=always
 
   deployment:
     needs: tests
