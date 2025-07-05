@@ -155,13 +155,13 @@ jobs:
           # @TODO TEMPORARY: Only for quick 8.4 feedback
           - operating-system: ubuntu-24.04
             php-version: '8.4'
-            job-description: 'integration test'
+            job-description: integration test
             run-84-integration-tests: 'yes'
 
           # @TODO TEMPORARY: Only for quick 8.4 feedback
           - operating-system: ubuntu-24.04
             php-version: '8.4'
-            job-description: 'unit test'
+            job-description: unit test
             run-84-unit-tests: 'yes'
 
           - operating-system: ubuntu-24.04
