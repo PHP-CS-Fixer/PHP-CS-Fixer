@@ -44,9 +44,9 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @template TFixer of FixerInterface
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  */

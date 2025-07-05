@@ -18,10 +18,10 @@ use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @template TFixerInputConfig of array<string, mixed>
  * @template TFixerComputedConfig of array<string, mixed>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 interface ConfigurableFixerInterface extends FixerInterface
 {

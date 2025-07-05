@@ -18,13 +18,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Whitespace\IndentationTypeFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\IndentationTypeFixer>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class IndentationTypeFixerTest extends AbstractFixerTestCase
 {
