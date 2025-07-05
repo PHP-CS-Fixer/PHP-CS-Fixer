@@ -85,13 +85,15 @@ jobs:
 
           - operating-system: ubuntu-24.04
             php-version: '8.3'
-            job-description: Fixer
+            job-description: Fixer with Symfony ^7
             run-fixer: 'yes'
+            execute-flex-with-symfony-version: ^7 # explicit check for Symfony 7.x compatibility
 
           - operating-system: ubuntu-24.04
             php-version: '8.3'
-            job-description: tests
+            job-description: tests with Symfony ^7
             run-tests: 'yes'
+            execute-flex-with-symfony-version: ^7 # explicit check for Symfony 7.x compatibility
 
           - operating-system: ubuntu-24.04
             php-version: '8.4'
@@ -114,18 +116,6 @@ jobs:
             job-description: tests with migration rules
             run-tests: 'yes'
             run-migration-rules: 'yes' # should be checked on the highest supported PHP version
-
-          - operating-system: ubuntu-24.04
-            php-version: '8.4'
-            job-description: Fixer with Symfony ^7
-            run-fixer: 'yes'
-            execute-flex-with-symfony-version: ^7 # explicit check for Symfony 7.x compatibility
-
-          - operating-system: ubuntu-24.04
-            php-version: '8.4'
-            job-description: tests with Symfony ^7
-            run-tests: 'yes'
-            execute-flex-with-symfony-version: ^7 # explicit check for Symfony 7.x compatibility
 
           - operating-system: windows-latest
             php-version: '8.4'
