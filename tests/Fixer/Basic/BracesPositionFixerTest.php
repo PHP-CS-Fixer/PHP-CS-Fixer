@@ -901,6 +901,14 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
             <<<'PHP'
                 <?php class C
                 {
+                    private int $i {
+                        get => 2;
+                    }
+                }
+                PHP,
+            <<<'PHP'
+                <?php class C
+                {
                     private int $i    {
                         get => 2;
                     }
