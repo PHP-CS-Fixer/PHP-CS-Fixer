@@ -336,6 +336,125 @@ switch($a) { // pass the `is candidate` check
 }
 ',
         ];
+
+        yield 'enum with function having return type and switch in that function' => [
+            <<<'PHP'
+                <?php enum Foo: int
+                {
+                    case C1 = 1;
+                    case C2 = 2;
+                    case C3 = 3;
+                    public static function f(string $s): self
+                    {
+                        switch ($s) {
+                            case 'a':
+                            case 'b':
+                                return self::C1;
+                            case 'c':
+                                return self::C2;
+                            case 'd':
+                            case 'e':
+                                return self::C3;
+                            default:
+                                throw new Exception();
+                        }
+                    }
+                }
+                PHP,
+        ];
+
+        yield 'enum with exit' => [
+            <<<'PHP'
+                <?php
+                enum MyEnum: string
+                {
+                    case A = 'a';
+
+                    public static function forHost(string $host): self
+                    {
+                        switch ($host) {
+                            case 'hub.a':
+                            case 'hub.b':
+                                exit(1);
+                            default:
+                                throw new Exception('Unknown host: ' . $host);
+                        }
+                    }
+                }
+                PHP,
+        ];
+
+        yield 'enum with continue' => [
+            <<<'PHP'
+                <?php
+                enum MyEnum: string
+                {
+                    case A = 'a';
+
+                    public static function forHost(array $hosts): self
+                    {
+                        foreach($hosts as $host) {
+                            switch ($host) {
+                                case 'hub.a':
+                                case 'hub.b':
+                                    continue 2;
+                                default:
+                                    throw new Exception('Unknown host: ' . $host);
+                            }
+                        }
+
+                    }
+                }
+                PHP,
+        ];
+
+        yield 'enum with break' => [
+            <<<'PHP'
+                <?php
+                enum MyEnum: string
+                {
+                    case A = 'a';
+
+                    public static function forHost(array $hosts): self
+                    {
+                        foreach($hosts as $host) {
+                            switch ($host) {
+                                case 'hub.a':
+                                case 'hub.b':
+                                    break 2;
+                                default:
+                                    throw new Exception('Unknown host: ' . $host);
+                            }
+                        }
+
+                    }
+                }
+                PHP,
+        ];
+
+        yield 'enum with throw' => [
+            <<<'PHP'
+                <?php
+                enum MyEnum: string
+                {
+                    case A = 'a';
+
+                    public static function forHost(array $hosts): self
+                    {
+                        foreach($hosts as $host) {
+                            switch ($host) {
+                                case 'hub.a':
+                                case 'hub.b':
+                                    throw new RuntimeException('boo');
+                                default:
+                                    throw new Exception('Unknown host: ' . $host);
+                            }
+                        }
+
+                    }
+                }
+                PHP,
+        ];
     }
 
     /**
@@ -595,6 +714,36 @@ switch ($foo) {
     case 2;
         bar();
 }',
+        ];
+
+        yield [
+            <<<'PHP'
+                            <?php
+                switch ($foo) {
+                    case 1;
+                        $foo = function ($bar): void {
+                            foreach ($bar as $baz) {
+                                break;
+                            }
+                        };
+                        // no break
+                    case 2;
+                        bar();
+                }
+                PHP,
+            <<<'PHP'
+                            <?php
+                switch ($foo) {
+                    case 1;
+                        $foo = function ($bar): void {
+                            foreach ($bar as $baz) {
+                                break;
+                            }
+                        };
+                    case 2;
+                        bar();
+                }
+                PHP,
         ];
 
         yield [
