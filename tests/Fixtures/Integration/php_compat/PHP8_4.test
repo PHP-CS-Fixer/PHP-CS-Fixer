@@ -13,6 +13,10 @@ PHP 8.4 test.
 // based on https://www.php.net/releases/8.4/en.php
 
 // https://wiki.php.net/rfc/property-hooks
+interface PropertyHooksInterface
+{
+    public bool $b { get; set; }
+}
 class PropertyHooks
 {
     public string $foo = 'default value' {
@@ -20,7 +24,7 @@ class PropertyHooks
         set => \strtolower($value);
     }
 
-    public string $bar {
+    final public string $bar {
         set(string $value) {
             $this->foo = strtolower($value);
         }
@@ -75,6 +79,10 @@ var_dump(new NewWithoutParentheses()->getVersion());
 // based on https://www.php.net/releases/8.4/en.php
 
 // https://wiki.php.net/rfc/property-hooks
+interface PropertyHooksInterface
+{
+    public bool $b { get; set; }
+}
 class PropertyHooks
 {
     public     string       $foo    =     'default value' {
@@ -84,7 +92,7 @@ class PropertyHooks
         \strtolower( $value );
     }
     
-    public string $bar {
+    final    public    string    $bar {
         set(    string $value    ) {
             $this -> foo = strtolower($value);
         }
