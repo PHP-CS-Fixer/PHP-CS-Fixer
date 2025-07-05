@@ -61,8 +61,6 @@ final class NormalizeIndexBraceFixerTest extends AbstractFixerTestCase
     /**
      * @requires PHP 8.4
      *
-     * @group php8.4
-     *
      * @dataProvider provideFix84Cases
      */
     public function testFix84(string $expected, ?string $input = null): void
