@@ -428,4 +428,32 @@ final class Foo
 }',
         ];
     }
+
+    /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<int, array{string, 1?: string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield [
+            '<?php class Foo { public(set) $bar = null; }',
+        ];
+
+        yield [
+            '<?php class Foo { protected(set) $bar = null; }',
+        ];
+
+        yield [
+            '<?php class Foo { private(set) $bar = null; }',
+        ];
+    }
 }
