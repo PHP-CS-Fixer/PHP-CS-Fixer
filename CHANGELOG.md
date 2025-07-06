@@ -3,6 +3,13 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.79.0
+---------------------
+
+* chore: `VisibilityRequiredFixerTest` - run tests in correct PHP version (#8790)
+* feat: `BracesPositionFixer` - do not touch one-line properties with hooks (#8785)
+* feat: `PhpUnitDataProvider(.+)Fixer` - support attributes (#8197)
+
 Changelog for v3.78.1
 ---------------------
 
