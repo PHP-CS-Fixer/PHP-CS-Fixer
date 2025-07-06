@@ -18,14 +18,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @author Bram Gotink <bram@gotink.me>
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\NamespaceNotation\NoLeadingNamespaceWhitespaceFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\NamespaceNotation\NoLeadingNamespaceWhitespaceFixer>
+ *
+ * @author Bram Gotink <bram@gotink.me>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class NoLeadingNamespaceWhitespaceFixerTest extends AbstractFixerTestCase
 {

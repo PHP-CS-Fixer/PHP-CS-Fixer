@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocTrimFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocTrimFixer>
+ *
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  */
 final class PhpdocTrimFixerTest extends AbstractFixerTestCase
 {
@@ -65,7 +65,7 @@ function deactivateCompleted()
         ];
 
         yield [
-            mb_convert_encoding('
+            (string) mb_convert_encoding('
 <?php
 /**
  * Test à

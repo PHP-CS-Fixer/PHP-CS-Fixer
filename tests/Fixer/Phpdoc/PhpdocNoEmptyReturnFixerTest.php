@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocNoEmptyReturnFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocNoEmptyReturnFixer>
+ *
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  */
 final class PhpdocNoEmptyReturnFixerTest extends AbstractFixerTestCase
 {

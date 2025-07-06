@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\ReturnNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ReturnNotation\SimplifiedNullReturnFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ReturnNotation\SimplifiedNullReturnFixer>
+ *
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  */
 final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
 {

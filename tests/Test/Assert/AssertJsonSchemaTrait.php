@@ -25,13 +25,16 @@ trait AssertJsonSchemaTrait
         $validator = new Validator();
         $validator->validate($data, (object) ['$ref' => 'file://'.realpath($schemaFile)]);
 
+        /** @var list<array{property: string, message: string}> $errors */
+        $errors = $validator->getErrors();
+
         self::assertTrue(
             $validator->isValid(),
             implode(
                 "\n",
                 array_map(
                     static fn (array $item): string => \sprintf('Property `%s`: %s.', $item['property'], $item['message']),
-                    $validator->getErrors(),
+                    $errors,
                 )
             )
         );

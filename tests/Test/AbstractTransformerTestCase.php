@@ -22,12 +22,12 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TransformerInterface;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @phpstan-type _TransformerTestExpectedTokens array<int, int|string>
  * @phpstan-type _TransformerTestObservedKindsOrPrototypes list<int|string>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 abstract class AbstractTransformerTestCase extends TestCase
 {
@@ -118,14 +118,17 @@ abstract class AbstractTransformerTestCase extends TestCase
         $tokens = new TokensWithObservedTransformers();
         $tokens->setCode($source);
 
+        $prototypes = array_map(
+            static fn ($kindOrPrototype) => \is_int($kindOrPrototype) ? [$kindOrPrototype] : $kindOrPrototype,
+            array_unique([...$observedKindsOrPrototypes, ...$expectedTokens])
+        );
+        \assert(array_is_list($prototypes));
+
         self::assertSame(
             \count($expectedTokens),
             $this->countTokenPrototypes(
                 $tokens,
-                array_map(
-                    static fn ($kindOrPrototype) => \is_int($kindOrPrototype) ? [$kindOrPrototype] : $kindOrPrototype,
-                    array_unique([...$observedKindsOrPrototypes, ...$expectedTokens])
-                )
+                $prototypes
             ),
             'Number of expected tokens does not match actual token count.'
         );
@@ -145,6 +148,7 @@ abstract class AbstractTransformerTestCase extends TestCase
 
         foreach ($tokens->observedModificationsPerTransformer as $appliedTransformerName => $modificationsOfTransformer) {
             foreach ($modificationsOfTransformer as $modification) {
+                self::assertIsInt($modification);
                 $customTokenName = Token::getNameForId($modification);
 
                 if ($appliedTransformerName === $transformerName) {
@@ -193,7 +197,7 @@ abstract class AbstractTransformerTestCase extends TestCase
     }
 
     /**
-     * @param list<array{0: int, 1?: string}> $prototypes
+     * @param list<array{0: int, 1?: string}|string> $prototypes
      */
     private function countTokenPrototypes(Tokens $tokens, array $prototypes): int
     {

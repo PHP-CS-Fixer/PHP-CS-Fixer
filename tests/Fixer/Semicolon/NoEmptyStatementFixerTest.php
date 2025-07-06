@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Semicolon;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Semicolon\NoEmptyStatementFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Semicolon\NoEmptyStatementFixer>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 {
@@ -606,7 +606,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
      */
     public function testWithShortOpenTag(string $expected, ?string $input = null): void
     {
-        if (!\ini_get('short_open_tag')) {
+        if ('1' !== \ini_get('short_open_tag')) {
             self::markTestSkipped('No short tag tests possible.');
         }
 
@@ -642,6 +642,46 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
         yield [
             '<?php enum Foo{}',
             '<?php enum Foo{};',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, 1?: string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield 'interface with property hooks' => [
+            <<<'PHP'
+                <?php interface I
+                {
+                    public bool $a { get; }
+                    public bool $b { get; set; }
+                    public bool $c { set; }
+                    public bool $d { set; get; }
+                    public bool $e {/* hello1 */set/* hello2 */;/* hello3 */get/* hello4 */;/* hello5 */}
+                }
+                PHP,
+        ];
+
+        yield 'abstract class with property hooks' => [
+            <<<'PHP'
+                <?php abstract class A
+                {
+                    abstract public bool $a { get; set; }
+                    abstract public bool $b { get{} set; }
+                    abstract public bool $c { get; set{} }
+                }
+                PHP,
         ];
     }
 }

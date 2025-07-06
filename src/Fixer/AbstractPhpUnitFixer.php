@@ -17,13 +17,14 @@ namespace PhpCsFixer\Fixer;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
-use PhpCsFixer\Indicator\PhpUnitTestCaseIndicator;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\FullyQualifiedNameAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\PhpUnitTestCaseAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -32,6 +33,9 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 abstract class AbstractPhpUnitFixer extends AbstractFixer
 {
+    private const DOC_BLOCK_MODIFIERS = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_COMMENT, FCT::T_ATTRIBUTE, FCT::T_READONLY];
+    private const ATTRIBUTE_MODIFIERS = [T_FINAL, FCT::T_READONLY];
+
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isAllTokenKindsFound([T_CLASS, T_STRING]);
@@ -39,9 +43,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
 
     final protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $phpUnitTestCaseIndicator = new PhpUnitTestCaseIndicator();
-
-        foreach ($phpUnitTestCaseIndicator->findPhpUnitClasses($tokens) as $indices) {
+        foreach ((new PhpUnitTestCaseAnalyzer())->findPhpUnitClasses($tokens) as $indices) {
             $this->applyPhpUnitClassFix($tokens, $indices[0], $indices[1]);
         }
     }
@@ -50,23 +52,13 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
 
     final protected function getDocBlockIndex(Tokens $tokens, int $index): int
     {
-        $modifiers = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_COMMENT];
-
-        if (\defined('T_ATTRIBUTE')) { // @TODO: drop condition when PHP 8.0+ is required
-            $modifiers[] = T_ATTRIBUTE;
-        }
-
-        if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.2+ is required
-            $modifiers[] = T_READONLY;
-        }
-
         do {
             $index = $tokens->getPrevNonWhitespace($index);
 
             if ($tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
                 $index = $tokens->getPrevTokenOfKind($index, [[T_ATTRIBUTE]]);
             }
-        } while ($tokens[$index]->isGivenKind($modifiers));
+        } while ($tokens[$index]->isGivenKind(self::DOC_BLOCK_MODIFIERS));
 
         return $index;
     }
@@ -148,8 +140,8 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
 
     final protected function isTestAttributePresent(Tokens $tokens, int $index): bool
     {
-        $attributeIndex = $tokens->getPrevTokenOfKind($index, ['{', [T_ATTRIBUTE]]);
-        if (!$tokens[$attributeIndex]->isGivenKind(T_ATTRIBUTE)) {
+        $attributeIndex = $tokens->getPrevTokenOfKind($index, ['{', [FCT::T_ATTRIBUTE]]);
+        if (!$tokens[$attributeIndex]->isGivenKind(FCT::T_ATTRIBUTE)) {
             return false;
         }
 
@@ -224,14 +216,9 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
             return false;
         }
 
-        $modifiers = [T_FINAL];
-        if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.2+ is required
-            $modifiers[] = T_READONLY;
-        }
-
         do {
             $index = $tokens->getPrevMeaningfulToken($index);
-        } while ($tokens[$index]->isGivenKind($modifiers));
+        } while ($tokens[$index]->isGivenKind(self::ATTRIBUTE_MODIFIERS));
         if (!$tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
             return false;
         }

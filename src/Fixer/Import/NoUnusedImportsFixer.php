@@ -24,6 +24,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -33,6 +34,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class NoUnusedImportsFixer extends AbstractFixer
 {
+    private const TOKENS_NOT_BEFORE_FUNCTION_CALL = [T_NEW, FCT::T_ATTRIBUTE];
+
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -94,27 +97,19 @@ final class NoUnusedImportsFixer extends AbstractFixer
         $analyzer = new TokensAnalyzer($tokens);
         $gotoLabelAnalyzer = new GotoLabelAnalyzer();
 
-        $tokensNotBeforeFunctionCall = [T_NEW];
-
-        $attributeIsDefined = \defined('T_ATTRIBUTE');
-
-        if ($attributeIsDefined) { // @TODO: drop condition when PHP 8.0+ is required
-            $tokensNotBeforeFunctionCall[] = T_ATTRIBUTE;
-        }
-
         $namespaceEndIndex = $namespace->getScopeEndIndex();
         $inAttribute = false;
 
         for ($index = $namespace->getScopeStartIndex(); $index <= $namespaceEndIndex; ++$index) {
             $token = $tokens[$index];
 
-            if ($attributeIsDefined && $token->isGivenKind(T_ATTRIBUTE)) {
+            if ($token->isGivenKind(FCT::T_ATTRIBUTE)) {
                 $inAttribute = true;
 
                 continue;
             }
 
-            if ($attributeIsDefined && $token->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+            if ($token->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
                 $inAttribute = false;
 
                 continue;
@@ -160,7 +155,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
                 if ($analyzer->isConstantInvocation($index)) {
                     $type = NamespaceUseAnalysis::TYPE_CONSTANT;
-                } elseif ($nextMeaningfulToken->equals('(') && !$prevMeaningfulToken->isGivenKind($tokensNotBeforeFunctionCall)) {
+                } elseif ($nextMeaningfulToken->equals('(') && !$prevMeaningfulToken->isGivenKind(self::TOKENS_NOT_BEFORE_FUNCTION_CALL)) {
                     $type = NamespaceUseAnalysis::TYPE_FUNCTION;
                 } else {
                     $type = NamespaceUseAnalysis::TYPE_CLASS;
@@ -175,7 +170,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
             if ($token->isComment()
                 && Preg::match(
-                    '/(?<![[:alnum:]\$])(?<!\\\)'.$import->getShortName().'(?![[:alnum:]])/i',
+                    '/(?<![[:alnum:]\$_])(?<!\\\)'.$import->getShortName().'(?![[:alnum:]_])/i',
                     $token->getContent()
                 )
             ) {

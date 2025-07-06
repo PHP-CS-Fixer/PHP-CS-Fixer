@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Operator;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Javier Spagnoletti <phansys@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Operator\NotOperatorWithSuccessorSpaceFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\NotOperatorWithSuccessorSpaceFixer>
+ *
+ * @author Javier Spagnoletti <phansys@gmail.com>
  */
 final class NotOperatorWithSuccessorSpaceFixerTest extends AbstractFixerTestCase
 {

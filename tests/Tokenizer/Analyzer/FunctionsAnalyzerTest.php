@@ -897,4 +897,68 @@ class(){};
             ),
         ]];
     }
+
+    /**
+     * @param array<string, ArgumentAnalysis> $expected
+     *
+     * @dataProvider provideFunctionArgumentInfoPhp84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testFunctionArgumentInfoPhp84(string $code, int $methodIndex, array $expected): void
+    {
+        $this->testFunctionArgumentInfo($code, $methodIndex, $expected);
+    }
+
+    /**
+     * @return iterable<string, array{string, int, array<string, ArgumentAnalysis>}>
+     */
+    public static function provideFunctionArgumentInfoPhp84Cases(): iterable
+    {
+        yield 'asymmetric visibility' => [
+            <<<'PHP'
+                <?php
+                class Foo {
+                    public function __construct(
+                        public public(set) bool $b,
+                        public protected(set) int|null $i,
+                        protected private(set) ?string $s,
+                    ) {}
+                }
+                PHP,
+            9,
+            [
+                '$b' => new ArgumentAnalysis(
+                    '$b',
+                    20,
+                    null,
+                    new TypeAnalysis(
+                        'bool',
+                        18,
+                        18,
+                    ),
+                ),
+                '$i' => new ArgumentAnalysis(
+                    '$i',
+                    31,
+                    null,
+                    new TypeAnalysis(
+                        'int|null',
+                        27,
+                        29,
+                    ),
+                ),
+                '$s' => new ArgumentAnalysis(
+                    '$s',
+                    41,
+                    null,
+                    new TypeAnalysis(
+                        '?string',
+                        38,
+                        39,
+                    ),
+                ),
+            ],
+        ];
+    }
 }

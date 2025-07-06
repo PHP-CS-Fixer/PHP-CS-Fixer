@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Filippo Tessarotto <zoeslam@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\FinalClassFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\FinalClassFixer>
+ *
+ * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
 final class FinalClassFixerTest extends AbstractFixerTestCase
 {

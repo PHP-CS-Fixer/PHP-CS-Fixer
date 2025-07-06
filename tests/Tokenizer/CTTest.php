@@ -29,7 +29,7 @@ final class CTTest extends TestCase
     public function testUniqueValues(): void
     {
         $constants = self::getConstants();
-        self::assertSame($constants, array_flip(array_flip($constants)), 'Values of CT::T_* constants must be unique.');
+        self::assertSame($constants, array_unique($constants), 'Values of CT::T_* constants must be unique.');
     }
 
     /**
