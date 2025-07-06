@@ -15,10 +15,16 @@ PHP 8.4 test.
 // https://wiki.php.net/rfc/property-hooks
 interface PropertyHooksInterface
 {
-    public bool $b { get; set; }
+    public bool $b {
+        get; set;
+    }
 }
-class PropertyHooks
+abstract class PropertyHooks
 {
+    abstract public string $readable {
+        get;
+    }
+
     public string $foo = 'default value' {
         get => $this->foo.($this->modified ? ' (modified)' : '');
         set => \strtolower($value);
@@ -83,8 +89,10 @@ interface PropertyHooksInterface
 {
     public bool $b { get; set; }
 }
-class PropertyHooks
+abstract class PropertyHooks
 {
+    abstract public string $readable { get; }
+
     public     string       $foo    =     'default value' {
         get      =>      $this->foo . ($this->modified     ?      ' (modified)' : '')
         ;
