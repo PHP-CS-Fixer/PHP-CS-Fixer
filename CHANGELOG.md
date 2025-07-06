@@ -3,6 +3,17 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.78.0
+---------------------
+
+* chore: `VisibilityRequiredFixer` - document behaviour for asymmetric visibility with only set-visibility (#8783)
+* feat: `BracesPositionFixer` - support property hooks (#8782)
+* feat: `VisibilityRequiredFixer` - support promoted property without visibility (#8773)
+* fix: `NativeFunctionInvocationFixer` - fix global function `set` called in array key (#8568)
+* fix: `NoBreakCommentFixer` - handle function having return type (#8767)
+* fix: `StatementIndentationFixer` - handle functions `set` and `get` (like property hooks, but not) (#8576)
+* fix: `StaticPrivateMethodFixer` - handle nested calls (#8768)
+
 Changelog for v3.77.0
 ---------------------
 
