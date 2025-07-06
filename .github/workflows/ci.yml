@@ -282,6 +282,7 @@ jobs:
 
   deployment:
     needs: tests
+    if: always()
     name: Deployment checks
 
     runs-on: ubuntu-24.04
@@ -291,6 +292,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Check if test job passed
+        run: |
+          echo "Tests result: ${{ needs.tests.result }}"
+          if [[ "${{ needs.tests.result }}" != "success" ]]; then
+            exit 1
+          fi
 
       - name: Setup PHP with Composer deps
         uses: ./.github/composite-actions/setup-php-with-composer-deps
