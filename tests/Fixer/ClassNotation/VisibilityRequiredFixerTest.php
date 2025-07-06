@@ -889,7 +889,26 @@ var_dump(Foo::CAT->test());',
                 PHP,
         ];
 
-        yield 'asymmetric visibility' => [
+        yield 'asymmetric visibility with only set-visibility' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public public(set) Bar $a;
+                    public protected(set) Bar $b;
+                    public private(set) Baz $c;
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public(set) Bar $a;
+                    protected(set) Bar $b;
+                    private(set) Baz $c;
+                }
+                PHP,
+        ];
+
+        yield 'asymmetric visibility with set-visibility before general visibility' => [
             <<<'PHP'
                 <?php class Foo
                 {
