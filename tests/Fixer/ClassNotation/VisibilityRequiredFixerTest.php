@@ -786,16 +786,6 @@ var_dump(Foo::CAT->test());',
             '<?php class Foo { public function __construct(public readonly string $bar) { } }',
             '<?php class Foo { public function __construct(readonly string $bar) { } }',
         ];
-
-        yield 'readonly class' => [
-            <<<'PHP'
-                <?php readonly class Foo
-                {
-                    public function __construct() {}
-                    public function bar(int $x): void {}
-                }
-                PHP,
-        ];
     }
 
     /**
@@ -809,7 +799,7 @@ var_dump(Foo::CAT->test());',
     }
 
     /**
-     * @return iterable<int, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFix82Cases(): iterable
     {
@@ -824,6 +814,16 @@ var_dump(Foo::CAT->test());',
                 protected A|(B&C)|D $y;
                 private A|B|(C&D) $z;
             }',
+        ];
+
+        yield 'readonly class' => [
+            <<<'PHP'
+                <?php readonly class Foo
+                {
+                    public function __construct() {}
+                    public function bar(int $x): void {}
+                }
+                PHP,
         ];
     }
 
