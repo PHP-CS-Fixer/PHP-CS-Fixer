@@ -18,6 +18,7 @@ use PhpCsFixer\DocBlock\TypeExpression;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\DataProviderAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -124,7 +125,7 @@ final class DataProviderAnalyzer
         while (!$tokens[$index]->equalsAny([';', '{', '}', [T_OPEN_TAG]])) {
             --$index;
 
-            if (\defined('T_ATTRIBUTE') && $tokens[$index]->isGivenKind(T_ATTRIBUTE)) {
+            if ($tokens[$index]->isGivenKind(FCT::T_ATTRIBUTE)) {
                 $attributeIndex = $index;
             } elseif ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
                 $docCommentIndex = $index;
