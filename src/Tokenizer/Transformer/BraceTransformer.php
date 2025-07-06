@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tokenizer\Transformer;
 
 use PhpCsFixer\Tokenizer\AbstractTransformer;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -171,13 +172,10 @@ final class BraceTransformer extends AbstractTransformer
 
         $nextIndex = $tokens->getNextMeaningfulToken($index);
 
-        // @TODO: drop condition when PHP 8.0+ is required
-        if (\defined('T_ATTRIBUTE')) {
-            // skip attributes
-            while ($tokens[$nextIndex]->isGivenKind(T_ATTRIBUTE)) {
-                $nextIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $nextIndex);
-                $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
-            }
+        // skip attributes
+        while ($tokens[$nextIndex]->isGivenKind(FCT::T_ATTRIBUTE)) {
+            $nextIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $nextIndex);
+            $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
         }
 
         if (!$tokens[$nextIndex]->equalsAny([
@@ -185,6 +183,15 @@ final class BraceTransformer extends AbstractTransformer
             [T_STRING, 'set'],
         ], false)) {
             return;
+        }
+
+        $openParenthesisIndex = $tokens->getNextMeaningfulToken($nextIndex);
+        if ($tokens[$openParenthesisIndex]->equals('(')) {
+            $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesisIndex);
+            $afterCloseParenthesisIndex = $tokens->getNextMeaningfulToken($closeParenthesisIndex);
+            if (!$tokens[$afterCloseParenthesisIndex]->equalsAny(['{', [T_DOUBLE_ARROW]])) {
+                return;
+            }
         }
 
         $closeIndex = $this->naivelyFindCurlyBlockEnd($tokens, $index);

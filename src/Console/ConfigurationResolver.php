@@ -42,6 +42,7 @@ use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\ToolInfoInterface;
+use PhpCsFixer\UnsupportedPhpVersionAllowedConfigInterface;
 use PhpCsFixer\Utils;
 use PhpCsFixer\WhitespacesFixerConfig;
 use PhpCsFixer\WordMatcher;
@@ -50,10 +51,6 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
 
 /**
  * The resolver that resolves configuration to use by command line options and config.
- *
- * @author Fabien Potencier <fabien@symfony.com>
- * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  *
@@ -71,8 +68,13 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  *      show-progress: null|string,
  *      stop-on-violation: null|bool,
  *      using-cache: null|string,
+ *      allow-unsupported-php-version: null|bool,
  *      verbosity: null|string,
  *  }
+ *
+ * @author Fabien Potencier <fabien@symfony.com>
+ * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class ConfigurationResolver
 {
@@ -121,6 +123,7 @@ final class ConfigurationResolver
         'show-progress' => null,
         'stop-on-violation' => null,
         'using-cache' => null,
+        'allow-unsupported-php-version' => null,
         'verbosity' => null,
     ];
 
@@ -154,6 +157,8 @@ final class ConfigurationResolver
     private ?RuleSet $ruleSet = null;
 
     private ?bool $usingCache = null;
+
+    private ?bool $isUnsupportedPhpVersionAllowed = null;
 
     private ?FixerFactory $fixerFactory = null;
 
@@ -469,6 +474,22 @@ final class ConfigurationResolver
         $this->usingCache = $this->usingCache && $this->isCachingAllowedForRuntime();
 
         return $this->usingCache;
+    }
+
+    public function getUnsupportedPhpVersionAllowed(): bool
+    {
+        if (null === $this->isUnsupportedPhpVersionAllowed) {
+            if (null === $this->options['allow-unsupported-php-version']) {
+                $config = $this->getConfig();
+                $this->isUnsupportedPhpVersionAllowed = $config instanceof UnsupportedPhpVersionAllowedConfigInterface
+                    ? $config->getUnsupportedPhpVersionAllowed()
+                    : false;
+            } else {
+                $this->isUnsupportedPhpVersionAllowed = $this->resolveOptionBooleanValue('allow-unsupported-php-version');
+            }
+        }
+
+        return $this->isUnsupportedPhpVersionAllowed;
     }
 
     /**

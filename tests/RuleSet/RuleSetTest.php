@@ -69,6 +69,7 @@ final class RuleSetTest extends TestCase
             return; // rule doesn't need configuration.
         }
 
+        \assert(\array_key_exists($ruleName, $fixers));
         $fixer = $fixers[$ruleName];
         self::assertInstanceOf(ConfigurableFixerInterface::class, $fixer, \sprintf('RuleSet "%s" contains configuration for rule "%s" which cannot be configured.', $setName, $ruleName));
 
@@ -112,9 +113,11 @@ final class RuleSetTest extends TestCase
     }
 
     /**
+     * @param array<string, mixed>|true $ruleConfig
+     *
      * @dataProvider provideAllRulesFromSetsCases
      */
-    public function testThatThereIsNoDeprecatedFixerInRuleSet(string $setName, string $ruleName): void
+    public function testThatThereIsNoDeprecatedFixerInRuleSet(string $setName, string $ruleName, $ruleConfig): void
     {
         $fixer = TestCaseUtils::getFixerByName($ruleName);
 
