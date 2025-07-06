@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Leszek Prabucki <leszek.prabucki@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ControlStructure\ElseifFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\ElseifFixer>
+ *
+ * @author Leszek Prabucki <leszek.prabucki@gmail.com>
  */
 final class ElseifFixerTest extends AbstractFixerTestCase
 {

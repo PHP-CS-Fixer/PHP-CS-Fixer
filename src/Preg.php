@@ -143,7 +143,7 @@ final class Preg
     }
 
     /**
-     * @return list<string>
+     * @return ($flags is PREG_SPLIT_OFFSET_CAPTURE ? list<array{string, int<0, max>}> : list<string>)
      *
      * @throws PregException
      */
@@ -176,6 +176,7 @@ final class Preg
         $delimiter = $pattern[0];
 
         $endDelimiterPosition = strrpos($pattern, $delimiter);
+        \assert(\is_int($endDelimiterPosition));
 
         return substr($pattern, 0, $endDelimiterPosition).str_replace('u', '', substr($pattern, $endDelimiterPosition));
     }

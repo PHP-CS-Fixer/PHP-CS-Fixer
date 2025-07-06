@@ -20,12 +20,15 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 final class SelfStaticAccessorFixer extends AbstractFixer
 {
+    private const CLASSY_TYPES = [T_CLASS, FCT::T_ENUM];
+    private const CLASSY_TOKENS_OF_INTEREST = [[T_CLASS], [FCT::T_ENUM]];
     private TokensAnalyzer $tokensAnalyzer;
 
     public function getDefinition(): FixerDefinitionInterface
@@ -103,14 +106,8 @@ enum Foo
 
     public function isCandidate(Tokens $tokens): bool
     {
-        $classyTypes = [T_CLASS];
-
-        if (\defined('T_ENUM')) { // @TODO: drop condition when PHP 8.1+ is required
-            $classyTypes[] = T_ENUM;
-        }
-
         return $tokens->isTokenKindFound(T_STATIC)
-            && $tokens->isAnyTokenKindsFound($classyTypes)
+            && $tokens->isAnyTokenKindsFound(self::CLASSY_TYPES)
             && $tokens->isAnyTokenKindsFound([T_DOUBLE_COLON, T_NEW, T_INSTANCEOF]);
     }
 
@@ -126,14 +123,8 @@ enum Foo
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $classyTokensOfInterest = [[T_CLASS]];
-
-        if (\defined('T_ENUM')) {
-            $classyTokensOfInterest[] = [T_ENUM]; // @TODO drop condition when PHP 8.1+ is required
-        }
-
         $this->tokensAnalyzer = new TokensAnalyzer($tokens);
-        $classyIndex = $tokens->getNextTokenOfKind(0, $classyTokensOfInterest);
+        $classyIndex = $tokens->getNextTokenOfKind(0, self::CLASSY_TOKENS_OF_INTEREST);
 
         while (null !== $classyIndex) {
             if ($tokens[$classyIndex]->isGivenKind(T_CLASS)) {
@@ -149,7 +140,7 @@ enum Foo
                 $classyIndex = $this->fixClassy($tokens, $classyIndex);
             }
 
-            $classyIndex = $tokens->getNextTokenOfKind($classyIndex, $classyTokensOfInterest);
+            $classyIndex = $tokens->getNextTokenOfKind($classyIndex, self::CLASSY_TOKENS_OF_INTEREST);
         }
     }
 

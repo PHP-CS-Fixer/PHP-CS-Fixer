@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Whitespace;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Marc Aubé
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Whitespace\NoSpacesInsideParenthesisFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\NoSpacesInsideParenthesisFixer>
+ *
+ * @author Marc Aubé
  */
 final class NoSpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
 {

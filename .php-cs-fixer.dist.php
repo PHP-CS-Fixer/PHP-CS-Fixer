@@ -43,6 +43,27 @@ return (new Config())
         'modernize_strpos' => true, // needs PHP 8+ or polyfill
         'no_useless_concat_operator' => false, // TODO switch back on when the `src/Console/Application.php` no longer needs the concat
         'numeric_literal_separator' => true,
+        'phpdoc_order' => [
+            'order' => [
+                'type',
+                'template',
+                'template-covariant',
+                'template-extends',
+                'extends',
+                'implements',
+                'property',
+                'method',
+                'param',
+                'return',
+                'var',
+                'assert',
+                'assert-if-false',
+                'assert-if-true',
+                'throws',
+                'author',
+                'see',
+            ],
+        ],
     ])
     ->setFinder(
         (new Finder())

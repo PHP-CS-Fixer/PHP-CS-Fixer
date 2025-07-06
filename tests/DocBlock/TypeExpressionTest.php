@@ -65,7 +65,6 @@ final class TypeExpressionTest extends TestCase
             'null',
             'true',
             'FALSE',
-
             '123',
             '+123',
             '-123',
@@ -78,7 +77,6 @@ final class TypeExpressionTest extends TestCase
             '0b01_01_01',
             '-0X7_Fb_4',
             '18_446_744_073_709_551_616', // 64-bit unsigned long + 1, larger than PHP_INT_MAX
-
             '123.4',
             '.123',
             '123.',
@@ -95,7 +93,6 @@ final class TypeExpressionTest extends TestCase
             '123E+80',
             '8.2023437675747321', // greater precision than 64-bit double
             '-0.0',
-
             '\'\'',
             '\'foo\'',
             '\'\\\\\'',

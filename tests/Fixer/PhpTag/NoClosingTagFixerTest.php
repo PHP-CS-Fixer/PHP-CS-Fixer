@@ -26,9 +26,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 final class NoClosingTagFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideWithFullOpenTagCases
+     * @dataProvider provideFixCases
      */
-    public function testWithFullOpenTag(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -36,7 +36,7 @@ final class NoClosingTagFixerTest extends AbstractFixerTestCase
     /**
      * @return iterable<array{0: string, 1?: string}>
      */
-    public static function provideWithFullOpenTagCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield [
             '<?php echo \'Foo\';',
@@ -151,7 +151,7 @@ if (true) {
      */
     public function testWithShortOpenTag(string $expected, ?string $input = null): void
     {
-        if (!\ini_get('short_open_tag')) {
+        if ('1' !== \ini_get('short_open_tag')) {
             self::markTestSkipped('The short_open_tag option is required to be enabled.');
         }
 
