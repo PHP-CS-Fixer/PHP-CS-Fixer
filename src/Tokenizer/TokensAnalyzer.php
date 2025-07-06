@@ -868,7 +868,9 @@ final class TokensAnalyzer
                 ];
                 $functionNameIndex = $this->tokens->getNextMeaningfulToken($index);
                 if ('__construct' === $this->tokens[$functionNameIndex]->getContent()) {
-                    foreach ($this->tokens->findGivenKind([CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE, FCT::T_READONLY]) as $kindElements) {
+                    $openParenthesis = $this->tokens->getNextMeaningfulToken($functionNameIndex);
+                    $closeParenthesis = $this->tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis);
+                    foreach ($this->tokens->findGivenKind([CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE, FCT::T_READONLY], $openParenthesis, $closeParenthesis) as $kindElements) {
                         foreach (array_keys($kindElements) as $promotedPropertyModifierIndex) {
                             /** @var int $promotedPropertyVariableIndex */
                             $promotedPropertyVariableIndex = $this->tokens->getNextTokenOfKind($promotedPropertyModifierIndex, [[T_VARIABLE]]);
