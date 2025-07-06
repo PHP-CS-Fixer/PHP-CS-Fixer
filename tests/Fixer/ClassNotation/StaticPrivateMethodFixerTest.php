@@ -499,6 +499,39 @@ final class StaticPrivateMethodFixerTest extends AbstractFixerTestCase
                 }
                 PHP,
         ];
+
+        yield 'nested calls' => [
+            <<<'PHP'
+                <?php class Foo {
+                    public function the_function() { return self::function_0(); }
+                    private static function function_2() { return self::function_3(); }
+                    private static function function_1() { return self::function_2(); }
+                    private static function function_3() { return self::function_4(); }
+                    private static function function_7() { return self::function_8(); }
+                    private static function function_9() { return null; }
+                    private static function function_5() { return self::function_6(); }
+                    private static function function_8() { return self::function_9(); }
+                    private static function function_0() { return self::function_1(); }
+                    private static function function_4() { return self::function_5(); }
+                    private static function function_6() { return self::function_7(); }
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo {
+                    public function the_function() { return $this->function_0(); }
+                    private function function_2() { return $this->function_3(); }
+                    private function function_1() { return $this->function_2(); }
+                    private function function_3() { return $this->function_4(); }
+                    private function function_7() { return $this->function_8(); }
+                    private function function_9() { return null; }
+                    private function function_5() { return $this->function_6(); }
+                    private function function_8() { return $this->function_9(); }
+                    private function function_0() { return $this->function_1(); }
+                    private function function_4() { return $this->function_5(); }
+                    private function function_6() { return $this->function_7(); }
+                }
+                PHP,
+        ];
     }
 
     private static function generate50Samples(bool $fixed): string
