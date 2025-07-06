@@ -330,7 +330,11 @@ switch ($foo) {
             }
         }
 
-        $position = $tokens->getNextMeaningfulToken($position);
+        if ($initialToken->isGivenKind(T_FUNCTION)) {
+            $position = $tokens->getNextTokenOfKind($position, ['{']);
+        } else {
+            $position = $tokens->getNextMeaningfulToken($position);
+        }
 
         if ('{' !== $tokens[$position]->getContent()) {
             return $tokens->getNextTokenOfKind($position, [';']);
