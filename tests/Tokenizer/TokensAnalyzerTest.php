@@ -803,6 +803,29 @@ enum Foo: string
                 }
                 PHP,
         ];
+
+        yield 'readonly class' => [
+            [
+                11 => [
+                    'classIndex' => 3,
+                    'type' => 'method',
+                ],
+                22 => [
+                    'classIndex' => 3,
+                    'type' => 'method',
+                ],
+                28 => [
+                    'classIndex' => 3,
+                    'type' => 'promoted_property', // This should not be here
+                ],
+            ],
+            <<<'PHP'
+                <?php readonly class Foo {
+                    public function __construct() {}
+                    public function process(object $event): void {}
+                }
+                PHP,
+        ];
     }
 
     /**
