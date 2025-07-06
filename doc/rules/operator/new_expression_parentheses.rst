@@ -77,6 +77,13 @@ With configuration: ``['use_parentheses' => true]``.
    -new class {}->bar();
    +(new class {})->bar();
 
+Rule sets
+---------
+
+The rule is part of the following rule set:
+
+- `@PHP84Migration <./../../ruleSets/PHP84Migration.rst>`_
+
 References
 ----------
 
