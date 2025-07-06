@@ -30,8 +30,8 @@ We do it by adding vY to our own test matrix.
 
 This does not quarantee that PHP CS Fixer will work properly for vY source code, but it's a good start to prevent our own code incompatibilties or runtime.
 
-2nd phase - initial support
-===========================
+2nd phase - compatibility support
+=================================
 
 2nd phase is about teaching PHP CS Fixer to not only run under vY runtime, but also to understand vY syntax.
 
@@ -44,8 +44,8 @@ Then, we want to ensure compatibility. With high amount of rules, it's not-likel
 On that moment, we claim initial support for vY is completed and PHP CS Fixer can run on vY runtime as-is.
 Any newly discovered incompatibility should be reported as a bug.
 
-3rd phase - extended support
-============================
+3rd phase - Coding Standards support
+====================================
 
 Having initial support for vY only means that PHP CS Fixer can run on vY runtime and understand vY syntax.
 It does not provide any explicit handling on style around vY syntax - that can be added on any moment later,
