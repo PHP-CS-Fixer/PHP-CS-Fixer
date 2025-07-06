@@ -275,7 +275,7 @@ Environment
 The ``--allow-unsupported-php-version=yes`` can be used to ignore any environment requirements.
 
 Also possible via ``PHP_CS_FIXER_IGNORE_ENV`` environment variable (deprecated),
-which also allow to run Fixer with required PHP extensions missing.
+which also allows the Fixer to run with required PHP extensions missing.
 
 NOTE: Execution may be unstable when used.
 
