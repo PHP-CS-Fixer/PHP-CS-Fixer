@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.78.1
+---------------------
+
+* fix: `VisibilityRequiredFixer` - do not add `public` incorrectly (#8787)
+
 Changelog for v3.78.0
 ---------------------
 
