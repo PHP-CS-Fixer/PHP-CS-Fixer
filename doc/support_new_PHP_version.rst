@@ -3,7 +3,7 @@ Support for new PHP version
 ===========================
 
 PHP CS Fixer is highly coupled with PHP built-in Tokenizer.
-We recommend PHP CS Fixer to run on same PHP version as platform PHP version of codebase that is about to be fix.
+We recommend PHP CS Fixer to run on same PHP version as platform PHP version of codebase that is about to be fixed.
 
 The fact that PHP CS Fixer can run under given PHP version doesn't mean it will properly analyse and fix codebase
 written in that version. Running the Fixer in that setup can cause harm and break the code.
@@ -14,9 +14,9 @@ Making PHP CS Fixer to support newly released PHP version may be a big task, dep
 new PHP version around language syntax and internal PHP built-in Tokenizer. Tokenizer executed under different PHP
 runtime may produce different result of same code source (even if code source is valid syntax under each of those runtimes).
 
-In this document, we will use followin shortcuts to refer a version:
-- vX - highest supported PHP version, eg v8.3.x
-- vY - not-yet supported PHP version, eg v8.4.x
+In this document, we will use following shortcuts to refer a version:
+- vX - highest supported PHP version, e.g., v8.3.x
+- vY - not-yet supported PHP version, e.g., v8.4.x
 
 Any new syntax in vY is a granted BC breaker for internal PHP Tokenizer.
 Lack of new syntax in vY does not guarantee BC compatibility for internal PHP Tokenizer.
@@ -28,7 +28,7 @@ Lack of new syntax in vY does not guarantee BC compatibility for internal PHP To
 
 We do it by adding vY to our own test matrix.
 
-This does not quarantee that PHP CS Fixer will work properly for vY source code, but it's a good start to prevent our own code incompatibilties or runtime.
+This does not guarantee that PHP CS Fixer will work properly for vY source code, but it's a good start to prevent our own code incompatibilities or runtime.
 
 2nd phase - compatibility support
 =================================
