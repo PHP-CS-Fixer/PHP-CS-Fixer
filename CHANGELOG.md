@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.80.0
+---------------------
+
+* feat: PHP 8.4 compatibility support (#8300)
+
 Changelog for v3.79.0
 ---------------------
 
