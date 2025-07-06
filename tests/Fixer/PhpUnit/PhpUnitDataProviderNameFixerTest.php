@@ -441,5 +441,30 @@ class FooTest extends TestCase {
                 }
                 PHP,
         ];
+
+        yield 'with data provider as an attribute' => [
+            <<<'PHP'
+                <?php
+                class FooTest extends TestCase {
+                    #[\PHPUnit\Framework\Attributes\DataProvider('provideFooCases')]
+                    public function testFoo(): void {}
+                    public function provideFooCases() {}
+                    #[\PHPUnit\Framework\Attributes\DataProvider("provideBarCases")]
+                    public function testBar(): void {}
+                    public function provideBarCases() {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class FooTest extends TestCase {
+                    #[\PHPUnit\Framework\Attributes\DataProvider('renameMe')]
+                    public function testFoo(): void {}
+                    public function renameMe() {}
+                    #[\PHPUnit\Framework\Attributes\DataProvider("renameMeToo")]
+                    public function testBar(): void {}
+                    public function renameMeToo() {}
+                }
+                PHP,
+        ];
     }
 }
