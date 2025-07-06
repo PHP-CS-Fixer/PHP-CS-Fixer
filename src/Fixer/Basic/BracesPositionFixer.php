@@ -71,7 +71,7 @@ final class BracesPositionFixer extends AbstractFixer implements ConfigurableFix
      */
     public const SAME_LINE = 'same_line';
 
-    private const SAME_LINE_PREV_OPEN_BRACE_TOKENS = [T_DECLARE, T_DO, T_ELSE, T_ELSEIF, T_FINALLY, T_FOR, T_FOREACH, T_IF, T_WHILE, T_TRY, T_CATCH, T_SWITCH, T_VARIABLE, FCT::T_MATCH];
+    private const CONTROL_STRUCTURE_TOKENS = [T_DECLARE, T_DO, T_ELSE, T_ELSEIF, T_FINALLY, T_FOR, T_FOREACH, T_IF, T_WHILE, T_TRY, T_CATCH, T_SWITCH, FCT::T_MATCH];
 
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -241,11 +241,24 @@ $bar = function () { $result = true;
                 } else {
                     $positionOption = 'functions_opening_brace';
                 }
-            } elseif ($token->isGivenKind(self::SAME_LINE_PREV_OPEN_BRACE_TOKENS)) {
+            } elseif ($token->isGivenKind(self::CONTROL_STRUCTURE_TOKENS)) {
                 $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
                 $openBraceIndex = $tokens->getNextMeaningfulToken($parenthesisEndIndex);
 
-                if (!$tokens[$openBraceIndex]->equalsAny(['{', [CT::T_PROPERTY_HOOK_BRACE_OPEN]])) {
+                if (!$tokens[$openBraceIndex]->equals('{')) {
+                    continue;
+                }
+
+                $positionOption = 'control_structures_opening_brace';
+            } elseif ($token->isGivenKind(T_VARIABLE)) {
+                $openBraceIndex = $tokens->getNextTokenOfKind($index, ['{', ';', [CT::T_PROPERTY_HOOK_BRACE_OPEN]]);
+
+                if (!$tokens[$openBraceIndex]->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
+                    continue;
+                }
+
+                $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PROPERTY_HOOK, $openBraceIndex);
+                if (!$tokens->isPartialCodeMultiline($openBraceIndex, $closeBraceIndex)) {
                     continue;
                 }
 
@@ -254,8 +267,7 @@ $bar = function () { $result = true;
                 continue;
             }
 
-            $blockType = Tokens::detectBlockType($tokens[$openBraceIndex]);
-            $closeBraceIndex = $tokens->findBlockEnd($blockType['type'], $openBraceIndex);
+            $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openBraceIndex);
 
             $addNewlinesInsideBraces = true;
             if ($allowSingleLine || $allowSingleLineIfEmpty || $index < $allowSingleLineUntil) {
