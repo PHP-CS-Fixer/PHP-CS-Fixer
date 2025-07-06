@@ -151,6 +151,11 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
                 <info>$ php %command.full_name% /path/to/project --rules='{"concat_space": {"spacing": "none"}}'</info>
 
+            The <comment>--rules-base64</comment> option allows rules to be specified as a base64 encoded string. This can be useful for
+            passing complex rules configurations through scripts or environments that have issues with special characters:
+
+                <info>$ php %command.full_name% /path/to/project --rules-base64=$(echo '{"concat_space": {"spacing": "none"}}' | base64)</info>
+
             The <comment>--dry-run</comment> flag will run the fixer without making changes to your files.
 
             The <comment>--sequential</comment> flag will enforce sequential analysis even if parallel config is provided.
@@ -211,6 +216,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a config file.'),
                 new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified.'),
                 new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'List of rules that should be run against configured paths.'),
+                new InputOption('rules-base64', '', InputOption::VALUE_REQUIRED, 'List of rules that should be run against configured paths, encoded in base64.'),
                 new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Should cache be used (can be `yes` or `no`).'),
                 new InputOption('allow-unsupported-php-version', '', InputOption::VALUE_REQUIRED, 'Should the command refuse to run on unsupported PHP version (can be `yes` or `no`).'),
                 new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file.'),
@@ -229,9 +235,23 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
         $passedConfig = $input->getOption('config');
         $passedRules = $input->getOption('rules');
+        $passedRulesBase64 = $input->getOption('rules-base64');
 
-        if (null !== $passedConfig && null !== $passedRules) {
-            throw new InvalidConfigurationException('Passing both `--config` and `--rules` options is not allowed.');
+        if (null !== $passedConfig && (null !== $passedRules || null !== $passedRulesBase64)) {
+            throw new InvalidConfigurationException('Passing both `--config` and (`--rules` or `--rules-base64`) options is not allowed.');
+        }
+
+        if (null !== $passedRules && null !== $passedRulesBase64) {
+            throw new InvalidConfigurationException('Passing both `--rules` and `--rules-base64` options is not allowed.');
+        }
+
+        $finalRules = $passedRules;
+        if (null !== $passedRulesBase64) {
+            $decoded = base64_decode($passedRulesBase64, true);
+            if (false === $decoded) {
+                throw new InvalidConfigurationException('Invalid base64 encoding in rules-base64 option.');
+            }
+            $finalRules = $decoded;
         }
 
         $resolver = new ConfigurationResolver(
@@ -240,7 +260,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 'allow-risky' => $input->getOption('allow-risky'),
                 'config' => $passedConfig,
                 'dry-run' => $this->isDryRun($input),
-                'rules' => $passedRules,
+                'rules' => $finalRules,
                 'path' => $input->getArgument('path'),
                 'path-mode' => $input->getOption('path-mode'),
                 'using-cache' => $input->getOption('using-cache'),
