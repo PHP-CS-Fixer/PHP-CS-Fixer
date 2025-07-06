@@ -682,6 +682,16 @@ AB# <- this is the name
                 }
                 PHP,
         ];
+
+        yield 'readonly class' => [
+            <<<'PHP'
+                <?php readonly class Foo
+                {
+                    public function __construct() {}
+                    public function bar(int $x): void {}
+                }
+                PHP,
+        ];
     }
 
     /**
