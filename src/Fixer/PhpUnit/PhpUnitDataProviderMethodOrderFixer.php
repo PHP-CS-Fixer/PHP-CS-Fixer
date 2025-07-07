@@ -221,7 +221,7 @@ class FooTest extends TestCase {
     /**
      * @return list<array{
      *   array{int, string},
-     *   non-empty-list<array{int, string, int}>
+     *   non-empty-array<int, array{int, string, int}>
      * }>
      */
     private function getDataProvidersWithUsagePairs(Tokens $tokens, int $startIndex, int $endIndex): array
@@ -237,7 +237,7 @@ class FooTest extends TestCase {
                     continue;
                 }
 
-                $usages[] = [
+                $usages[array_key_last($methodNameTokens)] = [
                     array_key_last($methodNameTokens),
                     end($methodNameTokens)->getContent(),
                     $usageIndex[1],
@@ -257,7 +257,7 @@ class FooTest extends TestCase {
     /**
      * @param list<array{
      *   array{int, string},
-     *   non-empty-list<array{int, string, int}>
+     *   non-empty-array<int, array{int, string, int}>
      * }> $dataProvidersWithUsagePairs
      *
      * @return list<array{string, string}>
