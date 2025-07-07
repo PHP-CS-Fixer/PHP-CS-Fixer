@@ -3,6 +3,18 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.81.0
+---------------------
+
+* feat: `VisibilityRequiredFixer` - handle more than only the first promoted property (#8801)
+* fix: `BracesPositionFixer` - do not crash when variable is terminated by PHP close tag (#8804)
+* fix: `PhpUnitDataProviderMethodOrderFixer` - handle data provider defined by both annotation and attribute (#8805)
+* fix: `PhpUnitInternalClassFixer` - skip adding `@internal` on instantiation of anonymous classes (#8807)
+* fix: `VisibilityRequiredFixer` - handle promoted parameter passed by reference (#8799)
+* chore: add automatically to milestone "PHP 8.5 initial compatibility" if label is "topic/PHP8.5" (#8806)
+* chore: fail "Deployment checks" if any job from `tests` failed (#8792)
+* docs: update docs about --allow-unsupported-php-version (#8796)
+
 Changelog for v3.80.0
 ---------------------
 
