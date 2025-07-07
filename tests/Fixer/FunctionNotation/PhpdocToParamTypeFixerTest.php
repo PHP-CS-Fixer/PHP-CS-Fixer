@@ -360,18 +360,20 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
         yield 'param by reference in PHPDoc too' => [
             <<<'PHP'
                 <?php class C {
-                    /** @param array&$data   */ function foo1(array &$data) {}
-                    /** @param array& $data  */ function foo2(array &$data) {}
-                    /** @param array &$data  */ function foo3(array &$data) {}
-                    /** @param array & $data */ function foo4(array &$data) {}
+                    /** @param array&$data     */ function foo1(array &$data) {}
+                    /** @param array& $data    */ function foo2(array &$data) {}
+                    /** @param array&    $data */ function foo3(array &$data) {}
+                    /** @param array &$data    */ function foo4(array &$data) {}
+                    /** @param array & $data   */ function foo5(array &$data) {}
                 }
                 PHP,
             <<<'PHP'
                 <?php class C {
-                    /** @param array&$data   */ function foo1(&$data) {}
-                    /** @param array& $data  */ function foo2(&$data) {}
-                    /** @param array &$data  */ function foo3(&$data) {}
-                    /** @param array & $data */ function foo4(&$data) {}
+                    /** @param array&$data     */ function foo1(&$data) {}
+                    /** @param array& $data    */ function foo2(&$data) {}
+                    /** @param array&    $data */ function foo3(&$data) {}
+                    /** @param array &$data    */ function foo4(&$data) {}
+                    /** @param array & $data   */ function foo5(&$data) {}
                 }
                 PHP,
         ];
