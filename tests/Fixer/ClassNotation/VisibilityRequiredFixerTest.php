@@ -798,8 +798,8 @@ var_dump(Foo::CAT->test());',
                 <?php class Foo {
                     public function __construct(
                         public readonly bool $one,
-                        readonly public bool $two,
-                        readonly public string $three
+                        public readonly bool $two,
+                        public readonly string $three
                     ) {}
                 }
                 PHP,

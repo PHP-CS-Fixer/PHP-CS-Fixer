@@ -237,7 +237,7 @@ class Sample
                 $index = $typeIndex;
             }
 
-            if ($tokens[$prevIndex]->equals(',')) {
+            if ('property' === $element['type'] && $tokens[$prevIndex]->equals(',')) {
                 continue;
             }
 
