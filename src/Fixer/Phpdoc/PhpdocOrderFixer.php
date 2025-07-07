@@ -115,16 +115,16 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        $configurationOrder = [];
+        foreach ($this->configuration['order'] as $type) {
+            $configurationOrder[] = $type;
+            $configurationOrder[] = 'phpstan-'.$type;
+            $configurationOrder[] = 'psalm-'.$type;
+        }
+
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
                 continue;
-            }
-
-            $configurationOrder = [];
-            foreach ($this->configuration['order'] as $type) {
-                $configurationOrder[] = $type;
-                $configurationOrder[] = 'phpstan-'.$type;
-                $configurationOrder[] = 'psalm-'.$type;
             }
 
             // assuming annotations are already grouped by tags
