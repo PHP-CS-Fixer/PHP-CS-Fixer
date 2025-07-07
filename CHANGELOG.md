@@ -3,6 +3,17 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.82.0
+---------------------
+
+* chore: cleanup `FCTTest` (#8808)
+* chore: PhpdocOrderFixer.php -  CPU optimization (#8812)
+* deps: update box (#8795)
+* docs: fix whitespace around code examples and reference sections in rules' docs (#8810)
+* feat: `MagicConstantCasingFixer` - support `__PROPERTY__` (#8809)
+* feat: `PhpUnitDataProviderNameFixer` - support data providers defined by both annotation and attribute for the same test (#8811)
+* fix: `PhpdocToParamTypeFixer` - always handle reference in PHPDoc (#8813)
+
 Changelog for v3.81.0
 ---------------------
 
