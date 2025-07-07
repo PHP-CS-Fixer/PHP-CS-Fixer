@@ -678,6 +678,7 @@ AB# <- this is the name
                         public string $a,
                         protected string $b,
                         private string $c,
+                        private array &$withReference,
                     ) {}
                 }
                 PHP,
@@ -785,6 +786,11 @@ var_dump(Foo::CAT->test());',
         yield 'promoted property without visibility' => [
             '<?php class Foo { public function __construct(public readonly string $bar) { } }',
             '<?php class Foo { public function __construct(readonly string $bar) { } }',
+        ];
+
+        yield 'promoted property without visibility with reference' => [
+            '<?php class Foo { public function __construct(public readonly string &$bar) { } }',
+            '<?php class Foo { public function __construct(readonly string &$bar) { } }',
         ];
     }
 

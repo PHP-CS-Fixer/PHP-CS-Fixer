@@ -215,7 +215,7 @@ class Sample
                 ? self::EXPECTED_KINDS_PROPERTY_KINDS
                 : self::EXPECTED_KINDS_GENERIC;
 
-            while ($tokens[$prevIndex]->isGivenKind($expectedKinds)) {
+            while ($tokens[$prevIndex]->isGivenKind($expectedKinds) || $tokens[$prevIndex]->equals('&')) {
                 if ($tokens[$prevIndex]->isGivenKind([T_ABSTRACT, T_FINAL])) {
                     $abstractFinalIndex = $prevIndex;
                 } elseif ($tokens[$prevIndex]->isGivenKind(T_STATIC)) {
@@ -226,7 +226,7 @@ class Sample
                     $visibilitySetIndex = $prevIndex;
                 } elseif ($tokens[$prevIndex]->isGivenKind(self::PROPERTY_TYPE_DECLARATION_KINDS)) {
                     $typeIndex = $prevIndex;
-                } else {
+                } elseif (!$tokens[$prevIndex]->equals('&')) {
                     $visibilityIndex = $prevIndex;
                 }
 
