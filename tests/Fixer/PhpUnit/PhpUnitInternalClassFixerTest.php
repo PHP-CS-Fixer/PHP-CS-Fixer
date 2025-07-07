@@ -387,6 +387,19 @@ class Test extends TestCase
 }
 ',
         ];
+
+        yield 'It skips instantiation of anonymous class as it is not a class declaration' => [
+            <<<'PHP'
+                <?php
+
+                $test = new class ('test') extends AbstractSomethingTestCase {
+                    public function getSomething(): string
+                    {
+                        return 'something';
+                    }
+                };
+                PHP,
+        ];
     }
 
     /**
