@@ -762,6 +762,30 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
                 }
                 PHP,
         ];
+
+        yield 'variable terminated by close tag' => [
+            <<<'PHP'
+                <?php
+
+                $pager = new class {
+                public function bar()
+                {
+                return 'baz';
+                }
+                };
+
+                echo $pager->bar()
+                ?>
+                PHP,
+            <<<'PHP'
+                <?php
+
+                $pager = new class { public function bar() { return 'baz'; } };
+
+                echo $pager->bar()
+                ?>
+                PHP,
+        ];
     }
 
     /**
