@@ -43,4 +43,5 @@ final class FCT
     public const T_PRIVATE_SET = \PHP_VERSION_ID >= 8_04_00 ? T_PRIVATE_SET : -841;
     public const T_PROTECTED_SET = \PHP_VERSION_ID >= 8_04_00 ? T_PROTECTED_SET : -842;
     public const T_PUBLIC_SET = \PHP_VERSION_ID >= 8_04_00 ? T_PUBLIC_SET : -843;
+    public const T_PROPERTY_C = \PHP_VERSION_ID >= 8_04_00 ? T_PROPERTY_C : -844;
 }

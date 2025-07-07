@@ -19,6 +19,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -70,6 +71,7 @@ final class MagicConstantCasingFixer extends AbstractFixer
                 T_NS_C => '__NAMESPACE__',
                 CT::T_CLASS_CONSTANT => 'class',
                 T_TRAIT_C => '__TRAIT__',
+                FCT::T_PROPERTY_C => '__PROPERTY__',
             ];
         }
 

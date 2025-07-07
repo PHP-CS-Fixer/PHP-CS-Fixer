@@ -123,4 +123,30 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
                 }',
         ];
     }
+
+    /**
+     * @requires PHP 8.4
+     *
+     * @dataProvider provideFix84Cases
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->testFix($expected, $input);
+    }
+
+    /**
+     * @return iterable<int, array{string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield [
+            '<?php echo __PROPERTY__;',
+            '<?php echo __property__;',
+        ];
+
+        yield [
+            '<?php echo __PROPERTY__;',
+            '<?php echo __PrOpErTy__;',
+        ];
+    }
 }
