@@ -31,6 +31,7 @@ Example #1
    -function sample(? string $str): ? string
    +function sample(?string $str): ?string
     {}
+
 References
 ----------
 

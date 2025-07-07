@@ -26,6 +26,7 @@ Example #1
     <?php
    -foo($a,);
    +foo($a);
+
 References
 ----------
 

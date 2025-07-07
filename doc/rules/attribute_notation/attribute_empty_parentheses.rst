@@ -57,6 +57,7 @@ With configuration: ``['use_parentheses' => true]``.
    -#[Bar, Baz]
    +#[Bar(), Baz()]
     class Sample2 {}
+
 References
 ----------
 

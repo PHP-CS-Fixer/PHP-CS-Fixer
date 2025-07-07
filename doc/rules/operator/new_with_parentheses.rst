@@ -100,7 +100,6 @@ The rule is part of the following rule sets:
 
   ``['anonymous_class' => false]``
 
-
 References
 ----------
 

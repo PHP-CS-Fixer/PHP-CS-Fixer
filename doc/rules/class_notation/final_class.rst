@@ -38,6 +38,7 @@ Example #1
     <?php
    -class MyApp {}
    +final class MyApp {}
+
 References
 ----------
 

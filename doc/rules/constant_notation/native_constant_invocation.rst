@@ -146,7 +146,6 @@ The rule is part of the following rule sets:
 
   ``['strict' => false]``
 
-
 References
 ----------
 

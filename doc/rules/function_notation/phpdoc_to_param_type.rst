@@ -110,6 +110,7 @@ With configuration: ``['union_types' => false]``.
    +function foo(Foo $foo) {}
     /** @param int|string $foo */
     function bar($foo) {}
+
 References
 ----------
 

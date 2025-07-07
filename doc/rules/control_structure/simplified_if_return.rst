@@ -18,6 +18,7 @@ Example #1
     <?php
    -if ($foo) { return true; } return false;
    +return (bool) ($foo)      ;
+
 References
 ----------
 

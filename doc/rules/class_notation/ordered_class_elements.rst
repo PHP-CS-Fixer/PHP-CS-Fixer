@@ -199,7 +199,6 @@ The rule is part of the following rule sets:
 
   ``['order' => ['use_trait']]``
 
-
 References
 ----------
 

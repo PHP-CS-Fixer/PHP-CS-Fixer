@@ -36,6 +36,7 @@ Example #1
    +++ New
    -<?php \DateTime::createFromFormat('Y-m-d', '2022-02-11');
    +<?php \DateTime::createFromFormat('!Y-m-d', '2022-02-11');
+
 References
 ----------
 

@@ -26,6 +26,7 @@ Example #1
 
    -$className = Baz::class;
    +$className = 'Foo\Bar\Baz';
+
 References
 ----------
 

@@ -26,6 +26,7 @@ Example #1
     <?php
    -new DateTime();
    +new DateTimeImmutable();
+
 References
 ----------
 
