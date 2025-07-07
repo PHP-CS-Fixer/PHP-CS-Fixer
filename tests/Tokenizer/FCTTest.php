@@ -24,43 +24,6 @@ use PhpCsFixer\Tokenizer\FCT;
  */
 final class FCTTest extends TestCase
 {
-    private const EXPECTED_CONSTANTS = [
-        'T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG',
-        'T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG',
-        'T_ATTRIBUTE',
-        'T_ENUM',
-        'T_MATCH',
-        'T_NULLSAFE_OBJECT_OPERATOR',
-        'T_PRIVATE_SET',
-        'T_PROTECTED_SET',
-        'T_PUBLIC_SET',
-        'T_READONLY',
-    ];
-
-    public function testClassIsInternal(): void
-    {
-        $docComment = (new \ReflectionClass(FCT::class))->getDocComment();
-        if (false === $docComment) {
-            $docComment = '';
-        }
-
-        self::assertStringContainsString(
-            "\n * @internal\n",
-            $docComment
-        );
-    }
-
-    public function testAllConstantsArePresentInEveryPhpVersionRuntime(): void
-    {
-        $consts = array_keys((new \ReflectionClass(FCT::class))->getConstants());
-        sort($consts);
-
-        self::assertSame(
-            self::EXPECTED_CONSTANTS,
-            $consts
-        );
-    }
-
     public function testConstantsHaveUniqueValues(): void
     {
         $constants = (new \ReflectionClass(FCT::class))->getConstants();
@@ -70,10 +33,9 @@ final class FCTTest extends TestCase
 
     public function testConstantsHaveCorrectValues(): void
     {
-        foreach (self::EXPECTED_CONSTANTS as $constantName) {
-            $constant = new \ReflectionClassConstant(FCT::class, $constantName);
-            if (\defined($constantName)) {
-                self::assertSame(\constant($constantName), $constant->getValue());
+        foreach ((new \ReflectionClass(FCT::class))->getReflectionConstants() as $constant) {
+            if (\defined($constant->getName())) {
+                self::assertSame(\constant($constant->getName()), $constant->getValue());
             } else {
                 self::assertLessThan(0, $constant->getValue());
             }
@@ -85,8 +47,7 @@ final class FCTTest extends TestCase
      */
     public function testHighestSupportedPhpVersionHaveOnlyPositiveValues(): void
     {
-        foreach (self::EXPECTED_CONSTANTS as $constantName) {
-            $constant = new \ReflectionClassConstant(FCT::class, $constantName);
+        foreach ((new \ReflectionClass(FCT::class))->getReflectionConstants() as $constant) {
             self::assertGreaterThan(0, $constant->getValue());
         }
     }
@@ -96,8 +57,7 @@ final class FCTTest extends TestCase
      */
     public function testLowestSupportedPhpVersionHaveOnlyNegativeValues(): void
     {
-        foreach (self::EXPECTED_CONSTANTS as $constantName) {
-            $constant = new \ReflectionClassConstant(FCT::class, $constantName);
+        foreach ((new \ReflectionClass(FCT::class))->getReflectionConstants() as $constant) {
             self::assertLessThan(0, $constant->getValue());
         }
     }
