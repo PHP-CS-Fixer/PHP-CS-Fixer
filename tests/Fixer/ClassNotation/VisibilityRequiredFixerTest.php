@@ -787,6 +787,11 @@ var_dump(Foo::CAT->test());',
             '<?php class Foo { public function __construct(public readonly string $bar) { } }',
             '<?php class Foo { public function __construct(readonly string $bar) { } }',
         ];
+
+        yield 'promoted property without visibility with reference' => [
+            '<?php class Foo { public function __construct(public readonly string &$bar) { } }',
+            '<?php class Foo { public function __construct(readonly string &$bar) { } }',
+        ];
     }
 
     /**
