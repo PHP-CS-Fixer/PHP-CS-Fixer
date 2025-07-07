@@ -13,10 +13,10 @@ permissions:
 jobs:
   add-to-milestone:
     runs-on: ubuntu-latest
-    if: ${{ github.event.label.name == 'topic/PHP8.4' }}
+    if: ${{ github.event.label.name == 'topic/PHP8.5' }}
     env:
       PR_URL: ${{github.event.pull_request.html_url}}
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
     steps:
-      - run: gh pr edit "$PR_URL" --milestone 'PHP 8.4 initial compatibility'
+      - run: gh pr edit "$PR_URL" --milestone 'PHP 8.5 initial compatibility'
