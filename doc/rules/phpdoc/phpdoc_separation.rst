@@ -163,7 +163,6 @@ The rule is part of the following rule sets:
 
   ``['groups' => [['Annotation', 'NamedArgumentConstructor', 'Target'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write'], ['deprecated', 'link', 'see', 'since']]]``
 
-
 References
 ----------
 

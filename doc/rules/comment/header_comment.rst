@@ -156,6 +156,7 @@ With configuration: ``['header' => '']``.
     namespace A\B;
 
     echo 1;
+
 References
 ----------
 

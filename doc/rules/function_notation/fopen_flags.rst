@@ -67,7 +67,6 @@ The rule is part of the following rule sets:
 
   ``['b_mode' => false]``
 
-
 References
 ----------
 

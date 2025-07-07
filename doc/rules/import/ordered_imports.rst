@@ -188,7 +188,6 @@ The rule is part of the following rule sets:
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'alpha']``
 
-
 References
 ----------
 

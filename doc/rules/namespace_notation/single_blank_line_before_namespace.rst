@@ -38,6 +38,7 @@ Example #2
 
    -
     namespace A{}
+
 References
 ----------
 

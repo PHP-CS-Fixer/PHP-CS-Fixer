@@ -76,6 +76,7 @@ With configuration: ``['use_parentheses' => true]``.
 
    -new class {}->bar();
    +(new class {})->bar();
+
 References
 ----------
 

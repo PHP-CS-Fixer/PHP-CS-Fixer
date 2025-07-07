@@ -112,6 +112,7 @@ With configuration: ``['union_types' => false]``.
    -    private $bar;
    +    private \Traversable $bar;
     }
+
 References
 ----------
 

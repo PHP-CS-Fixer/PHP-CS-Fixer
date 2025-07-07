@@ -144,7 +144,6 @@ The rule is part of the following rule sets:
 
   ``['elements' => ['method' => 'one']]``
 
-
 References
 ----------
 

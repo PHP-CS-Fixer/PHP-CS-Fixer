@@ -121,7 +121,6 @@ The rule is part of the following rule sets:
 
   ``['order' => ['param', 'return', 'throws']]``
 
-
 References
 ----------
 

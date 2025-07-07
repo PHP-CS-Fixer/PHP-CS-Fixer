@@ -49,6 +49,7 @@ With configuration: ``['tags' => ['foo']]``.
    - * @Foo
    + * @foo
      */
+
 References
 ----------
 

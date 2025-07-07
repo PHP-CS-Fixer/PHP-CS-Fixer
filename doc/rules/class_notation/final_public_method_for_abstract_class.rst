@@ -36,6 +36,7 @@ Example #1
    +    final public function start()
         {}
     }
+
 References
 ----------
 

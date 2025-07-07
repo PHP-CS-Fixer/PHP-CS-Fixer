@@ -104,7 +104,6 @@ The rule is part of the following rule sets:
 
   ``['stick_comment_to_next_continuous_control_statement' => true]``
 
-
 References
 ----------
 
