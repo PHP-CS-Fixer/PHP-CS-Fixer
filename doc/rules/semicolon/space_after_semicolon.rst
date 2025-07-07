@@ -64,7 +64,6 @@ The rule is part of the following rule sets:
 
   ``['remove_in_empty_for_expressions' => true]``
 
-
 References
 ----------
 

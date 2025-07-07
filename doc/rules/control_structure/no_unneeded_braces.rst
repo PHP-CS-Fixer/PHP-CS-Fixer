@@ -72,7 +72,6 @@ The rule is part of the following rule sets:
 
   ``['namespaces' => true]``
 
-
 References
 ----------
 

@@ -161,7 +161,6 @@ The rule is part of the following rule sets:
 
   ``['target' => '4.3']``
 
-
 References
 ----------
 

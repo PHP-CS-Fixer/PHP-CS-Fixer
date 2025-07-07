@@ -25,6 +25,7 @@ Example #1
     <?php
    -$a = array('sample',  );
    +$a = array('sample');
+
 References
 ----------
 

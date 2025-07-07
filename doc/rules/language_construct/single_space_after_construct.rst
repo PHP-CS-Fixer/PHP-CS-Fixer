@@ -68,6 +68,7 @@ With configuration: ``['constructs' => ['yield_from']]``.
 
    -yield  from  baz();
    +yield from baz();
+
 References
 ----------
 

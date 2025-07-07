@@ -72,6 +72,7 @@ Example #4
     {
         return 'hi!';
     }
+
 References
 ----------
 

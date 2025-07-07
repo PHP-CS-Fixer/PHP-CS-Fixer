@@ -75,6 +75,7 @@ With configuration: ``['property' => 'single']``.
    +    /** @var bool */
         public $var;
     }
+
 References
 ----------
 

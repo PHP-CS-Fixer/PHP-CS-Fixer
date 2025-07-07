@@ -193,7 +193,6 @@ The rule is part of the following rule sets:
 
   ``['target' => '8.4']``
 
-
 References
 ----------
 
