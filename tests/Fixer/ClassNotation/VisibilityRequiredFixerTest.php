@@ -678,6 +678,7 @@ AB# <- this is the name
                         public string $a,
                         protected string $b,
                         private string $c,
+                        private array &$withReference,
                     ) {}
                 }
                 PHP,
