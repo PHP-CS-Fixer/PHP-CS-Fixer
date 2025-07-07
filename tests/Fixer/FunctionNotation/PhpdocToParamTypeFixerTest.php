@@ -361,7 +361,7 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
             <<<'PHP'
                 <?php class C {
                     /** @param array&$data   */ function foo1(array &$data) {}
-                    /** @param array& $data  */ function foo2(&$data) {}
+                    /** @param array& $data  */ function foo2(array &$data) {}
                     /** @param array &$data  */ function foo3(array &$data) {}
                     /** @param array & $data */ function foo4(array &$data) {}
                 }
