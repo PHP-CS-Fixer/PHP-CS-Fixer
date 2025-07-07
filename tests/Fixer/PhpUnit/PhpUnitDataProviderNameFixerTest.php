@@ -473,6 +473,18 @@ class FooTest extends TestCase {
                 use PHPUnit\Framework\Attributes\DataProvider;
                 class FooTest extends TestCase {
                     /**
+                     * @dataProvider provideFooCases
+                     */
+                    #[DataProvider('provideFooCases')]
+                    public function testFoo(): void {}
+                    public function provideFooCases(): iterable {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\Attributes\DataProvider;
+                class FooTest extends TestCase {
+                    /**
                      * @dataProvider the_provider_of_the_data
                      */
                     #[DataProvider('the_provider_of_the_data')]

@@ -140,31 +140,36 @@ class FooTest extends TestCase {
     {
         $dataProviderAnalyzer = new DataProviderAnalyzer();
         foreach ($dataProviderAnalyzer->getDataProviders($tokens, $startIndex, $endIndex) as $dataProviderAnalysis) {
-            if (\count($dataProviderAnalysis->getUsageIndices()) > 1) {
+            $testIndices = [];
+            foreach ($dataProviderAnalysis->getUsageIndices() as [$usageIndex]) {
+                $testIndices[$tokens->getNextTokenOfKind($usageIndex, [[T_FUNCTION]])] = $usageIndex;
+            }
+            if (\count($testIndices) > 1) {
                 continue;
             }
 
-            $usageIndex = $dataProviderAnalysis->getUsageIndices()[0][0];
-            if (substr_count($tokens[$usageIndex]->getContent(), '@dataProvider') > 1) {
-                continue;
-            }
-
-            $dataProviderNewName = $this->getDataProviderNameForUsageIndex($tokens, $usageIndex);
+            $dataProviderNewName = $this->getDataProviderNameForUsageIndex($tokens, reset($testIndices));
             if (null !== $tokens->findSequence([[T_FUNCTION], [T_STRING, $dataProviderNewName]], $startIndex, $endIndex)) {
                 continue;
             }
 
-            $tokens[$dataProviderAnalysis->getNameIndex()] = new Token([T_STRING, $dataProviderNewName]);
+            foreach ($dataProviderAnalysis->getUsageIndices() as [$usageIndex]) {
+                if (substr_count($tokens[$usageIndex]->getContent(), '@dataProvider') > 1) {
+                    continue;
+                }
 
-            $newCommentContent = $tokens[$usageIndex]->isGivenKind(T_DOC_COMMENT)
-                ? Preg::replace(
-                    \sprintf('/(@dataProvider\s+)%s/', $dataProviderAnalysis->getName()),
-                    \sprintf('$1%s', $dataProviderNewName),
-                    $tokens[$usageIndex]->getContent(),
-                )
-                : \sprintf('%1$s%2$s%1$s', $tokens[$usageIndex]->getContent()[0], $dataProviderNewName);
+                $tokens[$dataProviderAnalysis->getNameIndex()] = new Token([T_STRING, $dataProviderNewName]);
 
-            $tokens[$usageIndex] = new Token([$tokens[$usageIndex]->getId(), $newCommentContent]);
+                $newCommentContent = $tokens[$usageIndex]->isGivenKind(T_DOC_COMMENT)
+                    ? Preg::replace(
+                        \sprintf('/(@dataProvider\s+)%s/', $dataProviderAnalysis->getName()),
+                        \sprintf('$1%s', $dataProviderNewName),
+                        $tokens[$usageIndex]->getContent(),
+                    )
+                    : \sprintf('%1$s%2$s%1$s', $tokens[$usageIndex]->getContent()[0], $dataProviderNewName);
+
+                $tokens[$usageIndex] = new Token([$tokens[$usageIndex]->getId(), $newCommentContent]);
+            }
         }
     }
 
