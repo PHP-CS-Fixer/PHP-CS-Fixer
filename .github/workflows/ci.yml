@@ -282,6 +282,7 @@ jobs:
 
   deployment:
     needs: tests
+    if: always()
     name: Deployment checks
 
     runs-on: ubuntu-24.04
@@ -289,6 +290,13 @@ jobs:
       php-version: '8.4'
 
     steps:
+      - name: Check if the tests passed
+        run: |
+          echo "Tests result: ${{ needs.tests.result }}"
+          if [[ "${{ needs.tests.result }}" != "success" ]]; then
+            exit 1
+          fi
+
       - name: Checkout code
         uses: actions/checkout@v4
 
