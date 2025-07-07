@@ -413,7 +413,7 @@ class FooTest extends TestCase {
     }
 
     /**
-     * @return iterable<string, array{string, string}>
+     * @return iterable<string, array{string, 1?: string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -463,6 +463,49 @@ class FooTest extends TestCase {
                     #[\PHPUnit\Framework\Attributes\DataProvider("renameMeToo")]
                     public function testBar(): void {}
                     public function renameMeToo() {}
+                }
+                PHP,
+        ];
+
+        yield 'data provider defined by both annotation and attribute for the same test' => [
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\Attributes\DataProvider;
+                class FooTest extends TestCase {
+                    /**
+                     * @dataProvider provideFooCases
+                     */
+                    #[DataProvider('provideFooCases')]
+                    public function testFoo(): void {}
+                    public function provideFooCases(): iterable {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\Attributes\DataProvider;
+                class FooTest extends TestCase {
+                    /**
+                     * @dataProvider the_provider_of_the_data
+                     */
+                    #[DataProvider('the_provider_of_the_data')]
+                    public function testFoo(): void {}
+                    public function the_provider_of_the_data(): iterable {}
+                }
+                PHP,
+        ];
+
+        yield 'data provider defined by annotation and attribute for different tests' => [
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\Attributes\DataProvider;
+                class FooTest extends TestCase {
+                    /**
+                     * @dataProvider the_provider_of_the_data
+                     */
+                    public function testFoo(): void {}
+                    #[DataProvider('the_provider_of_the_data')]
+                    public function testBar(): void {}
+                    public function the_provider_of_the_data(): iterable {}
                 }
                 PHP,
         ];
