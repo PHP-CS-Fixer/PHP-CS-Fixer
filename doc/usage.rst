@@ -269,11 +269,13 @@ GitLab Code Quality Integration
 If you want to integrate with GitLab's Code Quality feature, in order for report to contain correct line numbers, you
 will need to use both ``--format=gitlab`` and ``--diff`` arguments.
 
-Environment options
--------------------
+Environment
+-----------
 
-The ``PHP_CS_FIXER_IGNORE_ENV`` environment variable can be used to ignore any environment requirements.
-This includes requirements like missing PHP extensions, unsupported PHP versions or by using HHVM.
+The ``--allow-unsupported-php-version=yes`` can be used to ignore any environment requirements.
+
+Also possible via ``PHP_CS_FIXER_IGNORE_ENV`` environment variable (deprecated),
+which also allows the Fixer to run with required PHP extensions missing.
 
 NOTE: Execution may be unstable when used.
 
