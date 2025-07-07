@@ -792,6 +792,27 @@ var_dump(Foo::CAT->test());',
             '<?php class Foo { public function __construct(public readonly string &$bar) { } }',
             '<?php class Foo { public function __construct(readonly string &$bar) { } }',
         ];
+
+        yield 'promoted readonly properties' => [
+            <<<'PHP'
+                <?php class Foo {
+                    public function __construct(
+                        public readonly bool $one,
+                        public readonly bool $two,
+                        public readonly string $three
+                    ) {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo {
+                    public function __construct(
+                        readonly public bool $one,
+                        readonly public bool $two,
+                        readonly public string $three
+                    ) {}
+                }
+                PHP,
+        ];
     }
 
     /**
