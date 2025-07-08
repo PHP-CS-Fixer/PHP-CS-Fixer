@@ -407,6 +407,9 @@ Function Notation
 - `no_unreachable_default_argument_value <./function_notation/no_unreachable_default_argument_value.rst>`_ *(risky)*
 
   In function arguments there must not be arguments with default values before non-default ones.
+- `no_useless_printf <./function_notation/no_useless_printf.rst>`_ *(risky)*
+
+  There must be no ``printf`` calls with only the first argument.
 - `no_useless_sprintf <./function_notation/no_useless_sprintf.rst>`_ *(risky)*
 
   There must be no ``sprintf`` calls with only the first argument.
