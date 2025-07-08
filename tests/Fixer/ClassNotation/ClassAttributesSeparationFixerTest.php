@@ -1773,6 +1773,19 @@ class Foo
 }
 ',
         ];
+
+        yield 'method "get" aliased in trait import' => [
+            <<<'PHP'
+<?php
+class Foo
+{
+    use Bar {
+        get as private otherGet;
+    }
+}
+PHP
+        ];
+
     }
 
     /**

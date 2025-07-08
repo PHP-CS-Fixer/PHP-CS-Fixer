@@ -177,6 +177,18 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
                 PHP,
             [],
         ];
+
+        yield 'method "get" aliased in trait import' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    use Bar {
+                        get as private otherGet;
+                    }
+                }
+                PHP,
+            [],
+        ];
     }
 
     /**
