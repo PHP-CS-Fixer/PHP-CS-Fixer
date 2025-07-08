@@ -141,7 +141,7 @@ final class Example
                 continue;
             }
 
-            if ($repeatToken->equals(';')) {
+            if ($repeatToken->equalsAny([';', [CT::T_PROPERTY_HOOK_BRACE_OPEN]])) {
                 return; // no repeating found, no fixing needed
             }
 
