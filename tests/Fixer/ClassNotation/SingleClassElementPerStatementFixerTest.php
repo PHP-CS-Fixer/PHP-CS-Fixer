@@ -998,7 +998,7 @@ var_dump(Foo::A.Foo::B);",
     }
 
     /**
-     * @return iterable<string, array{string, string}>
+     * @return iterable<string, array{string, 1?: string}>
      */
     public static function provideFix84Cases(): iterable
     {
@@ -1018,6 +1018,15 @@ var_dump(Foo::A.Foo::B);",
                     public public(set) int $a, $b;
                     public protected(set) int $c, $d;
                     public private(set) int $e, $f;
+                }
+                PHP,
+        ];
+
+        yield 'property hook' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public int $i { get {} }
                 }
                 PHP,
         ];
