@@ -1296,6 +1296,31 @@ class Foo
 }',
         ];
 
+        yield 'multiline class constants with array key/value' => [
+            '<?php
+class Foo
+{
+    const
+        READY = "GO",
+        FOO = [
+            "foo" => "bar",
+        ],
+        BAR = "Foo",
+        STOP = "STOP";
+}',
+            '<?php
+class Foo
+{
+  const
+        READY = "GO",
+    FOO = [
+        "foo" => "bar",
+    ],
+        BAR = "Foo",
+      STOP = "STOP";
+}',
+        ];
+
         yield 'multiline class constant with semicolon on next line' => [
             '<?php
 class Foo
