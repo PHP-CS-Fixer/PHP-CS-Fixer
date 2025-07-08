@@ -485,7 +485,7 @@ Custom values:
 
     private function findElementEnd(Tokens $tokens, int $index): int
     {
-        $index = $tokens->getNextTokenOfKind($index, ['(', '{', ';']);
+        $index = $tokens->getNextTokenOfKind($index, ['(', '{', ';', [CT::T_PROPERTY_HOOK_BRACE_OPEN]]);
 
         if ($tokens[$index]->equals('(')) {
             $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
@@ -494,6 +494,10 @@ Custom values:
 
         if ($tokens[$index]->equals('{')) {
             $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+        }
+
+        if ($tokens[$index]->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
+            $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PROPERTY_HOOK, $index);
         }
 
         for (++$index; $tokens[$index]->isWhitespace(" \t") || $tokens[$index]->isComment(); ++$index);
