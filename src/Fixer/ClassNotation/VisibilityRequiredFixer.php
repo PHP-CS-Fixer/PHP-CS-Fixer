@@ -286,7 +286,11 @@ class Sample
 
     private function isKeywordPlacedProperly(Tokens $tokens, int $keywordIndex, int $comparedIndex): bool
     {
-        return $keywordIndex + 2 === $comparedIndex && ' ' === $tokens[$keywordIndex + 1]->getContent();
+        return ' ' === $tokens[$keywordIndex + 1]->getContent()
+                && (
+                    $keywordIndex + 2 === $comparedIndex
+                    || $keywordIndex + 3 === $comparedIndex && $tokens[$keywordIndex + 2]->equals('&')
+                );
     }
 
     private function moveTokenAndEnsureSingleSpaceFollows(Tokens $tokens, int $fromIndex, int $toIndex): void
