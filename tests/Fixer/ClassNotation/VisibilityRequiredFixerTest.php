@@ -683,6 +683,17 @@ AB# <- this is the name
                 }
                 PHP,
         ];
+
+        yield 'promoted property with visibility and reference, but without type' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public function __construct(
+                        private &$bar,
+                    ) {}
+                }
+                PHP,
+        ];
     }
 
     /**
@@ -979,6 +990,25 @@ var_dump(Foo::CAT->test());',
                     readonly private(set) protected Bar $a;
                     protected(set) readonly public Bar $b;
                     private(set) public readonly Baz $c;
+                }
+                PHP,
+        ];
+
+        yield 'promoted property with visibility, set-visibility and reference' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public function __construct(
+                        protected private(set) int &$bar,
+                    ) {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public function __construct(
+                        private(set) protected int &$bar,
+                    ) {}
                 }
                 PHP,
         ];
