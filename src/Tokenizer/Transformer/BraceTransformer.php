@@ -185,9 +185,14 @@ final class BraceTransformer extends AbstractTransformer
             return;
         }
 
-        $openParenthesisIndex = $tokens->getNextMeaningfulToken($nextIndex);
-        if ($tokens[$openParenthesisIndex]->equals('(')) {
-            $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesisIndex);
+        $nextNextIndex = $tokens->getNextMeaningfulToken($nextIndex);
+
+        if (!$tokens[$nextNextIndex]->equalsAny(['(', '{', ';', [T_DOUBLE_ARROW]])) {
+            return;
+        }
+
+        if ($tokens[$nextNextIndex]->equals('(')) {
+            $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextNextIndex);
             $afterCloseParenthesisIndex = $tokens->getNextMeaningfulToken($closeParenthesisIndex);
             if (!$tokens[$afterCloseParenthesisIndex]->equalsAny(['{', [T_DOUBLE_ARROW]])) {
                 return;
