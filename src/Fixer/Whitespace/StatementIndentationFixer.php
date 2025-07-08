@@ -326,6 +326,12 @@ if ($foo) {
                         continue;
                     }
 
+                    if ($endToken->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+                        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $endIndex);
+
+                        continue;
+                    }
+
                     if ($endToken->equalsAny(['{', ';', [T_DOUBLE_ARROW], [T_IMPLEMENTS]])) {
                         break;
                     }
