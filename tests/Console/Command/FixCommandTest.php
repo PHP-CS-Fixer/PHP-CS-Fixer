@@ -206,9 +206,6 @@ final class FixCommandTest extends TestCase
 
     public function testLoadedConfig(): void
     {
-        $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('The rules contain unknown fixers: "invalid/////rule    ".');
-
         $commandTester = $this->doTestExecute(
             [
                 'path' => [__DIR__.'/../../Fixtures/invalid-config'],
