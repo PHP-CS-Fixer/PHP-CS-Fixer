@@ -1021,6 +1021,15 @@ var_dump(Foo::A.Foo::B);",
                 }
                 PHP,
         ];
+
+        yield 'property hook' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public int $i { get {} }
+                }
+                PHP,
+        ];
     }
 
     public function testInvalidConfiguration(): void
