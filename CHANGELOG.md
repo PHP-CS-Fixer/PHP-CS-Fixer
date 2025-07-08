@@ -3,6 +3,12 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.82.1
+---------------------
+
+* fix: `OrderedClassElementsFixer` - handle property hooks (#8817)
+* fix: `SingleClassElementPerStatementFixer` - fix for property hooks (#8816)
+
 Changelog for v3.82.0
 ---------------------
 
