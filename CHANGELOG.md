@@ -3,6 +3,14 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.82.2
+---------------------
+
+* fix: `ClassAttributesSeparationFixer` - handle method `get` aliased in trait import (#8822)
+* fix: `LowercaseStaticReferenceFixer` - do not touch enum's cases (#8824)
+* fix: `StatementIndentationFixer` - multi constant statement containing array (#8825)
+* fix: `VisibilityRequiredFixer` - handle promoted property with visibility and reference, but without type (#8823)
+
 Changelog for v3.82.1
 ---------------------
 
