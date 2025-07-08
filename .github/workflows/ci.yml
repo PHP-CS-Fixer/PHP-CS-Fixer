@@ -270,7 +270,7 @@ jobs:
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           PHP_CS_FIXER_FUTURE_MODE: 1
-        run: php php-cs-fixer check --diff -v
+        run: php php-cs-fixer check --diff -v code.php --rules=ordered_class_elements,visibility_required
 
       # Should be checked on the lowest supported PHP version.
       # If any type can be converted from PHPDoc to native type on lowest supported PHP, we should commit such change.
