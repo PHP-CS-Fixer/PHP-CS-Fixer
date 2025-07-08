@@ -216,6 +216,15 @@ final class ConfigurationResolverTest extends TestCase
         self::assertInstanceOf(\Test1Config::class, $resolver->getConfig()); // @phpstan-ignore-line to avoid `Class Test1Config not found.`
     }
 
+    public function testResolveConfigFileWhenBothConfigsInPathAnInCwdExist(): void
+    {
+        $cwd = __DIR__.'/../..';
+        $dir = __DIR__.'/../Fixtures/ConfigurationResolverConfigFile/case_1';
+
+        $resolver = $this->createConfigurationResolver(['path' => [$dir.\DIRECTORY_SEPARATOR.'foo.php']], null, $cwd);
+        self::assertSame($dir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php', $resolver->getConfigFile());
+    }
+
     public function testResolveConfigFileSpecified(): void
     {
         $file = __DIR__.'/../Fixtures/ConfigurationResolverConfigFile/case_4/my.php-cs-fixer.php';
