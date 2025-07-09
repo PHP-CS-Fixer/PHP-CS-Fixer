@@ -97,7 +97,7 @@ final class ProcessFactory
             $commandArgs[] = '--stop-on-violation';
         }
 
-        foreach (['allow-risky', 'config', 'rules', 'rules-base64', 'using-cache', 'cache-file'] as $option) {
+        foreach (['allow-risky', 'config', 'rules', 'using-cache', 'cache-file'] as $option) {
             $optionValue = $this->input->getOption($option);
 
             if (null !== $optionValue) {
