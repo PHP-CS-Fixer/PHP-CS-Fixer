@@ -165,6 +165,52 @@ final class WorkerCommandTest extends TestCase
     }
 
     /**
+     * Test that demonstrates the Windows shell escaping problem would occur with --rules.
+     * On Windows, JSON with quotes and special characters gets mangled by escapeshellarg(),
+     * making --rules-base64 necessary for complex rule configurations.
+     *
+     * @requires OS Windows
+     */
+    public function testWindowsShellEscapingProblemWithComplexJsonRules(): void
+    {
+        $this->expectException(ParallelisationException::class);
+        $this->expectExceptionMessage('Unable to create runner:');
+
+        $problematicJsonRules = escapeshellarg('{"array_syntax":{"syntax":"short"},"binary_operator_spaces":{"operators":{"=>":"single_space"}}}');
+
+        $this->doTestExecute([
+            '--rules' => $problematicJsonRules,
+            '--port' => 12_345,
+            '--identifier' => ProcessIdentifier::create()->toString(),
+        ]);
+    }
+
+    public function testRulesAndRulesBase64CannotBeUsedTogether(): void
+    {
+        $this->expectException(ParallelisationException::class);
+        $this->expectExceptionMessage('Unable to create runner: Passing both `--rules` and `--rules-base64` options is not allowed');
+
+        $this->doTestExecute([
+            '--rules' => json_encode(['no_trailing_whitespace' => true]),
+            '--rules-base64' => base64_encode(json_encode(['blank_line_after_opening_tag' => true])),
+            '--port' => 12_345,
+            '--identifier' => ProcessIdentifier::create()->toString(),
+        ]);
+    }
+
+    public function testInvalidBase64ThrowsException(): void
+    {
+        $this->expectException(ParallelisationException::class);
+        $this->expectExceptionMessage('Unable to create runner: Unable to decode rules from base64.');
+
+        $this->doTestExecute([
+            '--rules-base64' => 'invalid-base64',
+            '--port' => 12_345,
+            '--identifier' => ProcessIdentifier::create()->toString(),
+        ]);
+    }
+
+    /**
      * @param array<string, mixed> $arguments
      */
     private function doTestExecute(array $arguments): CommandTester
