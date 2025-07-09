@@ -24,7 +24,7 @@ use Symfony\Component\Filesystem\Filesystem;
 $command = new DocumentationCommand(new Filesystem());
 
 $application = new Application();
-$application->add($command);
+$application->addCommands([$command]);
 $application
     ->setDefaultCommand($command->getName(), true)
     ->run()
