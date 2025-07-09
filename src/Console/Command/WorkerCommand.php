@@ -81,6 +81,7 @@ final class WorkerCommand extends Command
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a config file.'),
                 new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified.'),
                 new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'List of rules that should be run against configured paths.'),
+                new InputOption('rules-base64', '', InputOption::VALUE_REQUIRED, 'List of rules that should be run against configured paths, encoded in base64.'),
                 new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Should cache be used (can be `yes` or `no`).'),
                 new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file.'),
                 new InputOption('diff', '', InputOption::VALUE_NONE, 'Prints diff for each file.'),
@@ -195,9 +196,22 @@ final class WorkerCommand extends Command
     {
         $passedConfig = $input->getOption('config');
         $passedRules = $input->getOption('rules');
+        $passedRulesBase64 = $input->getOption('rules-base64');
 
         if (null !== $passedConfig && null !== $passedRules) {
             throw new \RuntimeException('Passing both `--config` and `--rules` options is not allowed');
+        }
+
+        if (null !== $passedRules && null !== $passedRulesBase64) {
+            throw new \RuntimeException('Passing both `--rules` and `--rules-base64` options is not allowed');
+        }
+
+        $finalRules = $passedRules;
+        if (null !== $passedRulesBase64) {
+            $finalRules = base64_decode($passedRulesBase64, true);
+            if (false === $finalRules) {
+                throw new \RuntimeException('Unable to decode rules from base64.');
+            }
         }
 
         // There's no one single source of truth when it comes to fixing single file, we need to collect statuses from events.
@@ -211,7 +225,7 @@ final class WorkerCommand extends Command
                 'allow-risky' => $input->getOption('allow-risky'),
                 'config' => $passedConfig,
                 'dry-run' => $input->getOption('dry-run'),
-                'rules' => $passedRules,
+                'rules' => $finalRules,
                 'path' => [],
                 'path-mode' => ConfigurationResolver::PATH_MODE_OVERRIDE, // IMPORTANT! WorkerCommand is called with file that already passed filtering, so here we can rely on PATH_MODE_OVERRIDE.
                 'using-cache' => $input->getOption('using-cache'),
