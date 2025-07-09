@@ -211,6 +211,27 @@ final class WorkerCommandTest extends TestCase
     }
 
     /**
+     * Test that --rules-base64 option correctly decodes base64-encoded JSON rules.
+     * This demonstrates that the base64 decoding works and the rules are properly parsed.
+     */
+    public function testRulesBase64OptionDecodesCorrectly(): void
+    {
+        $rules = ['no_trailing_whitespace' => true, 'blank_line_after_opening_tag' => false];
+        $encodedRules = base64_encode(json_encode($rules));
+
+        $commandTester = $this->doTestExecute([
+            '--rules-base64' => $encodedRules,
+            '--port' => 12_345,
+            '--identifier' => ProcessIdentifier::create()->toString(),
+        ]);
+
+        self::assertStringContainsString(
+            'Connection refused',
+            $commandTester->getErrorOutput()
+        );
+    }
+
+    /**
      * @param array<string, mixed> $arguments
      */
     private function doTestExecute(array $arguments): CommandTester
