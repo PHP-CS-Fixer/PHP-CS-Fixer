@@ -105,6 +105,14 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('class', 'Whether class/interface/trait blocks should be single or multi line.'))
+                ->setAllowedValues(['single', 'multi', null])
+                ->setDefault('multi')
+                ->getOption(),
+            (new FixerOptionBuilder('use_trait', 'Whether trait usage blocks should be single or multi line.'))
+                ->setAllowedValues(['single', 'multi', null])
+                ->setDefault('single')
+                ->getOption(),
             (new FixerOptionBuilder('const', 'Whether const blocks should be single or multi line.'))
                 ->setAllowedValues(['single', 'multi', null])
                 ->setDefault('multi')
@@ -116,6 +124,10 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
             (new FixerOptionBuilder('method', 'Whether method doc blocks should be single or multi line.'))
                 ->setAllowedValues(['single', 'multi', null])
                 ->setDefault('multi')
+                ->getOption(),
+            (new FixerOptionBuilder('other', 'Whether blocks for other code lines should be single or multi line.'))
+                ->setAllowedValues(['single', 'multi', null])
+                ->setDefault('single')
                 ->getOption(),
         ]);
     }
