@@ -1,0 +1,6 @@
+--TEST--
+Ensuring Performance is not an issue
+--RULESET--
+{
+    "braces_position": true
+}
