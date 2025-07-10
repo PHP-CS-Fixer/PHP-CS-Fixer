@@ -963,6 +963,31 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
                 PHP,
         ];
 
+        yield 'property hook with default' => [
+            <<<'PHP'
+                <?php class C
+                {
+                    private int $i = 5 {
+                        set(int $i)
+                        {
+                            $this->i = $i;
+                        }
+                    }
+                }
+                PHP,
+            <<<'PHP'
+                <?php class C
+                {
+                    private int $i = 5       {
+                        set(int $i)
+                        {
+                            $this->i = $i;
+                        }
+                    }
+                }
+                PHP,
+        ];
+
         yield 'property hook in promoted property' => [
             <<<'PHP'
                 <?php class CarPark
@@ -973,6 +998,22 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
                             {
                                 $this->car = $car;
                                 $this->car->parked();
+                            }
+                        },
+                    ) {}
+                }
+                PHP,
+        ];
+
+        yield 'property hook in promoted property with default' => [
+            <<<'PHP'
+                <?php class IntVal
+                {
+                    public function __construct(
+                        public int $int = 5 {
+                            set(int $int)
+                            {
+                                $this->int = $int;
                             }
                         },
                     ) {}
