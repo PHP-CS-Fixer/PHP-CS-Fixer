@@ -786,6 +786,18 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
                 ?>
                 PHP,
         ];
+
+        yield 'confirm {$foo} does not cause harm' => [
+            <<<'PHP'
+                <?php
+                $foo = "foo";
+                if($foo) {
+                    echo "
+                /* some sql */ {$foo} /* some sql */;
+                    ";
+                }
+                PHP,
+        ];
     }
 
     /**
