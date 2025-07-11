@@ -967,10 +967,10 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
             <<<'PHP'
                 <?php class C
                 {
-                    private int $i = 5 {
-                        set(int $i)
+                    private mixed $wat = [-7, "a" . 'b', null, array(), 1/3] {
+                        set(int $wat)
                         {
-                            $this->i = $i;
+                            $this->wat = $wat;
                         }
                     }
                 }
@@ -978,10 +978,10 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
             <<<'PHP'
                 <?php class C
                 {
-                    private int $i = 5       {
-                        set(int $i)
+                    private mixed $wat = [-7, "a" . 'b', null, array(), 1/3]        {
+                        set(int $wat)
                         {
-                            $this->i = $i;
+                            $this->wat = $wat;
                         }
                     }
                 }
