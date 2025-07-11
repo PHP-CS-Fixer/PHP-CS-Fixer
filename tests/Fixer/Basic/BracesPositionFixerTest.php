@@ -967,7 +967,7 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
             <<<'PHP'
                 <?php class C
                 {
-                    private mixed $wat = [-7, "a" . 'b', null, array(), 1/3] {
+                    private mixed $wat = [-7, "a" . 'b', null, array(), 1/3, self::FOO, ] {
                         set(mixed $wat)
                         {
                             $this->wat = $wat;
@@ -978,7 +978,7 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
             <<<'PHP'
                 <?php class C
                 {
-                    private mixed $wat = [-7, "a" . 'b', null, array(), 1/3]        {
+                    private mixed $wat = [-7, "a" . 'b', null, array(), 1/3, self::FOO, ]        {
                         set(mixed $wat)
                         {
                             $this->wat = $wat;
