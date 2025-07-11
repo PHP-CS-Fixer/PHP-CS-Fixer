@@ -181,7 +181,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
             T_UNSET_CAST => true,
         ];
 
-        static $operatorsPerContent = [
+        $operatorsPerContent = [
             '!',
             '%',
             '&',

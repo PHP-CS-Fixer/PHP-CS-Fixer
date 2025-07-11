@@ -143,7 +143,7 @@ final class FooTest extends \PHPUnit_Framework_TestCase {
 
     private function fixAssertNegative(Tokens $tokens, int $index, string $method): ?int
     {
-        static $map = [
+        $map = [
             'false' => 'assertNotFalse',
             'null' => 'assertNotNull',
             'true' => 'assertNotTrue',
@@ -154,7 +154,7 @@ final class FooTest extends \PHPUnit_Framework_TestCase {
 
     private function fixAssertPositive(Tokens $tokens, int $index, string $method): ?int
     {
-        static $map = [
+        $map = [
             'false' => 'assertFalse',
             'null' => 'assertNull',
             'true' => 'assertTrue',

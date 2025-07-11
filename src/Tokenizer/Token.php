@@ -431,9 +431,7 @@ final class Token
      */
     public function isNativeConstant(): bool
     {
-        static $nativeConstantStrings = ['true', 'false', 'null'];
-
-        return $this->isArray && \in_array(strtolower($this->content), $nativeConstantStrings, true);
+        return $this->isArray && \in_array(strtolower($this->content), ['true', 'false', 'null'], true);
     }
 
     /**

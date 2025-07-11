@@ -514,7 +514,7 @@ Custom values:
      */
     private function sortElements(array $elements): array
     {
-        static $phpunitPositions = [
+        $phpunitPositions = [
             'setupbeforeclass' => 1,
             'dosetupbeforeclass' => 2,
             'teardownafterclass' => 3,

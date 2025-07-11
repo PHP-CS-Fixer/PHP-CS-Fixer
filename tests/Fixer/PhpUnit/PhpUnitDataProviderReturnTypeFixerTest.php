@@ -320,7 +320,7 @@ class FooTest extends TestCase {
      */
     private static function mapToTemplate(string ...$types): array
     {
-        static $template = '<?php
+        $template = '<?php
 class FooTest extends TestCase {
     /**
      * @dataProvider provideFooCases

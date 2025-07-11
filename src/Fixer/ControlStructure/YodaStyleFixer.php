@@ -469,7 +469,7 @@ return $foo === count($bar);
             ];
         }
 
-        static $otherTokens = [
+        $otherTokens = [
             // bitwise and, or, xor
             '&', '|', '^',
             // ternary operators

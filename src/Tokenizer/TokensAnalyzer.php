@@ -593,7 +593,7 @@ final class TokensAnalyzer
      */
     public function isBinaryOperator(int $index): bool
     {
-        static $nonArrayOperators = [
+        $nonArrayOperators = [
             '=' => true,
             '*' => true,
             '/' => true,
@@ -605,7 +605,7 @@ final class TokensAnalyzer
             '.' => true,
         ];
 
-        static $potentialUnaryNonArrayOperators = [
+        $potentialUnaryNonArrayOperators = [
             '+' => true,
             '-' => true,
             '&' => true,
@@ -721,25 +721,23 @@ final class TokensAnalyzer
 
     public function isSuperGlobal(int $index): bool
     {
-        static $superNames = [
-            '$_COOKIE' => true,
-            '$_ENV' => true,
-            '$_FILES' => true,
-            '$_GET' => true,
-            '$_POST' => true,
-            '$_REQUEST' => true,
-            '$_SERVER' => true,
-            '$_SESSION' => true,
-            '$GLOBALS' => true,
-        ];
-
         $token = $this->tokens[$index];
 
         if (!$token->isGivenKind(T_VARIABLE)) {
             return false;
         }
 
-        return isset($superNames[strtoupper($token->getContent())]);
+        return \in_array(strtoupper($token->getContent()), [
+            '$_COOKIE',
+            '$_ENV',
+            '$_FILES',
+            '$_GET',
+            '$_POST',
+            '$_REQUEST',
+            '$_SERVER',
+            '$_SESSION',
+            '$GLOBALS',
+        ], true);
     }
 
     /**

@@ -156,12 +156,11 @@ namespace {
         );
 
         // Case-insensitive constants handling
-        static $caseInsensitiveConstants = ['null', 'false', 'true'];
         $caseInsensitiveConstantsToEscape = [];
 
         foreach ($constantsToEscape as $constantIndex => $constant) {
             $loweredConstant = strtolower($constant);
-            if (\in_array($loweredConstant, $caseInsensitiveConstants, true)) {
+            if (\in_array($loweredConstant, ['null', 'false', 'true'], true)) {
                 $caseInsensitiveConstantsToEscape[] = $loweredConstant;
                 unset($constantsToEscape[$constantIndex]);
             }
