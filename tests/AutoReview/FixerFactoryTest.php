@@ -714,6 +714,11 @@ final class FixerFactoryTest extends TestCase
                 'simplified_if_return',
                 'statement_indentation',
             ],
+            'no_useless_printf' => [
+                'echo_tag_syntax',
+                'no_extra_blank_lines',
+                'no_mixed_echo_print',
+            ],
             'no_useless_return' => [
                 'blank_line_before_statement',
                 'no_extra_blank_lines',
