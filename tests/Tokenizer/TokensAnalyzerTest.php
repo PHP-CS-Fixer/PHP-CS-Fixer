@@ -861,6 +861,60 @@ enum Foo: string
     }
 
     /**
+     * @param array<int, array{classIndex: int, type: _ClassyElementType}> $expected
+     *
+     * @dataProvider provideGetClassyElements85Cases
+     *
+     * @requires PHP 8.5
+     */
+    public function testGetClassyElements85(array $expected, string $source): void
+    {
+        $this->testGetClassyElements($expected, $source);
+    }
+
+    /**
+     * @return iterable<string, array{array<int, array{classIndex: int, type: _ClassyElementType}>, string}>
+     */
+    public static function provideGetClassyElements85Cases(): iterable
+    {
+        yield 'final promoted property' => [
+            [
+                9 => [
+                    'classIndex' => 1,
+                    'type' => 'method',
+                ],
+                19 => [
+                    'classIndex' => 1,
+                    'type' => 'promoted_property',
+                ],
+            ],
+            <<<'PHP'
+                <?php class Foo {
+                    public function __construct(public final bool $b) {}
+                }
+                PHP,
+        ];
+
+        yield 'promoted property without visibility' => [
+            [
+                9 => [
+                    'classIndex' => 1,
+                    'type' => 'method',
+                ],
+                17 => [
+                    'classIndex' => 1,
+                    'type' => 'promoted_property',
+                ],
+            ],
+            <<<'PHP'
+                <?php class Foo {
+                    public function __construct(final bool $b) {}
+                }
+                PHP,
+        ];
+    }
+
+    /**
      * @param array<int, bool> $expected
      *
      * @dataProvider provideIsAnonymousClassCases
