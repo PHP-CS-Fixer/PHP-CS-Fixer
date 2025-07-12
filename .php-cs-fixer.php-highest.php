@@ -13,7 +13,7 @@ declare(strict_types=1);
  */
 
 // @phpstan-ignore greaterOrEqual.alwaysFalse, booleanOr.alwaysFalse (PHPStan thinks that 80499 is max PHP version ID)
-if (PHP_VERSION_ID < 8_04_00 || PHP_VERSION_ID >= 8_05_00) {
+if (\PHP_VERSION_ID < 8_04_00 || \PHP_VERSION_ID >= 8_05_00) {
     fwrite(STDERR, "PHP CS Fixer's config for PHP-HIGHEST can be executed only on highest supported PHP version - 8.4.*.\n");
     fwrite(STDERR, "Running it on lower PHP version would prevent calling migration rules.\n");
 
