@@ -760,6 +760,7 @@ final class TokensAnalyzer
         ++$index; // skip the classy index itself
 
         for ($count = \count($this->tokens); $index < $count; ++$index) {
+            dump($index); // this loop will not end
             $token = $this->tokens[$index];
 
             if ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE)) {
