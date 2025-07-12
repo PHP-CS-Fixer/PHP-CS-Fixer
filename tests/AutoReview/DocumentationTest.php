@@ -175,7 +175,7 @@ final class DocumentationTest extends TestCase
     public function testInstallationDocHasCorrectMinimumVersion(): void
     {
         $composerJsonContent = (string) file_get_contents(__DIR__.'/../../composer.json');
-        $composerJson = json_decode($composerJsonContent, true, 512, JSON_THROW_ON_ERROR);
+        $composerJson = json_decode($composerJsonContent, true, 512, \JSON_THROW_ON_ERROR);
         $phpVersion = $composerJson['require']['php'];
         $minimumVersion = ltrim(substr($phpVersion, 0, (int) strpos($phpVersion, ' ')), '^');
 

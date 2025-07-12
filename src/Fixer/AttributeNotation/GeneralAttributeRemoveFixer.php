@@ -92,7 +92,7 @@ function foo() {}
 
         $index = 0;
 
-        while (null !== $index = $tokens->getNextTokenOfKind($index, [[T_ATTRIBUTE]])) {
+        while (null !== $index = $tokens->getNextTokenOfKind($index, [[\T_ATTRIBUTE]])) {
             $attributeAnalysis = AttributeAnalyzer::collectOne($tokens, $index);
 
             $endIndex = $attributeAnalysis->getEndIndex();

@@ -185,7 +185,7 @@ $c = get_class($d);
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     public function isRisky(): bool
@@ -288,18 +288,18 @@ $c = get_class($d);
                     continue;
                 }
 
-                if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
+                if ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
                     $tokens->clearTokenAndMergeSurroundingWhitespace($prevIndex);
                 }
 
                 continue;
             }
 
-            if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
+            if ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
                 continue; // do not bother if previous token is already namespace separator
             }
 
-            $tokensToInsert[$index] = new Token([T_NS_SEPARATOR, '\\']);
+            $tokensToInsert[$index] = new Token([\T_NS_SEPARATOR, '\\']);
         }
 
         $tokens->insertSlices($tokensToInsert);

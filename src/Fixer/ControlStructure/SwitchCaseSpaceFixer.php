@@ -50,13 +50,13 @@ final class SwitchCaseSpaceFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_SWITCH);
+        return $tokens->isTokenKindFound(\T_SWITCH);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         /** @var SwitchAnalysis $analysis */
-        foreach (ControlCaseStructuresAnalyzer::findControlStructures($tokens, [T_SWITCH]) as $analysis) {
+        foreach (ControlCaseStructuresAnalyzer::findControlStructures($tokens, [\T_SWITCH]) as $analysis) {
             $default = $analysis->getDefaultAnalysis();
 
             if (null !== $default) {

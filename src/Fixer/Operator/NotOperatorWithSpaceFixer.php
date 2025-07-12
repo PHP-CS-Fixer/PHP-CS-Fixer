@@ -63,11 +63,11 @@ if (!$bar) {
 
             if ($token->equals('!')) {
                 if (!$tokens[$index + 1]->isWhitespace()) {
-                    $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
+                    $tokens->insertAt($index + 1, new Token([\T_WHITESPACE, ' ']));
                 }
 
                 if (!$tokens[$index - 1]->isWhitespace()) {
-                    $tokens->insertAt($index, new Token([T_WHITESPACE, ' ']));
+                    $tokens->insertAt($index, new Token([\T_WHITESPACE, ' ']));
                 }
             }
         }

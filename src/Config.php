@@ -87,7 +87,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
         }
 
         // @TODO 4.0 cleanup
-        if (Utils::isFutureModeEnabled() || filter_var(getenv('PHP_CS_FIXER_PARALLEL'), FILTER_VALIDATE_BOOL)) {
+        if (Utils::isFutureModeEnabled() || filter_var(getenv('PHP_CS_FIXER_PARALLEL'), \FILTER_VALIDATE_BOOL)) {
             $this->parallelConfig = ParallelConfigFactory::detect();
         } else {
             $this->parallelConfig = ParallelConfigFactory::sequential();
@@ -95,7 +95,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
 
         // @TODO 4.0 cleanup
         if (false !== getenv('PHP_CS_FIXER_IGNORE_ENV')) {
-            $this->isUnsupportedPhpVersionAllowed = filter_var(getenv('PHP_CS_FIXER_IGNORE_ENV'), FILTER_VALIDATE_BOOL);
+            $this->isUnsupportedPhpVersionAllowed = filter_var(getenv('PHP_CS_FIXER_IGNORE_ENV'), \FILTER_VALIDATE_BOOL);
         }
     }
 

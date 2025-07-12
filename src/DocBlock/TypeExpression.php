@@ -433,7 +433,7 @@ final class TypeExpression
                 '{\G'.self::REGEX_TYPE.'(?<glue_raw>\h*(?<glue>[|&])\h*(?!$)|$)}',
                 $this->value,
                 $matches,
-                PREG_OFFSET_CAPTURE,
+                \PREG_OFFSET_CAPTURE,
                 $index
             );
 
@@ -673,7 +673,7 @@ final class TypeExpression
                 '{^'.self::REGEX_TYPES.'$}',
                 $addedPrefix.$consumedValue.'>(): void',
                 $matches,
-                PREG_OFFSET_CAPTURE
+                \PREG_OFFSET_CAPTURE
             );
 
             if ('' !== $matches['callable_template_inner_b'][0]) {
@@ -716,7 +716,7 @@ final class TypeExpression
                 '{^'.self::REGEX_TYPES.'$}',
                 $addedPrefix.$consumedValue.'): void',
                 $matches,
-                PREG_OFFSET_CAPTURE
+                \PREG_OFFSET_CAPTURE
             );
 
             $this->innerTypeExpressions[] = [
@@ -748,7 +748,7 @@ final class TypeExpression
                 '{^'.self::REGEX_TYPES.'$}',
                 $addedPrefix.$consumedValue.'}',
                 $matches,
-                PREG_OFFSET_CAPTURE
+                \PREG_OFFSET_CAPTURE
             );
 
             $this->innerTypeExpressions[] = [

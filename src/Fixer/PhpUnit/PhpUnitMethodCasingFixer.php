@@ -141,7 +141,7 @@ class MyTest extends \PhpUnit\FrameWork\TestCase
             $newFunctionName = $this->updateMethodCasing($functionName);
 
             if ($newFunctionName !== $functionName) {
-                $tokens[$functionNameIndex] = new Token([T_STRING, $newFunctionName]);
+                $tokens[$functionNameIndex] = new Token([\T_STRING, $newFunctionName]);
             }
 
             $docBlockIndex = $this->getDocBlockIndex($tokens, $index);
@@ -202,7 +202,7 @@ class MyTest extends \PhpUnit\FrameWork\TestCase
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        return $tokens[$index]->isGivenKind(T_FUNCTION) && !$tokensAnalyzer->isLambda($index);
+        return $tokens[$index]->isGivenKind(\T_FUNCTION) && !$tokensAnalyzer->isLambda($index);
     }
 
     private function updateDocBlock(Tokens $tokens, int $docBlockIndex): void
@@ -232,7 +232,7 @@ class MyTest extends \PhpUnit\FrameWork\TestCase
 
         if ($docBlockNeedsUpdate) {
             $lines = implode('', $lines);
-            $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $lines]);
+            $tokens[$docBlockIndex] = new Token([\T_DOC_COMMENT, $lines]);
         }
     }
 }

@@ -46,7 +46,7 @@ final class EmptyLoopBodyFixer extends AbstractFixer implements ConfigurableFixe
 
     private const STYLE_SEMICOLON = 'semicolon';
 
-    private const TOKEN_LOOP_KINDS = [T_FOR, T_FOREACH, T_WHILE];
+    private const TOKEN_LOOP_KINDS = [\T_FOR, \T_FOREACH, \T_WHILE];
 
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -85,7 +85,7 @@ final class EmptyLoopBodyFixer extends AbstractFixer implements ConfigurableFixe
         if (self::STYLE_BRACES === $this->configuration['style']) {
             $analyzer = new TokensAnalyzer($tokens);
             $fixLoop = static function (int $index, int $endIndex) use ($tokens, $analyzer): void {
-                if ($tokens[$index]->isGivenKind(T_WHILE) && $analyzer->isWhilePartOfDoWhile($index)) {
+                if ($tokens[$index]->isGivenKind(\T_WHILE) && $analyzer->isWhilePartOfDoWhile($index)) {
                     return;
                 }
 

@@ -50,7 +50,7 @@ class Foo {
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_CLASS, T_TRAIT]) && $tokens->isAnyTokenKindsFound([T_PUBLIC, T_PROTECTED, T_PRIVATE, T_VAR, T_STATIC]);
+        return $tokens->isAnyTokenKindsFound([\T_CLASS, \T_TRAIT]) && $tokens->isAnyTokenKindsFound([\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_VAR, \T_STATIC]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -59,7 +59,7 @@ class Foo {
         $classLevel = 0;
 
         for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
-            if ($tokens[$index]->isGivenKind([T_CLASS, T_TRAIT])) { // Enums and interfaces do not have properties
+            if ($tokens[$index]->isGivenKind([\T_CLASS, \T_TRAIT])) { // Enums and interfaces do not have properties
                 ++$classLevel;
                 $inClass[$classLevel] = 1;
 
@@ -94,18 +94,18 @@ class Foo {
                 continue;
             }
 
-            if (!$tokens[$index]->isGivenKind([T_PUBLIC, T_PROTECTED, T_PRIVATE, T_VAR, T_STATIC])) {
+            if (!$tokens[$index]->isGivenKind([\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_VAR, \T_STATIC])) {
                 continue;
             }
 
             while (true) {
                 $varTokenIndex = $index = $tokens->getNextMeaningfulToken($index);
 
-                if ($tokens[$index]->isGivenKind(T_STATIC)) {
+                if ($tokens[$index]->isGivenKind(\T_STATIC)) {
                     $varTokenIndex = $index = $tokens->getNextMeaningfulToken($index);
                 }
 
-                if (!$tokens[$index]->isGivenKind(T_VARIABLE)) {
+                if (!$tokens[$index]->isGivenKind(\T_VARIABLE)) {
                     break;
                 }
 
@@ -114,11 +114,11 @@ class Foo {
                 if ($tokens[$index]->equals('=')) {
                     $index = $tokens->getNextMeaningfulToken($index);
 
-                    if ($tokens[$index]->isGivenKind(T_NS_SEPARATOR)) {
+                    if ($tokens[$index]->isGivenKind(\T_NS_SEPARATOR)) {
                         $index = $tokens->getNextMeaningfulToken($index);
                     }
 
-                    if ($tokens[$index]->equals([T_STRING, 'null'], false)) {
+                    if ($tokens[$index]->equals([\T_STRING, 'null'], false)) {
                         for ($i = $varTokenIndex + 1; $i <= $index; ++$i) {
                             if (
                                 !($tokens[$i]->isWhitespace() && str_contains($tokens[$i]->getContent(), "\n"))

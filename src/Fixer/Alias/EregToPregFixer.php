@@ -69,7 +69,7 @@ final class EregToPregFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     public function isRisky(): bool
@@ -84,7 +84,7 @@ final class EregToPregFixer extends AbstractFixer
 
         foreach (self::FUNCTIONS as $map) {
             // the sequence is the function name, followed by "(" and a quoted string
-            $seq = [[T_STRING, $map[0]], '(', [T_CONSTANT_ENCAPSED_STRING]];
+            $seq = [[\T_STRING, $map[0]], '(', [\T_CONSTANT_ENCAPSED_STRING]];
             $currIndex = 0;
 
             while (true) {
@@ -137,8 +137,8 @@ final class EregToPregFixer extends AbstractFixer
                 }
 
                 // modify function and argument
-                $tokens[$match[0]] = new Token([T_STRING, $map[1]]);
-                $tokens[$match[2]] = new Token([T_CONSTANT_ENCAPSED_STRING, $prefix.$quote.$preg.$quote]);
+                $tokens[$match[0]] = new Token([\T_STRING, $map[1]]);
+                $tokens[$match[2]] = new Token([\T_CONSTANT_ENCAPSED_STRING, $prefix.$quote.$preg.$quote]);
             }
         }
     }

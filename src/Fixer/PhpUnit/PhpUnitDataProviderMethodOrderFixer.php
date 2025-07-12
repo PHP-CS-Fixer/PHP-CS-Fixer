@@ -232,7 +232,7 @@ class FooTest extends TestCase {
         foreach ($dataProviderAnalyzer->getDataProviders($tokens, $startIndex, $endIndex) as $dataProviderAnalysis) {
             $usages = [];
             foreach ($dataProviderAnalysis->getUsageIndices() as $usageIndex) {
-                $methodNameTokens = $tokens->findSequence([[T_FUNCTION], [T_STRING]], $usageIndex[0], $endIndex);
+                $methodNameTokens = $tokens->findSequence([[\T_FUNCTION], [\T_STRING]], $usageIndex[0], $endIndex);
                 if (null === $methodNameTokens) {
                     continue;
                 }

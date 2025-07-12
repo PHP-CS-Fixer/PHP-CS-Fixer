@@ -50,12 +50,12 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_ISSET);
+        return $tokens->isTokenKindFound(\T_ISSET);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $issetIndices = array_keys($tokens->findGivenKind(T_ISSET));
+        $issetIndices = array_keys($tokens->findGivenKind(\T_ISSET));
 
         foreach (array_reverse($issetIndices) as $issetIndex) {
             $this->fixIsset($tokens, $issetIndex);
@@ -122,7 +122,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
             }
         }
 
-        $tokens[$ternaryColonIndex] = new Token([T_COALESCE, '??']);
+        $tokens[$ternaryColonIndex] = new Token([\T_COALESCE, '??']);
         $tokens->overrideRange($index, $ternaryFirstOperandIndex - 1, $comments);
     }
 
@@ -157,28 +157,28 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
     private function isHigherPrecedenceAssociativityOperator(Token $token): bool
     {
         static $operatorsPerId = [
-            T_ARRAY_CAST => true,
-            T_BOOLEAN_AND => true,
-            T_BOOLEAN_OR => true,
-            T_BOOL_CAST => true,
-            T_COALESCE => true,
-            T_DEC => true,
-            T_DOUBLE_CAST => true,
-            T_INC => true,
-            T_INT_CAST => true,
-            T_IS_EQUAL => true,
-            T_IS_GREATER_OR_EQUAL => true,
-            T_IS_IDENTICAL => true,
-            T_IS_NOT_EQUAL => true,
-            T_IS_NOT_IDENTICAL => true,
-            T_IS_SMALLER_OR_EQUAL => true,
-            T_OBJECT_CAST => true,
-            T_POW => true,
-            T_SL => true,
-            T_SPACESHIP => true,
-            T_SR => true,
-            T_STRING_CAST => true,
-            T_UNSET_CAST => true,
+            \T_ARRAY_CAST => true,
+            \T_BOOLEAN_AND => true,
+            \T_BOOLEAN_OR => true,
+            \T_BOOL_CAST => true,
+            \T_COALESCE => true,
+            \T_DEC => true,
+            \T_DOUBLE_CAST => true,
+            \T_INC => true,
+            \T_INT_CAST => true,
+            \T_IS_EQUAL => true,
+            \T_IS_GREATER_OR_EQUAL => true,
+            \T_IS_IDENTICAL => true,
+            \T_IS_NOT_EQUAL => true,
+            \T_IS_NOT_IDENTICAL => true,
+            \T_IS_SMALLER_OR_EQUAL => true,
+            \T_OBJECT_CAST => true,
+            \T_POW => true,
+            \T_SL => true,
+            \T_SPACESHIP => true,
+            \T_SR => true,
+            \T_STRING_CAST => true,
+            \T_UNSET_CAST => true,
         ];
 
         static $operatorsPerContent = [
@@ -207,10 +207,10 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
     private function hasChangingContent(Tokens $tokens): bool
     {
         static $operatorsPerId = [
-            T_DEC,
-            T_INC,
-            T_YIELD,
-            T_YIELD_FROM,
+            \T_DEC,
+            \T_INC,
+            \T_YIELD,
+            \T_YIELD_FROM,
         ];
 
         foreach ($tokens as $token) {

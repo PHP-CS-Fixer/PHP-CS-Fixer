@@ -188,7 +188,7 @@ final class Runner
         $changed = [];
         $streamSelectLoop = new StreamSelectLoop();
         $server = new TcpServer('127.0.0.1:0', $streamSelectLoop);
-        $serverPort = parse_url($server->getAddress() ?? '', PHP_URL_PORT);
+        $serverPort = parse_url($server->getAddress() ?? '', \PHP_URL_PORT);
 
         if (!is_numeric($serverPort)) {
             throw new ParallelisationException(\sprintf(
@@ -226,10 +226,10 @@ final class Runner
                 $connection,
                 true,
                 512,
-                JSON_INVALID_UTF8_IGNORE,
+                \JSON_INVALID_UTF8_IGNORE,
                 self::PARALLEL_BUFFER_SIZE
             );
-            $encoder = new Encoder($connection, JSON_INVALID_UTF8_IGNORE);
+            $encoder = new Encoder($connection, \JSON_INVALID_UTF8_IGNORE);
 
             // [REACT] Bind connection when worker's process requests "hello" action (enables 2-way communication)
             $decoder->on('data', static function (array $data) use ($processPool, $getFileChunk, $decoder, $encoder): void {

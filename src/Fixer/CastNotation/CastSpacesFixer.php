@@ -103,10 +103,10 @@ final class CastSpacesFixer extends AbstractFixer implements ConfigurableFixerIn
                 // force single whitespace after cast token:
                 if ($tokens[$index + 1]->isWhitespace(" \t")) {
                     // - if next token is whitespaces that contains only spaces and tabs - override next token with single space
-                    $tokens[$index + 1] = new Token([T_WHITESPACE, ' ']);
+                    $tokens[$index + 1] = new Token([\T_WHITESPACE, ' ']);
                 } elseif (!$tokens[$index + 1]->isWhitespace()) {
                     // - if next token is not whitespaces that contains spaces, tabs and new lines - append single space to current token
-                    $tokens->insertAt($index + 1, new Token([T_WHITESPACE, ' ']));
+                    $tokens->insertAt($index + 1, new Token([\T_WHITESPACE, ' ']));
                 }
 
                 continue;

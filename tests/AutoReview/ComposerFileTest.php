@@ -81,6 +81,6 @@ final class ComposerFileTest extends TestCase
     {
         $composerJsonContent = (string) file_get_contents(__DIR__.'/../../composer.json');
 
-        return json_decode($composerJsonContent, true, 512, JSON_THROW_ON_ERROR);
+        return json_decode($composerJsonContent, true, 512, \JSON_THROW_ON_ERROR);
     }
 }

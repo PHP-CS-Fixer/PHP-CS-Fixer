@@ -52,7 +52,7 @@ final class ListFilesCommandTest extends TestCase
         $expectedPath = str_replace('/', \DIRECTORY_SEPARATOR, $expectedPath);
 
         self::assertSame(0, $commandTester->getStatusCode());
-        self::assertSame(escapeshellarg($expectedPath).PHP_EOL, $commandTester->getDisplay());
+        self::assertSame(escapeshellarg($expectedPath).\PHP_EOL, $commandTester->getDisplay());
     }
 
     /**
@@ -76,7 +76,7 @@ final class ListFilesCommandTest extends TestCase
             ]);
             $expectedPath = str_replace('/', \DIRECTORY_SEPARATOR, './'.Path::makeRelative($tmpFile, (string) getcwd()));
             self::assertSame(0, $commandTester->getStatusCode());
-            self::assertSame(escapeshellarg($expectedPath).PHP_EOL, $commandTester->getDisplay());
+            self::assertSame(escapeshellarg($expectedPath).\PHP_EOL, $commandTester->getDisplay());
         } finally {
             self::$filesystem->remove($tmpDir);
         }
