@@ -81,7 +81,7 @@ final class FixerFactoryTest extends TestCase
      */
     public function testFixersPriorityCasesHaveIntegrationTest(string $fixerName, array $edges): void
     {
-        static $forPerformanceEdgesOnly = [
+        $forPerformanceEdgesOnly = [
             'function_to_constant' => [
                 'native_function_casing' => true,
             ],

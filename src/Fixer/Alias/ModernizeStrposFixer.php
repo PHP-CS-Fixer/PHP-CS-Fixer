@@ -320,7 +320,7 @@ if (stripos($haystack, $needle) === false) {}
             T_SR,                  // >>
         ];
 
-        static $operatorsPerContent = [
+        return $token->isGivenKind($operatorsKinds) || $token->equalsAny([
             '!',
             '%',
             '*',
@@ -331,8 +331,6 @@ if (stripos($haystack, $needle) === false) {}
             '<',
             '>',
             '~',
-        ];
-
-        return $token->isGivenKind($operatorsKinds) || $token->equalsAny($operatorsPerContent);
+        ]);
     }
 }

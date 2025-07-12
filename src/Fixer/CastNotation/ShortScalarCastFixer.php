@@ -42,7 +42,7 @@ final class ShortScalarCastFixer extends AbstractFixer
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        static $castMap = [
+        $castMap = [
             'boolean' => 'bool',
             'integer' => 'int',
             'double' => 'float',

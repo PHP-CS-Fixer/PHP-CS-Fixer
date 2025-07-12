@@ -932,6 +932,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Offset mixed might not exist on array\\{setupbeforeclass\\: 1, dosetupbeforeclass\\: 2, teardownafterclass\\: 3, doteardownafterclass\\: 4, setup\\: 5, dosetup\\: 6, assertpreconditions\\: 7, assertpostconditions\\: 8, \\.\\.\\.\\}\\.$#',
+	'identifier' => 'offsetAccess.notFound',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$a of method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\OrderedClassElementsFixer\\:\\:sortGroupElements\\(\\) expects array\\{start\\: int, visibility\\: string, abstract\\: bool, static\\: bool, readonly\\: bool, type\\: string, name\\: string, end\\: int\\}, array&T given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -1008,6 +1014,12 @@ $ignoreErrors[] = [
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ProtectedToPrivateFixer.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Offset int might not exist on array\\{1\\: \'\\|\\^\\#\\\\\\\\s\\*\\$\\|\', 3\\: \'\\|\\^/\\\\\\\\\\*\\[\\\\\\\\s\\\\\\\\\\*\\]\\*\\\\\\\\\\*\\+/\\$\\|\', 2\\: \'\\|\\^//\\\\\\\\s\\*\\$\\|\'\\}\\.$#',
+	'identifier' => 'offsetAccess.notFound',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/Comment/NoEmptyCommentFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Argument of an invalid type array\\<int\\<0, max\\>, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|PhpCsFixer\\\\Tokenizer\\\\Token supplied for foreach, only iterables are supported\\.$#',

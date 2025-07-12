@@ -255,7 +255,7 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
 
     private function isOfHigherPrecedence(Token $token): bool
     {
-        static $operatorsPerContent = [
+        $operatorsPerContent = [
             '!',
             '%',
             '*',

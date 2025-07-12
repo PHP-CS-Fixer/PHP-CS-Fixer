@@ -209,18 +209,14 @@ final class FixerFactory
      */
     private function getFixersConflicts(FixerInterface $fixer): array
     {
-        static $conflictMap = [
+        return [
             'blank_lines_before_namespace' => [
                 'no_blank_lines_before_namespace',
                 'single_blank_line_before_namespace',
             ],
             'no_blank_lines_before_namespace' => ['single_blank_line_before_namespace'],
             'single_import_per_statement' => ['group_import'],
-        ];
-
-        $fixerName = $fixer->getName();
-
-        return \array_key_exists($fixerName, $conflictMap) ? $conflictMap[$fixerName] : [];
+        ][$fixer->getName()] ?? [];
     }
 
     /**
