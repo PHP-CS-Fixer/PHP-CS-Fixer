@@ -64,6 +64,12 @@ return (new Config())
                 'see',
             ],
         ],
+        'native_constant_invocation' => [
+            'fix_built_in' => false,
+            'include' => ['DIRECTORY_SEPARATOR', 'PHP_INT_SIZE', 'PHP_SAPI', 'PHP_VERSION_ID'],
+            'scope' => 'namespaced',
+            'strict' => true,
+        ],
     ])
     ->setFinder(
         (new Finder())
