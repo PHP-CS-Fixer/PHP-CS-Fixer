@@ -235,6 +235,7 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
             return true;
         }
 
+        // check for non-commutative kinds
         if ($operatorToken->equalsAny(['-', '/', '.', '%', '+'])) {
             return false;
         }
