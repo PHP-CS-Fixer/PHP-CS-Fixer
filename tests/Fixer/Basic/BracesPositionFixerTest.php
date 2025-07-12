@@ -786,6 +786,39 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
                 ?>
                 PHP,
         ];
+
+        yield 'confirm {$foo} does not cause harm' => [
+            <<<'PHP'
+                <?php
+                $foo = "foo";
+                if($foo) {
+                    echo "
+                /* some sql */ {$foo} /* some sql */;
+                    ";
+                }
+                PHP,
+        ];
+
+        yield 'string with a lot of variables' => [
+            '<?php
+                if (true) {
+                    $foo = "'.str_repeat(' text $variable text ', 50_000).'";
+                }',
+        ];
+
+        yield 'string with a lot of variables in braces (CT::T_CURLY_CLOSE)' => [
+            '<?php
+                if (true) {
+                    $foo = "'.str_repeat(' text {$variable} text ', 50_000).'";
+                }',
+        ];
+
+        yield 'string with concatenation of a lot of variables' => [
+            '<?php
+                if (true) {
+                    $foo = "'            . str_repeat(' text ".$variable." text ', 20_000) . '";
+                }',
+        ];
     }
 
     /**
@@ -951,6 +984,31 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
                 PHP,
         ];
 
+        yield 'property hook with default' => [
+            <<<'PHP'
+                <?php class C
+                {
+                    private mixed $wat = [-7, "a" . 'b', null, array(), 1/3, self::FOO, ] {
+                        set(mixed $wat)
+                        {
+                            $this->wat = $wat;
+                        }
+                    }
+                }
+                PHP,
+            <<<'PHP'
+                <?php class C
+                {
+                    private mixed $wat = [-7, "a" . 'b', null, array(), 1/3, self::FOO, ]        {
+                        set(mixed $wat)
+                        {
+                            $this->wat = $wat;
+                        }
+                    }
+                }
+                PHP,
+        ];
+
         yield 'property hook in promoted property' => [
             <<<'PHP'
                 <?php class CarPark
@@ -961,6 +1019,22 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
                             {
                                 $this->car = $car;
                                 $this->car->parked();
+                            }
+                        },
+                    ) {}
+                }
+                PHP,
+        ];
+
+        yield 'property hook in promoted property with default' => [
+            <<<'PHP'
+                <?php class IntVal
+                {
+                    public function __construct(
+                        public int $int = 5 {
+                            set(int $int)
+                            {
+                                $this->int = $int;
                             }
                         },
                     ) {}
