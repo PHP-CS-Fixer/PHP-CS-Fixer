@@ -230,6 +230,7 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
             return false;
         }
 
+        // check for commutative kinds
         if ($operatorToken->equalsAny(['*', '|', '&', '^'])) { // note that for arrays in PHP `+` is not commutative
             return true;
         }
