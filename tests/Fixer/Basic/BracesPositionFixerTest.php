@@ -812,6 +812,13 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
                     $foo = "'.str_repeat(' text {$variable} text ', 50_000).'";
                 }',
         ];
+
+        yield 'string with concatenation of a lot of variables' => [
+            '<?php
+                if (true) {
+                    $foo = "'            . str_repeat(' text ".$variable." text ', 20_000) . '";
+                }',
+        ];
     }
 
     /**
