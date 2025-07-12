@@ -18,6 +18,7 @@ use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\FixCommand;
+use PhpCsFixer\Console\Command\FixCommandExitStatusCalculator;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Command\Command;
@@ -201,6 +202,17 @@ final class FixCommandTest extends TestCase
         self::assertStringContainsString('PHP CS Fixer currently supports PHP syntax only up to PHP '.ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED, $cmdTester->getDisplay());
         self::assertStringContainsString('Add Config::setUnsupportedPhpVersionAllowed(true) to allow executions on unsupported PHP versions.', $cmdTester->getDisplay());
         self::assertSame(1, $cmdTester->getStatusCode());
+    }
+
+    public function testLoadedConfig(): void
+    {
+        $commandTester = $this->doTestExecute(
+            [
+                'path' => [__DIR__.'/../../Fixtures/invalid-config'],
+            ]
+        );
+
+        self::assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_CHANGED_FILES, $commandTester->getStatusCode());
     }
 
     /**

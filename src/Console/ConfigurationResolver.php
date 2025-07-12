@@ -566,17 +566,17 @@ final class ConfigurationResolver
         }
 
         $candidates = [
-            $configDir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php',
-            $configDir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php',
-            $configDir.\DIRECTORY_SEPARATOR.'.php_cs', // old v2 config, present here only to throw nice error message later
-            $configDir.\DIRECTORY_SEPARATOR.'.php_cs.dist', // old v2 config, present here only to throw nice error message later
+            $this->cwd.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php',
+            $this->cwd.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php',
+            $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs', // old v2 config, present here only to throw nice error message later
+            $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs.dist', // old v2 config, present here only to throw nice error message later
         ];
 
         if ($configDir !== $this->cwd) {
-            $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php';
-            $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php';
-            $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs'; // old v2 config, present here only to throw nice error message later
-            $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs.dist'; // old v2 config, present here only to throw nice error message later
+            $candidates[] = $configDir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php';
+            $candidates[] = $configDir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php';
+            $candidates[] = $configDir.\DIRECTORY_SEPARATOR.'.php_cs'; // old v2 config, present here only to throw nice error message later
+            $candidates[] = $configDir.\DIRECTORY_SEPARATOR.'.php_cs.dist'; // old v2 config, present here only to throw nice error message later
         }
 
         return $candidates;
