@@ -72,7 +72,7 @@ abstract class TestCase extends BaseTestCase
                     int $code,
                     string $message
                 ) {
-                    if (E_USER_DEPRECATED === $code || E_DEPRECATED === $code) {
+                    if (\E_USER_DEPRECATED === $code || \E_DEPRECATED === $code) {
                         $this->actualDeprecations[] = $message;
                     }
 

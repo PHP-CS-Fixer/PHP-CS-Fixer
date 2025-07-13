@@ -34,7 +34,7 @@ final class ListSetsCommandTest extends TestCase
 
         $resultRaw = $commandTester->getDisplay();
 
-        $expectedResultStart = ' 1) @DoctrineAnnotation'.PHP_EOL.'      Rules covering Doctrine annotations';
+        $expectedResultStart = ' 1) @DoctrineAnnotation'.\PHP_EOL.'      Rules covering Doctrine annotations';
         self::assertStringStartsWith($expectedResultStart, $resultRaw);
         self::assertSame(0, $commandTester->getStatusCode());
     }

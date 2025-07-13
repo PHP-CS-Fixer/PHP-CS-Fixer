@@ -173,7 +173,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     protected function configurePostNormalisation(): void
@@ -213,7 +213,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -222,7 +222,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
             $this->fixDocBlock($docBlock);
             $newContent = $docBlock->getContent();
             if ($newContent !== $content) {
-                $tokens[$index] = new Token([T_DOC_COMMENT, $newContent]);
+                $tokens[$index] = new Token([\T_DOC_COMMENT, $newContent]);
             }
         }
     }

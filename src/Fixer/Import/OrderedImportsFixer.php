@@ -213,7 +213,7 @@ use Bar;
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_USE);
+        return $tokens->isTokenKindFound(\T_USE);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -239,10 +239,10 @@ use Bar;
 
             // if there's some logic between two `use` statements, sort only imports grouped before that logic
             for ($index = 0; $index < $count - 1; ++$index) {
-                $nextGroupUse = $tokens->getNextTokenOfKind($usesPerNamespaceIndices[$index], [';', [T_CLOSE_TAG]]);
+                $nextGroupUse = $tokens->getNextTokenOfKind($usesPerNamespaceIndices[$index], [';', [\T_CLOSE_TAG]]);
 
-                if ($tokens[$nextGroupUse]->isGivenKind(T_CLOSE_TAG)) {
-                    $nextGroupUse = $tokens->getNextTokenOfKind($usesPerNamespaceIndices[$index], [[T_OPEN_TAG]]);
+                if ($tokens[$nextGroupUse]->isGivenKind(\T_CLOSE_TAG)) {
+                    $nextGroupUse = $tokens->getNextTokenOfKind($usesPerNamespaceIndices[$index], [[\T_OPEN_TAG]]);
                 }
 
                 $nextGroupUse = $tokens->getNextMeaningfulToken($nextGroupUse);
@@ -377,8 +377,8 @@ use Bar;
         for ($i = 0; $i < $usesCount; ++$i) {
             $index = $uses[$i];
 
-            $startIndex = $tokens->getTokenNotOfKindsSibling($index + 1, 1, [T_WHITESPACE]);
-            $endIndex = $tokens->getNextTokenOfKind($startIndex, [';', [T_CLOSE_TAG]]);
+            $startIndex = $tokens->getTokenNotOfKindsSibling($index + 1, 1, [\T_WHITESPACE]);
+            $endIndex = $tokens->getNextTokenOfKind($startIndex, [';', [\T_CLOSE_TAG]]);
             $previous = $tokens->getPrevMeaningfulToken($endIndex);
 
             $group = $tokens[$previous]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE);
@@ -495,7 +495,7 @@ use Bar;
                     }
 
                     $namespaceTokens = [];
-                    $nextPartIndex = $tokens->getTokenNotOfKindSibling($index, 1, [',', [T_WHITESPACE]]);
+                    $nextPartIndex = $tokens->getTokenNotOfKindSibling($index, 1, [',', [\T_WHITESPACE]]);
                     $startIndex = $nextPartIndex;
                     $index = $nextPartIndex;
 
@@ -616,10 +616,10 @@ use Bar;
         }
 
         $tokens[$index] = new Token(';');
-        $tokens->insertAt($index + 1, new Token([T_USE, 'use']));
+        $tokens->insertAt($index + 1, new Token([\T_USE, 'use']));
 
         if (!$tokens[$index + 2]->isWhitespace()) {
-            $tokens->insertAt($index + 2, new Token([T_WHITESPACE, ' ']));
+            $tokens->insertAt($index + 2, new Token([\T_WHITESPACE, ' ']));
         }
     }
 }

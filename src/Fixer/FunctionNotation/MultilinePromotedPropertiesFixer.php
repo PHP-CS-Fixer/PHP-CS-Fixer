@@ -149,7 +149,7 @@ final class MultilinePromotedPropertiesFixer extends AbstractFixer implements Co
         $promotedParameterFound = false;
         $minimumNumberOfParameters = 0;
         for ($index = $openParenthesisIndex + 1; $index < $closeParenthesisIndex; ++$index) {
-            if ($tokens[$index]->isGivenKind(T_VARIABLE)) {
+            if ($tokens[$index]->isGivenKind(\T_VARIABLE)) {
                 ++$minimumNumberOfParameters;
             }
             if (

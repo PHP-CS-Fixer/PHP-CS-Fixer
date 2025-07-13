@@ -34,7 +34,7 @@ final class SingleLineAfterImportsFixer extends AbstractFixer implements Whitesp
 {
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_USE);
+        return $tokens->isTokenKindFound(\T_USE);
     }
 
     public function getDefinition(): FixerDefinitionInterface
@@ -91,16 +91,16 @@ final class Example
             $indent = '';
 
             // if previous line ends with comment and current line starts with whitespace, use current indent
-            if ($tokens[$index - 1]->isWhitespace(" \t") && $tokens[$index - 2]->isGivenKind(T_COMMENT)) {
+            if ($tokens[$index - 1]->isWhitespace(" \t") && $tokens[$index - 2]->isGivenKind(\T_COMMENT)) {
                 $indent = $tokens[$index - 1]->getContent();
             } elseif ($tokens[$index - 1]->isWhitespace()) {
                 $indent = Utils::calculateTrailingWhitespaceIndent($tokens[$index - 1]);
             }
 
-            $semicolonIndex = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]); // Handle insert index for inline T_COMMENT with whitespace after semicolon
+            $semicolonIndex = $tokens->getNextTokenOfKind($index, [';', [\T_CLOSE_TAG]]); // Handle insert index for inline T_COMMENT with whitespace after semicolon
             $insertIndex = $semicolonIndex;
 
-            if ($tokens[$semicolonIndex]->isGivenKind(T_CLOSE_TAG)) {
+            if ($tokens[$semicolonIndex]->isGivenKind(\T_CLOSE_TAG)) {
                 if ($tokens[$insertIndex - 1]->isWhitespace()) {
                     --$insertIndex;
                 }
@@ -110,11 +110,11 @@ final class Example
             }
 
             if ($semicolonIndex === \count($tokens) - 1) {
-                $tokens->insertAt($insertIndex + 1, new Token([T_WHITESPACE, $ending.$ending.$indent]));
+                $tokens->insertAt($insertIndex + 1, new Token([\T_WHITESPACE, $ending.$ending.$indent]));
                 ++$added;
             } else {
                 $newline = $ending;
-                $tokens[$semicolonIndex]->isGivenKind(T_CLOSE_TAG) ? --$insertIndex : ++$insertIndex;
+                $tokens[$semicolonIndex]->isGivenKind(\T_CLOSE_TAG) ? --$insertIndex : ++$insertIndex;
                 if ($tokens[$insertIndex]->isWhitespace(" \t") && $tokens[$insertIndex + 1]->isComment()) {
                     ++$insertIndex;
                 }
@@ -125,7 +125,7 @@ final class Example
                 }
 
                 $afterSemicolon = $tokens->getNextMeaningfulToken($semicolonIndex);
-                if (null === $afterSemicolon || !$tokens[$afterSemicolon]->isGivenKind(T_USE)) {
+                if (null === $afterSemicolon || !$tokens[$afterSemicolon]->isGivenKind(\T_USE)) {
                     $newline .= $ending;
                 }
 
@@ -135,15 +135,15 @@ final class Example
                         continue;
                     }
                     $nextMeaningfulAfterUseIndex = $tokens->getNextMeaningfulToken($insertIndex);
-                    if (null !== $nextMeaningfulAfterUseIndex && $tokens[$nextMeaningfulAfterUseIndex]->isGivenKind(T_USE)) {
+                    if (null !== $nextMeaningfulAfterUseIndex && $tokens[$nextMeaningfulAfterUseIndex]->isGivenKind(\T_USE)) {
                         if (substr_count($nextToken->getContent(), "\n") < 1) {
-                            $tokens[$insertIndex] = new Token([T_WHITESPACE, $newline.$indent.ltrim($nextToken->getContent())]);
+                            $tokens[$insertIndex] = new Token([\T_WHITESPACE, $newline.$indent.ltrim($nextToken->getContent())]);
                         }
                     } else {
-                        $tokens[$insertIndex] = new Token([T_WHITESPACE, $newline.$indent.ltrim($nextToken->getContent())]);
+                        $tokens[$insertIndex] = new Token([\T_WHITESPACE, $newline.$indent.ltrim($nextToken->getContent())]);
                     }
                 } else {
-                    $tokens->insertAt($insertIndex, new Token([T_WHITESPACE, $newline.$indent]));
+                    $tokens->insertAt($insertIndex, new Token([\T_WHITESPACE, $newline.$indent]));
                     ++$added;
                 }
             }

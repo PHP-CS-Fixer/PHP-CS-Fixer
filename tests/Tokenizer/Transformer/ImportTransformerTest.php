@@ -39,9 +39,9 @@ final class ImportTransformerTest extends AbstractTransformerTestCase
             $source,
             $expectedTokens,
             [
-                T_CONST,
+                \T_CONST,
                 CT::T_CONST_IMPORT,
-                T_FUNCTION,
+                \T_FUNCTION,
                 CT::T_FUNCTION_IMPORT,
             ]
         );
@@ -55,21 +55,21 @@ final class ImportTransformerTest extends AbstractTransformerTestCase
         yield [
             '<?php const FOO = 1;',
             [
-                1 => T_CONST,
+                1 => \T_CONST,
             ],
         ];
 
         yield [
             '<?php use Foo; const FOO = 1;',
             [
-                6 => T_CONST,
+                6 => \T_CONST,
             ],
         ];
 
         yield [
             '<?php class Foo { const BAR = 1; }',
             [
-                7 => T_CONST,
+                7 => \T_CONST,
             ],
         ];
 
@@ -83,28 +83,28 @@ final class ImportTransformerTest extends AbstractTransformerTestCase
         yield [
             '<?php function foo() {}',
             [
-                1 => T_FUNCTION,
+                1 => \T_FUNCTION,
             ],
         ];
 
         yield [
             '<?php $a = function () {};',
             [
-                5 => T_FUNCTION,
+                5 => \T_FUNCTION,
             ],
         ];
 
         yield [
             '<?php class Foo { function foo() {} }',
             [
-                7 => T_FUNCTION,
+                7 => \T_FUNCTION,
             ],
         ];
 
         yield [
             '<?php function & foo() {}',
             [
-                1 => T_FUNCTION,
+                1 => \T_FUNCTION,
             ],
         ];
 

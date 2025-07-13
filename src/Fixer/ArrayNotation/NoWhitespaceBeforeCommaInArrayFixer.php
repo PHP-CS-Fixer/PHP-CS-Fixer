@@ -67,13 +67,13 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer implements
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
+        return $tokens->isAnyTokenKindsFound([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
-            if ($tokens[$index]->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+            if ($tokens[$index]->isGivenKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
                 $this->fixSpacing($index, $tokens);
             }
         }
@@ -109,7 +109,7 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer implements
 
             if (
                 $currentToken->equals(',') && !$tokens[$prevIndex]->isComment()
-                && (true === $this->configuration['after_heredoc'] || !$tokens[$prevIndex]->isGivenKind(T_END_HEREDOC))
+                && (true === $this->configuration['after_heredoc'] || !$tokens[$prevIndex]->isGivenKind(\T_END_HEREDOC))
             ) {
                 $tokens->removeLeadingWhitespace($i);
             }
@@ -128,7 +128,7 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer implements
         if ($tokens[$index]->equals(')')) {
             $startIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
             $startIndex = $tokens->getPrevMeaningfulToken($startIndex);
-            if (!$tokens[$startIndex]->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+            if (!$tokens[$startIndex]->isGivenKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
                 return $startIndex;
             }
         }
@@ -146,8 +146,8 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer implements
             $index = $tokens->getPrevMeaningfulToken($index);
 
             $current = $tokens[$index];
-        } while ($current->isGivenKind(T_STRING) || $current->equals(','));
+        } while ($current->isGivenKind(\T_STRING) || $current->equals(','));
 
-        return $current->isGivenKind(T_IMPLEMENTS);
+        return $current->isGivenKind(\T_IMPLEMENTS);
     }
 }

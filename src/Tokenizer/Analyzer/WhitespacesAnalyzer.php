@@ -24,7 +24,7 @@ final class WhitespacesAnalyzer
     public static function detectIndent(Tokens $tokens, int $index): string
     {
         while (true) {
-            $whitespaceIndex = $tokens->getPrevTokenOfKind($index, [[T_WHITESPACE]]);
+            $whitespaceIndex = $tokens->getPrevTokenOfKind($index, [[\T_WHITESPACE]]);
 
             if (null === $whitespaceIndex) {
                 return '';
@@ -38,7 +38,7 @@ final class WhitespacesAnalyzer
 
             $prevToken = $tokens[$whitespaceIndex - 1];
 
-            if ($prevToken->isGivenKind([T_OPEN_TAG, T_COMMENT]) && "\n" === substr($prevToken->getContent(), -1)) {
+            if ($prevToken->isGivenKind([\T_OPEN_TAG, \T_COMMENT]) && "\n" === substr($prevToken->getContent(), -1)) {
                 break;
             }
 

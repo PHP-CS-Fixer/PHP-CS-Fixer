@@ -40,7 +40,7 @@ final class ReturnToYieldFromFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAllTokenKindsFound([T_FUNCTION, T_RETURN]) && $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
+        return $tokens->isAllTokenKindsFound([\T_FUNCTION, \T_RETURN]) && $tokens->isAnyTokenKindsFound([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
     }
 
     /**
@@ -56,19 +56,19 @@ final class ReturnToYieldFromFixer extends AbstractFixer
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        foreach ($tokens->findGivenKind(T_RETURN) as $index => $token) {
+        foreach ($tokens->findGivenKind(\T_RETURN) as $index => $token) {
             if (!$this->shouldBeFixed($tokens, $index)) {
                 continue;
             }
 
-            $tokens[$index] = new Token([T_YIELD_FROM, 'yield from']);
+            $tokens[$index] = new Token([\T_YIELD_FROM, 'yield from']);
         }
     }
 
     private function shouldBeFixed(Tokens $tokens, int $returnIndex): bool
     {
         $arrayStartIndex = $tokens->getNextMeaningfulToken($returnIndex);
-        if (!$tokens[$arrayStartIndex]->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+        if (!$tokens[$arrayStartIndex]->isGivenKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
             return false;
         }
 
@@ -90,7 +90,7 @@ final class ReturnToYieldFromFixer extends AbstractFixer
         $functionStartIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $functionEndIndex);
 
         $returnTypeIndex = $tokens->getPrevMeaningfulToken($functionStartIndex);
-        if (!$tokens[$returnTypeIndex]->isGivenKind(T_STRING)) {
+        if (!$tokens[$returnTypeIndex]->isGivenKind(\T_STRING)) {
             return false;
         }
 

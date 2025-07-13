@@ -208,7 +208,7 @@ final class ConfigurationResolver
                 $this->cacheManager = new FileCacheManager(
                     new FileHandler($cacheFile),
                     new Signature(
-                        PHP_VERSION,
+                        \PHP_VERSION,
                         $this->toolInfo->getVersion(),
                         $this->getConfig()->getIndent(),
                         $this->getConfig()->getLineEnding(),
@@ -561,7 +561,7 @@ final class ConfigurationResolver
         } elseif (!is_file($path[0])) {
             $configDir = $path[0];
         } else {
-            $dirName = pathinfo($path[0], PATHINFO_DIRNAME);
+            $dirName = pathinfo($path[0], \PATHINFO_DIRNAME);
             $configDir = is_dir($dirName) ? $dirName : $path[0];
         }
 
@@ -610,7 +610,7 @@ final class ConfigurationResolver
             if ('@auto' === $this->format) {
                 $this->format = $parts[1] ?? 'txt';
 
-                if (filter_var(getenv('GITLAB_CI'), FILTER_VALIDATE_BOOL)) {
+                if (filter_var(getenv('GITLAB_CI'), \FILTER_VALIDATE_BOOL)) {
                     $this->format = 'gitlab';
                 }
             }
@@ -669,7 +669,7 @@ final class ConfigurationResolver
         if (str_starts_with($rules, '{')) {
             $rules = json_decode($rules, true);
 
-            if (JSON_ERROR_NONE !== json_last_error()) {
+            if (\JSON_ERROR_NONE !== json_last_error()) {
                 throw new InvalidConfigurationException(\sprintf('Invalid JSON rules input: "%s".', json_last_error_msg()));
             }
 
@@ -977,6 +977,6 @@ final class ConfigurationResolver
         return $this->toolInfo->isInstalledAsPhar()
             || $this->toolInfo->isInstalledByComposer()
             || $this->toolInfo->isRunInsideDocker()
-            || filter_var(getenv('PHP_CS_FIXER_ENFORCE_CACHE'), FILTER_VALIDATE_BOOL);
+            || filter_var(getenv('PHP_CS_FIXER_ENFORCE_CACHE'), \FILTER_VALIDATE_BOOL);
     }
 }

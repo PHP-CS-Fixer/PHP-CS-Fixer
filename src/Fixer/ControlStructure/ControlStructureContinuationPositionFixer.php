@@ -53,11 +53,11 @@ final class ControlStructureContinuationPositionFixer extends AbstractFixer impl
     public const SAME_LINE = 'same_line';
 
     private const CONTROL_CONTINUATION_TOKENS = [
-        T_CATCH,
-        T_ELSE,
-        T_ELSEIF,
-        T_FINALLY,
-        T_WHILE,
+        \T_CATCH,
+        \T_ELSE,
+        \T_ELSEIF,
+        \T_FINALLY,
+        \T_WHILE,
     ];
 
     public function getDefinition(): FixerDefinitionInterface
@@ -135,12 +135,12 @@ if ($baz == true) {
                 continue;
             }
 
-            if ($token->isGivenKind(T_WHILE)) {
+            if ($token->isGivenKind(\T_WHILE)) {
                 $prevIndex = $tokens->getPrevMeaningfulToken(
                     $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $prevIndex)
                 );
 
-                if (!$tokens[$prevIndex]->isGivenKind(T_DO)) {
+                if (!$tokens[$prevIndex]->isGivenKind(\T_DO)) {
                     continue;
                 }
             }

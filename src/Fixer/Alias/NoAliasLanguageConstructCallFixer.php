@@ -39,13 +39,13 @@ die;
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_EXIT);
+        return $tokens->isTokenKindFound(\T_EXIT);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_EXIT)) {
+            if (!$token->isGivenKind(\T_EXIT)) {
                 continue;
             }
 
@@ -53,7 +53,7 @@ die;
                 continue;
             }
 
-            $tokens[$index] = new Token([T_EXIT, 'exit']);
+            $tokens[$index] = new Token([\T_EXIT, 'exit']);
         }
     }
 }

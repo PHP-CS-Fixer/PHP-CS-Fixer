@@ -267,11 +267,11 @@ use Symfony\Component\Stopwatch\Stopwatch;
         if (null !== $stdErr) {
             $stdErr->writeln(Application::getAboutWithRuntime(true));
 
-            if (version_compare(PHP_VERSION, ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED.'.99', '>')) {
+            if (version_compare(\PHP_VERSION, ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED.'.99', '>')) {
                 $message = \sprintf(
                     'PHP CS Fixer currently supports PHP syntax only up to PHP %s, current PHP version: %s.',
                     ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED,
-                    PHP_VERSION
+                    \PHP_VERSION
                 );
 
                 if (!$resolver->getUnsupportedPhpVersionAllowed()) {
