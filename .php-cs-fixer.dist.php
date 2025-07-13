@@ -64,7 +64,7 @@ return (new Config())
                 'see',
             ],
         ],
-        'native_constant_invocation' => true,
+        'native_constant_invocation' => ['strict' => false], // strict:false to not remove `\` on low-end PHP versions for not-yet-known consts
     ])
     ->setFinder(
         (new Finder())
