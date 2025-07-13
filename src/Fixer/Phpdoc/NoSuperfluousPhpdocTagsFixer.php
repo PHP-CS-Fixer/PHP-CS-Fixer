@@ -72,15 +72,15 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
         'types' => [],
         'allows_null' => true,
     ];
-    private const SYMBOL_KINDS = [T_CLASS, T_INTERFACE, FCT::T_ENUM];
+    private const SYMBOL_KINDS = [\T_CLASS, \T_INTERFACE, FCT::T_ENUM];
 
     private const MODIFIER_KINDS = [
-        T_PRIVATE,
-        T_PROTECTED,
-        T_PUBLIC,
-        T_ABSTRACT,
-        T_FINAL,
-        T_STATIC,
+        \T_PRIVATE,
+        \T_PROTECTED,
+        \T_PUBLIC,
+        \T_ABSTRACT,
+        \T_FINAL,
+        \T_STATIC,
         FCT::T_READONLY,
         FCT::T_PRIVATE_SET,
         FCT::T_PROTECTED_SET,
@@ -173,7 +173,7 @@ class Foo {
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -197,7 +197,7 @@ class Foo {
                 continue;
             }
 
-            if ($token->isGivenKind(T_CLASS) && $tokensAnalyzer->isAnonymousClass($index)) {
+            if ($token->isGivenKind(\T_CLASS) && $tokensAnalyzer->isAnonymousClass($index)) {
                 continue;
             }
 
@@ -211,7 +211,7 @@ class Foo {
                 continue;
             }
 
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -247,7 +247,7 @@ class Foo {
             }
 
             if ($content !== $initialContent) {
-                $tokens[$index] = new Token([T_DOC_COMMENT, $content]);
+                $tokens[$index] = new Token([\T_DOC_COMMENT, $content]);
             }
         }
     }
@@ -284,8 +284,8 @@ class Foo {
             CT::T_ARRAY_TYPEHINT,
             CT::T_TYPE_ALTERNATION,
             CT::T_TYPE_INTERSECTION,
-            T_STRING,
-            T_NS_SEPARATOR,
+            \T_STRING,
+            \T_NS_SEPARATOR,
         ];
 
         $element = [
@@ -299,7 +299,7 @@ class Foo {
             do {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
                 $index = $tokens->getNextMeaningfulToken($index);
-            } while (null !== $index && $tokens[$index]->isGivenKind(T_ATTRIBUTE));
+            } while (null !== $index && $tokens[$index]->isGivenKind(\T_ATTRIBUTE));
         }
 
         while (true) {
@@ -314,14 +314,14 @@ class Foo {
                 return $element;
             }
 
-            if ($tokens[$index]->isGivenKind([T_FUNCTION, T_FN])) {
+            if ($tokens[$index]->isGivenKind([\T_FUNCTION, \T_FN])) {
                 $element['index'] = $index;
                 $element['type'] = 'function';
 
                 return $element;
             }
 
-            if ($tokens[$index]->isGivenKind(T_VARIABLE)) {
+            if ($tokens[$index]->isGivenKind(\T_VARIABLE)) {
                 $element['index'] = $index;
                 $element['type'] = 'property';
 
@@ -451,7 +451,7 @@ class Foo {
         for ($index = $start; $index <= $end; ++$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(T_VARIABLE)) {
+            if (!$token->isGivenKind(\T_VARIABLE)) {
                 continue;
             }
 
@@ -468,7 +468,7 @@ class Foo {
                 $nextIndex = $tokens->getNextMeaningfulToken($index);
                 if (
                     $tokens[$nextIndex]->equals('=')
-                    && $tokens[$tokens->getNextMeaningfulToken($nextIndex)]->equals([T_STRING, 'null'], false)
+                    && $tokens[$tokens->getNextMeaningfulToken($nextIndex)]->equals([\T_STRING, 'null'], false)
                 ) {
                     $info['allows_null'] = true;
                 }
@@ -532,7 +532,7 @@ class Foo {
                 $index = $tokens->getNextMeaningfulToken($index);
             }
 
-            while ($tokens[$index]->isGivenKind([T_NS_SEPARATOR, T_STATIC, T_STRING, CT::T_ARRAY_TYPEHINT, T_CALLABLE])) {
+            while ($tokens[$index]->isGivenKind([\T_NS_SEPARATOR, \T_STATIC, \T_STRING, CT::T_ARRAY_TYPEHINT, \T_CALLABLE])) {
                 $type .= $tokens[$index]->getContent();
                 $index = $tokens->getNextMeaningfulToken($index);
             }
@@ -736,7 +736,7 @@ class Foo {
      */
     private function removeSuperfluousModifierAnnotation(DocBlock $docBlock, array $element): void
     {
-        foreach (['abstract' => T_ABSTRACT, 'final' => T_FINAL] as $annotationType => $modifierToken) {
+        foreach (['abstract' => \T_ABSTRACT, 'final' => \T_FINAL] as $annotationType => $modifierToken) {
             $annotations = $docBlock->getAnnotationsOfType($annotationType);
 
             foreach ($element['modifiers'] as $token) {

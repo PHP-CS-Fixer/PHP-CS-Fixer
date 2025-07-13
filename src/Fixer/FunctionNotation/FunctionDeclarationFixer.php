@@ -66,7 +66,7 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_FUNCTION, T_FN]);
+        return $tokens->isAnyTokenKindsFound([\T_FUNCTION, \T_FN]);
     }
 
     public function getDefinition(): FixerDefinitionInterface
@@ -125,11 +125,11 @@ $f = fn () => null;
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind([T_FUNCTION, T_FN])) {
+            if (!$token->isGivenKind([\T_FUNCTION, \T_FN])) {
                 continue;
             }
 
-            $startParenthesisIndex = $tokens->getNextTokenOfKind($index, ['(', ';', [T_CLOSE_TAG]]);
+            $startParenthesisIndex = $tokens->getNextTokenOfKind($index, ['(', ';', [\T_CLOSE_TAG]]);
 
             if (!$tokens[$startParenthesisIndex]->equals('(')) {
                 continue;
@@ -147,14 +147,14 @@ $f = fn () => null;
                 }
             }
 
-            $startBraceIndex = $tokens->getNextTokenOfKind($endParenthesisIndex, [';', '{', [T_DOUBLE_ARROW]]);
+            $startBraceIndex = $tokens->getNextTokenOfKind($endParenthesisIndex, [';', '{', [\T_DOUBLE_ARROW]]);
 
             // fix single-line whitespace before { or =>
             // eg: `function foo(){}` => `function foo() {}`
             // eg: `function foo()   {}` => `function foo() {}`
             // eg: `fn()   =>` => `fn() =>`
             if (
-                $tokens[$startBraceIndex]->equalsAny(['{', [T_DOUBLE_ARROW]])
+                $tokens[$startBraceIndex]->equalsAny(['{', [\T_DOUBLE_ARROW]])
                 && (
                     !$tokens[$startBraceIndex - 1]->isWhitespace()
                     || $tokens[$startBraceIndex - 1]->isWhitespace($this->singleLineWhitespaceOptions)
@@ -200,7 +200,7 @@ $f = fn () => null;
                 $tokens->clearAt($startParenthesisIndex - 1);
             }
 
-            $option = $token->isGivenKind(T_FN) ? 'closure_fn_spacing' : 'closure_function_spacing';
+            $option = $token->isGivenKind(\T_FN) ? 'closure_fn_spacing' : 'closure_function_spacing';
 
             if ($isLambda && self::SPACING_NONE === $this->configuration[$option]) {
                 // optionally remove whitespace after T_FUNCTION of a closure
@@ -217,7 +217,7 @@ $f = fn () => null;
             if ($isLambda) {
                 $prev = $tokens->getPrevMeaningfulToken($index);
 
-                if ($tokens[$prev]->isGivenKind(T_STATIC)) {
+                if ($tokens[$prev]->isGivenKind(\T_STATIC)) {
                     // fix whitespace after T_STATIC
                     // eg: `$a = static     function(){};` => `$a = static function(){};`
                     $tokens->ensureWhitespaceAtIndex($prev + 1, 0, ' ');

@@ -77,14 +77,14 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurableFixerIn
 
     protected function configurePostNormalisation(): void
     {
-        $this->candidateTokenKind = 'long' === $this->configuration['syntax'] ? CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN : T_LIST;
+        $this->candidateTokenKind = 'long' === $this->configuration['syntax'] ? CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN : \T_LIST;
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             if ($tokens[$index]->isGivenKind($this->candidateTokenKind)) {
-                if (T_LIST === $this->candidateTokenKind) {
+                if (\T_LIST === $this->candidateTokenKind) {
                     $this->fixToShortSyntax($tokens, $index);
                 } else {
                     $this->fixToLongSyntax($tokens, $index);
@@ -117,7 +117,7 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurableFixerIn
 
         $tokens[$index] = new Token('(');
         $tokens[$closeIndex] = new Token(')');
-        $tokens->insertAt($index, new Token([T_LIST, 'list']));
+        $tokens->insertAt($index, new Token([\T_LIST, 'list']));
     }
 
     private function fixToShortSyntax(Tokens $tokens, int $index): void

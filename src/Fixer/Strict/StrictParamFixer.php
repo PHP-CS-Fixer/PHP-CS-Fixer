@@ -40,7 +40,7 @@ final class StrictParamFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     public function isRisky(): bool
@@ -65,14 +65,14 @@ final class StrictParamFixer extends AbstractFixer
         static $map = null;
 
         if (null === $map) {
-            $trueToken = new Token([T_STRING, 'true']);
+            $trueToken = new Token([\T_STRING, 'true']);
 
             $map = [
                 'array_keys' => [null, null, $trueToken],
                 'array_search' => [null, null, $trueToken],
                 'base64_decode' => [null, $trueToken],
                 'in_array' => [null, null, $trueToken],
-                'mb_detect_encoding' => [null, [new Token([T_STRING, 'mb_detect_order']), new Token('('), new Token(')')], $trueToken],
+                'mb_detect_encoding' => [null, [new Token([\T_STRING, 'mb_detect_order']), new Token('('), new Token(')')], $trueToken],
             ];
         }
 
@@ -143,7 +143,7 @@ final class StrictParamFixer extends AbstractFixer
             }
 
             $tokensToInsert[] = new Token(',');
-            $tokensToInsert[] = new Token([T_WHITESPACE, ' ']);
+            $tokensToInsert[] = new Token([\T_WHITESPACE, ' ']);
 
             if (!\is_array($functionParams[$i])) {
                 $tokensToInsert[] = clone $functionParams[$i];

@@ -28,7 +28,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class FunctionsAnalyzer
 {
     private const POSSIBLE_KINDS = [
-        T_DOUBLE_COLON, T_FUNCTION, CT::T_NAMESPACE_OPERATOR, T_NEW, CT::T_RETURN_REF, T_STRING, T_OBJECT_OPERATOR, FCT::T_NULLSAFE_OBJECT_OPERATOR, FCT::T_ATTRIBUTE];
+        \T_DOUBLE_COLON, \T_FUNCTION, CT::T_NAMESPACE_OPERATOR, \T_NEW, CT::T_RETURN_REF, \T_STRING, \T_OBJECT_OPERATOR, FCT::T_NULLSAFE_OBJECT_OPERATOR, FCT::T_ATTRIBUTE];
 
     /**
      * @var array{tokens: string, imports: list<NamespaceUseAnalysis>, declarations: list<int>}
@@ -40,7 +40,7 @@ final class FunctionsAnalyzer
      */
     public function isGlobalFunctionCall(Tokens $tokens, int $index): bool
     {
-        if (!$tokens[$index]->isGivenKind(T_STRING)) {
+        if (!$tokens[$index]->isGivenKind(\T_STRING)) {
             return false;
         }
 
@@ -53,7 +53,7 @@ final class FunctionsAnalyzer
         $previousIsNamespaceSeparator = false;
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-        if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
+        if ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
             $previousIsNamespaceSeparator = true;
             $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
         }
@@ -78,7 +78,7 @@ final class FunctionsAnalyzer
             }
             $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesisIndex);
             $afterCloseParenthesisIndex = $tokens->getNextMeaningfulToken($closeParenthesisIndex);
-            if ($tokens[$afterCloseParenthesisIndex]->equalsAny(['{', [T_DOUBLE_ARROW]])) {
+            if ($tokens[$afterCloseParenthesisIndex]->equalsAny(['{', [\T_DOUBLE_ARROW]])) {
                 return false;
             }
         }
@@ -172,7 +172,7 @@ final class FunctionsAnalyzer
         $type = '';
         $typeStartIndex = $tokens->getNextMeaningfulToken($typeColonIndex);
         $typeEndIndex = $typeStartIndex;
-        $functionBodyStart = $tokens->getNextTokenOfKind($typeColonIndex, ['{', ';', [T_DOUBLE_ARROW]]);
+        $functionBodyStart = $tokens->getNextTokenOfKind($typeColonIndex, ['{', ';', [\T_DOUBLE_ARROW]]);
 
         for ($i = $typeStartIndex; $i < $functionBodyStart; ++$i) {
             if ($tokens[$i]->isWhitespace() || $tokens[$i]->isComment()) {
@@ -198,7 +198,7 @@ final class FunctionsAnalyzer
             return false;
         }
 
-        if (!$tokens[$operatorIndex]->isObjectOperator() && !$tokens[$operatorIndex]->isGivenKind(T_DOUBLE_COLON)) {
+        if (!$tokens[$operatorIndex]->isObjectOperator() && !$tokens[$operatorIndex]->isGivenKind(\T_DOUBLE_COLON)) {
             return false;
         }
 
@@ -208,7 +208,7 @@ final class FunctionsAnalyzer
             return false;
         }
 
-        if (!$tokens[$referenceIndex]->equalsAny([[T_VARIABLE, '$this'], [T_STRING, 'self'], [T_STATIC, 'static']], false)) {
+        if (!$tokens[$referenceIndex]->equalsAny([[\T_VARIABLE, '$this'], [\T_STRING, 'self'], [\T_STATIC, 'static']], false)) {
             return false;
         }
 
@@ -225,7 +225,7 @@ final class FunctionsAnalyzer
 
         // find declarations
 
-        if ($tokens->isTokenKindFound(T_FUNCTION)) {
+        if ($tokens->isTokenKindFound(\T_FUNCTION)) {
             $end = \count($tokens);
 
             for ($i = 0; $i < $end; ++$i) {
@@ -243,7 +243,7 @@ final class FunctionsAnalyzer
                     continue;
                 }
 
-                if (!$tokens[$i]->isGivenKind(T_FUNCTION)) {
+                if (!$tokens[$i]->isGivenKind(\T_FUNCTION)) {
                     continue;
                 }
 
@@ -253,7 +253,7 @@ final class FunctionsAnalyzer
                     $i = $tokens->getNextMeaningfulToken($i);
                 }
 
-                if (!$tokens[$i]->isGivenKind(T_STRING)) {
+                if (!$tokens[$i]->isGivenKind(\T_STRING)) {
                     continue;
                 }
 

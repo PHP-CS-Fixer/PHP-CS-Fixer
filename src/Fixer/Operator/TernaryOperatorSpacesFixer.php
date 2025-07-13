@@ -119,13 +119,13 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
                 !str_contains($tokens[$index]->getContent(), "\n")
                 && !$tokens[$index - 1]->isComment()
             ) {
-                $tokens[$index] = new Token([T_WHITESPACE, ' ']);
+                $tokens[$index] = new Token([\T_WHITESPACE, ' ']);
             }
 
             return;
         }
 
         $index += $after ? 0 : 1;
-        $tokens->insertAt($index, new Token([T_WHITESPACE, ' ']));
+        $tokens->insertAt($index, new Token([\T_WHITESPACE, ' ']));
     }
 }

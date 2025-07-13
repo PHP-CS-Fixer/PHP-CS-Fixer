@@ -65,26 +65,26 @@ final class NewWithParenthesesFixer extends AbstractFixer implements Configurabl
         '&',
         '^',
         '|',
-        [T_CLASS],
-        [T_IS_SMALLER_OR_EQUAL],
-        [T_IS_GREATER_OR_EQUAL],
-        [T_IS_EQUAL],
-        [T_IS_NOT_EQUAL],
-        [T_IS_IDENTICAL],
-        [T_IS_NOT_IDENTICAL],
-        [T_CLOSE_TAG],
-        [T_LOGICAL_AND],
-        [T_LOGICAL_OR],
-        [T_LOGICAL_XOR],
-        [T_BOOLEAN_AND],
-        [T_BOOLEAN_OR],
-        [T_SL],
-        [T_SR],
-        [T_INSTANCEOF],
-        [T_AS],
-        [T_DOUBLE_ARROW],
-        [T_POW],
-        [T_SPACESHIP],
+        [\T_CLASS],
+        [\T_IS_SMALLER_OR_EQUAL],
+        [\T_IS_GREATER_OR_EQUAL],
+        [\T_IS_EQUAL],
+        [\T_IS_NOT_EQUAL],
+        [\T_IS_IDENTICAL],
+        [\T_IS_NOT_IDENTICAL],
+        [\T_CLOSE_TAG],
+        [\T_LOGICAL_AND],
+        [\T_LOGICAL_OR],
+        [\T_LOGICAL_XOR],
+        [\T_BOOLEAN_AND],
+        [\T_BOOLEAN_OR],
+        [\T_SL],
+        [\T_SR],
+        [\T_INSTANCEOF],
+        [\T_AS],
+        [\T_DOUBLE_ARROW],
+        [\T_POW],
+        [\T_SPACESHIP],
         [CT::T_ARRAY_SQUARE_BRACE_OPEN],
         [CT::T_ARRAY_SQUARE_BRACE_CLOSE],
         [CT::T_BRACE_CLASS_INSTANTIATION_OPEN],
@@ -123,7 +123,7 @@ final class NewWithParenthesesFixer extends AbstractFixer implements Configurabl
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_NEW);
+        return $tokens->isTokenKindFound(\T_NEW);
     }
 
     /** @protected */
@@ -144,14 +144,14 @@ final class NewWithParenthesesFixer extends AbstractFixer implements Configurabl
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 3; $index > 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_NEW)) {
+            if (!$tokens[$index]->isGivenKind(\T_NEW)) {
                 continue;
             }
 
             $nextIndex = $tokens->getNextTokenOfKind($index, self::NEXT_TOKEN_KINDS);
 
             // new anonymous class definition
-            if ($tokens[$nextIndex]->isGivenKind(T_CLASS)) {
+            if ($tokens[$nextIndex]->isGivenKind(\T_CLASS)) {
                 $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
 
                 if (true === $this->configuration['anonymous_class']) {

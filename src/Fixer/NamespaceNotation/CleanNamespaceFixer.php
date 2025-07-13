@@ -42,7 +42,7 @@ final class CleanNamespaceFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID < 8_00_00 && $tokens->isTokenKindFound(T_NS_SEPARATOR);
+        return \PHP_VERSION_ID < 8_00_00 && $tokens->isTokenKindFound(\T_NS_SEPARATOR);
     }
 
     /**
@@ -60,12 +60,12 @@ final class CleanNamespaceFixer extends AbstractFixer
         $count = $tokens->count();
 
         for ($index = 0; $index < $count; ++$index) {
-            if ($tokens[$index]->isGivenKind(T_NS_SEPARATOR)) {
+            if ($tokens[$index]->isGivenKind(\T_NS_SEPARATOR)) {
                 $previousIndex = $tokens->getPrevMeaningfulToken($index);
 
                 $index = $this->fixNamespace(
                     $tokens,
-                    $tokens[$previousIndex]->isGivenKind(T_STRING) ? $previousIndex : $index
+                    $tokens[$previousIndex]->isGivenKind(\T_STRING) ? $previousIndex : $index
                 );
             }
         }
@@ -79,7 +79,7 @@ final class CleanNamespaceFixer extends AbstractFixer
         $tillIndex = $index;
 
         // go to the end of the namespace
-        while ($tokens[$tillIndex]->isGivenKind([T_NS_SEPARATOR, T_STRING])) {
+        while ($tokens[$tillIndex]->isGivenKind([\T_NS_SEPARATOR, \T_STRING])) {
             $tillIndex = $tokens->getNextMeaningfulToken($tillIndex);
         }
 
@@ -88,7 +88,7 @@ final class CleanNamespaceFixer extends AbstractFixer
         $spaceIndices = [];
 
         for (; $index <= $tillIndex; ++$index) {
-            if ($tokens[$index]->isGivenKind(T_WHITESPACE)) {
+            if ($tokens[$index]->isGivenKind(\T_WHITESPACE)) {
                 $spaceIndices[] = $index;
             } elseif ($tokens[$index]->isComment()) {
                 $tokens->clearAt($index);

@@ -51,29 +51,29 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
      * @var array<string, int>
      */
     private const TOKEN_MAP = [
-        'break' => T_BREAK,
-        'case' => T_CASE,
-        'continue' => T_CONTINUE,
-        'declare' => T_DECLARE,
-        'default' => T_DEFAULT,
-        'do' => T_DO,
-        'exit' => T_EXIT,
-        'for' => T_FOR,
-        'foreach' => T_FOREACH,
-        'goto' => T_GOTO,
-        'if' => T_IF,
-        'include' => T_INCLUDE,
-        'include_once' => T_INCLUDE_ONCE,
-        'phpdoc' => T_DOC_COMMENT,
-        'require' => T_REQUIRE,
-        'require_once' => T_REQUIRE_ONCE,
-        'return' => T_RETURN,
-        'switch' => T_SWITCH,
-        'throw' => T_THROW,
-        'try' => T_TRY,
-        'while' => T_WHILE,
-        'yield' => T_YIELD,
-        'yield_from' => T_YIELD_FROM,
+        'break' => \T_BREAK,
+        'case' => \T_CASE,
+        'continue' => \T_CONTINUE,
+        'declare' => \T_DECLARE,
+        'default' => \T_DEFAULT,
+        'do' => \T_DO,
+        'exit' => \T_EXIT,
+        'for' => \T_FOR,
+        'foreach' => \T_FOREACH,
+        'goto' => \T_GOTO,
+        'if' => \T_IF,
+        'include' => \T_INCLUDE,
+        'include_once' => \T_INCLUDE_ONCE,
+        'phpdoc' => \T_DOC_COMMENT,
+        'require' => \T_REQUIRE,
+        'require_once' => \T_REQUIRE_ONCE,
+        'return' => \T_RETURN,
+        'switch' => \T_SWITCH,
+        'throw' => \T_THROW,
+        'try' => \T_TRY,
+        'while' => \T_WHILE,
+        'yield' => \T_YIELD,
+        'yield_from' => \T_YIELD_FROM,
     ];
 
     /**
@@ -273,11 +273,11 @@ function getValues() {
                 continue;
             }
 
-            if ($token->isGivenKind(T_WHILE) && $analyzer->isWhilePartOfDoWhile($index)) {
+            if ($token->isGivenKind(\T_WHILE) && $analyzer->isWhilePartOfDoWhile($index)) {
                 continue;
             }
 
-            if ($token->isGivenKind(T_CASE) && $analyzer->isEnumCase($index)) {
+            if ($token->isGivenKind(\T_CASE) && $analyzer->isEnumCase($index)) {
                 continue;
             }
 
@@ -368,12 +368,12 @@ function getValues() {
             $newlinesCount = substr_count($prevToken->getContent(), "\n");
 
             if (0 === $newlinesCount) {
-                $tokens[$prevIndex] = new Token([T_WHITESPACE, rtrim($prevToken->getContent(), " \t").$lineEnding.$lineEnding]);
+                $tokens[$prevIndex] = new Token([\T_WHITESPACE, rtrim($prevToken->getContent(), " \t").$lineEnding.$lineEnding]);
             } elseif (1 === $newlinesCount) {
-                $tokens[$prevIndex] = new Token([T_WHITESPACE, $lineEnding.$prevToken->getContent()]);
+                $tokens[$prevIndex] = new Token([\T_WHITESPACE, $lineEnding.$prevToken->getContent()]);
             }
         } else {
-            $tokens->insertAt($index, new Token([T_WHITESPACE, $lineEnding.$lineEnding]));
+            $tokens->insertAt($index, new Token([\T_WHITESPACE, $lineEnding.$lineEnding]));
         }
     }
 }

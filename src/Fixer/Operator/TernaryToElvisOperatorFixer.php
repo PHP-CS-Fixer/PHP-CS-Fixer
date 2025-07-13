@@ -33,8 +33,8 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
      */
     private const VALID_BEFORE_ENDTYPES = [
         '=',
-        [T_OPEN_TAG],
-        [T_OPEN_TAG_WITH_ECHO],
+        [\T_OPEN_TAG],
+        [\T_OPEN_TAG_WITH_ECHO],
         '(',
         ',',
         ';',
@@ -42,18 +42,18 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
         '{',
         '}',
         [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN],
-        [T_AND_EQUAL],    // &=
-        [T_CONCAT_EQUAL], // .=
-        [T_DIV_EQUAL],    // /=
-        [T_MINUS_EQUAL],  // -=
-        [T_MOD_EQUAL],    // %=
-        [T_MUL_EQUAL],    // *=
-        [T_OR_EQUAL],     // |=
-        [T_PLUS_EQUAL],   // +=
-        [T_POW_EQUAL],    // **=
-        [T_SL_EQUAL],     // <<=
-        [T_SR_EQUAL],     // >>=
-        [T_XOR_EQUAL],    // ^=
+        [\T_AND_EQUAL],    // &=
+        [\T_CONCAT_EQUAL], // .=
+        [\T_DIV_EQUAL],    // /=
+        [\T_MINUS_EQUAL],  // -=
+        [\T_MOD_EQUAL],    // %=
+        [\T_MUL_EQUAL],    // *=
+        [\T_OR_EQUAL],     // |=
+        [\T_PLUS_EQUAL],   // +=
+        [\T_POW_EQUAL],    // **=
+        [\T_SL_EQUAL],     // <<=
+        [\T_SR_EQUAL],     // >>=
+        [\T_XOR_EQUAL],    // ^=
     ];
 
     public function getDefinition(): FixerDefinitionInterface
@@ -136,7 +136,7 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
         $before = ['end' => $index];
 
         while (!$tokens[$index]->equalsAny(self::VALID_BEFORE_ENDTYPES)) {
-            if ($tokens[$index]->isGivenKind([T_INC, T_DEC])) {
+            if ($tokens[$index]->isGivenKind([\T_INC, \T_DEC])) {
                 return null;
             }
 
@@ -156,7 +156,7 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
             do {
                 $index = $tokens->getPrevMeaningfulToken($index);
 
-                if ($tokens[$index]->isGivenKind([T_INC, T_DEC])) {
+                if ($tokens[$index]->isGivenKind([\T_INC, \T_DEC])) {
                     return null;
                 }
 

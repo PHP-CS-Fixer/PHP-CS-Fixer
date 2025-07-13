@@ -279,7 +279,7 @@ class Tokens extends \SplFixedArray
                 'end' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE, '}'],
             ],
             self::BLOCK_TYPE_COMPLEX_STRING_VARIABLE => [
-                'start' => [T_DOLLAR_OPEN_CURLY_BRACES, '${'],
+                'start' => [\T_DOLLAR_OPEN_CURLY_BRACES, '${'],
                 'end' => [CT::T_DOLLAR_CLOSE_CURLY_BRACES, '}'],
             ],
             self::BLOCK_TYPE_PROPERTY_HOOK => [
@@ -460,16 +460,16 @@ class Tokens extends \SplFixedArray
         $removeLastCommentLine = static function (self $tokens, int $index, int $indexOffset, string $whitespace): string {
             $token = $tokens[$index];
 
-            if (1 === $indexOffset && $token->isGivenKind(T_OPEN_TAG)) {
+            if (1 === $indexOffset && $token->isGivenKind(\T_OPEN_TAG)) {
                 if (str_starts_with($whitespace, "\r\n")) {
-                    $tokens[$index] = new Token([T_OPEN_TAG, rtrim($token->getContent())."\r\n"]);
+                    $tokens[$index] = new Token([\T_OPEN_TAG, rtrim($token->getContent())."\r\n"]);
 
                     return \strlen($whitespace) > 2 // @TODO: can be removed on PHP 8; https://php.net/manual/en/function.substr.php
                         ? substr($whitespace, 2)
                         : '';
                 }
 
-                $tokens[$index] = new Token([T_OPEN_TAG, rtrim($token->getContent()).$whitespace[0]]);
+                $tokens[$index] = new Token([\T_OPEN_TAG, rtrim($token->getContent()).$whitespace[0]]);
 
                 return \strlen($whitespace) > 1 // @TODO: can be removed on PHP 8; https://php.net/manual/en/function.substr.php
                     ? substr($whitespace, 1)
@@ -485,7 +485,7 @@ class Tokens extends \SplFixedArray
             if ('' === $whitespace) {
                 $this->clearAt($index);
             } else {
-                $this[$index] = new Token([T_WHITESPACE, $whitespace]);
+                $this[$index] = new Token([\T_WHITESPACE, $whitespace]);
             }
 
             return false;
@@ -499,7 +499,7 @@ class Tokens extends \SplFixedArray
 
         $this->insertAt(
             $index + $indexOffset,
-            [new Token([T_WHITESPACE, $whitespace])]
+            [new Token([\T_WHITESPACE, $whitespace])]
         );
 
         return true;
@@ -774,7 +774,7 @@ class Tokens extends \SplFixedArray
         return $this->getTokenNotOfKindsSibling(
             $index,
             $direction,
-            [T_WHITESPACE, T_COMMENT, T_DOC_COMMENT]
+            [\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT]
         );
     }
 
@@ -844,7 +844,7 @@ class Tokens extends \SplFixedArray
             return null;
         }
 
-        $nonMeaningFullKind = [T_COMMENT, T_DOC_COMMENT, T_WHITESPACE];
+        $nonMeaningFullKind = [\T_COMMENT, \T_DOC_COMMENT, \T_WHITESPACE];
 
         // make sure the sequence content is "meaningful"
         foreach ($sequence as $key => $token) {
@@ -1104,7 +1104,7 @@ class Tokens extends \SplFixedArray
         }
 
         $this->updateSizeToZero(); // clear memory
-        $tokens = token_get_all($code, TOKEN_PARSE);
+        $tokens = token_get_all($code, \TOKEN_PARSE);
         $this->updateSizeByIncreasingToNewSize(\count($tokens)); // pre-allocate collection size
 
         foreach ($tokens as $index => $token) {
@@ -1140,7 +1140,7 @@ class Tokens extends \SplFixedArray
             $this->rewind();
         }
 
-        return json_encode($output, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK);
+        return json_encode($output, \JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT | \JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -1211,12 +1211,12 @@ class Tokens extends \SplFixedArray
      */
     public function isMonolithicPhp(): bool
     {
-        if (1 !== ($this->countTokenKind(T_OPEN_TAG) + $this->countTokenKind(T_OPEN_TAG_WITH_ECHO))) {
+        if (1 !== ($this->countTokenKind(\T_OPEN_TAG) + $this->countTokenKind(\T_OPEN_TAG_WITH_ECHO))) {
             return false;
         }
 
-        return 0 === $this->countTokenKind(T_INLINE_HTML)
-            || (1 === $this->countTokenKind(T_INLINE_HTML) && Preg::match('/^#!.+$/', $this[0]->getContent()));
+        return 0 === $this->countTokenKind(\T_INLINE_HTML)
+            || (1 === $this->countTokenKind(\T_INLINE_HTML) && Preg::match('/^#!.+$/', $this[0]->getContent()));
     }
 
     /**
@@ -1237,12 +1237,12 @@ class Tokens extends \SplFixedArray
     public function hasAlternativeSyntax(): bool
     {
         return $this->isAnyTokenKindsFound([
-            T_ENDDECLARE,
-            T_ENDFOR,
-            T_ENDFOREACH,
-            T_ENDIF,
-            T_ENDSWITCH,
-            T_ENDWHILE,
+            \T_ENDDECLARE,
+            \T_ENDFOR,
+            \T_ENDFOREACH,
+            \T_ENDIF,
+            \T_ENDSWITCH,
+            \T_ENDWHILE,
         ]);
     }
 
@@ -1264,9 +1264,9 @@ class Tokens extends \SplFixedArray
         $prevIndex = $this->getNonEmptySibling($index, -1);
 
         if ($this[$prevIndex]->isWhitespace()) {
-            $this[$prevIndex] = new Token([T_WHITESPACE, $this[$prevIndex]->getContent().$this[$nextIndex]->getContent()]);
+            $this[$prevIndex] = new Token([\T_WHITESPACE, $this[$prevIndex]->getContent().$this[$nextIndex]->getContent()]);
         } elseif ($this->isEmptyAt($prevIndex + 1)) {
-            $this[$prevIndex + 1] = new Token([T_WHITESPACE, $this[$nextIndex]->getContent()]);
+            $this[$prevIndex + 1] = new Token([\T_WHITESPACE, $this[$nextIndex]->getContent()]);
         }
 
         $this->clearAt($nextIndex);
@@ -1351,13 +1351,13 @@ class Tokens extends \SplFixedArray
 
             // if the token candidate to remove is preceded by single line comment we do not consider the new line after this comment as part of T_WHITESPACE
             if (isset($this[$whitespaceIndex - 1]) && $this[$whitespaceIndex - 1]->isComment() && !str_starts_with($this[$whitespaceIndex - 1]->getContent(), '/*')) {
-                [, $newContent, $whitespacesToCheck] = Preg::split('/^(\R)/', $this[$whitespaceIndex]->getContent(), -1, PREG_SPLIT_DELIM_CAPTURE);
+                [, $newContent, $whitespacesToCheck] = Preg::split('/^(\R)/', $this[$whitespaceIndex]->getContent(), -1, \PREG_SPLIT_DELIM_CAPTURE);
 
                 if ('' === $whitespacesToCheck) {
                     return;
                 }
 
-                $tokenToCheck = new Token([T_WHITESPACE, $whitespacesToCheck]);
+                $tokenToCheck = new Token([\T_WHITESPACE, $whitespacesToCheck]);
             }
 
             if (!$tokenToCheck->isWhitespace($whitespaces)) {
@@ -1367,7 +1367,7 @@ class Tokens extends \SplFixedArray
             if ('' === $newContent) {
                 $this->clearAt($whitespaceIndex);
             } else {
-                $this[$whitespaceIndex] = new Token([T_WHITESPACE, $newContent]);
+                $this[$whitespaceIndex] = new Token([\T_WHITESPACE, $newContent]);
             }
         }
     }

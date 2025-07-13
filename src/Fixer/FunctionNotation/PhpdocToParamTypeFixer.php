@@ -48,8 +48,8 @@ final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer 
      * @var list<array{int, string}>
      */
     private const EXCLUDE_FUNC_NAMES = [
-        [T_STRING, '__clone'],
-        [T_STRING, '__destruct'],
+        [\T_STRING, '__clone'],
+        [\T_STRING, '__destruct'],
     ];
 
     /**
@@ -105,7 +105,7 @@ function bar($foo) {}
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_FUNCTION, T_FN]);
+        return $tokens->isAnyTokenKindsFound([\T_FUNCTION, \T_FN]);
     }
 
     /**
@@ -127,7 +127,7 @@ function bar($foo) {}
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; 0 < $index; --$index) {
-            if (!$tokens[$index]->isGivenKind([T_FUNCTION, T_FN])) {
+            if (!$tokens[$index]->isGivenKind([\T_FUNCTION, \T_FN])) {
                 continue;
             }
 
@@ -195,7 +195,7 @@ function bar($foo) {}
 
                 $tokens->insertAt($variableIndex, array_merge(
                     $this->createTypeDeclarationTokens($paramType, $isNullable),
-                    [new Token([T_WHITESPACE, ' '])]
+                    [new Token([\T_WHITESPACE, ' '])]
                 ));
             }
         }
@@ -216,7 +216,7 @@ function bar($foo) {}
         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
 
         for ($index = $startIndex + 1; $index < $endIndex; ++$index) {
-            if (!$tokens[$index]->isGivenKind(T_VARIABLE)) {
+            if (!$tokens[$index]->isGivenKind(\T_VARIABLE)) {
                 continue;
             }
 

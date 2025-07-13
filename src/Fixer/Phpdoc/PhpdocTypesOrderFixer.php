@@ -124,7 +124,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
@@ -148,7 +148,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -178,7 +178,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
                 }, $line->getContent()));
             }
 
-            $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
+            $tokens[$index] = new Token([\T_DOC_COMMENT, $doc->getContent()]);
         }
     }
 

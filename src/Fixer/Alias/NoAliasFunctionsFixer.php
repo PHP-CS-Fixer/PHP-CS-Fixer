@@ -228,7 +228,7 @@ mbereg_search_getregs();
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     public function isRisky(): bool
@@ -261,7 +261,7 @@ mbereg_search_getregs();
         $argumentsAnalyzer = new ArgumentsAnalyzer();
 
         /** @var Token $token */
-        foreach ($tokens->findGivenKind(T_STRING) as $index => $token) {
+        foreach ($tokens->findGivenKind(\T_STRING) as $index => $token) {
             // check mapping hit
             $tokenContent = strtolower($token->getContent());
 
@@ -292,7 +292,7 @@ mbereg_search_getregs();
                 $alias = $this->aliases[$tokenContent];
             }
 
-            $tokens[$index] = new Token([T_STRING, $alias]);
+            $tokens[$index] = new Token([\T_STRING, $alias]);
         }
     }
 
