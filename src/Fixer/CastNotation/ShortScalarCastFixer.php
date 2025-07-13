@@ -42,14 +42,6 @@ final class ShortScalarCastFixer extends AbstractFixer
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $castMap = [
-            'boolean' => 'bool',
-            'integer' => 'int',
-            'double' => 'float',
-            'real' => 'float',
-            'binary' => 'string',
-        ];
-
         for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
             if (!$tokens[$index]->isCast()) {
                 continue;
@@ -58,13 +50,21 @@ final class ShortScalarCastFixer extends AbstractFixer
             $castFrom = trim(substr($tokens[$index]->getContent(), 1, -1));
             $castFromLowered = strtolower($castFrom);
 
-            if (!\array_key_exists($castFromLowered, $castMap)) {
+            $castTo = [
+                'boolean' => 'bool',
+                'integer' => 'int',
+                'double' => 'float',
+                'real' => 'float',
+                'binary' => 'string',
+            ][$castFromLowered] ?? null;
+
+            if (null === $castTo) {
                 continue;
             }
 
             $tokens[$index] = new Token([
                 $tokens[$index]->getId(),
-                str_replace($castFrom, $castMap[$castFromLowered], $tokens[$index]->getContent()),
+                str_replace($castFrom, $castTo, $tokens[$index]->getContent()),
             ]);
         }
     }
