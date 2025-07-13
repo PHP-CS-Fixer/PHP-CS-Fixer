@@ -124,7 +124,7 @@ final class Sample
                 $tokens[$protectedPromotedIndex] = new Token([CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE, 'private']);
             }
             if (null !== $protectedSetIndex) {
-                $tokens[$protectedSetIndex] = new Token([T_PRIVATE_SET, 'private(set)']);
+                $tokens[$protectedSetIndex] = new Token([\T_PRIVATE_SET, 'private(set)']);
             }
         }
     }
