@@ -134,7 +134,7 @@ final class MyTest extends \PHPUnit\Framework\TestCase
         $tokenAnalyzer = new TokensAnalyzer($tokens);
 
         for ($index = $startIndex; $index < $endIndex; ++$index) {
-            if (!$tokens[$index]->isGivenKind(T_CLASS) || !$tokenAnalyzer->isAnonymousClass($index)) {
+            if (!$tokens[$index]->isGivenKind(\T_CLASS) || !$tokenAnalyzer->isAnonymousClass($index)) {
                 continue;
             }
 
@@ -151,7 +151,7 @@ final class MyTest extends \PHPUnit\Framework\TestCase
                 continue;
             }
 
-            if (!$tokens[$index]->isGivenKind(T_STRING)) {
+            if (!$tokens[$index]->isGivenKind(\T_STRING)) {
                 continue;
             }
 
@@ -170,7 +170,7 @@ final class MyTest extends \PHPUnit\Framework\TestCase
             $expectedTypeTokenIndex = $tokens->getNextMeaningfulToken($bracketTokenIndex);
             $expectedTypeToken = $tokens[$expectedTypeTokenIndex];
 
-            if (!$expectedTypeToken->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
+            if (!$expectedTypeToken->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
                 continue;
             }
 
@@ -196,7 +196,7 @@ final class MyTest extends \PHPUnit\Framework\TestCase
             $nextMeaningfulTokenIndex = $tokens->getNextMeaningfulToken($commaTokenIndex);
 
             $tokens->overrideRange($index, $nextMeaningfulTokenIndex - 1, [
-                new Token([T_STRING, $newAssertion]),
+                new Token([\T_STRING, $newAssertion]),
                 new Token('('),
             ]);
         }

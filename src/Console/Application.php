@@ -151,7 +151,7 @@ final class Application extends BaseApplication
      */
     public static function getAboutWithRuntime(bool $decorated = false): string
     {
-        $about = self::getAbout(true)."\nPHP runtime: <info>".PHP_VERSION.'</info>';
+        $about = self::getAbout(true)."\nPHP runtime: <info>".\PHP_VERSION.'</info>';
         if (false === $decorated) {
             return strip_tags($about);
         }

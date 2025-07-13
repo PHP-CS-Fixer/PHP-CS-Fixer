@@ -151,7 +151,7 @@ final class FixCommandTest extends TestCase
      */
     public function testUnsupportedVersionWarningRun(): void
     {
-        if (version_compare(PHP_VERSION, ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED.'.99', '<=')) {
+        if (version_compare(\PHP_VERSION, ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED.'.99', '<=')) {
             self::markTestSkipped('This test requires version of PHP higher than '.ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED);
         }
 
@@ -180,7 +180,7 @@ final class FixCommandTest extends TestCase
 
     public function testUnsupportedVersionErrorRun(): void
     {
-        if (version_compare(PHP_VERSION, ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED.'.99', '<=')) {
+        if (version_compare(\PHP_VERSION, ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED.'.99', '<=')) {
             self::markTestSkipped('This test requires version of PHP higher than '.ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED);
         }
 

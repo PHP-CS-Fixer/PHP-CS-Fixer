@@ -207,10 +207,10 @@ final class FileHandlerTest extends TestCase
     private function createSignature(): SignatureInterface
     {
         return new Signature(
-            PHP_VERSION,
+            \PHP_VERSION,
             '2.0',
             '    ',
-            PHP_EOL,
+            \PHP_EOL,
             ['foo' => true, 'bar' => false],
         );
     }

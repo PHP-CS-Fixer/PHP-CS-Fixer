@@ -34,7 +34,7 @@ final class PhpdocParamOrderFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     /**
@@ -72,12 +72,12 @@ function m($a, array $b, Foo $c) {}
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
             // Check for function / closure token
-            $nextFunctionToken = $tokens->getNextTokenOfKind($index, [[T_FUNCTION], [T_FN]]);
+            $nextFunctionToken = $tokens->getNextTokenOfKind($index, [[\T_FUNCTION], [\T_FN]]);
             if (null === $nextFunctionToken) {
                 return;
             }
@@ -98,7 +98,7 @@ function m($a, array $b, Foo $c) {}
             $paramNames = $this->getFunctionParamNames($tokens, $paramBlockStart);
             $doc = $this->rewriteDocBlock($doc, $paramNames, $paramAnnotations);
 
-            $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
+            $tokens[$index] = new Token([\T_DOC_COMMENT, $doc->getContent()]);
         }
     }
 
@@ -111,9 +111,9 @@ function m($a, array $b, Foo $c) {}
 
         $paramNames = [];
         for (
-            $i = $tokens->getNextTokenOfKind($paramBlockStart, [[T_VARIABLE]]);
+            $i = $tokens->getNextTokenOfKind($paramBlockStart, [[\T_VARIABLE]]);
             null !== $i && $i < $paramBlockEnd;
-            $i = $tokens->getNextTokenOfKind($i, [[T_VARIABLE]])
+            $i = $tokens->getNextTokenOfKind($i, [[\T_VARIABLE]])
         ) {
             $paramNames[] = $tokens[$i];
         }

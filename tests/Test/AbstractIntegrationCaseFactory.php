@@ -114,7 +114,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
         /** @var array{php: int, "php<": int, os: list<string>} $parsed */
         $parsed = $this->parseJson($config, [
             'php' => \PHP_VERSION_ID,
-            'php<' => PHP_INT_MAX,
+            'php<' => \PHP_INT_MAX,
             'os' => ['Linux', 'Darwin', 'Windows'],
         ]);
 
@@ -239,7 +239,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
         if ((null === $encoded || '' === $encoded) && null !== $template) {
             $decoded = [];
         } else {
-            $decoded = json_decode($encoded, true, 512, JSON_THROW_ON_ERROR);
+            $decoded = json_decode($encoded, true, 512, \JSON_THROW_ON_ERROR);
         }
 
         if (null !== $template) {

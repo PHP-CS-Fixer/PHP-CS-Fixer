@@ -115,7 +115,7 @@ final class CacheTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $json = json_encode($data, JSON_THROW_ON_ERROR);
+        $json = json_encode($data, \JSON_THROW_ON_ERROR);
 
         Cache::fromJson($json);
     }
@@ -171,7 +171,7 @@ final class CacheTest extends TestCase
         $config = new Config();
 
         yield [new Signature(
-            PHP_VERSION,
+            \PHP_VERSION,
             '2.0',
             '  ',
             "\r\n",
@@ -182,7 +182,7 @@ final class CacheTest extends TestCase
         )];
 
         yield [new Signature(
-            PHP_VERSION,
+            \PHP_VERSION,
             $toolInfo->getVersion(),
             $config->getIndent(),
             $config->getLineEnding(),
@@ -230,7 +230,7 @@ final class CacheTest extends TestCase
 
             public function getLineEnding(): string
             {
-                return PHP_EOL;
+                return \PHP_EOL;
             }
 
             public function getRules(): array

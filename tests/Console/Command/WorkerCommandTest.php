@@ -86,7 +86,7 @@ final class WorkerCommandTest extends TestCase
     {
         $streamSelectLoop = new StreamSelectLoop();
         $server = new TcpServer('127.0.0.1:0', $streamSelectLoop);
-        $serverPort = parse_url($server->getAddress() ?? '', PHP_URL_PORT);
+        $serverPort = parse_url($server->getAddress() ?? '', \PHP_URL_PORT);
         $processIdentifier = ProcessIdentifier::create();
         $processFactory = new ProcessFactory(
             new ArrayInput([], (new FixCommand(new ToolInfo()))->getDefinition())
@@ -117,8 +117,8 @@ final class WorkerCommandTest extends TestCase
         $server->on(
             'connection',
             static function (ConnectionInterface $connection) use (&$workerScope): void {
-                $decoder = new Decoder($connection, true, 512, JSON_INVALID_UTF8_IGNORE);
-                $encoder = new Encoder($connection, JSON_INVALID_UTF8_IGNORE);
+                $decoder = new Decoder($connection, true, 512, \JSON_INVALID_UTF8_IGNORE);
+                $encoder = new Encoder($connection, \JSON_INVALID_UTF8_IGNORE);
 
                 $decoder->on(
                     'data',

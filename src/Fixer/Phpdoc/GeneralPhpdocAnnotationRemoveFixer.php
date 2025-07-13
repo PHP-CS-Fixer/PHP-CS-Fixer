@@ -104,7 +104,7 @@ function foo() {}
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -114,7 +114,7 @@ function foo() {}
         }
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -133,7 +133,7 @@ function foo() {}
             if ('' === $doc->getContent()) {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index);
             } else {
-                $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
+                $tokens[$index] = new Token([\T_DOC_COMMENT, $doc->getContent()]);
             }
         }
     }

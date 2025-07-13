@@ -158,7 +158,7 @@ You may find an UPGRADE guide at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/bl
 ';
 
         $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 7.4.0 and maximum version of PHP 8.2.*.
-Current PHP version: '.PHP_VERSION.'.
+Current PHP version: '.\PHP_VERSION.'.
 Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.
 ';
 
@@ -177,8 +177,8 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
 
         /** @phpstan-ignore-next-line to avoid `Ternary operator condition is always true|false.` */
         $aboutSubpattern = Application::VERSION_CODENAME
-            ? 'PHP CS Fixer '.preg_quote(Application::VERSION, '/').' '.preg_quote(Application::VERSION_CODENAME, '/')." by Fabien Potencier, Dariusz Ruminski and contributors.\nPHP runtime: ".PHP_VERSION
-            : 'PHP CS Fixer '.preg_quote(Application::VERSION, '/')." by Fabien Potencier, Dariusz Ruminski and contributors.\nPHP runtime: ".PHP_VERSION;
+            ? 'PHP CS Fixer '.preg_quote(Application::VERSION, '/').' '.preg_quote(Application::VERSION_CODENAME, '/')." by Fabien Potencier, Dariusz Ruminski and contributors.\nPHP runtime: ".\PHP_VERSION
+            : 'PHP CS Fixer '.preg_quote(Application::VERSION, '/')." by Fabien Potencier, Dariusz Ruminski and contributors.\nPHP runtime: ".\PHP_VERSION;
 
         $availableMaxProcesses = ParallelConfigFactory::detect()->getMaxProcesses();
 

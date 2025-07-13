@@ -46,7 +46,7 @@ final class TagComparator
      */
     public static function shouldBeTogether(Tag $first, Tag $second, array $groups = self::DEFAULT_GROUPS): bool
     {
-        @trigger_error('Method '.__METHOD__.' is deprecated and will be removed in version 4.0.', E_USER_DEPRECATED);
+        @trigger_error('Method '.__METHOD__.' is deprecated and will be removed in version 4.0.', \E_USER_DEPRECATED);
 
         $firstName = $first->getName();
         $secondName = $second->getName();

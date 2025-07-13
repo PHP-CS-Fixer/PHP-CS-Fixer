@@ -131,7 +131,7 @@ final class Example
             $repeatToken = $tokens[$repeatIndex];
 
             if ($tokensAnalyzer->isArray($repeatIndex)) {
-                if ($repeatToken->isGivenKind(T_ARRAY)) {
+                if ($repeatToken->isGivenKind(\T_ARRAY)) {
                     $repeatIndex = $tokens->getNextTokenOfKind($repeatIndex, ['(']);
                     $repeatIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $repeatIndex);
                 } else {
@@ -198,7 +198,7 @@ final class Example
             }
 
             if (null !== $divisionContent && '' !== $divisionContent) {
-                $tokens->insertAt($i + 1, new Token([T_WHITESPACE, $divisionContent]));
+                $tokens->insertAt($i + 1, new Token([\T_WHITESPACE, $divisionContent]));
             }
 
             // collect modifiers
@@ -213,9 +213,9 @@ final class Example
     private function getModifiersSequences(Tokens $tokens, string $type, int $startIndex, int $endIndex): array
     {
         if ('property' === $type) {
-            $tokenKinds = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC, T_VAR, T_STRING, T_NS_SEPARATOR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET];
+            $tokenKinds = [\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_STATIC, \T_VAR, \T_STRING, \T_NS_SEPARATOR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET];
         } else {
-            $tokenKinds = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_CONST];
+            $tokenKinds = [\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_CONST];
         }
 
         $sequence = [];

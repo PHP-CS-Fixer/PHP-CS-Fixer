@@ -57,7 +57,7 @@ final class SingleBlankLineAtEofFixer extends AbstractFixer implements Whitespac
     {
         $count = $tokens->count();
 
-        if ($count > 0 && !$tokens[$count - 1]->isGivenKind([T_INLINE_HTML, T_CLOSE_TAG, T_OPEN_TAG])) {
+        if ($count > 0 && !$tokens[$count - 1]->isGivenKind([\T_INLINE_HTML, \T_CLOSE_TAG, \T_OPEN_TAG])) {
             $tokens->ensureWhitespaceAtIndex($count - 1, 1, $this->whitespacesConfig->getLineEnding());
         }
     }

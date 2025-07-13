@@ -142,14 +142,14 @@ class FooTest extends TestCase {
         foreach ($dataProviderAnalyzer->getDataProviders($tokens, $startIndex, $endIndex) as $dataProviderAnalysis) {
             $testIndices = [];
             foreach ($dataProviderAnalysis->getUsageIndices() as [$usageIndex]) {
-                $testIndices[$tokens->getNextTokenOfKind($usageIndex, [[T_FUNCTION]])] = $usageIndex;
+                $testIndices[$tokens->getNextTokenOfKind($usageIndex, [[\T_FUNCTION]])] = $usageIndex;
             }
             if (\count($testIndices) > 1) {
                 continue;
             }
 
             $dataProviderNewName = $this->getDataProviderNameForUsageIndex($tokens, reset($testIndices));
-            if (null !== $tokens->findSequence([[T_FUNCTION], [T_STRING, $dataProviderNewName]], $startIndex, $endIndex)) {
+            if (null !== $tokens->findSequence([[\T_FUNCTION], [\T_STRING, $dataProviderNewName]], $startIndex, $endIndex)) {
                 continue;
             }
 
@@ -158,9 +158,9 @@ class FooTest extends TestCase {
                     continue;
                 }
 
-                $tokens[$dataProviderAnalysis->getNameIndex()] = new Token([T_STRING, $dataProviderNewName]);
+                $tokens[$dataProviderAnalysis->getNameIndex()] = new Token([\T_STRING, $dataProviderNewName]);
 
-                $newCommentContent = $tokens[$usageIndex]->isGivenKind(T_DOC_COMMENT)
+                $newCommentContent = $tokens[$usageIndex]->isGivenKind(\T_DOC_COMMENT)
                     ? Preg::replace(
                         \sprintf('/(@dataProvider\s+)%s/', $dataProviderAnalysis->getName()),
                         \sprintf('$1%s', $dataProviderNewName),
@@ -180,7 +180,7 @@ class FooTest extends TestCase {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
             }
             $index = $tokens->getNextMeaningfulToken($index);
-        } while (!$tokens[$index]->isGivenKind(T_STRING));
+        } while (!$tokens[$index]->isGivenKind(\T_STRING));
 
         $name = $tokens[$index]->getContent();
 

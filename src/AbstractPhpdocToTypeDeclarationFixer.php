@@ -112,16 +112,16 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
         do {
             $index = $tokens->getPrevNonWhitespace($index);
         } while ($tokens[$index]->isGivenKind([
-            T_COMMENT,
-            T_ABSTRACT,
-            T_FINAL,
-            T_PRIVATE,
-            T_PROTECTED,
-            T_PUBLIC,
-            T_STATIC,
+            \T_COMMENT,
+            \T_ABSTRACT,
+            \T_FINAL,
+            \T_PRIVATE,
+            \T_PROTECTED,
+            \T_PUBLIC,
+            \T_STATIC,
         ]));
 
-        if ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
+        if ($tokens[$index]->isGivenKind(\T_DOC_COMMENT)) {
             return $index;
         }
 
@@ -166,7 +166,7 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
 
         // 'scalar's, 'void', 'iterable' and 'object' must be unqualified
         foreach ($newTokens as $i => $token) {
-            if ($token->isGivenKind(T_STRING)) {
+            if ($token->isGivenKind(\T_STRING)) {
                 $typeUnqualified = $token->getContent();
 
                 if (

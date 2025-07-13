@@ -35,7 +35,7 @@ final class ReturnRefTransformer extends AbstractTransformer
 
     public function process(Tokens $tokens, Token $token, int $index): void
     {
-        if ($token->equals('&') && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind([T_FUNCTION, T_FN])) {
+        if ($token->equals('&') && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind([\T_FUNCTION, \T_FN])) {
             $tokens[$index] = new Token([CT::T_RETURN_REF, '&']);
         }
     }

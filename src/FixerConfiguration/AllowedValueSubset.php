@@ -31,7 +31,7 @@ final class AllowedValueSubset
      */
     public function __construct(array $allowedValues)
     {
-        sort($allowedValues, SORT_FLAG_CASE | SORT_STRING);
+        sort($allowedValues, \SORT_FLAG_CASE | \SORT_STRING);
         $this->allowedValues = $allowedValues;
     }
 

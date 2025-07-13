@@ -53,7 +53,7 @@ final class GithubClient implements GithubClientInterface
          * }>
          */
         $result = json_decode($result, true);
-        if (JSON_ERROR_NONE !== json_last_error()) {
+        if (\JSON_ERROR_NONE !== json_last_error()) {
             throw new \RuntimeException(\sprintf(
                 'Failed to read response from "%s" as JSON: %s.',
                 $this->url,

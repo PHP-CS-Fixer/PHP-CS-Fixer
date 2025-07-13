@@ -286,12 +286,12 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $testDefaultNamespaceTokenIndex = null;
         $testIndex = $tokens->getNextMeaningfulToken($assertCall['openBraceIndex']);
 
-        if (!$tokens[$testIndex]->isGivenKind([T_EMPTY, T_STRING])) {
+        if (!$tokens[$testIndex]->isGivenKind([\T_EMPTY, \T_STRING])) {
             if ($this->fixAssertTrueFalseInstanceof($tokens, $assertCall, $testIndex)) {
                 return;
             }
 
-            if (!$tokens[$testIndex]->isGivenKind(T_NS_SEPARATOR)) {
+            if (!$tokens[$testIndex]->isGivenKind(\T_NS_SEPARATOR)) {
                 return;
             }
 
@@ -335,7 +335,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 return;
             }
 
-            $tokens[$assertCall['index']] = new Token([T_STRING, $fixDetails[$isPositive]]);
+            $tokens[$assertCall['index']] = new Token([\T_STRING, $fixDetails[$isPositive]]);
             $this->removeFunctionCall($tokens, $testDefaultNamespaceTokenIndex, $testIndex, $testOpenIndex, $testCloseIndex);
 
             if ($fixDetails['swap_arguments'] ?? false) {
@@ -355,8 +355,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
         $type = substr($content, 3);
 
-        $tokens[$assertCall['index']] = new Token([T_STRING, $isPositive ? 'assertInternalType' : 'assertNotInternalType']);
-        $tokens[$testIndex] = new Token([T_CONSTANT_ENCAPSED_STRING, "'".$type."'"]);
+        $tokens[$assertCall['index']] = new Token([\T_STRING, $isPositive ? 'assertInternalType' : 'assertNotInternalType']);
+        $tokens[$testIndex] = new Token([\T_CONSTANT_ENCAPSED_STRING, "'".$type."'"]);
         $tokens[$testOpenIndex] = new Token(',');
 
         $tokens->clearTokenAndMergeSurroundingWhitespace($testCloseIndex);
@@ -368,7 +368,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         }
 
         if (!$tokens[$testOpenIndex + 1]->isWhitespace()) {
-            $tokens->insertAt($testOpenIndex + 1, new Token([T_WHITESPACE, ' ']));
+            $tokens->insertAt($testOpenIndex + 1, new Token([\T_WHITESPACE, ' ']));
         }
 
         if (null !== $testDefaultNamespaceTokenIndex) {
@@ -396,13 +396,13 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             $isPositiveCondition = true;
         }
 
-        if (!$tokens[$variableIndex]->isGivenKind(T_VARIABLE)) {
+        if (!$tokens[$variableIndex]->isGivenKind(\T_VARIABLE)) {
             return false;
         }
 
         $instanceOfIndex = $tokens->getNextMeaningfulToken($variableIndex);
 
-        if (!$tokens[$instanceOfIndex]->isGivenKind(T_INSTANCEOF)) {
+        if (!$tokens[$instanceOfIndex]->isGivenKind(\T_INSTANCEOF)) {
             return false;
         }
 
@@ -412,11 +412,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         do {
             $classEndIndex = $tokens->getNextMeaningfulToken($classEndIndex);
             $classPartTokens[] = $tokens[$classEndIndex];
-        } while ($tokens[$classEndIndex]->isGivenKind([T_STRING, T_NS_SEPARATOR, T_VARIABLE]));
+        } while ($tokens[$classEndIndex]->isGivenKind([\T_STRING, \T_NS_SEPARATOR, \T_VARIABLE]));
 
         if ($tokens[$classEndIndex]->equalsAny([',', ')'])) { // do the fixing
             array_pop($classPartTokens);
-            $isInstanceOfVar = reset($classPartTokens)->isGivenKind(T_VARIABLE);
+            $isInstanceOfVar = reset($classPartTokens)->isGivenKind(\T_VARIABLE);
             $insertIndex = $testIndex - 1;
             $newTokens = [];
 
@@ -425,12 +425,12 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             }
 
             if (!$isInstanceOfVar) {
-                $newTokens[++$insertIndex] = new Token([T_DOUBLE_COLON, '::']);
+                $newTokens[++$insertIndex] = new Token([\T_DOUBLE_COLON, '::']);
                 $newTokens[++$insertIndex] = new Token([CT::T_CLASS_CONSTANT, 'class']);
             }
 
             $newTokens[++$insertIndex] = new Token(',');
-            $newTokens[++$insertIndex] = new Token([T_WHITESPACE, ' ']);
+            $newTokens[++$insertIndex] = new Token([\T_WHITESPACE, ' ']);
             $newTokens[++$insertIndex] = clone $tokens[$variableIndex];
 
             for ($i = $classEndIndex - 1; $i >= $testIndex; --$i) {
@@ -444,7 +444,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 : 'assertNotInstanceOf';
 
             $tokens->insertSlices($newTokens);
-            $tokens[$assertCall['index']] = new Token([T_STRING, $name]);
+            $tokens[$assertCall['index']] = new Token([\T_STRING, $name]);
         }
 
         return true;
@@ -467,11 +467,11 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         // let $a = [1,2]; $b = "2";
         // "$this->assertEquals("2", count($a)); $this->assertEquals($b, count($a)); $this->assertEquals(2.1, count($a));"
 
-        if ($tokens[$expectedIndex]->isGivenKind([T_VARIABLE])) {
+        if ($tokens[$expectedIndex]->isGivenKind([\T_VARIABLE])) {
             if (!$tokens[$tokens->getNextMeaningfulToken($expectedIndex)]->equals(',')) {
                 return;
             }
-        } elseif (!$tokens[$expectedIndex]->isGivenKind([T_LNUMBER, T_VARIABLE])) {
+        } elseif (!$tokens[$expectedIndex]->isGivenKind([\T_LNUMBER, \T_VARIABLE])) {
             return;
         }
 
@@ -485,14 +485,14 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         // @ $this->/self::assertEquals/Same([$nextIndex,$commaIndex,$countCallIndex])
         $countCallIndex = $tokens->getNextMeaningfulToken($commaIndex);
 
-        if ($tokens[$countCallIndex]->isGivenKind(T_NS_SEPARATOR)) {
+        if ($tokens[$countCallIndex]->isGivenKind(\T_NS_SEPARATOR)) {
             $defaultNamespaceTokenIndex = $countCallIndex;
             $countCallIndex = $tokens->getNextMeaningfulToken($countCallIndex);
         } else {
             $defaultNamespaceTokenIndex = null;
         }
 
-        if (!$tokens[$countCallIndex]->isGivenKind(T_STRING)) {
+        if (!$tokens[$countCallIndex]->isGivenKind(\T_STRING)) {
             return;
         }
 
@@ -525,7 +525,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         );
 
         $tokens[$assertCall['index']] = new Token([
-            T_STRING,
+            \T_STRING,
             false === strpos($assertCall['loweredName'], 'not', 6) ? 'assertCount' : 'assertNotCount',
         ]);
     }
@@ -563,7 +563,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $secondClone = $this->cloneAndClearTokens($tokens, $secondArgumentIndex, $secondArgumentEndIndex);
 
         if (!$firstClone[0]->isWhitespace()) {
-            array_unshift($firstClone, new Token([T_WHITESPACE, ' ']));
+            array_unshift($firstClone, new Token([\T_WHITESPACE, ' ']));
         }
 
         $tokens->insertAt($secondArgumentIndex, $firstClone);

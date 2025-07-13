@@ -314,13 +314,13 @@ $foo = new class(){};
 
         if ($tokens[$openIndex - 1]->isWhitespace()) {
             if (' ' !== $spacing || !$tokens[$tokens->getPrevNonWhitespace($openIndex - 1)]->isComment()) {
-                $tokens[$openIndex - 1] = new Token([T_WHITESPACE, $spacing]);
+                $tokens[$openIndex - 1] = new Token([\T_WHITESPACE, $spacing]);
             }
 
             return $openIndex;
         }
 
-        $tokens->insertAt($openIndex, new Token([T_WHITESPACE, $spacing]));
+        $tokens->insertAt($openIndex, new Token([\T_WHITESPACE, $spacing]));
 
         return $openIndex + 1;
     }
@@ -343,19 +343,19 @@ $foo = new class(){};
             'readonly' => false,
         ];
 
-        if (!$tokens[$classyIndex]->isGivenKind(T_TRAIT)) {
-            $extends = $tokens->findGivenKind(T_EXTENDS, $classyIndex, $openIndex);
+        if (!$tokens[$classyIndex]->isGivenKind(\T_TRAIT)) {
+            $extends = $tokens->findGivenKind(\T_EXTENDS, $classyIndex, $openIndex);
             $def['extends'] = [] !== $extends ? $this->getClassyInheritanceInfo($tokens, array_key_first($extends), 'numberOfExtends') : false;
 
-            if (!$tokens[$classyIndex]->isGivenKind(T_INTERFACE)) {
-                $implements = $tokens->findGivenKind(T_IMPLEMENTS, $classyIndex, $openIndex);
+            if (!$tokens[$classyIndex]->isGivenKind(\T_INTERFACE)) {
+                $implements = $tokens->findGivenKind(\T_IMPLEMENTS, $classyIndex, $openIndex);
                 $def['implements'] = [] !== $implements ? $this->getClassyInheritanceInfo($tokens, array_key_first($implements), 'numberOfImplements') : false;
                 $def['anonymousClass'] = $tokensAnalyzer->isAnonymousClass($classyIndex);
             }
         }
 
         if ($def['anonymousClass']) {
-            $startIndex = $tokens->getPrevTokenOfKind($classyIndex, [[T_NEW]]); // go to "new" for anonymous class
+            $startIndex = $tokens->getPrevTokenOfKind($classyIndex, [[\T_NEW]]); // go to "new" for anonymous class
         } else {
             $modifiers = $tokensAnalyzer->getClassyModifiers($classyIndex);
             $startIndex = $classyIndex;
@@ -382,7 +382,7 @@ $foo = new class(){};
     {
         $implementsInfo = ['start' => $startIndex, $label => 1, 'multiLine' => false];
         ++$startIndex;
-        $endIndex = $tokens->getNextTokenOfKind($startIndex, ['{', [T_IMPLEMENTS], [T_EXTENDS]]);
+        $endIndex = $tokens->getNextTokenOfKind($startIndex, ['{', [\T_IMPLEMENTS], [\T_EXTENDS]]);
         $endIndex = $tokens[$endIndex]->equals('{') ? $tokens->getPrevNonWhitespace($endIndex) : $endIndex;
 
         for ($i = $startIndex; $i < $endIndex; ++$i) {
@@ -414,7 +414,7 @@ $foo = new class(){};
                         continue;
                     }
 
-                    if ($tokens[$i - 1]->isGivenKind(T_DOC_COMMENT) || $tokens[$i + 1]->isGivenKind(T_DOC_COMMENT)) {
+                    if ($tokens[$i - 1]->isGivenKind(\T_DOC_COMMENT) || $tokens[$i + 1]->isGivenKind(\T_DOC_COMMENT)) {
                         continue;
                     }
                 }
@@ -422,7 +422,7 @@ $foo = new class(){};
                 if ($tokens[$i - 1]->isComment()) {
                     $content = $tokens[$i - 1]->getContent();
                     if (!str_starts_with($content, '//') && !str_starts_with($content, '#')) {
-                        $tokens[$i] = new Token([T_WHITESPACE, ' ']);
+                        $tokens[$i] = new Token([\T_WHITESPACE, ' ']);
                     }
 
                     continue;
@@ -431,15 +431,15 @@ $foo = new class(){};
                 if ($tokens[$i + 1]->isComment()) {
                     $content = $tokens[$i + 1]->getContent();
                     if (!str_starts_with($content, '//')) {
-                        $tokens[$i] = new Token([T_WHITESPACE, ' ']);
+                        $tokens[$i] = new Token([\T_WHITESPACE, ' ']);
                     }
 
                     continue;
                 }
 
-                if ($tokens[$i - 1]->isGivenKind(T_CLASS) && $tokens[$i + 1]->equals('(')) {
+                if ($tokens[$i - 1]->isGivenKind(\T_CLASS) && $tokens[$i + 1]->equals('(')) {
                     if (true === $this->configuration['space_before_parenthesis']) {
-                        $tokens[$i] = new Token([T_WHITESPACE, ' ']);
+                        $tokens[$i] = new Token([\T_WHITESPACE, ' ']);
                     } else {
                         $tokens->clearAt($i);
                     }
@@ -453,19 +453,19 @@ $foo = new class(){};
                     continue;
                 }
 
-                $tokens[$i] = new Token([T_WHITESPACE, ' ']);
+                $tokens[$i] = new Token([\T_WHITESPACE, ' ']);
 
                 continue;
             }
 
             if ($tokens[$i]->equals(',') && !$tokens[$i + 1]->isWhitespace()) {
-                $tokens->insertAt($i + 1, new Token([T_WHITESPACE, ' ']));
+                $tokens->insertAt($i + 1, new Token([\T_WHITESPACE, ' ']));
 
                 continue;
             }
 
-            if (true === $this->configuration['space_before_parenthesis'] && $tokens[$i]->isGivenKind(T_CLASS) && !$tokens[$i + 1]->isWhitespace()) {
-                $tokens->insertAt($i + 1, new Token([T_WHITESPACE, ' ']));
+            if (true === $this->configuration['space_before_parenthesis'] && $tokens[$i]->isGivenKind(\T_CLASS) && !$tokens[$i + 1]->isWhitespace()) {
+                $tokens->insertAt($i + 1, new Token([\T_WHITESPACE, ' ']));
 
                 continue;
             }
@@ -475,11 +475,11 @@ $foo = new class(){};
             }
 
             if (!$tokens[$i + 1]->isWhitespace() && !$tokens[$i + 1]->isComment() && !str_contains($tokens[$i]->getContent(), "\n")) {
-                $tokens->insertAt($i + 1, new Token([T_WHITESPACE, ' ']));
+                $tokens->insertAt($i + 1, new Token([\T_WHITESPACE, ' ']));
             }
 
             if (!$tokens[$i - 1]->isWhitespace() && !$tokens[$i - 1]->isComment()) {
-                $tokens->insertAt($i, new Token([T_WHITESPACE, ' ']));
+                $tokens->insertAt($i, new Token([\T_WHITESPACE, ' ']));
             }
         }
     }
@@ -487,7 +487,7 @@ $foo = new class(){};
     private function makeClassyInheritancePartMultiLine(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         for ($i = $endIndex; $i > $startIndex; --$i) {
-            $previousInterfaceImplementingIndex = $tokens->getPrevTokenOfKind($i, [',', [T_IMPLEMENTS], [T_EXTENDS]]);
+            $previousInterfaceImplementingIndex = $tokens->getPrevTokenOfKind($i, [',', [\T_IMPLEMENTS], [\T_EXTENDS]]);
             $breakAtIndex = $tokens->getNextMeaningfulToken($previousInterfaceImplementingIndex);
 
             // make the part of a ',' or 'implements' single line
@@ -511,11 +511,11 @@ $foo = new class(){};
             if (!$isOnOwnLine) {
                 if ($tokens[$breakAtIndex - 1]->isWhitespace()) {
                     $tokens[$breakAtIndex - 1] = new Token([
-                        T_WHITESPACE,
+                        \T_WHITESPACE,
                         $this->whitespacesConfig->getLineEnding().$this->whitespacesConfig->getIndent(),
                     ]);
                 } else {
-                    $tokens->insertAt($breakAtIndex, new Token([T_WHITESPACE, $this->whitespacesConfig->getLineEnding().$this->whitespacesConfig->getIndent()]));
+                    $tokens->insertAt($breakAtIndex, new Token([\T_WHITESPACE, $this->whitespacesConfig->getLineEnding().$this->whitespacesConfig->getIndent()]));
                 }
             }
 

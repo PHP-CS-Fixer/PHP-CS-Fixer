@@ -100,7 +100,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         }
 
         $tokens[$assertCall['index']] = new Token([
-            T_STRING,
+            \T_STRING,
             $replacement,
         ]);
     }
