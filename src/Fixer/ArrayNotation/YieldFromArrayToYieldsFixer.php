@@ -53,7 +53,7 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_YIELD_FROM);
+        return $tokens->isTokenKindFound(\T_YIELD_FROM);
     }
 
     /**
@@ -89,7 +89,7 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
 
             $startIndex = $tokens->getNextMeaningfulToken($startIndex);
 
-            $inserts[$startIndex] = [new Token([T_YIELD, 'yield']), new Token([T_WHITESPACE, ' '])];
+            $inserts[$startIndex] = [new Token([\T_YIELD, 'yield']), new Token([\T_WHITESPACE, ' '])];
 
             foreach ($this->findArrayItemCommaIndex(
                 $tokens,
@@ -99,7 +99,7 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
                 $nextItemIndex = $tokens->getNextMeaningfulToken($commaIndex);
 
                 if ($nextItemIndex < $endIndex) {
-                    $inserts[$nextItemIndex] = [new Token([T_YIELD, 'yield']), new Token([T_WHITESPACE, ' '])];
+                    $inserts[$nextItemIndex] = [new Token([\T_YIELD, 'yield']), new Token([\T_WHITESPACE, ' '])];
                     $tokens[$commaIndex] = new Token(';');
                 } else {
                     $arrayHasTrailingComma = true;
@@ -125,22 +125,22 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
         $tokensCount = $tokens->count();
         $index = 0;
         while (++$index < $tokensCount) {
-            if (!$tokens[$index]->isGivenKind(T_YIELD_FROM)) {
+            if (!$tokens[$index]->isGivenKind(\T_YIELD_FROM)) {
                 continue;
             }
 
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
-            if (!$tokens[$prevIndex]->equalsAny([';', '{', '}', [T_OPEN_TAG]])) {
+            if (!$tokens[$prevIndex]->equalsAny([';', '{', '}', [\T_OPEN_TAG]])) {
                 continue;
             }
 
             $arrayStartIndex = $tokens->getNextMeaningfulToken($index);
 
-            if (!$tokens[$arrayStartIndex]->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+            if (!$tokens[$arrayStartIndex]->isGivenKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
                 continue;
             }
 
-            if ($tokens[$arrayStartIndex]->isGivenKind(T_ARRAY)) {
+            if ($tokens[$arrayStartIndex]->isGivenKind(\T_ARRAY)) {
                 $startIndex = $tokens->getNextTokenOfKind($arrayStartIndex, ['(']);
                 $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
             } else {
@@ -154,7 +154,7 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
             }
 
             // is there any nested "yield from"?
-            if ([] !== $tokens->findGivenKind(T_YIELD_FROM, $startIndex, $endIndex)) {
+            if ([] !== $tokens->findGivenKind(\T_YIELD_FROM, $startIndex, $endIndex)) {
                 continue;
             }
 

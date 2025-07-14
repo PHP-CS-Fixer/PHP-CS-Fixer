@@ -301,7 +301,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
         $tokens = Tokens::fromCode((string) file_get_contents($filePath));
 
-        $sequences = $this->findAllTokenSequences($tokens, [[T_VARIABLE, '$tokens'], [T_OBJECT_OPERATOR], [T_STRING]]);
+        $sequences = $this->findAllTokenSequences($tokens, [[\T_VARIABLE, '$tokens'], [\T_OBJECT_OPERATOR], [\T_STRING]]);
 
         $usedMethods = array_unique(array_map(static function (array $sequence): string {
             $last = end($sequence);
@@ -457,9 +457,9 @@ abstract class AbstractFixerTestCase extends TestCase
 
         self::assertSame(
             null !== $tokens->findSequence([
-                [T_VARIABLE, '$this'],
-                [T_OBJECT_OPERATOR],
-                [T_STRING, 'whitespacesConfig'],
+                [\T_VARIABLE, '$this'],
+                [\T_OBJECT_OPERATOR],
+                [\T_STRING, 'whitespacesConfig'],
             ]),
             $this->fixer instanceof WhitespacesAwareFixerInterface,
         );

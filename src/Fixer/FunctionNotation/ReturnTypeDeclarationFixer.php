@@ -95,7 +95,7 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
             if ($previousToken->isWhitespace()) {
                 if (!$tokens[$tokens->getPrevNonWhitespace($index - 1)]->isComment()) {
                     if ($oneSpaceBefore) {
-                        $tokens[$previousIndex] = new Token([T_WHITESPACE, ' ']);
+                        $tokens[$previousIndex] = new Token([\T_WHITESPACE, ' ']);
                     } else {
                         $tokens->clearAt($previousIndex);
                     }

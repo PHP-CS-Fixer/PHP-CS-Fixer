@@ -25,7 +25,7 @@ final class PhpdocListTypeFixer extends AbstractPhpdocTypesFixer
 {
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     public function isRisky(): bool

@@ -19,6 +19,7 @@ use Keradus\CliExecutor\CommandExecutor;
 use Keradus\CliExecutor\ScriptExecutor;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -157,7 +158,7 @@ You may find an UPGRADE guide at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/bl
 ';
 
         $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 7.4.0 and maximum version of PHP 8.2.*.
-Current PHP version: '.PHP_VERSION.'.
+Current PHP version: '.\PHP_VERSION.'.
 Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.
 ';
 
@@ -176,8 +177,10 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
 
         /** @phpstan-ignore-next-line to avoid `Ternary operator condition is always true|false.` */
         $aboutSubpattern = Application::VERSION_CODENAME
-            ? 'PHP CS Fixer '.preg_quote(Application::VERSION, '/').' '.preg_quote(Application::VERSION_CODENAME, '/')." by Fabien Potencier, Dariusz Ruminski and contributors.\nPHP runtime: ".PHP_VERSION
-            : 'PHP CS Fixer '.preg_quote(Application::VERSION, '/')." by Fabien Potencier, Dariusz Ruminski and contributors.\nPHP runtime: ".PHP_VERSION;
+            ? 'PHP CS Fixer '.preg_quote(Application::VERSION, '/').' '.preg_quote(Application::VERSION_CODENAME, '/')." by Fabien Potencier, Dariusz Ruminski and contributors.\nPHP runtime: ".\PHP_VERSION
+            : 'PHP CS Fixer '.preg_quote(Application::VERSION, '/')." by Fabien Potencier, Dariusz Ruminski and contributors.\nPHP runtime: ".\PHP_VERSION;
+
+        $availableMaxProcesses = ParallelConfigFactory::detect()->getMaxProcesses();
 
         $pattern = \sprintf(
             '/^(?:%s)?(?:%s)?(?:%s)?(?:%s)?%s\n%s\n%s\n%s\n([\.S]{%d})%s\n%s$/',
@@ -187,7 +190,7 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
             preg_quote($optionalWarningsHelp, '/'),
             $aboutSubpattern,
             'Running analysis on \d+ core(?: sequentially|s with \d+ files? per process)+\.',
-            preg_quote('You can enable parallel runner and speed up the analysis! Please see https://cs.symfony.com/doc/usage.html for more information.', '/'),
+            $availableMaxProcesses > 1 ? preg_quote('You can enable parallel runner and speed up the analysis! Please see https://cs.symfony.com/doc/usage.html for more information.', '/') : '',
             preg_quote('Loaded config default from ".php-cs-fixer.dist.php".', '/'),
             \strlen($expectedResult3FilesDots),
             preg_quote($expectedResult3FilesPercentage, '/'),

@@ -45,7 +45,7 @@ trait Indentation
     private function getPreviousNewlineTokenIndex(Tokens $tokens, int $index): ?int
     {
         while ($index > 0) {
-            $index = $tokens->getPrevTokenOfKind($index, [[T_WHITESPACE], [T_INLINE_HTML]]);
+            $index = $tokens->getPrevTokenOfKind($index, [[\T_WHITESPACE], [\T_INLINE_HTML]]);
 
             if (null === $index) {
                 break;
@@ -63,7 +63,7 @@ trait Indentation
     {
         $content = $tokens[$index]->getContent();
 
-        if (0 !== $index && $tokens[$index - 1]->equalsAny([[T_OPEN_TAG], [T_CLOSE_TAG]])) {
+        if (0 !== $index && $tokens[$index - 1]->equalsAny([[\T_OPEN_TAG], [\T_CLOSE_TAG]])) {
             $content = Preg::replace('/\S/', '', $tokens[$index - 1]->getContent()).$content;
         }
 
@@ -75,7 +75,7 @@ trait Indentation
         $token = $tokens[$index];
 
         if (
-            $token->isGivenKind(T_OPEN_TAG)
+            $token->isGivenKind(\T_OPEN_TAG)
             && isset($tokens[$index + 1])
             && !$tokens[$index + 1]->isWhitespace()
             && Preg::match('/\R/', $token->getContent())
@@ -83,7 +83,7 @@ trait Indentation
             return true;
         }
 
-        if (!$tokens[$index]->isGivenKind([T_WHITESPACE, T_INLINE_HTML])) {
+        if (!$tokens[$index]->isGivenKind([\T_WHITESPACE, \T_INLINE_HTML])) {
             return false;
         }
 

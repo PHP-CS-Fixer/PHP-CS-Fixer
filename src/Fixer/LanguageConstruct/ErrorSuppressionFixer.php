@@ -89,7 +89,7 @@ final class ErrorSuppressionFixer extends AbstractFixer implements ConfigurableF
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     public function isRisky(): bool
@@ -137,7 +137,7 @@ final class ErrorSuppressionFixer extends AbstractFixer implements ConfigurableF
             $startIndex = $index;
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-            if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
+            if ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
                 $startIndex = $prevIndex;
                 $prevIndex = $tokens->getPrevMeaningfulToken($startIndex);
             }
@@ -174,13 +174,13 @@ final class ErrorSuppressionFixer extends AbstractFixer implements ConfigurableF
             return false;
         }
 
-        $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $tokens->getNextTokenOfKind($index, [[T_STRING], '(']));
+        $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $tokens->getNextTokenOfKind($index, [[\T_STRING], '(']));
         $prevIndex = $tokens->getPrevMeaningfulToken($endBraceIndex);
 
         if ($tokens[$prevIndex]->equals(',')) {
             $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
         }
 
-        return $tokens[$prevIndex]->equals([T_STRING, 'E_USER_DEPRECATED']);
+        return $tokens[$prevIndex]->equals([\T_STRING, 'E_USER_DEPRECATED']);
     }
 }

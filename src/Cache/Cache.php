@@ -75,7 +75,7 @@ final class Cache implements CacheInterface
             'hashes' => $this->hashes,
         ]);
 
-        if (JSON_ERROR_NONE !== json_last_error() || false === $json) {
+        if (\JSON_ERROR_NONE !== json_last_error() || false === $json) {
             throw new \UnexpectedValueException(\sprintf(
                 'Cannot encode cache signature to JSON, error: "%s". If you have non-UTF8 chars in your signature, like in license for `header_comment`, consider enabling `ext-mbstring` or install `symfony/polyfill-mbstring`.',
                 json_last_error_msg()
@@ -92,7 +92,7 @@ final class Cache implements CacheInterface
     {
         $data = json_decode($json, true);
 
-        if (null === $data && JSON_ERROR_NONE !== json_last_error()) {
+        if (null === $data && \JSON_ERROR_NONE !== json_last_error()) {
             throw new \InvalidArgumentException(\sprintf(
                 'Value needs to be a valid JSON string, got "%s", error: "%s".',
                 $json,

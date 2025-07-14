@@ -114,10 +114,10 @@ final class EchoTagSyntaxFixer extends AbstractFixer implements ConfigurableFixe
     public function isCandidate(Tokens $tokens): bool
     {
         if (self::FORMAT_SHORT === $this->configuration[self::OPTION_FORMAT]) {
-            return $tokens->isAnyTokenKindsFound([T_ECHO, T_PRINT]);
+            return $tokens->isAnyTokenKindsFound([\T_ECHO, \T_PRINT]);
         }
 
-        return $tokens->isTokenKindFound(T_OPEN_TAG_WITH_ECHO);
+        return $tokens->isTokenKindFound(\T_OPEN_TAG_WITH_ECHO);
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
@@ -152,7 +152,7 @@ final class EchoTagSyntaxFixer extends AbstractFixer implements ConfigurableFixe
         $count = $tokens->count();
 
         for ($index = 0; $index < $count; ++$index) {
-            if (!$tokens[$index]->isGivenKind(T_OPEN_TAG)) {
+            if (!$tokens[$index]->isGivenKind(\T_OPEN_TAG)) {
                 continue;
             }
 
@@ -162,7 +162,7 @@ final class EchoTagSyntaxFixer extends AbstractFixer implements ConfigurableFixe
                 return;
             }
 
-            if (!$tokens[$nextMeaningful]->isGivenKind([T_ECHO, T_PRINT])) {
+            if (!$tokens[$nextMeaningful]->isGivenKind([\T_ECHO, \T_PRINT])) {
                 $index = $nextMeaningful;
 
                 continue;
@@ -183,24 +183,24 @@ final class EchoTagSyntaxFixer extends AbstractFixer implements ConfigurableFixe
     private function shortToLong(Tokens $tokens): void
     {
         if (self::LONG_FUNCTION_PRINT === $this->configuration[self::OPTION_LONG_FUNCTION]) {
-            $echoToken = [T_PRINT, 'print'];
+            $echoToken = [\T_PRINT, 'print'];
         } else {
-            $echoToken = [T_ECHO, 'echo'];
+            $echoToken = [\T_ECHO, 'echo'];
         }
 
         $index = -1;
 
         while (true) {
-            $index = $tokens->getNextTokenOfKind($index, [[T_OPEN_TAG_WITH_ECHO]]);
+            $index = $tokens->getNextTokenOfKind($index, [[\T_OPEN_TAG_WITH_ECHO]]);
 
             if (null === $index) {
                 return;
             }
 
-            $replace = [new Token([T_OPEN_TAG, '<?php ']), new Token($echoToken)];
+            $replace = [new Token([\T_OPEN_TAG, '<?php ']), new Token($echoToken)];
 
             if (!$tokens[$index + 1]->isWhitespace()) {
-                $replace[] = new Token([T_WHITESPACE, ' ']);
+                $replace[] = new Token([\T_WHITESPACE, ' ']);
             }
 
             $tokens->overrideRange($index, $index, $replace);
@@ -226,7 +226,7 @@ final class EchoTagSyntaxFixer extends AbstractFixer implements ConfigurableFixe
         for ($count = $tokens->count(); $index < $count; ++$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(T_CLOSE_TAG)) {
+            if ($token->isGivenKind(\T_CLOSE_TAG)) {
                 return false;
             }
 
@@ -247,7 +247,7 @@ final class EchoTagSyntaxFixer extends AbstractFixer implements ConfigurableFixe
      */
     private function buildLongToShortTokens(Tokens $tokens, int $openTagIndex, int $echoTagIndex): array
     {
-        $result = [new Token([T_OPEN_TAG_WITH_ECHO, '<?='])];
+        $result = [new Token([\T_OPEN_TAG_WITH_ECHO, '<?='])];
 
         $start = $tokens->getNextNonWhitespace($openTagIndex);
 

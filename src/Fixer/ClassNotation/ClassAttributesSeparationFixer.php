@@ -72,7 +72,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
     public const SPACING_ONE = 'one';
 
     private const SPACING_ONLY_IF_META = 'only_if_meta';
-    private const MODIFIER_TYPES = [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_ABSTRACT, T_FINAL, T_STATIC, T_STRING, T_NS_SEPARATOR, T_VAR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE, FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET];
+    private const MODIFIER_TYPES = [\T_PRIVATE, \T_PROTECTED, \T_PUBLIC, \T_ABSTRACT, \T_FINAL, \T_STATIC, \T_STRING, \T_NS_SEPARATOR, \T_VAR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE, FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET];
 
     /**
      * @var array<string, string>
@@ -275,7 +275,7 @@ class Sample
         }
 
         // deal with comments above an element
-        if ($tokens[$nonWhiteAbove]->isGivenKind(T_COMMENT)) {
+        if ($tokens[$nonWhiteAbove]->isGivenKind(\T_COMMENT)) {
             // check if the comment belongs to the previous element
             if ($elementAboveEnd === $nonWhiteAbove) {
                 $this->correctLineBreaks($tokens, $nonWhiteAbove, $element['start'], $this->determineRequiredLineCount($tokens, $class, $elementIndex));
@@ -320,7 +320,7 @@ class Sample
         }
 
         // deal with element with a PHPDoc/attribute above it
-        if ($tokens[$nonWhiteAbove]->isGivenKind([T_DOC_COMMENT, CT::T_ATTRIBUTE_CLOSE])) {
+        if ($tokens[$nonWhiteAbove]->isGivenKind([\T_DOC_COMMENT, CT::T_ATTRIBUTE_CLOSE])) {
             // there should be one linebreak between the element and the attribute above it
             $this->correctLineBreaks($tokens, $nonWhiteAbove, $element['start'], 1);
 
@@ -361,13 +361,13 @@ class Sample
 
             $aboveElementDocCandidateIndex = $tokens->getPrevNonWhitespace($aboveElement['start']);
 
-            return $tokens[$aboveElementDocCandidateIndex]->isGivenKind([T_DOC_COMMENT, CT::T_ATTRIBUTE_CLOSE]) ? 2 : 1;
+            return $tokens[$aboveElementDocCandidateIndex]->isGivenKind([\T_DOC_COMMENT, CT::T_ATTRIBUTE_CLOSE]) ? 2 : 1;
         }
 
         if (self::SPACING_ONLY_IF_META === $spacing) {
             $aboveElementDocCandidateIndex = $tokens->getPrevNonWhitespace($class['elements'][$elementIndex]['start']);
 
-            return $tokens[$aboveElementDocCandidateIndex]->isGivenKind([T_DOC_COMMENT, CT::T_ATTRIBUTE_CLOSE]) ? 2 : 1;
+            return $tokens[$aboveElementDocCandidateIndex]->isGivenKind([\T_DOC_COMMENT, CT::T_ATTRIBUTE_CLOSE]) ? 2 : 1;
         }
 
         throw new \RuntimeException(\sprintf('Unknown spacing "%s".', $spacing));
@@ -394,7 +394,7 @@ class Sample
         $numbOfWhiteTokens = $endIndex - $startIndex;
 
         if (0 === $numbOfWhiteTokens) {
-            $tokens->insertAt($startIndex, new Token([T_WHITESPACE, str_repeat($lineEnding, $reqLineCount)]));
+            $tokens->insertAt($startIndex, new Token([\T_WHITESPACE, str_repeat($lineEnding, $reqLineCount)]));
 
             return;
         }
@@ -407,7 +407,7 @@ class Sample
 
         if ($lineBreakCount < $reqLineCount) {
             $tokens[$startIndex] = new Token([
-                T_WHITESPACE,
+                \T_WHITESPACE,
                 str_repeat($lineEnding, $reqLineCount - $lineBreakCount).$tokens[$startIndex]->getContent(),
             ]);
 
@@ -417,7 +417,7 @@ class Sample
         // $lineCount = > $reqLineCount : check the one Token case first since this one will be true most of the time
         if (1 === $numbOfWhiteTokens) {
             $tokens[$startIndex] = new Token([
-                T_WHITESPACE,
+                \T_WHITESPACE,
                 Preg::replace('/\r\n|\n/', '', $tokens[$startIndex]->getContent(), $lineBreakCount - $reqLineCount),
             ]);
 
@@ -432,7 +432,7 @@ class Sample
 
             if ($tokenLineCount > 0) {
                 $tokens[$i] = new Token([
-                    T_WHITESPACE,
+                    \T_WHITESPACE,
                     Preg::replace('/\r\n|\n/', '', $tokens[$i]->getContent(), min($toReplaceCount, $tokenLineCount)),
                 ]);
                 $toReplaceCount -= $tokenLineCount;
@@ -547,7 +547,7 @@ class Sample
     private function getLastTokenIndexOfClassElement(Tokens $tokens, array $class, array $element, TokensAnalyzer $tokensAnalyzer): int
     {
         // find last token of the element
-        if ('method' === $element['type'] && !$tokens[$class['index']]->isGivenKind(T_INTERFACE)) {
+        if ('method' === $element['type'] && !$tokens[$class['index']]->isGivenKind(\T_INTERFACE)) {
             $attributes = $tokensAnalyzer->getMethodAttributes($element['index']);
 
             if (true === $attributes['abstract']) {
@@ -560,7 +560,7 @@ class Sample
 
             do {
                 $elementEndIndex = $tokens->getNextMeaningfulToken($elementEndIndex);
-            } while ($tokens[$elementEndIndex]->isGivenKind([T_STRING, T_NS_SEPARATOR]) || $tokens[$elementEndIndex]->equals(','));
+            } while ($tokens[$elementEndIndex]->isGivenKind([\T_STRING, \T_NS_SEPARATOR]) || $tokens[$elementEndIndex]->equals(','));
 
             if (!$tokens[$elementEndIndex]->equals(';')) {
                 $elementEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $tokens->getNextTokenOfKind($element['index'], ['{']));

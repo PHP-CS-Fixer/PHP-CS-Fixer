@@ -48,7 +48,7 @@ final class StrictComparisonFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_IS_EQUAL, T_IS_NOT_EQUAL]);
+        return $tokens->isAnyTokenKindsFound([\T_IS_EQUAL, \T_IS_NOT_EQUAL]);
     }
 
     public function isRisky(): bool
@@ -59,12 +59,12 @@ final class StrictComparisonFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         static $map = [
-            T_IS_EQUAL => [
-                'id' => T_IS_IDENTICAL,
+            \T_IS_EQUAL => [
+                'id' => \T_IS_IDENTICAL,
                 'content' => '===',
             ],
-            T_IS_NOT_EQUAL => [
-                'id' => T_IS_NOT_IDENTICAL,
+            \T_IS_NOT_EQUAL => [
+                'id' => \T_IS_NOT_IDENTICAL,
                 'content' => '!==',
             ],
         ];

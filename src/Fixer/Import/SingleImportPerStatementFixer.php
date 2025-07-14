@@ -85,7 +85,7 @@ use Space\Models\ {
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_USE);
+        return $tokens->isTokenKindFound(\T_USE);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -93,7 +93,7 @@ use Space\Models\ {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         foreach (array_reverse($tokensAnalyzer->getImportUseIndexes()) as $index) {
-            $endIndex = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
+            $endIndex = $tokens->getNextTokenOfKind($index, [';', [\T_CLOSE_TAG]]);
             $groupClose = $tokens->getPrevMeaningfulToken($endIndex);
 
             if ($tokens[$groupClose]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
@@ -183,7 +183,7 @@ use Space\Models\ {
             if ($token->isWhitespace()) {
                 $j = $tokens->getNextMeaningfulToken($i);
 
-                if ($tokens[$j]->isGivenKind(T_AS)) {
+                if ($tokens[$j]->isGivenKind(\T_AS)) {
                     $statement .= ' as ';
                     $i += 2;
                 } elseif ($tokens[$j]->isGivenKind(CT::T_FUNCTION_IMPORT)) {
@@ -234,12 +234,12 @@ use Space\Models\ {
         if ($tokens[$nextTokenIndex]->isGivenKind(CT::T_FUNCTION_IMPORT)) {
             $leadingTokens = [
                 new Token([CT::T_FUNCTION_IMPORT, 'function']),
-                new Token([T_WHITESPACE, ' ']),
+                new Token([\T_WHITESPACE, ' ']),
             ];
         } elseif ($tokens[$nextTokenIndex]->isGivenKind(CT::T_CONST_IMPORT)) {
             $leadingTokens = [
                 new Token([CT::T_CONST_IMPORT, 'const']),
-                new Token([T_WHITESPACE, ' ']),
+                new Token([\T_WHITESPACE, ' ']),
             ];
         } else {
             $leadingTokens = [];
@@ -255,8 +255,8 @@ use Space\Models\ {
             $tokens[$i] = new Token(';');
             $i = $tokens->getNextMeaningfulToken($i);
 
-            $tokens->insertAt($i, new Token([T_USE, 'use']));
-            $tokens->insertAt($i + 1, new Token([T_WHITESPACE, ' ']));
+            $tokens->insertAt($i, new Token([\T_USE, 'use']));
+            $tokens->insertAt($i + 1, new Token([\T_WHITESPACE, ' ']));
 
             foreach ($leadingTokens as $offset => $leadingToken) {
                 $tokens->insertAt($i + 2 + $offset, clone $leadingToken);
@@ -265,9 +265,9 @@ use Space\Models\ {
             $indent = WhitespacesAnalyzer::detectIndent($tokens, $index);
 
             if ($tokens[$i - 1]->isWhitespace()) {
-                $tokens[$i - 1] = new Token([T_WHITESPACE, $ending.$indent]);
+                $tokens[$i - 1] = new Token([\T_WHITESPACE, $ending.$indent]);
             } elseif (!str_contains($tokens[$i - 1]->getContent(), "\n")) {
-                $tokens->insertAt($i, new Token([T_WHITESPACE, $ending.$indent]));
+                $tokens->insertAt($i, new Token([\T_WHITESPACE, $ending.$indent]));
             }
         }
     }

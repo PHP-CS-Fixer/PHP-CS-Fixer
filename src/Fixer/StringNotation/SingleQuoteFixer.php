@@ -79,13 +79,13 @@ final class SingleQuoteFixer extends AbstractFixer implements ConfigurableFixerI
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_CONSTANT_ENCAPSED_STRING);
+        return $tokens->isTokenKindFound(\T_CONSTANT_ENCAPSED_STRING);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
+            if (!$token->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
                 continue;
             }
 
@@ -105,7 +105,7 @@ final class SingleQuoteFixer extends AbstractFixer implements ConfigurableFixerI
             ) {
                 $content = substr($content, 1, -1);
                 $content = str_replace(['\"', '\$', '\''], ['"', '$', '\\\''], $content);
-                $tokens[$index] = new Token([T_CONSTANT_ENCAPSED_STRING, $prefix.'\''.$content.'\'']);
+                $tokens[$index] = new Token([\T_CONSTANT_ENCAPSED_STRING, $prefix.'\''.$content.'\'']);
             }
         }
     }

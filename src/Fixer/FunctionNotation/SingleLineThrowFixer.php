@@ -28,7 +28,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class SingleLineThrowFixer extends AbstractFixer
 {
     private const REMOVE_WHITESPACE_AFTER_TOKENS = ['['];
-    private const REMOVE_WHITESPACE_AROUND_TOKENS = ['(', [T_DOUBLE_COLON]];
+    private const REMOVE_WHITESPACE_AROUND_TOKENS = ['(', [\T_DOUBLE_COLON]];
     private const REMOVE_WHITESPACE_BEFORE_TOKENS = [')', ']', ',', ';'];
 
     public function getDefinition(): FixerDefinitionInterface
@@ -43,7 +43,7 @@ final class SingleLineThrowFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_THROW);
+        return $tokens->isTokenKindFound(\T_THROW);
     }
 
     /**
@@ -59,13 +59,13 @@ final class SingleLineThrowFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
-            if (!$tokens[$index]->isGivenKind(T_THROW)) {
+            if (!$tokens[$index]->isGivenKind(\T_THROW)) {
                 continue;
             }
 
             $endCandidateIndex = $tokens->getNextMeaningfulToken($index);
 
-            while (!$tokens[$endCandidateIndex]->equalsAny([')', ']', ',', ';', [T_CLOSE_TAG]])) {
+            while (!$tokens[$endCandidateIndex]->equalsAny([')', ']', ',', ';', [\T_CLOSE_TAG]])) {
                 $blockType = Tokens::detectBlockType($tokens[$endCandidateIndex]);
 
                 if (null !== $blockType) {
@@ -88,7 +88,7 @@ final class SingleLineThrowFixer extends AbstractFixer
         for ($index = $startIndex; $index < $endIndex; ++$index) {
             $content = $tokens[$index]->getContent();
 
-            if ($tokens[$index]->isGivenKind(T_COMMENT)) {
+            if ($tokens[$index]->isGivenKind(\T_COMMENT)) {
                 if (str_starts_with($content, '//')) {
                     $content = '/*'.substr($content, 2).' */';
                     $tokens->clearAt($index + 1);
@@ -99,12 +99,12 @@ final class SingleLineThrowFixer extends AbstractFixer
                     $content = Preg::replace('/\R/', ' ', $content);
                 }
 
-                $tokens[$index] = new Token([T_COMMENT, $content]);
+                $tokens[$index] = new Token([\T_COMMENT, $content]);
 
                 continue;
             }
 
-            if (!$tokens[$index]->isGivenKind(T_WHITESPACE)) {
+            if (!$tokens[$index]->isGivenKind(\T_WHITESPACE)) {
                 continue;
             }
 
@@ -124,14 +124,14 @@ final class SingleLineThrowFixer extends AbstractFixer
 
             if (
                 $this->isNextTokenToClear($tokens[$nextIndex])
-                && !$tokens[$prevIndex]->isGivenKind(T_FUNCTION)
+                && !$tokens[$prevIndex]->isGivenKind(\T_FUNCTION)
             ) {
                 $tokens->clearAt($index);
 
                 continue;
             }
 
-            $tokens[$index] = new Token([T_WHITESPACE, ' ']);
+            $tokens[$index] = new Token([\T_WHITESPACE, ' ']);
         }
     }
 

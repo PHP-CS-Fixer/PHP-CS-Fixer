@@ -52,7 +52,7 @@ final class WorkerException extends \RuntimeException
             '## %s(%d)%s%s',
             $data['file'],
             $data['line'],
-            PHP_EOL,
+            \PHP_EOL,
             $data['trace']
         );
 
