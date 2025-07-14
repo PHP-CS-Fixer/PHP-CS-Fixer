@@ -405,11 +405,6 @@ interface Bar
             'static' => [\T_STATIC, 'static'],
         ];
 
-        $glues = [
-            '|' => [CT::T_TYPE_ALTERNATION, '|'],
-            '&' => [CT::T_TYPE_INTERSECTION, '&'],
-        ];
-
         $count = \count($types);
         $newTokens = [];
 
@@ -436,7 +431,10 @@ interface Bar
             }
 
             if ($i <= $count - 2) {
-                $newTokens[] = new Token($glues[$glue]);
+                $newTokens[] = new Token([
+                    '|' => [CT::T_TYPE_ALTERNATION, '|'],
+                    '&' => [CT::T_TYPE_INTERSECTION, '&'],
+                ][$glue]);
             }
         }
 

@@ -574,57 +574,6 @@ final class TokensAnalyzer
      */
     public function isBinaryOperator(int $index): bool
     {
-        $nonArrayOperators = [
-            '=' => true,
-            '*' => true,
-            '/' => true,
-            '%' => true,
-            '<' => true,
-            '>' => true,
-            '|' => true,
-            '^' => true,
-            '.' => true,
-        ];
-
-        $potentialUnaryNonArrayOperators = [
-            '+' => true,
-            '-' => true,
-            '&' => true,
-        ];
-
-        $arrayOperators = [
-            \T_AND_EQUAL => true,            // &=
-            \T_BOOLEAN_AND => true,          // &&
-            \T_BOOLEAN_OR => true,           // ||
-            \T_CONCAT_EQUAL => true,         // .=
-            \T_DIV_EQUAL => true,            // /=
-            \T_DOUBLE_ARROW => true,         // =>
-            \T_IS_EQUAL => true,             // ==
-            \T_IS_GREATER_OR_EQUAL => true,  // >=
-            \T_IS_IDENTICAL => true,         // ===
-            \T_IS_NOT_EQUAL => true,         // !=, <>
-            \T_IS_NOT_IDENTICAL => true,     // !==
-            \T_IS_SMALLER_OR_EQUAL => true,  // <=
-            \T_LOGICAL_AND => true,          // and
-            \T_LOGICAL_OR => true,           // or
-            \T_LOGICAL_XOR => true,          // xor
-            \T_MINUS_EQUAL => true,          // -=
-            \T_MOD_EQUAL => true,            // %=
-            \T_MUL_EQUAL => true,            // *=
-            \T_OR_EQUAL => true,             // |=
-            \T_PLUS_EQUAL => true,           // +=
-            \T_POW => true,                  // **
-            \T_POW_EQUAL => true,            // **=
-            \T_SL => true,                   // <<
-            \T_SL_EQUAL => true,             // <<=
-            \T_SR => true,                   // >>
-            \T_SR_EQUAL => true,             // >>=
-            \T_XOR_EQUAL => true,            // ^=
-            \T_SPACESHIP => true,            // <=>
-            \T_COALESCE => true,             // ??
-            \T_COALESCE_EQUAL => true,       // ??=
-        ];
-
         $tokens = $this->tokens;
         $token = $tokens[$index];
 
@@ -632,15 +581,46 @@ final class TokensAnalyzer
             return false;
         }
 
-        if (isset($potentialUnaryNonArrayOperators[$token->getContent()])) {
+        if (\in_array($token->getContent(), ['+', '-', '&'], true)) {
             return !$this->isUnaryPredecessorOperator($index);
         }
 
         if ($token->isArray()) {
-            return isset($arrayOperators[$token->getId()]);
+            return \in_array($token->getId(), [
+                \T_AND_EQUAL,            // &=
+                \T_BOOLEAN_AND,          // &&
+                \T_BOOLEAN_OR,           // ||
+                \T_CONCAT_EQUAL,         // .=
+                \T_DIV_EQUAL,            // /=
+                \T_DOUBLE_ARROW,         // =>
+                \T_IS_EQUAL,             // ==
+                \T_IS_GREATER_OR_EQUAL,  // >=
+                \T_IS_IDENTICAL,         // ===
+                \T_IS_NOT_EQUAL,         // !=, <>
+                \T_IS_NOT_IDENTICAL,     // !==
+                \T_IS_SMALLER_OR_EQUAL,  // <=
+                \T_LOGICAL_AND,          // and
+                \T_LOGICAL_OR,           // or
+                \T_LOGICAL_XOR,          // xor
+                \T_MINUS_EQUAL,          // -=
+                \T_MOD_EQUAL,            // %=
+                \T_MUL_EQUAL,            // *=
+                \T_OR_EQUAL,             // |=
+                \T_PLUS_EQUAL,           // +=
+                \T_POW,                  // **
+                \T_POW_EQUAL,            // **=
+                \T_SL,                   // <<
+                \T_SL_EQUAL,             // <<=
+                \T_SR,                   // >>
+                \T_SR_EQUAL,             // >>=
+                \T_XOR_EQUAL,            // ^=
+                \T_SPACESHIP,            // <=>
+                \T_COALESCE,             // ??
+                \T_COALESCE_EQUAL,       // ??=
+            ], true);
         }
 
-        if (isset($nonArrayOperators[$token->getContent()])) {
+        if (\in_array($token->getContent(), ['=', '*', '/', '%', '<', '>', '|', '^', '.'], true)) {
             return true;
         }
 
