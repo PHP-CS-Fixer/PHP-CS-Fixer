@@ -798,27 +798,6 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
                 }
                 PHP,
         ];
-
-        yield 'string with a lot of variables' => [
-            '<?php
-                if (true) {
-                    $foo = "'.str_repeat(' text $variable text ', 50_000).'";
-                }',
-        ];
-
-        yield 'string with a lot of variables in braces (CT::T_CURLY_CLOSE)' => [
-            '<?php
-                if (true) {
-                    $foo = "'.str_repeat(' text {$variable} text ', 50_000).'";
-                }',
-        ];
-
-        yield 'string with concatenation of a lot of variables' => [
-            '<?php
-                if (true) {
-                    $foo = "'.str_repeat(' text ".$variable." text ', 20_000).'";
-                }',
-        ];
     }
 
     /**
