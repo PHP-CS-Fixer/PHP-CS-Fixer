@@ -85,7 +85,7 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
             ],
             [
                 new Token([\T_OPEN_TAG, "<?php\n"]),
-                new Token([\T_NAME_RELATIVE, 'namespace\Transformer']),
+                new Token([FCT::T_NAME_RELATIVE, 'namespace\Transformer']),
                 new Token(';'),
             ],
         ];
@@ -104,7 +104,7 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
             ],
             [
                 new Token([\T_OPEN_TAG, "<?php\n"]),
-                new Token([\T_NAME_RELATIVE, 'namespace\Transformer\Foo\Bar']),
+                new Token([FCT::T_NAME_RELATIVE, 'namespace\Transformer\Foo\Bar']),
                 new Token(';'),
             ],
         ];
@@ -118,7 +118,7 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
             ],
             [
                 new Token([\T_OPEN_TAG, "<?php\n"]),
-                new Token([\T_NAME_FULLY_QUALIFIED, '\Foo']),
+                new Token([FCT::T_NAME_FULLY_QUALIFIED, '\Foo']),
                 new Token(';'),
             ],
         ];
@@ -133,7 +133,7 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
             ],
             [
                 new Token([\T_OPEN_TAG, "<?php\n"]),
-                new Token([\T_NAME_QUALIFIED, 'Foo\Bar']),
+                new Token([FCT::T_NAME_QUALIFIED, 'Foo\Bar']),
                 new Token(';'),
             ],
         ];
@@ -149,7 +149,7 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
             ],
             [
                 new Token([\T_OPEN_TAG, "<?php\n"]),
-                new Token([\T_NAME_QUALIFIED, '\Foo\Bar']),
+                new Token([FCT::T_NAME_QUALIFIED, '\Foo\Bar']),
                 new Token(';'),
             ],
         ];
