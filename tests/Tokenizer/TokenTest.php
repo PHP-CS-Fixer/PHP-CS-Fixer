@@ -715,8 +715,6 @@ final class TokenTest extends TestCase
      */
     private static function getForeachTokenPrototype(): array
     {
-        static $prototype = [\T_FOREACH, 'foreach'];
-
-        return $prototype;
+        return [\T_FOREACH, 'foreach'];
     }
 }

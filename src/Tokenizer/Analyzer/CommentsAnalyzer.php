@@ -218,15 +218,13 @@ final class CommentsAnalyzer
      */
     private function isValidControl(Tokens $tokens, Token $docsToken, int $controlIndex): bool
     {
-        static $controlStructures = [
+        if (!$tokens[$controlIndex]->isGivenKind([
             \T_FOR,
             \T_FOREACH,
             \T_IF,
             \T_SWITCH,
             \T_WHILE,
-        ];
-
-        if (!$tokens[$controlIndex]->isGivenKind($controlStructures)) {
+        ])) {
             return false;
         }
 
@@ -256,14 +254,12 @@ final class CommentsAnalyzer
      */
     private function isValidVariableAssignment(Tokens $tokens, Token $docsToken, int $languageConstructIndex): bool
     {
-        static $languageStructures = [
+        if (!$tokens[$languageConstructIndex]->isGivenKind([
             \T_LIST,
             \T_PRINT,
             \T_ECHO,
             CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-        ];
-
-        if (!$tokens[$languageConstructIndex]->isGivenKind($languageStructures)) {
+        ])) {
             return false;
         }
 
@@ -293,7 +289,13 @@ final class CommentsAnalyzer
      */
     private function isValidVariable(Tokens $tokens, int $index): bool
     {
-        static $assignmentTypes = [
+        if (!$tokens[$index]->isGivenKind(\T_VARIABLE)) {
+            return false;
+        }
+
+        $nextIndex = $tokens->getNextMeaningfulToken($index);
+
+        return $tokens[$nextIndex]->equalsAny([
             '=',
             // arithmetic assignments
             [\T_PLUS_EQUAL, '+='],
@@ -311,15 +313,7 @@ final class CommentsAnalyzer
             // other assignments
             [\T_COALESCE_EQUAL, '??='],
             [\T_CONCAT_EQUAL, '.='],
-        ];
-
-        if (!$tokens[$index]->isGivenKind(\T_VARIABLE)) {
-            return false;
-        }
-
-        $nextIndex = $tokens->getNextMeaningfulToken($index);
-
-        return $tokens[$nextIndex]->equalsAny($assignmentTypes);
+        ]);
     }
 
     private function getCommentType(string $content): int

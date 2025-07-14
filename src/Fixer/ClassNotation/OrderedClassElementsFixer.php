@@ -354,8 +354,6 @@ Custom values:
      */
     private function getElements(Tokens $tokens, int $startIndex): array
     {
-        static $elementTokenKinds = [CT::T_USE_TRAIT, \T_CASE, \T_CONST, \T_VARIABLE, \T_FUNCTION];
-
         ++$startIndex;
         $elements = [];
 
@@ -398,7 +396,7 @@ Custom values:
                     continue;
                 }
 
-                if (!$token->isGivenKind($elementTokenKinds)) {
+                if (!$token->isGivenKind([CT::T_USE_TRAIT, \T_CASE, \T_CONST, \T_VARIABLE, \T_FUNCTION])) {
                     continue;
                 }
 

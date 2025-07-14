@@ -481,15 +481,6 @@ final class TokensAnalyzer
      */
     public function isUnarySuccessorOperator(int $index): bool
     {
-        static $allowedPrevToken = [
-            ']',
-            [\T_STRING],
-            [\T_VARIABLE],
-            [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
-            [CT::T_DYNAMIC_PROP_BRACE_CLOSE],
-            [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
-        ];
-
         $tokens = $this->tokens;
         $token = $tokens[$index];
 
@@ -499,7 +490,14 @@ final class TokensAnalyzer
 
         $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
 
-        return $prevToken->equalsAny($allowedPrevToken);
+        return $prevToken->equalsAny([
+            ']',
+            [\T_STRING],
+            [\T_VARIABLE],
+            [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
+            [CT::T_DYNAMIC_PROP_BRACE_CLOSE],
+            [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
+        ]);
     }
 
     /**
@@ -507,65 +505,49 @@ final class TokensAnalyzer
      */
     public function isUnaryPredecessorOperator(int $index): bool
     {
-        static $potentialSuccessorOperator = [\T_INC, \T_DEC];
-
-        static $potentialBinaryOperator = ['+', '-', '&', [CT::T_RETURN_REF]];
-
-        static $otherOperators;
-
-        if (null === $otherOperators) {
-            $otherOperators = ['!', '~', '@', [\T_ELLIPSIS]];
-        }
-
-        static $disallowedPrevTokens;
-
-        if (null === $disallowedPrevTokens) {
-            $disallowedPrevTokens = [
-                ']',
-                '}',
-                ')',
-                '"',
-                '`',
-                [CT::T_ARRAY_SQUARE_BRACE_CLOSE],
-                [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
-                [CT::T_DYNAMIC_PROP_BRACE_CLOSE],
-                [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
-                [\T_CLASS_C],
-                [\T_CONSTANT_ENCAPSED_STRING],
-                [\T_DEC],
-                [\T_DIR],
-                [\T_DNUMBER],
-                [\T_FILE],
-                [\T_FUNC_C],
-                [\T_INC],
-                [\T_LINE],
-                [\T_LNUMBER],
-                [\T_METHOD_C],
-                [\T_NS_C],
-                [\T_STRING],
-                [\T_TRAIT_C],
-                [\T_VARIABLE],
-            ];
-        }
-
         $tokens = $this->tokens;
         $token = $tokens[$index];
 
-        if ($token->isGivenKind($potentialSuccessorOperator)) {
+        if ($token->isGivenKind([\T_INC, \T_DEC])) {
             return !$this->isUnarySuccessorOperator($index);
         }
 
-        if ($token->equalsAny($otherOperators)) {
+        if ($token->equalsAny(['!', '~', '@', [\T_ELLIPSIS]])) {
             return true;
         }
 
-        if (!$token->equalsAny($potentialBinaryOperator)) {
+        if (!$token->equalsAny(['+', '-', '&', [CT::T_RETURN_REF]])) {
             return false;
         }
 
         $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
 
-        if (!$prevToken->equalsAny($disallowedPrevTokens)) {
+        if (!$prevToken->equalsAny([
+            ']',
+            '}',
+            ')',
+            '"',
+            '`',
+            [CT::T_ARRAY_SQUARE_BRACE_CLOSE],
+            [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
+            [CT::T_DYNAMIC_PROP_BRACE_CLOSE],
+            [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
+            [\T_CLASS_C],
+            [\T_CONSTANT_ENCAPSED_STRING],
+            [\T_DEC],
+            [\T_DIR],
+            [\T_DNUMBER],
+            [\T_FILE],
+            [\T_FUNC_C],
+            [\T_INC],
+            [\T_LINE],
+            [\T_LNUMBER],
+            [\T_METHOD_C],
+            [\T_NS_C],
+            [\T_STRING],
+            [\T_TRAIT_C],
+            [\T_VARIABLE],
+        ])) {
             return true;
         }
 
@@ -573,7 +555,7 @@ final class TokensAnalyzer
             return false;
         }
 
-        static $searchTokens = [
+        $prevToken = $tokens[$tokens->getPrevTokenOfKind($index, [
             ';',
             '{',
             '}',
@@ -582,8 +564,7 @@ final class TokensAnalyzer
             [\T_FUNCTION],
             [\T_OPEN_TAG],
             [\T_OPEN_TAG_WITH_ECHO],
-        ];
-        $prevToken = $tokens[$tokens->getPrevTokenOfKind($index, $searchTokens)];
+        ])];
 
         return $prevToken->isGivenKind([\T_FN, \T_FUNCTION]);
     }
@@ -611,42 +592,38 @@ final class TokensAnalyzer
             '&' => true,
         ];
 
-        static $arrayOperators;
-
-        if (null === $arrayOperators) {
-            $arrayOperators = [
-                \T_AND_EQUAL => true,            // &=
-                \T_BOOLEAN_AND => true,          // &&
-                \T_BOOLEAN_OR => true,           // ||
-                \T_CONCAT_EQUAL => true,         // .=
-                \T_DIV_EQUAL => true,            // /=
-                \T_DOUBLE_ARROW => true,         // =>
-                \T_IS_EQUAL => true,             // ==
-                \T_IS_GREATER_OR_EQUAL => true,  // >=
-                \T_IS_IDENTICAL => true,         // ===
-                \T_IS_NOT_EQUAL => true,         // !=, <>
-                \T_IS_NOT_IDENTICAL => true,     // !==
-                \T_IS_SMALLER_OR_EQUAL => true,  // <=
-                \T_LOGICAL_AND => true,          // and
-                \T_LOGICAL_OR => true,           // or
-                \T_LOGICAL_XOR => true,          // xor
-                \T_MINUS_EQUAL => true,          // -=
-                \T_MOD_EQUAL => true,            // %=
-                \T_MUL_EQUAL => true,            // *=
-                \T_OR_EQUAL => true,             // |=
-                \T_PLUS_EQUAL => true,           // +=
-                \T_POW => true,                  // **
-                \T_POW_EQUAL => true,            // **=
-                \T_SL => true,                   // <<
-                \T_SL_EQUAL => true,             // <<=
-                \T_SR => true,                   // >>
-                \T_SR_EQUAL => true,             // >>=
-                \T_XOR_EQUAL => true,            // ^=
-                \T_SPACESHIP => true,            // <=>
-                \T_COALESCE => true,             // ??
-                \T_COALESCE_EQUAL => true,       // ??=
-            ];
-        }
+        $arrayOperators = [
+            \T_AND_EQUAL => true,            // &=
+            \T_BOOLEAN_AND => true,          // &&
+            \T_BOOLEAN_OR => true,           // ||
+            \T_CONCAT_EQUAL => true,         // .=
+            \T_DIV_EQUAL => true,            // /=
+            \T_DOUBLE_ARROW => true,         // =>
+            \T_IS_EQUAL => true,             // ==
+            \T_IS_GREATER_OR_EQUAL => true,  // >=
+            \T_IS_IDENTICAL => true,         // ===
+            \T_IS_NOT_EQUAL => true,         // !=, <>
+            \T_IS_NOT_IDENTICAL => true,     // !==
+            \T_IS_SMALLER_OR_EQUAL => true,  // <=
+            \T_LOGICAL_AND => true,          // and
+            \T_LOGICAL_OR => true,           // or
+            \T_LOGICAL_XOR => true,          // xor
+            \T_MINUS_EQUAL => true,          // -=
+            \T_MOD_EQUAL => true,            // %=
+            \T_MUL_EQUAL => true,            // *=
+            \T_OR_EQUAL => true,             // |=
+            \T_PLUS_EQUAL => true,           // +=
+            \T_POW => true,                  // **
+            \T_POW_EQUAL => true,            // **=
+            \T_SL => true,                   // <<
+            \T_SL_EQUAL => true,             // <<=
+            \T_SR => true,                   // >>
+            \T_SR_EQUAL => true,             // >>=
+            \T_XOR_EQUAL => true,            // ^=
+            \T_SPACESHIP => true,            // <=>
+            \T_COALESCE => true,             // ??
+            \T_COALESCE_EQUAL => true,       // ??=
+        ];
 
         $tokens = $this->tokens;
         $token = $tokens[$index];

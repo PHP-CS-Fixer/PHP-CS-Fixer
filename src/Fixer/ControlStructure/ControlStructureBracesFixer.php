@@ -194,7 +194,7 @@ final class ControlStructureBracesFixer extends AbstractFixer
      */
     private function getControlTokens(): array
     {
-        static $tokens = [
+        return [
             \T_DECLARE,
             \T_DO,
             \T_ELSE,
@@ -208,8 +208,6 @@ final class ControlStructureBracesFixer extends AbstractFixer
             \T_CATCH,
             \T_SWITCH,
         ];
-
-        return $tokens;
     }
 
     /**

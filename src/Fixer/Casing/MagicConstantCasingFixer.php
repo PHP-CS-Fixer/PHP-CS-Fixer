@@ -58,24 +58,18 @@ final class MagicConstantCasingFixer extends AbstractFixer
      */
     private function getMagicConstants(): array
     {
-        static $magicConstants = null;
-
-        if (null === $magicConstants) {
-            $magicConstants = [
-                \T_LINE => '__LINE__',
-                \T_FILE => '__FILE__',
-                \T_DIR => '__DIR__',
-                \T_FUNC_C => '__FUNCTION__',
-                \T_CLASS_C => '__CLASS__',
-                \T_METHOD_C => '__METHOD__',
-                \T_NS_C => '__NAMESPACE__',
-                CT::T_CLASS_CONSTANT => 'class',
-                \T_TRAIT_C => '__TRAIT__',
-                FCT::T_PROPERTY_C => '__PROPERTY__',
-            ];
-        }
-
-        return $magicConstants;
+        return [
+            \T_LINE => '__LINE__',
+            \T_FILE => '__FILE__',
+            \T_DIR => '__DIR__',
+            \T_FUNC_C => '__FUNCTION__',
+            \T_CLASS_C => '__CLASS__',
+            \T_METHOD_C => '__METHOD__',
+            \T_NS_C => '__NAMESPACE__',
+            CT::T_CLASS_CONSTANT => 'class',
+            \T_TRAIT_C => '__TRAIT__',
+            FCT::T_PROPERTY_C => '__PROPERTY__',
+        ];
     }
 
     /**
