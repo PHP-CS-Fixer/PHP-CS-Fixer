@@ -548,27 +548,6 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                     /**
                      * @param _Pair $x
                      */
-                    public function f(_Pair $x): void {}
-                }
-                /**
-                 * @phpstan-type _Trio array{int, int, int}
-                 */
-                class Bar {
-                    /**
-                     * @param _Trio $x
-                     */
-                    public function f(_Trio $x): void {}
-                }
-                PHP,
-            <<<'PHP'
-                <?php
-                /**
-                 * @phpstan-type _Pair array{int, int}
-                 */
-                class Foo {
-                    /**
-                     * @param _Pair $x
-                     */
                     public function f($x): void {}
                 }
                 /**

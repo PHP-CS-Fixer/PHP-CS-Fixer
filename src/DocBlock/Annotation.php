@@ -37,6 +37,7 @@ final class Annotation
         'method',
         'param',
         'param-out',
+        'phpstan-type',
         'property',
         'property-read',
         'property-write',

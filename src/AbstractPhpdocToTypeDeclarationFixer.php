@@ -311,4 +311,15 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
 
         return self::$syntaxValidationCache[$code];
     }
+
+    /**
+     * @return list<string>
+     */
+    final protected static function getTypesToExclude(string $content): array
+    {
+        return array_map(
+            static fn (Annotation $annotation): string => $annotation->getTypeExpression()->toString(),
+            (new DocBlock($content))->getAnnotationsOfType('phpstan-type')
+        );
+    }
 }

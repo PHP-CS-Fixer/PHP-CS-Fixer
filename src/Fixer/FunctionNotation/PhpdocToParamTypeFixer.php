@@ -127,8 +127,15 @@ function bar($foo) {}
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokensToInsert = [];
+        $typesToExclude = [];
 
         foreach ($tokens as $index => $token) {
+            if ($token->isGivenKind([\T_DOC_COMMENT])) {
+                $typesToExclude = array_merge($typesToExclude, self::getTypesToExclude($token->getContent()));
+
+                continue;
+            }
+
             if (!$token->isGivenKind([\T_FUNCTION, \T_FN])) {
                 continue;
             }
@@ -171,6 +178,10 @@ function bar($foo) {}
                 }
 
                 if (!isset($paramType, $isNullable)) {
+                    continue;
+                }
+
+                if (\in_array($paramType, $typesToExclude, true)) {
                     continue;
                 }
 
