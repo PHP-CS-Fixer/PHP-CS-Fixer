@@ -690,7 +690,7 @@ if ($foo) {
                 continue;
             }
 
-            if ($tokens[$index]->equalsAny([[\T_CASE], [\T_DEFAULT]])) {
+            if ($tokens[$index]->isGivenKind([\T_CASE, \T_DEFAULT])) {
                 return [$index, true];
             }
 
