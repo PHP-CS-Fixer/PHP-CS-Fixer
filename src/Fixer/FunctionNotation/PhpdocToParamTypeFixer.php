@@ -126,8 +126,10 @@ function bar($foo) {}
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        for ($index = $tokens->count() - 1; 0 < $index; --$index) {
-            if (!$tokens[$index]->isGivenKind([\T_FUNCTION, \T_FN])) {
+        $tokensToInsert = [];
+
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind([\T_FUNCTION, \T_FN])) {
                 continue;
             }
 
@@ -180,6 +182,7 @@ function bar($foo) {}
                 }
 
                 $byRefIndex = $tokens->getPrevMeaningfulToken($variableIndex);
+                \assert(\is_int($byRefIndex));
 
                 if ($tokens[$byRefIndex]->equals('&')) {
                     $variableIndex = $byRefIndex;
@@ -193,12 +196,14 @@ function bar($foo) {}
                     continue;
                 }
 
-                $tokens->insertAt($variableIndex, array_merge(
+                $tokensToInsert[$variableIndex] = array_merge(
                     $this->createTypeDeclarationTokens($paramType, $isNullable),
                     [new Token([\T_WHITESPACE, ' '])]
-                ));
+                );
             }
         }
+
+        $tokens->insertSlices($tokensToInsert);
     }
 
     protected function createTokensFromRawType(string $type): Tokens
