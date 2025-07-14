@@ -1010,6 +1010,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedTraitsFixer.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Offset string might not exist on array\\{\\|\\: array\\{10024, \'\\|\'\\}, &\\: array\\{10035, \'&\'\\}\\}\\.$#',
+	'identifier' => 'offsetAccess.notFound',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedTypesFixer.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Offset int might not exist on non\\-empty\\-array\\<int, bool\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
@@ -1020,12 +1026,6 @@ $ignoreErrors[] = [
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Comment/NoEmptyCommentFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Argument of an invalid type array\\<int\\<0, max\\>, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|PhpCsFixer\\\\Tokenizer\\\\Token supplied for foreach, only iterables are supported\\.$#',
-	'identifier' => 'foreach.nonIterable',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/IncludeFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Offset 1 might not exist on list\\{0\\?\\: string, 1\\?\\: string, 2\\?\\: non\\-falsy\\-string\\}\\.$#',
