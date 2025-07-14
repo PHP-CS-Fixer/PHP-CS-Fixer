@@ -1,8 +1,8 @@
-==========================
-Rule set ``@PER-CS:risky``
-==========================
+=============================
+Rule set ``@PER-CS3.0:risky``
+=============================
 
-Alias for the latest revision of PER-CS risky rules. Use it if you always want to be in sync with newest PER-CS standard.
+Rules that follow `PER Coding Style 3.0 <https://www.php-fig.org/per/coding-style/>`_.
 
 Warning
 -------
@@ -15,4 +15,4 @@ Using this rule set may lead to changes in your code's logic and behaviour. Use 
 Rules
 -----
 
-- `@PER-CS3.0:risky <./PER-CS3.0Risky.rst>`_
+- `@PER-CS2.0:risky <./PER-CS2.0Risky.rst>`_
