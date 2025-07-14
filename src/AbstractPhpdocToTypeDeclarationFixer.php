@@ -317,9 +317,24 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
      */
     final protected static function getTypesToExclude(string $content): array
     {
-        return array_map(
-            static fn (Annotation $annotation): string => $annotation->getTypeExpression()->toString(),
-            (new DocBlock($content))->getAnnotationsOfType(['phpstan-type', 'phpstan-import-type', 'psalm-type', 'psalm-import-type'])
-        );
+        $typesToExclude = [];
+
+        $docBlock = new DocBlock($content);
+
+        foreach ($docBlock->getAnnotationsOfType(['phpstan-type', 'psalm-type']) as $annotation) {
+            $typesToExclude[] = $annotation->getTypeExpression()->toString();
+        }
+
+        foreach ($docBlock->getAnnotationsOfType(['phpstan-import-type', 'psalm-import-type']) as $annotation) {
+            $content = trim($annotation->getContent());
+            if (Preg::match('/\bas\s+('.TypeExpression::REGEX_IDENTIFIER.')$/', $content, $matches)) {
+                $typesToExclude[] = $matches[1];
+
+                continue;
+            }
+            $typesToExclude[] = $annotation->getTypeExpression()->toString();
+        }
+
+        return $typesToExclude;
     }
 }
