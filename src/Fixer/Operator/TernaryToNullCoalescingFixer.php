@@ -156,7 +156,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
      */
     private function isHigherPrecedenceAssociativityOperator(Token $token): bool
     {
-        return in_array($token->getId(), [
+        return \in_array($token->getId(), [
             \T_ARRAY_CAST,
             \T_BOOLEAN_AND,
             \T_BOOLEAN_OR,
@@ -204,10 +204,10 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
     {
         foreach ($tokens as $token) {
             if ($token->isGivenKind([
-                    \T_DEC,
-                    \T_INC,
-                    \T_YIELD,
-                    \T_YIELD_FROM,
+                \T_DEC,
+                \T_INC,
+                \T_YIELD,
+                \T_YIELD_FROM,
             ]) || $token->equals('(')) {
                 return true;
             }
