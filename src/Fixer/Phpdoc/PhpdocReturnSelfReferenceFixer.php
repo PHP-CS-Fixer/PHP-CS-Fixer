@@ -186,12 +186,10 @@ class Sample
 
     private function fixMethod(Tokens $tokens, int $index): void
     {
-        static $methodModifiers = [\T_STATIC, \T_FINAL, \T_ABSTRACT, \T_PRIVATE, \T_PROTECTED, \T_PUBLIC];
-
         // find PHPDoc of method (if any)
         while (true) {
             $tokenIndex = $tokens->getPrevMeaningfulToken($index);
-            if (!$tokens[$tokenIndex]->isGivenKind($methodModifiers)) {
+            if (!$tokens[$tokenIndex]->isGivenKind([\T_STATIC, \T_FINAL, \T_ABSTRACT, \T_PRIVATE, \T_PROTECTED, \T_PUBLIC])) {
                 break;
             }
 

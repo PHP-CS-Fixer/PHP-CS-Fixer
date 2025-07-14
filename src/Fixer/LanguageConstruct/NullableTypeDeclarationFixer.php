@@ -307,7 +307,7 @@ class ValueObject
      */
     private function createTypeDeclarationTokens(array $types, bool $isQuestionMarkSyntax): array
     {
-        static $specialTypes = [
+        $specialTypes = [
             '?' => CT::T_NULLABLE_TYPE,
             'array' => CT::T_ARRAY_TYPEHINT,
             'callable' => \T_CALLABLE,

@@ -58,7 +58,7 @@ final class StrictComparisonFixer extends AbstractFixer
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        static $map = [
+        $map = [
             \T_IS_EQUAL => [
                 'id' => \T_IS_IDENTICAL,
                 'content' => '===',

@@ -105,12 +105,10 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurableFixerIn
 
     private function fixToLongSyntax(Tokens $tokens, int $index): void
     {
-        static $typesOfInterest = [
+        $closeIndex = $tokens->getNextTokenOfKind($index, [
             [CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE],
             '[', // [CT::T_ARRAY_SQUARE_BRACE_OPEN],
-        ];
-
-        $closeIndex = $tokens->getNextTokenOfKind($index, $typesOfInterest);
+        ]);
         if (!$tokens[$closeIndex]->isGivenKind(CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE)) {
             return;
         }

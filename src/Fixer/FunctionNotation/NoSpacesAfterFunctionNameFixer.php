@@ -135,7 +135,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
      */
     private function getFunctionyTokenKinds(): array
     {
-        static $tokens = [
+        return [
             \T_ARRAY,
             \T_ECHO,
             \T_EMPTY,
@@ -151,8 +151,6 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
             \T_UNSET,
             \T_VARIABLE,
         ];
-
-        return $tokens;
     }
 
     /**
@@ -162,7 +160,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
      */
     private function getLanguageConstructionTokenKinds(): array
     {
-        static $languageConstructionTokens = [
+        return [
             \T_ECHO,
             \T_PRINT,
             \T_INCLUDE,
@@ -170,7 +168,5 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
             \T_REQUIRE,
             \T_REQUIRE_ONCE,
         ];
-
-        return $languageConstructionTokens;
     }
 }
