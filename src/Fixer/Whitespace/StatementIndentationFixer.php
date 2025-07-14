@@ -645,7 +645,7 @@ if ($foo) {
             if (
                 $doWhileLevel > 0
                 && null !== $controlStructureContinuationIndex
-                && $tokens[$controlStructureContinuationIndex]->isGivenKind([\T_WHILE])
+                && $tokens[$controlStructureContinuationIndex]->isGivenKind(\T_WHILE)
             ) {
                 --$doWhileLevel;
                 $searchEndIndex = $controlStructureContinuationIndex;

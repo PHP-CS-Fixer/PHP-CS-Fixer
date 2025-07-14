@@ -487,7 +487,7 @@ yield  from  baz();
     {
         $beforeIndex = $tokens->getPrevNonWhitespace($index);
 
-        if (!$tokens[$beforeIndex]->isGivenKind([\T_COMMENT])) {
+        if (!$tokens[$beforeIndex]->isGivenKind(\T_COMMENT)) {
             return false;
         }
 

@@ -254,7 +254,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
                 $currentIndex = $attributeStartIndex;
             }
 
-            if ($tokens[$currentIndex]->isGivenKind([\T_DOC_COMMENT])) {
+            if ($tokens[$currentIndex]->isGivenKind(\T_DOC_COMMENT)) {
                 $decisions[] = $this->isClassCandidateBasedOnPhpDoc($tokens, $currentIndex);
             }
         }

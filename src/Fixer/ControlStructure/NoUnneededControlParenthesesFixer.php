@@ -597,7 +597,7 @@ while ($y) { continue (2); }
     {
         $token = $tokens[$index];
 
-        return $token->isObjectOperator() || $token->equals('[') || $token->isGivenKind([CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN]);
+        return $token->isObjectOperator() || $token->equals('[') || $token->isGivenKind(CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN);
     }
 
     private function getAfterAccess(Tokens $tokens, int $index): int
