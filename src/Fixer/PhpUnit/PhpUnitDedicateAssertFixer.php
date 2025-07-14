@@ -467,7 +467,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         // let $a = [1,2]; $b = "2";
         // "$this->assertEquals("2", count($a)); $this->assertEquals($b, count($a)); $this->assertEquals(2.1, count($a));"
 
-        if ($tokens[$expectedIndex]->isGivenKind([\T_VARIABLE])) {
+        if ($tokens[$expectedIndex]->isGivenKind(\T_VARIABLE)) {
             if (!$tokens[$tokens->getNextMeaningfulToken($expectedIndex)]->equals(',')) {
                 return;
             }
