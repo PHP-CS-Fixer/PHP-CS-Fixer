@@ -153,7 +153,7 @@ echo 1;
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isMonolithicPhp() && !$tokens->isTokenKindFound(T_OPEN_TAG_WITH_ECHO);
+        return $tokens->isMonolithicPhp() && !$tokens->isTokenKindFound(\T_OPEN_TAG_WITH_ECHO);
     }
 
     /**
@@ -335,7 +335,7 @@ echo 1;
 
         $next = $index + 1;
 
-        if (!isset($tokens[$next]) || \in_array($this->configuration['separate'], ['top', 'none'], true) || !$tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
+        if (!isset($tokens[$next]) || \in_array($this->configuration['separate'], ['top', 'none'], true) || !$tokens[$index]->isGivenKind(\T_DOC_COMMENT)) {
             return $index;
         }
 
@@ -347,7 +347,7 @@ echo 1;
             ++$next;
         }
 
-        if (!isset($tokens[$next]) || !$tokens[$next]->isClassy() && !$tokens[$next]->isGivenKind(T_FUNCTION)) {
+        if (!isset($tokens[$next]) || !$tokens[$next]->isClassy() && !$tokens[$next]->isGivenKind(\T_FUNCTION)) {
             return $index;
         }
 
@@ -366,7 +366,7 @@ echo 1;
      */
     private function findHeaderCommentInsertionIndex(Tokens $tokens, string $location): int
     {
-        $openTagIndex = $tokens[0]->isGivenKind(T_INLINE_HTML) ? 1 : 0;
+        $openTagIndex = $tokens[0]->isGivenKind(\T_INLINE_HTML) ? 1 : 0;
 
         if ('after_open' === $location) {
             return $openTagIndex + 1;
@@ -378,7 +378,7 @@ echo 1;
             return $openTagIndex + 1; // file without meaningful tokens but an open tag, comment should always be placed directly after the open tag
         }
 
-        if (!$tokens[$index]->isGivenKind(T_DECLARE)) {
+        if (!$tokens[$index]->isGivenKind(\T_DECLARE)) {
             return $openTagIndex + 1;
         }
 
@@ -390,7 +390,7 @@ echo 1;
 
         $next = $tokens->getNextMeaningfulToken($next);
 
-        if (null === $next || !$tokens[$next]->equals([T_STRING, 'strict_types'], false)) {
+        if (null === $next || !$tokens[$next]->equals([\T_STRING, 'strict_types'], false)) {
             return $openTagIndex + 1;
         }
 
@@ -402,7 +402,7 @@ echo 1;
 
         $next = $tokens->getNextMeaningfulToken($next);
 
-        if (null === $next || !$tokens[$next]->isGivenKind(T_LNUMBER)) {
+        if (null === $next || !$tokens[$next]->isGivenKind(\T_LNUMBER)) {
             return $openTagIndex + 1;
         }
 
@@ -436,7 +436,7 @@ echo 1;
         }
 
         if ($headerIndex === \count($tokens) - 1) {
-            $tokens->insertAt($headerIndex + 1, new Token([T_WHITESPACE, str_repeat($lineEnding, $expectedLineCount)]));
+            $tokens->insertAt($headerIndex + 1, new Token([\T_WHITESPACE, str_repeat($lineEnding, $expectedLineCount)]));
         } else {
             $lineBreakCount = $this->getLineBreakCount($tokens, $headerIndex, 1);
 
@@ -444,14 +444,14 @@ echo 1;
                 $missing = str_repeat($lineEnding, $expectedLineCount - $lineBreakCount);
 
                 if ($tokens[$headerIndex + 1]->isWhitespace()) {
-                    $tokens[$headerIndex + 1] = new Token([T_WHITESPACE, $missing.$tokens[$headerIndex + 1]->getContent()]);
+                    $tokens[$headerIndex + 1] = new Token([\T_WHITESPACE, $missing.$tokens[$headerIndex + 1]->getContent()]);
                 } else {
-                    $tokens->insertAt($headerIndex + 1, new Token([T_WHITESPACE, $missing]));
+                    $tokens->insertAt($headerIndex + 1, new Token([\T_WHITESPACE, $missing]));
                 }
             } elseif ($lineBreakCount > $expectedLineCount && $tokens[$headerIndex + 1]->isWhitespace()) {
                 $newLinesToRemove = $lineBreakCount - $expectedLineCount;
                 $tokens[$headerIndex + 1] = new Token([
-                    T_WHITESPACE,
+                    \T_WHITESPACE,
                     Preg::replace("/^\\R{{$newLinesToRemove}}/", '', $tokens[$headerIndex + 1]->getContent()),
                 ]);
             }
@@ -463,15 +463,15 @@ echo 1;
 
         $regex = '/\h$/';
 
-        if ($tokens[$prev]->isGivenKind(T_OPEN_TAG) && Preg::match($regex, $tokens[$prev]->getContent())) {
-            $tokens[$prev] = new Token([T_OPEN_TAG, Preg::replace($regex, $lineEnding, $tokens[$prev]->getContent())]);
+        if ($tokens[$prev]->isGivenKind(\T_OPEN_TAG) && Preg::match($regex, $tokens[$prev]->getContent())) {
+            $tokens[$prev] = new Token([\T_OPEN_TAG, Preg::replace($regex, $lineEnding, $tokens[$prev]->getContent())]);
         }
 
         $lineBreakCount = $this->getLineBreakCount($tokens, $headerIndex, -1);
 
         if ($lineBreakCount < $expectedLineCount) {
             // because of the way the insert index was determined for header comment there cannot be an empty token here
-            $tokens->insertAt($headerIndex, new Token([T_WHITESPACE, str_repeat($lineEnding, $expectedLineCount - $lineBreakCount)]));
+            $tokens->insertAt($headerIndex, new Token([\T_WHITESPACE, str_repeat($lineEnding, $expectedLineCount - $lineBreakCount)]));
         }
     }
 
@@ -488,7 +488,7 @@ echo 1;
                 continue;
             }
 
-            if (-1 === $direction && $token->isGivenKind(T_OPEN_TAG)) {
+            if (-1 === $direction && $token->isGivenKind(\T_OPEN_TAG)) {
                 $whitespace .= $token->getContent();
             }
 
@@ -532,7 +532,7 @@ echo 1;
 
     private function insertHeader(Tokens $tokens, string $headerAsComment, int $index): void
     {
-        $tokens->insertAt($index, new Token([self::HEADER_COMMENT === $this->configuration['comment_type'] ? T_COMMENT : T_DOC_COMMENT, $headerAsComment]));
+        $tokens->insertAt($index, new Token([self::HEADER_COMMENT === $this->configuration['comment_type'] ? \T_COMMENT : \T_DOC_COMMENT, $headerAsComment]));
         $this->fixWhiteSpaceAroundHeader($tokens, $index);
     }
 }

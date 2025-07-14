@@ -218,10 +218,10 @@ final class CiConfigurationTest extends TestCase
     {
         $tokens = Tokens::fromCode((string) file_get_contents(__DIR__.'/../../php-cs-fixer'));
         $sequence = $tokens->findSequence([
-            [T_STRING, 'PHP_VERSION_ID'],
+            [\T_STRING, 'PHP_VERSION_ID'],
             '<',
-            [T_INT_CAST],
-            [T_CONSTANT_ENCAPSED_STRING],
+            [\T_INT_CAST],
+            [\T_CONSTANT_ENCAPSED_STRING],
         ]);
 
         if (null === $sequence) {

@@ -41,6 +41,7 @@ return (new Config())
             with this source code in the file LICENSE.
             EOF],
         'modernize_strpos' => true, // needs PHP 8+ or polyfill
+        'native_constant_invocation' => ['strict' => false], // strict:false to not remove `\` on low-end PHP versions for not-yet-known consts
         'no_useless_concat_operator' => false, // TODO switch back on when the `src/Console/Application.php` no longer needs the concat
         'numeric_literal_separator' => true,
         'phpdoc_order' => [

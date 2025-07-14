@@ -70,7 +70,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
 
     private const REGEX_CLASS = '(?:\\\?+'.TypeExpression::REGEX_IDENTIFIER
         .'(\\\\'.TypeExpression::REGEX_IDENTIFIER.')*+)';
-    private const CLASSY_KINDS = [T_CLASS, T_INTERFACE, T_TRAIT, FCT::T_ENUM];
+    private const CLASSY_KINDS = [\T_CLASS, \T_INTERFACE, \T_TRAIT, FCT::T_ENUM];
 
     /**
      * @var array{
@@ -231,15 +231,15 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         return $tokens->isAnyTokenKindsFound([
             CT::T_USE_TRAIT,
             FCT::T_ATTRIBUTE,
-            T_CATCH,
-            T_DOUBLE_COLON,
-            T_DOC_COMMENT,
-            T_EXTENDS,
-            T_FUNCTION,
-            T_IMPLEMENTS,
-            T_INSTANCEOF,
-            T_NEW,
-            T_VARIABLE,
+            \T_CATCH,
+            \T_DOUBLE_COLON,
+            \T_DOC_COMMENT,
+            \T_EXTENDS,
+            \T_FUNCTION,
+            \T_IMPLEMENTS,
+            \T_INSTANCEOF,
+            \T_NEW,
+            \T_VARIABLE,
         ]);
     }
 
@@ -332,30 +332,30 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                     } elseif ($token->equals('}')) {
                         unset($this->reservedIdentifiersByLevel[$openedCurlyBrackets]);
                         --$openedCurlyBrackets;
-                    } elseif ($token->isGivenKind(T_VARIABLE)) {
+                    } elseif ($token->isGivenKind(\T_VARIABLE)) {
                         $prevIndex = $tokens->getPrevMeaningfulToken($index);
-                        if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(T_STRING)) {
+                        if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(\T_STRING)) {
                             $this->fixPrevName($tokens, $index, $uses, $namespaceName);
                         }
-                    } elseif ($token->isGivenKind(T_DOUBLE_COLON)) {
+                    } elseif ($token->isGivenKind(\T_DOUBLE_COLON)) {
                         $this->fixPrevName($tokens, $index, $uses, $namespaceName);
-                    } elseif ($token->isGivenKind(T_FUNCTION)) {
+                    } elseif ($token->isGivenKind(\T_FUNCTION)) {
                         $this->fixFunction($functionsAnalyzer, $tokens, $index, $uses, $namespaceName);
                     } elseif ($token->isGivenKind(FCT::T_ATTRIBUTE)) {
                         $this->fixAttribute($tokens, $index, $uses, $namespaceName);
-                    } elseif ($token->isGivenKind(T_CATCH)) {
+                    } elseif ($token->isGivenKind(\T_CATCH)) {
                         $this->fixCatch($tokens, $index, $uses, $namespaceName);
                     } elseif ($discoverSymbolsPhase && $token->isGivenKind(self::CLASSY_KINDS)) {
                         $this->fixNextName($tokens, $index, $uses, $namespaceName);
-                    } elseif ($token->isGivenKind([T_EXTENDS, T_IMPLEMENTS])) {
+                    } elseif ($token->isGivenKind([\T_EXTENDS, \T_IMPLEMENTS])) {
                         $this->fixExtendsImplements($tokens, $index, $uses, $namespaceName);
-                    } elseif ($token->isGivenKind([T_INSTANCEOF, T_NEW, CT::T_USE_TRAIT, CT::T_TYPE_COLON])) {
+                    } elseif ($token->isGivenKind([\T_INSTANCEOF, \T_NEW, CT::T_USE_TRAIT, CT::T_TYPE_COLON])) {
                         $this->fixNextName($tokens, $index, $uses, $namespaceName);
-                    } elseif ($discoverSymbolsPhase && $token->isGivenKind(T_COMMENT) && Preg::match('/#\[\s*('.self::REGEX_CLASS.')/', $token->getContent(), $matches)) { // @TODO: drop when PHP 8.0+ is required
+                    } elseif ($discoverSymbolsPhase && $token->isGivenKind(\T_COMMENT) && Preg::match('/#\[\s*('.self::REGEX_CLASS.')/', $token->getContent(), $matches)) { // @TODO: drop when PHP 8.0+ is required
                         /** @var class-string $attributeClass */
                         $attributeClass = $matches[1];
                         $this->determineShortType($attributeClass, 'class', $uses, $namespaceName);
-                    } elseif ($token->isGivenKind(T_DOC_COMMENT)) {
+                    } elseif ($token->isGivenKind(\T_DOC_COMMENT)) {
                         Preg::matchAll('/\*\h*@(?:psalm-|phpstan-)?(?:template(?:-covariant|-contravariant)?|(?:import-)?type)\h+('.TypeExpression::REGEX_IDENTIFIER.')(?!\S)/i', $token->getContent(), $matches);
                         foreach ($matches[1] as $reservedIdentifier) {
                             $this->reservedIdentifiersByLevel[$openedCurlyBrackets + 1][$reservedIdentifier] = true;
@@ -381,7 +381,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                     $atIndex = $namespace->getEndIndex() + 1;
                 } else {
                     $firstTokenIndex = $tokens->getNextMeaningfulToken($namespace->getScopeStartIndex());
-                    if (null !== $firstTokenIndex && $tokens[$firstTokenIndex]->isGivenKind(T_DECLARE)) {
+                    if (null !== $firstTokenIndex && $tokens[$firstTokenIndex]->isGivenKind(\T_DECLARE)) {
                         $atIndex = $tokens->getNextTokenOfKind($firstTokenIndex, [';']) + 1;
                     } else {
                         $atIndex = $namespace->getScopeStartIndex() + 1;
@@ -606,7 +606,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             }
 
             if (isset($this->symbolsForImport[$kind])) {
-                ksort($this->symbolsForImport[$kind], SORT_NATURAL);
+                ksort($this->symbolsForImport[$kind], \SORT_NATURAL);
             }
         }
     }
@@ -655,7 +655,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         }, $phpDocContent);
 
         if ($phpDocContentNew !== $phpDocContent) {
-            $tokens[$index] = new Token([T_DOC_COMMENT, $phpDocContentNew]);
+            $tokens[$index] = new Token([\T_DOC_COMMENT, $phpDocContentNew]);
         }
     }
 
@@ -699,20 +699,20 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     private function fixExtendsImplements(Tokens $tokens, int $index, array $uses, string $namespaceName): void
     {
         // We handle `extends` and `implements` with similar logic, but we need to exit the loop under different conditions.
-        $isExtends = $tokens[$index]->isGivenKind(T_EXTENDS);
+        $isExtends = $tokens[$index]->isGivenKind(\T_EXTENDS);
         $index = $tokens->getNextMeaningfulToken($index);
 
         $typeStartIndex = null;
         $typeEndIndex = null;
 
         while (true) {
-            if ($tokens[$index]->equalsAny([',', '{', [T_IMPLEMENTS]])) {
+            if ($tokens[$index]->equalsAny([',', '{', [\T_IMPLEMENTS]])) {
                 if (null !== $typeStartIndex) {
                     $index += $this->shortenClassIfPossible($tokens, $typeStartIndex, $typeEndIndex, $uses, $namespaceName);
                 }
                 $typeStartIndex = null;
 
-                if ($tokens[$index]->equalsAny($isExtends ? [[T_IMPLEMENTS], '{'] : ['{'])) {
+                if ($tokens[$index]->equalsAny($isExtends ? [[\T_IMPLEMENTS], '{'] : ['{'])) {
                     break;
                 }
             } else {
@@ -738,7 +738,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         $typeEndIndex = null;
 
         while (true) {
-            if ($tokens[$index]->equalsAny([')', [T_VARIABLE], [CT::T_TYPE_ALTERNATION]])) {
+            if ($tokens[$index]->equalsAny([')', [\T_VARIABLE], [CT::T_TYPE_ALTERNATION]])) {
                 if (null === $typeStartIndex) {
                     break;
                 }
@@ -769,7 +769,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
         foreach ($attributeAnalysis->getAttributes() as $attribute) {
             $index = $attribute['start'];
-            while ($tokens[$index]->isGivenKind([T_STRING, T_NS_SEPARATOR])) {
+            while ($tokens[$index]->isGivenKind([\T_STRING, \T_NS_SEPARATOR])) {
                 $index = $tokens->getPrevMeaningfulToken($index);
             }
             $this->fixNextName($tokens, $index, $uses, $namespaceName);
@@ -790,7 +790,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 break;
             }
 
-            if ($tokens[$index]->isGivenKind([T_STRING, T_NS_SEPARATOR])) {
+            if ($tokens[$index]->isGivenKind([\T_STRING, \T_NS_SEPARATOR])) {
                 $typeStartIndex = $index;
                 if (null === $typeEndIndex) {
                     $typeEndIndex = $index;
@@ -816,7 +816,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         while (true) {
             $index = $tokens->getNextMeaningfulToken($index);
 
-            if ($tokens[$index]->isGivenKind([T_STRING, T_NS_SEPARATOR])) {
+            if ($tokens[$index]->isGivenKind([\T_STRING, \T_NS_SEPARATOR])) {
                 if (null === $typeStartIndex) {
                     $typeStartIndex = $index;
                 }
@@ -958,16 +958,16 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         $tokens = [];
 
         if (str_starts_with($input, '\\')) {
-            $tokens[] = new Token([T_NS_SEPARATOR, '\\']);
+            $tokens[] = new Token([\T_NS_SEPARATOR, '\\']);
             $input = substr($input, 1);
         }
 
         $parts = explode('\\', $input);
         foreach ($parts as $index => $part) {
-            $tokens[] = new Token([T_STRING, $part]);
+            $tokens[] = new Token([\T_STRING, $part]);
 
             if ($index !== \count($parts) - 1) {
-                $tokens[] = new Token([T_NS_SEPARATOR, '\\']);
+                $tokens[] = new Token([\T_NS_SEPARATOR, '\\']);
             }
         }
 

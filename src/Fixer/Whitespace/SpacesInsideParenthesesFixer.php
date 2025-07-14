@@ -103,7 +103,7 @@ function foo(\$bar, \$baz)
                 $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
                 // ignore parenthesis for T_ARRAY
-                if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(T_ARRAY)) {
+                if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(\T_ARRAY)) {
                     continue;
                 }
 
@@ -190,20 +190,20 @@ function foo(\$bar, \$baz)
         if ($tokens[$end - 1]->isWhitespace()) {
             $content = $tokens[$end - 1]->getContent();
             if (' ' !== $content && !str_contains($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($end - 1)]->isComment()) {
-                $tokens[$end - 1] = new Token([T_WHITESPACE, ' ']);
+                $tokens[$end - 1] = new Token([\T_WHITESPACE, ' ']);
             }
         } else {
-            $tokens->insertAt($end, new Token([T_WHITESPACE, ' ']));
+            $tokens->insertAt($end, new Token([\T_WHITESPACE, ' ']));
         }
 
         // fix white space after '('
         if ($tokens[$start + 1]->isWhitespace()) {
             $content = $tokens[$start + 1]->getContent();
             if (' ' !== $content && !str_contains($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($start + 1)]->isComment()) {
-                $tokens[$start + 1] = new Token([T_WHITESPACE, ' ']);
+                $tokens[$start + 1] = new Token([\T_WHITESPACE, ' ']);
             }
         } else {
-            $tokens->insertAt($start + 1, new Token([T_WHITESPACE, ' ']));
+            $tokens->insertAt($start + 1, new Token([\T_WHITESPACE, ' ']));
         }
     }
 

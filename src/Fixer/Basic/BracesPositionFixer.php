@@ -71,7 +71,7 @@ final class BracesPositionFixer extends AbstractFixer implements ConfigurableFix
      */
     public const SAME_LINE = 'same_line';
 
-    private const CONTROL_STRUCTURE_TOKENS = [T_DECLARE, T_DO, T_ELSE, T_ELSEIF, T_FINALLY, T_FOR, T_FOREACH, T_IF, T_WHILE, T_TRY, T_CATCH, T_SWITCH, FCT::T_MATCH];
+    private const CONTROL_STRUCTURE_TOKENS = [\T_DECLARE, \T_DO, \T_ELSE, \T_ELSEIF, \T_FINALLY, \T_FOR, \T_FOREACH, \T_IF, \T_WHILE, \T_TRY, \T_CATCH, \T_SWITCH, FCT::T_MATCH];
 
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -228,7 +228,7 @@ $bar = function () { $result = true;
                 } else {
                     $positionOption = 'classes_opening_brace';
                 }
-            } elseif ($token->isGivenKind(T_FUNCTION)) {
+            } elseif ($token->isGivenKind(\T_FUNCTION)) {
                 $openBraceIndex = $tokens->getNextTokenOfKind($index, ['{', ';', [CT::T_PROPERTY_HOOK_BRACE_OPEN]]);
 
                 if (!$tokens[$openBraceIndex]->equals('{')) {
@@ -251,7 +251,7 @@ $bar = function () { $result = true;
 
                 $positionOption = 'control_structures_opening_brace';
             } elseif ($token->isGivenKind(T_VARIABLE)) {
-                $openBraceIndex = $tokens->getNextTokenOfKind($index, ['{', ';', '.', [CT::T_CURLY_CLOSE], [CT::T_PROPERTY_HOOK_BRACE_OPEN], [T_ENCAPSED_AND_WHITESPACE], [T_CLOSE_TAG]]);
+                $openBraceIndex = $tokens->getNextTokenOfKind($index, ['{', ';', '.', [CT::T_CURLY_CLOSE], [CT::T_PROPERTY_HOOK_BRACE_OPEN], [\T_ENCAPSED_AND_WHITESPACE], [\T_CLOSE_TAG]]);
 
                 if (!$tokens[$openBraceIndex]->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
                     continue;
@@ -295,7 +295,7 @@ $bar = function () { $result = true;
                 $addNewlinesInsideBraces
                 && !$this->isFollowedByNewLine($tokens, $openBraceIndex)
                 && !$this->hasCommentOnSameLine($tokens, $openBraceIndex)
-                && !$tokens[$tokens->getNextMeaningfulToken($openBraceIndex)]->isGivenKind(T_CLOSE_TAG)
+                && !$tokens[$tokens->getNextMeaningfulToken($openBraceIndex)]->isGivenKind(\T_CLOSE_TAG)
             ) {
                 $whitespace = $this->whitespacesConfig->getLineEnding().$this->getLineIndentation($tokens, $openBraceIndex);
                 if ($tokens->ensureWhitespaceAtIndex($openBraceIndex + 1, 0, $whitespace)) {
@@ -310,7 +310,7 @@ $bar = function () { $result = true;
                 $previousTokenIndex = $openBraceIndex;
                 do {
                     $previousTokenIndex = $tokens->getPrevMeaningfulToken($previousTokenIndex);
-                } while ($tokens[$previousTokenIndex]->isGivenKind([CT::T_TYPE_COLON, CT::T_NULLABLE_TYPE, T_STRING, T_NS_SEPARATOR, CT::T_ARRAY_TYPEHINT, T_STATIC, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, T_CALLABLE, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE]));
+                } while ($tokens[$previousTokenIndex]->isGivenKind([CT::T_TYPE_COLON, CT::T_NULLABLE_TYPE, \T_STRING, \T_NS_SEPARATOR, CT::T_ARRAY_TYPEHINT, \T_STATIC, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, \T_CALLABLE, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE]));
 
                 if ($tokens[$previousTokenIndex]->equals(')')) {
                     if ($tokens[--$previousTokenIndex]->isComment()) {
@@ -363,7 +363,7 @@ $bar = function () { $result = true;
                     if (-1 === $delta && Preg::match('/\R/', $tokens[$openBraceIndex - 1]->getContent())) {
                         $content = Preg::replace('/^(\h*?\R)?\h*/', '', $tokens[$openBraceIndex + 1]->getContent());
                         if ('' !== $content) {
-                            $tokens[$openBraceIndex + 1] = new Token([T_WHITESPACE, $content]);
+                            $tokens[$openBraceIndex + 1] = new Token([\T_WHITESPACE, $content]);
                         } else {
                             $tokens->clearAt($openBraceIndex + 1);
                         }
@@ -382,7 +382,7 @@ $bar = function () { $result = true;
 
                 if ($tokens[$openBraceIndex]->isWhitespace() && $tokens[$openBraceIndex + 1]->isWhitespace()) {
                     $tokens[$openBraceIndex] = new Token([
-                        T_WHITESPACE,
+                        \T_WHITESPACE,
                         $tokens[$openBraceIndex]->getContent().$tokens[$openBraceIndex + 1]->getContent(),
                     ]);
                     $tokens->clearAt($openBraceIndex + 1);
@@ -400,7 +400,7 @@ $bar = function () { $result = true;
 
             if (
                 !$addNewlinesInsideBraces
-                || $tokens[$tokens->getPrevMeaningfulToken($closeBraceIndex)]->isGivenKind(T_OPEN_TAG)
+                || $tokens[$tokens->getPrevMeaningfulToken($closeBraceIndex)]->isGivenKind(\T_OPEN_TAG)
             ) {
                 continue;
             }

@@ -167,7 +167,7 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
 
         $index = 0;
 
-        while (null !== $index = $tokens->getNextTokenOfKind($index, [[T_ATTRIBUTE]])) {
+        while (null !== $index = $tokens->getNextTokenOfKind($index, [[\T_ATTRIBUTE]])) {
             /** @var _AttributeItems $elements */
             $elements = array_map(fn (AttributeAnalysis $attributeAnalysis): array => [
                 'name' => $this->sortAttributes($fullyQualifiedNameAnalyzer, $tokens, $attributeAnalysis->getStartIndex(), $attributeAnalysis->getAttributes()),
@@ -244,8 +244,8 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
 
             if (self::ORDER_CUSTOM === $sortAlgorithm) {
                 return
-                    ($this->configuration['order'][$a['name']] ?? PHP_INT_MAX)
-                    <=> ($this->configuration['order'][$b['name']] ?? PHP_INT_MAX);
+                    ($this->configuration['order'][$a['name']] ?? \PHP_INT_MAX)
+                    <=> ($this->configuration['order'][$b['name']] ?? \PHP_INT_MAX);
             }
 
             throw new \InvalidArgumentException(\sprintf('Invalid sort algorithm "%s" provided.', $sortAlgorithm));

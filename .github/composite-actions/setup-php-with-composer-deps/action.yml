@@ -53,6 +53,14 @@ runs:
       shell: bash
       run: composer config extra.symfony.require ${{ inputs.composer-flex-with-symfony-version }}
 
+    - name: Configure Symfony ^8
+      if: inputs.composer-flex-with-symfony-version == '^8@dev'
+      shell: bash
+      run: |
+        composer config minimum-stability dev
+        composer remove facile-it/paraunit infection/infection keradus/cli-executor php-coveralls/php-coveralls --dev --no-update
+        sed -i.bak -E 's|"(symfony/.*): "(\^[567].*)"|"\1: "^8@dev"|' composer.json
+        sed -i -e 's|<bootstrap class="Paraunit\\Configuration\\ParaunitExtension"/>||' phpunit.xml.dist
     - name: Install Composer deps
       uses: ./.github/composite-actions/install-composer-deps
       with:

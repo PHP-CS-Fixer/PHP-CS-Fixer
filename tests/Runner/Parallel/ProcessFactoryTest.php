@@ -43,7 +43,7 @@ final class ProcessFactoryTest extends TestCase
     {
         $fixCommand = new FixCommand(new ToolInfo());
         $application = new Application();
-        $application->add($fixCommand);
+        $application->addCommands([$fixCommand]);
 
         // In order to have full list of options supported by the command (e.g. `--verbose`)
         $fixCommand->mergeApplicationDefinition(false);

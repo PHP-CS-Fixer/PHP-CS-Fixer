@@ -63,7 +63,7 @@ final class DataProviderAnalyzer
                     '/@dataProvider\h+(('.self::REGEX_CLASS.'::)?'.TypeExpression::REGEX_IDENTIFIER.')/',
                     $tokens[$docCommentIndex]->getContent(),
                     $matches,
-                    PREG_OFFSET_CAPTURE
+                    \PREG_OFFSET_CAPTURE
                 );
 
                 foreach ($matches[1] as $k => [$matchName]) {
@@ -99,13 +99,13 @@ final class DataProviderAnalyzer
     {
         $functions = [];
         for ($index = $startIndex; $index < $endIndex; ++$index) {
-            if (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if (!$tokens[$index]->isGivenKind(\T_FUNCTION)) {
                 continue;
             }
 
             $functionNameIndex = $tokens->getNextNonWhitespace($index);
 
-            if (!$tokens[$functionNameIndex]->isGivenKind(T_STRING)) {
+            if (!$tokens[$functionNameIndex]->isGivenKind(\T_STRING)) {
                 continue;
             }
 
@@ -122,12 +122,12 @@ final class DataProviderAnalyzer
     {
         $attributeIndex = null;
         $docCommentIndex = null;
-        while (!$tokens[$index]->equalsAny([';', '{', '}', [T_OPEN_TAG]])) {
+        while (!$tokens[$index]->equalsAny([';', '{', '}', [\T_OPEN_TAG]])) {
             --$index;
 
             if ($tokens[$index]->isGivenKind(FCT::T_ATTRIBUTE)) {
                 $attributeIndex = $index;
-            } elseif ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
+            } elseif ($tokens[$index]->isGivenKind(\T_DOC_COMMENT)) {
                 $docCommentIndex = $index;
             }
         }
@@ -150,13 +150,13 @@ final class DataProviderAnalyzer
             return null;
         }
 
-        $closeParenthesisIndex = $tokens->getPrevTokenOfKind($attribute['end'] + 1, [')', [T_ATTRIBUTE]]);
-        if ($tokens[$closeParenthesisIndex]->isGivenKind(T_ATTRIBUTE)) {
+        $closeParenthesisIndex = $tokens->getPrevTokenOfKind($attribute['end'] + 1, [')', [\T_ATTRIBUTE]]);
+        if ($tokens[$closeParenthesisIndex]->isGivenKind(\T_ATTRIBUTE)) {
             return null;
         }
 
         $dataProviderNameIndex = $tokens->getPrevMeaningfulToken($closeParenthesisIndex);
-        if (!$tokens[$dataProviderNameIndex]->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
+        if (!$tokens[$dataProviderNameIndex]->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
             return null;
         }
 

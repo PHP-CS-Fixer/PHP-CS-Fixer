@@ -40,7 +40,7 @@ final class ControlCaseStructuresAnalyzerTest extends TestCase
     public function testFindControlStructures(array $expectedAnalyses, string $source): void
     {
         $tokens = Tokens::fromCode($source);
-        $analyses = iterator_to_array(ControlCaseStructuresAnalyzer::findControlStructures($tokens, [T_SWITCH]));
+        $analyses = iterator_to_array(ControlCaseStructuresAnalyzer::findControlStructures($tokens, [\T_SWITCH]));
 
         self::assertCount(\count($expectedAnalyses), $analyses);
 
@@ -378,7 +378,7 @@ $expressionResult = match ($condition) {
                 1 => $switchAnalysis,
             ],
             $code,
-            [T_SWITCH],
+            [\T_SWITCH],
         ];
 
         yield [
@@ -387,7 +387,7 @@ $expressionResult = match ($condition) {
                 28 => $enumAnalysis,
             ],
             $code,
-            [T_SWITCH, FCT::T_ENUM],
+            [\T_SWITCH, FCT::T_ENUM],
         ];
 
         yield [
@@ -404,10 +404,10 @@ $expressionResult = match ($condition) {
         $tokens = Tokens::fromCode('<?php if(time() > 0){ echo 1; }');
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(\sprintf('Unexpected type "%d".', T_IF));
+        $this->expectExceptionMessage(\sprintf('Unexpected type "%d".', \T_IF));
 
         // we use `iterator_to_array` to ensure generator is consumed and it has possibility to raise exception
-        iterator_to_array(ControlCaseStructuresAnalyzer::findControlStructures($tokens, [T_IF]));
+        iterator_to_array(ControlCaseStructuresAnalyzer::findControlStructures($tokens, [\T_IF]));
     }
 
     private static function assertAnalysis(AbstractControlCaseStructuresAnalysis $expectedAnalysis, AbstractControlCaseStructuresAnalysis $analysis): void

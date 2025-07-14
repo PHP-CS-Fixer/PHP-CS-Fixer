@@ -177,7 +177,7 @@ abstract class AbstractTransformerTestCase extends TestCase
 
         foreach ($expectedTokens as $index => $tokenIdOrContent) {
             if (\is_string($tokenIdOrContent)) {
-                self::assertTrue($tokens[$index]->equals($tokenIdOrContent), \sprintf('The token at index %d should be %s, got %s', $index, json_encode($tokenIdOrContent, JSON_THROW_ON_ERROR), $tokens[$index]->toJson()));
+                self::assertTrue($tokens[$index]->equals($tokenIdOrContent), \sprintf('The token at index %d should be %s, got %s', $index, json_encode($tokenIdOrContent, \JSON_THROW_ON_ERROR), $tokens[$index]->toJson()));
 
                 continue;
             }

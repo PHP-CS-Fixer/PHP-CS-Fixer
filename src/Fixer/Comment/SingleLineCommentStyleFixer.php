@@ -107,7 +107,7 @@ $c = 3;
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_COMMENT);
+        return $tokens->isTokenKindFound(\T_COMMENT);
     }
 
     protected function configurePostNormalisation(): void
@@ -119,7 +119,7 @@ $c = 3;
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_COMMENT)) {
+            if (!$token->isGivenKind(\T_COMMENT)) {
                 continue;
             }
 

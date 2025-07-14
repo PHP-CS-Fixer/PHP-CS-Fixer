@@ -551,8 +551,8 @@ final class StaticPrivateMethodFixerTest extends AbstractFixerTestCase
         $usage = '';
         $signature = '';
         for ($inc = 0; $inc < 50; ++$inc) {
-            $usage .= \sprintf('$var = %sbar%02s();%s', $fixed ? 'self::' : '$this->', $inc, PHP_EOL);
-            $signature .= \sprintf('private %sfunction bar%02s() {}%s', $fixed ? 'static ' : '', $inc, PHP_EOL);
+            $usage .= \sprintf('$var = %sbar%02s();%s', $fixed ? 'self::' : '$this->', $inc, \PHP_EOL);
+            $signature .= \sprintf('private %sfunction bar%02s() {}%s', $fixed ? 'static ' : '', $inc, \PHP_EOL);
         }
 
         return \sprintf($template, $usage, $signature);
