@@ -18,23 +18,27 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 
 /**
  * @internal
+ *
+ * PER Coding Style v3.0.
+ *
+ * @see https://github.com/php-fig/per-coding-style/blob/3.0.0/spec.md
  */
-final class PERCSRiskySet extends AbstractRuleSetDescription
+final class PERCS3x0RiskySet extends AbstractRuleSetDescription
 {
     public function getName(): string
     {
-        return '@PER-CS:risky';
+        return '@PER-CS3.0:risky';
     }
 
     public function getRules(): array
     {
         return [
-            '@PER-CS3.0:risky' => true,
+            '@PER-CS2.0:risky' => true,
         ];
     }
 
     public function getDescription(): string
     {
-        return 'Alias for the latest revision of PER-CS risky rules. Use it if you always want to be in sync with newest PER-CS standard.';
+        return 'Rules that follow `PER Coding Style 3.0 <https://www.php-fig.org/per/coding-style/>`_.';
     }
 }
