@@ -330,7 +330,7 @@ yield  from  baz();
             }
 
             if ($token->isGivenKind(\T_OPEN_TAG)) {
-                if ($tokens[$whitespaceTokenIndex]->equals([\T_WHITESPACE]) && !str_contains($tokens[$whitespaceTokenIndex]->getContent(), "\n") && !str_contains($token->getContent(), "\n")) {
+                if ($tokens[$whitespaceTokenIndex]->isGivenKind(\T_WHITESPACE) && !str_contains($tokens[$whitespaceTokenIndex]->getContent(), "\n") && !str_contains($token->getContent(), "\n")) {
                     $tokens->clearAt($whitespaceTokenIndex);
                 }
 
@@ -354,7 +354,7 @@ yield  from  baz();
             }
 
             if ($token->isComment() || $token->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
-                if ($tokens[$whitespaceTokenIndex]->equals([\T_WHITESPACE]) && str_contains($tokens[$whitespaceTokenIndex]->getContent(), "\n")) {
+                if ($tokens[$whitespaceTokenIndex]->isGivenKind(\T_WHITESPACE) && str_contains($tokens[$whitespaceTokenIndex]->getContent(), "\n")) {
                     continue;
                 }
             }
