@@ -319,7 +319,7 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
     {
         return array_map(
             static fn (Annotation $annotation): string => $annotation->getTypeExpression()->toString(),
-            (new DocBlock($content))->getAnnotationsOfType('phpstan-type')
+            (new DocBlock($content))->getAnnotationsOfType(['phpstan-type', 'phpstan-import-type', 'psalm-type', 'psalm-import-type'])
         );
     }
 }

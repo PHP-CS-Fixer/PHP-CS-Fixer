@@ -130,7 +130,7 @@ function bar($foo) {}
         $typesToExclude = [];
 
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind([\T_DOC_COMMENT])) {
+            if ($token->isGivenKind(\T_DOC_COMMENT)) {
                 $typesToExclude = array_merge($typesToExclude, self::getTypesToExclude($token->getContent()));
 
                 continue;

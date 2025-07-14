@@ -538,7 +538,7 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
             );',
         ];
 
-        yield 'PHPStan types' => [
+        yield 'types defined with "phpstan-type"' => [
             <<<'PHP'
                 <?php
                 /**
@@ -552,6 +552,78 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                 }
                 /**
                  * @phpstan-type _Trio array{int, int, int}
+                 */
+                class Bar {
+                    /**
+                     * @param _Trio $x
+                     */
+                    public function f($x): void {}
+                }
+                PHP,
+        ];
+
+        yield 'types defined with "phpstan-import-type"' => [
+            <<<'PHP'
+                <?php
+                /**
+                 * @phpstan-import-type _Pair from FooFoo
+                 */
+                class Foo {
+                    /**
+                     * @param _Pair $x
+                     */
+                    public function f($x): void {}
+                }
+                /**
+                 * @phpstan-import-type _Trio from BarBar
+                 */
+                class Bar {
+                    /**
+                     * @param _Trio $x
+                     */
+                    public function f($x): void {}
+                }
+                PHP,
+        ];
+
+        yield 'types defined with "psalm-type"' => [
+            <<<'PHP'
+                <?php
+                /**
+                 * @psalm-type _Pair = array{int, int}
+                 */
+                class Foo {
+                    /**
+                     * @param _Pair $x
+                     */
+                    public function f($x): void {}
+                }
+                /**
+                 * @psalm-type _Trio array{int, int, int}
+                 */
+                class Bar {
+                    /**
+                     * @param _Trio $x
+                     */
+                    public function f($x): void {}
+                }
+                PHP,
+        ];
+
+        yield 'types defined with "psalm-import-type"' => [
+            <<<'PHP'
+                <?php
+                /**
+                 * @psalm-import-type _Pair from FooFoo
+                 */
+                class Foo {
+                    /**
+                     * @param _Pair $x
+                     */
+                    public function f($x): void {}
+                }
+                /**
+                 * @psalm-import-type _Trio from BarBar
                  */
                 class Bar {
                     /**
