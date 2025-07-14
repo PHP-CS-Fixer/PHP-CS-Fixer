@@ -97,7 +97,7 @@ class Foo {
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     /**
@@ -119,7 +119,7 @@ class Foo {
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; 0 < $index; --$index) {
-            if ($tokens[$index]->isGivenKind([T_CLASS, T_TRAIT])) {
+            if ($tokens[$index]->isGivenKind([\T_CLASS, \T_TRAIT])) {
                 $this->fixClass($tokens, $index);
             }
         }
@@ -141,7 +141,7 @@ class Foo {
         $classEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
 
         for (; $index < $classEndIndex; ++$index) {
-            if ($tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if ($tokens[$index]->isGivenKind(\T_FUNCTION)) {
                 $index = $tokens->getNextTokenOfKind($index, ['{', ';']);
 
                 if ($tokens[$index]->equals('{')) {
@@ -151,7 +151,7 @@ class Foo {
                 continue;
             }
 
-            if (!$tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
+            if (!$tokens[$index]->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -184,7 +184,7 @@ class Foo {
 
             $newTokens = array_merge(
                 $this->createTypeDeclarationTokens($propertyType, $isNullable),
-                [new Token([T_WHITESPACE, ' '])]
+                [new Token([\T_WHITESPACE, ' '])]
             );
 
             $tokens->insertAt(current($propertyIndices), $newTokens);
@@ -202,21 +202,21 @@ class Foo {
         do {
             $index = $tokens->getNextMeaningfulToken($index);
         } while ($tokens[$index]->isGivenKind([
-            T_PRIVATE,
-            T_PROTECTED,
-            T_PUBLIC,
-            T_STATIC,
-            T_VAR,
+            \T_PRIVATE,
+            \T_PROTECTED,
+            \T_PUBLIC,
+            \T_STATIC,
+            \T_VAR,
         ]));
 
-        if (!$tokens[$index]->isGivenKind(T_VARIABLE)) {
+        if (!$tokens[$index]->isGivenKind(\T_VARIABLE)) {
             return [];
         }
 
         $properties = [];
 
         while (!$tokens[$index]->equals(';')) {
-            if ($tokens[$index]->isGivenKind(T_VARIABLE)) {
+            if ($tokens[$index]->isGivenKind(\T_VARIABLE)) {
                 $properties[$tokens[$index]->getContent()] = $index;
             }
 

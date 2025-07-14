@@ -28,7 +28,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class ArgumentsAnalyzer
 {
-    private const ARGUMENT_INFO_SKIP_TYPES = [T_ELLIPSIS, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE, FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET];
+    private const ARGUMENT_INFO_SKIP_TYPES = [\T_ELLIPSIS, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE, FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET];
 
     /**
      * Count amount of parameters in a function/method reference.
@@ -119,7 +119,7 @@ final class ArgumentsAnalyzer
                 continue;
             }
 
-            if ($token->isGivenKind(T_VARIABLE)) {
+            if ($token->isGivenKind(\T_VARIABLE)) {
                 $sawName = true;
                 $info['name_index'] = $index;
                 $info['name'] = $token->getContent();

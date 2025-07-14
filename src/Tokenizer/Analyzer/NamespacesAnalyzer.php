@@ -33,7 +33,7 @@ final class NamespacesAnalyzer
         for ($index = 1, $count = \count($tokens); $index < $count; ++$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(T_NAMESPACE)) {
+            if (!$token->isGivenKind(\T_NAMESPACE)) {
                 continue;
             }
 
@@ -45,7 +45,7 @@ final class NamespacesAnalyzer
             if ($tokens[$declarationEndIndex]->equals('{')) {
                 $scopeEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $declarationEndIndex);
             } else {
-                $scopeEndIndex = $tokens->getNextTokenOfKind($declarationEndIndex, [[T_NAMESPACE]]);
+                $scopeEndIndex = $tokens->getNextTokenOfKind($declarationEndIndex, [[\T_NAMESPACE]]);
                 if (null === $scopeEndIndex) {
                     $scopeEndIndex = \count($tokens);
                 }
@@ -65,11 +65,11 @@ final class NamespacesAnalyzer
             $index = $scopeEndIndex;
         }
 
-        if (0 === \count($namespaces) && $tokens->isTokenKindFound(T_OPEN_TAG)) {
+        if (0 === \count($namespaces) && $tokens->isTokenKindFound(\T_OPEN_TAG)) {
             $namespaces[] = new NamespaceAnalysis(
                 '',
                 '',
-                $openTagIndex = $tokens[0]->isGivenKind(T_INLINE_HTML) ? 1 : 0,
+                $openTagIndex = $tokens[0]->isGivenKind(\T_INLINE_HTML) ? 1 : 0,
                 $openTagIndex,
                 $openTagIndex,
                 \count($tokens) - 1,

@@ -79,7 +79,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 continue;
             }
 
-            if (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if (!$tokens[$index]->isGivenKind(\T_FUNCTION)) {
                 continue;
             }
 
@@ -94,15 +94,15 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $visibility = $tokensAnalyzer->getMethodAttributes($index)['visibility'];
 
-            if (T_PUBLIC === $visibility) {
-                $visibilityIndex = $tokens->getPrevTokenOfKind($index, [[T_PUBLIC]]);
-                $tokens[$visibilityIndex] = new Token([T_PROTECTED, 'protected']);
+            if (\T_PUBLIC === $visibility) {
+                $visibilityIndex = $tokens->getPrevTokenOfKind($index, [[\T_PUBLIC]]);
+                $tokens[$visibilityIndex] = new Token([\T_PROTECTED, 'protected']);
 
                 continue;
             }
 
             if (null === $visibility) {
-                $slicesToInsert[$index] = [new Token([T_PROTECTED, 'protected']), new Token([T_WHITESPACE, ' '])];
+                $slicesToInsert[$index] = [new Token([\T_PROTECTED, 'protected']), new Token([\T_WHITESPACE, ' '])];
             }
         }
 

@@ -50,9 +50,9 @@ final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
      * @var list<array{int, string}>
      */
     private array $excludeFuncNames = [
-        [T_STRING, '__construct'],
-        [T_STRING, '__destruct'],
-        [T_STRING, '__clone'],
+        [\T_STRING, '__construct'],
+        [\T_STRING, '__destruct'],
+        [\T_STRING, '__clone'],
     ];
 
     /**
@@ -125,7 +125,7 @@ final class Foo {
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_FUNCTION, T_FN]);
+        return $tokens->isAnyTokenKindsFound([\T_FUNCTION, \T_FN]);
     }
 
     /**
@@ -147,7 +147,7 @@ final class Foo {
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; 0 < $index; --$index) {
-            if (!$tokens[$index]->isGivenKind([T_FUNCTION, T_FN])) {
+            if (!$tokens[$index]->isGivenKind([\T_FUNCTION, \T_FN])) {
                 continue;
             }
 
@@ -201,7 +201,7 @@ final class Foo {
             $paramsStartIndex = $tokens->getNextTokenOfKind($index, ['(']);
             $paramsEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $paramsStartIndex);
 
-            $bodyStartIndex = $tokens->getNextTokenOfKind($paramsEndIndex, ['{', ';', [T_DOUBLE_ARROW]]);
+            $bodyStartIndex = $tokens->getNextTokenOfKind($paramsEndIndex, ['{', ';', [\T_DOUBLE_ARROW]]);
 
             if ($this->hasReturnTypeHint($tokens, $bodyStartIndex)) {
                 continue;
@@ -216,7 +216,7 @@ final class Foo {
                 array_merge(
                     [
                         new Token([CT::T_TYPE_COLON, ':']),
-                        new Token([T_WHITESPACE, ' ']),
+                        new Token([\T_WHITESPACE, ' ']),
                     ],
                     $this->createTypeDeclarationTokens($returnType, $isNullable)
                 )

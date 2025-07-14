@@ -39,10 +39,10 @@ final class TextReporter implements ReporterInterface
         $output = '';
 
         foreach ($sets as $i => $set) {
-            $output .= \sprintf('%2d) %s', $i + 1, $set->getName()).PHP_EOL.'      '.$set->getDescription().PHP_EOL;
+            $output .= \sprintf('%2d) %s', $i + 1, $set->getName()).\PHP_EOL.'      '.$set->getDescription().\PHP_EOL;
 
             if ($set->isRisky()) {
-                $output .= '      Set contains risky rules.'.PHP_EOL;
+                $output .= '      Set contains risky rules.'.\PHP_EOL;
             }
         }
 

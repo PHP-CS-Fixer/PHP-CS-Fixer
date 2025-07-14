@@ -385,7 +385,7 @@ final class FixerDocumentGenerator
                    the sample is not suitable for current version of PHP (%s).
                 RST;
 
-            return \sprintf($error, PHP_VERSION);
+            return \sprintf($error, \PHP_VERSION);
         }
 
         $old = $sample->getCode();

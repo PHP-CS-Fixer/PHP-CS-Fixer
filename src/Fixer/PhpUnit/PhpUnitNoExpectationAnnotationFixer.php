@@ -145,7 +145,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         for ($i = $endIndex - 1; $i > $startIndex; --$i) {
-            if (!$tokens[$i]->isGivenKind(T_FUNCTION) || $tokensAnalyzer->isLambda($i)) {
+            if (!$tokens[$i]->isGivenKind(\T_FUNCTION) || $tokensAnalyzer->isLambda($i)) {
                 continue;
             }
 
@@ -160,9 +160,9 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             do {
                 $docBlockIndex = $tokens->getPrevNonWhitespace($docBlockIndex);
-            } while ($tokens[$docBlockIndex]->isGivenKind([T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_COMMENT]));
+            } while ($tokens[$docBlockIndex]->isGivenKind([\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_FINAL, \T_ABSTRACT, \T_COMMENT]));
 
-            if (!$tokens[$docBlockIndex]->isGivenKind(T_DOC_COMMENT)) {
+            if (!$tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -200,7 +200,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 .');';
             $newMethods = Tokens::fromCode($newMethodsCode);
             $newMethods[0] = new Token([
-                T_WHITESPACE,
+                \T_WHITESPACE,
                 $this->whitespacesConfig->getLineEnding().$originalIndent.$this->whitespacesConfig->getIndent(),
             ]);
 
@@ -209,12 +209,12 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             if ('' === $docContent) {
                 $docContent = '/** */';
             }
-            $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $docContent]);
+            $tokens[$docBlockIndex] = new Token([\T_DOC_COMMENT, $docContent]);
             $tokens->insertAt($braceIndex + 1, $newMethods);
 
             $whitespaceIndex = $braceIndex + $newMethods->getSize() + 1;
             $tokens[$whitespaceIndex] = new Token([
-                T_WHITESPACE,
+                \T_WHITESPACE,
                 $this->whitespacesConfig->getLineEnding().$tokens[$whitespaceIndex]->getContent(),
             ]);
 

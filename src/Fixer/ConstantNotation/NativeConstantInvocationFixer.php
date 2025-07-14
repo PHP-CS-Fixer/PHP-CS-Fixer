@@ -126,7 +126,7 @@ namespace {
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     public function isRisky(): bool
@@ -261,7 +261,7 @@ namespace {
             $token = $tokens[$index];
 
             // test if we are at a constant call
-            if (!$token->isGivenKind(T_STRING)) {
+            if (!$token->isGivenKind(\T_STRING)) {
                 continue;
             }
 
@@ -277,13 +277,13 @@ namespace {
                     continue;
                 }
 
-                if (!$tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
+                if (!$tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
                     continue;
                 }
 
                 $prevPrevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
 
-                if ($tokens[$prevPrevIndex]->isGivenKind(T_STRING)) {
+                if ($tokens[$prevPrevIndex]->isGivenKind(\T_STRING)) {
                     continue;
                 }
 
@@ -296,11 +296,11 @@ namespace {
                 continue;
             }
 
-            if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
+            if ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
                 continue;
             }
 
-            $tokens->insertAt($index, new Token([T_NS_SEPARATOR, '\\']));
+            $tokens->insertAt($index, new Token([\T_NS_SEPARATOR, '\\']));
         }
     }
 }

@@ -55,7 +55,7 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
                 if (!$this->belongsToSwitchOrAlternativeSyntax($alternativeSyntaxAnalyzer, $tokens, $beforeAssignmentIndex)) {
                     continue;
                 }
-            } elseif (!$tokens[$beforeAssignmentIndex]->equalsAny([';', '{', '}', '(', ')', ',', [T_OPEN_TAG], [T_RETURN]])) {
+            } elseif (!$tokens[$beforeAssignmentIndex]->equalsAny([';', '{', '}', '(', ')', ',', [\T_OPEN_TAG], [\T_RETURN]])) {
                 continue;
             }
 
@@ -105,9 +105,9 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
             $i = $tokens->getNonEmptySibling($i, 1);
 
             if ($tokens[$i]->isWhitespace(" \t")) {
-                $tokens[$i] = new Token([T_WHITESPACE, ' ']);
+                $tokens[$i] = new Token([\T_WHITESPACE, ' ']);
             } elseif (!$tokens[$i]->isWhitespace()) {
-                $tokens->insertAt($i, new Token([T_WHITESPACE, ' ']));
+                $tokens->insertAt($i, new Token([\T_WHITESPACE, ' ']));
             }
         }
     }
@@ -123,7 +123,7 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
         while (true) {
             $nextIndex = $tokens->getNextMeaningfulToken($index);
 
-            if (null === $nextIndex || $tokens[$nextIndex]->equalsAny([';', ',', [T_CLOSE_TAG]])) {
+            if (null === $nextIndex || $tokens[$nextIndex]->equalsAny([';', ',', [\T_CLOSE_TAG]])) {
                 break;
             }
 
@@ -162,7 +162,7 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
             }
         }
 
-        $controlStructureWithoutBracesTypes = [T_IF, T_ELSE, T_ELSEIF, T_FOR, T_FOREACH, T_WHILE];
+        $controlStructureWithoutBracesTypes = [\T_IF, \T_ELSE, \T_ELSEIF, \T_FOR, \T_FOREACH, \T_WHILE];
 
         $previousIndex = $tokens->getPrevMeaningfulToken($index);
         $previousToken = $tokens[$previousIndex];
@@ -181,9 +181,9 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
             [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
             [CT::T_DYNAMIC_PROP_BRACE_CLOSE],
             [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
-            [T_NS_SEPARATOR],
-            [T_STRING],
-            [T_VARIABLE],
+            [\T_NS_SEPARATOR],
+            [\T_STRING],
+            [\T_VARIABLE],
         ])) {
             $blockType = Tokens::detectBlockType($previousToken);
 
@@ -202,9 +202,9 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
             $previousToken = $tokens[$previousIndex];
         }
 
-        if ($previousToken->isGivenKind(T_OBJECT_OPERATOR)) {
+        if ($previousToken->isGivenKind(\T_OBJECT_OPERATOR)) {
             $index = $this->getBeforeOperatorRange($tokens, $previousIndex)['start'];
-        } elseif ($previousToken->isGivenKind(T_PAAMAYIM_NEKUDOTAYIM)) {
+        } elseif ($previousToken->isGivenKind(\T_PAAMAYIM_NEKUDOTAYIM)) {
             $index = $this->getBeforeOperatorRange($tokens, $tokens->getPrevMeaningfulToken($previousIndex))['start'];
         }
 
@@ -226,7 +226,7 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
 
     private function isOperatorCommutative(Token $operatorToken): bool
     {
-        if ($operatorToken->isGivenKind(T_COALESCE)) {
+        if ($operatorToken->isGivenKind(\T_COALESCE)) {
             return false;
         }
 
@@ -248,13 +248,13 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
         $candidate = $index;
         $index = $tokens->getPrevMeaningfulToken($candidate);
 
-        if ($tokens[$index]->isGivenKind(T_DEFAULT)) {
+        if ($tokens[$index]->isGivenKind(\T_DEFAULT)) {
             return true;
         }
 
         $index = $tokens->getPrevMeaningfulToken($index);
 
-        if ($tokens[$index]->isGivenKind(T_CASE)) {
+        if ($tokens[$index]->isGivenKind(\T_CASE)) {
             return true;
         }
 

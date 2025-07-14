@@ -225,11 +225,11 @@ abstract class AbstractIntegrationTestCase extends TestCase
             self::markTestSkipped(\sprintf('PHP lower than %d is required for "%s", current "%d".', $phpUpperLimit, $case->getFileName(), \PHP_VERSION_ID));
         }
 
-        if (!\in_array(PHP_OS_FAMILY, $case->getRequirement('os'), true)) {
+        if (!\in_array(\PHP_OS_FAMILY, $case->getRequirement('os'), true)) {
             self::markTestSkipped(
                 \sprintf(
                     'Unsupported OS (%s) for "%s", allowed are: %s.',
-                    PHP_OS,
+                    \PHP_OS,
                     $case->getFileName(),
                     implode(', ', $case->getRequirement('os'))
                 )

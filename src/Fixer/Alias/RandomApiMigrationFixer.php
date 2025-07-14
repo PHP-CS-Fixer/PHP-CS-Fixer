@@ -107,14 +107,14 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
 
                 // analysing cursor shift, so nested calls could be processed
                 $currIndex = $openParenthesis;
-                $tokens[$functionName] = new Token([T_STRING, $functionReplacement]);
+                $tokens[$functionName] = new Token([\T_STRING, $functionReplacement]);
 
                 if (0 === $count && 'random_int' === $functionReplacement) {
                     $tokens->insertAt($currIndex + 1, [
-                        new Token([T_LNUMBER, '0']),
+                        new Token([\T_LNUMBER, '0']),
                         new Token(','),
-                        new Token([T_WHITESPACE, ' ']),
-                        new Token([T_STRING, 'getrandmax']),
+                        new Token([\T_WHITESPACE, ' ']),
+                        new Token([\T_STRING, 'getrandmax']),
                         new Token('('),
                         new Token(')'),
                     ]);

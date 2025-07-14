@@ -52,7 +52,7 @@ final class NullableTypeDeclarationFixer extends AbstractFixer implements Config
 
     private const OPTION_SYNTAX_UNION = 'union';
     private const OPTION_SYNTAX_QUESTION_MARK = 'question_mark';
-    private const PROPERTY_MODIFIERS = [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_STATIC, T_VAR, FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET];
+    private const PROPERTY_MODIFIERS = [\T_PRIVATE, \T_PROTECTED, \T_PUBLIC, \T_STATIC, \T_VAR, FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET];
 
     private int $candidateTokenKind;
 
@@ -155,8 +155,8 @@ class ValueObject
 
         foreach ($tokens as $index => $token) {
             if (
-                $token->isGivenKind(T_FN)
-                || ($token->isGivenKind(T_FUNCTION) && !isset($elements[$index]))
+                $token->isGivenKind(\T_FN)
+                || ($token->isGivenKind(\T_FUNCTION) && !isset($elements[$index]))
             ) {
                 $elements[$index] = 'function';
             }
@@ -310,8 +310,8 @@ class ValueObject
         static $specialTypes = [
             '?' => CT::T_NULLABLE_TYPE,
             'array' => CT::T_ARRAY_TYPEHINT,
-            'callable' => T_CALLABLE,
-            'static' => T_STATIC,
+            'callable' => \T_CALLABLE,
+            'static' => \T_STATIC,
         ];
 
         $count = \count($types);
@@ -327,10 +327,10 @@ class ValueObject
                     }
 
                     if ($nsIndex > 0) {
-                        $newTokens[] = new Token([T_NS_SEPARATOR, '\\']);
+                        $newTokens[] = new Token([\T_NS_SEPARATOR, '\\']);
                     }
 
-                    $newTokens[] = new Token([T_STRING, $value]);
+                    $newTokens[] = new Token([\T_STRING, $value]);
                 }
             }
 

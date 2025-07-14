@@ -96,7 +96,7 @@ final class GeneralPhpdocTagRenameFixer extends AbstractFixer implements Configu
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
@@ -192,11 +192,11 @@ final class GeneralPhpdocTagRenameFixer extends AbstractFixer implements Configu
         }
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
-            $tokens[$index] = new Token([T_DOC_COMMENT, Preg::replaceCallback(
+            $tokens[$index] = new Token([\T_DOC_COMMENT, Preg::replaceCallback(
                 $regex,
                 static function (array $matches) use ($caseInsensitive, $replacements) {
                     \assert(isset($matches['tag']));

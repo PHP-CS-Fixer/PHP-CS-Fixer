@@ -48,7 +48,7 @@ final class AttributeAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
 
         foreach ($tokens as $index => $token) {
-            if ($token->equals([T_STRING, 'Foo'])) {
+            if ($token->equals([\T_STRING, 'Foo'])) {
                 if (isset($testedIndex)) {
                     self::fail('Test is run against index of "Foo", multiple occurrences found.');
                 }
@@ -145,7 +145,7 @@ final class AttributeAnalyzerTest extends TestCase
         $actualAnalyses = AttributeAnalyzer::collect($tokens, $startIndex);
 
         foreach ($expectedAnalyses as $expectedAnalysis) {
-            self::assertSame(T_ATTRIBUTE, $tokens[$expectedAnalysis->getOpeningBracketIndex()]->getId());
+            self::assertSame(\T_ATTRIBUTE, $tokens[$expectedAnalysis->getOpeningBracketIndex()]->getId());
             self::assertSame(CT::T_ATTRIBUTE_CLOSE, $tokens[$expectedAnalysis->getClosingBracketIndex()]->getId());
         }
 
