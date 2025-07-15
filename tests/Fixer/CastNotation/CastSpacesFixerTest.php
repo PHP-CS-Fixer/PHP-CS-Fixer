@@ -232,12 +232,12 @@ final class CastSpacesFixerTest extends AbstractFixerTestCase
     public static function provideFix85Cases(): iterable
     {
         yield [
-            '<?php (void) foo();;',
+            '<?php (void) foo();',
             '<?php (void)    foo();',
         ];
 
         yield [
-            '<?php (void)foo();;',
+            '<?php (void)foo();',
             '<?php (void)    foo();',
             ['space' => 'none'],
         ];
