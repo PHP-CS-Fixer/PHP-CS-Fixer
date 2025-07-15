@@ -87,7 +87,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     /**
@@ -154,7 +154,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $currIndex = 0;
 
         while (true) {
-            $currIndex = $tokens->getNextTokenOfKind($currIndex, [[T_STRING]]);
+            $currIndex = $tokens->getNextTokenOfKind($currIndex, [[\T_STRING]]);
 
             if (null === $currIndex) {
                 break;
@@ -162,7 +162,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $prevIndex = $tokens->getPrevMeaningfulToken($currIndex);
 
-            if ($tokens[$prevIndex]->isGivenKind([T_CONST, T_DOUBLE_COLON])) {
+            if ($tokens[$prevIndex]->isGivenKind([\T_CONST, \T_DOUBLE_COLON])) {
                 continue;
             }
 
@@ -185,12 +185,12 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             );
 
             $prevIndex = $tokens->getPrevMeaningfulToken($currIndex);
-            if ($tokens[$prevIndex]->isGivenKind(T_USE)) {
+            if ($tokens[$prevIndex]->isGivenKind(\T_USE)) {
                 $importedOriginalClassesMap[$originalClass] = true;
-            } elseif ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
+            } elseif ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
                 $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
 
-                if ($tokens[$prevIndex]->isGivenKind(T_USE)) {
+                if ($tokens[$prevIndex]->isGivenKind(\T_USE)) {
                     $importedOriginalClassesMap[$originalClass] = true;
                 }
             }
@@ -223,9 +223,9 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $tokensArray = [];
 
         while ([] !== $parts) {
-            $tokensArray[] = new Token([T_STRING, array_shift($parts)]);
+            $tokensArray[] = new Token([\T_STRING, array_shift($parts)]);
             if ([] !== $parts) {
-                $tokensArray[] = new Token([T_NS_SEPARATOR, '\\']);
+                $tokensArray[] = new Token([\T_NS_SEPARATOR, '\\']);
             }
         }
 
@@ -236,10 +236,10 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     {
         $prevIndex = $tokens->getPrevMeaningfulToken($currIndex);
 
-        if ($tokens[$prevIndex]->isGivenKind([T_NS_SEPARATOR])) {
+        if ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
             $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
         }
 
-        return $tokens[$prevIndex]->isGivenKind([T_USE]);
+        return $tokens[$prevIndex]->isGivenKind(\T_USE);
     }
 }

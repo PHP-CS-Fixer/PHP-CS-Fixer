@@ -164,7 +164,7 @@ final class Utils
     {
         return filter_var(
             getenv('PHP_CS_FIXER_FUTURE_MODE'),
-            FILTER_VALIDATE_BOOL
+            \FILTER_VALIDATE_BOOL
         );
     }
 
@@ -181,7 +181,7 @@ final class Utils
         $message = $futureException->getMessage();
 
         self::$deprecations[$message] = true;
-        @trigger_error($message, E_USER_DEPRECATED);
+        @trigger_error($message, \E_USER_DEPRECATED);
     }
 
     /**

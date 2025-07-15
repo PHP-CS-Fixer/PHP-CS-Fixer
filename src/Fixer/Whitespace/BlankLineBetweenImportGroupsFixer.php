@@ -97,7 +97,7 @@ use Bar;
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_USE);
+        return $tokens->isTokenKindFound(\T_USE);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -126,7 +126,7 @@ use Bar;
         for ($i = $usesCount - 1; $i >= 0; --$i) {
             $index = $uses[$i];
             $startIndex = $tokens->getNextMeaningfulToken($index + 1);
-            $endIndex = $tokens->getNextTokenOfKind($startIndex, [';', [T_CLOSE_TAG]]);
+            $endIndex = $tokens->getNextTokenOfKind($startIndex, [';', [\T_CLOSE_TAG]]);
 
             if ($tokens[$startIndex]->isGivenKind(CT::T_CONST_IMPORT)) {
                 $type = self::IMPORT_TYPE_CONST;

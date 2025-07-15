@@ -68,13 +68,13 @@ class Foo extends Bar
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_STATIC, T_STRING]);
+        return $tokens->isAnyTokenKindsFound([\T_STATIC, \T_STRING]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->equalsAny([[T_STRING, 'self'], [T_STATIC, 'static'], [T_STRING, 'parent']], false)) {
+            if (!$token->equalsAny([[\T_STRING, 'self'], [\T_STATIC, 'static'], [\T_STRING, 'parent']], false)) {
                 continue;
             }
 
@@ -93,18 +93,21 @@ class Foo extends Bar
         }
 
         $nextIndex = $tokens->getNextMeaningfulToken($index);
-        if ($tokens[$nextIndex]->isGivenKind(T_DOUBLE_COLON)) {
+        if ($tokens[$nextIndex]->isGivenKind(\T_DOUBLE_COLON)) {
             return true;
         }
-        if (!$tokens[$nextIndex]->isGivenKind([T_VARIABLE, CT::T_TYPE_ALTERNATION]) && !$tokens[$nextIndex]->equalsAny(['(', ')', '{', ';'])) {
+        if (!$tokens[$nextIndex]->isGivenKind([\T_VARIABLE, CT::T_TYPE_ALTERNATION]) && !$tokens[$nextIndex]->equalsAny(['(', ')', '{', ';'])) {
             return false;
         }
 
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
-        if ($tokens[$prevIndex]->isGivenKind(T_INSTANCEOF)) {
+        if ($tokens[$prevIndex]->isGivenKind(\T_INSTANCEOF)) {
             return true;
         }
-        if (!$tokens[$prevIndex]->isGivenKind([T_CASE, T_NEW, T_PRIVATE, T_PROTECTED, T_PUBLIC, CT::T_NULLABLE_TYPE, CT::T_TYPE_COLON, CT::T_TYPE_ALTERNATION]) && !$tokens[$prevIndex]->equalsAny(['(', '{'])) {
+        if ($tokens[$prevIndex]->isGivenKind(\T_CASE)) {
+            return !$tokens[$nextIndex]->equals(';');
+        }
+        if (!$tokens[$prevIndex]->isGivenKind([\T_NEW, \T_PRIVATE, \T_PROTECTED, \T_PUBLIC, CT::T_NULLABLE_TYPE, CT::T_TYPE_COLON, CT::T_TYPE_ALTERNATION]) && !$tokens[$prevIndex]->equalsAny(['(', '{'])) {
             return false;
         }
 
@@ -112,7 +115,7 @@ class Foo extends Bar
             return false;
         }
 
-        if ('static' === strtolower($tokens[$index]->getContent()) && $tokens[$nextIndex]->isGivenKind(T_VARIABLE)) {
+        if ('static' === strtolower($tokens[$index]->getContent()) && $tokens[$nextIndex]->isGivenKind(\T_VARIABLE)) {
             return false;
         }
 

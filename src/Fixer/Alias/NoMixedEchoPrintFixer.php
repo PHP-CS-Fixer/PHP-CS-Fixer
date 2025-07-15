@@ -77,14 +77,14 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
 
     protected function configurePostNormalisation(): void
     {
-        $this->candidateTokenType = 'echo' === $this->configuration['use'] ? T_PRINT : T_ECHO;
+        $this->candidateTokenType = 'echo' === $this->configuration['use'] ? \T_PRINT : \T_ECHO;
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind($this->candidateTokenType)) {
-                if (T_PRINT === $this->candidateTokenType) {
+                if (\T_PRINT === $this->candidateTokenType) {
                     $this->fixPrintToEcho($tokens, $index);
                 } else {
                     $this->fixEchoToPrint($tokens, $index);
@@ -106,7 +106,7 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
     private function fixEchoToPrint(Tokens $tokens, int $index): void
     {
         $nextTokenIndex = $tokens->getNextMeaningfulToken($index);
-        $endTokenIndex = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
+        $endTokenIndex = $tokens->getNextTokenOfKind($index, [';', [\T_CLOSE_TAG]]);
         $canBeConverted = true;
 
         for ($i = $nextTokenIndex; $i < $endTokenIndex; ++$i) {
@@ -126,17 +126,17 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
             return;
         }
 
-        $tokens[$index] = new Token([T_PRINT, 'print']);
+        $tokens[$index] = new Token([\T_PRINT, 'print']);
     }
 
     private function fixPrintToEcho(Tokens $tokens, int $index): void
     {
         $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
 
-        if (!$prevToken->equalsAny([';', '{', '}', ')', [T_OPEN_TAG], [T_ELSE]])) {
+        if (!$prevToken->equalsAny([';', '{', '}', ')', [\T_OPEN_TAG], [\T_ELSE]])) {
             return;
         }
 
-        $tokens[$index] = new Token([T_ECHO, 'echo']);
+        $tokens[$index] = new Token([\T_ECHO, 'echo']);
     }
 }

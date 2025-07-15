@@ -3,6 +3,27 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.83.0
+---------------------
+
+* feat: Suppress enable parallel runner message when only 1 core is available (#8833)
+* fix: BracesPositionFixer - fix performance issue for massive files with CT::T_CURLY_CLOSE (#8830)
+* fix: `NoUnreachableDefaultArgumentValueFixer` - do not crash on property hook (#8838)
+* chore: Add CS commit to .git-blame-ignore-revs
+* chore: apply native_constant_invocation for build-in consts (#8837)
+* chore: configure native_constant_invocation (#8840)
+* chore: early compat check with Symfony 8 (#8827)
+* chore: `FullyQualifiedStrictTypesFixer` - reduce function calls (#8834)
+* CI: mark jobs allow-to-fail declarative, instead of imperative check (#8829)
+
+Changelog for v3.82.2
+---------------------
+
+* fix: `ClassAttributesSeparationFixer` - handle method `get` aliased in trait import (#8822)
+* fix: `LowercaseStaticReferenceFixer` - do not touch enum's cases (#8824)
+* fix: `StatementIndentationFixer` - multi constant statement containing array (#8825)
+* fix: `VisibilityRequiredFixer` - handle promoted property with visibility and reference, but without type (#8823)
+
 Changelog for v3.82.1
 ---------------------
 

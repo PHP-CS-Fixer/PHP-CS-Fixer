@@ -44,7 +44,7 @@ final class PhpdocInlineTagNormalizerFixer extends AbstractFixer implements Conf
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     public function getDefinition(): FixerDefinitionInterface
@@ -81,7 +81,7 @@ final class PhpdocInlineTagNormalizerFixer extends AbstractFixer implements Conf
         }
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -105,7 +105,7 @@ final class PhpdocInlineTagNormalizerFixer extends AbstractFixer implements Conf
                 $token->getContent()
             );
 
-            $tokens[$index] = new Token([T_DOC_COMMENT, $content]);
+            $tokens[$index] = new Token([\T_DOC_COMMENT, $content]);
         }
     }
 

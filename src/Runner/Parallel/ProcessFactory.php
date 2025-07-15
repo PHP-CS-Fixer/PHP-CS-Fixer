@@ -89,11 +89,11 @@ final class ProcessFactory
             $commandArgs[] = '--dry-run';
         }
 
-        if (filter_var($this->input->getOption('diff'), FILTER_VALIDATE_BOOLEAN)) {
+        if (filter_var($this->input->getOption('diff'), \FILTER_VALIDATE_BOOLEAN)) {
             $commandArgs[] = '--diff';
         }
 
-        if (filter_var($this->input->getOption('stop-on-violation'), FILTER_VALIDATE_BOOLEAN)) {
+        if (filter_var($this->input->getOption('stop-on-violation'), \FILTER_VALIDATE_BOOLEAN)) {
             $commandArgs[] = '--stop-on-violation';
         }
 

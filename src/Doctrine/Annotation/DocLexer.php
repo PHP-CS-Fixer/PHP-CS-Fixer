@@ -157,7 +157,7 @@ final class DocLexer
             'iu'
         );
 
-        $flags = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE;
+        $flags = \PREG_SPLIT_NO_EMPTY | \PREG_SPLIT_DELIM_CAPTURE | \PREG_SPLIT_OFFSET_CAPTURE;
         $matches = Preg::split($this->regex, $input, -1, $flags);
 
         foreach ($matches as $match) {

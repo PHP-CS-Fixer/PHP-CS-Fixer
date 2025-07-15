@@ -683,6 +683,17 @@ AB# <- this is the name
                 }
                 PHP,
         ];
+
+        yield 'promoted property with visibility and reference, but without type' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public function __construct(
+                        private &$bar,
+                    ) {}
+                }
+                PHP,
+        ];
     }
 
     /**
@@ -979,6 +990,67 @@ var_dump(Foo::CAT->test());',
                     readonly private(set) protected Bar $a;
                     protected(set) readonly public Bar $b;
                     private(set) public readonly Baz $c;
+                }
+                PHP,
+        ];
+
+        yield 'promoted property with visibility, set-visibility and reference' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public function __construct(
+                        protected private(set) int &$bar,
+                    ) {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public function __construct(
+                        private(set) protected int &$bar,
+                    ) {}
+                }
+                PHP,
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix85Cases
+     *
+     * @requires PHP >= 8.5
+     */
+    public function testFix85(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix85Cases(): iterable
+    {
+        yield 'promoted property without visibility' => [
+            '<?php class Foo { public function __construct(final public string $bar) { } }',
+            '<?php class Foo { public function __construct(final string $bar) { } }',
+        ];
+
+        yield 'promoted final properties' => [
+            <<<'PHP'
+                <?php class Foo {
+                    public function __construct(
+                        final public bool $one,
+                        final public bool $two,
+                        final public string $three
+                    ) {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo {
+                    public function __construct(
+                        public final bool $one,
+                        public final bool $two,
+                        public final string $three
+                    ) {}
                 }
                 PHP,
         ];

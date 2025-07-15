@@ -82,7 +82,7 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     /**
@@ -123,7 +123,7 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
         }
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -144,7 +144,7 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
             $content = $this->moveAnnotationsAfter($last, $predecessors, $content);
 
             // persist the content at the end
-            $tokens[$index] = new Token([T_DOC_COMMENT, $content]);
+            $tokens[$index] = new Token([\T_DOC_COMMENT, $content]);
         }
     }
 

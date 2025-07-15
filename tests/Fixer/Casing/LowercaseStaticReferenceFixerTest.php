@@ -369,9 +369,23 @@ class Foo
             '<?php class A { final const PARENT = 42; }',
         ];
 
-        yield [
-            '<?php enum Foo: string { case PARENT = \'parent\'; }',
-        ];
+        yield [<<<'PHP'
+            <?php enum Foo: string
+            {
+                case SELF = 'self';
+                case STATIC = 'static';
+                case PARENT = 'parent';
+            }
+            PHP];
+
+        yield [<<<'PHP'
+            <?php enum Foo
+            {
+                case SELF;
+                case STATIC;
+                case PARENT;
+            }
+            PHP];
     }
 
     /**

@@ -44,7 +44,7 @@ final class NativeFunctionCasingFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -69,7 +69,7 @@ final class NativeFunctionCasingFixer extends AbstractFixer
                 continue;
             }
 
-            $tokens[$index] = new Token([T_STRING, $nativeFunctionNames[$lower]]);
+            $tokens[$index] = new Token([\T_STRING, $nativeFunctionNames[$lower]]);
         }
     }
 

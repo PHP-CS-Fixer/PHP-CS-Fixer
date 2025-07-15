@@ -61,7 +61,7 @@ final class FileHandler implements FileHandlerInterface
         $fileObject = $this->fileInfo->openFile('r+');
 
         if (method_exists($cache, 'backfillHashes') && $this->fileMTime < $this->getFileCurrentMTime()) {
-            $resultOfFlock = $fileObject->flock(LOCK_EX);
+            $resultOfFlock = $fileObject->flock(\LOCK_EX);
             if (false === $resultOfFlock) {
                 // Lock failed, OK - we continue without the lock.
                 // noop

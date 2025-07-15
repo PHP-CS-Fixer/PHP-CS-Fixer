@@ -38,13 +38,13 @@ final class IntegerLiteralCaseFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_LNUMBER);
+        return $tokens->isTokenKindFound(\T_LNUMBER);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_LNUMBER)) {
+            if (!$token->isGivenKind(\T_LNUMBER)) {
                 continue;
             }
 
@@ -56,7 +56,7 @@ final class IntegerLiteralCaseFixer extends AbstractFixer
                 continue;
             }
 
-            $tokens[$index] = new Token([T_LNUMBER, $newContent]);
+            $tokens[$index] = new Token([\T_LNUMBER, $newContent]);
         }
     }
 }

@@ -52,7 +52,7 @@ final class SingleLineCommentSpacingFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_COMMENT);
+        return $tokens->isTokenKindFound(\T_COMMENT);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -60,7 +60,7 @@ final class SingleLineCommentSpacingFixer extends AbstractFixer
         for ($index = \count($tokens) - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(T_COMMENT)) {
+            if (!$token->isGivenKind(\T_COMMENT)) {
                 continue;
             }
 
@@ -91,7 +91,7 @@ final class SingleLineCommentSpacingFixer extends AbstractFixer
             }
 
             if ($newContent !== $content) {
-                $tokens[$index] = new Token([T_COMMENT, $newContent]);
+                $tokens[$index] = new Token([\T_COMMENT, $newContent]);
             }
         }
     }

@@ -150,15 +150,15 @@ final class UtilsTest extends TestCase
      */
     public static function provideCalculateTrailingWhitespaceIndentCases(): iterable
     {
-        yield ['    ', [T_WHITESPACE, "\n\n    "]];
+        yield ['    ', [\T_WHITESPACE, "\n\n    "]];
 
-        yield [' ', [T_WHITESPACE, "\r\n\r\r\r "]];
+        yield [' ', [\T_WHITESPACE, "\r\n\r\r\r "]];
 
-        yield ["\t", [T_WHITESPACE, "\r\n\t"]];
+        yield ["\t", [\T_WHITESPACE, "\r\n\t"]];
 
-        yield ['', [T_WHITESPACE, "\t\n\r"]];
+        yield ['', [\T_WHITESPACE, "\t\n\r"]];
 
-        yield ['', [T_WHITESPACE, "\n"]];
+        yield ['', [\T_WHITESPACE, "\n"]];
 
         yield ['', ''];
     }
@@ -168,7 +168,7 @@ final class UtilsTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The given token must be whitespace, got "T_STRING".');
 
-        $token = new Token([T_STRING, 'foo']);
+        $token = new Token([\T_STRING, 'foo']);
 
         Utils::calculateTrailingWhitespaceIndent($token);
     }

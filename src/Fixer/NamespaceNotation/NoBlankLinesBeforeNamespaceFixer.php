@@ -36,7 +36,7 @@ final class NoBlankLinesBeforeNamespaceFixer extends AbstractProxyFixer implemen
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_NAMESPACE);
+        return $tokens->isTokenKindFound(\T_NAMESPACE);
     }
 
     public function getDefinition(): FixerDefinitionInterface
