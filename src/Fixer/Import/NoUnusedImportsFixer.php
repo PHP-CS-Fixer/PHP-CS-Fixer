@@ -297,7 +297,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
             if (
                 $tokens[$nextTokenIndex]->equals(',')
                 || $tokens[$nextTokenIndex]->equals(';')
-                || $tokens[$nextTokenIndex]->isGivenKind([CT::T_GROUP_IMPORT_BRACE_CLOSE])
+                || $tokens[$nextTokenIndex]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)
             ) {
                 $tokens->clearAt($index);
             } else {
@@ -305,7 +305,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
             }
 
             $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$prevTokenIndex]->isGivenKind([CT::T_GROUP_IMPORT_BRACE_OPEN])) {
+            if ($tokens[$prevTokenIndex]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                 $tokens->clearAt($index);
             }
         }
@@ -381,7 +381,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
         // Second we look for empty groups where all comma-separated chunks were removed (`use;`).
         $beforeSemicolonIndex = $tokens->getPrevMeaningfulToken($useDeclaration->getEndIndex());
         if (
-            $tokens[$beforeSemicolonIndex]->isGivenKind([\T_USE])
+            $tokens[$beforeSemicolonIndex]->isGivenKind(\T_USE)
             || \in_array($tokens[$beforeSemicolonIndex]->getContent(), ['function', 'const'], true)
         ) {
             $this->removeUseDeclaration($tokens, $useDeclaration, true);

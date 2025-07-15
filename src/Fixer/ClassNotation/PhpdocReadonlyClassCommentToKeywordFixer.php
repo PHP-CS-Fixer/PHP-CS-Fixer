@@ -100,7 +100,7 @@ final class PhpdocReadonlyClassCommentToKeywordFixer extends AbstractFixer
                 \T_PROTECTED,
                 \T_READONLY,
             ])) {
-                if ($tokens[$index]->isGivenKind([\T_READONLY])) {
+                if ($tokens[$index]->isGivenKind(\T_READONLY)) {
                     $addReadonly = false;
                 }
 

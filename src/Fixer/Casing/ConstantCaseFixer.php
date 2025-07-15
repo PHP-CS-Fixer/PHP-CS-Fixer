@@ -116,7 +116,7 @@ final class ConstantCaseFixer extends AbstractFixer implements ConfigurableFixer
             }
 
             $nextIndex = $tokens->getNextMeaningfulToken($index);
-            if ($tokens[$nextIndex]->isGivenKind([\T_PAAMAYIM_NEKUDOTAYIM, \T_NS_SEPARATOR]) || $tokens[$nextIndex]->equalsAny(['='], false)) {
+            if ($tokens[$nextIndex]->isGivenKind([\T_PAAMAYIM_NEKUDOTAYIM, \T_NS_SEPARATOR]) || $tokens[$nextIndex]->equals('=', false)) {
                 continue;
             }
 

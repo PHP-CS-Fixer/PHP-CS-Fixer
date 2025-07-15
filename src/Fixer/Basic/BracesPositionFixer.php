@@ -251,7 +251,22 @@ $bar = function () { $result = true;
 
                 $positionOption = 'control_structures_opening_brace';
             } elseif ($token->isGivenKind(\T_VARIABLE)) {
-                $openBraceIndex = $tokens->getNextTokenOfKind($index, ['{', ';', [CT::T_PROPERTY_HOOK_BRACE_OPEN], [\T_CLOSE_TAG]]);
+                // handle default value - explictly skip array as default value
+                $nextMeaningfulIndex = $tokens->getNextMeaningfulToken($index);
+                if ($tokens[$nextMeaningfulIndex]->equals('=')) {
+                    $nextMeaningfulIndex = $tokens->getNextMeaningfulToken($nextMeaningfulIndex);
+
+                    if ($tokens[$nextMeaningfulIndex]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+                        $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $nextMeaningfulIndex);
+                    } elseif ($tokens[$nextMeaningfulIndex]->isGivenKind(\T_ARRAY)) {
+                        $nextMeaningfulIndex = $tokens->getNextMeaningfulToken($nextMeaningfulIndex);
+                        if ($tokens[$nextMeaningfulIndex]->equals('(')) {
+                            $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextMeaningfulIndex);
+                        }
+                    }
+                }
+
+                $openBraceIndex = $tokens->getNextTokenOfKind($index, ['{', ';', '.', [CT::T_CURLY_CLOSE], [CT::T_PROPERTY_HOOK_BRACE_OPEN], [\T_ENCAPSED_AND_WHITESPACE], [\T_CLOSE_TAG]]);
 
                 if (!$tokens[$openBraceIndex]->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
                     continue;

@@ -63,7 +63,7 @@ trait Indentation
     {
         $content = $tokens[$index]->getContent();
 
-        if (0 !== $index && $tokens[$index - 1]->equalsAny([[\T_OPEN_TAG], [\T_CLOSE_TAG]])) {
+        if (0 !== $index && $tokens[$index - 1]->isGivenKind([\T_OPEN_TAG, \T_CLOSE_TAG])) {
             $content = Preg::replace('/\S/', '', $tokens[$index - 1]->getContent()).$content;
         }
 

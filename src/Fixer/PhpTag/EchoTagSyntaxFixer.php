@@ -105,6 +105,7 @@ final class EchoTagSyntaxFixer extends AbstractFixer implements ConfigurableFixe
      * {@inheritdoc}
      *
      * Must run before NoMixedEchoPrintFixer.
+     * Must run after NoUselessPrintfFixer.
      */
     public function getPriority(): int
     {
