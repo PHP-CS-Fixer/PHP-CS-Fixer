@@ -95,7 +95,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAllTokenKindsFound([T_CLASS, T_DOC_COMMENT]);
+        return $tokens->isAllTokenKindsFound([\T_CLASS, \T_DOC_COMMENT]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -113,7 +113,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 );
 
                 if (
-                    !$tokens[$index]->isGivenKind(T_DOC_COMMENT)
+                    !$tokens[$index]->isGivenKind(\T_DOC_COMMENT)
                     || !Preg::match($findPattern, $tokens[$index]->getContent())
                 ) {
                     continue;
@@ -157,7 +157,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
                 $orderedAnnotationMap = $annotationMap;
 
-                ksort($orderedAnnotationMap, SORT_STRING);
+                ksort($orderedAnnotationMap, \SORT_STRING);
 
                 if ($orderedAnnotationMap === $annotationMap) {
                     continue;
@@ -174,7 +174,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                     );
                 }
 
-                $tokens[$index] = new Token([T_DOC_COMMENT, implode('', $lines)]);
+                $tokens[$index] = new Token([\T_DOC_COMMENT, implode('', $lines)]);
             }
         }
     }

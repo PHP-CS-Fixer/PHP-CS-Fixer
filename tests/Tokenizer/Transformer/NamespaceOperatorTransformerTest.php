@@ -39,7 +39,7 @@ final class NamespaceOperatorTransformerTest extends AbstractTransformerTestCase
             $source,
             $expectedTokens,
             [
-                T_NAMESPACE,
+                \T_NAMESPACE,
                 CT::T_NAMESPACE_OPERATOR,
             ]
         );
@@ -56,7 +56,7 @@ namespace Foo;
 namespace\Bar\baz();
 ',
             [
-                1 => T_NAMESPACE,
+                1 => \T_NAMESPACE,
                 6 => CT::T_NAMESPACE_OPERATOR,
             ],
         ];

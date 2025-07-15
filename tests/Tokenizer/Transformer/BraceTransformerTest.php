@@ -40,9 +40,9 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
             $source,
             $expectedTokens,
             [
-                T_CURLY_OPEN,
+                \T_CURLY_OPEN,
                 CT::T_CURLY_CLOSE,
-                T_DOLLAR_OPEN_CURLY_BRACES,
+                \T_DOLLAR_OPEN_CURLY_BRACES,
                 CT::T_DOLLAR_CLOSE_CURLY_BRACES,
                 CT::T_DYNAMIC_PROP_BRACE_OPEN,
                 CT::T_DYNAMIC_PROP_BRACE_CLOSE,
@@ -66,7 +66,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
         yield 'curly open/close I' => [
             '<?php echo "This is {$great}";',
             [
-                5 => T_CURLY_OPEN,
+                5 => \T_CURLY_OPEN,
                 7 => CT::T_CURLY_CLOSE,
             ],
         ];
@@ -74,7 +74,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
         yield 'curly open/close II' => [
             '<?php $a = "a{$b->c()}d";',
             [
-                7 => T_CURLY_OPEN,
+                7 => \T_CURLY_OPEN,
                 13 => CT::T_CURLY_CLOSE,
             ],
         ];
@@ -82,7 +82,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
         yield 'dynamic var brace open/close' => [
             '<?php echo "I\'d like an {${beers::$ale}}\n";',
             [
-                5 => T_CURLY_OPEN,
+                5 => \T_CURLY_OPEN,
                 7 => CT::T_DYNAMIC_VAR_BRACE_OPEN,
                 11 => CT::T_DYNAMIC_VAR_BRACE_CLOSE,
                 12 => CT::T_CURLY_CLOSE,
@@ -92,7 +92,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
         yield 'dollar curly brace open/close' => [
             '<?php echo "This is ${great}";',
             [
-                5 => T_DOLLAR_OPEN_CURLY_BRACES,
+                5 => \T_DOLLAR_OPEN_CURLY_BRACES,
                 7 => CT::T_DOLLAR_CLOSE_CURLY_BRACES,
             ],
         ];
@@ -119,11 +119,11 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
                     echo "I\'d like an {${beers::$ale}}\n";
                 ',
             [
-                5 => T_CURLY_OPEN,
+                5 => \T_CURLY_OPEN,
                 7 => CT::T_CURLY_CLOSE,
-                17 => T_CURLY_OPEN,
+                17 => \T_CURLY_OPEN,
                 23 => CT::T_CURLY_CLOSE,
-                32 => T_CURLY_OPEN,
+                32 => \T_CURLY_OPEN,
                 34 => CT::T_DYNAMIC_VAR_BRACE_OPEN,
                 38 => CT::T_DYNAMIC_VAR_BRACE_CLOSE,
                 39 => CT::T_CURLY_CLOSE,
@@ -138,7 +138,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
             '<?php $object->{"set_{$name}"}(42);',
             [
                 3 => CT::T_DYNAMIC_PROP_BRACE_OPEN,
-                6 => T_CURLY_OPEN,
+                6 => \T_CURLY_OPEN,
                 8 => CT::T_CURLY_CLOSE,
                 10 => CT::T_DYNAMIC_PROP_BRACE_CLOSE,
             ],
@@ -155,9 +155,9 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
         yield 'nested curly open + close' => [
             '<?php echo "{$foo->{"{$bar}"}}";',
             [
-                4 => T_CURLY_OPEN,
+                4 => \T_CURLY_OPEN,
                 7 => CT::T_DYNAMIC_PROP_BRACE_OPEN,
-                9 => T_CURLY_OPEN,
+                9 => \T_CURLY_OPEN,
                 11 => CT::T_CURLY_CLOSE,
                 13 => CT::T_DYNAMIC_PROP_BRACE_CLOSE,
                 14 => CT::T_CURLY_CLOSE,
@@ -174,6 +174,18 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
                     get();
                 }
 
+                PHP,
+            [],
+        ];
+
+        yield 'method "get" aliased in trait import' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    use Bar {
+                        get as private otherGet;
+                    }
+                }
                 PHP,
             [],
         ];
@@ -218,9 +230,9 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
             $source,
             $expectedTokens,
             [
-                T_CURLY_OPEN,
+                \T_CURLY_OPEN,
                 CT::T_CURLY_CLOSE,
-                T_DOLLAR_OPEN_CURLY_BRACES,
+                \T_DOLLAR_OPEN_CURLY_BRACES,
                 CT::T_DOLLAR_CLOSE_CURLY_BRACES,
                 CT::T_DYNAMIC_PROP_BRACE_OPEN,
                 CT::T_DYNAMIC_PROP_BRACE_CLOSE,
@@ -316,9 +328,9 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
             $source,
             $expectedTokens,
             [
-                T_CURLY_OPEN,
+                \T_CURLY_OPEN,
                 CT::T_CURLY_CLOSE,
-                T_DOLLAR_OPEN_CURLY_BRACES,
+                \T_DOLLAR_OPEN_CURLY_BRACES,
                 CT::T_DOLLAR_CLOSE_CURLY_BRACES,
                 CT::T_DYNAMIC_PROP_BRACE_OPEN,
                 CT::T_DYNAMIC_PROP_BRACE_CLOSE,

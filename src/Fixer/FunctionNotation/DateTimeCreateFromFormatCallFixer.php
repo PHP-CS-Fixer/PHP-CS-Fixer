@@ -54,7 +54,7 @@ final class DateTimeCreateFromFormatCallFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOUBLE_COLON);
+        return $tokens->isTokenKindFound(\T_DOUBLE_COLON);
     }
 
     public function isRisky(): bool
@@ -72,13 +72,13 @@ final class DateTimeCreateFromFormatCallFixer extends AbstractFixer
             $useDeclarations = $namespaceUsesAnalyzer->getDeclarationsInNamespace($tokens, $namespace);
 
             for ($index = $namespace->getScopeEndIndex(); $index > $scopeStartIndex; --$index) {
-                if (!$tokens[$index]->isGivenKind(T_DOUBLE_COLON)) {
+                if (!$tokens[$index]->isGivenKind(\T_DOUBLE_COLON)) {
                     continue;
                 }
 
                 $functionNameIndex = $tokens->getNextMeaningfulToken($index);
 
-                if (!$tokens[$functionNameIndex]->equals([T_STRING, 'createFromFormat'], false)) {
+                if (!$tokens[$functionNameIndex]->equals([\T_STRING, 'createFromFormat'], false)) {
                     continue;
                 }
 
@@ -88,14 +88,14 @@ final class DateTimeCreateFromFormatCallFixer extends AbstractFixer
 
                 $classNameIndex = $tokens->getPrevMeaningfulToken($index);
 
-                if (!$tokens[$classNameIndex]->equalsAny([[T_STRING, \DateTime::class], [T_STRING, \DateTimeImmutable::class]], false)) {
+                if (!$tokens[$classNameIndex]->equalsAny([[\T_STRING, \DateTime::class], [\T_STRING, \DateTimeImmutable::class]], false)) {
                     continue;
                 }
 
                 $preClassNameIndex = $tokens->getPrevMeaningfulToken($classNameIndex);
 
-                if ($tokens[$preClassNameIndex]->isGivenKind(T_NS_SEPARATOR)) {
-                    if ($tokens[$tokens->getPrevMeaningfulToken($preClassNameIndex)]->isGivenKind(T_STRING)) {
+                if ($tokens[$preClassNameIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+                    if ($tokens[$tokens->getPrevMeaningfulToken($preClassNameIndex)]->isGivenKind(\T_STRING)) {
                         continue;
                     }
                 } elseif (!$namespace->isGlobalNamespace()) {
@@ -132,7 +132,7 @@ final class DateTimeCreateFromFormatCallFixer extends AbstractFixer
                 }
 
                 $tokens->clearAt($argumentIndex);
-                $tokens->insertAt($argumentIndex, new Token([T_CONSTANT_ENCAPSED_STRING, substr_replace($format, '!', $offset, 0)]));
+                $tokens->insertAt($argumentIndex, new Token([\T_CONSTANT_ENCAPSED_STRING, substr_replace($format, '!', $offset, 0)]));
             }
         }
     }
@@ -157,7 +157,7 @@ final class DateTimeCreateFromFormatCallFixer extends AbstractFixer
             return null; // argument is not a simple single string
         }
 
-        return !$tokens[$argumentStartIndex]->isGivenKind(T_CONSTANT_ENCAPSED_STRING)
+        return !$tokens[$argumentStartIndex]->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)
             ? null // first argument is not a string
             : $argumentStartIndex;
     }

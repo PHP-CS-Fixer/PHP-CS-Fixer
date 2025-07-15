@@ -167,7 +167,7 @@ class InvalidName {}
         $classyIndex = null;
 
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(T_NAMESPACE)) {
+            if ($token->isGivenKind(\T_NAMESPACE)) {
                 if (null !== $namespace) {
                     return;
                 }
@@ -196,7 +196,7 @@ class InvalidName {}
         $expectedClassyName = $this->calculateClassyName($file, $namespace, $classyName);
 
         if ($classyName !== $expectedClassyName) {
-            $tokens[$classyIndex] = new Token([T_STRING, $expectedClassyName]);
+            $tokens[$classyIndex] = new Token([\T_STRING, $expectedClassyName]);
         }
 
         if (null === $this->configuration['dir'] || null === $namespace) {

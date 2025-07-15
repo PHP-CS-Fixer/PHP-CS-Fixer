@@ -54,7 +54,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_COMMENT);
+        return $tokens->isTokenKindFound(\T_COMMENT);
     }
 
     public function isRisky(): bool
@@ -112,7 +112,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
         for ($index = 0, $limit = \count($tokens); $index < $limit; ++$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(T_COMMENT)) {
+            if (!$token->isGivenKind(\T_COMMENT)) {
                 continue;
             }
 
@@ -183,7 +183,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
             $message .= ' ';
         }
 
-        $tokens[$index] = new Token([T_DOC_COMMENT, '/**'.$message.'*/']);
+        $tokens[$index] = new Token([\T_DOC_COMMENT, '/**'.$message.'*/']);
     }
 
     /**
@@ -217,7 +217,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
 
         $newContent .= $indent.' */';
 
-        $tokens->insertAt($startIndex, new Token([T_DOC_COMMENT, $newContent]));
+        $tokens->insertAt($startIndex, new Token([\T_DOC_COMMENT, $newContent]));
     }
 
     private function getMessage(string $content): string

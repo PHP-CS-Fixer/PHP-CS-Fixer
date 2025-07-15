@@ -354,7 +354,7 @@ Custom values:
      */
     private function getElements(Tokens $tokens, int $startIndex): array
     {
-        static $elementTokenKinds = [CT::T_USE_TRAIT, T_CASE, T_CONST, T_VARIABLE, T_FUNCTION];
+        static $elementTokenKinds = [CT::T_USE_TRAIT, \T_CASE, \T_CONST, \T_VARIABLE, \T_FUNCTION];
 
         ++$startIndex;
         $elements = [];
@@ -376,13 +376,13 @@ Custom values:
                     return $elements;
                 }
 
-                if ($token->isGivenKind(T_ABSTRACT)) {
+                if ($token->isGivenKind(\T_ABSTRACT)) {
                     $element['abstract'] = true;
 
                     continue;
                 }
 
-                if ($token->isGivenKind(T_STATIC)) {
+                if ($token->isGivenKind(\T_STATIC)) {
                     $element['static'] = true;
 
                     continue;
@@ -392,7 +392,7 @@ Custom values:
                     $element['readonly'] = true;
                 }
 
-                if ($token->isGivenKind([T_PROTECTED, T_PRIVATE])) {
+                if ($token->isGivenKind([\T_PROTECTED, \T_PRIVATE])) {
                     $element['visibility'] = strtolower($token->getContent());
 
                     continue;
@@ -441,40 +441,40 @@ Custom values:
             return 'use_trait';
         }
 
-        if ($token->isGivenKind(T_CASE)) {
+        if ($token->isGivenKind(\T_CASE)) {
             return 'case';
         }
 
-        if ($token->isGivenKind(T_CONST)) {
+        if ($token->isGivenKind(\T_CONST)) {
             return 'constant';
         }
 
-        if ($token->isGivenKind(T_VARIABLE)) {
+        if ($token->isGivenKind(\T_VARIABLE)) {
             return 'property';
         }
 
         $nameToken = $tokens[$tokens->getNextMeaningfulToken($index)];
 
-        if ($nameToken->equals([T_STRING, '__construct'], false)) {
+        if ($nameToken->equals([\T_STRING, '__construct'], false)) {
             return 'construct';
         }
 
-        if ($nameToken->equals([T_STRING, '__destruct'], false)) {
+        if ($nameToken->equals([\T_STRING, '__destruct'], false)) {
             return 'destruct';
         }
 
         if (
             $nameToken->equalsAny([
-                [T_STRING, 'setUpBeforeClass'],
-                [T_STRING, 'doSetUpBeforeClass'],
-                [T_STRING, 'tearDownAfterClass'],
-                [T_STRING, 'doTearDownAfterClass'],
-                [T_STRING, 'setUp'],
-                [T_STRING, 'doSetUp'],
-                [T_STRING, 'assertPreConditions'],
-                [T_STRING, 'assertPostConditions'],
-                [T_STRING, 'tearDown'],
-                [T_STRING, 'doTearDown'],
+                [\T_STRING, 'setUpBeforeClass'],
+                [\T_STRING, 'doSetUpBeforeClass'],
+                [\T_STRING, 'tearDownAfterClass'],
+                [\T_STRING, 'doTearDownAfterClass'],
+                [\T_STRING, 'setUp'],
+                [\T_STRING, 'doSetUp'],
+                [\T_STRING, 'assertPreConditions'],
+                [\T_STRING, 'assertPostConditions'],
+                [\T_STRING, 'tearDown'],
+                [\T_STRING, 'doTearDown'],
             ], false)
         ) {
             return ['phpunit', strtolower($nameToken->getContent())];
@@ -485,7 +485,7 @@ Custom values:
 
     private function findElementEnd(Tokens $tokens, int $index): int
     {
-        $index = $tokens->getNextTokenOfKind($index, ['(', '{', ';']);
+        $index = $tokens->getNextTokenOfKind($index, ['(', '{', ';', [CT::T_PROPERTY_HOOK_BRACE_OPEN]]);
 
         if ($tokens[$index]->equals('(')) {
             $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
@@ -494,6 +494,10 @@ Custom values:
 
         if ($tokens[$index]->equals('{')) {
             $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+        }
+
+        if ($tokens[$index]->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
+            $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PROPERTY_HOOK, $index);
         }
 
         for (++$index; $tokens[$index]->isWhitespace(" \t") || $tokens[$index]->isComment(); ++$index);

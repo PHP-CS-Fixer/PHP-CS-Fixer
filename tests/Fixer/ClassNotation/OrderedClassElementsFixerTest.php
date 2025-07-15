@@ -1730,5 +1730,22 @@ class A
                 }
                 PHP,
         ];
+
+        yield 'property hook and const' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public const C = 0;
+                    public int $i { get {} }
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public int $i { get {} }
+                    public const C = 0;
+                }
+                PHP,
+        ];
     }
 }

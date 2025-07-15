@@ -56,7 +56,7 @@ final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixe
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     public function getDefinition(): FixerDefinitionInterface
@@ -101,7 +101,7 @@ final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixe
         );
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -109,7 +109,7 @@ final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixe
                 $regularExpression,
                 $token->getContent(),
                 -1,
-                PREG_SPLIT_DELIM_CAPTURE
+                \PREG_SPLIT_DELIM_CAPTURE
             );
 
             for ($i = 1, $max = \count($parts) - 1; $i < $max; $i += 2) {
@@ -141,7 +141,7 @@ final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixe
                 }
             }
 
-            $tokens[$index] = new Token([T_DOC_COMMENT, implode('', $parts)]);
+            $tokens[$index] = new Token([\T_DOC_COMMENT, implode('', $parts)]);
         }
     }
 

@@ -117,7 +117,7 @@ final class TypesSpacesFixer extends AbstractFixer implements ConfigurableFixerI
                 continue;
             }
 
-            if ($tokens[$index]->isGivenKind(T_CATCH)) {
+            if ($tokens[$index]->isGivenKind(\T_CATCH)) {
                 while (true) {
                     $index = $tokens->getNextTokenOfKind($index, [')', [CT::T_TYPE_ALTERNATION]]);
 
@@ -152,13 +152,13 @@ final class TypesSpacesFixer extends AbstractFixer implements ConfigurableFixerI
     private function ensureSingleSpace(Tokens $tokens, int $index, int $offset): int
     {
         if (!$tokens[$index]->isWhitespace()) {
-            $tokens->insertSlices([$index + $offset => new Token([T_WHITESPACE, ' '])]);
+            $tokens->insertSlices([$index + $offset => new Token([\T_WHITESPACE, ' '])]);
 
             return 1;
         }
 
         if (' ' !== $tokens[$index]->getContent() && !Preg::match('/\R/', $tokens[$index]->getContent())) {
-            $tokens[$index] = new Token([T_WHITESPACE, ' ']);
+            $tokens[$index] = new Token([\T_WHITESPACE, ' ']);
         }
 
         return 0;

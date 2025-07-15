@@ -105,18 +105,18 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $index = $tokens->getNextMeaningfulToken($index);
 
-            if ($tokens[$index]->equals([T_STRING, 'getMockWithoutInvokingTheOriginalConstructor'], false)) {
-                $tokens[$index] = new Token([T_STRING, 'createMock']);
-            } elseif ($tokens[$index]->equals([T_STRING, 'getMock'], false)) {
+            if ($tokens[$index]->equals([\T_STRING, 'getMockWithoutInvokingTheOriginalConstructor'], false)) {
+                $tokens[$index] = new Token([\T_STRING, 'createMock']);
+            } elseif ($tokens[$index]->equals([\T_STRING, 'getMock'], false)) {
                 $openingParenthesis = $tokens->getNextMeaningfulToken($index);
                 $closingParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingParenthesis);
 
                 $argumentsCount = $argumentsAnalyzer->countArguments($tokens, $openingParenthesis, $closingParenthesis);
 
                 if (1 === $argumentsCount) {
-                    $tokens[$index] = new Token([T_STRING, 'createMock']);
+                    $tokens[$index] = new Token([\T_STRING, 'createMock']);
                 } elseif (2 === $argumentsCount && true === $this->fixCreatePartialMock) {
-                    $tokens[$index] = new Token([T_STRING, 'createPartialMock']);
+                    $tokens[$index] = new Token([\T_STRING, 'createPartialMock']);
                 }
             }
         }

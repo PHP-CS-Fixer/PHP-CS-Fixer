@@ -117,7 +117,7 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
         $tokens[$index] = new Token('(');
         $tokens[$closeIndex] = new Token(')');
 
-        $tokens->insertAt($index, new Token([T_ARRAY, 'array']));
+        $tokens->insertAt($index, new Token([\T_ARRAY, 'array']));
     }
 
     private function fixToShortArraySyntax(Tokens $tokens, int $index): void
@@ -133,6 +133,6 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
 
     private function resolveCandidateTokenKind(): void
     {
-        $this->candidateTokenKind = 'long' === $this->configuration['syntax'] ? CT::T_ARRAY_SQUARE_BRACE_OPEN : T_ARRAY;
+        $this->candidateTokenKind = 'long' === $this->configuration['syntax'] ? CT::T_ARRAY_SQUARE_BRACE_OPEN : \T_ARRAY;
     }
 }

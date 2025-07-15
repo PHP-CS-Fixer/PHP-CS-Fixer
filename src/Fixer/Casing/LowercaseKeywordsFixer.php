@@ -59,7 +59,7 @@ final class LowercaseKeywordsFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if ($token->isKeyword() && !$token->isGivenKind([T_HALT_COMPILER])) {
+            if ($token->isKeyword() && !$token->isGivenKind(\T_HALT_COMPILER)) {
                 $tokens[$index] = new Token([$token->getId(), strtolower($token->getContent())]);
             }
         }

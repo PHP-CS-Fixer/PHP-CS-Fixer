@@ -50,7 +50,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_STRING, ...$this->getFunctionyTokenKinds()]);
+        return $tokens->isAnyTokenKindsFound([\T_STRING, ...$this->getFunctionyTokenKinds()]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -82,9 +82,9 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
             // check if it is a function call
             if ($tokens[$lastTokenIndex]->isGivenKind($functionyTokens)) {
                 $this->fixFunctionCall($tokens, $index);
-            } elseif ($tokens[$lastTokenIndex]->isGivenKind(T_STRING)) { // for real function calls or definitions
+            } elseif ($tokens[$lastTokenIndex]->isGivenKind(\T_STRING)) { // for real function calls or definitions
                 $possibleDefinitionIndex = $tokens->getPrevMeaningfulToken($lastTokenIndex);
-                if (!$tokens[$possibleDefinitionIndex]->isGivenKind(T_FUNCTION)) {
+                if (!$tokens[$possibleDefinitionIndex]->isGivenKind(\T_FUNCTION)) {
                     $this->fixFunctionCall($tokens, $index);
                 }
             } elseif ($tokens[$lastTokenIndex]->equalsAny($braceTypes)) {
@@ -136,20 +136,20 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
     private function getFunctionyTokenKinds(): array
     {
         static $tokens = [
-            T_ARRAY,
-            T_ECHO,
-            T_EMPTY,
-            T_EVAL,
-            T_EXIT,
-            T_INCLUDE,
-            T_INCLUDE_ONCE,
-            T_ISSET,
-            T_LIST,
-            T_PRINT,
-            T_REQUIRE,
-            T_REQUIRE_ONCE,
-            T_UNSET,
-            T_VARIABLE,
+            \T_ARRAY,
+            \T_ECHO,
+            \T_EMPTY,
+            \T_EVAL,
+            \T_EXIT,
+            \T_INCLUDE,
+            \T_INCLUDE_ONCE,
+            \T_ISSET,
+            \T_LIST,
+            \T_PRINT,
+            \T_REQUIRE,
+            \T_REQUIRE_ONCE,
+            \T_UNSET,
+            \T_VARIABLE,
         ];
 
         return $tokens;
@@ -163,12 +163,12 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
     private function getLanguageConstructionTokenKinds(): array
     {
         static $languageConstructionTokens = [
-            T_ECHO,
-            T_PRINT,
-            T_INCLUDE,
-            T_INCLUDE_ONCE,
-            T_REQUIRE,
-            T_REQUIRE_ONCE,
+            \T_ECHO,
+            \T_PRINT,
+            \T_INCLUDE,
+            \T_INCLUDE_ONCE,
+            \T_REQUIRE,
+            \T_REQUIRE_ONCE,
         ];
 
         return $languageConstructionTokens;

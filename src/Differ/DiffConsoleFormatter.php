@@ -47,7 +47,7 @@ final class DiffConsoleFormatter
         return \sprintf(
             $template,
             implode(
-                PHP_EOL,
+                \PHP_EOL,
                 array_map(
                     static function (string $line) use ($isDecorated, $lineTemplate): string {
                         if ($isDecorated) {

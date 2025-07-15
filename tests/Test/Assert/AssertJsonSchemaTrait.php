@@ -21,7 +21,7 @@ trait AssertJsonSchemaTrait
 {
     private static function assertJsonSchema(string $schemaFile, string $json): void
     {
-        $data = json_decode($json, null, 512, JSON_THROW_ON_ERROR);
+        $data = json_decode($json, null, 512, \JSON_THROW_ON_ERROR);
         $validator = new Validator();
         $validator->validate($data, (object) ['$ref' => 'file://'.realpath($schemaFile)]);
 

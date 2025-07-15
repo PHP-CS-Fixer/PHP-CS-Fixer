@@ -32,7 +32,7 @@ final class StringLineEndingFixer extends AbstractFixer implements WhitespacesAw
 {
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE, T_INLINE_HTML]);
+        return $tokens->isAnyTokenKindsFound([\T_CONSTANT_ENCAPSED_STRING, \T_ENCAPSED_AND_WHITESPACE, \T_INLINE_HTML]);
     }
 
     public function isRisky(): bool
@@ -59,7 +59,7 @@ final class StringLineEndingFixer extends AbstractFixer implements WhitespacesAw
         $ending = $this->whitespacesConfig->getLineEnding();
 
         foreach ($tokens as $tokenIndex => $token) {
-            if (!$token->isGivenKind([T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE, T_INLINE_HTML])) {
+            if (!$token->isGivenKind([\T_CONSTANT_ENCAPSED_STRING, \T_ENCAPSED_AND_WHITESPACE, \T_INLINE_HTML])) {
                 continue;
             }
 
