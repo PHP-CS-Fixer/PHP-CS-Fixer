@@ -118,11 +118,21 @@ class Foo {
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        for ($index = $tokens->count() - 1; 0 < $index; --$index) {
+        $tokensToInsert = [];
+        $typesToExclude = [];
+
+        foreach ($tokens as $index => $token) {
+            if ($token->isGivenKind(\T_DOC_COMMENT)) {
+                $typesToExclude = array_merge($typesToExclude, self::getTypesToExclude($token->getContent()));
+
+                continue;
+            }
             if ($tokens[$index]->isGivenKind([\T_CLASS, \T_TRAIT])) {
-                $this->fixClass($tokens, $index);
+                $tokensToInsert += $this->fixClass($tokens, $index, $typesToExclude);
             }
         }
+
+        $tokens->insertSlices($tokensToInsert);
     }
 
     protected function createTokensFromRawType(string $type): Tokens
@@ -135,8 +145,15 @@ class Foo {
         return $typeTokens;
     }
 
-    private function fixClass(Tokens $tokens, int $index): void
+    /**
+     * @param list<string> $typesToExclude
+     *
+     * @return array<int, list<Token>>
+     */
+    private function fixClass(Tokens $tokens, int $index, array $typesToExclude): array
     {
+        $tokensToInsert = [];
+
         $index = $tokens->getNextTokenOfKind($index, ['{']);
         $classEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
 
@@ -178,6 +195,10 @@ class Foo {
                 continue;
             }
 
+            if (\in_array($propertyType, $typesToExclude, true)) {
+                continue;
+            }
+
             if (!$this->isValidSyntax(\sprintf(self::TYPE_CHECK_TEMPLATE, $propertyType))) {
                 continue;
             }
@@ -187,11 +208,12 @@ class Foo {
                 [new Token([\T_WHITESPACE, ' '])]
             );
 
-            $tokens->insertAt(current($propertyIndices), $newTokens);
+            $tokensToInsert[current($propertyIndices)] = $newTokens;
 
-            $index = max($propertyIndices) + \count($newTokens) + 1;
-            $classEndIndex += \count($newTokens);
+            $index = max($propertyIndices) + 1;
         }
+
+        return $tokensToInsert;
     }
 
     /**
