@@ -1,24 +1,7 @@
 {
     "symbol-whitelist" : [
-        "Symfony\\Component\\EventDispatcher\\Event",
         "Symfony\\Contracts\\EventDispatcher\\Event",
-        "Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface",
-
-        "null", "true", "false",
-        "static", "self", "parent",
-        "array", "string", "int", "float", "bool", "iterable", "callable", "void",
-        "T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG",
-        "T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG",
-        "T_ATTRIBUTE",
-        "T_COALESCE_EQUAL",
-        "T_ENUM",
-        "T_FN",
-        "T_MATCH",
-        "T_NAME_FULLY_QUALIFIED",
-        "T_NAME_QUALIFIED",
-        "T_NAME_RELATIVE",
-        "T_NULLSAFE_OBJECT_OPERATOR",
-        "T_READONLY"
+        "T_VOID_CAST"
     ],
     "php-core-extensions" : [
         "dom", "mbstring", "Phar",
