@@ -354,8 +354,6 @@ Custom values:
      */
     private function getElements(Tokens $tokens, int $startIndex): array
     {
-        static $elementTokenKinds = [CT::T_USE_TRAIT, \T_CASE, \T_CONST, \T_VARIABLE, \T_FUNCTION];
-
         ++$startIndex;
         $elements = [];
 
@@ -398,7 +396,7 @@ Custom values:
                     continue;
                 }
 
-                if (!$token->isGivenKind($elementTokenKinds)) {
+                if (!$token->isGivenKind([CT::T_USE_TRAIT, \T_CASE, \T_CONST, \T_VARIABLE, \T_FUNCTION])) {
                     continue;
                 }
 
@@ -514,20 +512,7 @@ Custom values:
      */
     private function sortElements(array $elements): array
     {
-        static $phpunitPositions = [
-            'setupbeforeclass' => 1,
-            'dosetupbeforeclass' => 2,
-            'teardownafterclass' => 3,
-            'doteardownafterclass' => 4,
-            'setup' => 5,
-            'dosetup' => 6,
-            'assertpreconditions' => 7,
-            'assertpostconditions' => 8,
-            'teardown' => 9,
-            'doteardown' => 10,
-        ];
-
-        $getPositionType = function (array $element) use ($phpunitPositions): int {
+        $getPositionType = function (array $element): int {
             $type = $element['type'];
 
             if (\in_array($type, ['method', 'magic', 'phpunit'], true) && isset($this->typePosition["method:{$element['name']}"])) {
@@ -539,7 +524,18 @@ Custom values:
                     $position = $this->typePosition[$type];
 
                     if ('phpunit' === $type) {
-                        $position += $phpunitPositions[$element['name']];
+                        $position += [
+                            'setupbeforeclass' => 1,
+                            'dosetupbeforeclass' => 2,
+                            'teardownafterclass' => 3,
+                            'doteardownafterclass' => 4,
+                            'setup' => 5,
+                            'dosetup' => 6,
+                            'assertpreconditions' => 7,
+                            'assertpostconditions' => 8,
+                            'teardown' => 9,
+                            'doteardown' => 10,
+                        ][$element['name']];
                     }
 
                     return $position;

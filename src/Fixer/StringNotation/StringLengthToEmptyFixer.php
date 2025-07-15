@@ -255,7 +255,7 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
 
     private function isOfHigherPrecedence(Token $token): bool
     {
-        static $operatorsPerContent = [
+        return $token->isGivenKind([\T_INSTANCEOF, \T_POW, \T_SL, \T_SR]) || $token->equalsAny([
             '!',
             '%',
             '*',
@@ -265,9 +265,7 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
             '/',
             '~',
             '?',
-        ];
-
-        return $token->isGivenKind([\T_INSTANCEOF, \T_POW, \T_SL, \T_SR]) || $token->equalsAny($operatorsPerContent);
+        ]);
     }
 
     private function keepParentheses(Tokens $tokens, int $openParenthesisIndex, int $closeParenthesisIndex): bool

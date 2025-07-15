@@ -207,7 +207,7 @@ final class NewExpressionParenthesesFixer extends AbstractFixer implements Confi
         }
 
         // regular class name or $variable class name
-        static $nextTokens = [
+        $nextTokens = [
             [\T_STRING],
             [\T_NS_SEPARATOR],
             [CT::T_NAMESPACE_OPERATOR],

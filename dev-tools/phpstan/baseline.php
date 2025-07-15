@@ -704,7 +704,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Basic/PsrAutoloadingFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset int\\|null might not exist on array\\<int, string\\>\\.$#',
+	'message' => '#^Offset int\\|null might not exist on non\\-empty\\-array\\<\\-844\\|346\\|347\\|348\\|349\\|350\\|351\\|352\\|353\\|354\\|10008, \'__CLASS__\'\\|\'__DIR__\'\\|\'__FILE__\'\\|\'__FUNCTION__\'\\|\'__LINE__\'\\|\'__METHOD__\'\\|\'__NAMESPACE__\'\\|\'__PROPERTY__\'\\|\'__TRAIT__\'\\|\'class\'\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Casing/MagicConstantCasingFixer.php',
@@ -932,6 +932,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Offset mixed might not exist on array\\{setupbeforeclass\\: 1, dosetupbeforeclass\\: 2, teardownafterclass\\: 3, doteardownafterclass\\: 4, setup\\: 5, dosetup\\: 6, assertpreconditions\\: 7, assertpostconditions\\: 8, \\.\\.\\.\\}\\.$#',
+	'identifier' => 'offsetAccess.notFound',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$a of method PhpCsFixer\\\\Fixer\\\\ClassNotation\\\\OrderedClassElementsFixer\\:\\:sortGroupElements\\(\\) expects array\\{start\\: int, visibility\\: string, abstract\\: bool, static\\: bool, readonly\\: bool, type\\: string, name\\: string, end\\: int\\}, array&T given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
@@ -1004,16 +1010,22 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedTraitsFixer.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Offset string might not exist on array\\{\\|\\: array\\{10024, \'\\|\'\\}, &\\: array\\{10035, \'&\'\\}\\}\\.$#',
+	'identifier' => 'offsetAccess.notFound',
+	'count' => 1,
+	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/OrderedTypesFixer.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Offset int might not exist on non\\-empty\\-array\\<int, bool\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/ProtectedToPrivateFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Argument of an invalid type array\\<int\\<0, max\\>, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|PhpCsFixer\\\\Tokenizer\\\\Token supplied for foreach, only iterables are supported\\.$#',
-	'identifier' => 'foreach.nonIterable',
+	'message' => '#^Offset int might not exist on array\\{1\\: \'\\|\\^\\#\\\\\\\\s\\*\\$\\|\', 3\\: \'\\|\\^/\\\\\\\\\\*\\[\\\\\\\\s\\\\\\\\\\*\\]\\*\\\\\\\\\\*\\+/\\$\\|\', 2\\: \'\\|\\^//\\\\\\\\s\\*\\$\\|\'\\}\\.$#',
+	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/IncludeFixer.php',
+	'path' => __DIR__ . '/../../src/Fixer/Comment/NoEmptyCommentFixer.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Offset 1 might not exist on list\\{0\\?\\: string, 1\\?\\: string, 2\\?\\: non\\-falsy\\-string\\}\\.$#',

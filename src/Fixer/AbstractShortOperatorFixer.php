@@ -226,18 +226,17 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
 
     private function isOperatorCommutative(Token $operatorToken): bool
     {
-        static $commutativeKinds = ['*', '|', '&', '^']; // note that for arrays in PHP `+` is not commutative
-        static $nonCommutativeKinds = ['-', '/', '.', '%', '+'];
-
         if ($operatorToken->isGivenKind(\T_COALESCE)) {
             return false;
         }
 
-        if ($operatorToken->equalsAny($commutativeKinds)) {
+        // check for commutative kinds
+        if ($operatorToken->equalsAny(['*', '|', '&', '^'])) { // note that for arrays in PHP `+` is not commutative
             return true;
         }
 
-        if ($operatorToken->equalsAny($nonCommutativeKinds)) {
+        // check for non-commutative kinds
+        if ($operatorToken->equalsAny(['-', '/', '.', '%', '+'])) {
             return false;
         }
 

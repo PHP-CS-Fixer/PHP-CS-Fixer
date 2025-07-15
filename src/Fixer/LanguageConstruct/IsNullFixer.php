@@ -61,13 +61,12 @@ final class IsNullFixer extends AbstractFixer
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        static $sequenceNeeded = [[\T_STRING, 'is_null'], '('];
         $functionsAnalyzer = new FunctionsAnalyzer();
         $currIndex = 0;
 
         while (true) {
             // recalculate "end" because we might have added tokens in previous iteration
-            $matches = $tokens->findSequence($sequenceNeeded, $currIndex, $tokens->count() - 1, false);
+            $matches = $tokens->findSequence([[\T_STRING, 'is_null'], '('], $currIndex, $tokens->count() - 1, false);
 
             // stop looping if didn't find any new matches
             if (null === $matches) {

@@ -82,9 +82,7 @@ final class Token
      */
     public static function getCastTokenKinds(): array
     {
-        static $castTokens = [\T_ARRAY_CAST, \T_BOOL_CAST, \T_DOUBLE_CAST, \T_INT_CAST, \T_OBJECT_CAST, \T_STRING_CAST, \T_UNSET_CAST];
-
-        return $castTokens;
+        return [\T_ARRAY_CAST, \T_BOOL_CAST, \T_DOUBLE_CAST, \T_INT_CAST, \T_OBJECT_CAST, \T_STRING_CAST, \T_UNSET_CAST];
     }
 
     /**
@@ -94,9 +92,7 @@ final class Token
      */
     public static function getClassyTokenKinds(): array
     {
-        static $classTokens = [\T_CLASS, \T_TRAIT, \T_INTERFACE, FCT::T_ENUM];
-
-        return $classTokens;
+        return [\T_CLASS, \T_TRAIT, \T_INTERFACE, FCT::T_ENUM];
     }
 
     /**
@@ -106,9 +102,7 @@ final class Token
      */
     public static function getObjectOperatorKinds(): array
     {
-        static $objectOperators = [\T_OBJECT_OPERATOR, FCT::T_NULLSAFE_OBJECT_OPERATOR];
-
-        return $objectOperators;
+        return [\T_OBJECT_OPERATOR, FCT::T_NULLSAFE_OBJECT_OPERATOR];
     }
 
     /**
@@ -385,9 +379,7 @@ final class Token
      */
     public function isComment(): bool
     {
-        static $commentTokens = [\T_COMMENT, \T_DOC_COMMENT];
-
-        return $this->isGivenKind($commentTokens);
+        return $this->isGivenKind([\T_COMMENT, \T_DOC_COMMENT]);
     }
 
     /**
@@ -431,9 +423,7 @@ final class Token
      */
     public function isNativeConstant(): bool
     {
-        static $nativeConstantStrings = ['true', 'false', 'null'];
-
-        return $this->isArray && \in_array(strtolower($this->content), $nativeConstantStrings, true);
+        return $this->isArray && \in_array(strtolower($this->content), ['true', 'false', 'null'], true);
     }
 
     /**

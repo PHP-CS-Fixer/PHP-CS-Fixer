@@ -68,8 +68,8 @@ final class TokenTest extends TestCase
 
     public function testGetPrototype(): void
     {
-        self::assertSame(self::getBraceTokenPrototype(), self::getBraceToken()->getPrototype());
-        self::assertSame(self::getForeachTokenPrototype(), self::getForeachToken()->getPrototype());
+        self::assertSame('(', self::getBraceToken()->getPrototype());
+        self::assertSame([\T_FOREACH, 'foreach'], self::getForeachToken()->getPrototype());
     }
 
     public function testIsArray(): void
@@ -697,26 +697,11 @@ final class TokenTest extends TestCase
 
     private static function getBraceToken(): Token
     {
-        return new Token(self::getBraceTokenPrototype());
-    }
-
-    private static function getBraceTokenPrototype(): string
-    {
-        return '(';
+        return new Token('(');
     }
 
     private static function getForeachToken(): Token
     {
-        return new Token(self::getForeachTokenPrototype());
-    }
-
-    /**
-     * @return array{int, string}
-     */
-    private static function getForeachTokenPrototype(): array
-    {
-        static $prototype = [\T_FOREACH, 'foreach'];
-
-        return $prototype;
+        return new Token([\T_FOREACH, 'foreach']);
     }
 }

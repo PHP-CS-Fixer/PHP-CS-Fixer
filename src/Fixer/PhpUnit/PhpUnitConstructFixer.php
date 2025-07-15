@@ -143,24 +143,20 @@ final class FooTest extends \PHPUnit_Framework_TestCase {
 
     private function fixAssertNegative(Tokens $tokens, int $index, string $method): ?int
     {
-        static $map = [
+        return $this->fixAssert([
             'false' => 'assertNotFalse',
             'null' => 'assertNotNull',
             'true' => 'assertNotTrue',
-        ];
-
-        return $this->fixAssert($map, $tokens, $index, $method);
+        ], $tokens, $index, $method);
     }
 
     private function fixAssertPositive(Tokens $tokens, int $index, string $method): ?int
     {
-        static $map = [
+        return $this->fixAssert([
             'false' => 'assertFalse',
             'null' => 'assertNull',
             'true' => 'assertTrue',
-        ];
-
-        return $this->fixAssert($map, $tokens, $index, $method);
+        ], $tokens, $index, $method);
     }
 
     /**

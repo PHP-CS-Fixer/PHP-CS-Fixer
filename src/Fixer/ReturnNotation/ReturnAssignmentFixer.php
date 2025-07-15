@@ -103,16 +103,6 @@ final class ReturnAssignmentFixer extends AbstractFixer
      */
     private function fixFunction(Tokens $tokens, int $functionIndex, int $functionOpenIndex, int $functionCloseIndex): int
     {
-        static $riskyKinds = [
-            CT::T_DYNAMIC_VAR_BRACE_OPEN, // "$h = ${$g};" case
-            \T_EVAL,                       // "$c = eval('return $this;');" case
-            \T_GLOBAL,
-            \T_INCLUDE,                    // loading additional symbols we cannot analyze here
-            \T_INCLUDE_ONCE,               // "
-            \T_REQUIRE,                    // "
-            \T_REQUIRE_ONCE,               // "
-        ];
-
         $inserted = 0;
         $candidates = [];
         $isRisky = false;
@@ -178,7 +168,15 @@ final class ReturnAssignmentFixer extends AbstractFixer
             // test if there is anything in the function body that might
             // change global state or indirect changes (like through references, eval, etc.)
 
-            if ($tokens[$index]->isGivenKind($riskyKinds)) {
+            if ($tokens[$index]->isGivenKind([
+                CT::T_DYNAMIC_VAR_BRACE_OPEN, // "$h = ${$g};" case
+                \T_EVAL,                       // "$c = eval('return $this;');" case
+                \T_GLOBAL,
+                \T_INCLUDE,                    // loading additional symbols we cannot analyze here
+                \T_INCLUDE_ONCE,               // "
+                \T_REQUIRE,                    // "
+                \T_REQUIRE_ONCE,               // "
+            ])) {
                 $isRisky = true;
 
                 continue;
