@@ -135,9 +135,7 @@ namespace Foo {
      */
     private function isOverComplete(Tokens $tokens, int $index): bool
     {
-        static $include = ['{', '}', [\T_OPEN_TAG], ':', ';'];
-
-        return $tokens[$tokens->getPrevMeaningfulToken($index)]->equalsAny($include);
+        return $tokens[$tokens->getPrevMeaningfulToken($index)]->equalsAny(['{', '}', [\T_OPEN_TAG], ':', ';']);
     }
 
     private function clearIfIsOverCompleteNamespaceBlock(Tokens $tokens): void

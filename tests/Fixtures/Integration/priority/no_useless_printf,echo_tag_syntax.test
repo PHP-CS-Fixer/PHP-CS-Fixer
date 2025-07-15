@@ -1,0 +1,9 @@
+--TEST--
+Integration of fixers: no_useless_printf,echo_tag_syntax.
+--RULESET--
+{"no_useless_printf": true, "echo_tag_syntax": {"format": "short"}}
+--EXPECT--
+<?= $bar; ?>
+
+--INPUT--
+<?php printf($bar); ?>

@@ -104,11 +104,9 @@ include_once("sample4.php");
      */
     private function findIncludies(Tokens $tokens): array
     {
-        static $includyTokenKinds = [\T_REQUIRE, \T_REQUIRE_ONCE, \T_INCLUDE, \T_INCLUDE_ONCE];
-
         $includies = [];
 
-        foreach ($tokens->findGivenKind($includyTokenKinds) as $includyTokens) {
+        foreach ($tokens->findGivenKind([\T_REQUIRE, \T_REQUIRE_ONCE, \T_INCLUDE, \T_INCLUDE_ONCE]) as $includyTokens) {
             foreach ($includyTokens as $index => $token) {
                 $includy = [
                     'begin' => $index,

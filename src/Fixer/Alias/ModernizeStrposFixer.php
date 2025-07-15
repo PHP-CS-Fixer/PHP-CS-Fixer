@@ -309,30 +309,28 @@ if (stripos($haystack, $needle) === false) {}
 
     private function isOfHigherPrecedence(Token $token): bool
     {
-        static $operatorsKinds = [
-            \T_DEC,                 // --
-            \T_INC,                 // ++
-            \T_INSTANCEOF,          // instanceof
-            \T_IS_GREATER_OR_EQUAL, // >=
-            \T_IS_SMALLER_OR_EQUAL, // <=
-            \T_POW,                 // **
-            \T_SL,                  // <<
-            \T_SR,                  // >>
-        ];
-
-        static $operatorsPerContent = [
-            '!',
-            '%',
-            '*',
-            '+',
-            '-',
-            '.',
-            '/',
-            '<',
-            '>',
-            '~',
-        ];
-
-        return $token->isGivenKind($operatorsKinds) || $token->equalsAny($operatorsPerContent);
+        return
+            $token->isGivenKind([
+                \T_DEC,                 // --
+                \T_INC,                 // ++
+                \T_INSTANCEOF,          // instanceof
+                \T_IS_GREATER_OR_EQUAL, // >=
+                \T_IS_SMALLER_OR_EQUAL, // <=
+                \T_POW,                 // **
+                \T_SL,                  // <<
+                \T_SR,                  // >>
+            ])
+            || $token->equalsAny([
+                '!',
+                '%',
+                '*',
+                '+',
+                '-',
+                '.',
+                '/',
+                '<',
+                '>',
+                '~',
+            ]);
     }
 }

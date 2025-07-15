@@ -105,15 +105,6 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
      */
     private function findNotUsedLambdaImports(Tokens $tokens, array $imports, int $lambdaUseCloseBraceIndex): array
     {
-        static $riskyKinds = [
-            CT::T_DYNAMIC_VAR_BRACE_OPEN,
-            \T_EVAL,
-            \T_INCLUDE,
-            \T_INCLUDE_ONCE,
-            \T_REQUIRE,
-            \T_REQUIRE_ONCE,
-        ];
-
         // figure out where the lambda starts ...
         $lambdaOpenIndex = $tokens->getNextTokenOfKind($lambdaUseCloseBraceIndex, ['{']);
         $curlyBracesLevel = 0;
@@ -141,7 +132,14 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
                 return []; // wouldn't touch it with a ten-foot pole
             }
 
-            if ($token->isGivenKind($riskyKinds)) {
+            if ($token->isGivenKind([
+                CT::T_DYNAMIC_VAR_BRACE_OPEN,
+                \T_EVAL,
+                \T_INCLUDE,
+                \T_INCLUDE_ONCE,
+                \T_REQUIRE,
+                \T_REQUIRE_ONCE,
+            ])) {
                 return [];
             }
 

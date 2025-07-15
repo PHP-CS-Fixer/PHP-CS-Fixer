@@ -441,10 +441,8 @@ return $foo === count($bar);
      */
     private function isOfLowerPrecedence(Token $token): bool
     {
-        static $tokens;
-
-        if (null === $tokens) {
-            $tokens = [
+        return $this->isOfLowerPrecedenceAssignment($token)
+            || $token->isGivenKind([
                 \T_BOOLEAN_AND,  // &&
                 \T_BOOLEAN_OR,   // ||
                 \T_CASE,         // case
@@ -466,19 +464,15 @@ return $foo === count($bar);
                 \T_REQUIRE_ONCE,
                 \T_INCLUDE,
                 \T_INCLUDE_ONCE,
-            ];
-        }
-
-        static $otherTokens = [
-            // bitwise and, or, xor
-            '&', '|', '^',
-            // ternary operators
-            '?', ':',
-            // end of PHP statement
-            ',', ';',
-        ];
-
-        return $this->isOfLowerPrecedenceAssignment($token) || $token->isGivenKind($tokens) || $token->equalsAny($otherTokens);
+            ])
+            || $token->equalsAny([
+                // bitwise and, or, xor
+                '&', '|', '^',
+                // ternary operators
+                '?', ':',
+                // end of PHP statement
+                ',', ';',
+            ]);
     }
 
     /**
@@ -487,27 +481,21 @@ return $foo === count($bar);
      */
     private function isOfLowerPrecedenceAssignment(Token $token): bool
     {
-        static $tokens;
-
-        if (null === $tokens) {
-            $tokens = [
-                \T_AND_EQUAL,      // &=
-                \T_CONCAT_EQUAL,   // .=
-                \T_DIV_EQUAL,      // /=
-                \T_MINUS_EQUAL,    // -=
-                \T_MOD_EQUAL,      // %=
-                \T_MUL_EQUAL,      // *=
-                \T_OR_EQUAL,       // |=
-                \T_PLUS_EQUAL,     // +=
-                \T_POW_EQUAL,      // **=
-                \T_SL_EQUAL,       // <<=
-                \T_SR_EQUAL,       // >>=
-                \T_XOR_EQUAL,      // ^=
-                \T_COALESCE_EQUAL, // ??=
-            ];
-        }
-
-        return $token->equals('=') || $token->isGivenKind($tokens);
+        return $token->equals('=') || $token->isGivenKind([
+            \T_AND_EQUAL,      // &=
+            \T_CONCAT_EQUAL,   // .=
+            \T_DIV_EQUAL,      // /=
+            \T_MINUS_EQUAL,    // -=
+            \T_MOD_EQUAL,      // %=
+            \T_MUL_EQUAL,      // *=
+            \T_OR_EQUAL,       // |=
+            \T_PLUS_EQUAL,     // +=
+            \T_POW_EQUAL,      // **=
+            \T_SL_EQUAL,       // <<=
+            \T_SR_EQUAL,       // >>=
+            \T_XOR_EQUAL,      // ^=
+            \T_COALESCE_EQUAL, // ??=
+        ]);
     }
 
     /**

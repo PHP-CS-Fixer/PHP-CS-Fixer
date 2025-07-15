@@ -137,23 +137,11 @@ final class SingleLineThrowFixer extends AbstractFixer
 
     private function isPreviousTokenToClear(Token $token): bool
     {
-        static $tokens = null;
-
-        if (null === $tokens) {
-            $tokens = [...self::REMOVE_WHITESPACE_AFTER_TOKENS, ...self::REMOVE_WHITESPACE_AROUND_TOKENS];
-        }
-
-        return $token->equalsAny($tokens) || $token->isObjectOperator();
+        return $token->equalsAny([...self::REMOVE_WHITESPACE_AFTER_TOKENS, ...self::REMOVE_WHITESPACE_AROUND_TOKENS]) || $token->isObjectOperator();
     }
 
     private function isNextTokenToClear(Token $token): bool
     {
-        static $tokens = null;
-
-        if (null === $tokens) {
-            $tokens = [...self::REMOVE_WHITESPACE_AROUND_TOKENS, ...self::REMOVE_WHITESPACE_BEFORE_TOKENS];
-        }
-
-        return $token->equalsAny($tokens) || $token->isObjectOperator();
+        return $token->equalsAny([...self::REMOVE_WHITESPACE_AROUND_TOKENS, ...self::REMOVE_WHITESPACE_BEFORE_TOKENS]) || $token->isObjectOperator();
     }
 }
