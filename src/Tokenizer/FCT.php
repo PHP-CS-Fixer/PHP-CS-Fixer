@@ -23,6 +23,7 @@ namespace PhpCsFixer\Tokenizer;
  * @TODO PHP 8.0+, when mentioned PHP version is required, remove the related consts
  * @TODO PHP 8.1+, when mentioned PHP version is required, remove the related consts
  * @TODO PHP 8.4+, when mentioned PHP version is required, remove the related consts
+ * @TODO PHP 8.5+, when mentioned PHP version is required, remove the related consts
  *
  * @internal
  */
@@ -47,4 +48,10 @@ final class FCT
     public const T_PROTECTED_SET = \PHP_VERSION_ID >= 8_04_00 ? \T_PROTECTED_SET : -842;
     public const T_PUBLIC_SET = \PHP_VERSION_ID >= 8_04_00 ? \T_PUBLIC_SET : -843;
     public const T_PROPERTY_C = \PHP_VERSION_ID >= 8_04_00 ? \T_PROPERTY_C : -844;
+
+    // PHP 8.5+
+    /**
+     * @phpstan-ignore greaterOrEqual.alwaysFalse, constant.notFound
+     */
+    public const T_VOID_CAST = \PHP_VERSION_ID >= 8_05_00 ? \T_VOID_CAST : -852;
 }

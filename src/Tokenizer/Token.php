@@ -82,7 +82,7 @@ final class Token
      */
     public static function getCastTokenKinds(): array
     {
-        return [\T_ARRAY_CAST, \T_BOOL_CAST, \T_DOUBLE_CAST, \T_INT_CAST, \T_OBJECT_CAST, \T_STRING_CAST, \T_UNSET_CAST];
+        return [\T_ARRAY_CAST, \T_BOOL_CAST, \T_DOUBLE_CAST, \T_INT_CAST, \T_OBJECT_CAST, \T_STRING_CAST, \T_UNSET_CAST, FCT::T_VOID_CAST];
     }
 
     /**
