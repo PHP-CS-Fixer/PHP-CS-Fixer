@@ -30,7 +30,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
 {
     /**
-     * token kinds which can work as function calls.
+     * Token kinds which can work as function calls.
      */
     private const FUNCTIONY_TOKEN_KINDS = [
         \T_ARRAY,
