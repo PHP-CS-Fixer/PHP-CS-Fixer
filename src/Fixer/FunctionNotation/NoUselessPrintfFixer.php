@@ -45,7 +45,7 @@ final class NoUselessPrintfFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     public function isRisky(): bool
@@ -71,7 +71,7 @@ final class NoUselessPrintfFixer extends AbstractFixer
         $printfIndices = [];
 
         for ($index = \count($tokens) - 1; $index > 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_STRING)) {
+            if (!$tokens[$index]->isGivenKind(\T_STRING)) {
                 continue;
             }
 
@@ -85,7 +85,7 @@ final class NoUselessPrintfFixer extends AbstractFixer
 
             $openParenthesisIndex = $tokens->getNextTokenOfKind($index, ['(']);
 
-            if ($tokens[$tokens->getNextMeaningfulToken($openParenthesisIndex)]->isGivenKind([T_ELLIPSIS, CT::T_FIRST_CLASS_CALLABLE])) {
+            if ($tokens[$tokens->getNextMeaningfulToken($openParenthesisIndex)]->isGivenKind([\T_ELLIPSIS, CT::T_FIRST_CLASS_CALLABLE])) {
                 continue;
             }
 
@@ -108,7 +108,7 @@ final class NoUselessPrintfFixer extends AbstractFixer
 
             $prevMeaningfulTokenIndex = $tokens->getPrevMeaningfulToken($index);
 
-            if ($tokens[$prevMeaningfulTokenIndex]->isGivenKind(T_NS_SEPARATOR)) {
+            if ($tokens[$prevMeaningfulTokenIndex]->isGivenKind(\T_NS_SEPARATOR)) {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($prevMeaningfulTokenIndex);
             }
 
@@ -121,7 +121,7 @@ final class NoUselessPrintfFixer extends AbstractFixer
 
         $tokens->insertSlices(array_combine(
             $printfIndices,
-            array_fill(0, \count($printfIndices), [new Token([T_PRINT, 'print']), new Token([T_WHITESPACE, ' '])])
+            array_fill(0, \count($printfIndices), [new Token([\T_PRINT, 'print']), new Token([\T_WHITESPACE, ' '])])
         ));
     }
 }
