@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tests\Test\Assert\AssertTokensTrait;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
