@@ -508,14 +508,17 @@ final class TokensAnalyzer
         $tokens = $this->tokens;
         $token = $tokens[$index];
 
+        // potential unary successor operator
         if ($token->isGivenKind([\T_INC, \T_DEC])) {
             return !$this->isUnarySuccessorOperator($index);
         }
 
+        // always unary predecessor operator
         if ($token->equalsAny(['!', '~', '@', [\T_ELLIPSIS]])) {
             return true;
         }
 
+        // potential binary operator
         if (!$token->equalsAny(['+', '-', '&', [CT::T_RETURN_REF]])) {
             return false;
         }
@@ -581,6 +584,7 @@ final class TokensAnalyzer
             return false;
         }
 
+        // potential unary predecessor operator
         if (\in_array($token->getContent(), ['+', '-', '&'], true)) {
             return !$this->isUnaryPredecessorOperator($index);
         }
