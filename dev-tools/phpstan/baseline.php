@@ -842,7 +842,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/NoPhp4ConstructorFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$sequence of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:findSequence\\(\\) expects non\\-empty\\-list\\<array\\{0\\: int, 1\\?\\: string\\}\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\>, list\\<array\\{int, string\\}\\|int\\|string\\> given\\.$#',
+	'message' => '#^Parameter \\#1 \\$sequence of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:findSequence\\(\\) expects non\\-empty\\-list\\<array\\{0\\: int, 1\\?\\: string\\}\\|int\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\>, list\\<array\\{int, string\\}\\|int\\|string\\> given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 2,
 	'path' => __DIR__ . '/../../src/Fixer/ClassNotation/NoPhp4ConstructorFixer.php',
@@ -1048,12 +1048,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Offset string might not exist on array\\<int\\|string, bool\\|null\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
-	'count' => 1,
-	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/YodaStyleFixer.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$possibleKind of method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:isGivenKind\\(\\) expects int\\|list\\<int\\>, list\\<int\\|string\\> given\\.$#',
-	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/ControlStructure/YodaStyleFixer.php',
 ];
@@ -1970,7 +1964,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:findGivenKind\\(\\) should return array\\<int, array\\<int\\<0, max\\>, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|PhpCsFixer\\\\Tokenizer\\\\Token\\> but returns array\\<\'\'\\|int, array\\<int, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|PhpCsFixer\\\\Tokenizer\\\\Token\\>\\.$#',
+	'message' => '#^Method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:findGivenKind\\(\\) should return array\\<int\\|string, array\\<int\\<0, max\\>, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|PhpCsFixer\\\\Tokenizer\\\\Token\\> but returns array\\<int\\|string, array\\<int, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|PhpCsFixer\\\\Tokenizer\\\\Token\\>\\.$#',
 	'identifier' => 'return.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
@@ -2000,7 +1994,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset int might not exist on non\\-empty\\-array\\<\'\'\\|int, array\\<int, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\>\\.$#',
+	'message' => '#^Offset int\\|string might not exist on non\\-empty\\-array\\<int\\|string, array\\<int, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
@@ -2012,7 +2006,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$possibleKind of method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:isGivenKind\\(\\) expects int\\|list\\<int\\>, non\\-empty\\-array\\<int\\<0, max\\>, int\\> given\\.$#',
+	'message' => '#^Parameter \\#1 \\$possibleKind of method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:isGivenKind\\(\\) expects int\\|list\\<int\\|string\\>\\|string, non\\-empty\\-array\\<int\\<0, max\\>, int\\|string\\> given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Tokenizer/Tokens.php',
