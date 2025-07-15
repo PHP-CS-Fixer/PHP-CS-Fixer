@@ -160,7 +160,7 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
 
         if (
             $tokens[$index + 1]->isComment()
-            || $tokens[$index + 1]->equals([\T_CLOSE_TAG])
+            || $tokens[$index + 1]->isGivenKind(\T_CLOSE_TAG)
             || ($tokens[$index - 1]->isComment() && $tokens[$index + 1]->equals(';'))
         ) {
             return false;

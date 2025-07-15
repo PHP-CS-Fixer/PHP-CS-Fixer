@@ -241,7 +241,7 @@ return $foo === count($bar);
                 continue;
             }
 
-            if ($token->isGivenKind([CT::T_NAMED_ARGUMENT_COLON])) {
+            if ($token->isGivenKind(CT::T_NAMED_ARGUMENT_COLON)) {
                 break;
             }
 

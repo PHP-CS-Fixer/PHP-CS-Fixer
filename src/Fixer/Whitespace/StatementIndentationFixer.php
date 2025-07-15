@@ -645,7 +645,7 @@ if ($foo) {
             if (
                 $doWhileLevel > 0
                 && null !== $controlStructureContinuationIndex
-                && $tokens[$controlStructureContinuationIndex]->isGivenKind([\T_WHILE])
+                && $tokens[$controlStructureContinuationIndex]->isGivenKind(\T_WHILE)
             ) {
                 --$doWhileLevel;
                 $searchEndIndex = $controlStructureContinuationIndex;
@@ -690,7 +690,7 @@ if ($foo) {
                 continue;
             }
 
-            if ($tokens[$index]->equalsAny([[\T_CASE], [\T_DEFAULT]])) {
+            if ($tokens[$index]->isGivenKind([\T_CASE, \T_DEFAULT])) {
                 return [$index, true];
             }
 

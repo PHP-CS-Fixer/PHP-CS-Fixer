@@ -200,7 +200,7 @@ final class CommentsAnalyzer
         if ($token->isGivenKind(\T_CASE)) {
             $enumParent = $tokens->getPrevTokenOfKind($index, [[FCT::T_ENUM], [\T_SWITCH]]);
 
-            return $tokens[$enumParent]->isGivenKind([FCT::T_ENUM]);
+            return $tokens[$enumParent]->isGivenKind(FCT::T_ENUM);
         }
 
         if ($token->isGivenKind(\T_STATIC)) {

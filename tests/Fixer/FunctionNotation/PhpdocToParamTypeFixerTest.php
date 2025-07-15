@@ -537,6 +537,172 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                 fn($a, $b) => 1,
             );',
         ];
+
+        yield 'types defined with "phpstan-type"' => [
+            <<<'PHP'
+                <?php
+                /**
+                 * @phpstan-type _Pair array{int, int}
+                 */
+                class Foo {
+                    /**
+                     * @param _Pair $x
+                     */
+                    public function f($x): void {}
+                }
+                /**
+                 * @phpstan-type _Trio array{int, int, int}
+                 */
+                class Bar {
+                    /**
+                     * @param _Trio $x
+                     */
+                    public function f($x): void {}
+                }
+                PHP,
+        ];
+
+        yield 'types defined with "phpstan-import-type"' => [
+            <<<'PHP'
+                <?php
+                /**
+                 * @phpstan-import-type _Pair from FooFoo
+                 */
+                class Foo {
+                    /**
+                     * @param _Pair $x
+                     */
+                    public function f($x): void {}
+                }
+                /**
+                 * @phpstan-import-type _Trio from BarBar
+                 */
+                class Bar {
+                    /**
+                     * @param _Trio $x
+                     */
+                    public function f($x): void {}
+                }
+                PHP,
+        ];
+
+        yield 'types defined with "phpstan-import-type" with alias' => [
+            <<<'PHP'
+                <?php
+                /**
+                 * @phpstan-import-type ConflictingType from FooFoo as Not_ConflictingType
+                 */
+                class Foo {
+                    /**
+                     * @param Not_ConflictingType $x
+                     */
+                    public function f1($x): void {}
+                    /**
+                     * @param ConflictingType $x
+                     */
+                    public function f2(ConflictingType $x): void {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
+                 * @phpstan-import-type ConflictingType from FooFoo as Not_ConflictingType
+                 */
+                class Foo {
+                    /**
+                     * @param Not_ConflictingType $x
+                     */
+                    public function f1($x): void {}
+                    /**
+                     * @param ConflictingType $x
+                     */
+                    public function f2($x): void {}
+                }
+                PHP,
+        ];
+
+        yield 'types defined with "psalm-type"' => [
+            <<<'PHP'
+                <?php
+                /**
+                 * @psalm-type _Pair = array{int, int}
+                 */
+                class Foo {
+                    /**
+                     * @param _Pair $x
+                     */
+                    public function f($x): void {}
+                }
+                /**
+                 * @psalm-type _Trio array{int, int, int}
+                 */
+                class Bar {
+                    /**
+                     * @param _Trio $x
+                     */
+                    public function f($x): void {}
+                }
+                PHP,
+        ];
+
+        yield 'types defined with "psalm-import-type"' => [
+            <<<'PHP'
+                <?php
+                /**
+                 * @psalm-import-type _Pair from FooFoo
+                 */
+                class Foo {
+                    /**
+                     * @param _Pair $x
+                     */
+                    public function f($x): void {}
+                }
+                /**
+                 * @psalm-import-type _Trio from BarBar
+                 */
+                class Bar {
+                    /**
+                     * @param _Trio $x
+                     */
+                    public function f($x): void {}
+                }
+                PHP,
+        ];
+
+        yield 'types defined with "psalm-import-type" with alias' => [
+            <<<'PHP'
+                <?php
+                /**
+                 * @psalm-import-type Bar from FooFoo as BarAliased
+                 */
+                class Foo {
+                    /** @param Bar $x */
+                    public function f1(Bar $x): void {}
+                    /** @param BarAliased $x */
+                    public function f2($x): void {}
+                    /** @param BarAliased $x */
+                    public function f3($x): void {}
+                    /** @param Bar $x */
+                    public function f4(Bar $x): void {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
+                 * @psalm-import-type Bar from FooFoo as BarAliased
+                 */
+                class Foo {
+                    /** @param Bar $x */
+                    public function f1($x): void {}
+                    /** @param BarAliased $x */
+                    public function f2($x): void {}
+                    /** @param BarAliased $x */
+                    public function f3($x): void {}
+                    /** @param Bar $x */
+                    public function f4($x): void {}
+                }
+                PHP,
+        ];
     }
 
     /**

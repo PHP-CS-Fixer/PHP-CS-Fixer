@@ -236,10 +236,10 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     {
         $prevIndex = $tokens->getPrevMeaningfulToken($currIndex);
 
-        if ($tokens[$prevIndex]->isGivenKind([\T_NS_SEPARATOR])) {
+        if ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
             $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
         }
 
-        return $tokens[$prevIndex]->isGivenKind([\T_USE]);
+        return $tokens[$prevIndex]->isGivenKind(\T_USE);
     }
 }
