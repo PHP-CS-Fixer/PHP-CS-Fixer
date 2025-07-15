@@ -307,19 +307,19 @@ class ValueObject
      */
     private function createTypeDeclarationTokens(array $types, bool $isQuestionMarkSyntax): array
     {
-        $specialTypes = [
-            '?' => CT::T_NULLABLE_TYPE,
-            'array' => CT::T_ARRAY_TYPEHINT,
-            'callable' => \T_CALLABLE,
-            'static' => \T_STATIC,
-        ];
-
         $count = \count($types);
         $newTokens = [];
 
         foreach ($types as $index => $type) {
-            if (isset($specialTypes[strtolower($type)])) {
-                $newTokens[] = new Token([$specialTypes[strtolower($type)], $type]);
+            $specialType = [
+                '?' => CT::T_NULLABLE_TYPE,
+                'array' => CT::T_ARRAY_TYPEHINT,
+                'callable' => \T_CALLABLE,
+                'static' => \T_STATIC,
+            ][strtolower($type)] ?? null;
+
+            if (null !== $specialType) {
+                $newTokens[] = new Token([$specialType, $type]);
             } else {
                 foreach (explode('\\', $type) as $nsIndex => $value) {
                     if (0 === $nsIndex && '' === $value) {

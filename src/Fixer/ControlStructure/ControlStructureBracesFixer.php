@@ -24,6 +24,21 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 final class ControlStructureBracesFixer extends AbstractFixer
 {
+    private const CONTROL_TOKENS = [
+        \T_DECLARE,
+        \T_DO,
+        \T_ELSE,
+        \T_ELSEIF,
+        \T_FINALLY,
+        \T_FOR,
+        \T_FOREACH,
+        \T_IF,
+        \T_WHILE,
+        \T_TRY,
+        \T_CATCH,
+        \T_SWITCH,
+    ];
+
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -50,12 +65,11 @@ final class ControlStructureBracesFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $alternativeSyntaxAnalyzer = new AlternativeSyntaxAnalyzer();
-        $controlTokens = $this->getControlTokens();
 
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind($controlTokens)) {
+            if (!$token->isGivenKind(self::CONTROL_TOKENS)) {
                 continue;
             }
 
@@ -140,7 +154,7 @@ final class ControlStructureBracesFixer extends AbstractFixer
             return $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nextIndex);
         }
 
-        if ($nextToken->isGivenKind($this->getControlTokens())) {
+        if ($nextToken->isGivenKind(self::CONTROL_TOKENS)) {
             $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $nextIndex);
 
             $endIndex = $this->findStatementEnd($tokens, $parenthesisEndIndex);
@@ -187,27 +201,6 @@ final class ControlStructureBracesFixer extends AbstractFixer
                 return $tokens->getPrevNonWhitespace($index);
             }
         }
-    }
-
-    /**
-     * @return list<int>
-     */
-    private function getControlTokens(): array
-    {
-        return [
-            \T_DECLARE,
-            \T_DO,
-            \T_ELSE,
-            \T_ELSEIF,
-            \T_FINALLY,
-            \T_FOR,
-            \T_FOREACH,
-            \T_IF,
-            \T_WHILE,
-            \T_TRY,
-            \T_CATCH,
-            \T_SWITCH,
-        ];
     }
 
     /**

@@ -441,36 +441,38 @@ return $foo === count($bar);
      */
     private function isOfLowerPrecedence(Token $token): bool
     {
-        return $this->isOfLowerPrecedenceAssignment($token) || $token->isGivenKind([
-            \T_BOOLEAN_AND,  // &&
-            \T_BOOLEAN_OR,   // ||
-            \T_CASE,         // case
-            \T_DOUBLE_ARROW, // =>
-            \T_ECHO,         // echo
-            \T_GOTO,         // goto
-            \T_LOGICAL_AND,  // and
-            \T_LOGICAL_OR,   // or
-            \T_LOGICAL_XOR,  // xor
-            \T_OPEN_TAG,     // <?php
-            \T_OPEN_TAG_WITH_ECHO,
-            \T_PRINT,        // print
-            \T_RETURN,       // return
-            \T_THROW,        // throw
-            \T_COALESCE,
-            \T_YIELD,        // yield
-            \T_YIELD_FROM,
-            \T_REQUIRE,
-            \T_REQUIRE_ONCE,
-            \T_INCLUDE,
-            \T_INCLUDE_ONCE,
-        ]) || $token->equalsAny([
-            // bitwise and, or, xor
-            '&', '|', '^',
-            // ternary operators
-            '?', ':',
-            // end of PHP statement
-            ',', ';',
-        ]);
+        return $this->isOfLowerPrecedenceAssignment($token)
+            || $token->isGivenKind([
+                \T_BOOLEAN_AND,  // &&
+                \T_BOOLEAN_OR,   // ||
+                \T_CASE,         // case
+                \T_DOUBLE_ARROW, // =>
+                \T_ECHO,         // echo
+                \T_GOTO,         // goto
+                \T_LOGICAL_AND,  // and
+                \T_LOGICAL_OR,   // or
+                \T_LOGICAL_XOR,  // xor
+                \T_OPEN_TAG,     // <?php
+                \T_OPEN_TAG_WITH_ECHO,
+                \T_PRINT,        // print
+                \T_RETURN,       // return
+                \T_THROW,        // throw
+                \T_COALESCE,
+                \T_YIELD,        // yield
+                \T_YIELD_FROM,
+                \T_REQUIRE,
+                \T_REQUIRE_ONCE,
+                \T_INCLUDE,
+                \T_INCLUDE_ONCE,
+            ])
+            || $token->equalsAny([
+                // bitwise and, or, xor
+                '&', '|', '^',
+                // ternary operators
+                '?', ':',
+                // end of PHP statement
+                ',', ';',
+            ]);
     }
 
     /**

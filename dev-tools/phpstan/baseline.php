@@ -704,7 +704,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/../../src/Fixer/Basic/PsrAutoloadingFixer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset int\\|null might not exist on array\\<int, string\\>\\.$#',
+	'message' => '#^Offset int\\|null might not exist on non\\-empty\\-array\\<\\-844\\|346\\|347\\|348\\|349\\|350\\|351\\|352\\|353\\|354\\|10008, \'__CLASS__\'\\|\'__DIR__\'\\|\'__FILE__\'\\|\'__FUNCTION__\'\\|\'__LINE__\'\\|\'__METHOD__\'\\|\'__NAMESPACE__\'\\|\'__PROPERTY__\'\\|\'__TRAIT__\'\\|\'class\'\\>\\.$#',
 	'identifier' => 'offsetAccess.notFound',
 	'count' => 1,
 	'path' => __DIR__ . '/../../src/Fixer/Casing/MagicConstantCasingFixer.php',
