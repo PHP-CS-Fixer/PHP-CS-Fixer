@@ -34,7 +34,6 @@ final class PERCS3x0Set extends AbstractRuleSetDescription
     {
         return [
             '@PER-CS2.0' => true,
-            'new_expression_parentheses' => true,
             'nullable_type_declaration' => true,
             'operator_linebreak' => true,
             'ordered_types' => [

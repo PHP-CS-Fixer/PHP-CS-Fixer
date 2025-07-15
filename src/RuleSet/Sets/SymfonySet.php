@@ -77,7 +77,6 @@ final class SymfonySet extends AbstractRuleSetDescription
             ],
             'native_function_casing' => true,
             'native_type_declaration_casing' => true,
-            'new_expression_parentheses' => false,
             'no_alias_language_construct_call' => true,
             'no_alternative_syntax' => true,
             'no_binary_string' => true,

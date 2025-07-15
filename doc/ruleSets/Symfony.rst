@@ -178,5 +178,4 @@ Rules
 Disabled rules
 --------------
 
-- `new_expression_parentheses <./../rules/operator/new_expression_parentheses.rst>`_
 - `single_line_empty_body <./../rules/basic/single_line_empty_body.rst>`_

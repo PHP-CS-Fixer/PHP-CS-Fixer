@@ -8,7 +8,6 @@ Rules
 -----
 
 - `@PER-CS2.0 <./PER-CS2.0.rst>`_
-- `new_expression_parentheses <./../rules/operator/new_expression_parentheses.rst>`_
 - `nullable_type_declaration <./../rules/language_construct/nullable_type_declaration.rst>`_
 - `operator_linebreak <./../rules/operator/operator_linebreak.rst>`_
 - `ordered_types <./../rules/class_notation/ordered_types.rst>`_ with config:
