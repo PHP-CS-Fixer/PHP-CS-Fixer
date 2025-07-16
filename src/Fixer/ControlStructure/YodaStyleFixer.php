@@ -275,12 +275,7 @@ return $foo === count($bar);
     {
         for ($i = \count($tokens) - 1; $i > 1; --$i) {
             if ($tokens[$i]->isGivenKind($this->candidateTypes)) {
-                $yoda = $this->candidateTypesConfiguration[$tokens[$i]->getId()];
-            } elseif (
-                ($tokens[$i]->equals('<') && \in_array('<', $this->candidateTypes, true))
-                || ($tokens[$i]->equals('>') && \in_array('>', $this->candidateTypes, true))
-            ) {
-                $yoda = $this->candidateTypesConfiguration[$tokens[$i]->getContent()];
+                $yoda = $this->candidateTypesConfiguration[$tokens[$i]->getKind()];
             } else {
                 continue;
             }
@@ -441,38 +436,35 @@ return $foo === count($bar);
      */
     private function isOfLowerPrecedence(Token $token): bool
     {
-        return $this->isOfLowerPrecedenceAssignment($token)
-            || $token->isGivenKind([
-                \T_BOOLEAN_AND,  // &&
-                \T_BOOLEAN_OR,   // ||
-                \T_CASE,         // case
-                \T_DOUBLE_ARROW, // =>
-                \T_ECHO,         // echo
-                \T_GOTO,         // goto
-                \T_LOGICAL_AND,  // and
-                \T_LOGICAL_OR,   // or
-                \T_LOGICAL_XOR,  // xor
-                \T_OPEN_TAG,     // <?php
-                \T_OPEN_TAG_WITH_ECHO,
-                \T_PRINT,        // print
-                \T_RETURN,       // return
-                \T_THROW,        // throw
-                \T_COALESCE,
-                \T_YIELD,        // yield
-                \T_YIELD_FROM,
-                \T_REQUIRE,
-                \T_REQUIRE_ONCE,
-                \T_INCLUDE,
-                \T_INCLUDE_ONCE,
-            ])
-            || $token->equalsAny([
-                // bitwise and, or, xor
-                '&', '|', '^',
-                // ternary operators
-                '?', ':',
-                // end of PHP statement
-                ',', ';',
-            ]);
+        return $this->isOfLowerPrecedenceAssignment($token) || $token->isGivenKind([
+            \T_BOOLEAN_AND,  // &&
+            \T_BOOLEAN_OR,   // ||
+            \T_CASE,         // case
+            \T_DOUBLE_ARROW, // =>
+            \T_ECHO,         // echo
+            \T_GOTO,         // goto
+            \T_LOGICAL_AND,  // and
+            \T_LOGICAL_OR,   // or
+            \T_LOGICAL_XOR,  // xor
+            \T_OPEN_TAG,     // <?php
+            \T_OPEN_TAG_WITH_ECHO,
+            \T_PRINT,        // print
+            \T_RETURN,       // return
+            \T_THROW,        // throw
+            \T_COALESCE,
+            \T_YIELD,        // yield
+            \T_YIELD_FROM,
+            \T_REQUIRE,
+            \T_REQUIRE_ONCE,
+            \T_INCLUDE,
+            \T_INCLUDE_ONCE,
+            // bitwise and, or, xor
+            '&', '|', '^',
+            // ternary operators
+            '?', ':',
+            // end of PHP statement
+            ',', ';',
+        ]);
     }
 
     /**
@@ -481,7 +473,8 @@ return $foo === count($bar);
      */
     private function isOfLowerPrecedenceAssignment(Token $token): bool
     {
-        return $token->equals('=') || $token->isGivenKind([
+        return $token->isGivenKind([
+            '=',
             \T_AND_EQUAL,      // &=
             \T_CONCAT_EQUAL,   // .=
             \T_DIV_EQUAL,      // /=
@@ -517,7 +510,7 @@ return $foo === count($bar);
             return $tokens[$start]->isGivenKind(\T_VARIABLE);
         }
 
-        if ($tokens[$start]->equals('(')) {
+        if ($tokens[$start]->isGivenKind('(')) {
             return true;
         }
 
@@ -525,8 +518,7 @@ return $foo === count($bar);
             for ($index = $start; $index <= $end; ++$index) {
                 if (
                     $tokens[$index]->isCast()
-                    || $tokens[$index]->isGivenKind(\T_INSTANCEOF)
-                    || $tokens[$index]->equals('!')
+                    || $tokens[$index]->isGivenKind([\T_INSTANCEOF, '!'])
                     || $tokenAnalyzer->isBinaryOperator($index)
                 ) {
                     return false;
@@ -538,7 +530,7 @@ return $foo === count($bar);
 
         // handle multiple braces around statement ((($a === 1)))
         while (
-            $tokens[$index]->equals('(')
+            $tokens[$index]->isGivenKind('(')
             && $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index) === $end
         ) {
             $index = $tokens->getNextMeaningfulToken($index);
