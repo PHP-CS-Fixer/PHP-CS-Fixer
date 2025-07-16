@@ -123,7 +123,7 @@ final class TokensAnalyzer
                 $nextTokenIndex = $tokens->getNextTokenOfKind($index, [';', '{']);
                 $nextToken = $tokens[$nextTokenIndex];
 
-                if ($nextToken->equals('{')) {
+                if ($nextToken->isGivenKind('{')) {
                     $index = $nextTokenIndex;
                 }
 
@@ -321,7 +321,7 @@ final class TokensAnalyzer
             $startParenthesisToken = $this->tokens[$startParenthesisIndex];
         }
 
-        return $startParenthesisToken->equals('(');
+        return $startParenthesisToken->isGivenKind('(');
     }
 
     public function getLastTokenIndexOfArrowFunction(int $index): int
@@ -330,13 +330,12 @@ final class TokensAnalyzer
             throw new \InvalidArgumentException(\sprintf('Not an "arrow function" at given index %d.', $index));
         }
 
-        $stopTokens = [')', ']', ',', ';', [\T_CLOSE_TAG]];
-        $index = $this->tokens->getNextTokenOfKind($index, [[\T_DOUBLE_ARROW]]);
+        $index = $this->tokens->getNextTokenOfKind($index, [\T_DOUBLE_ARROW]);
 
         while (true) {
             $index = $this->tokens->getNextMeaningfulToken($index);
 
-            if ($this->tokens[$index]->equalsAny($stopTokens)) {
+            if ($this->tokens[$index]->isGivenKind([')', ']', ',', ';', \T_CLOSE_TAG])) {
                 break;
             }
 
@@ -369,10 +368,7 @@ final class TokensAnalyzer
 
         $nextIndex = $this->tokens->getNextMeaningfulToken($index);
 
-        if (
-            $this->tokens[$nextIndex]->equalsAny(['(', '{'])
-            || $this->tokens[$nextIndex]->isGivenKind([\T_DOUBLE_COLON, \T_ELLIPSIS, \T_NS_SEPARATOR, CT::T_RETURN_REF, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, \T_VARIABLE])
-        ) {
+        if ($this->tokens[$nextIndex]->isGivenKind(['(', '{', \T_DOUBLE_COLON, \T_ELLIPSIS, \T_NS_SEPARATOR, CT::T_RETURN_REF, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, \T_VARIABLE])) {
             return false;
         }
 
@@ -380,7 +376,7 @@ final class TokensAnalyzer
         if ($this->tokens[$nextIndex]->isGivenKind(\T_AS)) {
             $prevIndex = $this->tokens->getPrevMeaningfulToken($index);
 
-            if (!$this->tokens[$prevIndex]->equals('(')) {
+            if (!$this->tokens[$prevIndex]->isGivenKind('(')) {
                 return false;
             }
         }
@@ -399,7 +395,7 @@ final class TokensAnalyzer
             $this->tokens[$prevIndex]->isGivenKind(\T_CASE)
             && $this->tokens->isAllTokenKindsFound([FCT::T_ENUM])
         ) {
-            $enumSwitchIndex = $this->tokens->getPrevTokenOfKind($index, [[\T_SWITCH], [\T_ENUM]]);
+            $enumSwitchIndex = $this->tokens->getPrevTokenOfKind($index, [\T_SWITCH, \T_ENUM]);
 
             if (!$this->tokens[$enumSwitchIndex]->isGivenKind(\T_SWITCH)) {
                 return false;
@@ -418,7 +414,7 @@ final class TokensAnalyzer
         //   - function reference parameter: function baz(Foo & $bar) {}
         //   - bit operator: $x = FOO & $bar;
         if ($this->tokens[$nextIndex]->equals('&') && $this->tokens[$this->tokens->getNextMeaningfulToken($nextIndex)]->isGivenKind(\T_VARIABLE)) {
-            $checkIndex = $this->tokens->getPrevTokenOfKind($prevIndex, [';', '{', '}', [\T_FUNCTION], [\T_OPEN_TAG], [\T_OPEN_TAG_WITH_ECHO]]);
+            $checkIndex = $this->tokens->getPrevTokenOfKind($prevIndex, [';', '{', '}', \T_FUNCTION, \T_OPEN_TAG, \T_OPEN_TAG_WITH_ECHO]);
 
             if ($this->tokens[$checkIndex]->isGivenKind(\T_FUNCTION)) {
                 return false;
@@ -426,10 +422,10 @@ final class TokensAnalyzer
         }
 
         // check for `extends`/`implements`/`use` list
-        if ($this->tokens[$prevIndex]->equals(',')) {
+        if ($this->tokens[$prevIndex]->isGivenKind(',')) {
             $checkIndex = $prevIndex;
 
-            while ($this->tokens[$checkIndex]->equalsAny([',', [\T_AS], [CT::T_NAMESPACE_OPERATOR], [\T_NS_SEPARATOR], [\T_STRING]])) {
+            while ($this->tokens[$checkIndex]->isGivenKind([',', \T_AS, CT::T_NAMESPACE_OPERATOR, \T_NS_SEPARATOR, \T_STRING])) {
                 $checkIndex = $this->tokens->getPrevMeaningfulToken($checkIndex);
             }
 
@@ -439,10 +435,10 @@ final class TokensAnalyzer
         }
 
         // check for array in double quoted string: `"..$foo[bar].."`
-        if ($this->tokens[$prevIndex]->equals('[') && $this->tokens[$nextIndex]->equals(']')) {
+        if ($this->tokens[$prevIndex]->isGivenKind('[') && $this->tokens[$nextIndex]->isGivenKind(']')) {
             $checkToken = $this->tokens[$this->tokens->getNextMeaningfulToken($nextIndex)];
 
-            if ($checkToken->equals('"') || $checkToken->isGivenKind([\T_CURLY_OPEN, \T_DOLLAR_OPEN_CURLY_BRACES, \T_ENCAPSED_AND_WHITESPACE, \T_VARIABLE])) {
+            if ($checkToken->isGivenKind(['"', \T_CURLY_OPEN, \T_DOLLAR_OPEN_CURLY_BRACES, \T_ENCAPSED_AND_WHITESPACE, \T_VARIABLE])) {
                 return false;
             }
         }
@@ -453,7 +449,7 @@ final class TokensAnalyzer
         }
 
         // check for goto label
-        if ($this->tokens[$nextIndex]->equals(':')) {
+        if ($this->tokens[$nextIndex]->isGivenKind(':')) {
             if ($this->gotoLabelAnalyzer->belongsToGoToLabel($this->tokens, $nextIndex)) {
                 return false;
             }
@@ -465,7 +461,7 @@ final class TokensAnalyzer
             $prevIndex = $this->tokens->getPrevMeaningfulToken($prevIndex);
         }
 
-        if ($this->tokens[$prevIndex]->equals('(')) {
+        if ($this->tokens[$prevIndex]->isGivenKind('(')) {
             $prevPrevIndex = $this->tokens->getPrevMeaningfulToken($prevIndex);
 
             if ($this->tokens[$prevPrevIndex]->isGivenKind(\T_CATCH)) {
@@ -490,13 +486,13 @@ final class TokensAnalyzer
 
         $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
 
-        return $prevToken->equalsAny([
+        return $prevToken->isGivenKind([
             ']',
-            [\T_STRING],
-            [\T_VARIABLE],
-            [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
-            [CT::T_DYNAMIC_PROP_BRACE_CLOSE],
-            [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
+            \T_STRING,
+            \T_VARIABLE,
+            CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
+            CT::T_DYNAMIC_PROP_BRACE_CLOSE,
+            CT::T_DYNAMIC_VAR_BRACE_CLOSE,
         ]);
     }
 
@@ -514,42 +510,42 @@ final class TokensAnalyzer
         }
 
         // always unary predecessor operator
-        if ($token->equalsAny(['!', '~', '@', [\T_ELLIPSIS]])) {
+        if ($token->isGivenKind(['!', '~', '@', \T_ELLIPSIS])) {
             return true;
         }
 
         // potential binary operator
-        if (!$token->equalsAny(['+', '-', '&', [CT::T_RETURN_REF]])) {
+        if (!$token->isGivenKind(['+', '-', '&', FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG, CT::T_RETURN_REF])) {
             return false;
         }
 
         $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
 
-        if (!$prevToken->equalsAny([
+        if (!$prevToken->isGivenKind([
             ']',
             '}',
             ')',
             '"',
             '`',
-            [CT::T_ARRAY_SQUARE_BRACE_CLOSE],
-            [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
-            [CT::T_DYNAMIC_PROP_BRACE_CLOSE],
-            [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
-            [\T_CLASS_C],
-            [\T_CONSTANT_ENCAPSED_STRING],
-            [\T_DEC],
-            [\T_DIR],
-            [\T_DNUMBER],
-            [\T_FILE],
-            [\T_FUNC_C],
-            [\T_INC],
-            [\T_LINE],
-            [\T_LNUMBER],
-            [\T_METHOD_C],
-            [\T_NS_C],
-            [\T_STRING],
-            [\T_TRAIT_C],
-            [\T_VARIABLE],
+            CT::T_ARRAY_SQUARE_BRACE_CLOSE,
+            CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
+            CT::T_DYNAMIC_PROP_BRACE_CLOSE,
+            CT::T_DYNAMIC_VAR_BRACE_CLOSE,
+            \T_CLASS_C,
+            \T_CONSTANT_ENCAPSED_STRING,
+            \T_DEC,
+            \T_DIR,
+            \T_DNUMBER,
+            \T_FILE,
+            \T_FUNC_C,
+            \T_INC,
+            \T_LINE,
+            \T_LNUMBER,
+            \T_METHOD_C,
+            \T_NS_C,
+            \T_STRING,
+            \T_TRAIT_C,
+            \T_VARIABLE,
         ])) {
             return true;
         }
@@ -562,11 +558,11 @@ final class TokensAnalyzer
             ';',
             '{',
             '}',
-            [\T_DOUBLE_ARROW],
-            [\T_FN],
-            [\T_FUNCTION],
-            [\T_OPEN_TAG],
-            [\T_OPEN_TAG_WITH_ECHO],
+            \T_DOUBLE_ARROW,
+            \T_FN,
+            \T_FUNCTION,
+            \T_OPEN_TAG,
+            \T_OPEN_TAG_WITH_ECHO,
         ])];
 
         return $prevToken->isGivenKind([\T_FN, \T_FUNCTION]);
@@ -645,7 +641,7 @@ final class TokensAnalyzer
         }
 
         $endIndex = $tokens->getPrevMeaningfulToken($index);
-        if (!$tokens[$endIndex]->equals('}')) {
+        if (!$tokens[$endIndex]->isGivenKind('}')) {
             return false;
         }
 
@@ -675,7 +671,7 @@ final class TokensAnalyzer
             return false;
         }
 
-        $prevIndex = $tokens->getPrevTokenOfKind($caseIndex, [[\T_ENUM], [\T_SWITCH]]);
+        $prevIndex = $tokens->getPrevTokenOfKind($caseIndex, [\T_ENUM, \T_SWITCH]);
 
         return null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(\T_ENUM);
     }
@@ -733,19 +729,19 @@ final class TokensAnalyzer
                 $nestedClassIndex = $index;
                 $index = $this->tokens->getNextMeaningfulToken($index);
 
-                if ($this->tokens[$index]->equals('(')) {
+                if ($this->tokens[$index]->isGivenKind('(')) {
                     ++$index; // move after `(`
 
                     for ($nestedBracesLevel = 1; $index < $count; ++$index) {
                         $token = $this->tokens[$index];
 
-                        if ($token->equals('(')) {
+                        if ($token->isGivenKind('(')) {
                             ++$nestedBracesLevel;
 
                             continue;
                         }
 
-                        if ($token->equals(')')) {
+                        if ($token->isGivenKind(')')) {
                             --$nestedBracesLevel;
 
                             if (0 === $nestedBracesLevel) {
@@ -771,25 +767,25 @@ final class TokensAnalyzer
                 continue;
             }
 
-            if ($token->equals('(')) {
+            if ($token->isGivenKind('(')) {
                 ++$bracesLevel;
 
                 continue;
             }
 
-            if ($token->equals(')')) {
+            if ($token->isGivenKind(')')) {
                 --$bracesLevel;
 
                 continue;
             }
 
-            if ($token->equals('{')) {
+            if ($token->isGivenKind('{')) {
                 ++$curlyBracesLevel;
 
                 continue;
             }
 
-            if ($token->equals('}')) {
+            if ($token->isGivenKind('}')) {
                 --$curlyBracesLevel;
 
                 if (0 === $curlyBracesLevel) {
@@ -814,7 +810,7 @@ final class TokensAnalyzer
             }
 
             if ($token->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
-                $index = $this->tokens->getNextTokenOfKind($index, [[CT::T_PROPERTY_HOOK_BRACE_CLOSE]]);
+                $index = $this->tokens->getNextTokenOfKind($index, [CT::T_PROPERTY_HOOK_BRACE_CLOSE]);
 
                 continue;
             }
@@ -832,7 +828,7 @@ final class TokensAnalyzer
                     foreach ($this->tokens->findGivenKind([CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE, FCT::T_READONLY, \T_FINAL], $openParenthesis, $closeParenthesis) as $kindElements) {
                         foreach (array_keys($kindElements) as $promotedPropertyModifierIndex) {
                             /** @var int $promotedPropertyVariableIndex */
-                            $promotedPropertyVariableIndex = $this->tokens->getNextTokenOfKind($promotedPropertyModifierIndex, [[\T_VARIABLE]]);
+                            $promotedPropertyVariableIndex = $this->tokens->getNextTokenOfKind($promotedPropertyModifierIndex, [\T_VARIABLE]);
                             $elements[$promotedPropertyVariableIndex] = [
                                 'classIndex' => $classIndex,
                                 'token' => $this->tokens[$promotedPropertyVariableIndex],
