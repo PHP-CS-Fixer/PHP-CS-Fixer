@@ -33,7 +33,9 @@ final class NoNullPropertyInitializationFixer extends AbstractFixer
                 new CodeSample(
                     '<?php
 class Foo {
-    public $foo = null;
+    public $bar = null;
+    public ?string $baz = null;
+    public ?string $baux;
 }
 '
                 ),
