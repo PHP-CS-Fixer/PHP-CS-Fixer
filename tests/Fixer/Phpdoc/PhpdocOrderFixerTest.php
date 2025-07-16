@@ -790,5 +790,56 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                 EOF,
             ['order' => ['template', 'param', 'throws', 'return']],
         ];
+
+        yield 'multiline phpstan-return when phpstan order specified' => [
+            <<<'EOF'
+                    <?php
+                        /**
+                         * Returns next token if it's type equals to expected.
+                         *
+                         * @return array
+                         * @phpstan-param TTokenType $type
+                         * @phpstan-return (
+                         *     $type is 'TableRow'
+                         *         ? TTableRowToken
+                         *         : TOtherToken
+                         * )
+                         * @throws ParserException
+                         **/
+                EOF,
+            null,
+            ['order' => ['param', 'return', 'phpstan-param', 'phpstan-return', 'throws']],
+        ];
+
+        yield 'multiple phpstan-param when phpstan order specified' => [
+            <<<'EOF'
+                    <?php
+                        /**
+                         * @phpstan-param non-empty-list<TGitHubReleaseArray> $releases
+                         * @phpstan-param TCurrentVersionArray $currentVersion
+                         * @phpstan-return TGitHubReleaseArray|false
+                         */
+                EOF,
+            null,
+            ['order' => ['param', 'return', 'phpstan-param', 'phpstan-return', 'throws']],
+        ];
+
+        yield 'mixed param, phpstan-param and psalm-param with order specified' => [
+            <<<'EOF'
+                    <?php
+                        /**
+                         * @param array $releases
+                         * @param array $currentVersion
+                         * @psalm-param list<array> $releases
+                         * @psalm-param array<string> $releases
+                         * @phpstan-param non-empty-list<TGitHubReleaseArray> $releases
+                         * @phpstan-param TCurrentVersionArray $currentVersion
+                         * @return array|false
+                         * @phpstan-return TGitHubReleaseArray|false
+                         */
+                EOF,
+            null,
+            ['order' => ['param', 'psalm-param', 'phpstan-param', 'return']],
+        ];
     }
 }
