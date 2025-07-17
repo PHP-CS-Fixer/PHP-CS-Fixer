@@ -2,7 +2,7 @@ includes:
     - dev-tools/vendor/phpstan/phpstan/conf/bleedingEdge.neon
 
     # Baseline, should only shrink! To regenerate it, just execute `composer phpstan:baseline`.
-    - dev-tools/phpstan/baseline.php
+    - dev-tools/phpstan/baseline/_loader.php
 
 parameters:
     level: 7
