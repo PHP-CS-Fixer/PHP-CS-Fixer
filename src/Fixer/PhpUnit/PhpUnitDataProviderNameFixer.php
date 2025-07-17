@@ -168,10 +168,6 @@ class FooTest extends TestCase {
             }
 
             foreach ($dataProviderAnalysis->getUsageIndices() as [$usageIndex]) {
-                if (substr_count($tokens[$usageIndex]->getContent(), '@dataProvider') > 1) {
-                    continue;
-                }
-
                 $tokens[$dataProviderAnalysis->getNameIndex()] = new Token([\T_STRING, $dataProviderNewName]);
 
                 $newContent = $tokens[$usageIndex]->isGivenKind(\T_DOC_COMMENT)
