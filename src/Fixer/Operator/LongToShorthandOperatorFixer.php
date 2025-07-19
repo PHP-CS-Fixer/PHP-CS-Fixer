@@ -18,6 +18,7 @@ use PhpCsFixer\Fixer\AbstractShortOperatorFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -28,15 +29,15 @@ final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer
      * @var array<string, array{int, string}>
      */
     private const OPERATORS = [
-        '+' => [T_PLUS_EQUAL, '+='],
-        '-' => [T_MINUS_EQUAL, '-='],
-        '*' => [T_MUL_EQUAL, '*='],
-        '/' => [T_DIV_EQUAL, '/='],
-        '&' => [T_AND_EQUAL, '&='],
-        '.' => [T_CONCAT_EQUAL, '.='],
-        '%' => [T_MOD_EQUAL, '%='],
-        '|' => [T_OR_EQUAL, '|='],
-        '^' => [T_XOR_EQUAL, '^='],
+        '+' => [\T_PLUS_EQUAL, '+='],
+        '-' => [\T_MINUS_EQUAL, '-='],
+        '*' => [\T_MUL_EQUAL, '*='],
+        '/' => [\T_DIV_EQUAL, '/='],
+        '&' => [\T_AND_EQUAL, '&='],
+        '.' => [\T_CONCAT_EQUAL, '.='],
+        '%' => [\T_MOD_EQUAL, '%='],
+        '|' => [\T_OR_EQUAL, '|='],
+        '^' => [\T_XOR_EQUAL, '^='],
     ];
 
     /**
@@ -75,12 +76,7 @@ final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        if ($tokens->isAnyTokenKindsFound(array_keys(self::OPERATORS))) {
-            return true;
-        }
-
-        // @TODO: drop condition when PHP 8.0 is required and the "&" issues went away
-        return \defined('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG');
+        return $tokens->isAnyTokenKindsFound([...array_keys(self::OPERATORS), FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -101,12 +97,12 @@ final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer
             $index = $tokens->getNextMeaningfulToken($index);
             $otherToken = $tokens[$index];
 
-            if ($otherToken->equalsAny([';', [T_CLOSE_TAG]])) {
+            if ($otherToken->equalsAny([';', [\T_CLOSE_TAG]])) {
                 return true;
             }
 
             // fast precedence check
-            if ($otherToken->equals('?') || $otherToken->isGivenKind(T_INSTANCEOF)) {
+            if ($otherToken->equals('?') || $otherToken->isGivenKind(\T_INSTANCEOF)) {
                 return false;
             }
 

@@ -38,6 +38,9 @@ final class RangeAnalyzerTest extends TestCase
         self::assertSame($expected, RangeAnalyzer::rangeEqualsRange($tokens, $range1, $range2));
     }
 
+    /**
+     * @return iterable<array{bool, string, array{start: int, end: int}, array{start: int, end: int}}>
+     */
     public static function provideRangeEqualsRangeCases(): iterable
     {
         $ranges = [

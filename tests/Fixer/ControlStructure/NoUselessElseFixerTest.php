@@ -29,9 +29,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class NoUselessElseFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideCloseTagCases
+     * @dataProvider provideFixCases
      */
-    public function testCloseTag(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
@@ -39,7 +39,7 @@ final class NoUselessElseFixerTest extends AbstractFixerTestCase
     /**
      * @return iterable<array{0: string, 1?: string}>
      */
-    public static function provideCloseTagCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield [
             '<?php
@@ -134,22 +134,9 @@ if (true)
     echo 4;
 else?><?php echo 5;',
         ];
-    }
 
-    /**
-     * @dataProvider provideFixIfElseIfElseCases
-     */
-    public function testFixIfElseIfElse(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<array{0: string, 1?: string}>
-     */
-    public static function provideFixIfElseIfElseCases(): iterable
-    {
-        $expected = '<?php
+        yield from self::generateCases(
+            '<?php
                 while(true) {
                     while(true) {
                         if ($provideFixIfElseIfElseCases) {
@@ -164,9 +151,8 @@ else?><?php echo 5;',
                         '.'
                     }
                 }
-            ';
-
-        $input = '<?php
+            ',
+            '<?php
                 while(true) {
                     while(true) {
                         if ($provideFixIfElseIfElseCases) {
@@ -181,11 +167,10 @@ else?><?php echo 5;',
                         }
                     }
                 }
-            ';
+            '
+        );
 
-        yield from self::generateCases($expected, $input);
-
-        $expected = '<?php
+        yield from self::generateCases('<?php
                 while(true) {
                     while(true) {
                         if($a) {
@@ -197,11 +182,9 @@ else?><?php echo 5;',
                         }
                     }
                 }
-            ';
+            ');
 
-        yield from self::generateCases($expected);
-
-        $expected = '<?php
+        yield from self::generateCases('<?php
                 while(true) {
                     while(true) {
                         if ($a) {
@@ -217,9 +200,7 @@ else?><?php echo 5;',
                         }
                     }
                 }
-            ';
-
-        yield from self::generateCases($expected);
+            ');
 
         yield [
             '<?php
@@ -255,22 +236,9 @@ else?><?php echo 5;',
                     echo 4;
             ',
         ];
-    }
 
-    /**
-     * @dataProvider provideFixIfElseCases
-     */
-    public function testFixIfElse(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<array{0: string, 1?: string}>
-     */
-    public static function provideFixIfElseCases(): iterable
-    {
-        $expected = '<?php
+        yield from self::generateCases(
+            '<?php
             while(true) {
                 while(true) {
                     if ($a) {
@@ -280,9 +248,8 @@ else?><?php echo 5;',
                     '.'
                 }
             }
-        ';
-
-        $input = '<?php
+        ',
+            '<?php
             while(true) {
                 while(true) {
                     if ($a) {
@@ -292,9 +259,8 @@ else?><?php echo 5;',
                     }
                 }
             }
-        ';
-
-        yield from self::generateCases($expected, $input);
+        '
+        );
 
         yield [
             '<?php
@@ -316,22 +282,8 @@ else?><?php echo 5;',
                 jump:
             ',
         ];
-    }
 
-    /**
-     * @dataProvider provideFixNestedIfCases
-     */
-    public function testFixNestedIf(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<array{string, string}>
-     */
-    public static function provideFixNestedIfCases(): iterable
-    {
-        yield [
+        yield 'nested if' => [
             '<?php
                     if ($x) {
                         if ($y) {
@@ -355,21 +307,7 @@ else?><?php echo 5;',
                     }
                 ',
         ];
-    }
 
-    /**
-     * @dataProvider provideFixEmptyElseCases
-     */
-    public function testFixEmptyElse(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<array{string, string}>
-     */
-    public static function provideFixEmptyElseCases(): iterable
-    {
         yield [
             '<?php
                     if (false)
@@ -453,21 +391,7 @@ else?><?php echo 5;',
                     }//
                 ',
         ];
-    }
 
-    /**
-     * @dataProvider provideNegativeCases
-     */
-    public function testNegative(string $expected): void
-    {
-        $this->doTest($expected);
-    }
-
-    /**
-     * @return iterable<array{string}>
-     */
-    public static function provideNegativeCases(): iterable
-    {
         yield [
             '<?php
                     if ($a0) {
@@ -640,22 +564,60 @@ else?><?php echo 5;',
                         }
                     };',
         ];
+        $statements = [
+            'die;',
+            'throw new Exception($i);',
+            'while($i < 1) throw/*{}*/new Exception($i);',
+            'while($i < 1){throw new Exception($i);}',
+            'do{throw new Exception($i);}while($i < 1);',
+            'foreach($a as $b)throw new Exception($i);',
+            'foreach($a as $b){throw new Exception($i);}',
+        ];
+
+        foreach ($statements as $statement) {
+            yield from self::generateConditionsWithoutBracesCase($statement);
+        }
+
+        yield [
+            '<?php
+                if ($a === false)
+                {
+                    if ($v) { $ret = "foo"; if($d){return 1;}echo $a;}
+                }
+                else
+                    $ret .= $value;
+
+                return $ret;',
+            '<?php
+                if ($a === false)
+                {
+                    if ($v) { $ret = "foo"; if($d){return 1;}else{echo $a;}}
+                }
+                else
+                    $ret .= $value;
+
+                return $ret;',
+        ];
+
+        yield from self::generateConditionsWithoutBracesCase('throw new class extends Exception{};');
+
+        yield from self::generateConditionsWithoutBracesCase('throw new class ($a, 9) extends Exception{ public function z($a, $b){ echo 7;} };');
     }
 
     /**
-     * @dataProvider provideNegativePhp80Cases
+     * @dataProvider provideFix80Cases
      *
      * @requires PHP 8.0
      */
-    public function testNegativePhp80(string $expected): void
+    public function testFix80(string $expected): void
     {
         $this->doTest($expected);
     }
 
     /**
-     * @return iterable<string, array{string}>
+     * @return iterable<array{string}>
      */
-    public static function provideNegativePhp80Cases(): iterable
+    public static function provideFix80Cases(): iterable
     {
         $cases = [
             '$bar = $foo1 ?? throw new \Exception($e);',
@@ -681,6 +643,8 @@ else?><?php echo 5;',
         foreach ($cases as $index => $case) {
             yield \sprintf('PHP8 Negative case %d', $index) => [\sprintf($template, $case)];
         }
+
+        yield from self::generateConditionsWithoutBracesCase('$b = $a ?? throw new Exception($i);');
     }
 
     /**
@@ -698,6 +662,9 @@ else?><?php echo 5;',
         self::assertSame($expected, $result);
     }
 
+    /**
+     * @return iterable<int, array{list<int>, string, int}>
+     */
     public static function provideBlockDetectionCases(): iterable
     {
         $source = '<?php
@@ -740,77 +707,6 @@ else?><?php echo 5;',
     }
 
     /**
-     * @dataProvider provideConditionsWithoutBracesCases
-     */
-    public function testConditionsWithoutBraces(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<array{0: string, 1?: string}>
-     */
-    public static function provideConditionsWithoutBracesCases(): iterable
-    {
-        $statements = [
-            'die;',
-            'throw new Exception($i);',
-            'while($i < 1) throw/*{}*/new Exception($i);',
-            'while($i < 1){throw new Exception($i);}',
-            'do{throw new Exception($i);}while($i < 1);',
-            'foreach($a as $b)throw new Exception($i);',
-            'foreach($a as $b){throw new Exception($i);}',
-        ];
-
-        foreach ($statements as $statement) {
-            yield from self::generateConditionsWithoutBracesCase($statement);
-        }
-
-        yield [
-            '<?php
-                if ($a === false)
-                {
-                    if ($v) { $ret = "foo"; if($d){return 1;}echo $a;}
-                }
-                else
-                    $ret .= $value;
-
-                return $ret;',
-            '<?php
-                if ($a === false)
-                {
-                    if ($v) { $ret = "foo"; if($d){return 1;}else{echo $a;}}
-                }
-                else
-                    $ret .= $value;
-
-                return $ret;',
-        ];
-
-        yield from self::generateConditionsWithoutBracesCase('throw new class extends Exception{};');
-
-        yield from self::generateConditionsWithoutBracesCase('throw new class ($a, 9) extends Exception{ public function z($a, $b){ echo 7;} };');
-    }
-
-    /**
-     * @dataProvider provideConditionsWithoutBraces80Cases
-     *
-     * @requires PHP 8.0
-     */
-    public function testConditionsWithoutBraces80(string $expected): void
-    {
-        $this->doTest($expected);
-    }
-
-    /**
-     * @return iterable<array{string}>
-     */
-    public static function provideConditionsWithoutBraces80Cases(): iterable
-    {
-        yield from self::generateConditionsWithoutBracesCase('$b = $a ?? throw new Exception($i);');
-    }
-
-    /**
      * @param array<int, bool> $indexes
      *
      * @dataProvider provideIsInConditionWithoutBracesCases
@@ -828,6 +724,9 @@ else?><?php echo 5;',
         }
     }
 
+    /**
+     * @return iterable<int, array{array<int, bool>, string}>
+     */
     public static function provideIsInConditionWithoutBracesCases(): iterable
     {
         yield [

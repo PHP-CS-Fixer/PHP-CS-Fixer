@@ -34,7 +34,7 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -323,7 +323,6 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
                 $c = new D();
                 $e = new BarE();
                 EOF,
-
             <<<'EOF'
                 <?php
 
@@ -632,7 +631,6 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
                 <?php
 
                 EOF,
-
             <<<'EOF'
                 <?php
                 use Bar\Finder;
@@ -980,7 +978,7 @@ $b = $a-->ABC::Test;
         ];
 
         yield 'constants_in_the_global_namespace_should_not_be_removed' => [
-            $expected = <<<'EOF'
+            <<<'EOF'
                 <?php
 
                 namespace Foo;
@@ -1459,6 +1457,30 @@ Bar3:
             "<?php \n",
             "<?php \nuse A\\{B, C};     \t\t",
         ];
+
+        yield 'imported class name with underscore before or after it in PHPDoc' => [
+            <<<'PHP'
+                <?php
+                /** @var _UnusedImport1 */
+                $foo = 1;
+                /** @var UnusedImport2_ */
+                $bar = 2;
+                /** @var _UnusedImport3_ */
+                $baz = 3;
+                PHP,
+            <<<'PHP'
+                <?php
+                use Vendor\UnusedImport1;
+                use Vendor\UnusedImport2;
+                use Vendor\UnusedImport3;
+                /** @var _UnusedImport1 */
+                $foo = 1;
+                /** @var UnusedImport2_ */
+                $bar = 2;
+                /** @var _UnusedImport3_ */
+                $baz = 3;
+                PHP,
+        ];
     }
 
     /**
@@ -1505,7 +1527,7 @@ use /**/A\B/**/;
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -1580,7 +1602,7 @@ function f( #[Target(\'xxx\')] LoggerInterface|null $logger) {}
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFix81Cases(): iterable
     {

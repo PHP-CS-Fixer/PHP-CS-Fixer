@@ -27,17 +27,15 @@ final class ExecutorWithoutErrorHandlerTest extends TestCase
     public function testWithError(): void
     {
         $this->expectException(ExecutorWithoutErrorHandlerException::class);
-        $this->expectExceptionMessageMatches('/preg_match\(\): Delimiter must not be alphanumeric/');
+        $this->expectExceptionMessageMatches('/failed to open stream: No such file or directory/i');
 
-        // @phpstan-ignore-next-line
-        ExecutorWithoutErrorHandler::execute(static fn () => preg_match('bad pattern', ''));
+        ExecutorWithoutErrorHandler::execute(static fn () => fopen(__DIR__.'/404', 'r'));
     }
 
     public function testWithoutError(): void
     {
-        self::assertSame(
-            1,
-            ExecutorWithoutErrorHandler::execute(static fn () => preg_match('/./', 'a'))
+        self::assertTrue(
+            ExecutorWithoutErrorHandler::execute(static fn () => is_readable(__DIR__))
         );
     }
 }

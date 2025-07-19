@@ -18,13 +18,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\NamespaceNotation\NoBlankLinesBeforeNamespaceFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\NamespaceNotation\NoBlankLinesBeforeNamespaceFixer>
+ *
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  */
 final class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestCase
 {
@@ -40,7 +40,7 @@ final class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string, 2?: WhitespacesFixerConfig}>
+     * @return iterable<int, array{0: string, 1?: string, 2?: WhitespacesFixerConfig}>
      */
     public static function provideFixCases(): iterable
     {

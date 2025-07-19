@@ -36,7 +36,7 @@ final class NoEmptyCommentFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -281,7 +281,7 @@ echo 1;
     }
 
     /**
-     * @return iterable<array{string, int, int, bool}>
+     * @return iterable<int, array{string, int, int, bool}>
      */
     public static function provideGetCommentBlockCases(): iterable
     {

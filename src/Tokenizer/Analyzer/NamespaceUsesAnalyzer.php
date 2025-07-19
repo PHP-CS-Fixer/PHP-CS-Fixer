@@ -67,7 +67,7 @@ final class NamespaceUsesAnalyzer
         $uses = [];
 
         foreach ($useIndices as $index) {
-            $endIndex = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
+            $endIndex = $tokens->getNextTokenOfKind($index, [';', [\T_CLOSE_TAG]]);
 
             $declarations = $this->parseDeclarations($index, $endIndex, $tokens);
             if (false === $allowMultiUses) {
@@ -90,7 +90,7 @@ final class NamespaceUsesAnalyzer
         $type = $this->determineImportType($tokens, $startIndex);
         $potentialMulti = $tokens->getNextTokenOfKind($startIndex, [',', [CT::T_GROUP_IMPORT_BRACE_OPEN]]);
         $multi = null !== $potentialMulti && $potentialMulti < $endIndex;
-        $index = $tokens->getNextTokenOfKind($startIndex, [[T_STRING], [T_NS_SEPARATOR]]);
+        $index = $tokens->getNextTokenOfKind($startIndex, [[\T_STRING], [\T_NS_SEPARATOR]]);
         $imports = [];
 
         while (null !== $index && $index <= $endIndex) {
@@ -126,7 +126,7 @@ final class NamespaceUsesAnalyzer
                 }
 
                 $index = $groupIndex;
-            } elseif ($token->equalsAny([',', ';', [T_CLOSE_TAG]])) {
+            } elseif ($token->equalsAny([',', ';', [\T_CLOSE_TAG]])) {
                 $previousToken = $tokens->getPrevMeaningfulToken($qualifiedName['afterIndex']);
 
                 if (!$tokens[$previousToken]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
@@ -181,21 +181,21 @@ final class NamespaceUsesAnalyzer
         while (null !== $index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(T_STRING)) {
+            if ($token->isGivenKind(\T_STRING)) {
                 $shortName = $token->getContent();
                 if (!$aliased) {
                     $fullName .= $shortName;
                 }
-            } elseif ($token->isGivenKind(T_NS_SEPARATOR)) {
+            } elseif ($token->isGivenKind(\T_NS_SEPARATOR)) {
                 $fullName .= $token->getContent();
-            } elseif ($token->isGivenKind(T_AS)) {
+            } elseif ($token->isGivenKind(\T_AS)) {
                 $aliased = true;
             } elseif ($token->equalsAny([
                 ',',
                 ';',
                 [CT::T_GROUP_IMPORT_BRACE_OPEN],
                 [CT::T_GROUP_IMPORT_BRACE_CLOSE],
-                [T_CLOSE_TAG],
+                [\T_CLOSE_TAG],
             ])) {
                 break;
             }

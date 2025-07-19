@@ -29,7 +29,7 @@ final class TokensTest extends TestCase
     {
         $docComment = '/** */';
 
-        $token = new Token([T_DOC_COMMENT, $docComment]);
+        $token = new Token([\T_DOC_COMMENT, $docComment]);
         $tokens = Tokens::createFromDocComment($token);
 
         self::assertCount(1, $tokens);
@@ -43,7 +43,7 @@ final class TokensTest extends TestCase
     {
         $docComment = '/** */';
 
-        $token = new Token([T_DOC_COMMENT, $docComment]);
+        $token = new Token([\T_DOC_COMMENT, $docComment]);
         $tokens = Tokens::createFromDocComment($token);
 
         $this->expectException(\InvalidArgumentException::class);
@@ -54,7 +54,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, null|string}>
+     * @return iterable<int, array{string, null|string}>
      */
     public static function provideOffSetOtherThanTokenCases(): iterable
     {

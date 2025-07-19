@@ -58,7 +58,7 @@ class DocBlocks
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -66,7 +66,7 @@ class DocBlocks
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -82,8 +82,8 @@ class DocBlocks
 
             // ignore inline docblocks
             if (
-                $prevToken->isGivenKind(T_OPEN_TAG)
-                || ($prevToken->isWhitespace(" \t") && !$tokens[$index - 2]->isGivenKind(T_OPEN_TAG))
+                $prevToken->isGivenKind(\T_OPEN_TAG)
+                || ($prevToken->isWhitespace(" \t") && !$tokens[$index - 2]->isGivenKind(\T_OPEN_TAG))
                 || $prevToken->equalsAny([';', ',', '{', '('])
             ) {
                 continue;
@@ -97,11 +97,11 @@ class DocBlocks
 
             $newPrevContent = $this->fixWhitespaceBeforeDocblock($prevToken->getContent(), $indent);
 
-            $tokens[$index] = new Token([T_DOC_COMMENT, $this->fixDocBlock($token->getContent(), $indent)]);
+            $tokens[$index] = new Token([\T_DOC_COMMENT, $this->fixDocBlock($token->getContent(), $indent)]);
 
             if (!$prevToken->isWhitespace()) {
                 if ('' !== $indent) {
-                    $tokens->insertAt($index, new Token([T_WHITESPACE, $indent]));
+                    $tokens->insertAt($index, new Token([\T_WHITESPACE, $indent]));
                 }
             } elseif ('' !== $newPrevContent) {
                 if ($prevToken->isArray()) {

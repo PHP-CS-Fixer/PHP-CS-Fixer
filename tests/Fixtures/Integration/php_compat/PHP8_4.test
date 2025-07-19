@@ -1,0 +1,150 @@
+--TEST--
+PHP 8.4 test.
+--RULESET--
+{
+    "@PhpCsFixer": true,
+    "@PHP84Migration": true
+}
+--REQUIREMENTS--
+{"php": 80400}
+--EXPECT--
+<?php
+
+// based on https://www.php.net/releases/8.4/en.php
+
+// https://wiki.php.net/rfc/property-hooks
+interface PropertyHooksInterface
+{
+    public bool $b { get; set; }
+}
+abstract class PropertyHooks
+{
+    abstract public string $readable { get; }
+
+    public string $foo = 'default value' {
+        get => $this->foo.($this->modified ? ' (modified)' : '');
+        set => \strtolower($value);
+    }
+
+    final public string $bar {
+        set(string $value) {
+            $this->foo = strtolower($value);
+        }
+    }
+}
+
+// https://wiki.php.net/rfc/asymmetric-visibility-v2
+class AsymmetricVisibility
+{
+    public private(set) string $d = '8.4';
+    public protected(set) string $e;
+
+    public function __construct(
+        public private(set) string $a,
+        public protected(set) string $b,
+        protected private(set) int $c,
+    ) {}
+}
+
+// https://wiki.php.net/rfc/deprecated_attribute
+class DeprecatedAttribute
+{
+    #[Deprecated(
+        message: 'use PhpVersion::getVersion() instead',
+        since: '8.4',
+    )]
+    public function getPhpVersion(): string
+    {
+        return $this->getVersion();
+    }
+
+    public function getVersion(): string
+    {
+        return '8.4';
+    }
+}
+
+// https://wiki.php.net/rfc/new_without_parentheses
+class NewWithoutParentheses
+{
+    public function getVersion(): string
+    {
+        return 'PHP 8.4';
+    }
+}
+
+var_dump(new NewWithoutParentheses()->getVersion());
+
+--INPUT--
+<?php
+
+// based on https://www.php.net/releases/8.4/en.php
+
+// https://wiki.php.net/rfc/property-hooks
+interface PropertyHooksInterface
+{
+    public bool $b { get; set; }
+}
+abstract class PropertyHooks
+{
+    abstract public string $readable { get; }
+
+    public     string       $foo    =     'default value' {
+        get      =>      $this->foo . ($this->modified     ?      ' (modified)' : '')
+        ;
+        set => 
+        \strtolower( $value );
+    }
+    
+    final    public    string    $bar    {
+        set(    string $value    ) {
+            $this -> foo = strtolower($value);
+        }
+    }
+}
+
+// https://wiki.php.net/rfc/asymmetric-visibility-v2
+class AsymmetricVisibility
+{
+    public private(set) string $d = '8.4';
+    public protected(set) string $e;
+
+    public function __construct(
+        public private(set) string $a,
+        public protected(set) string $b,
+        protected private(set) int $c,
+    ) {}
+}
+
+// https://wiki.php.net/rfc/deprecated_attribute
+class DeprecatedAttribute
+{
+    #[Deprecated  
+            (
+        message:    "use PhpVersion::getVersion() instead"
+        
+        ,
+
+        since: "8.4"    ,
+    )]
+    public function getPhpVersion(): string
+    {
+        return $this->getVersion();
+    }
+
+    public function getVersion(): string
+    {
+        return '8.4';
+    }
+}
+
+// https://wiki.php.net/rfc/new_without_parentheses
+class NewWithoutParentheses
+{
+    public function getVersion(): string
+    {
+        return 'PHP 8.4';
+    }
+}
+
+var_dump(new NewWithoutParentheses  ()  ->getVersion());

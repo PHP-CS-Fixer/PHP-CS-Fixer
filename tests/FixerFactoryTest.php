@@ -243,6 +243,7 @@ final class FixerFactoryTest extends TestCase
                     throw new \InvalidArgumentException(\sprintf('Rule "%s" is not in the set.', $rule));
                 }
 
+                // @phpstan-ignore-next-line offsetAccess.notFound The offset existence was check in the `if` above
                 if (true === $this->getRules()[$rule]) {
                     return null;
                 }
@@ -316,7 +317,7 @@ final class FixerFactoryTest extends TestCase
     }
 
     /**
-     * @return iterable<array{RuleSet}>
+     * @return iterable<int, array{RuleSet}>
      */
     public static function provideConflictingFixersCases(): iterable
     {
@@ -500,7 +501,7 @@ final class FixerFactoryTest extends TestCase
     }
 
     /**
-     * @return iterable<array{float|int|\stdClass|string}>
+     * @return iterable<int, array{float|int|\stdClass|string}>
      */
     public static function provideConfigureFixerWithNonArrayCases(): iterable
     {

@@ -36,6 +36,8 @@ final class TestCaseUtils
                 continue;
             }
 
+            \assert(2 === \count($case));
+
             [$case[0], $case[1]] = [$case[1], $case[0]];
 
             yield $case;

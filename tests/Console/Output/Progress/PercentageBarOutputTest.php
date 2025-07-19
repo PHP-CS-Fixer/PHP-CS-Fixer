@@ -51,7 +51,7 @@ final class PercentageBarOutputTest extends TestCase
     }
 
     /**
-     * @return iterable<int|string, array{0: list<array{0: FileProcessed::STATUS_*, 1?: int}>, 1: string, 2: int}>
+     * @return iterable<int, array{0: list<array{0: FileProcessed::STATUS_*, 1?: int}>, 1: string, 2: int}>
      */
     public static function providePercentageBarProgressOutputCases(): iterable
     {
@@ -59,7 +59,7 @@ final class PercentageBarOutputTest extends TestCase
             [
                 [FileProcessed::STATUS_NO_CHANGES, 100],
             ],
-            '   0/100 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%'.PHP_EOL
+            '   0/100 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%'.\PHP_EOL
             .' 100/100 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%',
             80,
         ];

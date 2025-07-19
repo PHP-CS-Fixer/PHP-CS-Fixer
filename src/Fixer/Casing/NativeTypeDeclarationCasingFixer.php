@@ -107,11 +107,11 @@ final class NativeTypeDeclarationCasingFixer extends AbstractFixer
         $classyFound = $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
 
         return
-            $tokens->isAnyTokenKindsFound([T_FUNCTION, T_FN])
-            || ($classyFound && $tokens->isTokenKindFound(T_STRING))
+            $tokens->isAnyTokenKindsFound([\T_FUNCTION, \T_FN])
+            || ($classyFound && $tokens->isTokenKindFound(\T_STRING))
             || (
                 \PHP_VERSION_ID >= 8_03_00
-                && $tokens->isTokenKindFound(T_CONST)
+                && $tokens->isTokenKindFound(\T_CONST)
                 && $classyFound
             );
     }
@@ -129,18 +129,18 @@ final class NativeTypeDeclarationCasingFixer extends AbstractFixer
             }
 
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$prevIndex]->equals('=') || $tokens[$prevIndex]->isGivenKind([T_CASE, T_OBJECT_OPERATOR, T_DOUBLE_COLON, T_NS_SEPARATOR])) {
+            if ($tokens[$prevIndex]->equals('=') || $tokens[$prevIndex]->isGivenKind([\T_CASE, \T_OBJECT_OPERATOR, \T_DOUBLE_COLON, \T_NS_SEPARATOR])) {
                 continue;
             }
 
             $nextIndex = $tokens->getNextMeaningfulToken($index);
-            if ($tokens[$nextIndex]->equals('=') || $tokens[$nextIndex]->isGivenKind(T_NS_SEPARATOR)) {
+            if ($tokens[$nextIndex]->equals('=') || $tokens[$nextIndex]->isGivenKind(\T_NS_SEPARATOR)) {
                 continue;
             }
 
             if (
-                !$tokens[$prevIndex]->isGivenKind([T_CONST, CT::T_NULLABLE_TYPE, CT::T_TYPE_ALTERNATION, CT::T_TYPE_COLON])
-                && !$tokens[$nextIndex]->isGivenKind([T_VARIABLE, CT::T_TYPE_ALTERNATION])
+                !$tokens[$prevIndex]->isGivenKind([\T_CONST, CT::T_NULLABLE_TYPE, CT::T_TYPE_ALTERNATION, CT::T_TYPE_COLON])
+                && !$tokens[$nextIndex]->isGivenKind([\T_VARIABLE, CT::T_TYPE_ALTERNATION])
             ) {
                 continue;
             }

@@ -42,7 +42,7 @@ final class FunctionTypehintSpaceFixer extends AbstractProxyFixer implements Dep
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_FUNCTION, T_FN]);
+        return $tokens->isAnyTokenKindsFound([\T_FUNCTION, \T_FN]);
     }
 
     public function getSuccessorsNames(): array

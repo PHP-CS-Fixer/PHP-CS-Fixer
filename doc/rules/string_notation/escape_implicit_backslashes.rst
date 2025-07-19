@@ -143,6 +143,7 @@ With configuration: ``['heredoc_syntax' => false]``.
     $hereDoc = <<<HEREDOC
     Interpret my \100 but not my \999
     HEREDOC;
+
 References
 ----------
 

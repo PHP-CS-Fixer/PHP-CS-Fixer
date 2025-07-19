@@ -59,7 +59,7 @@ final class TypeAnalysisTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, bool}>
+     * @return iterable<int, array{string, bool}>
      */
     public static function provideReservedCases(): iterable
     {
@@ -116,7 +116,7 @@ final class TypeAnalysisTest extends TestCase
     }
 
     /**
-     * @return iterable<array{bool, string}>
+     * @return iterable<int, array{bool, string}>
      */
     public static function provideIsNullableCases(): iterable
     {
@@ -144,7 +144,7 @@ final class TypeAnalysisTest extends TestCase
     }
 
     /**
-     * @return iterable<array{bool, string}>
+     * @return iterable<int, array{bool, string}>
      */
     public static function provideIsNullable80Cases(): iterable
     {
@@ -206,7 +206,7 @@ final class TypeAnalysisTest extends TestCase
     }
 
     /**
-     * @return iterable<array{bool, string}>
+     * @return iterable<int, array{bool, string}>
      */
     public static function provideIsNullable81Cases(): iterable
     {
@@ -228,7 +228,7 @@ final class TypeAnalysisTest extends TestCase
     }
 
     /**
-     * @return iterable<array{bool, string}>
+     * @return iterable<int, array{bool, string}>
      */
     public static function provideIsNullable82Cases(): iterable
     {

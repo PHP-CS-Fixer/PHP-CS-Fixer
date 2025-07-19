@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Leszek Prabucki <leszek.prabucki@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ControlStructure\ElseifFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\ElseifFixer>
+ *
+ * @author Leszek Prabucki <leszek.prabucki@gmail.com>
  */
 final class ElseifFixerTest extends AbstractFixerTestCase
 {
@@ -36,7 +36,7 @@ final class ElseifFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {

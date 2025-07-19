@@ -151,7 +151,6 @@ The rule is part of the following rule sets:
 
   ``['after_heredoc' => true, 'elements' => ['array_destructuring', 'arrays', 'match', 'parameters']]``
 
-
 References
 ----------
 

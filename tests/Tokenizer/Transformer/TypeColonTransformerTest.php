@@ -44,6 +44,9 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
         );
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: _TransformerTestExpectedTokens}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield [
@@ -123,6 +126,9 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
         $this->testProcess($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<int, array{string, _TransformerTestExpectedTokens}>
+     */
     public static function provideProcess81Cases(): iterable
     {
         yield [

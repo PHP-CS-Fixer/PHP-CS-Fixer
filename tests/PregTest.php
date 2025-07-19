@@ -31,7 +31,7 @@ final class PregTest extends TestCase
         $this->expectException(PregException::class);
         $this->expectExceptionMessage('Preg::match(): Invalid PCRE pattern ""');
 
-        Preg::match('', 'foo', $matches);
+        Preg::match('', 'foo');
     }
 
     /**
@@ -162,7 +162,7 @@ final class PregTest extends TestCase
         $this->expectException(PregException::class);
         $this->expectExceptionMessage('Preg::matchAll(): Invalid PCRE pattern ""');
 
-        Preg::matchAll('', 'foo', $matches);
+        Preg::matchAll('', 'foo');
     }
 
     /**
@@ -186,12 +186,9 @@ final class PregTest extends TestCase
     }
 
     /**
-     * @param list<string>|string $pattern
-     * @param list<string>|string $subject
-     *
      * @dataProvider provideCommonCases
      */
-    public function testReplace($pattern, $subject): void
+    public function testReplace(string $pattern, string $subject): void
     {
         $expectedResult = preg_replace($pattern, 'foo', $subject);
         $actualResult = Preg::replace($pattern, 'foo', $subject);
@@ -208,12 +205,9 @@ final class PregTest extends TestCase
     }
 
     /**
-     * @param list<string>|string $pattern
-     * @param list<string>|string $subject
-     *
      * @dataProvider provideCommonCases
      */
-    public function testReplaceCallback($pattern, $subject): void
+    public function testReplaceCallback(string $pattern, string $subject): void
     {
         $callback = static fn (array $x): string => implode('-', $x);
 
@@ -243,7 +237,7 @@ final class PregTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideCommonCases(): iterable
     {

@@ -29,12 +29,12 @@ final class GotoLabelAnalyzer
 
         $prevMeaningfulTokenIndex = $tokens->getPrevMeaningfulToken($index);
 
-        if (!$tokens[$prevMeaningfulTokenIndex]->isGivenKind(T_STRING)) {
+        if (!$tokens[$prevMeaningfulTokenIndex]->isGivenKind(\T_STRING)) {
             return false;
         }
 
         $prevMeaningfulTokenIndex = $tokens->getPrevMeaningfulToken($prevMeaningfulTokenIndex);
 
-        return $tokens[$prevMeaningfulTokenIndex]->equalsAny([':', ';', '{', '}', [T_OPEN_TAG]]);
+        return $tokens[$prevMeaningfulTokenIndex]->equalsAny([':', ';', '{', '}', [\T_OPEN_TAG]]);
     }
 }

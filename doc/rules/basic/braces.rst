@@ -184,6 +184,7 @@ With configuration: ``['position_after_functions_and_oop_constructs' => 'same']`
    +        }
         }
     }
+
 References
 ----------
 

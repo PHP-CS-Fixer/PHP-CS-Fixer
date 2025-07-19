@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Differ;
 
 use PhpCsFixer\Differ\DifferInterface;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -26,7 +27,7 @@ abstract class AbstractDifferTestCase extends TestCase
 {
     final public function testIsDiffer(): void
     {
-        $className = preg_replace(
+        $className = Preg::replace(
             '/Test$/',
             '',
             str_replace(

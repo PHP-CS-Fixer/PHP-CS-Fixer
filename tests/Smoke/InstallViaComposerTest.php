@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Smoke;
 
 use Keradus\CliExecutor\CommandExecutor;
 use PhpCsFixer\Console\Application;
+use PhpCsFixer\Preg;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -125,7 +126,7 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
         unlink($tmpArtifactPath);
         $this->fs->mkdir($tmpArtifactPath);
 
-        $fakeVersion = preg_replace('/\-.+/', '', Application::VERSION, 1).'-alpha987654321';
+        $fakeVersion = Preg::replace('/\-.+/', '', Application::VERSION, 1).'-alpha987654321';
 
         $tmpPath = $this->createFakeComposerProject([
             'repositories' => [
@@ -197,7 +198,7 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
         try {
             file_put_contents(
                 $tmpPath.'/composer.json',
-                json_encode($initialComposerFileState, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT)
+                json_encode($initialComposerFileState, \JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT)
             );
         } catch (\JsonException $e) {
             throw new \InvalidArgumentException(

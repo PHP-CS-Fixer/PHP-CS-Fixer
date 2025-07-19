@@ -112,9 +112,8 @@ final class WorkerCommand extends Command
             ->then(
                 /** @codeCoverageIgnore */
                 function (ConnectionInterface $connection) use ($loop, $runner, $identifier): void {
-                    $jsonInvalidUtf8Ignore = \defined('JSON_INVALID_UTF8_IGNORE') ? JSON_INVALID_UTF8_IGNORE : 0;
-                    $out = new Encoder($connection, $jsonInvalidUtf8Ignore);
-                    $in = new Decoder($connection, true, 512, $jsonInvalidUtf8Ignore);
+                    $out = new Encoder($connection, \JSON_INVALID_UTF8_IGNORE);
+                    $in = new Decoder($connection, true, 512, \JSON_INVALID_UTF8_IGNORE);
 
                     // [REACT] Initialise connection with the parallelisation operator
                     $out->write(['action' => ParallelAction::WORKER_HELLO, 'identifier' => $identifier]);

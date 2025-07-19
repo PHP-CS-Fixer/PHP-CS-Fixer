@@ -33,6 +33,9 @@ final class SwitchContinueToBreakFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'alternative syntax |' => [
@@ -263,7 +266,7 @@ switch ($a) {
 ',
         ];
 
-        yield [
+        yield 'nested while without {}' => [
             '<?php
 switch(foo()) {
     case 1: while(bar($i))continue;break;
@@ -276,6 +279,19 @@ switch(foo()) {
     default: echo 7;
 }
 ',
+        ];
+
+        yield 'nested while with {}' => [
+            '<?php
+switch(foo()) {
+    case 1: while(bar($i)){ --$i; echo 1; continue;}break;
+    default: echo 8;
+}',
+            '<?php
+switch(foo()) {
+    case 1: while(bar($i)){ --$i; echo 1; continue;}continue;
+    default: echo 8;
+}',
         ];
 
         yield 'do not fix cases' => [
@@ -311,14 +327,6 @@ switch($a) {
         }
 }
 ',
-        ];
-
-        yield 'nested while, do not fix' => [
-            '<?php
-switch(foo()) {
-    case 1: while(bar($i)){ --$i; echo 1; continue;}break;
-    default: echo 8;
-}',
         ];
 
         yield 'not int cases' => [
@@ -409,7 +417,7 @@ case $b:
 }}}}}}}}}}',
         ];
 
-        yield 'numeric literal separator' => [
+        yield 'underscore constant' => [
             '<?php
             switch($a) {
                 case "a":
@@ -424,8 +432,10 @@ case $b:
                     continue;
             }
             ',
-            [
-                '<?php
+        ];
+
+        yield 'numeric literal separator' => [
+            '<?php
 switch ($a) {
 case $b:
     while (false) {
@@ -442,7 +452,7 @@ case $b:
 
             break 1_0;
 }}}}}}}}}}',
-                '<?php
+            '<?php
 switch ($a) {
 case $b:
     while (false) {
@@ -459,7 +469,6 @@ case $b:
 
             continue 1_0;
 }}}}}}}}}}',
-            ],
         ];
     }
 }

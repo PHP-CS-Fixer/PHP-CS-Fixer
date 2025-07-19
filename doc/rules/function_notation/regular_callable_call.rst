@@ -48,6 +48,7 @@ Example #2
 
    -call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
    +(static function ($a, $b) { var_dump($a, $b); })(1, 2);
+
 References
 ----------
 

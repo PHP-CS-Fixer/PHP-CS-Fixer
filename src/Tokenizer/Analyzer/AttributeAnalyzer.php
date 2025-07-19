@@ -18,6 +18,7 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -30,15 +31,15 @@ final class AttributeAnalyzer
     private const TOKEN_KINDS_NOT_ALLOWED_IN_ATTRIBUTE = [
         ';',
         '{',
-        [T_ATTRIBUTE],
-        [T_FUNCTION],
-        [T_OPEN_TAG],
-        [T_OPEN_TAG_WITH_ECHO],
-        [T_PRIVATE],
-        [T_PROTECTED],
-        [T_PUBLIC],
-        [T_RETURN],
-        [T_VARIABLE],
+        [\T_ATTRIBUTE],
+        [\T_FUNCTION],
+        [\T_OPEN_TAG],
+        [\T_OPEN_TAG_WITH_ECHO],
+        [\T_PRIVATE],
+        [\T_PROTECTED],
+        [\T_PUBLIC],
+        [\T_RETURN],
+        [\T_VARIABLE],
         [CT::T_ATTRIBUTE_CLOSE],
     ];
 
@@ -48,15 +49,14 @@ final class AttributeAnalyzer
     public static function isAttribute(Tokens $tokens, int $index): bool
     {
         if (
-            !\defined('T_ATTRIBUTE') // attributes not available, PHP version lower than 8.0
-            || !$tokens[$index]->isGivenKind(T_STRING) // checked token is not a string
-            || !$tokens->isAnyTokenKindsFound([T_ATTRIBUTE]) // no attributes in the tokens collection
+            !$tokens[$index]->isGivenKind(\T_STRING) // checked token is not a string
+            || !$tokens->isAnyTokenKindsFound([FCT::T_ATTRIBUTE]) // no attributes in the tokens collection
         ) {
             return false;
         }
 
         $attributeStartIndex = $tokens->getPrevTokenOfKind($index, self::TOKEN_KINDS_NOT_ALLOWED_IN_ATTRIBUTE);
-        if (!$tokens[$attributeStartIndex]->isGivenKind(T_ATTRIBUTE)) {
+        if (!$tokens[$attributeStartIndex]->isGivenKind(\T_ATTRIBUTE)) {
             return false;
         }
 
@@ -80,7 +80,7 @@ final class AttributeAnalyzer
      */
     public static function collect(Tokens $tokens, int $index): array
     {
-        if (!$tokens[$index]->isGivenKind(T_ATTRIBUTE)) {
+        if (!$tokens[$index]->isGivenKind(\T_ATTRIBUTE)) {
             throw new \InvalidArgumentException('Given index must point to an attribute.');
         }
 
@@ -96,7 +96,7 @@ final class AttributeAnalyzer
         do {
             $elements[] = $element = self::collectOne($tokens, $openingIndex);
             $openingIndex = $tokens->getNextMeaningfulToken($element->getEndIndex());
-        } while ($tokens[$openingIndex]->isGivenKind(T_ATTRIBUTE));
+        } while ($tokens[$openingIndex]->isGivenKind(\T_ATTRIBUTE));
 
         return $elements;
     }
@@ -106,7 +106,7 @@ final class AttributeAnalyzer
      */
     public static function collectOne(Tokens $tokens, int $index): AttributeAnalysis
     {
-        if (!$tokens[$index]->isGivenKind(T_ATTRIBUTE)) {
+        if (!$tokens[$index]->isGivenKind(\T_ATTRIBUTE)) {
             throw new \InvalidArgumentException('Given index must point to an attribute.');
         }
 
@@ -136,8 +136,8 @@ final class AttributeAnalyzer
             return $name;
         }
 
-        if (!$tokens[$index]->isGivenKind([T_STRING, T_NS_SEPARATOR])) {
-            $index = $tokens->getNextTokenOfKind($index, [[T_STRING], [T_NS_SEPARATOR]]);
+        if (!$tokens[$index]->isGivenKind([\T_STRING, \T_NS_SEPARATOR])) {
+            $index = $tokens->getNextTokenOfKind($index, [[\T_STRING], [\T_NS_SEPARATOR]]);
         }
 
         [$namespaceAnalysis, $namespaceUseAnalyses] = NamespacesAnalyzer::collectNamespaceAnalysis($tokens, $index);
@@ -168,7 +168,7 @@ final class AttributeAnalyzer
         do {
             $attributeStartIndex = $index + 1;
 
-            $nameStartIndex = $tokens->getNextTokenOfKind($index, [[T_STRING], [T_NS_SEPARATOR]]);
+            $nameStartIndex = $tokens->getNextTokenOfKind($index, [[\T_STRING], [\T_NS_SEPARATOR]]);
             $index = $tokens->getNextTokenOfKind($attributeStartIndex, ['(', ',', [CT::T_ATTRIBUTE_CLOSE]]);
             $attributeName = $tokens->generatePartialCode($nameStartIndex, $tokens->getPrevMeaningfulToken($index));
 

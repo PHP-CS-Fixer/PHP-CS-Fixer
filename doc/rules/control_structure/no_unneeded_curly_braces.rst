@@ -66,6 +66,7 @@ With configuration: ``['namespaces' => true]``.
         function Bar(){}
    -}
    +
+
 References
 ----------
 

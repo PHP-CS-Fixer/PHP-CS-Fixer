@@ -47,7 +47,7 @@ final class FixerDocumentGeneratorTest extends TestCase
     }
 
     /**
-     * @return iterable<array{FixerInterface}>
+     * @return iterable<int, array{FixerInterface}>
      */
     public static function provideGenerateRuleSetsDocumentationCases(): iterable
     {

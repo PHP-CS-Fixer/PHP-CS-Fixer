@@ -26,7 +26,7 @@ final class NoSuperfluousElseifFixer extends AbstractNoUselessElseFixer
 {
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_ELSE, T_ELSEIF]);
+        return $tokens->isAnyTokenKindsFound([\T_ELSE, \T_ELSEIF]);
     }
 
     public function getDefinition(): FixerDefinitionInterface
@@ -62,16 +62,16 @@ final class NoSuperfluousElseifFixer extends AbstractNoUselessElseFixer
     private function isElseif(Tokens $tokens, int $index): bool
     {
         return
-            $tokens[$index]->isGivenKind(T_ELSEIF)
-            || ($tokens[$index]->isGivenKind(T_ELSE) && $tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind(T_IF));
+            $tokens[$index]->isGivenKind(\T_ELSEIF)
+            || ($tokens[$index]->isGivenKind(\T_ELSE) && $tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind(\T_IF));
     }
 
     private function convertElseifToIf(Tokens $tokens, int $index): void
     {
-        if ($tokens[$index]->isGivenKind(T_ELSE)) {
+        if ($tokens[$index]->isGivenKind(\T_ELSE)) {
             $tokens->clearTokenAndMergeSurroundingWhitespace($index);
         } else {
-            $tokens[$index] = new Token([T_IF, 'if']);
+            $tokens[$index] = new Token([\T_IF, 'if']);
         }
 
         $whitespace = '';
@@ -92,9 +92,9 @@ final class NoSuperfluousElseifFixer extends AbstractNoUselessElseFixer
         $previousToken = $tokens[$index - 1];
 
         if (!$previousToken->isWhitespace()) {
-            $tokens->insertAt($index, new Token([T_WHITESPACE, $whitespace]));
+            $tokens->insertAt($index, new Token([\T_WHITESPACE, $whitespace]));
         } elseif (!Preg::match('/\R/', $previousToken->getContent())) {
-            $tokens[$index - 1] = new Token([T_WHITESPACE, $whitespace]);
+            $tokens[$index - 1] = new Token([\T_WHITESPACE, $whitespace]);
         }
     }
 }

@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Import;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Import\NoLeadingImportSlashFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Import\NoLeadingImportSlashFixer>
+ *
+ * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
  */
 final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
 {
@@ -36,7 +36,7 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -228,7 +228,7 @@ use const \some\Z\{ConstX,ConstY,ConstZ,};
     }
 
     /**
-     * @return iterable<int|string, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideFixPre80Cases(): iterable
     {

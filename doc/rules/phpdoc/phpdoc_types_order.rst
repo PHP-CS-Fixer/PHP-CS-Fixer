@@ -137,7 +137,6 @@ The rule is part of the following rule sets:
 
   ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``
 
-
 References
 ----------
 

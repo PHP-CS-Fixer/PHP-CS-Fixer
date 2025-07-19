@@ -62,7 +62,6 @@ The rule is part of the following rule set:
 
   ``['strategy' => 'new_line_for_chained_calls']``
 
-
 References
 ----------
 

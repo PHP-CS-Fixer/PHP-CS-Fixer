@@ -35,7 +35,7 @@ final class NoSuperfluousElseifFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -286,7 +286,7 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideFix80Cases(): iterable
     {

@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Gert de Pagter <BackEndTea@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\LanguageConstruct\NoUnsetOnPropertyFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\NoUnsetOnPropertyFixer>
+ *
+ * @author Gert de Pagter <BackEndTea@gmail.com>
  */
 final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
 {
@@ -36,7 +36,7 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -243,7 +243,7 @@ final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<string, array{string}>
      */
     public static function provideFixPre80Cases(): iterable
     {

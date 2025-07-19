@@ -17,28 +17,28 @@ namespace PhpCsFixer\Tests\Fixer\Semicolon;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Semicolon\NoEmptyStatementFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Semicolon\NoEmptyStatementFixer>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideNoEmptyStatementsCases
+     * @dataProvider provideFixCases
      */
-    public function testNoEmptyStatements(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
-    public static function provideNoEmptyStatementsCases(): iterable
+    public static function provideFixCases(): iterable
     {
         yield [
             '<?php
@@ -454,21 +454,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
             '<?php if ($foo2) {}',
             '<?php if ($foo2) {1;}',
         ];
-    }
 
-    /**
-     * @dataProvider provideFixCases
-     */
-    public function testFix(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<array{0: string, 1?: string}>
-     */
-    public static function provideFixCases(): iterable
-    {
         yield [
             '<?php
                     use function Functional\map;
@@ -554,44 +540,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
                     };
                 ',
         ];
-    }
 
-    /**
-     * @dataProvider provideCasesWithShortOpenTagCases
-     */
-    public function testCasesWithShortOpenTag(string $expected, ?string $input = null): void
-    {
-        if (!\ini_get('short_open_tag')) {
-            self::markTestSkipped('No short tag tests possible.');
-        }
-
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<array{string, string}>
-     */
-    public static function provideCasesWithShortOpenTagCases(): iterable
-    {
-        yield [
-            '<? ',
-            '<? ;',
-        ];
-    }
-
-    /**
-     * @dataProvider provideFixMultipleSemicolonsCases
-     */
-    public function testFixMultipleSemicolons(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<array{0: string, 1?: string}>
-     */
-    public static function provideFixMultipleSemicolonsCases(): iterable
-    {
         yield [
             '<?php $foo = 2 ; //
                     '.'
@@ -653,6 +602,29 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @dataProvider provideWithShortOpenTagCases
+     */
+    public function testWithShortOpenTag(string $expected, ?string $input = null): void
+    {
+        if ('1' !== \ini_get('short_open_tag')) {
+            self::markTestSkipped('No short tag tests possible.');
+        }
+
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<int, array{string, string}>
+     */
+    public static function provideWithShortOpenTagCases(): iterable
+    {
+        yield [
+            '<? ',
+            '<? ;',
+        ];
+    }
+
+    /**
      * @dataProvider provideFix81Cases
      *
      * @requires PHP 8.1
@@ -663,13 +635,53 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFix81Cases(): iterable
     {
         yield [
             '<?php enum Foo{}',
             '<?php enum Foo{};',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, 1?: string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield 'interface with property hooks' => [
+            <<<'PHP'
+                <?php interface I
+                {
+                    public bool $a { get; }
+                    public bool $b { get; set; }
+                    public bool $c { set; }
+                    public bool $d { set; get; }
+                    public bool $e {/* hello1 */set/* hello2 */;/* hello3 */get/* hello4 */;/* hello5 */}
+                }
+                PHP,
+        ];
+
+        yield 'abstract class with property hooks' => [
+            <<<'PHP'
+                <?php abstract class A
+                {
+                    abstract public bool $a { get; set; }
+                    abstract public bool $b { get{} set; }
+                    abstract public bool $c { get; set{} }
+                }
+                PHP,
         ];
     }
 }

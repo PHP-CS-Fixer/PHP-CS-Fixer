@@ -124,7 +124,6 @@ The rule is part of the following rule sets:
 
   ``['replacements' => ['inheritDocs' => 'inheritDoc']]``
 
-
 References
 ----------
 

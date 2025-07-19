@@ -54,7 +54,7 @@ final class NamespaceUseAnalysisTest extends TestCase
     {
         $this->expectException(\LogicException::class);
 
-        $analysis = new NamespaceUseAnalysis(NamespaceUseAnalysis::TYPE_CLASS, 'Full\NamespaceName', 'NamespaceName', false, true, 1, 20);
+        new NamespaceUseAnalysis(NamespaceUseAnalysis::TYPE_CLASS, 'Full\NamespaceName', 'NamespaceName', false, true, 1, 20);
     }
 
     public function testShortName(): void

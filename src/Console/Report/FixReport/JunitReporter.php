@@ -70,7 +70,12 @@ final class JunitReporter implements ReporterInterface
 
         $dom->formatOutput = true;
 
-        return $reportSummary->isDecoratedOutput() ? OutputFormatter::escape($dom->saveXML()) : $dom->saveXML();
+        $result = $dom->saveXML();
+        if (false === $result) {
+            throw new \RuntimeException('Failed to generate XML output');
+        }
+
+        return $reportSummary->isDecoratedOutput() ? OutputFormatter::escape($result) : $result;
     }
 
     private function createSuccessTestCase(\DOMDocument $dom, \DOMElement $testsuite): void
@@ -113,7 +118,7 @@ final class JunitReporter implements ReporterInterface
     {
         $appliedFixersCount = \count($fixResult['appliedFixers']);
 
-        $testName = str_replace('.', '_DOT_', Preg::replace('@\.'.pathinfo($file, PATHINFO_EXTENSION).'$@', '', $file));
+        $testName = str_replace('.', '_DOT_', Preg::replace('@\.'.pathinfo($file, \PATHINFO_EXTENSION).'$@', '', $file));
 
         $testcase = $dom->createElement('testcase');
         $testcase->setAttribute('name', $testName);

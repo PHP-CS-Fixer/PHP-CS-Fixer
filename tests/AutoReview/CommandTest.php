@@ -39,7 +39,7 @@ final class CommandTest extends TestCase
     }
 
     /**
-     * @return iterable<array{Command}>
+     * @return iterable<int, array{Command}>
      */
     public static function provideCommandHasNameConstCases(): iterable
     {
@@ -48,10 +48,11 @@ final class CommandTest extends TestCase
 
         $names = array_filter(
             array_keys($commands),
-            // is not an alias and is our command
+            // @phpstan-ignore-next-line offsetAccess.notFound is not an alias and is our command
             static fn (string $name): bool => !\in_array($name, $commands[$name]->getAliases(), true) && str_starts_with(\get_class($commands[$name]), 'PhpCsFixer\\')
         );
 
+        // @phpstan-ignore-next-line offsetAccess.notFound
         return array_map(static fn (string $name): array => [$commands[$name]], $names);
     }
 }

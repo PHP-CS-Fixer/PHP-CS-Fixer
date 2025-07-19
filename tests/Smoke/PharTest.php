@@ -123,13 +123,13 @@ final class PharTest extends AbstractSmokeTestCase
             $json = self::executePharCommand(\sprintf(
                 'fix %s --dry-run --sequential --format=json --rules=\'%s\' --using-cache=%s',
                 __FILE__,
-                json_encode(['concat_space' => ['spacing' => 'one']], JSON_THROW_ON_ERROR),
+                json_encode(['concat_space' => ['spacing' => 'one']], \JSON_THROW_ON_ERROR),
                 $usingCache,
             ))->getOutput();
 
             self::assertJson($json);
 
-            $report = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+            $report = json_decode($json, true, 512, \JSON_THROW_ON_ERROR);
             self::assertIsArray($report);
             self::assertArrayHasKey('files', $report);
             self::assertCount(1, $report['files']);
@@ -150,7 +150,7 @@ final class PharTest extends AbstractSmokeTestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideReportCases(): iterable
     {

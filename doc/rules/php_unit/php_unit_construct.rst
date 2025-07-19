@@ -23,7 +23,7 @@ List of assertion methods to fix.
 
 Allowed values: a subset of ``['assertEquals', 'assertNotEquals', 'assertNotSame', 'assertSame']``
 
-Default value: ``['assertEquals', 'assertSame', 'assertNotEquals', 'assertNotSame']``
+Default value: ``['assertEquals', 'assertNotEquals', 'assertNotSame', 'assertSame']``
 
 Examples
 --------

@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\RegularCallableCallFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\RegularCallableCallFixer>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class RegularCallableCallFixerTest extends AbstractFixerTestCase
 {
@@ -36,7 +36,7 @@ final class RegularCallableCallFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -246,7 +246,7 @@ class Foo {
     }
 
     /**
-     * @return iterable<array{string, 1?: string}>
+     * @return iterable<string, array{string, 1?: string}>
      */
     public static function provideFixPre80Cases(): iterable
     {
@@ -271,7 +271,7 @@ class Foo {
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideFix81Cases(): iterable
     {

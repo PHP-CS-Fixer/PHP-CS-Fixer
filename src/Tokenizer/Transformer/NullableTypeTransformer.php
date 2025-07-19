@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tokenizer\Transformer;
 
 use PhpCsFixer\Tokenizer\AbstractTransformer;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -28,6 +29,26 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class NullableTypeTransformer extends AbstractTransformer
 {
+    private const TYPES = [
+        '(',
+        ',',
+        [CT::T_TYPE_COLON],
+        [CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC],
+        [CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED],
+        [CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE],
+        [CT::T_ATTRIBUTE_CLOSE],
+        [\T_PRIVATE],
+        [\T_PROTECTED],
+        [\T_PUBLIC],
+        [\T_VAR],
+        [\T_STATIC],
+        [\T_CONST],
+        [FCT::T_READONLY],
+        [FCT::T_PRIVATE_SET],
+        [FCT::T_PROTECTED_SET],
+        [FCT::T_PUBLIC_SET],
+    ];
+
     public function getPriority(): int
     {
         // needs to run after TypeColonTransformer
@@ -45,33 +66,9 @@ final class NullableTypeTransformer extends AbstractTransformer
             return;
         }
 
-        static $types;
-
-        if (null === $types) {
-            $types = [
-                '(',
-                ',',
-                [CT::T_TYPE_COLON],
-                [CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC],
-                [CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED],
-                [CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE],
-                [CT::T_ATTRIBUTE_CLOSE],
-                [T_PRIVATE],
-                [T_PROTECTED],
-                [T_PUBLIC],
-                [T_VAR],
-                [T_STATIC],
-                [T_CONST],
-            ];
-
-            if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
-                $types[] = [T_READONLY];
-            }
-        }
-
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-        if ($tokens[$prevIndex]->equalsAny($types)) {
+        if ($tokens[$prevIndex]->equalsAny(self::TYPES)) {
             $tokens[$index] = new Token([CT::T_NULLABLE_TYPE, '?']);
         }
     }

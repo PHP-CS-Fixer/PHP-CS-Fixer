@@ -44,6 +44,9 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
         );
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: _TransformerTestExpectedTokens}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield [
@@ -135,6 +138,9 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
         $this->testProcess($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<int, array{_TransformerTestExpectedTokens, string}>
+     */
     public static function provideProcess80Cases(): iterable
     {
         yield [
@@ -178,6 +184,9 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
         $this->testProcess($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<int, array{_TransformerTestExpectedTokens, string}>
+     */
     public static function provideProcess81Cases(): iterable
     {
         yield [
@@ -212,6 +221,9 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
         $this->testProcess($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<string, array{_TransformerTestExpectedTokens, string}>
+     */
     public static function provideProcess83Cases(): iterable
     {
         yield 'nullable class constant' => [
@@ -224,6 +236,42 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
                     public const ?string FOO = null;
                 }
             ',
+        ];
+    }
+
+    /**
+     * @param _TransformerTestExpectedTokens $expectedTokens
+     *
+     * @dataProvider provideProcess84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testProcess84(array $expectedTokens, string $source): void
+    {
+        $this->testProcess($source, $expectedTokens);
+    }
+
+    /**
+     * @return iterable<string, array{_TransformerTestExpectedTokens, string}>
+     */
+    public static function provideProcess84Cases(): iterable
+    {
+        yield 'asymmetric visibility' => [
+            [
+                18 => CT::T_NULLABLE_TYPE,
+                28 => CT::T_NULLABLE_TYPE,
+                38 => CT::T_NULLABLE_TYPE,
+            ],
+            <<<'PHP'
+                <?php
+                class Foo {
+                    public function __construct(
+                        public public(set) ?Bar $x,
+                        public protected(set) ?Bar $y,
+                        public private(set) ?Bar $z,
+                    ) {}
+                }
+                PHP,
         ];
     }
 }

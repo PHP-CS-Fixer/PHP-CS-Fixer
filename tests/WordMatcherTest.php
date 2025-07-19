@@ -37,7 +37,7 @@ final class WordMatcherTest extends TestCase
     }
 
     /**
-     * @return iterable<array{?string, string, list<string>}>
+     * @return iterable<int, array{?string, string, list<string>}>
      */
     public static function provideMatchCases(): iterable
     {

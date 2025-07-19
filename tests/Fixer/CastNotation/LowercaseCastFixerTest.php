@@ -34,7 +34,7 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     * @return iterable<int, array{0: non-empty-string, 1?: non-empty-string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -56,7 +56,7 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     * @return iterable<int, array{0: non-empty-string, 1?: non-empty-string}>
      */
     public static function provideFixPre80Cases(): iterable
     {
@@ -78,7 +78,7 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     * @return iterable<int, array{0: non-empty-string, 1?: non-empty-string}>
      */
     public static function provideFixDeprecatedCases(): iterable
     {

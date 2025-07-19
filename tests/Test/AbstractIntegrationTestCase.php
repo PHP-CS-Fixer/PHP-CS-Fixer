@@ -165,9 +165,10 @@ abstract class AbstractIntegrationTestCase extends TestCase
     {
         $dir = static::getFixturesDir();
         $fixturesDir = realpath($dir);
+        \assert(\is_string($fixturesDir));
 
         if (!is_dir($fixturesDir)) {
-            throw new \UnexpectedValueException(\sprintf('Given fixture dir "%s" is not a directory.', \is_string($fixturesDir) ? $fixturesDir : $dir));
+            throw new \UnexpectedValueException(\sprintf('Given fixture dir "%s" is not a directory.', $fixturesDir));
         }
 
         $factory = static::createIntegrationCaseFactory();
@@ -178,7 +179,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
                 continue;
             }
 
-            $relativePath = substr($file->getPathname(), \strlen(realpath(__DIR__.'/../../')) + 1);
+            $relativePath = substr($file->getPathname(), \strlen((string) realpath(__DIR__.'/../../')) + 1);
 
             yield $relativePath => [$factory->create($file)];
         }
@@ -224,11 +225,11 @@ abstract class AbstractIntegrationTestCase extends TestCase
             self::markTestSkipped(\sprintf('PHP lower than %d is required for "%s", current "%d".', $phpUpperLimit, $case->getFileName(), \PHP_VERSION_ID));
         }
 
-        if (!\in_array(PHP_OS_FAMILY, $case->getRequirement('os'), true)) {
+        if (!\in_array(\PHP_OS_FAMILY, $case->getRequirement('os'), true)) {
             self::markTestSkipped(
                 \sprintf(
                     'Unsupported OS (%s) for "%s", allowed are: %s.',
-                    PHP_OS,
+                    \PHP_OS,
                     $case->getFileName(),
                     implode(', ', $case->getRequirement('os'))
                 )
@@ -290,7 +291,10 @@ abstract class AbstractIntegrationTestCase extends TestCase
         }
 
         self::assertNotEmpty($changed, \sprintf('Expected changes made to test "%s" in "%s".', $case->getTitle(), $case->getFileName()));
+
         $fixedInputCode = file_get_contents($tmpFile);
+        self::assertIsString($fixedInputCode);
+
         self::assertThat(
             $fixedInputCode,
             new IsIdenticalString($expected),
@@ -321,7 +325,9 @@ abstract class AbstractIntegrationTestCase extends TestCase
 
             Tokens::clearCache();
             $runner->fix();
+
             $fixedInputCodeWithReversedFixers = file_get_contents($tmpFile);
+            self::assertIsString($fixedInputCodeWithReversedFixers);
 
             static::assertRevertedOrderFixing($case, $fixedInputCode, $fixedInputCodeWithReversedFixers);
         }
@@ -371,7 +377,14 @@ abstract class AbstractIntegrationTestCase extends TestCase
         $errorStr = '';
         foreach ($errors as $error) {
             $source = $error->getSource();
-            $errorStr .= \sprintf("%d: %s%s\n", $error->getType(), $error->getFilePath(), null === $source ? '' : ' '.$source->getMessage()."\n\n".$source->getTraceAsString());
+            $errorStr .= \sprintf(
+                "\n\n[%s] %s\n\nDIFF:\n\n%s\n\nAPPLIED FIXERS:\n\n%s\n\nSTACKTRACE:\n\n%s\n",
+                $error->getFilePath(),
+                null === $source ? '' : $source->getMessage(),
+                $error->getDiff(),
+                implode(', ', $error->getAppliedFixers()),
+                $source->getTraceAsString()
+            );
         }
 
         return $errorStr;
@@ -383,7 +396,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
 
         if (null === $linter) {
             $linter = new CachingLinter(
-                getenv('FAST_LINT_TEST_CASES') ? new Linter() : new ProcessLinter()
+                '1' === getenv('FAST_LINT_TEST_CASES') ? new Linter() : new ProcessLinter()
             );
         }
 

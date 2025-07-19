@@ -39,7 +39,7 @@ final class BlocksAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, int, int}>
+     * @return iterable<int, array{string, int, int}>
      */
     public static function provideBlocksCases(): iterable
     {
@@ -82,7 +82,7 @@ final class BlocksAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, int, int}>
+     * @return iterable<int, array{string, int, int}>
      */
     public static function provideNonBlocksCases(): iterable
     {
@@ -111,7 +111,7 @@ final class BlocksAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, int, int}>
+     * @return iterable<int, array{string, int, int}>
      */
     public static function provideInvalidIndexCases(): iterable
     {

@@ -36,7 +36,7 @@ final class WhitespacesAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, string, int}>
+     * @return iterable<int, array{string, string, int}>
      */
     public static function provideIndentCases(): iterable
     {

@@ -18,13 +18,13 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Jack Cherng <jfcherng@gmail.com>
- *
  * @template TFixer of AbstractFixer
  *
  * @internal
  *
  * @extends AbstractFixerTestCase<TFixer>
+ *
+ * @author Jack Cherng <jfcherng@gmail.com>
  */
 abstract class AbstractNullableTypeDeclarationFixerTestCase extends AbstractFixerTestCase
 {
@@ -37,7 +37,7 @@ abstract class AbstractNullableTypeDeclarationFixerTestCase extends AbstractFixe
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {

@@ -1,6 +1,6 @@
 name: Bug report 🐛
 description: Existing feature does not behave as expected.
-labels: [ "kind/bug", "status/to verify" ]
+labels: [ kind/bug, status/to verify ]
 body:
   - type: markdown
     attributes:

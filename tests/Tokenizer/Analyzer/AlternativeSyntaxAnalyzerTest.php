@@ -43,6 +43,9 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
         }
     }
 
+    /**
+     * @return iterable<string, array{list<int>, string}>
+     */
     public static function provideBelongsToAlternativeSyntaxCases(): iterable
     {
         yield 'declare' => [
@@ -103,7 +106,7 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, int, int}>
+     * @return iterable<int, array{string, int, int}>
      */
     public static function provideItFindsTheEndOfAnAlternativeSyntaxBlockCases(): iterable
     {
@@ -199,7 +202,7 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, int, string}>
+     * @return iterable<int, array{string, int, string}>
      */
     public static function provideItThrowsOnInvalidAlternativeSyntaxBlockStartIndexCases(): iterable
     {

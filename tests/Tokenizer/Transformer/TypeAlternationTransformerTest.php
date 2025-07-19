@@ -45,6 +45,9 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{string, _TransformerTestExpectedTokens}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield 'no namespace' => [
@@ -136,6 +139,9 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
         $this->doTest($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<array{string, _TransformerTestExpectedTokens}>
+     */
     public static function provideProcess80Cases(): iterable
     {
         yield 'arrow function' => [
@@ -433,6 +439,9 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
         );
     }
 
+    /**
+     * @return iterable<string, array{_TransformerTestExpectedTokens, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'readonly' => [
@@ -493,6 +502,9 @@ class Foo
         $this->doTest($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<string, array{string, _TransformerTestExpectedTokens}>
+     */
     public static function provideProcess81Cases(): iterable
     {
         yield 'arrow function with intersection' => [
@@ -515,6 +527,9 @@ class Foo
         $this->doTest($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<string, array{string, _TransformerTestExpectedTokens}>
+     */
     public static function provideProcess82Cases(): iterable
     {
         yield 'disjunctive normal form types parameter' => [
@@ -602,6 +617,9 @@ class Dnf
         $this->doTest($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<string, array{string, _TransformerTestExpectedTokens}>
+     */
     public static function provideProcess83Cases(): iterable
     {
         yield 'typed const alternate types' => [

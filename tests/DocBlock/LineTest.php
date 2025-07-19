@@ -130,7 +130,7 @@ final class LineTest extends TestCase
     /**
      * @dataProvider provideLinesCases
      */
-    public function testStartOrEndPos(int $pos): void
+    public function testStartOrEndPos(int $pos, string $content): void
     {
         $doc = new DocBlock(self::$sample);
         $line = $doc->getLine($pos);
@@ -140,7 +140,7 @@ final class LineTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, string}>
+     * @return iterable<int, array{int, string}>
      */
     public static function provideLinesCases(): iterable
     {
@@ -161,7 +161,7 @@ final class LineTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, bool}>
+     * @return iterable<int, array{int, bool}>
      */
     public static function provideUsefulCases(): iterable
     {
@@ -182,7 +182,7 @@ final class LineTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, bool}>
+     * @return iterable<int, array{int, bool}>
      */
     public static function provideTagCases(): iterable
     {

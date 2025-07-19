@@ -73,6 +73,7 @@ With configuration: ``['keep_annotations' => true]``.
    +    #[\PHPUnit\Framework\Attributes\RequiresPhp('>= 8.0')]
         public function testSomething($expected, $actual) {}
     }
+
 References
 ----------
 

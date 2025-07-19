@@ -22,6 +22,10 @@ use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Console\Output\Progress\ProgressOutputType;
+use PhpCsFixer\Console\Report\FixReport\CheckstyleReporter;
+use PhpCsFixer\Console\Report\FixReport\GitlabReporter;
+use PhpCsFixer\Console\Report\FixReport\JsonReporter;
+use PhpCsFixer\Console\Report\FixReport\TextReporter;
 use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Differ\UnifiedDiffer;
 use PhpCsFixer\Finder;
@@ -240,7 +244,7 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1: string, 2: string, 3?: string}>
+     * @return iterable<int, array{0: string, 1: string, 2: string, 3?: string}>
      */
     public static function provideResolveConfigFileChooseFileCases(): iterable
     {
@@ -347,6 +351,9 @@ final class ConfigurationResolverTest extends TestCase
         self::assertSame($expectedPaths, $resolver->getPath());
     }
 
+    /**
+     * @return iterable<int, array{array<int, string>, string, array<int, string>}>
+     */
     public static function provideResolvePathCases(): iterable
     {
         yield [
@@ -393,6 +400,9 @@ final class ConfigurationResolverTest extends TestCase
         $resolver->getPath();
     }
 
+    /**
+     * @return iterable<int, array{list<string>, string}>
+     */
     public static function provideRejectInvalidPathCases(): iterable
     {
         yield [
@@ -539,17 +549,22 @@ final class ConfigurationResolverTest extends TestCase
             iterator_to_array($resolver->getFinder(), false)
         );
 
+        self::assertIsArray($expected);
+
         sort($expected);
         sort($intersectionItems);
 
         self::assertSame($expected, $intersectionItems);
     }
 
+    /**
+     * @return iterable<string, array{0: array<array-key, string>|\Exception, 1: null|Finder, 2: list<string>, 3: string, 4?: string}>
+     */
     public static function provideResolveIntersectionOfPathsCases(): iterable
     {
         $dir = __DIR__.'/../Fixtures/ConfigurationResolverPathsIntersection';
         $cb = static fn (array $items): array => array_map(
-            static fn (string $item): string => realpath($dir.'/'.$item),
+            static fn (string $item): string => (string) realpath($dir.'/'.$item),
             $items
         );
 
@@ -725,6 +740,9 @@ final class ConfigurationResolverTest extends TestCase
         self::assertSame($expectedResult, $resolver->configFinderIsOverridden());
     }
 
+    /**
+     * @return iterable<int, array{array<string, mixed>, bool}>
+     */
     public static function provideConfigFinderIsOverriddenCases(): iterable
     {
         $root = __DIR__.'/../..';
@@ -825,7 +843,7 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
-     * @return iterable<array{bool, bool, null|string}>
+     * @return iterable<int, array{bool, bool, null|string}>
      */
     public static function provideResolveBooleanOptionCases(): iterable
     {
@@ -933,7 +951,7 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: bool, 1: bool, 2: bool, 3: bool}>
+     * @return iterable<string, array{0: bool, 1: bool, 2: bool, 3: bool}>
      */
     public static function provideResolveUsingCacheForRuntimesCases(): iterable
     {
@@ -1129,6 +1147,9 @@ final class ConfigurationResolverTest extends TestCase
         $resolver->getRules();
     }
 
+    /**
+     * @return iterable<array{string, list<string>}>
+     */
     public static function provideResolveRenamedRulesWithUnknownRulesCases(): iterable
     {
         yield 'with config' => [
@@ -1196,7 +1217,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
         $options = $definition->getOptions();
         self::assertSame(
-            ['path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'cache-file', 'diff', 'format', 'stop-on-violation', 'show-progress', 'sequential'],
+            ['path-mode', 'allow-risky', 'config', 'dry-run', 'rules', 'using-cache', 'allow-unsupported-php-version', 'cache-file', 'diff', 'format', 'stop-on-violation', 'show-progress', 'sequential'],
             array_keys($options),
             'Expected options mismatch, possibly test needs updating.'
         );
@@ -1240,7 +1261,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
     }
 
     /**
-     * @return iterable<array{string, null|bool}>
+     * @return iterable<int, array{string, null|bool}>
      */
     public static function provideResolveDifferCases(): iterable
     {
@@ -1313,6 +1334,9 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         $resolver->getFixers();
     }
 
+    /**
+     * @return iterable<int, array{array<string, mixed>|bool}>
+     */
     public static function provideDeprecatedFixerConfiguredCases(): iterable
     {
         yield [true];
@@ -1348,7 +1372,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
     }
 
     /**
-     * @return iterable<array{0: string, 1: list<string>}>
+     * @return iterable<int, array{0: string, 1: list<string>}>
      */
     public static function provideDeprecatedRuleSetConfiguredCases(): iterable
     {
@@ -1388,7 +1412,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
     }
 
     /**
-     * @return iterable<array{null|string, string, string}>
+     * @return iterable<int, array{null|string, string, string}>
      */
     public static function provideGetDirectoryCases(): iterable
     {
@@ -1399,6 +1423,60 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         yield ['/my/path2/dir/.php-cs-fixer.cache', '/my/path2/dir/dir2/file', 'dir2/file'];
 
         yield ['dir/.php-cs-fixer.cache', '/my/path/dir/dir3/file', 'dir3/file'];
+    }
+
+    /**
+     * @param class-string         $expectedFormat
+     * @param array<string,string> $envs
+     *
+     * @dataProvider provideGetReporterCases
+     *
+     * @runInSeparateProcess
+     */
+    public function testGetReporter(string $expectedFormat, string $formatConfig, array $envs = []): void
+    {
+        foreach ($envs as $env => $val) {
+            putenv("{$env}={$val}");
+        }
+
+        $resolver = $this->createConfigurationResolver([
+            'format' => $formatConfig,
+        ]);
+
+        self::assertInstanceOf($expectedFormat, $resolver->getReporter());
+    }
+
+    /**
+     * @return iterable<int, array{0: class-string, 1: string, 2?: array<string,string>}>
+     */
+    public static function provideGetReporterCases(): iterable
+    {
+        yield [
+            CheckstyleReporter::class,
+            'checkstyle',
+        ];
+
+        yield [
+            TextReporter::class,
+            'txt',
+        ];
+
+        yield [
+            TextReporter::class,
+            '@auto',
+            ['GITLAB_CI' => ''],
+        ];
+
+        yield [
+            GitlabReporter::class,
+            '@auto',
+            ['GITLAB_CI' => 'true'],
+        ];
+
+        yield [
+            JsonReporter::class,
+            '@auto,json',
+        ];
     }
 
     /**

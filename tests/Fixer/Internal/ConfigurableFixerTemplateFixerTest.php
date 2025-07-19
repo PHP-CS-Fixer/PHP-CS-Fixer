@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Internal;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Internal\ConfigurableFixerTemplateFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Internal\ConfigurableFixerTemplateFixer>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @requires OS Linux|Darwin
  */
@@ -38,7 +38,7 @@ final class ConfigurableFixerTemplateFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{}>
+     * @return iterable<int, array{}>
      */
     public static function provideFixCases(): iterable
     {

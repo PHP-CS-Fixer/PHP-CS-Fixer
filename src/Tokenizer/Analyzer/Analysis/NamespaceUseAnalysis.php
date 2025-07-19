@@ -15,14 +15,14 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
 
 /**
- * @author VeeWee <toonverwerft@gmail.com>
- * @author Greg Korba <greg@codito.dev>
- *
  * @readonly
  *
  * @internal
  *
  * @phpstan-type _ImportType 'class'|'constant'|'function'
+ *
+ * @author VeeWee <toonverwerft@gmail.com>
+ * @author Greg Korba <greg@codito.dev>
  */
 final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
 {

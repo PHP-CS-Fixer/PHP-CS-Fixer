@@ -1,6 +1,6 @@
 name: Feature request 🚀
 description: I have a suggestion about a new feature (and may want to implement it)!
-labels: [ "kind/feature request", "status/to verify" ]
+labels: [ kind/feature request, status/to verify ]
 body:
   - type: markdown
     attributes:
@@ -23,7 +23,7 @@ body:
     id: discussion-reference
     attributes:
       label: Link to Discussion where feature request was formed
-      placeholder: "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/discussions/<ID>"
+      placeholder: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/discussions/<ID>
     validations:
       required: false
   - type: checkboxes

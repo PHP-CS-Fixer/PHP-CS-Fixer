@@ -63,7 +63,7 @@ final class TextDiffTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, string, bool}>
+     * @return iterable<int, array{string, string, bool}>
      */
     public static function provideDiffReportingDecoratedCases(): iterable
     {
@@ -81,7 +81,7 @@ final class TextDiffTest extends TestCase
             yield [$expected, $format, false];
         }
 
-        $expected = substr(json_encode($expected, JSON_THROW_ON_ERROR), 1, -1);
+        $expected = substr(json_encode($expected, \JSON_THROW_ON_ERROR), 1, -1);
 
         yield [$expected, 'json', true];
 

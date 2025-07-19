@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Casing;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Casing\LowercaseKeywordsFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\LowercaseKeywordsFixer>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class LowercaseKeywordsFixerTest extends AbstractFixerTestCase
 {
@@ -36,7 +36,7 @@ final class LowercaseKeywordsFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -67,7 +67,7 @@ final class LowercaseKeywordsFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -117,7 +117,7 @@ class Point {
     }
 
     /**
-     * @return iterable<int|string, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideFix81Cases(): iterable
     {
@@ -168,6 +168,41 @@ ENUM Suit {
     case Hearts;
 }
 ',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield 'asymmetric visibility' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public(set) Bar $a;
+                    protected(set) Bar $b;
+                    private(set) Baz $c;
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo
+                {
+                    PUBLIC(SET) Bar $a;
+                    PROTECTED(SET) Bar $b;
+                    PRIVATE(SET) Baz $c;
+                }
+                PHP,
         ];
     }
 }

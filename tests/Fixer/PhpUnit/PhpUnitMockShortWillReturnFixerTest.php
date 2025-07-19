@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Michał Adamski <michal.adamski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitMockShortWillReturnFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitMockShortWillReturnFixer>
+ *
+ * @author Michał Adamski <michal.adamski@gmail.com>
  */
 final class PhpUnitMockShortWillReturnFixerTest extends AbstractFixerTestCase
 {
@@ -36,7 +36,7 @@ final class PhpUnitMockShortWillReturnFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {

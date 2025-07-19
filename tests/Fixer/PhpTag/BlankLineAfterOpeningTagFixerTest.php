@@ -18,14 +18,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @author Ceeram <ceeram@cakephp.org>
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer>
+ *
+ * @author Ceeram <ceeram@cakephp.org>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class BlankLineAfterOpeningTagFixerTest extends AbstractFixerTestCase
 {
@@ -38,7 +38,7 @@ final class BlankLineAfterOpeningTagFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -192,7 +192,7 @@ $foo = $bar;
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideWithWhitespacesConfigCases(): iterable
     {

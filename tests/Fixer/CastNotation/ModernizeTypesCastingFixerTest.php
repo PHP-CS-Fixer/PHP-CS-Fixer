@@ -17,14 +17,14 @@ namespace PhpCsFixer\Tests\Fixer\CastNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Vladimir Reznichenko <kalessil@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
  * @covers \PhpCsFixer\Fixer\CastNotation\ModernizeTypesCastingFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\CastNotation\ModernizeTypesCastingFixer>
+ *
+ * @author Vladimir Reznichenko <kalessil@gmail.com>
  */
 final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
 {
@@ -37,7 +37,7 @@ final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -226,7 +226,7 @@ final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFixPre80Cases(): iterable
     {
@@ -269,7 +269,7 @@ intval#
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideFix81Cases(): iterable
     {

@@ -60,7 +60,7 @@ final class DeprecatedFixerOptionTest extends TestCase
     }
 
     /**
-     * @return iterable<array{bool}>
+     * @return iterable<int, array{bool}>
      */
     public static function provideHasDefaultCases(): iterable
     {
@@ -85,7 +85,7 @@ final class DeprecatedFixerOptionTest extends TestCase
     }
 
     /**
-     * @return iterable<array{bool|string}>
+     * @return iterable<int, array{bool|string}>
      */
     public static function provideGetDefaultCases(): iterable
     {

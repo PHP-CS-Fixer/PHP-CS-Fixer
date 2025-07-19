@@ -137,6 +137,7 @@ Example #4
             return new static($prototype);
         }
     }
+
 References
 ----------
 

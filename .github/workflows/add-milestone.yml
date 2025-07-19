@@ -1,0 +1,22 @@
+name: Add milestone
+
+on:
+  issues:
+    types: [labeled]
+  pull_request_target:
+    types: [labeled]
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  add-to-milestone:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.label.name == 'topic/PHP8.5' }}
+    env:
+      PR_URL: ${{github.event.pull_request.html_url}}
+      GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+    steps:
+      - run: gh pr edit "$PR_URL" --milestone 'PHP 8.5 initial compatibility'

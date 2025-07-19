@@ -82,29 +82,17 @@ final class Token
      */
     public static function getCastTokenKinds(): array
     {
-        static $castTokens = [T_ARRAY_CAST, T_BOOL_CAST, T_DOUBLE_CAST, T_INT_CAST, T_OBJECT_CAST, T_STRING_CAST, T_UNSET_CAST];
-
-        return $castTokens;
+        return [\T_ARRAY_CAST, \T_BOOL_CAST, \T_DOUBLE_CAST, \T_INT_CAST, \T_OBJECT_CAST, \T_STRING_CAST, \T_UNSET_CAST, FCT::T_VOID_CAST];
     }
 
     /**
-     * Get classy tokens kinds: T_CLASS, T_INTERFACE and T_TRAIT.
+     * Get classy tokens kinds: T_ENUM, T_CLASS, T_INTERFACE and T_TRAIT.
      *
      * @return list<int>
      */
     public static function getClassyTokenKinds(): array
     {
-        static $classTokens;
-
-        if (null === $classTokens) {
-            $classTokens = [T_CLASS, T_TRAIT, T_INTERFACE];
-
-            if (\defined('T_ENUM')) { // @TODO: drop condition when PHP 8.1+ is required
-                $classTokens[] = T_ENUM;
-            }
-        }
-
-        return $classTokens;
+        return [\T_CLASS, \T_TRAIT, \T_INTERFACE, FCT::T_ENUM];
     }
 
     /**
@@ -114,16 +102,7 @@ final class Token
      */
     public static function getObjectOperatorKinds(): array
     {
-        static $objectOperators = null;
-
-        if (null === $objectOperators) {
-            $objectOperators = [T_OBJECT_OPERATOR];
-            if (\defined('T_NULLSAFE_OBJECT_OPERATOR')) {
-                $objectOperators[] = T_NULLSAFE_OBJECT_OPERATOR;
-            }
-        }
-
-        return $objectOperators;
+        return [\T_OBJECT_OPERATOR, FCT::T_NULLSAFE_OBJECT_OPERATOR];
     }
 
     /**
@@ -136,13 +115,11 @@ final class Token
      */
     public function equals($other, bool $caseSensitive = true): bool
     {
-        if (\defined('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG')) { // @TODO: drop condition when PHP 8.1+ is required
-            if ('&' === $other) {
-                return '&' === $this->content && (null === $this->id || $this->isGivenKind([T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]));
-            }
-            if (null === $this->id && '&' === $this->content) {
-                return $other instanceof self && '&' === $other->content && (null === $other->id || $other->isGivenKind([T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]));
-            }
+        if ('&' === $other) {
+            return '&' === $this->content && (null === $this->id || $this->isGivenKind([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]));
+        }
+        if (null === $this->id && '&' === $this->content) {
+            return $other instanceof self && '&' === $other->content && (null === $other->id || $other->isGivenKind([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]));
         }
 
         if ($other instanceof self) {
@@ -318,9 +295,9 @@ final class Token
                 'T_FINALLY', 'T_FN', 'T_FOR', 'T_FOREACH', 'T_FUNCTION', 'T_GLOBAL', 'T_GOTO', 'T_HALT_COMPILER',
                 'T_IF', 'T_IMPLEMENTS', 'T_INCLUDE', 'T_INCLUDE_ONCE', 'T_INSTANCEOF', 'T_INSTEADOF',
                 'T_INTERFACE', 'T_ISSET', 'T_LIST', 'T_LOGICAL_AND', 'T_LOGICAL_OR', 'T_LOGICAL_XOR',
-                'T_NAMESPACE', 'T_MATCH', 'T_NEW', 'T_PRINT', 'T_PRIVATE', 'T_PROTECTED', 'T_PUBLIC', 'T_REQUIRE',
+                'T_NAMESPACE', 'T_NEW', 'T_PRINT', 'T_PRIVATE', 'T_PROTECTED', 'T_PUBLIC', 'T_REQUIRE',
                 'T_REQUIRE_ONCE', 'T_RETURN', 'T_STATIC', 'T_SWITCH', 'T_THROW', 'T_TRAIT', 'T_TRY',
-                'T_UNSET', 'T_USE', 'T_VAR', 'T_WHILE', 'T_YIELD', 'T_YIELD_FROM', 'T_READONLY', 'T_ENUM',
+                'T_UNSET', 'T_USE', 'T_VAR', 'T_WHILE', 'T_YIELD', 'T_YIELD_FROM',
             ]) + [
                 CT::T_ARRAY_TYPEHINT => CT::T_ARRAY_TYPEHINT,
                 CT::T_CLASS_CONSTANT => CT::T_CLASS_CONSTANT,
@@ -332,6 +309,12 @@ final class Token
                 CT::T_NAMESPACE_OPERATOR => CT::T_NAMESPACE_OPERATOR,
                 CT::T_USE_LAMBDA => CT::T_USE_LAMBDA,
                 CT::T_USE_TRAIT => CT::T_USE_TRAIT,
+                FCT::T_ENUM => FCT::T_ENUM,
+                FCT::T_MATCH => FCT::T_MATCH,
+                FCT::T_PRIVATE_SET => FCT::T_PRIVATE_SET,
+                FCT::T_PROTECTED_SET => FCT::T_PROTECTED_SET,
+                FCT::T_PUBLIC_SET => FCT::T_PUBLIC_SET,
+                FCT::T_READONLY => FCT::T_READONLY,
             ];
         }
 
@@ -341,9 +324,9 @@ final class Token
     /**
      * Generate array containing all predefined constants that exists in PHP version in use.
      *
-     * @see https://php.net/manual/en/language.constants.predefined.php
-     *
      * @return array<int, int>
+     *
+     * @see https://php.net/manual/en/language.constants.predefined.php
      */
     public static function getMagicConstants(): array
     {
@@ -396,9 +379,7 @@ final class Token
      */
     public function isComment(): bool
     {
-        static $commentTokens = [T_COMMENT, T_DOC_COMMENT];
-
-        return $this->isGivenKind($commentTokens);
+        return $this->isGivenKind([\T_COMMENT, \T_DOC_COMMENT]);
     }
 
     /**
@@ -442,9 +423,7 @@ final class Token
      */
     public function isNativeConstant(): bool
     {
-        static $nativeConstantStrings = ['true', 'false', 'null'];
-
-        return $this->isArray && \in_array(strtolower($this->content), $nativeConstantStrings, true);
+        return $this->isArray && \in_array(strtolower($this->content), ['true', 'false', 'null'], true);
     }
 
     /**
@@ -472,7 +451,7 @@ final class Token
             $whitespaces = " \t\n\r\0\x0B";
         }
 
-        if ($this->isArray && !$this->isGivenKind(T_WHITESPACE)) {
+        if ($this->isArray && !$this->isGivenKind(\T_WHITESPACE)) {
             return false;
         }
 
@@ -504,15 +483,15 @@ final class Token
      */
     public function toJson(): string
     {
-        $jsonResult = json_encode($this->toArray(), JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK);
+        $jsonResult = json_encode($this->toArray(), \JSON_PRETTY_PRINT | \JSON_NUMERIC_CHECK);
 
-        if (JSON_ERROR_NONE !== json_last_error()) {
+        if (\JSON_ERROR_NONE !== json_last_error()) {
             $jsonResult = json_encode(
                 [
                     'errorDescription' => 'Cannot encode Tokens to JSON.',
                     'rawErrorMessage' => json_last_error_msg(),
                 ],
-                JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK
+                \JSON_PRETTY_PRINT | \JSON_NUMERIC_CHECK
             );
         }
 
@@ -530,10 +509,8 @@ final class Token
     {
         $keywords = [];
         foreach ($tokenNames as $keywordName) {
-            if (\defined($keywordName)) {
-                $keyword = \constant($keywordName);
-                $keywords[$keyword] = $keyword;
-            }
+            $keyword = \constant($keywordName);
+            $keywords[$keyword] = $keyword;
         }
 
         return $keywords;

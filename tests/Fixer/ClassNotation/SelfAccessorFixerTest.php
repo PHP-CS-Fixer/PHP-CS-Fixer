@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Gregor Harlan <gharlan@web.de>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\SelfAccessorFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\SelfAccessorFixer>
+ *
+ * @author Gregor Harlan <gharlan@web.de>
  */
 final class SelfAccessorFixerTest extends AbstractFixerTestCase
 {
@@ -36,7 +36,7 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -234,7 +234,7 @@ final class A
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -286,7 +286,7 @@ final class A
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFix82Cases(): iterable
     {

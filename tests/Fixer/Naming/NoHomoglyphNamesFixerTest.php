@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Naming;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Fred Cox <mcfedr@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Naming\NoHomoglyphNamesFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Naming\NoHomoglyphNamesFixer>
+ *
+ * @author Fred Cox <mcfedr@gmail.com>
  */
 final class NoHomoglyphNamesFixerTest extends AbstractFixerTestCase
 {
@@ -36,7 +36,7 @@ final class NoHomoglyphNamesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
