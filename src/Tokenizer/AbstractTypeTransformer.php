@@ -21,13 +21,13 @@ namespace PhpCsFixer\Tokenizer;
  */
 abstract class AbstractTypeTransformer extends AbstractTransformer
 {
-    private const TYPE_END_TOKENS = [')', [\T_CALLABLE], [\T_NS_SEPARATOR], [\T_STATIC], [\T_STRING], [CT::T_ARRAY_TYPEHINT]];
+    private const TYPE_END_TOKENS = [')', \T_CALLABLE, \T_NS_SEPARATOR, \T_STATIC, \T_STRING, CT::T_ARRAY_TYPEHINT];
 
     private const TYPE_TOKENS = [
         '|', '&', '(',
         ...self::TYPE_END_TOKENS,
-        [CT::T_TYPE_ALTERNATION], [CT::T_TYPE_INTERSECTION], // some siblings may already be transformed
-        [\T_WHITESPACE], [\T_COMMENT], [\T_DOC_COMMENT], // technically these can be inside of type tokens array
+        CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, // some siblings may already be transformed
+        \T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT, // technically these can be inside of type tokens array
     ];
 
     abstract protected function replaceToken(Tokens $tokens, int $index): void;
@@ -84,6 +84,6 @@ abstract class AbstractTypeTransformer extends AbstractTransformer
             return null !== $prevIndex && $tokens[$prevIndex]->isGivenKind([\T_FN, \T_FUNCTION]);
         }
 
-        return $tokens[$beforeVariableIndex]->equalsAny(self::TYPE_END_TOKENS);
+        return $tokens[$beforeVariableIndex]->isGivenKind(self::TYPE_END_TOKENS);
     }
 }

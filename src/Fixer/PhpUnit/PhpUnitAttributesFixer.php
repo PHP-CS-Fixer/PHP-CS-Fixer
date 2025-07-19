@@ -133,7 +133,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
             $targetIndex = $tokens->getTokenNotOfKindSibling(
                 $index,
                 1,
-                [[\T_ABSTRACT], [\T_COMMENT], [\T_FINAL], [\T_FUNCTION], [\T_PRIVATE], [\T_PROTECTED], [\T_PUBLIC], [\T_STATIC], [\T_WHITESPACE]],
+                [\T_ABSTRACT, \T_COMMENT, \T_FINAL, \T_FUNCTION, \T_PRIVATE, \T_PROTECTED, \T_PUBLIC, \T_STATIC, \T_WHITESPACE],
             );
             $annotationScope = $tokens[$targetIndex]->isGivenKind(\T_CLASS) ? 'class' : 'method';
 
