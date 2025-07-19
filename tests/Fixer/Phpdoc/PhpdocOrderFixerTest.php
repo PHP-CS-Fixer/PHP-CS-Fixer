@@ -790,5 +790,164 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                 EOF,
             ['order' => ['template', 'param', 'throws', 'return']],
         ];
+
+        yield 'multiline phpstan-return when phpstan order specified' => [
+            <<<'EOF'
+                    <?php
+                        /**
+                         * Returns next token if it's type equals to expected.
+                         *
+                         * @return array
+                         * @phpstan-param TTokenType $type
+                         * @phpstan-return (
+                         *     $type is 'TableRow'
+                         *         ? TTableRowToken
+                         *         : TOtherToken
+                         * )
+                         * @throws ParserException
+                         **/
+                EOF,
+            null,
+            ['order' => ['param', 'return', 'phpstan-param', 'phpstan-return', 'throws']],
+        ];
+
+        yield 'multiple phpstan-param when phpstan order specified' => [
+            <<<'EOF'
+                    <?php
+                        /**
+                         * @phpstan-param non-empty-list<TGitHubReleaseArray> $releases
+                         * @phpstan-param TCurrentVersionArray $currentVersion
+                         * @phpstan-return TGitHubReleaseArray|false
+                         */
+                EOF,
+            null,
+            ['order' => ['param', 'return', 'phpstan-param', 'phpstan-return', 'throws']],
+        ];
+
+        yield 'mixed param, phpstan-param and psalm-param with order specified' => [
+            <<<'EOF'
+                    <?php
+                        /**
+                         * @param array $releases
+                         * @param array $currentVersion
+                         * @psalm-param list<array> $releases
+                         * @psalm-param array<string> $releases
+                         * @phpstan-param non-empty-list<TGitHubReleaseArray> $releases
+                         * @phpstan-param TCurrentVersionArray $currentVersion
+                         * @return array|false
+                         * @phpstan-return TGitHubReleaseArray|false
+                         */
+                EOF,
+            null,
+            ['order' => ['param', 'psalm-param', 'phpstan-param', 'return']],
+        ];
+
+        yield 'phpstan- / psalm- annotations follow specified order for non-prefixed version by default' => [
+            <<<'EOF'
+                <?php
+                    /**
+                     * Hello there
+                     *
+                     * Long description
+                     * goes here.
+                     *
+                     * @internal
+                     * @phpstan-template T of Extension\Extension
+                     * @param string $foo
+                     * @param bool   $bar Bar
+                     * @param string $id
+                     * @phpstan-param TFooType $foo
+                     * @custom Test!
+                     *         asldnaksdkjasdasd
+                     * @phpstan-param class-string<T> $id
+                     * @psalm-param 'foo'|'bar' $foo
+                     * @psalm-param class-string<T> $id
+                     * @throws Exception|RuntimeException dfsdf
+                     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+                     * @return array Some array of results
+                     * @phpstan-return TSomeResultArray
+                     * @psalm-return array{
+                     *    foo: string,
+                     *    bar: ?int
+                     * } Some array of results
+                     **/
+
+                EOF,
+            <<<'EOF'
+                <?php
+                    /**
+                     * Hello there
+                     *
+                     * Long description
+                     * goes here.
+                     *
+                     * @internal
+                     * @param string $foo
+                     * @phpstan-return TSomeResultArray
+                     * @return array Some array of results
+                     * @param bool   $bar Bar
+                     * @psalm-return array{
+                     *    foo: string,
+                     *    bar: ?int
+                     * } Some array of results
+                     * @param string $id
+                     * @phpstan-template T of Extension\Extension
+                     * @psalm-param 'foo'|'bar' $foo
+                     * @phpstan-param TFooType $foo
+                     * @psalm-param class-string<T> $id
+                     * @custom Test!
+                     *         asldnaksdkjasdasd
+                     * @phpstan-param class-string<T> $id
+                     * @throws Exception|RuntimeException dfsdf
+                     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+                     **/
+
+                EOF,
+            ['order' => ['template', 'param', 'throws', 'return']],
+        ];
+
+        yield 'retains phpstan- / psalm- annotations that are not prefixed versions of configured order' => [
+            <<<'EOF'
+                <?php
+                    /**
+                     * Hello there
+                     *
+                     * Long description
+                     * goes here.
+                     *
+                     * @internal
+                     * @psalm-ignore-nullable-return
+                     * @param string $id
+                     * @phpstan-param class-string<T> $id
+                     * @throws Exception|RuntimeException dfsdf
+                     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+                     * @return array Some array of results
+                     * @psalm-return TSomeResultArray
+                     * @phpstan-pure
+                     **/
+
+                EOF,
+            <<<'EOF'
+                <?php
+                    /**
+                     * Hello there
+                     *
+                     * Long description
+                     * goes here.
+                     *
+                     * @internal
+                     * @psalm-ignore-nullable-return
+                     * @return array Some array of results
+                     * @phpstan-param class-string<T> $id
+                     * @param string $id
+                     * @psalm-return TSomeResultArray
+                     * @throws Exception|RuntimeException dfsdf
+                     *         jkaskdnaksdnkasndansdnansdajsdnkasd
+                     * @phpstan-pure
+                     **/
+
+                EOF,
+            ['order' => ['template', 'param', 'throws', 'return']],
+        ];
     }
 }
