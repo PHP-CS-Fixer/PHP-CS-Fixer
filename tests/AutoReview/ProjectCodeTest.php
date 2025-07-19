@@ -371,8 +371,13 @@ final class ProjectCodeTest extends TestCase
     {
         $rc = new \ReflectionClass($testClassName);
 
+        $exceptionClasses = [
+            // @TODO remove while removing legacy `VisibilityRequiredFixer`
+            \PhpCsFixer\Tests\Fixer\ClassNotation\ModifierKeywordsFixerTest::class,
+        ];
+
         self::assertTrue(
-            $rc->isTrait() || $rc->isAbstract() || $rc->isFinal(),
+            $rc->isTrait() || $rc->isAbstract() || $rc->isFinal() || \in_array($testClassName, $exceptionClasses, true),
             \sprintf('Test class %s should be trait, abstract or final.', $testClassName)
         );
     }
