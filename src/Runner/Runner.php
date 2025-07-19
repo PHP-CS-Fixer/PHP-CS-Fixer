@@ -427,7 +427,7 @@ final class Runner
 
         if (
             Utils::isFutureModeEnabled() // @TODO 4.0 drop this line
-            && !filter_var(getenv('PHP_CS_FIXER_NON_MONOLITHIC'), FILTER_VALIDATE_BOOL)
+            && !filter_var(getenv('PHP_CS_FIXER_NON_MONOLITHIC'), \FILTER_VALIDATE_BOOL)
             && !$tokens->isMonolithicPhp()
         ) {
             $this->dispatchEvent(
