@@ -1,6 +1,6 @@
-============================
-Rule ``visibility_required``
-============================
+==========================
+Rule ``modifier_keywords``
+==========================
 
 Classes, constants, properties, and methods MUST have visibility declared, and
 keyword modifiers MUST be in the following order: inheritance modifier
@@ -8,14 +8,6 @@ keyword modifiers MUST be in the following order: inheritance modifier
 ``private``), set-visibility modifier (``public(set)``, ``protected(set)``, or
 ``private(set)``), scope modifier (``static``), mutation modifier
 (``readonly``), type declaration, name.
-
-Warning
--------
-
-This rule is deprecated and will be removed in the next major version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You should use ``modifier_keywords`` instead.
 
 Configuration
 -------------
@@ -162,10 +154,37 @@ With configuration: ``['elements' => ['const']]``.
    +    public const SAMPLE = 1;
     }
 
+Rule sets
+---------
+
+The rule is part of the following rule sets:
+
+- `@PER <./../../ruleSets/PER.rst>`_
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_
+- `@PHP71Migration <./../../ruleSets/PHP71Migration.rst>`_
+- `@PHP73Migration <./../../ruleSets/PHP73Migration.rst>`_
+- `@PHP74Migration <./../../ruleSets/PHP74Migration.rst>`_
+- `@PHP80Migration <./../../ruleSets/PHP80Migration.rst>`_
+- `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_
+- `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_
+- `@PHP83Migration <./../../ruleSets/PHP83Migration.rst>`_
+- `@PHP84Migration <./../../ruleSets/PHP84Migration.rst>`_
+- `@PHP85Migration <./../../ruleSets/PHP85Migration.rst>`_
+- `@PSR2 <./../../ruleSets/PSR2.rst>`_ with config:
+
+  ``['elements' => ['method', 'property']]``
+
+- `@PSR12 <./../../ruleSets/PSR12.rst>`_
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+- `@Symfony <./../../ruleSets/Symfony.rst>`_
+
 References
 ----------
 
-- Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\VisibilityRequiredFixer <./../../../src/Fixer/ClassNotation/VisibilityRequiredFixer.php>`_
-- Test class: `PhpCsFixer\\Tests\\Fixer\\ClassNotation\\VisibilityRequiredFixerTest <./../../../tests/Fixer/ClassNotation/VisibilityRequiredFixerTest.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\ModifierKeywordsFixer <./../../../src/Fixer/ClassNotation/ModifierKeywordsFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ClassNotation\\ModifierKeywordsFixerTest <./../../../tests/Fixer/ClassNotation/ModifierKeywordsFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.
