@@ -28,6 +28,7 @@ use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Runner\Parallel\ProcessUtils;
+use PhpCsFixer\Tests\Fixer\ClassNotation\ModifierKeywordsFixerTest;
 use PhpCsFixer\Tests\PregTest;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tests\Test\AbstractIntegrationTestCase;
@@ -373,7 +374,7 @@ final class ProjectCodeTest extends TestCase
 
         $exceptionClasses = [
             // @TODO remove while removing legacy `VisibilityRequiredFixer`
-            \PhpCsFixer\Tests\Fixer\ClassNotation\ModifierKeywordsFixerTest::class,
+            ModifierKeywordsFixerTest::class,
         ];
 
         self::assertTrue(
