@@ -62,14 +62,8 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PER <./../../ruleSets/PER.rst>`_ with config:
-
-  ``['elements' => ['property']]``
-
-- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
-
-  ``['elements' => ['property']]``
-
+- `@PER <./../../ruleSets/PER.rst>`_
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
 
   ``['elements' => ['property']]``
@@ -78,6 +72,7 @@ The rule is part of the following rule sets:
 
   ``['elements' => ['property']]``
 
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_
 - `@PSR2 <./../../ruleSets/PSR2.rst>`_ with config:
 
   ``['elements' => ['property']]``

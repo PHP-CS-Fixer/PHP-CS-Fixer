@@ -277,6 +277,7 @@ Fixing examples cannot be demonstrated on the current PHP version.
 * @PER-CS with config: ['default' => 'at_least_single_space']
 * @PER-CS1.0 with config: ['default' => 'at_least_single_space']
 * @PER-CS2.0 with config: ['default' => 'at_least_single_space']
+* @PER-CS3.0 with config: ['default' => 'at_least_single_space']
 * @PSR12 with config: ['default' => 'at_least_single_space']
 * @PhpCsFixer with default config
 * @Symfony with default config").'
