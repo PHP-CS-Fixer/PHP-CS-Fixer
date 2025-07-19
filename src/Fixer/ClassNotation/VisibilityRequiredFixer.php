@@ -178,7 +178,7 @@ class Sample
         $elements = ['const', 'method', 'property'];
 
         return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('elements', 'The structural elements to fix (PHP >= 7.1 required for `const`).'))
+            (new FixerOptionBuilder('elements', 'The structural elements to fix.'))
                 ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([new AllowedValueSubset($elements)])
                 ->setDefault($elements)

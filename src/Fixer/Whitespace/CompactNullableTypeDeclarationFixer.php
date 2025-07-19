@@ -34,8 +34,7 @@ final class CompactNullableTypeDeclarationFixer extends AbstractFixer
                 new CodeSample(
                     "<?php\nfunction sample(? string \$str): ? string\n{}\n"
                 ),
-            ],
-            'Rule is applied only in a PHP 7.1+ environment.'
+            ]
         );
     }
 

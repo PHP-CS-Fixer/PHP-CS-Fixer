@@ -4,11 +4,6 @@ Rule ``compact_nullable_type_declaration``
 
 Remove extra spaces in a nullable type declaration.
 
-Description
------------
-
-Rule is applied only in a PHP 7.1+ environment.
-
 Examples
 --------
 

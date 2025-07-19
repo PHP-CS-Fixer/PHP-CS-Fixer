@@ -17,8 +17,10 @@ Example #1
    +++ New
     <?php
     class Foo {
-   -    public $foo = null;
-   +    public $foo;
+   -    public $bar = null;
+   +    public $bar;
+        public ?string $baz = null;
+        public ?string $baux;
     }
 
 Example #2
