@@ -555,6 +555,9 @@ final class FixerFactoryTest extends TestCase
             'modernize_types_casting' => [
                 'no_unneeded_control_parentheses',
             ],
+            'modifier_keywords' => [
+                'class_attributes_separation',
+            ],
             'multiline_promoted_properties' => [
                 'braces_position',
                 'trailing_comma_in_multiline',
@@ -996,9 +999,6 @@ final class FixerFactoryTest extends TestCase
             ],
             'use_arrow_functions' => [
                 'function_declaration',
-            ],
-            'visibility_required' => [
-                'class_attributes_separation',
             ],
             'void_return' => [
                 'phpdoc_no_empty_return',
