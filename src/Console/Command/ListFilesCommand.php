@@ -30,10 +30,12 @@ use Symfony\Component\Filesystem\Path;
  *
  * @internal
  */
-#[AsCommand(name: 'list-files')]
+#[AsCommand(name: 'list-files', description: 'List all files being fixed by the given config.')]
 final class ListFilesCommand extends Command
 {
     protected static $defaultName = 'list-files';
+
+    protected static $defaultDescription = 'List all files being fixed by the given config.';
 
     private ConfigInterface $defaultConfig;
 
@@ -49,14 +51,11 @@ final class ListFilesCommand extends Command
 
     protected function configure(): void
     {
-        $this
-            ->setDefinition(
-                [
-                    new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
-                ]
-            )
-            ->setDescription('List all files being fixed by the given config.')
-        ;
+        $this->setDefinition(
+            [
+                new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
+            ]
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
