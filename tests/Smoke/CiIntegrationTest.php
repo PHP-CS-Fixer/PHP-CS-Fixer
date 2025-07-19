@@ -303,6 +303,17 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
         ];
     }
 
+    public function testWithUsingNonExistingFile(): void
+    {
+        $output = ScriptExecutor::create(
+            ['php php-cs-fixer check --config=tests/Fixtures/.php-cs-fixer.append-non-existing-file.php --show-progress=dots'],
+            __DIR__.'/../..'
+        )->getResult();
+
+        self::assertSame(0, $output->getCode());
+        self::assertStringContainsString(' (100%)', $output->getError());
+    }
+
     private static function executeCommand(string $command): CliResult
     {
         return CommandExecutor::create($command, self::$fixtureDir)->getResult();

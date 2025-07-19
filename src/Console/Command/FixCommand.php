@@ -331,7 +331,10 @@ use Symfony\Component\Stopwatch\Stopwatch;
             }
         }
 
-        $finder = new \ArrayIterator(iterator_to_array($resolver->getFinder()));
+        $finder = new \ArrayIterator(array_filter(
+            iterator_to_array($resolver->getFinder()),
+            static fn (\SplFileInfo $fileInfo) => false !== $fileInfo->getRealPath(),
+        ));
 
         if (null !== $stdErr && $resolver->configFinderIsOverridden()) {
             $stdErr->writeln(
