@@ -27,9 +27,9 @@ use Symfony\Component\Console\Input\InputOption;
 #[AsCommand(name: 'check', description: 'Checks if configured files/directories comply with configured rules.')]
 final class CheckCommand extends FixCommand
 {
-    protected static $defaultName = 'check';
+    protected static $defaultName = 'check'; // @phpstan-ignore property.parentPropertyFinalByPhpDoc
 
-    protected static $defaultDescription = 'Checks if configured files/directories comply with configured rules.';
+    protected static $defaultDescription = 'Checks if configured files/directories comply with configured rules.'; // @phpstan-ignore property.parentPropertyFinalByPhpDoc
 
     public function __construct(ToolInfoInterface $toolInfo)
     {
