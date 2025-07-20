@@ -595,7 +595,7 @@ $array = [
                     }
                 } elseif ('=' === $tokenContent) {
                     for ($index = $tokens->count() - 2; $index > 0; --$index) {
-                        if ('=' === $tokens[$index]->getContent() && !$this->isEqualPartOfDeclareStatement($tokens, $index) && $this->tokensAnalyzer->isBinaryOperator($index)) {
+                        if ('=' === $tokens[$index]->getContent() && false === $this->isEqualPartOfDeclareStatement($tokens, $index) && $this->tokensAnalyzer->isBinaryOperator($index)) {
                             $this->fixWhiteSpaceBeforeOperator($tokensClone, $index, $alignStrategy);
                         }
                     }
@@ -628,7 +628,7 @@ $array = [
             if (
                 strtolower($content) === $tokenContent
                 && $this->tokensAnalyzer->isBinaryOperator($index)
-                && ('=' !== $content || !$this->isEqualPartOfDeclareStatement($tokens, $index))
+                && ('=' !== $content || false === $this->isEqualPartOfDeclareStatement($tokens, $index))
                 && $newLineFoundSinceLastPlaceholder
             ) {
                 $tokens[$index] = new Token(\sprintf(self::ALIGN_PLACEHOLDER, $this->currentLevel).$content);
