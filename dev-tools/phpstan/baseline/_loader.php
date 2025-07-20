@@ -12,5 +12,4 @@ return ['includes' => [
     __DIR__ . '/plus.rightNonNumeric.php',
     __DIR__ . '/return.type.php',
     __DIR__ . '/smaller.alwaysFalse.php',
-    __DIR__ . '/staticMethod.impossibleType.php',
 ]];
