@@ -90,7 +90,6 @@ $className = Baz::class;
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $this->imports = [];
 
-        /** @var int $index */
         foreach ($tokensAnalyzer->getImportUseIndexes() as $index) {
             if ($index < $startIndex || $index > $endIndex) {
                 continue;

@@ -369,7 +369,6 @@ $bar = function () { $result = true;
             }
 
             if (null !== $moveBraceToIndex) {
-                /** @var Token $movedToken */
                 $movedToken = clone $tokens[$openBraceIndex];
 
                 $delta = $openBraceIndex < $moveBraceToIndex ? 1 : -1;
@@ -388,7 +387,6 @@ $bar = function () { $result = true;
                 }
 
                 for ($i = $openBraceIndex; $i !== $moveBraceToIndex; $i += $delta) {
-                    /** @var Token $siblingToken */
                     $siblingToken = $tokens[$i + $delta];
                     $tokens[$i] = $siblingToken;
                 }

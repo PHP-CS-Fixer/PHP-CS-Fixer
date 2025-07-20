@@ -53,7 +53,6 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        /** @var Token $token */
         foreach ($tokens as $index => $token) {
             if (!$token->isComment()) {
                 continue;
