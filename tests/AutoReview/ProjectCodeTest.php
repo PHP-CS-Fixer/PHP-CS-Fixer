@@ -616,7 +616,6 @@ final class ProjectCodeTest extends TestCase
             return;
         }
 
-        /** @var \ReflectionMethod $method */
         foreach ($publicMethods as $method) {
             $parameters = $method->getParameters();
 

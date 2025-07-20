@@ -1,0 +1,60 @@
+--TEST--
+PHP 8.5 test.
+--RULESET--
+{
+    "@PhpCsFixer": true,
+    "@PHP84Migration": true
+}
+--REQUIREMENTS--
+{"php": 80500}
+--EXPECT--
+<?php
+
+// https://wiki.php.net/rfc/final_promotion
+class Foo
+{
+    public function __construct(
+        final public bool $one,
+        final public bool $two,
+        // readonly    private    final    ?    string    $three, // @TODO: uncomment, now syntax error
+        final private readonly null|string $four,
+        ?finalstring $five, // @TODO: funny, but wrong
+    ) {}
+}
+
+// https://wiki.php.net/rfc/marking_return_value_as_important
+#[NoDiscard]
+function get42(): int
+{
+    return 42;
+}
+function thatNoDiscard()
+{
+    (void) get42();
+}
+
+--INPUT--
+<?php
+
+// https://wiki.php.net/rfc/final_promotion
+class Foo
+{
+    public function __construct(
+        public    final     bool   $one,
+        final    public     bool   $two,
+        // readonly    private    final    ?    string    $three, // @TODO: uncomment, now syntax error
+        readonly    private    final    null    |    string    $four,
+        readonly    private    final    string    |    null    $five, // @TODO: funny, but wrong
+    ) {}
+}
+
+// https://wiki.php.net/rfc/marking_return_value_as_important
+#[NoDiscard]
+function get42(): int
+{
+    return 42;
+}
+function thatNoDiscard()
+{
+    (VOID)get42();
+}

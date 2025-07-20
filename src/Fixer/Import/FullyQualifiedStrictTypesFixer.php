@@ -303,7 +303,6 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
             $namespaceName = $namespace->getFullName();
 
-            /** @var _Uses $uses */
             $uses = [];
             $lastUse = null;
 
