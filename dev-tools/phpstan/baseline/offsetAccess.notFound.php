@@ -512,21 +512,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset \'normalized\' might not exist on array\\<\'normalized\'\\|\'originalIndex\'\\|\'tokens\'\\|int\\<0, max\\>, int\\|list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\>\\.$#',
-    'count' => 6,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedInterfacesFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset \'originalIndex\' might not exist on array\\<\'normalized\'\\|\'originalIndex\'\\|\'tokens\'\\|int\\<0, max\\>, int\\|list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\>\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedInterfacesFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset \'tokens\' might not exist on array\\<\'normalized\'\\|\'originalIndex\'\\|\'tokens\'\\|int\\<0, max\\>, int\\|list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\>\\.$#',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedInterfacesFixer.php',
-];
-$ignoreErrors[] = [
     'message' => '#^Offset int might not exist on array\\<int, PhpCsFixer\\\\Tokenizer\\\\Tokens\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedTraitsFixer.php',
