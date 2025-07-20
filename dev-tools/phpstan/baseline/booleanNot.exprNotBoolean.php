@@ -1,17 +1,12 @@
 <?php declare(strict_types = 1);
 
-// total 4 errors
+// total 3 errors
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
     'message' => '#^Only booleans are allowed in a negated boolean, string\\|false given\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Cache/Signature.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Only booleans are allowed in a negated boolean, bool\\|int given\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
 ];
 $ignoreErrors[] = [
     'message' => '#^Only booleans are allowed in a negated boolean, int\\|false given\\.$#',

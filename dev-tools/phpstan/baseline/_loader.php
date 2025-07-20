@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-// total 485 errors
+// total 480 errors
 return ['includes' => [
     __DIR__ . '/argument.type.php',
     __DIR__ . '/argument.unpackNonIterable.php',
@@ -14,7 +14,6 @@ return ['includes' => [
     __DIR__ . '/offsetAccess.notFound.php',
     __DIR__ . '/plus.leftNonNumeric.php',
     __DIR__ . '/plus.rightNonNumeric.php',
-    __DIR__ . '/preInc.nonNumeric.php',
     __DIR__ . '/property.parentPropertyFinalByPhpDoc.php',
     __DIR__ . '/return.type.php',
     __DIR__ . '/smaller.alwaysFalse.php',

@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-// total 356 errors
+// total 354 errors
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
@@ -402,16 +402,6 @@ $ignoreErrors[] = [
     'message' => '#^Offset string might not exist on array\\<string, string\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset \'multiLine\' might not exist on non\\-empty\\-array\\<string, bool\\|int\\>\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset string might not exist on non\\-empty\\-array\\<string, bool\\|int\\>\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/ClassDefinitionFixer.php',
 ];
 $ignoreErrors[] = [
     'message' => '#^Offset int\\<1, max\\> might not exist on array\\<int\\<1, max\\>, int\\>\\.$#',
