@@ -4,11 +4,6 @@ Rule ``compact_nullable_typehint``
 
 Remove extra spaces in a nullable typehint.
 
-Description
------------
-
-Rule is applied only in a PHP 7.1+ environment.
-
 Warning
 -------
 
