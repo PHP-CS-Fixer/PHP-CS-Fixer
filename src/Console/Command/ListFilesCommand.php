@@ -33,10 +33,10 @@ use Symfony\Component\Filesystem\Path;
 #[AsCommand(name: 'list-files', description: 'List all files being fixed by the given config.')]
 final class ListFilesCommand extends Command
 {
-    /** @var string @TODO PHP 8.0 - remove the property */
+    /** @TODO PHP 8.0 - remove the property */
     protected static $defaultName = 'list-files';
 
-    /** @var string @TODO PHP 8.0 - remove the property */
+    /** @TODO PHP 8.0 - remove the property */
     protected static $defaultDescription = 'List all files being fixed by the given config.';
 
     private ConfigInterface $defaultConfig;

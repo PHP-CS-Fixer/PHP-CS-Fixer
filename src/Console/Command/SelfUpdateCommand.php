@@ -37,10 +37,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'self-update', description: 'Update php-cs-fixer.phar to the latest stable version.')]
 final class SelfUpdateCommand extends Command
 {
-    /** @var string @TODO PHP 8.0 - remove the property */
+    /** @TODO PHP 8.0 - remove the property */
     protected static $defaultName = 'self-update';
 
-    /** @var string @TODO PHP 8.0 - remove the property */
+    /** @TODO PHP 8.0 - remove the property */
     protected static $defaultDescription = 'Update php-cs-fixer.phar to the latest stable version.';
 
     private NewVersionCheckerInterface $versionChecker;

@@ -53,10 +53,10 @@ use Symfony\Component\Stopwatch\Stopwatch;
 #[AsCommand(name: 'fix', description: 'Fixes a directory or a file.')]
 /* final */ class FixCommand extends Command
 {
-    /** @var string @TODO PHP 8.0 - remove the property */
+    /** @TODO PHP 8.0 - remove the property */
     protected static $defaultName = 'fix';
 
-    /** @var string @TODO PHP 8.0 - remove the property */
+    /** @TODO PHP 8.0 - remove the property */
     protected static $defaultDescription = 'Fixes a directory or a file.';
 
     private EventDispatcherInterface $eventDispatcher;
