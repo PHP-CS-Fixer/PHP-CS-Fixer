@@ -1,7 +1,5 @@
 <?php declare(strict_types = 1);
 
-// total 12 errors
-
 $ignoreErrors = [];
 $ignoreErrors[] = [
     'message' => '#^Property PhpCsFixer\\\\Console\\\\Command\\\\CheckCommand\\:\\:\\$defaultDescription has no type specified\\.$#',

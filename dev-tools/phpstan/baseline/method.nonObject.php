@@ -1,7 +1,5 @@
 <?php declare(strict_types = 1);
 
-// total 4 errors
-
 $ignoreErrors = [];
 $ignoreErrors[] = [
     'message' => '#^Cannot call method getPriority\\(\\) on PhpCsFixer\\\\Fixer\\\\FixerInterface\\|false\\.$#',
