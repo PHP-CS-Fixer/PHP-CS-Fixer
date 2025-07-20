@@ -33,8 +33,10 @@ use Symfony\Component\Finder\SplFileInfo;
 #[AsCommand(name: 'documentation', description: 'Dumps the documentation of the project into its "/doc" directory.')]
 final class DocumentationCommand extends Command
 {
+    /** @var string @TODO PHP 8.0 - remove the property */
     protected static $defaultName = 'documentation';
 
+    /** @var string @TODO PHP 8.0 - remove the property */
     protected static $defaultDescription = 'Dumps the documentation of the project into its "/doc" directory.';
 
     private Filesystem $filesystem;

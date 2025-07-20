@@ -56,8 +56,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'describe', description: 'Describe rule / ruleset.')]
 final class DescribeCommand extends Command
 {
+    /** @var string @TODO PHP 8.0 - remove the property */
     protected static $defaultName = 'describe';
 
+    /** @var string @TODO PHP 8.0 - remove the property */
     protected static $defaultDescription = 'Describe rule / ruleset.';
 
     /**

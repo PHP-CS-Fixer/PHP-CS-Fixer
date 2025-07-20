@@ -53,11 +53,6 @@ parameters:
 
         # We retrieve these FQNs in various ways, we process them along the way, let's assume it's always class-string
         - '/^Parameter #2 \$fullName of class PhpCsFixer\\Tokenizer\\Analyzer\\Analysis\\NamespaceUseAnalysis constructor expects class-string, string given\.$/'
-
-        # Type for Command::$defaultName and ::$defaultDescription can not be specified because parent property also does not have a type
-        -
-            message: '/^Property PhpCsFixer\\Console\\Command\\\w+Command::\$default(?:Name|Description) has no type specified\.$/'
-            identifier: missingType.property
     tipsOfTheDay: false
     symfony:
         consoleApplicationLoader: dev-tools/phpstan/console-application.php
