@@ -204,8 +204,6 @@ final class AttributeAnalyzer
             --$index;
         }
 
-        \assert(array_is_list($elements));
-
         return $elements;
     }
 }

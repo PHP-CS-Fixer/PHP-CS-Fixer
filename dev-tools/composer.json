@@ -11,7 +11,7 @@
         "phpcompatibility/phpcompatibility-symfony": "^1.2.2",
         "phpmd/phpmd": "dev-master as 2.16.0",
         "phpstan/extension-installer": "^1.4.3",
-        "phpstan/phpstan": "^2.1.17",
+        "phpstan/phpstan": "^2.1.18",
         "phpstan/phpstan-phpunit": "^2.0.6",
         "phpstan/phpstan-strict-rules": "^2.0.4",
         "phpstan/phpstan-symfony": "^2.0.6",

@@ -24,7 +24,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Error/ErrorsManager.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Method PhpCsFixer\\\\Fixer\\\\AbstractPhpUnitFixer\\:\\:addInternalAnnotation\\(\\) should return list\\<PhpCsFixer\\\\DocBlock\\\\Line\\> but returns array\\<int\\<0, max\\>, PhpCsFixer\\\\DocBlock\\\\Line\\|non\\-falsy\\-string\\>\\.$#',
+    'message' => '#^Method PhpCsFixer\\\\Fixer\\\\AbstractPhpUnitFixer\\:\\:addInternalAnnotation\\(\\) should return list\\<PhpCsFixer\\\\DocBlock\\\\Line\\> but returns non\\-empty\\-list\\<PhpCsFixer\\\\DocBlock\\\\Line\\|non\\-falsy\\-string\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/AbstractPhpUnitFixer.php',
 ];

@@ -534,7 +534,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedTraitsFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset string might not exist on array\\{\\|\\: array\\{10024, \'\\|\'\\}, &\\: array\\{10035, \'&\'\\}\\}\\.$#',
+    'message' => '#^Offset string might not exist on array\\{\'\\|\'\\: array\\{10024, \'\\|\'\\}, \'&\'\\: array\\{10035, \'&\'\\}\\}\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedTypesFixer.php',
 ];
@@ -1114,7 +1114,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset int\\<\\-1, max\\> might not exist on array\\<int\\<0, max\\>, non\\-empty\\-array\\<literal\\-string&non\\-falsy\\-string, mixed\\>\\>\\.$#',
+    'message' => '#^Offset int\\<\\-1, max\\> might not exist on list\\<non\\-empty\\-array\\<literal\\-string&non\\-falsy\\-string, mixed\\>\\>\\.$#',
     'count' => 2,
     'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
 ];

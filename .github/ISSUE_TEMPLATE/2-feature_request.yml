@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Before requesting a new feature, make sure your version of PHP-CS-Fixer is up-to-date.
+        Before requesting a new feature, make sure your version of PHP CS Fixer is up-to-date.
 
         > [!IMPORTANT]
         > For initial ideas it's preferable to use [discussions](https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/discussions/categories/feature-ideas).
