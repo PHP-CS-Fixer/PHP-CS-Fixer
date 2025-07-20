@@ -53,10 +53,14 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @internal
  */
-#[AsCommand(name: 'describe')]
+#[AsCommand(name: 'describe', description: 'Describe rule / ruleset.')]
 final class DescribeCommand extends Command
 {
+    /** @TODO PHP 8.0 - remove the property */
     protected static $defaultName = 'describe';
+
+    /** @TODO PHP 8.0 - remove the property */
+    protected static $defaultDescription = 'Describe rule / ruleset.';
 
     /**
      * @var ?list<string>
@@ -84,15 +88,12 @@ final class DescribeCommand extends Command
 
     protected function configure(): void
     {
-        $this
-            ->setDefinition(
-                [
-                    new InputArgument('name', InputArgument::REQUIRED, 'Name of rule / set.'),
-                    new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
-                ]
-            )
-            ->setDescription('Describe rule / ruleset.')
-        ;
+        $this->setDefinition(
+            [
+                new InputArgument('name', InputArgument::REQUIRED, 'Name of rule / set.'),
+                new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
+            ]
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
