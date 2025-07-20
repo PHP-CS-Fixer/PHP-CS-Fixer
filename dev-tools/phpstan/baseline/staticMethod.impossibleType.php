@@ -1,7 +1,5 @@
 <?php declare(strict_types = 1);
 
-// total 3 errors
-
 $ignoreErrors = [];
 $ignoreErrors[] = [
     'message' => '#^Call to static method PhpCsFixer\\\\Preg\\:\\:match\\(\\) with arguments \'\\#\\^\\.\\*\\?\\(\\?P\\<annotation…\', mixed and array\\{\\} will always evaluate to false\\.$#',
