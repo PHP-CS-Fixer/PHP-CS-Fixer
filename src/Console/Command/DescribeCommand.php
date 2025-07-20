@@ -150,7 +150,6 @@ final class DescribeCommand extends Command
             throw new DescribeNameNotFoundException($name, 'rule');
         }
 
-        /** @var FixerInterface $fixer */
         $fixer = $fixers[$name];
 
         $definition = $fixer->getDefinition();
@@ -265,7 +264,6 @@ final class DescribeCommand extends Command
             $output->writeln('');
         }
 
-        /** @var list<CodeSampleInterface> $codeSamples */
         $codeSamples = array_filter($definition->getCodeSamples(), static function (CodeSampleInterface $codeSample): bool {
             if ($codeSample instanceof VersionSpecificCodeSampleInterface) {
                 return $codeSample->isSuitableFor(\PHP_VERSION_ID);
@@ -383,7 +381,6 @@ final class DescribeCommand extends Command
                 continue;
             }
 
-            /** @var FixerInterface $fixer */
             $fixer = $fixers[$rule];
 
             $definition = $fixer->getDefinition();

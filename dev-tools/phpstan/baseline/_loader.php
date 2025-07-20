@@ -13,5 +13,4 @@ return ['includes' => [
     __DIR__ . '/return.type.php',
     __DIR__ . '/smaller.alwaysFalse.php',
     __DIR__ . '/staticMethod.impossibleType.php',
-    __DIR__ . '/varTag.nativeType.php',
 ]];

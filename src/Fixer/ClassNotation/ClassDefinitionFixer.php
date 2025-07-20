@@ -544,10 +544,7 @@ $foo = new class(){};
 
             $accessModifierIndex = $classDefInfo[$accessModifier];
 
-            /** @var Token $readonlyToken */
             $readonlyToken = clone $tokens[$readonlyIndex];
-
-            /** @var Token $accessToken */
             $accessToken = clone $tokens[$accessModifierIndex];
 
             $tokens[$readonlyIndex] = $accessToken;
