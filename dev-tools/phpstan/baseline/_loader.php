@@ -2,7 +2,6 @@
 
 return ['includes' => [
     __DIR__ . '/argument.type.php',
-    __DIR__ . '/argument.unpackNonIterable.php',
     __DIR__ . '/assign.propertyType.php',
     __DIR__ . '/generator.valueType.php',
     __DIR__ . '/method.nonObject.php',
