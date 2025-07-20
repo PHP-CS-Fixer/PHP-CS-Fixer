@@ -1,7 +1,5 @@
 <?php declare(strict_types = 1);
 
-// total 18 errors
-
 $ignoreErrors = [];
 $ignoreErrors[] = [
     'message' => '#^Method PhpCsFixer\\\\Config\\:\\:getFinder\\(\\) should return PhpCsFixer\\\\Finder but returns iterable\\<SplFileInfo\\>\\.$#',

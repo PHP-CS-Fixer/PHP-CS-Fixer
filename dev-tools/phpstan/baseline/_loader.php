@@ -1,6 +1,5 @@
 <?php declare(strict_types = 1);
 
-// total 477 errors
 return ['includes' => [
     __DIR__ . '/argument.type.php',
     __DIR__ . '/argument.unpackNonIterable.php',
