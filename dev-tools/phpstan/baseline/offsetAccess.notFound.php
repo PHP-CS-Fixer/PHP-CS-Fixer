@@ -372,7 +372,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Basic/NumericLiteralSeparatorFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset int\\|null might not exist on non\\-empty\\-array\\<\\-844\\|346\\|347\\|348\\|349\\|350\\|351\\|352\\|353\\|354\\|10008, \'__CLASS__\'\\|\'__DIR__\'\\|\'__FILE__\'\\|\'__FUNCTION__\'\\|\'__LINE__\'\\|\'__METHOD__\'\\|\'__NAMESPACE__\'\\|\'__PROPERTY__\'\\|\'__TRAIT__\'\\|\'class\'\\>\\.$#',
+    'message' => '#^Offset int might not exist on non\\-empty\\-array\\<\\-844\\|346\\|347\\|348\\|349\\|350\\|351\\|352\\|353\\|354\\|10008, \'__CLASS__\'\\|\'__DIR__\'\\|\'__FILE__\'\\|\'__FUNCTION__\'\\|\'__LINE__\'\\|\'__METHOD__\'\\|\'__NAMESPACE__\'\\|\'__PROPERTY__\'\\|\'__TRAIT__\'\\|\'class\'\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Casing/MagicConstantCasingFixer.php',
 ];
@@ -512,21 +512,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset \'normalized\' might not exist on array\\<\'normalized\'\\|\'originalIndex\'\\|\'tokens\'\\|int\\<0, max\\>, int\\|list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\>\\.$#',
-    'count' => 6,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedInterfacesFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset \'originalIndex\' might not exist on array\\<\'normalized\'\\|\'originalIndex\'\\|\'tokens\'\\|int\\<0, max\\>, int\\|list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\>\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedInterfacesFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset \'tokens\' might not exist on array\\<\'normalized\'\\|\'originalIndex\'\\|\'tokens\'\\|int\\<0, max\\>, int\\|list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\|PhpCsFixer\\\\Tokenizer\\\\Token\\|string\\>\\.$#',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedInterfacesFixer.php',
-];
-$ignoreErrors[] = [
     'message' => '#^Offset int might not exist on array\\<int, PhpCsFixer\\\\Tokenizer\\\\Tokens\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedTraitsFixer.php',
@@ -557,7 +542,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/ControlStructure/NoBreakCommentFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset int\\|null might not exist on array\\<int\\|string, bool\\|null\\>\\.$#',
+    'message' => '#^Offset int might not exist on array\\<int\\|string, bool\\|null\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ControlStructure/YodaStyleFixer.php',
 ];
@@ -1002,12 +987,12 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Whitespace/IndentationTypeFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset int\\<1, max\\> might not exist on list\\<string\\>\\.$#',
+    'message' => '#^Offset int might not exist on array\\<int, callable\\(int\\)\\: void\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Whitespace/NoExtraBlankLinesFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset int\\|null might not exist on array\\<int, callable\\(int\\)\\: void\\>\\.$#',
+    'message' => '#^Offset int\\<1, max\\> might not exist on list\\<string\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Whitespace/NoExtraBlankLinesFixer.php',
 ];
@@ -1132,7 +1117,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Tokenizer/Tokens.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset int might not exist on non\\-empty\\-array\\<\'\'\\|int, array\\<int, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\>\\.$#',
+    'message' => '#^Offset int might not exist on non\\-empty\\-array\\<int, array\\<int, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Tokenizer/Tokens.php',
 ];

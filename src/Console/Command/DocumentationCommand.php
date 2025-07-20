@@ -29,10 +29,14 @@ use Symfony\Component\Finder\Finder;
 /**
  * @internal
  */
-#[AsCommand(name: 'documentation')]
+#[AsCommand(name: 'documentation', description: 'Dumps the documentation of the project into its "/doc" directory.')]
 final class DocumentationCommand extends Command
 {
+    /** @TODO PHP 8.0 - remove the property */
     protected static $defaultName = 'documentation';
+
+    /** @TODO PHP 8.0 - remove the property */
+    protected static $defaultDescription = 'Dumps the documentation of the project into its "/doc" directory.';
 
     private Filesystem $filesystem;
 
@@ -44,10 +48,7 @@ final class DocumentationCommand extends Command
 
     protected function configure(): void
     {
-        $this
-            ->setAliases(['doc'])
-            ->setDescription('Dumps the documentation of the project into its "/doc" directory.')
-        ;
+        $this->setAliases(['doc']);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
