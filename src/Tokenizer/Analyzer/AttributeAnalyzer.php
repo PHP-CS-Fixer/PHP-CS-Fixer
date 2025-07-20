@@ -89,7 +89,6 @@ final class AttributeAnalyzer
             $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $prevIndex);
         }
 
-        /** @var list<AttributeAnalysis> $elements */
         $elements = [];
 
         $openingIndex = $index;

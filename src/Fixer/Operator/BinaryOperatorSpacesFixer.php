@@ -713,7 +713,6 @@ $array = [
         $yieldFoundSinceLastPlaceholder = false;
 
         for ($index = $startAt; $index < $endAt; ++$index) {
-            /** @var Token $token */
             $token = $tokens[$index];
             $content = $token->getContent();
 

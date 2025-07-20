@@ -25,7 +25,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * @internal
@@ -79,7 +78,6 @@ final class DocumentationCommand extends Command
             );
         }
 
-        /** @var SplFileInfo $file */
         foreach (
             (new Finder())->files()
                 ->in($locator->getFixersDocumentationDirectoryPath())
@@ -97,7 +95,6 @@ final class DocumentationCommand extends Command
 
         // RuleSet docs.
 
-        /** @var SplFileInfo $file */
         foreach ((new Finder())->files()->in($locator->getRuleSetsDocumentationDirectoryPath()) as $file) {
             $this->filesystem->remove($file->getPathname());
         }
