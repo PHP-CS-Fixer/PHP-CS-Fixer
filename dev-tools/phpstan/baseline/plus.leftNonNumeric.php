@@ -1,7 +1,5 @@
 <?php declare(strict_types = 1);
 
-// total 9 errors
-
 $ignoreErrors = [];
 $ignoreErrors[] = [
     'message' => '#^Only numeric types are allowed in \\+, int\\|false given on the left side\\.$#',
