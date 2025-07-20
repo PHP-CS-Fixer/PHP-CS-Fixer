@@ -1,7 +1,5 @@
 <?php declare(strict_types = 1);
 
-// total 63 errors
-
 $ignoreErrors = [];
 $ignoreErrors[] = [
     'message' => '#^Parameter \\#2 \\$offset of function substr expects int, int\\<0, max\\>\\|false given\\.$#',

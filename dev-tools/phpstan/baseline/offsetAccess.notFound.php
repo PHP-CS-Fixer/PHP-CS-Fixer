@@ -1,7 +1,5 @@
 <?php declare(strict_types = 1);
 
-// total 347 errors
-
 $ignoreErrors = [];
 $ignoreErrors[] = [
     'message' => '#^Offset 1 might not exist on list\\<int\\>\\.$#',

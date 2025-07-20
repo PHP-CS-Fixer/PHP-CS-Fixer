@@ -1,7 +1,5 @@
 <?php declare(strict_types = 1);
 
-// total 1 error
-
 $ignoreErrors = [];
 $ignoreErrors[] = [
     'message' => '#^Generator expects value type array\\<int, PhpCsFixer\\\\Tokenizer\\\\Tokens\\>, array\\<int\\|string, PhpCsFixer\\\\Tokenizer\\\\Tokens\\> given\\.$#',
