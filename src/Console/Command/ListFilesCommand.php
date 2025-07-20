@@ -75,7 +75,6 @@ final class ListFilesCommand extends Command
 
         $finder = $resolver->getFinder();
 
-        /** @var \SplFileInfo $file */
         foreach ($finder as $file) {
             if ($file->isFile()) {
                 $relativePath = './'.Path::makeRelative($file->getRealPath(), $cwd);

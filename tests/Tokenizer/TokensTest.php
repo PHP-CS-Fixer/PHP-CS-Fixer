@@ -514,7 +514,6 @@ final class TokensTest extends TestCase
             PHP;
         $tokens = Tokens::fromCode($source);
 
-        /** @var array<int, Token> $found */
         $found = $tokens->findGivenKind(\T_CLASS);
         self::assertCount(1, $found);
         self::assertArrayHasKey(1, $found);

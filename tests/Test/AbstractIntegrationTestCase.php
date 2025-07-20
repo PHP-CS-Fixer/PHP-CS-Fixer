@@ -173,7 +173,6 @@ abstract class AbstractIntegrationTestCase extends TestCase
 
         $factory = static::createIntegrationCaseFactory();
 
-        /** @var SplFileInfo $file */
         foreach (Finder::create()->files()->in($fixturesDir) as $file) {
             if ('test' !== $file->getExtension()) {
                 continue;

@@ -149,7 +149,6 @@ namespace {
             }
         }
 
-        /** @var list<string> */
         $constantsToEscape = array_diff(
             array_unique($constantsToEscape),
             $uniqueConfiguredExclude
@@ -193,7 +192,6 @@ namespace {
         $namespaces = $tokens->getNamespaceDeclarations();
 
         // 'scope' is 'namespaced' here
-        /** @var NamespaceAnalysis $namespace */
         foreach (array_reverse($namespaces) as $namespace) {
             if ($namespace->isGlobalNamespace()) {
                 continue;

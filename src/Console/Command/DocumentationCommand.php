@@ -78,7 +78,6 @@ final class DocumentationCommand extends Command
             );
         }
 
-        /** @var SplFileInfo $file */
         foreach (
             (new Finder())->files()
                 ->in($locator->getFixersDocumentationDirectoryPath())
@@ -96,7 +95,6 @@ final class DocumentationCommand extends Command
 
         // RuleSet docs.
 
-        /** @var SplFileInfo $file */
         foreach ((new Finder())->files()->in($locator->getRuleSetsDocumentationDirectoryPath()) as $file) {
             $this->filesystem->remove($file->getPathname());
         }

@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-// total 485 errors
+// total 484 errors
 return ['includes' => [
     __DIR__ . '/argument.type.php',
     __DIR__ . '/argument.unpackNonIterable.php',
@@ -19,5 +19,4 @@ return ['includes' => [
     __DIR__ . '/return.type.php',
     __DIR__ . '/smaller.alwaysFalse.php',
     __DIR__ . '/staticMethod.impossibleType.php',
-    __DIR__ . '/varTag.nativeType.php',
 ]];
