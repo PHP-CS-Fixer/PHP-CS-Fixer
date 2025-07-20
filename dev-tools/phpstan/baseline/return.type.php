@@ -1,27 +1,12 @@
 <?php declare(strict_types = 1);
 
-// total 19 errors
+// total 16 errors
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
     'message' => '#^Method PhpCsFixer\\\\Config\\:\\:getFinder\\(\\) should return PhpCsFixer\\\\Finder but returns iterable\\<SplFileInfo\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Config.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Method PhpCsFixer\\\\Error\\\\ErrorsManager\\:\\:getExceptionErrors\\(\\) should return list\\<PhpCsFixer\\\\Error\\\\Error\\> but returns array\\<int\\<0, max\\>, PhpCsFixer\\\\Error\\\\Error\\>\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Error/ErrorsManager.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Method PhpCsFixer\\\\Error\\\\ErrorsManager\\:\\:getInvalidErrors\\(\\) should return list\\<PhpCsFixer\\\\Error\\\\Error\\> but returns array\\<int\\<0, max\\>, PhpCsFixer\\\\Error\\\\Error\\>\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Error/ErrorsManager.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Method PhpCsFixer\\\\Error\\\\ErrorsManager\\:\\:getLintErrors\\(\\) should return list\\<PhpCsFixer\\\\Error\\\\Error\\> but returns array\\<int\\<0, max\\>, PhpCsFixer\\\\Error\\\\Error\\>\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Error/ErrorsManager.php',
 ];
 $ignoreErrors[] = [
     'message' => '#^Method PhpCsFixer\\\\Fixer\\\\AbstractPhpUnitFixer\\:\\:addInternalAnnotation\\(\\) should return list\\<PhpCsFixer\\\\DocBlock\\\\Line\\> but returns non\\-empty\\-list\\<PhpCsFixer\\\\DocBlock\\\\Line\\|non\\-falsy\\-string\\>\\.$#',
