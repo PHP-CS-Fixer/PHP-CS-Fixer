@@ -53,10 +53,14 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @internal
  */
-#[AsCommand(name: 'describe')]
+#[AsCommand(name: 'describe', description: 'Describe rule / ruleset.')]
 final class DescribeCommand extends Command
 {
+    /** @TODO PHP 8.0 - remove the property */
     protected static $defaultName = 'describe';
+
+    /** @TODO PHP 8.0 - remove the property */
+    protected static $defaultDescription = 'Describe rule / ruleset.';
 
     /**
      * @var ?list<string>
@@ -84,15 +88,12 @@ final class DescribeCommand extends Command
 
     protected function configure(): void
     {
-        $this
-            ->setDefinition(
-                [
-                    new InputArgument('name', InputArgument::REQUIRED, 'Name of rule / set.'),
-                    new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
-                ]
-            )
-            ->setDescription('Describe rule / ruleset.')
-        ;
+        $this->setDefinition(
+            [
+                new InputArgument('name', InputArgument::REQUIRED, 'Name of rule / set.'),
+                new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
+            ]
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -149,7 +150,6 @@ final class DescribeCommand extends Command
             throw new DescribeNameNotFoundException($name, 'rule');
         }
 
-        /** @var FixerInterface $fixer */
         $fixer = $fixers[$name];
 
         $definition = $fixer->getDefinition();
@@ -264,7 +264,6 @@ final class DescribeCommand extends Command
             $output->writeln('');
         }
 
-        /** @var list<CodeSampleInterface> $codeSamples */
         $codeSamples = array_filter($definition->getCodeSamples(), static function (CodeSampleInterface $codeSample): bool {
             if ($codeSample instanceof VersionSpecificCodeSampleInterface) {
                 return $codeSample->isSuitableFor(\PHP_VERSION_ID);
@@ -382,7 +381,6 @@ final class DescribeCommand extends Command
                 continue;
             }
 
-            /** @var FixerInterface $fixer */
             $fixer = $fixers[$rule];
 
             $definition = $fixer->getDefinition();

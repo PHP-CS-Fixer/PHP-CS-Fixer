@@ -260,7 +260,6 @@ mbereg_search_getregs();
         $functionsAnalyzer = new FunctionsAnalyzer();
         $argumentsAnalyzer = new ArgumentsAnalyzer();
 
-        /** @var Token $token */
         foreach ($tokens->findGivenKind(\T_STRING) as $index => $token) {
             // check mapping hit
             $tokenContent = strtolower($token->getContent());
