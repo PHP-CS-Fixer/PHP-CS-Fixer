@@ -34,10 +34,14 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @internal
  */
-#[AsCommand(name: 'self-update')]
+#[AsCommand(name: 'self-update', description: 'Update php-cs-fixer.phar to the latest stable version.')]
 final class SelfUpdateCommand extends Command
 {
+    /** @TODO PHP 8.0 - remove the property */
     protected static $defaultName = 'self-update';
+
+    /** @TODO PHP 8.0 - remove the property */
+    protected static $defaultDescription = 'Update php-cs-fixer.phar to the latest stable version.';
 
     private NewVersionCheckerInterface $versionChecker;
 
@@ -66,7 +70,6 @@ final class SelfUpdateCommand extends Command
                     new InputOption('--force', '-f', InputOption::VALUE_NONE, 'Force update to next major version if available.'),
                 ]
             )
-            ->setDescription('Update php-cs-fixer.phar to the latest stable version.')
             ->setHelp(
                 <<<'EOT'
                     The <info>%command.name%</info> command replace your php-cs-fixer.phar by the
