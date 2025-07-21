@@ -14,17 +14,9 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractMigrationSetDescription;
+use PhpCsFixer\RuleSet\AbstractMajorMinorDeprecationSetDescription;
 
 /**
  * @internal
  */
-final class PHP56MigrationRiskySet extends AbstractMigrationSetDescription
-{
-    public function getRules(): array
-    {
-        return [
-            'pow_to_exponentiation' => true,
-        ];
-    }
-}
+final class PHP56MigrationRiskySet extends AbstractMajorMinorDeprecationSetDescription {}

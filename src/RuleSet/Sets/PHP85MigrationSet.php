@@ -14,18 +14,9 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractMigrationSetDescription;
+use PhpCsFixer\RuleSet\AbstractMajorMinorDeprecationSetDescription;
 
 /**
  * @internal
  */
-final class PHP85MigrationSet extends AbstractMigrationSetDescription
-{
-    public function getRules(): array
-    {
-        return [
-            '@PHP84Migration' => true,
-            'switch_case_semicolon_to_colon' => true,
-        ];
-    }
-}
+final class PHP85MigrationSet extends AbstractMajorMinorDeprecationSetDescription {}

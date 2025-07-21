@@ -14,20 +14,9 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractMigrationSetDescription;
+use PhpCsFixer\RuleSet\AbstractMajorMinorDeprecationSetDescription;
 
 /**
  * @internal
  */
-final class PHP74MigrationSet extends AbstractMigrationSetDescription
-{
-    public function getRules(): array
-    {
-        return [
-            '@PHP73Migration' => true,
-            'assign_null_coalescing_to_coalesce_equal' => true,
-            'normalize_index_brace' => true,
-            'short_scalar_cast' => true,
-        ];
-    }
-}
+final class PHP74MigrationSet extends AbstractMajorMinorDeprecationSetDescription {}

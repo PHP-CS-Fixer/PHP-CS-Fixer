@@ -14,18 +14,9 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractMigrationSetDescription;
+use PhpCsFixer\RuleSet\AbstractMajorMinorDeprecationSetDescription;
 
 /**
  * @internal
  */
-final class PHP82MigrationSet extends AbstractMigrationSetDescription
-{
-    public function getRules(): array
-    {
-        return [
-            '@PHP81Migration' => true,
-            'simple_to_complex_string_variable' => true,
-        ];
-    }
-}
+final class PHP82MigrationSet extends AbstractMajorMinorDeprecationSetDescription {}

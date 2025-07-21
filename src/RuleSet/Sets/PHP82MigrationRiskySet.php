@@ -14,18 +14,9 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractMigrationSetDescription;
+use PhpCsFixer\RuleSet\AbstractMajorMinorDeprecationSetDescription;
 
 /**
  * @internal
  */
-final class PHP82MigrationRiskySet extends AbstractMigrationSetDescription
-{
-    public function getRules(): array
-    {
-        return [
-            '@PHP80Migration:risky' => true,
-            'phpdoc_readonly_class_comment_to_keyword' => true,
-        ];
-    }
-}
+final class PHP82MigrationRiskySet extends AbstractMajorMinorDeprecationSetDescription {}
