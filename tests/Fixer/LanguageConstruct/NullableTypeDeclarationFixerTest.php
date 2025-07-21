@@ -350,8 +350,9 @@ class Foo
      */
     public static function provideFix84Cases(): iterable
     {
-        $codeWithQuestionMarks = <<<'PHP'
-            <?php class Foo {
+        $asymmetricVisibilityWithQuestionMarks = <<<'PHP'
+            <?php class Foo
+            {
                 public public(set) ?int $a;
                 public protected(set) ?int $b;
                 public private(set) ?int $c;
@@ -361,8 +362,9 @@ class Foo
             }
             PHP;
 
-        $codeWithNullUnionType = <<<'PHP'
-            <?php class Foo {
+        $asymmetricVisibilityWithNullUnionType = <<<'PHP'
+            <?php class Foo
+            {
                 public public(set) null|int $a;
                 public protected(set) null|int $b;
                 public private(set) null|int $c;
@@ -372,14 +374,55 @@ class Foo
             }
             PHP;
 
-        yield 'asymmetric visibility - fix to `?`' => [
-            $codeWithQuestionMarks,
-            $codeWithNullUnionType,
+        yield 'asymmetric visibility - fix `null|T` to `?T`' => [
+            $asymmetricVisibilityWithQuestionMarks,
+            $asymmetricVisibilityWithNullUnionType,
         ];
 
-        yield 'asymmetric visibility - fix to `null`' => [
-            $codeWithNullUnionType,
-            $codeWithQuestionMarks,
+        yield 'asymmetric visibility - fix `T|null` to `?T`' => [
+            $asymmetricVisibilityWithQuestionMarks,
+            str_replace('null|int', 'int|null', $asymmetricVisibilityWithNullUnionType),
+        ];
+
+        yield 'asymmetric visibility - fix `?T` to `null|T`' => [
+            $asymmetricVisibilityWithNullUnionType,
+            $asymmetricVisibilityWithQuestionMarks,
+            ['syntax' => 'union'],
+        ];
+
+        $abstractAndFinalPropertiesWithQuestionMarks = <<<'PHP'
+            <?php abstract class Foo
+            {
+                abstract public ?int $abstractPublic { set; }
+                public abstract ?int $publicAbstract { set; }
+                final protected ?int $finalProtected { set(?int $x) { $this->finalProtected = $x; } }
+                protected final ?int $protectedFinal { set(?int $i) { $this->protectedFinal = $x; } }
+            }
+            PHP;
+
+        $abstractAndFinalPropertiesWithNullUnionType = <<<'PHP'
+            <?php abstract class Foo
+            {
+                abstract public null|int $abstractPublic { set; }
+                public abstract null|int $publicAbstract { set; }
+                final protected null|int $finalProtected { set(?int $x) { $this->finalProtected = $x; } }
+                protected final null|int $protectedFinal { set(?int $i) { $this->protectedFinal = $x; } }
+            }
+            PHP;
+
+        yield 'abstract and final properties - fix `null|T` to `?T`' => [
+            $abstractAndFinalPropertiesWithQuestionMarks,
+            $abstractAndFinalPropertiesWithNullUnionType,
+        ];
+
+        yield 'abstract and final properties - fix `T|null` to `?T`' => [
+            $abstractAndFinalPropertiesWithQuestionMarks,
+            str_replace('null|int', 'int|null', $abstractAndFinalPropertiesWithNullUnionType),
+        ];
+
+        yield 'abstract and final properties - fix `?T` to `null|T`' => [
+            $abstractAndFinalPropertiesWithNullUnionType,
+            $abstractAndFinalPropertiesWithQuestionMarks,
             ['syntax' => 'union'],
         ];
     }
