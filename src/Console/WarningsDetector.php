@@ -62,7 +62,7 @@ final class WarningsDetector
     public function detectNonMonolithic(): void
     {
         if (filter_var(getenv('PHP_CS_FIXER_NON_MONOLITHIC'), \FILTER_VALIDATE_BOOL)) {
-            $this->warnings[] = 'Processing non-monolithic files, because `PHP_CS_FIXER_NON_MONOLITHIC` is set. Execution result may be unpredictable - non-monolithic files are not officially supported.';
+            $this->warnings[] = 'Processing non-monolithic files enabled, because `PHP_CS_FIXER_NON_MONOLITHIC` is set. Execution result may be unpredictable - non-monolithic files are not officially supported.';
         }
     }
 
