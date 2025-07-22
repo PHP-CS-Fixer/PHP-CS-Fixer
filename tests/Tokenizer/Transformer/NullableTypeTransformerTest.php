@@ -273,5 +273,49 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
                 }
                 PHP,
         ];
+
+        yield 'abstract properties' => [
+            [
+                13 => CT::T_NULLABLE_TYPE,
+                29 => CT::T_NULLABLE_TYPE,
+                45 => CT::T_NULLABLE_TYPE,
+                61 => CT::T_NULLABLE_TYPE,
+                77 => CT::T_NULLABLE_TYPE,
+                93 => CT::T_NULLABLE_TYPE,
+            ],
+            <<<'PHP'
+                <?php
+                abstract class Foo {
+                    abstract public ?bool $b1 { set; }
+                    public abstract ?bool $b2 { set; }
+                    abstract protected ?int $i1 { set; }
+                    protected abstract ?int $i2 { set; }
+                    abstract private ?string $s1 { set; }
+                    private abstract ?string $s2 { set; }
+                }
+                PHP,
+        ];
+
+        yield 'final properties' => [
+            [
+                11 => CT::T_NULLABLE_TYPE,
+                31 => CT::T_NULLABLE_TYPE,
+                51 => CT::T_NULLABLE_TYPE,
+                71 => CT::T_NULLABLE_TYPE,
+                91 => CT::T_NULLABLE_TYPE,
+                111 => CT::T_NULLABLE_TYPE,
+            ],
+            <<<'PHP'
+                <?php
+                class Foo {
+                    final public ?bool $b1 { get => 0; }
+                    public final ?bool $b2 { get => 0; }
+                    final protected ?int $i1 { get => 0; }
+                    protected final ?int $i2 { get => 0; }
+                    final private ?string $s1 { get => 0; }
+                    private final ?string $s2 { get => 0; }
+                }
+                PHP,
+        ];
     }
 }
