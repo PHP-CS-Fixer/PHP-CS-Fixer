@@ -48,7 +48,7 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
     'message' => '#^Offset string might not exist on array\\<string, PhpCsFixer\\\\RuleSet\\\\RuleSetDescriptionInterface\\>\\.$#',
-    'count' => 4,
+    'count' => 1,
     'path' => __DIR__ . '/../../../src/Console/Command/DescribeCommand.php',
 ];
 $ignoreErrors[] = [
