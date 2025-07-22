@@ -43,6 +43,8 @@ final class NullableTypeTransformer extends AbstractTransformer
         [\T_VAR],
         [\T_STATIC],
         [\T_CONST],
+        [\T_ABSTRACT],
+        [\T_FINAL],
         [FCT::T_READONLY],
         [FCT::T_PRIVATE_SET],
         [FCT::T_PROTECTED_SET],
