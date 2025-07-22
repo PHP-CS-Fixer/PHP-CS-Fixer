@@ -338,6 +338,7 @@ final class DescribeCommand extends Command
             $ruleSetDefinitions = RuleSets::getSetDefinitions();
 
             foreach ($ruleSetConfigs as $set => $config) {
+                \assert(isset($ruleSetDefinitions[$set]));
                 $ruleSetDescription = $ruleSetDefinitions[$set];
                 $deprecatedDesc = ($ruleSetDescription instanceof DeprecatedRuleSetDescriptionInterface) ? ' *(deprecated)*' : '';
                 if (null !== $config) {
