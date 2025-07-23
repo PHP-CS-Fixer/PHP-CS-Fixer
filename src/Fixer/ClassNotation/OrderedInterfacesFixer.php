@@ -161,13 +161,14 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
             $implementsStart = $index + 1;
             $implementsEnd = $tokens->getPrevMeaningfulToken($tokens->getNextTokenOfKind($implementsStart, ['{']));
 
-            $interfaces = $this->getInterfaces($tokens, $implementsStart, $implementsEnd);
+            $interfacesTokens = $this->getInterfaces($tokens, $implementsStart, $implementsEnd);
 
-            if (1 === \count($interfaces)) {
+            if (1 === \count($interfacesTokens)) {
                 continue;
             }
 
-            foreach ($interfaces as $interfaceIndex => $interface) {
+            $interfaces = [];
+            foreach ($interfacesTokens as $interfaceIndex => $interface) {
                 $interfaceTokens = Tokens::fromArray($interface);
                 $normalized = '';
                 $actualInterfaceIndex = $interfaceTokens->getNextMeaningfulToken(-1);

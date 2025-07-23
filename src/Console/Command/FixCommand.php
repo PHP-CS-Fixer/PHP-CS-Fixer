@@ -53,8 +53,10 @@ use Symfony\Component\Stopwatch\Stopwatch;
 #[AsCommand(name: 'fix', description: 'Fixes a directory or a file.')]
 /* final */ class FixCommand extends Command
 {
+    /** @TODO PHP 8.0 - remove the property */
     protected static $defaultName = 'fix';
 
+    /** @TODO PHP 8.0 - remove the property */
     protected static $defaultDescription = 'Fixes a directory or a file.';
 
     private EventDispatcherInterface $eventDispatcher;
@@ -331,7 +333,10 @@ use Symfony\Component\Stopwatch\Stopwatch;
             }
         }
 
-        $finder = new \ArrayIterator(iterator_to_array($resolver->getFinder()));
+        $finder = new \ArrayIterator(array_filter(
+            iterator_to_array($resolver->getFinder()),
+            static fn (\SplFileInfo $fileInfo) => false !== $fileInfo->getRealPath(),
+        ));
 
         if (null !== $stdErr && $resolver->configFinderIsOverridden()) {
             $stdErr->writeln(

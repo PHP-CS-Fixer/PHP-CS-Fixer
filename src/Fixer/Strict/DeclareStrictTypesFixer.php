@@ -80,8 +80,6 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
      */
     private function fixStrictTypesCasingAndValue(Tokens $tokens, array $sequence): void
     {
-        /** @var int $index */
-        /** @var Token $token */
         foreach ($sequence as $index => $token) {
             if ($token->isGivenKind(\T_STRING)) {
                 $tokens[$index] = new Token([\T_STRING, strtolower($token->getContent())]);
