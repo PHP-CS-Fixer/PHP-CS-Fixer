@@ -70,6 +70,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
                     $a = 1 ? "aaa" : "bbb";
                     $b = 1 ? fnc() : [];
                     $c = 1 ?: [];
+                    $a instanceof static ? "aaa" : "bbb";
                 ',
         ];
 
