@@ -32,6 +32,7 @@ use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
+use Symfony\Component\String\ByteString;
 
 /**
  * @readonly
@@ -238,7 +239,7 @@ final class FixerDocumentGenerator
 
             foreach ($ruleSetConfigs as $set => $config) {
                 $ruleSetPath = $this->locator->getRuleSetsDocumentationFilePath($set);
-                $ruleSetPath = substr($ruleSetPath, strrpos($ruleSetPath, '/'));
+                $ruleSetPath = (new ByteString($ruleSetPath))->afterLast('/', true);
 
                 $configInfo = (null !== $config)
                     ? " with config:\n\n  ``".Utils::toString($config)."``\n"
@@ -255,9 +256,9 @@ final class FixerDocumentGenerator
         $reflectionObject = new \ReflectionObject($fixer);
         $className = str_replace('\\', '\\\\', $reflectionObject->getName());
         $fileName = $reflectionObject->getFileName();
-        $fileName = str_replace('\\', '/', $fileName);
-        $fileName = substr($fileName, strrpos($fileName, '/src/Fixer/') + 1);
-        $fileName = "`{$className} <./../../../{$fileName}>`_";
+        \assert(\is_string($fileName));
+        $fileName = (new ByteString($fileName))->replace('\\', '/')->afterLast('/src/Fixer/', true);
+        $fileName = "`{$className} <./../../..{$fileName}>`_";
 
         $testFileName = Preg::replace('~.*\K/src/(?=Fixer/)~', '/tests/', $fileName);
         $testFileName = Preg::replace('~PhpCsFixer\\\\\\\\\K(?=Fixer\\\\\\\)~', 'Tests\\\\\\\\', $testFileName);
