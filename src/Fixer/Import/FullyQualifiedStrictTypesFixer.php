@@ -503,7 +503,8 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         // try to shorten the name using uses
         $tmp = new ByteString($fqcn);
         for ($i = substr_count($fqcn, '\\'); $i >= $iMin; --$i) {
-            if (null !== $cachedName = ($this->cacheUseShortNameByNameLower[$importKind][$tmp->lower()->toString()] ?? null)) {
+            $cachedName = ($this->cacheUseShortNameByNameLower[$importKind][$tmp->lower()->toString()] ?? null);
+            if (null !== $cachedName) {
                 $tmpRes = $cachedName.substr($fqcn, $tmp->length());
                 if (!$this->isReservedIdentifier($tmpRes)) {
                     $res = $tmpRes;
