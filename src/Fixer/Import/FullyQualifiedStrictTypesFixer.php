@@ -572,7 +572,6 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                 while (true) {
                     $shortEndNameLower = $symbol->afterLast('\\')->lower()->toString();
                     if (!isset($discoveredFqcnByShortNameLower[$kind][$shortEndNameLower])) {
-                        // $shortStartNameLower = strtolower(explode('\\', $symbol->trimStart('\\')->toString(), 2)[0]);
                         $shortStartNameLower = $symbol->trimStart('\\')->before('\\')->lower()->toString();
                         if (('' === $namespaceName && !isset($useByShortNameLower[$shortStartNameLower]))
                             || $symbol->startsWith('\\') || !$symbol->containsAny('\\')
