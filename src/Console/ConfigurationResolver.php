@@ -232,7 +232,8 @@ final class ConfigurationResolver
                 }
 
                 $configFileBasename = basename($configFile);
-                // @TODO v4 drop handling (triggering error) for v2 config names
+
+                /** @TODO v4 drop handling (triggering error) for v2 config names */
                 $deprecatedConfigs = [
                     '.php_cs' => '.php-cs-fixer.php',
                     '.php_cs.dist' => '.php-cs-fixer.dist.php',
