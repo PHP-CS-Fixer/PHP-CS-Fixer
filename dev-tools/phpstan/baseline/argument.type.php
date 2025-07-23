@@ -68,16 +68,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
     'message' => '#^Parameter \\#2 \\$offset of function substr expects int, int\\|false given\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Documentation/FixerDocumentGenerator.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Parameter \\#3 \\$subject of function str_replace expects array\\<string\\>\\|string, string\\|false given\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Documentation/FixerDocumentGenerator.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Parameter \\#2 \\$offset of function substr expects int, int\\|false given\\.$#',
     'count' => 2,
     'path' => __DIR__ . '/../../../src/Documentation/RuleSetDocumentationGenerator.php',
 ];
@@ -130,11 +120,6 @@ $ignoreErrors[] = [
     'message' => '#^Parameter \\#1 \\$possibleKind of method PhpCsFixer\\\\Tokenizer\\\\Token\\:\\:isGivenKind\\(\\) expects int\\|list\\<int\\>, list\\<int\\|string\\> given\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ControlStructure/YodaStyleFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Parameter \\#3 \\$length of function substr expects int\\|null, int\\|false given\\.$#',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Fixer/Import/FullyQualifiedStrictTypesFixer.php',
 ];
 $ignoreErrors[] = [
     'message' => '#^Parameter \\#1 \\$types of method PhpCsFixer\\\\DocBlock\\\\Annotation\\:\\:setTypes\\(\\) expects list\\<string\\>, array\\<int\\<0, max\\>, string\\> given\\.$#',
