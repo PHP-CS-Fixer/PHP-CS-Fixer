@@ -456,6 +456,40 @@ class Foo
         ];
     }
 
+    /**
+     * @requires PHP 8.5
+     *
+     * @dataProvider provideArgumentInfo85Cases
+     */
+    public function testArgumentInfo85(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void
+    {
+        $this->testArgumentInfo($code, $openIndex, $closeIndex, $expected);
+    }
+
+    /**
+     * @return iterable<string, array{string, int, int, ArgumentAnalysis}>
+     */
+    public static function provideArgumentInfo85Cases(): iterable
+    {
+        yield 'final promoted properties' => [
+            '<?php class Foo { public function __construct(
+                    public final Bar $x,
+                ) {} }',
+            13,
+            20,
+            new ArgumentAnalysis(
+                '$x',
+                20,
+                null,
+                new TypeAnalysis(
+                    'finalBar',
+                    16,
+                    18,
+                ),
+            ),
+        ];
+    }
+
     private static function assertArgumentAnalysis(ArgumentAnalysis $expected, ArgumentAnalysis $actual): void
     {
         self::assertSame($expected->getDefault(), $actual->getDefault(), 'Default.');
