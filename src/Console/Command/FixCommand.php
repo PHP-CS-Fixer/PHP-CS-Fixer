@@ -26,6 +26,9 @@ use PhpCsFixer\Console\Output\Progress\ProgressOutputType;
 use PhpCsFixer\Console\Report\FixReport\ReporterFactory;
 use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Error\ErrorsManager;
+use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerFactory;
+use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Runner\Event\FileProcessed;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\Runner\Runner;
@@ -215,18 +218,24 @@ use Symfony\Component\Stopwatch\Stopwatch;
         $this->setDefinition(
             [
                 new InputArgument('path', InputArgument::IS_ARRAY, 'The path(s) that rules will be run against (each path can be a file or directory).'),
-                new InputOption('path-mode', '', InputOption::VALUE_REQUIRED, 'Specify path mode (can be `override` or `intersection`).', ConfigurationResolver::PATH_MODE_OVERRIDE),
-                new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be `yes` or `no`).'),
+                new InputOption('path-mode', '', InputOption::VALUE_REQUIRED, 'Specify path mode (can be `override` or `intersection`).', ConfigurationResolver::PATH_MODE_OVERRIDE, [ConfigurationResolver::PATH_MODE_OVERRIDE, ConfigurationResolver::PATH_MODE_INTERSECTION]),
+                new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be `yes` or `no`).', null, ['yes', 'no']),
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a config file.'),
                 new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified.'),
-                new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'List of rules that should be run against configured paths.'),
-                new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Should cache be used (can be `yes` or `no`).'),
-                new InputOption('allow-unsupported-php-version', '', InputOption::VALUE_REQUIRED, 'Should the command refuse to run on unsupported PHP version (can be `yes` or `no`).'),
+                new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'List of rules that should be run against configured paths.', null, function () {
+                    $fixerFactory = new FixerFactory();
+                    $fixerFactory->registerBuiltInFixers();
+                    $fixers = array_map(fn (FixerInterface $fixer) => $fixer->getName(), $fixerFactory->getFixers());
+
+                    return array_merge(RuleSets::getSetDefinitionNames(), $fixers);
+                }),
+                new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Should cache be used (can be `yes` or `no`).', null, ['yes', 'no']),
+                new InputOption('allow-unsupported-php-version', '', InputOption::VALUE_REQUIRED, 'Should the command refuse to run on unsupported PHP version (can be `yes` or `no`).', null, ['yes', 'no']),
                 new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file.'),
                 new InputOption('diff', '', InputOption::VALUE_NONE, 'Prints diff for each file.'),
-                new InputOption('format', '', InputOption::VALUE_REQUIRED, \sprintf('To output results in other formats (can be %s).', implode(', ', array_map(static fn ($format) => \sprintf('`%s`', $format), $formats)))),
+                new InputOption('format', '', InputOption::VALUE_REQUIRED, \sprintf('To output results in other formats (can be %s).', implode(', ', array_map(static fn ($format) => \sprintf('`%s`', $format), $formats))), null, $formats),
                 new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
-                new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, dots).'),
+                new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, dots).', null, fn () => ProgressOutputType::all()),
                 new InputOption('sequential', '', InputOption::VALUE_NONE, 'Enforce sequential analysis.'),
             ]
         );

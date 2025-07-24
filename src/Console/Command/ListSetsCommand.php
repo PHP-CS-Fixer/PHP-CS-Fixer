@@ -50,7 +50,7 @@ final class ListSetsCommand extends Command
 
         $this->setDefinition(
             [
-                new InputOption('format', '', InputOption::VALUE_REQUIRED, \sprintf('To output results in other formats (can be %s).', implode(', ', array_map(static fn ($format) => \sprintf('`%s`', $format), $formats))), (new TextReporter())->getFormat()),
+                new InputOption('format', '', InputOption::VALUE_REQUIRED, \sprintf('To output results in other formats (can be %s).', implode(', ', array_map(static fn ($format) => \sprintf('`%s`', $format), $formats))), (new TextReporter())->getFormat(), $formats),
             ]
         );
     }
