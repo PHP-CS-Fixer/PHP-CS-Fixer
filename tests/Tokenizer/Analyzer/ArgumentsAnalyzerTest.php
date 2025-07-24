@@ -482,8 +482,8 @@ class Foo
                 20,
                 null,
                 new TypeAnalysis(
-                    'finalBar',
-                    16,
+                    'Bar',
+                    18,
                     18,
                 ),
             ),

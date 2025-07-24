@@ -474,29 +474,18 @@ class Foo
             PHP;
 
         yield 'final promoted properties - fix `null|T` to `?T`' => [
+            $finalPromotedPropertiesWithQuestionMarks,
             $finalPromotedPropertiesWithNullUnionType,
         ];
 
         yield 'final promoted properties - fix `T|null` to `?T`' => [
-            <<<'PHP'
-                <?php class Foo
-                {
-                    public function __construct(
-                        ?finalint $a,
-                        ?finalint $b,
-                        ?finalint $c,
-                        public ?finalint $d,
-                        protected ?finalint $e,
-                        private ?finalint $f,
-                    ) {}
-                }
-                PHP,
+            $finalPromotedPropertiesWithQuestionMarks,
             str_replace('null|int', 'int|null', $finalPromotedPropertiesWithNullUnionType),
         ];
 
         yield 'final promoted properties - fix `?T` to `null|T`' => [
+            $finalPromotedPropertiesWithNullUnionType,
             $finalPromotedPropertiesWithQuestionMarks,
-            null,
             ['syntax' => 'union'],
         ];
     }
