@@ -356,7 +356,6 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
                         $extraIndent += 7; // \strlen('static ');
                     }
 
-                    // dump($itemOpeningLine);
                     $line = $item['indent']
                         .' * '
                         .('' !== $itemOpeningLine['hint'] && self::ALIGN_LEFT_MULTILINE !== $this->align ? ' ' : '')
