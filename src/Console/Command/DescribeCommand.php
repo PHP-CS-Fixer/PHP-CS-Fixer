@@ -33,6 +33,7 @@ use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
+use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -334,11 +335,16 @@ final class DescribeCommand extends Command
             $plural = 1 !== \count($ruleSetConfigs) ? 's' : '';
             $output->writeln("Fixer is part of the following rule set{$plural}:");
 
+            $ruleSetDefinitions = RuleSets::getSetDefinitions();
+
             foreach ($ruleSetConfigs as $set => $config) {
+                \assert(isset($ruleSetDefinitions[$set]));
+                $ruleSetDescription = $ruleSetDefinitions[$set];
+                $deprecatedDesc = ($ruleSetDescription instanceof DeprecatedRuleSetDescriptionInterface) ? ' *(deprecated)*' : '';
                 if (null !== $config) {
-                    $output->writeln(\sprintf('* <info>%s</info> with config: <comment>%s</comment>', $set, Utils::toString($config)));
+                    $output->writeln(\sprintf('* <info>%s</info> with config: <comment>%s</comment>', $set.$deprecatedDesc, Utils::toString($config)));
                 } else {
-                    $output->writeln(\sprintf('* <info>%s</info> with <comment>default</comment> config', $set));
+                    $output->writeln(\sprintf('* <info>%s</info> with <comment>default</comment> config', $set.$deprecatedDesc));
                 }
             }
 
@@ -353,22 +359,35 @@ final class DescribeCommand extends Command
         }
 
         $ruleSetDefinitions = RuleSets::getSetDefinitions();
+        $ruleSetDescription = $ruleSetDefinitions[$name];
         $fixers = $this->getFixers();
 
-        $output->writeln(\sprintf('<fg=blue>Description of the <info>`%s`</info> set.</>', $ruleSetDefinitions[$name]->getName()));
+        $output->writeln(\sprintf('<fg=blue>Description of the <info>`%s`</info> set.</>', $ruleSetDescription->getName()));
         $output->writeln('');
 
-        $output->writeln($this->replaceRstLinks($ruleSetDefinitions[$name]->getDescription()));
+        $output->writeln($this->replaceRstLinks($ruleSetDescription->getDescription()));
         $output->writeln('');
 
-        if ($ruleSetDefinitions[$name]->isRisky()) {
+        if ($ruleSetDescription instanceof DeprecatedRuleSetDescriptionInterface) {
+            $successors = $ruleSetDescription->getSuccessorsNames();
+            $message = [] === $successors
+                ? \sprintf('it will be removed in version %d.0', Application::getMajorVersion() + 1)
+                : \sprintf('use %s instead', Utils::naturalLanguageJoinWithBackticks($successors));
+
+            Utils::triggerDeprecation(new \RuntimeException(str_replace('`', '"', "Set \"{$name}\" is deprecated, {$message}.")));
+            $message = Preg::replace('/(`[^`]+`)/', '<info>$1</info>', $message);
+            $output->writeln(\sprintf('<error>DEPRECATED</error>: %s.', $message));
+            $output->writeln('');
+        }
+
+        if ($ruleSetDescription->isRisky()) {
             $output->writeln('<error>This set contains risky rules.</error>');
             $output->writeln('');
         }
 
         $help = '';
 
-        foreach ($ruleSetDefinitions[$name]->getRules() as $rule => $config) {
+        foreach ($ruleSetDescription->getRules() as $rule => $config) {
             if (str_starts_with($rule, '@')) {
                 $set = $ruleSetDefinitions[$rule];
                 $help .= \sprintf(
