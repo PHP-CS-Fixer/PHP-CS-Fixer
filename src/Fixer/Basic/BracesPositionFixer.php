@@ -251,7 +251,7 @@ $bar = function () { $result = true;
 
                 $positionOption = 'control_structures_opening_brace';
             } elseif ($token->isGivenKind(\T_VARIABLE)) {
-                // handle default value - explictly skip array as default value
+                // handle default value - explicitly skip array as default value
                 $nextMeaningfulIndex = $tokens->getNextMeaningfulToken($index);
                 if ($tokens[$nextMeaningfulIndex]->equals('=')) {
                     $nextMeaningfulIndex = $tokens->getNextMeaningfulToken($nextMeaningfulIndex);
@@ -277,6 +277,19 @@ $bar = function () { $result = true;
                     continue;
                 }
 
+                $positionOption = 'control_structures_opening_brace';
+            } elseif ($token->isGivenKind(\T_STRING)) {
+                $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
+                $openBraceIndex = $tokens->getNextMeaningfulToken($parenthesisEndIndex);
+                if (!$tokens[$openBraceIndex]->equals('{')) {
+                    continue;
+                }
+
+                $prevIndex = $tokens->getPrevMeaningfulToken($index);
+                if (!$tokens[$prevIndex]->equalsAny(['}', ';', [CT::T_ATTRIBUTE_CLOSE], [CT::T_PROPERTY_HOOK_BRACE_OPEN]])) {
+                    continue;
+                }
+                $allowSingleLine = true === $this->configuration['allow_single_line_anonymous_functions'];
                 $positionOption = 'control_structures_opening_brace';
             } else {
                 continue;
