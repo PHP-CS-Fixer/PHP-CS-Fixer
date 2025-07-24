@@ -222,10 +222,10 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be `yes` or `no`).', null, ['yes', 'no']),
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a config file.'),
                 new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified.'),
-                new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'List of rules that should be run against configured paths.', null, function () {
+                new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'List of rules that should be run against configured paths.', null, static function () {
                     $fixerFactory = new FixerFactory();
                     $fixerFactory->registerBuiltInFixers();
-                    $fixers = array_map(fn (FixerInterface $fixer) => $fixer->getName(), $fixerFactory->getFixers());
+                    $fixers = array_map(static fn (FixerInterface $fixer) => $fixer->getName(), $fixerFactory->getFixers());
 
                     return array_merge(RuleSets::getSetDefinitionNames(), $fixers);
                 }),
@@ -235,7 +235,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 new InputOption('diff', '', InputOption::VALUE_NONE, 'Prints diff for each file.'),
                 new InputOption('format', '', InputOption::VALUE_REQUIRED, \sprintf('To output results in other formats (can be %s).', implode(', ', array_map(static fn ($format) => \sprintf('`%s`', $format), $formats))), null, $formats),
                 new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
-                new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, dots).', null, fn () => ProgressOutputType::all()),
+                new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, dots).', null, static fn () => ProgressOutputType::all()),
                 new InputOption('sequential', '', InputOption::VALUE_NONE, 'Enforce sequential analysis.'),
             ]
         );
