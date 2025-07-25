@@ -32,6 +32,8 @@ use PhpCsFixer\Utils;
  *
  * @method Token offsetGet($offset)
  *
+ * @phpstan-import-type _TokenKind from Token
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @final
@@ -103,7 +105,7 @@ class Tokens extends \SplFixedArray
      * was ever seen inside the collection (but may not be part of it any longer).
      * The key is token kind and the value is the number of occurrences.
      *
-     * @var array<int|string, int<0, max>>
+     * @var array<_TokenKind, int<0, max>>
      */
     private array $foundTokenKinds = [];
 
@@ -159,10 +161,7 @@ class Tokens extends \SplFixedArray
             }
         }
 
-        // inlined extractTokenKind() call on the hot path
-        $tokenKind = $token->isArray() ? $token->getId() : $token->getContent();
-
-        return $blockEdgeKinds[$tokenKind] ?? null;
+        return $blockEdgeKinds[$token->getKind()] ?? null;
     }
 
     /**
@@ -528,11 +527,11 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * @param int|non-empty-list<int> $possibleKind kind or array of kinds
-     * @param int                     $start        optional offset
-     * @param null|int                $end          optional limit
+     * @param _TokenKind|non-empty-list<_TokenKind> $possibleKind kind or array of kinds
+     * @param int                                   $start        optional offset
+     * @param null|int                              $end          optional limit
      *
-     * @return ($possibleKind is int ? array<int<0, max>, Token> : array<int, array<int<0, max>, Token>>)
+     * @return ($possibleKind is array ? array<_TokenKind, array<int<0, max>, Token>> : array<int<0, max>, Token>)
      */
     public function findGivenKind($possibleKind, int $start = 0, ?int $end = null): array
     {
@@ -553,7 +552,7 @@ class Tokens extends \SplFixedArray
             for ($i = $start; $i < $end; ++$i) {
                 $token = $this[$i];
                 if ($token->isGivenKind($possibleKinds)) {
-                    $elements[$token->getId()][$i] = $token;
+                    $elements[$token->getKind()][$i] = $token;
                 }
             }
         }
@@ -642,9 +641,9 @@ class Tokens extends \SplFixedArray
      *
      * This method is shorthand for getTokenOfKindSibling method.
      *
-     * @param int                           $index         token index
-     * @param list<array{int}|string|Token> $tokens        possible tokens
-     * @param bool                          $caseSensitive perform a case sensitive comparison
+     * @param int                               $index         token index
+     * @param list<_TokenKind|array{int}|Token> $tokens        possible tokens
+     * @param bool                              $caseSensitive perform a case sensitive comparison
      */
     public function getNextTokenOfKind(int $index, array $tokens = [], bool $caseSensitive = true): ?int
     {
@@ -689,9 +688,9 @@ class Tokens extends \SplFixedArray
      * Get index for closest previous token of given kind.
      * This method is shorthand for getTokenOfKindSibling method.
      *
-     * @param int                           $index         token index
-     * @param list<array{int}|string|Token> $tokens        possible tokens
-     * @param bool                          $caseSensitive perform a case sensitive comparison
+     * @param int                               $index         token index
+     * @param list<_TokenKind|array{int}|Token> $tokens        possible tokens
+     * @param bool                              $caseSensitive perform a case sensitive comparison
      */
     public function getPrevTokenOfKind(int $index, array $tokens = [], bool $caseSensitive = true): ?int
     {
@@ -701,23 +700,26 @@ class Tokens extends \SplFixedArray
     /**
      * Get index for closest sibling token of given kind.
      *
-     * @param int                           $index         token index
-     * @param -1|1                          $direction
-     * @param list<array{int}|string|Token> $tokens        possible tokens
-     * @param bool                          $caseSensitive perform a case sensitive comparison
+     * @param int                               $index         token index
+     * @param -1|1                              $direction
+     * @param list<_TokenKind|array{int}|Token> $tokens        possible tokens
+     * @param bool                              $caseSensitive perform a case sensitive comparison
      */
     public function getTokenOfKindSibling(int $index, int $direction, array $tokens = [], bool $caseSensitive = true): ?int
     {
-        $tokens = array_values(
-            array_filter(
-                $tokens,
-                fn ($token): bool => $this->isTokenKindFound($this->extractTokenKind($token))
-            )
+        $tokens = array_filter(
+            $tokens,
+            fn ($token): bool => $this->isTokenKindFound($this->extractTokenKind($token))
         );
 
         if (0 === \count($tokens)) {
             return null;
         }
+
+        $tokens = array_map(
+            static fn ($token) => \is_int($token) ? [$token] : $token,
+            array_values($tokens)
+        );
 
         while (true) {
             $index += $direction;
@@ -734,12 +736,17 @@ class Tokens extends \SplFixedArray
     /**
      * Get index for closest sibling token not of given kind.
      *
-     * @param int                           $index     token index
-     * @param -1|1                          $direction
-     * @param list<array{int}|string|Token> $tokens    possible tokens
+     * @param int                               $index     token index
+     * @param -1|1                              $direction
+     * @param list<_TokenKind|array{int}|Token> $tokens    possible tokens
      */
     public function getTokenNotOfKindSibling(int $index, int $direction, array $tokens = []): ?int
     {
+        $tokens = array_map(
+            static fn ($token) => \is_int($token) ? [$token] : $token,
+            $tokens
+        );
+
         return $this->getTokenNotOfKind(
             $index,
             $direction,
@@ -750,9 +757,9 @@ class Tokens extends \SplFixedArray
     /**
      * Get index for closest sibling token not of given kind.
      *
-     * @param int       $index     token index
-     * @param -1|1      $direction
-     * @param list<int> $kinds     possible tokens kinds
+     * @param int              $index     token index
+     * @param -1|1             $direction
+     * @param list<_TokenKind> $kinds     possible tokens kinds
      */
     public function getTokenNotOfKindsSibling(int $index, int $direction, array $kinds = []): ?int
     {
@@ -821,12 +828,12 @@ class Tokens extends \SplFixedArray
     /**
      * Find a sequence of meaningful tokens and returns the array of their locations.
      *
-     * @param non-empty-list<array{0: int, 1?: string}|string|Token> $sequence      an array of token (kinds)
-     * @param int                                                    $start         start index, defaulting to the start of the file
-     * @param null|int                                               $end           end index, defaulting to the end of the file
-     * @param array<int, bool>|bool                                  $caseSensitive global case sensitiveness or a list of booleans, whose keys should match
-     *                                                                              the ones used in $sequence. If any is missing, the default case-sensitive
-     *                                                                              comparison is used
+     * @param non-empty-list<_TokenKind|array{0: int, 1?: string}|Token> $sequence      an array of token (kinds)
+     * @param int                                                        $start         start index, defaulting to the start of the file
+     * @param null|int                                                   $end           end index, defaulting to the end of the file
+     * @param array<int, bool>|bool                                      $caseSensitive global case sensitiveness or a list of booleans, whose keys should match
+     *                                                                                  the ones used in $sequence. If any is missing, the default case-sensitive
+     *                                                                                  comparison is used
      *
      * @return null|non-empty-array<int<0, max>, Token> an array containing the tokens matching the sequence elements, indexed by their position
      */
@@ -850,6 +857,9 @@ class Tokens extends \SplFixedArray
         foreach ($sequence as $key => $token) {
             // if not a Token instance already, we convert it to verify the meaningfulness
             if (!$token instanceof Token) {
+                if (\is_int($token)) {
+                    $token = [$token];
+                }
                 if (\is_array($token) && !isset($token[1])) {
                     // fake some content as it is required by the Token constructor,
                     // although optional for search purposes
@@ -906,7 +916,7 @@ class Tokens extends \SplFixedArray
                     return null;
                 }
 
-                if (!$this[$currIdx]->equals($token, self::isKeyCaseSensitive($caseSensitive, $key))) {
+                if (!$this[$currIdx]->equals(\is_int($token) ? [$token] : $token, self::isKeyCaseSensitive($caseSensitive, $key))) {
                     // not a match, restart the outer loop
                     continue 2;
                 }
@@ -1029,7 +1039,7 @@ class Tokens extends \SplFixedArray
     {
         $token = $this[$index];
 
-        return null === $token->getId() && '' === $token->getContent();
+        return '' === $token->getKind();
     }
 
     public function clearAt(int $index): void
@@ -1146,7 +1156,7 @@ class Tokens extends \SplFixedArray
     /**
      * Check if all token kinds given as argument are found.
      *
-     * @param list<int|string> $tokenKinds
+     * @param list<_TokenKind> $tokenKinds
      */
     public function isAllTokenKindsFound(array $tokenKinds): bool
     {
@@ -1162,7 +1172,7 @@ class Tokens extends \SplFixedArray
     /**
      * Check if any token kind given as argument is found.
      *
-     * @param list<int|string> $tokenKinds
+     * @param list<_TokenKind> $tokenKinds
      */
     public function isAnyTokenKindsFound(array $tokenKinds): bool
     {
@@ -1178,7 +1188,7 @@ class Tokens extends \SplFixedArray
     /**
      * Check if token kind given as argument is found.
      *
-     * @param int|string $tokenKind
+     * @param _TokenKind $tokenKind
      */
     public function isTokenKindFound($tokenKind): bool
     {
@@ -1186,7 +1196,7 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * @param int|string $tokenKind
+     * @param _TokenKind $tokenKind
      */
     public function countTokenKind($tokenKind): int
     {
@@ -1509,8 +1519,7 @@ class Tokens extends \SplFixedArray
      */
     private function registerFoundToken(Token $token): void
     {
-        // inlined extractTokenKind() call on the hot path
-        $tokenKind = $token->isArray() ? $token->getId() : $token->getContent();
+        $tokenKind = $token->getKind();
 
         $this->foundTokenKinds[$tokenKind] ??= 0;
         ++$this->foundTokenKinds[$tokenKind];
@@ -1521,22 +1530,21 @@ class Tokens extends \SplFixedArray
      */
     private function unregisterFoundToken(Token $token): void
     {
-        // inlined extractTokenKind() call on the hot path
-        $tokenKind = $token->isArray() ? $token->getId() : $token->getContent();
+        $tokenKind = $token->getKind();
 
         \assert(($this->foundTokenKinds[$tokenKind] ?? 0) > 0);
         --$this->foundTokenKinds[$tokenKind];
     }
 
     /**
-     * @param array{int}|string|Token $token token prototype
+     * @param _TokenKind|array{int}|Token $token token prototype
      *
-     * @return int|string
+     * @return _TokenKind
      */
     private function extractTokenKind($token)
     {
         return $token instanceof Token
-            ? ($token->isArray() ? $token->getId() : $token->getContent())
+            ? $token->getKind()
             : (\is_array($token) ? $token[0] : $token);
     }
 

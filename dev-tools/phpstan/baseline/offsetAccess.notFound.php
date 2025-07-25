@@ -532,12 +532,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/ControlStructure/NoBreakCommentFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset int might not exist on array\\<int\\|string, bool\\|null\\>\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/ControlStructure/YodaStyleFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset string might not exist on array\\<int\\|string, bool\\|null\\>\\.$#',
+    'message' => '#^Offset int\\|string might not exist on array\\<int\\|string, bool\\|null\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ControlStructure/YodaStyleFixer.php',
 ];
@@ -1107,7 +1102,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Tokenizer/Tokens.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset int might not exist on non\\-empty\\-array\\<int, array\\<int, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\>\\.$#',
+    'message' => '#^Offset int\\|string might not exist on non\\-empty\\-array\\<int\\|string, array\\<int, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Tokenizer/Tokens.php',
 ];

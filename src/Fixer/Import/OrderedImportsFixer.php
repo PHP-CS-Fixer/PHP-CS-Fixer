@@ -495,7 +495,7 @@ use Bar;
                     }
 
                     $namespaceTokens = [];
-                    $nextPartIndex = $tokens->getTokenNotOfKindSibling($index, 1, [',', [\T_WHITESPACE]]);
+                    $nextPartIndex = $tokens->getTokenNotOfKindSibling($index, 1, [',', \T_WHITESPACE]);
                     $startIndex = $nextPartIndex;
                     $index = $nextPartIndex;
 
