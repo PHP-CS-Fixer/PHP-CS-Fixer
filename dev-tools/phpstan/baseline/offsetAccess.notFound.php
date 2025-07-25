@@ -742,7 +742,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitNoExpectationAnnotationFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset int might not exist on list\\<string\\>\\.$#',
+    'message' => '#^Offset int might not exist on list\\<non\\-empty\\-string\\>\\.$#',
     'count' => 4,
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php',
 ];
