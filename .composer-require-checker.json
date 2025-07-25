@@ -1,6 +1,7 @@
 {
     "symbol-whitelist" : [
         "Symfony\\Contracts\\EventDispatcher\\Event",
+        "T_PIPE",
         "T_VOID_CAST"
     ],
     "php-core-extensions" : [
