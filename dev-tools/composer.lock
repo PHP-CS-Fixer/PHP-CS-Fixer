@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0a2e899d80ef9c4e2aecaa0ac2e1f087",
+    "content-hash": "5494a66db52411b6f88c0a0b52d09464",
     "packages": [
         {
             "name": "composer-unused/contracts",
@@ -1017,19 +1017,23 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.18",
+            "version": "2.1.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "ee1f390b7a70cdf74a2b737e554f68afea885db7"
+                "reference": "473a8c30e450d87099f76313edcbb90852f9afdf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/ee1f390b7a70cdf74a2b737e554f68afea885db7",
-                "reference": "ee1f390b7a70cdf74a2b737e554f68afea885db7"
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/473a8c30e450d87099f76313edcbb90852f9afdf",
+                "reference": "473a8c30e450d87099f76313edcbb90852f9afdf",
+                "shasum": ""
             },
             "require": {
                 "php": "^7.4|^8.0"
+            },
+            "conflict": {
+                "phpstan/phpstan-shim": "*"
             },
             "bin": [
                 "phpstan",
@@ -1041,27 +1045,61 @@
                     "bootstrap.php"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "description": "PHPStan - PHP Static Analysis Tool"
+            "description": "PHPStan - PHP Static Analysis Tool",
+            "keywords": [
+                "dev",
+                "static analysis"
+            ],
+            "support": {
+                "docs": "https://phpstan.org/user-guide/getting-started",
+                "forum": "https://github.com/phpstan/phpstan/discussions",
+                "issues": "https://github.com/phpstan/phpstan/issues",
+                "security": "https://github.com/phpstan/phpstan/security/policy",
+                "source": "https://github.com/phpstan/phpstan-src"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/ondrejmirtes",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/phpstan",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-07-21T19:58:24+00:00"
         },
         {
             "name": "phpstan/phpstan-phpunit",
-            "version": "2.0.6",
+            "version": "2.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-phpunit.git",
-                "reference": "6b92469f8a7995e626da3aa487099617b8dfa260"
+                "reference": "9a9b161baee88a5f5c58d816943cff354ff233dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-phpunit/zipball/6b92469f8a7995e626da3aa487099617b8dfa260",
-                "reference": "6b92469f8a7995e626da3aa487099617b8dfa260"
+                "url": "https://api.github.com/repos/phpstan/phpstan-phpunit/zipball/9a9b161baee88a5f5c58d816943cff354ff233dc",
+                "reference": "9a9b161baee88a5f5c58d816943cff354ff233dc",
+                "shasum": ""
             },
             "require": {
                 "php": "^7.4 || ^8.0",
-                "phpstan/phpstan": "^2.0.4"
+                "phpstan/phpstan": "^2.1.18"
+            },
+            "conflict": {
+                "phpunit/phpunit": "<7.0"
+            },
+            "require-dev": {
+                "nikic/php-parser": "^5",
+                "php-parallel-lint/php-parallel-lint": "^1.2",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-strict-rules": "^2.0",
+                "phpunit/phpunit": "^9.6"
             },
             "type": "phpstan-extension",
             "extra": {
@@ -1077,27 +1115,40 @@
                     "PHPStan\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "description": "PHPUnit extensions and rules for PHPStan"
+            "description": "PHPUnit extensions and rules for PHPStan",
+            "support": {
+                "issues": "https://github.com/phpstan/phpstan-phpunit/issues",
+                "source": "https://github.com/phpstan/phpstan-phpunit/tree/2.0.7"
+            },
+            "time": "2025-07-13T11:31:46+00:00"
         },
         {
             "name": "phpstan/phpstan-strict-rules",
-            "version": "2.0.4",
+            "version": "2.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-strict-rules.git",
-                "reference": "3e139cbe67fafa3588e1dbe27ca50f31fdb6236a"
+                "reference": "f9f77efa9de31992a832ff77ea52eb42d675b094"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-strict-rules/zipball/3e139cbe67fafa3588e1dbe27ca50f31fdb6236a",
-                "reference": "3e139cbe67fafa3588e1dbe27ca50f31fdb6236a"
+                "url": "https://api.github.com/repos/phpstan/phpstan-strict-rules/zipball/f9f77efa9de31992a832ff77ea52eb42d675b094",
+                "reference": "f9f77efa9de31992a832ff77ea52eb42d675b094",
+                "shasum": ""
             },
             "require": {
                 "php": "^7.4 || ^8.0",
                 "phpstan/phpstan": "^2.0.4"
+            },
+            "require-dev": {
+                "php-parallel-lint/php-parallel-lint": "^1.2",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpunit/phpunit": "^9.6"
             },
             "type": "phpstan-extension",
             "extra": {
@@ -1112,29 +1163,56 @@
                     "PHPStan\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "description": "Extra strict and opinionated rules for PHPStan"
+            "description": "Extra strict and opinionated rules for PHPStan",
+            "support": {
+                "issues": "https://github.com/phpstan/phpstan-strict-rules/issues",
+                "source": "https://github.com/phpstan/phpstan-strict-rules/tree/2.0.6"
+            },
+            "time": "2025-07-21T12:19:29+00:00"
         },
         {
             "name": "phpstan/phpstan-symfony",
-            "version": "2.0.6",
+            "version": "2.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-symfony.git",
-                "reference": "5005288e07583546ea00b52de4a9ac412eb869d7"
+                "reference": "392f7ab8f52a0a776977be4e62535358c28e1b15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-symfony/zipball/5005288e07583546ea00b52de4a9ac412eb869d7",
-                "reference": "5005288e07583546ea00b52de4a9ac412eb869d7"
+                "url": "https://api.github.com/repos/phpstan/phpstan-symfony/zipball/392f7ab8f52a0a776977be4e62535358c28e1b15",
+                "reference": "392f7ab8f52a0a776977be4e62535358c28e1b15",
+                "shasum": ""
             },
             "require": {
                 "ext-simplexml": "*",
                 "php": "^7.4 || ^8.0",
                 "phpstan/phpstan": "^2.1.13"
             },
+            "conflict": {
+                "symfony/framework-bundle": "<3.0"
+            },
+            "require-dev": {
+                "php-parallel-lint/php-parallel-lint": "^1.2",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpstan/phpstan-strict-rules": "^2.0",
+                "phpunit/phpunit": "^9.6",
+                "psr/container": "1.1.2",
+                "symfony/config": "^5.4 || ^6.1",
+                "symfony/console": "^5.4 || ^6.1",
+                "symfony/dependency-injection": "^5.4 || ^6.1",
+                "symfony/form": "^5.4 || ^6.1",
+                "symfony/framework-bundle": "^5.4 || ^6.1",
+                "symfony/http-foundation": "^5.4 || ^6.1",
+                "symfony/messenger": "^5.4",
+                "symfony/polyfill-php80": "^1.24",
+                "symfony/serializer": "^5.4",
+                "symfony/service-contracts": "^2.2.0"
+            },
             "type": "phpstan-extension",
             "extra": {
                 "phpstan": {
@@ -1149,10 +1227,23 @@
                     "PHPStan\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "description": "Symfony Framework extensions and rules for PHPStan"
+            "authors": [
+                {
+                    "name": "Lukáš Unger",
+                    "email": "looky.msc@gmail.com",
+                    "homepage": "https://lookyman.net"
+                }
+            ],
+            "description": "Symfony Framework extensions and rules for PHPStan",
+            "support": {
+                "issues": "https://github.com/phpstan/phpstan-symfony/issues",
+                "source": "https://github.com/phpstan/phpstan-symfony/tree/2.0.7"
+            },
+            "time": "2025-07-22T09:40:57+00:00"
         },
         {
             "name": "psr/container",
