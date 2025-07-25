@@ -238,7 +238,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
     }
 
     /**
-     * @return list<Line>
+     * @return list<Line|non-empty-string>
      */
     private function addInternalAnnotation(DocBlock $docBlock, Tokens $tokens, int $docBlockIndex, string $annotation): array
     {
