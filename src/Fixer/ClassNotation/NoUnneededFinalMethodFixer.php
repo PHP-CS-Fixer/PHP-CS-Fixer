@@ -134,7 +134,7 @@ class Bar
      *     token: Token,
      *     type: string,
      *     class_is_final?: bool,
-     *     method_final_index: int|null,
+     *     method_final_index: null|int,
      *     method_is_constructor?: bool,
      *     method_is_private: bool,
      *     method_of_enum: bool
