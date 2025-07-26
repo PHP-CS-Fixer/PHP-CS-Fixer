@@ -233,6 +233,10 @@ final class TypeExpressionTest extends TestCase
 
         yield ['array{a: bool,...<string> }'];
 
+        yield ["array{\n    a: Foo,\n    b: Bar\n}"];
+
+        yield ["array{\n    Foo,\n    Bar,\n}"];
+
         yield ['list{int, ...<string>}'];
 
         yield ['callable'];
