@@ -343,6 +343,18 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
             <<<'PHP'
                  <?php /**
                         * @param array<
+                        *     int,
+                        *     string
+                        * > $x
+                        *
+                        * @param array<
+                        *     bool
+                        * > $y
+                        */
+                PHP,
+            <<<'PHP'
+                 <?php /**
+                        * @param array<
                         *     INT,
                         *     STRING
                         * > $x
@@ -355,6 +367,19 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'multiline array shape' => [
+            <<<'PHP'
+                 <?php /**
+                        * @param array{
+                        *     foo: bool,
+                        *     bar: int,
+                        *     withoutTrailingComma: string
+                        * } $x
+                        *
+                        * @param array{
+                        *     withTrailingComma: bool,
+                        * } $y
+                        */
+                PHP,
             <<<'PHP'
                  <?php /**
                         * @param array{
