@@ -7,7 +7,7 @@ Rules that follow the official `Symfony Coding Standards <https://symfony.com/do
 Rules
 -----
 
-- `@PER-CS2.0 <./PER-CS2.0.rst>`_
+- `@PER-CS3.0 <./PER-CS3.0.rst>`_
 - `align_multiline_comment <./../rules/phpdoc/align_multiline_comment.rst>`_
 - `backtick_to_shell_exec <./../rules/alias/backtick_to_shell_exec.rst>`_
 - `binary_operator_spaces <./../rules/operator/binary_operator_spaces.rst>`_
@@ -98,7 +98,6 @@ Rules
 - `no_useless_nullsafe_operator <./../rules/operator/no_useless_nullsafe_operator.rst>`_
 - `no_whitespace_before_comma_in_array <./../rules/array_notation/no_whitespace_before_comma_in_array.rst>`_
 - `normalize_index_brace <./../rules/array_notation/normalize_index_brace.rst>`_
-- `nullable_type_declaration <./../rules/language_construct/nullable_type_declaration.rst>`_
 - `nullable_type_declaration_for_default_null_value <./../rules/function_notation/nullable_type_declaration_for_default_null_value.rst>`_
 - `object_operator_without_whitespace <./../rules/operator/object_operator_without_whitespace.rst>`_
 - `operator_linebreak <./../rules/operator/operator_linebreak.rst>`_ with config:
@@ -108,10 +107,6 @@ Rules
 - `ordered_imports <./../rules/import/ordered_imports.rst>`_ with config:
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'alpha']``
-
-- `ordered_types <./../rules/class_notation/ordered_types.rst>`_ with config:
-
-  ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``
 
 - `php_unit_fqcn_annotation <./../rules/php_unit/php_unit_fqcn_annotation.rst>`_
 - `php_unit_method_casing <./../rules/php_unit/php_unit_method_casing.rst>`_
@@ -150,7 +145,6 @@ Rules
 - `phpdoc_var_without_name <./../rules/phpdoc/phpdoc_var_without_name.rst>`_
 - `semicolon_after_instruction <./../rules/semicolon/semicolon_after_instruction.rst>`_
 - `simple_to_complex_string_variable <./../rules/string_notation/simple_to_complex_string_variable.rst>`_
-- `single_class_element_per_statement <./../rules/class_notation/single_class_element_per_statement.rst>`_
 - `single_import_per_statement <./../rules/import/single_import_per_statement.rst>`_
 - `single_line_comment_spacing <./../rules/comment/single_line_comment_spacing.rst>`_
 - `single_line_comment_style <./../rules/comment/single_line_comment_style.rst>`_ with config:
@@ -177,7 +171,6 @@ Rules
 
 - `trim_array_spaces <./../rules/array_notation/trim_array_spaces.rst>`_
 - `type_declaration_spaces <./../rules/whitespace/type_declaration_spaces.rst>`_
-- `types_spaces <./../rules/whitespace/types_spaces.rst>`_
 - `unary_operator_spaces <./../rules/operator/unary_operator_spaces.rst>`_
 - `whitespace_after_comma_in_array <./../rules/array_notation/whitespace_after_comma_in_array.rst>`_
 - `yoda_style <./../rules/control_structure/yoda_style.rst>`_

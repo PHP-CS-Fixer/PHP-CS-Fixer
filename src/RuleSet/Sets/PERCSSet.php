@@ -29,7 +29,7 @@ final class PERCSSet extends AbstractRuleSetDescription
     public function getRules(): array
     {
         return [
-            '@PER-CS2.0' => true,
+            '@PER-CS3.0' => true,
         ];
     }
 
