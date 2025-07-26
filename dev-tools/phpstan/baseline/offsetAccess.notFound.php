@@ -347,21 +347,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Alias/EregToPregFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset 0 might not exist on list\\<int\\>\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Alias/SetTypeToCastFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset 1 might not exist on list\\<int\\>\\.$#',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Fixer/Alias/SetTypeToCastFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset 2 might not exist on list\\<int\\>\\.$#',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Fixer/Alias/SetTypeToCastFixer.php',
-];
-$ignoreErrors[] = [
     'message' => '#^Offset int might not exist on non\\-empty\\-array\\<int, int\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Alias/SetTypeToCastFixer.php',
@@ -478,16 +463,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
     'message' => '#^Offset \'visibility\' might not exist on array\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset 0 might not exist on list\\<string\\>\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset 1 might not exist on list\\<string\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
