@@ -62,7 +62,7 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  *      dry-run: null|bool,
  *      format: null|string,
  *      path: list<string>,
- *      path-mode: self::PATH_MODE_*,
+ *      path-mode: value-of<self::PATH_MODE_VALUES>,
  *      rules: null|string,
  *      sequential: null|string,
  *      show-progress: null|string,
@@ -856,17 +856,15 @@ final class ConfigurationResolver
             return new \ArrayIterator([new StdinFileInfo()]);
         }
 
-        $modes = [self::PATH_MODE_OVERRIDE, self::PATH_MODE_INTERSECTION];
-
         if (!\in_array(
             $this->options['path-mode'],
-            $modes,
+            self::PATH_MODE_VALUES,
             true
         )) {
             throw new InvalidConfigurationException(\sprintf(
                 'The path-mode "%s" is not defined, supported are %s.',
                 $this->options['path-mode'],
-                Utils::naturalLanguageJoin($modes)
+                Utils::naturalLanguageJoin(self::PATH_MODE_VALUES)
             ));
         }
 
