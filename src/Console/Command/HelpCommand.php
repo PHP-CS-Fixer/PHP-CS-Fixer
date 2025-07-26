@@ -43,14 +43,7 @@ final class HelpCommand extends BaseHelpCommand
      */
     public static function getDescriptionWithAllowedValues(string $description, array $allowedValues): string
     {
-        $allowedValues = array_map(static fn ($value) => \sprintf('`%s`', $value), $allowedValues);
-
-        if (1 === \count($allowedValues)) {
-            $allowedValues = $allowedValues[0];
-        } else {
-            $lastValue = array_pop($allowedValues);
-            $allowedValues = \sprintf('%s or %s', implode(', ', $allowedValues), $lastValue);
-        }
+        $allowedValues = Utils::naturalLanguageJoinWithBackticks($allowedValues, 'or');
 
         return \sprintf($description, 'can be '.$allowedValues);
     }
