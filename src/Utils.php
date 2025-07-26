@@ -155,7 +155,7 @@ final class Utils
      *
      * @throws \InvalidArgumentException
      */
-    public static function naturalLanguageJoinWithBackticks(array $names, string $lastJoin = 'or'): string
+    public static function naturalLanguageJoinWithBackticks(array $names, string $lastJoin = 'and'): string
     {
         return self::naturalLanguageJoin($names, '`', $lastJoin);
     }

@@ -266,13 +266,13 @@ final class UtilsTest extends TestCase
      *
      * @param list<string> $names
      */
-    public function testNaturalLanguageJoin(string $joined, array $names, string $wrapper = '"'): void
+    public function testNaturalLanguageJoin(string $joined, array $names, string $wrapper = '"', ?string $lastJoin = null): void
     {
-        self::assertSame($joined, Utils::naturalLanguageJoin($names, $wrapper));
+        self::assertSame($joined, Utils::naturalLanguageJoin($names, $wrapper, ...null === $lastJoin ? [] : [$lastJoin]));
     }
 
     /**
-     * @return iterable<int, array{0: string, 1: list<string>, 2?: string}>
+     * @return iterable<int, array{0: string, 1: list<string>, 2?: string, 3?: string}>
      */
     public static function provideNaturalLanguageJoinCases(): iterable
     {
@@ -344,6 +344,27 @@ final class UtilsTest extends TestCase
             ['a', 'b', 'c'],
             '',
         ];
+
+        yield [
+            '"a"',
+            ['a'],
+            '"',
+            'or',
+        ];
+
+        yield [
+            '"a" or "b"',
+            ['a', 'b'],
+            '"',
+            'or',
+        ];
+
+        yield [
+            '"a", "b" or "c"',
+            ['a', 'b', 'c'],
+            '"',
+            'or',
+        ];
     }
 
     public function testNaturalLanguageJoinWithBackticksThrowsInvalidArgumentExceptionForEmptyArray(): void
@@ -358,13 +379,13 @@ final class UtilsTest extends TestCase
      *
      * @dataProvider provideNaturalLanguageJoinWithBackticksCases
      */
-    public function testNaturalLanguageJoinWithBackticks(string $joined, array $names): void
+    public function testNaturalLanguageJoinWithBackticks(string $joined, array $names, ?string $lastJoin = null): void
     {
-        self::assertSame($joined, Utils::naturalLanguageJoinWithBackticks($names));
+        self::assertSame($joined, Utils::naturalLanguageJoinWithBackticks($names, ...null === $lastJoin ? [] : [$lastJoin]));
     }
 
     /**
-     * @return iterable<int, array{string, list<string>}>
+     * @return iterable<int, array{0: string, 1: list<string>, 2?: string}>
      */
     public static function provideNaturalLanguageJoinWithBackticksCases(): iterable
     {
@@ -381,6 +402,24 @@ final class UtilsTest extends TestCase
         yield [
             '`a`, `b` and `c`',
             ['a', 'b', 'c'],
+        ];
+
+        yield [
+            '`a`',
+            ['a'],
+            'or',
+        ];
+
+        yield [
+            '`a` or `b`',
+            ['a', 'b'],
+            'or',
+        ];
+
+        yield [
+            '`a`, `b` or `c`',
+            ['a', 'b', 'c'],
+            'or',
         ];
     }
 
