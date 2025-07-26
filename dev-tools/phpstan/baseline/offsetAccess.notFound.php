@@ -82,21 +82,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Differ/DiffConsoleFormatter.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset \'types\' might not exist on array\\<string\\>\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/DocBlock/Annotation.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset \'variable\' might not exist on array\\<string\\>\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/DocBlock/Annotation.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset 0 might not exist on array\\<int, PhpCsFixer\\\\DocBlock\\\\Line\\>\\.$#',
-    'count' => 5,
-    'path' => __DIR__ . '/../../../src/DocBlock/Annotation.php',
-];
-$ignoreErrors[] = [
     'message' => '#^Offset 0 might not exist on list\\<PhpCsFixer\\\\DocBlock\\\\Line\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/DocBlock/DocBlock.php',
