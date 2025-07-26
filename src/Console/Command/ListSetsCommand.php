@@ -47,10 +47,11 @@ final class ListSetsCommand extends Command
         $reporterFactory = new ReporterFactory();
         $reporterFactory->registerBuiltInReporters();
         $formats = $reporterFactory->getFormats();
+        \assert([] !== $formats);
 
         $this->setDefinition(
             [
-                new InputOption('format', '', InputOption::VALUE_REQUIRED, \sprintf('To output results in other formats (can be %s).', implode(', ', array_map(static fn ($format) => \sprintf('`%s`', $format), $formats))), (new TextReporter())->getFormat(), $formats),
+                new InputOption('format', '', InputOption::VALUE_REQUIRED, HelpCommand::getDescriptionWithAllowedValues('To output results in other formats (%s).', $formats), (new TextReporter())->getFormat(), $formats),
             ]
         );
     }
