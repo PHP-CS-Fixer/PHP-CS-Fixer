@@ -467,6 +467,11 @@ final class AnnotationTest extends TestCase
         ];
 
         yield [
+            [],
+            "/** @var array{\n    a: int,\n    b: string\n} */",
+        ];
+
+        yield [
             ['callable(string)'],
             '/** @param callable(string) $function',
         ];

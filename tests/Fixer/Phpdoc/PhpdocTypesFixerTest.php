@@ -338,6 +338,37 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
             '<?php /** @return float|int (number) count of something */',
             '<?php /** @return FLOAT|INT (number) count of something */',
         ];
+
+        yield 'multiline array' => [
+            <<<'PHP'
+                 <?php /**
+                        * @param array<
+                        *     INT,
+                        *     STRING
+                        * > $x
+                        *
+                        * @param array<
+                        *     BOOL
+                        * > $y
+                        */
+                PHP,
+        ];
+
+        yield 'multiline array shape' => [
+            <<<'PHP'
+                 <?php /**
+                        * @param array{
+                        *     foo: BOOL,
+                        *     bar: INT,
+                        *     withoutTrailingComma: STRING
+                        * } $x
+                        *
+                        * @param array{
+                        *     withTrailingComma: BOOL,
+                        * } $y
+                        */
+                PHP,
+        ];
     }
 
     public function testInvalidConfiguration(): void

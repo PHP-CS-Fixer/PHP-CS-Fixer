@@ -462,6 +462,10 @@ final class TypeExpressionTest extends TestCase
         yield 'generic Closure with non-identifier template argument' => ['Closure<A|B>(): void'];
 
         yield [substr(self::makeLongArrayShapeType(), 0, -1)];
+
+        yield ["array{\n    a: Foo,\n    b: Bar\n}"];
+
+        yield ["array{\n    Foo,\n    Bar,\n}"];
     }
 
     public function testHugeType(): void
