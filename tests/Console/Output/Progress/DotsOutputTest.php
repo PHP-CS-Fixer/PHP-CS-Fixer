@@ -123,11 +123,12 @@ final class DotsOutputTest extends TestCase
                 [FileProcessed::STATUS_INVALID],
                 [FileProcessed::STATUS_NO_CHANGES, 40],
                 [FileProcessed::STATUS_INVALID],
-                [FileProcessed::STATUS_NO_CHANGES, 15],
+                [FileProcessed::STATUS_NO_CHANGES, 14],
+                [FileProcessed::STATUS_NON_MONOLITHIC],
             ],
             '...................E......EFFF.................................  63 / 189 ( 33%)'.\PHP_EOL
             .'.................S............................................. 126 / 189 ( 67%)'.\PHP_EOL
-            .'....I.I........................................I............... 189 / 189 (100%)',
+            .'....I.I........................................I..............M 189 / 189 (100%)',
             80,
         ];
 

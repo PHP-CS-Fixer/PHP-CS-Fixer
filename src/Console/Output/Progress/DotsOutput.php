@@ -34,6 +34,7 @@ final class DotsOutput implements ProgressOutputInterface
         FileProcessed::STATUS_NO_CHANGES => ['symbol' => '.', 'format' => '%s', 'description' => 'no changes'],
         FileProcessed::STATUS_FIXED => ['symbol' => 'F', 'format' => '<fg=green>%s</fg=green>', 'description' => 'fixed'],
         FileProcessed::STATUS_SKIPPED => ['symbol' => 'S', 'format' => '<fg=cyan>%s</fg=cyan>', 'description' => 'skipped (cached or empty file)'],
+        FileProcessed::STATUS_NON_MONOLITHIC => ['symbol' => 'M', 'format' => '<bg=magenta>%s</bg=magenta>', 'description' => 'skipped (non-monolithic)'],
         FileProcessed::STATUS_INVALID => ['symbol' => 'I', 'format' => '<bg=red>%s</bg=red>', 'description' => 'invalid file syntax (file ignored)'],
         FileProcessed::STATUS_EXCEPTION => ['symbol' => 'E', 'format' => '<bg=red>%s</bg=red>', 'description' => 'error'],
         FileProcessed::STATUS_LINT => ['symbol' => 'E', 'format' => '<bg=red>%s</bg=red>', 'description' => 'error'],

@@ -98,6 +98,7 @@ final class Application extends BaseApplication
             $warningsDetector = new WarningsDetector($this->toolInfo);
             $warningsDetector->detectOldVendor();
             $warningsDetector->detectOldMajor();
+            $warningsDetector->detectNonMonolithic();
             $warnings = $warningsDetector->getWarnings();
 
             if (\count($warnings) > 0) {
