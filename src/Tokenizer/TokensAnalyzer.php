@@ -72,9 +72,9 @@ final class TokensAnalyzer
      * Get indices of modifiers of a classy code (classes, interfaces and traits).
      *
      * @return array{
-     *     final: int|null,
-     *     abstract: int|null,
-     *     readonly: int|null
+     *     final: null|int,
+     *     abstract: null|int,
+     *     readonly: null|int
      * }
      */
     public function getClassyModifiers(int $index): array

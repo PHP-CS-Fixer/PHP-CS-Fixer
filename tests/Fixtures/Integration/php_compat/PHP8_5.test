@@ -22,6 +22,11 @@ class Foo
     ) {}
 }
 
+// https://wiki.php.net/rfc/pipe-operator-v3
+$numberOfAdmins = getUsers()
+    |> fn ($list) => array_filter($list, isAdmin(...))
+    |> count(...);
+
 // https://wiki.php.net/rfc/marking_return_value_as_important
 #[NoDiscard]
 function get42(): int
@@ -47,6 +52,11 @@ class Foo
         readonly    private    final    string    |    null    $five,
     ) {}
 }
+
+// https://wiki.php.net/rfc/pipe-operator-v3
+$numberOfAdmins = getUsers() |>
+    fn ($list) => array_filter($list, isAdmin(...)) |>
+    count(...);
 
 // https://wiki.php.net/rfc/marking_return_value_as_important
 #[NoDiscard]
