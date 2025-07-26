@@ -53,5 +53,10 @@ final class FCT
     /**
      * @phpstan-ignore greaterOrEqual.alwaysFalse, constant.notFound
      */
+    public const T_PIPE = \PHP_VERSION_ID >= 8_05_00 ? \T_PIPE : -851;
+
+    /**
+     * @phpstan-ignore greaterOrEqual.alwaysFalse, constant.notFound
+     */
     public const T_VOID_CAST = \PHP_VERSION_ID >= 8_05_00 ? \T_VOID_CAST : -852;
 }

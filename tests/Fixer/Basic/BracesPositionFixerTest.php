@@ -968,15 +968,13 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
                 <?php class C
                 {
                     private mixed $wat = [-7, "a" . 'b', null, array(), 1/3, self::FOO, ] {
-                        set(mixed $wat)
-                        {
+                        set(mixed $wat) {
                             $this->wat = $wat;
                         }
                     }
 
                     private mixed $wat2 = array(-7, "a" . 'b', null, array(), 1/3, self::FOO, ) {
-                        set(mixed $wat2)
-                        {
+                        set(mixed $wat2) {
                             $this->wat2 = $wat2;
                         }
                     }
@@ -986,15 +984,13 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
                 <?php class C
                 {
                     private mixed $wat = [-7, "a" . 'b', null, array(), 1/3, self::FOO, ]        {
-                        set(mixed $wat)
-                        {
+                        set(mixed $wat) {
                             $this->wat = $wat;
                         }
                     }
 
                     private mixed $wat2 = array(-7, "a" . 'b', null, array(), 1/3, self::FOO, )        {
-                        set(mixed $wat2)
-                        {
+                        set(mixed $wat2) {
                             $this->wat2 = $wat2;
                         }
                     }
@@ -1003,6 +999,19 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'property hook in promoted property' => [
+            <<<'PHP'
+                <?php class CarPark
+                {
+                    public function __construct(
+                        public Car $car {
+                            set(Car $car) {
+                                $this->car = $car;
+                                $this->car->parked();
+                            }
+                        },
+                    ) {}
+                }
+                PHP,
             <<<'PHP'
                 <?php class CarPark
                 {
@@ -1025,8 +1034,20 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
                 {
                     public function __construct(
                         public int $int = 5 {
+                            set(int $int) {
+                                $this->int = $int;
+                            }
+                        },
+                    ) {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php class IntVal
+                {
+                    public function __construct(
+                        public int $int = 5 {
                             set(int $int)
-                            {
+                                                    {
                                 $this->int = $int;
                             }
                         },
