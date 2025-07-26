@@ -258,9 +258,9 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
         $needsAnnotation = 'annotation' === $this->configuration['style'];
 
         $doc = new DocBlock($tokens[$docBlockIndex]->getContent());
-        for ($i = 0; $i < \count($lines); ++$i) {
+        foreach ($lines as $i => $line) {
             // If we need to add test annotation and it is a single line comment we need to deal with that separately
-            if ($needsAnnotation && ($lines[$i]->isTheStart() && $lines[$i]->isTheEnd())) {
+            if ($needsAnnotation && ($line->isTheStart() && $line->isTheEnd())) {
                 if (!$this->doesDocBlockContainTest($doc)) {
                     $lines = $this->splitUpDocBlock($lines, $tokens, $docBlockIndex);
 
@@ -270,19 +270,19 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
             }
 
             if (!$needsAnnotation
-                && str_contains($lines[$i]->getContent(), ' @test')
-                && !str_contains($lines[$i]->getContent(), '@testWith')
-                && !str_contains($lines[$i]->getContent(), '@testdox')
+                && str_contains($line->getContent(), ' @test')
+                && !str_contains($line->getContent(), '@testWith')
+                && !str_contains($line->getContent(), '@testdox')
             ) {
                 // We remove @test from the doc block
-                $lines[$i] = new Line(str_replace(' @test', '', $lines[$i]->getContent()));
+                $lines[$i] = $line = new Line(str_replace(' @test', '', $line->getContent()));
             }
             // ignore the line if it isn't @depends
-            if (!str_contains($lines[$i]->getContent(), '@depends')) {
+            if (!str_contains($line->getContent(), '@depends')) {
                 continue;
             }
 
-            $lines[$i] = $this->updateDependsAnnotation($lines[$i]);
+            $lines[$i] = $this->updateDependsAnnotation($line);
         }
 
         return $lines;
