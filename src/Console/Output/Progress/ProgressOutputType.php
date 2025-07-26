@@ -24,7 +24,7 @@ final class ProgressOutputType
     public const BAR = 'bar';
 
     /**
-     * @return list<ProgressOutputType::*>
+     * @return non-empty-list<ProgressOutputType::*>
      */
     public static function all(): array
     {

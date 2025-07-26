@@ -30,6 +30,8 @@ use PhpCsFixer\ToolInfo;
 use PhpCsFixer\Utils;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Command\CompleteCommand;
+use Symfony\Component\Console\Command\DumpCompletionCommand;
 use Symfony\Component\Console\Command\ListCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
@@ -176,7 +178,7 @@ final class Application extends BaseApplication
 
     protected function getDefaultCommands(): array
     {
-        return [new HelpCommand(), new ListCommand()];
+        return [new HelpCommand(), new ListCommand(), new CompleteCommand(), new DumpCompletionCommand()];
     }
 
     /**

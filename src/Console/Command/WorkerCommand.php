@@ -79,11 +79,11 @@ final class WorkerCommand extends Command
             [
                 new InputOption('port', null, InputOption::VALUE_REQUIRED, 'Specifies parallelisation server\'s port.'),
                 new InputOption('identifier', null, InputOption::VALUE_REQUIRED, 'Specifies parallelisation process\' identifier.'),
-                new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be `yes` or `no`).'),
+                new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, HelpCommand::getDescriptionWithAllowedValues('Are risky fixers allowed (%s).', ConfigurationResolver::BOOL_VALUES), null, ConfigurationResolver::BOOL_VALUES),
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a config file.'),
                 new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified.'),
                 new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'List of rules that should be run against configured paths.'),
-                new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Should cache be used (can be `yes` or `no`).'),
+                new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, HelpCommand::getDescriptionWithAllowedValues('Should cache be used (%s).', ConfigurationResolver::BOOL_VALUES), null, ConfigurationResolver::BOOL_VALUES),
                 new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file.'),
                 new InputOption('diff', '', InputOption::VALUE_NONE, 'Prints diff for each file.'),
                 new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
