@@ -1938,6 +1938,9 @@ $bar;',
         self::assertSame($size, $tokens->getSize());
     }
 
+    /**
+     * @requires PHP 8.0
+     */
     public function testToJson(): void
     {
         self::assertSame(
@@ -1984,9 +1987,10 @@ $bar;',
                 \T_OPEN_TAG,
                 \T_RETURN,
                 \T_WHITESPACE,
-                \T_LNUMBER
+                \T_LNUMBER,
             ),
-            Tokens::fromCode('<?php return 1;')->toJson()
+            Tokens::fromCode('<?php return 1;')->toJson(),
+            Tokens::fromCode('<?php return 1;')->toJson(),
         );
     }
 
