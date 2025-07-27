@@ -249,6 +249,7 @@ final class ConfigTest extends TestCase
         self::assertFalse($config->getRiskyAllowed());
         self::assertSame(['@PSR12' => true], $config->getRules());
         self::assertTrue($config->getUsingCache());
+        self::assertFalse($config->getUnsupportedPhpVersionAllowed());
 
         $finder = $config->getFinder();
         self::assertInstanceOf(Finder::class, $finder);
@@ -274,6 +275,9 @@ final class ConfigTest extends TestCase
 
         $config->setUsingCache(false);
         self::assertFalse($config->getUsingCache());
+
+        $config->setUnsupportedPhpVersionAllowed(true);
+        self::assertTrue($config->getUnsupportedPhpVersionAllowed());
     }
 
     public function testConfigConstructorWithName(): void
