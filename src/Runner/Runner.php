@@ -535,7 +535,7 @@ final class Runner
 
         $this->dispatchEvent(
             FileProcessed::NAME,
-            new FileProcessed(null !== $fixInfo ? FileProcessed::STATUS_FIXED : FileProcessed::STATUS_NO_CHANGES, $filePathname, $newHash)
+            new FileProcessed(null !== $fixInfo ? FileProcessed::STATUS_FIXED : FileProcessed::STATUS_NO_CHANGES, $newHash)
         );
 
         return $fixInfo;
