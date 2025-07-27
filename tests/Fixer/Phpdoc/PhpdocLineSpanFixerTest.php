@@ -599,6 +599,42 @@ class Foo
      */
     public static function provideFix80Cases(): iterable
     {
+        yield 'It handles constructor property promotion' => [
+            '<?php
+
+class Foo
+{
+    public function __construct(
+        /** @var string[] */
+        #[Attribute1]
+        private array $foo1,
+
+        /** @var string[] */
+        private array $foo2,
+    ) {}
+}',
+            '<?php
+
+class Foo
+{
+    public function __construct(
+        /**
+         * @var string[]
+         */
+        #[Attribute1]
+        private array $foo1,
+
+        /**
+         * @var string[]
+         */
+        private array $foo2,
+    ) {}
+}',
+            [
+                'property' => 'single',
+            ],
+        ];
+
         yield 'It detects attributes between docblock and token' => [
             '<?php
 
