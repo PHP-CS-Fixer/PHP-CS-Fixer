@@ -169,14 +169,6 @@ final class Tokens extends \SplFixedArray
     }
 
     /**
-     * Returns the index of the closest previous token that is neither a comment nor a whitespace token.
-     */
-    public function getPreviousMeaningfulToken(int $index): ?int
-    {
-        return $this->getMeaningfulTokenSibling($index, -1);
-    }
-
-    /**
      * Returns the index of the last token that is part of the annotation at the given index.
      */
     public function getAnnotationEnd(int $index): ?int

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5494a66db52411b6f88c0a0b52d09464",
+    "content-hash": "1c5279483848e1e43099e7b98ec74f78",
     "packages": [
         {
             "name": "composer-unused/contracts",
@@ -1217,6 +1217,41 @@
                 "MIT"
             ],
             "description": "Common interface for logging libraries"
+        },
+        {
+            "name": "shipmonk/dead-code-detector",
+            "version": "0.13.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/shipmonk-rnd/dead-code-detector.git",
+                "reference": "d7cf34827e29aeb977260c01ce8f12a7d17fa7e6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/shipmonk-rnd/dead-code-detector/zipball/d7cf34827e29aeb977260c01ce8f12a7d17fa7e6",
+                "reference": "d7cf34827e29aeb977260c01ce8f12a7d17fa7e6"
+            },
+            "require": {
+                "php": "^7.4 || ^8.0",
+                "phpstan/phpstan": "^2.1.12"
+            },
+            "type": "phpstan-extension",
+            "extra": {
+                "phpstan": {
+                    "includes": [
+                        "rules.neon"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ShipMonk\\PHPStan\\DeadCode\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Dead code detector to find unused PHP code via PHPStan extension. Can automatically remove dead PHP code. Supports libraries like Symfony, Doctrine, PHPUnit etc. Detects dead cycles. Can detect dead code that is tested."
         },
         {
             "name": "shipmonk/phpstan-baseline-per-identifier",
