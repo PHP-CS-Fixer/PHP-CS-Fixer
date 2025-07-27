@@ -1941,45 +1941,51 @@ $bar;',
     public function testToJson(): void
     {
         self::assertSame(
-            <<<'JSON'
-                [
-                    {
-                        "id": 393,
-                        "name": "T_OPEN_TAG",
-                        "content": "<?php ",
-                        "isArray": true,
-                        "changed": false
-                    },
-                    {
-                        "id": 313,
-                        "name": "T_RETURN",
-                        "content": "return",
-                        "isArray": true,
-                        "changed": false
-                    },
-                    {
-                        "id": 396,
-                        "name": "T_WHITESPACE",
-                        "content": " ",
-                        "isArray": true,
-                        "changed": false
-                    },
-                    {
-                        "id": 260,
-                        "name": "T_LNUMBER",
-                        "content": 1,
-                        "isArray": true,
-                        "changed": false
-                    },
-                    {
-                        "id": null,
-                        "name": null,
-                        "content": ";",
-                        "isArray": false,
-                        "changed": false
-                    }
-                ]
-                JSON,
+            \sprintf(
+                <<<'JSON'
+                    [
+                        {
+                            "id": %d,
+                            "name": "T_OPEN_TAG",
+                            "content": "<?php ",
+                            "isArray": true,
+                            "changed": false
+                        },
+                        {
+                            "id": %d,
+                            "name": "T_RETURN",
+                            "content": "return",
+                            "isArray": true,
+                            "changed": false
+                        },
+                        {
+                            "id": %d,
+                            "name": "T_WHITESPACE",
+                            "content": " ",
+                            "isArray": true,
+                            "changed": false
+                        },
+                        {
+                            "id": %d,
+                            "name": "T_LNUMBER",
+                            "content": 1,
+                            "isArray": true,
+                            "changed": false
+                        },
+                        {
+                            "id": null,
+                            "name": null,
+                            "content": ";",
+                            "isArray": false,
+                            "changed": false
+                        }
+                    ]
+                    JSON,
+                \T_OPEN_TAG,
+                \T_RETURN,
+                \T_WHITESPACE,
+                \T_LNUMBER
+            ),
             Tokens::fromCode('<?php return 1;')->toJson()
         );
     }
