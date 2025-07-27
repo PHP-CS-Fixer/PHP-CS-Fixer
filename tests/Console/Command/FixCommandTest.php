@@ -208,6 +208,18 @@ final class FixCommandTest extends TestCase
         self::assertSame(1, $cmdTester->getStatusCode());
     }
 
+    public function testLoadedConfig(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('Using config from passed path is deprecated and will be removed in version 4.0, please use "--config" instead, or move the config to the current working directory.');
+
+        $this->doTestExecute(
+            [
+                'path' => [__DIR__.'/../../Fixtures/ci-integration'],
+            ]
+        );
+    }
+
     /**
      * @param array<string, mixed> $arguments
      */
