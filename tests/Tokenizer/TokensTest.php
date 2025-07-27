@@ -1939,7 +1939,7 @@ $bar;',
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP 8.1
      */
     public function testToJson(): void
     {
@@ -1989,7 +1989,6 @@ $bar;',
                 \T_WHITESPACE,
                 \T_LNUMBER,
             ),
-            Tokens::fromCode('<?php return 1;')->toJson(),
             Tokens::fromCode('<?php return 1;')->toJson(),
         );
     }

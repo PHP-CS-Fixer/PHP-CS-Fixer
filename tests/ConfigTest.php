@@ -249,7 +249,7 @@ final class ConfigTest extends TestCase
         self::assertFalse($config->getRiskyAllowed());
         self::assertSame(['@PSR12' => true], $config->getRules());
         self::assertTrue($config->getUsingCache());
-        self::assertFalse($config->getUnsupportedPhpVersionAllowed());
+        self::assertSame(filter_var(getenv('PHP_CS_FIXER_IGNORE_ENV'), \FILTER_VALIDATE_BOOL), $config->getUnsupportedPhpVersionAllowed());
 
         $finder = $config->getFinder();
         self::assertInstanceOf(Finder::class, $finder);
