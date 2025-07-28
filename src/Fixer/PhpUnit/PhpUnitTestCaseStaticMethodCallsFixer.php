@@ -559,7 +559,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 }
             }
 
-            if (!$tokens[$index]->isGivenKind(T_STRING) || !isset(self::METHODS[$tokens[$index]->getContent()])) {
+            if (!$tokens[$index]->isGivenKind(\T_STRING) || !isset(self::METHODS[$tokens[$index]->getContent()])) {
                 continue;
             }
 
