@@ -226,7 +226,6 @@ final class ConfigurationResolver
     public function getConfig(): ConfigInterface
     {
         if (null === $this->config) {
-            //            dd($this->computeConfigFiles());
             foreach ($this->computeConfigFiles() as $configFile) {
                 // @TODO v4 drop handling
                 if (str_starts_with($configFile, 'deprecated:') && file_exists(substr($configFile, 11))) {
