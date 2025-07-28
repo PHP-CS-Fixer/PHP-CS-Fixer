@@ -14,9 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Console\Command;
 
+use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\FixCommand;
+use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Command\Command;
@@ -98,8 +100,12 @@ final class FixCommandTest extends TestCase
             ]
         );
 
+        $availableMaxProcesses = ParallelConfigFactory::detect()->getMaxProcesses();
+
         self::assertStringContainsString('Running analysis on 1 core sequentially.', $cmdTester->getDisplay());
-        self::assertStringContainsString('You can enable parallel runner and speed up the analysis!', $cmdTester->getDisplay());
+        if ($availableMaxProcesses > 1) {
+            self::assertStringContainsString('You can enable parallel runner and speed up the analysis!', $cmdTester->getDisplay());
+        }
         self::assertStringContainsString('(header_comment)', $cmdTester->getDisplay());
         self::assertSame(8, $cmdTester->getStatusCode());
     }
@@ -138,6 +144,68 @@ final class FixCommandTest extends TestCase
         self::assertStringContainsString('Parallel runner is an experimental feature and may be unstable, use it at your own risk. Feedback highly appreciated!', $cmdTester->getDisplay());
         self::assertStringContainsString('(header_comment)', $cmdTester->getDisplay());
         self::assertSame(8, $cmdTester->getStatusCode());
+    }
+
+    /**
+     * @large
+     */
+    public function testUnsupportedVersionWarningRun(): void
+    {
+        if (version_compare(\PHP_VERSION, ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED.'.99', '<=')) {
+            self::markTestSkipped('This test requires version of PHP higher than '.ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED);
+        }
+
+        $pathToDistConfig = __DIR__.'/../../../.php-cs-fixer.dist.php';
+        $configWithFixedParallelConfig = <<<PHP
+            <?php
+
+            \$config = require '{$pathToDistConfig}';
+            \$config->setUnsupportedPhpVersionAllowed(true);
+
+            return \$config;
+            PHP;
+        $tmpFile = tempnam(sys_get_temp_dir(), 'php-cs-fixer-parallel-config-').'.php';
+        file_put_contents($tmpFile, $configWithFixedParallelConfig);
+
+        $cmdTester = $this->doTestExecute(
+            [
+                '--config' => $tmpFile,
+                'path' => [__DIR__],
+            ]
+        );
+
+        self::assertStringContainsString('PHP CS Fixer currently supports PHP syntax only up to PHP '.ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED, $cmdTester->getDisplay());
+        self::assertStringContainsString('Execution may be unstable. You may experience code modified in a wrong way.', $cmdTester->getDisplay());
+    }
+
+    public function testUnsupportedVersionErrorRun(): void
+    {
+        if (version_compare(\PHP_VERSION, ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED.'.99', '<=')) {
+            self::markTestSkipped('This test requires version of PHP higher than '.ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED);
+        }
+
+        $pathToDistConfig = __DIR__.'/../../../.php-cs-fixer.dist.php';
+        $configWithFixedParallelConfig = <<<PHP
+            <?php
+
+            \$config = require '{$pathToDistConfig}';
+            \$config->setUnsupportedPhpVersionAllowed(false);
+
+            return \$config;
+            PHP;
+        $tmpFile = tempnam(sys_get_temp_dir(), 'php-cs-fixer-parallel-config-').'.php';
+        file_put_contents($tmpFile, $configWithFixedParallelConfig);
+
+        $cmdTester = $this->doTestExecute(
+            [
+                '--config' => $tmpFile,
+                'path' => [__DIR__],
+            ]
+        );
+
+        self::assertStringContainsString('PHP CS Fixer currently supports PHP syntax only up to PHP '.ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED, $cmdTester->getDisplay());
+        self::assertStringContainsString('Add Config::setUnsupportedPhpVersionAllowed(true) to allow executions on unsupported PHP versions.', $cmdTester->getDisplay());
+        self::assertSame(1, $cmdTester->getStatusCode());
     }
 
     /**

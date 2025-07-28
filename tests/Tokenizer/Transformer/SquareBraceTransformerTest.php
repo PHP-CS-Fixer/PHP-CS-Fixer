@@ -46,9 +46,9 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
 
         foreach ($tokens as $index => $token) {
             if (\in_array($index, $inspectIndexes, true)) {
-                self::assertSame('[', $tokens[$index]->getContent(), \sprintf('Token @ index %d must have content \']\'', $index));
+                self::assertSame('[', $token->getContent(), \sprintf('Token @ index %d must have content \']\'', $index));
                 $exp = $expected;
-            } elseif ('[' === $tokens[$index]->getContent()) {
+            } elseif ('[' === $token->getContent()) {
                 $exp = !$expected;
             } else {
                 continue;
@@ -57,7 +57,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
             self::assertSame(
                 $expected,
                 \Closure::bind(static fn (SquareBraceTransformer $transformer): bool => $transformer->isShortArray($tokens, $index), null, SquareBraceTransformer::class)($transformer),
-                \sprintf('Excepted token "%s" @ index %d %sto be detected as short array.', $tokens[$index]->toJson(), $index, $exp ? '' : 'not ')
+                \sprintf('Excepted token "%s" @ index %d %sto be detected as short array.', $token->toJson(), $index, $exp ? '' : 'not ')
             );
         }
     }

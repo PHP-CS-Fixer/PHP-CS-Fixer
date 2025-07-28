@@ -98,7 +98,6 @@ The rule is part of the following rule sets:
 
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
 
-
 References
 ----------
 

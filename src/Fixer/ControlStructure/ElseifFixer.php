@@ -48,7 +48,7 @@ final class ElseifFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAllTokenKindsFound([T_IF, T_ELSE]);
+        return $tokens->isAllTokenKindsFound([\T_IF, \T_ELSE]);
     }
 
     /**
@@ -59,14 +59,14 @@ final class ElseifFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_ELSE)) {
+            if (!$token->isGivenKind(\T_ELSE)) {
                 continue;
             }
 
             $ifTokenIndex = $tokens->getNextMeaningfulToken($index);
 
             // if next meaningful token is not T_IF - continue searching, this is not the case for fixing
-            if (!$tokens[$ifTokenIndex]->isGivenKind(T_IF)) {
+            if (!$tokens[$ifTokenIndex]->isGivenKind(\T_IF)) {
                 continue;
             }
 
@@ -82,7 +82,7 @@ final class ElseifFixer extends AbstractFixer
             $tokens->clearAt($index + 1);
 
             // 2. change token from T_ELSE into T_ELSEIF
-            $tokens[$index] = new Token([T_ELSEIF, 'elseif']);
+            $tokens[$index] = new Token([\T_ELSEIF, 'elseif']);
 
             // 3. clear succeeding T_IF
             $tokens->clearAt($ifTokenIndex);

@@ -23,9 +23,11 @@ use PhpCsFixer\Console\Output\ErrorOutput;
 use PhpCsFixer\Console\Output\OutputContext;
 use PhpCsFixer\Console\Output\Progress\ProgressOutputFactory;
 use PhpCsFixer\Console\Output\Progress\ProgressOutputType;
+use PhpCsFixer\Console\Report\FixReport\ReporterFactory;
 use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Runner\Event\FileProcessed;
+use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\ToolInfoInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -52,8 +54,10 @@ use Symfony\Component\Stopwatch\Stopwatch;
 #[AsCommand(name: 'fix', description: 'Fixes a directory or a file.')]
 /* final */ class FixCommand extends Command
 {
+    /** @TODO PHP 8.0 - remove the property */
     protected static $defaultName = 'fix';
 
+    /** @TODO PHP 8.0 - remove the property */
     protected static $defaultDescription = 'Fixes a directory or a file.';
 
     private EventDispatcherInterface $eventDispatcher;
@@ -203,6 +207,11 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
     protected function configure(): void
     {
+        $reporterFactory = new ReporterFactory();
+        $reporterFactory->registerBuiltInReporters();
+        $formats = $reporterFactory->getFormats();
+        array_unshift($formats, '@auto', '@auto,txt');
+
         $this->setDefinition(
             [
                 new InputArgument('path', InputArgument::IS_ARRAY, 'The path(s) that rules will be run against (each path can be a file or directory).'),
@@ -212,9 +221,10 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified.'),
                 new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'List of rules that should be run against configured paths.'),
                 new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Should cache be used (can be `yes` or `no`).'),
+                new InputOption('allow-unsupported-php-version', '', InputOption::VALUE_REQUIRED, 'Should the command refuse to run on unsupported PHP version (can be `yes` or `no`).'),
                 new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file.'),
                 new InputOption('diff', '', InputOption::VALUE_NONE, 'Prints diff for each file.'),
-                new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats.'),
+                new InputOption('format', '', InputOption::VALUE_REQUIRED, \sprintf('To output results in other formats (can be %s).', implode(', ', array_map(static fn ($format) => \sprintf('`%s`', $format), $formats)))),
                 new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
                 new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, dots).'),
                 new InputOption('sequential', '', InputOption::VALUE_NONE, 'Enforce sequential analysis.'),
@@ -243,6 +253,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 'path' => $input->getArgument('path'),
                 'path-mode' => $input->getOption('path-mode'),
                 'using-cache' => $input->getOption('using-cache'),
+                'allow-unsupported-php-version' => $input->getOption('allow-unsupported-php-version'),
                 'cache-file' => $input->getOption('cache-file'),
                 'format' => $input->getOption('format'),
                 'diff' => $input->getOption('diff'),
@@ -263,6 +274,30 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
         if (null !== $stdErr) {
             $stdErr->writeln(Application::getAboutWithRuntime(true));
+
+            if (version_compare(\PHP_VERSION, ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED.'.99', '>')) {
+                $message = \sprintf(
+                    'PHP CS Fixer currently supports PHP syntax only up to PHP %s, current PHP version: %s.',
+                    ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED,
+                    \PHP_VERSION
+                );
+
+                if (!$resolver->getUnsupportedPhpVersionAllowed()) {
+                    $message .= ' Add Config::setUnsupportedPhpVersionAllowed(true) to allow executions on unsupported PHP versions. Such execution may be unstable and you may experience code modified in a wrong way.';
+                    $stdErr->writeln(\sprintf(
+                        $stdErr->isDecorated() ? '<bg=red;fg=white;>%s</>' : '%s',
+                        $message
+                    ));
+
+                    return 1;
+                }
+                $message .= ' Execution may be unstable. You may experience code modified in a wrong way. Please report such cases at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer. Remove Config::setUnsupportedPhpVersionAllowed(true) to allow executions only on supported PHP versions.';
+                $stdErr->writeln(\sprintf(
+                    $stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s',
+                    $message
+                ));
+            }
+
             $isParallel = $resolver->getParallelConfig()->getMaxProcesses() > 1;
 
             $stdErr->writeln(\sprintf(
@@ -276,18 +311,21 @@ use Symfony\Component\Stopwatch\Stopwatch;
             ));
 
             /** @TODO v4 remove warnings related to parallel runner */
-            $usageDocs = 'https://cs.symfony.com/doc/usage.html';
-            $stdErr->writeln(\sprintf(
-                $stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s',
-                $isParallel
-                    ? 'Parallel runner is an experimental feature and may be unstable, use it at your own risk. Feedback highly appreciated!'
-                    : \sprintf(
-                        'You can enable parallel runner and speed up the analysis! Please see %s for more information.',
-                        $stdErr->isDecorated()
-                            ? \sprintf('<href=%s;bg=yellow;fg=red;bold>usage docs</>', OutputFormatter::escape($usageDocs))
-                            : $usageDocs
-                    )
-            ));
+            $availableMaxProcesses = ParallelConfigFactory::detect()->getMaxProcesses();
+            if ($isParallel || $availableMaxProcesses > 1) {
+                $usageDocs = 'https://cs.symfony.com/doc/usage.html';
+                $stdErr->writeln(\sprintf(
+                    $stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s',
+                    $isParallel
+                        ? 'Parallel runner is an experimental feature and may be unstable, use it at your own risk. Feedback highly appreciated!'
+                        : \sprintf(
+                            'You can enable parallel runner and speed up the analysis! Please see %s for more information.',
+                            $stdErr->isDecorated()
+                                ? \sprintf('<href=%s;bg=yellow;fg=red;bold>usage docs</>', OutputFormatter::escape($usageDocs))
+                                : $usageDocs
+                        )
+                ));
+            }
 
             $configFile = $resolver->getConfigFile();
             $stdErr->writeln(\sprintf('Loaded config <comment>%s</comment>%s.', $resolver->getConfig()->getName(), null === $configFile ? '' : ' from "'.$configFile.'"'));
@@ -301,7 +339,10 @@ use Symfony\Component\Stopwatch\Stopwatch;
             }
         }
 
-        $finder = new \ArrayIterator(iterator_to_array($resolver->getFinder()));
+        $finder = new \ArrayIterator(array_filter(
+            iterator_to_array($resolver->getFinder()),
+            static fn (\SplFileInfo $fileInfo) => false !== $fileInfo->getRealPath(),
+        ));
 
         if (null !== $stdErr && $resolver->configFinderIsOverridden()) {
             $stdErr->writeln(

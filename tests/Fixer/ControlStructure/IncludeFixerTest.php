@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Саша Стаменковић <umpirsky@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ControlStructure\IncludeFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\IncludeFixer>
+ *
+ * @author Саша Стаменковић <umpirsky@gmail.com>
  */
 final class IncludeFixerTest extends AbstractFixerTestCase
 {

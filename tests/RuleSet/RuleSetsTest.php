@@ -108,7 +108,7 @@ Integration of %s.
 ';
         self::assertStringStartsWith(
             \sprintf($template, $setDefinitionName, $setDefinitionName),
-            file_get_contents($file)
+            (string) file_get_contents($file)
         );
     }
 
@@ -125,6 +125,7 @@ Integration of %s.
      */
     public function testSetDefinitionsAreSorted(string $setDefinitionName): void
     {
+        \assert(\array_key_exists($setDefinitionName, RuleSets::getSetDefinitions()));
         $setDefinition = RuleSets::getSetDefinitions()[$setDefinitionName]->getRules();
         $sortedSetDefinition = $setDefinition;
         $this->sort($sortedSetDefinition);
@@ -256,7 +257,7 @@ Integration of %s.
      */
     private function doSort(array &$data, string $path): void
     {
-        if ('ordered_imports.imports_order' === $path) { // order matters
+        if (\in_array($path, ['ordered_imports.imports_order', 'phpdoc_order.order'], true)) { // order matters
             return;
         }
 

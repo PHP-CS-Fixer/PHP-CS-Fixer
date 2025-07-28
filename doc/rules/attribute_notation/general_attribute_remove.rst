@@ -47,6 +47,7 @@ With configuration: ``['attributes' => ['\\A\\B\\Foo', 'A\\B\\Bar']]``.
    -#[\A\B\Foo]
    -#[BarAlias]
     function foo() {}
+
 References
 ----------
 

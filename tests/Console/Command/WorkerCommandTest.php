@@ -86,7 +86,7 @@ final class WorkerCommandTest extends TestCase
     {
         $streamSelectLoop = new StreamSelectLoop();
         $server = new TcpServer('127.0.0.1:0', $streamSelectLoop);
-        $serverPort = parse_url($server->getAddress() ?? '', PHP_URL_PORT);
+        $serverPort = parse_url($server->getAddress() ?? '', \PHP_URL_PORT);
         $processIdentifier = ProcessIdentifier::create();
         $processFactory = new ProcessFactory(
             new ArrayInput([], (new FixCommand(new ToolInfo()))->getDefinition())
@@ -117,9 +117,8 @@ final class WorkerCommandTest extends TestCase
         $server->on(
             'connection',
             static function (ConnectionInterface $connection) use (&$workerScope): void {
-                $jsonInvalidUtf8Ignore = \defined('JSON_INVALID_UTF8_IGNORE') ? JSON_INVALID_UTF8_IGNORE : 0;
-                $decoder = new Decoder($connection, true, 512, $jsonInvalidUtf8Ignore);
-                $encoder = new Encoder($connection, $jsonInvalidUtf8Ignore);
+                $decoder = new Decoder($connection, true, 512, \JSON_INVALID_UTF8_IGNORE);
+                $encoder = new Encoder($connection, \JSON_INVALID_UTF8_IGNORE);
 
                 $decoder->on(
                     'data',
@@ -127,6 +126,7 @@ final class WorkerCommandTest extends TestCase
                         $workerScope['messages'][] = $data;
                         $ds = \DIRECTORY_SEPARATOR;
 
+                        \assert(\array_key_exists('action', $data));
                         if (ParallelAction::WORKER_HELLO === $data['action']) {
                             $encoder->write(['action' => ParallelAction::RUNNER_REQUEST_ANALYSIS, 'files' => [
                                 realpath(__DIR__.$ds.'..'.$ds.'..').$ds.'Fixtures'.$ds.'FixerTest'.$ds.'fix'.$ds.'somefile.php',
@@ -152,9 +152,13 @@ final class WorkerCommandTest extends TestCase
 
         self::assertSame(Command::SUCCESS, $process->getExitCode());
         self::assertCount(3, $workerScope['messages']);
+        self::assertArrayHasKey('action', $workerScope['messages'][0]);
         self::assertSame(ParallelAction::WORKER_HELLO, $workerScope['messages'][0]['action']);
+        self::assertArrayHasKey('action', $workerScope['messages'][1]);
         self::assertSame(ParallelAction::WORKER_RESULT, $workerScope['messages'][1]['action']);
+        self::assertArrayHasKey('status', $workerScope['messages'][1]);
         self::assertSame(FileProcessed::STATUS_FIXED, $workerScope['messages'][1]['status']);
+        self::assertArrayHasKey('action', $workerScope['messages'][2]);
         self::assertSame(ParallelAction::WORKER_GET_FILE_CHUNK, $workerScope['messages'][2]['action']);
 
         $server->close();

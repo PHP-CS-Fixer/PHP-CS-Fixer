@@ -27,6 +27,7 @@ Example #1
    -
    -
     namespace Example;
+
 References
 ----------
 

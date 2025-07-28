@@ -130,7 +130,7 @@ final class LineTest extends TestCase
     /**
      * @dataProvider provideLinesCases
      */
-    public function testStartOrEndPos(int $pos): void
+    public function testStartOrEndPos(int $pos, string $content): void
     {
         $doc = new DocBlock(self::$sample);
         $line = $doc->getLine($pos);

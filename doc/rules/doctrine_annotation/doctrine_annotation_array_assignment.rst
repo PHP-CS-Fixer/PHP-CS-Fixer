@@ -69,7 +69,6 @@ The rule is part of the following rule set:
 
   ``['operator' => ':']``
 
-
 References
 ----------
 

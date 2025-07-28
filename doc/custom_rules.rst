@@ -3,7 +3,7 @@ Creating custom rules
 =====================
 
 If you need to enforce some specific code style rules, you can implement your
-own fixers.
+own fixers. There is a `cookbook <./cookbook_fixers.rst>`_ with basic instructions on how to build a new fixer.
 
 For each rule you want to add, create a class that implements
 `PhpCsFixer\\Fixer\\FixerInterface <./../src/Fixer/FixerInterface.php>`_.

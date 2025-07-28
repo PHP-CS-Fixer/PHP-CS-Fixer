@@ -43,7 +43,7 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAllTokenKindsFound([T_ISSET, T_BOOLEAN_AND]);
+        return $tokens->isAllTokenKindsFound([\T_ISSET, \T_BOOLEAN_AND]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -51,8 +51,8 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
         $tokenCount = $tokens->count();
 
         for ($index = 1; $index < $tokenCount; ++$index) {
-            if (!$tokens[$index]->isGivenKind(T_ISSET)
-                || !$tokens[$tokens->getPrevMeaningfulToken($index)]->equalsAny(['(', '{', ';', '=', [T_OPEN_TAG], [T_BOOLEAN_AND], [T_BOOLEAN_OR]])) {
+            if (!$tokens[$index]->isGivenKind(\T_ISSET)
+                || !$tokens[$tokens->getPrevMeaningfulToken($index)]->equalsAny(['(', '{', ';', '=', [\T_OPEN_TAG], [\T_BOOLEAN_AND], [\T_BOOLEAN_OR]])) {
                 continue;
             }
 
@@ -62,9 +62,9 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
 
             $booleanAndTokenIndex = $tokens->getNextMeaningfulToken($issetCloseBraceIndex);
 
-            while ($tokens[$booleanAndTokenIndex]->isGivenKind(T_BOOLEAN_AND)) {
+            while ($tokens[$booleanAndTokenIndex]->isGivenKind(\T_BOOLEAN_AND)) {
                 $issetIndex = $tokens->getNextMeaningfulToken($booleanAndTokenIndex);
-                if (!$tokens[$issetIndex]->isGivenKind(T_ISSET)) {
+                if (!$tokens[$issetIndex]->isGivenKind(\T_ISSET)) {
                     $index = $issetIndex;
 
                     break;
@@ -76,7 +76,7 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
                 $nextMeaningfulTokenIndex = $tokens->getNextMeaningfulToken(end($nextIssetInfo));
                 $nextMeaningfulToken = $tokens[$nextMeaningfulTokenIndex];
 
-                if (!$nextMeaningfulToken->equalsAny([')', '}', ';', [T_CLOSE_TAG], [T_BOOLEAN_AND], [T_BOOLEAN_OR]])) {
+                if (!$nextMeaningfulToken->equalsAny([')', '}', ';', [\T_CLOSE_TAG], [\T_BOOLEAN_AND], [\T_BOOLEAN_OR]])) {
                     $index = $nextMeaningfulTokenIndex;
 
                     break;
@@ -89,7 +89,7 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
                 $this->clearTokens($tokens, array_merge($nextIssetInfo, [$issetIndex, $booleanAndTokenIndex]));
 
                 // insert the tokens to create the new statement
-                array_unshift($clones, new Token(','), new Token([T_WHITESPACE, ' ']));
+                array_unshift($clones, new Token(','), new Token([\T_WHITESPACE, ' ']));
                 $tokens->insertAt($insertLocation, $clones);
 
                 // correct some counts and offset based on # of tokens inserted

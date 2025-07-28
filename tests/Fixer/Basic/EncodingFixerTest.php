@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Basic;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Basic\EncodingFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\EncodingFixer>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class EncodingFixerTest extends AbstractFixerTestCase
 {
@@ -56,8 +56,8 @@ final class EncodingFixerTest extends AbstractFixerTestCase
         $inputFile = null !== $inputFilename ? new \SplFileInfo(__DIR__.'/../../Fixtures/FixerTest/encoding/'.$inputFilename) : null;
 
         return [
-            file_get_contents($expectedFile->getRealPath()),
-            null !== $inputFile ? file_get_contents($inputFile->getRealPath()) : null,
+            (string) file_get_contents($expectedFile->getRealPath()),
+            null !== $inputFile ? (string) file_get_contents($inputFile->getRealPath()) : null,
             $inputFile ?? $expectedFile,
         ];
     }

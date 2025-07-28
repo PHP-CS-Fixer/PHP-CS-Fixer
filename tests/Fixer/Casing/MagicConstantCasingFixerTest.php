@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Casing;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author ntzm
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Casing\MagicConstantCasingFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\MagicConstantCasingFixer>
+ *
+ * @author ntzm
  */
 final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
 {
@@ -121,6 +121,32 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
                 namespace {
                     echo \Bar::__line__;
                 }',
+        ];
+    }
+
+    /**
+     * @requires PHP 8.4
+     *
+     * @dataProvider provideFix84Cases
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->testFix($expected, $input);
+    }
+
+    /**
+     * @return iterable<int, array{string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield [
+            '<?php echo __PROPERTY__;',
+            '<?php echo __property__;',
+        ];
+
+        yield [
+            '<?php echo __PROPERTY__;',
+            '<?php echo __PrOpErTy__;',
         ];
     }
 }

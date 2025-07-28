@@ -1,11 +1,11 @@
 name: Bug report 🐛
 description: Existing feature does not behave as expected.
-labels: [ "kind/bug", "status/to verify" ]
+labels: [ kind/bug, status/to verify ]
 body:
   - type: markdown
     attributes:
       value: |
-        Before reporting a bug, make sure PHP-CS-Fixer is up-to-date and the problem is/was not reported already.
+        Before reporting a bug, make sure PHP CS Fixer is up-to-date and the problem is/was not reported already.
   - type: textarea
     id: problem-description
     attributes:

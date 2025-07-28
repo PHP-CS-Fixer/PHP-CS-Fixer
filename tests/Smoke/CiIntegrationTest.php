@@ -19,6 +19,7 @@ use Keradus\CliExecutor\CommandExecutor;
 use Keradus\CliExecutor\ScriptExecutor;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -109,7 +110,14 @@ final class CiIntegrationTest extends AbstractSmokeTestCase
             $caseCommands
         ));
 
-        $integrationScript = explode("\n", str_replace('vendor/bin/', './../../../', file_get_contents(__DIR__.'/../../ci-integration.sh')));
+        $integrationScript = explode("\n", str_replace('vendor/bin/', './../../../', (string) file_get_contents(__DIR__.'/../../ci-integration.sh')));
+
+        self::assertArrayHasKey(3, $integrationScript);
+        self::assertArrayHasKey(4, $integrationScript);
+        self::assertArrayHasKey(5, $integrationScript);
+        self::assertArrayHasKey(6, $integrationScript);
+        self::assertArrayHasKey(7, $integrationScript);
+
         $steps = [
             "COMMIT_RANGE=\"master..{$branchName}\"",
             "{$integrationScript[3]}\n{$integrationScript[4]}",
@@ -150,7 +158,7 @@ You may find an UPGRADE guide at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/bl
 ';
 
         $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 7.4.0 and maximum version of PHP 8.2.*.
-Current PHP version: '.PHP_VERSION.'.
+Current PHP version: '.\PHP_VERSION.'.
 Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.
 ';
 
@@ -162,13 +170,17 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
 ';
 
         $expectedResult3FilesLineAfterDotsIndex = strpos($expectedResult3FilesLine, ' ');
+        self::assertIsInt($expectedResult3FilesLineAfterDotsIndex);
+
         $expectedResult3FilesDots = substr($expectedResult3FilesLine, 0, $expectedResult3FilesLineAfterDotsIndex);
         $expectedResult3FilesPercentage = substr($expectedResult3FilesLine, $expectedResult3FilesLineAfterDotsIndex);
 
         /** @phpstan-ignore-next-line to avoid `Ternary operator condition is always true|false.` */
         $aboutSubpattern = Application::VERSION_CODENAME
-            ? 'PHP CS Fixer '.preg_quote(Application::VERSION, '/').' '.preg_quote(Application::VERSION_CODENAME, '/')." by Fabien Potencier, Dariusz Ruminski and contributors.\nPHP runtime: ".PHP_VERSION
-            : 'PHP CS Fixer '.preg_quote(Application::VERSION, '/')." by Fabien Potencier, Dariusz Ruminski and contributors.\nPHP runtime: ".PHP_VERSION;
+            ? 'PHP CS Fixer '.preg_quote(Application::VERSION, '/').' '.preg_quote(Application::VERSION_CODENAME, '/')." by Fabien Potencier, Dariusz Ruminski and contributors.\nPHP runtime: ".\PHP_VERSION
+            : 'PHP CS Fixer '.preg_quote(Application::VERSION, '/')." by Fabien Potencier, Dariusz Ruminski and contributors.\nPHP runtime: ".\PHP_VERSION;
+
+        $availableMaxProcesses = ParallelConfigFactory::detect()->getMaxProcesses();
 
         $pattern = \sprintf(
             '/^(?:%s)?(?:%s)?(?:%s)?(?:%s)?%s\n%s\n%s\n%s\n([\.S]{%d})%s\n%s$/',
@@ -178,7 +190,7 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
             preg_quote($optionalWarningsHelp, '/'),
             $aboutSubpattern,
             'Running analysis on \d+ core(?: sequentially|s with \d+ files? per process)+\.',
-            preg_quote('You can enable parallel runner and speed up the analysis! Please see https://cs.symfony.com/doc/usage.html for more information.', '/'),
+            $availableMaxProcesses > 1 ? preg_quote('You can enable parallel runner and speed up the analysis! Please see https://cs.symfony.com/doc/usage.html for more information.', '/') : '',
             preg_quote('Loaded config default from ".php-cs-fixer.dist.php".', '/'),
             \strlen($expectedResult3FilesDots),
             preg_quote($expectedResult3FilesPercentage, '/'),
@@ -289,6 +301,17 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
             ],
             '...                                                                 3 / 3 (100%)',
         ];
+    }
+
+    public function testWithUsingNonExistingFile(): void
+    {
+        $output = ScriptExecutor::create(
+            ['php php-cs-fixer check --config=tests/Fixtures/.php-cs-fixer.append-non-existing-file.php --show-progress=dots'],
+            __DIR__.'/../..'
+        )->getResult();
+
+        self::assertSame(0, $output->getCode());
+        self::assertStringContainsString(' (100%)', $output->getError());
     }
 
     private static function executeCommand(string $command): CliResult

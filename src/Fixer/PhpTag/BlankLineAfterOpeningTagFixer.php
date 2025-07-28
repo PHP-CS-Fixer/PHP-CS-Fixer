@@ -48,7 +48,7 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isMonolithicPhp() && !$tokens->isTokenKindFound(T_OPEN_TAG_WITH_ECHO);
+        return $tokens->isMonolithicPhp() && !$tokens->isTokenKindFound(\T_OPEN_TAG_WITH_ECHO);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -57,7 +57,7 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
 
         $newlineFound = false;
         foreach ($tokens as $token) {
-            if (($token->isWhitespace() || $token->isGivenKind(T_OPEN_TAG)) && str_contains($token->getContent(), "\n")) {
+            if (($token->isWhitespace() || $token->isGivenKind(\T_OPEN_TAG)) && str_contains($token->getContent(), "\n")) {
                 $newlineFound = true;
 
                 break;
@@ -69,7 +69,7 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
             return;
         }
 
-        $openTagIndex = $tokens[0]->isGivenKind(T_INLINE_HTML) ? 1 : 0;
+        $openTagIndex = $tokens[0]->isGivenKind(\T_INLINE_HTML) ? 1 : 0;
         $token = $tokens[$openTagIndex];
 
         if (!str_contains($token->getContent(), "\n")) {
@@ -83,10 +83,10 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
 
         if ($tokens[$newLineIndex]->isWhitespace()) {
             if (!str_contains($tokens[$newLineIndex]->getContent(), "\n")) {
-                $tokens[$newLineIndex] = new Token([T_WHITESPACE, $lineEnding.$tokens[$newLineIndex]->getContent()]);
+                $tokens[$newLineIndex] = new Token([\T_WHITESPACE, $lineEnding.$tokens[$newLineIndex]->getContent()]);
             }
         } else {
-            $tokens->insertAt($newLineIndex, new Token([T_WHITESPACE, $lineEnding]));
+            $tokens->insertAt($newLineIndex, new Token([\T_WHITESPACE, $lineEnding]));
         }
     }
 }

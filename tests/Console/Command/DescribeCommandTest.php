@@ -205,10 +205,10 @@ Fixing examples:
             false,
             self::createFixerWithSamplesDouble([
                 new CodeSample(
-                    "<?php echo 'BEFORE';".PHP_EOL,
+                    "<?php echo 'BEFORE';".\PHP_EOL,
                 ),
                 new CodeSample(
-                    "<?php echo 'BEFORE'.'-B';".PHP_EOL,
+                    "<?php echo 'BEFORE'.'-B';".\PHP_EOL,
                 ),
             ]),
         ];
@@ -235,10 +235,10 @@ Fixing examples:
             false,
             self::createFixerWithSamplesDouble([
                 new CodeSample(
-                    "<?php echo 'BEFORE';".PHP_EOL,
+                    "<?php echo 'BEFORE';".\PHP_EOL,
                 ),
                 new VersionSpecificCodeSample(
-                    "<?php echo 'BEFORE'.'-B';".PHP_EOL,
+                    "<?php echo 'BEFORE'.'-B';".\PHP_EOL,
                     new VersionSpecification(20_00_00)
                 ),
             ]),
@@ -257,11 +257,11 @@ Fixing examples cannot be demonstrated on the current PHP version.
             false,
             self::createFixerWithSamplesDouble([
                 new VersionSpecificCodeSample(
-                    "<?php echo 'BEFORE';".PHP_EOL,
+                    "<?php echo 'BEFORE';".\PHP_EOL,
                     new VersionSpecification(20_00_00)
                 ),
                 new VersionSpecificCodeSample(
-                    "<?php echo 'BEFORE'.'-B';".PHP_EOL,
+                    "<?php echo 'BEFORE'.'-B';".\PHP_EOL,
                     new VersionSpecification(20_00_00)
                 ),
             ]),
@@ -273,7 +273,7 @@ Fixing examples cannot be demonstrated on the current PHP version.
    ----------- end diff -----------
 
 '.preg_quote("Fixer is part of the following rule sets:
-* @PER with config: ['default' => 'at_least_single_space']
+* @PER *(deprecated)* with config: ['default' => 'at_least_single_space']
 * @PER-CS with config: ['default' => 'at_least_single_space']
 * @PER-CS1.0 with config: ['default' => 'at_least_single_space']
 * @PER-CS2.0 with config: ['default' => 'at_least_single_space']
@@ -281,7 +281,6 @@ Fixing examples cannot be demonstrated on the current PHP version.
 * @PhpCsFixer with default config
 * @Symfony with default config").'
 $/s',
-
             true,
             false,
             new BinaryOperatorSpacesFixer(),

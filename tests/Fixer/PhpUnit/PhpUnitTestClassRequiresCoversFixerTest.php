@@ -18,14 +18,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\AbstractPhpUnitFixer
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitTestClassRequiresCoversFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitTestClassRequiresCoversFixer>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCase
 {
@@ -481,6 +481,15 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
                 <?php
                 use PHPUnit\Framework\Attributes as PHPUnitAttributes;
                 #[PHPUnitAttributes\CoversFunction('bar')]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
+
+        yield 'already with attribute CoversTrait' => [
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\Attributes\CoversTrait;
+                #[CoversTrait('Bar')]
                 class FooTest extends \PHPUnit_Framework_TestCase {}
                 PHP,
         ];

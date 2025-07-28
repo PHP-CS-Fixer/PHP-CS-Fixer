@@ -328,6 +328,8 @@ final class FileCacheManagerTest extends TestCase
 
             public function get(string $file): string
             {
+                \assert(\array_key_exists($file, $this->fileMap));
+
                 return $this->fileMap[$file];
             }
 

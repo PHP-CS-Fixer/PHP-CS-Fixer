@@ -248,6 +248,8 @@ final class FixerDocumentGenerator
                     - `{$set} <./../../ruleSets{$ruleSetPath}>`_{$configInfo}\n
                     RST;
             }
+
+            $doc = trim($doc);
         }
 
         $reflectionObject = new \ReflectionObject($fixer);
@@ -262,6 +264,7 @@ final class FixerDocumentGenerator
         $testFileName = Preg::replace('~(?= <|\.php>)~', 'Test', $testFileName);
 
         $doc .= <<<RST
+
 
             References
             ----------
@@ -382,7 +385,7 @@ final class FixerDocumentGenerator
                    the sample is not suitable for current version of PHP (%s).
                 RST;
 
-            return \sprintf($error, PHP_VERSION);
+            return \sprintf($error, \PHP_VERSION);
         }
 
         $old = $sample->getCode();

@@ -76,7 +76,10 @@ final class FileCachingLintingFileIteratorTest extends TestCase
 
         foreach ($fileCachingLintingIterator as $index => $lintedFile) {
             self::assertSame($lintingResultInterface, $fileCachingLintingIterator->currentLintingResult());
+
+            \assert(\array_key_exists($index, $files));
             self::assertSame($files[$index], $lintedFile);
+
             ++$iterations;
         }
 

@@ -38,6 +38,7 @@ Example #1
             return 1;
         }
     }
+
 References
 ----------
 

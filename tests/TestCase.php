@@ -26,10 +26,10 @@ abstract class TestCase extends BaseTestCase
     /** @var null|callable */
     private $previouslyDefinedErrorHandler;
 
-    /** @var list<string> */
+    /** @var array<int, string> */
     private array $expectedDeprecations = [];
 
-    /** @var list<string> */
+    /** @var array<int, string> */
     private array $actualDeprecations = [];
 
     protected function tearDown(): void
@@ -72,7 +72,7 @@ abstract class TestCase extends BaseTestCase
                     int $code,
                     string $message
                 ) {
-                    if (E_USER_DEPRECATED === $code || E_DEPRECATED === $code) {
+                    if (\E_USER_DEPRECATED === $code || \E_DEPRECATED === $code) {
                         $this->actualDeprecations[] = $message;
                     }
 

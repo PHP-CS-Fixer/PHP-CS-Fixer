@@ -19,7 +19,7 @@ namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
  *
  * @internal
  */
-final class TypeAnalysis implements StartEndTokenAwareAnalysis
+final class TypeAnalysis
 {
     private string $name;
 

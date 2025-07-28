@@ -80,7 +80,7 @@ class Foo
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAllTokenKindsFound([T_CLASS, T_PRIVATE, T_FUNCTION]);
+        return $tokens->isAllTokenKindsFound([\T_CLASS, \T_PRIVATE, \T_FUNCTION]);
     }
 
     public function isRisky(): bool
@@ -91,20 +91,25 @@ class Foo
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $end = \count($tokens) - 3; // min. number of tokens to form a class candidate to fix
-        for ($index = $end; $index > 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_CLASS)) {
-                continue;
+
+        do {
+            $anythingChanged = false;
+
+            $end = \count($tokens) - 3; // min. number of tokens to form a class candidate to fix
+            for ($index = $end; $index > 0; --$index) {
+                if (!$tokens[$index]->isGivenKind(\T_CLASS)) {
+                    continue;
+                }
+
+                $classOpen = $tokens->getNextTokenOfKind($index, ['{']);
+                $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
+
+                $anythingChanged |= $this->fixClass($tokens, $tokensAnalyzer, $classOpen, $classClose);
             }
-
-            $classOpen = $tokens->getNextTokenOfKind($index, ['{']);
-            $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
-
-            $this->fixClass($tokens, $tokensAnalyzer, $classOpen, $classClose);
-        }
+        } while ($anythingChanged);
     }
 
-    private function fixClass(Tokens $tokens, TokensAnalyzer $tokensAnalyzer, int $classOpen, int $classClose): void
+    private function fixClass(Tokens $tokens, TokensAnalyzer $tokensAnalyzer, int $classOpen, int $classClose): bool
     {
         $fixedMethods = [];
         foreach ($this->getClassMethods($tokens, $classOpen, $classClose) as $methodData) {
@@ -118,11 +123,11 @@ class Foo
             $methodName = $tokens[$methodNameIndex]->getContent();
             $fixedMethods[$methodName] = true;
 
-            $tokens->insertSlices([$functionKeywordIndex => [new Token([T_STATIC, 'static']), new Token([T_WHITESPACE, ' '])]]);
+            $tokens->insertSlices([$functionKeywordIndex => [new Token([\T_STATIC, 'static']), new Token([\T_WHITESPACE, ' '])]]);
         }
 
         if (0 === \count($fixedMethods)) {
-            return;
+            return false;
         }
 
         $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
@@ -131,6 +136,8 @@ class Foo
 
             $this->fixReferencesInFunction($tokens, $tokensAnalyzer, $methodOpen, $methodClose, $fixedMethods);
         }
+
+        return true;
     }
 
     private function skipMethod(Tokens $tokens, TokensAnalyzer $tokensAnalyzer, int $functionKeywordIndex, int $methodOpen, int $methodClose): bool
@@ -142,37 +149,37 @@ class Foo
         }
 
         $prevTokenIndex = $tokens->getPrevMeaningfulToken($functionKeywordIndex);
-        if ($tokens[$prevTokenIndex]->isGivenKind(T_FINAL)) {
+        if ($tokens[$prevTokenIndex]->isGivenKind(\T_FINAL)) {
             $prevTokenIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
         }
-        if (!$tokens[$prevTokenIndex]->isGivenKind(T_PRIVATE)) {
+        if (!$tokens[$prevTokenIndex]->isGivenKind(\T_PRIVATE)) {
             return true;
         }
 
         $prePrevTokenIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
-        if ($tokens[$prePrevTokenIndex]->isGivenKind(T_STATIC)) {
+        if ($tokens[$prePrevTokenIndex]->isGivenKind(\T_STATIC)) {
             return true;
         }
 
         for ($index = $methodOpen + 1; $index < $methodClose - 1; ++$index) {
-            if ($tokens[$index]->isGivenKind(T_CLASS) && $tokensAnalyzer->isAnonymousClass($index)) {
+            if ($tokens[$index]->isGivenKind(\T_CLASS) && $tokensAnalyzer->isAnonymousClass($index)) {
                 $anonymousClassOpen = $tokens->getNextTokenOfKind($index, ['{']);
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $anonymousClassOpen);
 
                 continue;
             }
 
-            if ($tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if ($tokens[$index]->isGivenKind(\T_FUNCTION)) {
                 return true;
             }
 
-            if ($tokens[$index]->equals([T_VARIABLE, '$this'])) {
+            if ($tokens[$index]->equals([\T_VARIABLE, '$this'])) {
                 $operatorIndex = $tokens->getNextMeaningfulToken($index);
                 $methodNameIndex = $tokens->getNextMeaningfulToken($operatorIndex);
                 $argumentsBraceIndex = $tokens->getNextMeaningfulToken($methodNameIndex);
 
                 if (
-                    !$tokens[$operatorIndex]->isGivenKind(T_OBJECT_OPERATOR)
+                    !$tokens[$operatorIndex]->isGivenKind(\T_OBJECT_OPERATOR)
                     || $methodName !== $tokens[$methodNameIndex]->getContent()
                     || !$tokens[$argumentsBraceIndex]->equals('(')
                 ) {
@@ -180,7 +187,7 @@ class Foo
                 }
             }
 
-            if ($tokens[$index]->equals([T_STRING, 'debug_backtrace'])) {
+            if ($tokens[$index]->equals([\T_STRING, 'debug_backtrace'])) {
                 return true;
             }
         }
@@ -194,11 +201,11 @@ class Foo
     private function fixReferencesInFunction(Tokens $tokens, TokensAnalyzer $tokensAnalyzer, int $methodOpen, int $methodClose, array $fixedMethods): void
     {
         for ($index = $methodOpen + 1; $index < $methodClose - 1; ++$index) {
-            if ($tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if ($tokens[$index]->isGivenKind(\T_FUNCTION)) {
                 $prevIndex = $tokens->getPrevMeaningfulToken($index);
                 $closureStart = $tokens->getNextTokenOfKind($index, ['{']);
                 $closureEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $closureStart);
-                if (!$tokens[$prevIndex]->isGivenKind(T_STATIC)) {
+                if (!$tokens[$prevIndex]->isGivenKind(\T_STATIC)) {
                     $this->fixReferencesInFunction($tokens, $tokensAnalyzer, $closureStart, $closureEnd, $fixedMethods);
                 }
 
@@ -207,19 +214,19 @@ class Foo
                 continue;
             }
 
-            if ($tokens[$index]->isGivenKind(T_CLASS) && $tokensAnalyzer->isAnonymousClass($index)) {
+            if ($tokens[$index]->isGivenKind(\T_CLASS) && $tokensAnalyzer->isAnonymousClass($index)) {
                 $anonymousClassOpen = $tokens->getNextTokenOfKind($index, ['{']);
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $anonymousClassOpen);
 
                 continue;
             }
 
-            if (!$tokens[$index]->equals([T_VARIABLE, '$this'])) {
+            if (!$tokens[$index]->equals([\T_VARIABLE, '$this'])) {
                 continue;
             }
 
             $objectOperatorIndex = $tokens->getNextMeaningfulToken($index);
-            if (!$tokens[$objectOperatorIndex]->isGivenKind(T_OBJECT_OPERATOR)) {
+            if (!$tokens[$objectOperatorIndex]->isGivenKind(\T_OBJECT_OPERATOR)) {
                 continue;
             }
 
@@ -234,8 +241,8 @@ class Foo
                 continue;
             }
 
-            $tokens[$index] = new Token([T_STRING, 'self']);
-            $tokens[$objectOperatorIndex] = new Token([T_DOUBLE_COLON, '::']);
+            $tokens[$index] = new Token([\T_STRING, 'self']);
+            $tokens[$objectOperatorIndex] = new Token([\T_DOUBLE_COLON, '::']);
         }
     }
 
@@ -252,14 +259,14 @@ class Foo
                 continue;
             }
 
-            if (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if (!$tokens[$index]->isGivenKind(\T_FUNCTION)) {
                 continue;
             }
 
             $functionKeywordIndex = $index;
             $prevTokenIndex = $tokens->getPrevMeaningfulToken($functionKeywordIndex);
             $prevPrevTokenIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
-            if ($tokens[$prevTokenIndex]->isGivenKind(T_ABSTRACT) || $tokens[$prevPrevTokenIndex]->isGivenKind(T_ABSTRACT)) {
+            if ($tokens[$prevTokenIndex]->isGivenKind(\T_ABSTRACT) || $tokens[$prevPrevTokenIndex]->isGivenKind(\T_ABSTRACT)) {
                 continue;
             }
 

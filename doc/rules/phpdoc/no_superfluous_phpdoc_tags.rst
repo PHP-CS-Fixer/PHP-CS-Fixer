@@ -158,7 +158,6 @@ The rule is part of the following rule sets:
 
   ``['allow_hidden_params' => true, 'remove_inheritdoc' => true]``
 
-
 References
 ----------
 

@@ -79,6 +79,7 @@ With configuration: ``['annotations' => ['package', 'subpackage']]``.
      * @version 1.0
      */
     function foo() {}
+
 References
 ----------
 

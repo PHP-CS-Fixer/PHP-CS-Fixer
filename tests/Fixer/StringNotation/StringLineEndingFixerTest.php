@@ -18,13 +18,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @author Ilija Tovilo <ilija.tovilo@me.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\StringNotation\StringLineEndingFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\StringLineEndingFixer>
+ *
+ * @author Ilija Tovilo <ilija.tovilo@me.com>
  */
 final class StringLineEndingFixerTest extends AbstractFixerTestCase
 {

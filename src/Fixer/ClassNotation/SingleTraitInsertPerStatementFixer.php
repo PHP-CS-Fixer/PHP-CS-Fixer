@@ -77,7 +77,7 @@ final class Example
         foreach ($candidates as $commaIndex) {
             $inserts = [
                 new Token([CT::T_USE_TRAIT, 'use']),
-                new Token([T_WHITESPACE, ' ']),
+                new Token([\T_WHITESPACE, ' ']),
             ];
 
             $nextImportStartIndex = $tokens->getNextMeaningfulToken($commaIndex);

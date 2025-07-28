@@ -94,5 +94,22 @@ final class PhpdocListTypeFixerTest extends AbstractFixerTestCase
             '<?php /** @var list<int<1, 10>> */',
             '<?php /** @var array<int<1, 10>> */',
         ];
+
+        yield [<<<'EOD'
+            <?php
+            /** @var list<Foo> */
+            /** @var \SplFixedArray<Foo> */
+            /** @var \KůňArray<Foo> */
+            /** @var \My_Array<Foo> */
+            /** @var \My2Array<Foo> */
+            EOD, <<<'EOD'
+            <?php
+            /** @var array<Foo> */
+            /** @var \SplFixedArray<Foo> */
+            /** @var \KůňArray<Foo> */
+            /** @var \My_Array<Foo> */
+            /** @var \My2Array<Foo> */
+            EOD,
+        ];
     }
 }

@@ -41,8 +41,10 @@ final class FixerFactoryTest extends TestCase
 
         foreach (self::getFixerWithFixedPosition() as $fixerName => $offset) {
             if ($offset < 0) {
+                \assert(\array_key_exists(\count($fixers) + $offset, $fixers));
                 self::assertSame($fixerName, $fixers[\count($fixers) + $offset]->getName(), $fixerName);
             } else {
+                \assert(\array_key_exists($offset, $fixers));
                 self::assertSame($fixerName, $fixers[$offset]->getName(), $fixerName);
             }
         }
@@ -59,9 +61,11 @@ final class FixerFactoryTest extends TestCase
 
         foreach ($graphs as $graph) {
             foreach ($graph as $fixerName => $edges) {
+                \assert(\array_key_exists($fixerName, $fixers));
                 $first = $fixers[$fixerName];
 
                 foreach ($edges as $edge) {
+                    \assert(\array_key_exists($edge, $fixers));
                     $second = $fixers[$edge];
 
                     self::assertLessThan($first->getPriority(), $second->getPriority(), \sprintf('"%s" should have less priority than "%s"', $edge, $fixerName));
@@ -77,7 +81,7 @@ final class FixerFactoryTest extends TestCase
      */
     public function testFixersPriorityCasesHaveIntegrationTest(string $fixerName, array $edges): void
     {
-        static $forPerformanceEdgesOnly = [
+        $forPerformanceEdgesOnly = [
             'function_to_constant' => [
                 'native_function_casing' => true,
             ],
@@ -112,6 +116,8 @@ final class FixerFactoryTest extends TestCase
             }
 
             $file = realpath($file);
+            self::assertIsString($file);
+
             $factory = new IntegrationCaseFactory();
             $test = $factory->create(new SplFileInfo($file, './', __DIR__));
             $rules = $test->getRuleset()->getRules();
@@ -202,9 +208,9 @@ final class FixerFactoryTest extends TestCase
     public function testFixersPriorityComment(): void
     {
         $fixersPhpDocIssues = [];
-        $fixers = self::getAllFixers();
+        $fixers = [];
 
-        foreach ($fixers as $name => $fixer) {
+        foreach (self::getAllFixers() as $name => $fixer) {
             $reflection = new \ReflectionObject($fixer);
             $fixers[$name] = ['reflection' => $reflection, 'short_classname' => $reflection->getShortName()];
         }
@@ -240,13 +246,16 @@ final class FixerFactoryTest extends TestCase
         }
 
         foreach ($graph as $fixerName => $edges) {
+            \assert(\array_key_exists($fixerName, $fixers));
+
             $expectedMessage = "/**\n     * {@inheritdoc}\n     *";
 
             foreach ($edges as $label => $others) {
                 if (\count($others) > 0) {
                     $shortClassNames = [];
 
-                    foreach (array_keys($others) as $other) {
+                    foreach ($others as $other => $true) {
+                        \assert(\array_key_exists($other, $fixers));
                         $shortClassNames[$other] = $fixers[$other]['short_classname'];
                     }
 
@@ -317,7 +326,7 @@ final class FixerFactoryTest extends TestCase
             }
         }
 
-        foreach (array_keys($knownIssues) as $knownIssue) {
+        foreach ($knownIssues as $knownIssue => $true) {
             if (isset($missing[$knownIssue])) {
                 unset($missing[$knownIssue]);
             } else {
@@ -705,6 +714,11 @@ final class FixerFactoryTest extends TestCase
                 'simplified_if_return',
                 'statement_indentation',
             ],
+            'no_useless_printf' => [
+                'echo_tag_syntax',
+                'no_extra_blank_lines',
+                'no_mixed_echo_print',
+            ],
             'no_useless_return' => [
                 'blank_line_before_statement',
                 'no_extra_blank_lines',
@@ -755,16 +769,9 @@ final class FixerFactoryTest extends TestCase
                 'class_attributes_separation',
                 'no_blank_lines_after_class_opening',
             ],
-            'php_unit_data_provider_name' => [
-                'php_unit_attributes',
-            ],
             'php_unit_data_provider_return_type' => [
-                'php_unit_attributes',
                 'return_to_yield_from',
                 'return_type_declaration',
-            ],
-            'php_unit_data_provider_static' => [
-                'php_unit_attributes',
             ],
             'php_unit_dedicate_assert' => [
                 'no_unused_imports',
@@ -829,7 +836,6 @@ final class FixerFactoryTest extends TestCase
             ],
             'phpdoc_no_empty_return' => [
                 'no_empty_phpdoc',
-                'phpdoc_order',
                 'phpdoc_separation',
                 'phpdoc_trim',
             ],

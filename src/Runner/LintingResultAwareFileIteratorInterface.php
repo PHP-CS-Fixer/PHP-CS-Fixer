@@ -17,11 +17,11 @@ namespace PhpCsFixer\Runner;
 use PhpCsFixer\Linter\LintingResultInterface;
 
 /**
- * @author Greg Korba <greg@codito.dev>
- *
  * @internal
  *
  * @extends \Iterator<mixed, \SplFileInfo>
+ *
+ * @author Greg Korba <greg@codito.dev>
  */
 interface LintingResultAwareFileIteratorInterface extends \Iterator
 {

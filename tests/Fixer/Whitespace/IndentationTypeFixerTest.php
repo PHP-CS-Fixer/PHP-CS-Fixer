@@ -18,26 +18,30 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Whitespace\IndentationTypeFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\IndentationTypeFixer>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class IndentationTypeFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @param non-empty-string $indent
+     * @param non-empty-string $lineEnding
+     *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, string $indent = '    ', string $lineEnding = "\n"): void
     {
+        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig($indent, $lineEnding));
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<int, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: null|string, 2?: string, 3?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -222,22 +226,72 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
         yield [
             "<?php\necho 1;\n?>\r\n\t\$a = ellow;",
         ];
-    }
 
-    /**
-     * @dataProvider provideMessyWhitespacesCases
+        foreach (self::getFixCases() as $name => $case) {
+            yield 'tabs - '.$name => [...$case, "\t", "\r\n"];
+
+            if ('mix indentation' === $name) {
+                continue;
+            }
+
+            yield 'spaces - '.$name => [$case[1], $case[0], '    ', "\r\n"];
+        }
+
+        yield [
+            '<?php
+if (true) {
+  if (true) {
+    (new stdClass())->foo(
+      "text",
+      "text2"
+    );
+  }
+}',
+            null,
+            '  ',
+        ];
+
+        yield [
+            "<?php
+if (true) {
+  if (true) {
+    (new stdClass())->foo(
+      'text',
+      'text2'
+    );
+  }
+}",
+            "<?php
+if (true) {
+  if (true) {
+\t(new stdClass())->foo(
+\t  'text',
+\t  'text2'
+\t);
+  }
+}",
+            '  ',
+        ];
+
+        yield [
+            '<?php
+    /*
+     * Foo
      */
-    public function testMessyWhitespaces(string $expected, ?string $input = null): void
-    {
-        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
-
-        $this->doTest($expected, $input);
+',
+            "<?php
+\t/*
+\t * Foo
+\t */
+",
+            '  ',
+        ];
     }
 
     /**
      * @return iterable<array{string, string}>
      */
-    public static function provideMessyWhitespacesCases(): iterable
+    private static function getFixCases(): iterable
     {
         yield [
             "<?php
@@ -295,89 +349,5 @@ function myFunction() {
     $middleVar  = 1;
 }',
         ];
-    }
-
-    /**
-     * @dataProvider provideMessyWhitespacesReversedCases
-     */
-    public function testMessyWhitespacesReversed(string $expected, ?string $input = null): void
-    {
-        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig('    ', "\r\n"));
-
-        $this->doTest($input, $expected);
-    }
-
-    /**
-     * @return iterable<array{string, string}>
-     */
-    public static function provideMessyWhitespacesReversedCases(): iterable
-    {
-        foreach (self::provideMessyWhitespacesCases() as $name => $case) {
-            if ('mix indentation' === $name) {
-                continue;
-            }
-
-            yield $name => $case;
-        }
-    }
-
-    /**
-     * @dataProvider provideDoubleSpaceIndentCases
-     */
-    public function testDoubleSpaceIndent(string $expected, ?string $input = null): void
-    {
-        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig('  '));
-
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<int, array{0: string, 1?: string}>
-     */
-    public static function provideDoubleSpaceIndentCases(): iterable
-    {
-        yield ['<?php
-if (true) {
-  if (true) {
-    (new stdClass())->foo(
-      "text",
-      "text2"
-    );
-  }
-}'];
-
-        yield [
-            "<?php
-if (true) {
-  if (true) {
-    (new stdClass())->foo(
-      'text',
-      'text2'
-    );
-  }
-}",
-            "<?php
-if (true) {
-  if (true) {
-\t(new stdClass())->foo(
-\t  'text',
-\t  'text2'
-\t);
-  }
-}",
-        ];
-
-        yield [
-            '<?php
-    /*
-     * Foo
-     */
-',
-
-            "<?php
-\t/*
-\t * Foo
-\t */
-", ];
     }
 }

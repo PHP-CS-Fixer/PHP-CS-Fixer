@@ -29,6 +29,8 @@ final class FileSpecificCodeSampleTest extends TestCase
     public function testDefaults(): void
     {
         $code = file_get_contents(__FILE__);
+        self::assertIsString($code);
+
         $splFileInfo = new \SplFileInfo(__FILE__);
 
         $sample = new FileSpecificCodeSample(
@@ -44,6 +46,8 @@ final class FileSpecificCodeSampleTest extends TestCase
     public function testConstructorSetsValues(): void
     {
         $code = file_get_contents(__FILE__);
+        self::assertIsString($code);
+
         $splFileInfo = new \SplFileInfo(__FILE__);
         $configuration = [
             'foo' => 'bar',

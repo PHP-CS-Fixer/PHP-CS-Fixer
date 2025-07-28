@@ -25,6 +25,7 @@ Example #1
     <?php
    -list($a, $b,) = foo();
    +list($a, $b) = foo();
+
 References
 ----------
 

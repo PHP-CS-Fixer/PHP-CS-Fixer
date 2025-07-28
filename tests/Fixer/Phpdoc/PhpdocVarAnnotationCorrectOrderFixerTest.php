@@ -19,11 +19,11 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @author Kuba Werłos <werlos@gmail.com>
- *
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocVarAnnotationCorrectOrderFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocVarAnnotationCorrectOrderFixer>
+ *
+ * @author Kuba Werłos <werlos@gmail.com>
  */
 final class PhpdocVarAnnotationCorrectOrderFixerTest extends AbstractFixerTestCase
 {

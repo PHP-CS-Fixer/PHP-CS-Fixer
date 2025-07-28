@@ -51,10 +51,10 @@ use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
+ * @phpstan-type _RunResult array<string, array{appliedFixers: list<string>, diff: string}>
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Greg Korba <greg@codito.dev>
- *
- * @phpstan-type _RunResult array<string, array{appliedFixers: list<string>, diff: string}>
  */
 final class Runner
 {
@@ -188,7 +188,7 @@ final class Runner
         $changed = [];
         $streamSelectLoop = new StreamSelectLoop();
         $server = new TcpServer('127.0.0.1:0', $streamSelectLoop);
-        $serverPort = parse_url($server->getAddress() ?? '', PHP_URL_PORT);
+        $serverPort = parse_url($server->getAddress() ?? '', \PHP_URL_PORT);
 
         if (!is_numeric($serverPort)) {
             throw new ParallelisationException(\sprintf(
@@ -222,15 +222,14 @@ final class Runner
 
         // [REACT] Handle worker's handshake (init connection)
         $server->on('connection', static function (ConnectionInterface $connection) use ($processPool, $getFileChunk): void {
-            $jsonInvalidUtf8Ignore = \defined('JSON_INVALID_UTF8_IGNORE') ? JSON_INVALID_UTF8_IGNORE : 0;
             $decoder = new Decoder(
                 $connection,
                 true,
                 512,
-                $jsonInvalidUtf8Ignore,
+                \JSON_INVALID_UTF8_IGNORE,
                 self::PARALLEL_BUFFER_SIZE
             );
-            $encoder = new Encoder($connection, $jsonInvalidUtf8Ignore);
+            $encoder = new Encoder($connection, \JSON_INVALID_UTF8_IGNORE);
 
             // [REACT] Bind connection when worker's process requests "hello" action (enables 2-way communication)
             $decoder->on('data', static function (array $data) use ($processPool, $getFileChunk, $decoder, $encoder): void {
@@ -536,7 +535,7 @@ final class Runner
 
         $this->dispatchEvent(
             FileProcessed::NAME,
-            new FileProcessed(null !== $fixInfo ? FileProcessed::STATUS_FIXED : FileProcessed::STATUS_NO_CHANGES, $filePathname, $newHash)
+            new FileProcessed(null !== $fixInfo ? FileProcessed::STATUS_FIXED : FileProcessed::STATUS_NO_CHANGES, $newHash)
         );
 
         return $fixInfo;

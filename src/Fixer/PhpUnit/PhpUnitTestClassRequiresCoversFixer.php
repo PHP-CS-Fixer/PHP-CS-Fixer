@@ -59,7 +59,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
-        $classIndex = $tokens->getPrevTokenOfKind($startIndex, [[T_CLASS]]);
+        $classIndex = $tokens->getPrevTokenOfKind($startIndex, [[\T_CLASS]]);
 
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $modifiers = $tokensAnalyzer->getClassyModifiers($classIndex);
@@ -82,6 +82,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 'phpunit\framework\attributes\coversnothing',
                 'phpunit\framework\attributes\coversmethod',
                 'phpunit\framework\attributes\coversfunction',
+                'phpunit\framework\attributes\coverstrait',
             ],
         );
     }

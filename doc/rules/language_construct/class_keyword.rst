@@ -45,6 +45,7 @@ Example #1
    -$bar = "\PhpCsFixer\Tokenizer\Tokens";
    +$foo = \PhpCsFixer\Tokenizer\Tokens::class;
    +$bar = \PhpCsFixer\Tokenizer\Tokens::class;
+
 References
 ----------
 

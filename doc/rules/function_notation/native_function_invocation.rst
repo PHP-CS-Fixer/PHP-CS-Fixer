@@ -205,7 +205,6 @@ The rule is part of the following rule sets:
 
   ``['include' => ['@compiler_optimized'], 'scope' => 'namespaced', 'strict' => true]``
 
-
 References
 ----------
 

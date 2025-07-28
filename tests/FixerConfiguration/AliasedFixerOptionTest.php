@@ -206,12 +206,4 @@ final class AliasedFixerOptionTest extends TestCase
 
         yield ['baz'];
     }
-
-    public function testRequiredWithDefaultValue(): void
-    {
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Required options cannot have a default value.');
-
-        new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, false), 'baz');
-    }
 }

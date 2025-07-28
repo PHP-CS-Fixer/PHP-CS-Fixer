@@ -241,7 +241,7 @@ Class Notation
   Converts private methods to ``static`` where possible.
 - `visibility_required <./class_notation/visibility_required.rst>`_
 
-  Classes, constants, properties, and methods MUST have visibility declared, and keyword modifiers MUST be in the following order: inheritance modifier (``abstract`` or ``final``), visibility modifier (``public``, ``protected``, or ``private``), scope modifier (``static``), mutation modifier (``readonly``), type declaration, name.
+  Classes, constants, properties, and methods MUST have visibility declared, and keyword modifiers MUST be in the following order: inheritance modifier (``abstract`` or ``final``), visibility modifier (``public``, ``protected``, or ``private``), set-visibility modifier (``public(set)``, ``protected(set)``, or ``private(set)``), scope modifier (``static``), mutation modifier (``readonly``), type declaration, name.
 
 Class Usage
 -----------
@@ -392,7 +392,7 @@ Function Notation
 - `method_argument_space <./function_notation/method_argument_space.rst>`_
 
   In method arguments and method call, there MUST NOT be a space before each comma and there MUST be one space after each comma. Argument lists MAY be split across multiple lines, where each subsequent line is indented once. When doing so, the first item in the list MUST be on the next line, and there MUST be only one argument per line.
-- `multiline_promoted_properties <./function_notation/multiline_promoted_properties.rst>`_
+- `multiline_promoted_properties <./function_notation/multiline_promoted_properties.rst>`_ *(experimental)*
 
   Promoted properties must be on separate lines.
 - `native_function_invocation <./function_notation/native_function_invocation.rst>`_ *(risky)*
@@ -407,6 +407,9 @@ Function Notation
 - `no_unreachable_default_argument_value <./function_notation/no_unreachable_default_argument_value.rst>`_ *(risky)*
 
   In function arguments there must not be arguments with default values before non-default ones.
+- `no_useless_printf <./function_notation/no_useless_printf.rst>`_ *(risky)*
+
+  There must be no ``printf`` calls with only the first argument.
 - `no_useless_sprintf <./function_notation/no_useless_sprintf.rst>`_ *(risky)*
 
   There must be no ``sprintf`` calls with only the first argument.

@@ -53,6 +53,23 @@ final class TransformerTest extends TestCase
             $transformers[$transformer->getName()] = $transformer;
         }
 
+        \assert(\array_key_exists('array_typehint', $transformers));
+        \assert(\array_key_exists('attribute', $transformers));
+        \assert(\array_key_exists('brace', $transformers));
+        \assert(\array_key_exists('brace_class_instantiation', $transformers));
+        \assert(\array_key_exists('disjunctive_normal_form_type_parenthesis', $transformers));
+        \assert(\array_key_exists('import', $transformers));
+        \assert(\array_key_exists('name_qualified', $transformers));
+        \assert(\array_key_exists('named_argument', $transformers));
+        \assert(\array_key_exists('namespace_operator', $transformers));
+        \assert(\array_key_exists('nullable_type', $transformers));
+        \assert(\array_key_exists('return_ref', $transformers));
+        \assert(\array_key_exists('square_brace', $transformers));
+        \assert(\array_key_exists('type_alternation', $transformers));
+        \assert(\array_key_exists('type_colon', $transformers));
+        \assert(\array_key_exists('type_intersection', $transformers));
+        \assert(\array_key_exists('use', $transformers));
+
         yield [$transformers['attribute'], $transformers['brace']];
 
         yield [$transformers['attribute'], $transformers['square_brace']];

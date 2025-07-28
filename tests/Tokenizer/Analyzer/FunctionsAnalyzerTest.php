@@ -40,7 +40,7 @@ final class FunctionsAnalyzerTest extends TestCase
         $analyzer = new FunctionsAnalyzer();
 
         $calculatedIndices = [];
-        foreach (array_keys($tokens->toArray()) as $index) {
+        foreach ($tokens as $index => $token) {
             if ($analyzer->isGlobalFunctionCall($tokens, $index)) {
                 $calculatedIndices[] = $index;
             }
@@ -277,6 +277,22 @@ A();
             '<?php foo("bar"); class A { function Foo(){ foo(); } }',
             [1, 20],
         ];
+
+        yield 'functions that can be confused with a property hook' => [
+            <<<'PHP'
+                <?php
+                $array = [
+                    1 => 2,
+                    set() => 3,
+                    $foo . set() => 3,
+                ];
+                $x = set(set(), set());
+                set();
+                if (true) { set(); }
+                set();
+                PHP,
+            [14, 27, 43, 45, 50, 56, 69, 76],
+        ];
     }
 
     /**
@@ -420,27 +436,54 @@ class(){};
         yield 'property hooks' => [
             <<<'PHP'
                 <?php
-                class Foo
+                class GetFirst
                 {
-                    public string $a = '' {
-                        get => $this->a;
-                        set(string $a) => strtolower($a);
+                    public string $bothWithDoubleArrow = '' {
+                        get => '';
+                        set(string $x) => $x;
                     }
-                    public string $b = '' {
-                        get => $this->b;
-                        set(string $b) { $this->b = strtoupper($b); }
+                    public string $getWithDoubleArrow = '' {
+                        get => '';
+                        set(string $x) { ''; }
                     }
-                    public string $c = '' {
-                        GET => $this->c;
-                        SET(string $c) { $this->c = strrev($c); }
+                    public string $setWithDoubleArrow = '' {
+                        get { ''; }
+                        set(string $x) => $x;
+                    }
+                    public string $bothWithBraces = '' {
+                        get { ''; }
+                        set(string $x) { ''; }
+                    }
+                    public string $setUppercase = '' {
+                        get { ''; }
+                        SET(string $x) { ''; }
+                    }
+                }
+                class SetFirst
+                {
+                    public string $bothWithDoubleArrow = '' {
+                        set(string $x) => $x;
+                        get => '';
+                    }
+                    public string $getWithDoubleArrow = '' {
+                        set(string $x) { ''; }
+                        get => '';
+                    }
+                    public string $setWithDoubleArrow = '' {
+                        set(string $x) => $x;
+                        get { ''; }
+                    }
+                    public string $bothWithBraces = '' {
+                        set(string $x) { ''; }
+                        get { ''; }
+                    }
+                    public string $setUppercase = '' {
+                        SET(string $x) { ''; }
+                        get { ''; }
                     }
                 }
                 PHP,
-            [
-                37, // strtolower
-                81, // strtoupper
-                127, // strrev
-            ],
+            [],
         ];
     }
 
@@ -896,5 +939,69 @@ class(){};
                 null
             ),
         ]];
+    }
+
+    /**
+     * @param array<string, ArgumentAnalysis> $expected
+     *
+     * @dataProvider provideFunctionArgumentInfoPhp84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testFunctionArgumentInfoPhp84(string $code, int $methodIndex, array $expected): void
+    {
+        $this->testFunctionArgumentInfo($code, $methodIndex, $expected);
+    }
+
+    /**
+     * @return iterable<string, array{string, int, array<string, ArgumentAnalysis>}>
+     */
+    public static function provideFunctionArgumentInfoPhp84Cases(): iterable
+    {
+        yield 'asymmetric visibility' => [
+            <<<'PHP'
+                <?php
+                class Foo {
+                    public function __construct(
+                        public public(set) bool $b,
+                        public protected(set) int|null $i,
+                        protected private(set) ?string $s,
+                    ) {}
+                }
+                PHP,
+            9,
+            [
+                '$b' => new ArgumentAnalysis(
+                    '$b',
+                    20,
+                    null,
+                    new TypeAnalysis(
+                        'bool',
+                        18,
+                        18,
+                    ),
+                ),
+                '$i' => new ArgumentAnalysis(
+                    '$i',
+                    31,
+                    null,
+                    new TypeAnalysis(
+                        'int|null',
+                        27,
+                        29,
+                    ),
+                ),
+                '$s' => new ArgumentAnalysis(
+                    '$s',
+                    41,
+                    null,
+                    new TypeAnalysis(
+                        '?string',
+                        38,
+                        39,
+                    ),
+                ),
+            ],
+        ];
     }
 }

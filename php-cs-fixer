@@ -16,7 +16,7 @@ declare(strict_types=1);
 use Composer\XdebugHandler\XdebugHandler;
 use PhpCsFixer\Console\Application;
 
-error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
+error_reporting(\E_ALL & ~\E_DEPRECATED & ~\E_USER_DEPRECATED);
 
 set_error_handler(static function (int $severity, string $message, string $file, int $line): bool {
     if (0 !== ($severity & error_reporting())) {
@@ -29,33 +29,30 @@ set_error_handler(static function (int $severity, string $message, string $file,
 // check environment requirements
 (static function (): void {
     if (\PHP_VERSION_ID === (int) '80000') { // TODO use 8_00_00 once only PHP 7.4+ is supported by this entry file
-        fwrite(STDERR, "PHP CS Fixer is not able run on PHP 8.0.0 due to bug in PHP tokenizer (https://bugs.php.net/bug.php?id=80462).\n");
-        fwrite(STDERR, "Update PHP version to unblock execution.\n");
+        fwrite(\STDERR, "PHP CS Fixer is not able run on PHP 8.0.0 due to bug in PHP tokenizer (https://bugs.php.net/bug.php?id=80462).\n");
+        fwrite(\STDERR, "Update PHP version to unblock execution.\n");
 
         exit(1);
     }
 
-    if (\PHP_VERSION_ID < (int) '70400' || \PHP_VERSION_ID >= (int) '80400') {
-        fwrite(STDERR, "PHP needs to be a minimum version of PHP 7.4.0 and maximum version of PHP 8.3.*.\n");
-        fwrite(STDERR, 'Current PHP version: '.PHP_VERSION.".\n");
+    if (\PHP_VERSION_ID < (int) '70400') {
+        fwrite(\STDERR, "PHP needs to be a minimum version of PHP 7.4.0.\n");
+        fwrite(\STDERR, 'Current PHP version: '.\PHP_VERSION.".\n");
 
-        if (filter_var(getenv('PHP_CS_FIXER_IGNORE_ENV'), FILTER_VALIDATE_BOOLEAN)) {
-            fwrite(STDERR, "Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.\n");
-        } else {
-            fwrite(STDERR, "To ignore this requirement please set `PHP_CS_FIXER_IGNORE_ENV`.\n");
-            fwrite(STDERR, "If you use PHP version higher than supported, you may experience code modified in a wrong way.\n");
-            fwrite(STDERR, "Please report such cases at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer .\n");
+        exit(1);
+    }
 
-            exit(1);
-        }
+    // @TODO 4.0 cleanup
+    if (false !== getenv('PHP_CS_FIXER_IGNORE_ENV')) {
+        fwrite(\STDERR, "Setting PHP_CS_FIXER_IGNORE_ENV environment variable is deprecated and will be removed in 4.0, use unsupportedPhpVersionAllowed config instead.\n");
     }
 
     foreach (['json', 'tokenizer'] as $extension) {
         if (!extension_loaded($extension)) {
-            fwrite(STDERR, sprintf("PHP extension ext-%s is missing from your system. Install or enable it.\n", $extension));
+            fwrite(\STDERR, sprintf("PHP extension ext-%s is missing from your system. Install or enable it.\n", $extension));
 
-            if (filter_var(getenv('PHP_CS_FIXER_IGNORE_ENV'), FILTER_VALIDATE_BOOLEAN)) {
-                fwrite(STDERR, "Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.\n");
+            if (filter_var(getenv('PHP_CS_FIXER_IGNORE_ENV'), \FILTER_VALIDATE_BOOLEAN)) {
+                fwrite(\STDERR, "Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.\n");
             } else {
                 exit(1);
             }

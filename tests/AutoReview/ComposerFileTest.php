@@ -29,6 +29,8 @@ final class ComposerFileTest extends TestCase
     public function testScriptsHaveDescriptions(): void
     {
         $composerJson = self::readComposerJson();
+        self::assertArrayHasKey('scripts', $composerJson);
+        self::assertArrayHasKey('scripts-descriptions', $composerJson);
 
         $scripts = array_keys($composerJson['scripts']);
         $descriptions = array_keys($composerJson['scripts-descriptions']);
@@ -40,21 +42,28 @@ final class ComposerFileTest extends TestCase
     public function testScriptsAliasesDescriptionsFollowThePattern(): void
     {
         $composerJson = self::readComposerJson();
+        self::assertArrayHasKey('scripts', $composerJson);
+        self::assertArrayHasKey('scripts-descriptions', $composerJson);
 
         $scripts = array_keys($composerJson['scripts']);
 
-        $aliases = array_reduce($scripts, static function (array $carry, string $script) use ($composerJson): array {
-            $code = $composerJson['scripts'][$script];
+        $aliases = array_reduce(
+            $scripts,
+            // @phpstan-ignore-next-line argument.type
+            static function (array $carry, string $script) use ($composerJson): array {
+                $code = $composerJson['scripts'][$script];
 
-            if (\is_string($code) && '@' === $code[0]) {
-                $potentialAlias = substr($code, 1);
-                if (isset($composerJson['scripts'][$potentialAlias])) {
-                    $carry[$script] = $potentialAlias;
+                if (\is_string($code) && '@' === $code[0]) {
+                    $potentialAlias = substr($code, 1);
+                    if (isset($composerJson['scripts'][$potentialAlias])) {
+                        $carry[$script] = $potentialAlias;
+                    }
                 }
-            }
 
-            return $carry;
-        }, []);
+                return $carry;
+            },
+            []
+        );
 
         foreach ($aliases as $code => $alias) {
             self::assertSame(
@@ -70,8 +79,8 @@ final class ComposerFileTest extends TestCase
      */
     private static function readComposerJson(): array
     {
-        $composerJsonContent = file_get_contents(__DIR__.'/../../composer.json');
+        $composerJsonContent = (string) file_get_contents(__DIR__.'/../../composer.json');
 
-        return json_decode($composerJsonContent, true, 512, JSON_THROW_ON_ERROR);
+        return json_decode($composerJsonContent, true, 512, \JSON_THROW_ON_ERROR);
     }
 }

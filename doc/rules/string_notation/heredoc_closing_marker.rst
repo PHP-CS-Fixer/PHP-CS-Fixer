@@ -80,6 +80,7 @@ With configuration: ``['explicit_heredoc_style' => true]``.
    +<?php $a = <<<"EOD"
     Foo
     EOD;
+
 References
 ----------
 

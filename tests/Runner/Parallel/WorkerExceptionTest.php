@@ -39,6 +39,6 @@ final class WorkerExceptionTest extends TestCase
         self::assertSame('foo.php', $exception->getFile());
         self::assertSame(1, $exception->getLine());
         self::assertSame(1, $exception->getCode());
-        self::assertSame('## foo.php(1)'.PHP_EOL.'#0 bar', $exception->getOriginalTraceAsString());
+        self::assertSame('## foo.php(1)'.\PHP_EOL.'#0 bar', $exception->getOriginalTraceAsString());
     }
 }

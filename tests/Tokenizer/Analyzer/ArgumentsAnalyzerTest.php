@@ -371,6 +371,125 @@ class Foo
         ];
     }
 
+    /**
+     * @requires PHP 8.4
+     *
+     * @dataProvider provideArgumentInfo84Cases
+     */
+    public function testArgumentInfo84(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void
+    {
+        $this->testArgumentInfo($code, $openIndex, $closeIndex, $expected);
+    }
+
+    /**
+     * @return iterable<string, array{string, int, int, ArgumentAnalysis}>
+     */
+    public static function provideArgumentInfo84Cases(): iterable
+    {
+        yield 'asymmetric visibility public write' => [
+            <<<'PHP'
+                <?php
+                class Foo {
+                    public function __construct(
+                        public public(set) Bar $x,
+                    ) {}
+                }
+                PHP,
+            13,
+            20,
+            new ArgumentAnalysis(
+                '$x',
+                20,
+                null,
+                new TypeAnalysis(
+                    'Bar',
+                    18,
+                    18,
+                ),
+            ),
+        ];
+
+        yield 'asymmetric visibility protected write' => [
+            <<<'PHP'
+                <?php
+                class Foo {
+                    public function __construct(
+                        public protected(set) Bar $x,
+                    ) {}
+                }
+                PHP,
+            13,
+            20,
+            new ArgumentAnalysis(
+                '$x',
+                20,
+                null,
+                new TypeAnalysis(
+                    'Bar',
+                    18,
+                    18,
+                ),
+            ),
+        ];
+
+        yield 'asymmetric visibility private write' => [
+            <<<'PHP'
+                <?php
+                class Foo {
+                    public function __construct(
+                        public private(set) Bar $x,
+                    ) {}
+                }
+                PHP,
+            13,
+            20,
+            new ArgumentAnalysis(
+                '$x',
+                20,
+                null,
+                new TypeAnalysis(
+                    'Bar',
+                    18,
+                    18,
+                ),
+            ),
+        ];
+    }
+
+    /**
+     * @requires PHP 8.5
+     *
+     * @dataProvider provideArgumentInfo85Cases
+     */
+    public function testArgumentInfo85(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void
+    {
+        $this->testArgumentInfo($code, $openIndex, $closeIndex, $expected);
+    }
+
+    /**
+     * @return iterable<string, array{string, int, int, ArgumentAnalysis}>
+     */
+    public static function provideArgumentInfo85Cases(): iterable
+    {
+        yield 'final promoted properties' => [
+            '<?php class Foo { public function __construct(
+                    public final Bar $x,
+                ) {} }',
+            13,
+            20,
+            new ArgumentAnalysis(
+                '$x',
+                20,
+                null,
+                new TypeAnalysis(
+                    'Bar',
+                    18,
+                    18,
+                ),
+            ),
+        ];
+    }
+
     private static function assertArgumentAnalysis(ArgumentAnalysis $expected, ArgumentAnalysis $actual): void
     {
         self::assertSame($expected->getDefault(), $actual->getDefault(), 'Default.');

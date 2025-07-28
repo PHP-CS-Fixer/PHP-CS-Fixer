@@ -56,7 +56,7 @@ final class ConfigTest extends TestCase
             [
                 'rules' => 'cast_spaces,statement_indentation',
             ],
-            getcwd(),
+            (string) getcwd(),
             new ToolInfo()
         );
 
@@ -77,7 +77,7 @@ final class ConfigTest extends TestCase
             [
                 'rules' => '{"array_syntax": {"syntax": "short"}, "cast_spaces": true}',
             ],
-            getcwd(),
+            (string) getcwd(),
             new ToolInfo()
         );
 
@@ -102,7 +102,7 @@ final class ConfigTest extends TestCase
             [
                 'rules' => '{blah',
             ],
-            getcwd(),
+            (string) getcwd(),
             new ToolInfo()
         );
         $configResolver->getRules();
@@ -249,6 +249,7 @@ final class ConfigTest extends TestCase
         self::assertFalse($config->getRiskyAllowed());
         self::assertSame(['@PSR12' => true], $config->getRules());
         self::assertTrue($config->getUsingCache());
+        self::assertSame(filter_var(getenv('PHP_CS_FIXER_IGNORE_ENV'), \FILTER_VALIDATE_BOOL), $config->getUnsupportedPhpVersionAllowed());
 
         $finder = $config->getFinder();
         self::assertInstanceOf(Finder::class, $finder);
@@ -274,6 +275,9 @@ final class ConfigTest extends TestCase
 
         $config->setUsingCache(false);
         self::assertFalse($config->getUsingCache());
+
+        $config->setUnsupportedPhpVersionAllowed(true);
+        self::assertTrue($config->getUnsupportedPhpVersionAllowed());
     }
 
     public function testConfigConstructorWithName(): void

@@ -62,7 +62,6 @@ The rule is part of the following rule sets:
 
   ``['tags' => ['inheritDoc' => 'inline']]``
 
-
 References
 ----------
 

@@ -42,6 +42,7 @@ Example #2
    +function foo($bar, $baz)
     {
     }
+
 References
 ----------
 

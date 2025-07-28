@@ -112,16 +112,16 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
         do {
             $index = $tokens->getPrevNonWhitespace($index);
         } while ($tokens[$index]->isGivenKind([
-            T_COMMENT,
-            T_ABSTRACT,
-            T_FINAL,
-            T_PRIVATE,
-            T_PROTECTED,
-            T_PUBLIC,
-            T_STATIC,
+            \T_COMMENT,
+            \T_ABSTRACT,
+            \T_FINAL,
+            \T_PRIVATE,
+            \T_PROTECTED,
+            \T_PUBLIC,
+            \T_STATIC,
         ]));
 
-        if ($tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
+        if ($tokens[$index]->isGivenKind(\T_DOC_COMMENT)) {
             return $index;
         }
 
@@ -166,7 +166,7 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
 
         // 'scalar's, 'void', 'iterable' and 'object' must be unqualified
         foreach ($newTokens as $i => $token) {
-            if ($token->isGivenKind(T_STRING)) {
+            if ($token->isGivenKind(\T_STRING)) {
                 $typeUnqualified = $token->getContent();
 
                 if (
@@ -310,5 +310,31 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
         }
 
         return self::$syntaxValidationCache[$code];
+    }
+
+    /**
+     * @return list<string>
+     */
+    final protected static function getTypesToExclude(string $content): array
+    {
+        $typesToExclude = [];
+
+        $docBlock = new DocBlock($content);
+
+        foreach ($docBlock->getAnnotationsOfType(['phpstan-type', 'psalm-type']) as $annotation) {
+            $typesToExclude[] = $annotation->getTypeExpression()->toString();
+        }
+
+        foreach ($docBlock->getAnnotationsOfType(['phpstan-import-type', 'psalm-import-type']) as $annotation) {
+            $content = trim($annotation->getContent());
+            if (Preg::match('/\bas\s+('.TypeExpression::REGEX_IDENTIFIER.')$/', $content, $matches)) {
+                $typesToExclude[] = $matches[1];
+
+                continue;
+            }
+            $typesToExclude[] = $annotation->getTypeExpression()->toString();
+        }
+
+        return $typesToExclude;
     }
 }

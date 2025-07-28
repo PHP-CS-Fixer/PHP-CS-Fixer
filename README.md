@@ -25,14 +25,14 @@ projects. This tool does not only detect them, but also fixes them for you.
 * PHP 8.1
 * PHP 8.2
 * PHP 8.3
+* PHP 8.4
 
 > **Note**
 > Each new PHP version requires a huge effort to support the new syntax.
 > That's why the latest PHP version might not be supported yet. If you need it,
 > please, consider supporting the project in any convenient way, for example
 > with code contribution or reviewing existing PRs. To run PHP CS Fixer on yet
-> unsupported versions "at your own risk" - leverage the
-> [PHP_CS_FIXER_IGNORE_ENV](./doc/usage.rst#environment-options).
+> unsupported versions "at your own risk" - use `--allow-unsupported-php-version=yes` option.
 
 ## Documentation
 

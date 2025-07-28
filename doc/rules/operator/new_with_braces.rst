@@ -79,6 +79,7 @@ With configuration: ``['named_class' => false]``.
 
    -$x = new X();
    +$x = new X;
+
 References
 ----------
 

@@ -34,7 +34,7 @@ final class AnnotationTest extends TestCase
     /**
      * This represents the content an entire docblock.
      */
-    private static string $sample = '/**
+    private const SAMPLE = '/**
      * Test docblock.
      *
      * @param string $hello
@@ -56,7 +56,7 @@ final class AnnotationTest extends TestCase
      *
      * @var list<string>
      */
-    private static array $content = [
+    private const CONTENT = [
         "     * @param string \$hello\n",
         "     * @param bool \$test Description\n     *        extends over many lines\n",
         "     * @param adkjbadjasbdand \$asdnjkasd\n",
@@ -69,14 +69,14 @@ final class AnnotationTest extends TestCase
      *
      * @var list<int>
      */
-    private static array $start = [3, 4, 7, 9, 14];
+    private const START = [3, 4, 7, 9, 14];
 
     /**
      * This represents the start indexes of each annotation.
      *
      * @var list<int>
      */
-    private static array $end = [3, 5, 7, 12, 14];
+    private const END = [3, 5, 7, 12, 14];
 
     /**
      * This represents the tag type of each annotation.
@@ -90,7 +90,7 @@ final class AnnotationTest extends TestCase
      */
     public function testGetContent(int $index, string $content): void
     {
-        $doc = new DocBlock(self::$sample);
+        $doc = new DocBlock(self::SAMPLE);
         $annotation = $doc->getAnnotation($index);
 
         self::assertSame($content, $annotation->getContent());
@@ -102,7 +102,7 @@ final class AnnotationTest extends TestCase
      */
     public static function provideGetContentCases(): iterable
     {
-        foreach (self::$content as $index => $content) {
+        foreach (self::CONTENT as $index => $content) {
             yield [$index, $content];
         }
     }
@@ -112,7 +112,7 @@ final class AnnotationTest extends TestCase
      */
     public function testStart(int $index, int $start): void
     {
-        $doc = new DocBlock(self::$sample);
+        $doc = new DocBlock(self::SAMPLE);
         $annotation = $doc->getAnnotation($index);
 
         self::assertSame($start, $annotation->getStart());
@@ -123,7 +123,7 @@ final class AnnotationTest extends TestCase
      */
     public static function provideStartCases(): iterable
     {
-        foreach (self::$start as $index => $start) {
+        foreach (self::START as $index => $start) {
             yield [$index, $start];
         }
     }
@@ -133,7 +133,7 @@ final class AnnotationTest extends TestCase
      */
     public function testEnd(int $index, int $end): void
     {
-        $doc = new DocBlock(self::$sample);
+        $doc = new DocBlock(self::SAMPLE);
         $annotation = $doc->getAnnotation($index);
 
         self::assertSame($end, $annotation->getEnd());
@@ -144,7 +144,7 @@ final class AnnotationTest extends TestCase
      */
     public static function provideEndCases(): iterable
     {
-        foreach (self::$end as $index => $end) {
+        foreach (self::END as $index => $end) {
             yield [$index, $end];
         }
     }
@@ -154,7 +154,7 @@ final class AnnotationTest extends TestCase
      */
     public function testGetTag(int $index, string $tag): void
     {
-        $doc = new DocBlock(self::$sample);
+        $doc = new DocBlock(self::SAMPLE);
         $annotation = $doc->getAnnotation($index);
 
         self::assertSame($tag, $annotation->getTag()->getName());
@@ -175,7 +175,7 @@ final class AnnotationTest extends TestCase
      */
     public function testRemove(int $index, int $start, int $end): void
     {
-        $doc = new DocBlock(self::$sample);
+        $doc = new DocBlock(self::SAMPLE);
         $annotation = $doc->getAnnotation($index);
 
         $annotation->remove();
@@ -189,8 +189,8 @@ final class AnnotationTest extends TestCase
      */
     public static function provideRemoveCases(): iterable
     {
-        foreach (self::$start as $index => $start) {
-            yield [$index, $start, self::$end[$index]];
+        foreach (self::START as $index => $start) {
+            yield [$index, $start, self::END[$index]];
         }
     }
 
@@ -695,6 +695,10 @@ final class AnnotationTest extends TestCase
         yield ['* @param &$foo', '$foo'];
 
         yield ['* @param & $foo', '$foo'];
+
+        yield ['* @param int&$foo', '$foo'];
+
+        yield ['* @param int& $foo', '$foo'];
 
         yield ['* @param int &$foo', '$foo'];
 

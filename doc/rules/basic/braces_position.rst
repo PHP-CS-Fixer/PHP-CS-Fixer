@@ -253,7 +253,6 @@ The rule is part of the following rule sets:
 
   ``['allow_single_line_anonymous_functions' => true, 'allow_single_line_empty_anonymous_classes' => true]``
 
-
 References
 ----------
 

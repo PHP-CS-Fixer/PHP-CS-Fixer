@@ -12,13 +12,13 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  PHP_MAX: '8.3'
+  PHP_MAX: '8.4'
   PHP_MIN: '7.4'
 
 jobs:
   entrypoint-low-php-compat:
     name: Entrypoint low-PHP compat
-    runs-on: 'ubuntu-24.04'
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -32,146 +32,160 @@ jobs:
         run: php -l $(cat composer.json | jq -r '.bin[]')
 
   tests:
-    continue-on-error: ${{ matrix.operating-system == 'macos-latest' }}
+    continue-on-error: ${{ matrix.allow-to-fail == 'yes' }}
     strategy:
       fail-fast: false
       matrix:
         include:
-          - operating-system: 'ubuntu-24.04'
+          - operating-system: ubuntu-24.04
             php-version: '7.4'
-            job-description: 'Fixer with lowest deps'
+            job-description: Fixer with lowest deps
             run-fixer: 'yes'
-            composer-flags: '--prefer-lowest' # should be checked on the lowest supported PHP version
-            execute-flex-with-symfony-version: '^5' # explicit check for Symfony 5.x compatibility
+            composer-flags: --prefer-lowest # should be checked on the lowest supported PHP version
+            execute-flex-with-symfony-version: ^5 # explicit check for Symfony 5.x compatibility
 
-          - operating-system: 'ubuntu-24.04'
+          - operating-system: ubuntu-24.04
             php-version: '7.4'
-            job-description: 'tests with lowest deps'
+            job-description: tests with lowest deps
             run-tests: 'yes'
-            composer-flags: '--prefer-lowest' # should be checked on the lowest supported PHP version
-            execute-flex-with-symfony-version: '^5' # explicit check for Symfony 5.x compatibility
+            composer-flags: --prefer-lowest # should be checked on the lowest supported PHP version
+            execute-flex-with-symfony-version: ^5 # explicit check for Symfony 5.x compatibility
 
-          - operating-system: 'ubuntu-24.04'
+          - operating-system: ubuntu-24.04
             php-version: '8.0'
-            job-description: 'Fixer'
+            job-description: Fixer
             run-fixer: 'yes'
 
-          - operating-system: 'ubuntu-24.04'
+          - operating-system: ubuntu-24.04
             php-version: '8.0'
-            job-description: 'tests'
+            job-description: tests
             run-tests: 'yes'
 
-          - operating-system: 'ubuntu-24.04'
+          - operating-system: ubuntu-24.04
             php-version: '8.1'
-            job-description: 'Fixer with Symfony ^6'
+            job-description: Fixer with Symfony ^6
             run-fixer: 'yes'
-            execute-flex-with-symfony-version: '^6' # explicit check for Symfony 6.x compatibility
+            execute-flex-with-symfony-version: ^6 # explicit check for Symfony 6.x compatibility
 
-          - operating-system: 'ubuntu-24.04'
+          - operating-system: ubuntu-24.04
             php-version: '8.1'
-            job-description: 'tests with Symfony ^6'
+            job-description: tests with Symfony ^6
             run-tests: 'yes'
-            execute-flex-with-symfony-version: '^6' # explicit check for Symfony 6.x compatibility
+            execute-flex-with-symfony-version: ^6 # explicit check for Symfony 6.x compatibility
 
-          - operating-system: 'ubuntu-24.04'
+          - operating-system: ubuntu-24.04
             php-version: '8.2'
-            job-description: 'Fixer'
+            job-description: Fixer
             run-fixer: 'yes'
 
-          - operating-system: 'ubuntu-24.04'
+          - operating-system: ubuntu-24.04
             php-version: '8.2'
-            job-description: 'tests'
+            job-description: tests
             run-tests: 'yes'
 
-          - operating-system: 'ubuntu-24.04'
+          - operating-system: ubuntu-24.04
             php-version: '8.3'
-            job-description: 'Fixer'
+            job-description: Fixer with Symfony ^7
+            run-fixer: 'yes'
+            execute-flex-with-symfony-version: ^7 # explicit check for Symfony 7.x compatibility
+
+          - operating-system: ubuntu-24.04
+            php-version: '8.3'
+            job-description: tests with Symfony ^7
+            run-tests: 'yes'
+            execute-flex-with-symfony-version: ^7 # explicit check for Symfony 7.x compatibility
+
+          - operating-system: ubuntu-24.04
+            php-version: '8.4'
+            job-description: Fixer
             run-fixer: 'yes'
 
-          - operating-system: 'ubuntu-24.04'
-            php-version: '8.3'
-            job-description: 'tests'
+          - operating-system: ubuntu-24.04
+            php-version: '8.4'
+            job-description: tests
             run-tests: 'yes'
 
-          - operating-system: 'ubuntu-24.04'
-            php-version: '8.3'
-            job-description: 'Fixer with migration rules'
+          - operating-system: ubuntu-24.04
+            php-version: '8.4'
+            job-description: Fixer with Symfony ^8
+            run-fixer: 'yes'
+            allow-to-fail: 'yes' # because v8 is not yet stable
+            execute-flex-with-symfony-version: ^8@dev # explicit check for Symfony 8.x compatibility
+
+          - operating-system: ubuntu-24.04
+            php-version: '8.4'
+            job-description: tests with Symfony ^8
+            run-tests: 'yes'
+            allow-to-fail: 'yes' # because v8 is not yet stable
+            AVOID_PARAUNIT: 'yes' # as it doesn't support Symfony 8 yet
+            execute-flex-with-symfony-version: ^8@dev # explicit check for Symfony 8.x compatibility
+
+          - operating-system: ubuntu-24.04
+            php-version: '8.4'
+            job-description: Fixer with migration rules
             run-fixer: 'yes'
             run-migration-rules: 'yes' # should be checked on the highest supported PHP version
 
-          - operating-system: 'ubuntu-24.04'
-            php-version: '8.3'
-            job-description: 'tests with migration rules'
+          - operating-system: ubuntu-24.04
+            php-version: '8.4'
+            job-description: tests with migration rules
             run-tests: 'yes'
             run-migration-rules: 'yes' # should be checked on the highest supported PHP version
 
-          - operating-system: 'ubuntu-24.04'
-            php-version: '8.3'
-            job-description: 'Fixer with Symfony ^7'
-            run-fixer: 'yes'
-            execute-flex-with-symfony-version: '^7' # explicit check for Symfony 7.x compatibility
-
-          - operating-system: 'ubuntu-24.04'
-            php-version: '8.3'
-            job-description: 'tests with Symfony ^7'
-            run-tests: 'yes'
-            execute-flex-with-symfony-version: '^7' # explicit check for Symfony 7.x compatibility
-
-          - operating-system: 'windows-latest'
-            php-version: '8.3'
-            job-description: 'Fixer on Windows'
+          - operating-system: windows-latest
+            php-version: '8.4'
+            job-description: Fixer on Windows
             run-fixer: 'yes'
             FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
 
-          - operating-system: 'windows-latest'
-            php-version: '8.3'
-            job-description: 'tests on Windows'
+          - operating-system: windows-latest
+            php-version: '8.4'
+            job-description: tests on Windows
             run-tests: 'yes'
             FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
 
-          - operating-system: 'macos-latest'
-            php-version: '8.3'
-            job-description: 'Fixer on macOS'
+          - operating-system: macos-latest
+            php-version: '8.4'
+            job-description: Fixer on macOS
             run-fixer: 'yes'
+            allow-to-fail: 'yes'
             FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
 
-          - operating-system: 'macos-latest'
-            php-version: '8.3'
-            job-description: 'tests on macOS'
+          - operating-system: macos-latest
+            php-version: '8.4'
+            job-description: tests on macOS
             run-tests: 'yes'
+            allow-to-fail: 'yes'
             AVOID_PARAUNIT: 'yes' # macOS job is having weird issue on CI under ParaUnit
             FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
 
-          - operating-system: 'ubuntu-24.04'
+          - operating-system: ubuntu-24.04
             php-version: '8.4'
-            job-description: 'Fixer'
+            job-description: tests using PHPUnit 12
+            install-phpunit-12: 'yes'
+            run-tests: 'yes'
+
+          - operating-system: ubuntu-24.04
+            php-version: '8.4'
+            job-description: code coverage
+            run-tests: 'yes'
+            collect-code-coverage: 'yes'
+
+          - operating-system: ubuntu-24.04
+            php-version: '8.4'
+            job-description: mutation tests
+            run-mutation-tests: 'yes'
+
+          - operating-system: ubuntu-24.04
+            php-version: '8.5'
+            job-description: Fixer
             run-fixer: 'yes'
             PHP_CS_FIXER_IGNORE_ENV: 1
 
-          - operating-system: 'ubuntu-24.04'
-            php-version: '8.4'
-            job-description: 'tests'
+          - operating-system: ubuntu-24.04
+            php-version: '8.5'
+            job-description: tests
             run-tests: 'yes'
-            PHP_CS_FIXER_IGNORE_ENV: 1
-
-          - operating-system: 'ubuntu-24.04'
-            php-version: '8.4'
-            job-description: 'tests using PHPUnit 12'
-            install-phpunit-12: 'yes'
-            run-tests: 'yes'
-            PHP_CS_FIXER_IGNORE_ENV: 1
-
-          - operating-system: 'ubuntu-24.04'
-            php-version: '8.4'
-            job-description: 'code coverage'
-            run-tests: 'yes'
-            collect-code-coverage: 'yes'
-            PHP_CS_FIXER_IGNORE_ENV: 1
-
-          - operating-system: 'ubuntu-24.04'
-            php-version: '8.4'
-            job-description: 'mutation tests'
-            run-mutation-tests: 'yes'
             PHP_CS_FIXER_IGNORE_ENV: 1
 
     name: PHP ${{ matrix.php-version }} ${{ matrix.job-description }}
@@ -205,10 +219,6 @@ jobs:
           PHP_CS_FIXER_FUTURE_MODE: 1
         run: php php-cs-fixer fix --diff --config .php-cs-fixer.php-highest.php
 
-      - name: Custom PHPUnit config for code coverage
-        if: matrix.collect-code-coverage == 'yes' || matrix.run-mutation-tests
-        run: sed -e 's/enforceTimeLimit="true"/enforceTimeLimit="false"/g' -e 's/coverage/source/g' phpunit.xml.dist > phpunit.xml
-
       - name: Disable time limit for tests under Windows # due to https://github.com/sebastianbergmann/phpunit/issues/5589
         if: matrix.operating-system == 'windows-latest'
         run: (Get-Content phpunit.xml.dist) -replace 'enforceTimeLimit="true"', 'enforceTimeLimit="false"' | Out-File phpunit.xml
@@ -225,7 +235,7 @@ jobs:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
         run: |
-          composer require --dev --with-all-dependencies phpunit/phpunit:^12.0.2
+          composer require --dev --with-all-dependencies phpunit/phpunit:^12.1.5
           php php-cs-fixer fix --quiet --rules=php_unit_attributes
 
       - name: Run tests (via PHPUnit)
@@ -289,13 +299,21 @@ jobs:
 
   deployment:
     needs: tests
+    if: always()
     name: Deployment checks
 
-    runs-on: 'ubuntu-24.04'
+    runs-on: ubuntu-24.04
     env:
-      php-version: '8.3'
+      php-version: '8.4'
 
     steps:
+      - name: Check if the tests passed
+        run: |
+          echo "Tests result: ${{ needs.tests.result }}"
+          if [[ "${{ needs.tests.result }}" != "success" ]]; then
+            exit 1
+          fi
+
       - name: Checkout code
         uses: actions/checkout@v4
 

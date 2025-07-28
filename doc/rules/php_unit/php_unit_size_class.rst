@@ -57,6 +57,7 @@ With configuration: ``['group' => 'medium']``.
    + * @medium
    + */
     class MyTest extends TestCase {}
+
 References
 ----------
 

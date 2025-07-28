@@ -120,7 +120,6 @@ The rule is part of the following rule sets:
 
   ``['import_classes' => false, 'import_constants' => false, 'import_functions' => false]``
 
-
 References
 ----------
 

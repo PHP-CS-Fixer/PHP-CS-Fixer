@@ -323,7 +323,6 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
                 $c = new D();
                 $e = new BarE();
                 EOF,
-
             <<<'EOF'
                 <?php
 
@@ -632,7 +631,6 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
                 <?php
 
                 EOF,
-
             <<<'EOF'
                 <?php
                 use Bar\Finder;
@@ -1458,6 +1456,30 @@ Bar3:
         yield 'only unused grouped imports in the last line, with whitespace after' => [
             "<?php \n",
             "<?php \nuse A\\{B, C};     \t\t",
+        ];
+
+        yield 'imported class name with underscore before or after it in PHPDoc' => [
+            <<<'PHP'
+                <?php
+                /** @var _UnusedImport1 */
+                $foo = 1;
+                /** @var UnusedImport2_ */
+                $bar = 2;
+                /** @var _UnusedImport3_ */
+                $baz = 3;
+                PHP,
+            <<<'PHP'
+                <?php
+                use Vendor\UnusedImport1;
+                use Vendor\UnusedImport2;
+                use Vendor\UnusedImport3;
+                /** @var _UnusedImport1 */
+                $foo = 1;
+                /** @var UnusedImport2_ */
+                $bar = 2;
+                /** @var _UnusedImport3_ */
+                $baz = 3;
+                PHP,
         ];
     }
 

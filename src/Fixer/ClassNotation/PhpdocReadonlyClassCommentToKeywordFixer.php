@@ -41,7 +41,7 @@ final class PhpdocReadonlyClassCommentToKeywordFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 8_02_00 && $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return \PHP_VERSION_ID >= 8_02_00 && $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     public function isRisky(): bool
@@ -72,7 +72,7 @@ final class PhpdocReadonlyClassCommentToKeywordFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -93,26 +93,26 @@ final class PhpdocReadonlyClassCommentToKeywordFixer extends AbstractFixer
             $addReadonly = true;
 
             while ($tokens[$index]->isGivenKind([
-                T_ABSTRACT,
-                T_FINAL,
-                T_PRIVATE,
-                T_PUBLIC,
-                T_PROTECTED,
-                T_READONLY,
+                \T_ABSTRACT,
+                \T_FINAL,
+                \T_PRIVATE,
+                \T_PUBLIC,
+                \T_PROTECTED,
+                \T_READONLY,
             ])) {
-                if ($tokens[$index]->isGivenKind([T_READONLY])) {
+                if ($tokens[$index]->isGivenKind(\T_READONLY)) {
                     $addReadonly = false;
                 }
 
                 $index = $tokens->getNextMeaningfulToken($index);
             }
 
-            if (!$tokens[$index]->isGivenKind(T_CLASS)) {
+            if (!$tokens[$index]->isGivenKind(\T_CLASS)) {
                 continue;
             }
 
             if ($addReadonly) {
-                $tokens->insertAt($index, [new Token([T_READONLY, 'readonly']), new Token([T_WHITESPACE, ' '])]);
+                $tokens->insertAt($index, [new Token([\T_READONLY, 'readonly']), new Token([\T_WHITESPACE, ' '])]);
             }
 
             $newContent = $doc->getContent();
@@ -123,7 +123,7 @@ final class PhpdocReadonlyClassCommentToKeywordFixer extends AbstractFixer
                 continue;
             }
 
-            $tokens[$mainIndex] = new Token([T_DOC_COMMENT, $doc->getContent()]);
+            $tokens[$mainIndex] = new Token([\T_DOC_COMMENT, $doc->getContent()]);
         }
     }
 }
