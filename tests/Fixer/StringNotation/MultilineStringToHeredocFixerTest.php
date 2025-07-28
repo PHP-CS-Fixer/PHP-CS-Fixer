@@ -34,7 +34,7 @@ final class MultilineStringToHeredocFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string}>
+     * @return iterable<string, array{0: string, 1?: null|string}>
      */
     public static function provideFixCases(): iterable
     {

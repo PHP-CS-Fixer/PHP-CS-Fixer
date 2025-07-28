@@ -43,7 +43,7 @@ final class ProcessFactoryTest extends TestCase
     {
         $fixCommand = new FixCommand(new ToolInfo());
         $application = new Application();
-        $application->add($fixCommand);
+        $application->addCommands([$fixCommand]);
 
         // In order to have full list of options supported by the command (e.g. `--verbose`)
         $fixCommand->mergeApplicationDefinition(false);
@@ -91,7 +91,7 @@ final class ProcessFactoryTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: array<string, mixed>, 1: RunnerConfig, 2: string}>
+     * @return iterable<string, array{0: array<string, mixed>, 1: RunnerConfig, 2: string}>
      */
     public static function provideCreateCases(): iterable
     {

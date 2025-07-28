@@ -69,6 +69,7 @@ final class RuleSetTest extends TestCase
             return; // rule doesn't need configuration.
         }
 
+        \assert(\array_key_exists($ruleName, $fixers));
         $fixer = $fixers[$ruleName];
         self::assertInstanceOf(ConfigurableFixerInterface::class, $fixer, \sprintf('RuleSet "%s" contains configuration for rule "%s" which cannot be configured.', $setName, $ruleName));
 
@@ -112,15 +113,20 @@ final class RuleSetTest extends TestCase
     }
 
     /**
+     * @param array<string, mixed>|true $ruleConfig
+     *
      * @dataProvider provideAllRulesFromSetsCases
      */
-    public function testThatThereIsNoDeprecatedFixerInRuleSet(string $setName, string $ruleName): void
+    public function testThatThereIsNoDeprecatedFixerInRuleSet(string $setName, string $ruleName, $ruleConfig): void
     {
         $fixer = TestCaseUtils::getFixerByName($ruleName);
 
         self::assertNotInstanceOf(DeprecatedFixerInterface::class, $fixer, \sprintf('RuleSet "%s" contains deprecated rule "%s".', $setName, $ruleName));
     }
 
+    /**
+     * @return iterable<string, array{string, string, array<string, mixed>|true}>
+     */
     public static function provideAllRulesFromSetsCases(): iterable
     {
         foreach (RuleSets::getSetDefinitionNames() as $setName) {
@@ -259,6 +265,9 @@ final class RuleSetTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{array<string, array<string, mixed>|bool>, bool}>
+     */
     public static function provideRiskyRulesInSetCases(): iterable
     {
         foreach (RuleSets::getSetDefinitionNames() as $name) {
@@ -366,7 +375,7 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function providePhpUnitTargetVersionHasSetCases(): iterable
     {

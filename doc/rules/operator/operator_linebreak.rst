@@ -73,7 +73,6 @@ The rule is part of the following rule sets:
 
   ``['only_booleans' => true]``
 
-
 References
 ----------
 

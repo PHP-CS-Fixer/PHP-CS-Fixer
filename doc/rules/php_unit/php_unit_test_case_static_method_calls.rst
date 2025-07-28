@@ -128,7 +128,6 @@ The rule is part of the following rule set:
 
   ``['call_type' => 'self']``
 
-
 References
 ----------
 

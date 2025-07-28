@@ -13,7 +13,8 @@ custom patterns.
 Element types: ``['use_trait', 'public', 'protected', 'private', 'case',
 'constant', 'constant_public', 'constant_protected', 'constant_private',
 'property', 'property_static', 'property_public', 'property_protected',
-'property_private', 'property_public_readonly', 'property_protected_readonly',
+'property_private', 'property_public_abstract', 'property_public_readonly',
+'property_protected_abstract', 'property_protected_readonly',
 'property_private_readonly', 'property_public_static',
 'property_protected_static', 'property_private_static', 'method',
 'method_abstract', 'method_static', 'method_public', 'method_protected',
@@ -197,7 +198,6 @@ The rule is part of the following rule sets:
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
   ``['order' => ['use_trait']]``
-
 
 References
 ----------

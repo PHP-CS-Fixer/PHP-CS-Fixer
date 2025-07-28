@@ -44,6 +44,9 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
         );
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: _TransformerTestExpectedTokens}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield [
@@ -67,6 +70,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
                     $a = 1 ? "aaa" : "bbb";
                     $b = 1 ? fnc() : [];
                     $c = 1 ?: [];
+                    $a instanceof static ? "aaa" : "bbb";
                 ',
         ];
 
@@ -132,15 +136,12 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
      */
     public function testProcess80(array $expectedTokens, string $source): void
     {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            [
-                CT::T_NULLABLE_TYPE,
-            ]
-        );
+        $this->testProcess($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<int, array{_TransformerTestExpectedTokens, string}>
+     */
     public static function provideProcess80Cases(): iterable
     {
         yield [
@@ -181,15 +182,12 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
      */
     public function testProcess81(array $expectedTokens, string $source): void
     {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            [
-                CT::T_NULLABLE_TYPE,
-            ]
-        );
+        $this->testProcess($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<int, array{_TransformerTestExpectedTokens, string}>
+     */
     public static function provideProcess81Cases(): iterable
     {
         yield [
@@ -221,15 +219,12 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
      */
     public function testProcess83(array $expectedTokens, string $source): void
     {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            [
-                CT::T_NULLABLE_TYPE,
-            ]
-        );
+        $this->testProcess($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<string, array{_TransformerTestExpectedTokens, string}>
+     */
     public static function provideProcess83Cases(): iterable
     {
         yield 'nullable class constant' => [
@@ -242,6 +237,86 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
                     public const ?string FOO = null;
                 }
             ',
+        ];
+    }
+
+    /**
+     * @param _TransformerTestExpectedTokens $expectedTokens
+     *
+     * @dataProvider provideProcess84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testProcess84(array $expectedTokens, string $source): void
+    {
+        $this->testProcess($source, $expectedTokens);
+    }
+
+    /**
+     * @return iterable<string, array{_TransformerTestExpectedTokens, string}>
+     */
+    public static function provideProcess84Cases(): iterable
+    {
+        yield 'asymmetric visibility' => [
+            [
+                18 => CT::T_NULLABLE_TYPE,
+                28 => CT::T_NULLABLE_TYPE,
+                38 => CT::T_NULLABLE_TYPE,
+            ],
+            <<<'PHP'
+                <?php
+                class Foo {
+                    public function __construct(
+                        public public(set) ?Bar $x,
+                        public protected(set) ?Bar $y,
+                        public private(set) ?Bar $z,
+                    ) {}
+                }
+                PHP,
+        ];
+
+        yield 'abstract properties' => [
+            [
+                13 => CT::T_NULLABLE_TYPE,
+                29 => CT::T_NULLABLE_TYPE,
+                45 => CT::T_NULLABLE_TYPE,
+                61 => CT::T_NULLABLE_TYPE,
+                77 => CT::T_NULLABLE_TYPE,
+                93 => CT::T_NULLABLE_TYPE,
+            ],
+            <<<'PHP'
+                <?php
+                abstract class Foo {
+                    abstract public ?bool $b1 { set; }
+                    public abstract ?bool $b2 { set; }
+                    abstract protected ?int $i1 { set; }
+                    protected abstract ?int $i2 { set; }
+                    abstract private ?string $s1 { set; }
+                    private abstract ?string $s2 { set; }
+                }
+                PHP,
+        ];
+
+        yield 'final properties' => [
+            [
+                11 => CT::T_NULLABLE_TYPE,
+                31 => CT::T_NULLABLE_TYPE,
+                51 => CT::T_NULLABLE_TYPE,
+                71 => CT::T_NULLABLE_TYPE,
+                91 => CT::T_NULLABLE_TYPE,
+                111 => CT::T_NULLABLE_TYPE,
+            ],
+            <<<'PHP'
+                <?php
+                class Foo {
+                    final public ?bool $b1 { get => 0; }
+                    public final ?bool $b2 { get => 0; }
+                    final protected ?int $i1 { get => 0; }
+                    protected final ?int $i2 { get => 0; }
+                    final private ?string $s1 { get => 0; }
+                    private final ?string $s2 { get => 0; }
+                }
+                PHP,
         ];
     }
 }

@@ -35,7 +35,7 @@ final class ArrayIndentationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -847,7 +847,7 @@ $foo = [
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideWithWhitespacesConfigCases(): iterable
     {
@@ -971,6 +971,49 @@ class Foo {
      {
      }
 }',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix85Cases
+     *
+     * @requires PHP 8.5
+     */
+    public function testFix85(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function provideFix85Cases(): iterable
+    {
+        yield 'nested attribute' => [
+            <<<'PHP'
+                <?php
+                #[Foo([static function (#[SensitiveParameter] $a) {
+                    return [
+                        fn (#[Bar([1, 2])] $b) => [
+                            $b[1]
+                        ]
+                    ]
+                    ;
+                }])]
+                class Baz {}
+                PHP,
+            <<<'PHP'
+                <?php
+                #[Foo([static function (#[SensitiveParameter] $a) {
+                    return [
+                        fn (#[Bar([1, 2])] $b) => [
+                            $b[1]
+                        ]
+                                                                                        ]
+                    ;
+                }])]
+                class Baz {}
+                PHP,
         ];
     }
 

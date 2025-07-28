@@ -1,20 +1,20 @@
-name: "Setup PHP"
+name: Setup PHP
 
 inputs:
   version:
-    description: 'PHP version'
+    description: PHP version
     required: true
   coverage:
-    description: 'coverage mode'
+    description: coverage mode
     required: false
-    default: 'none'
+    default: none
   tools:
-    description: 'tools'
+    description: tools
     required: false
-    default: 'none'
+    default: none
 
 runs:
-  using: "composite"
+  using: composite
   steps:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -22,5 +22,5 @@ runs:
         php-version: ${{ inputs.version }}
         coverage: ${{ inputs.coverage }}
         tools: composer, ${{ inputs.tools }}
-        extensions: none, ctype, curl, dom, json, mbstring, opcache, openssl, simplexml, tokenizer, xml, xmlwriter, zip
+        extensions: none, ctype, curl, dom, iconv, json, mbstring, opcache, openssl, simplexml, tokenizer, xml, xmlwriter, zip
         ini-values: zend.assertions=1

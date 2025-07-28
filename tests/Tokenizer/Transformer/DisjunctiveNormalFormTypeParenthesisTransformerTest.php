@@ -38,6 +38,9 @@ final class DisjunctiveNormalFormTypeParenthesisTransformerTest extends Abstract
         $this->doTest($source, $expectedTokens, [CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE]);
     }
 
+    /**
+     * @return iterable<string, array{string, _TransformerTestExpectedTokens}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield 'lambda with lots of arguments and some others' => [
@@ -339,6 +342,9 @@ return new static();
         $this->doTest($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<string, array{string, _TransformerTestExpectedTokens}>
+     */
     public static function provideProcess83Cases(): iterable
     {
         yield 'typed const' => [

@@ -56,6 +56,9 @@ final class TokensAnalyzerTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<array{array<int, array{classIndex: int, type: string}>, string}>
+     */
     public static function provideGetClassyElementsCases(): iterable
     {
         yield 'trait import' => [
@@ -188,6 +191,63 @@ final class TokensAnalyzerTest extends TestCase
                     const CONSTANT = 'constant value';
 
                     use Foo\Bar; // expected in the return value
+                }
+
+                PHP,
+        ];
+
+        yield [
+            [
+                11 => [
+                    'classIndex' => 1,
+                    'type' => 'property',
+                ],
+                23 => [
+                    'classIndex' => 1,
+                    'type' => 'property',
+                ],
+                31 => [
+                    'classIndex' => 1,
+                    'type' => 'property',
+                ],
+                44 => [
+                    'classIndex' => 1,
+                    'type' => 'property',
+                ],
+                51 => [
+                    'classIndex' => 1,
+                    'type' => 'property',
+                ],
+                54 => [
+                    'classIndex' => 1,
+                    'type' => 'property',
+                ],
+                61 => [
+                    'classIndex' => 1,
+                    'type' => 'property',
+                ],
+                69 => [
+                    'classIndex' => 1,
+                    'type' => 'property',
+                ],
+            ],
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public int $bar = 3;
+
+                    protected ?string $baz;
+
+                    private ?string $bazNull = null;
+
+                    public static iterable $staticProp;
+
+                    public float $x, $y;
+
+                    var bool $flag1;
+
+                    var ?bool $flag2;
                 }
 
                 PHP,
@@ -445,42 +505,52 @@ final class TokensAnalyzerTest extends TestCase
         );
     }
 
-    public function testGetClassyElements74(): void
+    /**
+     * @param array<int, array{classIndex: int, type: string}> $expected
+     *
+     * @dataProvider provideGetClassyElements80Cases
+     *
+     * @requires PHP >= 8.0
+     */
+    public function testGetClassyElements80(array $expected, string $source): void
     {
-        $source = <<<'PHP'
-            <?php
-            class Foo
-            {
-                public int $bar = 3;
+        $this->testGetClassyElements($expected, $source);
+    }
 
-                protected ?string $baz;
-
-                private ?string $bazNull = null;
-
-                public static iterable $staticProp;
-
-                public float $x, $y;
-
-                var bool $flag1;
-
-                var ?bool $flag2;
-            }
-
-            PHP;
-        $tokens = Tokens::fromCode($source);
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $elements = $tokensAnalyzer->getClassyElements();
-        $expected = [];
-
-        foreach ([11, 23, 31, 44, 51, 54, 61, 69] as $index) {
-            $expected[$index] = [
-                'classIndex' => 1,
-                'token' => $tokens[$index],
-                'type' => 'property',
-            ];
-        }
-
-        self::assertSame($expected, $elements);
+    /**
+     * @return iterable<string, array{array<int, array{classIndex: int, type: string}>, string}>
+     */
+    public static function provideGetClassyElements80Cases(): iterable
+    {
+        yield 'promoted properties' => [
+            [
+                9 => [
+                    'classIndex' => 1,
+                    'type' => 'method',
+                ],
+                18 => [
+                    'classIndex' => 1,
+                    'type' => 'promoted_property',
+                ],
+                26 => [
+                    'classIndex' => 1,
+                    'type' => 'promoted_property',
+                ],
+                37 => [
+                    'classIndex' => 1,
+                    'type' => 'promoted_property',
+                ],
+            ],
+            <<<'PHP'
+                <?php class Foo {
+                    public function __construct(
+                        public bool $b,
+                        protected ?int $i,
+                        private bool|int|string $x,
+                    ) {}
+                }
+                PHP,
+        ];
     }
 
     /**
@@ -492,21 +562,12 @@ final class TokensAnalyzerTest extends TestCase
      */
     public function testGetClassyElements81(array $expected, string $source): void
     {
-        $tokens = Tokens::fromCode($source);
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $elements = $tokensAnalyzer->getClassyElements();
-
-        array_walk(
-            $expected,
-            static function (array &$element, int $index) use ($tokens): void {
-                $element['token'] = $tokens[$index];
-                ksort($element);
-            }
-        );
-
-        self::assertSame($expected, $elements);
+        $this->testGetClassyElements($expected, $source);
     }
 
+    /**
+     * @return iterable<array{array<int, array{classIndex: int, type: string}>, string}>
+     */
     public static function provideGetClassyElements81Cases(): iterable
     {
         yield [
@@ -667,6 +728,42 @@ enum Foo: string
 }
             ',
         ];
+
+        yield 'readonly promoted property' => [
+            [
+                9 => [
+                    'classIndex' => 1,
+                    'type' => 'method',
+                ],
+                19 => [
+                    'classIndex' => 1,
+                    'type' => 'promoted_property',
+                ],
+            ],
+            <<<'PHP'
+                <?php class Foo {
+                    public function __construct(public readonly bool $b) {}
+                }
+                PHP,
+        ];
+
+        yield 'promoted property without visibility' => [
+            [
+                9 => [
+                    'classIndex' => 1,
+                    'type' => 'method',
+                ],
+                17 => [
+                    'classIndex' => 1,
+                    'type' => 'promoted_property',
+                ],
+            ],
+            <<<'PHP'
+                <?php class Foo {
+                    public function __construct(readonly bool $b) {}
+                }
+                PHP,
+        ];
     }
 
     /**
@@ -678,21 +775,12 @@ enum Foo: string
      */
     public function testGetClassyElements82(array $expected, string $source): void
     {
-        $tokens = Tokens::fromCode($source);
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $elements = $tokensAnalyzer->getClassyElements();
-
-        array_walk(
-            $expected,
-            static function (array &$element, int $index) use ($tokens): void {
-                $element['token'] = $tokens[$index];
-                ksort($element);
-            },
-        );
-
-        self::assertSame($expected, $elements);
+        $this->testGetClassyElements($expected, $source);
     }
 
+    /**
+     * @return iterable<string, array{array<int, array{classIndex: int, type: string}>, string}>
+     */
     public static function provideGetClassyElements82Cases(): iterable
     {
         yield 'constant in trait' => [
@@ -715,6 +803,25 @@ enum Foo: string
                 }
                 PHP,
         ];
+
+        yield 'readonly class' => [
+            [
+                11 => [
+                    'classIndex' => 3,
+                    'type' => 'method',
+                ],
+                22 => [
+                    'classIndex' => 3,
+                    'type' => 'method',
+                ],
+            ],
+            <<<'PHP'
+                <?php readonly class Foo {
+                    public function __construct() {}
+                    public function process(object $event): void {}
+                }
+                PHP,
+        ];
     }
 
     /**
@@ -730,7 +837,7 @@ enum Foo: string
     }
 
     /**
-     * @return iterable<array{array<int, array{classIndex: int, type: _ClassyElementType}>, string}>
+     * @return iterable<string, array{array<int, array{classIndex: int, type: _ClassyElementType}>, string}>
      */
     public static function provideGetClassyElements84Cases(): iterable
     {
@@ -754,6 +861,60 @@ enum Foo: string
     }
 
     /**
+     * @param array<int, array{classIndex: int, type: _ClassyElementType}> $expected
+     *
+     * @dataProvider provideGetClassyElements85Cases
+     *
+     * @requires PHP 8.5
+     */
+    public function testGetClassyElements85(array $expected, string $source): void
+    {
+        $this->testGetClassyElements($expected, $source);
+    }
+
+    /**
+     * @return iterable<string, array{array<int, array{classIndex: int, type: _ClassyElementType}>, string}>
+     */
+    public static function provideGetClassyElements85Cases(): iterable
+    {
+        yield 'final promoted property' => [
+            [
+                9 => [
+                    'classIndex' => 1,
+                    'type' => 'method',
+                ],
+                19 => [
+                    'classIndex' => 1,
+                    'type' => 'promoted_property',
+                ],
+            ],
+            <<<'PHP'
+                <?php class Foo {
+                    public function __construct(public final bool $b) {}
+                }
+                PHP,
+        ];
+
+        yield 'promoted property without visibility' => [
+            [
+                9 => [
+                    'classIndex' => 1,
+                    'type' => 'method',
+                ],
+                17 => [
+                    'classIndex' => 1,
+                    'type' => 'promoted_property',
+                ],
+            ],
+            <<<'PHP'
+                <?php class Foo {
+                    public function __construct(final bool $b) {}
+                }
+                PHP,
+        ];
+    }
+
+    /**
      * @param array<int, bool> $expected
      *
      * @dataProvider provideIsAnonymousClassCases
@@ -768,7 +929,7 @@ enum Foo: string
     }
 
     /**
-     * @return iterable<array{array<int, bool>, string}>
+     * @return iterable<int, array{array<int, bool>, string}>
      */
     public static function provideIsAnonymousClassCases(): iterable
     {
@@ -816,7 +977,7 @@ enum Foo: string
     }
 
     /**
-     * @return iterable<array{array<int, bool>, string}>
+     * @return iterable<int, array{array<int, bool>, string}>
      */
     public static function provideIsAnonymousClass80Cases(): iterable
     {
@@ -844,7 +1005,7 @@ enum Foo: string
     }
 
     /**
-     * @return iterable<array{array<int, bool>, string}>
+     * @return iterable<int, array{array<int, bool>, string}>
      */
     public static function provideIsAnonymousClass81Cases(): iterable
     {
@@ -867,7 +1028,7 @@ enum Foo: string
     }
 
     /**
-     * @return iterable<array{array<int, bool>, string}>
+     * @return iterable<string, array{array<int, bool>, string}>
      */
     public static function provideIsAnonymousClass83Cases(): iterable
     {
@@ -901,6 +1062,9 @@ enum Foo: string
         }
     }
 
+    /**
+     * @return iterable<int, array{array<int, bool>, string}>
+     */
     public static function provideIsLambdaCases(): iterable
     {
         yield [
@@ -1019,6 +1183,9 @@ preg_replace_callback(
         $this->testIsLambda($expected, $source);
     }
 
+    /**
+     * @return iterable<int, array{array<int, bool>, string}>
+     */
     public static function provideIsLambda80Cases(): iterable
     {
         yield [
@@ -1074,6 +1241,9 @@ $a(1,2);',
         $this->doIsConstantInvocationTest($expected, $source);
     }
 
+    /**
+     * @return iterable<array{array<int, bool>, string}>
+     */
     public static function provideIsConstantInvocationCases(): iterable
     {
         yield [
@@ -1349,6 +1519,9 @@ abstract class Baz
         $this->doIsConstantInvocationTest($expected, $source);
     }
 
+    /**
+     * @return iterable<array{array<int, bool>, string}>
+     */
     public static function provideIsConstantInvocationPhp80Cases(): iterable
     {
         yield 'abstract method return alternation' => [
@@ -1459,6 +1632,9 @@ function f( #[Target(\'xxx\')] LoggerInterface|null $logger) {}
         $this->doIsConstantInvocationTest($expected, $source);
     }
 
+    /**
+     * @return iterable<array{array<int, bool>, string}>
+     */
     public static function provideIsConstantInvocationPhp81Cases(): iterable
     {
         yield [
@@ -1513,7 +1689,7 @@ abstract class Baz
     }
 
     /**
-     * @return iterable<array{array<int, bool>, string}>
+     * @return iterable<int, array{array<int, bool>, string}>
      */
     public static function provideIsConstantInvocationPhp82Cases(): iterable
     {
@@ -1549,7 +1725,7 @@ abstract class Baz
     }
 
     /**
-     * @return iterable<array{array<int, bool>, string}>
+     * @return iterable<int, array{array<int, bool>, string}>
      */
     public static function provideIsConstantInvocationPhp83Cases(): iterable
     {
@@ -1622,7 +1798,7 @@ abstract class Baz
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_STRING)) {
+            if (!$token->isGivenKind(\T_STRING)) {
                 continue;
             }
 
@@ -1649,6 +1825,9 @@ abstract class Baz
         }
     }
 
+    /**
+     * @return iterable<array{array<int, bool>, string}>
+     */
     public static function provideIsUnarySuccessorOperatorCases(): iterable
     {
         yield [
@@ -1705,7 +1884,7 @@ abstract class Baz
     }
 
     /**
-     * @return iterable<array{array<int, bool>, string}>
+     * @return iterable<string, array{array<int, bool>, string}>
      */
     public static function provideIsUnarySuccessorOperatorPre84Cases(): iterable
     {
@@ -1747,6 +1926,9 @@ abstract class Baz
         }
     }
 
+    /**
+     * @return iterable<int, array{list<int>, string}>
+     */
     public static function provideIsUnaryPredecessorOperatorCases(): iterable
     {
         yield [
@@ -1872,6 +2054,9 @@ abstract class Baz
         }
     }
 
+    /**
+     * @return iterable<int, array{array<int, bool|int>, string}>
+     */
     public static function provideIsBinaryOperatorCases(): iterable
     {
         yield [
@@ -2046,18 +2231,34 @@ $b;',
 
     /**
      * @dataProvider provideIsArrayCases
+     *
+     * @param array<int,bool> $tokenIndices in the form: index => isArrayMultiLine
      */
-    public function testIsArray(string $source, int $tokenIndex, bool $isMultiLineArray = false): void
+    public function testIsArray(string $source, array $tokenIndices): void
     {
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        self::assertTrue($tokensAnalyzer->isArray($tokenIndex), 'Expected to be an array.');
-        self::assertSame($isMultiLineArray, $tokensAnalyzer->isArrayMultiLine($tokenIndex), \sprintf('Expected %sto be a multiline array', $isMultiLineArray ? '' : 'not '));
+        foreach ($tokens as $index => $token) {
+            $isArray = \array_key_exists($index, $tokenIndices);
+
+            self::assertSame(
+                $isArray,
+                $tokensAnalyzer->isArray($index),
+                \sprintf('Expected %sarray, got @ %d "%s".', $isArray ? '' : 'no ', $index, var_export($token, true))
+            );
+            if (\array_key_exists($index, $tokenIndices)) {
+                self::assertSame(
+                    $tokenIndices[$index],
+                    $tokensAnalyzer->isArrayMultiLine($index),
+                    \sprintf('Expected %sto be a multiline array', $tokenIndices[$index] ? '' : 'not ')
+                );
+            }
+        }
     }
 
     /**
-     * @return iterable<array{0: string, 1: int, 2?: bool}>
+     * @return iterable<int, array{string, array<int, bool>}>
      */
     public static function provideIsArrayCases(): iterable
     {
@@ -2065,14 +2266,14 @@ $b;',
             '<?php
                     array("a" => 1);
                 ',
-            2,
+            [2 => false],
         ];
 
         yield [
             '<?php
                     ["a" => 2];
                 ',
-            2, false,
+            [2 => false],
         ];
 
         yield [
@@ -2081,7 +2282,7 @@ $b;',
                         "a" => 3
                     );
                 ',
-            2, true,
+            [2 => true],
         ];
 
         yield [
@@ -2090,7 +2291,7 @@ $b;',
                         "a" => 4
                     ];
                 ',
-            2, true,
+            [2 => true],
         ];
 
         yield [
@@ -2100,7 +2301,7 @@ $b;',
 8 => new \Exception(\'Hello\')
                     );
                 ',
-            2, true,
+            [2 => true, 9 => false],
         ];
 
         yield [
@@ -2111,44 +2312,20 @@ $b;',
 12 => new \Exception(\'Hello\')
                     );
                 ',
-            2, true,
+            [2 => true, 9 => false],
         ];
 
         // Windows/Max EOL testing
         yield [
             "<?php\r\narray('a' => 13);\r\n",
-            1,
+            [1 => false],
         ];
 
         yield [
             "<?php\r\n   array(\r\n       'a' => 14,\r\n       'b' =>  15\r\n   );\r\n",
-            2, true,
+            [2 => true],
         ];
-    }
 
-    /**
-     * @param list<int> $tokenIndexes
-     *
-     * @dataProvider provideIsArray71Cases
-     */
-    public function testIsArray71(string $source, array $tokenIndexes): void
-    {
-        $tokens = Tokens::fromCode($source);
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-
-        foreach ($tokens as $index => $token) {
-            $expect = \in_array($index, $tokenIndexes, true);
-
-            self::assertSame(
-                $expect,
-                $tokensAnalyzer->isArray($index),
-                \sprintf('Expected %sarray, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
-            );
-        }
-    }
-
-    public static function provideIsArray71Cases(): iterable
-    {
         yield [
             '<?php
                     [$a] = $z;
@@ -2157,7 +2334,7 @@ $b;',
                     [[$a, $b], [$c, $d]] = $d;
                     $array = []; $d = array();
                 ',
-            [76, 84],
+            [76 => false, 84 => false],
         ];
     }
 
@@ -2173,6 +2350,9 @@ $b;',
         $this->testIsBinaryOperator($expected, $source);
     }
 
+    /**
+     * @return iterable<int, array{list<int>, string}>
+     */
     public static function provideIsBinaryOperator80Cases(): iterable
     {
         yield [
@@ -2213,6 +2393,9 @@ $b;',
         $this->testIsBinaryOperator($expected, $source);
     }
 
+    /**
+     * @return iterable<string, array{list<int>, string}>
+     */
     public static function provideIsBinaryOperator81Cases(): iterable
     {
         yield 'type intersection' => [
@@ -2233,6 +2416,9 @@ $b;',
         $this->testIsBinaryOperator($expected, $source);
     }
 
+    /**
+     * @return iterable<array{list<int>, string}>
+     */
     public static function provideIsBinaryOperator82Cases(): iterable
     {
         yield [
@@ -2271,7 +2457,7 @@ $b;',
     }
 
     /**
-     * @return iterable<array{list<int>, string}>
+     * @return iterable<int, array{list<int>, string}>
      */
     public static function provideIsBinaryOperatorPre84Cases(): iterable
     {
@@ -2305,7 +2491,7 @@ $b;',
     }
 
     /**
-     * @return iterable<array{string, int}>
+     * @return iterable<int, array{string, int}>
      */
     public static function provideArrayExceptionsCases(): iterable
     {
@@ -2339,7 +2525,7 @@ $b;',
     }
 
     /**
-     * @return iterable<array{bool, string, int}>
+     * @return iterable<int, array{bool, string, int}>
      */
     public static function provideIsBlockMultilineCases(): iterable
     {
@@ -2389,6 +2575,9 @@ $b;',
         self::assertSame($expected, $attributes);
     }
 
+    /**
+     * @return iterable<int, array{string, int, array{visibility: ?int, static: bool, abstract: bool, final: bool}}>
+     */
     public static function provideGetFunctionPropertiesCases(): iterable
     {
         $defaultAttributes = [
@@ -2409,15 +2598,15 @@ class TestClass {
         $cases = [];
 
         $attributes = $defaultAttributes;
-        $attributes['visibility'] = T_PRIVATE;
+        $attributes['visibility'] = \T_PRIVATE;
         $cases[] = [\sprintf($template, 'private'), 10, $attributes];
 
         $attributes = $defaultAttributes;
-        $attributes['visibility'] = T_PUBLIC;
+        $attributes['visibility'] = \T_PUBLIC;
         $cases[] = [\sprintf($template, 'public'), 10, $attributes];
 
         $attributes = $defaultAttributes;
-        $attributes['visibility'] = T_PROTECTED;
+        $attributes['visibility'] = \T_PROTECTED;
         $cases[] = [\sprintf($template, 'protected'), 10, $attributes];
 
         $attributes = $defaultAttributes;
@@ -2426,7 +2615,7 @@ class TestClass {
         $cases[] = [\sprintf($template, 'static'), 10, $attributes];
 
         $attributes = $defaultAttributes;
-        $attributes['visibility'] = T_PUBLIC;
+        $attributes['visibility'] = \T_PUBLIC;
         $attributes['static'] = true;
         $attributes['final'] = true;
         $cases[] = [\sprintf($template, 'final public static'), 14, $attributes];
@@ -2437,7 +2626,7 @@ class TestClass {
         $cases[] = [\sprintf($template, 'abstract'), 10, $attributes];
 
         $attributes = $defaultAttributes;
-        $attributes['visibility'] = T_PUBLIC;
+        $attributes['visibility'] = \T_PUBLIC;
         $attributes['abstract'] = true;
         $cases[] = [\sprintf($template, 'abstract public'), 12, $attributes];
 
@@ -2510,7 +2699,7 @@ class TestClass {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_WHILE)) {
+            if (!$token->isGivenKind(\T_WHILE)) {
                 continue;
             }
 
@@ -2537,7 +2726,7 @@ class TestClass {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_CASE)) {
+            if (!$token->isGivenKind(\T_CASE)) {
                 try {
                     $tokensAnalyzer->isEnumCase($index);
                     self::fail('TokensAnalyzer::isEnumCase() did not throw LogicException.');
@@ -2549,10 +2738,14 @@ class TestClass {
                 continue;
             }
 
+            \assert(\array_key_exists($index, $expected));
             self::assertSame($expected[$index], $tokensAnalyzer->isEnumCase($index));
         }
     }
 
+    /**
+     * @return iterable<string, array{string, array<int, bool>}>
+     */
     public static function provideIsEnumCaseCases(): iterable
     {
         yield 'switch only' => [
@@ -2676,6 +2869,9 @@ enum Suit: string
         self::assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
     }
 
+    /**
+     * @return iterable<int, array{0: array<int, list<int>>|list<int>, 1: string, 2?: bool}>
+     */
     public static function provideGetImportUseIndexesCases(): iterable
     {
         yield [
@@ -2867,7 +3063,7 @@ class MyTestWithAnonymousClass extends TestCase
     }
 
     /**
-     * @return iterable<array{bool, string, int}>
+     * @return iterable<int, array{bool, string, int}>
      */
     public static function provideIsSuperGlobalCases(): iterable
     {
@@ -2926,6 +3122,9 @@ class MyTestWithAnonymousClass extends TestCase
         self::assertSame($expectedModifiers, $tokensAnalyzer->getClassyModifiers($index));
     }
 
+    /**
+     * @return iterable<string, array{array<string, null|int>, int, string}>
+     */
     public static function provideGetClassyModifiersCases(): iterable
     {
         yield 'final' => [
@@ -2953,6 +3152,9 @@ class MyTestWithAnonymousClass extends TestCase
         $this->testGetClassyModifiers($expectedModifiers, $index, $source);
     }
 
+    /**
+     * @return iterable<string, array{array<string, null|int>, int, string}>
+     */
     public static function provideGetClassyModifiersOnPhp82Cases(): iterable
     {
         yield 'readonly' => [
@@ -3027,6 +3229,9 @@ class MyTestWithAnonymousClass extends TestCase
         self::assertSame($expectations, $indices);
     }
 
+    /**
+     * @return iterable<string, array{array<int, int>, string}>
+     */
     public static function provideGetLastTokenIndexOfArrowFunctionCases(): iterable
     {
         yield 'simple cases' => [
@@ -3163,7 +3368,7 @@ class MyTestWithAnonymousClass extends TestCase
         $tokens = Tokens::fromCode($source);
 
         self::assertCount(
-            $tokens->countTokenKind(T_STRING),
+            $tokens->countTokenKind(\T_STRING),
             $expected,
             'All T_STRING tokens must be tested'
         );

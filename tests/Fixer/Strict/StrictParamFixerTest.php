@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Strict;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Strict\StrictParamFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Strict\StrictParamFixer>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class StrictParamFixerTest extends AbstractFixerTestCase
 {
@@ -36,7 +36,7 @@ final class StrictParamFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {

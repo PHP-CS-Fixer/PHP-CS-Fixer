@@ -562,7 +562,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1: NamespaceAnalysis, 2: list<NamespaceUseAnalysis>}>
+     * @return iterable<int, array{0: string, 1: NamespaceAnalysis, 2: list<NamespaceUseAnalysis>}>
      */
     public static function provideGetDeclarationsInNamespaceCases(): iterable
     {

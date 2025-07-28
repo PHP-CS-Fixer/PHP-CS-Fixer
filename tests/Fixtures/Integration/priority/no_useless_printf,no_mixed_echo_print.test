@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: no_useless_printf,no_mixed_echo_print.
+--RULESET--
+{"no_useless_printf": true, "no_mixed_echo_print": {"use": "echo"}}
+--EXPECT--
+<?php
+
+echo $bar;
+
+--INPUT--
+<?php
+
+printf($bar);

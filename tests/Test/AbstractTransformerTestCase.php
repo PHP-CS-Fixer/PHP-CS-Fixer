@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Test;
 
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -21,12 +22,12 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TransformerInterface;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @phpstan-type _TransformerTestExpectedTokens array<int, int|string>
  * @phpstan-type _TransformerTestObservedKindsOrPrototypes list<int|string>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 abstract class AbstractTransformerTestCase extends TestCase
 {
@@ -117,14 +118,17 @@ abstract class AbstractTransformerTestCase extends TestCase
         $tokens = new TokensWithObservedTransformers();
         $tokens->setCode($source);
 
+        $prototypes = array_map(
+            static fn ($kindOrPrototype) => \is_int($kindOrPrototype) ? [$kindOrPrototype] : $kindOrPrototype,
+            array_unique([...$observedKindsOrPrototypes, ...$expectedTokens])
+        );
+        \assert(array_is_list($prototypes));
+
         self::assertSame(
             \count($expectedTokens),
             $this->countTokenPrototypes(
                 $tokens,
-                array_map(
-                    static fn ($kindOrPrototype) => \is_int($kindOrPrototype) ? [$kindOrPrototype] : $kindOrPrototype,
-                    array_unique([...$observedKindsOrPrototypes, ...$expectedTokens])
-                )
+                $prototypes
             ),
             'Number of expected tokens does not match actual token count.'
         );
@@ -144,6 +148,7 @@ abstract class AbstractTransformerTestCase extends TestCase
 
         foreach ($tokens->observedModificationsPerTransformer as $appliedTransformerName => $modificationsOfTransformer) {
             foreach ($modificationsOfTransformer as $modification) {
+                self::assertIsInt($modification);
                 $customTokenName = Token::getNameForId($modification);
 
                 if ($appliedTransformerName === $transformerName) {
@@ -172,7 +177,7 @@ abstract class AbstractTransformerTestCase extends TestCase
 
         foreach ($expectedTokens as $index => $tokenIdOrContent) {
             if (\is_string($tokenIdOrContent)) {
-                self::assertTrue($tokens[$index]->equals($tokenIdOrContent), \sprintf('The token at index %d should be %s, got %s', $index, json_encode($tokenIdOrContent, JSON_THROW_ON_ERROR), $tokens[$index]->toJson()));
+                self::assertTrue($tokens[$index]->equals($tokenIdOrContent), \sprintf('The token at index %d should be %s, got %s', $index, json_encode($tokenIdOrContent, \JSON_THROW_ON_ERROR), $tokens[$index]->toJson()));
 
                 continue;
             }
@@ -192,7 +197,7 @@ abstract class AbstractTransformerTestCase extends TestCase
     }
 
     /**
-     * @param list<array{0: int, 1?: string}> $prototypes
+     * @param list<array{0: int, 1?: string}|string> $prototypes
      */
     private function countTokenPrototypes(Tokens $tokens, array $prototypes): int
     {
@@ -209,7 +214,8 @@ abstract class AbstractTransformerTestCase extends TestCase
 
     private function createTransformer(): TransformerInterface
     {
-        $transformerClassName = preg_replace('/^(PhpCsFixer)\\\Tests(\\\.+)Test$/', '$1$2', static::class);
+        $transformerClassName = Preg::replace('/^(PhpCsFixer)\\\Tests(\\\.+)Test$/', '$1$2', static::class);
+        \assert(is_a($transformerClassName, TransformerInterface::class, true));
 
         return new $transformerClassName();
     }

@@ -22,6 +22,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\EnumAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\MatchAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\ControlCaseStructuresAnalyzer;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -39,15 +40,19 @@ final class ControlCaseStructuresAnalyzerTest extends TestCase
     public function testFindControlStructures(array $expectedAnalyses, string $source): void
     {
         $tokens = Tokens::fromCode($source);
-        $analyses = iterator_to_array(ControlCaseStructuresAnalyzer::findControlStructures($tokens, [T_SWITCH]));
+        $analyses = iterator_to_array(ControlCaseStructuresAnalyzer::findControlStructures($tokens, [\T_SWITCH]));
 
         self::assertCount(\count($expectedAnalyses), $analyses);
 
         foreach ($expectedAnalyses as $index => $expectedAnalysis) {
+            \assert(\array_key_exists($index, $analyses));
             self::assertAnalysis($expectedAnalysis, $analyses[$index]);
         }
     }
 
+    /**
+     * @return iterable<array{0: array<int, AbstractControlCaseStructuresAnalysis>, 1: string, 2?: int}>
+     */
     public static function provideFindControlStructuresCases(): iterable
     {
         yield 'two cases' => [
@@ -177,7 +182,6 @@ switch ($foo) {
                 switch ($bar) : case "a": return "b"; case "c"; return "d"; case "e": return "f"; endswitch;
                 return;
                 case 100: return false; endswitch ?>  <?php echo 1;',
-            1,
         ];
 
         $expected = [
@@ -335,10 +339,14 @@ endswitch ?>',
         self::assertCount(\count($expectedAnalyses), $analyses);
 
         foreach ($expectedAnalyses as $index => $expectedAnalysis) {
+            \assert(\array_key_exists($index, $analyses));
             self::assertAnalysis($expectedAnalysis, $analyses[$index]);
         }
     }
 
+    /**
+     * @return iterable<int, array{array<int, AbstractControlCaseStructuresAnalysis>, string, list<int>}>
+     */
     public static function provideFindControlStructuresPhp81Cases(): iterable
     {
         $switchAnalysis = new SwitchAnalysis(1, 6, 26, [new CaseAnalysis(8, 11)], new DefaultAnalysis(18, 19));
@@ -370,29 +378,25 @@ $expressionResult = match ($condition) {
                 1 => $switchAnalysis,
             ],
             $code,
-            [T_SWITCH],
+            [\T_SWITCH],
         ];
 
-        if (\defined('T_ENUM')) { // @TODO: drop condition when PHP 8.1+ is required - sadly PHPUnit still calls the provider even if requires condition is not matched
-            yield [
-                [
-                    1 => $switchAnalysis,
-                    28 => $enumAnalysis,
-                ],
-                $code,
-                [T_SWITCH, T_ENUM],
-            ];
-        }
+        yield [
+            [
+                1 => $switchAnalysis,
+                28 => $enumAnalysis,
+            ],
+            $code,
+            [\T_SWITCH, FCT::T_ENUM],
+        ];
 
-        if (\defined('T_MATCH')) { // @TODO: drop condition when PHP 8.0+ is required - sadly PHPUnit still calls the provider even if requires condition is not matched
-            yield [
-                [
-                    57 => $matchAnalysis,
-                ],
-                $code,
-                [T_MATCH],
-            ];
-        }
+        yield [
+            [
+                57 => $matchAnalysis,
+            ],
+            $code,
+            [FCT::T_MATCH],
+        ];
     }
 
     public function testNoSupportedControlStructure(): void
@@ -400,10 +404,10 @@ $expressionResult = match ($condition) {
         $tokens = Tokens::fromCode('<?php if(time() > 0){ echo 1; }');
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(\sprintf('Unexpected type "%d".', T_IF));
+        $this->expectExceptionMessage(\sprintf('Unexpected type "%d".', \T_IF));
 
         // we use `iterator_to_array` to ensure generator is consumed and it has possibility to raise exception
-        iterator_to_array(ControlCaseStructuresAnalyzer::findControlStructures($tokens, [T_IF]));
+        iterator_to_array(ControlCaseStructuresAnalyzer::findControlStructures($tokens, [\T_IF]));
     }
 
     private static function assertAnalysis(AbstractControlCaseStructuresAnalysis $expectedAnalysis, AbstractControlCaseStructuresAnalysis $analysis): void

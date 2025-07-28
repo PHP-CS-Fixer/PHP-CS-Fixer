@@ -53,7 +53,7 @@ final class FixCommandExitStatusCalculatorTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, bool, bool, bool, bool, bool}>
+     * @return iterable<int, array{int, bool, bool, bool, bool, bool}>
      */
     public static function provideCalculateCases(): iterable
     {

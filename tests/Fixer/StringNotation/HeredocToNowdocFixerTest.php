@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\StringNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Gregor Harlan <gharlan@web.de>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\StringNotation\HeredocToNowdocFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\HeredocToNowdocFixer>
+ *
+ * @author Gregor Harlan <gharlan@web.de>
  */
 final class HeredocToNowdocFixerTest extends AbstractFixerTestCase
 {
@@ -36,7 +36,7 @@ final class HeredocToNowdocFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {

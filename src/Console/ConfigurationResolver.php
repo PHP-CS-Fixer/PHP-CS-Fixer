@@ -42,6 +42,7 @@ use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\ToolInfoInterface;
+use PhpCsFixer\UnsupportedPhpVersionAllowedConfigInterface;
 use PhpCsFixer\Utils;
 use PhpCsFixer\WhitespacesFixerConfig;
 use PhpCsFixer\WordMatcher;
@@ -50,10 +51,6 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
 
 /**
  * The resolver that resolves configuration to use by command line options and config.
- *
- * @author Fabien Potencier <fabien@symfony.com>
- * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  *
@@ -71,8 +68,13 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  *      show-progress: null|string,
  *      stop-on-violation: null|bool,
  *      using-cache: null|string,
+ *      allow-unsupported-php-version: null|bool,
  *      verbosity: null|string,
  *  }
+ *
+ * @author Fabien Potencier <fabien@symfony.com>
+ * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class ConfigurationResolver
 {
@@ -121,6 +123,7 @@ final class ConfigurationResolver
         'show-progress' => null,
         'stop-on-violation' => null,
         'using-cache' => null,
+        'allow-unsupported-php-version' => null,
         'verbosity' => null,
     ];
 
@@ -154,6 +157,8 @@ final class ConfigurationResolver
     private ?RuleSet $ruleSet = null;
 
     private ?bool $usingCache = null;
+
+    private ?bool $isUnsupportedPhpVersionAllowed = null;
 
     private ?FixerFactory $fixerFactory = null;
 
@@ -203,7 +208,7 @@ final class ConfigurationResolver
                 $this->cacheManager = new FileCacheManager(
                     new FileHandler($cacheFile),
                     new Signature(
-                        PHP_VERSION,
+                        \PHP_VERSION,
                         $this->toolInfo->getVersion(),
                         $this->getConfig()->getIndent(),
                         $this->getConfig()->getLineEnding(),
@@ -227,6 +232,8 @@ final class ConfigurationResolver
                 }
 
                 $configFileBasename = basename($configFile);
+
+                /** @TODO v4 drop handling (triggering error) for v2 config names */
                 $deprecatedConfigs = [
                     '.php_cs' => '.php-cs-fixer.php',
                     '.php_cs.dist' => '.php-cs-fixer.dist.php',
@@ -388,7 +395,7 @@ final class ConfigurationResolver
     public function getProgressType(): string
     {
         if (null === $this->progress) {
-            if ('txt' === $this->getFormat()) {
+            if ('txt' === $this->resolveFormat()) {
                 $progressType = $this->options['show-progress'];
 
                 if (null === $progressType) {
@@ -418,7 +425,7 @@ final class ConfigurationResolver
             $reporterFactory = new ReporterFactory();
             $reporterFactory->registerBuiltInReporters();
 
-            $format = $this->getFormat();
+            $format = $this->resolveFormat();
 
             try {
                 $this->reporter = $reporterFactory->getReporter($format);
@@ -469,6 +476,22 @@ final class ConfigurationResolver
         $this->usingCache = $this->usingCache && $this->isCachingAllowedForRuntime();
 
         return $this->usingCache;
+    }
+
+    public function getUnsupportedPhpVersionAllowed(): bool
+    {
+        if (null === $this->isUnsupportedPhpVersionAllowed) {
+            if (null === $this->options['allow-unsupported-php-version']) {
+                $config = $this->getConfig();
+                $this->isUnsupportedPhpVersionAllowed = $config instanceof UnsupportedPhpVersionAllowedConfigInterface
+                    ? $config->getUnsupportedPhpVersionAllowed()
+                    : false;
+            } else {
+                $this->isUnsupportedPhpVersionAllowed = $this->resolveOptionBooleanValue('allow-unsupported-php-version');
+            }
+        }
+
+        return $this->isUnsupportedPhpVersionAllowed;
     }
 
     /**
@@ -540,13 +563,15 @@ final class ConfigurationResolver
         } elseif (!is_file($path[0])) {
             $configDir = $path[0];
         } else {
-            $dirName = pathinfo($path[0], PATHINFO_DIRNAME);
+            $dirName = pathinfo($path[0], \PATHINFO_DIRNAME);
             $configDir = is_dir($dirName) ? $dirName : $path[0];
         }
 
         $candidates = [
             $configDir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php',
             $configDir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php',
+
+            // @TODO v4 drop handling (triggering error) for v2 config names
             $configDir.\DIRECTORY_SEPARATOR.'.php_cs', // old v2 config, present here only to throw nice error message later
             $configDir.\DIRECTORY_SEPARATOR.'.php_cs.dist', // old v2 config, present here only to throw nice error message later
         ];
@@ -554,6 +579,8 @@ final class ConfigurationResolver
         if ($configDir !== $this->cwd) {
             $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php';
             $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php';
+
+            // @TODO v4 drop handling (triggering error) for v2 config names
             $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs'; // old v2 config, present here only to throw nice error message later
             $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs.dist'; // old v2 config, present here only to throw nice error message later
         }
@@ -574,10 +601,25 @@ final class ConfigurationResolver
         return $this->fixerFactory;
     }
 
-    private function getFormat(): string
+    private function resolveFormat(): string
     {
         if (null === $this->format) {
-            $this->format = $this->options['format'] ?? $this->getConfig()->getFormat();
+            $formatCandidate = $this->options['format'] ?? $this->getConfig()->getFormat();
+            $parts = explode(',', $formatCandidate);
+
+            if (\count($parts) > 2) {
+                throw new InvalidConfigurationException(\sprintf('The format "%s" is invalid.', $formatCandidate));
+            }
+
+            $this->format = $parts[0];
+
+            if ('@auto' === $this->format) {
+                $this->format = $parts[1] ?? 'txt';
+
+                if (filter_var(getenv('GITLAB_CI'), \FILTER_VALIDATE_BOOL)) {
+                    $this->format = 'gitlab';
+                }
+            }
         }
 
         return $this->format;
@@ -633,7 +675,7 @@ final class ConfigurationResolver
         if (str_starts_with($rules, '{')) {
             $rules = json_decode($rules, true);
 
-            if (JSON_ERROR_NONE !== json_last_error()) {
+            if (\JSON_ERROR_NONE !== json_last_error()) {
                 throw new InvalidConfigurationException(\sprintf('Invalid JSON rules input: "%s".', json_last_error_msg()));
             }
 
@@ -941,6 +983,6 @@ final class ConfigurationResolver
         return $this->toolInfo->isInstalledAsPhar()
             || $this->toolInfo->isInstalledByComposer()
             || $this->toolInfo->isRunInsideDocker()
-            || filter_var(getenv('PHP_CS_FIXER_ENFORCE_CACHE'), FILTER_VALIDATE_BOOL);
+            || filter_var(getenv('PHP_CS_FIXER_ENFORCE_CACHE'), \FILTER_VALIDATE_BOOL);
     }
 }

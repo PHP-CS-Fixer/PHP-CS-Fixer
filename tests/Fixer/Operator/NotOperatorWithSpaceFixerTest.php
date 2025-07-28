@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Operator;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Javier Spagnoletti <phansys@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Operator\NotOperatorWithSpaceFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\NotOperatorWithSpaceFixer>
+ *
+ * @author Javier Spagnoletti <phansys@gmail.com>
  */
 final class NotOperatorWithSpaceFixerTest extends AbstractFixerTestCase
 {
@@ -36,7 +36,7 @@ final class NotOperatorWithSpaceFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFixCases(): iterable
     {

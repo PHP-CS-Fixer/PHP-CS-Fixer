@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Kuba Werłos <werlos@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\ImplodeCallFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\ImplodeCallFixer>
+ *
+ * @author Kuba Werłos <werlos@gmail.com>
  */
 final class ImplodeCallFixerTest extends AbstractFixerTestCase
 {
@@ -36,7 +36,7 @@ final class ImplodeCallFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {

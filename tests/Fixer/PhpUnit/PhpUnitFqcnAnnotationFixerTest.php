@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Roland Franssen <franssen.roland@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitFqcnAnnotationFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitFqcnAnnotationFixer>
+ *
+ * @author Roland Franssen <franssen.roland@gmail.com>
  */
 final class PhpUnitFqcnAnnotationFixerTest extends AbstractFixerTestCase
 {
@@ -36,7 +36,7 @@ final class PhpUnitFqcnAnnotationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {

@@ -23,9 +23,9 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 /**
  * Generates a report according to gitlabs subset of codeclimate json files.
  *
- * @see https://github.com/codeclimate/platform/blob/master/spec/analyzers/SPEC.md#data-types
- *
  * @author Hans-Christian Otto <c.otto@suora.com>
+ *
+ * @see https://github.com/codeclimate/platform/blob/master/spec/analyzers/SPEC.md#data-types
  *
  * @readonly
  *
@@ -69,7 +69,7 @@ final class GitlabReporter implements ReporterInterface
             }
         }
 
-        $jsonString = json_encode($report, JSON_THROW_ON_ERROR);
+        $jsonString = json_encode($report, \JSON_THROW_ON_ERROR);
 
         return $reportSummary->isDecoratedOutput() ? OutputFormatter::escape($jsonString) : $jsonString;
     }

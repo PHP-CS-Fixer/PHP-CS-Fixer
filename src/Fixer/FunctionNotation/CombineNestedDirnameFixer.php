@@ -43,7 +43,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     public function isRisky(): bool
@@ -81,7 +81,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
             $firstArgumentEnd = $dirnameInfo['end'];
             $dirnameInfoArray = [$dirnameInfo];
 
-            while ($dirnameInfo = $this->getDirnameInfo($tokens, $prev, $firstArgumentEnd)) {
+            while (($dirnameInfo = $this->getDirnameInfo($tokens, $prev, $firstArgumentEnd)) !== false) {
                 $dirnameInfoArray[] = $dirnameInfo;
                 $prev = $tokens->getPrevMeaningfulToken($dirnameInfo['indices'][0]);
 
@@ -109,7 +109,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
      */
     private function getDirnameInfo(Tokens $tokens, int $index, ?int $firstArgumentEndIndex = null)
     {
-        if (!$tokens[$index]->equals([T_STRING, 'dirname'], false)) {
+        if (!$tokens[$index]->equals([\T_STRING, 'dirname'], false)) {
             return false;
         }
 
@@ -120,7 +120,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
         $info = ['indices' => []];
         $prev = $tokens->getPrevMeaningfulToken($index);
 
-        if ($tokens[$prev]->isGivenKind(T_NS_SEPARATOR)) {
+        if ($tokens[$prev]->isGivenKind(\T_NS_SEPARATOR)) {
             $info['indices'][] = $prev;
         }
 
@@ -164,7 +164,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
             return $info;
         }
 
-        if (!$tokens[$next]->isGivenKind(T_LNUMBER)) {
+        if (!$tokens[$next]->isGivenKind(\T_LNUMBER)) {
             return false;
         }
 
@@ -205,7 +205,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
             }
         }
 
-        $levelsToken = new Token([T_LNUMBER, (string) $levels]);
+        $levelsToken = new Token([\T_LNUMBER, (string) $levels]);
 
         if (isset($outerDirnameInfo['secondArgument'])) {
             $tokens[$outerDirnameInfo['secondArgument']] = $levelsToken;
@@ -214,7 +214,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
             $items = [];
 
             if (!$tokens[$prev]->equals(',')) {
-                $items = [new Token(','), new Token([T_WHITESPACE, ' '])];
+                $items = [new Token(','), new Token([\T_WHITESPACE, ' '])];
             }
 
             $items[] = $levelsToken;

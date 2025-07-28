@@ -52,7 +52,7 @@ final class MultilineStringToHeredocFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE]);
+        return $tokens->isAnyTokenKindsFound([\T_CONSTANT_ENCAPSED_STRING, \T_ENCAPSED_AND_WHITESPACE]);
     }
 
     /**
@@ -67,23 +67,11 @@ final class MultilineStringToHeredocFixer extends AbstractFixer
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $inHeredoc = false;
         $complexStringStartIndex = null;
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind([T_START_HEREDOC, T_END_HEREDOC])) {
-                $inHeredoc = $token->isGivenKind(T_START_HEREDOC) || !$token->isGivenKind(T_END_HEREDOC);
-
-                continue;
-            }
-
             if (null === $complexStringStartIndex) {
-                if ($token->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
+                if ($token->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
                     $this->convertStringToHeredoc($tokens, $index, $index);
-
-                    // skip next 2 added tokens if replaced
-                    if ($tokens[$index]->isGivenKind(T_START_HEREDOC)) {
-                        $inHeredoc = true;
-                    }
                 } elseif ($token->equalsAny(['"', 'b"', 'B"'])) {
                     $complexStringStartIndex = $index;
                 }
@@ -99,7 +87,7 @@ final class MultilineStringToHeredocFixer extends AbstractFixer
     {
         $closingMarker = 'EOD';
 
-        if ($tokens[$stringStartIndex]->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
+        if ($tokens[$stringStartIndex]->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
             $content = $tokens[$stringStartIndex]->getContent();
             if ('b' === strtolower(substr($content, 0, 1))) {
                 $content = substr($content, 1);
@@ -113,7 +101,7 @@ final class MultilineStringToHeredocFixer extends AbstractFixer
                 $content = Preg::replace('~(\\\\\\\)|\\\(")~', '$1$2', $content);
             }
 
-            $constantStringToken = new Token([T_ENCAPSED_AND_WHITESPACE, $content."\n"]);
+            $constantStringToken = new Token([\T_ENCAPSED_AND_WHITESPACE, $content."\n"]);
         } else {
             $content = $tokens->generatePartialCode($stringStartIndex + 1, $stringEndIndex - 1);
             $isSingleQuoted = false;
@@ -129,8 +117,8 @@ final class MultilineStringToHeredocFixer extends AbstractFixer
         }
 
         $quoting = $isSingleQuoted ? '\'' : '';
-        $heredocStartToken = new Token([T_START_HEREDOC, '<<<'.$quoting.$closingMarker.$quoting."\n"]);
-        $heredocEndToken = new Token([T_END_HEREDOC, $closingMarker]);
+        $heredocStartToken = new Token([\T_START_HEREDOC, '<<<'.$quoting.$closingMarker.$quoting."\n"]);
+        $heredocEndToken = new Token([\T_END_HEREDOC, $closingMarker]);
 
         if (null !== $constantStringToken) {
             $tokens->overrideRange($stringStartIndex, $stringEndIndex, [
@@ -140,7 +128,7 @@ final class MultilineStringToHeredocFixer extends AbstractFixer
             ]);
         } else {
             for ($i = $stringStartIndex + 1; $i < $stringEndIndex; ++$i) {
-                if ($tokens[$i]->isGivenKind(T_ENCAPSED_AND_WHITESPACE)) {
+                if ($tokens[$i]->isGivenKind(\T_ENCAPSED_AND_WHITESPACE)) {
                     $tokens[$i] = new Token([
                         $tokens[$i]->getId(),
                         Preg::replace('~(\\\\\\\)|\\\(")~', '$1$2', $tokens[$i]->getContent()),
@@ -150,14 +138,14 @@ final class MultilineStringToHeredocFixer extends AbstractFixer
 
             $tokens[$stringStartIndex] = $heredocStartToken;
             $tokens[$stringEndIndex] = $heredocEndToken;
-            if ($tokens[$stringEndIndex - 1]->isGivenKind(T_ENCAPSED_AND_WHITESPACE)) {
+            if ($tokens[$stringEndIndex - 1]->isGivenKind(\T_ENCAPSED_AND_WHITESPACE)) {
                 $tokens[$stringEndIndex - 1] = new Token([
                     $tokens[$stringEndIndex - 1]->getId(),
                     $tokens[$stringEndIndex - 1]->getContent()."\n",
                 ]);
             } else {
                 $tokens->insertAt($stringEndIndex, new Token([
-                    T_ENCAPSED_AND_WHITESPACE,
+                    \T_ENCAPSED_AND_WHITESPACE,
                     "\n",
                 ]));
             }

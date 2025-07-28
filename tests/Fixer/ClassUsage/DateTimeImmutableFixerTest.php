@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\ClassUsage;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Kuba Werłos <werlos@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer>
+ *
+ * @author Kuba Werłos <werlos@gmail.com>
  */
 final class DateTimeImmutableFixerTest extends AbstractFixerTestCase
 {
@@ -36,7 +36,7 @@ final class DateTimeImmutableFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -225,7 +225,7 @@ final class DateTimeImmutableFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideFix80Cases(): iterable
     {

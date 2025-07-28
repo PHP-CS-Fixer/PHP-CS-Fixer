@@ -338,7 +338,6 @@ The rule is part of the following rule sets:
 
   ``['on_multiline' => 'ignore']``
 
-
 References
 ----------
 

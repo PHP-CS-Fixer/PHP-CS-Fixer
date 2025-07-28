@@ -43,7 +43,7 @@ final class DataProviderAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{list<DataProviderAnalysis>, string}>
+     * @return iterable<string, array{list<DataProviderAnalysis>, string}>
      */
     public static function provideGettingDataProvidersCases(): iterable
     {
@@ -197,7 +197,7 @@ final class DataProviderAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{list<DataProviderAnalysis>, string}>
+     * @return iterable<string, array{list<DataProviderAnalysis>, string}>
      */
     public static function provideGettingDataProviders80Cases(): iterable
     {
@@ -212,6 +212,73 @@ final class DataProviderAnalyzerTest extends TestCase
                     #[CustomAttribute]
                     public function testFoo(): void {}
                     public function provideFooCases(): iterable {}
+                }
+                PHP,
+        ];
+
+        yield 'with multiple DataProvider attributes' => [
+            [
+                new DataProviderAnalysis('provider1', 70, [[21, 0]]),
+                new DataProviderAnalysis('provider2', 84, [[35, 0]]),
+                new DataProviderAnalysis('provider3', 98, [[48, 0]]),
+            ],
+            <<<'PHP'
+                <?php
+                class FooTest extends TestCase {
+                    #[\PHPUnit\Framework\Attributes\DataProvider('provider1')]
+                    #[\PHPUnit\Framework\Attributes\DataProvider('provider2')]
+                    #[PHPUnit\Framework\Attributes\DataProvider('provider3')]
+                    public function testFoo(): void {}
+                    public function provider1(): iterable {}
+                    public function provider2(): iterable {}
+                    public function provider3(): iterable {}
+                }
+                PHP,
+        ];
+
+        yield 'with incorrect DataProvider attributes' => [
+            [],
+            <<<'PHP'
+                <?php
+                namespace NamespaceToMakeAttributeWithoutLeadingSlashIgnored;
+                class FooTest extends TestCase {
+                    #[PHPUnit\Framework\Attributes\DataProvider('provider1')]
+                    #[\PHPUnit\Framework\Attributes\DataProvider]
+                    #[\PHPUnit\Framework\Attributes\DataProvider(123)]
+                    #[\PHPUnit\Framework\Attributes\DataProvider('doNotGetFooledByConcatenation' . 'provider3')]
+                    public function testFoo(): void {}
+                    public function provider1(): iterable {}
+                    public function provider2(): iterable {}
+                    public function provider3(): iterable {}
+                }
+                PHP,
+        ];
+
+        yield 'with DataProvider attributes use in a tricky way' => [
+            [
+                new DataProviderAnalysis('provider1', 151, [[60, 0], [126, 0]]),
+                new DataProviderAnalysis('provider2', 165, [[84, 0]]),
+                new DataProviderAnalysis('provider3', 179, [[95, 0]]),
+            ],
+            <<<'PHP'
+                <?php
+                namespace N;
+                use PHPUnit\Framework as PphUnitAlias;
+                use PHPUnit\Framework\Attributes;
+                class FooTest extends TestCase {
+                    #[
+                        \PHPUnit\Framework\Attributes\BackupGlobals(true),
+                        \PHPUnit\Framework\Attributes\DataProvider('provider1'),
+                        \PHPUnit\Framework\Attributes\Group('foo'),
+                    ]
+                    #[Attributes\DataProvider('provider2')]
+                    #[PphUnitAlias\Attributes\DataProvider('provider3')]
+                    public function testFoo(int $x): void {}
+                    #[\PHPUnit\Framework\Attributes\DataProvider('provider1')]
+                    public function testBar(int $x): void {}
+                    public function provider1(): iterable {}
+                    public function provider2(): iterable {}
+                    public function provider3(): iterable {}
                 }
                 PHP,
         ];

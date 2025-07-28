@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Comment;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Filippo Tessarotto <zoeslam@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Comment\MultilineCommentOpeningClosingFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Comment\MultilineCommentOpeningClosingFixer>
+ *
+ * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
 final class MultilineCommentOpeningClosingFixerTest extends AbstractFixerTestCase
 {
@@ -36,7 +36,7 @@ final class MultilineCommentOpeningClosingFixerTest extends AbstractFixerTestCas
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {

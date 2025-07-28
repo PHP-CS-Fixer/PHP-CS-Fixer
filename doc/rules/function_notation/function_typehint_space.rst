@@ -38,6 +38,7 @@ Example #2
    -function sample(array  $a)
    +function sample(array $a)
     {}
+
 References
 ----------
 

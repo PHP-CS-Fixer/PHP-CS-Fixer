@@ -46,7 +46,7 @@ final class ProcessIdentifierTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1: bool}>
+     * @return iterable<int, array{0: string, 1: bool}>
      */
     public static function provideFromRawCases(): iterable
     {

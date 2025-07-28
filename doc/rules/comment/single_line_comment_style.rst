@@ -92,7 +92,6 @@ The rule is part of the following rule sets:
 
   ``['comment_types' => ['hash']]``
 
-
 References
 ----------
 

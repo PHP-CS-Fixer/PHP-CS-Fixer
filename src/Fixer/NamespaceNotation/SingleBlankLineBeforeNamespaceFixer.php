@@ -47,7 +47,7 @@ final class SingleBlankLineBeforeNamespaceFixer extends AbstractProxyFixer imple
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_NAMESPACE);
+        return $tokens->isTokenKindFound(\T_NAMESPACE);
     }
 
     /**

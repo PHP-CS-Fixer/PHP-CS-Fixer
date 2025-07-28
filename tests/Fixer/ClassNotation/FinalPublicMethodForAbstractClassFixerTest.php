@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Filippo Tessarotto <zoeslam@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\FinalPublicMethodForAbstractClassFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\FinalPublicMethodForAbstractClassFixer>
+ *
+ * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
 final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTestCase
 {
@@ -39,7 +39,7 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<string, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -140,7 +140,7 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<string, array{0: string, 1?: string}>
      */
     public static function provideFix82Cases(): iterable
     {

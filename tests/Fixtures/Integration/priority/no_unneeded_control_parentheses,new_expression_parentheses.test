@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: no_unneeded_control_parentheses,new_expression_parentheses.
+--RULESET--
+{"no_unneeded_control_parentheses": {"statements": ["others"]}, "new_expression_parentheses": true}
+--REQUIREMENTS--
+{"php": 80400}
+--EXPECT--
+<?php
+new Foo()->bar;
+
+--INPUT--
+<?php
+(((new Foo())))->bar;

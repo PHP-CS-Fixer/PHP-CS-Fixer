@@ -286,7 +286,7 @@ final class RunnerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: bool, 1: int}>
+     * @return iterable<string, array{0: bool, 1: int}>
      */
     public static function provideParallelFixStopsOnFirstViolationIfSuchOptionIsEnabledCases(): iterable
     {

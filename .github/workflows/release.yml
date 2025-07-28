@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - "v[0-9]+.[0-9]+.[0-9]+"
+      - v[0-9]+.[0-9]+.[0-9]+
 
 env:
   REGISTRY: ghcr.io
@@ -22,11 +22,13 @@ jobs:
           - php-version: '8.0'
             alpine-version: '3.16'
           - php-version: '8.1'
-            alpine-version: '3.18'
+            alpine-version: '3.21'
           - php-version: '8.2'
-            alpine-version: '3.18'
+            alpine-version: '3.21'
           - php-version: '8.3'
-            alpine-version: '3.18'
+            alpine-version: '3.21'
+          - php-version: '8.4'
+            alpine-version: '3.21'
 
     permissions:
       contents: read

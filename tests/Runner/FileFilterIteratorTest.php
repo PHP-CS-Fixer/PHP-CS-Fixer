@@ -33,7 +33,6 @@ final class FileFilterIteratorTest extends TestCase
     public function testAccept(int $repeat): void
     {
         $file = __FILE__;
-        $content = file_get_contents($file);
         $events = [];
 
         $eventDispatcher = new EventDispatcher();
@@ -61,7 +60,7 @@ final class FileFilterIteratorTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int}>
+     * @return iterable<int, array{int}>
      */
     public static function provideAcceptCases(): iterable
     {
@@ -75,7 +74,6 @@ final class FileFilterIteratorTest extends TestCase
     public function testEmitSkipEventWhenCacheNeedFixingFalse(): void
     {
         $file = __FILE__;
-        $content = file_get_contents($file);
         $events = [];
 
         $eventDispatcher = new EventDispatcher();
@@ -105,7 +103,6 @@ final class FileFilterIteratorTest extends TestCase
     public function testIgnoreEmptyFile(): void
     {
         $file = __DIR__.'/../Fixtures/empty.php';
-        $content = file_get_contents($file);
         $events = [];
 
         $eventDispatcher = new EventDispatcher();
@@ -157,7 +154,6 @@ final class FileFilterIteratorTest extends TestCase
     public function testWithoutDispatcher(): void
     {
         $file = __FILE__;
-        $content = file_get_contents($file);
 
         $filter = new FileFilterIterator(
             new \ArrayIterator([new \SplFileInfo($file)]),

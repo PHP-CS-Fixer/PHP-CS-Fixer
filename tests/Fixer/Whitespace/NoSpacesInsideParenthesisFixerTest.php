@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Whitespace;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Marc Aubé
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Whitespace\NoSpacesInsideParenthesisFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\NoSpacesInsideParenthesisFixer>
+ *
+ * @author Marc Aubé
  */
 final class NoSpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
 {
@@ -36,7 +36,7 @@ final class NoSpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -151,7 +151,7 @@ $a = $b->test(  // do not remove space
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFix80Cases(): iterable
     {

@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
@@ -63,7 +64,7 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideCamelCaseToUnderscoreCases(): iterable
     {
@@ -145,19 +146,19 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, array{int, string}|string}>
+     * @return iterable<int, array{string, array{int, string}|string}>
      */
     public static function provideCalculateTrailingWhitespaceIndentCases(): iterable
     {
-        yield ['    ', [T_WHITESPACE, "\n\n    "]];
+        yield ['    ', [\T_WHITESPACE, "\n\n    "]];
 
-        yield [' ', [T_WHITESPACE, "\r\n\r\r\r "]];
+        yield [' ', [\T_WHITESPACE, "\r\n\r\r\r "]];
 
-        yield ["\t", [T_WHITESPACE, "\r\n\t"]];
+        yield ["\t", [\T_WHITESPACE, "\r\n\t"]];
 
-        yield ['', [T_WHITESPACE, "\t\n\r"]];
+        yield ['', [\T_WHITESPACE, "\t\n\r"]];
 
-        yield ['', [T_WHITESPACE, "\n"]];
+        yield ['', [\T_WHITESPACE, "\n"]];
 
         yield ['', ''];
     }
@@ -167,7 +168,7 @@ final class UtilsTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The given token must be whitespace, got "T_STRING".');
 
-        $token = new Token([T_STRING, 'foo']);
+        $token = new Token([\T_STRING, 'foo']);
 
         Utils::calculateTrailingWhitespaceIndent($token);
     }
@@ -191,7 +192,7 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @return iterable<array{list<mixed>, list<mixed>, callable, callable}>
+     * @return iterable<int, array{list<mixed>, list<mixed>, callable, callable}>
      */
     public static function provideStableSortCases(): iterable
     {
@@ -219,7 +220,7 @@ final class UtilsTest extends TestCase
         yield [
             ['bar1', 'baz1', 'foo1', 'bar2', 'baz2', 'foo2'],
             ['foo1', 'foo2', 'bar1', 'bar2', 'baz1', 'baz2'],
-            static fn ($element) => preg_replace('/([a-z]+)(\d+)/', '$2$1', $element),
+            static fn ($element) => Preg::replace('/([a-z]+)(\d+)/', '$2$1', $element),
             'strcmp',
         ];
     }
@@ -271,7 +272,7 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1: list<string>, 2?: string}>
+     * @return iterable<int, array{0: string, 1: list<string>, 2?: string}>
      */
     public static function provideNaturalLanguageJoinCases(): iterable
     {
@@ -363,7 +364,7 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, list<string>}>
+     * @return iterable<int, array{string, list<string>}>
      */
     public static function provideNaturalLanguageJoinWithBackticksCases(): iterable
     {
@@ -430,7 +431,7 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, mixed}>
+     * @return iterable<int, array{string, mixed}>
      */
     public static function provideToStringCases(): iterable
     {

@@ -33,7 +33,7 @@ final class AttributeAnalyzerTest extends TestCase
     public function testNotAnAttribute(): void
     {
         $tokens = Tokens::fromCode('<?php class Foo { private $bar; }');
-        foreach ($tokens as $index => $token) {
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             self::assertFalse(AttributeAnalyzer::isAttribute($tokens, $index));
         }
     }
@@ -48,7 +48,7 @@ final class AttributeAnalyzerTest extends TestCase
         $tokens = Tokens::fromCode($code);
 
         foreach ($tokens as $index => $token) {
-            if ($token->equals([T_STRING, 'Foo'])) {
+            if ($token->equals([\T_STRING, 'Foo'])) {
                 if (isset($testedIndex)) {
                     self::fail('Test is run against index of "Foo", multiple occurrences found.');
                 }
@@ -65,7 +65,7 @@ final class AttributeAnalyzerTest extends TestCase
     /**
      * Test case requires to having "Foo" as it will be searched for to test its index.
      *
-     * @return iterable<array{bool, string}>
+     * @return iterable<int, array{bool, string}>
      */
     public static function provideIsAttributeCases(): iterable
     {
@@ -145,7 +145,7 @@ final class AttributeAnalyzerTest extends TestCase
         $actualAnalyses = AttributeAnalyzer::collect($tokens, $startIndex);
 
         foreach ($expectedAnalyses as $expectedAnalysis) {
-            self::assertSame(T_ATTRIBUTE, $tokens[$expectedAnalysis->getOpeningBracketIndex()]->getId());
+            self::assertSame(\T_ATTRIBUTE, $tokens[$expectedAnalysis->getOpeningBracketIndex()]->getId());
             self::assertSame(CT::T_ATTRIBUTE_CLOSE, $tokens[$expectedAnalysis->getClosingBracketIndex()]->getId());
         }
 
@@ -156,7 +156,7 @@ final class AttributeAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1: int, 2: list<AttributeAnalysis>}>
+     * @return iterable<string, array{0: string, 1: int, 2: list<AttributeAnalysis>}>
      */
     public static function provideGetAttributeDeclarationsCases(): iterable
     {
@@ -354,7 +354,7 @@ final class AttributeAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1: int, 2: list<AttributeAnalysis>}>
+     * @return iterable<string, array{0: string, 1: int, 2: list<AttributeAnalysis>}>
      */
     public static function provideGetAttributeDeclarations81Cases(): iterable
     {

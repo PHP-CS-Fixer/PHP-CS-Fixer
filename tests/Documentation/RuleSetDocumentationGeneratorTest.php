@@ -48,7 +48,7 @@ final class RuleSetDocumentationGeneratorTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideGenerateRuleSetsDocumentationCases(): iterable
     {

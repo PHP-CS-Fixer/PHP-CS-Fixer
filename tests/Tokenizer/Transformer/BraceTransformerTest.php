@@ -40,9 +40,9 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
             $source,
             $expectedTokens,
             [
-                T_CURLY_OPEN,
+                \T_CURLY_OPEN,
                 CT::T_CURLY_CLOSE,
-                T_DOLLAR_OPEN_CURLY_BRACES,
+                \T_DOLLAR_OPEN_CURLY_BRACES,
                 CT::T_DOLLAR_CLOSE_CURLY_BRACES,
                 CT::T_DYNAMIC_PROP_BRACE_OPEN,
                 CT::T_DYNAMIC_PROP_BRACE_CLOSE,
@@ -58,12 +58,15 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: _TransformerTestExpectedTokens}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield 'curly open/close I' => [
             '<?php echo "This is {$great}";',
             [
-                5 => T_CURLY_OPEN,
+                5 => \T_CURLY_OPEN,
                 7 => CT::T_CURLY_CLOSE,
             ],
         ];
@@ -71,7 +74,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
         yield 'curly open/close II' => [
             '<?php $a = "a{$b->c()}d";',
             [
-                7 => T_CURLY_OPEN,
+                7 => \T_CURLY_OPEN,
                 13 => CT::T_CURLY_CLOSE,
             ],
         ];
@@ -79,7 +82,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
         yield 'dynamic var brace open/close' => [
             '<?php echo "I\'d like an {${beers::$ale}}\n";',
             [
-                5 => T_CURLY_OPEN,
+                5 => \T_CURLY_OPEN,
                 7 => CT::T_DYNAMIC_VAR_BRACE_OPEN,
                 11 => CT::T_DYNAMIC_VAR_BRACE_CLOSE,
                 12 => CT::T_CURLY_CLOSE,
@@ -89,7 +92,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
         yield 'dollar curly brace open/close' => [
             '<?php echo "This is ${great}";',
             [
-                5 => T_DOLLAR_OPEN_CURLY_BRACES,
+                5 => \T_DOLLAR_OPEN_CURLY_BRACES,
                 7 => CT::T_DOLLAR_CLOSE_CURLY_BRACES,
             ],
         ];
@@ -116,11 +119,11 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
                     echo "I\'d like an {${beers::$ale}}\n";
                 ',
             [
-                5 => T_CURLY_OPEN,
+                5 => \T_CURLY_OPEN,
                 7 => CT::T_CURLY_CLOSE,
-                17 => T_CURLY_OPEN,
+                17 => \T_CURLY_OPEN,
                 23 => CT::T_CURLY_CLOSE,
-                32 => T_CURLY_OPEN,
+                32 => \T_CURLY_OPEN,
                 34 => CT::T_DYNAMIC_VAR_BRACE_OPEN,
                 38 => CT::T_DYNAMIC_VAR_BRACE_CLOSE,
                 39 => CT::T_CURLY_CLOSE,
@@ -135,7 +138,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
             '<?php $object->{"set_{$name}"}(42);',
             [
                 3 => CT::T_DYNAMIC_PROP_BRACE_OPEN,
-                6 => T_CURLY_OPEN,
+                6 => \T_CURLY_OPEN,
                 8 => CT::T_CURLY_CLOSE,
                 10 => CT::T_DYNAMIC_PROP_BRACE_CLOSE,
             ],
@@ -152,13 +155,39 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
         yield 'nested curly open + close' => [
             '<?php echo "{$foo->{"{$bar}"}}";',
             [
-                4 => T_CURLY_OPEN,
+                4 => \T_CURLY_OPEN,
                 7 => CT::T_DYNAMIC_PROP_BRACE_OPEN,
-                9 => T_CURLY_OPEN,
+                9 => \T_CURLY_OPEN,
                 11 => CT::T_CURLY_CLOSE,
                 13 => CT::T_DYNAMIC_PROP_BRACE_CLOSE,
                 14 => CT::T_CURLY_CLOSE,
             ],
+        ];
+
+        yield 'functions "set" and "get" (like property hooks, but not)' => [
+            <<<'PHP'
+                <?php if ($x) {
+                    set();
+                } elseif ($y) {
+                    SET();
+                } else {
+                    get();
+                }
+
+                PHP,
+            [],
+        ];
+
+        yield 'method "get" aliased in trait import' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    use Bar {
+                        get as private otherGet;
+                    }
+                }
+                PHP,
+            [],
         ];
     }
 
@@ -171,28 +200,12 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
      */
     public function testProcess80(string $source, array $expectedTokens = []): void
     {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            [
-                T_CURLY_OPEN,
-                CT::T_CURLY_CLOSE,
-                T_DOLLAR_OPEN_CURLY_BRACES,
-                CT::T_DOLLAR_CLOSE_CURLY_BRACES,
-                CT::T_DYNAMIC_PROP_BRACE_OPEN,
-                CT::T_DYNAMIC_PROP_BRACE_CLOSE,
-                CT::T_DYNAMIC_VAR_BRACE_OPEN,
-                CT::T_DYNAMIC_VAR_BRACE_CLOSE,
-                CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
-                CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
-                CT::T_GROUP_IMPORT_BRACE_OPEN,
-                CT::T_GROUP_IMPORT_BRACE_CLOSE,
-                CT::T_PROPERTY_HOOK_BRACE_OPEN,
-                CT::T_PROPERTY_HOOK_BRACE_CLOSE,
-            ]
-        );
+        $this->testProcess($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<string, array{string, _TransformerTestExpectedTokens}>
+     */
     public static function provideProcess80Cases(): iterable
     {
         yield 'dynamic nullable property brace open/close' => [
@@ -217,9 +230,9 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
             $source,
             $expectedTokens,
             [
-                T_CURLY_OPEN,
+                \T_CURLY_OPEN,
                 CT::T_CURLY_CLOSE,
-                T_DOLLAR_OPEN_CURLY_BRACES,
+                \T_DOLLAR_OPEN_CURLY_BRACES,
                 CT::T_DOLLAR_CLOSE_CURLY_BRACES,
                 CT::T_DYNAMIC_PROP_BRACE_OPEN,
                 CT::T_DYNAMIC_PROP_BRACE_CLOSE,
@@ -236,7 +249,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<array{string, array<int, int>}>
+     * @return iterable<string, array{string, array<int, int>}>
      */
     public static function providePre84ProcessCases(): iterable
     {
@@ -315,9 +328,9 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
             $source,
             $expectedTokens,
             [
-                T_CURLY_OPEN,
+                \T_CURLY_OPEN,
                 CT::T_CURLY_CLOSE,
-                T_DOLLAR_OPEN_CURLY_BRACES,
+                \T_DOLLAR_OPEN_CURLY_BRACES,
                 CT::T_DOLLAR_CLOSE_CURLY_BRACES,
                 CT::T_DYNAMIC_PROP_BRACE_OPEN,
                 CT::T_DYNAMIC_PROP_BRACE_CLOSE,
@@ -334,7 +347,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<array{string, array<int, int>}>
+     * @return iterable<string, array{string, array<int, int>}>
      */
     public static function provideStarting84ProcessCases(): iterable
     {
@@ -495,6 +508,23 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
                 143 => CT::T_PROPERTY_HOOK_BRACE_CLOSE,
             ],
         ];
+
+        yield 'property hooks: casing' => [
+            <<<'PHP'
+                <?php
+                class PropertyHooks
+                {
+                    public string $bar { // << this one
+                        Get => strtolower($this->bar);
+                        SET => strtoupper($value);
+                    } // << this one
+                }
+                PHP,
+            [
+                13 => CT::T_PROPERTY_HOOK_BRACE_OPEN,
+                39 => CT::T_PROPERTY_HOOK_BRACE_CLOSE,
+            ],
+        ];
     }
 
     /**
@@ -560,6 +590,9 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{_TransformerTestExpectedTokens, string}>
+     */
     public static function provideDynamicClassConstantFetchCases(): iterable
     {
         yield 'simple' => [
@@ -659,7 +692,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<array{array<int, int>, string}>
+     * @return iterable<string, array{array<int, int>, string}>
      */
     public static function provideDynamicClassConstantFetchPhp83Cases(): iterable
     {

@@ -104,7 +104,6 @@ The rule is part of the following rule sets:
 
   ``['force' => true]``
 
-
 References
 ----------
 

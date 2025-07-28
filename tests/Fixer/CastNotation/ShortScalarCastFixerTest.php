@@ -34,7 +34,7 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -66,7 +66,7 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideFixPre80Cases(): iterable
     {
@@ -80,13 +80,13 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFix74DeprecatedCases
+     * @dataProvider provideFixDeprecatedCases
      *
      * @group legacy
      *
      * @requires PHP <8.0
      */
-    public function testFix74Deprecated(string $expected, ?string $input = null): void
+    public function testFixDeprecated(string $expected, ?string $input = null): void
     {
         $this->expectDeprecation('The (real) cast is deprecated, use (float) instead');
 
@@ -94,9 +94,9 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     * @return iterable<int, array{0: non-empty-string, 1?: non-empty-string}>
      */
-    public static function provideFix74DeprecatedCases(): iterable
+    public static function provideFixDeprecatedCases(): iterable
     {
         yield from self::createCasesFor('real', 'float');
     }

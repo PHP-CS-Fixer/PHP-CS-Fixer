@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Marcel Behrmann <marcel@behrmann.dev>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\PhpdocReadonlyClassCommentToKeywordFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\PhpdocReadonlyClassCommentToKeywordFixer>
+ *
+ * @author Marcel Behrmann <marcel@behrmann.dev>
  */
 final class PhpdocReadonlyClassCommentToKeywordFixerTest extends AbstractFixerTestCase
 {
@@ -38,7 +38,7 @@ final class PhpdocReadonlyClassCommentToKeywordFixerTest extends AbstractFixerTe
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {

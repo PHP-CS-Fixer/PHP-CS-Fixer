@@ -35,7 +35,7 @@ interface FixerOptionInterface
     public function getAllowedTypes(): ?array;
 
     /**
-     * @return null|list<null|(callable(mixed): bool)|scalar>
+     * @return null|non-empty-list<null|(callable(mixed): bool)|scalar>
      */
     public function getAllowedValues(): ?array;
 

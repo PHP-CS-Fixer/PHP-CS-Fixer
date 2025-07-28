@@ -23,7 +23,7 @@ use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
-class Config implements ConfigInterface, ParallelAwareConfigInterface
+class Config implements ConfigInterface, ParallelAwareConfigInterface, UnsupportedPhpVersionAllowedConfigInterface
 {
     /**
      * @var non-empty-string
@@ -40,7 +40,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
      */
     private ?iterable $finder = null;
 
-    private string $format = 'txt';
+    private string $format;
 
     private bool $hideProgress = false;
 
@@ -71,22 +71,31 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
 
     private bool $usingCache = true;
 
+    private bool $isUnsupportedPhpVersionAllowed = false;
+
     public function __construct(string $name = 'default')
     {
         // @TODO 4.0 cleanup
         if (Utils::isFutureModeEnabled()) {
             $this->name = $name.' (future mode)';
             $this->rules = ['@PER-CS' => true];
+            $this->format = '@auto';
         } else {
             $this->name = $name;
             $this->rules = ['@PSR12' => true];
+            $this->format = 'txt';
         }
 
         // @TODO 4.0 cleanup
-        if (Utils::isFutureModeEnabled() || filter_var(getenv('PHP_CS_FIXER_PARALLEL'), FILTER_VALIDATE_BOOL)) {
+        if (Utils::isFutureModeEnabled() || filter_var(getenv('PHP_CS_FIXER_PARALLEL'), \FILTER_VALIDATE_BOOL)) {
             $this->parallelConfig = ParallelConfigFactory::detect();
         } else {
             $this->parallelConfig = ParallelConfigFactory::sequential();
+        }
+
+        // @TODO 4.0 cleanup
+        if (false !== getenv('PHP_CS_FIXER_IGNORE_ENV')) {
+            $this->isUnsupportedPhpVersionAllowed = filter_var(getenv('PHP_CS_FIXER_IGNORE_ENV'), \FILTER_VALIDATE_BOOL);
         }
     }
 
@@ -161,6 +170,11 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
     public function getUsingCache(): bool
     {
         return $this->usingCache;
+    }
+
+    public function getUnsupportedPhpVersionAllowed(): bool
+    {
+        return $this->isUnsupportedPhpVersionAllowed;
     }
 
     public function registerCustomFixers(iterable $fixers): ConfigInterface
@@ -254,6 +268,13 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
     public function setUsingCache(bool $usingCache): ConfigInterface
     {
         $this->usingCache = $usingCache;
+
+        return $this;
+    }
+
+    public function setUnsupportedPhpVersionAllowed(bool $isUnsupportedPhpVersionAllowed): ConfigInterface
+    {
+        $this->isUnsupportedPhpVersionAllowed = $isUnsupportedPhpVersionAllowed;
 
         return $this;
     }

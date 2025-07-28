@@ -1,12 +1,12 @@
-name: "Install Composer deps"
+name: Install Composer deps
 
 inputs:
   flags:
-    description: 'Composer flags'
+    description: Composer flags
     required: false
 
 runs:
-  using: "composite"
+  using: composite
   steps:
     # Warning!
     # Use $GITHUB_ENV instead of $GITHUB_OUTPUT.

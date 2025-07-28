@@ -19,17 +19,17 @@ namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
  *
  * @internal
  */
-final class TypeAnalysis implements StartEndTokenAwareAnalysis
+final class TypeAnalysis
 {
     /**
      * This list contains soft and hard reserved types that can be used or will be used by PHP at some point.
      *
      * More info:
      *
+     * @var list<string>
+     *
      * @see https://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration.types
      * @see https://php.net/manual/en/reserved.other-reserved-words.php
-     *
-     * @var list<string>
      */
     private const RESERVED_TYPES = [
         'array',

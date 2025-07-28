@@ -49,9 +49,9 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @param null|array<int, Token>                       $expected
-     * @param list<array{0: int, 1?: string}|string|Token> $sequence
-     * @param bool|list<bool>                              $caseSensitive
+     * @param null|array<int, Token>                                 $expected
+     * @param non-empty-list<array{0: int, 1?: string}|string|Token> $sequence
+     * @param bool|list<bool>                                        $caseSensitive
      *
      * @dataProvider provideFindSequenceCases
      */
@@ -76,6 +76,9 @@ final class TokensTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1: null|array<int, Token>, 2: list<array{0: int, 1?: string}|string|Token>, 3?: int, 4?: int, 5?: array<int, bool>|bool}>
+     */
     public static function provideFindSequenceCases(): iterable
     {
         yield [
@@ -91,20 +94,20 @@ final class TokensTest extends TestCase
             '<?php $x = 2;',
             null,
             [
-                [T_OPEN_TAG],
-                [T_VARIABLE, '$y'],
+                [\T_OPEN_TAG],
+                [\T_VARIABLE, '$y'],
             ],
         ];
 
         yield [
             '<?php $x = 3;',
             [
-                0 => new Token([T_OPEN_TAG, '<?php ']),
-                1 => new Token([T_VARIABLE, '$x']),
+                0 => new Token([\T_OPEN_TAG, '<?php ']),
+                1 => new Token([\T_VARIABLE, '$x']),
             ],
             [
-                [T_OPEN_TAG],
-                [T_VARIABLE, '$x'],
+                [\T_OPEN_TAG],
+                [\T_VARIABLE, '$x'],
             ],
         ];
 
@@ -112,12 +115,12 @@ final class TokensTest extends TestCase
             '<?php $x = 4;',
             [
                 3 => new Token('='),
-                5 => new Token([T_LNUMBER, '4']),
+                5 => new Token([\T_LNUMBER, '4']),
                 6 => new Token(';'),
             ],
             [
                 '=',
-                [T_LNUMBER, '4'],
+                [\T_LNUMBER, '4'],
                 ';',
             ],
         ];
@@ -125,12 +128,12 @@ final class TokensTest extends TestCase
         yield [
             '<?php $x = 5;',
             [
-                0 => new Token([T_OPEN_TAG, '<?php ']),
-                1 => new Token([T_VARIABLE, '$x']),
+                0 => new Token([\T_OPEN_TAG, '<?php ']),
+                1 => new Token([\T_VARIABLE, '$x']),
             ],
             [
-                [T_OPEN_TAG],
-                [T_VARIABLE, '$x'],
+                [\T_OPEN_TAG],
+                [\T_VARIABLE, '$x'],
             ],
             0,
         ];
@@ -139,8 +142,8 @@ final class TokensTest extends TestCase
             '<?php $x = 6;',
             null,
             [
-                [T_OPEN_TAG],
-                [T_VARIABLE, '$x'],
+                [\T_OPEN_TAG],
+                [\T_VARIABLE, '$x'],
             ],
             1,
         ];
@@ -149,12 +152,12 @@ final class TokensTest extends TestCase
             '<?php $x = 7;',
             [
                 3 => new Token('='),
-                5 => new Token([T_LNUMBER, '7']),
+                5 => new Token([\T_LNUMBER, '7']),
                 6 => new Token(';'),
             ],
             [
                 '=',
-                [T_LNUMBER, '7'],
+                [\T_LNUMBER, '7'],
                 ';',
             ],
             3,
@@ -166,7 +169,7 @@ final class TokensTest extends TestCase
             null,
             [
                 '=',
-                [T_LNUMBER, '8'],
+                [\T_LNUMBER, '8'],
                 ';',
             ],
             4,
@@ -178,7 +181,7 @@ final class TokensTest extends TestCase
             null,
             [
                 '=',
-                [T_LNUMBER, '9'],
+                [\T_LNUMBER, '9'],
                 ';',
             ],
             3,
@@ -188,12 +191,12 @@ final class TokensTest extends TestCase
         yield [
             '<?php $x = 10;',
             [
-                0 => new Token([T_OPEN_TAG, '<?php ']),
-                1 => new Token([T_VARIABLE, '$x']),
+                0 => new Token([\T_OPEN_TAG, '<?php ']),
+                1 => new Token([\T_VARIABLE, '$x']),
             ],
             [
-                [T_OPEN_TAG],
-                [T_VARIABLE, '$x'],
+                [\T_OPEN_TAG],
+                [\T_VARIABLE, '$x'],
             ],
             0,
             1,
@@ -204,8 +207,8 @@ final class TokensTest extends TestCase
             '<?php $x = 11;',
             null,
             [
-                [T_OPEN_TAG],
-                [T_VARIABLE, '$X'],
+                [\T_OPEN_TAG],
+                [\T_VARIABLE, '$X'],
             ],
             0,
             1,
@@ -216,8 +219,8 @@ final class TokensTest extends TestCase
             '<?php $x = 12;',
             null,
             [
-                [T_OPEN_TAG],
-                [T_VARIABLE, '$X'],
+                [\T_OPEN_TAG],
+                [\T_VARIABLE, '$X'],
             ],
             0,
             1,
@@ -227,12 +230,12 @@ final class TokensTest extends TestCase
         yield [
             '<?php $x = 13;',
             [
-                0 => new Token([T_OPEN_TAG, '<?php ']),
-                1 => new Token([T_VARIABLE, '$x']),
+                0 => new Token([\T_OPEN_TAG, '<?php ']),
+                1 => new Token([\T_VARIABLE, '$x']),
             ],
             [
-                [T_OPEN_TAG],
-                [T_VARIABLE, '$X'],
+                [\T_OPEN_TAG],
+                [\T_VARIABLE, '$X'],
             ],
             0,
             1,
@@ -242,12 +245,12 @@ final class TokensTest extends TestCase
         yield [
             '<?php $x = 14;',
             [
-                0 => new Token([T_OPEN_TAG, '<?php ']),
-                1 => new Token([T_VARIABLE, '$x']),
+                0 => new Token([\T_OPEN_TAG, '<?php ']),
+                1 => new Token([\T_VARIABLE, '$x']),
             ],
             [
-                [T_OPEN_TAG],
-                [T_VARIABLE, '$X'],
+                [\T_OPEN_TAG],
+                [\T_VARIABLE, '$X'],
             ],
             0,
             1,
@@ -257,12 +260,12 @@ final class TokensTest extends TestCase
         yield [
             '<?php $x = 15;',
             [
-                0 => new Token([T_OPEN_TAG, '<?php ']),
-                1 => new Token([T_VARIABLE, '$x']),
+                0 => new Token([\T_OPEN_TAG, '<?php ']),
+                1 => new Token([\T_VARIABLE, '$x']),
             ],
             [
-                [T_OPEN_TAG],
-                [T_VARIABLE, '$X'],
+                [\T_OPEN_TAG],
+                [\T_VARIABLE, '$X'],
             ],
             0,
             1,
@@ -273,8 +276,8 @@ final class TokensTest extends TestCase
             '<?php $x = 16;',
             null,
             [
-                [T_OPEN_TAG],
-                [T_VARIABLE, '$X'],
+                [\T_OPEN_TAG],
+                [\T_VARIABLE, '$X'],
             ],
             0,
             1,
@@ -285,7 +288,7 @@ final class TokensTest extends TestCase
             '<?php $x = 17;',
             null,
             [
-                [T_VARIABLE, '$X'],
+                [\T_VARIABLE, '$X'],
                 '=',
             ],
             0,
@@ -294,7 +297,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @param list<mixed> $sequence sequence of token prototypes
+     * @param non-empty-list<array{0: int, 1?: string}|string|Token> $sequence sequence of token prototypes
      *
      * @dataProvider provideFindSequenceExceptionCases
      */
@@ -308,6 +311,9 @@ final class TokensTest extends TestCase
         $tokens->findSequence($sequence);
     }
 
+    /**
+     * @return iterable<int, array{string, list<mixed>}>
+     */
     public static function provideFindSequenceExceptionCases(): iterable
     {
         $emptyToken = new Token('');
@@ -316,12 +322,12 @@ final class TokensTest extends TestCase
 
         yield [
             'Non-meaningful token at position: "0".',
-            [[T_WHITESPACE, '   ']],
+            [[\T_WHITESPACE, '   ']],
         ];
 
         yield [
             'Non-meaningful token at position: "1".',
-            ['{', [T_COMMENT, '// Foo'], '}'],
+            ['{', [\T_COMMENT, '// Foo'], '}'],
         ];
 
         yield [
@@ -349,11 +355,13 @@ final class TokensTest extends TestCase
             PHP;
 
         $tokens = Tokens::fromCode($source);
-        [$fooIndex, $barIndex] = array_keys($tokens->findGivenKind(T_PUBLIC));
+
+        // @phpstan-ignore-next-line offsetAccess.notFound
+        [$fooIndex, $barIndex] = array_keys($tokens->findGivenKind(\T_PUBLIC));
 
         $tokens->clearRange($fooIndex, $barIndex - 1);
 
-        $newPublicIndexes = array_keys($tokens->findGivenKind(T_PUBLIC));
+        $newPublicIndexes = array_keys($tokens->findGivenKind(\T_PUBLIC));
         self::assertSame($barIndex, reset($newPublicIndexes));
 
         for ($i = $fooIndex; $i < $barIndex; ++$i) {
@@ -371,7 +379,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @return iterable<array{bool, string}>
+     * @return iterable<int, array{bool, string}>
      */
     public static function provideMonolithicPhpDetectionCases(): iterable
     {
@@ -474,17 +482,17 @@ final class TokensTest extends TestCase
 
         $tokens = Tokens::fromCode($code);
 
-        self::assertTrue($tokens->isTokenKindFound(T_CLASS));
-        self::assertTrue($tokens->isTokenKindFound(T_RETURN));
-        self::assertFalse($tokens->isTokenKindFound(T_INTERFACE));
-        self::assertFalse($tokens->isTokenKindFound(T_ARRAY));
+        self::assertTrue($tokens->isTokenKindFound(\T_CLASS));
+        self::assertTrue($tokens->isTokenKindFound(\T_RETURN));
+        self::assertFalse($tokens->isTokenKindFound(\T_INTERFACE));
+        self::assertFalse($tokens->isTokenKindFound(\T_ARRAY));
 
-        self::assertTrue($tokens->isAllTokenKindsFound([T_CLASS, T_RETURN]));
-        self::assertFalse($tokens->isAllTokenKindsFound([T_CLASS, T_INTERFACE]));
+        self::assertTrue($tokens->isAllTokenKindsFound([\T_CLASS, \T_RETURN]));
+        self::assertFalse($tokens->isAllTokenKindsFound([\T_CLASS, \T_INTERFACE]));
 
-        self::assertTrue($tokens->isAnyTokenKindsFound([T_CLASS, T_RETURN]));
-        self::assertTrue($tokens->isAnyTokenKindsFound([T_CLASS, T_INTERFACE]));
-        self::assertFalse($tokens->isAnyTokenKindsFound([T_INTERFACE, T_ARRAY]));
+        self::assertTrue($tokens->isAnyTokenKindsFound([\T_CLASS, \T_RETURN]));
+        self::assertTrue($tokens->isAnyTokenKindsFound([\T_CLASS, \T_INTERFACE]));
+        self::assertFalse($tokens->isAnyTokenKindsFound([\T_INTERFACE, \T_ARRAY]));
     }
 
     public function testFindGivenKind(): void
@@ -506,42 +514,41 @@ final class TokensTest extends TestCase
             PHP;
         $tokens = Tokens::fromCode($source);
 
-        /** @var array<int, Token> $found */
-        $found = $tokens->findGivenKind(T_CLASS);
+        $found = $tokens->findGivenKind(\T_CLASS);
         self::assertCount(1, $found);
         self::assertArrayHasKey(1, $found);
-        self::assertSame(T_CLASS, $found[1]->getId());
+        self::assertSame(\T_CLASS, $found[1]->getId());
 
-        $found = $tokens->findGivenKind([T_CLASS, T_FUNCTION]);
+        $found = $tokens->findGivenKind([\T_CLASS, \T_FUNCTION]);
         self::assertCount(2, $found);
-        self::assertArrayHasKey(T_CLASS, $found);
-        self::assertIsArray($found[T_CLASS]);
-        self::assertCount(1, $found[T_CLASS]);
-        self::assertArrayHasKey(1, $found[T_CLASS]);
-        self::assertSame(T_CLASS, $found[T_CLASS][1]->getId());
+        self::assertArrayHasKey(\T_CLASS, $found);
+        self::assertIsArray($found[\T_CLASS]);
+        self::assertCount(1, $found[\T_CLASS]);
+        self::assertArrayHasKey(1, $found[\T_CLASS]);
+        self::assertSame(\T_CLASS, $found[\T_CLASS][1]->getId());
 
-        self::assertArrayHasKey(T_FUNCTION, $found);
-        self::assertIsArray($found[T_FUNCTION]);
-        self::assertCount(2, $found[T_FUNCTION]);
-        self::assertArrayHasKey(9, $found[T_FUNCTION]);
-        self::assertSame(T_FUNCTION, $found[T_FUNCTION][9]->getId());
-        self::assertArrayHasKey(26, $found[T_FUNCTION]);
-        self::assertSame(T_FUNCTION, $found[T_FUNCTION][26]->getId());
+        self::assertArrayHasKey(\T_FUNCTION, $found);
+        self::assertIsArray($found[\T_FUNCTION]);
+        self::assertCount(2, $found[\T_FUNCTION]);
+        self::assertArrayHasKey(9, $found[\T_FUNCTION]);
+        self::assertSame(\T_FUNCTION, $found[\T_FUNCTION][9]->getId());
+        self::assertArrayHasKey(26, $found[\T_FUNCTION]);
+        self::assertSame(\T_FUNCTION, $found[\T_FUNCTION][26]->getId());
 
         // test offset and limits of the search
-        $found = $tokens->findGivenKind([T_CLASS, T_FUNCTION], 10);
-        self::assertArrayHasKey(T_CLASS, $found);
-        self::assertCount(0, $found[T_CLASS]);
-        self::assertArrayHasKey(T_FUNCTION, $found);
-        self::assertCount(1, $found[T_FUNCTION]);
-        self::assertArrayHasKey(26, $found[T_FUNCTION]);
+        $found = $tokens->findGivenKind([\T_CLASS, \T_FUNCTION], 10);
+        self::assertArrayHasKey(\T_CLASS, $found);
+        self::assertCount(0, $found[\T_CLASS]);
+        self::assertArrayHasKey(\T_FUNCTION, $found);
+        self::assertCount(1, $found[\T_FUNCTION]);
+        self::assertArrayHasKey(26, $found[\T_FUNCTION]);
 
-        $found = $tokens->findGivenKind([T_CLASS, T_FUNCTION], 2, 10);
-        self::assertArrayHasKey(T_CLASS, $found);
-        self::assertCount(0, $found[T_CLASS]);
-        self::assertArrayHasKey(T_FUNCTION, $found);
-        self::assertCount(1, $found[T_FUNCTION]);
-        self::assertArrayHasKey(9, $found[T_FUNCTION]);
+        $found = $tokens->findGivenKind([\T_CLASS, \T_FUNCTION], 2, 10);
+        self::assertArrayHasKey(\T_CLASS, $found);
+        self::assertCount(0, $found[\T_CLASS]);
+        self::assertArrayHasKey(\T_FUNCTION, $found);
+        self::assertCount(1, $found[\T_FUNCTION]);
+        self::assertArrayHasKey(9, $found[\T_FUNCTION]);
     }
 
     /**
@@ -558,6 +565,9 @@ final class TokensTest extends TestCase
         }
     }
 
+    /**
+     * @return iterable<int, array{string, list<int>, list<Token>}>
+     */
     public static function provideClearTokenAndMergeSurroundingWhitespaceCases(): iterable
     {
         $clearToken = new Token('');
@@ -566,10 +576,10 @@ final class TokensTest extends TestCase
             '<?php if($a){}else{}',
             [7, 8, 9],
             [
-                new Token([T_OPEN_TAG, '<?php ']),
-                new Token([T_IF, 'if']),
+                new Token([\T_OPEN_TAG, '<?php ']),
+                new Token([\T_IF, 'if']),
                 new Token('('),
-                new Token([T_VARIABLE, '$a']),
+                new Token([\T_VARIABLE, '$a']),
                 new Token(')'),
                 new Token('{'),
                 new Token('}'),
@@ -584,10 +594,10 @@ final class TokensTest extends TestCase
             [2],
             [
                 // <?php $a /**/;
-                new Token([T_OPEN_TAG, '<?php ']),
-                new Token([T_VARIABLE, '$a']),
+                new Token([\T_OPEN_TAG, '<?php ']),
+                new Token([\T_VARIABLE, '$a']),
                 $clearToken,
-                new Token([T_COMMENT, '/**/']),
+                new Token([\T_COMMENT, '/**/']),
                 new Token(';'),
             ],
         ];
@@ -597,9 +607,9 @@ final class TokensTest extends TestCase
             [3],
             [
                 // <?php ;  ;
-                new Token([T_OPEN_TAG, '<?php ']),
+                new Token([\T_OPEN_TAG, '<?php ']),
                 new Token(';'),
-                new Token([T_WHITESPACE, '  ']),
+                new Token([\T_WHITESPACE, '  ']),
                 $clearToken,
                 $clearToken,
                 new Token(';'),
@@ -611,11 +621,11 @@ final class TokensTest extends TestCase
             [1, 5],
             [
                 // <?php  ;
-                new Token([T_OPEN_TAG, '<?php ']),
-                new Token([T_WHITESPACE, ' ']),
+                new Token([\T_OPEN_TAG, '<?php ']),
+                new Token([\T_WHITESPACE, ' ']),
                 $clearToken,
                 new Token(';'),
-                new Token([T_WHITESPACE, ' ']),
+                new Token([\T_WHITESPACE, ' ']),
                 $clearToken,
             ],
         ];
@@ -625,8 +635,8 @@ final class TokensTest extends TestCase
             [1, 3],
             [
                 // <?php   ;
-                new Token([T_OPEN_TAG, '<?php ']),
-                new Token([T_WHITESPACE, '  ']),
+                new Token([\T_OPEN_TAG, '<?php ']),
+                new Token([\T_WHITESPACE, '  ']),
                 $clearToken,
                 $clearToken,
                 $clearToken,
@@ -639,11 +649,11 @@ final class TokensTest extends TestCase
             [1],
             [
                 // <?php  ; ;
-                new Token([T_OPEN_TAG, '<?php ']),
-                new Token([T_WHITESPACE, ' ']),
+                new Token([\T_OPEN_TAG, '<?php ']),
+                new Token([\T_WHITESPACE, ' ']),
                 $clearToken,
                 new Token(';'),
-                new Token([T_WHITESPACE, ' ']),
+                new Token([\T_WHITESPACE, ' ']),
                 new Token(';'),
             ],
         ];
@@ -682,6 +692,9 @@ final class TokensTest extends TestCase
         self::assertSame($expectedIndex, $tokens->getTokenOfKindSibling($index, $direction, $findTokens, $caseSensitive));
     }
 
+    /**
+     * @return iterable<int, array{null|int, int, int, list<array{int}|string|Token>}>
+     */
     public static function provideTokenOfKindSiblingCases(): iterable
     {
         // find next cases
@@ -690,28 +703,28 @@ final class TokensTest extends TestCase
         ];
 
         yield [
-            14, 1, 0, [[T_RETURN]],
+            14, 1, 0, [[\T_RETURN]],
         ];
 
         yield [
-            32, 1, 14, [[T_RETURN]],
+            32, 1, 14, [[\T_RETURN]],
         ];
 
         yield [
-            6, 1, 0, [[T_RETURN], [T_FUNCTION]],
+            6, 1, 0, [[\T_RETURN], [\T_FUNCTION]],
         ];
 
         // find previous cases
         yield [
-            14, -1, 32, [[T_RETURN], [T_FUNCTION]],
+            14, -1, 32, [[\T_RETURN], [\T_FUNCTION]],
         ];
 
         yield [
-            6, -1, 7, [[T_FUNCTION]],
+            6, -1, 7, [[\T_FUNCTION]],
         ];
 
         yield [
-            null, -1, 6, [[T_FUNCTION]],
+            null, -1, 6, [[\T_FUNCTION]],
         ];
     }
 
@@ -726,7 +739,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, string, int, int}>
+     * @return iterable<int, array{int, string, int, int}>
      */
     public static function provideFindBlockEndCases(): iterable
     {
@@ -770,7 +783,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, string, int, int}>
+     * @return iterable<int, array{int, string, int, int}>
      */
     public static function provideFindBlockEnd80Cases(): iterable
     {
@@ -798,7 +811,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, string, int, int}>
+     * @return iterable<int, array{int, string, int, int}>
      */
     public static function provideFindBlockEnd82Cases(): iterable
     {
@@ -872,7 +885,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @return iterable<array{int, string, int, int}>
+     * @return iterable<int, array{int, string, int, int}>
      */
     public static function provideFindBlockEndPre84Cases(): iterable
     {
@@ -934,7 +947,7 @@ final class TokensTest extends TestCase
         $tokens = Tokens::fromCode($code);
 
         self::assertCount(0, $tokens);
-        self::assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
+        self::assertFalse($tokens->isTokenKindFound(\T_OPEN_TAG));
     }
 
     public function testEmptyTokensMultiple(): void
@@ -944,14 +957,14 @@ final class TokensTest extends TestCase
         $tokens = Tokens::fromCode($code);
         self::assertFalse($tokens->isChanged());
 
-        $tokens->insertAt(0, new Token([T_WHITESPACE, ' ']));
+        $tokens->insertAt(0, new Token([\T_WHITESPACE, ' ']));
         self::assertCount(1, $tokens);
-        self::assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
+        self::assertFalse($tokens->isTokenKindFound(\T_OPEN_TAG));
         self::assertTrue($tokens->isChanged());
 
         $tokens2 = Tokens::fromCode($code);
         self::assertCount(0, $tokens2);
-        self::assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
+        self::assertFalse($tokens->isTokenKindFound(\T_OPEN_TAG));
     }
 
     public function testFromArray(): void
@@ -961,15 +974,15 @@ final class TokensTest extends TestCase
         $tokens1 = Tokens::fromCode($code);
         $tokens2 = Tokens::fromArray($tokens1->toArray());
 
-        self::assertTrue($tokens1->isTokenKindFound(T_OPEN_TAG));
-        self::assertTrue($tokens2->isTokenKindFound(T_OPEN_TAG));
+        self::assertTrue($tokens1->isTokenKindFound(\T_OPEN_TAG));
+        self::assertTrue($tokens2->isTokenKindFound(\T_OPEN_TAG));
         self::assertSame($tokens1->getCodeHash(), $tokens2->getCodeHash());
     }
 
     public function testFromArrayEmpty(): void
     {
         $tokens = Tokens::fromArray([]);
-        self::assertFalse($tokens->isTokenKindFound(T_OPEN_TAG));
+        self::assertFalse($tokens->isTokenKindFound(\T_OPEN_TAG));
     }
 
     /**
@@ -983,7 +996,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @return iterable<array{Token, bool}>
+     * @return iterable<int, array{Token, bool}>
      */
     public static function provideIsEmptyCases(): iterable
     {
@@ -991,7 +1004,7 @@ final class TokensTest extends TestCase
 
         yield [new Token('('), false];
 
-        yield [new Token([T_WHITESPACE, ' ']), false];
+        yield [new Token([\T_WHITESPACE, ' ']), false];
     }
 
     public function testClone(): void
@@ -1001,8 +1014,8 @@ final class TokensTest extends TestCase
 
         $tokensClone = clone $tokens;
 
-        self::assertTrue($tokens->isTokenKindFound(T_OPEN_TAG));
-        self::assertTrue($tokensClone->isTokenKindFound(T_OPEN_TAG));
+        self::assertTrue($tokens->isTokenKindFound(\T_OPEN_TAG));
+        self::assertTrue($tokensClone->isTokenKindFound(\T_OPEN_TAG));
 
         $count = \count($tokens);
         self::assertCount($count, $tokensClone);
@@ -1025,7 +1038,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, string, int, int, string}>
+     * @return iterable<int, array{string, string, int, int, string}>
      */
     public static function provideEnsureWhitespaceAtIndexCases(): iterable
     {
@@ -1169,14 +1182,14 @@ echo $a;',
             }';
 
         $tokens = Tokens::fromCode(\sprintf($template, ''));
-        $commentIndex = $tokens->getNextTokenOfKind(0, [[T_COMMENT]]);
+        $commentIndex = $tokens->getNextTokenOfKind(0, [[\T_COMMENT]]);
 
         $tokens->insertAt(
             $commentIndex,
             [
-                new Token([T_PRIVATE, 'private']),
-                new Token([T_WHITESPACE, ' ']),
-                new Token([T_VARIABLE, '$name']),
+                new Token([\T_PRIVATE, 'private']),
+                new Token([\T_WHITESPACE, ' ']),
+                new Token([\T_VARIABLE, '$name']),
                 new Token(';'),
             ]
         );
@@ -1203,7 +1216,7 @@ echo $a;',
     }
 
     /**
-     * @return iterable<array{0: int, 1: null|string, 2: string, 3?: string}>
+     * @return iterable<int, array{0: int, 1: null|string, 2: string, 3?: string}>
      */
     public static function provideRemoveLeadingWhitespaceCases(): iterable
     {
@@ -1277,7 +1290,7 @@ echo $a;',
     }
 
     /**
-     * @return iterable<array{0: int, 1: null|string, 2: string, 3?: string}>
+     * @return iterable<int, array{0: int, 1: null|string, 2: string, 3?: string}>
      */
     public static function provideRemoveTrailingWhitespaceCases(): iterable
     {
@@ -1367,6 +1380,9 @@ $bar;',
         self::assertSame($expected, Tokens::detectBlockType($tokens[$index]));
     }
 
+    /**
+     * @return iterable<int, array{null|array{type: Tokens::BLOCK_TYPE_*, isStart: bool}, string, int}>
+     */
     public static function provideDetectBlockTypeCases(): iterable
     {
         yield [
@@ -1388,14 +1404,14 @@ $bar;',
     public function testOverrideRangeTokens(): void
     {
         $expected = [
-            new Token([T_OPEN_TAG, '<?php ']),
-            new Token([T_FUNCTION, 'function']),
-            new Token([T_WHITESPACE, ' ']),
-            new Token([T_STRING, 'foo']),
+            new Token([\T_OPEN_TAG, '<?php ']),
+            new Token([\T_FUNCTION, 'function']),
+            new Token([\T_WHITESPACE, ' ']),
+            new Token([\T_STRING, 'foo']),
             new Token('('),
-            new Token([T_ARRAY, 'array']),
-            new Token([T_WHITESPACE, ' ']),
-            new Token([T_VARIABLE, '$bar']),
+            new Token([\T_ARRAY, 'array']),
+            new Token([\T_WHITESPACE, ' ']),
+            new Token([\T_VARIABLE, '$bar']),
             new Token(')'),
             new Token('{'),
             new Token('}'),
@@ -1403,7 +1419,7 @@ $bar;',
         $code = '<?php function foo(array $bar){}';
         $indexStart = 5;
         $indexEnd = 5;
-        $items = Tokens::fromArray([new Token([T_ARRAY, 'array'])]);
+        $items = Tokens::fromArray([new Token([\T_ARRAY, 'array'])]);
 
         $tokens = Tokens::fromCode($code);
         $tokens->overrideRange($indexStart, $indexEnd, $items);
@@ -1427,20 +1443,23 @@ $bar;',
         self::assertTokens(Tokens::fromArray($expected), $tokens);
     }
 
+    /**
+     * @return iterable<array{list<Token>, string, int, int, array<int, Token>}>
+     */
     public static function provideOverrideRangeCases(): iterable
     {
         // typically done by transformers, here we test the reverse
 
         yield 'override different tokens but same content' => [
             [
-                new Token([T_OPEN_TAG, '<?php ']),
-                new Token([T_FUNCTION, 'function']),
-                new Token([T_WHITESPACE, ' ']),
-                new Token([T_STRING, 'foo']),
+                new Token([\T_OPEN_TAG, '<?php ']),
+                new Token([\T_FUNCTION, 'function']),
+                new Token([\T_WHITESPACE, ' ']),
+                new Token([\T_STRING, 'foo']),
                 new Token('('),
-                new Token([T_ARRAY, 'array']),
-                new Token([T_WHITESPACE, ' ']),
-                new Token([T_VARIABLE, '$bar']),
+                new Token([\T_ARRAY, 'array']),
+                new Token([\T_WHITESPACE, ' ']),
+                new Token([\T_VARIABLE, '$bar']),
                 new Token(')'),
                 new Token('{'),
                 new Token('}'),
@@ -1448,74 +1467,74 @@ $bar;',
             '<?php function foo(array $bar){}',
             5,
             5,
-            [new Token([T_ARRAY, 'array'])],
+            [new Token([\T_ARRAY, 'array'])],
         ];
 
         yield 'add more item than in range' => [
             [
-                new Token([T_OPEN_TAG, "<?php\n"]),
-                new Token([T_COMMENT, '// test']),
-                new Token([T_WHITESPACE, "\n"]),
-                new Token([T_COMMENT, '// test']),
-                new Token([T_WHITESPACE, "\n"]),
-                new Token([T_COMMENT, '// test']),
-                new Token([T_WHITESPACE, "\n"]),
+                new Token([\T_OPEN_TAG, "<?php\n"]),
+                new Token([\T_COMMENT, '// test']),
+                new Token([\T_WHITESPACE, "\n"]),
+                new Token([\T_COMMENT, '// test']),
+                new Token([\T_WHITESPACE, "\n"]),
+                new Token([\T_COMMENT, '// test']),
+                new Token([\T_WHITESPACE, "\n"]),
             ],
             "<?php\n#comment",
             1,
             1,
             [
-                new Token([T_COMMENT, '// test']),
-                new Token([T_WHITESPACE, "\n"]),
-                new Token([T_COMMENT, '// test']),
-                new Token([T_WHITESPACE, "\n"]),
-                new Token([T_COMMENT, '// test']),
-                new Token([T_WHITESPACE, "\n"]),
+                new Token([\T_COMMENT, '// test']),
+                new Token([\T_WHITESPACE, "\n"]),
+                new Token([\T_COMMENT, '// test']),
+                new Token([\T_WHITESPACE, "\n"]),
+                new Token([\T_COMMENT, '// test']),
+                new Token([\T_WHITESPACE, "\n"]),
             ],
         ];
 
         yield [
             [
-                new Token([T_OPEN_TAG, "<?php\n"]),
-                new Token([T_COMMENT, '#comment1']),
-                new Token([T_WHITESPACE, "\n"]),
-                new Token([T_COMMENT, '// test 1']),
-                new Token([T_WHITESPACE, "\n"]),
-                new Token([T_COMMENT, '#comment5']),
-                new Token([T_WHITESPACE, "\n"]),
-                new Token([T_COMMENT, '#comment6']),
+                new Token([\T_OPEN_TAG, "<?php\n"]),
+                new Token([\T_COMMENT, '#comment1']),
+                new Token([\T_WHITESPACE, "\n"]),
+                new Token([\T_COMMENT, '// test 1']),
+                new Token([\T_WHITESPACE, "\n"]),
+                new Token([\T_COMMENT, '#comment5']),
+                new Token([\T_WHITESPACE, "\n"]),
+                new Token([\T_COMMENT, '#comment6']),
             ],
             "<?php\n#comment1\n#comment2\n#comment3\n#comment4\n#comment5\n#comment6",
             3,
             7,
             [
-                new Token([T_COMMENT, '// test 1']),
+                new Token([\T_COMMENT, '// test 1']),
             ],
         ];
 
         yield [
             [
-                new Token([T_OPEN_TAG, "<?php\n"]),
-                new Token([T_COMMENT, '// test']),
+                new Token([\T_OPEN_TAG, "<?php\n"]),
+                new Token([\T_COMMENT, '// test']),
             ],
             "<?php\n#comment1\n#comment2\n#comment3\n#comment4\n#comment5\n#comment6\n#comment7",
             1,
             13,
             [
-                new Token([T_COMMENT, '// test']),
+                new Token([\T_COMMENT, '// test']),
             ],
         ];
 
         yield [
             [
-                new Token([T_OPEN_TAG, "<?php\n"]),
-                new Token([T_COMMENT, '// test']),
+                new Token([\T_OPEN_TAG, "<?php\n"]),
+                new Token([\T_COMMENT, '// test']),
             ],
             "<?php\n#comment",
             1,
             1,
             [
-                new Token([T_COMMENT, '// test']),
+                new Token([\T_COMMENT, '// test']),
             ],
         ];
     }
@@ -1527,8 +1546,8 @@ $bar;',
 
         $tokens = Tokens::fromArray(
             [
-                new Token([T_OPEN_TAG, "<?php\n"]),
-                new Token([T_STRING, 'Foo']),
+                new Token([\T_OPEN_TAG, "<?php\n"]),
+                new Token([\T_STRING, 'Foo']),
                 new Token(';'),
             ]
         );
@@ -1549,7 +1568,7 @@ $bar;',
     }
 
     /**
-     * @return iterable<int|string, array{null|int, int, int, string}>
+     * @return iterable<array{null|int, int, int, string}>
      */
     public static function provideGetMeaningfulTokenSiblingCases(): iterable
     {
@@ -1579,7 +1598,7 @@ $bar;',
     /**
      * @dataProvider provideInsertSlicesAtMultiplePlacesCases
      *
-     * @param array<int, Token> $slices
+     * @param list<Token> $slices
      */
     public function testInsertSlicesAtMultiplePlaces(string $expected, array $slices): void
     {
@@ -1598,6 +1617,9 @@ $bar;',
         self::assertTokens(Tokens::fromCode($expected), $tokens);
     }
 
+    /**
+     * @return iterable<string, array{string, array<int, Token>}>
+     */
     public static function provideInsertSlicesAtMultiplePlacesCases(): iterable
     {
         yield 'one slice count' => [
@@ -1607,7 +1629,7 @@ $bar;',
                 $after = /*foo*/get_class($after);
                 $before = /*foo*/get_class($before);
                 EOF,
-            [new Token([T_COMMENT, '/*foo*/'])],
+            [new Token([\T_COMMENT, '/*foo*/'])],
         ];
 
         yield 'two slice count' => [
@@ -1617,7 +1639,7 @@ $bar;',
                 $after = (string) get_class($after);
                 $before = (string) get_class($before);
                 EOF,
-            [new Token([T_STRING_CAST, '(string)']), new Token([T_WHITESPACE, ' '])],
+            [new Token([\T_STRING_CAST, '(string)']), new Token([\T_WHITESPACE, ' '])],
         ];
 
         yield 'three slice count' => [
@@ -1627,7 +1649,7 @@ $bar;',
                 $after = !(bool) get_class($after);
                 $before = !(bool) get_class($before);
                 EOF,
-            [new Token('!'), new Token([T_BOOL_CAST, '(bool)']), new Token([T_WHITESPACE, ' '])],
+            [new Token('!'), new Token([\T_BOOL_CAST, '(bool)']), new Token([\T_WHITESPACE, ' '])],
         ];
     }
 
@@ -1636,13 +1658,13 @@ $bar;',
         $tokens = Tokens::fromCode('<?php echo 1234567890;');
 
         self::assertFalse($tokens->isChanged());
-        self::assertFalse($tokens->isTokenKindFound(T_COMMENT));
+        self::assertFalse($tokens->isTokenKindFound(\T_COMMENT));
         self::assertSame(5, $tokens->getSize());
 
-        $tokens->insertSlices([1 => new Token([T_COMMENT, '/* comment */'])]);
+        $tokens->insertSlices([1 => new Token([\T_COMMENT, '/* comment */'])]);
 
         self::assertTrue($tokens->isChanged());
-        self::assertTrue($tokens->isTokenKindFound(T_COMMENT));
+        self::assertTrue($tokens->isTokenKindFound(\T_COMMENT));
         self::assertSame(6, $tokens->getSize());
     }
 
@@ -1657,13 +1679,16 @@ $bar;',
         self::assertTokens($expected, $tokens);
     }
 
+    /**
+     * @return iterable<string, array{Tokens, Tokens, array<int, list<Token>|Token|Tokens>}>
+     */
     public static function provideInsertSlicesCases(): iterable
     {
         // basic insert of single token at 3 different locations including appending as new token
 
         $template = "<?php\n%s\n/* single token test header */%s\necho 1;\n%s";
         $commentContent = '/* test */';
-        $commentToken = new Token([T_COMMENT, $commentContent]);
+        $commentToken = new Token([\T_COMMENT, $commentContent]);
         $from = Tokens::fromCode(\sprintf($template, '', '', ''));
 
         yield 'single insert @ 1' => [
@@ -1686,7 +1711,7 @@ $bar;',
 
         // basic tests for single token, array of that token and tokens object with that token
 
-        $openTagToken = new Token([T_OPEN_TAG, "<?php\n"]);
+        $openTagToken = new Token([\T_OPEN_TAG, "<?php\n"]);
         $expected = Tokens::fromArray([$openTagToken]);
 
         $slices = [
@@ -1702,25 +1727,25 @@ $bar;',
         // test insert lists of tokens, index out of order
 
         $setOne = [
-            new Token([T_ECHO, 'echo']),
-            new Token([T_WHITESPACE, ' ']),
-            new Token([T_CONSTANT_ENCAPSED_STRING, '"new"']),
+            new Token([\T_ECHO, 'echo']),
+            new Token([\T_WHITESPACE, ' ']),
+            new Token([\T_CONSTANT_ENCAPSED_STRING, '"new"']),
             new Token(';'),
         ];
 
         $setTwo = [
-            new Token([T_WHITESPACE, ' ']),
-            new Token([T_COMMENT, '/* new comment */']),
+            new Token([\T_WHITESPACE, ' ']),
+            new Token([\T_COMMENT, '/* new comment */']),
         ];
 
         $setThree = Tokens::fromArray([
-            new Token([T_VARIABLE, '$new']),
-            new Token([T_WHITESPACE, ' ']),
+            new Token([\T_VARIABLE, '$new']),
+            new Token([\T_WHITESPACE, ' ']),
             new Token('='),
-            new Token([T_WHITESPACE, ' ']),
-            new Token([T_LNUMBER, '8899']),
+            new Token([\T_WHITESPACE, ' ']),
+            new Token([\T_LNUMBER, '8899']),
             new Token(';'),
-            new Token([T_WHITESPACE, "\n"]),
+            new Token([\T_WHITESPACE, "\n"]),
         ]);
 
         $template = "<?php\n%s\n/* header */%s\necho 789;\n%s";
@@ -1744,12 +1769,17 @@ $bar;',
             for ($i = 0; $i < 10; ++$i) {
                 $content = \sprintf('/* new %d|%s */', $j, $i);
 
-                $set['tokens'][] = new Token([T_COMMENT, $content]);
+                $set['tokens'][] = new Token([\T_COMMENT, $content]);
                 $set['content'] .= $content;
             }
 
             $sets[$j] = $set;
         }
+
+        \assert(\array_key_exists(0, $sets));
+        \assert(\array_key_exists(1, $sets));
+        \assert(\array_key_exists(2, $sets));
+        \assert(\array_key_exists(3, $sets));
 
         yield 'overlapping inserts of bunch of comments' => [
             Tokens::fromCode(\sprintf("<?php\n%s/* line #1 */\n%s/* line #2 */\n%s/* line #3 */%s", $sets[0]['content'], $sets[1]['content'], $sets[2]['content'], $sets[3]['content'])),
@@ -1777,12 +1807,12 @@ $bar;',
     public function testBlockEdgeCachingOffsetSetPruneEvenIfTokenEquals(): void
     {
         $tokens = Tokens::fromArray([
-            new Token([T_OPEN_TAG, '<?php ']),
-            new Token([T_VARIABLE, '$a']),
+            new Token([\T_OPEN_TAG, '<?php ']),
+            new Token([\T_VARIABLE, '$a']),
             new Token('='),
-            new Token([T_WHITESPACE, ' ']),
+            new Token([\T_WHITESPACE, ' ']),
             new Token([CT::T_ARRAY_SQUARE_BRACE_OPEN, '[']),
-            new Token([T_WHITESPACE, ' ']),
+            new Token([\T_WHITESPACE, ' ']),
             new Token([CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']']),
             new Token(';'),
         ]);
@@ -1827,7 +1857,7 @@ $bar;',
         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
         self::assertSame(9, $endIndex);
 
-        $tokens->insertSlices([6 => [new Token([T_COMMENT, '/* A */'])], new Token([T_COMMENT, '/* B */'])]);
+        $tokens->insertSlices([6 => [new Token([\T_COMMENT, '/* A */'])], new Token([\T_COMMENT, '/* B */'])]);
 
         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
         self::assertSame(11, $endIndex);
@@ -1874,14 +1904,14 @@ $bar;',
     {
         $tokens = Tokens::fromCode('<?php $x;');
 
-        self::assertTrue($tokens->isTokenKindFound(T_VARIABLE));
+        self::assertTrue($tokens->isTokenKindFound(\T_VARIABLE));
 
         $tokens->offsetUnset(1);
         $tokens->offsetUnset(1); // 2nd unset of the same index should not crash anything
-        self::assertFalse($tokens->isTokenKindFound(T_VARIABLE));
+        self::assertFalse($tokens->isTokenKindFound(\T_VARIABLE));
 
-        $tokens[1] = new Token([T_VARIABLE, '$x']);
-        self::assertTrue($tokens->isTokenKindFound(T_VARIABLE));
+        $tokens[1] = new Token([\T_VARIABLE, '$x']);
+        self::assertTrue($tokens->isTokenKindFound(\T_VARIABLE));
     }
 
     public function testSettingSizeThrowsException(): void
@@ -1908,23 +1938,78 @@ $bar;',
         self::assertSame($size, $tokens->getSize());
     }
 
+    /**
+     * @requires PHP 8.1
+     */
+    public function testToJson(): void
+    {
+        self::assertSame(
+            \sprintf(
+                <<<'JSON'
+                    [
+                        {
+                            "id": %d,
+                            "name": "T_OPEN_TAG",
+                            "content": "<?php ",
+                            "isArray": true,
+                            "changed": false
+                        },
+                        {
+                            "id": %d,
+                            "name": "T_RETURN",
+                            "content": "return",
+                            "isArray": true,
+                            "changed": false
+                        },
+                        {
+                            "id": %d,
+                            "name": "T_WHITESPACE",
+                            "content": " ",
+                            "isArray": true,
+                            "changed": false
+                        },
+                        {
+                            "id": %d,
+                            "name": "T_LNUMBER",
+                            "content": 1,
+                            "isArray": true,
+                            "changed": false
+                        },
+                        {
+                            "id": null,
+                            "name": null,
+                            "content": ";",
+                            "isArray": false,
+                            "changed": false
+                        }
+                    ]
+                    JSON,
+                \T_OPEN_TAG,
+                \T_RETURN,
+                \T_WHITESPACE,
+                \T_LNUMBER,
+            ),
+            Tokens::fromCode('<?php return 1;')->toJson(),
+        );
+    }
+
     private function getBlockEdgeCachingTestTokens(): Tokens
     {
         Tokens::clearCache();
 
         return Tokens::fromArray([
-            new Token([T_OPEN_TAG, '<?php ']),
-            new Token([T_VARIABLE, '$a']),
-            new Token([T_WHITESPACE, ' ']),
+            new Token([\T_OPEN_TAG, '<?php ']),
+            new Token([\T_VARIABLE, '$a']),
+            new Token([\T_WHITESPACE, ' ']),
             new Token('='),
-            new Token([T_WHITESPACE, ' ']),
+            new Token([\T_WHITESPACE, ' ']),
             new Token([CT::T_ARRAY_SQUARE_BRACE_OPEN, '[']),
-            new Token([T_WHITESPACE, ' ']),
-            new Token([T_COMMENT, '/* foo */']),
-            new Token([T_WHITESPACE, ' ']),
+            new Token([\T_WHITESPACE, ' ']),
+            new Token([\T_COMMENT, '/* foo */']),
+            new Token([\T_WHITESPACE, ' ']),
             new Token([CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']']),
             new Token(';'),
-            new Token([T_WHITESPACE, "\n"]),
+            new Token([\T_WHITESPACE, "\n"]),
         ]);
     }
 
@@ -1973,6 +2058,7 @@ $bar;',
         self::assertSame(array_keys($expected), array_keys($input), 'Both arrays need to have same keys.');
 
         foreach ($expected as $index => $expectedToken) {
+            \assert(\array_key_exists($index, $input));
             self::assertTrue(
                 $expectedToken->equals($input[$index]),
                 \sprintf('The token at index %d should be %s, got %s', $index, $expectedToken->toJson(), $input[$index]->toJson())
@@ -1997,7 +2083,7 @@ $bar;',
             $token = $tokens[$index];
             $expectedPrototype = $expectedToken->getPrototype();
 
-            self::assertTrue($token->equals($expectedPrototype), \sprintf('The token at index %d should be %s, got %s', $index, json_encode($expectedPrototype, JSON_THROW_ON_ERROR), $token->toJson()));
+            self::assertTrue($token->equals($expectedPrototype), \sprintf('The token at index %d should be %s, got %s', $index, json_encode($expectedPrototype, \JSON_THROW_ON_ERROR), $token->toJson()));
         }
     }
 }

@@ -3,17 +3,17 @@ name: Docker
 on:
   push:
     branches:
-      - "master"
+      - master
   pull_request:
     paths:
-      - "compose.yaml"
-      - "Dockerfile"
-      - "docker/**"
-      - ".github/workflows/docker.yml"
+      - compose.yaml
+      - Dockerfile
+      - docker/**
+      - .github/workflows/docker.yml
   # Allow running on demand using Github UI
   workflow_dispatch:
   schedule:
-    - cron: "0 5 * * *"
+    - cron: 0 5 * * *
 
 jobs:
   docker-compose-build:
@@ -22,13 +22,14 @@ jobs:
     strategy:
       matrix:
         include:
-          - docker-service: 'php-7.4'
-          - docker-service: 'php-8.0'
-          - docker-service: 'php-8.1'
-          - docker-service: 'php-8.2'
-          - docker-service: 'php-8.3'
-          - docker-service: 'sphinx-lint'
-          - docker-service: 'markdown-lint'
+          - docker-service: php-7.4
+          - docker-service: php-8.0
+          - docker-service: php-8.1
+          - docker-service: php-8.2
+          - docker-service: php-8.3
+          - docker-service: php-8.4
+          - docker-service: sphinx-lint
+          - docker-service: markdown-lint
 
     steps:
       - name: Checkout repository

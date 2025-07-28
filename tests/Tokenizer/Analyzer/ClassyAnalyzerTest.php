@@ -35,6 +35,9 @@ final class ClassyAnalyzerTest extends TestCase
         self::assertClassyInvocation($source, $expected);
     }
 
+    /**
+     * @return iterable<array{string, array<int, bool>}>
+     */
     public static function provideIsClassyInvocationCases(): iterable
     {
         yield [
@@ -187,6 +190,9 @@ final class ClassyAnalyzerTest extends TestCase
         self::assertClassyInvocation($source, $expected);
     }
 
+    /**
+     * @return iterable<int, array{string, array<int, bool>}>
+     */
     public static function provideIsClassyInvocation80Cases(): iterable
     {
         yield [
@@ -247,6 +253,9 @@ final class ClassyAnalyzerTest extends TestCase
         self::assertClassyInvocation($source, $expected);
     }
 
+    /**
+     * @return iterable<string, array{string, array<int, bool>}>
+     */
     public static function provideIsClassyInvocation81Cases(): iterable
     {
         yield 'never' => [

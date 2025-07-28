@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Mark Nielsen
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\VoidReturnFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\VoidReturnFixer>
+ *
+ * @author Mark Nielsen
  */
 final class VoidReturnFixerTest extends AbstractFixerTestCase
 {
@@ -206,7 +206,6 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
                  * @return void
                  */
                 function foo($param): void {}',
-
             '<?php
                 /**
                  * @return void
@@ -222,7 +221,6 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
                      */
                     public function foo($param): void;
                 }',
-
             '<?php
                 interface Test {
                     /**
@@ -240,7 +238,6 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
                      */
                     abstract protected function foo($param): void;
                 }',
-
             '<?php
                 abstract class Test {
                     /**
@@ -299,7 +296,7 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, 1?: ?string}>
+     * @return iterable<int, array{string, 1?: ?string}>
      */
     public static function provideFix80Cases(): iterable
     {

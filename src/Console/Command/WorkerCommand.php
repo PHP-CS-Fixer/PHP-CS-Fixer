@@ -49,8 +49,10 @@ final class WorkerCommand extends Command
     /** @var string Prefix used before JSON-encoded error printed in the worker's process */
     public const ERROR_PREFIX = 'WORKER_ERROR::';
 
+    /** @TODO PHP 8.0 - remove the property */
     protected static $defaultName = 'worker';
 
+    /** @TODO PHP 8.0 - remove the property */
     protected static $defaultDescription = 'Internal command for running fixers in parallel';
 
     private ToolInfoInterface $toolInfo;
@@ -112,9 +114,8 @@ final class WorkerCommand extends Command
             ->then(
                 /** @codeCoverageIgnore */
                 function (ConnectionInterface $connection) use ($loop, $runner, $identifier): void {
-                    $jsonInvalidUtf8Ignore = \defined('JSON_INVALID_UTF8_IGNORE') ? JSON_INVALID_UTF8_IGNORE : 0;
-                    $out = new Encoder($connection, $jsonInvalidUtf8Ignore);
-                    $in = new Decoder($connection, true, 512, $jsonInvalidUtf8Ignore);
+                    $out = new Encoder($connection, \JSON_INVALID_UTF8_IGNORE);
+                    $in = new Decoder($connection, true, 512, \JSON_INVALID_UTF8_IGNORE);
 
                     // [REACT] Initialise connection with the parallelisation operator
                     $out->write(['action' => ParallelAction::WORKER_HELLO, 'identifier' => $identifier]);

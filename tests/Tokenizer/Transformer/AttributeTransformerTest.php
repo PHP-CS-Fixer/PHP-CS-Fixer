@@ -39,6 +39,9 @@ final class AttributeTransformerTest extends AbstractTransformerTestCase
         $this->doTest($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<int, array{string, _TransformerTestExpectedTokens}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield ['<?php class Foo {
@@ -178,6 +181,39 @@ class User
     }
 
     /**
+     * @param _TransformerTestExpectedTokens $expectedTokens
+     *
+     * @dataProvider provideProcess85Cases
+     *
+     * @requires PHP 8.5
+     */
+    public function testProcess85(string $source, array $expectedTokens): void
+    {
+        $this->doTest($source, $expectedTokens);
+    }
+
+    /**
+     * @return iterable<int, array{string, _TransformerTestExpectedTokens}>
+     */
+    public static function provideProcess85Cases(): iterable
+    {
+        yield [
+            <<<'PHP'
+                <?php
+                #[Foo([static function (#[SensitiveParameter] $a) {
+                    return [fn (#[Bar([1, 2])] $b) => [$b[1]]];
+                }])]
+                class Baz {}
+                PHP,
+            [
+                12 => CT::T_ATTRIBUTE_CLOSE,
+                35 => CT::T_ATTRIBUTE_CLOSE,
+                54 => CT::T_ATTRIBUTE_CLOSE,
+            ],
+        ];
+    }
+
+    /**
      * @dataProvider provideNotChangeCases
      */
     public function testNotChange(string $source): void
@@ -192,7 +228,7 @@ class User
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideNotChangeCases(): iterable
     {

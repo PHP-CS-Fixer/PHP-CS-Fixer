@@ -18,14 +18,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @author Bram Gotink <bram@gotink.me>
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\NamespaceNotation\NoLeadingNamespaceWhitespaceFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\NamespaceNotation\NoLeadingNamespaceWhitespaceFixer>
+ *
+ * @author Bram Gotink <bram@gotink.me>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class NoLeadingNamespaceWhitespaceFixerTest extends AbstractFixerTestCase
 {
@@ -38,7 +38,7 @@ final class NoLeadingNamespaceWhitespaceFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -170,7 +170,7 @@ namespace TestComment;',
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideWithWhitespacesConfigCases(): iterable
     {

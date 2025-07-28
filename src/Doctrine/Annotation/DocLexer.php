@@ -45,12 +45,9 @@ final class DocLexer
     public const T_CLOSE_PARENTHESIS = 103;
     public const T_COMMA = 104;
     public const T_EQUALS = 105;
-    public const T_FALSE = 106;
     public const T_NAMESPACE_SEPARATOR = 107;
     public const T_OPEN_CURLY_BRACES = 108;
     public const T_OPEN_PARENTHESIS = 109;
-    public const T_TRUE = 110;
-    public const T_NULL = 111;
     public const T_COLON = 112;
     public const T_MINUS = 113;
 
@@ -157,7 +154,7 @@ final class DocLexer
             'iu'
         );
 
-        $flags = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE;
+        $flags = \PREG_SPLIT_NO_EMPTY | \PREG_SPLIT_DELIM_CAPTURE | \PREG_SPLIT_OFFSET_CAPTURE;
         $matches = Preg::split($this->regex, $input, -1, $flags);
 
         foreach ($matches as $match) {

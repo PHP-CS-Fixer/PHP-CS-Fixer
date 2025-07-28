@@ -83,7 +83,7 @@ Files that were not fixed due to errors reported during %s:
     }
 
     /**
-     * @return iterable<array{Error, int, int, int, string}>
+     * @return iterable<int, array{Error, int, int, int, string}>
      */
     public static function provideErrorOutputCases(): iterable
     {
@@ -148,7 +148,10 @@ Files that were not fixed due to errors reported during %s:
      */
     private function createStreamOutput(int $verbosityLevel): StreamOutput
     {
-        $output = new StreamOutput(fopen('php://memory', 'w', false));
+        $steam = fopen('php://memory', 'w', false);
+        \assert(\is_resource($steam));
+
+        $output = new StreamOutput($steam);
         $output->setDecorated(false);
         $output->setVerbosity($verbosityLevel);
 
@@ -159,11 +162,12 @@ Files that were not fixed due to errors reported during %s:
     {
         rewind($output->getStream());
         $displayed = stream_get_contents($output->getStream());
+        \assert(\is_string($displayed));
 
         // normalize line breaks,
         // as we output using SF `writeln` we are not sure what line ending has been used as it is
         // based on the platform/console/terminal used
-        return str_replace(PHP_EOL, "\n", $displayed);
+        return str_replace(\PHP_EOL, "\n", $displayed);
     }
 
     /**

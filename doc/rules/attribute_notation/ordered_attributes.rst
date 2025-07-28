@@ -80,6 +80,7 @@ With configuration: ``['sort_algorithm' => 'custom', 'order' => ['A\\B\\Qux', 'A
     #[\A\B\Corge(a: 'test')]
    +#[Foo]
     class Sample1 {}
+
 References
 ----------
 

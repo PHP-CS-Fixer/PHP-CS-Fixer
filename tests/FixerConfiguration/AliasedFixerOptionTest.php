@@ -38,7 +38,7 @@ final class AliasedFixerOptionTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideGetNameCases(): iterable
     {
@@ -58,7 +58,7 @@ final class AliasedFixerOptionTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideGetDescriptionCases(): iterable
     {
@@ -76,7 +76,7 @@ final class AliasedFixerOptionTest extends TestCase
     }
 
     /**
-     * @return iterable<array{bool, AliasedFixerOption}>
+     * @return iterable<int, array{bool, AliasedFixerOption}>
      */
     public static function provideHasDefaultCases(): iterable
     {
@@ -102,7 +102,7 @@ final class AliasedFixerOptionTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideGetDefaultCases(): iterable
     {
@@ -132,6 +132,9 @@ final class AliasedFixerOptionTest extends TestCase
         self::assertSame($allowedTypes, $option->getAllowedTypes());
     }
 
+    /**
+     * @return iterable<int, array{null|list<string>}>
+     */
     public static function provideGetAllowedTypesCases(): iterable
     {
         yield [null];
@@ -142,7 +145,7 @@ final class AliasedFixerOptionTest extends TestCase
     }
 
     /**
-     * @param null|list<null|(callable(mixed): bool)|scalar> $allowedValues
+     * @param null|non-empty-list<null|(callable(mixed): bool)|scalar> $allowedValues
      *
      * @dataProvider provideGetAllowedValuesCases
      */
@@ -153,6 +156,9 @@ final class AliasedFixerOptionTest extends TestCase
         self::assertSame($allowedValues, $option->getAllowedValues());
     }
 
+    /**
+     * @return iterable<int, array{null|non-empty-list<null|(callable(mixed): bool)|scalar>}>
+     */
     public static function provideGetAllowedValuesCases(): iterable
     {
         yield [null];
@@ -192,20 +198,12 @@ final class AliasedFixerOptionTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideGetAliasCases(): iterable
     {
         yield ['bar'];
 
         yield ['baz'];
-    }
-
-    public function testRequiredWithDefaultValue(): void
-    {
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Required options cannot have a default value.');
-
-        new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, false), 'baz');
     }
 }

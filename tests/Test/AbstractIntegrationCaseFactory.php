@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Test;
 
+use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSet;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -27,7 +28,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     public function create(SplFileInfo $file): IntegrationCase
     {
         try {
-            if (!preg_match(
+            if (!Preg::match(
                 '/^
                             --TEST--           \r?\n(?<title>          .*?)
                        \s   --RULESET--        \r?\n(?<ruleset>        .*?)
@@ -80,6 +81,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
      */
     protected function determineConfig(SplFileInfo $file, ?string $config): array
     {
+        /** @var array{indent: non-empty-string, lineEnding: non-empty-string} $parsed */
         $parsed = $this->parseJson($config, [
             'indent' => '    ',
             'lineEnding' => "\n",
@@ -109,9 +111,10 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
      */
     protected function determineRequirements(SplFileInfo $file, ?string $config): array
     {
+        /** @var array{php: int, "php<": int, os: list<string>} $parsed */
         $parsed = $this->parseJson($config, [
             'php' => \PHP_VERSION_ID,
-            'php<' => PHP_INT_MAX,
+            'php<' => \PHP_INT_MAX,
             'os' => ['Linux', 'Darwin', 'Windows'],
         ]);
 
@@ -162,6 +165,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
      */
     protected function determineSettings(SplFileInfo $file, ?string $config): array
     {
+        /** @var array{checkPriority: bool, deprecations: list<string>} $parsed */
         $parsed = $this->parseJson($config, [
             'checkPriority' => true,
             'deprecations' => [],
@@ -235,7 +239,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
         if ((null === $encoded || '' === $encoded) && null !== $template) {
             $decoded = [];
         } else {
-            $decoded = json_decode($encoded, true, 512, JSON_THROW_ON_ERROR);
+            $decoded = json_decode($encoded, true, 512, \JSON_THROW_ON_ERROR);
         }
 
         if (null !== $template) {

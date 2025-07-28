@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Filippo Tessarotto <zoeslam@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\ProtectedToPrivateFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\ProtectedToPrivateFixer>
+ *
+ * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
 final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
 {
@@ -36,7 +36,7 @@ final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -165,11 +165,11 @@ final class Foo
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<string, array{0: string, 1?: string}>
      */
     public static function provideFix80Cases(): iterable
     {
-        yield [
+        yield 'type union' => [
             '<?php
 final class Foo2 {
     private int|float $a;
@@ -180,6 +180,25 @@ final class Foo2 {
     protected int|float $a;
 }
 ',
+        ];
+
+        yield 'promoted properties' => [
+            <<<'PHP'
+                <?php final class Foo {
+                    public function __construct(
+                        private null|Bar $x,
+                        private ?Bar $u,
+                    ) {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php final class Foo {
+                    public function __construct(
+                        protected null|Bar $x,
+                        protected ?Bar $u,
+                    ) {}
+                }
+                PHP,
         ];
     }
 
@@ -194,7 +213,7 @@ final class Foo2 {
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFix81Cases(): iterable
     {
@@ -341,6 +360,48 @@ echo DocumentStats::DRAFT->getStatusName();
             '<?php
             readonly final class Foo {
                 protected function noop(): void{}
+            }',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP >= 8.4
+     */
+    public function testFix84(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield 'asymmetric visibility with only set visibility' => [
+            '<?php
+            final class Foo {
+                private(set) int $a;
+            }',
+            '<?php
+            final class Foo {
+                protected(set) int $a;
+            }',
+        ];
+
+        yield 'asymmetric visibility with both visibilities' => [
+            '<?php
+            final class Foo {
+                public private(set) int $a;
+                private private(set) int $b;
+                private private(set) int $c;
+            }',
+            '<?php
+            final class Foo {
+                public protected(set) int $a;
+                protected protected(set) int $b;
+                protected private(set) int $c;
             }',
         ];
     }

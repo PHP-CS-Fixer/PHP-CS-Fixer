@@ -52,6 +52,9 @@ final class CommentsAnalyzerTest extends TestCase
         self::assertFalse($analyzer->isHeaderComment($tokens, $index));
     }
 
+    /**
+     * @return iterable<string, array{string, int, list<int>}>
+     */
     public static function provideCommentsCases(): iterable
     {
         yield 'discover all 4 comments for the 1st comment with slash' => [
@@ -174,7 +177,7 @@ $bar;',
     }
 
     /**
-     * @return iterable<array{string, int}>
+     * @return iterable<int, array{string, int}>
      */
     public static function provideHeaderCommentCases(): iterable
     {
@@ -201,7 +204,7 @@ $bar;',
     }
 
     /**
-     * @return iterable<array{string, int}>
+     * @return iterable<int, array{string, int}>
      */
     public static function provideNotHeaderCommentCases(): iterable
     {
@@ -234,14 +237,14 @@ $bar;',
     public function testPhpdocCandidate(string $code): void
     {
         $tokens = Tokens::fromCode($code);
-        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
+        $index = $tokens->getNextTokenOfKind(0, [[\T_COMMENT], [\T_DOC_COMMENT]]);
         $analyzer = new CommentsAnalyzer();
 
         self::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function providePhpdocCandidateCases(): iterable
     {
@@ -349,19 +352,41 @@ $bar;',
     }
 
     /**
+     * @dataProvider providePhpdocCandidate84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testPhpdocCandidate84(string $code): void
+    {
+        $this->testPhpdocCandidate($code);
+    }
+
+    /**
+     * @return iterable<int, array{string}>
+     */
+    public static function providePhpdocCandidate84Cases(): iterable
+    {
+        yield ['<?php class Foo { /* comment */ public(set) int $i; }'];
+
+        yield ['<?php class Foo { /* comment */ protected(set) int $i; }'];
+
+        yield ['<?php class Foo { /* comment */ private(set) int $i; }'];
+    }
+
+    /**
      * @dataProvider provideNotPhpdocCandidateCases
      */
     public function testNotPhpdocCandidate(string $code): void
     {
         $tokens = Tokens::fromCode($code);
-        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
+        $index = $tokens->getNextTokenOfKind(0, [[\T_COMMENT], [\T_DOC_COMMENT]]);
         $analyzer = new CommentsAnalyzer();
 
         self::assertFalse($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideNotPhpdocCandidateCases(): iterable
     {
@@ -507,7 +532,7 @@ enum Foo: int {
     public function testReturnStatement(string $code, bool $expected): void
     {
         $tokens = Tokens::fromCode($code);
-        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
+        $index = $tokens->getNextTokenOfKind(0, [[\T_COMMENT], [\T_DOC_COMMENT]]);
         $analyzer = new CommentsAnalyzer();
 
         self::assertSame($expected, $analyzer->isBeforeReturn($tokens, $index));

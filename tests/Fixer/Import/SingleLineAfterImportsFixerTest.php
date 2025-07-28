@@ -18,13 +18,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @author Ceeram <ceeram@cakephp.org>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Import\SingleLineAfterImportsFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Import\SingleLineAfterImportsFixer>
+ *
+ * @author Ceeram <ceeram@cakephp.org>
  */
 final class SingleLineAfterImportsFixerTest extends AbstractFixerTestCase
 {
@@ -37,7 +37,7 @@ final class SingleLineAfterImportsFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -520,7 +520,7 @@ use some\a\ClassA; use function some\a\fn_a; use const some\c;
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideWithWhitespacesConfigCases(): iterable
     {

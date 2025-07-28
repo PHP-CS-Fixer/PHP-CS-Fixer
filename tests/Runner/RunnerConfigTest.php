@@ -43,7 +43,7 @@ final class RunnerConfigTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: bool, 1: bool, 2: ParallelConfig, 3?: null|string}>
+     * @return iterable<string, array{0: bool, 1: bool, 2: ParallelConfig, 3?: null|string}>
      */
     public static function provideGettersReturnCorrectDataCases(): iterable
     {

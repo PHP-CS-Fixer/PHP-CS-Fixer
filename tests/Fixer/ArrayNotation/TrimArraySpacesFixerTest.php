@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\ArrayNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Jared Henderson <jared@netrivet.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ArrayNotation\TrimArraySpacesFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ArrayNotation\TrimArraySpacesFixer>
+ *
+ * @author Jared Henderson <jared@netrivet.com>
  */
 final class TrimArraySpacesFixerTest extends AbstractFixerTestCase
 {
@@ -36,7 +36,7 @@ final class TrimArraySpacesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {

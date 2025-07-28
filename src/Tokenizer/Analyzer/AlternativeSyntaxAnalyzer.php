@@ -24,13 +24,13 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class AlternativeSyntaxAnalyzer
 {
     private const ALTERNATIVE_SYNTAX_BLOCK_EDGES = [
-        T_IF => [T_ENDIF, T_ELSE, T_ELSEIF],
-        T_ELSE => [T_ENDIF],
-        T_ELSEIF => [T_ENDIF, T_ELSE, T_ELSEIF],
-        T_FOR => [T_ENDFOR],
-        T_FOREACH => [T_ENDFOREACH],
-        T_WHILE => [T_ENDWHILE],
-        T_SWITCH => [T_ENDSWITCH],
+        \T_IF => [\T_ENDIF, \T_ELSE, \T_ELSEIF],
+        \T_ELSE => [\T_ENDIF],
+        \T_ELSEIF => [\T_ENDIF, \T_ELSE, \T_ELSEIF],
+        \T_FOR => [\T_ENDFOR],
+        \T_FOREACH => [\T_ENDFOREACH],
+        \T_WHILE => [\T_ENDWHILE],
+        \T_SWITCH => [\T_ENDSWITCH],
     ];
 
     public function belongsToAlternativeSyntax(Tokens $tokens, int $index): bool
@@ -41,7 +41,7 @@ final class AlternativeSyntaxAnalyzer
 
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-        if ($tokens[$prevIndex]->isGivenKind(T_ELSE)) {
+        if ($tokens[$prevIndex]->isGivenKind(\T_ELSE)) {
             return true;
         }
 
@@ -53,13 +53,13 @@ final class AlternativeSyntaxAnalyzer
         $beforeOpenParenthesisIndex = $tokens->getPrevMeaningfulToken($openParenthesisIndex);
 
         return $tokens[$beforeOpenParenthesisIndex]->isGivenKind([
-            T_DECLARE,
-            T_ELSEIF,
-            T_FOR,
-            T_FOREACH,
-            T_IF,
-            T_SWITCH,
-            T_WHILE,
+            \T_DECLARE,
+            \T_ELSEIF,
+            \T_FOR,
+            \T_FOREACH,
+            \T_IF,
+            \T_SWITCH,
+            \T_WHILE,
         ]);
     }
 

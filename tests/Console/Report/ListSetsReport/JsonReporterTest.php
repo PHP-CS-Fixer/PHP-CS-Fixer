@@ -50,7 +50,7 @@ final class JsonReporterTest extends AbstractReporterTestCase
         return '{
     "sets": {
         "@PhpCsFixer": {
-            "description": "Rule set as used by the PHP-CS-Fixer development team, highly opinionated.",
+            "description": "Rule set as used by the PHP CS Fixer development team, highly opinionated.",
             "isRisky": false,
             "name": "@PhpCsFixer"
         },

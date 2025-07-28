@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Varga Bence <vbence@czentral.org>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\NoSpacesAfterFunctionNameFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\NoSpacesAfterFunctionNameFixer>
+ *
+ * @author Varga Bence <vbence@czentral.org>
  */
 final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
 {
@@ -36,7 +36,7 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -260,7 +260,7 @@ $$e(2);
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFix81Cases(): iterable
     {

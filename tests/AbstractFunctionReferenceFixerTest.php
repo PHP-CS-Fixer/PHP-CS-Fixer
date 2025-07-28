@@ -57,6 +57,9 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
         self::assertFalse($tokens->isChanged());
     }
 
+    /**
+     * @return iterable<string, array{0: null|list<int>, 1: string, 2: string, 3?: int}>
+     */
     public static function provideAbstractFunctionReferenceFixerCases(): iterable
     {
         yield 'simple case I' => [

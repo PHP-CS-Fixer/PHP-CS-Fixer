@@ -92,7 +92,6 @@ The rule is part of the following rule sets:
 
   ``['target' => '7.5']``
 
-
 References
 ----------
 

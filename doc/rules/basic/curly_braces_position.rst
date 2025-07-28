@@ -226,6 +226,7 @@ With configuration: ``['allow_single_line_anonymous_functions' => true]``.
    +$result = true;
    +    return $result;
    +};
+
 References
 ----------
 

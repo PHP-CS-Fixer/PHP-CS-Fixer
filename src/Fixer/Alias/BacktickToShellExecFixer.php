@@ -107,7 +107,7 @@ final class BacktickToShellExecFixer extends AbstractFixer
         $count = \count($backtickTokens);
 
         $newTokens = [
-            new Token([T_STRING, 'shell_exec']),
+            new Token([\T_STRING, 'shell_exec']),
             new Token('('),
         ];
 
@@ -116,7 +116,7 @@ final class BacktickToShellExecFixer extends AbstractFixer
         }
 
         foreach ($backtickTokens as $token) {
-            if (!$token->isGivenKind(T_ENCAPSED_AND_WHITESPACE)) {
+            if (!$token->isGivenKind(\T_ENCAPSED_AND_WHITESPACE)) {
                 $newTokens[] = $token;
 
                 continue;
@@ -128,11 +128,11 @@ final class BacktickToShellExecFixer extends AbstractFixer
                 return;
             }
 
-            $kind = T_ENCAPSED_AND_WHITESPACE;
+            $kind = \T_ENCAPSED_AND_WHITESPACE;
 
             if (1 === $count) {
                 $content = '"'.$content.'"';
-                $kind = T_CONSTANT_ENCAPSED_STRING;
+                $kind = \T_CONSTANT_ENCAPSED_STRING;
             }
 
             $newTokens[] = new Token([$kind, $content]);

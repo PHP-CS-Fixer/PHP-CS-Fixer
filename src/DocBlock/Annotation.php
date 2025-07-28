@@ -32,11 +32,18 @@ final class Annotation
      * @var list<string>
      */
     private const TAGS = [
+        'extends',
+        'implements',
         'method',
         'param',
+        'param-out',
+        'phpstan-type',
+        'phpstan-import-type',
         'property',
         'property-read',
         'property-write',
+        'psalm-type',
+        'psalm-import-type',
         'return',
         'throws',
         'type',
@@ -46,7 +53,7 @@ final class Annotation
     /**
      * The lines that make up the annotation.
      *
-     * @var array<int, Line>
+     * @var non-empty-list<Line>
      */
     private array $lines;
 
@@ -87,7 +94,7 @@ final class Annotation
     /**
      * Create a new line instance.
      *
-     * @param array<int, Line>           $lines
+     * @param non-empty-array<int, Line> $lines
      * @param null|NamespaceAnalysis     $namespace
      * @param list<NamespaceUseAnalysis> $namespaceUses
      */
@@ -173,6 +180,8 @@ final class Annotation
         );
 
         if (Preg::match($regex, $this->lines[0]->getContent(), $matches)) {
+            \assert(isset($matches['variable']));
+
             return $matches['variable'];
         }
 
@@ -297,15 +306,14 @@ final class Annotation
                 throw new \RuntimeException('This tag does not support types.');
             }
 
-            $matchingResult = Preg::match(
-                '{^(?:\h*\*|/\*\*)[\h*]*@'.$name.'\h+'.TypeExpression::REGEX_TYPES.'(?:(?:[*\h\v]|\&?[\.\$]).*)?\r?$}is',
+            if (Preg::match(
+                '{^(?:\h*\*|/\*\*)[\h*]*@'.$name.'\h+'.TypeExpression::REGEX_TYPES.'(?:(?:[*\h\v]|\&?[\.\$\s]).*)?\r?$}is',
                 $this->lines[0]->getContent(),
                 $matches
-            );
-
-            $this->typesContent = $matchingResult
-                ? $matches['types']
-                : null;
+            )) {
+                \assert(isset($matches['types']));
+                $this->typesContent = $matches['types'];
+            }
         }
 
         return $this->typesContent;

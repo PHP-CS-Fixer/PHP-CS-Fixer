@@ -37,7 +37,7 @@ final class ShortDescriptionTest extends TestCase
     }
 
     /**
-     * @return iterable<array{null|int, string}>
+     * @return iterable<int, array{null|int, string}>
      */
     public static function provideGetEndCases(): iterable
     {

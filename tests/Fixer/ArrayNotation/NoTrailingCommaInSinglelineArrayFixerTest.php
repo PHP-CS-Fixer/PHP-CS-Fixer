@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\ArrayNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Sebastiaan Stok <s.stok@rollerscapes.net>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ArrayNotation\NoTrailingCommaInSinglelineArrayFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ArrayNotation\NoTrailingCommaInSinglelineArrayFixer>
+ *
+ * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
 final class NoTrailingCommaInSinglelineArrayFixerTest extends AbstractFixerTestCase
 {
@@ -36,7 +36,7 @@ final class NoTrailingCommaInSinglelineArrayFixerTest extends AbstractFixerTestC
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {

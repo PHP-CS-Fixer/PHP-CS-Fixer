@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Operator;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Farhad Safarov <farhad.safarov@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Operator\ObjectOperatorWithoutWhitespaceFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\ObjectOperatorWithoutWhitespaceFixer>
+ *
+ * @author Farhad Safarov <farhad.safarov@gmail.com>
  */
 final class ObjectOperatorWithoutWhitespaceFixerTest extends AbstractFixerTestCase
 {
@@ -36,7 +36,7 @@ final class ObjectOperatorWithoutWhitespaceFixerTest extends AbstractFixerTestCa
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -100,7 +100,7 @@ final class ObjectOperatorWithoutWhitespaceFixerTest extends AbstractFixerTestCa
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFix80Cases(): iterable
     {

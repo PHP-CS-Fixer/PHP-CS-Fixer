@@ -17,19 +17,30 @@ namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Phpdoc\NoBlankLinesAfterPhpdocFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\NoBlankLinesAfterPhpdocFixer>
+ *
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  */
 final class NoBlankLinesAfterPhpdocFixerTest extends AbstractFixerTestCase
 {
-    public function testSimpleExampleIsNotChanged(): void
+    /**
+     * @dataProvider provideFixCases
+     */
+    public function testFix(string $expected, ?string $input = null): void
     {
-        $input = <<<'EOF'
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFixCases(): iterable
+    {
+        yield 'simple example is not changed' => [<<<'EOF'
             <?php
 
             /**
@@ -46,14 +57,9 @@ final class NoBlankLinesAfterPhpdocFixerTest extends AbstractFixerTestCase
                 }
             }
 
-            EOF;
+            EOF];
 
-        $this->doTest($input);
-    }
-
-    public function testComplexExampleIsNotChanged(): void
-    {
-        $input = <<<'EOF'
+        yield 'complex example is not changed' => [<<<'EOF'
             <?php
             /**
              * This is the hello function.
@@ -111,14 +117,9 @@ final class NoBlankLinesAfterPhpdocFixerTest extends AbstractFixerTestCase
                 public function silly() {}
             }
 
-            EOF;
+            EOF];
 
-        $this->doTest($input);
-    }
-
-    public function testCommentsAreNotChanged(): void
-    {
-        $input = <<<'EOF'
+        yield 'comments are not changed' => [<<<'EOF'
             <?php
 
             /*
@@ -129,53 +130,27 @@ final class NoBlankLinesAfterPhpdocFixerTest extends AbstractFixerTestCase
 
             namespace Foo\Bar;
 
-            EOF;
+            EOF];
 
-        $this->doTest($input);
-    }
-
-    public function testLineBeforeDeclareIsNotRemoved(): void
-    {
-        $expected = <<<'EOF'
+        yield 'line before declare is not removed' => [<<<'EOF'
             <?php
             /**
              * This is some license header.
              */
 
             declare(strict_types=1);
-            EOF;
+            EOF];
 
-        $this->doTest($expected);
-    }
-
-    public function testLineBeforeUseStatementIsNotRemoved(): void
-    {
-        $expected = <<<'EOF'
+        yield 'line before use statement is not removed' => [<<<'EOF'
             <?php
             /**
              * This is some license header.
              */
 
             use Foo\Bar;
-            EOF;
+            EOF];
 
-        $this->doTest($expected);
-    }
-
-    /**
-     * @dataProvider provideLineBeforeIncludeOrRequireIsNotRemovedCases
-     */
-    public function testLineBeforeIncludeOrRequireIsNotRemoved(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<array{string}>
-     */
-    public static function provideLineBeforeIncludeOrRequireIsNotRemovedCases(): iterable
-    {
-        yield [
+        yield 'line before include is not removed' => [
             <<<'EOF'
                 <?php
                 /**
@@ -186,7 +161,7 @@ final class NoBlankLinesAfterPhpdocFixerTest extends AbstractFixerTestCase
                 EOF,
         ];
 
-        yield [
+        yield 'line before include_once is not removed' => [
             <<<'EOF'
                 <?php
                 /**
@@ -197,7 +172,7 @@ final class NoBlankLinesAfterPhpdocFixerTest extends AbstractFixerTestCase
                 EOF,
         ];
 
-        yield [
+        yield 'line before require is not removed' => [
             <<<'EOF'
                 <?php
                 /**
@@ -208,7 +183,7 @@ final class NoBlankLinesAfterPhpdocFixerTest extends AbstractFixerTestCase
                 EOF,
         ];
 
-        yield [
+        yield 'line before require_once is not removed' => [
             <<<'EOF'
                 <?php
                 /**
@@ -218,11 +193,8 @@ final class NoBlankLinesAfterPhpdocFixerTest extends AbstractFixerTestCase
                 require_once 'vendor/autoload.php';
                 EOF,
         ];
-    }
 
-    public function testLineWithSpacesIsRemovedWhenNextTokenIsIndented(): void
-    {
-        $this->doTest(
+        yield 'line with spaces is removed When next token is indented' => [
             '<?php
                 /**
                  * PHPDoc with a line with space
@@ -233,13 +205,10 @@ final class NoBlankLinesAfterPhpdocFixerTest extends AbstractFixerTestCase
                  * PHPDoc with a line with space
                  */
                 '.'
-                class Foo {}'
-        );
-    }
+                class Foo {}',
+        ];
 
-    public function testLineWithSpacesIsRemovedWhenNextTokenIsNotIndented(): void
-    {
-        $this->doTest(
+        yield 'line With spaces is removed when next token is not indented' => [
             '<?php
     /**
      * PHPDoc with a line with space
@@ -250,108 +219,93 @@ class Foo {}',
      * PHPDoc with a line with space
      */
     '.'
-class Foo {}'
-        );
-    }
+class Foo {}',
+        ];
 
-    public function testFixesSimpleClass(): void
-    {
-        $expected = <<<'EOF'
-            <?php
-
-            /**
-             * This is the bar class.
-             */
-            class Bar {}
-
-            EOF;
-
-        $input = <<<'EOF'
-            <?php
-
-            /**
-             * This is the bar class.
-             */
-
-
-            class Bar {}
-
-            EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testFixesIndentedClass(): void
-    {
-        $expected = <<<'EOF'
-            <?php
+        yield 'simple class' => [
+            <<<'EOF'
+                <?php
 
                 /**
-                 *
+                 * This is the bar class.
                  */
-                class Foo {
-                    private $a;
-                }
+                class Bar {}
 
-            EOF;
-
-        $input = <<<'EOF'
-            <?php
+                EOF,
+            <<<'EOF'
+                <?php
 
                 /**
-                 *
-                 */
-
-                class Foo {
-                    private $a;
-                }
-
-            EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testFixesOthers(): void
-    {
-        $expected = <<<'EOF'
-            <?php
-
-                /**
-                 * Constant!
-                 */
-                const test = 'constant';
-
-                /**
-                 * Foo!
-                 */
-                $foo = 123;
-
-            EOF;
-
-        $input = <<<'EOF'
-            <?php
-
-                /**
-                 * Constant!
+                 * This is the bar class.
                  */
 
 
-                const test = 'constant';
+                class Bar {}
 
-                /**
-                 * Foo!
-                 */
+                EOF,
+        ];
 
-                $foo = 123;
+        yield 'indented class' => [
+            <<<'EOF'
+                <?php
 
-            EOF;
+                    /**
+                     *
+                     */
+                    class Foo {
+                        private $a;
+                    }
 
-        $this->doTest($expected, $input);
-    }
+                EOF,
+            <<<'EOF'
+                <?php
 
-    public function testWhitespaceInDocBlockAboveNamespaceIsNotTouched(): void
-    {
-        $expected = <<<'EOF'
+                    /**
+                     *
+                     */
+
+                    class Foo {
+                        private $a;
+                    }
+
+                EOF,
+        ];
+
+        yield 'others' => [
+            <<<'EOF'
+                <?php
+
+                    /**
+                     * Constant!
+                     */
+                    const test = 'constant';
+
+                    /**
+                     * Foo!
+                     */
+                    $foo = 123;
+
+                EOF,
+            <<<'EOF'
+                <?php
+
+                    /**
+                     * Constant!
+                     */
+
+
+                    const test = 'constant';
+
+                    /**
+                     * Foo!
+                     */
+
+                    $foo = 123;
+
+                EOF,
+        ];
+
+        yield 'whitespace in docblock above namespace is not touched' => [<<<'EOF'
             <?php
 
             /**
@@ -360,36 +314,14 @@ class Foo {}'
 
             namespace Foo\Bar\Baz;
 
-            EOF;
+            EOF];
 
-        $this->doTest($expected);
-    }
+        yield 'windows style' => [
+            "<?php\r\n    /**     * Constant!     */\n    \$foo = 123;",
+            "<?php\r\n    /**     * Constant!     */\r\n\r\n\r\n    \$foo = 123;",
+        ];
 
-    public function testFixesWindowsStyle(): void
-    {
-        $expected = "<?php\r\n    /**     * Constant!     */\n    \$foo = 123;";
-
-        $input = "<?php\r\n    /**     * Constant!     */\r\n\r\n\r\n    \$foo = 123;";
-
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * Empty line between typehinting docs and return statement should be preserved.
-     *
-     * @dataProvider provideInlineTypehintingDocsBeforeFlowBreakCases
-     */
-    public function testInlineTypehintingDocsBeforeFlowBreak(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<array{string}>
-     */
-    public static function provideInlineTypehintingDocsBeforeFlowBreakCases(): iterable
-    {
-        yield [
+        yield 'inline typehinting docs before flow break 1' => [
             <<<'EOF'
                 <?php
                 function parseTag($tag)
@@ -405,7 +337,7 @@ class Foo {}'
                 EOF,
         ];
 
-        yield [
+        yield 'inline typehinting docs before flow break 2' => [
             <<<'EOF'
                 <?php
                 function parseTag($tag)
@@ -421,7 +353,7 @@ class Foo {}'
                 EOF,
         ];
 
-        yield [
+        yield 'inline typehinting docs before flow break 3' => [
             <<<'EOF'
                 <?php
                 function parseTag($tag)
@@ -439,7 +371,7 @@ class Foo {}'
                 EOF,
         ];
 
-        yield [
+        yield 'inline typehinting docs before flow break 4' => [
             <<<'EOF'
                 <?php
                 function parseTag($tag)
@@ -457,7 +389,7 @@ class Foo {}'
                 EOF,
         ];
 
-        yield [
+        yield 'inline typehinting docs before flow break 5' => [
             <<<'EOF'
                 <?php
                 function parseTag($tag)

@@ -20,6 +20,7 @@ use PhpCsFixer\Documentation\FixerDocumentGenerator;
 use PhpCsFixer\Documentation\RuleSetDocumentationGenerator;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Finder\Finder;
@@ -58,8 +59,9 @@ final class DocumentationTest extends TestCase
 
         $expected = $generator->generateFixerDocumentation($fixer);
         $actual = file_get_contents($path);
+        self::assertIsString($actual);
 
-        $expected = preg_replace_callback(
+        $expected = Preg::replaceCallback(
             '/
                 # an example
                 (?<before>
@@ -82,16 +84,18 @@ final class DocumentationTest extends TestCase
                 )
             /x',
             static function (array $matches) use ($actual): string {
+                /** @var array{before: string, after: string} $matches */
                 $before = preg_quote($matches['before'], '/');
                 $after = preg_quote($matches['after'], '/');
 
                 $replacement = '[UNAVAILABLE EXAMPLE DIFF]';
 
-                if (1 === preg_match("/{$before}(\\.\\. code-block:: diff.*?){$after}/s", $actual, $actualMatches)) {
+                if (Preg::match("/{$before}(\\.\\. code-block:: diff.*?){$after}/s", $actual, $actualMatches)) {
+                    \assert(\array_key_exists(1, $actualMatches));
                     $replacement = $actualMatches[1];
                 }
 
-                return $matches[1].$replacement.$matches[2];
+                return $matches['before'].$replacement.$matches['after'];
             },
             $expected
         );
@@ -170,17 +174,18 @@ final class DocumentationTest extends TestCase
 
     public function testInstallationDocHasCorrectMinimumVersion(): void
     {
-        $composerJsonContent = file_get_contents(__DIR__.'/../../composer.json');
-        $composerJson = json_decode($composerJsonContent, true, 512, JSON_THROW_ON_ERROR);
+        $composerJsonContent = (string) file_get_contents(__DIR__.'/../../composer.json');
+        $composerJson = json_decode($composerJsonContent, true, 512, \JSON_THROW_ON_ERROR);
         $phpVersion = $composerJson['require']['php'];
-        $minimumVersion = ltrim(substr($phpVersion, 0, strpos($phpVersion, ' ')), '^');
+        $minimumVersion = ltrim(substr($phpVersion, 0, (int) strpos($phpVersion, ' ')), '^');
 
         $minimumVersionInformation = \sprintf('PHP needs to be a minimum version of PHP %s.', $minimumVersion);
         $installationDocPath = realpath(__DIR__.'/../../doc/installation.rst');
+        self::assertIsString($installationDocPath);
 
         self::assertStringContainsString(
             $minimumVersionInformation,
-            file_get_contents($installationDocPath),
+            (string) file_get_contents($installationDocPath),
             \sprintf('Files %s needs to contain information "%s"', $installationDocPath, $minimumVersionInformation)
         );
     }
@@ -207,7 +212,7 @@ final class DocumentationTest extends TestCase
         }
 
         $lastFormat = array_pop($formats);
-        $expectedContent = 'Supported formats are ``txt`` (default one), ';
+        $expectedContent = 'Supported formats are ``@auto`` (default one on v4+), ``txt`` (default one on v3), ';
 
         foreach ($formats as $format) {
             $expectedContent .= '``'.$format.'``, ';

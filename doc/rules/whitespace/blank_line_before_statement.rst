@@ -242,7 +242,6 @@ The rule is part of the following rule sets:
 
   ``['statements' => ['return']]``
 
-
 References
 ----------
 

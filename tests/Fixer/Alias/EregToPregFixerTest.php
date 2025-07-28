@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Alias;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Matteo Beccati <matteo@beccati.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Alias\EregToPregFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\EregToPregFixer>
+ *
+ * @author Matteo Beccati <matteo@beccati.com>
  */
 final class EregToPregFixerTest extends AbstractFixerTestCase
 {
@@ -36,7 +36,7 @@ final class EregToPregFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -146,7 +146,7 @@ final class EregToPregFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideFix81Cases(): iterable
     {
