@@ -576,7 +576,6 @@ final class ConfigurationResolver
         }
 
         $candidates = [];
-        //        dd($configDir , $this->cwd);
         if ($configDir !== $this->cwd) {
             // @TODO v4 drop handling (triggering error)
             $candidates[] = 'deprecated:'.$configDir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php';
