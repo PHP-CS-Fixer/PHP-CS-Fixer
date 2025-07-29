@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.85.1
+---------------------
+
+* chore: update legacy deps (#8902)
+
 Changelog for v3.85.0
 ---------------------
 
