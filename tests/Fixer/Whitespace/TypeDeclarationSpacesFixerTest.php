@@ -630,24 +630,7 @@ class Foo
                 }
                 PHP,
         ];
-    }
 
-    /**
-     * @dataProvider provideFix85Cases
-     *
-     * @requires PHP 8.5
-     */
-    public function testFix85(string $expected, ?string $input = null): void
-    {
-        $this->fixer->configure(['elements' => ['property', 'constant', 'function']]);
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<string, array{string, 1?: ?string}>
-     */
-    public static function provideFix85Cases(): iterable
-    {
         yield 'final property' => [
             '<?php class Foo { final int $i; }',
             '<?php class Foo { final int$i; }',
