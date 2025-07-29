@@ -429,6 +429,11 @@ class Foo
             '<?php class Foo { private readonly int $bar; }',
             '<?php class Foo { private readonly int    $bar; }',
         ];
+
+        yield [
+            '<?php class Foo { readonly int $i; }',
+            '<?php class Foo { readonly int$i; }',
+        ];
     }
 
     /**
@@ -586,6 +591,44 @@ class Foo
         yield [
             '<?php class Foo {public const int /**bla bla*/ VALUE = 0; }',
             '<?php class Foo {public const int  /**bla bla*/ VALUE = 0; }',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->fixer->configure(['elements' => ['property', 'constant', 'function']]);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, 1?: ?string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield 'asymmetric visibility' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public(set) bool $a;
+                    protected(set) int $i;
+                    private(set) string $s;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public(set) bool$a;
+                    protected(set) int$i;
+                    private(set) string$s;
+                }
+                PHP,
         ];
     }
 }
