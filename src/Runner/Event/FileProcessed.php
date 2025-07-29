@@ -42,16 +42,14 @@ final class FileProcessed extends Event
      */
     private int $status;
 
-    private ?string $fileRelativePath;
     private ?string $fileHash;
 
     /**
      * @param self::STATUS_* $status
      */
-    public function __construct(int $status, ?string $fileRelativePath = null, ?string $fileHash = null)
+    public function __construct(int $status, ?string $fileHash = null)
     {
         $this->status = $status;
-        $this->fileRelativePath = $fileRelativePath;
         $this->fileHash = $fileHash;
     }
 
@@ -61,11 +59,6 @@ final class FileProcessed extends Event
     public function getStatus(): int
     {
         return $this->status;
-    }
-
-    public function getFileRelativePath(): ?string
-    {
-        return $this->fileRelativePath;
     }
 
     public function getFileHash(): ?string
