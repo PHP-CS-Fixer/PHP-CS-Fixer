@@ -461,8 +461,8 @@ final class Token
 
     /**
      * @return array{
-     *     id: int|null,
-     *     name: non-empty-string|null,
+     *     id: null|int,
+     *     name: null|non-empty-string,
      *     content: string,
      *     isArray: bool,
      *     changed: bool,

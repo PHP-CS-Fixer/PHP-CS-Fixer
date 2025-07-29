@@ -23,6 +23,7 @@ use PhpCsFixer\Console\Output\ErrorOutput;
 use PhpCsFixer\Console\Output\OutputContext;
 use PhpCsFixer\Console\Output\Progress\ProgressOutputFactory;
 use PhpCsFixer\Console\Output\Progress\ProgressOutputType;
+use PhpCsFixer\Console\Report\FixReport\ReporterFactory;
 use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Runner\Event\FileProcessed;
@@ -206,6 +207,11 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
     protected function configure(): void
     {
+        $reporterFactory = new ReporterFactory();
+        $reporterFactory->registerBuiltInReporters();
+        $formats = $reporterFactory->getFormats();
+        array_unshift($formats, '@auto', '@auto,txt');
+
         $this->setDefinition(
             [
                 new InputArgument('path', InputArgument::IS_ARRAY, 'The path(s) that rules will be run against (each path can be a file or directory).'),
@@ -218,7 +224,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 new InputOption('allow-unsupported-php-version', '', InputOption::VALUE_REQUIRED, 'Should the command refuse to run on unsupported PHP version (can be `yes` or `no`).'),
                 new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file.'),
                 new InputOption('diff', '', InputOption::VALUE_NONE, 'Prints diff for each file.'),
-                new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats.'),
+                new InputOption('format', '', InputOption::VALUE_REQUIRED, \sprintf('To output results in other formats (can be %s).', implode(', ', array_map(static fn ($format) => \sprintf('`%s`', $format), $formats)))),
                 new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
                 new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, dots).'),
                 new InputOption('sequential', '', InputOption::VALUE_NONE, 'Enforce sequential analysis.'),
@@ -333,7 +339,10 @@ use Symfony\Component\Stopwatch\Stopwatch;
             }
         }
 
-        $finder = new \ArrayIterator(iterator_to_array($resolver->getFinder()));
+        $finder = new \ArrayIterator(array_filter(
+            iterator_to_array($resolver->getFinder()),
+            static fn (\SplFileInfo $fileInfo) => false !== $fileInfo->getRealPath(),
+        ));
 
         if (null !== $stdErr && $resolver->configFinderIsOverridden()) {
             $stdErr->writeln(

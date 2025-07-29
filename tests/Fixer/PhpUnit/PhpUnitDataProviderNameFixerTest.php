@@ -509,5 +509,39 @@ class FooTest extends TestCase {
                 }
                 PHP,
         ];
+
+        yield 'multiple data providers defined by attributes for one test method' => [
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\Attributes\DataProvider;
+                class PersistenceTest extends TestCase
+                {
+                    #[DataProvider('provideTypecastBidirectionalCases')]
+                    #[DataProvider('provideTypecastLoadOnlyCases')]
+                    public function testTypecast($v): void {}
+                    public static function provideTypecastBidirectionalCases(): iterable {}
+                    public static function provideTypecastLoadOnlyCases(): iterable {}
+                }
+                PHP,
+        ];
+
+        yield 'multiple data providers defined by annotation and attributes for one test method' => [
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\Attributes\DataProvider;
+                class PersistenceTest extends TestCase
+                {
+                    /**
+                     * @dataProvider provideTypecastBidirectionalCases
+                     * @dataProvider provideTypecastLoadOnlyCases
+                     */
+                    #[DataProvider('provideTypecastBidirectionalCases')]
+                    #[DataProvider('provideTypecastLoadOnlyCases')]
+                    public function testTypecast($v): void {}
+                    public static function provideTypecastBidirectionalCases(): iterable {}
+                    public static function provideTypecastLoadOnlyCases(): iterable {}
+                }
+                PHP,
+        ];
     }
 }

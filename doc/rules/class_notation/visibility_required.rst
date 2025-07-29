@@ -15,7 +15,7 @@ Configuration
 ``elements``
 ~~~~~~~~~~~~
 
-The structural elements to fix (PHP >= 7.1 required for ``const``).
+The structural elements to fix.
 
 Allowed values: a subset of ``['const', 'method', 'property']``
 

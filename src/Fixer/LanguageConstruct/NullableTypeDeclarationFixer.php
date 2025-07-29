@@ -52,7 +52,7 @@ final class NullableTypeDeclarationFixer extends AbstractFixer implements Config
 
     private const OPTION_SYNTAX_UNION = 'union';
     private const OPTION_SYNTAX_QUESTION_MARK = 'question_mark';
-    private const PROPERTY_MODIFIERS = [\T_PRIVATE, \T_PROTECTED, \T_PUBLIC, \T_STATIC, \T_VAR, FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET];
+    private const PROPERTY_MODIFIERS = [\T_PRIVATE, \T_PROTECTED, \T_PUBLIC, \T_STATIC, \T_ABSTRACT, \T_FINAL, \T_VAR, FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET];
 
     private int $candidateTokenKind;
 

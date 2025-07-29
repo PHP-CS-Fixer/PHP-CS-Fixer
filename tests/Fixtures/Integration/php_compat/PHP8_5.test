@@ -16,11 +16,16 @@ class Foo
     public function __construct(
         final public bool $one,
         final public bool $two,
-        // readonly    private    final    ?    string    $three, // @TODO: uncomment, now syntax error
-        final private readonly null|string $four,
-        ?finalstring $five, // @TODO: funny, but wrong
+        final private readonly ?string $three,
+        final private readonly ?string $four,
+        final private readonly ?string $five,
     ) {}
 }
+
+// https://wiki.php.net/rfc/pipe-operator-v3
+$numberOfAdmins = getUsers()
+    |> fn ($list) => array_filter($list, isAdmin(...))
+    |> count(...);
 
 // https://wiki.php.net/rfc/marking_return_value_as_important
 #[NoDiscard]
@@ -42,11 +47,16 @@ class Foo
     public function __construct(
         public    final     bool   $one,
         final    public     bool   $two,
-        // readonly    private    final    ?    string    $three, // @TODO: uncomment, now syntax error
+        readonly    private    final    ?    string    $three,
         readonly    private    final    null    |    string    $four,
-        readonly    private    final    string    |    null    $five, // @TODO: funny, but wrong
+        readonly    private    final    string    |    null    $five,
     ) {}
 }
+
+// https://wiki.php.net/rfc/pipe-operator-v3
+$numberOfAdmins = getUsers() |>
+    fn ($list) => array_filter($list, isAdmin(...)) |>
+    count(...);
 
 // https://wiki.php.net/rfc/marking_return_value_as_important
 #[NoDiscard]

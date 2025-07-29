@@ -48,7 +48,7 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
     'message' => '#^Offset string might not exist on array\\<string, PhpCsFixer\\\\RuleSet\\\\RuleSetDescriptionInterface\\>\\.$#',
-    'count' => 4,
+    'count' => 1,
     'path' => __DIR__ . '/../../../src/Console/Command/DescribeCommand.php',
 ];
 $ignoreErrors[] = [
@@ -80,21 +80,6 @@ $ignoreErrors[] = [
     'message' => '#^Offset 0 might not exist on array\\.$#',
     'count' => 3,
     'path' => __DIR__ . '/../../../src/Differ/DiffConsoleFormatter.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset \'types\' might not exist on array\\<string\\>\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/DocBlock/Annotation.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset \'variable\' might not exist on array\\<string\\>\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/DocBlock/Annotation.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset 0 might not exist on array\\<int, PhpCsFixer\\\\DocBlock\\\\Line\\>\\.$#',
-    'count' => 5,
-    'path' => __DIR__ . '/../../../src/DocBlock/Annotation.php',
 ];
 $ignoreErrors[] = [
     'message' => '#^Offset 0 might not exist on list\\<PhpCsFixer\\\\DocBlock\\\\Line\\>\\.$#',
@@ -347,21 +332,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Alias/EregToPregFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset 0 might not exist on list\\<int\\>\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Alias/SetTypeToCastFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset 1 might not exist on list\\<int\\>\\.$#',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Fixer/Alias/SetTypeToCastFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset 2 might not exist on list\\<int\\>\\.$#',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Fixer/Alias/SetTypeToCastFixer.php',
-];
-$ignoreErrors[] = [
     'message' => '#^Offset int might not exist on non\\-empty\\-array\\<int, int\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Alias/SetTypeToCastFixer.php',
@@ -478,16 +448,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
     'message' => '#^Offset \'visibility\' might not exist on array\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset 0 might not exist on list\\<string\\>\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset 1 might not exist on list\\<string\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
@@ -742,7 +702,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitNoExpectationAnnotationFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset int might not exist on list\\<string\\>\\.$#',
+    'message' => '#^Offset int might not exist on list\\<non\\-empty\\-string\\>\\.$#',
     'count' => 4,
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php',
 ];

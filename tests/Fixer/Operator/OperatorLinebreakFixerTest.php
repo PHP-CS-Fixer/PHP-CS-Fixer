@@ -251,6 +251,37 @@ endwhile;
     }
 
     /**
+     * @dataProvider provideFix85Cases
+     *
+     * @requires PHP 8.5
+     */
+    public function testFix85(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, 1?: string}>
+     */
+    public static function provideFix85Cases(): iterable
+    {
+        yield 'pipe operator' => [
+            <<<'PHP'
+                <?php
+                $numberOfAdmins = getUsers()
+                    |> fn ($list) => array_filter($list, isAdmin(...))
+                    |> count(...);
+                PHP,
+            <<<'PHP'
+                <?php
+                $numberOfAdmins = getUsers() |>
+                    fn ($list) => array_filter($list, isAdmin(...)) |>
+                    count(...);
+                PHP,
+        ];
+    }
+
+    /**
      * @return iterable<array{0: string, 1: null|string, 2?: array<string, mixed>}>
      */
     private static function pairs(): iterable

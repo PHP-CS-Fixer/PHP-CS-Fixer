@@ -123,7 +123,7 @@ final class ErrorOutput
      *     line?: int,
      *     file?: string,
      *     class?: class-string,
-     *     type?: '::'|'->',
+     *     type?: '->'|'::',
      *     args?: mixed[],
      *     object?: object,
      * } $trace
