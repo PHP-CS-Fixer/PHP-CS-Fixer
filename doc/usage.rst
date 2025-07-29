@@ -215,6 +215,15 @@ To visualize all the rules that belong to a ruleset:
 
     php php-cs-fixer.phar describe @PSR2
 
+Command-line completion
+-----------------------
+
+Command-line completion can be enabled by running this command and following the instructions:
+
+.. code-block:: console
+
+    php php-cs-fixer.phar completion --help
+
 Caching
 -------
 
