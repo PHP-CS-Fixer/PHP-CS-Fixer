@@ -179,7 +179,7 @@ final class Annotation
             TypeExpression::REGEX_IDENTIFIER
         );
 
-        if (Preg::match($regex, $this->lines[0]->getContent(), $matches)) {
+        if (Preg::match($regex, $this->getContent(), $matches)) {
             \assert(isset($matches['variable']));
 
             return $matches['variable'];

@@ -743,6 +743,6 @@ final class AnnotationTest extends TestCase
         );
         $annotation = $docBlock->getAnnotation(0);
 
-        self::assertNull($annotation->getVariableName());
+        self::assertSame('$x', $annotation->getVariableName());
     }
 }

@@ -2660,6 +2660,18 @@ static fn ($foo): int => 1;',
             <<<'PHP'
                 <?php
                 /**
+                 *
+                 * @param array{
+                 *     value1: bool,
+                 *     value2: int,
+                 *     value3: string,
+                 * } $notSuperfluous
+                 */
+                function foo($notSuperfluous) {}
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
                  * @param array{
                  *     foo: Foo,
                  *     bar: Bar
