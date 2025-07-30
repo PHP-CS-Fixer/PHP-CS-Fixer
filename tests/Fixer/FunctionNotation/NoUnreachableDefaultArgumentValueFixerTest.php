@@ -303,5 +303,18 @@ $bar) {}',
             }
             PHP
         ];
+
+        yield 'do not crash 2' => [<<<'PHP'
+            <?php class Foo
+            {
+                public function __construct(
+                    public string $key {
+                        set(string $key) => $this->key = mb_strtolower($key);
+                    },
+                    public int $value,
+                ) {}
+            }
+            PHP
+        ];
     }
 }

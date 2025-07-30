@@ -103,7 +103,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_DNUMBER, T_LNUMBER]);
+        return $tokens->isAnyTokenKindsFound([\T_DNUMBER, \T_LNUMBER]);
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
@@ -129,7 +129,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind([T_DNUMBER, T_LNUMBER])) {
+            if (!$token->isGivenKind([\T_DNUMBER, \T_LNUMBER])) {
                 continue;
             }
 

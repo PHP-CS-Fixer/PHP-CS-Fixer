@@ -47,7 +47,7 @@ final class TextReporter implements ReporterInterface
             }
 
             $output .= $this->getDiff($reportSummary->isDecoratedOutput(), $fixResult['diff']);
-            $output .= PHP_EOL;
+            $output .= \PHP_EOL;
         }
 
         return $output.$this->getFooter(
@@ -78,11 +78,11 @@ final class TextReporter implements ReporterInterface
 
         $diffFormatter = new DiffConsoleFormatter($isDecoratedOutput, \sprintf(
             '<comment>      ---------- begin diff ----------</comment>%s%%s%s<comment>      ----------- end diff -----------</comment>',
-            PHP_EOL,
-            PHP_EOL
+            \PHP_EOL,
+            \PHP_EOL
         ));
 
-        return PHP_EOL.$diffFormatter->format($diff).PHP_EOL;
+        return \PHP_EOL.$diffFormatter->format($diff).\PHP_EOL;
     }
 
     private function getFooter(int $time, int $identifiedFiles, int $files, int $memory, bool $isDryRun): string
@@ -91,8 +91,8 @@ final class TextReporter implements ReporterInterface
             return '';
         }
 
-        return PHP_EOL.\sprintf(
-            '%s %d of %d %s in %.3f seconds, %.2f MB memory used'.PHP_EOL,
+        return \PHP_EOL.\sprintf(
+            '%s %d of %d %s in %.3f seconds, %.2f MB memory used'.\PHP_EOL,
             $isDryRun ? 'Found' : 'Fixed',
             $identifiedFiles,
             $files,

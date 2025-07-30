@@ -62,7 +62,7 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  *      dry-run: null|bool,
  *      format: null|string,
  *      path: list<string>,
- *      path-mode: self::PATH_MODE_*,
+ *      path-mode: value-of<self::PATH_MODE_VALUES>,
  *      rules: null|string,
  *      sequential: null|string,
  *      show-progress: null|string,
@@ -80,6 +80,17 @@ final class ConfigurationResolver
 {
     public const PATH_MODE_OVERRIDE = 'override';
     public const PATH_MODE_INTERSECTION = 'intersection';
+    public const PATH_MODE_VALUES = [
+        self::PATH_MODE_OVERRIDE,
+        self::PATH_MODE_INTERSECTION,
+    ];
+
+    public const BOOL_YES = 'yes';
+    public const BOOL_NO = 'no';
+    public const BOOL_VALUES = [
+        self::BOOL_YES,
+        self::BOOL_NO,
+    ];
 
     private ?bool $allowRisky = null;
 
@@ -208,7 +219,7 @@ final class ConfigurationResolver
                 $this->cacheManager = new FileCacheManager(
                     new FileHandler($cacheFile),
                     new Signature(
-                        PHP_VERSION,
+                        \PHP_VERSION,
                         $this->toolInfo->getVersion(),
                         $this->getConfig()->getIndent(),
                         $this->getConfig()->getLineEnding(),
@@ -232,6 +243,8 @@ final class ConfigurationResolver
                 }
 
                 $configFileBasename = basename($configFile);
+
+                /** @TODO v4 drop handling (triggering error) for v2 config names */
                 $deprecatedConfigs = [
                     '.php_cs' => '.php-cs-fixer.php',
                     '.php_cs.dist' => '.php-cs-fixer.dist.php',
@@ -561,13 +574,15 @@ final class ConfigurationResolver
         } elseif (!is_file($path[0])) {
             $configDir = $path[0];
         } else {
-            $dirName = pathinfo($path[0], PATHINFO_DIRNAME);
+            $dirName = pathinfo($path[0], \PATHINFO_DIRNAME);
             $configDir = is_dir($dirName) ? $dirName : $path[0];
         }
 
         $candidates = [
             $configDir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php',
             $configDir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php',
+
+            // @TODO v4 drop handling (triggering error) for v2 config names
             $configDir.\DIRECTORY_SEPARATOR.'.php_cs', // old v2 config, present here only to throw nice error message later
             $configDir.\DIRECTORY_SEPARATOR.'.php_cs.dist', // old v2 config, present here only to throw nice error message later
         ];
@@ -575,6 +590,8 @@ final class ConfigurationResolver
         if ($configDir !== $this->cwd) {
             $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php';
             $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php';
+
+            // @TODO v4 drop handling (triggering error) for v2 config names
             $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs'; // old v2 config, present here only to throw nice error message later
             $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs.dist'; // old v2 config, present here only to throw nice error message later
         }
@@ -610,7 +627,7 @@ final class ConfigurationResolver
             if ('@auto' === $this->format) {
                 $this->format = $parts[1] ?? 'txt';
 
-                if (filter_var(getenv('GITLAB_CI'), FILTER_VALIDATE_BOOL)) {
+                if (filter_var(getenv('GITLAB_CI'), \FILTER_VALIDATE_BOOL)) {
                     $this->format = 'gitlab';
                 }
             }
@@ -669,7 +686,7 @@ final class ConfigurationResolver
         if (str_starts_with($rules, '{')) {
             $rules = json_decode($rules, true);
 
-            if (JSON_ERROR_NONE !== json_last_error()) {
+            if (\JSON_ERROR_NONE !== json_last_error()) {
                 throw new InvalidConfigurationException(\sprintf('Invalid JSON rules input: "%s".', json_last_error_msg()));
             }
 
@@ -839,17 +856,15 @@ final class ConfigurationResolver
             return new \ArrayIterator([new StdinFileInfo()]);
         }
 
-        $modes = [self::PATH_MODE_OVERRIDE, self::PATH_MODE_INTERSECTION];
-
         if (!\in_array(
             $this->options['path-mode'],
-            $modes,
+            self::PATH_MODE_VALUES,
             true
         )) {
             throw new InvalidConfigurationException(\sprintf(
                 'The path-mode "%s" is not defined, supported are %s.',
                 $this->options['path-mode'],
-                Utils::naturalLanguageJoin($modes)
+                Utils::naturalLanguageJoin(self::PATH_MODE_VALUES)
             ));
         }
 
@@ -949,15 +964,15 @@ final class ConfigurationResolver
     {
         $value = $this->options[$optionName];
 
-        if ('yes' === $value) {
+        if (self::BOOL_YES === $value) {
             return true;
         }
 
-        if ('no' === $value) {
+        if (self::BOOL_NO === $value) {
             return false;
         }
 
-        throw new InvalidConfigurationException(\sprintf('Expected "yes" or "no" for option "%s", got "%s".', $optionName, \is_object($value) ? \get_class($value) : (\is_scalar($value) ? $value : \gettype($value))));
+        throw new InvalidConfigurationException(\sprintf('Expected "%s" or "%s" for option "%s", got "%s".', self::BOOL_YES, self::BOOL_NO, $optionName, \is_object($value) ? \get_class($value) : (\is_scalar($value) ? $value : \gettype($value))));
     }
 
     private static function separatedContextLessInclude(string $path): ConfigInterface
@@ -977,6 +992,6 @@ final class ConfigurationResolver
         return $this->toolInfo->isInstalledAsPhar()
             || $this->toolInfo->isInstalledByComposer()
             || $this->toolInfo->isRunInsideDocker()
-            || filter_var(getenv('PHP_CS_FIXER_ENFORCE_CACHE'), FILTER_VALIDATE_BOOL);
+            || filter_var(getenv('PHP_CS_FIXER_ENFORCE_CACHE'), \FILTER_VALIDATE_BOOL);
     }
 }

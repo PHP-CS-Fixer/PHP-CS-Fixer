@@ -32,7 +32,21 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'help')]
 final class HelpCommand extends BaseHelpCommand
 {
+    /** @TODO PHP 8.0 - remove the property */
     protected static $defaultName = 'help';
+
+    /**
+     * Formats the description of an option to include its allowed values.
+     *
+     * @param string                 $description   description with a single `%s` placeholder for the allowed values
+     * @param non-empty-list<string> $allowedValues
+     */
+    public static function getDescriptionWithAllowedValues(string $description, array $allowedValues): string
+    {
+        $allowedValues = Utils::naturalLanguageJoinWithBackticks($allowedValues, 'or');
+
+        return \sprintf($description, 'can be '.$allowedValues);
+    }
 
     /**
      * Returns the allowed values of the given option that can be converted to a string.

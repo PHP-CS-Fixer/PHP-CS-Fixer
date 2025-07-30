@@ -135,23 +135,21 @@ namespace Foo {
      */
     private function isOverComplete(Tokens $tokens, int $index): bool
     {
-        static $include = ['{', '}', [T_OPEN_TAG], ':', ';'];
-
-        return $tokens[$tokens->getPrevMeaningfulToken($index)]->equalsAny($include);
+        return $tokens[$tokens->getPrevMeaningfulToken($index)]->equalsAny(['{', '}', [\T_OPEN_TAG], ':', ';']);
     }
 
     private function clearIfIsOverCompleteNamespaceBlock(Tokens $tokens): void
     {
-        if (1 !== $tokens->countTokenKind(T_NAMESPACE)) {
+        if (1 !== $tokens->countTokenKind(\T_NAMESPACE)) {
             return; // fast check, we never fix if multiple namespaces are defined
         }
 
-        $index = $tokens->getNextTokenOfKind(0, [[T_NAMESPACE]]);
+        $index = $tokens->getNextTokenOfKind(0, [[\T_NAMESPACE]]);
 
         $namespaceIsNamed = false;
 
         $index = $tokens->getNextMeaningfulToken($index);
-        while ($tokens[$index]->isGivenKind([T_STRING, T_NS_SEPARATOR])) {
+        while ($tokens[$index]->isGivenKind([\T_STRING, \T_NS_SEPARATOR])) {
             $index = $tokens->getNextMeaningfulToken($index);
             $namespaceIsNamed = true;
         }
@@ -167,7 +165,7 @@ namespace Foo {
         $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
         $afterCloseIndex = $tokens->getNextMeaningfulToken($closeIndex);
 
-        if (null !== $afterCloseIndex && (!$tokens[$afterCloseIndex]->isGivenKind(T_CLOSE_TAG) || null !== $tokens->getNextMeaningfulToken($afterCloseIndex))) {
+        if (null !== $afterCloseIndex && (!$tokens[$afterCloseIndex]->isGivenKind(\T_CLOSE_TAG) || null !== $tokens->getNextMeaningfulToken($afterCloseIndex))) {
             return;
         }
 

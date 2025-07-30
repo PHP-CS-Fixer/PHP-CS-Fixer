@@ -40,13 +40,13 @@ final class OctalNotationFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 8_01_00 && $tokens->isTokenKindFound(T_LNUMBER);
+        return \PHP_VERSION_ID >= 8_01_00 && $tokens->isTokenKindFound(\T_LNUMBER);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_LNUMBER)) {
+            if (!$token->isGivenKind(\T_LNUMBER)) {
                 continue;
             }
 
@@ -58,7 +58,7 @@ final class OctalNotationFixer extends AbstractFixer
                 continue;
             }
 
-            $tokens[$index] = new Token([T_LNUMBER, $newContent]);
+            $tokens[$index] = new Token([\T_LNUMBER, $newContent]);
         }
     }
 }

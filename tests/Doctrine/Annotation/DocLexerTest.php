@@ -30,7 +30,6 @@ final class DocLexerTest extends TestCase
         $lexer = new DocLexer();
         $lexer->setInput('/** @Foo("bar": 42) */');
 
-        /** @var list<array{DocLexer::T_*, string, int}> */
         $expectedContents = [
             [DocLexer::T_NONE, '/', 0],
             [DocLexer::T_AT, '@', 4],

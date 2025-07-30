@@ -104,7 +104,7 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_START_HEREDOC);
+        return $tokens->isTokenKindFound(\T_START_HEREDOC);
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
@@ -140,13 +140,13 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
 
         $startIndex = null;
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(T_START_HEREDOC)) {
+            if ($token->isGivenKind(\T_START_HEREDOC)) {
                 $startIndex = $index;
 
                 continue;
             }
 
-            if (null !== $startIndex && $token->isGivenKind(T_END_HEREDOC)) {
+            if (null !== $startIndex && $token->isGivenKind(\T_END_HEREDOC)) {
                 $existingClosingMarker = trim($token->getContent());
 
                 if (null === $reservedClosingMarkersMap) {

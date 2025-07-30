@@ -108,11 +108,11 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
     {
         $prevNonWhitespaceToken = $tokens[$tokens->getPrevNonWhitespace($index)];
 
-        if (!$prevNonWhitespaceToken->isGivenKind([T_LNUMBER, T_COMMENT, T_DOC_COMMENT]) || str_starts_with($prevNonWhitespaceToken->getContent(), '/*')) {
+        if (!$prevNonWhitespaceToken->isGivenKind([\T_LNUMBER, \T_COMMENT, \T_DOC_COMMENT]) || str_starts_with($prevNonWhitespaceToken->getContent(), '/*')) {
             $tokens->removeLeadingWhitespace($index, " \t");
         }
 
-        if (!$tokens[$tokens->getNextNonWhitespace($index)]->isGivenKind([T_LNUMBER, T_COMMENT, T_DOC_COMMENT])) {
+        if (!$tokens[$tokens->getNextNonWhitespace($index)]->isGivenKind([\T_LNUMBER, \T_COMMENT, \T_DOC_COMMENT])) {
             $tokens->removeTrailingWhitespace($index, " \t");
         }
     }
@@ -142,7 +142,7 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
         $offsetIndex = $index + $offset;
 
         if (!$tokens[$offsetIndex]->isWhitespace()) {
-            $tokens->insertAt($index + (1 === $offset ? 1 : 0), new Token([T_WHITESPACE, ' ']));
+            $tokens->insertAt($index + (1 === $offset ? 1 : 0), new Token([\T_WHITESPACE, ' ']));
 
             return;
         }
@@ -155,6 +155,6 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
             return;
         }
 
-        $tokens[$offsetIndex] = new Token([T_WHITESPACE, ' ']);
+        $tokens[$offsetIndex] = new Token([\T_WHITESPACE, ' ']);
     }
 }

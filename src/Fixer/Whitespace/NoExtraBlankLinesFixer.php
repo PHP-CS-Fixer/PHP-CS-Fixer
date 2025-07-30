@@ -227,7 +227,7 @@ switch($a) {
      * {@inheritdoc}
      *
      * Must run before BlankLineBeforeStatementFixer.
-     * Must run after ClassAttributesSeparationFixer, CombineConsecutiveUnsetsFixer, EmptyLoopBodyFixer, EmptyLoopConditionFixer, FunctionToConstantFixer, LongToShorthandOperatorFixer, ModernizeStrposFixer, NoEmptyCommentFixer, NoEmptyPhpdocFixer, NoEmptyStatementFixer, NoUnusedImportsFixer, NoUselessElseFixer, NoUselessReturnFixer, NoUselessSprintfFixer, PhpdocReadonlyClassCommentToKeywordFixer, StringLengthToEmptyFixer, YieldFromArrayToYieldsFixer.
+     * Must run after ClassAttributesSeparationFixer, CombineConsecutiveUnsetsFixer, EmptyLoopBodyFixer, EmptyLoopConditionFixer, FunctionToConstantFixer, LongToShorthandOperatorFixer, ModernizeStrposFixer, NoEmptyCommentFixer, NoEmptyPhpdocFixer, NoEmptyStatementFixer, NoUnusedImportsFixer, NoUselessElseFixer, NoUselessPrintfFixer, NoUselessReturnFixer, NoUselessSprintfFixer, PhpdocReadonlyClassCommentToKeywordFixer, StringLengthToEmptyFixer, YieldFromArrayToYieldsFixer.
      */
     public function getPriority(): int
     {
@@ -270,16 +270,16 @@ switch($a) {
         // Each item requires explicit array-like callable, otherwise PHPStan will complain about unused private methods.
         $configMap = [
             'attribute' => [CT::T_ATTRIBUTE_CLOSE, [$this, 'fixAfterToken']],
-            'break' => [T_BREAK, [$this, 'fixAfterToken']],
-            'case' => [T_CASE, [$this, 'fixAfterCaseToken']],
-            'continue' => [T_CONTINUE, [$this, 'fixAfterToken']],
-            'default' => [T_DEFAULT, [$this, 'fixAfterToken']],
-            'extra' => [T_WHITESPACE, [$this, 'removeMultipleBlankLines']],
-            'return' => [T_RETURN, [$this, 'fixAfterToken']],
+            'break' => [\T_BREAK, [$this, 'fixAfterToken']],
+            'case' => [\T_CASE, [$this, 'fixAfterCaseToken']],
+            'continue' => [\T_CONTINUE, [$this, 'fixAfterToken']],
+            'default' => [\T_DEFAULT, [$this, 'fixAfterToken']],
+            'extra' => [\T_WHITESPACE, [$this, 'removeMultipleBlankLines']],
+            'return' => [\T_RETURN, [$this, 'fixAfterToken']],
             'square_brace_block' => [CT::T_ARRAY_SQUARE_BRACE_OPEN, [$this, 'fixStructureOpenCloseIfMultiLine']],
-            'switch' => [T_SWITCH, [$this, 'fixAfterToken']],
-            'throw' => [T_THROW, [$this, 'fixAfterThrowToken']],
-            'use' => [T_USE, [$this, 'removeBetweenUse']],
+            'switch' => [\T_SWITCH, [$this, 'fixAfterToken']],
+            'throw' => [\T_THROW, [$this, 'fixAfterThrowToken']],
+            'use' => [\T_USE, [$this, 'removeBetweenUse']],
             'use_trait' => [CT::T_USE_TRAIT, [$this, 'removeBetweenUse']],
         ];
 
@@ -346,9 +346,9 @@ switch($a) {
 
     private function removeBetweenUse(int $index): void
     {
-        $next = $this->tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
+        $next = $this->tokens->getNextTokenOfKind($index, [';', [\T_CLOSE_TAG]]);
 
-        if (null === $next || $this->tokens[$next]->isGivenKind(T_CLOSE_TAG)) {
+        if (null === $next || $this->tokens[$next]->isGivenKind(\T_CLOSE_TAG)) {
             return;
         }
 
@@ -363,24 +363,24 @@ switch($a) {
 
     private function removeMultipleBlankLines(int $index): void
     {
-        $expected = $this->tokens[$index - 1]->isGivenKind(T_OPEN_TAG) && Preg::match('/\R$/', $this->tokens[$index - 1]->getContent()) ? 1 : 2;
+        $expected = $this->tokens[$index - 1]->isGivenKind(\T_OPEN_TAG) && Preg::match('/\R$/', $this->tokens[$index - 1]->getContent()) ? 1 : 2;
 
-        $parts = Preg::split('/(.*\R)/', $this->tokens[$index]->getContent(), -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        $parts = Preg::split('/(.*\R)/', $this->tokens[$index]->getContent(), -1, \PREG_SPLIT_DELIM_CAPTURE | \PREG_SPLIT_NO_EMPTY);
         $count = \count($parts);
 
         if ($count > $expected) {
-            $this->tokens[$index] = new Token([T_WHITESPACE, implode('', \array_slice($parts, 0, $expected)).rtrim($parts[$count - 1], "\r\n")]);
+            $this->tokens[$index] = new Token([\T_WHITESPACE, implode('', \array_slice($parts, 0, $expected)).rtrim($parts[$count - 1], "\r\n")]);
         }
     }
 
     private function fixAfterToken(int $index): void
     {
         for ($i = $index - 1; $i > 0; --$i) {
-            if ($this->tokens[$i]->isGivenKind(T_FUNCTION) && $this->tokensAnalyzer->isLambda($i)) {
+            if ($this->tokens[$i]->isGivenKind(\T_FUNCTION) && $this->tokensAnalyzer->isLambda($i)) {
                 return;
             }
 
-            if ($this->tokens[$i]->isGivenKind(T_CLASS) && $this->tokensAnalyzer->isAnonymousClass($i)) {
+            if ($this->tokens[$i]->isGivenKind(\T_CLASS) && $this->tokensAnalyzer->isAnonymousClass($i)) {
                 return;
             }
 
@@ -398,9 +398,9 @@ switch($a) {
 
     private function fixAfterCaseToken(int $index): void
     {
-        $enumSwitchIndex = $this->tokens->getPrevTokenOfKind($index, [[T_SWITCH], [FCT::T_ENUM]]);
+        $enumSwitchIndex = $this->tokens->getPrevTokenOfKind($index, [[\T_SWITCH], [FCT::T_ENUM]]);
 
-        if (!$this->tokens[$enumSwitchIndex]->isGivenKind(T_SWITCH)) {
+        if (!$this->tokens[$enumSwitchIndex]->isGivenKind(\T_SWITCH)) {
             return;
         }
 
@@ -411,7 +411,7 @@ switch($a) {
     {
         $prevIndex = $this->tokens->getPrevMeaningfulToken($index);
 
-        if (!$this->tokens[$prevIndex]->equalsAny([';', '{', '}', ':', [T_OPEN_TAG]])) {
+        if (!$this->tokens[$prevIndex]->equalsAny([';', '{', '}', ':', [\T_OPEN_TAG]])) {
             return;
         }
 
@@ -487,7 +487,7 @@ switch($a) {
 
             $newContent = Preg::replace('/^.*\R(\h*)$/s', $ending.'$1', $content);
 
-            $this->tokens[$i] = new Token([T_WHITESPACE, $newContent]);
+            $this->tokens[$i] = new Token([\T_WHITESPACE, $newContent]);
         }
     }
 

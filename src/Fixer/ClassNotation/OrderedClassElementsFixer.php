@@ -354,8 +354,6 @@ Custom values:
      */
     private function getElements(Tokens $tokens, int $startIndex): array
     {
-        static $elementTokenKinds = [CT::T_USE_TRAIT, T_CASE, T_CONST, T_VARIABLE, T_FUNCTION];
-
         ++$startIndex;
         $elements = [];
 
@@ -376,13 +374,13 @@ Custom values:
                     return $elements;
                 }
 
-                if ($token->isGivenKind(T_ABSTRACT)) {
+                if ($token->isGivenKind(\T_ABSTRACT)) {
                     $element['abstract'] = true;
 
                     continue;
                 }
 
-                if ($token->isGivenKind(T_STATIC)) {
+                if ($token->isGivenKind(\T_STATIC)) {
                     $element['static'] = true;
 
                     continue;
@@ -392,13 +390,13 @@ Custom values:
                     $element['readonly'] = true;
                 }
 
-                if ($token->isGivenKind([T_PROTECTED, T_PRIVATE])) {
+                if ($token->isGivenKind([\T_PROTECTED, \T_PRIVATE])) {
                     $element['visibility'] = strtolower($token->getContent());
 
                     continue;
                 }
 
-                if (!$token->isGivenKind($elementTokenKinds)) {
+                if (!$token->isGivenKind([CT::T_USE_TRAIT, \T_CASE, \T_CONST, \T_VARIABLE, \T_FUNCTION])) {
                     continue;
                 }
 
@@ -431,7 +429,7 @@ Custom values:
     }
 
     /**
-     * @return list<string>|string type or array of type and name
+     * @return list{string, string}|string type or array of type and name
      */
     private function detectElementType(Tokens $tokens, int $index)
     {
@@ -441,40 +439,40 @@ Custom values:
             return 'use_trait';
         }
 
-        if ($token->isGivenKind(T_CASE)) {
+        if ($token->isGivenKind(\T_CASE)) {
             return 'case';
         }
 
-        if ($token->isGivenKind(T_CONST)) {
+        if ($token->isGivenKind(\T_CONST)) {
             return 'constant';
         }
 
-        if ($token->isGivenKind(T_VARIABLE)) {
+        if ($token->isGivenKind(\T_VARIABLE)) {
             return 'property';
         }
 
         $nameToken = $tokens[$tokens->getNextMeaningfulToken($index)];
 
-        if ($nameToken->equals([T_STRING, '__construct'], false)) {
+        if ($nameToken->equals([\T_STRING, '__construct'], false)) {
             return 'construct';
         }
 
-        if ($nameToken->equals([T_STRING, '__destruct'], false)) {
+        if ($nameToken->equals([\T_STRING, '__destruct'], false)) {
             return 'destruct';
         }
 
         if (
             $nameToken->equalsAny([
-                [T_STRING, 'setUpBeforeClass'],
-                [T_STRING, 'doSetUpBeforeClass'],
-                [T_STRING, 'tearDownAfterClass'],
-                [T_STRING, 'doTearDownAfterClass'],
-                [T_STRING, 'setUp'],
-                [T_STRING, 'doSetUp'],
-                [T_STRING, 'assertPreConditions'],
-                [T_STRING, 'assertPostConditions'],
-                [T_STRING, 'tearDown'],
-                [T_STRING, 'doTearDown'],
+                [\T_STRING, 'setUpBeforeClass'],
+                [\T_STRING, 'doSetUpBeforeClass'],
+                [\T_STRING, 'tearDownAfterClass'],
+                [\T_STRING, 'doTearDownAfterClass'],
+                [\T_STRING, 'setUp'],
+                [\T_STRING, 'doSetUp'],
+                [\T_STRING, 'assertPreConditions'],
+                [\T_STRING, 'assertPostConditions'],
+                [\T_STRING, 'tearDown'],
+                [\T_STRING, 'doTearDown'],
             ], false)
         ) {
             return ['phpunit', strtolower($nameToken->getContent())];
@@ -514,20 +512,7 @@ Custom values:
      */
     private function sortElements(array $elements): array
     {
-        static $phpunitPositions = [
-            'setupbeforeclass' => 1,
-            'dosetupbeforeclass' => 2,
-            'teardownafterclass' => 3,
-            'doteardownafterclass' => 4,
-            'setup' => 5,
-            'dosetup' => 6,
-            'assertpreconditions' => 7,
-            'assertpostconditions' => 8,
-            'teardown' => 9,
-            'doteardown' => 10,
-        ];
-
-        $getPositionType = function (array $element) use ($phpunitPositions): int {
+        $getPositionType = function (array $element): int {
             $type = $element['type'];
 
             if (\in_array($type, ['method', 'magic', 'phpunit'], true) && isset($this->typePosition["method:{$element['name']}"])) {
@@ -539,7 +524,18 @@ Custom values:
                     $position = $this->typePosition[$type];
 
                     if ('phpunit' === $type) {
-                        $position += $phpunitPositions[$element['name']];
+                        $position += [
+                            'setupbeforeclass' => 1,
+                            'dosetupbeforeclass' => 2,
+                            'teardownafterclass' => 3,
+                            'doteardownafterclass' => 4,
+                            'setup' => 5,
+                            'dosetup' => 6,
+                            'assertpreconditions' => 7,
+                            'assertpostconditions' => 8,
+                            'teardown' => 9,
+                            'doteardown' => 10,
+                        ][$element['name']];
                     }
 
                     return $position;

@@ -78,7 +78,7 @@ final class AttributeEmptyParenthesesFixer extends AbstractFixer implements Conf
     {
         $index = 0;
 
-        while (null !== $index = $tokens->getNextTokenOfKind($index, [[T_ATTRIBUTE]])) {
+        while (null !== $index = $tokens->getNextTokenOfKind($index, [[\T_ATTRIBUTE]])) {
             $nextIndex = $index;
 
             do {

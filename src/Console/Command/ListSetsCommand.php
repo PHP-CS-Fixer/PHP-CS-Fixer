@@ -33,21 +33,27 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @internal
  */
-#[AsCommand(name: 'list-sets')]
+#[AsCommand(name: 'list-sets', description: 'List all available RuleSets.')]
 final class ListSetsCommand extends Command
 {
+    /** @TODO PHP 8.0 - remove the property */
     protected static $defaultName = 'list-sets';
+
+    /** @TODO PHP 8.0 - remove the property */
+    protected static $defaultDescription = 'List all available RuleSets.';
 
     protected function configure(): void
     {
-        $this
-            ->setDefinition(
-                [
-                    new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats.', (new TextReporter())->getFormat()),
-                ]
-            )
-            ->setDescription('List all available RuleSets.')
-        ;
+        $reporterFactory = new ReporterFactory();
+        $reporterFactory->registerBuiltInReporters();
+        $formats = $reporterFactory->getFormats();
+        \assert([] !== $formats);
+
+        $this->setDefinition(
+            [
+                new InputOption('format', '', InputOption::VALUE_REQUIRED, HelpCommand::getDescriptionWithAllowedValues('To output results in other formats (%s).', $formats), (new TextReporter())->getFormat(), $formats),
+            ]
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

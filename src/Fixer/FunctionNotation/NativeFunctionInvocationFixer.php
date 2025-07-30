@@ -23,7 +23,6 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -185,7 +184,7 @@ $c = get_class($d);
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     public function isRisky(): bool
@@ -209,7 +208,6 @@ $c = get_class($d);
         $namespaces = $tokens->getNamespaceDeclarations();
 
         // 'scope' is 'namespaced' here
-        /** @var NamespaceAnalysis $namespace */
         foreach (array_reverse($namespaces) as $namespace) {
             $this->fixFunctionCalls($tokens, $this->functionFilter, $namespace->getScopeStartIndex(), $namespace->getScopeEndIndex(), $namespace->isGlobalNamespace());
         }
@@ -288,18 +286,18 @@ $c = get_class($d);
                     continue;
                 }
 
-                if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
+                if ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
                     $tokens->clearTokenAndMergeSurroundingWhitespace($prevIndex);
                 }
 
                 continue;
             }
 
-            if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
+            if ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
                 continue; // do not bother if previous token is already namespace separator
             }
 
-            $tokensToInsert[$index] = new Token([T_NS_SEPARATOR, '\\']);
+            $tokensToInsert[$index] = new Token([\T_NS_SEPARATOR, '\\']);
         }
 
         $tokens->insertSlices($tokensToInsert);

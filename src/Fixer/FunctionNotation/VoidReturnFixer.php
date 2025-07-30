@@ -32,12 +32,12 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 final class VoidReturnFixer extends AbstractFixer
 {
     private const PREVIOUS_TOKENS = [
-        T_ABSTRACT,
-        T_FINAL,
-        T_PRIVATE,
-        T_PROTECTED,
-        T_PUBLIC,
-        T_STATIC,
+        \T_ABSTRACT,
+        \T_FINAL,
+        \T_PRIVATE,
+        \T_PROTECTED,
+        \T_PUBLIC,
+        \T_STATIC,
         FCT::T_ATTRIBUTE,
     ];
 
@@ -68,7 +68,7 @@ final class VoidReturnFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_FUNCTION);
+        return $tokens->isTokenKindFound(\T_FUNCTION);
     }
 
     public function isRisky(): bool
@@ -78,26 +78,24 @@ final class VoidReturnFixer extends AbstractFixer
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        // These cause syntax errors.
-        static $excludedFunctions = [
-            [T_STRING, '__clone'],
-            [T_STRING, '__construct'],
-            [T_STRING, '__debugInfo'],
-            [T_STRING, '__destruct'],
-            [T_STRING, '__isset'],
-            [T_STRING, '__serialize'],
-            [T_STRING, '__set_state'],
-            [T_STRING, '__sleep'],
-            [T_STRING, '__toString'],
-        ];
-
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if (!$tokens[$index]->isGivenKind(\T_FUNCTION)) {
                 continue;
             }
 
             $functionName = $tokens->getNextMeaningfulToken($index);
-            if ($tokens[$functionName]->equalsAny($excludedFunctions, false)) {
+            // These cause syntax errors.
+            if ($tokens[$functionName]->equalsAny([
+                [\T_STRING, '__clone'],
+                [\T_STRING, '__construct'],
+                [\T_STRING, '__debugInfo'],
+                [\T_STRING, '__destruct'],
+                [\T_STRING, '__isset'],
+                [\T_STRING, '__serialize'],
+                [\T_STRING, '__set_state'],
+                [\T_STRING, '__sleep'],
+                [\T_STRING, '__toString'],
+            ], false)) {
                 continue;
             }
 
@@ -186,9 +184,9 @@ final class VoidReturnFixer extends AbstractFixer
         for ($i = $startIndex; $i < $endIndex; ++$i) {
             if (
                 // skip anonymous classes
-                ($tokens[$i]->isGivenKind(T_CLASS) && $tokensAnalyzer->isAnonymousClass($i))
+                ($tokens[$i]->isGivenKind(\T_CLASS) && $tokensAnalyzer->isAnonymousClass($i))
                  // skip lambda functions
-                || ($tokens[$i]->isGivenKind(T_FUNCTION) && $tokensAnalyzer->isLambda($i))
+                || ($tokens[$i]->isGivenKind(\T_FUNCTION) && $tokensAnalyzer->isLambda($i))
             ) {
                 $i = $tokens->getNextTokenOfKind($i, ['{']);
                 $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $i);
@@ -196,11 +194,11 @@ final class VoidReturnFixer extends AbstractFixer
                 continue;
             }
 
-            if ($tokens[$i]->isGivenKind([T_YIELD, T_YIELD_FROM])) {
+            if ($tokens[$i]->isGivenKind([\T_YIELD, \T_YIELD_FROM])) {
                 return false; // Generators cannot return void.
             }
 
-            if (!$tokens[$i]->isGivenKind(T_RETURN)) {
+            if (!$tokens[$i]->isGivenKind(\T_RETURN)) {
                 continue;
             }
 
@@ -221,8 +219,8 @@ final class VoidReturnFixer extends AbstractFixer
         $endFuncIndex = $tokens->getPrevTokenOfKind($index, [')']);
         $tokens->insertAt($endFuncIndex + 1, [
             new Token([CT::T_TYPE_COLON, ':']),
-            new Token([T_WHITESPACE, ' ']),
-            new Token([T_STRING, 'void']),
+            new Token([\T_WHITESPACE, ' ']),
+            new Token([\T_STRING, 'void']),
         ]);
     }
 
@@ -239,11 +237,11 @@ final class VoidReturnFixer extends AbstractFixer
             $index = $tokens->getPrevNonWhitespace($index);
 
             if ($tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
-                $index = $tokens->getPrevTokenOfKind($index, [[T_ATTRIBUTE]]);
+                $index = $tokens->getPrevTokenOfKind($index, [[\T_ATTRIBUTE]]);
             }
         } while ($tokens[$index]->isGivenKind(self::PREVIOUS_TOKENS));
 
-        if (!$tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
+        if (!$tokens[$index]->isGivenKind(\T_DOC_COMMENT)) {
             return [];
         }
 

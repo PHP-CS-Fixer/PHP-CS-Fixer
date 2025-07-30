@@ -51,7 +51,7 @@ final class IsNullFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     public function isRisky(): bool
@@ -61,13 +61,12 @@ final class IsNullFixer extends AbstractFixer
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        static $sequenceNeeded = [[T_STRING, 'is_null'], '('];
         $functionsAnalyzer = new FunctionsAnalyzer();
         $currIndex = 0;
 
         while (true) {
             // recalculate "end" because we might have added tokens in previous iteration
-            $matches = $tokens->findSequence($sequenceNeeded, $currIndex, $tokens->count() - 1, false);
+            $matches = $tokens->findSequence([[\T_STRING, 'is_null'], '('], $currIndex, $tokens->count() - 1, false);
 
             // stop looping if didn't find any new matches
             if (null === $matches) {
@@ -93,7 +92,7 @@ final class IsNullFixer extends AbstractFixer
             $prevTokenIndex = $tokens->getPrevMeaningfulToken($matches[0]);
 
             // handle function references with namespaces
-            if ($tokens[$prevTokenIndex]->isGivenKind(T_NS_SEPARATOR)) {
+            if ($tokens[$prevTokenIndex]->isGivenKind(\T_NS_SEPARATOR)) {
                 $tokens->removeTrailingWhitespace($prevTokenIndex);
                 $tokens->clearAt($prevTokenIndex);
 
@@ -126,7 +125,7 @@ final class IsNullFixer extends AbstractFixer
             // edge cases: is_null() followed/preceded by ==, ===, !=, !==, <>, (int-or-other-casting)
             $parentLeftToken = $tokens[$tokens->getPrevMeaningfulToken($isNullIndex)];
             $parentRightToken = $tokens[$tokens->getNextMeaningfulToken($referenceEnd)];
-            $parentOperations = [T_IS_EQUAL, T_IS_NOT_EQUAL, T_IS_IDENTICAL, T_IS_NOT_IDENTICAL];
+            $parentOperations = [\T_IS_EQUAL, \T_IS_NOT_EQUAL, \T_IS_IDENTICAL, \T_IS_NOT_IDENTICAL];
             $wrapIntoParentheses = $parentLeftToken->isCast() || $parentLeftToken->isGivenKind($parentOperations) || $parentRightToken->isGivenKind($parentOperations);
 
             // possible trailing comma removed
@@ -149,10 +148,10 @@ final class IsNullFixer extends AbstractFixer
 
             // sequence which we'll use as a replacement
             $replacement = [
-                new Token([T_STRING, 'null']),
-                new Token([T_WHITESPACE, ' ']),
-                new Token($isInvertedNullCheck ? [T_IS_NOT_IDENTICAL, '!=='] : [T_IS_IDENTICAL, '===']),
-                new Token([T_WHITESPACE, ' ']),
+                new Token([\T_STRING, 'null']),
+                new Token([\T_WHITESPACE, ' ']),
+                new Token($isInvertedNullCheck ? [\T_IS_NOT_IDENTICAL, '!=='] : [\T_IS_IDENTICAL, '===']),
+                new Token([\T_WHITESPACE, ' ']),
             ];
 
             if ($wrapIntoParentheses) {

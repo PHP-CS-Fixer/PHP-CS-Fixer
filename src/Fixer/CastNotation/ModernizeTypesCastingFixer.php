@@ -59,18 +59,15 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        // replacement patterns
-        static $replacement = [
-            'intval' => [T_INT_CAST, '(int)'],
-            'floatval' => [T_DOUBLE_CAST, '(float)'],
-            'doubleval' => [T_DOUBLE_CAST, '(float)'],
-            'strval' => [T_STRING_CAST, '(string)'],
-            'boolval' => [T_BOOL_CAST, '(bool)'],
-        ];
-
         $argumentsAnalyzer = new ArgumentsAnalyzer();
 
-        foreach ($replacement as $functionIdentity => $newToken) {
+        foreach ([
+            'intval' => [\T_INT_CAST, '(int)'],
+            'floatval' => [\T_DOUBLE_CAST, '(float)'],
+            'doubleval' => [\T_DOUBLE_CAST, '(float)'],
+            'strval' => [\T_STRING_CAST, '(string)'],
+            'boolval' => [\T_BOOL_CAST, '(bool)'],
+        ] as $functionIdentity => $newToken) {
             $currIndex = 0;
 
             do {
@@ -106,7 +103,7 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
 
                 for ($paramContentIndex = $openParenthesis + 1; $paramContentIndex < $paramContentEnd; ++$paramContentIndex) {
                     // not a space, means some sensible token
-                    if (!$tokens[$paramContentIndex]->isGivenKind(T_WHITESPACE)) {
+                    if (!$tokens[$paramContentIndex]->isGivenKind(\T_WHITESPACE)) {
                         ++$countParamTokens;
                     }
                 }
@@ -115,12 +112,12 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
 
                 $afterCloseParenthesisIndex = $tokens->getNextMeaningfulToken($closeParenthesis);
                 $afterCloseParenthesisToken = $tokens[$afterCloseParenthesisIndex];
-                $wrapInParentheses = $afterCloseParenthesisToken->equalsAny(['[', '{']) || $afterCloseParenthesisToken->isGivenKind(T_POW);
+                $wrapInParentheses = $afterCloseParenthesisToken->equalsAny(['[', '{']) || $afterCloseParenthesisToken->isGivenKind(\T_POW);
 
                 // analyse namespace specification (root one or none) and decide what to do
                 $prevTokenIndex = $tokens->getPrevMeaningfulToken($functionName);
 
-                if ($tokens[$prevTokenIndex]->isGivenKind(T_NS_SEPARATOR)) {
+                if ($tokens[$prevTokenIndex]->isGivenKind(\T_NS_SEPARATOR)) {
                     // get rid of root namespace when it used
                     $tokens->removeTrailingWhitespace($prevTokenIndex);
                     $tokens->clearAt($prevTokenIndex);
@@ -129,7 +126,7 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
                 // perform transformation
                 $replacementSequence = [
                     new Token($newToken),
-                    new Token([T_WHITESPACE, ' ']),
+                    new Token([\T_WHITESPACE, ' ']),
                 ];
 
                 if ($wrapInParentheses) {

@@ -49,7 +49,7 @@ final class NoLeadingImportSlashFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_USE);
+        return $tokens->isTokenKindFound(\T_USE);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -61,11 +61,11 @@ final class NoLeadingImportSlashFixer extends AbstractFixer
             $nextTokenIdx = $tokens->getNextMeaningfulToken($idx);
             $nextToken = $tokens[$nextTokenIdx];
 
-            if ($nextToken->isGivenKind(T_NS_SEPARATOR)) {
+            if ($nextToken->isGivenKind(\T_NS_SEPARATOR)) {
                 $this->removeLeadingImportSlash($tokens, $nextTokenIdx);
             } elseif ($nextToken->isGivenKind([CT::T_FUNCTION_IMPORT, CT::T_CONST_IMPORT])) {
                 $nextTokenIdx = $tokens->getNextMeaningfulToken($nextTokenIdx);
-                if ($tokens[$nextTokenIdx]->isGivenKind(T_NS_SEPARATOR)) {
+                if ($tokens[$nextTokenIdx]->isGivenKind(\T_NS_SEPARATOR)) {
                     $this->removeLeadingImportSlash($tokens, $nextTokenIdx);
                 }
             }
@@ -85,6 +85,6 @@ final class NoLeadingImportSlashFixer extends AbstractFixer
             return;
         }
 
-        $tokens[$index] = new Token([T_WHITESPACE, ' ']);
+        $tokens[$index] = new Token([\T_WHITESPACE, ' ']);
     }
 }

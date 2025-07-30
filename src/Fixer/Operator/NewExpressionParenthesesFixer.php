@@ -84,7 +84,7 @@ final class NewExpressionParenthesesFixer extends AbstractFixer implements Confi
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 8_04_00 && $tokens->isTokenKindFound(T_NEW);
+        return \PHP_VERSION_ID >= 8_04_00 && $tokens->isTokenKindFound(\T_NEW);
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
@@ -102,7 +102,7 @@ final class NewExpressionParenthesesFixer extends AbstractFixer implements Confi
         $useParentheses = $this->configuration['use_parentheses'];
 
         for ($index = $tokens->count() - 3; $index > 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_NEW)) {
+            if (!$tokens[$index]->isGivenKind(\T_NEW)) {
                 continue;
             }
 
@@ -113,7 +113,7 @@ final class NewExpressionParenthesesFixer extends AbstractFixer implements Confi
             }
 
             // anonymous class
-            if ($tokens[$classStartIndex]->isGivenKind(T_CLASS)) {
+            if ($tokens[$classStartIndex]->isGivenKind(\T_CLASS)) {
                 $nextIndex = $tokens->getNextMeaningfulToken($classStartIndex);
 
                 if ($tokens[$nextIndex]->equals('(')) {
@@ -170,7 +170,7 @@ final class NewExpressionParenthesesFixer extends AbstractFixer implements Confi
             return;
         }
 
-        if (!$tokens[$nextIndex]->isObjectOperator() && !$tokens[$nextIndex]->isGivenKind(T_PAAMAYIM_NEKUDOTAYIM)) {
+        if (!$tokens[$nextIndex]->isObjectOperator() && !$tokens[$nextIndex]->isGivenKind(\T_PAAMAYIM_NEKUDOTAYIM)) {
             return;
         }
 
@@ -191,7 +191,7 @@ final class NewExpressionParenthesesFixer extends AbstractFixer implements Confi
 
         $operatorIndex = $tokens->getNextMeaningfulToken($nextIndex);
 
-        if (!$tokens[$operatorIndex]->isObjectOperator() && !$tokens[$operatorIndex]->isGivenKind(T_PAAMAYIM_NEKUDOTAYIM)) {
+        if (!$tokens[$operatorIndex]->isObjectOperator() && !$tokens[$operatorIndex]->isGivenKind(\T_PAAMAYIM_NEKUDOTAYIM)) {
             return;
         }
 
@@ -207,17 +207,17 @@ final class NewExpressionParenthesesFixer extends AbstractFixer implements Confi
         }
 
         // regular class name or $variable class name
-        static $nextTokens = [
-            [T_STRING],
-            [T_NS_SEPARATOR],
+        $nextTokens = [
+            [\T_STRING],
+            [\T_NS_SEPARATOR],
             [CT::T_NAMESPACE_OPERATOR],
-            [T_VARIABLE],
+            [\T_VARIABLE],
             '$',
             [CT::T_DYNAMIC_VAR_BRACE_OPEN],
             '[',
-            [T_OBJECT_OPERATOR],
-            [T_NULLSAFE_OBJECT_OPERATOR],
-            [T_PAAMAYIM_NEKUDOTAYIM],
+            [\T_OBJECT_OPERATOR],
+            [\T_NULLSAFE_OBJECT_OPERATOR],
+            [\T_PAAMAYIM_NEKUDOTAYIM],
         ];
 
         if (!$tokens[$index]->equalsAny($nextTokens)) {

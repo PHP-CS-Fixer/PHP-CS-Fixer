@@ -75,8 +75,8 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
     ];
     private const CLASS_CANDIDATE_ACCEPT_TYPES = [
         CT::T_ATTRIBUTE_CLOSE,
-        T_DOC_COMMENT,
-        T_COMMENT, // Skip comments
+        \T_DOC_COMMENT,
+        \T_COMMENT, // Skip comments
         FCT::T_READONLY,
     ];
 
@@ -121,7 +121,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_CLASS);
+        return $tokens->isTokenKindFound(\T_CLASS);
     }
 
     public function isRisky(): bool
@@ -139,15 +139,15 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_CLASS) || !$this->isClassCandidate($tokensAnalyzer, $tokens, $index)) {
+            if (!$tokens[$index]->isGivenKind(\T_CLASS) || !$this->isClassCandidate($tokensAnalyzer, $tokens, $index)) {
                 continue;
             }
 
             // make class 'final'
             $tokens->insertSlices([
                 $index => [
-                    new Token([T_FINAL, 'final']),
-                    new Token([T_WHITESPACE, ' ']),
+                    new Token([\T_FINAL, 'final']),
+                    new Token([\T_WHITESPACE, ' ']),
                 ],
             ]);
         }
@@ -254,7 +254,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
                 $currentIndex = $attributeStartIndex;
             }
 
-            if ($tokens[$currentIndex]->isGivenKind([T_DOC_COMMENT])) {
+            if ($tokens[$currentIndex]->isGivenKind(\T_DOC_COMMENT)) {
                 $decisions[] = $this->isClassCandidateBasedOnPhpDoc($tokens, $currentIndex);
             }
         }
@@ -299,7 +299,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         $currentIndex = $startIndex;
 
         while ($currentIndex < $endIndex && null !== ($currentIndex = $tokens->getNextMeaningfulToken($currentIndex))) {
-            if (!$tokens[$currentIndex]->isGivenKind([T_STRING, T_NS_SEPARATOR])) {
+            if (!$tokens[$currentIndex]->isGivenKind([\T_STRING, \T_NS_SEPARATOR])) {
                 if ('' !== $attributeString) {
                     $attributeCandidates[$attributeString] = true;
                     $attributeString = '';

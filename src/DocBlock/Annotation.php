@@ -37,9 +37,13 @@ final class Annotation
         'method',
         'param',
         'param-out',
+        'phpstan-type',
+        'phpstan-import-type',
         'property',
         'property-read',
         'property-write',
+        'psalm-type',
+        'psalm-import-type',
         'return',
         'throws',
         'type',
@@ -49,7 +53,7 @@ final class Annotation
     /**
      * The lines that make up the annotation.
      *
-     * @var array<int, Line>
+     * @var non-empty-list<Line>
      */
     private array $lines;
 
@@ -90,7 +94,7 @@ final class Annotation
     /**
      * Create a new line instance.
      *
-     * @param array<int, Line>           $lines
+     * @param non-empty-array<int, Line> $lines
      * @param null|NamespaceAnalysis     $namespace
      * @param list<NamespaceUseAnalysis> $namespaceUses
      */
@@ -176,6 +180,8 @@ final class Annotation
         );
 
         if (Preg::match($regex, $this->lines[0]->getContent(), $matches)) {
+            \assert(isset($matches['variable']));
+
             return $matches['variable'];
         }
 
@@ -218,9 +224,18 @@ final class Annotation
             return;
         }
 
-        $pattern = '/'.preg_quote($origTypesContent, '/').'/';
+        $originalTypesLines = Preg::split('/([^\n\r]+\R*)/', $origTypesContent, -1, \PREG_SPLIT_NO_EMPTY | \PREG_SPLIT_DELIM_CAPTURE);
+        $newTypesLines = Preg::split('/([^\n\r]+\R*)/', $newTypesContent, -1, \PREG_SPLIT_NO_EMPTY | \PREG_SPLIT_DELIM_CAPTURE);
 
-        $this->lines[0]->setContent(Preg::replace($pattern, $newTypesContent, $this->lines[0]->getContent(), 1));
+        \assert(\count($originalTypesLines) === \count($newTypesLines));
+
+        foreach ($newTypesLines as $index => $line) {
+            \assert(isset($originalTypesLines[$index]));
+            $pattern = '/'.preg_quote($originalTypesLines[$index], '/').'/';
+
+            \assert(isset($this->lines[$index]));
+            $this->lines[$index]->setContent(Preg::replace($pattern, $line, $this->lines[$index]->getContent(), 1));
+        }
 
         $this->clearCache();
     }
@@ -300,15 +315,14 @@ final class Annotation
                 throw new \RuntimeException('This tag does not support types.');
             }
 
-            $matchingResult = Preg::match(
+            if (Preg::match(
                 '{^(?:\h*\*|/\*\*)[\h*]*@'.$name.'\h+'.TypeExpression::REGEX_TYPES.'(?:(?:[*\h\v]|\&?[\.\$\s]).*)?\r?$}is',
-                $this->lines[0]->getContent(),
+                $this->getContent(),
                 $matches
-            );
-
-            $this->typesContent = $matchingResult
-                ? $matches['types']
-                : null;
+            )) {
+                \assert(isset($matches['types']));
+                $this->typesContent = $matches['types'];
+            }
         }
 
         return $this->typesContent;

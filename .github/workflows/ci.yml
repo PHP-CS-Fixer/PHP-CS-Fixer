@@ -107,6 +107,21 @@ jobs:
 
           - operating-system: ubuntu-24.04
             php-version: '8.4'
+            job-description: Fixer with Symfony ^8
+            run-fixer: 'yes'
+            allow-to-fail: 'yes' # because v8 is not yet stable
+            execute-flex-with-symfony-version: ^8@dev # explicit check for Symfony 8.x compatibility
+
+          - operating-system: ubuntu-24.04
+            php-version: '8.4'
+            job-description: tests with Symfony ^8
+            run-tests: 'yes'
+            allow-to-fail: 'yes' # because v8 is not yet stable
+            AVOID_PARAUNIT: 'yes' # as it doesn't support Symfony 8 yet
+            execute-flex-with-symfony-version: ^8@dev # explicit check for Symfony 8.x compatibility
+
+          - operating-system: ubuntu-24.04
+            php-version: '8.4'
             job-description: Fixer with migration rules
             run-fixer: 'yes'
             run-migration-rules: 'yes' # should be checked on the highest supported PHP version

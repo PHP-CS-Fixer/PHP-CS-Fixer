@@ -28,6 +28,19 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class MagicConstantCasingFixer extends AbstractFixer
 {
+    private const MAGIC_CONSTANTS = [
+        \T_LINE => '__LINE__',
+        \T_FILE => '__FILE__',
+        \T_DIR => '__DIR__',
+        \T_FUNC_C => '__FUNCTION__',
+        \T_CLASS_C => '__CLASS__',
+        \T_METHOD_C => '__METHOD__',
+        \T_NS_C => '__NAMESPACE__',
+        CT::T_CLASS_CONSTANT => 'class',
+        \T_TRAIT_C => '__TRAIT__',
+        FCT::T_PROPERTY_C => '__PROPERTY__',
+    ];
+
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -43,39 +56,13 @@ final class MagicConstantCasingFixer extends AbstractFixer
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $magicConstants = $this->getMagicConstants();
         $magicConstantTokens = $this->getMagicConstantTokens();
 
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind($magicConstantTokens)) {
-                $tokens[$index] = new Token([$token->getId(), $magicConstants[$token->getId()]]);
+                $tokens[$index] = new Token([$token->getId(), self::MAGIC_CONSTANTS[$token->getId()]]);
             }
         }
-    }
-
-    /**
-     * @return array<int, string>
-     */
-    private function getMagicConstants(): array
-    {
-        static $magicConstants = null;
-
-        if (null === $magicConstants) {
-            $magicConstants = [
-                T_LINE => '__LINE__',
-                T_FILE => '__FILE__',
-                T_DIR => '__DIR__',
-                T_FUNC_C => '__FUNCTION__',
-                T_CLASS_C => '__CLASS__',
-                T_METHOD_C => '__METHOD__',
-                T_NS_C => '__NAMESPACE__',
-                CT::T_CLASS_CONSTANT => 'class',
-                T_TRAIT_C => '__TRAIT__',
-                FCT::T_PROPERTY_C => '__PROPERTY__',
-            ];
-        }
-
-        return $magicConstants;
     }
 
     /**
@@ -86,7 +73,7 @@ final class MagicConstantCasingFixer extends AbstractFixer
         static $magicConstantTokens = null;
 
         if (null === $magicConstantTokens) {
-            $magicConstantTokens = array_keys($this->getMagicConstants());
+            $magicConstantTokens = array_keys(self::MAGIC_CONSTANTS);
         }
 
         return $magicConstantTokens;

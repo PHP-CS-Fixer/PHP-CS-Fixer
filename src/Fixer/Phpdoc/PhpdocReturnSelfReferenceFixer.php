@@ -111,7 +111,7 @@ class Sample
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return \count($tokens) > 10 && $tokens->isAllTokenKindsFound([T_DOC_COMMENT, T_FUNCTION]) && $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
+        return \count($tokens) > 10 && $tokens->isAllTokenKindsFound([\T_DOC_COMMENT, \T_FUNCTION]) && $tokens->isAnyTokenKindsFound(Token::getClassyTokenKinds());
     }
 
     /**
@@ -186,12 +186,10 @@ class Sample
 
     private function fixMethod(Tokens $tokens, int $index): void
     {
-        static $methodModifiers = [T_STATIC, T_FINAL, T_ABSTRACT, T_PRIVATE, T_PROTECTED, T_PUBLIC];
-
         // find PHPDoc of method (if any)
         while (true) {
             $tokenIndex = $tokens->getPrevMeaningfulToken($index);
-            if (!$tokens[$tokenIndex]->isGivenKind($methodModifiers)) {
+            if (!$tokens[$tokenIndex]->isGivenKind([\T_STATIC, \T_FINAL, \T_ABSTRACT, \T_PRIVATE, \T_PROTECTED, \T_PUBLIC])) {
                 break;
             }
 
@@ -199,7 +197,7 @@ class Sample
         }
 
         $docIndex = $tokens->getPrevNonWhitespace($index);
-        if (!$tokens[$docIndex]->isGivenKind(T_DOC_COMMENT)) {
+        if (!$tokens[$docIndex]->isGivenKind(\T_DOC_COMMENT)) {
             return;
         }
 
@@ -229,6 +227,6 @@ class Sample
         }
 
         $returnsBlock->setTypes($newTypes);
-        $tokens[$docIndex] = new Token([T_DOC_COMMENT, $docBlock->getContent()]);
+        $tokens[$docIndex] = new Token([\T_DOC_COMMENT, $docBlock->getContent()]);
     }
 }

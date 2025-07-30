@@ -97,7 +97,7 @@ class Foo {
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     /**
@@ -118,11 +118,21 @@ class Foo {
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        for ($index = $tokens->count() - 1; 0 < $index; --$index) {
-            if ($tokens[$index]->isGivenKind([T_CLASS, T_TRAIT])) {
-                $this->fixClass($tokens, $index);
+        $tokensToInsert = [];
+        $typesToExclude = [];
+
+        foreach ($tokens as $index => $token) {
+            if ($token->isGivenKind(\T_DOC_COMMENT)) {
+                $typesToExclude = array_merge($typesToExclude, self::getTypesToExclude($token->getContent()));
+
+                continue;
+            }
+            if ($tokens[$index]->isGivenKind([\T_CLASS, \T_TRAIT])) {
+                $tokensToInsert += $this->fixClass($tokens, $index, $typesToExclude);
             }
         }
+
+        $tokens->insertSlices($tokensToInsert);
     }
 
     protected function createTokensFromRawType(string $type): Tokens
@@ -135,13 +145,20 @@ class Foo {
         return $typeTokens;
     }
 
-    private function fixClass(Tokens $tokens, int $index): void
+    /**
+     * @param list<string> $typesToExclude
+     *
+     * @return array<int, list<Token>>
+     */
+    private function fixClass(Tokens $tokens, int $index, array $typesToExclude): array
     {
+        $tokensToInsert = [];
+
         $index = $tokens->getNextTokenOfKind($index, ['{']);
         $classEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
 
         for (; $index < $classEndIndex; ++$index) {
-            if ($tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if ($tokens[$index]->isGivenKind(\T_FUNCTION)) {
                 $index = $tokens->getNextTokenOfKind($index, ['{', ';']);
 
                 if ($tokens[$index]->equals('{')) {
@@ -151,7 +168,7 @@ class Foo {
                 continue;
             }
 
-            if (!$tokens[$index]->isGivenKind(T_DOC_COMMENT)) {
+            if (!$tokens[$index]->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -178,20 +195,25 @@ class Foo {
                 continue;
             }
 
+            if (\in_array($propertyType, $typesToExclude, true)) {
+                continue;
+            }
+
             if (!$this->isValidSyntax(\sprintf(self::TYPE_CHECK_TEMPLATE, $propertyType))) {
                 continue;
             }
 
             $newTokens = array_merge(
                 $this->createTypeDeclarationTokens($propertyType, $isNullable),
-                [new Token([T_WHITESPACE, ' '])]
+                [new Token([\T_WHITESPACE, ' '])]
             );
 
-            $tokens->insertAt(current($propertyIndices), $newTokens);
+            $tokensToInsert[current($propertyIndices)] = $newTokens;
 
-            $index = max($propertyIndices) + \count($newTokens) + 1;
-            $classEndIndex += \count($newTokens);
+            $index = max($propertyIndices) + 1;
         }
+
+        return $tokensToInsert;
     }
 
     /**
@@ -202,21 +224,21 @@ class Foo {
         do {
             $index = $tokens->getNextMeaningfulToken($index);
         } while ($tokens[$index]->isGivenKind([
-            T_PRIVATE,
-            T_PROTECTED,
-            T_PUBLIC,
-            T_STATIC,
-            T_VAR,
+            \T_PRIVATE,
+            \T_PROTECTED,
+            \T_PUBLIC,
+            \T_STATIC,
+            \T_VAR,
         ]));
 
-        if (!$tokens[$index]->isGivenKind(T_VARIABLE)) {
+        if (!$tokens[$index]->isGivenKind(\T_VARIABLE)) {
             return [];
         }
 
         $properties = [];
 
         while (!$tokens[$index]->equals(';')) {
-            if ($tokens[$index]->isGivenKind(T_VARIABLE)) {
+            if ($tokens[$index]->isGivenKind(\T_VARIABLE)) {
                 $properties[$tokens[$index]->getContent()] = $index;
             }
 

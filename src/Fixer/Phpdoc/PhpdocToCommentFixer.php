@@ -56,7 +56,7 @@ final class PhpdocToCommentFixer extends AbstractFixer implements ConfigurableFi
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     /**
@@ -155,7 +155,7 @@ function returnClassName() {
         $commentsAnalyzer = new CommentsAnalyzer();
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -179,7 +179,7 @@ function returnClassName() {
                 }
             }
 
-            $tokens[$index] = new Token([T_COMMENT, '/*'.ltrim($token->getContent(), '/*')]);
+            $tokens[$index] = new Token([\T_COMMENT, '/*'.ltrim($token->getContent(), '/*')]);
         }
     }
 }

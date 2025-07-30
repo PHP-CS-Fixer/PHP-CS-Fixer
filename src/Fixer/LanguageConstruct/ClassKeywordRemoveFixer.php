@@ -90,7 +90,6 @@ $className = Baz::class;
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $this->imports = [];
 
-        /** @var int $index */
         foreach ($tokensAnalyzer->getImportUseIndexes() as $index) {
             if ($index < $startIndex || $index > $endIndex) {
                 continue;
@@ -98,7 +97,7 @@ $className = Baz::class;
 
             $import = '';
             while (($index = $tokens->getNextMeaningfulToken($index)) !== null) {
-                if ($tokens[$index]->equalsAny([';', [CT::T_GROUP_IMPORT_BRACE_OPEN]]) || $tokens[$index]->isGivenKind(T_AS)) {
+                if ($tokens[$index]->equalsAny([';', [CT::T_GROUP_IMPORT_BRACE_OPEN]]) || $tokens[$index]->isGivenKind(\T_AS)) {
                     break;
                 }
 
@@ -120,7 +119,7 @@ $className = Baz::class;
                         $this->imports[] = $import.$groupImport;
                     }
                 }
-            } elseif ($tokens[$index]->isGivenKind(T_AS)) {
+            } elseif ($tokens[$index]->isGivenKind(\T_AS)) {
                 $aliasIndex = $tokens->getNextMeaningfulToken($index);
                 $alias = $tokens[$aliasIndex]->getContent();
                 $this->imports[$alias] = $import;
@@ -149,18 +148,18 @@ $className = Baz::class;
         $classEndIndex = $tokens->getPrevMeaningfulToken($classIndex);
         $classEndIndex = $tokens->getPrevMeaningfulToken($classEndIndex);
 
-        if (!$tokens[$classEndIndex]->isGivenKind(T_STRING)) {
+        if (!$tokens[$classEndIndex]->isGivenKind(\T_STRING)) {
             return;
         }
 
-        if ($tokens[$classEndIndex]->equalsAny([[T_STRING, 'self'], [T_STATIC, 'static'], [T_STRING, 'parent']], false)) {
+        if ($tokens[$classEndIndex]->equalsAny([[\T_STRING, 'self'], [\T_STATIC, 'static'], [\T_STRING, 'parent']], false)) {
             return;
         }
 
         $classBeginIndex = $classEndIndex;
         while (true) {
             $prev = $tokens->getPrevMeaningfulToken($classBeginIndex);
-            if (!$tokens[$prev]->isGivenKind([T_NS_SEPARATOR, T_STRING])) {
+            if (!$tokens[$prev]->isGivenKind([\T_NS_SEPARATOR, \T_STRING])) {
                 break;
             }
 
@@ -168,14 +167,14 @@ $className = Baz::class;
         }
 
         $classString = $tokens->generatePartialCode(
-            $tokens[$classBeginIndex]->isGivenKind(T_NS_SEPARATOR)
+            $tokens[$classBeginIndex]->isGivenKind(\T_NS_SEPARATOR)
                 ? $tokens->getNextMeaningfulToken($classBeginIndex)
                 : $classBeginIndex,
             $classEndIndex
         );
 
         $classImport = false;
-        if ($tokens[$classBeginIndex]->isGivenKind(T_NS_SEPARATOR)) {
+        if ($tokens[$classBeginIndex]->isGivenKind(\T_NS_SEPARATOR)) {
             $namespacePrefix = '';
         } else {
             foreach ($this->imports as $alias => $import) {
@@ -203,7 +202,7 @@ $className = Baz::class;
         }
 
         $tokens->insertAt($classBeginIndex, new Token([
-            T_CONSTANT_ENCAPSED_STRING,
+            \T_CONSTANT_ENCAPSED_STRING,
             "'".$this->makeClassFQN($namespacePrefix, $classImport, $classString)."'",
         ]));
     }

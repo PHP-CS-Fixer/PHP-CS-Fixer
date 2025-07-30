@@ -56,14 +56,14 @@ final class TypeExpression
             (?:
                 (?<array_shape>
                     (?<array_shape_name>(?i)(?:array|list|object)(?-i))
-                    (?<array_shape_start>\h*\{\h*)
+                    (?<array_shape_start>\h*\{[\h\v*]*)
                     (?<array_shape_inners>
                         (?<array_shape_inner>
                             (?<array_shape_inner_key>(?:(?&constant)|(?&identifier)|(?&name))\h*\??\h*:\h*|)
                             (?<array_shape_inner_value>(?&types_inner))
                         )
                         (?:
-                            \h*,\h*
+                            \h*,[\h\v*]*
                             (?&array_shape_inner)
                         )*+
                         (?:\h*,|(?!(?&array_shape_unsealed_variadic)))
@@ -80,7 +80,7 @@ final class TypeExpression
                             \h*>
                         |)
                     |)
-                    \h*\}
+                    [\h\v*]*\}
                 )
                 |
                 (?<callable> # callable syntax, e.g. `callable(string, int...): bool`, `\Closure<T>(T, int): T`
@@ -133,16 +133,16 @@ final class TypeExpression
                 |
                 (?<generic> # generic syntax, e.g.: `array<int, \Foo\Bar>`
                     (?<generic_name>(?&name))
-                    (?<generic_start>\h*<\h*)
+                    (?<generic_start>\h*<[\h\v*]*)
                     (?<generic_types>
                         (?&types_inner)
                         (?:
-                            \h*,\h*
+                            \h*,[\h\v*]*
                             (?&types_inner)
                         )*+
                         (?:\h*,)?
                     )
-                    \h*>
+                    [\h\v*]*>
                 )
                 |
                 (?<class_constant> # class constants with optional wildcard, e.g.: `Foo::*`, `Foo::CONST_A`, `FOO::CONST_*`
@@ -433,7 +433,7 @@ final class TypeExpression
                 '{\G'.self::REGEX_TYPE.'(?<glue_raw>\h*(?<glue>[|&])\h*(?!$)|$)}',
                 $this->value,
                 $matches,
-                PREG_OFFSET_CAPTURE,
+                \PREG_OFFSET_CAPTURE,
                 $index
             );
 
@@ -637,7 +637,7 @@ final class TypeExpression
         $index = 0;
         while (\strlen($value) !== $index) {
             Preg::match(
-                '{\G'.self::REGEX_TYPES.'(?:\h*,\h*|$)}',
+                '{\G'.self::REGEX_TYPES.'(?:\h*,[\h\v*]*|$)}',
                 $value,
                 $matches,
                 0,
@@ -673,7 +673,7 @@ final class TypeExpression
                 '{^'.self::REGEX_TYPES.'$}',
                 $addedPrefix.$consumedValue.'>(): void',
                 $matches,
-                PREG_OFFSET_CAPTURE
+                \PREG_OFFSET_CAPTURE
             );
 
             if ('' !== $matches['callable_template_inner_b'][0]) {
@@ -716,7 +716,7 @@ final class TypeExpression
                 '{^'.self::REGEX_TYPES.'$}',
                 $addedPrefix.$consumedValue.'): void',
                 $matches,
-                PREG_OFFSET_CAPTURE
+                \PREG_OFFSET_CAPTURE
             );
 
             $this->innerTypeExpressions[] = [
@@ -733,7 +733,7 @@ final class TypeExpression
         $index = 0;
         while (\strlen($value) !== $index) {
             Preg::match(
-                '{\G(?:(?=1)0'.self::REGEX_TYPES.'|(?<_array_shape_inner>(?&array_shape_inner))(?:\h*,\h*|$))}',
+                '{\G(?:(?=1)0'.self::REGEX_TYPES.'|(?<_array_shape_inner>(?&array_shape_inner))(?:\h*,[\h\v*]*|$))}',
                 $value,
                 $prematches,
                 0,
@@ -748,7 +748,7 @@ final class TypeExpression
                 '{^'.self::REGEX_TYPES.'$}',
                 $addedPrefix.$consumedValue.'}',
                 $matches,
-                PREG_OFFSET_CAPTURE
+                \PREG_OFFSET_CAPTURE
             );
 
             $this->innerTypeExpressions[] = [

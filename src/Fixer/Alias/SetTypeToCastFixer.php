@@ -54,21 +54,21 @@ settype($bar, "null");
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAllTokenKindsFound([T_CONSTANT_ENCAPSED_STRING, T_STRING, T_VARIABLE]);
+        return $tokens->isAllTokenKindsFound([\T_CONSTANT_ENCAPSED_STRING, \T_STRING, \T_VARIABLE]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $map = [
-            'array' => [T_ARRAY_CAST, '(array)'],
-            'bool' => [T_BOOL_CAST, '(bool)'],
-            'boolean' => [T_BOOL_CAST, '(bool)'],
-            'double' => [T_DOUBLE_CAST, '(float)'],
-            'float' => [T_DOUBLE_CAST, '(float)'],
-            'int' => [T_INT_CAST, '(int)'],
-            'integer' => [T_INT_CAST, '(int)'],
-            'object' => [T_OBJECT_CAST, '(object)'],
-            'string' => [T_STRING_CAST, '(string)'],
+            'array' => [\T_ARRAY_CAST, '(array)'],
+            'bool' => [\T_BOOL_CAST, '(bool)'],
+            'boolean' => [\T_BOOL_CAST, '(bool)'],
+            'double' => [\T_DOUBLE_CAST, '(float)'],
+            'float' => [\T_DOUBLE_CAST, '(float)'],
+            'int' => [\T_INT_CAST, '(int)'],
+            'integer' => [\T_INT_CAST, '(int)'],
+            'object' => [\T_OBJECT_CAST, '(object)'],
+            'string' => [\T_STRING_CAST, '(string)'],
             // note: `'null' is dealt with later on
         ];
 
@@ -84,7 +84,7 @@ settype($bar, "null");
 
             $prev = $tokens->getPrevMeaningfulToken($functionNameIndex);
 
-            if (!$tokens[$prev]->equalsAny([';', '{', '}', [T_OPEN_TAG]])) {
+            if (!$tokens[$prev]->equalsAny([';', '{', '}', [\T_OPEN_TAG]])) {
                 continue; // return value of the function is used
             }
 
@@ -97,7 +97,7 @@ settype($bar, "null");
                 $firstArgumentStart = $tokens->getNextMeaningfulToken($firstArgumentStart);
             }
 
-            if (!$tokens[$firstArgumentStart]->isGivenKind(T_VARIABLE)) {
+            if (!$tokens[$firstArgumentStart]->isGivenKind(\T_VARIABLE)) {
                 continue; // settype only works with variables pass by reference, function must be overridden
             }
 
@@ -118,7 +118,7 @@ settype($bar, "null");
             }
 
             if (
-                !$tokens[$secondArgumentStart]->isGivenKind(T_CONSTANT_ENCAPSED_STRING)
+                !$tokens[$secondArgumentStart]->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)
                 || $tokens->getNextMeaningfulToken($secondArgumentStart) < $secondArgumentEnd
             ) {
                 continue; // second argument is of the wrong type or is a (complex) statement of some sort (function is overridden)
@@ -155,7 +155,7 @@ settype($bar, "null");
     }
 
     /**
-     * @return list<list<int>>
+     * @return list<array{int, int, int}>
      */
     private function findSettypeCalls(Tokens $tokens): array
     {
@@ -207,11 +207,11 @@ settype($bar, "null");
             $functionNameIndex,
             [
                 clone $argumentToken,
-                new Token([T_WHITESPACE, ' ']),
+                new Token([\T_WHITESPACE, ' ']),
                 new Token('='),
-                new Token([T_WHITESPACE, ' ']),
+                new Token([\T_WHITESPACE, ' ']),
                 $castToken,
-                new Token([T_WHITESPACE, ' ']),
+                new Token([\T_WHITESPACE, ' ']),
                 clone $argumentToken,
             ]
         );
@@ -228,10 +228,10 @@ settype($bar, "null");
             $functionNameIndex,
             [
                 clone $argumentToken,
-                new Token([T_WHITESPACE, ' ']),
+                new Token([\T_WHITESPACE, ' ']),
                 new Token('='),
-                new Token([T_WHITESPACE, ' ']),
-                new Token([T_STRING, 'null']),
+                new Token([\T_WHITESPACE, ' ']),
+                new Token([\T_STRING, 'null']),
             ]
         );
 

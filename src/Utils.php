@@ -127,7 +127,7 @@ final class Utils
      *
      * @throws \InvalidArgumentException
      */
-    public static function naturalLanguageJoin(array $names, string $wrapper = '"'): string
+    public static function naturalLanguageJoin(array $names, string $wrapper = '"', string $lastJoin = 'and'): string
     {
         if (0 === \count($names)) {
             throw new \InvalidArgumentException('Array of names cannot be empty.');
@@ -142,7 +142,7 @@ final class Utils
         $last = array_pop($names);
 
         if (\count($names) > 0) {
-            return implode(', ', $names).' and '.$last;
+            return implode(', ', $names).' '.$lastJoin.' '.$last;
         }
 
         return $last;
@@ -155,16 +155,16 @@ final class Utils
      *
      * @throws \InvalidArgumentException
      */
-    public static function naturalLanguageJoinWithBackticks(array $names): string
+    public static function naturalLanguageJoinWithBackticks(array $names, string $lastJoin = 'and'): string
     {
-        return self::naturalLanguageJoin($names, '`');
+        return self::naturalLanguageJoin($names, '`', $lastJoin);
     }
 
     public static function isFutureModeEnabled(): bool
     {
         return filter_var(
             getenv('PHP_CS_FIXER_FUTURE_MODE'),
-            FILTER_VALIDATE_BOOL
+            \FILTER_VALIDATE_BOOL
         );
     }
 
@@ -181,7 +181,7 @@ final class Utils
         $message = $futureException->getMessage();
 
         self::$deprecations[$message] = true;
-        @trigger_error($message, E_USER_DEPRECATED);
+        @trigger_error($message, \E_USER_DEPRECATED);
     }
 
     /**

@@ -87,11 +87,11 @@ class Bar
 
     public function isCandidate(Tokens $tokens): bool
     {
-        if (!$tokens->isAllTokenKindsFound([T_FINAL, T_FUNCTION])) {
+        if (!$tokens->isAllTokenKindsFound([\T_FINAL, \T_FUNCTION])) {
             return false;
         }
 
-        return $tokens->isAnyTokenKindsFound([T_CLASS, FCT::T_ENUM]);
+        return $tokens->isAnyTokenKindsFound([\T_CLASS, FCT::T_ENUM]);
     }
 
     public function isRisky(): bool
@@ -134,7 +134,7 @@ class Bar
      *     token: Token,
      *     type: string,
      *     class_is_final?: bool,
-     *     method_final_index: int|null,
+     *     method_final_index: null|int,
      *     method_is_constructor?: bool,
      *     method_is_private: bool,
      *     method_of_enum: bool
@@ -143,7 +143,7 @@ class Bar
     private function getMethods(Tokens $tokens): \Generator
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $modifierKinds = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_STATIC];
+        $modifierKinds = [\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_FINAL, \T_ABSTRACT, \T_STATIC];
 
         $enums = [];
         $classesAreFinal = [];
@@ -167,9 +167,9 @@ class Bar
             do {
                 $previous = $tokens->getPrevMeaningfulToken($previous);
 
-                if ($tokens[$previous]->isGivenKind(T_PRIVATE)) {
+                if ($tokens[$previous]->isGivenKind(\T_PRIVATE)) {
                     $element['method_is_private'] = true;
-                } elseif ($tokens[$previous]->isGivenKind(T_FINAL)) {
+                } elseif ($tokens[$previous]->isGivenKind(\T_FINAL)) {
                     $element['method_final_index'] = $previous;
                 }
             } while ($tokens[$previous]->isGivenKind($modifierKinds));

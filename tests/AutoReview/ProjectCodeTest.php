@@ -160,8 +160,8 @@ final class ProjectCodeTest extends TestCase
         $tokens = $this->createTokensForClass($className);
 
         $constructorSequence = $tokens->findSequence([
-            [T_FUNCTION],
-            [T_STRING, '__construct'],
+            [\T_FUNCTION],
+            [\T_STRING, '__construct'],
             '(',
         ]);
         if (null !== $constructorSequence) {
@@ -616,7 +616,6 @@ final class ProjectCodeTest extends TestCase
             return;
         }
 
-        /** @var \ReflectionMethod $method */
         foreach ($publicMethods as $method) {
             $parameters = $method->getParameters();
 
@@ -670,8 +669,8 @@ final class ProjectCodeTest extends TestCase
             $nextToken = $tokens[$tokens->getNextMeaningfulToken($k)];
 
             // element is data provider method
-            return 'method' === $v['type'] && $nextToken->equals([T_STRING, $dataProviderName]);
-        }, ARRAY_FILTER_USE_BOTH);
+            return 'method' === $v['type'] && $nextToken->equals([\T_STRING, $dataProviderName]);
+        }, \ARRAY_FILTER_USE_BOTH);
 
         if (1 !== \count($dataProviderElements)) {
             throw new \UnexpectedValueException(\sprintf('Data provider "%s::%s" should be found exactly once, got %d times.', $testClassName, $dataProviderName, \count($dataProviderElements)));
@@ -681,12 +680,12 @@ final class ProjectCodeTest extends TestCase
         $startIndex = $tokens->getNextTokenOfKind($methodIndex, ['{']);
         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $startIndex);
 
-        $versionTokens = array_filter($tokens->findGivenKind(T_STRING, $startIndex, $endIndex), static fn (Token $v): bool => $v->equalsAny([
-            [T_STRING, 'PHP_VERSION_ID'],
-            [T_STRING, 'PHP_MAJOR_VERSION'],
-            [T_STRING, 'PHP_MINOR_VERSION'],
-            [T_STRING, 'PHP_RELEASE_VERSION'],
-            [T_STRING, 'phpversion'],
+        $versionTokens = array_filter($tokens->findGivenKind(\T_STRING, $startIndex, $endIndex), static fn (Token $v): bool => $v->equalsAny([
+            [\T_STRING, 'PHP_VERSION_ID'],
+            [\T_STRING, 'PHP_MAJOR_VERSION'],
+            [\T_STRING, 'PHP_MINOR_VERSION'],
+            [\T_STRING, 'PHP_RELEASE_VERSION'],
+            [\T_STRING, 'phpversion'],
         ], false));
 
         self::assertCount(
@@ -739,19 +738,19 @@ final class ProjectCodeTest extends TestCase
     public function testAllCodeContainSingleClassy(string $className): void
     {
         $headerTypes = [
-            T_ABSTRACT,
-            T_AS,
-            T_COMMENT,
-            T_DECLARE,
-            T_DOC_COMMENT,
-            T_FINAL,
-            T_LNUMBER,
-            T_NAMESPACE,
-            T_NS_SEPARATOR,
-            T_OPEN_TAG,
-            T_STRING,
-            T_USE,
-            T_WHITESPACE,
+            \T_ABSTRACT,
+            \T_AS,
+            \T_COMMENT,
+            \T_DECLARE,
+            \T_DOC_COMMENT,
+            \T_FINAL,
+            \T_LNUMBER,
+            \T_NAMESPACE,
+            \T_NS_SEPARATOR,
+            \T_OPEN_TAG,
+            \T_STRING,
+            \T_USE,
+            \T_WHITESPACE,
             FCT::T_READONLY,
         ];
 
@@ -918,7 +917,7 @@ final class ProjectCodeTest extends TestCase
             foreach ($alreadyFoundCases as $caseKey => $caseData) {
                 if ($serializedCandidateData === $caseData) {
                     $duplicates[] = \sprintf(
-                        'Duplicate in %s::%s: %s and %s.'.PHP_EOL,
+                        'Duplicate in %s::%s: %s and %s.'.\PHP_EOL,
                         $testClassName,
                         $dataProviderName,
                         \is_int($caseKey) ? '#'.$caseKey : '"'.$caseKey.'"',
@@ -1091,7 +1090,7 @@ final class ProjectCodeTest extends TestCase
         /** @var list<Token> $stringTokens */
         $stringTokens = array_filter(
             $tokens,
-            static fn (Token $token): bool => $token->isGivenKind(T_STRING)
+            static fn (Token $token): bool => $token->isGivenKind(\T_STRING)
         );
 
         $strings = array_map(
@@ -1158,11 +1157,11 @@ final class ProjectCodeTest extends TestCase
         $tokens = $this->createTokensForClass($testClassName);
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
-            $methodName = $tokens[$tokens->getNextTokenOfKind($index, [[T_STRING]])]->getContent();
+            $methodName = $tokens[$tokens->getNextTokenOfKind($index, [[\T_STRING]])]->getContent();
 
             $docBlock = new DocBlock($token->getContent());
             $dataProviderAnnotations = $docBlock->getAnnotationsOfType($annotation);

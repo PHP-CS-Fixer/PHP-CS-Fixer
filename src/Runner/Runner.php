@@ -42,6 +42,7 @@ use PhpCsFixer\Runner\Parallel\ProcessIdentifier;
 use PhpCsFixer\Runner\Parallel\ProcessPool;
 use PhpCsFixer\Runner\Parallel\WorkerException;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Utils;
 use React\EventLoop\StreamSelectLoop;
 use React\Socket\ConnectionInterface;
 use React\Socket\TcpServer;
@@ -188,7 +189,7 @@ final class Runner
         $changed = [];
         $streamSelectLoop = new StreamSelectLoop();
         $server = new TcpServer('127.0.0.1:0', $streamSelectLoop);
-        $serverPort = parse_url($server->getAddress() ?? '', PHP_URL_PORT);
+        $serverPort = parse_url($server->getAddress() ?? '', \PHP_URL_PORT);
 
         if (!is_numeric($serverPort)) {
             throw new ParallelisationException(\sprintf(
@@ -226,10 +227,10 @@ final class Runner
                 $connection,
                 true,
                 512,
-                JSON_INVALID_UTF8_IGNORE,
+                \JSON_INVALID_UTF8_IGNORE,
                 self::PARALLEL_BUFFER_SIZE
             );
-            $encoder = new Encoder($connection, JSON_INVALID_UTF8_IGNORE);
+            $encoder = new Encoder($connection, \JSON_INVALID_UTF8_IGNORE);
 
             // [REACT] Bind connection when worker's process requests "hello" action (enables 2-way communication)
             $decoder->on('data', static function (array $data) use ($processPool, $getFileChunk, $decoder, $encoder): void {
@@ -423,6 +424,20 @@ final class Runner
         $old = FileReader::createSingleton()->read($file->getRealPath());
 
         $tokens = Tokens::fromCode($old);
+
+        if (
+            Utils::isFutureModeEnabled() // @TODO 4.0 drop this line
+            && !filter_var(getenv('PHP_CS_FIXER_NON_MONOLITHIC'), \FILTER_VALIDATE_BOOL)
+            && !$tokens->isMonolithicPhp()
+        ) {
+            $this->dispatchEvent(
+                FileProcessed::NAME,
+                new FileProcessed(FileProcessed::STATUS_NON_MONOLITHIC)
+            );
+
+            return null;
+        }
+
         $oldHash = $tokens->getCodeHash();
 
         $new = $old;
@@ -535,7 +550,7 @@ final class Runner
 
         $this->dispatchEvent(
             FileProcessed::NAME,
-            new FileProcessed(null !== $fixInfo ? FileProcessed::STATUS_FIXED : FileProcessed::STATUS_NO_CHANGES, $filePathname, $newHash)
+            new FileProcessed(null !== $fixInfo ? FileProcessed::STATUS_FIXED : FileProcessed::STATUS_NO_CHANGES, $newHash)
         );
 
         return $fixInfo;

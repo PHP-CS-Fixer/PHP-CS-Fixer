@@ -34,7 +34,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  */
 final class NoUnusedImportsFixer extends AbstractFixer
 {
-    private const TOKENS_NOT_BEFORE_FUNCTION_CALL = [T_NEW, FCT::T_ATTRIBUTE];
+    private const TOKENS_NOT_BEFORE_FUNCTION_CALL = [\T_NEW, FCT::T_ATTRIBUTE];
 
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -57,7 +57,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_USE);
+        return $tokens->isTokenKindFound(\T_USE);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -121,21 +121,21 @@ final class NoUnusedImportsFixer extends AbstractFixer
                 continue;
             }
 
-            if ($token->isGivenKind(T_STRING)) {
+            if ($token->isGivenKind(\T_STRING)) {
                 if (0 !== strcasecmp($import->getShortName(), $token->getContent())) {
                     continue;
                 }
 
                 $prevMeaningfulToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
 
-                if ($prevMeaningfulToken->isGivenKind(T_NAMESPACE)) {
-                    $index = $tokens->getNextTokenOfKind($index, [';', '{', [T_CLOSE_TAG]]);
+                if ($prevMeaningfulToken->isGivenKind(\T_NAMESPACE)) {
+                    $index = $tokens->getNextTokenOfKind($index, [';', '{', [\T_CLOSE_TAG]]);
 
                     continue;
                 }
 
                 if (
-                    $prevMeaningfulToken->isGivenKind([T_NS_SEPARATOR, T_FUNCTION, T_CONST, T_DOUBLE_COLON])
+                    $prevMeaningfulToken->isGivenKind([\T_NS_SEPARATOR, \T_FUNCTION, \T_CONST, \T_DOUBLE_COLON])
                     || $prevMeaningfulToken->isObjectOperator()
                 ) {
                     continue;
@@ -207,7 +207,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
             if ($tokens[$prevIndex]->isComment()) {
                 $content = $tokens[$index]->getContent();
-                $tokens[$index] = new Token([T_WHITESPACE, substr($content, strrpos($content, "\n"))]); // preserve indent only
+                $tokens[$index] = new Token([\T_WHITESPACE, substr($content, strrpos($content, "\n"))]); // preserve indent only
             } else {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index);
             }
@@ -297,15 +297,15 @@ final class NoUnusedImportsFixer extends AbstractFixer
             if (
                 $tokens[$nextTokenIndex]->equals(',')
                 || $tokens[$nextTokenIndex]->equals(';')
-                || $tokens[$nextTokenIndex]->isGivenKind([CT::T_GROUP_IMPORT_BRACE_CLOSE])
+                || $tokens[$nextTokenIndex]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)
             ) {
                 $tokens->clearAt($index);
             } else {
-                $tokens[$index] = new Token([T_WHITESPACE, ' ']);
+                $tokens[$index] = new Token([\T_WHITESPACE, ' ']);
             }
 
             $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$prevTokenIndex]->isGivenKind([CT::T_GROUP_IMPORT_BRACE_OPEN])) {
+            if ($tokens[$prevTokenIndex]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                 $tokens->clearAt($index);
             }
         }
@@ -381,7 +381,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
         // Second we look for empty groups where all comma-separated chunks were removed (`use;`).
         $beforeSemicolonIndex = $tokens->getPrevMeaningfulToken($useDeclaration->getEndIndex());
         if (
-            $tokens[$beforeSemicolonIndex]->isGivenKind([T_USE])
+            $tokens[$beforeSemicolonIndex]->isGivenKind(\T_USE)
             || \in_array($tokens[$beforeSemicolonIndex]->getContent(), ['function', 'const'], true)
         ) {
             $this->removeUseDeclaration($tokens, $useDeclaration, true);

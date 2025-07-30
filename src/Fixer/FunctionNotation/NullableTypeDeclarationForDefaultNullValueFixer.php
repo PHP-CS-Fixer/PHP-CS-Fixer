@@ -89,14 +89,13 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
                     new VersionSpecification(8_02_00),
                     ['use_nullable_type_declaration' => false]
                 ),
-            ],
-            'Rule is applied only in a PHP 7.1+ environment.'
+            ]
         );
     }
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_VARIABLE) && $tokens->isAnyTokenKindsFound([T_FUNCTION, T_FN]);
+        return $tokens->isTokenKindFound(\T_VARIABLE) && $tokens->isAnyTokenKindsFound([\T_FUNCTION, \T_FN]);
     }
 
     /**
@@ -123,7 +122,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $functionsAnalyzer = new FunctionsAnalyzer();
-        $tokenKinds = [T_FUNCTION, T_FN];
+        $tokenKinds = [\T_FUNCTION, \T_FN];
 
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
@@ -204,12 +203,12 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
 
             $tokens->insertAt($endIndex + 1, [
                 new Token([CT::T_TYPE_ALTERNATION, '|']),
-                new Token([T_STRING, 'null']),
+                new Token([\T_STRING, 'null']),
             ]);
         } elseif ($argumentTypeInfo->isNullable()) {
             $startIndex = $argumentTypeInfo->getStartIndex();
 
-            $index = $tokens->getNextTokenOfKind($startIndex - 1, [[T_STRING, 'null']], false);
+            $index = $tokens->getNextTokenOfKind($startIndex - 1, [[\T_STRING, 'null']], false);
 
             if ($index === $startIndex) {
                 $tokens->removeTrailingWhitespace($index);

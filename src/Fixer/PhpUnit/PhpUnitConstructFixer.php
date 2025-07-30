@@ -143,24 +143,20 @@ final class FooTest extends \PHPUnit_Framework_TestCase {
 
     private function fixAssertNegative(Tokens $tokens, int $index, string $method): ?int
     {
-        static $map = [
+        return $this->fixAssert([
             'false' => 'assertNotFalse',
             'null' => 'assertNotNull',
             'true' => 'assertNotTrue',
-        ];
-
-        return $this->fixAssert($map, $tokens, $index, $method);
+        ], $tokens, $index, $method);
     }
 
     private function fixAssertPositive(Tokens $tokens, int $index, string $method): ?int
     {
-        static $map = [
+        return $this->fixAssert([
             'false' => 'assertFalse',
             'null' => 'assertNull',
             'true' => 'assertTrue',
-        ];
-
-        return $this->fixAssert($map, $tokens, $index, $method);
+        ], $tokens, $index, $method);
     }
 
     /**
@@ -172,7 +168,7 @@ final class FooTest extends \PHPUnit_Framework_TestCase {
 
         $sequence = $tokens->findSequence(
             [
-                [T_STRING, $method],
+                [\T_STRING, $method],
                 '(',
             ],
             $index
@@ -202,7 +198,7 @@ final class FooTest extends \PHPUnit_Framework_TestCase {
             return $sequenceIndices[3];
         }
 
-        $tokens[$sequenceIndices[0]] = new Token([T_STRING, $map[strtolower($firstParameterToken->getContent())]]);
+        $tokens[$sequenceIndices[0]] = new Token([\T_STRING, $map[strtolower($firstParameterToken->getContent())]]);
         $tokens->clearRange($sequenceIndices[2], $tokens->getNextNonWhitespace($sequenceIndices[3]) - 1);
 
         return $sequenceIndices[3];

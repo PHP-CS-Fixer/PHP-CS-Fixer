@@ -82,6 +82,11 @@ beginning:
 echo $guard?1:2;}',
         ];
 
+        yield 'handle instanceof static' => [
+            '<?php $a instanceof static ? $b : $c;',
+            '<?php $a instanceof static?$b:$c;',
+        ];
+
         yield [
             '<?php $a = $a ? 1 : 0;',
             '<?php $a = $a  ? 1 : 0;',

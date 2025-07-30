@@ -69,7 +69,7 @@ final class GitlabReporter implements ReporterInterface
             }
         }
 
-        $jsonString = json_encode($report, JSON_THROW_ON_ERROR);
+        $jsonString = json_encode($report, \JSON_THROW_ON_ERROR);
 
         return $reportSummary->isDecoratedOutput() ? OutputFormatter::escape($jsonString) : $jsonString;
     }

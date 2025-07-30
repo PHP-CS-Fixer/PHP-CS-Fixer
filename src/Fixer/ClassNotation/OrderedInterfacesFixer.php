@@ -137,15 +137,15 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_IMPLEMENTS)
-            || $tokens->isAllTokenKindsFound([T_INTERFACE, T_EXTENDS]);
+        return $tokens->isTokenKindFound(\T_IMPLEMENTS)
+            || $tokens->isAllTokenKindsFound([\T_INTERFACE, \T_EXTENDS]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_IMPLEMENTS)) {
-                if (!$token->isGivenKind(T_EXTENDS)) {
+            if (!$token->isGivenKind(\T_IMPLEMENTS)) {
+                if (!$token->isGivenKind(\T_EXTENDS)) {
                     continue;
                 }
 
@@ -153,7 +153,7 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
                 $interfaceTokenIndex = $tokens->getPrevMeaningfulToken($nameTokenIndex);
                 $interfaceToken = $tokens[$interfaceTokenIndex];
 
-                if (!$interfaceToken->isGivenKind(T_INTERFACE)) {
+                if (!$interfaceToken->isGivenKind(\T_INTERFACE)) {
                     continue;
                 }
             }
@@ -161,13 +161,14 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
             $implementsStart = $index + 1;
             $implementsEnd = $tokens->getPrevMeaningfulToken($tokens->getNextTokenOfKind($implementsStart, ['{']));
 
-            $interfaces = $this->getInterfaces($tokens, $implementsStart, $implementsEnd);
+            $interfacesTokens = $this->getInterfaces($tokens, $implementsStart, $implementsEnd);
 
-            if (1 === \count($interfaces)) {
+            if (1 === \count($interfacesTokens)) {
                 continue;
             }
 
-            foreach ($interfaces as $interfaceIndex => $interface) {
+            $interfaces = [];
+            foreach ($interfacesTokens as $interfaceIndex => $interface) {
                 $interfaceTokens = Tokens::fromArray($interface);
                 $normalized = '';
                 $actualInterfaceIndex = $interfaceTokens->getNextMeaningfulToken(-1);
