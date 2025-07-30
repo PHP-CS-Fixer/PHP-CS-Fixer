@@ -78,7 +78,7 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Changes doc blocks from single to multi line, or reversed. Works for class constants, properties and methods only.',
+            'Changes doc blocks from single to multi line, or reversed.',
             [
                 new CodeSample("<?php\n\nclass Foo{\n    /** @var bool */\n    public \$var;\n}\n"),
                 new CodeSample(
@@ -112,9 +112,9 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
                 ->setAllowedValues(['single', 'multi', null])
                 ->setDefault('multi')
                 ->getOption(),
-            (new FixerOptionBuilder('use_trait', 'Whether trait usage blocks should be single or multi line.'))
+            (new FixerOptionBuilder('trait_import', 'Whether trait usage blocks should be single or multi line.'))
                 ->setAllowedValues(['single', 'multi', null])
-                ->setDefault('single')
+                ->setDefault(null)
                 ->getOption(),
             (new FixerOptionBuilder('const', 'Whether const blocks should be single or multi line.'))
                 ->setAllowedValues(['single', 'multi', null])
@@ -130,7 +130,7 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
                 ->getOption(),
             (new FixerOptionBuilder('other', 'Whether blocks for other code lines should be single or multi line.'))
                 ->setAllowedValues(['single', 'multi', null])
-                ->setDefault('single')
+                ->setDefault(null)
                 ->getOption(),
         ]);
     }
