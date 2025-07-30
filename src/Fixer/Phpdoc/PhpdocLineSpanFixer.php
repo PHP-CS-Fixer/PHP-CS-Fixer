@@ -147,11 +147,11 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
                 continue;
             }
 
-            if (!$this->hasDocBlock($tokens, $index)) {
+            $docIndex = $this->getDocBlockIndex($tokens, $index);
+            if (null === $docIndex) {
                 continue;
             }
 
-            $docIndex = $this->getDocBlockIndex($tokens, $index);
             $doc = new DocBlock($tokens[$docIndex]->getContent());
 
             if ('multi' === $this->configuration[$type]) {
@@ -164,14 +164,7 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
         }
     }
 
-    private function hasDocBlock(Tokens $tokens, int $index): bool
-    {
-        $docBlockIndex = $this->getDocBlockIndex($tokens, $index);
-
-        return $tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT);
-    }
-
-    private function getDocBlockIndex(Tokens $tokens, int $index): int
+    private function getDocBlockIndex(Tokens $tokens, int $index): ?int
     {
         do {
             $index = $tokens->getPrevNonWhitespace($index);
@@ -181,6 +174,6 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
             }
         } while ($tokens[$index]->isGivenKind(self::PROPERTY_PART_KINDS));
 
-        return $index;
+        return $tokens[$index]->isGivenKind(\T_DOC_COMMENT) ? $index : null;
     }
 }
