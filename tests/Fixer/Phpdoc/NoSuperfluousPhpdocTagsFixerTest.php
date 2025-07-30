@@ -2655,6 +2655,25 @@ static fn ($foo): int => 1;',
                     function foo(...$x) {}
                 PHP,
         ];
+
+        yield 'multiline array shapes' => [
+            <<<'PHP'
+                <?php
+                /**
+                 * @param array{
+                 *     foo: Foo,
+                 *     bar: Bar
+                 * } $superfluous
+                 *
+                 * @param array{
+                 *     value1: bool,
+                 *     value2: int,
+                 *     value3: string,
+                 * } $notSuperfluous
+                 */
+                function foo($notSuperfluous) {}
+                PHP,
+        ];
     }
 
     /**
