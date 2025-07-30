@@ -91,7 +91,7 @@ final class DescribeCommand extends Command
     {
         $this->setDefinition(
             [
-                new InputArgument('name', InputArgument::REQUIRED, 'Name of rule / set.'),
+                new InputArgument('name', InputArgument::REQUIRED, 'Name of rule / set.', null, fn () => array_merge($this->getSetNames(), array_keys($this->getFixers()))),
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
             ]
         );

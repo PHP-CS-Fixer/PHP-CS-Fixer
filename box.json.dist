@@ -14,7 +14,8 @@
         {
             "name": [
                 "*.php",
-                "*.php8"
+                "*.php8",
+                "completion.*"
             ],
             "exclude": [
                 "Test",

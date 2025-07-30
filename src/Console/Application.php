@@ -30,6 +30,8 @@ use PhpCsFixer\ToolInfo;
 use PhpCsFixer\Utils;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Command\CompleteCommand;
+use Symfony\Component\Console\Command\DumpCompletionCommand;
 use Symfony\Component\Console\Command\ListCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
@@ -44,7 +46,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class Application extends BaseApplication
 {
     public const NAME = 'PHP CS Fixer';
-    public const VERSION = '3.84.1-DEV';
+    public const VERSION = '3.85.2-DEV';
     public const VERSION_CODENAME = 'Alexander';
 
     /**
@@ -98,6 +100,7 @@ final class Application extends BaseApplication
             $warningsDetector = new WarningsDetector($this->toolInfo);
             $warningsDetector->detectOldVendor();
             $warningsDetector->detectOldMajor();
+            $warningsDetector->detectNonMonolithic();
             $warnings = $warningsDetector->getWarnings();
 
             if (\count($warnings) > 0) {
@@ -176,7 +179,7 @@ final class Application extends BaseApplication
 
     protected function getDefaultCommands(): array
     {
-        return [new HelpCommand(), new ListCommand()];
+        return [new HelpCommand(), new ListCommand(), new CompleteCommand(), new DumpCompletionCommand()];
     }
 
     /**
