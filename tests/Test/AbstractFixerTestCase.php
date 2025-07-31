@@ -37,6 +37,7 @@ use PhpCsFixer\Tests\Fixer\ClassNotation\ClassAttributesSeparationFixerTest;
 use PhpCsFixer\Tests\Fixer\ClassNotation\ClassDefinitionFixerTest;
 use PhpCsFixer\Tests\Fixer\Comment\NoEmptyCommentFixerTest;
 use PhpCsFixer\Tests\Fixer\ControlStructure\NoUselessElseFixerTest;
+use PhpCsFixer\Tests\Fixer\LanguageConstruct\NullableTypeDeclarationFixerTest;
 use PhpCsFixer\Tests\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixerTest;
 use PhpCsFixer\Tests\Test\Assert\AssertTokensTrait;
 use PhpCsFixer\Tests\TestCase;
@@ -399,6 +400,7 @@ abstract class AbstractFixerTestCase extends TestCase
             NoEmptyCommentFixerTest::class => ['testGetCommentBlock', 'provideGetCommentBlockCases'],
             NoUselessElseFixerTest::class => ['testBlockDetection', 'provideBlockDetectionCases', 'testIsInConditionWithoutBraces', 'provideIsInConditionWithoutBracesCases'],
             PhpUnitTestCaseStaticMethodCallsFixerTest::class => ['testFixerContainsAllPhpunitStaticMethodsInItsList'],
+            NullableTypeDeclarationFixerTest::class => ['testFix80ForceLastPosition', 'provideFix80ForceLastPositionCases', 'testFix80ForceFirstPosition', 'provideFix80ForceFirstPositionCases', 'testFix80DoNotChangeUnionOrder', 'provideFix80DoNotChangeUnionOrderCases'],
         ];
 
         $names = ['Fix', 'FixDeprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'Fix85', 'WithShortOpenTag', 'WithWhitespacesConfig', 'InvalidConfiguration'];
