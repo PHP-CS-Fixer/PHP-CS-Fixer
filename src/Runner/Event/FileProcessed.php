@@ -36,22 +36,21 @@ final class FileProcessed extends Event
     public const STATUS_FIXED = 4;
     public const STATUS_EXCEPTION = 5;
     public const STATUS_LINT = 6;
+    public const STATUS_NON_MONOLITHIC = 7;
 
     /**
      * @var self::STATUS_*
      */
     private int $status;
 
-    private ?string $fileRelativePath;
     private ?string $fileHash;
 
     /**
      * @param self::STATUS_* $status
      */
-    public function __construct(int $status, ?string $fileRelativePath = null, ?string $fileHash = null)
+    public function __construct(int $status, ?string $fileHash = null)
     {
         $this->status = $status;
-        $this->fileRelativePath = $fileRelativePath;
         $this->fileHash = $fileHash;
     }
 
@@ -61,11 +60,6 @@ final class FileProcessed extends Event
     public function getStatus(): int
     {
         return $this->status;
-    }
-
-    public function getFileRelativePath(): ?string
-    {
-        return $this->fileRelativePath;
     }
 
     public function getFileHash(): ?string

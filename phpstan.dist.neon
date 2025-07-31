@@ -58,6 +58,10 @@ parameters:
         -
             message: '/^Property PhpCsFixer\\Console\\Command\\\w+Command::\$default(?:Name|Description) has no type specified\.$/'
             identifier: missingType.property
+        -
+            message: '/^Unused PhpCsFixer\\[a-zA-Z\\]+Interface::[a-zA-Z]+$/'
+            path: src
+            count: 17
     tipsOfTheDay: false
     symfony:
         consoleApplicationLoader: dev-tools/phpstan/console-application.php

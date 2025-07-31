@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0a2e899d80ef9c4e2aecaa0ac2e1f087",
+    "content-hash": "dc1c84d37cfcdf4d8168b4dbb7e8b3d4",
     "packages": [
         {
             "name": "composer-unused/contracts",
@@ -988,16 +988,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "2.1.0",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "9b30d6fd026b2c132b3985ce6b23bec09ab3aa68"
+                "reference": "b9e61a61e39e02dd90944e9115241c7f7e76bfd8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/9b30d6fd026b2c132b3985ce6b23bec09ab3aa68",
-                "reference": "9b30d6fd026b2c132b3985ce6b23bec09ab3aa68"
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/b9e61a61e39e02dd90944e9115241c7f7e76bfd8",
+                "reference": "b9e61a61e39e02dd90944e9115241c7f7e76bfd8"
             },
             "require": {
                 "php": "^7.4 || ^8.0"
@@ -1017,16 +1017,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.18",
+            "version": "2.1.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "ee1f390b7a70cdf74a2b737e554f68afea885db7"
+                "reference": "1ccf445757458c06a04eb3f803603cb118fe5fa6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/ee1f390b7a70cdf74a2b737e554f68afea885db7",
-                "reference": "ee1f390b7a70cdf74a2b737e554f68afea885db7"
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/1ccf445757458c06a04eb3f803603cb118fe5fa6",
+                "reference": "1ccf445757458c06a04eb3f803603cb118fe5fa6"
             },
             "require": {
                 "php": "^7.4|^8.0"
@@ -1048,20 +1048,20 @@
         },
         {
             "name": "phpstan/phpstan-phpunit",
-            "version": "2.0.6",
+            "version": "2.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-phpunit.git",
-                "reference": "6b92469f8a7995e626da3aa487099617b8dfa260"
+                "reference": "9a9b161baee88a5f5c58d816943cff354ff233dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-phpunit/zipball/6b92469f8a7995e626da3aa487099617b8dfa260",
-                "reference": "6b92469f8a7995e626da3aa487099617b8dfa260"
+                "url": "https://api.github.com/repos/phpstan/phpstan-phpunit/zipball/9a9b161baee88a5f5c58d816943cff354ff233dc",
+                "reference": "9a9b161baee88a5f5c58d816943cff354ff233dc"
             },
             "require": {
                 "php": "^7.4 || ^8.0",
-                "phpstan/phpstan": "^2.0.4"
+                "phpstan/phpstan": "^2.1.18"
             },
             "type": "phpstan-extension",
             "extra": {
@@ -1084,16 +1084,16 @@
         },
         {
             "name": "phpstan/phpstan-strict-rules",
-            "version": "2.0.4",
+            "version": "2.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-strict-rules.git",
-                "reference": "3e139cbe67fafa3588e1dbe27ca50f31fdb6236a"
+                "reference": "f9f77efa9de31992a832ff77ea52eb42d675b094"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-strict-rules/zipball/3e139cbe67fafa3588e1dbe27ca50f31fdb6236a",
-                "reference": "3e139cbe67fafa3588e1dbe27ca50f31fdb6236a"
+                "url": "https://api.github.com/repos/phpstan/phpstan-strict-rules/zipball/f9f77efa9de31992a832ff77ea52eb42d675b094",
+                "reference": "f9f77efa9de31992a832ff77ea52eb42d675b094"
             },
             "require": {
                 "php": "^7.4 || ^8.0",
@@ -1119,16 +1119,16 @@
         },
         {
             "name": "phpstan/phpstan-symfony",
-            "version": "2.0.6",
+            "version": "2.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-symfony.git",
-                "reference": "5005288e07583546ea00b52de4a9ac412eb869d7"
+                "reference": "392f7ab8f52a0a776977be4e62535358c28e1b15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-symfony/zipball/5005288e07583546ea00b52de4a9ac412eb869d7",
-                "reference": "5005288e07583546ea00b52de4a9ac412eb869d7"
+                "url": "https://api.github.com/repos/phpstan/phpstan-symfony/zipball/392f7ab8f52a0a776977be4e62535358c28e1b15",
+                "reference": "392f7ab8f52a0a776977be4e62535358c28e1b15"
             },
             "require": {
                 "ext-simplexml": "*",
@@ -1217,6 +1217,41 @@
                 "MIT"
             ],
             "description": "Common interface for logging libraries"
+        },
+        {
+            "name": "shipmonk/dead-code-detector",
+            "version": "0.13.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/shipmonk-rnd/dead-code-detector.git",
+                "reference": "d7cf34827e29aeb977260c01ce8f12a7d17fa7e6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/shipmonk-rnd/dead-code-detector/zipball/d7cf34827e29aeb977260c01ce8f12a7d17fa7e6",
+                "reference": "d7cf34827e29aeb977260c01ce8f12a7d17fa7e6"
+            },
+            "require": {
+                "php": "^7.4 || ^8.0",
+                "phpstan/phpstan": "^2.1.12"
+            },
+            "type": "phpstan-extension",
+            "extra": {
+                "phpstan": {
+                    "includes": [
+                        "rules.neon"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ShipMonk\\PHPStan\\DeadCode\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Dead code detector to find unused PHP code via PHPStan extension. Can automatically remove dead PHP code. Supports libraries like Symfony, Doctrine, PHPUnit etc. Detects dead cycles. Can detect dead code that is tested."
         },
         {
             "name": "shipmonk/phpstan-baseline-per-identifier",

@@ -28,6 +28,7 @@ use PhpCsFixer\Tokenizer\Analyzer\AlternativeSyntaxAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\ReferenceAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\SwitchAnalyzer;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -284,7 +285,7 @@ function foo() {
                 [\T_IS_IDENTICAL], [\T_IS_NOT_EQUAL], [\T_IS_NOT_IDENTICAL], [\T_IS_SMALLER_OR_EQUAL], [\T_MINUS_EQUAL],
                 [\T_MOD_EQUAL], [\T_MUL_EQUAL], [\T_OR_EQUAL], [\T_PAAMAYIM_NEKUDOTAYIM], [\T_PLUS_EQUAL], [\T_POW],
                 [\T_POW_EQUAL], [\T_SL], [\T_SL_EQUAL], [\T_SR], [\T_SR_EQUAL], [\T_XOR_EQUAL],
-                [\T_COALESCE], [\T_SPACESHIP],
+                [\T_COALESCE], [\T_SPACESHIP], [FCT::T_PIPE],
             ],
             array_map(static fn (int $id): array => [$id], Token::getObjectOperatorKinds()),
         );
