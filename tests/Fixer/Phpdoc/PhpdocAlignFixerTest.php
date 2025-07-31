@@ -174,7 +174,7 @@ final class PhpdocAlignFixerTest extends AbstractFixerTestCase
      * @param    string          $format
      * @param    int             $code       An HTTP response status code
      *                                       See constants
-     * @param    bool            $debug
+     * @param    bool            $dry
      * @param    bool            $debug      See constants
      *                                       See constants
      * @param    mixed           &$reference A parameter passed by reference
@@ -191,7 +191,7 @@ final class PhpdocAlignFixerTest extends AbstractFixerTestCase
      * @param string      $format
      * @param  int  $code       An HTTP response status code
      *                              See constants
-     * @param    bool         $debug
+     * @param    bool         $dry
      * @param    bool         $debug See constants
      * See constants
      * @param  mixed    &$reference     A parameter passed by reference
@@ -212,7 +212,7 @@ final class PhpdocAlignFixerTest extends AbstractFixerTestCase
      * @param string $format
      * @param int $code An HTTP response status code
      *                  See constants
-     * @param bool $debug
+     * @param bool $dry
      * @param bool $debug See constants
      *                    See constants
      * @param mixed &$reference A parameter passed by reference
@@ -229,7 +229,7 @@ final class PhpdocAlignFixerTest extends AbstractFixerTestCase
      * @param string      $format
      * @param  int  $code       An HTTP response status code
      *                              See constants
-     * @param    bool         $debug
+     * @param    bool         $dry
      * @param    bool         $debug See constants
      * See constants
      * @param  mixed    &$reference     A parameter passed by reference
@@ -250,7 +250,7 @@ final class PhpdocAlignFixerTest extends AbstractFixerTestCase
      * @param string          $format
      * @param int             $code       An HTTP response status code
      *                                    See constants
-     * @param bool            $debug
+     * @param bool            $dry
      * @param bool            $debug      See constants
      *                                    See constants
      * @param mixed           &$reference A parameter passed by reference
@@ -268,7 +268,7 @@ final class PhpdocAlignFixerTest extends AbstractFixerTestCase
      * @param string      $format
      * @param  int  $code       An HTTP response status code
      *                              See constants
-     * @param    bool         $debug
+     * @param    bool         $dry
      * @param    bool         $debug See constants
      * See constants
      * @param  mixed    &$reference     A parameter passed by reference
@@ -290,7 +290,7 @@ final class PhpdocAlignFixerTest extends AbstractFixerTestCase
      * @param string $format
      * @param int $code An HTTP response status code
      *                  See constants
-     * @param bool $debug
+     * @param bool $dry
      * @param bool $debug See constants
      *                    See constants
      * @param mixed &$reference A parameter passed by reference
@@ -308,7 +308,7 @@ final class PhpdocAlignFixerTest extends AbstractFixerTestCase
      * @param string      $format
      * @param  int  $code       An HTTP response status code
      *                              See constants
-     * @param    bool         $debug
+     * @param    bool         $dry
      * @param    bool         $debug See constants
      * See constants
      * @param  mixed    &$reference     A parameter passed by reference
