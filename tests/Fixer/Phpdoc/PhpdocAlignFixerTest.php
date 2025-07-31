@@ -1359,7 +1359,7 @@ function foo($typeless): void {}',
      * @param  string  $format
      * @param  int  $code  An HTTP response status code
      *                     See constants
-     * @param  bool  $debug
+     * @param  bool  $dry
      * @param  bool  $debug  See constants
      *                       See constants
      * @param  mixed  &$reference  A parameter passed by reference
@@ -1377,7 +1377,7 @@ function foo($typeless): void {}',
      * @param string      $format
      * @param  int  $code       An HTTP response status code
      *                              See constants
-     * @param    bool         $debug
+     * @param    bool         $dry
      * @param    bool         $debug See constants
      * See constants
      * @param  mixed    &$reference     A parameter passed by reference
@@ -1402,7 +1402,7 @@ function foo($typeless): void {}',
      * @param  string           $format
      * @param  int              $code        An HTTP response status code
      *                                       See constants
-     * @param  bool             $debug
+     * @param  bool             $dry
      * @param  bool             $debug       See constants
      *                                       See constants
      * @param  mixed            &$reference  A parameter passed by reference
@@ -1421,7 +1421,7 @@ function foo($typeless): void {}',
      * @param string      $format
      * @param  int  $code       An HTTP response status code
      *                              See constants
-     * @param    bool         $debug
+     * @param    bool         $dry
      * @param    bool         $debug See constants
      * See constants
      * @param  mixed    &$reference     A parameter passed by reference
@@ -1447,7 +1447,7 @@ function foo($typeless): void {}',
      * @param  string  $format
      * @param  int  $code  An HTTP response status code
      *                     See constants
-     * @param  bool  $debug
+     * @param  bool  $dry
      * @param  bool  $debug  See constants
      *                       See constants
      * @param  mixed  &$reference  A parameter passed by reference
@@ -1465,7 +1465,7 @@ function foo($typeless): void {}',
      * @param string      $format
      * @param  int  $code       An HTTP response status code
      *                              See constants
-     * @param    bool         $debug
+     * @param    bool         $dry
      * @param    bool         $debug See constants
      * See constants
      * @param  mixed    &$reference     A parameter passed by reference
@@ -1491,7 +1491,7 @@ function foo($typeless): void {}',
      * @param  string  $format
      * @param  int  $code  An HTTP response status code
      *                     See constants
-     * @param  bool  $debug
+     * @param  bool  $dry
      * @param  bool  $debug  See constants
      *                       See constants
      * @param  mixed  &$reference  A parameter passed by reference
@@ -1510,7 +1510,7 @@ function foo($typeless): void {}',
      * @param string      $format
      * @param  int  $code       An HTTP response status code
      *                              See constants
-     * @param    bool         $debug
+     * @param    bool         $dry
      * @param    bool         $debug See constants
      * See constants
      * @param  mixed    &$reference     A parameter passed by reference
@@ -1537,7 +1537,7 @@ function foo($typeless): void {}',
      * @param int $code
      *   An HTTP response status code
      *   See constants
-     * @param bool $debug
+     * @param bool $dry
      * @param bool $debug
      *   See constants
      *   See constants
@@ -1562,7 +1562,7 @@ function foo($typeless): void {}',
      * @param  int  $code
      *    An HTTP response status code
      *                              See constants
-     * @param    bool         $debug
+     * @param    bool         $dry
      * @param    bool         $debug
      * See constants
      * See constants
@@ -1591,7 +1591,7 @@ function foo($typeless): void {}',
      * @param string $format
      * @param int $code An HTTP response status code
      *   See constants
-     * @param bool $debug
+     * @param bool $dry
      * @param bool $debug See constants
      *   See constants
      * @param mixed &$reference A parameter passed by reference
@@ -1610,7 +1610,7 @@ function foo($typeless): void {}',
      * @param string      $format
      * @param  int  $code       An HTTP response status code
      *                              See constants
-     * @param    bool         $debug
+     * @param    bool         $dry
      * @param    bool         $debug See constants
      * See constants
      * @param  mixed    &$reference     A parameter passed by reference
@@ -1636,7 +1636,7 @@ function foo($typeless): void {}',
      * @param string $format
      * @param int $code An HTTP response status code
      *     See constants
-     * @param bool $debug
+     * @param bool $dry
      * @param bool $debug See constants
      *     See constants
      * @param mixed &$reference A parameter passed by reference
@@ -1655,7 +1655,7 @@ function foo($typeless): void {}',
      * @param string      $format
      * @param  int  $code       An HTTP response status code
      *                              See constants
-     * @param    bool         $debug
+     * @param    bool         $dry
      * @param    bool         $debug See constants
      * See constants
      * @param  mixed    &$reference     A parameter passed by reference
@@ -1681,7 +1681,7 @@ function foo($typeless): void {}',
      * @param string $format
      * @param int $code An HTTP response status code
      * See constants
-     * @param bool $debug
+     * @param bool $dry
      * @param bool $debug See constants
      * See constants
      * @param mixed &$reference A parameter passed by reference
@@ -1700,7 +1700,7 @@ function foo($typeless): void {}',
      * @param string      $format
      * @param  int  $code       An HTTP response status code
      *                              See constants
-     * @param    bool         $debug
+     * @param    bool         $dry
      * @param    bool         $debug See constants
      * See constants
      * @param  mixed    &$reference     A parameter passed by reference
