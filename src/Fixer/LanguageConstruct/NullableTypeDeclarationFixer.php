@@ -134,7 +134,7 @@ class ValueObject
                 ->setAllowedValues([self::OPTION_SYNTAX_UNION, self::OPTION_SYNTAX_QUESTION_MARK])
                 ->setDefault(self::OPTION_SYNTAX_QUESTION_MARK)
                 ->getOption(),
-            (new FixerOptionBuilder('union_null_position', 'Whether to place `null` first or last in union for nullable type. If not specified, existing unions are left as they were, and new ones ale placed first in union.'))
+            (new FixerOptionBuilder('union_null_position', 'Whether to place `null` first or last in union for nullable type. If not specified, existing unions are left as they were, and new ones are placed first in union.'))
                 ->setAllowedValues([self::OPTION_UNION_NULL_POSITION_ANY, self::OPTION_UNION_NULL_POSITION_FIRST, self::OPTION_UNION_NULL_POSITION_LAST])
                 ->setDefault(self::OPTION_UNION_NULL_POSITION_ANY)
                 ->getOption(),

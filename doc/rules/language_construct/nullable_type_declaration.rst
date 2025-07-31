@@ -21,7 +21,7 @@ Default value: ``'question_mark'``
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Whether to place ``null`` first or last in union for nullable type. If not
-specified, existing unions are left as they were, and new ones ale placed first
+specified, existing unions are left as they were, and new ones are placed first
 in union.
 
 Allowed values: ``'any'``, ``'first'`` and ``'last'``
