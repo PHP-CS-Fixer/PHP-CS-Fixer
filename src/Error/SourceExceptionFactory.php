@@ -49,13 +49,13 @@ final class SourceExceptionFactory
             foreach (['file', 'line'] as $property) {
                 $propertyReflection = $exceptionReflection->getProperty($property);
 
-                if (\PHP_VERSION_ID < 80_100) {
+                if (\PHP_VERSION_ID < 8_01_00) {
                     $propertyReflection->setAccessible(true);
                 }
 
                 $propertyReflection->setValue($exception, $error[$property]);
 
-                if (\PHP_VERSION_ID < 80_100) {
+                if (\PHP_VERSION_ID < 8_01_00) {
                     $propertyReflection->setAccessible(false);
                 }
             }
