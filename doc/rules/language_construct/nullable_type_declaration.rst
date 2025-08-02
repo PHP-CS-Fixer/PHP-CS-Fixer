@@ -72,6 +72,9 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+- `@PER <./../../ruleSets/PER.rst>`_
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 

@@ -188,6 +188,10 @@ The rule is part of the following rule sets:
 
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
 
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
+
+  ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
+
 - `@PSR2 <./../../ruleSets/PSR2.rst>`_
 - `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
 

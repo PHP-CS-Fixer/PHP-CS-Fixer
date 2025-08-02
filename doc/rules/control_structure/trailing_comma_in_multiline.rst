@@ -115,6 +115,10 @@ The rule is part of the following rule sets:
 
   ``['after_heredoc' => true, 'elements' => ['arguments', 'array_destructuring', 'arrays', 'match', 'parameters']]``
 
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
+
+  ``['after_heredoc' => true, 'elements' => ['arguments', 'array_destructuring', 'arrays', 'match', 'parameters']]``
+
 - `@PHP73Migration <./../../ruleSets/PHP73Migration.rst>`_ with config:
 
   ``['after_heredoc' => true]``

@@ -8,6 +8,8 @@ List of Available Rule sets
 - `@PER-CS1.0:risky <./PER-CS1.0Risky.rst>`_
 - `@PER-CS2.0 <./PER-CS2.0.rst>`_
 - `@PER-CS2.0:risky <./PER-CS2.0Risky.rst>`_
+- `@PER-CS3.0 <./PER-CS3.0.rst>`_
+- `@PER-CS3.0:risky <./PER-CS3.0Risky.rst>`_
 - `@PER-CS:risky <./PER-CSRisky.rst>`_
 - `@PER:risky <./PERRisky.rst>`_ *(deprecated)*
 - `@PHP54Migration <./PHP54Migration.rst>`_
