@@ -37,6 +37,7 @@ use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
+use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -848,7 +849,7 @@ final class ProjectCodeTest extends TestCase
             fn (string $className): bool => str_contains($this->getFileContentForClass($className), 'short_open_tag') && self::class !== $className
         );
         $testFilesWithShortOpenTag = array_map(
-            fn (string $className): string => './'.$this->getFilePathForClass($className),
+            fn (string $className): string => './'.Path::normalize($this->getFilePathForClass($className)),
             $testClassesWithShortOpenTag
         );
 
