@@ -98,6 +98,7 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
                          * @var string
                          */
                         $var = foo();
+
                         PHP,
                     ['other' => 'single']
                 ),
