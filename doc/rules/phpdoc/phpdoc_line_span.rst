@@ -2,11 +2,19 @@
 Rule ``phpdoc_line_span``
 =========================
 
-Changes doc blocks from single to multi line, or reversed. Works for class
-constants, properties and methods only.
+Changes doc blocks from single to multi line, or reversed.
 
 Configuration
 -------------
+
+``class``
+~~~~~~~~~
+
+Whether class/interface/trait blocks should be single or multi line.
+
+Allowed values: ``'multi'``, ``'single'`` and ``null``
+
+Default value: ``'multi'``
 
 ``const``
 ~~~~~~~~~
@@ -26,6 +34,15 @@ Allowed values: ``'multi'``, ``'single'`` and ``null``
 
 Default value: ``'multi'``
 
+``other``
+~~~~~~~~~
+
+Whether blocks for other code lines should be single or multi line.
+
+Allowed values: ``'multi'``, ``'single'`` and ``null``
+
+Default value: ``null``
+
 ``property``
 ~~~~~~~~~~~~
 
@@ -34,6 +51,15 @@ Whether property doc blocks should be single or multi line.
 Allowed values: ``'multi'``, ``'single'`` and ``null``
 
 Default value: ``'multi'``
+
+``trait_import``
+~~~~~~~~~~~~~~~~
+
+Whether trait usage blocks should be single or multi line.
+
+Allowed values: ``'multi'``, ``'single'`` and ``null``
+
+Default value: ``null``
 
 Examples
 --------
@@ -75,6 +101,23 @@ With configuration: ``['property' => 'single']``.
    +    /** @var bool */
         public $var;
     }
+
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['other' => 'single']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -/**
+   - * @var string
+   - */
+   +/** @var string */
+    $var = foo();
+   \ No newline at end of file
 
 References
 ----------
