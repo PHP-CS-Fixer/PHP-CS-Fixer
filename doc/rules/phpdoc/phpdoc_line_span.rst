@@ -117,7 +117,6 @@ With configuration: ``['other' => 'single']``.
    - */
    +/** @var string */
     $var = foo();
-   \ No newline at end of file
 
 References
 ----------
