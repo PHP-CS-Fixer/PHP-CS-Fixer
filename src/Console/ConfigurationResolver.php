@@ -238,6 +238,14 @@ final class ConfigurationResolver
     {
         if (null === $this->config) {
             foreach ($this->computeConfigFiles() as $configFile) {
+                // @TODO v4 drop handling
+                if (str_starts_with($configFile, 'deprecated:') && file_exists(substr($configFile, 11))) {
+                    throw new InvalidConfigurationException(
+                        'Using config from passed path is deprecated and will be removed in version 4.0,'
+                        .' please use "--config" instead, or move the config to the current working directory.',
+                    );
+                }
+
                 if (!file_exists($configFile)) {
                     continue;
                 }
@@ -578,23 +586,24 @@ final class ConfigurationResolver
             $configDir = is_dir($dirName) ? $dirName : $path[0];
         }
 
-        $candidates = [
-            $configDir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php',
-            $configDir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php',
-
-            // @TODO v4 drop handling (triggering error) for v2 config names
-            $configDir.\DIRECTORY_SEPARATOR.'.php_cs', // old v2 config, present here only to throw nice error message later
-            $configDir.\DIRECTORY_SEPARATOR.'.php_cs.dist', // old v2 config, present here only to throw nice error message later
-        ];
-
+        $candidates = [];
         if ($configDir !== $this->cwd) {
-            $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php';
-            $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php';
+            // @TODO v4 drop handling (triggering error)
+            $candidates[] = 'deprecated:'.$configDir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php';
+            $candidates[] = 'deprecated:'.$configDir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php';
 
             // @TODO v4 drop handling (triggering error) for v2 config names
-            $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs'; // old v2 config, present here only to throw nice error message later
-            $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs.dist'; // old v2 config, present here only to throw nice error message later
+            $candidates[] = $configDir.\DIRECTORY_SEPARATOR.'.php_cs'; // old v2 config, present here only to throw nice error message later
+            $candidates[] = $configDir.\DIRECTORY_SEPARATOR.'.php_cs.dist'; // old v2 config, present here only to throw nice error message later
         }
+
+        // @TODO v4 simply return these entries:
+        $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php';
+        $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php';
+
+        // @TODO v4 drop handling (triggering error) for v2 config names
+        $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs'; // old v2 config, present here only to throw nice error message later
+        $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs.dist'; // old v2 config, present here only to throw nice error message later
 
         return $candidates;
     }

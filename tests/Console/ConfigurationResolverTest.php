@@ -210,7 +210,10 @@ final class ConfigurationResolverTest extends TestCase
     {
         $dir = __DIR__.'/../Fixtures/ConfigurationResolverConfigFile/case_1';
 
-        $resolver = $this->createConfigurationResolver(['path' => [$dir.\DIRECTORY_SEPARATOR.'foo.php']]);
+        $resolver = $this->createConfigurationResolver([
+            'config' => $dir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php',
+            'path' => [$dir.\DIRECTORY_SEPARATOR.'foo.php'],
+        ]);
 
         self::assertSame($dir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php', $resolver->getConfigFile());
         self::assertInstanceOf(\Test1Config::class, $resolver->getConfig()); // @phpstan-ignore-line to avoid `Class Test1Config not found.`
@@ -226,63 +229,6 @@ final class ConfigurationResolverTest extends TestCase
         self::assertInstanceOf(\Test4Config::class, $resolver->getConfig()); // @phpstan-ignore-line to avoid `Class Test4Config not found.`
     }
 
-    /**
-     * @dataProvider provideResolveConfigFileChooseFileCases
-     *
-     * @param class-string<ConfigInterface> $expectedClass
-     */
-    public function testResolveConfigFileChooseFile(string $expectedFile, string $expectedClass, string $path, ?string $cwdPath = null): void
-    {
-        $resolver = $this->createConfigurationResolver(
-            ['path' => [$path]],
-            null,
-            $cwdPath ?? ''
-        );
-
-        self::assertSame($expectedFile, $resolver->getConfigFile());
-        self::assertInstanceOf($expectedClass, $resolver->getConfig());
-    }
-
-    /**
-     * @return iterable<int, array{0: string, 1: string, 2: string, 3?: string}>
-     */
-    public static function provideResolveConfigFileChooseFileCases(): iterable
-    {
-        $dirBase = self::getFixtureDir();
-
-        yield [
-            $dirBase.'case_1'.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php',
-            'Test1Config',
-            $dirBase.'case_1',
-        ];
-
-        yield [
-            $dirBase.'case_2'.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php',
-            'Test2Config',
-            $dirBase.'case_2',
-        ];
-
-        yield [
-            $dirBase.'case_3'.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php',
-            'Test3Config',
-            $dirBase.'case_3',
-        ];
-
-        yield [
-            $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php',
-            'Test6Config',
-            $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'subdir',
-            $dirBase.'case_6',
-        ];
-
-        yield [
-            $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php',
-            'Test6Config',
-            $dirBase.'case_6'.\DIRECTORY_SEPARATOR.'subdir/empty_file.php',
-            $dirBase.'case_6',
-        ];
-    }
-
     public function testResolveConfigFileChooseFileWithInvalidFile(): void
     {
         $this->expectException(InvalidConfigurationException::class);
@@ -292,7 +238,10 @@ final class ConfigurationResolverTest extends TestCase
 
         $dirBase = self::getFixtureDir();
 
-        $resolver = $this->createConfigurationResolver(['path' => [$dirBase.'case_5']]);
+        $resolver = $this->createConfigurationResolver([
+            'config' => $dirBase.'case_5/.php-cs-fixer.dist.php',
+            'path' => [$dirBase.'case_5'],
+        ]);
 
         $resolver->getConfig();
     }
@@ -304,7 +253,10 @@ final class ConfigurationResolverTest extends TestCase
 
         $dirBase = self::getFixtureDir();
 
-        $resolver = $this->createConfigurationResolver(['path' => [$dirBase.'case_7']]);
+        $resolver = $this->createConfigurationResolver([
+            'config' => $dirBase.'case_7/.php-cs-fixer.php',
+            'path' => [$dirBase.'case_7'],
+        ]);
 
         $resolver->getReporter();
     }
@@ -332,6 +284,18 @@ final class ConfigurationResolverTest extends TestCase
         ]);
 
         self::assertSame($configFile, $resolver->getConfigFile());
+    }
+
+    public function testResolveConfigFileFromPath(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('Using config from passed path is deprecated and will be removed in version 4.0, please use "--config" instead, or move the config to the current working directory.');
+
+        $dirBase = self::getFixtureDir();
+
+        $resolver = $this->createConfigurationResolver(['path' => [$dirBase.'../ci-integration']]);
+
+        $resolver->getReporter();
     }
 
     /**
@@ -1285,7 +1249,10 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
     {
         $dir = __DIR__.'/../Fixtures/ConfigurationResolverConfigFile/case_8';
 
-        $resolver = $this->createConfigurationResolver(['path' => [$dir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php']]);
+        $resolver = $this->createConfigurationResolver([
+            'config' => $dir.'/.php-cs-fixer.php',
+            'path' => [$dir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php'],
+        ]);
 
         self::assertTrue($resolver->getRiskyAllowed());
         self::assertSame(['php_unit_construct' => true], $resolver->getRules());
