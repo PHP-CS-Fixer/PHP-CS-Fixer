@@ -118,8 +118,12 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
         $configurationOrder = [];
         foreach ($this->configuration['order'] as $type) {
             $configurationOrder[] = $type;
-            $configurationOrder[] = 'phpstan-'.$type;
-            $configurationOrder[] = 'psalm-'.$type;
+            if (!\in_array('phpstan-'.$type, $this->configuration['order'], true)) {
+                $configurationOrder[] = 'phpstan-'.$type;
+            }
+            if (!\in_array('psalm-'.$type, $this->configuration['order'], true)) {
+                $configurationOrder[] = 'psalm-'.$type;
+            }
         }
 
         foreach ($tokens as $index => $token) {
