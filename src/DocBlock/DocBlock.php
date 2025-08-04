@@ -98,6 +98,7 @@ final class DocBlock
             if ($this->lines[$index]->containsATag()) {
                 // get all the lines that make up the annotation
                 $lines = \array_slice($this->lines, $index, $this->findAnnotationLength($index), true);
+                \assert([] !== $lines);
                 $annotation = new Annotation($lines, $this->namespace, $this->namespaceUses);
                 // move the index to the end of the annotation to avoid
                 // checking it again because we know the lines inside the
