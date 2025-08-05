@@ -187,6 +187,11 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitNoExpectationAnnotationFixer.php',
 ];
 $ignoreErrors[] = [
+    'message' => '#^Parameter \\#1 \\$lines of method PhpCsFixer\\\\Fixer\\\\PhpUnit\\\\PhpUnitTestAnnotationFixer\\:\\:splitUpDocBlock\\(\\) expects non\\-empty\\-list\\<PhpCsFixer\\\\DocBlock\\\\Line\\>, list\\<PhpCsFixer\\\\DocBlock\\\\Line\\> given\\.$#',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php',
+];
+$ignoreErrors[] = [
     'message' => '#^Parameter \\#2 \\$offset of function substr expects int, int\\|false given\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/NoBlankLinesAfterPhpdocFixer.php',
