@@ -58,7 +58,6 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
         $analyzer = new TokensAnalyzer($tokens);
         $this->classyElements = $analyzer->getClassyElements();
 
-        /** @var Token $docCommentToken */
         foreach ($tokens->findGivenKind(\T_DOC_COMMENT) as $index => $docCommentToken) {
             if (!$this->nextElementAcceptsDoctrineAnnotations($tokens, $index)) {
                 continue;

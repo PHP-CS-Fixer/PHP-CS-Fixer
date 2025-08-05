@@ -482,7 +482,6 @@ class Foo {
             $paramsString = $tokens->generatePartialCode($start, $end);
             Preg::matchAll('|/\*[^$]*(\$\w+)[^*]*\*/|', $paramsString, $matches);
 
-            /** @var non-empty-string $match */
             foreach ($matches[1] as $match) {
                 $argumentsInfo[$match] = self::NO_TYPE_INFO; // HINT: one could try to extract actual type for hidden param, for now we only indicate it's existence
             }

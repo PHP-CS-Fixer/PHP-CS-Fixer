@@ -533,6 +533,148 @@ final class PhpdocToPropertyTypeFixerTest extends AbstractFixerTestCase
         yield 'very long class name after ampersand' => [
             '<?php class Foo { /** @var Bar&Baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaz */ private $x; }',
         ];
+
+        yield 'types defined with "phpstan-type"' => [
+            <<<'PHP'
+                <?php
+                /**
+                 * @phpstan-type _Pair array{int, int}
+                 */
+                class Foo {
+                    /** @var _Pair */
+                    public $x;
+                }
+                /**
+                 * @phpstan-type _Trio array{int, int, int}
+                 */
+                class Bar {
+                    /** @var _Trio */
+                    private $x;
+                }
+                PHP,
+        ];
+
+        yield 'types defined with "phpstan-import-type"' => [
+            <<<'PHP'
+                <?php
+                /**
+                 * @phpstan-import-type _Pair from FooFoo
+                 */
+                class Foo {
+                    /** @var _Pair */
+                    private $x;
+                }
+                /**
+                 * @phpstan-import-type _Trio from BarBar
+                 */
+                class Bar {
+                    /** @var _Trio */
+                    private $x;
+                }
+                PHP,
+        ];
+
+        yield 'types defined with "phpstan-import-type" with alias' => [
+            <<<'PHP'
+                <?php
+                /**
+                 * @phpstan-import-type ConflictingType from FooFoo as Not_ConflictingType
+                 */
+                class Foo {
+                    /** @var Not_ConflictingType */
+                    private $x;
+                    /** @var ConflictingType */
+                    private ConflictingType $y;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
+                 * @phpstan-import-type ConflictingType from FooFoo as Not_ConflictingType
+                 */
+                class Foo {
+                    /** @var Not_ConflictingType */
+                    private $x;
+                    /** @var ConflictingType */
+                    private $y;
+                }
+                PHP,
+        ];
+
+        yield 'types defined with "psalm-type"' => [
+            <<<'PHP'
+                <?php
+                /**
+                 * @psalm-type _Pair = array{int, int}
+                 */
+                class Foo {
+                    /** @var _Pair */
+                    private $x;
+                }
+                /**
+                 * @psalm-type _Trio array{int, int, int}
+                 */
+                class Bar {
+                    /** @var _Trio */
+                    private $x;
+                }
+                PHP,
+        ];
+
+        yield 'types defined with "psalm-import-type"' => [
+            <<<'PHP'
+                <?php
+                /**
+                 * @psalm-import-type _Pair from FooFoo
+                 */
+                class Foo {
+                    /** @var _Pair */
+                    private $x;
+                }
+                /**
+                 * @psalm-import-type _Trio from BarBar
+                 */
+                class Bar {
+                    /** @var _Trio */
+                    private $x;
+                }
+                PHP,
+        ];
+
+        yield 'types defined with "psalm-import-type" with alias' => [
+            <<<'PHP'
+                <?php
+                /**
+                 * @psalm-import-type Bar from FooFoo as BarAliased
+                 */
+                class Foo {
+                    /** @var Bar */
+                    private Bar $a;
+                    /** @var BarAliased */
+                    private $b;
+                    /** @var BarAliased */
+                    private $c;
+                    /** @var Bar */
+                    private Bar $d;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
+                 * @psalm-import-type Bar from FooFoo as BarAliased
+                 */
+                class Foo {
+                    /** @var Bar */
+                    private $a;
+                    /** @var BarAliased */
+                    private $b;
+                    /** @var BarAliased */
+                    private $c;
+                    /** @var Bar */
+                    private $d;
+                }
+                PHP,
+        ];
     }
 
     /**

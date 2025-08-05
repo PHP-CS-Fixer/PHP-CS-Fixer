@@ -64,24 +64,6 @@ class Bar {}
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        static $forbiddenSuccessors = [
-            \T_BREAK,
-            \T_COMMENT,
-            \T_CONTINUE,
-            \T_DECLARE,
-            \T_DOC_COMMENT,
-            \T_GOTO,
-            \T_INCLUDE,
-            \T_INCLUDE_ONCE,
-            \T_NAMESPACE,
-            \T_REQUIRE,
-            \T_REQUIRE_ONCE,
-            \T_RETURN,
-            \T_THROW,
-            \T_USE,
-            \T_WHITESPACE,
-        ];
-
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
@@ -89,7 +71,23 @@ class Bar {}
             // get the next non-whitespace token inc comments, provided
             // that there is whitespace between it and the current token
             $next = $tokens->getNextNonWhitespace($index);
-            if ($index + 2 === $next && false === $tokens[$next]->isGivenKind($forbiddenSuccessors)) {
+            if ($index + 2 === $next && false === $tokens[$next]->isGivenKind([
+                \T_BREAK,
+                \T_COMMENT,
+                \T_CONTINUE,
+                \T_DECLARE,
+                \T_DOC_COMMENT,
+                \T_GOTO,
+                \T_INCLUDE,
+                \T_INCLUDE_ONCE,
+                \T_NAMESPACE,
+                \T_REQUIRE,
+                \T_REQUIRE_ONCE,
+                \T_RETURN,
+                \T_THROW,
+                \T_USE,
+                \T_WHITESPACE,
+            ])) {
                 $this->fixWhitespace($tokens, $index + 1);
             }
         }

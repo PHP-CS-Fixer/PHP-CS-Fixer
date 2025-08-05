@@ -399,15 +399,10 @@ interface Bar
      */
     private function createTypeDeclarationTokens(array $types, string $glue, bool $isDisjunctive = false): array
     {
-        static $specialTypes = [
+        $specialTypes = [
             'array' => [CT::T_ARRAY_TYPEHINT, 'array'],
             'callable' => [\T_CALLABLE, 'callable'],
             'static' => [\T_STATIC, 'static'],
-        ];
-
-        static $glues = [
-            '|' => [CT::T_TYPE_ALTERNATION, '|'],
-            '&' => [CT::T_TYPE_INTERSECTION, '&'],
         ];
 
         $count = \count($types);
@@ -436,7 +431,10 @@ interface Bar
             }
 
             if ($i <= $count - 2) {
-                $newTokens[] = new Token($glues[$glue]);
+                $newTokens[] = new Token([
+                    '|' => [CT::T_TYPE_ALTERNATION, '|'],
+                    '&' => [CT::T_TYPE_INTERSECTION, '&'],
+                ][$glue]);
             }
         }
 

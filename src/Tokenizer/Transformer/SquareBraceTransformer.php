@@ -107,7 +107,8 @@ final class SquareBraceTransformer extends AbstractTransformer
             return false;
         }
 
-        static $disallowedPrevTokens = [
+        $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
+        if ($prevToken->equalsAny([
             ')',
             ']',
             '}',
@@ -120,10 +121,7 @@ final class SquareBraceTransformer extends AbstractTransformer
             [CT::T_DYNAMIC_PROP_BRACE_CLOSE],
             [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
             [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
-        ];
-
-        $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
-        if ($prevToken->equalsAny($disallowedPrevTokens)) {
+        ])) {
             return false;
         }
 
@@ -141,7 +139,9 @@ final class SquareBraceTransformer extends AbstractTransformer
             return false;
         }
 
-        static $disallowedPrevTokens = [
+        $prevIndex = $tokens->getPrevMeaningfulToken($index);
+        $prevToken = $tokens[$prevIndex];
+        if ($prevToken->equalsAny([
             ')',
             ']',
             '"',
@@ -153,11 +153,7 @@ final class SquareBraceTransformer extends AbstractTransformer
             [CT::T_DYNAMIC_PROP_BRACE_CLOSE],
             [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
             [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
-        ];
-
-        $prevIndex = $tokens->getPrevMeaningfulToken($index);
-        $prevToken = $tokens[$prevIndex];
-        if ($prevToken->equalsAny($disallowedPrevTokens)) {
+        ])) {
             return false;
         }
 

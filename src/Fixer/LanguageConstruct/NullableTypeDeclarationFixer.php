@@ -52,7 +52,7 @@ final class NullableTypeDeclarationFixer extends AbstractFixer implements Config
 
     private const OPTION_SYNTAX_UNION = 'union';
     private const OPTION_SYNTAX_QUESTION_MARK = 'question_mark';
-    private const PROPERTY_MODIFIERS = [\T_PRIVATE, \T_PROTECTED, \T_PUBLIC, \T_STATIC, \T_VAR, FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET];
+    private const PROPERTY_MODIFIERS = [\T_PRIVATE, \T_PROTECTED, \T_PUBLIC, \T_STATIC, \T_ABSTRACT, \T_FINAL, \T_VAR, FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET];
 
     private int $candidateTokenKind;
 
@@ -307,19 +307,19 @@ class ValueObject
      */
     private function createTypeDeclarationTokens(array $types, bool $isQuestionMarkSyntax): array
     {
-        static $specialTypes = [
-            '?' => CT::T_NULLABLE_TYPE,
-            'array' => CT::T_ARRAY_TYPEHINT,
-            'callable' => \T_CALLABLE,
-            'static' => \T_STATIC,
-        ];
-
         $count = \count($types);
         $newTokens = [];
 
         foreach ($types as $index => $type) {
-            if (isset($specialTypes[strtolower($type)])) {
-                $newTokens[] = new Token([$specialTypes[strtolower($type)], $type]);
+            $specialType = [
+                '?' => CT::T_NULLABLE_TYPE,
+                'array' => CT::T_ARRAY_TYPEHINT,
+                'callable' => \T_CALLABLE,
+                'static' => \T_STATIC,
+            ][strtolower($type)] ?? null;
+
+            if (null !== $specialType) {
+                $newTokens[] = new Token([$specialType, $type]);
             } else {
                 foreach (explode('\\', $type) as $nsIndex => $value) {
                     if (0 === $nsIndex && '' === $value) {

@@ -60,8 +60,7 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
                     "<?php\nfunction foo(int \$a):string {};\n",
                     ['space_before' => 'one']
                 ),
-            ],
-            'Rule is applied only in a PHP 7+ environment.'
+            ]
         );
     }
 

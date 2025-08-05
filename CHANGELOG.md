@@ -3,6 +3,70 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.85.1
+---------------------
+
+* chore: update legacy deps (#8902)
+
+Changelog for v3.85.0
+---------------------
+
+* feat: `ArrayIndentationFixer` - handle closures inside attributes (#8888)
+* feat: `NullableTypeDeclarationFixer` - support final promoted properties (#8885)
+* feat: `OperatorLinebreakFixer` - support pipe operator (#8891)
+* feat: `PhpdocTypesFixer` - support multiline array shapes (#8893)
+* fix: always reach 100% of checked files (#8861)
+* fix: `BracesPositionFixer` - handle property hooks correctly (#8886)
+* fix: `NullableTypeDeclarationFixer` - handle abstract and final properties (#8876)
+* fix: `PhpdocLineSpanFixer` - handle promoted properties (#8897)
+* fix: `PhpUnitDataProviderNameFixer` - fix for multiple providers defined by attributes for one test method (#8849)
+* fix: `TernaryOperatorSpacesFixer` - handle `instanceof static` (#8879)
+* fix: `TypeDeclarationSpacesFixer` - handle asymmetric visibility and final properties (#8900)
+* chore: add initial PHP 8.5 integration test (#8871)
+* chore: add tests for public API methods (#8895)
+* chore: apply changes from `PhpdocTypesFixer` for multiline array shapes (#8894)
+* chore: baseline files without error count (#8870)
+* chore: cleanup `PhpCsFixer\DocBlock\Annotation` (#8892)
+* chore: Command name/descriptions - use attribute and static properties (#8862)
+* chore: Commands - unify way to define help content (#8881)
+* chore: ConfigurationResolver - add few missing v4 TODOs (#8882)
+* chore: fix `booleanNot.exprNotBoolean` errors (#8869)
+* chore: fix/optimize some phpdocs (#8889)
+* chore: more unification of PHP CS Fixer naming (#8854)
+* chore: PHPStan baseline - use `shipmonk/phpstan-baseline-per-identifier` (#8844)
+* chore: remove dead code (#8896)
+* chore: remove unused constants (#8864)
+* chore: remove useless `@var` annotations (#8867)
+* chore: simplify `ClassDefinitionFixer` (#8868)
+* chore: unify usage of image versions to not mention minor (#8860)
+* chore: update PHPStan (#8898)
+* chore: update PHPStan extension for `Preg::match` (#8872)
+* chore: wrong return values in `ErrorsManager` (#8863)
+* chore: `OrderedInterfacesFixer` - make code more PHPStan friendly (#8866)
+* chore: `Token` - add `@phpstan-assert-if-true` (#8865)
+* deps: bump phpstan/phpstan from 2.1.17 to 2.1.18 in /dev-tools in the phpstan group (#8859)
+* deps: bump the phpstan group in /dev-tools with 4 updates (#8890)
+* docs: better document reprecated rule sets (#8878)
+* docs: cleanup docs for PHP 7 (#8873)
+* docs: cleanup docs for PHP < 7.4 (#8855)
+* docs: ListSetsCommand,FixCommand - document possible formats in Command's definitions (#8880)
+* DX: Explicitly prevent touching non-monolithic files (#6517)
+
+Changelog for v3.84.0
+---------------------
+
+* feat: Introduce `NoUselessPrintfFixer` (#8820)
+* feat: `CastSpacesFixer` - support `(void)` cast (#8851)
+* feat: `NewExpressionParenthesesFixer` - add to `PHP84MigrationSet` (#8788)
+* feat: `VisibilityRequiredFixer` - support final promoted properties (#8835)
+* fix: `PhpdocToParamTypeFixer` - do not convert types from `phpstan-type`, `phpstan-import-type`, `psalm-type` and `psalm-import-type` (#8842)
+* fix: `PhpdocToPropertyTypeFixer` - do not convert types from `phpstan-type`, `phpstan-import-type`, `psalm-type` and `psalm-import-type` (#8847)
+* fix: `PhpdocToReturnTypeFixer` - do not convert types from `phpstan-type`, `phpstan-import-type`, `psalm-type` and `psalm-import-type` (#8846)
+* chore: introduce FCT for few missing tokens (#8845)
+* chore: remove useless static variables for const content (#8836)
+* chore: simplify `isGivenKind`/`equals`/`equalsAll` calls (#8843)
+* docs: Support for new PHP version (#8780)
+
 Changelog for v3.83.0
 ---------------------
 

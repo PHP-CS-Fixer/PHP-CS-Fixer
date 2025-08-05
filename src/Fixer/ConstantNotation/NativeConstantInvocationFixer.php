@@ -23,7 +23,6 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -149,19 +148,17 @@ namespace {
             }
         }
 
-        /** @var list<string> */
         $constantsToEscape = array_diff(
             array_unique($constantsToEscape),
             $uniqueConfiguredExclude
         );
 
         // Case-insensitive constants handling
-        static $caseInsensitiveConstants = ['null', 'false', 'true'];
         $caseInsensitiveConstantsToEscape = [];
 
         foreach ($constantsToEscape as $constantIndex => $constant) {
             $loweredConstant = strtolower($constant);
-            if (\in_array($loweredConstant, $caseInsensitiveConstants, true)) {
+            if (\in_array($loweredConstant, ['null', 'false', 'true'], true)) {
                 $caseInsensitiveConstantsToEscape[] = $loweredConstant;
                 unset($constantsToEscape[$constantIndex]);
             }
@@ -194,7 +191,6 @@ namespace {
         $namespaces = $tokens->getNamespaceDeclarations();
 
         // 'scope' is 'namespaced' here
-        /** @var NamespaceAnalysis $namespace */
         foreach (array_reverse($namespaces) as $namespace) {
             if ($namespace->isGlobalNamespace()) {
                 continue;

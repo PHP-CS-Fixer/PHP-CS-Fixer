@@ -4,11 +4,6 @@ Rule ``return_type_declaration``
 
 Adjust spacing around colon in return type declarations and backed enum types.
 
-Description
------------
-
-Rule is applied only in a PHP 7+ environment.
-
 Configuration
 -------------
 

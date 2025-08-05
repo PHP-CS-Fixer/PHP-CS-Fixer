@@ -73,11 +73,11 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
     private const CLASSY_KINDS = [\T_CLASS, \T_INTERFACE, \T_TRAIT, FCT::T_ENUM];
 
     /**
-     * @var array{
+     * @var null|array{
      *     constant?: list<class-string>,
      *     class?: list<class-string>,
      *     function?: list<class-string>
-     * }|null
+     * }
      */
     private ?array $discoveredSymbols;
 
@@ -303,7 +303,6 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
             $namespaceName = $namespace->getFullName();
 
-            /** @var _Uses $uses */
             $uses = [];
             $lastUse = null;
 

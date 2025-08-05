@@ -59,18 +59,15 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        // replacement patterns
-        static $replacement = [
+        $argumentsAnalyzer = new ArgumentsAnalyzer();
+
+        foreach ([
             'intval' => [\T_INT_CAST, '(int)'],
             'floatval' => [\T_DOUBLE_CAST, '(float)'],
             'doubleval' => [\T_DOUBLE_CAST, '(float)'],
             'strval' => [\T_STRING_CAST, '(string)'],
             'boolval' => [\T_BOOL_CAST, '(bool)'],
-        ];
-
-        $argumentsAnalyzer = new ArgumentsAnalyzer();
-
-        foreach ($replacement as $functionIdentity => $newToken) {
+        ] as $functionIdentity => $newToken) {
             $currIndex = 0;
 
             do {

@@ -42,6 +42,10 @@ abstract class AbstractNullableTypeDeclarationFixerTestCase extends AbstractFixe
     public static function provideFixCases(): iterable
     {
         yield [
+            '<?php $a instanceof static ? \DateTime::class : $c;',
+        ];
+
+        yield [
             '<?php function foo(?int $param): ?int {}',
         ];
 

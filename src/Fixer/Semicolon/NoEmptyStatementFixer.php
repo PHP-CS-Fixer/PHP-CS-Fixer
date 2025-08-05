@@ -131,16 +131,10 @@ final class NoEmptyStatementFixer extends AbstractFixer
      */
     private function fixSemicolonAfterCurlyBraceClose(Tokens $tokens, int $index, int $curlyCloseIndex): void
     {
-        static $beforeCurlyOpeningKinds = null;
-
-        if (null === $beforeCurlyOpeningKinds) {
-            $beforeCurlyOpeningKinds = [\T_ELSE, \T_FINALLY, \T_NAMESPACE, \T_OPEN_TAG];
-        }
-
         $curlyOpeningIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $curlyCloseIndex);
         $beforeCurlyOpeningIndex = $tokens->getPrevMeaningfulToken($curlyOpeningIndex);
 
-        if ($tokens[$beforeCurlyOpeningIndex]->isGivenKind($beforeCurlyOpeningKinds) || $tokens[$beforeCurlyOpeningIndex]->equalsAny([';', '{', '}'])) {
+        if ($tokens[$beforeCurlyOpeningIndex]->isGivenKind([\T_ELSE, \T_FINALLY, \T_NAMESPACE, \T_OPEN_TAG]) || $tokens[$beforeCurlyOpeningIndex]->equalsAny([';', '{', '}'])) {
             $tokens->clearTokenAndMergeSurroundingWhitespace($index);
 
             return;

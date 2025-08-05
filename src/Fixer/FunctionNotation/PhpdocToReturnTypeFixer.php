@@ -146,7 +146,16 @@ final class Foo {
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        for ($index = $tokens->count() - 1; 0 < $index; --$index) {
+        $tokensToInsert = [];
+        $typesToExclude = [];
+
+        foreach ($tokens as $index => $token) {
+            if ($token->isGivenKind(\T_DOC_COMMENT)) {
+                $typesToExclude = array_merge($typesToExclude, self::getTypesToExclude($token->getContent()));
+
+                continue;
+            }
+
             if (!$tokens[$index]->isGivenKind([\T_FUNCTION, \T_FN])) {
                 continue;
             }
@@ -198,6 +207,10 @@ final class Foo {
                 continue;
             }
 
+            if (\in_array($returnType, $typesToExclude, true)) {
+                continue;
+            }
+
             $paramsStartIndex = $tokens->getNextTokenOfKind($index, ['(']);
             $paramsEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $paramsStartIndex);
 
@@ -211,17 +224,16 @@ final class Foo {
                 continue;
             }
 
-            $tokens->insertAt(
-                $paramsEndIndex + 1,
-                array_merge(
-                    [
-                        new Token([CT::T_TYPE_COLON, ':']),
-                        new Token([\T_WHITESPACE, ' ']),
-                    ],
-                    $this->createTypeDeclarationTokens($returnType, $isNullable)
-                )
+            $tokensToInsert[$paramsEndIndex + 1] = array_merge(
+                [
+                    new Token([CT::T_TYPE_COLON, ':']),
+                    new Token([\T_WHITESPACE, ' ']),
+                ],
+                $this->createTypeDeclarationTokens($returnType, $isNullable)
             );
         }
+
+        $tokens->insertSlices($tokensToInsert);
     }
 
     protected function createTokensFromRawType(string $type): Tokens

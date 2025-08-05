@@ -245,7 +245,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
         $lines = $docBlock->getLines();
         $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $docBlockIndex);
         $lineEnd = $this->whitespacesConfig->getLineEnding();
-        array_splice($lines, -1, 0, $originalIndent.' * @'.$annotation.$lineEnd);
+        array_splice($lines, -1, 0, [new Line($originalIndent.' * @'.$annotation.$lineEnd)]);
 
         return $lines;
     }

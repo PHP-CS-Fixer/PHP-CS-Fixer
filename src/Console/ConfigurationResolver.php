@@ -62,7 +62,7 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  *      dry-run: null|bool,
  *      format: null|string,
  *      path: list<string>,
- *      path-mode: self::PATH_MODE_*,
+ *      path-mode: value-of<self::PATH_MODE_VALUES>,
  *      rules: null|string,
  *      sequential: null|string,
  *      show-progress: null|string,
@@ -80,6 +80,17 @@ final class ConfigurationResolver
 {
     public const PATH_MODE_OVERRIDE = 'override';
     public const PATH_MODE_INTERSECTION = 'intersection';
+    public const PATH_MODE_VALUES = [
+        self::PATH_MODE_OVERRIDE,
+        self::PATH_MODE_INTERSECTION,
+    ];
+
+    public const BOOL_YES = 'yes';
+    public const BOOL_NO = 'no';
+    public const BOOL_VALUES = [
+        self::BOOL_YES,
+        self::BOOL_NO,
+    ];
 
     private ?bool $allowRisky = null;
 
@@ -232,6 +243,8 @@ final class ConfigurationResolver
                 }
 
                 $configFileBasename = basename($configFile);
+
+                /** @TODO v4 drop handling (triggering error) for v2 config names */
                 $deprecatedConfigs = [
                     '.php_cs' => '.php-cs-fixer.php',
                     '.php_cs.dist' => '.php-cs-fixer.dist.php',
@@ -568,6 +581,8 @@ final class ConfigurationResolver
         $candidates = [
             $configDir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php',
             $configDir.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php',
+
+            // @TODO v4 drop handling (triggering error) for v2 config names
             $configDir.\DIRECTORY_SEPARATOR.'.php_cs', // old v2 config, present here only to throw nice error message later
             $configDir.\DIRECTORY_SEPARATOR.'.php_cs.dist', // old v2 config, present here only to throw nice error message later
         ];
@@ -575,6 +590,8 @@ final class ConfigurationResolver
         if ($configDir !== $this->cwd) {
             $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php-cs-fixer.php';
             $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php-cs-fixer.dist.php';
+
+            // @TODO v4 drop handling (triggering error) for v2 config names
             $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs'; // old v2 config, present here only to throw nice error message later
             $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs.dist'; // old v2 config, present here only to throw nice error message later
         }
@@ -839,17 +856,15 @@ final class ConfigurationResolver
             return new \ArrayIterator([new StdinFileInfo()]);
         }
 
-        $modes = [self::PATH_MODE_OVERRIDE, self::PATH_MODE_INTERSECTION];
-
         if (!\in_array(
             $this->options['path-mode'],
-            $modes,
+            self::PATH_MODE_VALUES,
             true
         )) {
             throw new InvalidConfigurationException(\sprintf(
                 'The path-mode "%s" is not defined, supported are %s.',
                 $this->options['path-mode'],
-                Utils::naturalLanguageJoin($modes)
+                Utils::naturalLanguageJoin(self::PATH_MODE_VALUES)
             ));
         }
 
@@ -949,15 +964,15 @@ final class ConfigurationResolver
     {
         $value = $this->options[$optionName];
 
-        if ('yes' === $value) {
+        if (self::BOOL_YES === $value) {
             return true;
         }
 
-        if ('no' === $value) {
+        if (self::BOOL_NO === $value) {
             return false;
         }
 
-        throw new InvalidConfigurationException(\sprintf('Expected "yes" or "no" for option "%s", got "%s".', $optionName, \is_object($value) ? \get_class($value) : (\is_scalar($value) ? $value : \gettype($value))));
+        throw new InvalidConfigurationException(\sprintf('Expected "%s" or "%s" for option "%s", got "%s".', self::BOOL_YES, self::BOOL_NO, $optionName, \is_object($value) ? \get_class($value) : (\is_scalar($value) ? $value : \gettype($value))));
     }
 
     private static function separatedContextLessInclude(string $path): ConfigInterface
