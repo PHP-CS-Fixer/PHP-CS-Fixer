@@ -39,14 +39,33 @@ Example #1
    --- Original
    +++ New
     <?php
-    function foo() {
-   -    return $bar ||
-   -        $baz;
-   +    return $bar
-   +        || $baz;
-    }
+   -$a = $b ||
+   -    $c;
+   -$d = $e +
+   -    $f;
+   +$a = $b
+   +    || $c;
+   +$d = $e
+   +    + $f;
 
 Example #2
+~~~~~~~~~~
+
+With configuration: ``['only_booleans' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -$a = $b ||
+   -    $c;
+   +$a = $b
+   +    || $c;
+    $d = $e +
+        $f;
+
+Example #3
 ~~~~~~~~~~
 
 With configuration: ``['position' => 'end']``.
@@ -56,12 +75,14 @@ With configuration: ``['position' => 'end']``.
    --- Original
    +++ New
     <?php
-    function foo() {
-   -    return $bar
-   -        || $baz;
-   +    return $bar ||
-   +        $baz;
-    }
+   -$a = $b
+   -    || $c;
+   -$d = $e
+   -    + $f;
+   +$a = $b ||
+   +    $c;
+   +$d = $e +
+   +    $f;
 
 Rule sets
 ---------
