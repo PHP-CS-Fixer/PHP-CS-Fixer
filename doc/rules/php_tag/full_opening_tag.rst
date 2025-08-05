@@ -20,6 +20,18 @@ Example #1
 
     echo "Hello!";
 
+Example #2
+~~~~~~~~~~
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+   -<?PHP
+   +<?php
+
+    echo "Hello!";
+
 Rule sets
 ---------
 
