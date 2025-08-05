@@ -10,6 +10,9 @@ class Foo extends Bar implements FooInterfaceA{
     const X = 1, Y = 2;
     var $aaa = 1, $bbb = 2;
 
+    public null|string $ccc;
+    public null|string|int $ddd;
+
     public function sampleFunction($a, $arg1, $arg2, $arg3, $foo, $b = null)
     {
         if ($a === $b) {

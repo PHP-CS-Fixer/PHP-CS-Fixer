@@ -21,6 +21,9 @@ class Foo extends Bar implements FooInterfaceA
     public $aaa = 1;
     public $bbb = 2;
 
+    public ?string $ccc;
+    public string|int|null $ddd;
+
     public function sampleFunction($a, $arg1, $arg2, $arg3, $foo, $b = null)
     {
         if ($a === $b) {
