@@ -37,6 +37,8 @@ use Symfony\Component\Console\Input\InputDefinition;
  */
 final class ProcessFactoryTest extends TestCase
 {
+    public const IS_WINDOWS = '\\' === \DIRECTORY_SEPARATOR;
+
     private InputDefinition $inputDefinition;
 
     protected function setUp(): void
@@ -75,12 +77,12 @@ final class ProcessFactoryTest extends TestCase
         $command = Preg::replace('/^(.*php-cs-fixer[\'"]? )+(.+)/', '$2', $command);
 
         self::assertSame(
-            trim(
-                \sprintf(
-                    'worker --port 1234 --identifier \'%s\' %s',
-                    $identifier->toString(),
-                    trim($expectedAdditionalArgs)
-                )
+            \sprintf(
+                'worker --port 1234 --identifier %s%s',
+                self::IS_WINDOWS
+                    ? '"'.$identifier->toString().'"'
+                    : '\''.$identifier->toString().'\'',
+                $expectedAdditionalArgs ? ' '.$expectedAdditionalArgs : '',
             ),
             $command
         );
@@ -95,6 +97,53 @@ final class ProcessFactoryTest extends TestCase
      */
     public static function provideCreateCases(): iterable
     {
+        yield 'dry run with misc options' => [
+            [
+                '--config' => 'conf.php',
+                '--diff' => true,
+                '--using-cache' => 'yes',
+                '--stop-on-violation' => true,
+            ],
+            self::createRunnerConfig(true),
+            self::IS_WINDOWS
+                ? '--dry-run --diff --stop-on-violation --config "conf.php" --using-cache "yes"'
+                : '--dry-run --diff --stop-on-violation --config \'conf.php\' --using-cache \'yes\'',
+        ];
+    }
+
+    /**
+     * @param array<string, string> $input
+     *
+     * @dataProvider provideGetCommandArgsCases
+     */
+    public function testGetCommandArgs(array $input, RunnerConfig $config, string $expectedAdditionalArgs): void
+    {
+        $factory = new ProcessFactory(new ArrayInput($input, $this->inputDefinition));
+        $identifier = ProcessIdentifier::create();
+
+        $commandByArgs = $factory->getCommandArgs(1_234, $identifier, $config);
+        $command = implode(' ', $commandByArgs);
+
+        // PHP binary and Fixer executable are not fixed, so we need to remove them from the command
+        $command = Preg::replace('/^(.*php-cs-fixer[\'"]? )+(.+)/', '$2', $command);
+
+        self::assertSame(
+            \sprintf(
+                'worker --port 1234 --identifier %s%s',
+                self::IS_WINDOWS
+                    ? '"'.$identifier->toString().'"'
+                    : '\''.$identifier->toString().'\'',
+                $expectedAdditionalArgs ? ' '.$expectedAdditionalArgs : '',
+            ),
+            $command
+        );
+    }
+
+    /**
+     * @return iterable<string, array{0: array<string, mixed>, 1: RunnerConfig, 2: string}>
+     */
+    public static function provideGetCommandArgsCases(): iterable
+    {
         yield 'no additional params' => [[], self::createRunnerConfig(false), ''];
 
         yield 'dry run' => [[], self::createRunnerConfig(true), '--dry-run'];
@@ -103,18 +152,36 @@ final class ProcessFactoryTest extends TestCase
 
         yield 'stop-on-violation enabled' => [['--stop-on-violation' => true], self::createRunnerConfig(false), '--stop-on-violation'];
 
-        yield 'allow risky' => [['--allow-risky' => 'yes'], self::createRunnerConfig(false), '--allow-risky \'yes\''];
+        yield 'allow risky' => [
+            ['--allow-risky' => 'yes'],
+            self::createRunnerConfig(false),
+            self::IS_WINDOWS
+                ? '--allow-risky "yes"'
+                : '--allow-risky \'yes\'',
+        ];
 
-        yield 'config' => [['--config' => 'foo.php'], self::createRunnerConfig(false), '--config \'foo.php\''];
+        yield 'config' => [
+            ['--config' => 'foo.php'],
+            self::createRunnerConfig(false),
+            self::IS_WINDOWS
+                ? '--config "foo.php"'
+                : '--config \'foo.php\'',
+        ];
 
-        yield 'rules' => [['--rules' => '@PhpCsFixer'], self::createRunnerConfig(false), '--rules \'@PhpCsFixer\''];
-
-        yield 'using-cache' => [['--using-cache' => 'no'], self::createRunnerConfig(false), '--using-cache \'no\''];
+        yield 'using-cache' => [
+            ['--using-cache' => 'no'],
+            self::createRunnerConfig(false),
+            self::IS_WINDOWS
+                ? '--using-cache "no"'
+                : '--using-cache \'no\'',
+        ];
 
         yield 'cache-file' => [
             ['--cache-file' => 'cache.json'],
             self::createRunnerConfig(false),
-            '--cache-file \'cache.json\'',
+            self::IS_WINDOWS
+                ? '--cache-file "cache.json"'
+                : '--cache-file \'cache.json\'',
         ];
 
         yield 'dry run with other options' => [
@@ -125,7 +192,17 @@ final class ProcessFactoryTest extends TestCase
                 '--stop-on-violation' => true,
             ],
             self::createRunnerConfig(true),
-            '--dry-run --diff --stop-on-violation --config \'conf.php\' --using-cache \'yes\'',
+            self::IS_WINDOWS
+                ? '--dry-run --diff --stop-on-violation --config "conf.php" --using-cache "yes"'
+                : '--dry-run --diff --stop-on-violation --config \'conf.php\' --using-cache \'yes\'',
+        ];
+
+        yield 'rules' => [
+            ['--rules' => '@PhpCsFixer'],
+            self::createRunnerConfig(false),
+            self::IS_WINDOWS
+                ? '--rules "@PhpCsFixer"'
+                : '--rules \'@PhpCsFixer\'',
         ];
     }
 
