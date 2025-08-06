@@ -1,44 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
+<!-- source: https://github.com/checkstyle/checkstyle/blob/master/config/checkstyle-report-1.0.0.xsd -->
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-    Copyright 2016 LinkedIn Corp.
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-        http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
--->
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:element name="checkstyle" type="checkstyleType"/>
-  <xs:complexType name="fileType">
-    <xs:sequence>
-      <xs:element type="errorType" name="error" maxOccurs="unbounded" minOccurs="0"/>
-    </xs:sequence>
-    <xs:attribute type="xs:string" name="name" use="optional"/>
-  </xs:complexType>
-  <xs:complexType name="errorType">
-    <xs:simpleContent>
-      <xs:extension base="xs:string">
-        <xs:attribute type="xs:string" name="line" use="optional"/>
-        <xs:attribute type="xs:string" name="severity" use="optional"/>
-        <xs:attribute type="xs:string" name="message" use="optional"/>
-        <xs:attribute type="xs:string" name="source" use="optional"/>
-        <xs:attribute type="xs:string" name="column" use="optional"/>
-      </xs:extension>
-    </xs:simpleContent>
-  </xs:complexType>
+
   <xs:complexType name="checkstyleType">
     <xs:sequence>
-      <xs:element type="fileType" name="file" maxOccurs="unbounded" minOccurs="0"/>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="file" type="fileType"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="exception" type="xs:string"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="error" type="errorType"/>
+      </xs:choice>
     </xs:sequence>
-    <xs:attribute type="xs:string" name="version"/>
+    <xs:attribute name="version" type="xs:string"/>
   </xs:complexType>
+
+  <xs:complexType name="fileType">
+    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="error" type="errorType"/>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="exception" type="xs:string"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="errorType">
+    <xs:attribute name="column" type="xs:positiveInteger"/>
+    <xs:attribute name="line" type="xs:positiveInteger"/>
+    <xs:attribute name="message" type="xs:string"/>
+    <xs:attribute name="severity" type="severityType"/>
+    <xs:attribute name="source" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:simpleType name="severityType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="error"/>
+      <xs:enumeration value="warning"/>
+      <xs:enumeration value="info"/>
+    </xs:restriction>
+  </xs:simpleType>
+
 </xs:schema>

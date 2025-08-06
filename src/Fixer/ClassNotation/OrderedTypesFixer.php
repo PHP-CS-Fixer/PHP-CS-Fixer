@@ -138,7 +138,7 @@ interface Bar
                 ->getOption(),
             (new FixerOptionBuilder('null_adjustment', 'Forces the position of `null` (overrides `sort_algorithm`).'))
                 ->setAllowedValues(['always_first', 'always_last', 'none'])
-                ->setDefault('always_first')
+                ->setDefault('always_first') // @TODO 4.0 change to 'always_last', as recommended in https://github.com/php-fig/per-coding-style/blob/master/migration-3.0.md#section-25---keywords-and-types
                 ->getOption(),
             (new FixerOptionBuilder('case_sensitive', 'Whether the sorting should be case sensitive.'))
                 ->setAllowedTypes(['bool'])

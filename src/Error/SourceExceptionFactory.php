@@ -48,9 +48,16 @@ final class SourceExceptionFactory
             $exceptionReflection = new \ReflectionClass($exception);
             foreach (['file', 'line'] as $property) {
                 $propertyReflection = $exceptionReflection->getProperty($property);
-                $propertyReflection->setAccessible(true);
+
+                if (\PHP_VERSION_ID < 8_01_00) {
+                    $propertyReflection->setAccessible(true);
+                }
+
                 $propertyReflection->setValue($exception, $error[$property]);
-                $propertyReflection->setAccessible(false);
+
+                if (\PHP_VERSION_ID < 8_01_00) {
+                    $propertyReflection->setAccessible(false);
+                }
             }
         } catch (\Throwable $reflectionException) {
             // Ignore if we were not able to set file/line properties. In most cases it should be fine,
