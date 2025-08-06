@@ -235,6 +235,10 @@ The rule is part of the following rule sets:
 
   ``['tokens' => ['use']]``
 
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
+
+  ``['tokens' => ['use']]``
+
 - `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
 
   ``['tokens' => ['use']]``

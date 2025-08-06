@@ -75,6 +75,10 @@ The rule is part of the following rule sets:
 
   ``['spacing' => 'one']``
 
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
+
+  ``['spacing' => 'one']``
+
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 

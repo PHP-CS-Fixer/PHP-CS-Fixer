@@ -41,6 +41,7 @@ The rule is part of the following rule sets:
 - `@PER-CS <./../../ruleSets/PER-CS.rst>`_
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_
 - `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_
 - `@PSR1 <./../../ruleSets/PSR1.rst>`_
 - `@PSR2 <./../../ruleSets/PSR2.rst>`_
 - `@PSR12 <./../../ruleSets/PSR12.rst>`_
