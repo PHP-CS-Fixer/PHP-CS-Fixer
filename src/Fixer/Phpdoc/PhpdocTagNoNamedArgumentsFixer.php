@@ -57,11 +57,6 @@ final class PhpdocTagNoNamedArgumentsFixer extends AbstractFixer implements Conf
     private string $description = '';
     private string $directory = '';
 
-    public function setWhitespacesConfig(WhitespacesFixerConfig $config): void
-    {
-        $this->whitespacesConfig = $config;
-    }
-
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
