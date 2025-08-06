@@ -124,6 +124,7 @@ final class FileRemovalTest extends TestCase
      * Must NOT be run as first test, see https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/7104.
      *
      * @runInSeparateProcess
+     * @group sf-8-problematic
      *
      * @preserveGlobalState disabled
      *
