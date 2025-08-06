@@ -118,6 +118,7 @@ jobs:
             run-tests: 'yes'
             allow-to-fail: 'yes' # because v8 is not yet stable
             AVOID_PARAUNIT: 'yes' # as it doesn't support Symfony 8 yet
+            phpunit-flags: --exclude-group=sf-8-problematic # @todo: solve before claiming Symfony 8.x support
             execute-flex-with-symfony-version: ^8@dev # explicit check for Symfony 8.x compatibility
 
           - operating-system: ubuntu-24.04
@@ -243,7 +244,7 @@ jobs:
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
-        run: vendor/bin/phpunit --testsuite unit,integration
+        run: vendor/bin/phpunit --testsuite unit,integration ${{ matrix.phpunit-flags }}
 
       - name: Run tests (via ParaUnit)
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes' && matrix.AVOID_PARAUNIT != 'yes'
@@ -335,4 +336,4 @@ jobs:
       - name: Run smoke tests
         env:
           FAST_LINT_TEST_CASES: 1
-        run: vendor/bin/phpunit --testsuite smoke
+        run: vendor/bin/phpunit --testsuite smoke ${{ matrix.phpunit-flags }}

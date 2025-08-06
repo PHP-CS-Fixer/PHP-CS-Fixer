@@ -1432,6 +1432,8 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
      * @dataProvider provideGetReporterCases
      *
      * @runInSeparateProcess
+     *
+     * @group sf-8-problematic
      */
     public function testGetReporter(string $expectedFormat, string $formatConfig, array $envs = []): void
     {
