@@ -12,8 +12,6 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-require __DIR__.'/dev-tools/vendor/kubawerlos/php-cs-fixer-custom-fixers/bootstrap.php';
-
 use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\Internal\ConfigurableFixerTemplateFixer;
@@ -76,13 +74,20 @@ $unorderedTags = [
     'TODO',
 ];
 
+$customFixers = [new ConfigurableFixerTemplateFixer()];
+
+$phpdocOnlyAllowedAnnotationsFixerConfig = [];
+
+if (file_exists(__DIR__.'/dev-tools/vendor/kubawerlos/php-cs-fixer-custom-fixers/bootstrap.php')) {
+    require __DIR__.'/dev-tools/vendor/kubawerlos/php-cs-fixer-custom-fixers/bootstrap.php';
+    $customFixers[] = new PhpdocOnlyAllowedAnnotationsFixer();
+    $phpdocOnlyAllowedAnnotationsFixerConfig = ['PhpCsFixerCustomFixers/phpdoc_only_allowed_annotations' => ['elements' => array_merge($orderedTags, $unorderedTags)]];
+}
+
 return (new Config())
     ->setParallelConfig(ParallelConfigFactory::detect()) // @TODO 4.0 no need to call this manually
     ->setRiskyAllowed(true)
-    ->registerCustomFixers([
-        new ConfigurableFixerTemplateFixer(),
-        new PhpdocOnlyAllowedAnnotationsFixer(),
-    ])
+    ->registerCustomFixers($customFixers)
     ->setRules([
         '@PHP74Migration' => true,
         '@PHP74Migration:risky' => true,
@@ -90,6 +95,7 @@ return (new Config())
         '@PhpCsFixer' => true,
         '@PhpCsFixer:risky' => true,
         'PhpCsFixerInternal/configurable_fixer_template' => true, // internal rules, shall not be used outside of main repo
+        ...$phpdocOnlyAllowedAnnotationsFixerConfig,
         'general_phpdoc_annotation_remove' => ['annotations' => ['expectedDeprecation']], // one should use PHPUnit built-in method instead
         'header_comment' => ['header' => <<<'EOF'
             This file is part of PHP CS Fixer.
@@ -105,7 +111,6 @@ return (new Config())
         'no_useless_concat_operator' => false, // TODO switch back on when the `src/Console/Application.php` no longer needs the concat
         'numeric_literal_separator' => true,
         'phpdoc_order' => ['order' => $orderedTags],
-        'PhpCsFixerCustomFixers/phpdoc_only_allowed_annotations' => ['elements' => array_merge($orderedTags, $unorderedTags)],
     ])
     ->setFinder(
         (new Finder())
