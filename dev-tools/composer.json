@@ -5,6 +5,7 @@
         "ergebnis/composer-normalize": "^2.47.0",
         "icanhazstring/composer-unused": "^0.9.4",
         "kubawerlos/composer-smaller-lock": "^1.1.0",
+        "kubawerlos/php-cs-fixer-custom-fixers": "^3.32",
         "maglnet/composer-require-checker": "^4.16.1",
         "mi-schi/phpmd-extension": "^4.3.0",
         "phpcompatibility/php-compatibility": "10.x-dev as 9.99.0",

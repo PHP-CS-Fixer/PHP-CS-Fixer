@@ -12,16 +12,76 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+require __DIR__.'/dev-tools/vendor/kubawerlos/php-cs-fixer-custom-fixers/bootstrap.php';
+
 use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\Internal\ConfigurableFixerTemplateFixer;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
+use PhpCsFixerCustomFixers\Fixer\PhpdocOnlyAllowedAnnotationsFixer;
+
+$orderedTags = [
+    'type',
+    'template',
+    'template-covariant',
+    'template-extends',
+    'extends',
+    'implements',
+    'property',
+    'method',
+    'param',
+    'return',
+    'var',
+    'assert',
+    'assert-if-false',
+    'assert-if-true',
+    'throws',
+    'author',
+    'see',
+];
+
+$unorderedTags = [
+    'codeCoverageIgnore',
+    'const',
+    'covers',
+    'coversNothing',
+    'dataProvider',
+    'depends',
+    'deprecated',
+    'doesNotPerformAssertions',
+    'example',
+    'final',
+    'group',
+    'internal',
+    'large',
+    'medium',
+    'param-out',
+    'phpstan-assert-if-true',
+    'phpstan-ignore',
+    'phpstan-ignore-line',
+    'phpstan-ignore-next-line',
+    'phpstan-import-type',
+    'phpstan-param',
+    'phpstan-return',
+    'phpstan-type',
+    'preserveGlobalState',
+    'private',
+    'protected',
+    'readonly',
+    'requires',
+    'runInSeparateProcess',
+    'use',
+    'uses',
+    'warning',
+    'TODO',
+];
 
 return (new Config())
     ->setParallelConfig(ParallelConfigFactory::detect()) // @TODO 4.0 no need to call this manually
     ->setRiskyAllowed(true)
     ->registerCustomFixers([
         new ConfigurableFixerTemplateFixer(),
+        new PhpdocOnlyAllowedAnnotationsFixer(),
     ])
     ->setRules([
         '@PHP74Migration' => true,
@@ -44,27 +104,8 @@ return (new Config())
         'native_constant_invocation' => ['strict' => false], // strict:false to not remove `\` on low-end PHP versions for not-yet-known consts
         'no_useless_concat_operator' => false, // TODO switch back on when the `src/Console/Application.php` no longer needs the concat
         'numeric_literal_separator' => true,
-        'phpdoc_order' => [
-            'order' => [
-                'type',
-                'template',
-                'template-covariant',
-                'template-extends',
-                'extends',
-                'implements',
-                'property',
-                'method',
-                'param',
-                'return',
-                'var',
-                'assert',
-                'assert-if-false',
-                'assert-if-true',
-                'throws',
-                'author',
-                'see',
-            ],
-        ],
+        'phpdoc_order' => ['order' => $orderedTags],
+        'PhpCsFixerCustomFixers/phpdoc_only_allowed_annotations' => ['elements' => array_merge($orderedTags, $unorderedTags)],
     ])
     ->setFinder(
         (new Finder())
