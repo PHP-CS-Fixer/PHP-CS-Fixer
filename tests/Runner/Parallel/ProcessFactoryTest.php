@@ -66,10 +66,10 @@ final class ProcessFactoryTest extends TestCase
      */
     public function testCreate(array $input, RunnerConfig $config, string $expectedAdditionalArgs): void
     {
-        $factory = new ProcessFactory(new ArrayInput($input, $this->inputDefinition));
+        $factory = new ProcessFactory();
         $identifier = ProcessIdentifier::create();
 
-        $process = $factory->create(new StreamSelectLoop(), $config, $identifier, 1_234);
+        $process = $factory->create(new StreamSelectLoop(), new ArrayInput($input, $this->inputDefinition), $config, $identifier, 1_234);
 
         $command = \Closure::bind(static fn (Process $process): string => $process->command, null, Process::class)($process);
 
@@ -118,10 +118,10 @@ final class ProcessFactoryTest extends TestCase
      */
     public function testGetCommandArgs(array $input, RunnerConfig $config, string $expectedAdditionalArgs): void
     {
-        $factory = new ProcessFactory(new ArrayInput($input, $this->inputDefinition));
+        $factory = new ProcessFactory();
         $identifier = ProcessIdentifier::create();
 
-        $commandByArgs = $factory->getCommandArgs(1_234, $identifier, $config);
+        $commandByArgs = $factory->getCommandArgs(1_234, $identifier, new ArrayInput($input, $this->inputDefinition), $config);
         $command = implode(' ', $commandByArgs);
 
         // PHP binary and Fixer executable are not fixed, so we need to remove them from the command
