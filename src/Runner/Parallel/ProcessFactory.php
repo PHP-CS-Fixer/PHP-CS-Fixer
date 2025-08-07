@@ -72,13 +72,13 @@ final class ProcessFactory
         }
 
         $commandArgs = [
-            escapeshellarg($phpBinary),
-            escapeshellarg($mainScript),
+            ProcessUtils::escapeArgument($phpBinary),
+            ProcessUtils::escapeArgument($mainScript),
             'worker',
             '--port',
             (string) $serverPort,
             '--identifier',
-            escapeshellarg($identifier->toString()),
+            ProcessUtils::escapeArgument($identifier->toString()),
         ];
 
         if ($runnerConfig->isDryRun()) {
@@ -98,7 +98,7 @@ final class ProcessFactory
 
             if (null !== $optionValue) {
                 $commandArgs[] = "--{$option}";
-                $commandArgs[] = escapeshellarg($optionValue);
+                $commandArgs[] = ProcessUtils::escapeArgument($optionValue);
             }
         }
 
