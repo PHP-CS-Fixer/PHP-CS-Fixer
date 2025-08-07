@@ -204,6 +204,14 @@ final class ProcessFactoryTest extends TestCase
                 ? '--rules "@PhpCsFixer"'
                 : '--rules \'@PhpCsFixer\'',
         ];
+
+        yield 'rules (complex)' => [
+            ['--rules' => '{"array_syntax":{"syntax":"short"},"binary_operator_spaces":{"operators":{"=>":"single_space"}}}'],
+            self::createRunnerConfig(false),
+            self::IS_WINDOWS
+                ? '--rules "{\"array_syntax\":{\"syntax\":\"short\"},\"binary_operator_spaces\":{\"operators\":{\"=>\":\"single_space\"}}}"'
+                : '--rules \'{"array_syntax":{"syntax":"short"},"binary_operator_spaces":{"operators":{"=>":"single_space"}}}\'',
+        ];
     }
 
     private static function createRunnerConfig(bool $dryRun): RunnerConfig
