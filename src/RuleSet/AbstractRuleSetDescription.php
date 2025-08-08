@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet;
 
+use Symfony\Component\String\ByteString;
+
 /**
  * @internal
  */
@@ -23,9 +25,9 @@ abstract class AbstractRuleSetDescription implements RuleSetDescriptionInterface
 
     public function getName(): string
     {
-        $name = substr(static::class, 1 + strrpos(static::class, '\\'), -3);
+        $name = (new ByteString(static::class))->afterLast('\\')->slice(0, -3);
 
-        return '@'.str_replace('Risky', ':risky', $name);
+        return '@'.$name->replace('Risky', ':risky');
     }
 
     public function isRisky(): bool
