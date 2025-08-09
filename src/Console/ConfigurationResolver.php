@@ -563,7 +563,7 @@ final class ConfigurationResolver
     /**
      * Compute file candidates for config file.
      *
-     * @TODO v4: don't offerconfigs from passed `path` CLI argument
+     * @TODO v4: don't offer configs from passed `path` CLI argument
      *
      * @return list<string>
      */
