@@ -77,16 +77,9 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
 
     public function __construct(string $name = 'default')
     {
-        // @TODO 4.0 cleanup
-        if (Future::isFutureModeEnabled()) {
-            $this->name = $name.' (future mode)';
-            $this->rules = ['@PER-CS' => true];
-            $this->format = '@auto';
-        } else {
-            $this->name = $name;
-            $this->rules = ['@PSR12' => true];
-            $this->format = 'txt';
-        }
+        $this->name = $name.(Future::isFutureModeEnabled() ? ' (future mode)' : '');
+        $this->rules = Future::getV4OrV3(['@PER-CS' => true], ['@PSR12' => true]);
+        $this->format = Future::getV4OrV3('@auto', 'txt');
 
         // @TODO 4.0 cleanup
         if (Future::isFutureModeEnabled() || filter_var(getenv('PHP_CS_FIXER_PARALLEL'), \FILTER_VALIDATE_BOOL)) {
