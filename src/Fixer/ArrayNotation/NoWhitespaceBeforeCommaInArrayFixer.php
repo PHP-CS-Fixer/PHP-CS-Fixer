@@ -84,7 +84,7 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer implements
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('after_heredoc', 'Whether the whitespace between heredoc end and comma should be removed.'))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(false)
+                ->setDefault(false) // @TODO 4.0: set to true
                 ->getOption(),
         ]);
     }
