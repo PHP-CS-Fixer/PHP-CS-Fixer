@@ -829,7 +829,7 @@ final class ProjectCodeTest extends TestCase
 
         $methodsWithInheritdoc = array_filter(
             $rc->getMethods(),
-            static fn (\ReflectionMethod $rm): bool => false !== $rm->getDocComment() && false !== stripos($rm->getDocComment(), '@inheritdoc')
+            static fn (\ReflectionMethod $rm): bool => false !== $rm->getDocComment() && str_contains(strtolower($rm->getDocComment()), strtolower('@inheritdoc'))
         );
 
         $methodsWithInheritdoc = array_map(
