@@ -24,8 +24,8 @@ use PhpCsFixer\Tokenizer\TransformerInterface;
 /**
  * @internal
  *
- * @phpstan-type _TransformerTestExpectedKindsUnderIndex array<int, int|string>
- * @phpstan-type _TransformerTestObservedKinds list<int|string>
+ * @phpstan-type _TransformerTestExpectedKindsUnderIndex array<int, _PhpTokenKind>
+ * @phpstan-type _TransformerTestObservedKinds list<_PhpTokenKind>
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
@@ -197,7 +197,7 @@ abstract class AbstractTransformerTestCase extends TestCase
     }
 
     /**
-     * @param list<array{0: int, 1?: string}|string> $prototypes
+     * @param list<_PhpTokenPrototypePartial> $prototypes
      */
     private function countTokenPrototypes(Tokens $tokens, array $prototypes): int
     {

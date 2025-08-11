@@ -1171,7 +1171,7 @@ final class TypeExpressionTest extends TestCase
     /**
      * Return type is recursive.
      *
-     * @return list<array{int, string}|list<mixed>>
+     * @return list<_PhpTokenArray|list<mixed>>
      */
     private function checkInnerTypeExpressionsStartIndex(TypeExpression $typeExpression): array
     {

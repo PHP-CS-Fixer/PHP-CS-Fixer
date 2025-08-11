@@ -140,7 +140,7 @@ final class LineTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{int, string}>
+     * @return iterable<int, _PhpTokenArray>
      */
     public static function provideLinesCases(): iterable
     {

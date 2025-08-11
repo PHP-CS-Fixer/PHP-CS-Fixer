@@ -220,7 +220,7 @@ class FooTest extends TestCase {
 
     /**
      * @return list<array{
-     *   array{int, string},
+     *   _PhpTokenArray,
      *   non-empty-array<int, array{int, string, int}>
      * }>
      */
@@ -256,7 +256,7 @@ class FooTest extends TestCase {
 
     /**
      * @param list<array{
-     *   array{int, string},
+     *   _PhpTokenArray,
      *   non-empty-array<int, array{int, string, int}>
      * }> $dataProvidersWithUsagePairs
      *

@@ -56,7 +56,7 @@ final class OperatorLinebreakFixer extends AbstractFixer implements Configurable
     private string $position = 'beginning';
 
     /**
-     * @var list<array{int}|string>
+     * @var list<_PhpTokenPrototypePartial>
      */
     private array $operators = [];
 
@@ -285,7 +285,7 @@ $d = $e
     }
 
     /**
-     * @return list<array{int}|string>
+     * @return list<_PhpTokenPrototypePartial>
      */
     private static function getNonBooleanOperators(): array
     {

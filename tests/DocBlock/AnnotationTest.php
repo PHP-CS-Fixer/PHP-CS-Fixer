@@ -98,7 +98,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{int, string}>
+     * @return iterable<int, _PhpTokenArray>
      */
     public static function provideGetContentCases(): iterable
     {
@@ -161,7 +161,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{int, string}>
+     * @return iterable<int, _PhpTokenArray>
      */
     public static function provideGetTagCases(): iterable
     {

@@ -150,7 +150,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     ];
 
     /**
-     * @var list<array{int}|string>
+     * @var list<_PhpTokenPrototypePartial>
      */
     private array $noopTypes;
 
