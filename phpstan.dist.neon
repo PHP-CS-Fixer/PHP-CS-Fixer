@@ -19,6 +19,7 @@ parameters:
     reportPossiblyNonexistentConstantArrayOffset: true
     treatPhpDocTypesAsCertain: false
     typeAliases:
+        _PhpTokenKind: 'int|string'
         _PhpTokenArray: 'array{0: int, 1: string}' # ideally not empty string
         _PhpTokenArrayPartial: 'array{0: int, 1?: string}' # ideally not empty string
         _PhpTokenPrototype: '_PhpTokenArray|string' # ideally not empty string
