@@ -42,7 +42,7 @@ final class Token
     private bool $isArray;
 
     /**
-     * @param array{int, string}|string $token token prototype
+     * @param _PhpTokenPrototype $token token prototype
      */
     public function __construct($token)
     {
@@ -110,7 +110,7 @@ final class Token
      *
      * If tokens are arrays, then only keys defined in parameter token are checked.
      *
-     * @param array{0: int, 1?: string}|string|Token $other         token or it's prototype
+     * @param _PhpTokenPrototypePartial|Token $other         token or it's prototype
      * @param bool                                   $caseSensitive perform a case sensitive comparison
      */
     public function equals($other, bool $caseSensitive = true): bool
@@ -169,7 +169,7 @@ final class Token
     /**
      * Check if token is equals to one of given.
      *
-     * @param list<array{0: int, 1?: string}|string|Token> $others        array of tokens or token prototypes
+     * @param list<_PhpTokenPrototypePartial|Token> $others        array of tokens or token prototypes
      * @param bool                                         $caseSensitive perform a case sensitive comparison
      */
     public function equalsAny(array $others, bool $caseSensitive = true): bool
