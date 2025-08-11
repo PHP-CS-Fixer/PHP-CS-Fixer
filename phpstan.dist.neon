@@ -19,10 +19,10 @@ parameters:
     reportPossiblyNonexistentConstantArrayOffset: true
     treatPhpDocTypesAsCertain: false
     typeAliases:
-        _PhpTokenArray: 'array{0: int, 1: non-empty-string}'
-        _PhpTokenArrayPartial: 'array{0: int, 1?: non-empty-string}'
-        _PhpTokenPrototype: '_PhpTokenArray|string'
-        _PhpTokenPrototypePartial: '_PhpTokenArrayPartial|string'
+        _PhpTokenArray: 'array{0: int, 1: string}' # ideally not empty string
+        _PhpTokenArrayPartial: 'array{0: int, 1?: string}' # ideally not empty string
+        _PhpTokenPrototype: '_PhpTokenArray|string' # ideally not empty string
+        _PhpTokenPrototypePartial: '_PhpTokenArrayPartial|string' # ideally not empty string
     ignoreErrors:
         - identifier: method.internal
         - identifier: method.internalClass
