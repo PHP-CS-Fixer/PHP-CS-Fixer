@@ -726,7 +726,7 @@ final class ProjectCodeTest extends TestCase
         $content = $returnDoc->getContent();
 
         self::assertMatchesRegularExpression('/iterable\</', $content, \sprintf('Data provider "%s::%s@return" must return iterable.', $testClassName, $dataProviderName));
-        self::assertMatchesRegularExpression('/iterable\<(?:(int|string|int\|string), )?array\{/', $content, \sprintf('Data provider "%s::%s@return" must return iterable of tuples (eg `iterable<string, array{string, string}>`).', $testClassName, $dataProviderName));
+        self::assertMatchesRegularExpression('/iterable\<(?:(int|string|int\|string), )?(?:array\{|_PhpTokenArray)/', $content, \sprintf('Data provider "%s::%s@return" must return iterable of tuples (eg `iterable<string, array{string, string}>`).', $testClassName, $dataProviderName));
     }
 
     /**
@@ -936,8 +936,8 @@ final class ProjectCodeTest extends TestCase
         if (1 === \count($keyTypes)) {
             // all data provider's keys are of single type - type must be present
             $type = array_keys($keyTypes)[0];
-            self::assertStringContainsString(
-                \sprintf('@return iterable<%s, array{', $type),
+            self::assertMatchesRegularExpression(
+                \sprintf('/@return iterable\<%s, (?:array\{|_PhpTokenArray)/', $type),
                 $docComment,
                 \sprintf('Data provider %s::%s iterable key "%s" must be present.', $testClassName, $dataProviderName, $type)
             );
@@ -946,8 +946,8 @@ final class ProjectCodeTest extends TestCase
             $types = array_keys($keyTypes);
             sort($types);
             self::assertSame(['int', 'string'], $types);
-            self::assertStringContainsString(
-                '@return iterable<array{',
+            self::assertMatchesRegularExpression(
+                '/@return iterable\<(?:array\{|_PhpTokenArray)/',
                 $docComment,
                 \sprintf('Data provider %s::%s iterable must not have key type.', $testClassName, $dataProviderName)
             );
