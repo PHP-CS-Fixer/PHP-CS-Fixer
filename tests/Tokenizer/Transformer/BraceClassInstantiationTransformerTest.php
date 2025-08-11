@@ -24,14 +24,14 @@ use PhpCsFixer\Tokenizer\CT;
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\BraceClassInstantiationTransformer
  *
- * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
- * @phpstan-import-type _TransformerTestObservedKindsOrPrototypes from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestObservedKinds from AbstractTransformerTestCase
  */
 final class BraceClassInstantiationTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param _TransformerTestExpectedTokens            $expectedTokens
-     * @param _TransformerTestObservedKindsOrPrototypes $observedKinds
+     * @param _TransformerTestExpectedKindsUnderIndex            $expectedTokens
+     * @param _TransformerTestObservedKinds $observedKinds
      *
      * @dataProvider provideProcessCases
      */
@@ -45,7 +45,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     }
 
     /**
-     * @return iterable<int, array{string, _TransformerTestExpectedTokens, _TransformerTestExpectedTokens}>
+     * @return iterable<int, array{string, _TransformerTestExpectedKindsUnderIndex, _TransformerTestExpectedKindsUnderIndex}>
      */
     public static function provideProcessCases(): iterable
     {
@@ -387,8 +387,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     }
 
     /**
-     * @param _TransformerTestExpectedTokens            $expectedTokens
-     * @param _TransformerTestObservedKindsOrPrototypes $observedKinds
+     * @param _TransformerTestExpectedKindsUnderIndex            $expectedTokens
+     * @param _TransformerTestObservedKinds $observedKinds
      *
      * @dataProvider provideProcessPhp80Cases
      *
@@ -404,7 +404,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     }
 
     /**
-     * @return iterable<int, array{_TransformerTestExpectedTokens, _TransformerTestExpectedTokens, string}>
+     * @return iterable<int, array{_TransformerTestExpectedKindsUnderIndex, _TransformerTestExpectedKindsUnderIndex, string}>
      */
     public static function provideProcessPhp80Cases(): iterable
     {
@@ -441,8 +441,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     }
 
     /**
-     * @param _TransformerTestExpectedTokens            $expectedTokens
-     * @param _TransformerTestObservedKindsOrPrototypes $observedKinds
+     * @param _TransformerTestExpectedKindsUnderIndex            $expectedTokens
+     * @param _TransformerTestObservedKinds $observedKinds
      *
      * @dataProvider provideProcessPhp81Cases
      *
@@ -458,7 +458,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     }
 
     /**
-     * @return iterable<int, array{_TransformerTestExpectedTokens, _TransformerTestExpectedTokens, string}>
+     * @return iterable<int, array{_TransformerTestExpectedKindsUnderIndex, _TransformerTestExpectedKindsUnderIndex, string}>
      */
     public static function provideProcessPhp81Cases(): iterable
     {
@@ -500,8 +500,8 @@ function test2($param = (new Foo)) {}
     }
 
     /**
-     * @param _TransformerTestExpectedTokens            $expectedTokens
-     * @param _TransformerTestObservedKindsOrPrototypes $observedKinds
+     * @param _TransformerTestExpectedKindsUnderIndex            $expectedTokens
+     * @param _TransformerTestObservedKinds $observedKinds
      *
      * @dataProvider provideProcessPrePhp84Cases
      *
@@ -517,7 +517,7 @@ function test2($param = (new Foo)) {}
     }
 
     /**
-     * @return iterable<int, array{string, _TransformerTestExpectedTokens, _TransformerTestObservedKindsOrPrototypes}>
+     * @return iterable<int, array{string, _TransformerTestExpectedKindsUnderIndex, _TransformerTestObservedKinds}>
      */
     public static function provideProcessPrePhp84Cases(): iterable
     {

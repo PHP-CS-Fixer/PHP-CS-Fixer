@@ -23,12 +23,12 @@ use PhpCsFixer\Tokenizer\FCT;
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\TypeIntersectionTransformer
  *
- * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
  */
 final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcessCases
      *
@@ -46,7 +46,7 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: _TransformerTestExpectedTokens}>
+     * @return iterable<array{0: string, 1?: _TransformerTestExpectedKindsUnderIndex}>
      */
     public static function provideProcessCases(): iterable
     {
@@ -383,7 +383,7 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
     }
 
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcess81Cases
      *
@@ -395,7 +395,7 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
     }
 
     /**
-     * @return iterable<string, array{string, _TransformerTestExpectedTokens}>
+     * @return iterable<string, array{string, _TransformerTestExpectedKindsUnderIndex}>
      */
     public static function provideProcess81Cases(): iterable
     {
@@ -422,7 +422,7 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
     }
 
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcess82Cases
      *
@@ -434,7 +434,7 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
     }
 
     /**
-     * @return iterable<string, array{string, _TransformerTestExpectedTokens}>
+     * @return iterable<string, array{string, _TransformerTestExpectedKindsUnderIndex}>
      */
     public static function provideProcess82Cases(): iterable
     {
@@ -536,7 +536,7 @@ class Dnf
     }
 
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcess83Cases
      *
@@ -548,7 +548,7 @@ class Dnf
     }
 
     /**
-     * @return iterable<string, array{string, _TransformerTestExpectedTokens}>
+     * @return iterable<string, array{string, _TransformerTestExpectedKindsUnderIndex}>
      */
     public static function provideProcess83Cases(): iterable
     {

@@ -22,12 +22,12 @@ use PhpCsFixer\Tokenizer\CT;
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\FirstClassCallableTransformer
  *
- * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
  */
 final class FirstClassCallableTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcessCases
      *
@@ -39,7 +39,7 @@ final class FirstClassCallableTransformerTest extends AbstractTransformerTestCas
     }
 
     /**
-     * @return iterable<string, array{_TransformerTestExpectedTokens, string}>
+     * @return iterable<string, array{_TransformerTestExpectedKindsUnderIndex, string}>
      */
     public static function provideProcessCases(): iterable
     {
