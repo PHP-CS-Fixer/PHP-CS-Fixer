@@ -111,7 +111,7 @@ final class Token
      * If tokens are arrays, then only keys defined in parameter token are checked.
      *
      * @param _PhpTokenPrototypePartial|Token $other         token or it's prototype
-     * @param bool                                   $caseSensitive perform a case sensitive comparison
+     * @param bool                            $caseSensitive perform a case sensitive comparison
      */
     public function equals($other, bool $caseSensitive = true): bool
     {
@@ -170,7 +170,7 @@ final class Token
      * Check if token is equals to one of given.
      *
      * @param list<_PhpTokenPrototypePartial|Token> $others        array of tokens or token prototypes
-     * @param bool                                         $caseSensitive perform a case sensitive comparison
+     * @param bool                                  $caseSensitive perform a case sensitive comparison
      */
     public function equalsAny(array $others, bool $caseSensitive = true): bool
     {
