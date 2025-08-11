@@ -12,6 +12,8 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use Symfony\Component\Yaml\Yaml;
+
 // @phpstan-ignore greaterOrEqual.alwaysFalse, booleanOr.alwaysFalse (PHPStan thinks that 80499 is max PHP version ID)
 if (\PHP_VERSION_ID < 8_04_00 || \PHP_VERSION_ID >= 8_05_00) {
     fwrite(\STDERR, "PHP CS Fixer's config for PHP-HIGHEST can be executed only on highest supported PHP version - 8.4.*.\n");
@@ -22,6 +24,8 @@ if (\PHP_VERSION_ID < 8_04_00 || \PHP_VERSION_ID >= 8_05_00) {
 
 $config = require __DIR__.'/.php-cs-fixer.dist.php';
 
+$phpstanConfig = Yaml::parseFile('phpstan.dist.neon');
+
 $config->setRules(array_merge($config->getRules(), [
     '@PHP84Migration' => true,
     '@PHP82Migration:risky' => true,
@@ -30,7 +34,7 @@ $config->setRules(array_merge($config->getRules(), [
             'TFixerInputConfig' => 'array',
             'TFixerComputedConfig' => 'array',
             'TFixer' => '\PhpCsFixer\AbstractFixer',
-        ],
+        ] + $phpstanConfig['parameters']['typeAliases'],
     ],
     'fully_qualified_strict_types' => ['import_symbols' => true],
     'php_unit_attributes' => false, // as is not yet supported by PhpCsFixerInternal/configurable_fixer_template
