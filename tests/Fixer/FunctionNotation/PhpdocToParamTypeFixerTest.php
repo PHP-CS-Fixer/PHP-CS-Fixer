@@ -703,6 +703,24 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                 }
                 PHP,
         ];
+
+        yield 'types aliased in config:types_map' => [
+            <<<'PHP'
+                <?php
+                class Token {
+                     /**
+                      * @param _PhpTokenPrototype $token token prototype
+                     */
+                     public function __construct($token) {}
+                }
+                PHP,
+            null,
+            [
+                'types_map' => [
+                    '_PhpTokenPrototype' => "_PhpTokenArray|string",
+                ],
+            ]
+        ];
     }
 
     /**
