@@ -34,15 +34,21 @@ $config->getFinder()->notPath([
     'src/ExecutorWithoutErrorHandler.php',
 ]);
 
+$typesMap = [
+    'TFixerInputConfig' => 'array',
+    'TFixerComputedConfig' => 'array',
+    'TFixer' => '\PhpCsFixer\AbstractFixer',
+] + $phpstanConfig['parameters']['typeAliases'];
+
 $config->setRules([
-    'phpdoc_to_param_type' => true,
-    'phpdoc_to_return_type' => true,
+    'phpdoc_to_param_type' => [
+        'types_map' => $typesMap,
+    ],
+    'phpdoc_to_return_type' => [
+        'types_map' => $typesMap,
+    ],
     'phpdoc_to_property_type' => [
-        'types_map' => [
-            'TFixerInputConfig' => 'array',
-            'TFixerComputedConfig' => 'array',
-            'TFixer' => '\PhpCsFixer\AbstractFixer',
-        ] + $phpstanConfig['parameters']['typeAliases'],
+        'types_map' => $typesMap,
     ],
 ]);
 
