@@ -121,7 +121,7 @@ final class Application extends BaseApplication
 
             if (\count($triggeredDeprecations) > 0) {
                 $stdErr->writeln('');
-                $stdErr->writeln($stdErr->isDecorated() ? '<bg=yellow;fg=black;>Detected deprecations in use:</>' : 'Detected deprecations in use:');
+                $stdErr->writeln($stdErr->isDecorated() ? '<bg=yellow;fg=black;>Detected deprecations in use (they will stop working in next major release):</>' : 'Detected deprecations in use (they will stop working in next major release):');
                 foreach ($triggeredDeprecations as $deprecation) {
                     $stdErr->writeln(\sprintf('- %s', $deprecation));
                 }
