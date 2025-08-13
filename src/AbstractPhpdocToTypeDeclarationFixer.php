@@ -268,7 +268,13 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
             }
 
             $typeExpression = new TypeExpression($type, null, []);
-            $commonType = $typeExpression->getCommonType();
+            $commonTypeInfo = $this->getCommonTypeInfo($typeExpression, $isReturnType);
+
+            if (null === $commonTypeInfo) {
+                return null;
+            }
+
+            $commonType = $commonTypeInfo['commonType'];
 
             if (!$containsOtherThanIterableType && !\in_array($commonType, ['array', \Traversable::class, 'iterable'], true)) {
                 $containsOtherThanIterableType = true;
@@ -277,7 +283,7 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
                 $containsOtherThanEmptyType = true;
             }
 
-            if (!$isNullable && $typesExpression->allowsNull()) {
+            if (!$isNullable && $commonTypeInfo['isNullable']) {
                 $isNullable = true;
             }
 

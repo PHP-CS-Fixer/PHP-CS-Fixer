@@ -708,18 +708,25 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
             <<<'PHP'
                 <?php
                 class Token {
-                     /**
-                      * @param _PhpTokenPrototype $token token prototype
+                    /**
+                     * @param _PhpTokenPrototype $token token prototype
                      */
-                     public function __construct($token) {}
+                    public function __construct($token) {}
+
+                    /**
+                     * @param _PhpTokenPrototypePartial|Token $other         token or it's prototype
+                     * @param bool                            $caseSensitive perform a case sensitive comparison
+                     */
+                    public function equals($other, bool $caseSensitive = true): bool {}
                 }
                 PHP,
             null,
             [
                 'types_map' => [
-                    '_PhpTokenPrototype' => "_PhpTokenArray|string",
+                    '_PhpTokenPrototype' => '_PhpTokenArray|string',
+                    '_PhpTokenPrototypePartial' => '_PhpTokenArrayPartial|string',
                 ],
-            ]
+            ],
         ];
     }
 
