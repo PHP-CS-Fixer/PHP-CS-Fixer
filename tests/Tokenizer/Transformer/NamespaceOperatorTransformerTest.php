@@ -24,12 +24,12 @@ use PhpCsFixer\Tokenizer\CT;
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\NamespaceOperatorTransformer
  *
- * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
  */
 final class NamespaceOperatorTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
@@ -46,7 +46,7 @@ final class NamespaceOperatorTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<int, array{string, _TransformerTestExpectedKindsUnderIndex}>
+     * @return iterable<int, array{string, _TransformerTestExpectedTokens}>
      */
     public static function provideProcessCases(): iterable
     {

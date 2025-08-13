@@ -22,14 +22,14 @@ use PhpCsFixer\Tokenizer\CT;
  *
  * @internal
  *
- * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
  *
  * @requires PHP 8.2
  */
 final class DisjunctiveNormalFormTypeParenthesisTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
@@ -39,7 +39,7 @@ final class DisjunctiveNormalFormTypeParenthesisTransformerTest extends Abstract
     }
 
     /**
-     * @return iterable<string, array{string, _TransformerTestExpectedKindsUnderIndex}>
+     * @return iterable<string, array{string, _TransformerTestExpectedTokens}>
      */
     public static function provideProcessCases(): iterable
     {
@@ -331,7 +331,7 @@ return new static();
     }
 
     /**
-     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideProcess83Cases
      *
@@ -343,7 +343,7 @@ return new static();
     }
 
     /**
-     * @return iterable<string, array{string, _TransformerTestExpectedKindsUnderIndex}>
+     * @return iterable<string, array{string, _TransformerTestExpectedTokens}>
      */
     public static function provideProcess83Cases(): iterable
     {

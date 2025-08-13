@@ -26,7 +26,7 @@ use PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer;
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer
  *
- * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
  */
 final class SquareBraceTransformerTest extends AbstractTransformerTestCase
 {
@@ -87,7 +87,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
@@ -106,7 +106,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: _TransformerTestExpectedKindsUnderIndex}>
+     * @return iterable<array{0: string, 1?: _TransformerTestExpectedTokens}>
      */
     public static function provideProcessCases(): iterable
     {

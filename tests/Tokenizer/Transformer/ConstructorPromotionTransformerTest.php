@@ -23,12 +23,12 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\ConstructorPromotionTransformer
  *
- * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
  */
 final class ConstructorPromotionTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideProcessCases
      *
@@ -48,7 +48,7 @@ final class ConstructorPromotionTransformerTest extends AbstractTransformerTestC
     }
 
     /**
-     * @return iterable<int, array{_TransformerTestExpectedKindsUnderIndex, string}>
+     * @return iterable<int, array{_TransformerTestExpectedTokens, string}>
      */
     public static function provideProcessCases(): iterable
     {
@@ -132,7 +132,7 @@ class Point {
     }
 
     /**
-     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
+     * @param _TransformerTestExpectedTokens $expectedTokens
      *
      * @dataProvider provideFix81Cases
      *
@@ -150,7 +150,7 @@ class Point {
     }
 
     /**
-     * @return iterable<string, array{_TransformerTestExpectedKindsUnderIndex, string}>
+     * @return iterable<string, array{_TransformerTestExpectedTokens, string}>
      */
     public static function provideFix81Cases(): iterable
     {
