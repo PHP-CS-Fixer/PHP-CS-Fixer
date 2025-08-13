@@ -56,7 +56,7 @@ Rules
 - `magic_method_casing <./../rules/casing/magic_method_casing.rst>`_
 - `method_argument_space <./../rules/function_notation/method_argument_space.rst>`_ with config:
 
-  ``['on_multiline' => 'ignore']``
+  ``['after_heredoc' => true, 'on_multiline' => 'ignore']``
 
 - `native_function_casing <./../rules/casing/native_function_casing.rst>`_
 - `native_type_declaration_casing <./../rules/casing/native_type_declaration_casing.rst>`_
@@ -96,7 +96,10 @@ Rules
 - `no_unused_imports <./../rules/import/no_unused_imports.rst>`_
 - `no_useless_concat_operator <./../rules/operator/no_useless_concat_operator.rst>`_
 - `no_useless_nullsafe_operator <./../rules/operator/no_useless_nullsafe_operator.rst>`_
-- `no_whitespace_before_comma_in_array <./../rules/array_notation/no_whitespace_before_comma_in_array.rst>`_
+- `no_whitespace_before_comma_in_array <./../rules/array_notation/no_whitespace_before_comma_in_array.rst>`_ with config:
+
+  ``['after_heredoc' => true]``
+
 - `normalize_index_brace <./../rules/array_notation/normalize_index_brace.rst>`_
 - `nullable_type_declaration_for_default_null_value <./../rules/function_notation/nullable_type_declaration_for_default_null_value.rst>`_
 - `object_operator_without_whitespace <./../rules/operator/object_operator_without_whitespace.rst>`_
@@ -142,6 +145,7 @@ Rules
 
   ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``
 
+- `phpdoc_var_annotation_correct_order <./../rules/phpdoc/phpdoc_var_annotation_correct_order.rst>`_
 - `phpdoc_var_without_name <./../rules/phpdoc/phpdoc_var_without_name.rst>`_
 - `semicolon_after_instruction <./../rules/semicolon/semicolon_after_instruction.rst>`_
 - `simple_to_complex_string_variable <./../rules/string_notation/simple_to_complex_string_variable.rst>`_

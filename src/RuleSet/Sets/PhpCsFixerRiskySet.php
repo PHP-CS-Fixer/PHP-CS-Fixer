@@ -47,6 +47,7 @@ final class PhpCsFixerRiskySet extends AbstractRuleSetDescription
                     '@all',
                 ],
             ],
+            'no_trailing_whitespace_in_string' => true, // override Symfony to mimics PER / CS
             'no_unset_on_property' => true,
             'php_unit_data_provider_name' => true,
             'php_unit_data_provider_return_type' => true,
