@@ -87,8 +87,7 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
                                     EOD
                             ];
 
-                        SAMPLE
-                    ,
+                        SAMPLE,
                     ['after_heredoc' => true]
                 ),
                 new CodeSample("<?php\nfoo(\n    1,\n    2\n);\n", ['elements' => [self::ELEMENTS_ARGUMENTS]]),

@@ -66,8 +66,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
                         <?php
                         $integer = 1234567890;
 
-                        PHP
-                    ,
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -77,8 +76,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
                         $binary = 0b00_10_01_00;
                         $hexadecimal = 0x3D45_8F4F;
 
-                        PHP
-                    ,
+                        PHP,
                     ['strategy' => self::STRATEGY_NO_SEPARATOR],
                 ),
                 new CodeSample(
@@ -89,8 +87,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
                         $binary = 0b0010010011011010;
                         $hexadecimal = 0x3D458F4F;
 
-                        PHP
-                    ,
+                        PHP,
                     ['strategy' => self::STRATEGY_USE_SEPARATOR],
                 ),
                 new CodeSample(

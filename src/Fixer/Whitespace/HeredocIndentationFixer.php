@@ -74,8 +74,7 @@ final class HeredocIndentationFixer extends AbstractFixer implements Configurabl
                             def
                         EOD;
 
-                        SAMPLE
-                    ,
+                        SAMPLE,
                     ['indentation' => 'same_as_start']
                 ),
             ]
