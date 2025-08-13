@@ -35,6 +35,9 @@ set_error_handler(static function (int $severity, string $message, string $file,
         exit(1);
     }
 
+    // PHPStan knows our min PHP version, but we want to check the min version here
+    // because entrypoint file allows wider PHP range than project itself
+    // @phpstan-ignore smaller.alwaysFalse
     if (\PHP_VERSION_ID < (int) '70400') {
         fwrite(\STDERR, "PHP needs to be a minimum version of PHP 7.4.0.\n");
         fwrite(\STDERR, 'Current PHP version: '.\PHP_VERSION.".\n");
