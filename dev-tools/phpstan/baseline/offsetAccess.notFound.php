@@ -417,47 +417,17 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/NoUnneededFinalMethodFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset \'abstract\' might not exist on array\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
-];
-$ignoreErrors[] = [
     'message' => '#^Offset \'end\' might not exist on array\\{start\\: int, visibility\\: non\\-empty\\-string, abstract\\: bool, static\\: bool, readonly\\: bool, type\\?\\: string, name\\?\\: string, end\\?\\: int\\}\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset \'name\' might not exist on array\\.$#',
-    'count' => 3,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset \'readonly\' might not exist on non\\-empty\\-array\\.$#',
+    'message' => '#^Offset string might not exist on array\\<string, int\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset \'static\' might not exist on non\\-empty\\-array\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset \'type\' might not exist on array\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset \'visibility\' might not exist on array\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset mixed might not exist on array\\<string, int\\>\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset mixed might not exist on array\\{setupbeforeclass\\: 1, dosetupbeforeclass\\: 2, teardownafterclass\\: 3, doteardownafterclass\\: 4, setup\\: 5, dosetup\\: 6, assertpreconditions\\: 7, assertpostconditions\\: 8, \\.\\.\\.\\}\\.$#',
+    'message' => '#^Offset string might not exist on array\\{setupbeforeclass\\: 1, dosetupbeforeclass\\: 2, teardownafterclass\\: 3, doteardownafterclass\\: 4, setup\\: 5, dosetup\\: 6, assertpreconditions\\: 7, assertpostconditions\\: 8, \\.\\.\\.\\}\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
