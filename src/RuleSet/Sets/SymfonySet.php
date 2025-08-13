@@ -73,6 +73,7 @@ final class SymfonySet extends AbstractRuleSetDescription
             'magic_constant_casing' => true,
             'magic_method_casing' => true,
             'method_argument_space' => [ // overrides @PER-CS2.0
+                'after_heredoc' => true,
                 'on_multiline' => 'ignore',
             ],
             'native_function_casing' => true,

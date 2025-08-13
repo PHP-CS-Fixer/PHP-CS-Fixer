@@ -58,6 +58,7 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             ],
             'heredoc_to_nowdoc' => true,
             'method_argument_space' => [
+                'after_heredoc' => true,
                 'on_multiline' => 'ensure_fully_multiline',
             ],
             'method_chaining_indentation' => true,
