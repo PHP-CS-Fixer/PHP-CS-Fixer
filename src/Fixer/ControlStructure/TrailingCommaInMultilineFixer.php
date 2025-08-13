@@ -117,7 +117,7 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('after_heredoc', 'Whether a trailing comma should also be placed after heredoc end.'))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(false) // @TODO 4.0: set to `true`.
+                ->setDefault(false) // @TODO 4.0: set to true
                 ->getOption(),
             (new FixerOptionBuilder('elements', \sprintf('Where to fix multiline trailing comma (PHP >= 8.0 for `%s` and `%s`).', self::ELEMENTS_PARAMETERS, self::MATCH_EXPRESSIONS))) // @TODO: remove text when PHP 8.0+ is required
                 ->setAllowedTypes(['string[]'])
