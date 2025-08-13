@@ -187,6 +187,7 @@ final class SymfonySet extends AbstractRuleSetDescription
                 'null_adjustment' => 'always_last',
                 'sort_algorithm' => 'none',
             ],
+            'phpdoc_var_annotation_correct_order' => true,
             'phpdoc_var_without_name' => true,
             'semicolon_after_instruction' => true,
             'simple_to_complex_string_variable' => true,
