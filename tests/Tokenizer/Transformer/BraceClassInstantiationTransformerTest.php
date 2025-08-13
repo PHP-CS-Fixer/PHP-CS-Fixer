@@ -30,8 +30,8 @@ use PhpCsFixer\Tokenizer\CT;
 final class BraceClassInstantiationTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param _TransformerTestExpectedKindsUnderIndex            $expectedTokens
-     * @param _TransformerTestObservedKinds $observedKinds
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
+     * @param _TransformerTestObservedKinds           $observedKinds
      *
      * @dataProvider provideProcessCases
      */
@@ -387,8 +387,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     }
 
     /**
-     * @param _TransformerTestExpectedKindsUnderIndex            $expectedTokens
-     * @param _TransformerTestObservedKinds $observedKinds
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
+     * @param _TransformerTestObservedKinds           $observedKinds
      *
      * @dataProvider provideProcessPhp80Cases
      *
@@ -441,8 +441,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     }
 
     /**
-     * @param _TransformerTestExpectedKindsUnderIndex            $expectedTokens
-     * @param _TransformerTestObservedKinds $observedKinds
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
+     * @param _TransformerTestObservedKinds           $observedKinds
      *
      * @dataProvider provideProcessPhp81Cases
      *
@@ -500,8 +500,8 @@ function test2($param = (new Foo)) {}
     }
 
     /**
-     * @param _TransformerTestExpectedKindsUnderIndex            $expectedTokens
-     * @param _TransformerTestObservedKinds $observedKinds
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
+     * @param _TransformerTestObservedKinds           $observedKinds
      *
      * @dataProvider provideProcessPrePhp84Cases
      *
