@@ -3,6 +3,33 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.86.0
+---------------------
+
+* feat: console application - add completion support (#8887)
+* feat: introduce `PER-CS3.0` rulsets (#8841)
+* feat: update `@Symfony` and `@PhpCsFixer` sets (#8930)
+* feat: `NoSuperfluousPhpdocTagsFixer` - support multiline array shapes (#8903)
+* fix: PhpdocToParamTypeFixerTest - handle types_map for union-types (#8926)
+* chore: AbstractTransformerTestCase - better virtual type naming (#8927)
+* chore: add TODO for v4 (#8912)
+* chore: do not call `Reflection*::setAccessible()` in PHP >= 8.1 (#8907)
+* chore: document .env.example (#8901)
+* chore: fix `@todo` annotation casing (#8921)
+* chore: switch to official checkstyle.xsd (#8910)
+* chore: unify future default of after_heredoc (#8924)
+* chore: `@phpstan-ignore` for php version check (#8920)
+* chore: `PhpUnitTestAnnotationFixer` - use `foreach` instead of `for` (#8911)
+* CI: allow PHP 8.5 for failure, till it's officially releaed and we get the stable support (#8928)
+* ci: run tests under 8.5 via PHPUnit, as ParaUnit failing (#8933)
+* CI: temporarily skip problematic tests under Sf v8 (#8919)
+* deps: bump icanhazstring/composer-unused from 0.9.3 to 0.9.4 in /dev-tools (#8905)
+* deps: update and bump dev-tools/composer (#8915)
+* docs: extend FullOpeningTagFixer samples (#8913)
+* docs: extend OperatorLinebreakFixer samples (#8914)
+* docs: more explicit msg for stop using deprecated code (#8922)
+* DX: .gitignore - ignore php-cs-fixer.cache, as it's existance is possible when using env var (#8929)
+
 Changelog for v3.85.1
 ---------------------
 
