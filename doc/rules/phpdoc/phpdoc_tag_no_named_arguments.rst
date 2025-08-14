@@ -17,15 +17,23 @@ Allowed types: ``string``
 
 Default value: ``''``
 
-``directory``
-~~~~~~~~~~~~~
+``fix_attribute_classes``
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Directory in which apply the changes, empty value will result with current
-working directory (result of ``getcwd`` call).
+Whether to fix attribute classes.
 
-Allowed types: ``string``
+Allowed types: ``bool``
 
-Default value: ``''``
+Default value: ``true``
+
+``fix_internal``
+~~~~~~~~~~~~~~~~
+
+Whether to fix internal elements.
+
+Allowed types: ``bool``
+
+Default value: ``true``
 
 Examples
 --------
