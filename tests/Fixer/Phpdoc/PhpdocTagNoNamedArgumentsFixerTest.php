@@ -408,7 +408,7 @@ final class PhpdocTagNoNamedArgumentsFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<string, array{0: string, 1?: string}>
      */
     public static function provideFixPre85Cases(): iterable
     {
