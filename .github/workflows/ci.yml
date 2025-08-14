@@ -109,14 +109,14 @@ jobs:
             php-version: '8.4'
             job-description: Fixer with Symfony ^8
             run-fixer: 'yes'
-            allow-to-fail: 'yes' # because v8 is not yet stable
+            allow-to-fail: 'yes' # because Symfony v8 is not yet stable
             execute-flex-with-symfony-version: ^8@dev # explicit check for Symfony 8.x compatibility
 
           - operating-system: ubuntu-24.04
             php-version: '8.4'
             job-description: tests with Symfony ^8
             run-tests: 'yes'
-            allow-to-fail: 'yes' # because v8 is not yet stable
+            allow-to-fail: 'yes' # because Symfony v8 is not yet stable
             AVOID_PARAUNIT: 'yes' # as it doesn't support Symfony 8 yet
             phpunit-flags: --exclude-group=sf-8-problematic # @todo: solve before claiming Symfony 8.x support
             execute-flex-with-symfony-version: ^8@dev # explicit check for Symfony 8.x compatibility
@@ -149,14 +149,14 @@ jobs:
             php-version: '8.4'
             job-description: Fixer on macOS
             run-fixer: 'yes'
-            allow-to-fail: 'yes'
+            allow-to-fail: 'yes' # we experience random failures on macOS
             FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
 
           - operating-system: macos-latest
             php-version: '8.4'
             job-description: tests on macOS
             run-tests: 'yes'
-            allow-to-fail: 'yes'
+            allow-to-fail: 'yes' # we experience random failures on macOS
             AVOID_PARAUNIT: 'yes' # macOS job is having weird issue on CI under ParaUnit
             FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
 
@@ -187,6 +187,8 @@ jobs:
             php-version: '8.5'
             job-description: tests
             run-tests: 'yes'
+            allow-to-fail: 'yes' # with newest 8.5 development, we are not longer (and not yet) compatible with 8.5
+            AVOID_PARAUNIT: 'yes' # for easier issues debugging
             PHP_CS_FIXER_IGNORE_ENV: 1
 
     name: PHP ${{ matrix.php-version }} ${{ matrix.job-description }}

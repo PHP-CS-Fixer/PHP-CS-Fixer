@@ -58,6 +58,7 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             ],
             'heredoc_to_nowdoc' => true,
             'method_argument_space' => [
+                'after_heredoc' => true,
                 'on_multiline' => 'ensure_fully_multiline',
             ],
             'method_chaining_indentation' => true,
@@ -103,7 +104,6 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             ],
             'no_useless_else' => true,
             'no_useless_return' => true,
-            'no_whitespace_before_comma_in_array' => ['after_heredoc' => true],
             'operator_linebreak' => true,
             'ordered_class_elements' => true,
             'ordered_types' => true,
@@ -114,7 +114,6 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             'phpdoc_no_empty_return' => true,
             'phpdoc_order_by_value' => true,
             'phpdoc_types_order' => true,
-            'phpdoc_var_annotation_correct_order' => true,
             'protected_to_private' => true,
             'return_assignment' => true,
             'self_static_accessor' => true,
