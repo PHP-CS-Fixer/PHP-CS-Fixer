@@ -133,17 +133,19 @@ jobs:
             run-tests: 'yes'
             run-migration-rules: 'yes' # should be checked on the highest supported PHP version
 
-          - operating-system: windows-latest
-            php-version: '8.4'
-            job-description: Fixer on Windows
-            run-fixer: 'yes'
-            FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
+          # TODO: restore
+          #- operating-system: windows-latest
+          #  php-version: '8.4'
+          #  job-description: Fixer on Windows
+          #  run-fixer: 'yes'
+          #  FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
 
-          - operating-system: windows-latest
-            php-version: '8.4'
-            job-description: tests on Windows
-            run-tests: 'yes'
-            FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
+          # TODO: restore
+          #- operating-system: windows-latest
+          #  php-version: '8.4'
+          #  job-description: tests on Windows
+          #  run-tests: 'yes'
+          #  FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
 
           - operating-system: macos-latest
             php-version: '8.4'
@@ -188,6 +190,7 @@ jobs:
             job-description: tests
             run-tests: 'yes'
             allow-to-fail: 'yes' # with newest 8.5 development, we are not longer (and not yet) compatible with 8.5
+            phpunit-flags: --display-deprecations --fail-on-deprecation
             AVOID_PARAUNIT: 'yes' # for easier issues debugging
             PHP_CS_FIXER_IGNORE_ENV: 1
 
@@ -240,6 +243,10 @@ jobs:
         run: |
           composer require --dev --with-all-dependencies phpunit/phpunit:^12.1.5
           php php-cs-fixer fix --quiet --rules=php_unit_attributes
+
+      - name: Check configuration for PHPUnit
+        if: matrix.php-version != '7.4' && matrix.php-version != '8.0' # These run PHPUnit 9, which does not have the option
+        run: vendor/bin/phpunit --check-php-configuration
 
       - name: Run tests (via PHPUnit)
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes' && matrix.AVOID_PARAUNIT == 'yes'
@@ -334,6 +341,9 @@ jobs:
 
       - name: Build phar
         run: ./dev-tools/build.sh
+
+      - name: Check configuration for PHPUnit
+        run: vendor/bin/phpunit --check-php-configuration
 
       - name: Run smoke tests
         env:

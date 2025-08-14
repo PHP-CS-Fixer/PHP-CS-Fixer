@@ -30,7 +30,7 @@ runs:
     - name: Get Composer cache params
       shell: bash
       run: |
-        echo "COMPOSER_CACHE_DIR=$(composer config cache-dir)" >> $GITHUB_ENV
+        echo "COMPOSER_CACHE_DIR=$(php -d error_reporting=0 `which composer` config cache-dir)" >> $GITHUB_ENV
         echo "COMPOSER_CACHE_PHP=$(php -r 'echo PHP_VERSION;')" >> $GITHUB_ENV
         echo "PHP_VERSION_ID=$(php -r 'echo PHP_VERSION_ID;')" >> $GITHUB_ENV
 
@@ -52,7 +52,14 @@ runs:
         retry_wait_seconds: 30
         # `--no-scripts` to avoid side-effects (e.g. installing dev-tools for all jobs on CI level),
         # all executed scripts should be explicit and run only when needed.
-        command: composer update --optimize-autoloader --no-interaction --no-progress --no-scripts ${{ inputs.flags }}
+        # TODO: revert to commented version, when hack not needed
+        command: php -d error_reporting=0 `which composer` update --optimize-autoloader --no-interaction --no-progress --no-scripts ${{ inputs.flags }}
+#        command: composer update --optimize-autoloader --no-interaction --no-progress --no-scripts ${{ inputs.flags }}
+
+    # TODO: Remove when not needed
+    - name: Fix PHP 8.5 syntax
+      shell: bash
+      run: sed -i 's/case $type instanceof \\ReflectionUnionType;/case $type instanceof \\ReflectionUnionType:/g' vendor/react/promise/src/functions.php || true
 
     - name: Show versions of packages
       shell: bash
