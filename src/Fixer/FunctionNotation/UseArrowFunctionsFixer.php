@@ -40,8 +40,7 @@ final class UseArrowFunctionsFixer extends AbstractFixer
                             return $a + $b;
                         });
 
-                        SAMPLE
-                    ,
+                        SAMPLE,
                 ),
             ],
             null,

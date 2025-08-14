@@ -123,8 +123,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                             'bar'
                         );
 
-                        SAMPLE
-                    ,
+                        SAMPLE,
                     ['after_heredoc' => true]
                 ),
             ],
@@ -197,7 +196,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                 ->getOption(),
             (new FixerOptionBuilder('after_heredoc', 'Whether the whitespace between heredoc end and comma should be removed.'))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(false)
+                ->setDefault(false) // @TODO 4.0: set to true
                 ->getOption(),
             (new FixerOptionBuilder(
                 'attribute_placement',

@@ -25,12 +25,12 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\BraceTransformer
  *
- * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
  */
 final class BraceTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
@@ -59,7 +59,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<string, array{0: string, 1?: _TransformerTestExpectedTokens}>
+     * @return iterable<string, array{0: string, 1?: _TransformerTestExpectedKindsUnderIndex}>
      */
     public static function provideProcessCases(): iterable
     {
@@ -192,7 +192,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcess80Cases
      *
@@ -204,7 +204,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<string, array{string, _TransformerTestExpectedTokens}>
+     * @return iterable<string, array{string, _TransformerTestExpectedKindsUnderIndex}>
      */
     public static function provideProcess80Cases(): iterable
     {
@@ -218,7 +218,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider providePre84ProcessCases
      *
@@ -316,7 +316,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideStarting84ProcessCases
      *
@@ -572,7 +572,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideDynamicClassConstantFetchCases
      *
@@ -591,7 +591,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<string, array{_TransformerTestExpectedTokens, string}>
+     * @return iterable<string, array{_TransformerTestExpectedKindsUnderIndex, string}>
      */
     public static function provideDynamicClassConstantFetchCases(): iterable
     {
@@ -673,7 +673,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideDynamicClassConstantFetchPhp83Cases
      *
