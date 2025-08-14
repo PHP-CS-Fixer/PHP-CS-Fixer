@@ -273,7 +273,7 @@ final class PhpdocTagNoNamedArgumentsFixerTest extends AbstractFixerTestCase
                 namespace Foo;
                 use Attribute as TheAttributeClass;
                 #[TheAttributeClass(flags: TheAttributeClass::TARGET_METHOD)]
-                abstract class MyAttributeClass {}
+                final class MyAttributeClass {}
                 PHP,
             null,
             ['fix_attribute_classes' => false],
@@ -363,12 +363,12 @@ final class PhpdocTagNoNamedArgumentsFixerTest extends AbstractFixerTestCase
                 final readonly class NotAttributeClass1 {}
 
                 #[Attribute(flags: Attribute::TARGET_METHOD)]
-                abstract readonly class MyAttributeClass {}
+                final readonly class MyAttributeClass {}
 
                 /**
                  * @no-named-arguments
                  */
-                abstract readonly class NoAttributes {}
+                final readonly class NoAttributes {}
 
                 /**
                  * @no-named-arguments
@@ -384,9 +384,9 @@ final class PhpdocTagNoNamedArgumentsFixerTest extends AbstractFixerTestCase
                 final readonly class NotAttributeClass1 {}
 
                 #[Attribute(flags: Attribute::TARGET_METHOD)]
-                abstract readonly class MyAttributeClass {}
+                final readonly class MyAttributeClass {}
 
-                abstract readonly class NoAttributes {}
+                final readonly class NoAttributes {}
 
                 #[FooAttribute]
                 #[BarAttribute]
@@ -394,6 +394,41 @@ final class PhpdocTagNoNamedArgumentsFixerTest extends AbstractFixerTestCase
                 final readonly class NotAttributeClass2 {}
                 PHP,
             ['fix_attribute_classes' => false],
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPre85Cases
+     *
+     * @requires PHP ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0
+     */
+    public function testFixPre85(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
+    public static function provideFixPre85Cases(): iterable
+    {
+        // the below case is fatal error in PHP 8.5+ (https://github.com/php/php-src/pull/19154)
+        yield 'always add for abstract attribute class' => [
+            <<<'PHP'
+                <?php
+                namespace Foo;
+                /**
+                 * @no-named-arguments
+                 */
+                #[\Attribute(flags: \Attribute::TARGET_METHOD)]
+                abstract class MyAttributeClass {}
+                PHP,
+            <<<'PHP'
+                <?php
+                namespace Foo;
+                #[\Attribute(flags: \Attribute::TARGET_METHOD)]
+                abstract class MyAttributeClass {}
+                PHP,
         ];
     }
 }

@@ -144,7 +144,7 @@ final class PhpdocTagNoNamedArgumentsFixer extends AbstractFixer implements Conf
 
     private static function isAttributeClass(Tokens $tokens, int $index): bool
     {
-        while ($tokens[$index]->isGivenKind([\T_ABSTRACT, \T_FINAL, FCT::T_READONLY])) {
+        while ($tokens[$index]->isGivenKind([\T_FINAL, FCT::T_READONLY])) {
             $index = $tokens->getPrevMeaningfulToken($index);
             \assert(\is_int($index));
         }
