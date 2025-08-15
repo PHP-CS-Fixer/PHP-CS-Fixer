@@ -22,6 +22,10 @@ if (\PHP_VERSION_ID < 8_04_00 || \PHP_VERSION_ID >= 8_05_00) {
 
 $config = require __DIR__.'/.php-cs-fixer.dist.php';
 
+$config->getFinder()->notPath([
+    'src/Tokenizer/Tokens.php', // due to some quirks on SplFixedArray typing
+]);
+
 $typesMap = [
     'TFixerInputConfig' => 'array',
     'TFixerComputedConfig' => 'array',
