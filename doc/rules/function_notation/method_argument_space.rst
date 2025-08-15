@@ -333,11 +333,11 @@ The rule is part of the following rule sets:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 
-  ``['on_multiline' => 'ensure_fully_multiline']``
+  ``['after_heredoc' => true, 'on_multiline' => 'ensure_fully_multiline']``
 
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
-  ``['on_multiline' => 'ignore']``
+  ``['after_heredoc' => true, 'on_multiline' => 'ignore']``
 
 References
 ----------

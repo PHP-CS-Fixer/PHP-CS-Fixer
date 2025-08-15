@@ -60,3 +60,8 @@ Rules
 - `string_length_to_empty <./../rules/string_notation/string_length_to_empty.rst>`_
 - `string_line_ending <./../rules/string_notation/string_line_ending.rst>`_
 - `ternary_to_elvis_operator <./../rules/operator/ternary_to_elvis_operator.rst>`_
+
+Disabled rules
+--------------
+
+- `no_trailing_whitespace_in_string <./../rules/string_notation/no_trailing_whitespace_in_string.rst>`_

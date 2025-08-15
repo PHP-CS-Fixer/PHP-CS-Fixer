@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7c5f59f136d2a0c3a1b0e8d9749c3d4d",
+    "content-hash": "f701fb45798b0a2cd38be4d4a2a5007c",
     "packages": [
         {
             "name": "composer-unused/contracts",
@@ -1221,16 +1221,16 @@
         },
         {
             "name": "shipmonk/dead-code-detector",
-            "version": "0.13.1",
+            "version": "0.13.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shipmonk-rnd/dead-code-detector.git",
-                "reference": "18a28eb9c3ab1ced99bbe722a6889f1180034c7c"
+                "reference": "806c397fdc6d3c2c7fce7f51ab6beaa92455e33c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shipmonk-rnd/dead-code-detector/zipball/18a28eb9c3ab1ced99bbe722a6889f1180034c7c",
-                "reference": "18a28eb9c3ab1ced99bbe722a6889f1180034c7c"
+                "url": "https://api.github.com/repos/shipmonk-rnd/dead-code-detector/zipball/806c397fdc6d3c2c7fce7f51ab6beaa92455e33c",
+                "reference": "806c397fdc6d3c2c7fce7f51ab6beaa92455e33c"
             },
             "require": {
                 "php": "^7.4 || ^8.0",

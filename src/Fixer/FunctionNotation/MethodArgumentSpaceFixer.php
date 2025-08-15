@@ -123,8 +123,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                             'bar'
                         );
 
-                        SAMPLE
-                    ,
+                        SAMPLE,
                     ['after_heredoc' => true]
                 ),
             ],
