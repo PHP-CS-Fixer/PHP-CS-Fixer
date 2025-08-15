@@ -22,16 +22,18 @@ if (\PHP_VERSION_ID < 8_04_00 || \PHP_VERSION_ID >= 8_05_00) {
 
 $config = require __DIR__.'/.php-cs-fixer.dist.php';
 
+$typesMap = [
+    'TFixerInputConfig' => 'array',
+    'TFixerComputedConfig' => 'array',
+    'TFixer' => '\PhpCsFixer\AbstractFixer',
+];
+
 $config->setRules(array_merge($config->getRules(), [
     '@PHP84Migration' => true,
     '@PHP82Migration:risky' => true,
-    'phpdoc_to_property_type' => [ // experimental
-        'types_map' => [
-            'TFixerInputConfig' => 'array',
-            'TFixerComputedConfig' => 'array',
-            'TFixer' => '\PhpCsFixer\AbstractFixer',
-        ],
-    ],
+    'phpdoc_to_param_type' => ['types_map' => $typesMap],
+    'phpdoc_to_return_type' => ['types_map' => $typesMap],
+    'phpdoc_to_property_type' => ['types_map' => $typesMap],
     'fully_qualified_strict_types' => ['import_symbols' => true],
     'php_unit_attributes' => false, // as is not yet supported by PhpCsFixerInternal/configurable_fixer_template
 ]));
