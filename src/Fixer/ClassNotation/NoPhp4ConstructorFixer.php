@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
+ * @phpstan-import-type _PhpTokenPrototypePartial from Token
+ *
  * @author Matteo Beccati <matteo@beccati.com>
  */
 final class NoPhp4ConstructorFixer extends AbstractFixer

@@ -32,6 +32,12 @@ use PhpCsFixer\Utils;
  *
  * @method Token offsetGet($offset)
  *
+ * @phpstan-import-type _PhpTokenKind from Token
+ * @phpstan-import-type _PhpTokenArray from Token
+ * @phpstan-import-type _PhpTokenArrayPartial from Token
+ * @phpstan-import-type _PhpTokenPrototype from Token
+ * @phpstan-import-type _PhpTokenPrototypePartial from Token
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @final

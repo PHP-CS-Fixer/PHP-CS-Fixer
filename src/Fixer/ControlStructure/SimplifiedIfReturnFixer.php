@@ -22,6 +22,8 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
+ * @phpstan-import-type _PhpTokenPrototypePartial from Token
+ *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
 final class SimplifiedIfReturnFixer extends AbstractFixer

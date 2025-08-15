@@ -18,12 +18,6 @@ parameters:
     reportPossiblyNonexistentGeneralArrayOffset: true # enabled, but huge exceptions count; example fix: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/8089
     reportPossiblyNonexistentConstantArrayOffset: true
     treatPhpDocTypesAsCertain: false
-    typeAliases:
-        _PhpTokenKind: 'int|string'
-        _PhpTokenArray: 'array{0: int, 1: string}' # ideally not empty string
-        _PhpTokenArrayPartial: 'array{0: int, 1?: string}' # ideally not empty string
-        _PhpTokenPrototype: '_PhpTokenArray|string' # ideally not empty string
-        _PhpTokenPrototypePartial: '_PhpTokenArrayPartial|string' # ideally not empty string
     ignoreErrors:
         - identifier: method.internal
         - identifier: method.internalClass

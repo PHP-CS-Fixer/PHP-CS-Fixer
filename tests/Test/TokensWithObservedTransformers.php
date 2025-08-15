@@ -19,6 +19,10 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\Transformers;
 
+/**
+ * @phpstan-import-type _PhpTokenKind from Token
+ * @phpstan-import-type _PhpTokenPrototypePartial from Token
+ */
 class TokensWithObservedTransformers extends Tokens
 {
     public ?string $currentTransformer = null;

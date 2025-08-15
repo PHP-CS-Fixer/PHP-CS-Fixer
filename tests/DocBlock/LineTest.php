@@ -17,9 +17,12 @@ namespace PhpCsFixer\Tests\DocBlock;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\Token;
 
 /**
- * @author Graham Campbell <hello@gjcampbell.co.uk>
+ * @phpstan-import-type _PhpTokenArray from Token
+ *
+ *  @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @internal
  *

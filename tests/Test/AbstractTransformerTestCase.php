@@ -22,6 +22,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TransformerInterface;
 
 /**
+ * @phpstan-import-type _PhpTokenKind from Token
+ * @phpstan-import-type _PhpTokenPrototypePartial from Token
+ *
  * @internal
  *
  * @phpstan-type _TransformerTestExpectedKindsUnderIndex array<int, _PhpTokenKind>

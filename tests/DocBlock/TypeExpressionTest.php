@@ -19,8 +19,11 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
+use PhpCsFixer\Tokenizer\Token;
 
 /**
+ * @phpstan-import-type _PhpTokenArray from Token
+ *
  * @covers \PhpCsFixer\DocBlock\TypeExpression
  *
  * @internal
