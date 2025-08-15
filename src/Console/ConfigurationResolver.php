@@ -92,6 +92,11 @@ final class ConfigurationResolver
         self::BOOL_NO,
     ];
 
+    /**
+     * @TODO v4: this is no longer needed due to `MARKER-multi-paths-vs-only-cwd-config`
+     */
+    private ?string $deprecatedNestedConfigDir = null;
+
     private ?bool $allowRisky = null;
 
     private ?ConfigInterface $config = null;
@@ -252,6 +257,13 @@ final class ConfigurationResolver
 
                 if (isset($deprecatedConfigs[$configFileBasename])) {
                     throw new InvalidConfigurationException("Configuration file `{$configFileBasename}` is outdated, rename to `{$deprecatedConfigs[$configFileBasename]}`.");
+                }
+
+                if (null !== $this->deprecatedNestedConfigDir && str_starts_with($configFile, $this->deprecatedNestedConfigDir)) {
+                    // @TODO v4: when removing, remove also TODO with `MARKER-multi-paths-vs-only-cwd-config`
+                    Utils::triggerDeprecation(
+                        new InvalidConfigurationException("Configuration file `{$configFile}` is picked as file inside passed `path` CLI argument. This will be ignored in the future and only config file in `cwd` will be picked. Please use `config` CLI option instead if you want to keep current behaviour."),
+                    );
                 }
 
                 $this->config = self::separatedContextLessInclude($configFile);
@@ -551,6 +563,8 @@ final class ConfigurationResolver
     /**
      * Compute file candidates for config file.
      *
+     * @TODO v4: don't offer configs from passed `path` CLI argument
+     *
      * @return list<string>
      */
     private function computeConfigFiles(): array
@@ -570,6 +584,7 @@ final class ConfigurationResolver
         if ($this->isStdIn() || 0 === \count($path)) {
             $configDir = $this->cwd;
         } elseif (1 < \count($path)) {
+            // @TODO v4: this is no longer needed due to `MARKER-multi-paths-vs-only-cwd-config`
             throw new InvalidConfigurationException('For multiple paths config parameter is required.');
         } elseif (!is_file($path[0])) {
             $configDir = $path[0];
@@ -594,6 +609,8 @@ final class ConfigurationResolver
             // @TODO v4 drop handling (triggering error) for v2 config names
             $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs'; // old v2 config, present here only to throw nice error message later
             $candidates[] = $this->cwd.\DIRECTORY_SEPARATOR.'.php_cs.dist'; // old v2 config, present here only to throw nice error message later
+
+            $this->deprecatedNestedConfigDir = $configDir;
         }
 
         return $candidates;
