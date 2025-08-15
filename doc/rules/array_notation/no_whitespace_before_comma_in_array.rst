@@ -85,7 +85,9 @@ The rule is part of the following rule sets:
 
   ``['after_heredoc' => true]``
 
-- `@Symfony <./../../ruleSets/Symfony.rst>`_
+- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
+  ``['after_heredoc' => true]``
 
 References
 ----------

@@ -125,6 +125,8 @@ final class FileRemovalTest extends TestCase
      *
      * @runInSeparateProcess
      *
+     * @group sf-8-problematic
+     *
      * @preserveGlobalState disabled
      *
      * @doesNotPerformAssertions

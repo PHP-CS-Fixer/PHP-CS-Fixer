@@ -3,6 +3,82 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.86.0
+---------------------
+
+* feat: console application - add completion support (#8887)
+* feat: introduce `PER-CS3.0` rulsets (#8841)
+* feat: update `@Symfony` and `@PhpCsFixer` sets (#8930)
+* feat: `NoSuperfluousPhpdocTagsFixer` - support multiline array shapes (#8903)
+* fix: PhpdocToParamTypeFixerTest - handle types_map for union-types (#8926)
+* chore: AbstractTransformerTestCase - better virtual type naming (#8927)
+* chore: add TODO for v4 (#8912)
+* chore: do not call `Reflection*::setAccessible()` in PHP >= 8.1 (#8907)
+* chore: document .env.example (#8901)
+* chore: fix `@todo` annotation casing (#8921)
+* chore: switch to official checkstyle.xsd (#8910)
+* chore: unify future default of after_heredoc (#8924)
+* chore: `@phpstan-ignore` for php version check (#8920)
+* chore: `PhpUnitTestAnnotationFixer` - use `foreach` instead of `for` (#8911)
+* CI: allow PHP 8.5 for failure, till it's officially releaed and we get the stable support (#8928)
+* ci: run tests under 8.5 via PHPUnit, as ParaUnit failing (#8933)
+* CI: temporarily skip problematic tests under Sf v8 (#8919)
+* deps: bump icanhazstring/composer-unused from 0.9.3 to 0.9.4 in /dev-tools (#8905)
+* deps: update and bump dev-tools/composer (#8915)
+* docs: extend FullOpeningTagFixer samples (#8913)
+* docs: extend OperatorLinebreakFixer samples (#8914)
+* docs: more explicit msg for stop using deprecated code (#8922)
+* DX: .gitignore - ignore php-cs-fixer.cache, as it's existance is possible when using env var (#8929)
+
+Changelog for v3.85.1
+---------------------
+
+* chore: update legacy deps (#8902)
+
+Changelog for v3.85.0
+---------------------
+
+* feat: `ArrayIndentationFixer` - handle closures inside attributes (#8888)
+* feat: `NullableTypeDeclarationFixer` - support final promoted properties (#8885)
+* feat: `OperatorLinebreakFixer` - support pipe operator (#8891)
+* feat: `PhpdocTypesFixer` - support multiline array shapes (#8893)
+* fix: always reach 100% of checked files (#8861)
+* fix: `BracesPositionFixer` - handle property hooks correctly (#8886)
+* fix: `NullableTypeDeclarationFixer` - handle abstract and final properties (#8876)
+* fix: `PhpdocLineSpanFixer` - handle promoted properties (#8897)
+* fix: `PhpUnitDataProviderNameFixer` - fix for multiple providers defined by attributes for one test method (#8849)
+* fix: `TernaryOperatorSpacesFixer` - handle `instanceof static` (#8879)
+* fix: `TypeDeclarationSpacesFixer` - handle asymmetric visibility and final properties (#8900)
+* chore: add initial PHP 8.5 integration test (#8871)
+* chore: add tests for public API methods (#8895)
+* chore: apply changes from `PhpdocTypesFixer` for multiline array shapes (#8894)
+* chore: baseline files without error count (#8870)
+* chore: cleanup `PhpCsFixer\DocBlock\Annotation` (#8892)
+* chore: Command name/descriptions - use attribute and static properties (#8862)
+* chore: Commands - unify way to define help content (#8881)
+* chore: ConfigurationResolver - add few missing v4 TODOs (#8882)
+* chore: fix `booleanNot.exprNotBoolean` errors (#8869)
+* chore: fix/optimize some phpdocs (#8889)
+* chore: more unification of PHP CS Fixer naming (#8854)
+* chore: PHPStan baseline - use `shipmonk/phpstan-baseline-per-identifier` (#8844)
+* chore: remove dead code (#8896)
+* chore: remove unused constants (#8864)
+* chore: remove useless `@var` annotations (#8867)
+* chore: simplify `ClassDefinitionFixer` (#8868)
+* chore: unify usage of image versions to not mention minor (#8860)
+* chore: update PHPStan (#8898)
+* chore: update PHPStan extension for `Preg::match` (#8872)
+* chore: wrong return values in `ErrorsManager` (#8863)
+* chore: `OrderedInterfacesFixer` - make code more PHPStan friendly (#8866)
+* chore: `Token` - add `@phpstan-assert-if-true` (#8865)
+* deps: bump phpstan/phpstan from 2.1.17 to 2.1.18 in /dev-tools in the phpstan group (#8859)
+* deps: bump the phpstan group in /dev-tools with 4 updates (#8890)
+* docs: better document reprecated rule sets (#8878)
+* docs: cleanup docs for PHP 7 (#8873)
+* docs: cleanup docs for PHP < 7.4 (#8855)
+* docs: ListSetsCommand,FixCommand - document possible formats in Command's definitions (#8880)
+* DX: Explicitly prevent touching non-monolithic files (#6517)
+
 Changelog for v3.84.0
 ---------------------
 

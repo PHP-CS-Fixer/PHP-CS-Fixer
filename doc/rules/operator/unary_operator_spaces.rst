@@ -87,6 +87,10 @@ The rule is part of the following rule sets:
 
   ``['only_dec_inc' => true]``
 
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
+
+  ``['only_dec_inc' => true]``
+
 - `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
 
   ``['only_dec_inc' => true]``

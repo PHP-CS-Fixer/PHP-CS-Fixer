@@ -27,6 +27,7 @@ Rules
 
   ``['sets' => ['@all']]``
 
+- `no_trailing_whitespace_in_string <./../rules/string_notation/no_trailing_whitespace_in_string.rst>`_
 - `no_unset_on_property <./../rules/language_construct/no_unset_on_property.rst>`_
 - `php_unit_data_provider_name <./../rules/php_unit/php_unit_data_provider_name.rst>`_
 - `php_unit_data_provider_return_type <./../rules/php_unit/php_unit_data_provider_return_type.rst>`_

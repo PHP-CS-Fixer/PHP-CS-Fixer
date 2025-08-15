@@ -40,6 +40,12 @@ final class FullOpeningTagFixer extends AbstractFixer
 echo "Hello!";
 '
                 ),
+                new CodeSample(
+                    '<?PHP
+
+echo "Hello!";
+'
+                ),
             ]
         );
     }

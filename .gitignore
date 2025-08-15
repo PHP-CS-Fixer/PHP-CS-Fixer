@@ -1,4 +1,5 @@
 /.env
+/.php-cs-fixer.cache
 /.php-cs-fixer.php
 /box.json
 /compose.override.yaml

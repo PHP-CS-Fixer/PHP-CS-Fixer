@@ -119,6 +119,7 @@ function callback($a, ...$b)
     return (--$a) * ($b++);
 }
 
+/** @var int $a */
 $a = &$b;
 $c = &$d;
 

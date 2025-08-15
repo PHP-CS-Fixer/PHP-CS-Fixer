@@ -242,8 +242,7 @@ TXT;
             \sprintf(
                 <<<'INPUT'
                     <?php echo 'Double " quote %s inside';
-                    INPUT
-                ,
+                    INPUT,
                 pack('H*', 'e2808b')
             ),
             ['use_escape_sequences_in_strings' => true],
@@ -256,8 +255,7 @@ TXT;
             \sprintf(
                 <<<'INPUT'
                     <?php echo 'Single \' quote %s inside';
-                    INPUT
-                ,
+                    INPUT,
                 pack('H*', 'e2808b')
             ),
             ['use_escape_sequences_in_strings' => true],
@@ -276,8 +274,7 @@ TXT;
                         Quotes ' and " to be handled %s properly \' and \"
                     STRING
                     ;
-                    INPUT
-                ,
+                    INPUT,
                 pack('H*', 'e2808b')
             ),
             ['use_escape_sequences_in_strings' => true],
@@ -290,8 +287,7 @@ TXT;
             \sprintf(
                 <<<'INPUT'
                     <?php echo '\\%s"';
-                    INPUT
-                ,
+                    INPUT,
                 pack('H*', 'e2808b')
             ),
             ['use_escape_sequences_in_strings' => true],
@@ -304,8 +300,7 @@ TXT;
             \sprintf(
                 <<<'INPUT'
                     <?php echo '\\%s\'';
-                    INPUT
-                ,
+                    INPUT,
                 pack('H*', 'e2808b')
             ),
             ['use_escape_sequences_in_strings' => true],
@@ -318,8 +313,7 @@ TXT;
             \sprintf(
                 <<<'INPUT'
                     <?php echo 'Backslash 1 \ %s';
-                    INPUT
-                ,
+                    INPUT,
                 pack('H*', 'e2808b')
             ),
             ['use_escape_sequences_in_strings' => true],
@@ -332,8 +326,7 @@ TXT;
             \sprintf(
                 <<<'INPUT'
                     <?php echo 'Backslash 2 \\ %s';
-                    INPUT
-                ,
+                    INPUT,
                 pack('H*', 'e2808b')
             ),
             ['use_escape_sequences_in_strings' => true],
@@ -346,8 +339,7 @@ TXT;
             \sprintf(
                 <<<'INPUT'
                     <?php echo 'Backslash 3 \\\ %s';
-                    INPUT
-                ,
+                    INPUT,
                 pack('H*', 'e2808b')
             ),
             ['use_escape_sequences_in_strings' => true],
@@ -360,8 +352,7 @@ TXT;
             \sprintf(
                 <<<'INPUT'
                     <?php echo 'Backslash 4 \\\\ %s';
-                    INPUT
-                ,
+                    INPUT,
                 pack('H*', 'e2808b')
             ),
             ['use_escape_sequences_in_strings' => true],
