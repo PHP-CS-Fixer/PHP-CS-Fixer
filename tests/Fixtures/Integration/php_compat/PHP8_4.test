@@ -19,7 +19,14 @@ interface PropertyHooksInterface
 }
 abstract class PropertyHooks
 {
-    abstract public string $readable { get; }
+    abstract public string $abstractPublic { get; }
+    abstract public string $publicAbstract { get; }
+    abstract public ?string $publicAbstractNullable { get; }
+
+    final public string $finalPublic;
+    final public string $publicFinal;
+    final public ?string $publicFinalTypeUnionWithNull;
+    final public ?string $publicFinalNullUnionWithType;
 
     public string $foo = 'default value' {
         get => $this->foo.($this->modified ? ' (modified)' : '');
@@ -87,7 +94,14 @@ interface PropertyHooksInterface
 }
 abstract class PropertyHooks
 {
-    abstract public string $readable { get; }
+    abstract   public     string    $abstractPublic { get; }
+    public     abstract   string    $publicAbstract { get; }
+    public     abstract   ?    string    $publicAbstractNullable { get; }
+
+    final     public    string    $finalPublic;
+    public    final     string    $publicFinal;
+    public    final     string    |    null    $publicFinalTypeUnionWithNull;
+    public    final     null    |    string    $publicFinalNullUnionWithType;
 
     public     string       $foo    =     'default value' {
         get      =>      $this->foo . ($this->modified     ?      ' (modified)' : '')

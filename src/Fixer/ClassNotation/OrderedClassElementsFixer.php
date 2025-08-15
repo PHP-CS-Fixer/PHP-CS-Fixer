@@ -429,7 +429,7 @@ Custom values:
     }
 
     /**
-     * @return list<string>|string type or array of type and name
+     * @return list{string, string}|string type or array of type and name
      */
     private function detectElementType(Tokens $tokens, int $index)
     {
@@ -512,63 +512,12 @@ Custom values:
      */
     private function sortElements(array $elements): array
     {
-        $getPositionType = function (array $element): int {
-            $type = $element['type'];
-
-            if (\in_array($type, ['method', 'magic', 'phpunit'], true) && isset($this->typePosition["method:{$element['name']}"])) {
-                return $this->typePosition["method:{$element['name']}"];
-            }
-
-            if (\array_key_exists($type, self::SPECIAL_TYPES)) {
-                if (isset($this->typePosition[$type])) {
-                    $position = $this->typePosition[$type];
-
-                    if ('phpunit' === $type) {
-                        $position += [
-                            'setupbeforeclass' => 1,
-                            'dosetupbeforeclass' => 2,
-                            'teardownafterclass' => 3,
-                            'doteardownafterclass' => 4,
-                            'setup' => 5,
-                            'dosetup' => 6,
-                            'assertpreconditions' => 7,
-                            'assertpostconditions' => 8,
-                            'teardown' => 9,
-                            'doteardown' => 10,
-                        ][$element['name']];
-                    }
-
-                    return $position;
-                }
-
-                $type = 'method';
-            }
-
-            if (\in_array($type, ['constant', 'property', 'method'], true)) {
-                $type .= '_'.$element['visibility'];
-
-                if ($element['abstract']) {
-                    $type .= '_abstract';
-                }
-
-                if ($element['static']) {
-                    $type .= '_static';
-                }
-
-                if ($element['readonly']) {
-                    $type .= '_readonly';
-                }
-            }
-
-            return $this->typePosition[$type];
-        };
-
         return Utils::stableSort(
             $elements,
             /**
              * @return array{element: _ClassElement, position: int}
              */
-            static fn (array $element): array => ['element' => $element, 'position' => $getPositionType($element)],
+            fn (array $element): array => ['element' => $element, 'position' => $this->getTypePosition($element)],
             /**
              * @param array{element: _ClassElement, position: int} $a
              * @param array{element: _ClassElement, position: int} $b
@@ -577,6 +526,61 @@ Custom values:
              */
             fn (array $a, array $b): int => ($a['position'] === $b['position']) ? $this->sortGroupElements($a['element'], $b['element']) : $a['position'] <=> $b['position'],
         );
+    }
+
+    /**
+     * @param _ClassElement $element
+     */
+    private function getTypePosition(array $element): int
+    {
+        $type = $element['type'];
+
+        if (\in_array($type, ['method', 'magic', 'phpunit'], true) && isset($this->typePosition["method:{$element['name']}"])) {
+            return $this->typePosition["method:{$element['name']}"];
+        }
+
+        if (\array_key_exists($type, self::SPECIAL_TYPES)) {
+            if (isset($this->typePosition[$type])) {
+                $position = $this->typePosition[$type];
+
+                if ('phpunit' === $type) {
+                    $position += [
+                        'setupbeforeclass' => 1,
+                        'dosetupbeforeclass' => 2,
+                        'teardownafterclass' => 3,
+                        'doteardownafterclass' => 4,
+                        'setup' => 5,
+                        'dosetup' => 6,
+                        'assertpreconditions' => 7,
+                        'assertpostconditions' => 8,
+                        'teardown' => 9,
+                        'doteardown' => 10,
+                    ][$element['name']];
+                }
+
+                return $position;
+            }
+
+            $type = 'method';
+        }
+
+        if (\in_array($type, ['constant', 'property', 'method'], true)) {
+            $type .= '_'.$element['visibility'];
+
+            if ($element['abstract']) {
+                $type .= '_abstract';
+            }
+
+            if ($element['static']) {
+                $type .= '_static';
+            }
+
+            if ($element['readonly']) {
+                $type .= '_readonly';
+            }
+        }
+
+        return $this->typePosition[$type];
     }
 
     /**

@@ -24,7 +24,7 @@ namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
  * @author VeeWee <toonverwerft@gmail.com>
  * @author Greg Korba <greg@codito.dev>
  */
-final class NamespaceUseAnalysis implements StartEndTokenAwareAnalysis
+final class NamespaceUseAnalysis
 {
     public const TYPE_CLASS = 1; // "classy" could be class, interface or trait
     public const TYPE_FUNCTION = 2;

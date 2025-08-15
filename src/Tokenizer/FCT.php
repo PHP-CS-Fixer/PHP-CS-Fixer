@@ -50,8 +50,6 @@ final class FCT
     public const T_PROPERTY_C = \PHP_VERSION_ID >= 8_04_00 ? \T_PROPERTY_C : -844;
 
     // PHP 8.5+
-    /**
-     * @phpstan-ignore greaterOrEqual.alwaysFalse, constant.notFound
-     */
+    public const T_PIPE = \PHP_VERSION_ID >= 8_05_00 ? \T_PIPE : -851;
     public const T_VOID_CAST = \PHP_VERSION_ID >= 8_05_00 ? \T_VOID_CAST : -852;
 }

@@ -194,7 +194,7 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
             preg_quote('Loaded config default from ".php-cs-fixer.dist.php".', '/'),
             \strlen($expectedResult3FilesDots),
             preg_quote($expectedResult3FilesPercentage, '/'),
-            preg_quote('Legend: .-no changes, F-fixed, S-skipped (cached or empty file), I-invalid file syntax (file ignored), E-error', '/')
+            preg_quote('Legend: .-no changes, F-fixed, S-skipped (cached or empty file), M-skipped (non-monolithic), I-invalid file syntax (file ignored), E-error', '/')
         );
 
         self::assertMatchesRegularExpression($pattern, $result3->getError());
@@ -301,6 +301,17 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
             ],
             '...                                                                 3 / 3 (100%)',
         ];
+    }
+
+    public function testWithUsingNonExistingFile(): void
+    {
+        $output = ScriptExecutor::create(
+            ['php php-cs-fixer check --config=tests/Fixtures/.php-cs-fixer.append-non-existing-file.php --show-progress=dots'],
+            __DIR__.'/../..'
+        )->getResult();
+
+        self::assertSame(0, $output->getCode());
+        self::assertStringContainsString(' (100%)', $output->getError());
     }
 
     private static function executeCommand(string $command): CliResult

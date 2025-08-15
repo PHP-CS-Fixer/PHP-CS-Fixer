@@ -56,11 +56,11 @@ final class ControlCaseStructuresAnalyzer
 
         /**
          * @var list<array{
-         *     kind: int|null,
+         *     kind: null|int,
          *     index: int,
          *     brace_count: int,
          *     cases: list<array{index: int, open: int}>,
-         *     default: array{index: int, open: int}|null,
+         *     default: null|array{index: int, open: int},
          *     alternative_syntax: bool,
          * }> $stack
          */

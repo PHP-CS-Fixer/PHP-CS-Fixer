@@ -397,6 +397,7 @@ final class Token
      *
      * @param int|list<int> $possibleKind kind or array of kinds
      *
+     * @phpstan-assert-if-true !=null $this->getId()
      * @phpstan-assert-if-true !='' $this->getContent()
      */
     public function isGivenKind($possibleKind): bool
@@ -460,8 +461,8 @@ final class Token
 
     /**
      * @return array{
-     *     id: int|null,
-     *     name: non-empty-string|null,
+     *     id: null|int,
+     *     name: null|non-empty-string,
      *     content: string,
      *     isArray: bool,
      *     changed: bool,

@@ -514,7 +514,6 @@ final class TokensTest extends TestCase
             PHP;
         $tokens = Tokens::fromCode($source);
 
-        /** @var array<int, Token> $found */
         $found = $tokens->findGivenKind(\T_CLASS);
         self::assertCount(1, $found);
         self::assertArrayHasKey(1, $found);
@@ -1937,6 +1936,61 @@ $bar;',
         }
 
         self::assertSame($size, $tokens->getSize());
+    }
+
+    /**
+     * @requires PHP 8.1
+     */
+    public function testToJson(): void
+    {
+        self::assertSame(
+            \sprintf(
+                <<<'JSON'
+                    [
+                        {
+                            "id": %d,
+                            "name": "T_OPEN_TAG",
+                            "content": "<?php ",
+                            "isArray": true,
+                            "changed": false
+                        },
+                        {
+                            "id": %d,
+                            "name": "T_RETURN",
+                            "content": "return",
+                            "isArray": true,
+                            "changed": false
+                        },
+                        {
+                            "id": %d,
+                            "name": "T_WHITESPACE",
+                            "content": " ",
+                            "isArray": true,
+                            "changed": false
+                        },
+                        {
+                            "id": %d,
+                            "name": "T_LNUMBER",
+                            "content": 1,
+                            "isArray": true,
+                            "changed": false
+                        },
+                        {
+                            "id": null,
+                            "name": null,
+                            "content": ";",
+                            "isArray": false,
+                            "changed": false
+                        }
+                    ]
+                    JSON,
+                \T_OPEN_TAG,
+                \T_RETURN,
+                \T_WHITESPACE,
+                \T_LNUMBER,
+            ),
+            Tokens::fromCode('<?php return 1;')->toJson(),
+        );
     }
 
     private function getBlockEdgeCachingTestTokens(): Tokens
