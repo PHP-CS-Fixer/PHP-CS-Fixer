@@ -12,8 +12,6 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-use Symfony\Component\Yaml\Yaml;
-
 if (\PHP_VERSION_ID < 7_04_00 || \PHP_VERSION_ID >= 7_05_00) {
     fwrite(\STDERR, "PHP CS Fixer's config for PHP-LOWEST can be executed only on lowest supported PHP version - ~7.4.0.\n");
     fwrite(\STDERR, "Running it on higher PHP version would falsy expect more changes, eg `mixed` type on PHP 8.\n");
@@ -22,8 +20,6 @@ if (\PHP_VERSION_ID < 7_04_00 || \PHP_VERSION_ID >= 7_05_00) {
 }
 
 $config = require __DIR__.'/.php-cs-fixer.dist.php';
-
-$phpstanConfig = Yaml::parseFile('phpstan.dist.neon');
 
 $config->getFinder()->notPath([
     // @TODO 4.0 change interface to be fully typehinted and remove the exceptions from this list
@@ -34,21 +30,15 @@ $config->getFinder()->notPath([
     'src/ExecutorWithoutErrorHandler.php',
 ]);
 
-$typesMap = [
-    'TFixerInputConfig' => 'array',
-    'TFixerComputedConfig' => 'array',
-    'TFixer' => '\PhpCsFixer\AbstractFixer',
-] + $phpstanConfig['parameters']['typeAliases'];
-
 $config->setRules([
-    'phpdoc_to_param_type' => [
-        'types_map' => $typesMap,
-    ],
-    'phpdoc_to_return_type' => [
-        'types_map' => $typesMap,
-    ],
+    'phpdoc_to_param_type' => true,
+    'phpdoc_to_return_type' => true,
     'phpdoc_to_property_type' => [
-        'types_map' => $typesMap,
+        'types_map' => [
+            'TFixerInputConfig' => 'array',
+            'TFixerComputedConfig' => 'array',
+            'TFixer' => '\PhpCsFixer\AbstractFixer',
+        ],
     ],
 ]);
 
