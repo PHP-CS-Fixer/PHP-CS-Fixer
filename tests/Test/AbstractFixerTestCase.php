@@ -46,6 +46,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @template TFixer of FixerInterface
  *
+ * @phpstan-import-type _PhpTokenArrayPartial from Token
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
@@ -660,7 +662,7 @@ abstract class AbstractFixerTestCase extends TestCase
     }
 
     /**
-     * @param non-empty-list<array{0: int, 1?: string}> $sequence
+     * @param non-empty-list<_PhpTokenArrayPartial> $sequence
      *
      * @return list<non-empty-array<int, Token>>
      */

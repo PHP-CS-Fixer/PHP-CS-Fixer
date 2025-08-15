@@ -19,12 +19,16 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\Transformers;
 
+/**
+ * @phpstan-import-type _PhpTokenKind from Token
+ * @phpstan-import-type _PhpTokenPrototypePartial from Token
+ */
 class TokensWithObservedTransformers extends Tokens
 {
     public ?string $currentTransformer = null;
 
     /**
-     * @var array<string, list<int|string>>
+     * @var array<string, list<_PhpTokenKind>>
      */
     public array $observedModificationsPerTransformer = [];
 
@@ -58,9 +62,9 @@ class TokensWithObservedTransformers extends Tokens
     }
 
     /**
-     * @param array{int}|string|Token $token token prototype
+     * @param _PhpTokenPrototypePartial|Token $token token prototype
      *
-     * @return int|string
+     * @return _PhpTokenKind
      */
     private function extractTokenKind($token)
     {
