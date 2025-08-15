@@ -22,11 +22,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Cache/Cache.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset 1 might not exist on non\\-empty\\-list\\<string\\>\\.$#',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Console/Command/CheckCommand.php',
-];
-$ignoreErrors[] = [
     'message' => '#^Offset 1 might not exist on array\\.$#',
     'count' => 2,
     'path' => __DIR__ . '/../../../src/Console/Command/DescribeCommand.php',
