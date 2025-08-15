@@ -34,6 +34,11 @@ $typesMap = [
     'TFixerInputConfig' => 'array',
     'TFixerComputedConfig' => 'array',
     'TFixer' => '\PhpCsFixer\AbstractFixer',
+    '_PhpTokenKind' => 'int|string',
+    '_PhpTokenArray' => 'array{0: int, 1: string}',
+    '_PhpTokenArrayPartial' => 'array{0: int, 1?: string}',
+    '_PhpTokenPrototype' => '_PhpTokenArray|string',
+    '_PhpTokenPrototypePartial' => '_PhpTokenArrayPartial|string',
 ];
 
 $config->setRules([
