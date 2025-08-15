@@ -24,9 +24,8 @@ final class PHP85MigrationSet extends AbstractMigrationSetDescription
     public function getRules(): array
     {
         return [
-            '@PHP83Migration' => true,
-            'new_expression_parentheses' => true,
-            'nullable_type_declaration_for_default_null_value' => true,
+            '@PHP84Migration' => true,
+            'switch_case_semicolon_to_colon' => true,
         ];
     }
 }
