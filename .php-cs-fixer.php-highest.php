@@ -27,6 +27,7 @@ $config->getFinder()->notPath([
 ]);
 
 $typesMap = [
+    'T' => 'mixed',
     'TFixerInputConfig' => 'array',
     'TFixerComputedConfig' => 'array',
     'TFixer' => '\PhpCsFixer\AbstractFixer',
