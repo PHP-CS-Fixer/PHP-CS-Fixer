@@ -139,35 +139,47 @@ final class Token
         }
 
         if ($other instanceof self) {
+            // Inlined getPrototype() on this very hot path.
             // We access the private properties of $other directly to save function call overhead.
             // This is only possible because $other is of the same class as `self`.
-            $other = [$other->kind, $other->content];
-        } elseif (\is_string($other)) {
-            $other = [$other];
+            if (!$other->isArray) {
+                $otherPrototype = $other->content;
+            } else {
+                $otherPrototype = [
+                    $other->id,
+                    $other->content,
+                ];
+            }
+        } else {
+            $otherPrototype = $other;
         }
 
-        if ($this->kind !== $other[0]) {
+        if ($this->isArray !== \is_array($otherPrototype)) {
             return false;
         }
 
         if (!$this->isArray) {
-            return true;
+            return $this->content === $otherPrototype;
         }
 
-        if (isset($other[1])) {
+        if ($this->id !== $otherPrototype[0]) {
+            return false;
+        }
+
+        if (isset($otherPrototype[1])) {
             if ($caseSensitive) {
-                if ($this->content !== $other[1]) {
+                if ($this->content !== $otherPrototype[1]) {
                     return false;
                 }
-            } elseif (0 !== strcasecmp($this->content, $other[1])) {
+            } elseif (0 !== strcasecmp($this->content, $otherPrototype[1])) {
                 return false;
             }
         }
 
         // detect unknown keys
-        unset($other[0], $other[1]);
+        unset($otherPrototype[0], $otherPrototype[1]);
 
-        return [] === $other;
+        return [] === $otherPrototype;
     }
 
     /**
