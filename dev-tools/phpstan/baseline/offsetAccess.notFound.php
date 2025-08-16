@@ -457,12 +457,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/ControlStructure/NoBreakCommentFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset int might not exist on array\\<int\\|string, bool\\|null\\>\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/ControlStructure/YodaStyleFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset string might not exist on array\\<int\\|string, bool\\|null\\>\\.$#',
+    'message' => '#^Offset int\\|string might not exist on array\\<int\\|string, bool\\|null\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ControlStructure/YodaStyleFixer.php',
 ];

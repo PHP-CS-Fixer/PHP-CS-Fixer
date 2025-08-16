@@ -277,12 +277,7 @@ return $foo === count($bar);
     {
         for ($i = \count($tokens) - 1; $i > 1; --$i) {
             if ($tokens[$i]->isGivenKind($this->candidateTypes)) {
-                $yoda = $this->candidateTypesConfiguration[$tokens[$i]->getId()];
-            } elseif (
-                ($tokens[$i]->equals('<') && \in_array('<', $this->candidateTypes, true))
-                || ($tokens[$i]->equals('>') && \in_array('>', $this->candidateTypes, true))
-            ) {
-                $yoda = $this->candidateTypesConfiguration[$tokens[$i]->getContent()];
+                $yoda = $this->candidateTypesConfiguration[$tokens[$i]->getKind()];
             } else {
                 continue;
             }
