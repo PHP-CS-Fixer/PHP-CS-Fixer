@@ -165,6 +165,7 @@ jobs:
             job-description: tests using PHPUnit 12
             install-phpunit-12: 'yes'
             run-tests: 'yes'
+            phpunit-flags: --display-phpunit-deprecations --fail-on-phpunit-deprecation
 
           - operating-system: ubuntu-24.04
             php-version: '8.4'
