@@ -949,5 +949,27 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
                 EOF,
             ['order' => ['template', 'param', 'throws', 'return']],
         ];
+
+        yield 'duplicated tags are removed' => [
+            <<<'PHP'
+                <?php
+                /**
+                 * @see example.com
+                 * @return int
+                 **/
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
+                 * @see example.com
+                 * @param array{string} $x
+                 * @param array{
+                 *     string
+                 * } $y
+                 * @return int
+                 **/
+                PHP,
+            ['order' => ['param', 'return', 'param']],
+        ];
     }
 }
