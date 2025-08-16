@@ -113,6 +113,7 @@ Rule sets
 The rule is part of the following rule sets:
 
 - `@PHP84Migration <./../../ruleSets/PHP84Migration.rst>`_
+- `@PHP85Migration <./../../ruleSets/PHP85Migration.rst>`_
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
