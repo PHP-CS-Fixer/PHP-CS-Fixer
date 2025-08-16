@@ -521,8 +521,15 @@ final class TokensTest extends TestCase
         self::assertArrayHasKey(1, $found);
         self::assertSame(\T_CLASS, $found[1]->getId());
 
-        $found = $tokens->findGivenKind([\T_CLASS, \T_FUNCTION]);
+        $found = $tokens->findGivenKind(';');
         self::assertCount(2, $found);
+        self::assertArrayHasKey(20, $found);
+        self::assertSame(';', $found[20]->getKind());
+        self::assertArrayHasKey(37, $found);
+        self::assertSame(';', $found[37]->getKind());
+
+        $found = $tokens->findGivenKind([\T_CLASS, \T_FUNCTION, ';']);
+        self::assertCount(3, $found);
         self::assertArrayHasKey(\T_CLASS, $found);
         self::assertIsArray($found[\T_CLASS]);
         self::assertCount(1, $found[\T_CLASS]);
@@ -537,20 +544,34 @@ final class TokensTest extends TestCase
         self::assertArrayHasKey(26, $found[\T_FUNCTION]);
         self::assertSame(\T_FUNCTION, $found[\T_FUNCTION][26]->getId());
 
+        self::assertArrayHasKey(';', $found);
+        self::assertIsArray($found[';']);
+        self::assertCount(2, $found[';']);
+        self::assertArrayHasKey(20, $found[';']);
+        self::assertSame(';', $found[';'][20]->getKind());
+        self::assertArrayHasKey(37, $found[';']);
+        self::assertSame(';', $found[';'][37]->getKind());
+
         // test offset and limits of the search
-        $found = $tokens->findGivenKind([\T_CLASS, \T_FUNCTION], 10);
+        $found = $tokens->findGivenKind([\T_CLASS, \T_FUNCTION, ';'], 21);
         self::assertArrayHasKey(\T_CLASS, $found);
         self::assertCount(0, $found[\T_CLASS]);
         self::assertArrayHasKey(\T_FUNCTION, $found);
         self::assertCount(1, $found[\T_FUNCTION]);
         self::assertArrayHasKey(26, $found[\T_FUNCTION]);
+        self::assertArrayHasKey(';', $found);
+        self::assertCount(1, $found[';']);
+        self::assertArrayHasKey(37, $found[';']);
 
-        $found = $tokens->findGivenKind([\T_CLASS, \T_FUNCTION], 2, 10);
+        $found = $tokens->findGivenKind([\T_CLASS, \T_FUNCTION, ';'], 2, 21);
         self::assertArrayHasKey(\T_CLASS, $found);
         self::assertCount(0, $found[\T_CLASS]);
         self::assertArrayHasKey(\T_FUNCTION, $found);
         self::assertCount(1, $found[\T_FUNCTION]);
         self::assertArrayHasKey(9, $found[\T_FUNCTION]);
+        self::assertArrayHasKey(';', $found);
+        self::assertCount(1, $found[';']);
+        self::assertArrayHasKey(20, $found[';']);
     }
 
     /**

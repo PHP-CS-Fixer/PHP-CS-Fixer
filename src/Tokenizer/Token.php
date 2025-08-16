@@ -44,6 +44,13 @@ final class Token
     private ?int $id;
 
     /**
+     * Token ID (if available) or token content otherwise.
+     *
+     * @var _PhpTokenKind
+     */
+    private $kind;
+
+    /**
      * If token prototype is an array.
      */
     private bool $isArray;
@@ -74,10 +81,12 @@ final class Token
 
             $this->isArray = true;
             $this->id = $token[0];
+            $this->kind = $token[0];
             $this->content = $token[1];
         } elseif (\is_string($token)) {
             $this->isArray = false;
             $this->id = null;
+            $this->kind = $token;
             $this->content = $token;
         } else {
             throw new \InvalidArgumentException(\sprintf('Cannot recognize input value as valid Token prototype, got "%s".', get_debug_type($token)));
@@ -125,7 +134,7 @@ final class Token
         if ('&' === $other) {
             return '&' === $this->content && (null === $this->id || $this->isGivenKind([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]));
         }
-        if (null === $this->id && '&' === $this->content) {
+        if ('&' === $this->kind) {
             return $other instanceof self && '&' === $other->content && (null === $other->id || $other->isGivenKind([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]));
         }
 
@@ -249,6 +258,16 @@ final class Token
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * Get token's kind.
+     *
+     * @return _PhpTokenKind token ID (if available) or token content otherwise
+     */
+    public function getKind()
+    {
+        return $this->kind;
     }
 
     /**
@@ -402,14 +421,14 @@ final class Token
     /**
      * Check if token is one of given kind.
      *
-     * @param int|list<int> $possibleKind kind or array of kinds
+     * @param _PhpTokenKind|list<_PhpTokenKind> $possibleKind kind or array of kinds
      *
      * @phpstan-assert-if-true !=null $this->getId()
      * @phpstan-assert-if-true !='' $this->getContent()
      */
     public function isGivenKind($possibleKind): bool
     {
-        return $this->isArray && (\is_array($possibleKind) ? \in_array($this->id, $possibleKind, true) : $this->id === $possibleKind);
+        return \is_array($possibleKind) ? \in_array($this->kind, $possibleKind, true) : $this->kind === $possibleKind;
     }
 
     /**

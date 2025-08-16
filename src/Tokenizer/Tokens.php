@@ -165,10 +165,7 @@ class Tokens extends \SplFixedArray
             }
         }
 
-        // inlined extractTokenKind() call on the hot path
-        $tokenKind = $token->isArray() ? $token->getId() : $token->getContent();
-
-        return $blockEdgeKinds[$tokenKind] ?? null;
+        return $blockEdgeKinds[$token->getKind()] ?? null;
     }
 
     /**
@@ -534,11 +531,11 @@ class Tokens extends \SplFixedArray
     }
 
     /**
-     * @param int|non-empty-list<int> $possibleKind kind or array of kinds
-     * @param int                     $start        optional offset
-     * @param null|int                $end          optional limit
+     * @param _PhpTokenKind|non-empty-list<_PhpTokenKind> $possibleKind kind or array of kinds
+     * @param int                                         $start        optional offset
+     * @param null|int                                    $end          optional limit
      *
-     * @return ($possibleKind is int ? array<int<0, max>, Token> : array<int, array<int<0, max>, Token>>)
+     * @return ($possibleKind is array ? array<_PhpTokenKind, array<int<0, max>, Token>> : array<int<0, max>, Token>)
      */
     public function findGivenKind($possibleKind, int $start = 0, ?int $end = null): array
     {
@@ -559,7 +556,7 @@ class Tokens extends \SplFixedArray
             for ($i = $start; $i < $end; ++$i) {
                 $token = $this[$i];
                 if ($token->isGivenKind($possibleKinds)) {
-                    $elements[$token->getId()][$i] = $token;
+                    $elements[$token->getKind()][$i] = $token;
                 }
             }
         }
@@ -756,9 +753,9 @@ class Tokens extends \SplFixedArray
     /**
      * Get index for closest sibling token not of given kind.
      *
-     * @param int       $index     token index
-     * @param -1|1      $direction
-     * @param list<int> $kinds     possible tokens kinds
+     * @param int                 $index     token index
+     * @param -1|1                $direction
+     * @param list<_PhpTokenKind> $kinds     possible tokens kinds
      */
     public function getTokenNotOfKindsSibling(int $index, int $direction, array $kinds = []): ?int
     {
@@ -1035,7 +1032,7 @@ class Tokens extends \SplFixedArray
     {
         $token = $this[$index];
 
-        return null === $token->getId() && '' === $token->getContent();
+        return '' === $token->getKind();
     }
 
     public function clearAt(int $index): void
@@ -1515,8 +1512,7 @@ class Tokens extends \SplFixedArray
      */
     private function registerFoundToken(Token $token): void
     {
-        // inlined extractTokenKind() call on the hot path
-        $tokenKind = $token->isArray() ? $token->getId() : $token->getContent();
+        $tokenKind = $token->getKind();
 
         $this->foundTokenKinds[$tokenKind] ??= 0;
         ++$this->foundTokenKinds[$tokenKind];
@@ -1527,8 +1523,7 @@ class Tokens extends \SplFixedArray
      */
     private function unregisterFoundToken(Token $token): void
     {
-        // inlined extractTokenKind() call on the hot path
-        $tokenKind = $token->isArray() ? $token->getId() : $token->getContent();
+        $tokenKind = $token->getKind();
 
         \assert(($this->foundTokenKinds[$tokenKind] ?? 0) > 0);
         --$this->foundTokenKinds[$tokenKind];
@@ -1542,7 +1537,7 @@ class Tokens extends \SplFixedArray
     private function extractTokenKind($token)
     {
         return $token instanceof Token
-            ? ($token->isArray() ? $token->getId() : $token->getContent())
+            ? $token->getKind()
             : (\is_array($token) ? $token[0] : $token);
     }
 
