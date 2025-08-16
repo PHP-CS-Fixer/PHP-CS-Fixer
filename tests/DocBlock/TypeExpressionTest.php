@@ -19,11 +19,8 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
-use PhpCsFixer\Tokenizer\Token;
 
 /**
- * @phpstan-import-type _PhpTokenArray from Token
- *
  * @covers \PhpCsFixer\DocBlock\TypeExpression
  *
  * @internal
@@ -1174,7 +1171,7 @@ final class TypeExpressionTest extends TestCase
     /**
      * Return type is recursive.
      *
-     * @return list<_PhpTokenArray|list<mixed>>
+     * @return list<array{int, string}|list<mixed>>
      */
     private function checkInnerTypeExpressionsStartIndex(TypeExpression $typeExpression): array
     {

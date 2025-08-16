@@ -20,11 +20,8 @@ use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
-use PhpCsFixer\Tokenizer\Token;
 
 /**
- * @phpstan-import-type _PhpTokenArray from Token
- *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
@@ -101,7 +98,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<int, _PhpTokenArray>
+     * @return iterable<int, array{int, string}>
      */
     public static function provideGetContentCases(): iterable
     {
@@ -164,7 +161,7 @@ final class AnnotationTest extends TestCase
     }
 
     /**
-     * @return iterable<int, _PhpTokenArray>
+     * @return iterable<int, array{int, string}>
      */
     public static function provideGetTagCases(): iterable
     {
