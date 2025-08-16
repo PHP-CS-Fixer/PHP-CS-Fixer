@@ -20,7 +20,6 @@ use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
-use PhpCsFixer\Tokenizer\Token;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
