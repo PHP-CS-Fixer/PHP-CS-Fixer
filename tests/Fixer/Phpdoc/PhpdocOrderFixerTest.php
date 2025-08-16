@@ -58,6 +58,16 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
             ['order' => ['param']],
             'The option "order" value is invalid. Minimum two tags are required.',
         ];
+
+        yield 'duplicated tag' => [
+            ['order' => ['param', 'return', 'throws', 'return']],
+            'The option "order" value is invalid. Tag "return" is duplicated.',
+        ];
+
+        yield 'duplicated tags' => [
+            ['order' => ['param', 'return', 'throws', 'param', 'return', 'throws']],
+            'The option "order" value is invalid. Tags "param", "return" and "throws" are duplicated.',
+        ];
     }
 
     /**
@@ -948,28 +958,6 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
 
                 EOF,
             ['order' => ['template', 'param', 'throws', 'return']],
-        ];
-
-        yield 'duplicated tags are removed' => [
-            <<<'PHP'
-                <?php
-                /**
-                 * @see example.com
-                 * @return int
-                 **/
-                PHP,
-            <<<'PHP'
-                <?php
-                /**
-                 * @see example.com
-                 * @param array{string} $x
-                 * @param array{
-                 *     string
-                 * } $y
-                 * @return int
-                 **/
-                PHP,
-            ['order' => ['param', 'return', 'param']],
         ];
     }
 }
