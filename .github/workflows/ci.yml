@@ -166,6 +166,7 @@ jobs:
             install-phpunit-12: 'yes'
             run-tests: 'yes'
             phpunit-flags: --display-phpunit-deprecations --fail-on-phpunit-deprecation
+            AVOID_PARAUNIT: 'yes'
 
           - operating-system: ubuntu-24.04
             php-version: '8.4'
