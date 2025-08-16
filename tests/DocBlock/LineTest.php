@@ -17,12 +17,9 @@ namespace PhpCsFixer\Tests\DocBlock;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Tests\TestCase;
-use PhpCsFixer\Tokenizer\Token;
 
 /**
- * @phpstan-import-type _PhpTokenArray from Token
- *
- *  @author Graham Campbell <hello@gjcampbell.co.uk>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @internal
  *
@@ -143,7 +140,7 @@ final class LineTest extends TestCase
     }
 
     /**
-     * @return iterable<int, _PhpTokenArray>
+     * @return iterable<int, array{int, string}>
      */
     public static function provideLinesCases(): iterable
     {
