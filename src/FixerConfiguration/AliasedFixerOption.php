@@ -53,6 +53,11 @@ final class AliasedFixerOption implements FixerOptionInterface
         return $this->fixerOption->hasDefault();
     }
 
+    /**
+     * @return mixed
+     *
+     * @throws \LogicException when no default value is defined
+     */
     public function getDefault()
     {
         return $this->fixerOption->getDefault();

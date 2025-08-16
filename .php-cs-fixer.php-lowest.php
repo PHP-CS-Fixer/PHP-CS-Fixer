@@ -30,16 +30,22 @@ $config->getFinder()->notPath([
     'src/ExecutorWithoutErrorHandler.php',
 ]);
 
+$typesMap = [
+    'T' => 'mixed',
+    'TFixerInputConfig' => 'array',
+    'TFixerComputedConfig' => 'array',
+    'TFixer' => '\PhpCsFixer\AbstractFixer',
+    '_PhpTokenKind' => 'int|string',
+    '_PhpTokenArray' => 'array{0: int, 1: string}',
+    '_PhpTokenArrayPartial' => 'array{0: int, 1?: string}',
+    '_PhpTokenPrototype' => '_PhpTokenArray|string',
+    '_PhpTokenPrototypePartial' => '_PhpTokenArrayPartial|string',
+];
+
 $config->setRules([
-    'phpdoc_to_param_type' => true,
-    'phpdoc_to_return_type' => true,
-    'phpdoc_to_property_type' => [
-        'types_map' => [
-            'TFixerInputConfig' => 'array',
-            'TFixerComputedConfig' => 'array',
-            'TFixer' => '\PhpCsFixer\AbstractFixer',
-        ],
-    ],
+    'phpdoc_to_param_type' => ['types_map' => $typesMap],
+    'phpdoc_to_return_type' => ['types_map' => $typesMap],
+    'phpdoc_to_property_type' => ['types_map' => $typesMap],
 ]);
 
 return $config;
