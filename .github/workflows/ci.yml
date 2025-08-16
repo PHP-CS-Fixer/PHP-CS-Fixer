@@ -246,7 +246,14 @@ jobs:
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
-        run: vendor/bin/phpunit --testsuite unit,integration ${{ matrix.phpunit-flags }}
+        run: vendor/bin/phpunit --testsuite unit,integration ${{ matrix.phpunit-flags }} tests/Fixer/CastNotation/ShortScalarCastFixerTest.php --testdox
+
+      - name: Run tests (via PHPUnit) [debug]
+        if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes' && matrix.AVOID_PARAUNIT == 'yes'
+        env:
+          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
+          FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
+        run: vendor/bin/phpunit --testsuite unit,integration ${{ matrix.phpunit-flags }} tests/Fixer/CastNotation/ShortScalarCastFixerTest.php --debug
 
       - name: Run tests (via ParaUnit)
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes' && matrix.AVOID_PARAUNIT != 'yes'
