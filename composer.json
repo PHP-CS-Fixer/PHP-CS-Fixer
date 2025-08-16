@@ -53,7 +53,6 @@
         "keradus/cli-executor": "^2.2",
         "mikey179/vfsstream": "^1.6.12",
         "php-coveralls/php-coveralls": "^2.8",
-        "php-cs-fixer/accessible-object": "^1.1",
         "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.6",
         "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.6",
         "phpunit/phpunit": "^9.6.23 || ^10.5.47 || ^11.5.25",
