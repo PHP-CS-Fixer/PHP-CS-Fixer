@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Runner;
 
-use PhpCsFixer\AccessibleObject\AccessibleObject;
 use PhpCsFixer\Cache\Directory;
 use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Console\Command\FixCommand;
@@ -322,7 +321,14 @@ final class RunnerTest extends TestCase
 
         $runner->fix();
 
-        self::assertSame($path, AccessibleObject::create($differ)->passedFile->getPath());
+        self::assertSame(
+            $path,
+            \Closure::bind(
+                static fn ($differ): string => $differ->passedFile->getPath(),
+                null,
+                \get_class($differ)
+            )($differ),
+        );
     }
 
     private function createDifferDouble(): DifferInterface

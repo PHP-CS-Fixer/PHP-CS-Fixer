@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Test;
 
-use PhpCsFixer\AccessibleObject\AccessibleObject;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\Transformers;
@@ -49,7 +48,14 @@ class TokensWithObservedTransformers extends Tokens
         $this->observedModificationsPerTransformer = [];
 
         $transformers = Transformers::createSingleton();
-        foreach (AccessibleObject::create($transformers)->items as $transformer) {
+
+        $items = \Closure::bind(
+            static fn (Transformers $transformers): array => $transformers->items,
+            null,
+            Transformers::class
+        )($transformers);
+
+        foreach ($items as $transformer) {
             $this->currentTransformer = $transformer->getName();
             $this->observedModificationsPerTransformer[$this->currentTransformer] = [];
 

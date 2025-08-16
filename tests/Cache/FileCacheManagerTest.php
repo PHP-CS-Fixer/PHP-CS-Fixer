@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Cache;
 
-use PhpCsFixer\AccessibleObject\AccessibleObject;
 use PhpCsFixer\Cache\CacheInterface;
 use PhpCsFixer\Cache\CacheManagerInterface;
 use PhpCsFixer\Cache\DirectoryInterface;
@@ -55,7 +54,7 @@ final class FileCacheManagerTest extends TestCase
         $manager = new FileCacheManager($handler, $signature);
         unset($manager);
 
-        self::assertSame(1, AccessibleObject::create($handler)->writeCallCount);
+        self::assertWriteCallCount(1, $handler);
     }
 
     public function testCreatesCacheIfCachedSignatureIsDifferent(): void
@@ -68,7 +67,7 @@ final class FileCacheManagerTest extends TestCase
         $manager = new FileCacheManager($handler, $signature);
         unset($manager);
 
-        self::assertSame(1, AccessibleObject::create($handler)->writeCallCount);
+        self::assertWriteCallCount(1, $handler);
     }
 
     public function testUsesCacheIfCachedSignatureIsEqualAndNoFileWasUpdated(): void
@@ -81,7 +80,7 @@ final class FileCacheManagerTest extends TestCase
         $manager = new FileCacheManager($handler, $signature);
         unset($manager);
 
-        self::assertSame(0, AccessibleObject::create($handler)->writeCallCount);
+        self::assertWriteCallCount(0, $handler);
     }
 
     public function testNeedFixingReturnsTrueIfCacheHasNoHash(): void
@@ -163,7 +162,7 @@ final class FileCacheManagerTest extends TestCase
 
         self::assertTrue($cache->has($file));
         self::assertSame(Hasher::calculate($fileContent), $cache->get($file));
-        self::assertSame(1, AccessibleObject::create($handler)->writeCallCount);
+        self::assertWriteCallCount(1, $handler);
     }
 
     public function testSetFileSetsHashOfFileContentDuringDryRunIfCacheHasNoHash(): void
@@ -230,6 +229,18 @@ final class FileCacheManagerTest extends TestCase
 
         self::assertTrue($cache->has($relativePathToFile));
         self::assertSame(Hasher::calculate($fileContent), $cache->get($relativePathToFile));
+    }
+
+    private static function assertWriteCallCount(int $writeCallCount, FileHandlerInterface $handler): void
+    {
+        self::assertSame(
+            $writeCallCount,
+            \Closure::bind(
+                static fn ($handler): int => $handler->writeCallCount,
+                null,
+                \get_class($handler)
+            )($handler),
+        );
     }
 
     private function getFile(): string
