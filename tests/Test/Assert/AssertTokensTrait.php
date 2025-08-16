@@ -38,7 +38,7 @@ trait AssertTokensTrait
                 \sprintf("The token at index %d must be:\n%s,\ngot:\n%s.", $index, $expectedToken->toJson(), $inputToken->toJson())
             );
 
-            $expectedTokenKind = $expectedToken->isArray() ? $expectedToken->getId() : $expectedToken->getContent();
+            $expectedTokenKind = $expectedToken->getKind();
             self::assertTrue(
                 $inputTokens->isTokenKindFound($expectedTokenKind),
                 \sprintf(
