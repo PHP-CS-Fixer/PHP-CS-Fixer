@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
+ * @phpstan-import-type _PhpTokenPrototypePartial from Token
+ *
  * @author Matteo Beccati <matteo@beccati.com>
  */
 final class NoPhp4ConstructorFixer extends AbstractFixer
@@ -290,7 +292,7 @@ class Foo
      * @param int    $startIndex function/method start index
      * @param int    $bodyIndex  function/method body index
      *
-     * @return array{list<non-empty-list<array{0: int, 1?: string}|string>>, array{3: false}}
+     * @return array{list<non-empty-list<_PhpTokenPrototypePartial>>, array{3: false}}
      */
     private function getWrapperMethodSequence(Tokens $tokens, string $method, int $startIndex, int $bodyIndex): array
     {

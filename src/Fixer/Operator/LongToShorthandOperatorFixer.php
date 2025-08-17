@@ -23,10 +23,13 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
+/**
+ * @phpstan-import-type _PhpTokenArray from Token
+ */
 final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer
 {
     /**
-     * @var array<string, array{int, string}>
+     * @var array<string, _PhpTokenArray>
      */
     private const OPERATORS = [
         '+' => [\T_PLUS_EQUAL, '+='],

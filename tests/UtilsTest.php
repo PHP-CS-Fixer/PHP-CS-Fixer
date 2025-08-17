@@ -22,6 +22,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
 
 /**
+ * @phpstan-import-type _PhpTokenPrototype from Token
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Odín del Río <odin.drp@gmail.com>
@@ -134,7 +136,7 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @param array{int, string}|string $input token prototype
+     * @param _PhpTokenPrototype $input token prototype
      *
      * @dataProvider provideCalculateTrailingWhitespaceIndentCases
      */
@@ -146,7 +148,7 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{string, array{int, string}|string}>
+     * @return iterable<int, array{string, _PhpTokenPrototype}>
      */
     public static function provideCalculateTrailingWhitespaceIndentCases(): iterable
     {
