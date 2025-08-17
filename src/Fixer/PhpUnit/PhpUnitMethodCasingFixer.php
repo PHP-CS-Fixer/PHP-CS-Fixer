@@ -146,7 +146,7 @@ class MyTest extends \PhpUnit\FrameWork\TestCase
 
             $docBlockIndex = $this->getDocBlockIndex($tokens, $index);
 
-            if ($this->isPHPDoc($tokens, $docBlockIndex)) {
+            if ($tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT)) {
                 $this->updateDocBlock($tokens, $docBlockIndex);
             }
         }
@@ -194,7 +194,7 @@ class MyTest extends \PhpUnit\FrameWork\TestCase
         $docBlockIndex = $this->getDocBlockIndex($tokens, $index);
 
         return
-            $this->isPHPDoc($tokens, $docBlockIndex) // If the function doesn't have test in its name, and no doc block, it's not a test
+            $tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT) // If the function doesn't have test in its name, and no doc block, it's not a test
             && str_contains($tokens[$docBlockIndex]->getContent(), '@test');
     }
 

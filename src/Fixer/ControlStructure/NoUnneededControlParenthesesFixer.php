@@ -254,7 +254,7 @@ while ($y) { continue (2); }
             // do a cheap check for negative case: `X()`
 
             if ($tokens->getNextMeaningfulToken($openIndex) === $closeIndex) {
-                if ($this->isExitStatement($tokens, $beforeOpenIndex)) {
+                if ($tokens[$beforeOpenIndex]->isGivenKind(\T_EXIT)) {
                     $this->removeUselessParenthesisPair($tokens, $beforeOpenIndex, $afterCloseIndex, $openIndex, $closeIndex, 'others');
                 }
 
@@ -277,7 +277,7 @@ while ($y) { continue (2); }
 
             // handle `clone` statements
 
-            if ($this->isCloneStatement($tokens, $beforeOpenIndex)) {
+            if ($tokens[$beforeOpenIndex]->isGivenKind(\T_CLONE)) {
                 if ($this->isWrappedCloneArgument($tokens, $beforeOpenIndex, $openIndex, $closeIndex, $afterCloseIndex)) {
                     $this->removeUselessParenthesisPair($tokens, $beforeOpenIndex, $afterCloseIndex, $openIndex, $closeIndex, 'clone');
                 }
@@ -336,16 +336,6 @@ while ($y) { continue (2); }
             || $this->isWrappedForElement($tokens, $beforeOpenIndex, $afterCloseIndex)
             || $this->isWrappedLanguageConstructArgument($tokens, $beforeOpenIndex, $afterCloseIndex)
             || $this->isWrappedSequenceElement($tokens, $beforeOpenIndex, $afterCloseIndex);
-    }
-
-    private function isExitStatement(Tokens $tokens, int $beforeOpenIndex): bool
-    {
-        return $tokens[$beforeOpenIndex]->isGivenKind(\T_EXIT);
-    }
-
-    private function isCloneStatement(Tokens $tokens, int $beforeOpenIndex): bool
-    {
-        return $tokens[$beforeOpenIndex]->isGivenKind(\T_CLONE);
     }
 
     private function isWrappedCloneArgument(Tokens $tokens, int $beforeOpenIndex, int $openIndex, int $closeIndex, int $afterCloseIndex): bool
