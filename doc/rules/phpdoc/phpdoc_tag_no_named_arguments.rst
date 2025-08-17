@@ -17,8 +17,8 @@ Allowed types: ``string``
 
 Default value: ``''``
 
-``fix_attribute_classes``
-~~~~~~~~~~~~~~~~~~~~~~~~~
+``fix_attribute``
+~~~~~~~~~~~~~~~~~
 
 Whether to fix attribute classes.
 
@@ -29,7 +29,7 @@ Default value: ``true``
 ``fix_internal``
 ~~~~~~~~~~~~~~~~
 
-Whether to fix internal elements.
+Whether to fix internal elements (marked with ``@internal``).
 
 Allowed types: ``bool``
 

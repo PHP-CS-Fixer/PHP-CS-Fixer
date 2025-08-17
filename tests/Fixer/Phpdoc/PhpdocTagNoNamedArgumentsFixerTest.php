@@ -246,7 +246,7 @@ final class PhpdocTagNoNamedArgumentsFixerTest extends AbstractFixerTestCase
                 final class MyAttributeClass {}
                 PHP,
             null,
-            ['fix_attribute_classes' => false],
+            ['fix_attribute' => false],
         ];
 
         yield 'add for attribute class' => [
@@ -264,7 +264,7 @@ final class PhpdocTagNoNamedArgumentsFixerTest extends AbstractFixerTestCase
                 #[Attribute(flags: Attribute::TARGET_METHOD)]
                 final class MyAttributeClass {}
                 PHP,
-            ['fix_attribute_classes' => true],
+            ['fix_attribute' => true],
         ];
 
         yield 'do not add for attribute class (with alias)' => [
@@ -276,7 +276,7 @@ final class PhpdocTagNoNamedArgumentsFixerTest extends AbstractFixerTestCase
                 final class MyAttributeClass {}
                 PHP,
             null,
-            ['fix_attribute_classes' => false],
+            ['fix_attribute' => false],
         ];
     }
 
@@ -393,7 +393,7 @@ final class PhpdocTagNoNamedArgumentsFixerTest extends AbstractFixerTestCase
                 #[BazAttribute]
                 final readonly class NotAttributeClass2 {}
                 PHP,
-            ['fix_attribute_classes' => false],
+            ['fix_attribute' => false],
         ];
     }
 
