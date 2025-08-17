@@ -3,7 +3,7 @@
     "require": {
         "php": "^8.4",
         "ergebnis/composer-normalize": "^2.47.0",
-        "icanhazstring/composer-unused": "^0.9.3",
+        "icanhazstring/composer-unused": "^0.9.4",
         "kubawerlos/composer-smaller-lock": "^1.1.0",
         "maglnet/composer-require-checker": "^4.16.1",
         "mi-schi/phpmd-extension": "^4.3.0",
@@ -11,11 +11,11 @@
         "phpcompatibility/phpcompatibility-symfony": "^1.2.2",
         "phpmd/phpmd": "dev-master as 2.16.0",
         "phpstan/extension-installer": "^1.4.3",
-        "phpstan/phpstan": "^2.1.21",
+        "phpstan/phpstan": "^2.1.22",
         "phpstan/phpstan-phpunit": "^2.0.7",
         "phpstan/phpstan-strict-rules": "^2.0.6",
         "phpstan/phpstan-symfony": "^2.0.7",
-        "shipmonk/dead-code-detector": "^0.13.0",
+        "shipmonk/dead-code-detector": "^0.13.2",
         "shipmonk/phpstan-baseline-per-identifier": "^2.1.6"
     },
     "config": {

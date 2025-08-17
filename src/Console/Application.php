@@ -46,7 +46,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class Application extends BaseApplication
 {
     public const NAME = 'PHP CS Fixer';
-    public const VERSION = '3.85.2-DEV';
+    public const VERSION = '3.86.1-DEV';
     public const VERSION_CODENAME = 'Alexander';
 
     /**
@@ -121,7 +121,7 @@ final class Application extends BaseApplication
 
             if (\count($triggeredDeprecations) > 0) {
                 $stdErr->writeln('');
-                $stdErr->writeln($stdErr->isDecorated() ? '<bg=yellow;fg=black;>Detected deprecations in use:</>' : 'Detected deprecations in use:');
+                $stdErr->writeln($stdErr->isDecorated() ? '<bg=yellow;fg=black;>Detected deprecations in use (they will stop working in next major release):</>' : 'Detected deprecations in use (they will stop working in next major release):');
                 foreach ($triggeredDeprecations as $deprecation) {
                     $stdErr->writeln(\sprintf('- %s', $deprecation));
                 }

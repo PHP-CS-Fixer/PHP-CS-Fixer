@@ -294,6 +294,7 @@ The rule is part of the following rule sets:
   ``['attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline']``
 
 - `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_
 - `@PHP73Migration <./../../ruleSets/PHP73Migration.rst>`_ with config:
 
   ``['after_heredoc' => true]``
@@ -332,11 +333,11 @@ The rule is part of the following rule sets:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 
-  ``['on_multiline' => 'ensure_fully_multiline']``
+  ``['after_heredoc' => true, 'on_multiline' => 'ensure_fully_multiline']``
 
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
-  ``['on_multiline' => 'ignore']``
+  ``['after_heredoc' => true, 'on_multiline' => 'ignore']``
 
 References
 ----------

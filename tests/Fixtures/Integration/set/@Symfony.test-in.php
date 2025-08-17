@@ -118,6 +118,7 @@ final class FinalClass
 
 function callback($a, ...   $b) { return (--   $a) * ($b   ++);}
 
+/** @var $a int */
 $a =& $b;
 $c =  &  $d;
 

@@ -2,11 +2,6 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
-    'message' => '#^Parameter \\#2 \\$offset of function substr expects int, int\\<0, max\\>\\|false given\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/Command/CheckCommand.php',
-];
-$ignoreErrors[] = [
     'message' => '#^Parameter \\#1 \\$names of static method PhpCsFixer\\\\Utils\\:\\:naturalLanguageJoin\\(\\) expects list\\<string\\>, array\\<non\\-falsy\\-string\\> given\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Console/Command/DescribeCommand.php',
@@ -185,6 +180,11 @@ $ignoreErrors[] = [
     'message' => '#^Parameter \\#3 \\$length of function substr expects int\\|null, int\\<0, max\\>\\|false given\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitNoExpectationAnnotationFixer.php',
+];
+$ignoreErrors[] = [
+    'message' => '#^Parameter \\#1 \\$lines of method PhpCsFixer\\\\Fixer\\\\PhpUnit\\\\PhpUnitTestAnnotationFixer\\:\\:splitUpDocBlock\\(\\) expects non\\-empty\\-list\\<PhpCsFixer\\\\DocBlock\\\\Line\\>, list\\<PhpCsFixer\\\\DocBlock\\\\Line\\> given\\.$#',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php',
 ];
 $ignoreErrors[] = [
     'message' => '#^Parameter \\#2 \\$offset of function substr expects int, int\\|false given\\.$#',

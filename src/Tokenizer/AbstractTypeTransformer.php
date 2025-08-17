@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer;
 
 /**
+ * @phpstan-import-type _PhpTokenPrototype from Token
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
@@ -33,7 +35,7 @@ abstract class AbstractTypeTransformer extends AbstractTransformer
     abstract protected function replaceToken(Tokens $tokens, int $index): void;
 
     /**
-     * @param array{0: int, 1: string}|string $originalToken
+     * @param _PhpTokenPrototype $originalToken
      */
     protected function doProcess(Tokens $tokens, int $index, $originalToken): void
     {
