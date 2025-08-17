@@ -100,6 +100,10 @@ The rule is part of the following rule sets:
 
   ``['force' => true]``
 
+- `@PHPUnit110Migration:risky <./../../ruleSets/PHPUnit110MigrationRisky.rst>`_ with config:
+
+  ``['force' => true]``
+
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ with config:
 
   ``['force' => true]``

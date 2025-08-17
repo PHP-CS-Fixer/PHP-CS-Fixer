@@ -134,6 +134,10 @@ The rule is part of the following rule sets:
 
   ``['target' => '6.0']``
 
+- `@PHPUnit110Migration:risky <./../../ruleSets/PHPUnit110MigrationRisky.rst>`_ with config:
+
+  ``['target' => '6.0']``
+
 References
 ----------
 

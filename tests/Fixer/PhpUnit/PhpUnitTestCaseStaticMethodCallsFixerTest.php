@@ -89,7 +89,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
     public function testWrongConfigTypeForMethodsAndTargetVersion(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessage('[php_unit_test_case_static_method_calls] Configuration cannot contain method "once" and target "11.0".');
+        $this->expectExceptionMessage('[php_unit_test_case_static_method_calls] Configuration cannot contain method "once" and target "11.0", it is dynamic in that PHPUnit version.');
 
         $this->fixer->configure([
             'methods' => ['once' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_SELF],

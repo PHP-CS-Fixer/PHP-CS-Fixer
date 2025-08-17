@@ -519,7 +519,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             if (isset($this->configuration['methods'][$method])) {
                 throw new InvalidFixerConfigurationException(
                     $this->getName(),
-                    \sprintf('Configuration cannot contain method "%s" and target "%s".', $method, $this->configuration['target'])
+                    \sprintf('Configuration cannot contain method "%s" and target "%s", it is dynamic in that PHPUnit version.', $method, $this->configuration['target'])
                 );
             }
             // @phpstan-ignore-next-line assign.propertyType

@@ -380,7 +380,7 @@ final class RuleSetTest extends TestCase
     public static function providePhpUnitTargetVersionHasSetCases(): iterable
     {
         foreach ((new \ReflectionClass(PhpUnitTargetVersion::class))->getConstants() as $constant) {
-            if ('newest' === $constant || PhpUnitTargetVersion::VERSION_11_0 === $constant) {
+            if ('newest' === $constant) {
                 continue;
             }
 
