@@ -114,7 +114,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
 
     private const DEFAULT_SPACING_KEY = '_default';
 
-    private const MULTILINE_DEFAULT_SPACING = 2;
+    private const MULTILINE_DEFAULT_SPACING = 4;
 
     private const MULTILINE_DEFAULT_SPACING_KEY = '_multiline';
 

@@ -231,7 +231,7 @@ With configuration: ``['align' => 'left_multiline']``.
    - * @throws Foo            description foo
    - *             description foo
    + * @throws Foo description foo
-   + *   description foo
+   + *     description foo
      *
      */
 

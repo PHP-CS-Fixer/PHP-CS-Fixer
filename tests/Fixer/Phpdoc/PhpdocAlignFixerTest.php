@@ -1531,25 +1531,25 @@ function foo($typeless): void {}',
             '<?php
     /**
      * @property string $bar
-     *   Foo-Bar lorem ipsum
+     *     Foo-Bar lorem ipsum
      * @param EngineInterface $templating
      * @param string $format
      * @param int $code
-     *   An HTTP response status code
-     *   See constants
+     *     An HTTP response status code
+     *     See constants
      * @param bool $dry
      * @param bool $debug
-     *   See constants
-     *   See constants
+     *     See constants
+     *     See constants
      * @param mixed &$reference
-     *   A parameter passed by reference
+     *     A parameter passed by reference
      *
      * @return Foo
-     *   description foo
+     *     description foo
      *
      * @throws Foo
-     *   description foo
-     *   description foo
+     *     description foo
+     *     description foo
      *
      */
 ',
@@ -1590,16 +1590,16 @@ function foo($typeless): void {}',
      * @param EngineInterface $templating
      * @param string $format
      * @param int $code An HTTP response status code
-     *   See constants
+     *     See constants
      * @param bool $dry
      * @param bool $debug See constants
-     *   See constants
+     *     See constants
      * @param mixed &$reference A parameter passed by reference
      *
      * @return Foo description foo
      *
      * @throws Foo description foo
-     *   description foo
+     *     description foo
      *
      */
 ',
@@ -1627,7 +1627,7 @@ function foo($typeless): void {}',
         yield 'left align with multiline and custom multiline spacing' => [
             [
                 'align' => PhpdocAlignFixer::ALIGN_LEFT_MULTILINE,
-                'spacing' => ['_multiline' => 4],
+                'spacing' => ['_multiline' => 2],
             ],
             '<?php
     /**
@@ -1635,16 +1635,16 @@ function foo($typeless): void {}',
      * @param EngineInterface $templating
      * @param string $format
      * @param int $code An HTTP response status code
-     *     See constants
+     *   See constants
      * @param bool $dry
      * @param bool $debug See constants
-     *     See constants
+     *   See constants
      * @param mixed &$reference A parameter passed by reference
      *
      * @return Foo description foo
      *
      * @throws Foo description foo
-     *     description foo
+     *   description foo
      *
      */
 ',
