@@ -86,7 +86,7 @@ final class PhpdocTagNoNamedArgumentsFixer extends AbstractFixer implements Conf
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
                 ->getOption(),
-            (new FixerOptionBuilder('fix_internal', 'Whether to fix internal elements.'))
+            (new FixerOptionBuilder('fix_internal', 'Whether to fix internal elements (marked with `@internal`).'))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(true)
                 ->getOption(),
