@@ -80,16 +80,11 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
             return;
         }
 
-        if ($this->isPHPDoc($tokens, $docBlockIndex)) {
+        if ($tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT)) {
             $this->updateDocBlockIfNeeded($tokens, $docBlockIndex, $annotation, $preventingAnnotations);
         } else {
             $this->createDocBlock($tokens, $docBlockIndex, $annotation);
         }
-    }
-
-    final protected function isPHPDoc(Tokens $tokens, int $index): bool
-    {
-        return $tokens[$index]->isGivenKind(\T_DOC_COMMENT);
     }
 
     /**
