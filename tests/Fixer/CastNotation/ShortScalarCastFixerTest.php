@@ -25,6 +25,11 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  */
 final class ShortScalarCastFixerTest extends AbstractFixerTestCase
 {
+    public function testAaa(): void
+    {
+        $this->doTest('<?php (float) $b;', '<?php (double) $b;');
+    }
+
     /**
      * @dataProvider provideFixCases
      */
