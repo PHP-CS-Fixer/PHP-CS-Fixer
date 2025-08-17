@@ -22,6 +22,8 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
+ * @phpstan-import-type _PhpTokenPrototypePartial from Token
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
@@ -49,9 +51,9 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @param null|array<int, Token>                                 $expected
-     * @param non-empty-list<array{0: int, 1?: string}|string|Token> $sequence
-     * @param bool|list<bool>                                        $caseSensitive
+     * @param null|array<int, Token>                          $expected
+     * @param non-empty-list<_PhpTokenPrototypePartial|Token> $sequence
+     * @param bool|list<bool>                                 $caseSensitive
      *
      * @dataProvider provideFindSequenceCases
      */
@@ -77,7 +79,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{0: string, 1: null|array<int, Token>, 2: list<array{0: int, 1?: string}|string|Token>, 3?: int, 4?: int, 5?: array<int, bool>|bool}>
+     * @return iterable<int, array{0: string, 1: null|array<int, Token>, 2: list<_PhpTokenPrototypePartial|Token>, 3?: int, 4?: int, 5?: array<int, bool>|bool}>
      */
     public static function provideFindSequenceCases(): iterable
     {
@@ -297,7 +299,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @param non-empty-list<array{0: int, 1?: string}|string|Token> $sequence sequence of token prototypes
+     * @param non-empty-list<_PhpTokenPrototypePartial|Token> $sequence sequence of token prototypes
      *
      * @dataProvider provideFindSequenceExceptionCases
      */
@@ -660,8 +662,8 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @param -1|1                          $direction
-     * @param list<array{int}|string|Token> $findTokens
+     * @param -1|1                                  $direction
+     * @param list<_PhpTokenPrototypePartial|Token> $findTokens
      *
      * @dataProvider provideTokenOfKindSiblingCases
      */
@@ -693,7 +695,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{null|int, int, int, list<array{int}|string|Token>}>
+     * @return iterable<int, array{null|int, int, int, list<_PhpTokenPrototypePartial|Token>}>
      */
     public static function provideTokenOfKindSiblingCases(): iterable
     {

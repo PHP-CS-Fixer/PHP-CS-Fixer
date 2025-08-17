@@ -26,7 +26,7 @@ if [ ! -x bin/checkbashisms ]; then
     wget -qO- https://formulae.brew.sh/api/formula/checkbashisms.json \
         | jq -r .urls.stable.url \
         | xargs wget -qO- \
-        | tar -xJv -O "devscripts/scripts/checkbashisms.pl" \
+        | tar -xJv -O "work/scripts/checkbashisms.pl" \
         > bin/checkbashisms
     chmod u+x bin/checkbashisms
 fi

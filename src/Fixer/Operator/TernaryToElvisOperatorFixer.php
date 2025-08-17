@@ -20,8 +20,12 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Analyzer\RangeAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @phpstan-import-type _PhpTokenPrototypePartial from Token
+ */
 final class TernaryToElvisOperatorFixer extends AbstractFixer
 {
     /**
@@ -29,7 +33,7 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
      *
      * Ordered by most common types first.
      *
-     * @var list<array{int}|string>
+     * @var list<_PhpTokenPrototypePartial>
      */
     private const VALID_BEFORE_ENDTYPES = [
         '=',
