@@ -96,6 +96,7 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
         }
 
         $this->ensureIsDocBlockWithAnnotation(
+            $this->whitespacesConfig,
             $tokens,
             $classIndex,
             'internal',

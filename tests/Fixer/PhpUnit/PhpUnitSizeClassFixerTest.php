@@ -20,6 +20,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\AbstractPhpUnitFixer
+ * @covers \PhpCsFixer\Fixer\DocBlockAnnotation
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitSizeClassFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitSizeClassFixer>
