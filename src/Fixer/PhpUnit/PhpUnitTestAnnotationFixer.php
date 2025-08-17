@@ -123,7 +123,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
 
             $docBlockIndex = $this->getDocBlockIndex($tokens, $i);
 
-            if ($this->isPHPDoc($tokens, $docBlockIndex)) {
+            if ($tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT)) {
                 $lines = $this->updateDocBlock($tokens, $docBlockIndex);
                 $lines = $this->addTestAnnotation($lines, $tokens, $docBlockIndex);
                 $lines = implode('', $lines);
@@ -146,7 +146,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
 
             $docBlockIndex = $this->getDocBlockIndex($tokens, $i);
 
-            if (!$this->isPHPDoc($tokens, $docBlockIndex)) {
+            if (!$tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -185,7 +185,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
 
         // If the function doesn't have test in its name, and no doc block, it is not a test
         return
-            $this->isPHPDoc($tokens, $docBlockIndex)
+            $tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT)
             && str_contains($tokens[$docBlockIndex]->getContent(), '@test');
     }
 

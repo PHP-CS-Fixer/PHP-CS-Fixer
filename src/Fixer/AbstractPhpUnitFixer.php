@@ -44,11 +44,6 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
 
     abstract protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void;
 
-    final protected function isPHPDoc(Tokens $tokens, int $index): bool
-    {
-        return $tokens[$index]->isGivenKind(\T_DOC_COMMENT);
-    }
-
     /**
      * @return iterable<array{
      *     index: int,
