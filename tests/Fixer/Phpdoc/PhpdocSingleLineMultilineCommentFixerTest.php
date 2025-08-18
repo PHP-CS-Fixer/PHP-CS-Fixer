@@ -34,7 +34,7 @@ final class PhpdocSingleLineMultilineCommentFixerTest extends AbstractFixerTestC
     }
 
     /**
-     * @return iterable<string, array{string, string|null}>
+     * @return iterable<string, array{string, null|string}>
      */
     public static function provideFixCases(): iterable
     {

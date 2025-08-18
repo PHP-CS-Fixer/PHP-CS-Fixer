@@ -18,7 +18,6 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -104,13 +103,13 @@ function setName($name)
         foreach ($lines as $line) {
             $trimmedLine = trim($line);
 
-            if ($trimmedLine === '/**' || $trimmedLine === '*/' || $trimmedLine === '*' || $trimmedLine === '') {
+            if ('/**' === $trimmedLine || '*/' === $trimmedLine || '*' === $trimmedLine || '' === $trimmedLine) {
                 continue;
             }
-            
+
             if (str_starts_with($trimmedLine, '*')) {
                 $lineContent = trim(substr($trimmedLine, 1));
-                if ($lineContent !== '') {
+                if ('' !== $lineContent) {
                     $meaningfulLines[] = $lineContent;
                 }
             } else {
@@ -118,8 +117,8 @@ function setName($name)
             }
         }
 
-        if (\count($meaningfulLines) === 1) {
-            return '/** ' . $meaningfulLines[0] . ' */';
+        if (1 === \count($meaningfulLines)) {
+            return '/** '.$meaningfulLines[0].' */';
         }
 
         return $content;
