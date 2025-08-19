@@ -20,7 +20,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @internal
  */
-trait Indentation
+trait IndentationTrait
 {
     private function getLineIndentation(Tokens $tokens, int $index): string
     {
