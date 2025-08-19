@@ -24,12 +24,11 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
  * @internal
  */
-trait DocBlockAnnotation
+trait DocBlockAnnotationTrait
 {
     final protected function getDocBlockIndex(Tokens $tokens, int $index): int
     {
@@ -49,7 +48,6 @@ trait DocBlockAnnotation
      * @param list<class-string> $preventingAttributes
      */
     final protected function ensureIsDocBlockWithAnnotation(
-        WhitespacesFixerConfig $whitespacesConfig,
         Tokens $tokens,
         int $index,
         string $annotation,
@@ -58,20 +56,20 @@ trait DocBlockAnnotation
     ): void {
         $docBlockIndex = $this->getDocBlockIndex($tokens, $index);
 
-        if (self::isPreventedByAttribute($tokens, $index, $preventingAttributes)) {
+        if ($this->isPreventedByAttribute($tokens, $index, $preventingAttributes)) {
             return;
         }
 
         if ($tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT)) {
-            self::updateDocBlockIfNeeded($whitespacesConfig, $tokens, $docBlockIndex, $annotation, $preventingAnnotations);
+            $this->updateDocBlockIfNeeded($tokens, $docBlockIndex, $annotation, $preventingAnnotations);
         } else {
-            self::createDocBlock($whitespacesConfig, $tokens, $docBlockIndex, $annotation);
+            $this->createDocBlock($tokens, $docBlockIndex, $annotation);
         }
     }
 
-    protected static function createDocBlock(WhitespacesFixerConfig $whitespacesConfig, Tokens $tokens, int $docBlockIndex, string $annotation): void
+    protected function createDocBlock(Tokens $tokens, int $docBlockIndex, string $annotation): void
     {
-        $lineEnd = $whitespacesConfig->getLineEnding();
+        $lineEnd = $this->whitespacesConfig->getLineEnding();
         $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
         $toInsert = [
             new Token([\T_DOC_COMMENT, "/**{$lineEnd}{$originalIndent} * @{$annotation}{$lineEnd}{$originalIndent} */"]),
@@ -81,10 +79,10 @@ trait DocBlockAnnotation
         $tokens->insertAt($index, $toInsert);
 
         if (!$tokens[$index - 1]->isGivenKind(\T_WHITESPACE)) {
-            $extraNewLines = $whitespacesConfig->getLineEnding();
+            $extraNewLines = $this->whitespacesConfig->getLineEnding();
 
             if (!$tokens[$index - 1]->isGivenKind(\T_OPEN_TAG)) {
-                $extraNewLines .= $whitespacesConfig->getLineEnding();
+                $extraNewLines .= $this->whitespacesConfig->getLineEnding();
             }
 
             $tokens->insertAt($index, [
@@ -96,8 +94,7 @@ trait DocBlockAnnotation
     /**
      * @param list<string> $preventingAnnotations
      */
-    private static function updateDocBlockIfNeeded(
-        WhitespacesFixerConfig $whitespacesConfig,
+    private function updateDocBlockIfNeeded(
         Tokens $tokens,
         int $docBlockIndex,
         string $annotation,
@@ -109,9 +106,9 @@ trait DocBlockAnnotation
                 return;
             }
         }
-        $doc = self::makeDocBlockMultiLineIfNeeded($whitespacesConfig, $doc, $tokens, $docBlockIndex, $annotation);
+        $doc = $this->makeDocBlockMultiLineIfNeeded($doc, $tokens, $docBlockIndex, $annotation);
 
-        $lines = self::addAnnotation($whitespacesConfig, $doc, $tokens, $docBlockIndex, $annotation);
+        $lines = $this->addAnnotation($doc, $tokens, $docBlockIndex, $annotation);
         $lines = implode('', $lines);
 
         $tokens->getNamespaceDeclarations();
@@ -121,7 +118,7 @@ trait DocBlockAnnotation
     /**
      * @param list<class-string> $preventingAttributes
      */
-    private static function isPreventedByAttribute(Tokens $tokens, int $index, array $preventingAttributes): bool
+    private function isPreventedByAttribute(Tokens $tokens, int $index, array $preventingAttributes): bool
     {
         if ([] === $preventingAttributes) {
             return false;
@@ -151,8 +148,7 @@ trait DocBlockAnnotation
     /**
      * @return list<Line>
      */
-    private static function addAnnotation(
-        WhitespacesFixerConfig $whitespacesConfig,
+    private function addAnnotation(
         DocBlock $docBlock,
         Tokens $tokens,
         int $docBlockIndex,
@@ -160,14 +156,13 @@ trait DocBlockAnnotation
     ): array {
         $lines = $docBlock->getLines();
         $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $docBlockIndex);
-        $lineEnd = $whitespacesConfig->getLineEnding();
+        $lineEnd = $this->whitespacesConfig->getLineEnding();
         array_splice($lines, -1, 0, [new Line($originalIndent.' * @'.$annotation.$lineEnd)]);
 
         return $lines;
     }
 
-    private static function makeDocBlockMultiLineIfNeeded(
-        WhitespacesFixerConfig $whitespacesConfig,
+    private function makeDocBlockMultiLineIfNeeded(
         DocBlock $doc,
         Tokens $tokens,
         int $docBlockIndex,
@@ -176,7 +171,7 @@ trait DocBlockAnnotation
         $lines = $doc->getLines();
         if (1 === \count($lines) && [] === $doc->getAnnotationsOfType($annotation)) {
             $indent = WhitespacesAnalyzer::detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
-            $doc->makeMultiLine($indent, $whitespacesConfig->getLineEnding());
+            $doc->makeMultiLine($indent, $this->whitespacesConfig->getLineEnding());
 
             return $doc;
         }

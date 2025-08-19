@@ -131,7 +131,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
                 $tokens[$docBlockIndex] = new Token([\T_DOC_COMMENT, $lines]);
             } else {
                 // Create a new docblock if it didn't have one before;
-                self::createDocBlock($this->whitespacesConfig, $tokens, $docBlockIndex, 'test');
+                $this->createDocBlock($tokens, $docBlockIndex, 'test');
             }
         }
     }

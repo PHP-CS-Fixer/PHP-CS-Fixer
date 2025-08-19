@@ -69,7 +69,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->ensureIsDocBlockWithAnnotation(
-            $this->whitespacesConfig,
             $tokens,
             $classIndex,
             'coversNothing',

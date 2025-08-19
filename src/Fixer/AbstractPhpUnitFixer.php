@@ -28,7 +28,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 abstract class AbstractPhpUnitFixer extends AbstractFixer
 {
-    use DocBlockAnnotation;
+    use DocBlockAnnotationTrait;
 
     public function isCandidate(Tokens $tokens): bool
     {

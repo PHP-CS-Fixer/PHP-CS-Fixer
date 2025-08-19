@@ -86,7 +86,6 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
         }
 
         $this->ensureIsDocBlockWithAnnotation(
-            $this->whitespacesConfig,
             $tokens,
             $classIndex,
             $this->configuration['group'],
