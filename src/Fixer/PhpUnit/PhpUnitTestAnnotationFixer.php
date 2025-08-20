@@ -131,7 +131,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
                 $tokens[$docBlockIndex] = new Token([\T_DOC_COMMENT, $lines]);
             } else {
                 // Create a new docblock if it didn't have one before;
-                $this->createDocBlock($tokens, $docBlockIndex);
+                $this->createDocBlock($tokens, $docBlockIndex, 'test');
             }
         }
     }
@@ -223,18 +223,6 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
     private function addTestPrefix(string $functionName): string
     {
         return 'test'.ucfirst($functionName);
-    }
-
-    private function createDocBlock(Tokens $tokens, int $docBlockIndex): void
-    {
-        $lineEnd = $this->whitespacesConfig->getLineEnding();
-        $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $tokens->getNextNonWhitespace($docBlockIndex));
-        $toInsert = [
-            new Token([\T_DOC_COMMENT, '/**'.$lineEnd."{$originalIndent} * @test".$lineEnd."{$originalIndent} */"]),
-            new Token([\T_WHITESPACE, $lineEnd.$originalIndent]),
-        ];
-        $index = $tokens->getNextMeaningfulToken($docBlockIndex);
-        $tokens->insertAt($index, $toInsert);
     }
 
     /**
