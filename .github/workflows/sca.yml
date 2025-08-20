@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # We need to fetch base branch because `actions/checkout` only initializes empty repo and fetches PR's meta-branch
       # which leads to `fatal: ambiguous argument 'origin/...': unknown revision or path not in the working tree.`,
