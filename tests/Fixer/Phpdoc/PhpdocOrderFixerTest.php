@@ -58,6 +58,16 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
             ['order' => ['param']],
             'The option "order" value is invalid. Minimum two tags are required.',
         ];
+
+        yield 'duplicated tag' => [
+            ['order' => ['param', 'return', 'throws', 'return']],
+            'The option "order" value is invalid. Tag "return" is duplicated.',
+        ];
+
+        yield 'duplicated tags' => [
+            ['order' => ['param', 'return', 'throws', 'param', 'return', 'throws']],
+            'The option "order" value is invalid. Tags "param", "return" and "throws" are duplicated.',
+        ];
     }
 
     /**

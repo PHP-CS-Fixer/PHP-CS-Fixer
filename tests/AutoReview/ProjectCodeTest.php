@@ -127,11 +127,19 @@ final class ProjectCodeTest extends TestCase
             return; // public properties present, no need for class to be readonly
         }
 
-        $parentClass = $rc->getParentClass();
-        if (\PHP_VERSION_ID >= 8_02_00 && false !== $parentClass && !$parentClass->isReadOnly()) {
-            $this->addToAssertionCount(1);
+        if (\PHP_VERSION_ID >= 8_02_00) {
+            if ($rc->isReadOnly()) {
+                $this->addToAssertionCount(1);
 
-            return; // Parent class is _not_ readonly, child class cannot be readonly in such case
+                return; // Class is readonly, no need for further checks
+            }
+
+            $parentClass = $rc->getParentClass();
+            if (false !== $parentClass && !$parentClass->isReadOnly()) {
+                $this->addToAssertionCount(1);
+
+                return; // Parent class is _not_ readonly, child class cannot be readonly in such case
+            }
         }
 
         $rc = new \ReflectionClass($className);
@@ -1016,6 +1024,26 @@ final class ProjectCodeTest extends TestCase
             }
 
             yield [\get_class($fixer)];
+        }
+    }
+
+    /**
+     * @dataProvider provideSrcClassCases
+     * @dataProvider provideTestClassCases
+     *
+     * @param class-string $name
+     */
+    public function testConsistentClassyNaming(string $name): void
+    {
+        $reflection = new \ReflectionClass($name);
+
+        if ($reflection->isInterface()) {
+            self::assertStringEndsWith('Interface', $name);
+        } elseif ($reflection->isTrait()) {
+            self::assertStringEndsWith('Trait', $name);
+        } else {
+            self::assertStringEndsNotWith('Interface', $name);
+            self::assertStringEndsNotWith('Trait', $name);
         }
     }
 
