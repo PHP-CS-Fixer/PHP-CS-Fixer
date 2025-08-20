@@ -48,6 +48,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
     use ConfigurableFixerTrait;
 
     use IndentationTrait;
+
     private const BLOCK_SIGNATURE_FIRST_TOKENS = [
         \T_USE,
         \T_IF,
