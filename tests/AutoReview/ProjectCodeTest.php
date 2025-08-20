@@ -1029,10 +1029,11 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider provideSrcClassCases
+     * @dataProvider provideTestClassCases
      *
      * @param class-string $name
      */
-    public function testProperNaming(string $name): void
+    public function testConsistentClassyNaming(string $name): void
     {
         $reflection = new \ReflectionClass($name);
 
