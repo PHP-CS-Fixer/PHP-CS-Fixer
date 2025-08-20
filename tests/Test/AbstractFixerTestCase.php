@@ -591,7 +591,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
         if (null === $linter) {
             $linter = new CachingLinter(
-                '1' === getenv('FAST_LINT_TEST_CASES') ? new Linter() : new ProcessLinter()
+                '1' === getenv('PHP_CS_FIXER_FAST_LINT_TEST_CASES') ? new Linter() : new ProcessLinter()
             );
         }
 
