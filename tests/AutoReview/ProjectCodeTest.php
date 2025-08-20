@@ -1029,6 +1029,25 @@ final class ProjectCodeTest extends TestCase
 
     /**
      * @dataProvider provideSrcClassCases
+     *
+     * @param class-string $name
+     */
+    public function testProperNaming(string $name): void
+    {
+        $reflection = new \ReflectionClass($name);
+
+        if ($reflection->isInterface()) {
+            self::assertStringEndsWith('Interface', $name);
+        } elseif ($reflection->isTrait()) {
+            self::assertStringEndsWith('Trait', $name);
+        } else {
+            self::assertStringEndsNotWith('Interface', $name);
+            self::assertStringEndsNotWith('Trait', $name);
+        }
+    }
+
+    /**
+     * @dataProvider provideSrcClassCases
      * @dataProvider provideTestClassCases
      *
      * @param class-string $className
