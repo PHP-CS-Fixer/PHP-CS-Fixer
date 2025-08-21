@@ -895,6 +895,10 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
             return null;
         }
 
+        if (lcfirst($shortenedType) === $fqcn && strtoupper(substr($fqcn, 0, 1)) === substr($shortenedType, 0, 1)) {
+            return null;
+        }
+
         return $this->namespacedStringToTokens($shortenedType);
     }
 
