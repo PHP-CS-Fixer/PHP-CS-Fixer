@@ -61,26 +61,8 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
     public static function provideFixPre80Cases(): iterable
     {
         yield from self::createCasesFor('unset');
-    }
 
-    /**
-     * @dataProvider provideFixDeprecatedCases
-     *
-     * @group legacy
-     *
-     * @requires PHP <8.0
-     */
-    public function testFixDeprecated(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<int, array{0: non-empty-string, 1?: non-empty-string}>
-     */
-    public static function provideFixDeprecatedCases(): iterable
-    {
-        return self::createCasesFor('real');
+        yield from self::createCasesFor('real');
     }
 
     /**
