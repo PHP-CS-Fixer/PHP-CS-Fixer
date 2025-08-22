@@ -528,6 +528,21 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
+     * @dataProvider provideSrcClassCases
+     * @dataProvider provideTestClassCases
+     *
+     * @param class-string $className
+     */
+    public function testThereIsNoUsageOfJsonLastError(string $className): void
+    {
+        $calledFunctions = $this->extractFunctionNamesCalledInClass($className);
+
+        $message = \sprintf('Class %s must not use "json_last_error()" nor "json_last_error_msg()", explicitly replace it to handle errors with "JSON_ERROR_NONE".', $className);
+        self::assertNotContains('json_last_error', $calledFunctions, $message);
+        self::assertNotContains('json_last_error_msg', $calledFunctions, $message);
+    }
+
+    /**
      * @dataProvider provideThereIsNoPregFunctionUsedDirectlyCases
      *
      * @param class-string $className
