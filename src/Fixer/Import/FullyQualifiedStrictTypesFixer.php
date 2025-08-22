@@ -993,7 +993,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         $mainPart = substr($input, 0, $namespacePartEndPosition);
         $lastPart = substr($input, $namespacePartEndPosition);
 
-        return $mainPart . strtolower($lastPart);
+        return $mainPart.strtolower($lastPart);
     }
 
     /**
