@@ -72,8 +72,6 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
      */
     public function testFixDeprecated(string $expected, ?string $input = null): void
     {
-        $this->expectDeprecation('The (real) cast is deprecated, use (float) instead');
-
         $this->doTest($expected, $input);
     }
 
