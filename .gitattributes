@@ -12,6 +12,13 @@
 /phpunit.xml.dist export-ignore
 /src/Fixer/Internal/ export-ignore
 /tests/ export-ignore
+/feature-or-bug.rst export-ignore
+/logo.md export-ignore
+/logo.png export-ignore
+/CHANGELOG.md export-ignore
+/ci-integration.sh export-ignore
+/CONTRIBUTING.md export-ignore
+/UPGRADE-v3.md export-ignore
 
 *       text=auto eol=lf
 *.json  text whitespace=blank-at-eol,blank-at-eof,space-before-tab,tab-in-indent,tabwidth=4
