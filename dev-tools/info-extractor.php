@@ -25,4 +25,4 @@ $version = [
 
 echo json_encode([
     'version' => $version,
-], \JSON_PRETTY_PRINT);
+], \JSON_PRETTY_PRINT | \JSON_THROW_ON_ERROR);
