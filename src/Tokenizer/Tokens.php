@@ -1112,6 +1112,8 @@ class Tokens extends \SplFixedArray
         $this->updateSizeToZero(); // clear memory
 
         $prevErrorHandler = set_error_handler(static function ($type, $msg, $file, $line, $context = []) use (&$prevErrorHandler) {
+            // Ignore deprecations triggered by token_get_all for tokenized code.
+            // It is not the responsibility of PHP CS Fixer to care about deprecations within the code being tokenized.
             if (\E_DEPRECATED === $type) {
                 return true;
             }
