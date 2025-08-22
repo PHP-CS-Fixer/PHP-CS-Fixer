@@ -207,8 +207,9 @@ final class Application extends BaseApplication
                     'line' => $e->getLine(),
                     'code' => $e->getCode(),
                     'trace' => $e->getTraceAsString(),
-                ]
-            ), \JSON_THROW_ON_ERROR);
+                ],
+                \JSON_THROW_ON_ERROR
+            ));
 
             return;
         }
