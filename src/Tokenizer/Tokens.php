@@ -1110,7 +1110,6 @@ class Tokens extends \SplFixedArray
         }
 
         $this->updateSizeToZero(); // clear memory
-
         $tokens = token_get_all($code, \TOKEN_PARSE);
         $this->updateSizeByIncreasingToNewSize(\count($tokens)); // pre-allocate collection size
 
