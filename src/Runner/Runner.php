@@ -361,7 +361,9 @@ final class Runner
                     );
 
                     if ($errorsReported > 0) {
-                        throw WorkerException::fromRaw(json_decode($matches[1][0], true));
+                        throw WorkerException::fromRaw(
+                            json_decode($matches[1][0], true, 512, \JSON_THROW_ON_ERROR)
+                        );
                     }
                 }
             );

@@ -91,13 +91,13 @@ final class Cache implements CacheInterface
      */
     public static function fromJson(string $json): self
     {
-        $data = json_decode($json, true);
-
-        if (null === $data && \JSON_ERROR_NONE !== json_last_error()) {
+        try {
+            $data = json_decode($json, true, 512, \JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
             throw new \InvalidArgumentException(\sprintf(
                 'Value needs to be a valid JSON string, got "%s", error: "%s".',
                 $json,
-                json_last_error_msg()
+                $e->getMessage()
             ));
         }
 
