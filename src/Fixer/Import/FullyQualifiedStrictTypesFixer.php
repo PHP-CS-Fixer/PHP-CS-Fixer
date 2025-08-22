@@ -984,11 +984,16 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
     private function normalizeFqcn(string $input): string
     {
-        $namespacePartEndPosition = strrpos($input, '\\') + 1;
-        $namespacePart = substr($input, 0, $namespacePartEndPosition);
-        $classNamePart = substr($input, $namespacePartEndPosition);
+        $backslashPosition = strrpos($input, '\\');
+        if (false === $backslashPosition) {
+            return $input;
+        }
 
-        return $namespacePart . ucfirst(strtolower($classNamePart));
+        $namespacePartEndPosition = $backslashPosition + 1;
+        $mainPart = substr($input, 0, $namespacePartEndPosition);
+        $lastPart = substr($input, $namespacePartEndPosition);
+
+        return $mainPart . strtolower($lastPart);
     }
 
     /**
