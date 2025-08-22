@@ -241,6 +241,10 @@ jobs:
           composer require --dev --with-all-dependencies phpunit/phpunit:^12.1.5
           php php-cs-fixer fix --quiet --rules=php_unit_attributes
 
+      - name: Check configuration for PHPUnit
+        if: matrix.php-version != '7.4' && matrix.php-version != '8.0' # These run PHPUnit 9, which does not have the option
+        run: vendor/bin/phpunit --check-php-configuration
+
       - name: Run tests (via PHPUnit)
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes' && matrix.AVOID_PARAUNIT == 'yes'
         env:
@@ -334,6 +338,9 @@ jobs:
 
       - name: Build phar
         run: ./dev-tools/build.sh
+
+      - name: Check configuration for PHPUnit
+        run: vendor/bin/phpunit --check-php-configuration
 
       - name: Run smoke tests
         env:
