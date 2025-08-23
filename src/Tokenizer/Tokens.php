@@ -1110,7 +1110,23 @@ class Tokens extends \SplFixedArray
         }
 
         $this->updateSizeToZero(); // clear memory
-        $tokens = token_get_all($code, \TOKEN_PARSE);
+
+        $prevErrorHandler = set_error_handler(static function ($type, $msg, $file, $line, $context = []) use (&$prevErrorHandler) {
+            // Ignore deprecations triggered by token_get_all for tokenized code.
+            // It is not the responsibility of PHP CS Fixer to care about deprecations within the code being tokenized.
+            if (\E_DEPRECATED === $type) {
+                return true;
+            }
+
+            return null !== $prevErrorHandler ? $prevErrorHandler($type, $msg, $file, $line, $context) : false;
+        });
+
+        try {
+            $tokens = token_get_all($code, \TOKEN_PARSE);
+        } finally {
+            restore_error_handler();
+        }
+
         $this->updateSizeByIncreasingToNewSize(\count($tokens)); // pre-allocate collection size
 
         foreach ($tokens as $index => $token) {

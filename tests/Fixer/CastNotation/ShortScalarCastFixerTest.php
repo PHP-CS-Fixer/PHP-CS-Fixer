@@ -77,27 +77,7 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
         yield ['<?php $b=(Unset ) $d;'];
 
         yield ['<?php $b=(UNSET ) $d;'];
-    }
 
-    /**
-     * @dataProvider provideFixDeprecatedCases
-     *
-     * @group legacy
-     *
-     * @requires PHP <8.0
-     */
-    public function testFixDeprecated(string $expected, ?string $input = null): void
-    {
-        $this->expectDeprecation('The (real) cast is deprecated, use (float) instead');
-
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<int, array{0: non-empty-string, 1?: non-empty-string}>
-     */
-    public static function provideFixDeprecatedCases(): iterable
-    {
         yield from self::createCasesFor('real', 'float');
     }
 
