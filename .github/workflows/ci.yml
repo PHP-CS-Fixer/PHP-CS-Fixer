@@ -249,14 +249,14 @@ jobs:
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
-        run: vendor/bin/phpunit tests/Runner/Parallel/ProcessFactoryTest.php
+        run: vendor/bin/phpunit --testsuite unit,integration ${{ matrix.phpunit-flags }}
 
       - name: Run tests (via ParaUnit)
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes' && matrix.AVOID_PARAUNIT != 'yes'
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
-        run: vendor/bin/phpunit tests/Runner/Parallel/ProcessFactoryTest.php
+        run: vendor/bin/paraunit run --testsuite unit,integration
 
       - name: Run tests with "short_open_tag" enabled
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes'
