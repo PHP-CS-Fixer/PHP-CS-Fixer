@@ -22,6 +22,8 @@ use PhpCsFixer\Differ\NullDiffer;
  * @internal
  *
  * @covers \PhpCsFixer\Differ\NullDiffer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NullDifferTest extends AbstractDifferTestCase
 {

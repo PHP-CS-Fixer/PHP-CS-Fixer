@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\Comment\SingleLineCommentSpacingFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Comment\SingleLineCommentSpacingFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SingleLineCommentSpacingFixerTest extends AbstractFixerTestCase
 {

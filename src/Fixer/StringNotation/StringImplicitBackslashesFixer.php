@@ -43,6 +43,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  * @author Michael Vorisek <https://github.com/mvorisek>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class StringImplicitBackslashesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {

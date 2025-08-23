@@ -20,6 +20,8 @@ use PhpCsFixer\Utils;
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class Cache implements CacheInterface
 {
