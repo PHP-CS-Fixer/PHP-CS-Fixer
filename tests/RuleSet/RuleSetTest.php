@@ -25,6 +25,7 @@ use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 
 /**
@@ -53,6 +54,7 @@ final class RuleSetTest extends TestCase
      *
      * @dataProvider provideAllRulesFromSetsCases
      */
+    #[DataProvider('provideAllRulesFromSetsCases')]
     #[IgnoreDeprecations]
     public function testIfAllRulesInSetsExists(string $setName, string $ruleName, $ruleConfig): void
     {
@@ -87,6 +89,7 @@ final class RuleSetTest extends TestCase
      *
      * @dataProvider provideAllRulesFromSetsCases
      */
+    #[DataProvider('provideAllRulesFromSetsCases')]
     #[IgnoreDeprecations]
     public function testThatDefaultConfigIsNotPassed(string $setName, string $ruleName, $ruleConfig): void
     {
@@ -120,6 +123,7 @@ final class RuleSetTest extends TestCase
      *
      * @dataProvider provideAllRulesFromSetsCases
      */
+    #[DataProvider('provideAllRulesFromSetsCases')]
     #[IgnoreDeprecations]
     public function testThatThereIsNoDeprecatedFixerInRuleSet(string $setName, string $ruleName, $ruleConfig): void
     {
