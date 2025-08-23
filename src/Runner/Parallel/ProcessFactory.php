@@ -28,8 +28,6 @@ use Symfony\Component\Process\PhpExecutableFinder;
  */
 final class ProcessFactory
 {
-    public function __construct() {}
-
     public function create(
         LoopInterface $loop,
         InputInterface $input,
