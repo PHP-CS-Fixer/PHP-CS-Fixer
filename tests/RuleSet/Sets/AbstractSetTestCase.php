@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\TestCase;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractSetTestCase extends TestCase
 {

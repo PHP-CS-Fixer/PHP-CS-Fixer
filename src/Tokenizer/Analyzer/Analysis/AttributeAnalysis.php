@@ -21,6 +21,8 @@ namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
  *
  * @phpstan-type _AttributeItem array{start: int, end: int, name: string}
  * @phpstan-type _AttributeItems non-empty-list<_AttributeItem>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class AttributeAnalysis
 {

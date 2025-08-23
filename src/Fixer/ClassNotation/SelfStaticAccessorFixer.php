@@ -25,6 +25,9 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class SelfStaticAccessorFixer extends AbstractFixer
 {
     private const CLASSY_TYPES = [\T_CLASS, FCT::T_ENUM];

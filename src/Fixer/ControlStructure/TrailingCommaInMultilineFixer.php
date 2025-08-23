@@ -46,6 +46,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TrailingCommaInMultilineFixer extends AbstractFixer implements ConfigurableFixerInterface
 {

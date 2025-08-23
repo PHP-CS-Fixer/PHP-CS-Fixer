@@ -43,6 +43,8 @@ use Symfony\Component\OptionsResolver\Options;
  *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Greg Korba <greg@codito.dev>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements WhitespacesAwareFixerInterface, ConfigurableFixerInterface
 {

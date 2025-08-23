@@ -26,6 +26,8 @@ use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
  * @extends AbstractFixerTestCase<TFixer>
  *
  * @author ntzm
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractFixerWithAliasedOptionsTestCase extends AbstractFixerTestCase
 {

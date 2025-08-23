@@ -22,6 +22,8 @@ use PhpCsFixer\Linter\LintingResultInterface;
  * @extends \Iterator<mixed, \SplFileInfo>
  *
  * @author Greg Korba <greg@codito.dev>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 interface LintingResultAwareFileIteratorInterface extends \Iterator
 {

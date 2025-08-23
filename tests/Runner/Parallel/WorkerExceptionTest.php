@@ -21,6 +21,8 @@ use PhpCsFixer\Tests\TestCase;
  * @covers \PhpCsFixer\Runner\Parallel\WorkerException
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class WorkerExceptionTest extends TestCase
 {

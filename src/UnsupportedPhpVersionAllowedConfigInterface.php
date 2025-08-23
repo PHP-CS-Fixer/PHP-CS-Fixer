@@ -16,6 +16,8 @@ namespace PhpCsFixer;
 
 /**
  * @TODO 4.0 Include in main ConfigInterface
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 interface UnsupportedPhpVersionAllowedConfigInterface extends ConfigInterface
 {

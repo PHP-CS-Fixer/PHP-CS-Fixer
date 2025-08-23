@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\Casing\NativeTypeDeclarationCasingFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\NativeTypeDeclarationCasingFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NativeTypeDeclarationCasingFixerTest extends AbstractFixerTestCase
 {

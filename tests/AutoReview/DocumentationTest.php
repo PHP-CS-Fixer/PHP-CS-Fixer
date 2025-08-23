@@ -32,6 +32,8 @@ use Symfony\Component\Finder\Finder;
  *
  * @group legacy
  * @group auto-review
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DocumentationTest extends TestCase
 {

@@ -31,6 +31,8 @@ use Symfony\Component\OptionsResolver\Options;
  * @group legacy
  *
  * @covers \PhpCsFixer\FixerConfiguration\FixerConfigurationResolver
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FixerConfigurationResolverTest extends TestCase
 {

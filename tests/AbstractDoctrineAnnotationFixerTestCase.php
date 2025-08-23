@@ -25,6 +25,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @template TFixer of AbstractDoctrineAnnotationFixer
  *
  * @extends AbstractFixerTestCase<TFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTestCase
 {

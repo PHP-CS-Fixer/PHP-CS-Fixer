@@ -28,6 +28,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * @phpstan-import-type _ClassyElementType from \PhpCsFixer\Tokenizer\TokensAnalyzer
  *
  * @covers \PhpCsFixer\Tokenizer\TokensAnalyzer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TokensAnalyzerTest extends TestCase
 {

@@ -20,6 +20,8 @@ use Symfony\Component\Finder\Finder;
  * Set of rule sets to be used by fixer.
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class RuleSets
 {

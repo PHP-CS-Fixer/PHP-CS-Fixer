@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Krzysztof Ciszewski <krzysztof@ciszew.ski>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpUnitAssertNewNamesFixer extends AbstractPhpUnitFixer
 {

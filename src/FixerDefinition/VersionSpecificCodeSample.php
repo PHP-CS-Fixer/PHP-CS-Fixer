@@ -18,6 +18,8 @@ namespace PhpCsFixer\FixerDefinition;
  * @author Andreas Möller <am@localheinz.com>
  *
  * @readonly
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class VersionSpecificCodeSample implements VersionSpecificCodeSampleInterface
 {

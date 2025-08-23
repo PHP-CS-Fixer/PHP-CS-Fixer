@@ -27,6 +27,8 @@ use PhpCsFixer\ToolInfo;
  *
  * @group auto-review
  * @group covers-nothing
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ProjectFixerConfigurationTest extends TestCase
 {

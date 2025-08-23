@@ -18,5 +18,7 @@ namespace PhpCsFixer\Tests\RuleSet\Sets;
  * @internal
  *
  * @covers \PhpCsFixer\RuleSet\Sets\PERCS3x0Set
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PERCS3x0SetTest extends AbstractSetTestCase {}

@@ -21,6 +21,8 @@ use PhpCsFixer\Tokenizer\Transformers;
 /**
  * @phpstan-import-type _PhpTokenKind from Token
  * @phpstan-import-type _PhpTokenPrototypePartial from Token
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 class TokensWithObservedTransformers extends Tokens
 {

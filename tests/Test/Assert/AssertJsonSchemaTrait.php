@@ -16,7 +16,11 @@ namespace PhpCsFixer\Tests\Test\Assert;
 
 use JsonSchema\Validator;
 
-/** @internal */
+/**
+ * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 trait AssertJsonSchemaTrait
 {
     private static function assertJsonSchema(string $schemaFile, string $json): void

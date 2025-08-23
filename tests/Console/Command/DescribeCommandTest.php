@@ -45,6 +45,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @group legacy
  *
  * @covers \PhpCsFixer\Console\Command\DescribeCommand
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DescribeCommandTest extends TestCase
 {

@@ -23,6 +23,8 @@ use PhpCsFixer\FileReader;
  * @internal
  *
  * @covers \PhpCsFixer\FileReader
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FileReaderTest extends TestCase
 {

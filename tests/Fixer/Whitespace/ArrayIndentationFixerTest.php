@@ -23,6 +23,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @covers \PhpCsFixer\Fixer\Whitespace\ArrayIndentationFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\ArrayIndentationFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ArrayIndentationFixerTest extends AbstractFixerTestCase
 {

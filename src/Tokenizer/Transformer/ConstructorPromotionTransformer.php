@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * Transform T_PUBLIC, T_PROTECTED and T_PRIVATE of Constructor Property Promotion into custom tokens.
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ConstructorPromotionTransformer extends AbstractTransformer
 {

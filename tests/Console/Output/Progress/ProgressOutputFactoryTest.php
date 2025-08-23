@@ -26,6 +26,8 @@ use Symfony\Component\Console\Output\NullOutput as SymfonyNullOutput;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Output\Progress\ProgressOutputFactory
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ProgressOutputFactoryTest extends TestCase
 {

@@ -26,6 +26,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * @phpstan-import-type _PhpTokenPrototypePartial from Token
  *
  * @author Matteo Beccati <matteo@beccati.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoPhp4ConstructorFixer extends AbstractFixer
 {

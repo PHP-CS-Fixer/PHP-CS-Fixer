@@ -31,6 +31,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @group legacy
  *
  * @large
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PharTest extends AbstractSmokeTestCase
 {

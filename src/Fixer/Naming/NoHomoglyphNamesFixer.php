@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Fred Cox <mcfedr@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoHomoglyphNamesFixer extends AbstractFixer
 {

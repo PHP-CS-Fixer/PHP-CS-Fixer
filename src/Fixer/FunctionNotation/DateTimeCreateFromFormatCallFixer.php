@@ -23,6 +23,9 @@ use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class DateTimeCreateFromFormatCallFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface

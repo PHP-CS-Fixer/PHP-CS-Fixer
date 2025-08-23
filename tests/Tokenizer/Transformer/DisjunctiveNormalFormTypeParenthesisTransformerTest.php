@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\CT;
  * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
  *
  * @requires PHP 8.2
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DisjunctiveNormalFormTypeParenthesisTransformerTest extends AbstractTransformerTestCase
 {

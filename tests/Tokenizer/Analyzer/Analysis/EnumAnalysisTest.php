@@ -22,6 +22,8 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\EnumAnalysis;
  * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\EnumAnalysis
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class EnumAnalysisTest extends TestCase
 {

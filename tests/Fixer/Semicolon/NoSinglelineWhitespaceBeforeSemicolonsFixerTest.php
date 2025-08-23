@@ -26,6 +26,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @author John Kelly <wablam@gmail.com>
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoSinglelineWhitespaceBeforeSemicolonsFixerTest extends AbstractFixerTestCase
 {

@@ -18,6 +18,8 @@ namespace PhpCsFixer\Console\SelfUpdate;
  * @readonly
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class GithubClient implements GithubClientInterface
 {

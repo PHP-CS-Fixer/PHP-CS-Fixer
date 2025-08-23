@@ -24,6 +24,8 @@ use PhpCsFixer\Console\Report\FixReport\TextReporter;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Report\FixReport\TextReporter
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TextReporterTest extends AbstractReporterTestCase
 {

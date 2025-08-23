@@ -22,6 +22,8 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\MatchAnalysis;
  * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\MatchAnalysis
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class MatchAnalysisTest extends TestCase
 {
