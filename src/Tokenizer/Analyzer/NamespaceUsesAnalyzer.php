@@ -110,6 +110,8 @@ final class NamespaceUsesAnalyzer
                     }
 
                     $groupQualifiedName = $this->getNearestQualifiedName($tokens, $chunkStart);
+                    \assert('' !== $groupQualifiedName['fullName']);
+                    \assert('' !== $groupQualifiedName['shortName']);
                     $imports[] = new NamespaceUseAnalysis(
                         $type,
                         $qualifiedName['fullName'].$groupQualifiedName['fullName'],
@@ -130,6 +132,8 @@ final class NamespaceUsesAnalyzer
                 $previousToken = $tokens->getPrevMeaningfulToken($qualifiedName['afterIndex']);
 
                 if (!$tokens[$previousToken]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
+                    \assert('' !== $qualifiedName['fullName']);
+                    \assert('' !== $qualifiedName['shortName']);
                     $imports[] = new NamespaceUseAnalysis(
                         $type,
                         $qualifiedName['fullName'],
@@ -171,7 +175,7 @@ final class NamespaceUsesAnalyzer
     }
 
     /**
-     * @return array{fullName: non-empty-string, shortName: non-empty-string, aliased: bool, afterIndex: int}
+     * @return array{fullName: string, shortName: string, aliased: bool, afterIndex: int}
      */
     private function getNearestQualifiedName(Tokens $tokens, int $index): array
     {
@@ -202,9 +206,6 @@ final class NamespaceUsesAnalyzer
 
             $index = $tokens->getNextMeaningfulToken($index);
         }
-
-        \assert('' !== $fullName);
-        \assert('' !== $shortName);
 
         return [
             'fullName' => $fullName,
