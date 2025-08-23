@@ -33,12 +33,14 @@ final class NamespaceUseAnalysis
     /**
      * The fully qualified use namespace.
      *
-     * @var class-string
+     * @var non-empty-string
      */
     private string $fullName;
 
     /**
      * The short version of use namespace or the alias name in case of aliased use statements.
+     *
+     * @var non-empty-string
      */
     private string $shortName;
 
@@ -80,8 +82,9 @@ final class NamespaceUseAnalysis
     private int $type;
 
     /**
-     * @param self::TYPE_* $type
-     * @param class-string $fullName
+     * @param self::TYPE_*     $type
+     * @param non-empty-string $fullName
+     * @param non-empty-string $shortName
      */
     public function __construct(
         int $type,
@@ -110,13 +113,16 @@ final class NamespaceUseAnalysis
     }
 
     /**
-     * @return class-string
+     * @return non-empty-string
      */
     public function getFullName(): string
     {
         return $this->fullName;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function getShortName(): string
     {
         return $this->shortName;
