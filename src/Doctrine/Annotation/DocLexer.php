@@ -51,6 +51,14 @@ final class DocLexer
     public const T_COLON = 112;
     public const T_MINUS = 113;
 
+    private const CATCHABLE_PATTERNS = [
+        '[a-z_\\\][a-z0-9_\:\\\]*[a-z_][a-z0-9_]*',
+        '(?:[+-]?[0-9]+(?:[\.][0-9]+)*)(?:[eE][+-]?[0-9]+)?',
+        '"(?:""|[^"])*+"',
+    ];
+
+    private const NON_CATCHABLE_PATTERNS = ['\s+', '\*+', '(.)'];
+
     /** @var array<string, self::T_*> */
     private array $noCase = [
         '@' => self::T_AT,
@@ -97,26 +105,6 @@ final class DocLexer
     }
 
     /**
-     * @return list<string>
-     */
-    private function getCatchablePatterns(): array
-    {
-        return [
-            '[a-z_\\\][a-z0-9_\:\\\]*[a-z_][a-z0-9_]*',
-            '(?:[+-]?[0-9]+(?:[\.][0-9]+)*)(?:[eE][+-]?[0-9]+)?',
-            '"(?:""|[^"])*+"',
-        ];
-    }
-
-    /**
-     * @return list<string>
-     */
-    private function getNonCatchablePatterns(): array
-    {
-        return ['\s+', '\*+', '(.)'];
-    }
-
-    /**
      * @return self::T_*
      */
     private function getType(string &$value): int
@@ -149,8 +137,8 @@ final class DocLexer
     {
         $this->regex ??= \sprintf(
             '/(%s)|%s/%s',
-            implode(')|(', $this->getCatchablePatterns()),
-            implode('|', $this->getNonCatchablePatterns()),
+            implode(')|(', self::CATCHABLE_PATTERNS),
+            implode('|', self::NON_CATCHABLE_PATTERNS),
             'iu'
         );
 
