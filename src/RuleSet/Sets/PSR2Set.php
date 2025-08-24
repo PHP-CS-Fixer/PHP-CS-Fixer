@@ -41,9 +41,9 @@ final class PSR2Set extends AbstractRuleSetDescription
             'line_ending' => true,
             'lowercase_keywords' => true,
             'method_argument_space' => [
+                'after_heredoc' => false, // @TODO: default value of this option changed, consider to switch to new default
                 'attribute_placement' => 'ignore',
                 'on_multiline' => 'ensure_fully_multiline',
-                'after_heredoc' => false, // @TODO: default value of this option changed, consider to switch to new default
             ],
             'no_break_comment' => true,
             'no_closing_tag' => true,
