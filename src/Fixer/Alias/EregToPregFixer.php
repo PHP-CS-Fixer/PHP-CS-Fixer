@@ -45,7 +45,7 @@ final class EregToPregFixer extends AbstractFixer
     /**
      * @var list<string> the list of preg delimiters, in order of preference
      */
-    private static array $delimiters = ['/', '#', '!'];
+    private const DELIMITERS = ['/', '#', '!'];
 
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -171,7 +171,7 @@ final class EregToPregFixer extends AbstractFixer
         // try to find something that's not used
         $delimiters = [];
 
-        foreach (self::$delimiters as $k => $d) {
+        foreach (self::DELIMITERS as $k => $d) {
             if (!str_contains($pattern, $d)) {
                 return $d;
             }
