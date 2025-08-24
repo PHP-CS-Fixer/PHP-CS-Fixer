@@ -153,7 +153,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
             }
 
             $doc = new DocBlock($token->getContent());
-            $annotations = $doc->getAnnotationsOfType(Annotation::getTagsWithTypes());
+            $annotations = $doc->getAnnotationsOfType(Annotation::TAGS_WITH_TYPES);
 
             if (0 === \count($annotations)) {
                 continue;
