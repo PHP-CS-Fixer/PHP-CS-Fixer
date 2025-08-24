@@ -122,6 +122,8 @@ final class Annotation
      * @return list<string>
      *
      * @deprecated Use `Annotation::TAGS_WITH_TYPES` constant instead
+     *
+     * @TODO 4.0 remove me
      */
     public static function getTagsWithTypes(): array
     {
