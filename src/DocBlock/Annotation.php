@@ -31,7 +31,7 @@ final class Annotation
      *
      * @var list<string>
      */
-    private const TAGS = [
+    public const TAGS_WITH_TYPES = [
         'extends',
         'implements',
         'method',
@@ -120,10 +120,14 @@ final class Annotation
      * Get all the annotation tag names with types.
      *
      * @return list<string>
+     *
+     * @deprecated Use `Annotation::TAGS_WITH_TYPES` constant instead
+     *
+     * @TODO 4.0 remove me
      */
     public static function getTagsWithTypes(): array
     {
-        return self::TAGS;
+        return self::TAGS_WITH_TYPES;
     }
 
     /**
@@ -298,7 +302,7 @@ final class Annotation
 
     public function supportTypes(): bool
     {
-        return \in_array($this->getTag()->getName(), self::TAGS, true);
+        return \in_array($this->getTag()->getName(), self::TAGS_WITH_TYPES, true);
     }
 
     /**
