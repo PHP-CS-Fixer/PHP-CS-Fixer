@@ -14,6 +14,10 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Tokenizer\Analyzer\Analysis;
 
+use PhpCsFixer\Linter\CachingLinter;
+use PhpCsFixer\Linter\LinterInterface;
+use PhpCsFixer\Linter\LintingException;
+use PhpCsFixer\Linter\ProcessLinter;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 
@@ -26,6 +30,22 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
  */
 final class TypeAnalysisTest extends TestCase
 {
+    private ?LinterInterface $linter = null;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->linter = $this->getLinter();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        $this->linter = null;
+    }
+
     public function testName(): void
     {
         $analysis = new TypeAnalysis('string', 1, 2);
@@ -52,58 +72,65 @@ final class TypeAnalysisTest extends TestCase
     /**
      * @dataProvider provideReservedCases
      */
-    public function testReserved(string $type, bool $expected): void
+    public function testReserved(string $type): void
     {
+        try {
+            $this->linter->lintSource('<?php class '.$type.' {}')->check();
+            $isReservedType = false;
+        } catch (LintingException $exception) {
+            $isReservedType = true;
+        }
+
         $analysis = new TypeAnalysis($type, 1, 2);
-        self::assertSame($expected, $analysis->isReservedType());
+        self::assertSame($isReservedType, $analysis->isReservedType());
     }
 
     /**
-     * @return iterable<int, array{string, bool}>
+     * @return iterable<int, array{string}>
      */
     public static function provideReservedCases(): iterable
     {
-        yield ['array', true];
+        yield ['array'];
 
-        yield ['bool', true];
+        yield ['bool'];
 
-        yield ['callable', true];
+        yield ['callable'];
 
-        yield ['float', true];
+        yield ['float'];
 
-        yield ['int', true];
+        yield ['int'];
 
-        yield ['iterable', true];
+        yield ['iterable'];
 
-        yield ['list', true];
+        yield ['list'];
 
-        yield ['mixed', true];
+        yield ['mixed'];
 
-        yield ['never', true];
+        yield ['never'];
 
-        yield ['null', true];
+        yield ['null'];
 
-        yield ['object', true];
+        yield ['object'];
 
-        yield ['resource', true];
+        yield ['resource'];
 
-        yield ['self', true];
+        yield ['self'];
 
-        yield ['string', true];
+        yield ['string'];
 
-        yield ['void', true];
+        yield ['void'];
 
-        yield ['VOID', true];
+        yield ['VOID'];
 
-        yield ['Void', true];
+        yield ['Void'];
 
-        yield ['voId', true];
+        yield ['voId'];
 
-        yield ['other', false];
+        yield ['other'];
 
-        yield ['OTHER', false];
+        yield ['OTHER'];
 
-        yield ['numeric', false];
+        yield ['numeric'];
     }
 
     /**
@@ -243,5 +270,16 @@ final class TypeAnalysisTest extends TestCase
         yield [true, 'Null'];
 
         yield [true, 'NULL'];
+    }
+
+    private function getLinter(): LinterInterface
+    {
+        static $linter = null;
+
+        if (null === $linter) {
+            $linter = new CachingLinter(new ProcessLinter());
+        }
+
+        return $linter;
     }
 }

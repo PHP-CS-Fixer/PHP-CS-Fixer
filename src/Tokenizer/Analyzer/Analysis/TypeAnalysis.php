@@ -21,38 +21,6 @@ namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
  */
 final class TypeAnalysis
 {
-    /**
-     * This list contains soft and hard reserved types that can be used or will be used by PHP at some point.
-     *
-     * More info:
-     *
-     * @var list<string>
-     *
-     * @see https://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration.types
-     * @see https://php.net/manual/en/reserved.other-reserved-words.php
-     */
-    private const RESERVED_TYPES = [
-        'array',
-        'bool',
-        'callable',
-        'false',
-        'float',
-        'int',
-        'iterable',
-        'list',
-        'mixed',
-        'never',
-        'null',
-        'object',
-        'parent',
-        'resource',
-        'self',
-        'static',
-        'string',
-        'true',
-        'void',
-    ];
-
     private string $name;
 
     private ?int $startIndex;
@@ -106,7 +74,38 @@ final class TypeAnalysis
 
     public function isReservedType(): bool
     {
-        return \in_array(strtolower($this->name), self::RESERVED_TYPES, true);
+        /** @var ?array<string, true> */
+        static $reservedTypes;
+        if (null === $reservedTypes) {
+            $reservedTypes = [
+                'array' => true,
+                'bool' => true,
+                'callable' => true,
+                'false' => true,
+                'float' => true,
+                'int' => true,
+                'iterable' => true,
+                'list' => true,
+                'null' => true,
+                'object' => true,
+                'parent' => true,
+                'self' => true,
+                'static' => true,
+                'string' => true,
+                'true' => true,
+                'void' => true,
+            ];
+
+            if (\PHP_VERSION_ID >= 8_00_00) {
+                $reservedTypes['mixed'] = true;
+            }
+
+            if (\PHP_VERSION_ID >= 8_01_00) {
+                $reservedTypes['never'] = true;
+            }
+        }
+
+        return isset($reservedTypes[strtolower($this->name)]);
     }
 
     public function isNullable(): bool
