@@ -844,21 +844,4 @@ final class TypeExpression
 
         return "{$this->namespace->getFullName()}\\{$type}";
     }
-
-    /**
-     * @return array<string, string>
-     */
-    private function getAliases(): array
-    {
-        return [
-            'boolean' => 'bool',
-            'callback' => 'callable',
-            'double' => 'float',
-            'false' => 'bool',
-            'integer' => 'int',
-            'list' => 'array',
-            'real' => 'float',
-            'true' => 'bool',
-        ];
-    }
 }
