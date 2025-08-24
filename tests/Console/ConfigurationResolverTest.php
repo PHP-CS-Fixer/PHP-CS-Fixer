@@ -180,7 +180,7 @@ final class ConfigurationResolverTest extends TestCase
      */
     public static function provideProgressTypeCases(): iterable
     {
-        foreach (ProgressOutputType::all() as $outputType) {
+        foreach (ProgressOutputType::ALL as $outputType) {
             yield $outputType => [$outputType];
         }
     }

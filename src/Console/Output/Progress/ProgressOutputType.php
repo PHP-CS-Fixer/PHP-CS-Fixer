@@ -23,15 +23,9 @@ final class ProgressOutputType
     public const DOTS = 'dots';
     public const BAR = 'bar';
 
-    /**
-     * @return non-empty-list<ProgressOutputType::*>
-     */
-    public static function all(): array
-    {
-        return [
-            self::BAR,
-            self::DOTS,
-            self::NONE,
-        ];
-    }
+    public const ALL = [
+        self::BAR,
+        self::DOTS,
+        self::NONE,
+    ];
 }

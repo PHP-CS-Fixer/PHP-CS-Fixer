@@ -215,7 +215,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
         $formats = $reporterFactory->getFormats();
         array_unshift($formats, '@auto', '@auto,txt');
 
-        $progessOutputTypes = ProgressOutputType::all();
+        $progessOutputTypes = ProgressOutputType::ALL;
 
         $this->setDefinition(
             [
