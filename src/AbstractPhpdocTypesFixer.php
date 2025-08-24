@@ -34,14 +34,7 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
      *
      * @var list<string>
      */
-    protected array $tags;
-
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->tags = Annotation::getTagsWithTypes();
-    }
+    protected array $tags = Annotation::TAGS_WITH_TYPES;
 
     public function isCandidate(Tokens $tokens): bool
     {
