@@ -36,7 +36,7 @@ final class Directory implements DirectoryInterface
 
         if (
             '' === $this->directoryName
-            || 0 !== stripos($file, $this->directoryName.\DIRECTORY_SEPARATOR)
+            || !str_starts_with(strtolower($file), strtolower($this->directoryName.\DIRECTORY_SEPARATOR))
         ) {
             return $file;
         }
