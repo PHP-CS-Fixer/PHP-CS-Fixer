@@ -97,6 +97,14 @@ final class RuleSetTest extends TestCase
             return;
         }
 
+        if (\in_array($ruleName, [
+            'type_declaration_spaces', // @TODO v4: default value for this rule will changed, remove it when they are changed
+        ], true)) {
+            $this->expectNotToPerformAssertions();
+
+            return;
+        }
+
         $defaultConfig = [];
 
         foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
