@@ -272,7 +272,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
     }
 
     /**
-     * @return list<Token>
+     * @return non-empty-list<Token>
      */
     private static function fixWithoutParameters(Tokens $tokens, int $index, Annotation $annotation): array
     {
@@ -565,7 +565,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
     }
 
     /**
-     * @return list<Token>
+     * @return non-empty-list<Token>
      */
     private static function createAttributeTokens(
         Tokens $tokens,

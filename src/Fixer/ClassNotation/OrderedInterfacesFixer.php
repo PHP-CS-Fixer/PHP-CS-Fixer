@@ -68,7 +68,7 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
     /**
      * Array of supported directions in configuration.
      *
-     * @var list<string>
+     * @var non-empty-list<string>
      */
     private const SUPPORTED_DIRECTION_OPTIONS = [
         self::DIRECTION_ASCEND,
@@ -78,7 +78,7 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
     /**
      * Array of supported orders in configuration.
      *
-     * @var list<string>
+     * @var non-empty-list<string>
      */
     private const SUPPORTED_ORDER_OPTIONS = [
         self::ORDER_ALPHA,

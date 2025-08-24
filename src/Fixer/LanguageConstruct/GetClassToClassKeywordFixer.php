@@ -126,7 +126,7 @@ final class GetClassToClassKeywordFixer extends AbstractFixer
     }
 
     /**
-     * @return list<Token>
+     * @return non-empty-list<Token>
      */
     private function getReplacementTokenSlices(Tokens $tokens, int $variableIndex): array
     {

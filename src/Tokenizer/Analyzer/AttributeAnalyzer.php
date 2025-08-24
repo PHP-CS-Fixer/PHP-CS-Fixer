@@ -76,7 +76,7 @@ final class AttributeAnalyzer
     /**
      * Find all consecutive elements that start with #[ and end with ] and the attributes inside.
      *
-     * @return list<AttributeAnalysis>
+     * @return non-empty-list<AttributeAnalysis>
      */
     public static function collect(Tokens $tokens, int $index): array
     {

@@ -49,7 +49,7 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
     use ConfigurableFixerTrait;
 
     /**
-     * @var list<string>
+     * @var non-empty-list<string>
      */
     public const RESERVED_CLOSING_MARKERS = [
         'CSS',

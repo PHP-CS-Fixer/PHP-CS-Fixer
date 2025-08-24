@@ -277,7 +277,7 @@ class ValueObject
     }
 
     /**
-     * @return list<string>
+     * @return array{0: string, 1?: string}
      */
     private function convertToNullableType(string $type): array
     {
@@ -289,7 +289,7 @@ class ValueObject
     }
 
     /**
-     * @return list<string>
+     * @return array{0: string, 1?: string}
      */
     private function convertToExplicitUnionType(string $type): array
     {

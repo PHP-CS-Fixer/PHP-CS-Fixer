@@ -101,14 +101,14 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
     /**
      * Array of supported sort types in configuration.
      *
-     * @var list<string>
+     * @var non-empty-list<string>
      */
     private const SUPPORTED_SORT_TYPES = [self::IMPORT_TYPE_CLASS, self::IMPORT_TYPE_CONST, self::IMPORT_TYPE_FUNCTION];
 
     /**
      * Array of supported sort algorithms in configuration.
      *
-     * @var list<string>
+     * @var non-empty-list<string>
      */
     private const SUPPORTED_SORT_ALGORITHMS = [self::SORT_ALPHA, self::SORT_LENGTH, self::SORT_NONE];
 

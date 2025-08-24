@@ -287,7 +287,7 @@ $d = $e
     }
 
     /**
-     * @return list<_PhpTokenPrototypePartial>
+     * @return non-empty-list<_PhpTokenPrototypePartial>
      */
     private static function getNonBooleanOperators(): array
     {

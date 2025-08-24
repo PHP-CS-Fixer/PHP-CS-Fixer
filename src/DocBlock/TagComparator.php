@@ -28,7 +28,7 @@ final class TagComparator
     /**
      * Groups of tags that should be allowed to immediately follow each other.
      *
-     * @var list<list<string>>
+     * @var non-empty-list<non-empty-list<string>>
      *
      * @internal
      */

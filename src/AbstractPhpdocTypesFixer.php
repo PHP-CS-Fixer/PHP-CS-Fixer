@@ -32,7 +32,7 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
     /**
      * The annotation tags search inside.
      *
-     * @var list<string>
+     * @var non-empty-list<string>
      */
     protected array $tags;
 

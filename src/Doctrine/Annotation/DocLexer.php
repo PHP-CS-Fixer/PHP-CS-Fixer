@@ -97,7 +97,7 @@ final class DocLexer
     }
 
     /**
-     * @return list<string>
+     * @return non-empty-list<string>
      */
     private function getCatchablePatterns(): array
     {
@@ -109,7 +109,7 @@ final class DocLexer
     }
 
     /**
-     * @return list<string>
+     * @return non-empty-list<string>
      */
     private function getNonCatchablePatterns(): array
     {

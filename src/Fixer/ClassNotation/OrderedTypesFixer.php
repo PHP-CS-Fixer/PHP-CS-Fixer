@@ -318,7 +318,7 @@ interface Bar
     }
 
     /**
-     * @return array{0: list<list<string>|string>, 1: string}
+     * @return array{0: non-empty-list<non-empty-list<string>|string>, 1: string}
      */
     private function collectDisjunctiveNormalFormTypes(string $type): array
     {
@@ -334,7 +334,7 @@ interface Bar
     }
 
     /**
-     * @return array{0: list<string>, 1: string}
+     * @return array{0: non-empty-list<string>, 1: string}
      */
     private function collectUnionOrIntersectionTypes(string $type): array
     {

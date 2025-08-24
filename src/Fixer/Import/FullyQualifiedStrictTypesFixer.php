@@ -877,7 +877,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
      * @param _ImportType  $importKind
      * @param _Uses        $uses
      *
-     * @return null|list<Token>
+     * @return null|non-empty-list<Token>
      */
     private function determineShortType(string $typeName, string $importKind, array $uses, string $namespaceName): ?array
     {
@@ -950,7 +950,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     }
 
     /**
-     * @return list<Token>
+     * @return non-empty-list<Token>
      */
     private function namespacedStringToTokens(string $input): array
     {

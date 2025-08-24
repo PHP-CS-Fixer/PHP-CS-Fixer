@@ -72,7 +72,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
     ];
 
     /**
-     * @var array<string, null|list<string>> Array containing all class element base types (keys) and their parent types (values)
+     * @var array<string, null|non-empty-list<string>> Array containing all class element base types (keys) and their parent types (values)
      */
     private const TYPE_HIERARCHY = [
         'use_trait' => null,

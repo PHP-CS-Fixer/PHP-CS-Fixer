@@ -281,7 +281,7 @@ public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEndi
      *
      * @param non-empty-list<Line> $lines
      *
-     * @return list<Line>
+     * @return non-empty-list<Line>
      */
     private function splitUpDocBlock(array $lines, Tokens $tokens, int $docBlockIndex): array
     {

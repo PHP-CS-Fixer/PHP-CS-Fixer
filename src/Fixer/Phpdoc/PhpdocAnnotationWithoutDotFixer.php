@@ -29,7 +29,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
 {
     /**
-     * @var list<string>
+     * @var non-empty-list<string>
      */
     private array $tags = ['throws', 'return', 'param', 'internal', 'deprecated', 'var', 'type'];
 

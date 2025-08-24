@@ -205,7 +205,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
     }
 
     /**
-     * @return list<int>
+     * @return non-empty-list<int>
      */
     private function getAllowedKinds(): array
     {

@@ -47,7 +47,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
     /**
      * Available types, grouped.
      *
-     * @var array<string, list<string>>
+     * @var non-empty-array<string, non-empty-list<string>>
      */
     private const POSSIBLE_TYPES = [
         'alias' => [

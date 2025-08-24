@@ -47,7 +47,7 @@ final class AlignMultilineCommentFixer extends AbstractFixer implements Configur
     use ConfigurableFixerTrait;
 
     /**
-     * @var null|list<int>
+     * @var null|non-empty-list<int>
      */
     private ?array $tokenKinds = null;
 

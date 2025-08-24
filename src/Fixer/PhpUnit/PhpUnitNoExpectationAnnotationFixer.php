@@ -242,7 +242,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * @param array<string, string> $annotations
      *
-     * @return list<string>
+     * @return non-empty-list<string>
      */
     private function annotationsToParamList(array $annotations): array
     {

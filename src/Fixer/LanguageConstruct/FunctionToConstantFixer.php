@@ -45,12 +45,12 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
     use ConfigurableFixerTrait;
 
     /**
-     * @var null|array<string, list<Token>>
+     * @var null|array<string, non-empty-list<Token>>
      */
     private static ?array $availableFunctions = null;
 
     /**
-     * @var array<string, list<Token>>
+     * @var array<string, non-empty-list<Token>>
      */
     private array $functionsFixMap;
 
@@ -171,7 +171,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
     }
 
     /**
-     * @param list<Token> $replacements
+     * @param non-empty-list<Token> $replacements
      */
     private function fixFunctionCallToConstant(Tokens $tokens, int $index, int $braceOpenIndex, int $braceCloseIndex, array $replacements): void
     {
@@ -199,7 +199,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
     }
 
     /**
-     * @return ?array{int, int, list<Token>}
+     * @return ?array{int, int, non-empty-list<Token>}
      */
     private function getReplaceCandidate(
         Tokens $tokens,
@@ -239,7 +239,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
     }
 
     /**
-     * @return ?array{int, int, list<Token>}
+     * @return ?array{int, int, non-empty-list<Token>}
      */
     private function fixGetClassCall(
         Tokens $tokens,
@@ -293,7 +293,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
     }
 
     /**
-     * @return array{int, int, list<Token>}
+     * @return array{int, int, non-empty-list<Token>}
      */
     private function getReplacementTokenClones(string $lowerContent, int $braceOpenIndex, int $braceCloseIndex): array
     {

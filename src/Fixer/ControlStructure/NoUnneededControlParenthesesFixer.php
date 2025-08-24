@@ -52,7 +52,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     use ConfigurableFixerTrait;
 
     /**
-     * @var list<int>
+     * @var non-empty-list<int>
      */
     private const BLOCK_TYPES = [
         Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE,
