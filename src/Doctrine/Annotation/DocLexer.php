@@ -126,7 +126,7 @@ final class DocLexer
         }
 
         if (is_numeric($value)) {
-            return str_contains($value, '.') || str_contains(strtolower($value), strtolower('e'))
+            return str_contains($value, '.') || str_contains(strtolower($value), 'e')
                 ? self::T_FLOAT : self::T_INTEGER;
         }
 
