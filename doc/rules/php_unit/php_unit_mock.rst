@@ -78,6 +78,42 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+- `@PHPUnit5x4Migration:risky <./../../ruleSets/PHPUnit5x4MigrationRisky.rst>`_ with config:
+
+  ``['target' => '5.4']``
+
+- `@PHPUnit5x5Migration:risky <./../../ruleSets/PHPUnit5x5MigrationRisky.rst>`_ with config:
+
+  ``['target' => '5.5']``
+
+- `@PHPUnit5x6Migration:risky <./../../ruleSets/PHPUnit5x6MigrationRisky.rst>`_ with config:
+
+  ``['target' => '5.5']``
+
+- `@PHPUnit5x7Migration:risky <./../../ruleSets/PHPUnit5x7MigrationRisky.rst>`_ with config:
+
+  ``['target' => '5.5']``
+
+- `@PHPUnit6x0Migration:risky <./../../ruleSets/PHPUnit6x0MigrationRisky.rst>`_ with config:
+
+  ``['target' => '5.5']``
+
+- `@PHPUnit7x5Migration:risky <./../../ruleSets/PHPUnit7x5MigrationRisky.rst>`_ with config:
+
+  ``['target' => '5.5']``
+
+- `@PHPUnit8x4Migration:risky <./../../ruleSets/PHPUnit8x4MigrationRisky.rst>`_ with config:
+
+  ``['target' => '5.5']``
+
+- `@PHPUnit9x1Migration:risky <./../../ruleSets/PHPUnit9x1MigrationRisky.rst>`_ with config:
+
+  ``['target' => '5.5']``
+
+- `@PHPUnit10x0Migration:risky <./../../ruleSets/PHPUnit10x0MigrationRisky.rst>`_ with config:
+
+  ``['target' => '5.5']``
+
 - `@PHPUnit54Migration:risky <./../../ruleSets/PHPUnit54MigrationRisky.rst>`_ with config:
 
   ``['target' => '5.4']``

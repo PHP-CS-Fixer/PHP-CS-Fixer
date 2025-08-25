@@ -119,6 +119,38 @@ The rule is part of the following rule sets:
 
   ``['after_heredoc' => true, 'elements' => ['arguments', 'array_destructuring', 'arrays', 'match', 'parameters']]``
 
+- `@PHP7x3Migration <./../../ruleSets/PHP7x3Migration.rst>`_ with config:
+
+  ``['after_heredoc' => true]``
+
+- `@PHP7x4Migration <./../../ruleSets/PHP7x4Migration.rst>`_ with config:
+
+  ``['after_heredoc' => true]``
+
+- `@PHP8x0Migration <./../../ruleSets/PHP8x0Migration.rst>`_ with config:
+
+  ``['after_heredoc' => true]``
+
+- `@PHP8x1Migration <./../../ruleSets/PHP8x1Migration.rst>`_ with config:
+
+  ``['after_heredoc' => true]``
+
+- `@PHP8x2Migration <./../../ruleSets/PHP8x2Migration.rst>`_ with config:
+
+  ``['after_heredoc' => true]``
+
+- `@PHP8x3Migration <./../../ruleSets/PHP8x3Migration.rst>`_ with config:
+
+  ``['after_heredoc' => true]``
+
+- `@PHP8x4Migration <./../../ruleSets/PHP8x4Migration.rst>`_ with config:
+
+  ``['after_heredoc' => true]``
+
+- `@PHP8x5Migration <./../../ruleSets/PHP8x5Migration.rst>`_ with config:
+
+  ``['after_heredoc' => true]``
+
 - `@PHP73Migration <./../../ruleSets/PHP73Migration.rst>`_ with config:
 
   ``['after_heredoc' => true]``
