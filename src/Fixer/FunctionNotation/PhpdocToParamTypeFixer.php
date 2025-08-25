@@ -47,7 +47,7 @@ final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer 
     private const TYPE_CHECK_TEMPLATE = '<?php function f(%s $x) {}';
 
     /**
-     * @var list<_PhpTokenArray>
+     * @var non-empty-list<_PhpTokenArray>
      */
     private const EXCLUDE_FUNC_NAMES = [
         [\T_STRING, '__clone'],

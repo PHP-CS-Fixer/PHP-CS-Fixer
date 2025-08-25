@@ -29,7 +29,7 @@ final class Annotation
     /**
      * All the annotation tag names with types.
      *
-     * @var list<string>
+     * @var non-empty-list<string>
      */
     public const TAGS_WITH_TYPES = [
         'extends',
@@ -119,7 +119,7 @@ final class Annotation
     /**
      * Get all the annotation tag names with types.
      *
-     * @return list<string>
+     * @return non-empty-list<string>
      *
      * @deprecated Use `Annotation::TAGS_WITH_TYPES` constant instead
      *

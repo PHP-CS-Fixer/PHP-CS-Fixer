@@ -47,7 +47,7 @@ final class PhpdocReturnSelfReferenceFixer extends AbstractFixer implements Conf
     use ConfigurableFixerTrait;
 
     /**
-     * @var list<string>
+     * @var non-empty-list<string>
      */
     private const TO_TYPES = [
         '$this',

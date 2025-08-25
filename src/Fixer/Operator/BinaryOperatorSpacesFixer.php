@@ -103,7 +103,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     public const ALIGN_PLACEHOLDER = "\x2 ALIGNABLE%d \x3";
 
     /**
-     * @var list<string>
+     * @var non-empty-list<string>
      */
     private const SUPPORTED_OPERATORS = [
         '=',
@@ -151,7 +151,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     ];
 
     /**
-     * @var list<null|string>
+     * @var non-empty-list<null|string>
      */
     private const ALLOWED_VALUES = [
         self::ALIGN,

@@ -292,7 +292,7 @@ class Foo
      * @param int    $startIndex function/method start index
      * @param int    $bodyIndex  function/method body index
      *
-     * @return array{list<non-empty-list<_PhpTokenPrototypePartial>>, array{3: false}}
+     * @return array{non-empty-list<non-empty-list<_PhpTokenPrototypePartial>>, array{3: false}}
      */
     private function getWrapperMethodSequence(Tokens $tokens, string $method, int $startIndex, int $bodyIndex): array
     {

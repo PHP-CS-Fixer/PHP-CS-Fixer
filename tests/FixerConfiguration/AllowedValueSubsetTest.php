@@ -25,8 +25,8 @@ use PhpCsFixer\Tests\TestCase;
 final class AllowedValueSubsetTest extends TestCase
 {
     /**
-     * @param list<string> $expected
-     * @param list<string> $input
+     * @param non-empty-list<string> $expected
+     * @param non-empty-list<string> $input
      *
      * @dataProvider provideGetAllowedValuesAreSortedCases
      */

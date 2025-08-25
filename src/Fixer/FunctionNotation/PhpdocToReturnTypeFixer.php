@@ -49,7 +49,7 @@ final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
     private const TYPE_CHECK_TEMPLATE = '<?php function f(): %s {}';
 
     /**
-     * @var list<_PhpTokenArray>
+     * @var non-empty-list<_PhpTokenArray>
      */
     private array $excludeFuncNames = [
         [\T_STRING, '__construct'],

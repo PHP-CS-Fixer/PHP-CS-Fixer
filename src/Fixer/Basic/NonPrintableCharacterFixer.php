@@ -47,7 +47,7 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
     use ConfigurableFixerTrait;
 
     /**
-     * @var list<int>
+     * @var non-empty-list<int>
      */
     private const TOKENS = [
         \T_STRING_VARNAME,

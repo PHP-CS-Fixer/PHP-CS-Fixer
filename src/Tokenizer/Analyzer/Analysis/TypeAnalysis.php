@@ -26,7 +26,7 @@ final class TypeAnalysis
      *
      * More info:
      *
-     * @var list<string>
+     * @var non-empty-list<string>
      *
      * @see https://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration.types
      * @see https://php.net/manual/en/reserved.other-reserved-words.php

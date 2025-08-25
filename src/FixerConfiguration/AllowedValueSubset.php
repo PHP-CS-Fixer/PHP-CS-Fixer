@@ -22,12 +22,12 @@ namespace PhpCsFixer\FixerConfiguration;
 final class AllowedValueSubset
 {
     /**
-     * @var list<string>
+     * @var non-empty-list<string>
      */
     private array $allowedValues;
 
     /**
-     * @param list<string> $allowedValues
+     * @param non-empty-list<string> $allowedValues
      */
     public function __construct(array $allowedValues)
     {
@@ -56,7 +56,7 @@ final class AllowedValueSubset
     }
 
     /**
-     * @return list<string>
+     * @return non-empty-list<string>
      */
     public function getAllowedValues(): array
     {

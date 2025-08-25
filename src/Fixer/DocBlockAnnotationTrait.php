@@ -146,7 +146,7 @@ trait DocBlockAnnotationTrait
     }
 
     /**
-     * @return list<Line>
+     * @return non-empty-list<Line>
      */
     private function addAnnotation(
         DocBlock $docBlock,
