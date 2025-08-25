@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @covers \PhpCsFixer\Fixer\Comment\NoEmptyCommentFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Comment\NoEmptyCommentFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoEmptyCommentFixerTest extends AbstractFixerTestCase
 {

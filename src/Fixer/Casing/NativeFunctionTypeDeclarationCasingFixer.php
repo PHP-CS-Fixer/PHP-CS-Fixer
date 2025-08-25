@@ -22,6 +22,8 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 
 /**
  * @deprecated in favor of NativeTypeDeclarationCasingFixer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NativeFunctionTypeDeclarationCasingFixer extends AbstractProxyFixer implements DeprecatedFixerInterface
 {

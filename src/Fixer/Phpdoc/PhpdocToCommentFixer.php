@@ -42,6 +42,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Ceeram <ceeram@cakephp.org>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocToCommentFixer extends AbstractFixer implements ConfigurableFixerInterface
 {

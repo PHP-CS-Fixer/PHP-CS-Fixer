@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\Test\Assert\AssertJsonSchemaTrait;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Report\ListSetsReport\JsonReporter
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class JsonReporterTest extends AbstractReporterTestCase
 {

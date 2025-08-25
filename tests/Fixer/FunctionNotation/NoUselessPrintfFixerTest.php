@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\NoUselessPrintfFixer>
  *
  * @author John Paul E. Balandan, CPA <paulbalandan@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoUselessPrintfFixerTest extends AbstractFixerTestCase
 {

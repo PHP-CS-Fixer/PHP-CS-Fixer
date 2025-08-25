@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ArgumentAnalysisTest extends TestCase
 {

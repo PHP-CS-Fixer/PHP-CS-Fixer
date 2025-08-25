@@ -32,6 +32,8 @@ use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
  * @template TFixerComputedConfig of array<string, mixed>
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 trait ConfigurableFixerTrait
 {

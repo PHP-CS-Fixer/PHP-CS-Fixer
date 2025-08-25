@@ -23,6 +23,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @author Greg Korba <greg@codito.dev>
  *
  * @readonly
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ImportProcessor
 {

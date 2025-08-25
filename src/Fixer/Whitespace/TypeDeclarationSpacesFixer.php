@@ -45,6 +45,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author John Paul E. Balandan, CPA <paulbalandan@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TypeDeclarationSpacesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {

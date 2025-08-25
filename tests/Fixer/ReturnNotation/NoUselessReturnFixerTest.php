@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\ReturnNotation\NoUselessReturnFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ReturnNotation\NoUselessReturnFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoUselessReturnFixerTest extends AbstractFixerTestCase
 {

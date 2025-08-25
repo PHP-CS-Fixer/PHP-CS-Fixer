@@ -27,6 +27,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @requires PHP 8.0
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\NameQualifiedTransformer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
 {

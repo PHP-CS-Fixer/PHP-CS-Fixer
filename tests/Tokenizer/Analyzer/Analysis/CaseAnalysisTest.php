@@ -21,6 +21,8 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\CaseAnalysis;
  * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\CaseAnalysis
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class CaseAnalysisTest extends TestCase
 {

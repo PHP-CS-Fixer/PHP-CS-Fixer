@@ -26,6 +26,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\OctalNotationFixer>
  *
  * @author SpacePossum
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class OctalNotationFixerTest extends AbstractFixerTestCase
 {

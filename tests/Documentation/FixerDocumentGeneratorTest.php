@@ -29,6 +29,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Documentation\FixerDocumentGenerator
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FixerDocumentGeneratorTest extends TestCase
 {

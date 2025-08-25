@@ -74,6 +74,8 @@ use Symfony\Component\Finder\Finder;
  *     By default test is run on all supported operating systems.
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractIntegrationTestCase extends TestCase
 {

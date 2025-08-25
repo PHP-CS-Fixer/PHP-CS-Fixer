@@ -22,6 +22,8 @@ use PhpCsFixer\WordMatcher;
  * @internal
  *
  * @covers \PhpCsFixer\WordMatcher
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class WordMatcherTest extends TestCase
 {

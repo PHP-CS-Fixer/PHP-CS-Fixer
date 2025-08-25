@@ -27,6 +27,8 @@ use PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer;
  * @covers \PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer
  *
  * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SquareBraceTransformerTest extends AbstractTransformerTestCase
 {

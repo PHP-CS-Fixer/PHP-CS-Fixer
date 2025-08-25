@@ -21,6 +21,8 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\DataProviderAnalysis;
  * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\DataProviderAnalysis
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DataProviderAnalysisTest extends TestCase
 {

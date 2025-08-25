@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class RequiredFixerConfigurationExceptionTest extends TestCase
 {

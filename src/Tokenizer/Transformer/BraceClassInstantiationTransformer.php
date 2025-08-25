@@ -26,6 +26,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Sebastiaans Stok <s.stok@rollerscapes.net>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class BraceClassInstantiationTransformer extends AbstractTransformer
 {

@@ -23,6 +23,8 @@ namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
  *
  * @author VeeWee <toonverwerft@gmail.com>
  * @author Greg Korba <greg@codito.dev>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NamespaceUseAnalysis
 {

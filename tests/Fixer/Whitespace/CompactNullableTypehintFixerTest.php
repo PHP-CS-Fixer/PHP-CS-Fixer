@@ -22,5 +22,7 @@ namespace PhpCsFixer\Tests\Fixer\Whitespace;
  * @extends AbstractNullableTypeDeclarationFixerTestCase<\PhpCsFixer\Fixer\Whitespace\CompactNullableTypehintFixer>
  *
  * @author Jack Cherng <jfcherng@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class CompactNullableTypehintFixerTest extends AbstractNullableTypeDeclarationFixerTestCase {}

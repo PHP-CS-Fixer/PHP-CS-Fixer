@@ -27,6 +27,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * @internal
  *
  * @TODO Drop `allowMultiUses` opt-in flag when all fixers are updated and can handle multi-use statements.
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NamespaceUsesAnalyzer
 {

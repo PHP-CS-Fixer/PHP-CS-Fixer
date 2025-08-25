@@ -21,6 +21,8 @@ use Symfony\Component\Finder\SplFileInfo;
  * @internal
  *
  * @covers \PhpCsFixer\Finder
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FinderTest extends TestCase
 {

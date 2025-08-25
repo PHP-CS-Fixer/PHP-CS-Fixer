@@ -62,6 +62,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Michael Vorisek <https://github.com/mvorisek>
  *
  * @phpstan-import-type _ImportType from \PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {

@@ -42,6 +42,8 @@ use Symfony\Component\OptionsResolver\Options;
  *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  * @author Andreas Möller <am@localheinz.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocOrderByValueFixer extends AbstractFixer implements ConfigurableFixerInterface
 {

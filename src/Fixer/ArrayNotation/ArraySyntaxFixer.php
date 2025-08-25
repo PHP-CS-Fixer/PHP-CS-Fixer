@@ -40,6 +40,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Gregor Harlan <gharlan@web.de>
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerInterface
 {

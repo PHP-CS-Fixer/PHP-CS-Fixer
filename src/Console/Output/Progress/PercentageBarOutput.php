@@ -24,6 +24,8 @@ use Symfony\Component\Console\Helper\ProgressBar;
  * @readonly
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PercentageBarOutput implements ProgressOutputInterface
 {

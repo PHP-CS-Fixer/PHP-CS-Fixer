@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\Operator\LongToShorthandOperatorFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\LongToShorthandOperatorFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class LongToShorthandOperatorFixerTest extends AbstractFixerTestCase
 {

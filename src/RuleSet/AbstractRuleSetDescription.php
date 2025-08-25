@@ -16,6 +16,8 @@ namespace PhpCsFixer\RuleSet;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractRuleSetDescription implements RuleSetDescriptionInterface
 {

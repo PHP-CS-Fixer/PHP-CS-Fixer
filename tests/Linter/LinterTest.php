@@ -23,6 +23,8 @@ use PhpCsFixer\Linter\LinterInterface;
  * @internal
  *
  * @covers \PhpCsFixer\Linter\Linter
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class LinterTest extends AbstractLinterTestCase
 {

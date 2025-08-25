@@ -27,6 +27,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * Fixes the line endings in multi-line strings.
  *
  * @author Ilija Tovilo <ilija.tovilo@me.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class StringLineEndingFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {

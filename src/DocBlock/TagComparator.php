@@ -22,6 +22,8 @@ namespace PhpCsFixer\DocBlock;
  * @author Jakub Kwaśniewski <jakub@zero-85.pl>
  *
  * @deprecated
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TagComparator
 {

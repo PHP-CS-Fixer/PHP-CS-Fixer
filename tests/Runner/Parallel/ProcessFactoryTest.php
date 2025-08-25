@@ -34,6 +34,8 @@ use Symfony\Component\Console\Input\InputDefinition;
  * @internal
  *
  * @covers \PhpCsFixer\Runner\Parallel\ProcessFactory
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ProcessFactoryTest extends TestCase
 {

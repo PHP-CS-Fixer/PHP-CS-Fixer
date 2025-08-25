@@ -56,6 +56,8 @@ use Symfony\Contracts\EventDispatcher\Event;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Greg Korba <greg@codito.dev>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class Runner
 {
