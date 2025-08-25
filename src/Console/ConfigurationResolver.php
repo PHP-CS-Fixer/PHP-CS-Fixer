@@ -166,7 +166,7 @@ final class ConfigurationResolver
     private ?array $path = null;
 
     /**
-     * @var null|ProgressOutputType::*
+     * @var null|value-of<ProgressOutputType::ALL>
      */
     private $progress;
 
@@ -411,7 +411,7 @@ final class ConfigurationResolver
     }
 
     /**
-     * @return ProgressOutputType::*
+     * @return value-of<ProgressOutputType::ALL>
      *
      * @throws InvalidConfigurationException
      */
@@ -425,11 +425,11 @@ final class ConfigurationResolver
                     $progressType = $this->getConfig()->getHideProgress()
                         ? ProgressOutputType::NONE
                         : ProgressOutputType::BAR;
-                } elseif (!\in_array($progressType, ProgressOutputType::all(), true)) {
+                } elseif (!\in_array($progressType, ProgressOutputType::ALL, true)) {
                     throw new InvalidConfigurationException(\sprintf(
                         'The progress type "%s" is not defined, supported are %s.',
                         $progressType,
-                        Utils::naturalLanguageJoin(ProgressOutputType::all())
+                        Utils::naturalLanguageJoin(ProgressOutputType::ALL)
                     ));
                 }
 
