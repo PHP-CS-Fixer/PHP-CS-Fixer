@@ -28,7 +28,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class ImportProcessorTest extends TestCase
 {
     /**
-     * @param class-string $symbol
+     * @param non-empty-string $symbol
      *
      * @dataProvider provideTokenizeNameCases
      */
@@ -68,9 +68,9 @@ final class ImportProcessorTest extends TestCase
 
     /**
      * @param array{
-     *      const?: array<int|string, class-string>,
-     *      class?: array<int|string, class-string>,
-     *      function?: array<int|string, class-string>
+     *      const?: array<int|string, non-empty-string>,
+     *      class?: array<int|string, non-empty-string>,
+     *      function?: array<int|string, non-empty-string>
      *  } $imports
      *
      * @dataProvider provideInsertImportsCases
