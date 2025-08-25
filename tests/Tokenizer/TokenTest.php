@@ -20,6 +20,7 @@ use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 
 /**
+ * @phpstan-import-type _PhpTokenKind from Token
  * @phpstan-import-type _PhpTokenPrototypePartial from Token
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -72,6 +73,12 @@ final class TokenTest extends TestCase
     {
         self::assertSame('(', self::getBraceToken()->getPrototype());
         self::assertSame([\T_FOREACH, 'foreach'], self::getForeachToken()->getPrototype());
+    }
+
+    public function testGetKind(): void
+    {
+        self::assertSame('(', self::getBraceToken()->getKind());
+        self::assertSame(\T_FOREACH, self::getForeachToken()->getKind());
     }
 
     public function testIsArray(): void
@@ -228,22 +235,64 @@ final class TokenTest extends TestCase
         yield [new Token([FCT::T_NULLSAFE_OBJECT_OPERATOR, '?->']), true];
     }
 
-    public function testIsGivenKind(): void
+    /**
+     * @dataProvider provideIsGivenKindCases
+     *
+     * @param _PhpTokenKind|list<_PhpTokenKind> $kind
+     */
+    public function testIsGivenKind(bool $expected, Token $token, $kind): void
+    {
+        self::assertSame($expected, $token->isGivenKind($kind));
+    }
+
+    /**
+     * @return iterable<int, array{bool, Token, _PhpTokenKind|list<_PhpTokenKind>}>
+     */
+    public static function provideIsGivenKindCases(): iterable
     {
         $braceToken = self::getBraceToken();
+
+        yield [false, $braceToken, \T_FOR];
+
+        yield [false, $braceToken, \T_FOREACH];
+
+        yield [true, $braceToken, '('];
+
+        yield [false, $braceToken, ';'];
+
+        yield [false, $braceToken, [\T_FOR]];
+
+        yield [false, $braceToken, [\T_FOREACH]];
+
+        yield [false, $braceToken, [\T_FOR, \T_FOREACH, ';']];
+
+        yield [true, $braceToken, ['(']];
+
+        yield [false, $braceToken, [';']];
+
+        yield [true, $braceToken, ['(', ';']];
+
+        yield [true, $braceToken, [\T_FOREACH, '(']];
+
         $foreachToken = self::getForeachToken();
 
-        self::assertFalse($braceToken->isGivenKind(\T_FOR));
-        self::assertFalse($braceToken->isGivenKind(\T_FOREACH));
-        self::assertFalse($braceToken->isGivenKind([\T_FOR]));
-        self::assertFalse($braceToken->isGivenKind([\T_FOREACH]));
-        self::assertFalse($braceToken->isGivenKind([\T_FOR, \T_FOREACH]));
+        yield [false, $foreachToken, \T_FOR];
 
-        self::assertFalse($foreachToken->isGivenKind(\T_FOR));
-        self::assertTrue($foreachToken->isGivenKind(\T_FOREACH));
-        self::assertFalse($foreachToken->isGivenKind([\T_FOR]));
-        self::assertTrue($foreachToken->isGivenKind([\T_FOREACH]));
-        self::assertTrue($foreachToken->isGivenKind([\T_FOR, \T_FOREACH]));
+        yield [true, $foreachToken, \T_FOREACH];
+
+        yield [false, $foreachToken, '('];
+
+        yield [false, $foreachToken, [\T_FOR]];
+
+        yield [true, $foreachToken, [\T_FOREACH]];
+
+        yield [true, $foreachToken, [\T_FOR, \T_FOREACH]];
+
+        yield [false, $foreachToken, ['(']];
+
+        yield [false, $foreachToken, ['(', ';']];
+
+        yield [true, $foreachToken, [\T_FOREACH, '(']];
     }
 
     public function testIsKeywords(): void
