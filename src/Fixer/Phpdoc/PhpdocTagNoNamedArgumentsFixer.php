@@ -71,7 +71,7 @@ final class PhpdocTagNoNamedArgumentsFixer extends AbstractFixer implements Conf
             'There must be `@no-named-arguments` tag in PHPDoc of a class/enum/interface/trait.',
             [
                 new CodeSample($code),
-                new CodeSample($code, ['description' => 'the reason']),
+                new CodeSample($code, ['description' => 'Parameter names are not covered by the backward compatibility promise.']),
             ],
         );
     }
