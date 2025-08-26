@@ -28,6 +28,8 @@ use Symfony\Component\Filesystem\Exception\IOException;
  * @internal
  *
  * @covers \PhpCsFixer\Cache\FileHandler
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FileHandlerTest extends TestCase
 {

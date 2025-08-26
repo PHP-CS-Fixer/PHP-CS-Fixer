@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Gregor Harlan <gharlan@web.de>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NamespaceOperatorTransformer extends AbstractTransformer
 {

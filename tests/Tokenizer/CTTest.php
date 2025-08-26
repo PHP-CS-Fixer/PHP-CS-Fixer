@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\CT;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\CT
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class CTTest extends TestCase
 {

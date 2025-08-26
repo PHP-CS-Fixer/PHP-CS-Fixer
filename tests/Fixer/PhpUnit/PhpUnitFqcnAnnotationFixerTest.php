@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitFqcnAnnotationFixer>
  *
  * @author Roland Franssen <franssen.roland@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpUnitFqcnAnnotationFixerTest extends AbstractFixerTestCase
 {

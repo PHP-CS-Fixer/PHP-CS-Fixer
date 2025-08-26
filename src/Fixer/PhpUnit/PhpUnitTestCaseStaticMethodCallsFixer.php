@@ -46,6 +46,8 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  * @phpstan-import-type _PhpTokenArray from Token
  *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer implements ConfigurableFixerInterface
 {

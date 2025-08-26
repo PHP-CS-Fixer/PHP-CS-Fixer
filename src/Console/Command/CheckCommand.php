@@ -24,6 +24,8 @@ use Symfony\Component\Console\Input\InputOption;
  * @author Greg Korba <greg@codito.dev>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 #[AsCommand(name: 'check', description: 'Checks if configured files/directories comply with configured rules.')]
 final class CheckCommand extends FixCommand

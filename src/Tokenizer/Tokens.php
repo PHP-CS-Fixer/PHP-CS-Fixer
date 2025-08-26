@@ -41,6 +41,8 @@ use PhpCsFixer\Utils;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @final
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 class Tokens extends \SplFixedArray
 {
