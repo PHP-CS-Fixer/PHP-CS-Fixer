@@ -43,6 +43,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Jules Pietri <jules@heahprod.com>
  * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ErrorSuppressionFixer extends AbstractFixer implements ConfigurableFixerInterface
 {

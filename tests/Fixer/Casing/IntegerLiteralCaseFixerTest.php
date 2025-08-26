@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\Casing\IntegerLiteralCaseFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\IntegerLiteralCaseFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class IntegerLiteralCaseFixerTest extends AbstractFixerTestCase
 {

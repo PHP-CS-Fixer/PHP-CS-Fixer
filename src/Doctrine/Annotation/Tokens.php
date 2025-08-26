@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Token as PhpToken;
  * @internal
  *
  * @extends \SplFixedArray<Token>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class Tokens extends \SplFixedArray
 {

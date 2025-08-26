@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\ControlStructure\SwitchContinueToBreakFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\SwitchContinueToBreakFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SwitchContinueToBreakFixerTest extends AbstractFixerTestCase
 {

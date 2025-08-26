@@ -23,6 +23,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\FixerConfiguration\FixerOptionBuilder
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FixerOptionBuilderTest extends TestCase
 {

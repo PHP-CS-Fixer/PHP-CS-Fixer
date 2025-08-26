@@ -28,6 +28,8 @@ use PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TokensAnalyzer
 {
