@@ -22,6 +22,8 @@ use Symfony\Component\Process\Process;
  * @readonly
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ProcessLinterProcessBuilder
 {

@@ -40,6 +40,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  * @author Julien Falque <julien.falque@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class AlignMultilineCommentFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
@@ -47,7 +49,7 @@ final class AlignMultilineCommentFixer extends AbstractFixer implements Configur
     use ConfigurableFixerTrait;
 
     /**
-     * @var null|list<int>
+     * @var null|non-empty-list<int>
      */
     private ?array $tokenKinds = null;
 

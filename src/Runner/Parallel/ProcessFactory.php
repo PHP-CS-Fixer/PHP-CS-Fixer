@@ -25,6 +25,8 @@ use Symfony\Component\Process\PhpExecutableFinder;
  * @readonly
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ProcessFactory
 {
@@ -53,7 +55,7 @@ final class ProcessFactory
     /**
      * @private
      *
-     * @return list<string>
+     * @return non-empty-list<string>
      */
     public function getCommandArgs(int $serverPort, ProcessIdentifier $identifier, RunnerConfig $runnerConfig): array
     {

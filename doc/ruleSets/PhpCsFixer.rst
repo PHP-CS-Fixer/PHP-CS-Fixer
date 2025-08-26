@@ -40,7 +40,7 @@ Rules
 - `no_superfluous_elseif <./../rules/control_structure/no_superfluous_elseif.rst>`_
 - `no_superfluous_phpdoc_tags <./../rules/phpdoc/no_superfluous_phpdoc_tags.rst>`_ with config:
 
-  ``['allow_mixed' => true, 'remove_inheritdoc' => true]``
+  ``['allow_hidden_params' => true, 'allow_mixed' => true, 'remove_inheritdoc' => true]``
 
 - `no_unneeded_control_parentheses <./../rules/control_structure/no_unneeded_control_parentheses.rst>`_ with config:
 
@@ -50,7 +50,10 @@ Rules
 - `no_useless_return <./../rules/return_notation/no_useless_return.rst>`_
 - `operator_linebreak <./../rules/operator/operator_linebreak.rst>`_
 - `ordered_class_elements <./../rules/class_notation/ordered_class_elements.rst>`_
-- `ordered_types <./../rules/class_notation/ordered_types.rst>`_
+- `ordered_types <./../rules/class_notation/ordered_types.rst>`_ with config:
+
+  ``['null_adjustment' => 'always_last']``
+
 - `php_unit_data_provider_method_order <./../rules/php_unit/php_unit_data_provider_method_order.rst>`_
 - `php_unit_internal_class <./../rules/php_unit/php_unit_internal_class.rst>`_
 - `php_unit_test_class_requires_covers <./../rules/php_unit/php_unit_test_class_requires_covers.rst>`_

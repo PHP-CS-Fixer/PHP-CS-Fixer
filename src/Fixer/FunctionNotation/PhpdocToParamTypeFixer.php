@@ -41,13 +41,15 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @phpstan-import-type _PhpTokenArray from Token
  *
  * @author Jan Gantzert <jan@familie-gantzert.de>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer implements ConfigurableFixerInterface, ExperimentalFixerInterface
 {
     private const TYPE_CHECK_TEMPLATE = '<?php function f(%s $x) {}';
 
     /**
-     * @var list<_PhpTokenArray>
+     * @var non-empty-list<_PhpTokenArray>
      */
     private const EXCLUDE_FUNC_NAMES = [
         [\T_STRING, '__clone'],

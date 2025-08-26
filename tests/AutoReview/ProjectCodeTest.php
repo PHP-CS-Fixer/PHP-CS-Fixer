@@ -49,6 +49,8 @@ use Symfony\Component\Finder\SplFileInfo;
  *
  * @group auto-review
  * @group covers-nothing
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ProjectCodeTest extends TestCase
 {
@@ -829,7 +831,7 @@ final class ProjectCodeTest extends TestCase
 
         $methodsWithInheritdoc = array_filter(
             $rc->getMethods(),
-            static fn (\ReflectionMethod $rm): bool => false !== $rm->getDocComment() && false !== stripos($rm->getDocComment(), '@inheritdoc')
+            static fn (\ReflectionMethod $rm): bool => false !== $rm->getDocComment() && str_contains(strtolower($rm->getDocComment()), '@inheritdoc')
         );
 
         $methodsWithInheritdoc = array_map(

@@ -38,6 +38,8 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
  *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements ConfigurableFixerInterface
 {
@@ -47,7 +49,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
     /**
      * Available types, grouped.
      *
-     * @var array<string, list<string>>
+     * @var non-empty-array<string, non-empty-list<string>>
      */
     private const POSSIBLE_TYPES = [
         'alias' => [

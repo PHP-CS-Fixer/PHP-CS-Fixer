@@ -2,11 +2,6 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
-    'message' => '#^Parameter \\#1 \\$names of static method PhpCsFixer\\\\Utils\\:\\:naturalLanguageJoin\\(\\) expects list\\<string\\>, array\\<non\\-falsy\\-string\\> given\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/Command/DescribeCommand.php',
-];
-$ignoreErrors[] = [
     'message' => '#^Parameter \\#3 \\$cwd of class PhpCsFixer\\\\Console\\\\ConfigurationResolver constructor expects string, string\\|false given\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Console/Command/DescribeCommand.php',
@@ -55,11 +50,6 @@ $ignoreErrors[] = [
     'message' => '#^Parameter \\#1 \\$reporter of method PhpCsFixer\\\\Console\\\\Report\\\\ListSetsReport\\\\ReporterFactory\\:\\:registerReporter\\(\\) expects PhpCsFixer\\\\Console\\\\Report\\\\ListSetsReport\\\\ReporterInterface, object given\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Console/Report/ListSetsReport/ReporterFactory.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Parameter \\#1 \\$names of static method PhpCsFixer\\\\Utils\\:\\:naturalLanguageJoin\\(\\) expects list\\<string\\>, array\\<non\\-falsy\\-string\\> given\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Documentation/FixerDocumentGenerator.php',
 ];
 $ignoreErrors[] = [
     'message' => '#^Parameter \\#2 \\$offset of function substr expects int, int\\|false given\\.$#',
@@ -145,11 +135,6 @@ $ignoreErrors[] = [
     'message' => '#^Parameter \\#1 \\$names of static method PhpCsFixer\\\\Utils\\:\\:naturalLanguageJoin\\(\\) expects list\\<string\\>, non\\-empty\\-array\\<0\\|1\\|2, \'class\'\\|\'const\'\\|\'function\'\\> given\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Import/OrderedImportsFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Parameter \\#1 \\$index of method PhpCsFixer\\\\Tokenizer\\\\Tokens\\:\\:getNextMeaningfulToken\\(\\) expects int, int\\|false given\\.$#',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Fixer/LanguageConstruct/CombineConsecutiveIssetsFixer.php',
 ];
 $ignoreErrors[] = [
     'message' => '#^Parameter \\#2 \\$offset of function substr expects int, int\\<0, max\\>\\|false given\\.$#',

@@ -23,6 +23,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\FunctionNotation\FopenFlagOrderFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\FopenFlagOrderFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FopenFlagOrderFixerTest extends AbstractFixerTestCase
 {

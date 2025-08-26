@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @phpstan-import-type _AttributeItems from AttributeAnalysis
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class AttributeAnalyzer
 {
@@ -76,7 +78,7 @@ final class AttributeAnalyzer
     /**
      * Find all consecutive elements that start with #[ and end with ] and the attributes inside.
      *
-     * @return list<AttributeAnalysis>
+     * @return non-empty-list<AttributeAnalysis>
      */
     public static function collect(Tokens $tokens, int $index): array
     {

@@ -18,6 +18,8 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpCsFixerSet extends AbstractRuleSetDescription
 {
@@ -85,6 +87,7 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             ],
             'no_superfluous_elseif' => true,
             'no_superfluous_phpdoc_tags' => [
+                'allow_hidden_params' => true,
                 'allow_mixed' => true,
                 'remove_inheritdoc' => true,
             ],
@@ -106,7 +109,9 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             'no_useless_return' => true,
             'operator_linebreak' => true,
             'ordered_class_elements' => true,
-            'ordered_types' => true,
+            'ordered_types' => [
+                'null_adjustment' => 'always_last',
+            ],
             'php_unit_data_provider_method_order' => true,
             'php_unit_internal_class' => true,
             'php_unit_test_class_requires_covers' => true,
