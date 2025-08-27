@@ -192,6 +192,24 @@ final class DocumentationTest extends TestCase
         );
     }
 
+    public function testCiIntegrationSampleMatches(): void
+    {
+        $locator = new DocumentationLocator();
+        $usage = $locator->getUsageFilePath();
+        self::assertFileExists($usage);
+
+        $usage = file_get_contents($usage);
+        self::assertIsString($usage);
+
+        $expectedCiIntegrationContent = file_get_contents(__DIR__.'/../../ci-integration.sh');
+        self::assertIsString($expectedCiIntegrationContent);
+
+        $expectedCiIntegrationContent = trim(str_replace(['#!/bin/sh', 'set -eu'], ['', ''], $expectedCiIntegrationContent));
+        $expectedCiIntegrationContent = '    '.implode("\n    ", explode("\n", $expectedCiIntegrationContent));
+
+        self::assertStringContainsString($expectedCiIntegrationContent, $usage);
+    }
+
     public function testAllReportFormatsAreInUsageDoc(): void
     {
         $locator = new DocumentationLocator();
