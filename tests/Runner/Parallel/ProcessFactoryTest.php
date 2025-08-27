@@ -84,7 +84,7 @@ final class ProcessFactoryTest extends TestCase
                 self::IS_WINDOWS
                     ? '"'.$identifier->toString().'"'
                     : '\''.$identifier->toString().'\'',
-                $expectedAdditionalArgs !== "" ? ' '.$expectedAdditionalArgs : '',
+                '' !== $expectedAdditionalArgs ? ' '.$expectedAdditionalArgs : '',
             ),
             $command
         );
@@ -135,7 +135,7 @@ final class ProcessFactoryTest extends TestCase
                 self::IS_WINDOWS
                     ? '"'.$identifier->toString().'"'
                     : '\''.$identifier->toString().'\'',
-                $expectedAdditionalArgs !== "" ? ' '.$expectedAdditionalArgs : '',
+                '' !== $expectedAdditionalArgs ? ' '.$expectedAdditionalArgs : '',
             ),
             $command
         );
