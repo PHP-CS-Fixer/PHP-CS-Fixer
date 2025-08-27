@@ -90,12 +90,11 @@ final class WorkerCommandTest extends TestCase
         $server = new TcpServer('127.0.0.1:0', $streamSelectLoop);
         $serverPort = parse_url($server->getAddress() ?? '', \PHP_URL_PORT);
         $processIdentifier = ProcessIdentifier::create();
-        $processFactory = new ProcessFactory(
-            new ArrayInput([], (new FixCommand(new ToolInfo()))->getDefinition())
-        );
+        $processFactory = new ProcessFactory();
         $process = new Process(implode(' ', $processFactory->getCommandArgs(
             $serverPort, // @phpstan-ignore-line
             $processIdentifier,
+            new ArrayInput([], (new FixCommand(new ToolInfo()))->getDefinition()),
             new RunnerConfig(true, false, ParallelConfigFactory::sequential())
         )));
 

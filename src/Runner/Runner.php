@@ -263,12 +263,13 @@ final class Runner
                 (int) ceil($this->fileCount / $this->parallelConfig->getFilesPerProcess()),
             )
         );
-        $processFactory = new ProcessFactory($this->input);
+        $processFactory = new ProcessFactory();
 
         for ($i = 0; $i < $processesToSpawn; ++$i) {
             $identifier = ProcessIdentifier::create();
             $process = $processFactory->create(
                 $streamSelectLoop,
+                $this->input,
                 new RunnerConfig(
                     $this->isDryRun,
                     $this->stopOnViolation,
