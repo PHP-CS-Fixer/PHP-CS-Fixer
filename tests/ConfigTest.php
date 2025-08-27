@@ -33,6 +33,8 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  * @internal
  *
  * @covers \PhpCsFixer\Config
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ConfigTest extends TestCase
 {

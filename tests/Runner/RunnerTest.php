@@ -39,6 +39,8 @@ use Symfony\Component\Finder\Finder;
  * @internal
  *
  * @covers \PhpCsFixer\Runner\Runner
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class RunnerTest extends TestCase
 {

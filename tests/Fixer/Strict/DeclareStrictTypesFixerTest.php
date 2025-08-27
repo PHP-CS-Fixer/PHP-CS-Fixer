@@ -23,6 +23,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @covers \PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DeclareStrictTypesFixerTest extends AbstractFixerTestCase
 {

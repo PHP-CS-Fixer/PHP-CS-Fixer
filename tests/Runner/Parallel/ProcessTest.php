@@ -23,6 +23,8 @@ use React\EventLoop\StreamSelectLoop;
  * @internal
  *
  * @covers \PhpCsFixer\Runner\Parallel\Process
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ProcessTest extends TestCase
 {

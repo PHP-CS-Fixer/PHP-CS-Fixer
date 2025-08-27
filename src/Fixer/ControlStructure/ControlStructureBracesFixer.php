@@ -22,6 +22,9 @@ use PhpCsFixer\Tokenizer\Analyzer\AlternativeSyntaxAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class ControlStructureBracesFixer extends AbstractFixer
 {
     private const CONTROL_TOKENS = [
