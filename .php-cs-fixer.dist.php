@@ -81,6 +81,9 @@ return (new Config())
                 'see',
             ],
         ],
+        'phpdoc_tag_no_named_arguments' => [
+            'description' => 'Parameter names are not covered by the backward compatibility promise.',
+        ],
     ])
     ->setFinder(
         (new Finder())
