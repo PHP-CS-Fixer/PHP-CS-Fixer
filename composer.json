@@ -39,7 +39,7 @@
         "symfony/event-dispatcher": "^5.4.45 || ^6.4.24 || ^7.0",
         "symfony/filesystem": "^5.4.45 || ^6.4.24 || ^7.0",
         "symfony/finder": "^5.4.45 || ^6.4.24 || ^7.0",
-        "symfony/options-resolver": "^5.4.45 || ^6.4.24|| ^7.0",
+        "symfony/options-resolver": "^5.4.45 || ^6.4.24 || ^7.0",
         "symfony/polyfill-mbstring": "^1.33",
         "symfony/polyfill-php80": "^1.33",
         "symfony/polyfill-php81": "^1.33",
