@@ -201,7 +201,7 @@ final class DocumentationTest extends TestCase
         $usage = file_get_contents($usage);
         self::assertIsString($usage);
 
-        $expectedCiIntegrationContent = file_get_contents(__DIR__.'/../../ci-integration.sh');
+        $expectedCiIntegrationContent = file_get_contents(__DIR__.'/../../doc/examples/ci-integration.sh');
         self::assertIsString($expectedCiIntegrationContent);
 
         $expectedCiIntegrationContent = trim(str_replace(['#!/bin/sh', 'set -eu'], ['', ''], $expectedCiIntegrationContent));
