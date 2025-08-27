@@ -27,6 +27,8 @@ use PhpCsFixer\Tests\Test\InternalIntegrationCaseFactory;
  * @coversNothing
  *
  * @group covers-nothing
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class IntegrationTest extends AbstractIntegrationTestCase
 {

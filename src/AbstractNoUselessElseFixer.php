@@ -16,6 +16,9 @@ namespace PhpCsFixer;
 
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 abstract class AbstractNoUselessElseFixer extends AbstractFixer
 {
     public function getPriority(): int

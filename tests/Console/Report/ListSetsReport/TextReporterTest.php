@@ -23,6 +23,8 @@ use PhpCsFixer\Console\Report\ListSetsReport\TextReporter;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Report\ListSetsReport\TextReporter
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TextReporterTest extends AbstractReporterTestCase
 {

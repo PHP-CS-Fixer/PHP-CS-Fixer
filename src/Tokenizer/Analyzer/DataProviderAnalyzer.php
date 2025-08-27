@@ -27,6 +27,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @phpstan-import-type _AttributeItem from \PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DataProviderAnalyzer
 {

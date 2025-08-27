@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
  * It internally splits it up into "lines" that we can manipulate.
  *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DocBlock
 {

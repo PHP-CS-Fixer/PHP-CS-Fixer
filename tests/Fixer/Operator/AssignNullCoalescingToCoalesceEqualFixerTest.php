@@ -23,6 +23,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\Operator\AssignNullCoalescingToCoalesceEqualFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\AssignNullCoalescingToCoalesceEqualFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class AssignNullCoalescingToCoalesceEqualFixerTest extends AbstractFixerTestCase
 {

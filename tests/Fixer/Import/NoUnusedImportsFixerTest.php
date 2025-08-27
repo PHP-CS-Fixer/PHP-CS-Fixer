@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\Import\NoUnusedImportsFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Import\NoUnusedImportsFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
 {

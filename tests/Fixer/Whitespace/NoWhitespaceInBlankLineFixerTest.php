@@ -25,6 +25,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\NoWhitespaceInBlankLineFixer>
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoWhitespaceInBlankLineFixerTest extends AbstractFixerTestCase
 {

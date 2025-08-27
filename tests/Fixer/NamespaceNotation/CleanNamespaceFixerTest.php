@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\NamespaceNotation\CleanNamespaceFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\NamespaceNotation\CleanNamespaceFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class CleanNamespaceFixerTest extends AbstractFixerTestCase
 {
