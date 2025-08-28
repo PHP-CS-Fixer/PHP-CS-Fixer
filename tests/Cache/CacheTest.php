@@ -29,6 +29,8 @@ use PhpCsFixer\ToolInfo;
  * @internal
  *
  * @covers \PhpCsFixer\Cache\Cache
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class CacheTest extends TestCase
 {

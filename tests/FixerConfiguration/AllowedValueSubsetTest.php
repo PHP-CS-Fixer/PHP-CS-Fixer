@@ -21,12 +21,14 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\FixerConfiguration\AllowedValueSubset
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class AllowedValueSubsetTest extends TestCase
 {
     /**
-     * @param list<string> $expected
-     * @param list<string> $input
+     * @param non-empty-list<string> $expected
+     * @param non-empty-list<string> $input
      *
      * @dataProvider provideGetAllowedValuesAreSortedCases
      */

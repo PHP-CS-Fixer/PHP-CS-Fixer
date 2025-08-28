@@ -33,11 +33,14 @@ use Symfony\Component\Console\Input\ArrayInput;
  * @internal
  *
  * @covers \PhpCsFixer\Runner\Parallel\ProcessPool
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ProcessPoolTest extends TestCase
 {
     public bool $serverClosed = false;
 
+    private ArrayInput $arrayInput;
     private ProcessFactory $processFactory;
 
     protected function setUp(): void
@@ -49,7 +52,9 @@ final class ProcessPoolTest extends TestCase
         // In order to have full list of options supported by the command (e.g. `--verbose`)
         $fixCommand->mergeApplicationDefinition(false);
 
-        $this->processFactory = new ProcessFactory(new ArrayInput([], $fixCommand->getDefinition()));
+        $this->arrayInput = new ArrayInput([], $fixCommand->getDefinition());
+
+        $this->processFactory = new ProcessFactory();
     }
 
     public function testGetProcessWithInvalidIdentifier(): void
@@ -121,6 +126,7 @@ final class ProcessPoolTest extends TestCase
     {
         return $this->processFactory->create(
             new StreamSelectLoop(),
+            $this->arrayInput,
             new RunnerConfig(
                 true,
                 false,

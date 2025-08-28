@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * or `} catch (ExceptionType1 & ExceptionType2 $e) {`.
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TypeIntersectionTransformer extends AbstractTypeTransformer
 {

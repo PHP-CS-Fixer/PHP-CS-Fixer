@@ -31,6 +31,8 @@ use PhpCsFixer\Tokenizer\TransformerInterface;
  * @phpstan-type _TransformerTestObservedKinds list<_PhpTokenKind>
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractTransformerTestCase extends TestCase
 {

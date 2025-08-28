@@ -20,6 +20,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @TODO 4.0 remove this analyzer and move this logic into a transformer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class AlternativeSyntaxAnalyzer
 {

@@ -30,6 +30,8 @@ use PhpCsFixer\Utils;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @readonly
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class Token
 {
@@ -85,7 +87,7 @@ final class Token
     }
 
     /**
-     * @return list<int>
+     * @return non-empty-list<int>
      */
     public static function getCastTokenKinds(): array
     {
@@ -95,7 +97,7 @@ final class Token
     /**
      * Get classy tokens kinds: T_ENUM, T_CLASS, T_INTERFACE and T_TRAIT.
      *
-     * @return list<int>
+     * @return non-empty-list<int>
      */
     public static function getClassyTokenKinds(): array
     {
@@ -105,7 +107,7 @@ final class Token
     /**
      * Get object operator tokens kinds: T_OBJECT_OPERATOR and (if available) T_NULLSAFE_OBJECT_OPERATOR.
      *
-     * @return list<int>
+     * @return non-empty-list<int>
      */
     public static function getObjectOperatorKinds(): array
     {
@@ -288,7 +290,7 @@ final class Token
     /**
      * Generate array containing all keywords that exists in PHP version in use.
      *
-     * @return list<int>
+     * @return non-empty-list<int>
      */
     public static function getKeywords(): array
     {
@@ -331,7 +333,7 @@ final class Token
     /**
      * Generate array containing all predefined constants that exists in PHP version in use.
      *
-     * @return array<int, int>
+     * @return non-empty-array<int, int>
      *
      * @see https://php.net/manual/en/language.constants.predefined.php
      */
@@ -505,9 +507,9 @@ final class Token
     }
 
     /**
-     * @param list<string> $tokenNames
+     * @param non-empty-list<string> $tokenNames
      *
-     * @return array<int, int>
+     * @return non-empty-array<int, int>
      */
     private static function getTokenKindsForNames(array $tokenNames): array
     {

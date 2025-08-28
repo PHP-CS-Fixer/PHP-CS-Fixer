@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Cache\Signature
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SignatureTest extends TestCase
 {

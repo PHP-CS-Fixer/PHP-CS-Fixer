@@ -23,7 +23,7 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
     'message' => '#^Only numeric types are allowed in \\+, int\\|false given on the left side\\.$#',
-    'count' => 2,
+    'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/LanguageConstruct/CombineConsecutiveIssetsFixer.php',
 ];
 $ignoreErrors[] = [

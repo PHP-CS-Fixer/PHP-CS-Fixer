@@ -46,6 +46,8 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  * @phpstan-import-type _PhpTokenArray from Token
  *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer implements ConfigurableFixerInterface
 {
@@ -388,7 +390,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
     ];
 
     /**
-     * @var array<string, list<_PhpTokenArray>>
+     * @var non-empty-array<string, non-empty-list<_PhpTokenArray>>
      */
     private array $conversionMap = [
         self::CALL_TYPE_THIS => [[\T_OBJECT_OPERATOR, '->'], [\T_VARIABLE, '$this']],

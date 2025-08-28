@@ -62,6 +62,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Michael Vorisek <https://github.com/mvorisek>
  *
  * @phpstan-import-type _ImportType from \PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
@@ -877,7 +879,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
      * @param _ImportType  $importKind
      * @param _Uses        $uses
      *
-     * @return null|list<Token>
+     * @return null|non-empty-list<Token>
      */
     private function determineShortType(string $typeName, string $importKind, array $uses, string $namespaceName): ?array
     {
@@ -950,7 +952,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     }
 
     /**
-     * @return list<Token>
+     * @return non-empty-list<Token>
      */
     private function namespacedStringToTokens(string $input): array
     {

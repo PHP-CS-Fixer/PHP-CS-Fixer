@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @phpstan-import-type _PhpTokenPrototypePartial from Token
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TernaryToElvisOperatorFixer extends AbstractFixer
 {
@@ -33,7 +35,7 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
      *
      * Ordered by most common types first.
      *
-     * @var list<_PhpTokenPrototypePartial>
+     * @var non-empty-list<_PhpTokenPrototypePartial>
      */
     private const VALID_BEFORE_ENDTYPES = [
         '=',
