@@ -64,7 +64,7 @@ final class RuleSet implements RuleSetInterface
             }
         }
 
-        $set = self::normaliseConfig($set);
+        $set = self::normalizeConfig($set);
 
         $this->rules = $this->resolveSet($set);
     }
@@ -74,15 +74,15 @@ final class RuleSet implements RuleSetInterface
      *
      * @return array<string, array<string, mixed>|bool>
      */
-    public static function normaliseConfig(array $rulesConfig): array
+    public static function normalizeConfig(array $rulesConfig): array
     {
-        $normalisedConfig = [];
+        $normalizedConfig = [];
 
         foreach ($rulesConfig as $name => $config) {
-            $normalisedConfig[self::normaliseRuleName($name)] = $config;
+            $normalizedConfig[self::normalizeRuleName($name)] = $config;
         }
 
-        return $normalisedConfig;
+        return $normalizedConfig;
     }
 
     /**
@@ -91,7 +91,7 @@ final class RuleSet implements RuleSetInterface
      * and then fine-tune some rules or disable them. Without this normalisation it would be required to always
      * use only exact names in the config (FQCN only where FQCN is used as name).
      */
-    public static function normaliseRuleName(string $name): string
+    public static function normalizeRuleName(string $name): string
     {
         if (class_exists($name)
             && \in_array(FixerInterface::class, class_implements($name), true)
@@ -182,7 +182,7 @@ final class RuleSet implements RuleSetInterface
             Future::triggerDeprecation(new \RuntimeException("Rule set \"{$setName}\" is deprecated. {$messageEnd}."));
         }
 
-        $rules = self::normaliseConfig($ruleSet->getRules());
+        $rules = self::normalizeConfig($ruleSet->getRules());
 
         foreach ($rules as $name => $value) {
             if (str_starts_with($name, '@')) {

@@ -172,7 +172,7 @@ final class FixerFactory
 
         $fixerNames = array_keys($ruleSet->getRules());
         foreach ($fixerNames as $name) {
-            $name = RuleSet::normaliseRuleName($name);
+            $name = RuleSet::normalizeRuleName($name);
 
             if (!\array_key_exists($name, $this->fixersByName)) {
                 throw new \UnexpectedValueException(\sprintf('Rule "%s" does not exist.', $name));
@@ -218,12 +218,12 @@ final class FixerFactory
      */
     public function hasRule(string $name): bool
     {
-        return isset($this->fixersByName[RuleSet::normaliseRuleName($name)]);
+        return isset($this->fixersByName[RuleSet::normalizeRuleName($name)]);
     }
 
     public function getRule(string $name): FixerInterface
     {
-        $fixer = $this->fixersByName[RuleSet::normaliseRuleName($name)] ?? null;
+        $fixer = $this->fixersByName[RuleSet::normalizeRuleName($name)] ?? null;
 
         if (null === $fixer) {
             throw new \UnexpectedValueException(\sprintf('Rule "%s" does not exist.', $name));
