@@ -93,12 +93,9 @@ final class RuleSet implements RuleSetInterface
      */
     public static function normalizeRuleName(string $name): string
     {
-        if (is_a($name, FixerInterface::class, true)) {
-            // @phpstan-ignore method.notFound (we're sure it's a `FixerInterface` instance)
-            return (new $name())->getName();
-        }
-
-        return $name;
+        return is_a($name, FixerInterface::class, true)
+            ? (new $name())->getName()
+            : $name;
     }
 
     public function hasRule(string $rule): bool
