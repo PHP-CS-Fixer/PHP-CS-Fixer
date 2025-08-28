@@ -44,8 +44,6 @@ final class RuleSet implements RuleSetInterface
 
     public function __construct(array $set = [])
     {
-        $set = self::normaliseConfig($set);
-
         foreach ($set as $name => $value) {
             if ('' === $name) {
                 throw new \InvalidArgumentException('Rule/set name must not be empty.');
@@ -66,6 +64,8 @@ final class RuleSet implements RuleSetInterface
             }
         }
 
+        $set = self::normaliseConfig($set);
+
         $this->rules = $this->resolveSet($set);
     }
 
@@ -79,7 +79,7 @@ final class RuleSet implements RuleSetInterface
         $normalisedConfig = [];
 
         foreach ($rulesConfig as $name => $config) {
-            $normalisedConfig[\is_int($name) ? $name : self::normaliseRuleName($name)] = $config;
+            $normalisedConfig[self::normaliseRuleName($name)] = $config;
         }
 
         return $normalisedConfig;
