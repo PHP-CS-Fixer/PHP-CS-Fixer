@@ -27,7 +27,7 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
 {
     public function getRules(): array
     {
-        return RuleSet::normaliseConfig([
+        return RuleSet::normalizeConfig([
             '@PER-CS' => true,
             '@Symfony' => true,
             Fixer\Whitespace\BlankLineBeforeStatementFixer::class => [

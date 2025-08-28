@@ -103,7 +103,7 @@ final class RuleSetDocumentationGenerator
             $doc .= "\n\n".$header($warningsHeader).implode("\n", $warnings);
         }
 
-        $rules = RuleSet::normaliseConfig($definition instanceof AutomaticRuleSetDescriptionInterface
+        $rules = RuleSet::normalizeConfig($definition instanceof AutomaticRuleSetDescriptionInterface
             ? $definition->getRulesCandidates()
             : $definition->getRules()
         );
