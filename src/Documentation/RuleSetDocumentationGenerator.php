@@ -100,7 +100,7 @@ final class RuleSetDocumentationGenerator
             );
         }
 
-        $rules = RuleSet::normaliseConfig($definition->getRules());
+        $rules = RuleSet::normalizeConfig($definition->getRules());
 
         if ([] === $rules) {
             $doc .= "\n\nThis is an empty set.";
