@@ -259,14 +259,14 @@ final class RuleSetTest extends TestCase
             ],
         ];
 
-        yield 'same rule configure three times with different approaches for names, but with leading backslash in raw string\'s FQCN' => [
+        yield 'same rule configure three times with different approaches for names, with leading backslash in raw string\'s FQCN' => [
             [
                 '\PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer' => true,
-                'array_syntax' => false,
-                ArraySyntaxFixer::class => true,
+                'array_syntax' => ['syntax' => 'long'],
+                ArraySyntaxFixer::class => ['syntax' => 'short'],
             ],
             [
-                'array_syntax' => true,
+                'array_syntax' => ['syntax' => 'short'],
             ],
         ];
 
