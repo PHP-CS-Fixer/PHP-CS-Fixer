@@ -271,13 +271,13 @@ endwhile;
             <<<'PHP'
                 <?php
                 $numberOfAdmins = getUsers()
-                    |> fn ($list) => array_filter($list, isAdmin(...))
+                    |> (fn ($list) => array_filter($list, isAdmin(...)))
                     |> count(...);
                 PHP,
             <<<'PHP'
                 <?php
                 $numberOfAdmins = getUsers() |>
-                    fn ($list) => array_filter($list, isAdmin(...)) |>
+                    (fn ($list) => array_filter($list, isAdmin(...))) |>
                     count(...);
                 PHP,
         ];
