@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\RuleSet;
 
 use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
+use PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
@@ -161,59 +162,125 @@ final class RuleSetTest extends TestCase
         new RuleSet(['braces']);
     }
 
-    public function testResolveRulesWithSet(): void
+    /**
+     * @param array<string, array<string, mixed>|bool> $input
+     * @param array<string, array<string, mixed>|bool> $output
+     *
+     * @dataProvider provideResolveRulesWithSetCases
+     */
+    public function testResolveRulesWithSet(array $input, array $output): void
     {
-        $ruleSet = new RuleSet([
-            '@PSR1' => true,
-            'braces' => true,
-            'encoding' => false,
-            'line_ending' => true,
-            'strict_comparison' => true,
-        ]);
+        $ruleSet = new RuleSet($input);
 
-        self::assertSameRules(
+        self::assertSameRules($output, $ruleSet->getRules());
+    }
+
+    /**
+     * @return iterable<string, array{array<string, array<string, mixed>|bool>, array<string, array<string, mixed>|bool>}>
+     */
+    public static function provideResolveRulesWithSetCases(): iterable
+    {
+        yield 'overriding ruleset' => [
+            [
+                '@PSR1' => true,
+                'braces' => true,
+                'encoding' => false,
+                'line_ending' => true,
+                'strict_comparison' => true,
+            ],
             [
                 'braces' => true,
                 'full_opening_tag' => true,
                 'line_ending' => true,
                 'strict_comparison' => true,
             ],
-            $ruleSet->getRules()
-        );
-    }
+        ];
 
-    public function testResolveRulesWithNestedSet(): void
-    {
-        $ruleSet = new RuleSet([
-            '@PHP70Migration' => true,
-            'strict_comparison' => true,
-        ]);
-
-        self::assertSameRules(
+        yield 'overriding ruleset with nested set' => [
+            [
+                '@PHP70Migration' => true,
+                'strict_comparison' => true,
+            ],
             [
                 'array_syntax' => true,
                 'strict_comparison' => true,
                 'ternary_to_null_coalescing' => true,
             ],
-            $ruleSet->getRules()
-        );
-    }
+        ];
 
-    public function testResolveRulesWithDisabledSet(): void
-    {
-        $ruleSet = new RuleSet([
-            '@PHP70Migration' => true,
-            '@PHP54Migration' => false,
-            'strict_comparison' => true,
-        ]);
-
-        self::assertSameRules(
+        yield 'overriding ruleset with disabled set' => [
+            [
+                '@PHP70Migration' => true,
+                '@PHP54Migration' => false,
+                'strict_comparison' => true,
+            ],
             [
                 'strict_comparison' => true,
                 'ternary_to_null_coalescing' => true,
             ],
-            $ruleSet->getRules()
-        );
+        ];
+
+        yield 'FQCN as rule name' => [
+            [
+                ArraySyntaxFixer::class => true,
+            ],
+            [
+                'array_syntax' => true,
+            ],
+        ];
+
+        yield 'FQCN as rule name overridden by next entry that uses rule name' => [
+            [
+                ArraySyntaxFixer::class => false,
+                'array_syntax' => true,
+            ],
+            [
+                'array_syntax' => true,
+            ],
+        ];
+
+        yield 'native rule name overridden by next entry with FQCN as rule name (class resolution)' => [
+            [
+                'array_syntax' => false,
+                ArraySyntaxFixer::class => true,
+            ],
+            [
+                'array_syntax' => true,
+            ],
+        ];
+
+        yield 'native rule name overridden by next entry with FQCN as rule name (raw string)' => [
+            [
+                'array_syntax' => false,
+                'PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer' => true,
+            ],
+            [
+                'array_syntax' => true,
+            ],
+        ];
+
+        yield 'same rule configure three times with different approaches for names, but with leading backslash in raw string\'s FQCN' => [
+            [
+                '\PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer' => true,
+                'array_syntax' => false,
+                ArraySyntaxFixer::class => true,
+            ],
+            [
+                'array_syntax' => true,
+            ],
+        ];
+
+        // This one is weird, because you would expect that `array_syntax` is enabled,
+        // but seems like PHP reduces the array and keeps only first (not last!) entry with FQCN as a key.
+        yield 'same rule configure three times with different approaches for names, with weird behaviour for array canonicalising' => [
+            [
+                // @phpstan-ignore array.duplicateKey (we explicitly test this particular behaviour with same key defined twice)
+                'PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer' => true,
+                'array_syntax' => false,
+                ArraySyntaxFixer::class => true,
+            ],
+            [],
+        ];
     }
 
     /**
