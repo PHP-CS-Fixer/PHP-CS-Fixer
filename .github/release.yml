@@ -5,7 +5,8 @@ changelog:
   categories:
     - title: Reverts 🔙
       labels:
-        - type/revert
+        # following kind/* instead of type/*, as it's a special type of entry in the release notes
+        - kind/revert
     - title: Breaking Changes 🛠
       labels:
         - type/BC
