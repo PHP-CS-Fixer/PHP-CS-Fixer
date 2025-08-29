@@ -9,6 +9,9 @@ changelog:
     - title: Breaking Changes 💀
       labels:
         - type/BC-break
+    - title: Deprecations 👀
+      labels:
+        - type/depr
     - title: New Features 🎉
       labels:
         - type/feat
