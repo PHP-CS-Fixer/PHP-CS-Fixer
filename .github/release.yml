@@ -6,9 +6,9 @@ changelog:
     - title: Reverts 🔙
       labels:
         - type/revert
-    - title: Breaking Changes 🛠
+    - title: Breaking Changes 💀
       labels:
-        - type/BC
+        - type/BC-break
     - title: New Features 🎉
       labels:
         - type/feat
@@ -18,7 +18,7 @@ changelog:
     - title: Documentation 📚
       labels:
         - type/docs
-    - title: DX 🔧
+    - title: DX 🛠
       labels:
         - type/DX
     - title: Tests 🧪
