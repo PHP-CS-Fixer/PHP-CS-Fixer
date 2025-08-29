@@ -122,7 +122,8 @@ final class FileHandler implements FileHandlerInterface
             }
 
             if (false === $fileObject->flock(\LOCK_SH)) {
-                return null;
+                // Lock failed, OK - we continue without the lock.
+                // noop
             }
 
             // Read cache file in chunks
