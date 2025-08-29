@@ -5,11 +5,11 @@ changelog:
   categories:
     - title: Reverts 🔙
       labels:
-        # following kind/* instead of type/*, as it's a special type of entry in the release notes
+        # following kind/* instead of type/*, as it's a meta kind of the PRs
         - kind/revert
     - title: Breaking Changes 💀
       labels:
-        # following kind/* instead of type/*, as it's a special type of entry in the release notes
+        # following kind/* instead of type/*, as it's a meta kind of the PRs
         - kind/BC break
     - title: Deprecations 👀
       labels:
