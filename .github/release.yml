@@ -23,15 +23,15 @@ changelog:
     - title: Documentation 📚
       labels:
         - type/docs
-    - title: DX 🛠
-      labels:
-        - type/DX
     - title: Tests 🧪
       labels:
         - type/test
     - title: CI/CD 📦
       labels:
         - type/CI
+    - title: DX 🛠
+      labels:
+        - type/DX
     - title: Refactoring 💎
       labels:
         - type/refactor
