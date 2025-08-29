@@ -14,8 +14,8 @@ create two child classes, one empty if necessary: you'll gain much more fine
 grained type-hinting. If you need to mock a standalone class, create an
 interface, or maybe it's a value-object that shouldn't be mocked at all. If you
 need to extend a standalone class, create an interface and use the Composite
-pattern. If you aren't ready yet for serious OOP, go with
-FinalInternalClassFixer, it's fine.
+pattern. If these rules are too strict for you, you can use
+``FinalInternalClassFixer`` instead.
 
 Warning
 -------
@@ -38,3 +38,11 @@ Example #1
     <?php
    -class MyApp {}
    +final class MyApp {}
+
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\FinalClassFixer <./../../../src/Fixer/ClassNotation/FinalClassFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ClassNotation\\FinalClassFixerTest <./../../../tests/Fixer/ClassNotation/FinalClassFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

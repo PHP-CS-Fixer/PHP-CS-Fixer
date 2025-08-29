@@ -1,0 +1,30 @@
+{
+    "$schema": "vendor/infection/infection/resources/schema.json",
+    "testFrameworkOptions": "--testsuite=unit",
+    "source": {
+        "directories": [
+            "src"
+        ]
+    },
+    "mutators": {
+        "global-ignoreSourceCodeByRegex": [
+            // Don't touch version-specific code examples in rules
+            ".*new VersionSpecification\\(.*",
+            // Don't touch conditions based on PHP version as these are crucial for tool to work properly
+            ".*\\\\PHP_VERSION_ID.*",
+        ],
+        "@default": true,
+        "Throw_": {
+            "ignore": [
+                // It makes `tests/Fixtures/cache-file-handler/cache-file` unreadable (permissions)
+                "PhpCsFixer\\Cache\\FileHandler"
+            ]
+        },
+        "LogicalNot": {
+            "ignore": [
+                // Causes modifications in `tests/Fixtures/FixerTest/fix/*.php`
+                "PhpCsFixer\\Runner\\Runner::fixFile"
+            ]
+        }
+    }
+}

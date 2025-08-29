@@ -26,6 +26,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @coversNothing
  *
  * @group covers-nothing
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TextDiffTest extends TestCase
 {
@@ -52,16 +54,19 @@ final class TextDiffTest extends TestCase
         );
 
         if ($isDecorated !== $commandTester->getOutput()->isDecorated()) {
-            self::markTestSkipped(sprintf('Output should %sbe decorated.', $isDecorated ? '' : 'not '));
+            self::markTestSkipped(\sprintf('Output should %sbe decorated.', $isDecorated ? '' : 'not '));
         }
 
         if ($isDecorated !== $commandTester->getOutput()->getFormatter()->isDecorated()) {
-            self::markTestSkipped(sprintf('Formatter should %sbe decorated.', $isDecorated ? '' : 'not '));
+            self::markTestSkipped(\sprintf('Formatter should %sbe decorated.', $isDecorated ? '' : 'not '));
         }
 
         self::assertStringMatchesFormat($expected, $commandTester->getDisplay(false));
     }
 
+    /**
+     * @return iterable<int, array{string, string, bool}>
+     */
     public static function provideDiffReportingDecoratedCases(): iterable
     {
         $expected = <<<'TEST'
@@ -78,7 +83,7 @@ final class TextDiffTest extends TestCase
             yield [$expected, $format, false];
         }
 
-        $expected = substr(json_encode($expected, JSON_THROW_ON_ERROR), 1, -1);
+        $expected = substr(json_encode($expected, \JSON_THROW_ON_ERROR), 1, -1);
 
         yield [$expected, 'json', true];
 

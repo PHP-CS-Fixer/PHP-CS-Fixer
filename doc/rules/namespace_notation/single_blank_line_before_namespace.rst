@@ -7,8 +7,8 @@ There should be exactly one blank line before a namespace declaration.
 Warning
 -------
 
-This rule is deprecated and will be removed on next major version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is deprecated and will be removed in the next major version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You should use ``blank_lines_before_namespace`` instead.
 
@@ -38,3 +38,11 @@ Example #2
 
    -
     namespace A{}
+
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\NamespaceNotation\\SingleBlankLineBeforeNamespaceFixer <./../../../src/Fixer/NamespaceNotation/SingleBlankLineBeforeNamespaceFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\NamespaceNotation\\SingleBlankLineBeforeNamespaceFixerTest <./../../../tests/Fixer/NamespaceNotation/SingleBlankLineBeforeNamespaceFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

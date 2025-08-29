@@ -17,87 +17,90 @@ namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocNoPackageFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocNoPackageFixer>
+ *
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocNoPackageFixerTest extends AbstractFixerTestCase
 {
-    public function testFixPackage(): void
+    /**
+     * @dataProvider provideFixCases
+     */
+    public function testFix(string $expected, ?string $input = null): void
     {
-        $expected = <<<'EOF'
-            <?php
-                /**
-                 */
-
-            EOF;
-
-        $input = <<<'EOF'
-            <?php
-                /**
-                 * @package Foo\Bar
-                 */
-
-            EOF;
-
         $this->doTest($expected, $input);
     }
 
-    public function testFixSubpackage(): void
+    /**
+     * @return iterable<string, array{string, 1?: string}>
+     */
+    public static function provideFixCases(): iterable
     {
-        $expected = <<<'EOF'
-            <?php
+        yield 'package' => [
+            <<<'EOF'
+                <?php
+                    /**
+                     */
+
+                EOF,
+            <<<'EOF'
+                <?php
+                    /**
+                     * @package Foo\Bar
+                     */
+
+                EOF,
+        ];
+
+        yield 'subpackage' => [
+            <<<'EOF'
+                <?php
+                    /**
+                     */
+
+                EOF,
+            <<<'EOF'
+                <?php
+                    /**
+                     * @subpackage Foo\Bar\Baz
+                     */
+
+                EOF,
+        ];
+
+        yield 'many' => [
+            <<<'EOF'
+                <?php
                 /**
+                 * Hello!
                  */
 
-            EOF;
-
-        $input = <<<'EOF'
-            <?php
+                EOF,
+            <<<'EOF'
+                <?php
                 /**
-                 * @subpackage Foo\Bar\Baz
+                 * Hello!
+                 * @package
+                 * @subpackage
                  */
 
-            EOF;
+                EOF,
+        ];
 
-        $this->doTest($expected, $input);
-    }
+        yield 'do nothing' => [
+            <<<'EOF'
+                <?php
+                    /**
+                     * @var package
+                     */
 
-    public function testFixMany(): void
-    {
-        $expected = <<<'EOF'
-            <?php
-            /**
-             * Hello!
-             */
-
-            EOF;
-
-        $input = <<<'EOF'
-            <?php
-            /**
-             * Hello!
-             * @package
-             * @subpackage
-             */
-
-            EOF;
-
-        $this->doTest($expected, $input);
-    }
-
-    public function testDoNothing(): void
-    {
-        $expected = <<<'EOF'
-            <?php
-                /**
-                 * @var package
-                 */
-
-            EOF;
-
-        $this->doTest($expected);
+                EOF,
+        ];
     }
 }

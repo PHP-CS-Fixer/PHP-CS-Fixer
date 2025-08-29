@@ -23,11 +23,16 @@ use PhpCsFixer\Tokenizer\CT;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\UseTransformer
+ *
+ * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestObservedKinds from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class UseTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
@@ -37,19 +42,22 @@ final class UseTransformerTest extends AbstractTransformerTestCase
             $source,
             $expectedTokens,
             [
-                T_USE,
+                \T_USE,
                 CT::T_USE_LAMBDA,
                 CT::T_USE_TRAIT,
             ]
         );
     }
 
+    /**
+     * @return iterable<array{string, _TransformerTestExpectedKindsUnderIndex}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield [
             '<?php use Foo;',
             [
-                1 => T_USE,
+                1 => \T_USE,
             ],
         ];
 
@@ -70,7 +78,7 @@ final class UseTransformerTest extends AbstractTransformerTestCase
         yield [
             '<?php namespace Aaa; use Bbb; class Foo { use Bar; function baz() { $a=1; return function () use ($a) {}; } }',
             [
-                6 => T_USE,
+                6 => \T_USE,
                 17 => CT::T_USE_TRAIT,
                 42 => CT::T_USE_LAMBDA,
             ],
@@ -89,14 +97,14 @@ final class UseTransformerTest extends AbstractTransformerTestCase
                     echo 123;
                 }',
             [
-                30 => T_USE,
+                30 => \T_USE,
             ],
         ];
 
         yield [
             '<?php use Foo; $a = Bar::class;',
             [
-                1 => T_USE,
+                1 => \T_USE,
             ],
         ];
 
@@ -138,15 +146,15 @@ use function D;
 use C\{D,E,};
 ',
             [
-                1 => T_USE,
-                11 => T_USE,
-                18 => T_USE,
+                1 => \T_USE,
+                11 => \T_USE,
+                18 => \T_USE,
             ],
         ];
     }
 
     /**
-     * @param array<int, int> $expectedTokens index => kind
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @requires PHP 8.1
      *
@@ -157,6 +165,9 @@ use C\{D,E,};
         $this->doTest($source, $expectedTokens, [CT::T_USE_TRAIT]);
     }
 
+    /**
+     * @return iterable<int, array{string, _TransformerTestExpectedKindsUnderIndex}>
+     */
     public static function provideProcessPhp81Cases(): iterable
     {
         yield [

@@ -18,10 +18,14 @@ namespace PhpCsFixer\Cache;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 interface CacheManagerInterface
 {
     public function needFixing(string $file, string $fileContent): bool;
 
     public function setFile(string $file, string $fileContent): void;
+
+    public function setFileHash(string $file, string $hash): void;
 }

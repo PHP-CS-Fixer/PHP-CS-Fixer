@@ -28,6 +28,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class LineEndingFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
@@ -55,8 +57,8 @@ final class LineEndingFixer extends AbstractFixer implements WhitespacesAwareFix
         for ($index = 0, $count = \count($tokens); $index < $count; ++$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(T_ENCAPSED_AND_WHITESPACE)) {
-                if ($tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind(T_END_HEREDOC)) {
+            if ($token->isGivenKind(\T_ENCAPSED_AND_WHITESPACE)) {
+                if ($tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind(\T_END_HEREDOC)) {
                     $tokens[$index] = new Token([
                         $token->getId(),
                         Preg::replace(
@@ -70,7 +72,7 @@ final class LineEndingFixer extends AbstractFixer implements WhitespacesAwareFix
                 continue;
             }
 
-            if ($token->isGivenKind([T_CLOSE_TAG, T_COMMENT, T_DOC_COMMENT, T_OPEN_TAG, T_START_HEREDOC, T_WHITESPACE])) {
+            if ($token->isGivenKind([\T_CLOSE_TAG, \T_COMMENT, \T_DOC_COMMENT, \T_OPEN_TAG, \T_START_HEREDOC, \T_WHITESPACE])) {
                 $tokens[$index] = new Token([
                     $token->getId(),
                     Preg::replace(

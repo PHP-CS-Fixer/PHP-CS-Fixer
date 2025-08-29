@@ -1,0 +1,30 @@
+name: Lock cleanup
+
+on:
+  push:
+    branches:
+      - dependabot/**
+    paths:
+      - dev-tools/composer.lock
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  automate:
+    name: Automate
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Update lock
+        run: |
+          git config user.name "dependabot[bot]"
+          git config user.email "49699333+dependabot[bot]@users.noreply.github.com"
+          composer --working-dir=dev-tools update --lock
+          git add dev-tools/composer.lock
+          git commit -m "update lock file" || echo "nothing to commit"
+          git push

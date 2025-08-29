@@ -15,20 +15,23 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Basic;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\Indentation;
+use PhpCsFixer\Fixer\IndentationTrait;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * Fixer for rules defined in PSR2 ¶2.3 Lines: There must not be more than one statement per line.
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoMultipleStatementsPerLineFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
-    use Indentation;
+    use IndentationTrait;
 
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -41,7 +44,7 @@ final class NoMultipleStatementsPerLineFixer extends AbstractFixer implements Wh
     /**
      * {@inheritdoc}
      *
-     * Must run before CurlyBracesPositionFixer.
+     * Must run before BracesPositionFixer, CurlyBracesPositionFixer.
      * Must run after ControlStructureBracesFixer, NoEmptyStatementFixer, YieldFromArrayToYieldsFixer.
      */
     public function getPriority(): int
@@ -57,10 +60,19 @@ final class NoMultipleStatementsPerLineFixer extends AbstractFixer implements Wh
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = 1, $max = \count($tokens) - 1; $index < $max; ++$index) {
-            if ($tokens[$index]->isGivenKind(T_FOR)) {
+            if ($tokens[$index]->isGivenKind(\T_FOR)) {
                 $index = $tokens->findBlockEnd(
                     Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
                     $tokens->getNextTokenOfKind($index, ['('])
+                );
+
+                continue;
+            }
+
+            if ($tokens[$index]->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
+                $index = $tokens->findBlockEnd(
+                    Tokens::BLOCK_TYPE_PROPERTY_HOOK,
+                    $index
                 );
 
                 continue;
@@ -81,7 +93,7 @@ final class NoMultipleStatementsPerLineFixer extends AbstractFixer implements Wh
                     continue;
                 }
 
-                if (!$token->equalsAny(['}', [T_CLOSE_TAG], [T_ENDIF], [T_ENDFOR], [T_ENDSWITCH], [T_ENDWHILE], [T_ENDFOREACH]])) {
+                if (!$token->equalsAny(['}', [\T_CLOSE_TAG], [\T_ENDIF], [\T_ENDFOR], [\T_ENDSWITCH], [\T_ENDWHILE], [\T_ENDFOREACH]])) {
                     $whitespaceIndex = $index;
                     do {
                         $token = $tokens[++$whitespaceIndex];

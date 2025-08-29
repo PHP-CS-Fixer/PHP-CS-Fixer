@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\FixerConfiguration;
 
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
-use PhpCsFixer\FixerConfiguration\DeprecatedFixerOptionInterface;
 use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\Tests\TestCase;
@@ -24,20 +23,11 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\FixerConfiguration\DeprecatedFixerOption
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DeprecatedFixerOptionTest extends TestCase
 {
-    public function testConstruct(): void
-    {
-        $option = new DeprecatedFixerOption(
-            new FixerOption('foo', 'Foo.'),
-            'deprecated'
-        );
-
-        self::assertInstanceOf(FixerOptionInterface::class, $option);
-        self::assertInstanceOf(DeprecatedFixerOptionInterface::class, $option);
-    }
-
     public function testGetName(): void
     {
         $option = new DeprecatedFixerOption(
@@ -71,6 +61,9 @@ final class DeprecatedFixerOptionTest extends TestCase
         self::assertSame(!$isRequired, $option->hasDefault());
     }
 
+    /**
+     * @return iterable<int, array{bool}>
+     */
     public static function provideHasDefaultCases(): iterable
     {
         yield [true];
@@ -93,6 +86,9 @@ final class DeprecatedFixerOptionTest extends TestCase
         self::assertSame($default, $option->getDefault());
     }
 
+    /**
+     * @return iterable<int, array{bool|string}>
+     */
     public static function provideGetDefaultCases(): iterable
     {
         yield ['foo'];
@@ -128,11 +124,8 @@ final class DeprecatedFixerOptionTest extends TestCase
     {
         $normalizer = static fn () => null;
 
-        $decoratedOption = $this->prophesize(FixerOptionInterface::class);
-        $decoratedOption->getNormalizer()->willReturn($normalizer);
-
         $option = new DeprecatedFixerOption(
-            $decoratedOption->reveal(),
+            $this->createFixerOptionDouble($normalizer),
             'deprecated'
         );
 
@@ -147,5 +140,57 @@ final class DeprecatedFixerOptionTest extends TestCase
         );
 
         self::assertSame('Use option "bar" instead.', $option->getDeprecationMessage());
+    }
+
+    private function createFixerOptionDouble(\Closure $normalizer): FixerOptionInterface
+    {
+        return new class($normalizer) implements FixerOptionInterface {
+            private \Closure $normalizer;
+
+            public function __construct(\Closure $normalizer)
+            {
+                $this->normalizer = $normalizer;
+            }
+
+            public function getName(): string
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getDescription(): string
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function hasDefault(): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            /**
+             * @return mixed
+             *
+             * @throws \LogicException when no default value is defined
+             */
+            public function getDefault()
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getAllowedTypes(): ?array
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getAllowedValues(): ?array
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getNormalizer(): \Closure
+            {
+                return $this->normalizer;
+            }
+        };
     }
 }

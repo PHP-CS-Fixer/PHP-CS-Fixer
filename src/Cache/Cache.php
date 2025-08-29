@@ -20,6 +20,8 @@ use PhpCsFixer\Utils;
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class Cache implements CacheInterface
 {
@@ -66,23 +68,24 @@ final class Cache implements CacheInterface
 
     public function toJson(): string
     {
-        $json = json_encode([
-            'php' => $this->getSignature()->getPhpVersion(),
-            'version' => $this->getSignature()->getFixerVersion(),
-            'indent' => $this->getSignature()->getIndent(),
-            'lineEnding' => $this->getSignature()->getLineEnding(),
-            'rules' => $this->getSignature()->getRules(),
-            'hashes' => $this->hashes,
-        ]);
-
-        if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new \UnexpectedValueException(sprintf(
+        try {
+            return json_encode(
+                [
+                    'php' => $this->getSignature()->getPhpVersion(),
+                    'version' => $this->getSignature()->getFixerVersion(),
+                    'indent' => $this->getSignature()->getIndent(),
+                    'lineEnding' => $this->getSignature()->getLineEnding(),
+                    'rules' => $this->getSignature()->getRules(),
+                    'hashes' => $this->hashes,
+                ],
+                \JSON_THROW_ON_ERROR
+            );
+        } catch (\JsonException $e) {
+            throw new \UnexpectedValueException(\sprintf(
                 'Cannot encode cache signature to JSON, error: "%s". If you have non-UTF8 chars in your signature, like in license for `header_comment`, consider enabling `ext-mbstring` or install `symfony/polyfill-mbstring`.',
-                json_last_error_msg()
+                $e->getMessage()
             ));
         }
-
-        return $json;
     }
 
     /**
@@ -90,13 +93,13 @@ final class Cache implements CacheInterface
      */
     public static function fromJson(string $json): self
     {
-        $data = json_decode($json, true);
-
-        if (null === $data && JSON_ERROR_NONE !== json_last_error()) {
-            throw new \InvalidArgumentException(sprintf(
+        try {
+            $data = json_decode($json, true, 512, \JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
+            throw new \InvalidArgumentException(\sprintf(
                 'Value needs to be a valid JSON string, got "%s", error: "%s".',
                 $json,
-                json_last_error_msg()
+                $e->getMessage()
             ));
         }
 
@@ -112,7 +115,7 @@ final class Cache implements CacheInterface
         $missingKeys = array_diff_key(array_flip($requiredKeys), $data);
 
         if (\count($missingKeys) > 0) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(\sprintf(
                 'JSON data is missing keys %s',
                 Utils::naturalLanguageJoin(array_keys($missingKeys))
             ));
@@ -133,5 +136,19 @@ final class Cache implements CacheInterface
         $cache->hashes = array_map(static fn ($v): string => \is_int($v) ? (string) $v : $v, $data['hashes']);
 
         return $cache;
+    }
+
+    /**
+     * @internal
+     */
+    public function backfillHashes(self $oldCache): bool
+    {
+        if (!$this->getSignature()->equals($oldCache->getSignature())) {
+            return false;
+        }
+
+        $this->hashes = array_merge($oldCache->hashes, $this->hashes);
+
+        return true;
     }
 }

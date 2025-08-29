@@ -26,6 +26,8 @@ use Symfony\Component\Process\Process;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ProcessLinter implements LinterInterface
 {
@@ -35,10 +37,8 @@ final class ProcessLinter implements LinterInterface
 
     /**
      * Temporary file for code linting.
-     *
-     * @var null|string
      */
-    private $temporaryFile;
+    private ?string $temporaryFile = null;
 
     /**
      * @param null|string $executable PHP executable, null for autodetection
@@ -84,7 +84,7 @@ final class ProcessLinter implements LinterInterface
      */
     public function __sleep(): array
     {
-        throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
+        throw new \BadMethodCallException('Cannot serialize '.self::class);
     }
 
     /**
@@ -95,7 +95,7 @@ final class ProcessLinter implements LinterInterface
      */
     public function __wakeup(): void
     {
-        throw new \BadMethodCallException('Cannot unserialize '.__CLASS__);
+        throw new \BadMethodCallException('Cannot unserialize '.self::class);
     }
 
     public function isAsync(): bool
@@ -143,7 +143,7 @@ final class ProcessLinter implements LinterInterface
         }
 
         if (false === @file_put_contents($this->temporaryFile, $source)) {
-            throw new IOException(sprintf('Failed to write file "%s".', $this->temporaryFile), 0, null, $this->temporaryFile);
+            throw new IOException(\sprintf('Failed to write file "%s".', $this->temporaryFile), 0, null, $this->temporaryFile);
         }
 
         return $this->createProcessForFile($this->temporaryFile);

@@ -23,12 +23,15 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
 {
     public function isCandidate(Tokens $tokens): bool
     {
         // minimal candidate to fix is seven tokens: pow(x,y);
-        return $tokens->count() > 7 && $tokens->isTokenKindFound(T_STRING);
+        return $tokens->count() > 7 && $tokens->isTokenKindFound(\T_STRING);
     }
 
     public function getDefinition(): FixerDefinitionInterface
@@ -81,7 +84,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
             }
 
             for ($i = $candidate[1]; $i < $candidate[2]; ++$i) {
-                if ($tokens[$i]->isGivenKind(T_ELLIPSIS)) {
+                if ($tokens[$i]->isGivenKind(\T_ELLIPSIS)) {
                     continue 2;
                 }
             }
@@ -97,7 +100,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
     }
 
     /**
-     * @return array<int[]>
+     * @return list<array{int, int, int}>
      */
     private function findPowCalls(Tokens $tokens): array
     {
@@ -130,7 +133,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
     {
         // find the argument separator ',' directly after the last token of the first argument;
         // replace it with T_POW '**'
-        $tokens[$tokens->getNextTokenOfKind(reset($arguments), [','])] = new Token([T_POW, '**']);
+        $tokens[$tokens->getNextTokenOfKind(reset($arguments), [','])] = new Token([\T_POW, '**']);
 
         // clean up the function call tokens prt. I
         $tokens->clearAt($closeParenthesisIndex);
@@ -157,7 +160,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
 
         $prevMeaningfulTokenIndex = $tokens->getPrevMeaningfulToken($functionNameIndex);
 
-        if ($tokens[$prevMeaningfulTokenIndex]->isGivenKind(T_NS_SEPARATOR)) {
+        if ($tokens[$prevMeaningfulTokenIndex]->isGivenKind(\T_NS_SEPARATOR)) {
             $tokens->clearAt($prevMeaningfulTokenIndex);
         }
 
@@ -205,13 +208,13 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
     }
 
     /**
-     * @return int[]
+     * @return non-empty-list<int>
      */
     private function getAllowedKinds(): array
     {
         return [
-            T_DNUMBER, T_LNUMBER, T_VARIABLE, T_STRING, T_CONSTANT_ENCAPSED_STRING, T_DOUBLE_CAST,
-            T_INT_CAST, T_INC, T_DEC, T_NS_SEPARATOR, T_WHITESPACE, T_DOUBLE_COLON, T_LINE, T_COMMENT, T_DOC_COMMENT,
+            \T_DNUMBER, \T_LNUMBER, \T_VARIABLE, \T_STRING, \T_CONSTANT_ENCAPSED_STRING, \T_DOUBLE_CAST,
+            \T_INT_CAST, \T_INC, \T_DEC, \T_NS_SEPARATOR, \T_WHITESPACE, \T_DOUBLE_COLON, \T_LINE, \T_COMMENT, \T_DOC_COMMENT,
             CT::T_NAMESPACE_OPERATOR,
             ...Token::getObjectOperatorKinds(),
         ];

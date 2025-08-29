@@ -1,6 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of PHP CS Fixer.
  *
@@ -11,17 +13,18 @@
  * with this source code in the file LICENSE.
  */
 
-error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
+error_reporting(\E_ALL & ~\E_DEPRECATED & ~\E_USER_DEPRECATED);
 
 require __DIR__.'/../vendor/autoload.php';
 
 use PhpCsFixer\Console\Command\DocumentationCommand;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Filesystem\Filesystem;
 
-$command = new DocumentationCommand();
+$command = new DocumentationCommand(new Filesystem());
 
 $application = new Application();
-$application->add($command);
+$application->addCommands([$command]);
 $application
     ->setDefaultCommand($command->getName(), true)
     ->run()

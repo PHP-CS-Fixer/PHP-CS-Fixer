@@ -20,13 +20,15 @@ use Symfony\Component\Finder\Finder;
  * Set of rule sets to be used by fixer.
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class RuleSets
 {
     /**
-     * @var array<string,RuleSetDescriptionInterface>
+     * @var null|array<string, RuleSetDescriptionInterface>
      */
-    private static $setDefinitions;
+    private static ?array $setDefinitions = null;
 
     /**
      * @return array<string, RuleSetDescriptionInterface>
@@ -38,6 +40,8 @@ final class RuleSets
 
             foreach (Finder::create()->files()->in(__DIR__.'/Sets') as $file) {
                 $class = 'PhpCsFixer\RuleSet\Sets\\'.$file->getBasename('.php');
+
+                /** @var RuleSetDescriptionInterface */
                 $set = new $class();
 
                 self::$setDefinitions[$set->getName()] = $set;
@@ -50,7 +54,7 @@ final class RuleSets
     }
 
     /**
-     * @return string[]
+     * @return list<string>
      */
     public static function getSetDefinitionNames(): array
     {
@@ -62,7 +66,7 @@ final class RuleSets
         $definitions = self::getSetDefinitions();
 
         if (!isset($definitions[$name])) {
-            throw new \InvalidArgumentException(sprintf('Set "%s" does not exist.', $name));
+            throw new \InvalidArgumentException(\sprintf('Set "%s" does not exist.', $name));
         }
 
         return $definitions[$name];

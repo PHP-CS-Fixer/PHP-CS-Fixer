@@ -17,72 +17,84 @@ namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Roland Franssen <franssen.roland@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitFqcnAnnotationFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitFqcnAnnotationFixer>
+ *
+ * @author Roland Franssen <franssen.roland@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpUnitFqcnAnnotationFixerTest extends AbstractFixerTestCase
 {
-    public function testFix(): void
+    /**
+     * @dataProvider provideFixCases
+     */
+    public function testFix(string $expected, ?string $input = null): void
     {
-        $expected = <<<'EOF'
-            <?php
-            /**
-             * @covers \Foo
-             * @covers ::fooMethod
-             * @coversDefaultClass \Bar
-             */
-            class FooTest extends TestCase {
-                /**
-                 * @ExpectedException Value
-                 * @expectedException \X
-                 * @expectedException
-                 * @expectedException \Exception
-                     * @expectedException \Some\Exception\ClassName
-             * @expectedExceptionCode 123
-                 * @expectedExceptionMessage Foo bar
-                 *
-                 * @uses \Baz
-                 * @uses \selfieGenerator
-                 * @uses self::someFunction
-                 * @uses static::someOtherFunction
-                 */
-            }
-            EOF;
-        $input = <<<'EOF'
-            <?php
-            /**
-             * @covers Foo
-             * @covers ::fooMethod
-             * @coversDefaultClass Bar
-             */
-            class FooTest extends TestCase {
-                /**
-                 * @ExpectedException Value
-                 * @expectedException X
-                 * @expectedException
-                 * @expectedException \Exception
-                     * @expectedException Some\Exception\ClassName
-             * @expectedExceptionCode 123
-                 * @expectedExceptionMessage Foo bar
-                 *
-                 * @uses Baz
-                 * @uses selfieGenerator
-                 * @uses self::someFunction
-                 * @uses static::someOtherFunction
-                 */
-            }
-            EOF;
-
         $this->doTest($expected, $input);
     }
 
-    public function testIgnoringNonPhpUnitClass(): void
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
+    public static function provideFixCases(): iterable
     {
-        $this->doTest('
-<?php
+        yield [
+            <<<'EOF'
+                <?php
+                /**
+                 * @covers \Foo
+                 * @covers ::fooMethod
+                 * @coversDefaultClass \Bar
+                 */
+                class FooTest extends TestCase {
+                    /**
+                     * @ExpectedException Value
+                     * @expectedException \X
+                     * @expectedException
+                     * @expectedException \Exception
+                         * @expectedException \Some\Exception\ClassName
+                 * @expectedExceptionCode 123
+                     * @expectedExceptionMessage Foo bar
+                     *
+                     * @uses \Baz
+                     * @uses \selfieGenerator
+                     * @uses self::someFunction
+                     * @uses static::someOtherFunction
+                     */
+                }
+                EOF,
+            <<<'EOF'
+                <?php
+                /**
+                 * @covers Foo
+                 * @covers ::fooMethod
+                 * @coversDefaultClass Bar
+                 */
+                class FooTest extends TestCase {
+                    /**
+                     * @ExpectedException Value
+                     * @expectedException X
+                     * @expectedException
+                     * @expectedException \Exception
+                         * @expectedException Some\Exception\ClassName
+                 * @expectedExceptionCode 123
+                     * @expectedExceptionMessage Foo bar
+                     *
+                     * @uses Baz
+                     * @uses selfieGenerator
+                     * @uses self::someFunction
+                     * @uses static::someOtherFunction
+                     */
+                }
+                EOF,
+        ];
+
+        yield [
+            '<?php
 class Foo {
     /**
      * @expectedException Some\Exception\ClassName
@@ -91,6 +103,7 @@ class Foo {
      * @uses self::someFunction
      */
 }
-');
+',
+        ];
     }
 }

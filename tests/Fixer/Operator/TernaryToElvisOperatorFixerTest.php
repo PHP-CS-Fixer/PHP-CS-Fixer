@@ -20,6 +20,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Operator\TernaryToElvisOperatorFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\TernaryToElvisOperatorFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TernaryToElvisOperatorFixerTest extends AbstractFixerTestCase
 {
@@ -31,14 +35,17 @@ final class TernaryToElvisOperatorFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         $operators = ['+=', '-=', '*=', '**=', '/=', '.=', '%=', '&=', '|=', '^=', '<<=', '>>='];
 
         foreach ($operators as $operator) {
-            yield sprintf('Test with operator "%s".', $operator) => [
-                sprintf('<?php $z = $a %s $b ?  : $c;', $operator),
-                sprintf('<?php $z = $a %s $b ? $b : $c;', $operator),
+            yield \sprintf('Test with operator "%s".', $operator) => [
+                \sprintf('<?php $z = $a %s $b ?  : $c;', $operator),
+                \sprintf('<?php $z = $a %s $b ? $b : $c;', $operator),
             ];
         }
 
@@ -440,11 +447,14 @@ EOT
      *
      * @requires PHP <8.0
      */
-    public function testFixPre80(string $expected, string $input = null): void
+    public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixPre80Cases(): iterable
     {
         yield [
@@ -493,16 +503,19 @@ EOT
     }
 
     /**
-     * @dataProvider provideDoNotFix80Cases
+     * @dataProvider provideFix80Cases
      *
      * @requires PHP 8.0
      */
-    public function testDoNotFix80(string $input): void
+    public function testFix80(string $input): void
     {
         $this->doTest($input);
     }
 
-    public static function provideDoNotFix80Cases(): iterable
+    /**
+     * @return iterable<int, array{string}>
+     */
+    public static function provideFix80Cases(): iterable
     {
         yield ['<?php
 

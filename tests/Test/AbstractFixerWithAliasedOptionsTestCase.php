@@ -19,16 +19,22 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
 
 /**
+ * @internal
+ *
+ * @template TFixer of AbstractFixer
+ *
+ * @extends AbstractFixerTestCase<TFixer>
+ *
  * @author ntzm
  *
- * @internal
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractFixerWithAliasedOptionsTestCase extends AbstractFixerTestCase
 {
     /**
-     * @var null|\PhpCsFixer\Fixer\ConfigurableFixerInterface
+     * @var null|TFixer
      */
-    private $fixerWithAliasedConfig;
+    private ?AbstractFixer $fixerWithAliasedConfig = null;
 
     protected function tearDown(): void
     {
@@ -42,10 +48,6 @@ abstract class AbstractFixerWithAliasedOptionsTestCase extends AbstractFixerTest
         parent::doTest($expected, $input, $file);
 
         if (null !== $this->fixerWithAliasedConfig) {
-            if (!$this->fixerWithAliasedConfig instanceof AbstractFixer) {
-                throw new \LogicException();
-            }
-
             $fixer = $this->fixer;
             $fixerWithAliasedConfig = $this->fixerWithAliasedConfig;
 

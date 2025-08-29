@@ -28,20 +28,17 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @coversNothing
  *
  * @group covers-nothing
+ * @group legacy
  *
  * @large
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PharTest extends AbstractSmokeTestCase
 {
-    /**
-     * @var string
-     */
-    private static $pharCwd;
+    private static string $pharCwd;
 
-    /**
-     * @var string
-     */
-    private static $pharName;
+    private static string $pharName;
 
     public static function setUpBeforeClass(): void
     {
@@ -51,7 +48,7 @@ final class PharTest extends AbstractSmokeTestCase
         self::$pharName = 'php-cs-fixer.phar';
 
         if (!file_exists(self::$pharCwd.'/'.self::$pharName)) {
-            self::markTestSkippedOrFail('No phar file available.');
+            self::fail('No phar file available.');
         }
     }
 
@@ -61,13 +58,17 @@ final class PharTest extends AbstractSmokeTestCase
         $shouldExpectCodename = Application::VERSION_CODENAME ? 1 : 0;
 
         self::assertMatchesRegularExpression(
-            sprintf("/^PHP CS Fixer (?<version>%s)(?<git_sha> \\([a-z0-9]+\\))?(?<codename> %s){%d}(?<by> by .*)\nPHP runtime: (?<php_version>\\d\\.\\d+\\..*)$/", Application::VERSION, Application::VERSION_CODENAME, $shouldExpectCodename),
+            \sprintf("/^PHP CS Fixer (?<version>%s)(?<git_sha> \\([a-z0-9]+\\))?(?<codename> %s){%d}(?<by> by .*)\nPHP runtime: (?<php_version>\\d\\.\\d+\\..*)$/", Application::VERSION, Application::VERSION_CODENAME, $shouldExpectCodename),
             self::executePharCommand('--version')->getOutput()
         );
     }
 
     public function testDescribe(): void
     {
+        // @TODO 4.0 Remove this expectations
+        $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
+        $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
+
         $command = new DescribeCommand();
 
         $application = new Application();
@@ -85,11 +86,25 @@ final class PharTest extends AbstractSmokeTestCase
         );
     }
 
-    public function testFix(): void
+    public function testFixSequential(): void
     {
-        self::assertSame(
-            0,
-            self::executePharCommand('fix src/Config.php -vvv --dry-run --diff --using-cache=no 2>&1')->getCode()
+        $command = self::executePharCommand('fix src/Config.php -vvv --dry-run --sequential --diff --using-cache=no 2>&1');
+
+        self::assertSame(0, $command->getCode());
+        self::assertMatchesRegularExpression(
+            '/Running analysis on 1 core sequentially/',
+            $command->getOutput()
+        );
+    }
+
+    public function testFixParallel(): void
+    {
+        $command = self::executePharCommand('fix src/Config.php -vvv --dry-run --diff --using-cache=no --config=.php-cs-fixer.dist.php 2>&1');
+
+        self::assertSame(0, $command->getCode());
+        self::assertMatchesRegularExpression(
+            '/Running analysis on [0-9]+ cores with [0-9]+ files per process/',
+            $command->getOutput()
         );
     }
 
@@ -101,29 +116,22 @@ final class PharTest extends AbstractSmokeTestCase
         );
     }
 
-    public static function provideReportCases(): iterable
-    {
-        yield ['no'];
-
-        yield ['yes'];
-    }
-
     /**
      * @dataProvider provideReportCases
      */
     public function testReport(string $usingCache): void
     {
         try {
-            $json = self::executePharCommand(sprintf(
-                'fix %s --dry-run --format=json --rules=\'%s\' --using-cache=%s',
+            $json = self::executePharCommand(\sprintf(
+                'fix %s --dry-run --sequential --format=json --rules=\'%s\' --using-cache=%s',
                 __FILE__,
-                json_encode(['concat_space' => ['spacing' => 'one']], JSON_THROW_ON_ERROR),
+                json_encode(['concat_space' => ['spacing' => 'one']], \JSON_THROW_ON_ERROR),
                 $usingCache,
             ))->getOutput();
 
             self::assertJson($json);
 
-            $report = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+            $report = json_decode($json, true, 512, \JSON_THROW_ON_ERROR);
             self::assertIsArray($report);
             self::assertArrayHasKey('files', $report);
             self::assertCount(1, $report['files']);
@@ -141,6 +149,16 @@ final class PharTest extends AbstractSmokeTestCase
                 unlink($cacheFile);
             }
         }
+    }
+
+    /**
+     * @return iterable<int, array{string}>
+     */
+    public static function provideReportCases(): iterable
+    {
+        yield ['no'];
+
+        yield ['yes'];
     }
 
     private static function executePharCommand(string $params): CliResult

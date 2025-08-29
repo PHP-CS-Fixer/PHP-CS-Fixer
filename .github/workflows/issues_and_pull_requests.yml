@@ -1,53 +1,69 @@
 # https://docs.github.com/en/actions
 
-name: "Issues and Pull Requests"
+name: Issues and Pull Requests
 
 on:
+  # Allow running on demand using Github UI
+  workflow_dispatch:
   schedule:
-    - cron: "0 12 * * *"
+    - cron: 0 12 * * *
 
 env:
-  CLOSE_MESSAGE: |
-    The fact this was automatically closed doesn't mean that the idea got rejected - it simply didn't get any priority for way too long to keep it open. If you're still interested in this, please let as know, we can consider re-opening it.
+  CLOSE_MESSAGE: >-
+    The fact this was automatically closed doesn't mean that the idea got rejected - it simply didn't get any priority for way too long to keep it open.
+    If you are interested in implementing this yourself, please share the implementation draft to align on the approach, before you prepare the full implementation.
   DAYS_BEFORE_ISSUE_CLOSE: 30
   DAYS_BEFORE_ISSUE_STALE: 90
   DAYS_BEFORE_PR_CLOSE: 14
   DAYS_BEFORE_PR_STALE: 90
-  EXEMPT_MILESTONES: "long-term-ideas"
-  STALE_CLARIFICATION: |
-    The purpose of this action is to enforce backlog review once in a while. This is mostly for maintainers and helps with keeping repository in good condition, because stale issues and PRs can accumulate over time and make it harder for others to find relevant information. It is also possible that some changes has been made to the repo already, and issue or PR became outdated, but wasn't closed for some reason. This action helps with periodic review and closing of such stale items in automated way.
+  STALE_CLARIFICATION: >-
+    The purpose of this action is to enforce backlog review once in a while.
+    This is mostly for maintainers and helps with keeping repository in good condition,
+    because stale issues and PRs can accumulate over time and make it harder for others to find relevant information.
+    It is also possible that some changes has been made to the repo already, and issue or PR became outdated, but wasn't closed for some reason.
+    This action helps with periodic review and closing of such stale items in automated way.
 
-    You may let maintainers handle this or verify current relevancy by yourself, to help with re-triage. Any activity will remove stale label so it won't be automatically closed at this point.
+
+    You may let maintainers handle this or verify current relevancy by yourself, to help with re-triage.
+    Any activity will remove stale label so it won't be automatically closed at this point.
 
 jobs:
   handle_stale:
-    name: "Handle stale state"
+    name: Handle stale state
 
-    runs-on: "ubuntu-latest"
+    runs-on: ubuntu-latest
+
+    # See: https://github.com/actions/stale#recommended-permissions
+    permissions:
+      contents: write # only for delete-branch option
+      issues: write
+      pull-requests: write
 
     steps:
       # Config reference: https://github.com/actions/stale
-      - name: "Handle stale issues and pull requests"
-        uses: "actions/stale@v8"
+      - name: Handle stale issues and pull requests
+        uses: actions/stale@v9
         with:
-          close-issue-message: "${{ env.CLOSE_MESSAGE }}"
-          close-pr-message: "${{ env.CLOSE_MESSAGE }} When it comes to pull requests it may be better to create new one, on top of main branch."
-          close-pr-label: "status/to recover"
-          days-before-issue-close: "${{ env.DAYS_BEFORE_ISSUE_CLOSE }}"
-          days-before-issue-stale: "${{ env.DAYS_BEFORE_ISSUE_STALE }}"
-          days-before-pr-close: "${{ env.DAYS_BEFORE_PR_CLOSE }}"
-          days-before-pr-stale: "${{ env.DAYS_BEFORE_PR_STALE }}"
-          exempt-milestones: "${{ env.EXEMPT_MILESTONES }}"
-          labels-to-add-when-unstale: "status/to verify"
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
-          stale-issue-label: "status/stale"
+          close-issue-message: ${{ env.CLOSE_MESSAGE }}
+          close-pr-message: ${{ env.CLOSE_MESSAGE }} When it comes to pull requests it may be better to create new one, on top of main branch.
+          close-pr-label: status/to recover
+          days-before-issue-close: ${{ env.DAYS_BEFORE_ISSUE_CLOSE }}
+          days-before-issue-stale: ${{ env.DAYS_BEFORE_ISSUE_STALE }}
+          days-before-pr-close: ${{ env.DAYS_BEFORE_PR_CLOSE }}
+          days-before-pr-stale: ${{ env.DAYS_BEFORE_PR_STALE }}
+          exempt-all-milestones: true
+          exempt-issue-labels: topic/core
+          exempt-pr-labels: topic/core
+          labels-to-add-when-unstale: status/to verify
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          stale-issue-label: status/stale
           stale-issue-message: |
             Since this issue has not had any activity within the last ${{ env.DAYS_BEFORE_ISSUE_STALE }} days, I have marked it as stale.
 
             ${{ env.STALE_CLARIFICATION }}
 
             I will close it if no further activity occurs within the next ${{ env.DAYS_BEFORE_ISSUE_CLOSE }} days.
-          stale-pr-label: "status/stale"
+          stale-pr-label: status/stale
           stale-pr-message: |
             Since this pull request has not had any activity within the last ${{ env.DAYS_BEFORE_PR_STALE }} days, I have marked it as stale.
 

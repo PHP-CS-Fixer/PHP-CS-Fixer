@@ -1,0 +1,23 @@
+--TEST--
+Integration of fixers: php_unit_test_class_requires_covers,php_unit_attributes.
+--RULESET--
+{"php_unit_test_class_requires_covers": true, "php_unit_attributes": true}
+--REQUIREMENTS--
+{"php": 80000}
+--EXPECT--
+<?php
+
+/**
+ */
+#[\PHPUnit\Framework\Attributes\CoversNothing]
+class FooTest extends TestCase
+{
+    public function fooBar() {}
+}
+
+--INPUT--
+<?php
+class FooTest extends TestCase
+{
+    public function fooBar() {}
+}

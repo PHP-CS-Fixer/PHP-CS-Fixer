@@ -1,0 +1,21 @@
+--TEST--
+Integration of fixers: php_unit_dedicate_assert,php_unit_assert_new_names.
+--RULESET--
+{"php_unit_dedicate_assert": true, "php_unit_assert_new_names": true}
+--EXPECT--
+<?php
+class FooTest extends \PHPUnit\Framework\TestCase {
+    public function testMe()
+    {
+        $this->assertDirectoryDoesNotExist($a);
+    }
+}
+
+--INPUT--
+<?php
+class FooTest extends \PHPUnit\Framework\TestCase {
+    public function testMe()
+    {
+        $this->assertFalse(is_dir($a));
+    }
+}

@@ -18,6 +18,8 @@ namespace PhpCsFixer;
  * @author Davi Koscianski Vidal <davividal@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class StdinFileInfo extends \SplFileInfo
 {
@@ -58,9 +60,12 @@ final class StdinFileInfo extends \SplFileInfo
         return '.php';
     }
 
-    public function getFileInfo($className = null): \SplFileInfo
+    /**
+     * @param null|class-string<\SplFileInfo> $class
+     */
+    public function getFileInfo($class = null): \SplFileInfo
     {
-        throw new \BadMethodCallException(sprintf('Method "%s" is not implemented.', __METHOD__));
+        throw new \BadMethodCallException(\sprintf('Method "%s" is not implemented.', __METHOD__));
     }
 
     public function getFilename(): string
@@ -105,9 +110,12 @@ final class StdinFileInfo extends \SplFileInfo
         return '';
     }
 
-    public function getPathInfo($className = null): \SplFileInfo
+    /**
+     * @param null|class-string<\SplFileInfo> $class
+     */
+    public function getPathInfo($class = null): \SplFileInfo
     {
-        throw new \BadMethodCallException(sprintf('Method "%s" is not implemented.', __METHOD__));
+        throw new \BadMethodCallException(\sprintf('Method "%s" is not implemented.', __METHOD__));
     }
 
     public function getPathname(): string
@@ -162,10 +170,6 @@ final class StdinFileInfo extends \SplFileInfo
 
     public function openFile($openMode = 'r', $useIncludePath = false, $context = null): \SplFileObject
     {
-        throw new \BadMethodCallException(sprintf('Method "%s" is not implemented.', __METHOD__));
+        throw new \BadMethodCallException(\sprintf('Method "%s" is not implemented.', __METHOD__));
     }
-
-    public function setFileClass($className = null): void {}
-
-    public function setInfoClass($className = null): void {}
 }

@@ -22,6 +22,8 @@ use PhpCsFixer\Tokenizer\Token;
  * @internal
  *
  * @covers \PhpCsFixer\Doctrine\Annotation\Tokens
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TokensTest extends TestCase
 {
@@ -29,7 +31,7 @@ final class TokensTest extends TestCase
     {
         $docComment = '/** */';
 
-        $token = new Token([T_DOC_COMMENT, $docComment]);
+        $token = new Token([\T_DOC_COMMENT, $docComment]);
         $tokens = Tokens::createFromDocComment($token);
 
         self::assertCount(1, $tokens);
@@ -43,7 +45,7 @@ final class TokensTest extends TestCase
     {
         $docComment = '/** */';
 
-        $token = new Token([T_DOC_COMMENT, $docComment]);
+        $token = new Token([\T_DOC_COMMENT, $docComment]);
         $tokens = Tokens::createFromDocComment($token);
 
         $this->expectException(\InvalidArgumentException::class);
@@ -53,6 +55,9 @@ final class TokensTest extends TestCase
         $tokens[1] = $wrongType;
     }
 
+    /**
+     * @return iterable<int, array{string, null|string}>
+     */
     public static function provideOffSetOtherThanTokenCases(): iterable
     {
         yield [

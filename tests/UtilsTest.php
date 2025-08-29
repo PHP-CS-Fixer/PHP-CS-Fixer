@@ -15,11 +15,15 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
+use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
-use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 /**
+ * @phpstan-import-type _PhpTokenPrototype from Token
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Odín del Río <odin.drp@gmail.com>
@@ -27,11 +31,11 @@ use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
  * @internal
  *
  * @covers \PhpCsFixer\Utils
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class UtilsTest extends TestCase
 {
-    use ExpectDeprecationTrait;
-
     /**
      * @var null|false|string
      */
@@ -45,6 +49,8 @@ final class UtilsTest extends TestCase
     protected function tearDown(): void
     {
         putenv("PHP_CS_FIXER_FUTURE_MODE={$this->originalValueOfFutureMode}");
+
+        parent::tearDown();
     }
 
     /**
@@ -52,7 +58,7 @@ final class UtilsTest extends TestCase
      *
      * @dataProvider provideCamelCaseToUnderscoreCases
      */
-    public function testCamelCaseToUnderscore(string $expected, string $input = null): void
+    public function testCamelCaseToUnderscore(string $expected, ?string $input = null): void
     {
         if (null !== $input) {
             self::assertSame($expected, Utils::camelCaseToUnderscore($input));
@@ -61,6 +67,9 @@ final class UtilsTest extends TestCase
         self::assertSame($expected, Utils::camelCaseToUnderscore($expected));
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideCamelCaseToUnderscoreCases(): iterable
     {
         yield [
@@ -121,10 +130,15 @@ final class UtilsTest extends TestCase
             'voyage_éclair',
             'VoyageÉclair',
         ];
+
+        yield [
+            'i_want_to_fully_be_a_snake',
+            'i_wantTo_fully_be_A_Snake',
+        ];
     }
 
     /**
-     * @param array{int, string}|string $input token prototype
+     * @param _PhpTokenPrototype $input token prototype
      *
      * @dataProvider provideCalculateTrailingWhitespaceIndentCases
      */
@@ -135,17 +149,20 @@ final class UtilsTest extends TestCase
         self::assertSame($spaces, Utils::calculateTrailingWhitespaceIndent($token));
     }
 
+    /**
+     * @return iterable<int, array{string, _PhpTokenPrototype}>
+     */
     public static function provideCalculateTrailingWhitespaceIndentCases(): iterable
     {
-        yield ['    ', [T_WHITESPACE, "\n\n    "]];
+        yield ['    ', [\T_WHITESPACE, "\n\n    "]];
 
-        yield [' ', [T_WHITESPACE, "\r\n\r\r\r "]];
+        yield [' ', [\T_WHITESPACE, "\r\n\r\r\r "]];
 
-        yield ["\t", [T_WHITESPACE, "\r\n\t"]];
+        yield ["\t", [\T_WHITESPACE, "\r\n\t"]];
 
-        yield ['', [T_WHITESPACE, "\t\n\r"]];
+        yield ['', [\T_WHITESPACE, "\t\n\r"]];
 
-        yield ['', [T_WHITESPACE, "\n"]];
+        yield ['', [\T_WHITESPACE, "\n"]];
 
         yield ['', ''];
     }
@@ -155,7 +172,7 @@ final class UtilsTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The given token must be whitespace, got "T_STRING".');
 
-        $token = new Token([T_STRING, 'foo']);
+        $token = new Token([\T_STRING, 'foo']);
 
         Utils::calculateTrailingWhitespaceIndent($token);
     }
@@ -178,6 +195,9 @@ final class UtilsTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<int, array{list<mixed>, list<mixed>, callable, callable}>
+     */
     public static function provideStableSortCases(): iterable
     {
         yield [
@@ -204,7 +224,7 @@ final class UtilsTest extends TestCase
         yield [
             ['bar1', 'baz1', 'foo1', 'bar2', 'baz2', 'foo2'],
             ['foo1', 'foo2', 'bar1', 'bar2', 'baz1', 'baz2'],
-            static fn ($element) => preg_replace('/([a-z]+)(\d+)/', '$2$1', $element),
+            static fn ($element) => Preg::replace('/([a-z]+)(\d+)/', '$2$1', $element),
             'strcmp',
         ];
     }
@@ -250,13 +270,13 @@ final class UtilsTest extends TestCase
      *
      * @param list<string> $names
      */
-    public function testNaturalLanguageJoin(string $joined, array $names, string $wrapper = '"'): void
+    public function testNaturalLanguageJoin(string $joined, array $names, string $wrapper = '"', ?string $lastJoin = null): void
     {
-        self::assertSame($joined, Utils::naturalLanguageJoin($names, $wrapper));
+        self::assertSame($joined, Utils::naturalLanguageJoin($names, $wrapper, ...null === $lastJoin ? [] : [$lastJoin]));
     }
 
     /**
-     * @return iterable<array<null|array<string>|string>>
+     * @return iterable<int, array{0: string, 1: list<string>, 2?: string, 3?: string}>
      */
     public static function provideNaturalLanguageJoinCases(): iterable
     {
@@ -328,6 +348,27 @@ final class UtilsTest extends TestCase
             ['a', 'b', 'c'],
             '',
         ];
+
+        yield [
+            '"a"',
+            ['a'],
+            '"',
+            'or',
+        ];
+
+        yield [
+            '"a" or "b"',
+            ['a', 'b'],
+            '"',
+            'or',
+        ];
+
+        yield [
+            '"a", "b" or "c"',
+            ['a', 'b', 'c'],
+            '"',
+            'or',
+        ];
     }
 
     public function testNaturalLanguageJoinWithBackticksThrowsInvalidArgumentExceptionForEmptyArray(): void
@@ -342,11 +383,14 @@ final class UtilsTest extends TestCase
      *
      * @dataProvider provideNaturalLanguageJoinWithBackticksCases
      */
-    public function testNaturalLanguageJoinWithBackticks(string $joined, array $names): void
+    public function testNaturalLanguageJoinWithBackticks(string $joined, array $names, ?string $lastJoin = null): void
     {
-        self::assertSame($joined, Utils::naturalLanguageJoinWithBackticks($names));
+        self::assertSame($joined, Utils::naturalLanguageJoinWithBackticks($names, ...null === $lastJoin ? [] : [$lastJoin]));
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1: list<string>, 2?: string}>
+     */
     public static function provideNaturalLanguageJoinWithBackticksCases(): iterable
     {
         yield [
@@ -362,6 +406,24 @@ final class UtilsTest extends TestCase
         yield [
             '`a`, `b` and `c`',
             ['a', 'b', 'c'],
+        ];
+
+        yield [
+            '`a`',
+            ['a'],
+            'or',
+        ];
+
+        yield [
+            '`a` or `b`',
+            ['a', 'b'],
+            'or',
+        ];
+
+        yield [
+            '`a`, `b` or `c`',
+            ['a', 'b', 'c'],
+            'or',
         ];
     }
 
@@ -411,6 +473,9 @@ final class UtilsTest extends TestCase
         self::assertSame($expected, Utils::toString($input));
     }
 
+    /**
+     * @return iterable<int, array{string, mixed}>
+     */
     public static function provideToStringCases(): iterable
     {
         yield ["['a' => 3, 'b' => 'c']", ['a' => 3, 'b' => 'c']];
@@ -438,10 +503,50 @@ final class UtilsTest extends TestCase
 
     private function createFixerDouble(string $name, int $priority): FixerInterface
     {
-        $fixer = $this->prophesize(FixerInterface::class);
-        $fixer->getName()->willReturn($name);
-        $fixer->getPriority()->willReturn($priority);
+        return new class($name, $priority) implements FixerInterface {
+            private string $name;
+            private int $priority;
 
-        return $fixer->reveal();
+            public function __construct(string $name, int $priority)
+            {
+                $this->name = $name;
+                $this->priority = $priority;
+            }
+
+            public function isCandidate(Tokens $tokens): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function isRisky(): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function fix(\SplFileInfo $file, Tokens $tokens): void
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getDefinition(): FixerDefinitionInterface
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getName(): string
+            {
+                return $this->name;
+            }
+
+            public function getPriority(): int
+            {
+                return $this->priority;
+            }
+
+            public function supports(\SplFileInfo $file): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+        };
     }
 }

@@ -20,6 +20,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\CastNotation\LowercaseCastFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\CastNotation\LowercaseCastFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class LowercaseCastFixerTest extends AbstractFixerTestCase
 {
@@ -32,37 +36,35 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFix74DeprecatedCases
-     *
-     * @group legacy
+     * @return iterable<int, array{0: non-empty-string, 1?: non-empty-string}>
+     */
+    public static function provideFixCases(): iterable
+    {
+        $types = ['boolean', 'bool', 'integer', 'int', 'double', 'float', 'string', 'array', 'object', 'binary'];
+
+        foreach ($types as $from) {
+            yield from self::createCasesFor($from);
+        }
+    }
+
+    /**
+     * @dataProvider provideFixPre80Cases
      *
      * @requires PHP <8.0
      */
-    public function testFix74Deprecated(string $expected, ?string $input = null): void
+    public function testFixPre80(string $expected, ?string $input = null): void
     {
-        $this->expectDeprecation('%AThe (real) cast is deprecated, use (float) instead');
-
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixCases(): iterable
+    /**
+     * @return iterable<int, array{0: non-empty-string, 1?: non-empty-string}>
+     */
+    public static function provideFixPre80Cases(): iterable
     {
-        $types = ['boolean', 'bool', 'integer', 'int', 'double', 'float', 'float', 'string', 'array', 'object', 'binary'];
+        yield from self::createCasesFor('unset');
 
-        if (\PHP_VERSION_ID < 8_00_00) {
-            $types[] = 'unset';
-        }
-
-        foreach ($types as $from) {
-            foreach (self::createCasesFor($from) as $case) {
-                yield $case;
-            }
-        }
-    }
-
-    public static function provideFix74DeprecatedCases(): iterable
-    {
-        return self::createCasesFor('real');
+        yield from self::createCasesFor('real');
     }
 
     /**
@@ -71,23 +73,23 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
     private static function createCasesFor(string $type): iterable
     {
         yield [
-            sprintf('<?php $b= (%s)$d;', $type),
-            sprintf('<?php $b= (%s)$d;', strtoupper($type)),
+            \sprintf('<?php $b= (%s)$d;', $type),
+            \sprintf('<?php $b= (%s)$d;', strtoupper($type)),
         ];
 
         yield [
-            sprintf('<?php $b=( %s) $d;', $type),
-            sprintf('<?php $b=( %s) $d;', ucfirst($type)),
+            \sprintf('<?php $b=( %s) $d;', $type),
+            \sprintf('<?php $b=( %s) $d;', ucfirst($type)),
         ];
 
         yield [
-            sprintf('<?php $b=(%s ) $d;', $type),
-            sprintf('<?php $b=(%s ) $d;', strtoupper($type)),
+            \sprintf('<?php $b=(%s ) $d;', $type),
+            \sprintf('<?php $b=(%s ) $d;', strtoupper($type)),
         ];
 
         yield [
-            sprintf('<?php $b=(  %s  ) $d;', $type),
-            sprintf('<?php $b=(  %s  ) $d;', ucfirst($type)),
+            \sprintf('<?php $b=(  %s  ) $d;', $type),
+            \sprintf('<?php $b=(  %s  ) $d;', ucfirst($type)),
         ];
     }
 }

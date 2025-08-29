@@ -26,6 +26,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * Fixer for rules defined in PSR2 ¶5.2.
  *
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SwitchCaseSpaceFixer extends AbstractFixer
 {
@@ -50,13 +52,13 @@ final class SwitchCaseSpaceFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_SWITCH);
+        return $tokens->isTokenKindFound(\T_SWITCH);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         /** @var SwitchAnalysis $analysis */
-        foreach (ControlCaseStructuresAnalyzer::findControlStructures($tokens, [T_SWITCH]) as $analysis) {
+        foreach (ControlCaseStructuresAnalyzer::findControlStructures($tokens, [\T_SWITCH]) as $analysis) {
             $default = $analysis->getDefaultAnalysis();
 
             if (null !== $default) {

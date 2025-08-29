@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Cache;
 
+use PhpCsFixer\Hasher;
+
 /**
  * Class supports caching information about state of fixing files.
  *
@@ -29,6 +31,8 @@ namespace PhpCsFixer\Cache;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FileCacheManager implements CacheManagerInterface
 {
@@ -46,10 +50,7 @@ final class FileCacheManager implements CacheManagerInterface
 
     private bool $signatureWasUpdated = false;
 
-    /**
-     * @var CacheInterface
-     */
-    private $cache;
+    private CacheInterface $cache;
 
     public function __construct(
         FileHandlerInterface $handler,
@@ -101,9 +102,12 @@ final class FileCacheManager implements CacheManagerInterface
 
     public function setFile(string $file, string $fileContent): void
     {
-        $file = $this->cacheDirectory->getRelativePathTo($file);
+        $this->setFileHash($file, $this->calcHash($fileContent));
+    }
 
-        $hash = $this->calcHash($fileContent);
+    public function setFileHash(string $file, string $hash): void
+    {
+        $file = $this->cacheDirectory->getRelativePathTo($file);
 
         if ($this->isDryRun && $this->cache->has($file) && $this->cache->get($file) !== $hash) {
             $this->cache->clear($file);
@@ -136,6 +140,6 @@ final class FileCacheManager implements CacheManagerInterface
 
     private function calcHash(string $content): string
     {
-        return md5($content);
+        return Hasher::calculate($content);
     }
 }

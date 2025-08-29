@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: string_implicit_backslashes,heredoc_to_nowdoc.
+--RULESET--
+{"string_implicit_backslashes": {"heredoc": "escape"}, "heredoc_to_nowdoc": true}
+--EXPECT--
+<?php
+$var = <<<'EOF'
+My\Prefix \t
+EOF;
+
+--INPUT--
+<?php
+$var = <<<EOF
+My\Prefix \\t
+EOF;

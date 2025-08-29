@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\Casing;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author ntzm
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Casing\MagicConstantCasingFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\MagicConstantCasingFixer>
+ *
+ * @author ntzm
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{string, string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -94,14 +101,17 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
     /**
      * @requires PHP <8.0
      *
-     * @dataProvider provideFix74Cases
+     * @dataProvider provideFixPre80Cases
      */
-    public function testFix74(string $expected, ?string $input = null): void
+    public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFix74Cases(): iterable
+    /**
+     * @return iterable<int, array{string}>
+     */
+    public static function provideFixPre80Cases(): iterable
     {
         yield [
             '<?php
@@ -113,6 +123,32 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
                 namespace {
                     echo \Bar::__line__;
                 }',
+        ];
+    }
+
+    /**
+     * @requires PHP 8.4
+     *
+     * @dataProvider provideFix84Cases
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->testFix($expected, $input);
+    }
+
+    /**
+     * @return iterable<int, array{string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield [
+            '<?php echo __PROPERTY__;',
+            '<?php echo __property__;',
+        ];
+
+        yield [
+            '<?php echo __PROPERTY__;',
+            '<?php echo __PrOpErTy__;',
         ];
     }
 }

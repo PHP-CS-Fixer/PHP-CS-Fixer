@@ -22,6 +22,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ClassyAnalyzerTest extends TestCase
 {
@@ -35,6 +37,9 @@ final class ClassyAnalyzerTest extends TestCase
         self::assertClassyInvocation($source, $expected);
     }
 
+    /**
+     * @return iterable<array{string, array<int, bool>}>
+     */
     public static function provideIsClassyInvocationCases(): iterable
     {
         yield [
@@ -147,14 +152,9 @@ final class ClassyAnalyzerTest extends TestCase
             [3 => false, 8 => true],
         ];
 
-        yield [
-            '<?php function foo(): \Foo {}',
-            [3 => false, 9 => true],
-        ];
-
         foreach (['bool', 'float', 'int', 'parent', 'self', 'string', 'void'] as $returnType) {
             yield [
-                sprintf('<?php function foo(): %s {}', $returnType),
+                \sprintf('<?php function foo(): %s {}', $returnType),
                 [3 => false, 8 => false],
             ];
         }
@@ -192,6 +192,9 @@ final class ClassyAnalyzerTest extends TestCase
         self::assertClassyInvocation($source, $expected);
     }
 
+    /**
+     * @return iterable<int, array{string, array<int, bool>}>
+     */
     public static function provideIsClassyInvocation80Cases(): iterable
     {
         yield [
@@ -252,6 +255,9 @@ final class ClassyAnalyzerTest extends TestCase
         self::assertClassyInvocation($source, $expected);
     }
 
+    /**
+     * @return iterable<string, array{string, array<int, bool>}>
+     */
     public static function provideIsClassyInvocation81Cases(): iterable
     {
         yield 'never' => [
@@ -274,7 +280,7 @@ final class ClassyAnalyzerTest extends TestCase
         $analyzer = new ClassyAnalyzer();
 
         foreach ($expected as $index => $isClassy) {
-            self::assertSame($isClassy, $analyzer->isClassyInvocation($tokens, $index), sprintf('Token at index %d should match the expected value "%s".', $index, true === $isClassy ? 'true' : 'false'));
+            self::assertSame($isClassy, $analyzer->isClassyInvocation($tokens, $index), \sprintf('Token at index %d should match the expected value "%s".', $index, true === $isClassy ? 'true' : 'false'));
         }
     }
 }

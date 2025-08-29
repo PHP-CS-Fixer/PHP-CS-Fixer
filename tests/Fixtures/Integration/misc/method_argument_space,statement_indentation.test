@@ -1,0 +1,23 @@
+--TEST--
+Integration of fixers: method_argument_space,statement_indentation.
+--RULESET--
+{"method_argument_space": true, "statement_indentation": true}
+--EXPECT--
+<div>
+    <?php echo in_array(
+        (int)
+        $needle,
+        $haystack
+    ) ? 'yes' : 'no';
+    ?>
+</div>
+
+--INPUT--
+<div>
+    <?php echo in_array(
+        (int)
+        $needle,
+            $haystack
+    ) ? 'yes' : 'no';
+    ?>
+</div>

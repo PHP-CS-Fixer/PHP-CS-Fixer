@@ -12,72 +12,49 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  tests:
-    strategy:
-      fail-fast: false
-      matrix:
-        operating-system:
-          - ubuntu-20.04
-        php-version:
-          - 8.1
-
+  everything:
     name: Static Code Analysis
 
-    runs-on: ${{ matrix.operating-system }}
+    runs-on: ubuntu-24.04
+    env:
+      php-version: '8.4'
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
+
+      # We need to fetch base branch because `actions/checkout` only initializes empty repo and fetches PR's meta-branch
+      # which leads to `fatal: ambiguous argument 'origin/...': unknown revision or path not in the working tree.`,
+      # because of that `CHANGED_PHP_FILES` is not set, and tools based on diff between branches (like Mess Detector) don't work.
+      - name: Fetch base branch
+        if: ${{ github.event_name == 'pull_request' }}
+        run: git fetch --no-tags --prune --no-recurse-submodules --depth=1 origin $GITHUB_BASE_REF
+
+      - name: Setup PHP with Composer deps
+        uses: ./.github/composite-actions/setup-php-with-composer-deps
         with:
-          fetch-depth: 0
+          os: ${{ runner.os }}
+          php: ${{ env.php-version }}
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - name: Cache dev-tools
+        uses: actions/cache@v4
         with:
-          php-version: ${{ matrix.php-version }}
-          extensions: none, dom, mbstring, opcache, simplexml, tokenizer, xml, xmlwriter
-          coverage: none # without this Xdebug will be enabled
-          tools: cs2pr
-
-      - name: Get Composer cache directory
-        id: composer-cache
-        run: echo "dir=$(composer config cache-dir)" >> $GITHUB_OUTPUT
-
-      - name: Cache dependencies
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: composer-${{ runner.os }}-${{ matrix.php-version }}-${{ hashFiles('**/composer.*') }}-${{ matrix.composer-flags }}
-          restore-keys: |
-            composer-${{ runner.os }}-${{ matrix.php-version }}-${{ hashFiles('**/composer.*') }}-
-            composer-${{ runner.os }}-${{ matrix.php-version }}-
-            composer-${{ runner.os }}-
-            composer-
-
-      - name: Install dependencies
-        uses: nick-invision/retry@v2
-        with:
-          timeout_minutes: 5
-          max_attempts: 5
-          retry_wait_seconds: 30
-          command: composer update --optimize-autoloader --no-interaction --no-progress ${{ matrix.composer-flags }}
-
-      - name: Report versions
-        run: composer info -D
-
-      ## We want to have a lock-file used on PR level, so contributors are not bothered by SCA complains unrelated to their changes,
-      ## and same time we want to be aware that we are complying with bleeding edge of SCA tools as maintainers observing the push hook.
-      - name: Unlock dev-tools
-        if: ${{ github.event_name != 'pull_request' }}
-        run: rm ./dev-tools/composer.lock
+          path: dev-tools/bin/
+          key: DevTools-${{ hashFiles('dev-tools/install.sh') }}
 
       - name: Install dev-tools
-        uses: nick-invision/retry@v2
+        uses: nick-invision/retry@v3
         with:
           timeout_minutes: 5
           max_attempts: 5
           retry_wait_seconds: 30
           command: ./dev-tools/install.sh
+
+      - name: Check configuration for PHPUnit
+        run: vendor/bin/phpunit --check-php-configuration
+
+      - name: Run AutoReview
+        run: vendor/bin/phpunit --testsuite auto-review
 
       - name: Check - file permissions
         run: ./dev-tools/check_file_permissions.sh
@@ -85,8 +62,17 @@ jobs:
       - name: Check - trailing spaces
         run: ./dev-tools/check_trailing_spaces.sh
 
+      - name: Check - Composer's autoload
+        run: composer dump-autoload --dry-run --optimize --strict-psr
+
       - name: Check - phpstan
-        run: ./dev-tools/vendor/bin/phpstan analyse --error-format=checkstyle | cs2pr
+        run: ./dev-tools/vendor/bin/phpstan analyse --ansi
+
+      - name: Check - PHP compatibility
+        run: composer php-compatibility
+
+      - name: Check - composer-unused
+        run: ./dev-tools/vendor/bin/composer-unused --no-progress --excludePackage=composer/xdebug-handler
 
       - name: Check - composer-require-checker
         run: ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file .composer-require-checker.json
@@ -94,6 +80,7 @@ jobs:
       - name: Check - composer normalize
         run: |
           composer normalize --dry-run --working-dir=./dev-tools ../composer.json
+          composer bump --dry-run --working-dir=./dev-tools
           composer normalize --dry-run --working-dir=./dev-tools composer.json
 
       - name: Check - shell scripts
@@ -116,6 +103,13 @@ jobs:
             git diff --name-only --diff-filter=ACMRTUXB HEAD~..HEAD | grep -E "\.php$" >> $GITHUB_ENV
             echo 'EOF' >> $GITHUB_ENV
           fi
+
+      - name: Check - well defined array keys
+        if: ${{ env.CHANGED_PHP_FILES }}
+        run: |
+          echo "Array types must explicitly declare key-type, i.e. as \`array<type-of-key, type-of-value>\`, \`list<type-of-value>\` or \`array{...}\` - instead of \`array<type-of-value>\` or \`type-of-value[]\`."
+          echo "Hint: don't apply those rules blindly, provide array key type explicitly\!"
+          PHP_CS_FIXER_IGNORE_ENV=1 ./php-cs-fixer check --config=dev-tools/.php-cs-fixer.well-defined-arrays.php --path-mode=intersection $CHANGED_PHP_FILES
 
       - name: Check - Mess Detector (phpmd)
         if: ${{ env.CHANGED_PHP_FILES }}

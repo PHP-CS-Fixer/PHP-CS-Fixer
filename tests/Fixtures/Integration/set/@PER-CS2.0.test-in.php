@@ -38,7 +38,36 @@ class Aaa implements
     }
 
 $a = new Foo;
-$b = (boolean) 1;
+$b = (  boolean  )   1;
 $c = true  ? (INT) '1'  :  2;
+
+$anonymousClass = new class () {
+  public function test() {
+  // method body
+  }
+};
+
+$fn = fn ($a) => $a;
+
+$arrayNotMultiline = ['foo' => 'bar', 'foo2' => 'bar'];
+$arrayMultiline = [
+'foo' => 'bar',
+'foo2' => 'bar',
+];
+
+$arrayMultilineWithoutComma = [
+    'foo' => 'bar',
+    'foo2' => 'bar'
+];
+$heredocMultilineWithoutComma = [
+    'foo',
+    <<<EOD
+        bar
+        EOD
+];
+argumentsMultilineWithoutComma(
+    1,
+    2
+);
 
 ?>

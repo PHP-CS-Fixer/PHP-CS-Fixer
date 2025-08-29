@@ -20,11 +20,13 @@ use PhpCsFixer\RuleSet\RuleSet;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class IntegrationCase
 {
     /**
-     * @var array{indent: string, lineEnding: string}
+     * @var array{indent: non-empty-string, lineEnding: non-empty-string}
      */
     private array $config;
 
@@ -35,7 +37,7 @@ final class IntegrationCase
     private ?string $inputCode;
 
     /**
-     * @var array{php: int, "php<"?: int, os: list<string>}
+     * @var array{php: int, "php<": int, os: list<string>}
      */
     private array $requirements;
 
@@ -52,8 +54,8 @@ final class IntegrationCase
 
     /**
      * @param array{checkPriority: bool, deprecations: list<string>, isExplicitPriorityCheck?: bool} $settings
-     * @param array{php: int, "php<"?: int, os: list<string>}                                        $requirements
-     * @param array{indent: string, lineEnding: string}                                              $config
+     * @param array{php: int, "php<": int, os: list<string>}                                         $requirements
+     * @param array{indent: non-empty-string, lineEnding: non-empty-string}                          $config
      */
     public function __construct(
         string $fileName,
@@ -81,7 +83,7 @@ final class IntegrationCase
     }
 
     /**
-     * @return array{indent: string, lineEnding: string}
+     * @return array{indent: non-empty-string, lineEnding: non-empty-string}
      */
     public function getConfig(): array
     {
@@ -109,7 +111,7 @@ final class IntegrationCase
     public function getRequirement(string $name)
     {
         if (!\array_key_exists($name, $this->requirements)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(\sprintf(
                 'Unknown requirement key "%s", expected any of "%s".',
                 $name,
                 implode('","', array_keys($this->requirements))
@@ -120,7 +122,7 @@ final class IntegrationCase
     }
 
     /**
-     * @return array{php: int, "php<"?: int, os: list<string>}
+     * @return array{php: int, "php<": int, os: list<string>}
      */
     public function getRequirements(): array
     {

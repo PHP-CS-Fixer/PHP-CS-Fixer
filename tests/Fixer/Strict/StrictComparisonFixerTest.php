@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\Strict;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Strict\StrictComparisonFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Strict\StrictComparisonFixer>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class StrictComparisonFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class StrictComparisonFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield ['<?php $a === $b;', '<?php $a == $b;'];

@@ -18,11 +18,15 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @author Ceeram <ceeram@cakephp.org>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\NoBlankLinesAfterClassOpeningFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\NoBlankLinesAfterClassOpeningFixer>
+ *
+ * @author Ceeram <ceeram@cakephp.org>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoBlankLinesAfterClassOpeningFixerTest extends AbstractFixerTestCase
 {
@@ -35,13 +39,8 @@ final class NoBlankLinesAfterClassOpeningFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @dataProvider provideFixTraitsCases
+     * @return iterable<int, array{0: string, 1?: string}>
      */
-    public function testFixTraits(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
     public static function provideFixCases(): iterable
     {
         yield [
@@ -158,10 +157,7 @@ function bar() {}
 }
 ',
         ];
-    }
 
-    public static function provideFixTraitsCases(): iterable
-    {
         yield [
             '<?php
 trait Good
@@ -184,16 +180,19 @@ trait Good
     }
 
     /**
-     * @dataProvider provideMessyWhitespacesCases
+     * @dataProvider provideWithWhitespacesConfigCases
      */
-    public function testMessyWhitespaces(string $expected, ?string $input = null): void
+    public function testWithWhitespacesConfig(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
         $this->doTest($expected, $input);
     }
 
-    public static function provideMessyWhitespacesCases(): iterable
+    /**
+     * @return iterable<int, array{string, string}>
+     */
+    public static function provideWithWhitespacesConfigCases(): iterable
     {
         yield [
             "<?php\nclass Foo\n{\r\n    public function bar() {}\n}",
@@ -216,6 +215,9 @@ trait Good
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{string, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [

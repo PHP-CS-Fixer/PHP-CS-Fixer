@@ -1,0 +1,6 @@
+# Apply reconfigured phpdoc_order
+086f8766024f20530488265071cc7e32128c4863
+# Apply reconfigured native_constant_invocation
+adf95039e6c28528f19dcae5da7322d953761782
+# Apply phpdoc_tag_no_named_arguments (#8969)
+cd245c59a94e44c47c027da59ee555ec94afe161

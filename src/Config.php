@@ -15,18 +15,25 @@ declare(strict_types=1);
 namespace PhpCsFixer;
 
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Runner\Parallel\ParallelConfig;
+use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-class Config implements ConfigInterface
+class Config implements ConfigInterface, ParallelAwareConfigInterface, UnsupportedPhpVersionAllowedConfigInterface
 {
+    /**
+     * @var non-empty-string
+     */
     private string $cacheFile = '.php-cs-fixer.cache';
 
     /**
-     * @var FixerInterface[]
+     * @var list<FixerInterface>
      */
     private array $customFixers = [];
 
@@ -35,37 +42,68 @@ class Config implements ConfigInterface
      */
     private ?iterable $finder = null;
 
-    private string $format = 'txt';
+    private string $format;
 
     private bool $hideProgress = false;
 
+    /**
+     * @var non-empty-string
+     */
     private string $indent = '    ';
 
     private bool $isRiskyAllowed = false;
 
+    /**
+     * @var non-empty-string
+     */
     private string $lineEnding = "\n";
 
     private string $name;
 
-    /**
-     * @var null|string
-     */
-    private $phpExecutable;
+    private ParallelConfig $parallelConfig;
+
+    private ?string $phpExecutable = null;
 
     /**
      * @TODO: 4.0 - update to @PER
      *
      * @var array<string, array<string, mixed>|bool>
      */
-    private array $rules = ['@PSR12' => true];
+    private array $rules;
 
     private bool $usingCache = true;
 
+    private bool $isUnsupportedPhpVersionAllowed = false;
+
     public function __construct(string $name = 'default')
     {
-        $this->name = $name;
+        // @TODO 4.0 cleanup
+        if (Utils::isFutureModeEnabled()) {
+            $this->name = $name.' (future mode)';
+            $this->rules = ['@PER-CS' => true];
+            $this->format = '@auto';
+        } else {
+            $this->name = $name;
+            $this->rules = ['@PSR12' => true];
+            $this->format = 'txt';
+        }
+
+        // @TODO 4.0 cleanup
+        if (Utils::isFutureModeEnabled() || filter_var(getenv('PHP_CS_FIXER_PARALLEL'), \FILTER_VALIDATE_BOOL)) {
+            $this->parallelConfig = ParallelConfigFactory::detect();
+        } else {
+            $this->parallelConfig = ParallelConfigFactory::sequential();
+        }
+
+        // @TODO 4.0 cleanup
+        if (false !== getenv('PHP_CS_FIXER_IGNORE_ENV')) {
+            $this->isUnsupportedPhpVersionAllowed = filter_var(getenv('PHP_CS_FIXER_IGNORE_ENV'), \FILTER_VALIDATE_BOOL);
+        }
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function getCacheFile(): string
     {
         return $this->cacheFile;
@@ -81,9 +119,7 @@ class Config implements ConfigInterface
      */
     public function getFinder(): iterable
     {
-        if (null === $this->finder) {
-            $this->finder = new Finder();
-        }
+        $this->finder ??= new Finder();
 
         return $this->finder;
     }
@@ -113,6 +149,11 @@ class Config implements ConfigInterface
         return $this->name;
     }
 
+    public function getParallelConfig(): ParallelConfig
+    {
+        return $this->parallelConfig;
+    }
+
     public function getPhpExecutable(): ?string
     {
         return $this->phpExecutable;
@@ -133,6 +174,11 @@ class Config implements ConfigInterface
         return $this->usingCache;
     }
 
+    public function getUnsupportedPhpVersionAllowed(): bool
+    {
+        return $this->isUnsupportedPhpVersionAllowed;
+    }
+
     public function registerCustomFixers(iterable $fixers): ConfigInterface
     {
         foreach ($fixers as $fixer) {
@@ -142,6 +188,9 @@ class Config implements ConfigInterface
         return $this;
     }
 
+    /**
+     * @param non-empty-string $cacheFile
+     */
     public function setCacheFile(string $cacheFile): ConfigInterface
     {
         $this->cacheFile = $cacheFile;
@@ -170,6 +219,9 @@ class Config implements ConfigInterface
         return $this;
     }
 
+    /**
+     * @param non-empty-string $indent
+     */
     public function setIndent(string $indent): ConfigInterface
     {
         $this->indent = $indent;
@@ -177,9 +229,19 @@ class Config implements ConfigInterface
         return $this;
     }
 
+    /**
+     * @param non-empty-string $lineEnding
+     */
     public function setLineEnding(string $lineEnding): ConfigInterface
     {
         $this->lineEnding = $lineEnding;
+
+        return $this;
+    }
+
+    public function setParallelConfig(ParallelConfig $config): ConfigInterface
+    {
+        $this->parallelConfig = $config;
 
         return $this;
     }
@@ -208,6 +270,13 @@ class Config implements ConfigInterface
     public function setUsingCache(bool $usingCache): ConfigInterface
     {
         $this->usingCache = $usingCache;
+
+        return $this;
+    }
+
+    public function setUnsupportedPhpVersionAllowed(bool $isUnsupportedPhpVersionAllowed): ConfigInterface
+    {
+        $this->isUnsupportedPhpVersionAllowed = $isUnsupportedPhpVersionAllowed;
 
         return $this;
     }

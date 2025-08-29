@@ -22,11 +22,13 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\AlternativeSyntaxAnalyzer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class AlternativeSyntaxAnalyzerTest extends TestCase
 {
     /**
-     * @param int[] $expectedPositives
+     * @param list<int> $expectedPositives
      *
      * @dataProvider provideBelongsToAlternativeSyntaxCases
      */
@@ -43,6 +45,9 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
         }
     }
 
+    /**
+     * @return iterable<string, array{list<int>, string}>
+     */
     public static function provideBelongsToAlternativeSyntaxCases(): iterable
     {
         yield 'declare' => [
@@ -102,6 +107,9 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<int, array{string, int, int}>
+     */
     public static function provideItFindsTheEndOfAnAlternativeSyntaxBlockCases(): iterable
     {
         yield ['<?php if ($foo): foo(); endif;', 1, 13];
@@ -195,6 +203,9 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
         $analyzer->findAlternativeSyntaxBlockEnd($tokens, $startIndex);
     }
 
+    /**
+     * @return iterable<int, array{string, int, string}>
+     */
     public static function provideItThrowsOnInvalidAlternativeSyntaxBlockStartIndexCases(): iterable
     {
         yield ['<?php if ($foo): foo(); endif;', 0, 'Token at index 0 is not the start of an alternative syntax block.'];
@@ -215,23 +226,11 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
 
         yield ['<?php if ($foo): foo(); elseif ($bar): bar(); endif;', 999, 'There is no token at index 999.'];
 
-        yield ['<?php if ($foo): foo(); elseif ($bar): bar(); endif;', 0, 'Token at index 0 is not the start of an alternative syntax block.'];
-
-        yield ['<?php if ($foo): foo(); elseif ($bar): bar(); endif;', 2, 'Token at index 2 is not the start of an alternative syntax block.'];
-
-        yield ['<?php if ($foo): foo(); elseif ($bar): bar(); endif;', 999, 'There is no token at index 999.'];
-
         yield ['<?php if ($foo): foo(); elseif ($bar): bar(); else: baz(); endif;', 0, 'Token at index 0 is not the start of an alternative syntax block.'];
 
         yield ['<?php if ($foo): foo(); elseif ($bar): bar(); else: baz(); endif;', 2, 'Token at index 2 is not the start of an alternative syntax block.'];
 
         yield ['<?php if ($foo): foo(); elseif ($bar): bar(); else: baz(); endif;', 999, 'There is no token at index 999.'];
-
-        yield ['<?php if ($foo): foo(); else: bar(); endif;', 0, 'Token at index 0 is not the start of an alternative syntax block.'];
-
-        yield ['<?php if ($foo): foo(); else: bar(); endif;', 2, 'Token at index 2 is not the start of an alternative syntax block.'];
-
-        yield ['<?php if ($foo): foo(); else: bar(); endif;', 999, 'There is no token at index 999.'];
 
         yield ['<?php for (;;): foo(); endfor;', 0, 'Token at index 0 is not the start of an alternative syntax block.'];
 

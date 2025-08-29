@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Varga Bence <vbence@czentral.org>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\NoSpacesAfterFunctionNameFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\NoSpacesAfterFunctionNameFixer>
+ *
+ * @author Varga Bence <vbence@czentral.org>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'test function call' => [
@@ -167,6 +174,55 @@ $$e(2);
             '<?php $a()(1);',
             '<?php $a () (1);',
         ];
+
+        yield [
+            '<?php
+                echo (function () {})();
+                echo ($propertyValue ? "TRUE" : "FALSE") . EOL;
+                echo(FUNCTION_1);
+                echo (EXPRESSION + CONST_1), CONST_2;
+            ',
+            '<?php
+                echo (function () {})();
+                echo ($propertyValue ? "TRUE" : "FALSE") . EOL;
+                echo (FUNCTION_1);
+                echo (EXPRESSION + CONST_1), CONST_2;
+            ',
+        ];
+
+        yield [
+            '<?php
+                include(SOME_PATH_1);
+                include_once(SOME_PATH_2);
+                require(SOME_PATH_3);
+                require_once(SOME_PATH_4);
+                print(SOME_VALUE);
+                print(FIRST_HALF_OF_STRING_1 . SECOND_HALF_OF_STRING_1);
+                print((FIRST_HALF_OF_STRING_2) . (SECOND_HALF_OF_STRING_2));
+            ',
+            '<?php
+                include         (SOME_PATH_1);
+                include_once    (SOME_PATH_2);
+                require         (SOME_PATH_3);
+                require_once    (SOME_PATH_4);
+                print           (SOME_VALUE);
+                print           (FIRST_HALF_OF_STRING_1 . SECOND_HALF_OF_STRING_1);
+                print           ((FIRST_HALF_OF_STRING_2) . (SECOND_HALF_OF_STRING_2));
+            ',
+        ];
+
+        yield [
+            '<?php
+                include         (DIR) . FILENAME_1;
+                include_once    (DIR) . (FILENAME_2);
+                require         (DIR) . FILENAME_3;
+                require_once    (DIR) . (FILENAME_4);
+                print           (FIRST_HALF_OF_STRING_1) . SECOND_HALF_OF_STRING_1;
+                print           (FIRST_HALF_OF_STRING_2) . ((((SECOND_HALF_OF_STRING_2))));
+                print           ((FIRST_HALF_OF_STRING_3)) . ((SECOND_HALF_OF_STRING_3));
+                print           ((((FIRST_HALF_OF_STRING_4)))) . ((((SECOND_HALF_OF_STRING_4))));
+            ',
+        ];
     }
 
     /**
@@ -174,11 +230,14 @@ $$e(2);
      *
      * @requires PHP <8.0
      */
-    public function testFixPre80(string $expected, string $input = null): void
+    public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFixPre80Cases(): iterable
     {
         yield 'test dynamic by array, curly mix' => [
@@ -202,6 +261,9 @@ $$e(2);
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{string, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [

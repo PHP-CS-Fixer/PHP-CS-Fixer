@@ -13,7 +13,8 @@ custom patterns.
 Element types: ``['use_trait', 'public', 'protected', 'private', 'case',
 'constant', 'constant_public', 'constant_protected', 'constant_private',
 'property', 'property_static', 'property_public', 'property_protected',
-'property_private', 'property_public_readonly', 'property_protected_readonly',
+'property_private', 'property_public_abstract', 'property_public_readonly',
+'property_protected_abstract', 'property_protected_readonly',
 'property_private_readonly', 'property_public_static',
 'property_protected_static', 'property_private_static', 'method',
 'method_abstract', 'method_static', 'method_public', 'method_protected',
@@ -32,12 +33,21 @@ the order of that specific method.
 Configuration
 -------------
 
+``case_sensitive``
+~~~~~~~~~~~~~~~~~~
+
+Whether the sorting should be case sensitive.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 ``order``
 ~~~~~~~~~
 
 List of strings defining order of elements.
 
-Allowed types: ``array``
+Allowed types: ``list<string>``
 
 Default value: ``['use_trait', 'case', 'constant_public', 'constant_protected', 'constant_private', 'property_public', 'property_protected', 'property_private', 'construct', 'destruct', 'magic', 'phpunit', 'method_public', 'method_protected', 'method_private']``
 
@@ -49,15 +59,6 @@ How multiple occurrences of same type statements should be sorted.
 Allowed values: ``'alpha'`` and ``'none'``
 
 Default value: ``'none'``
-
-``case_sensitive``
-~~~~~~~~~~~~~~~~~~
-
-Whether the sorting should be case sensitive.
-
-Allowed types: ``bool``
-
-Default value: ``false``
 
 Examples
 --------
@@ -177,11 +178,19 @@ The rule is part of the following rule sets:
 
   ``['order' => ['use_trait']]``
 
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
+
+  ``['order' => ['use_trait']]``
+
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
 
   ``['order' => ['use_trait']]``
 
 - `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+
+  ``['order' => ['use_trait']]``
+
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
 
   ``['order' => ['use_trait']]``
 
@@ -194,4 +203,10 @@ The rule is part of the following rule sets:
 
   ``['order' => ['use_trait']]``
 
+References
+----------
 
+- Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\OrderedClassElementsFixer <./../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ClassNotation\\OrderedClassElementsFixerTest <./../../../tests/Fixer/ClassNotation/OrderedClassElementsFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

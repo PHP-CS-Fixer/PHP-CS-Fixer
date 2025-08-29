@@ -126,8 +126,18 @@ The rule is part of the following rule sets:
 
   ``['target' => '6.0']``
 
+- `@PHPUnit91Migration:risky <./../../ruleSets/PHPUnit91MigrationRisky.rst>`_ with config:
+
+  ``['target' => '6.0']``
+
 - `@PHPUnit100Migration:risky <./../../ruleSets/PHPUnit100MigrationRisky.rst>`_ with config:
 
   ``['target' => '6.0']``
 
+References
+----------
 
+- Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitNamespacedFixer <./../../../src/Fixer/PhpUnit/PhpUnitNamespacedFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitNamespacedFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitNamespacedFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

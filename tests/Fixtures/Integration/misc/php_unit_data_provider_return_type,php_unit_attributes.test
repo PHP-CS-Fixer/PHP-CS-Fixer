@@ -1,0 +1,39 @@
+--TEST--
+Integration of fixers: php_unit_data_provider_return_type,php_unit_attributes.
+--RULESET--
+{"php_unit_data_provider_return_type": true, "php_unit_attributes": true}
+--REQUIREMENTS--
+{"php": 80000}
+--EXPECT--
+<?php
+
+use PHPUnit\Framework\TestCase;
+
+class FooTest extends TestCase
+{
+    /**
+     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('provideFooCases')]
+    public function testFoo() {}
+
+    public static function provideFooCases(): iterable {
+        return [[1], [2], [3]];
+    }
+}
+
+--INPUT--
+<?php
+
+use PHPUnit\Framework\TestCase;
+
+class FooTest extends TestCase
+{
+    /**
+     * @dataProvider provideFooCases
+     */
+    public function testFoo() {}
+
+    public static function provideFooCases() {
+        return [[1], [2], [3]];
+    }
+}

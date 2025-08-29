@@ -26,20 +26,28 @@ use Symfony\Component\Console\Output\NullOutput as SymfonyNullOutput;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Output\Progress\ProgressOutputFactory
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ProgressOutputFactoryTest extends TestCase
 {
     /**
      * @dataProvider provideValidProcessOutputIsCreatedCases
+     *
+     * @param class-string<\Throwable> $expectedOutputClass
      */
     public function testValidProcessOutputIsCreated(
         string $outputType,
         OutputContext $context,
         string $expectedOutputClass
     ): void {
+        // @phpstan-ignore-next-line argument.type as we explicitly test non-valid $outputType
         self::assertInstanceOf($expectedOutputClass, (new ProgressOutputFactory())->create($outputType, $context));
     }
 
+    /**
+     * @return iterable<string, array{string, OutputContext, string}>
+     */
     public static function provideValidProcessOutputIsCreatedCases(): iterable
     {
         $context = new OutputContext(new SymfonyNullOutput(), 100, 10);
@@ -58,9 +66,9 @@ final class ProgressOutputFactoryTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        (new ProgressOutputFactory())->create(
-            'boom',
-            new OutputContext(new SymfonyNullOutput(), 100, 10)
-        );
+        $outputContext = new OutputContext(new SymfonyNullOutput(), 100, 10);
+
+        // @phpstan-ignore-next-line argument.type as we explicitly test non-valid $outputType
+        (new ProgressOutputFactory())->create('boom', $outputContext);
     }
 }

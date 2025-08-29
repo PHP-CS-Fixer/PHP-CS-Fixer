@@ -1,0 +1,26 @@
+--TEST--
+Integration of fixers: php_unit_size_class,php_unit_attributes.
+--RULESET--
+{"php_unit_size_class": true, "php_unit_attributes": true}
+--REQUIREMENTS--
+{"php": 80000}
+--EXPECT--
+<?php
+/**
+ * @author John Doe
+ */
+#[\PHPUnit\Framework\Attributes\Small]
+final class FooTest extends TestCase
+{
+    public function testBar() {}
+}
+
+--INPUT--
+<?php
+/**
+ * @author John Doe
+ */
+final class FooTest extends TestCase
+{
+    public function testBar() {}
+}

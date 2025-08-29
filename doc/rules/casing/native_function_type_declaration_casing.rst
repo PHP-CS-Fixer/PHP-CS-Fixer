@@ -2,7 +2,15 @@
 Rule ``native_function_type_declaration_casing``
 ================================================
 
-Native type hints for functions should use the correct case.
+Native type declarations for functions should use the correct case.
+
+Warning
+-------
+
+This rule is deprecated and will be removed in the next major version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You should use ``native_type_declaration_casing`` instead.
 
 Examples
 --------
@@ -65,11 +73,10 @@ Example #4
         return 'hi!';
     }
 
-Rule sets
----------
+References
+----------
 
-The rule is part of the following rule sets:
+- Fixer class: `PhpCsFixer\\Fixer\\Casing\\NativeFunctionTypeDeclarationCasingFixer <./../../../src/Fixer/Casing/NativeFunctionTypeDeclarationCasingFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Casing\\NativeFunctionTypeDeclarationCasingFixerTest <./../../../tests/Fixer/Casing/NativeFunctionTypeDeclarationCasingFixerTest.php>`_
 
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
-- `@Symfony <./../../ruleSets/Symfony.rst>`_
-
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

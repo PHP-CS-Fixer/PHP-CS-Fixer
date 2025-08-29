@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ruleset
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../vendor/squizlabs/php_codesniffer/phpcs.xsd"
+>
+    <arg name="basepath" value="../../"/>
+    <arg name="cache" value="cache.json"/>
+    <arg name="colors"/>
+    <arg name="extensions" value="php"/>
+
+    <arg value="n"/><!-- Only errors, without warnings -->
+    <arg value="s"/><!-- Display sniffs' names -->
+
+    <rule ref="PHPCompatibility">
+        <!-- Attributes are interpreted as a comments on PHP <8.0, so they don't break the code (when they're single line) -->
+        <exclude name="PHPCompatibility.Attributes.NewAttributes.Found"/>
+        <!-- We use named arguments in few places when using Attributes, let's decide if we want to continue doing so -->
+        <exclude name="PHPCompatibility.FunctionUse.NewNamedParameters.Found"/>
+        <!-- We explicitly check in codebase if new constants are defined -->
+        <exclude name="PHPCompatibility.Constants.NewConstants"/>
+        <!-- We use Sf 8.1 polyfill (but no polyfill ruleset available yet)-->
+        <exclude name="PHPCompatibility.FunctionUse.NewFunctions.array_is_listFound"/>
+        <!-- We use Sf 8.4 polyfill (but no polyfill ruleset available yet)-->
+        <exclude name="PHPCompatibility.FunctionUse.NewFunctions.array_anyFound"/>
+        <!-- we use it to test code using high PHP version -->
+        <exclude name="PHPCompatibility.Numbers.RemovedHexadecimalNumericStrings.Found"/>
+        <!-- we have explicit handling of different hash algo depends on PHP version -->
+        <exclude name="PHPCompatibility.ParameterValues.NewHashAlgorithms.xxh128Found"/>
+        <exclude-pattern>tests/Fixtures/**/*</exclude-pattern>
+    </rule>
+    <rule ref="PHPCompatibilitySymfonyPolyfillPHP80"/>
+
+    <config name="testVersion" value="7.4-8.4"/>
+
+    <file>../../src/</file>
+    <file>../../tests/</file>
+    <file>../../php-cs-fixer</file>
+</ruleset>

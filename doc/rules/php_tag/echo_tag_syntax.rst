@@ -124,3 +124,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\PhpTag\\EchoTagSyntaxFixer <./../../../src/Fixer/PhpTag/EchoTagSyntaxFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpTag\\EchoTagSyntaxFixerTest <./../../../tests/Fixer/PhpTag/EchoTagSyntaxFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

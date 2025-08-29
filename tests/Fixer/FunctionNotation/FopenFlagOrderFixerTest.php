@@ -21,6 +21,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @covers \PhpCsFixer\AbstractFopenFlagFixer
  * @covers \PhpCsFixer\Fixer\FunctionNotation\FopenFlagOrderFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\FopenFlagOrderFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FopenFlagOrderFixerTest extends AbstractFixerTestCase
 {
@@ -32,6 +36,9 @@ final class FopenFlagOrderFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'most simple fix case' => [

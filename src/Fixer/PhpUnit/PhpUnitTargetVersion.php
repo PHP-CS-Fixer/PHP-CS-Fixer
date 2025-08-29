@@ -20,6 +20,8 @@ use Composer\Semver\Comparator;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpUnitTargetVersion
 {
@@ -37,6 +39,7 @@ final class PhpUnitTargetVersion
     public const VERSION_6_0 = '6.0';
     public const VERSION_7_5 = '7.5';
     public const VERSION_8_4 = '8.4';
+    public const VERSION_9_1 = '9.1';
     public const VERSION_NEWEST = 'newest';
 
     private function __construct() {}
@@ -44,7 +47,7 @@ final class PhpUnitTargetVersion
     public static function fulfills(string $candidate, string $target): bool
     {
         if (self::VERSION_NEWEST === $target) {
-            throw new \LogicException(sprintf('Parameter `target` shall not be provided as "%s", determine proper target for tested PHPUnit feature instead.', self::VERSION_NEWEST));
+            throw new \LogicException(\sprintf('Parameter `target` shall not be provided as "%s", determine proper target for tested PHPUnit feature instead.', self::VERSION_NEWEST));
         }
 
         if (self::VERSION_NEWEST === $candidate) {

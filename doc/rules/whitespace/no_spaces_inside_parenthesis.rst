@@ -8,8 +8,8 @@ space before the closing parenthesis.
 Warning
 -------
 
-This rule is deprecated and will be removed on next major version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is deprecated and will be removed in the next major version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You should use ``spaces_inside_parentheses`` instead.
 
@@ -42,3 +42,11 @@ Example #2
    +function foo($bar, $baz)
     {
     }
+
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\Whitespace\\NoSpacesInsideParenthesisFixer <./../../../src/Fixer/Whitespace/NoSpacesInsideParenthesisFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Whitespace\\NoSpacesInsideParenthesisFixerTest <./../../../tests/Fixer/Whitespace/NoSpacesInsideParenthesisFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

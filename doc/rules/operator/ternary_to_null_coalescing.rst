@@ -2,7 +2,7 @@
 Rule ``ternary_to_null_coalescing``
 ===================================
 
-Use ``null`` coalescing operator ``??`` where possible. Requires PHP >= 7.0.
+Use ``null`` coalescing operator ``??`` where possible.
 
 Examples
 --------
@@ -30,4 +30,14 @@ The rule is part of the following rule sets:
 - `@PHP80Migration <./../../ruleSets/PHP80Migration.rst>`_
 - `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_
 - `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_
+- `@PHP83Migration <./../../ruleSets/PHP83Migration.rst>`_
+- `@PHP84Migration <./../../ruleSets/PHP84Migration.rst>`_
+- `@PHP85Migration <./../../ruleSets/PHP85Migration.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\Operator\\TernaryToNullCoalescingFixer <./../../../src/Fixer/Operator/TernaryToNullCoalescingFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Operator\\TernaryToNullCoalescingFixerTest <./../../../tests/Fixer/Operator/TernaryToNullCoalescingFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

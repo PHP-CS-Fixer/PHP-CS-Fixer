@@ -4,22 +4,30 @@ Rule ``new_with_braces``
 
 All instances created with ``new`` keyword must (not) be followed by braces.
 
+Warning
+-------
+
+This rule is deprecated and will be removed in the next major version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You should use ``new_with_parentheses`` instead.
+
 Configuration
 -------------
-
-``named_class``
-~~~~~~~~~~~~~~~
-
-Whether named classes should be followed by parentheses.
-
-Allowed types: ``bool``
-
-Default value: ``true``
 
 ``anonymous_class``
 ~~~~~~~~~~~~~~~~~~~
 
 Whether anonymous classes should be followed by parentheses.
+
+Allowed types: ``bool``
+
+Default value: ``true``
+
+``named_class``
+~~~~~~~~~~~~~~~
+
+Whether named classes should be followed by parentheses.
 
 Allowed types: ``bool``
 
@@ -72,15 +80,10 @@ With configuration: ``['named_class' => false]``.
    -$x = new X();
    +$x = new X;
 
-Rule sets
----------
+References
+----------
 
-The rule is part of the following rule sets:
+- Fixer class: `PhpCsFixer\\Fixer\\Operator\\NewWithBracesFixer <./../../../src/Fixer/Operator/NewWithBracesFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Operator\\NewWithBracesFixerTest <./../../../tests/Fixer/Operator/NewWithBracesFixerTest.php>`_
 
-- `@PER <./../../ruleSets/PER.rst>`_
-- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_
-- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_
-- `@PSR12 <./../../ruleSets/PSR12.rst>`_
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
-- `@Symfony <./../../ruleSets/Symfony.rst>`_
-
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

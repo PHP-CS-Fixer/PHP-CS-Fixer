@@ -22,6 +22,8 @@ use PhpCsFixer\StdinFileInfo;
  * @internal
  *
  * @covers \PhpCsFixer\StdinFileInfo
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class StdinFileInfoTest extends TestCase
 {
@@ -214,14 +216,5 @@ final class StdinFileInfoTest extends TestCase
         $this->expectExceptionMessage('Method "PhpCsFixer\StdinFileInfo::openFile" is not implemented.');
 
         $fileInfo->openFile();
-    }
-
-    public function testNoOpMethods(): void
-    {
-        $fileInfo = new StdinFileInfo();
-        $fileInfo->setFileClass('foo1');
-        $fileInfo->setInfoClass('foo2');
-
-        $this->addToAssertionCount(1);
     }
 }

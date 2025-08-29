@@ -20,6 +20,8 @@ namespace PhpCsFixer\RuleSet;
  * Example of set: ["@PSR2" => true, "@PSR1" => false, "strict" => true].
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 interface RuleSetInterface
 {
@@ -38,7 +40,7 @@ interface RuleSetInterface
     /**
      * Get all rules from rules set.
      *
-     * @return array<string, array<string, mixed>|bool>
+     * @return array<string, array<string, mixed>|true>
      */
     public function getRules(): array;
 

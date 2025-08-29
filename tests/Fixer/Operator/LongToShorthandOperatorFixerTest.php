@@ -22,6 +22,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @covers \PhpCsFixer\Fixer\AbstractShortOperatorFixer
  * @covers \PhpCsFixer\Fixer\Operator\LongToShorthandOperatorFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\LongToShorthandOperatorFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class LongToShorthandOperatorFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class LongToShorthandOperatorFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'simple I' => [
@@ -84,26 +91,26 @@ final class LongToShorthandOperatorFixerTest extends AbstractFixerTestCase
 
         foreach ($constants as $i => $constant) {
             yield 'c #'.$i => [
-                sprintf('<?php $fa .= %s;', $constant),
-                sprintf('<?php $fa = $fa . %s;', $constant),
+                \sprintf('<?php $fa .= %s;', $constant),
+                \sprintf('<?php $fa = $fa . %s;', $constant),
             ];
 
             yield 'c reverse #'.$i => [
-                sprintf('<?php $ga *= %s  ;', $constant),
-                sprintf('<?php $ga = %s * $ga;', $constant),
+                \sprintf('<?php $ga *= %s  ;', $constant),
+                \sprintf('<?php $ga = %s * $ga;', $constant),
             ];
         }
 
         foreach (['-', '/', '.', '%'] as $nonCommutativeKind) {
-            yield sprintf('non commutative kind "%s"', $nonCommutativeKind) => [
-                sprintf('<?php $nck = 5 %s $nck;', $nonCommutativeKind),
+            yield \sprintf('non commutative kind "%s"', $nonCommutativeKind) => [
+                \sprintf('<?php $nck = 5 %s $nck;', $nonCommutativeKind),
             ];
         }
 
         foreach (['*' => '*=', '|' => '|=', '&' => '&=', '^' => '^='] as $operator => $shortHand) {
-            yield sprintf('commutative operator "%s".', $operator) => [
-                sprintf('<?php $a3 %s "456"  ;', $shortHand),
-                sprintf('<?php $a3 = "456" %s $a3;', $operator),
+            yield \sprintf('commutative operator "%s".', $operator) => [
+                \sprintf('<?php $a3 %s "456"  ;', $shortHand),
+                \sprintf('<?php $a3 = "456" %s $a3;', $operator),
             ];
         }
 
@@ -132,21 +139,19 @@ final class LongToShorthandOperatorFixerTest extends AbstractFixerTestCase
         ];
 
         // test simple with all operators
-
-        $reflection = new \ReflectionClass(LongToShorthandOperatorFixer::class);
-        $operators = $reflection->getStaticProperties()['operators'];
+        $operators = \Closure::bind(static fn (): array => LongToShorthandOperatorFixer::OPERATORS, null, LongToShorthandOperatorFixer::class)();
 
         foreach ($operators as $operator => $info) {
             $shortHand = $info[1];
 
-            yield sprintf('Simple test with operator "%s" var/var.', $operator) => [
-                sprintf('<?php $a1 %s $b;', $shortHand),
-                sprintf('<?php $a1 = $a1 %s $b;', $operator),
+            yield \sprintf('Simple test with operator "%s" var/var.', $operator) => [
+                \sprintf('<?php $a1 %s $b;', $shortHand),
+                \sprintf('<?php $a1 = $a1 %s $b;', $operator),
             ];
 
-            yield sprintf('Simple test with operator "%s" var/const.', $operator) => [
-                sprintf('<?php $a2 %s 1;', $shortHand),
-                sprintf('<?php $a2 = $a2 %s 1;', $operator),
+            yield \sprintf('Simple test with operator "%s" var/const.', $operator) => [
+                \sprintf('<?php $a2 %s 1;', $shortHand),
+                \sprintf('<?php $a2 = $a2 %s 1;', $operator),
             ];
         }
 
@@ -452,14 +457,17 @@ class Foo
     /**
      * @requires PHP <8.0
      *
-     * @dataProvider provideFixPrePHP80Cases
+     * @dataProvider provideFixPre80Cases
      */
-    public function testFixPrePHP80(string $expected, ?string $input = null): void
+    public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixPrePHP80Cases(): iterable
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
+    public static function provideFixPre80Cases(): iterable
     {
         yield [
             '<?php

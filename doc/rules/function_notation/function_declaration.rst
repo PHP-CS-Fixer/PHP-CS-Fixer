@@ -7,19 +7,19 @@ Spaces should be properly placed in a function declaration.
 Configuration
 -------------
 
-``closure_function_spacing``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``closure_fn_spacing``
+~~~~~~~~~~~~~~~~~~~~~~
 
-Spacing to use before open parenthesis for closures.
+Spacing to use before open parenthesis for short arrow functions.
 
 Allowed values: ``'none'`` and ``'one'``
 
 Default value: ``'one'``
 
-``closure_fn_spacing``
-~~~~~~~~~~~~~~~~~~~~~~
+``closure_function_spacing``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Spacing to use before open parenthesis for short arrow functions.
+Spacing to use before open parenthesis for closures.
 
 Allowed values: ``'none'`` and ``'one'``
 
@@ -94,11 +94,32 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PER <./../../ruleSets/PER.rst>`_
+- `@PER <./../../ruleSets/PER.rst>`_ with config:
+
+  ``['closure_fn_spacing' => 'none']``
+
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
+
+  ``['closure_fn_spacing' => 'none']``
+
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_
-- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+
+  ``['closure_fn_spacing' => 'none']``
+
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
+
+  ``['closure_fn_spacing' => 'none']``
+
 - `@PSR2 <./../../ruleSets/PSR2.rst>`_
 - `@PSR12 <./../../ruleSets/PSR12.rst>`_
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\FunctionNotation\\FunctionDeclarationFixer <./../../../src/Fixer/FunctionNotation/FunctionDeclarationFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\FunctionNotation\\FunctionDeclarationFixerTest <./../../../tests/Fixer/FunctionNotation/FunctionDeclarationFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -8,12 +8,12 @@ placed. Body of braces should be properly indented.
 Warning
 -------
 
-This rule is deprecated and will be removed on next major version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is deprecated and will be removed in the next major version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You should use ``single_space_around_construct``, ``control_structure_braces``,
 ``control_structure_continuation_position``, ``declare_parentheses``,
-``no_multiple_statements_per_line``, ``curly_braces_position``,
+``no_multiple_statements_per_line``, ``braces_position``,
 ``statement_indentation`` and ``no_extra_blank_lines`` instead.
 
 Configuration
@@ -37,16 +37,15 @@ Allowed types: ``bool``
 
 Default value: ``false``
 
-``position_after_functions_and_oop_constructs``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``position_after_anonymous_constructs``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Whether the opening brace should be placed on "next" or "same" line after classy
-constructs (non-anonymous classes, interfaces, traits, methods and non-lambda
-functions).
+Whether the opening brace should be placed on "next" or "same" line after
+anonymous constructs (anonymous classes and lambda functions).
 
 Allowed values: ``'next'`` and ``'same'``
 
-Default value: ``'next'``
+Default value: ``'same'``
 
 ``position_after_control_structures``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -58,15 +57,16 @@ Allowed values: ``'next'`` and ``'same'``
 
 Default value: ``'same'``
 
-``position_after_anonymous_constructs``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``position_after_functions_and_oop_constructs``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Whether the opening brace should be placed on "next" or "same" line after
-anonymous constructs (anonymous classes and lambda functions).
+Whether the opening brace should be placed on "next" or "same" line after classy
+constructs (non-anonymous classes, interfaces, traits, methods and non-lambda
+functions).
 
 Allowed values: ``'next'`` and ``'same'``
 
-Default value: ``'same'``
+Default value: ``'next'``
 
 Examples
 --------
@@ -184,3 +184,11 @@ With configuration: ``['position_after_functions_and_oop_constructs' => 'same']`
    +        }
         }
     }
+
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\Basic\\BracesFixer <./../../../src/Fixer/Basic/BracesFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Basic\\BracesFixerTest <./../../../tests/Fixer/Basic/BracesFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

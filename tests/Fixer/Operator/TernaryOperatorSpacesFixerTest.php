@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\Operator;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Operator\TernaryOperatorSpacesFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\TernaryOperatorSpacesFixer>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TernaryOperatorSpacesFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class TernaryOperatorSpacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'handle goto labels 1' => [
@@ -75,6 +82,11 @@ echo $guard ? 1 : 2;}',
 {
 beginning:
 echo $guard?1:2;}',
+        ];
+
+        yield 'handle instanceof static' => [
+            '<?php $a instanceof static ? $b : $c;',
+            '<?php $a instanceof static?$b:$c;',
         ];
 
         yield [
@@ -223,6 +235,9 @@ $a = ($b
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield 'nullable types in constructor property promotion' => [
@@ -251,6 +266,9 @@ class Foo
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [

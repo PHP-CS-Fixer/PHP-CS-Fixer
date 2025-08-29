@@ -20,6 +20,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Alias\ArrayPushFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\ArrayPushFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ArrayPushFixerTest extends AbstractFixerTestCase
 {
@@ -31,6 +35,9 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'minimal' => [
@@ -174,8 +181,8 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php $a->$c[1]->$d{$a--}->$a[7][] = $b;',
-            '<?php array_push($a->$c[1]->$d{$a--}->$a[7], $b);',
+            '<?php $a->$c[1]->$d[$a--]->$a[7][] = $b;',
+            '<?php array_push($a->$c[1]->$d[$a--]->$a[7], $b);',
         ];
 
         yield 'push multiple' => [
@@ -242,7 +249,7 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
 
         foreach ($precedenceCases as $precedenceCase) {
             yield [
-                sprintf(
+                \sprintf(
                     '<?php array_push($a, %s);',
                     $precedenceCase
                 ),
@@ -270,11 +277,14 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
      *
      * @requires PHP <8.0
      */
-    public function testFixPre80(string $expected, string $input = null): void
+    public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{string, string}>
+     */
     public static function provideFixPre80Cases(): iterable
     {
         yield [
@@ -293,11 +303,14 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
      *
      * @requires PHP 8.0
      */
-    public function testFix80(string $expected, string $input = null): void
+    public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [
@@ -315,6 +328,9 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'simple 8.1' => [
@@ -326,6 +342,27 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
                 array_push($a, $b);
                 $a = array_push(...);
             ',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPre84Cases
+     *
+     * @requires PHP <8.4
+     */
+    public function testFixPre84(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<int, array{string, string}>
+     */
+    public static function provideFixPre84Cases(): iterable
+    {
+        yield [
+            '<?php $a->$c[1]->$d{$a--}->$a[7][] = $b;',
+            '<?php array_push($a->$c[1]->$d{$a--}->$a[7], $b);',
         ];
     }
 }

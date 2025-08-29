@@ -21,6 +21,8 @@ namespace PhpCsFixer;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FileRemoval
 {
@@ -47,7 +49,7 @@ final class FileRemoval
      */
     public function __sleep(): array
     {
-        throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
+        throw new \BadMethodCallException('Cannot serialize '.self::class);
     }
 
     /**
@@ -58,7 +60,7 @@ final class FileRemoval
      */
     public function __wakeup(): void
     {
-        throw new \BadMethodCallException('Cannot unserialize '.__CLASS__);
+        throw new \BadMethodCallException('Cannot unserialize '.self::class);
     }
 
     /**

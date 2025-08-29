@@ -14,7 +14,7 @@ Type groups to fix.
 
 Allowed values: a subset of ``['alias', 'meta', 'simple']``
 
-Default value: ``['simple', 'alias', 'meta']``
+Default value: ``['alias', 'meta', 'simple']``
 
 Examples
 --------
@@ -62,3 +62,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTypesFixer <./../../../src/Fixer/Phpdoc/PhpdocTypesFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocTypesFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocTypesFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

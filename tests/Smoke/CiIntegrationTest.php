@@ -18,6 +18,8 @@ use Keradus\CliExecutor\CliResult;
 use Keradus\CliExecutor\CommandExecutor;
 use Keradus\CliExecutor\ScriptExecutor;
 use PhpCsFixer\Console\Application;
+use PhpCsFixer\Preg;
+use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -31,13 +33,12 @@ use PhpCsFixer\Console\Application;
  * @group covers-nothing
  *
  * @large
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class CiIntegrationTest extends AbstractSmokeTestCase
 {
-    /**
-     * @var string
-     */
-    public static $fixtureDir;
+    public static string $fixtureDir;
 
     public static function setUpBeforeClass(): void
     {
@@ -48,13 +49,13 @@ final class CiIntegrationTest extends AbstractSmokeTestCase
         try {
             CommandExecutor::create('composer --version', __DIR__)->getResult();
         } catch (\RuntimeException $e) {
-            self::markTestSkippedOrFail('Missing `composer` env script. Details:'."\n".$e->getMessage());
+            self::fail('Missing `composer` env script. Details:'."\n".$e->getMessage());
         }
 
         try {
             CommandExecutor::create('composer check', __DIR__.'/../..')->getResult();
         } catch (\RuntimeException $e) {
-            self::markTestSkippedOrFail('Composer check failed. Details:'."\n".$e->getMessage());
+            self::fail('Composer check failed. Details:'."\n".$e->getMessage());
         }
 
         try {
@@ -67,7 +68,7 @@ final class CiIntegrationTest extends AbstractSmokeTestCase
                 'git commit -m "init" -q',
             ]);
         } catch (\RuntimeException $e) {
-            self::markTestSkippedOrFail($e->getMessage());
+            self::fail($e->getMessage());
         }
     }
 
@@ -91,9 +92,9 @@ final class CiIntegrationTest extends AbstractSmokeTestCase
     }
 
     /**
-     * @param string[] $caseCommands
-     * @param string[] $expectedResult1Lines
-     * @param string[] $expectedResult2Lines
+     * @param list<string> $caseCommands
+     * @param list<string> $expectedResult1Lines
+     * @param list<string> $expectedResult2Lines
      *
      * @dataProvider provideIntegrationCases
      */
@@ -111,7 +112,14 @@ final class CiIntegrationTest extends AbstractSmokeTestCase
             $caseCommands
         ));
 
-        $integrationScript = explode("\n", str_replace('vendor/bin/', './../../../', file_get_contents(__DIR__.'/../../ci-integration.sh')));
+        $integrationScript = explode("\n", str_replace('vendor/bin/', './../../../', (string) file_get_contents(__DIR__.'/../../doc/examples/ci-integration.sh')));
+
+        self::assertArrayHasKey(3, $integrationScript);
+        self::assertArrayHasKey(4, $integrationScript);
+        self::assertArrayHasKey(5, $integrationScript);
+        self::assertArrayHasKey(6, $integrationScript);
+        self::assertArrayHasKey(7, $integrationScript);
+
         $steps = [
             "COMMIT_RANGE=\"master..{$branchName}\"",
             "{$integrationScript[3]}\n{$integrationScript[4]}",
@@ -152,42 +160,48 @@ You may find an UPGRADE guide at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/bl
 ';
 
         $optionalIncompatibilityWarning = 'PHP needs to be a minimum version of PHP 7.4.0 and maximum version of PHP 8.2.*.
-Current PHP version: '.PHP_VERSION.'.
+Current PHP version: '.\PHP_VERSION.'.
 Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.
 ';
 
         $optionalXdebugWarning = 'You are running PHP CS Fixer with xdebug enabled. This has a major impact on runtime performance.
 ';
 
-        $optionalWarningsHelp = 'If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, we will help you!
+        $optionalWarningsHelp = 'If you need help while solving warnings, ask at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/discussions/, we will help you!
 
 ';
 
         $expectedResult3FilesLineAfterDotsIndex = strpos($expectedResult3FilesLine, ' ');
+        self::assertIsInt($expectedResult3FilesLineAfterDotsIndex);
+
         $expectedResult3FilesDots = substr($expectedResult3FilesLine, 0, $expectedResult3FilesLineAfterDotsIndex);
         $expectedResult3FilesPercentage = substr($expectedResult3FilesLine, $expectedResult3FilesLineAfterDotsIndex);
 
         /** @phpstan-ignore-next-line to avoid `Ternary operator condition is always true|false.` */
         $aboutSubpattern = Application::VERSION_CODENAME
-            ? 'PHP CS Fixer '.preg_quote(Application::VERSION, '/').' '.preg_quote(Application::VERSION_CODENAME, '/')." by Fabien Potencier and Dariusz Ruminski.\nPHP runtime: ".PHP_VERSION
-            : 'PHP CS Fixer '.preg_quote(Application::VERSION, '/')." by Fabien Potencier and Dariusz Ruminski.\nPHP runtime: ".PHP_VERSION;
+            ? 'PHP CS Fixer '.preg_quote(Application::VERSION, '/').' '.preg_quote(Application::VERSION_CODENAME, '/')." by Fabien Potencier, Dariusz Ruminski and contributors.\nPHP runtime: ".\PHP_VERSION
+            : 'PHP CS Fixer '.preg_quote(Application::VERSION, '/')." by Fabien Potencier, Dariusz Ruminski and contributors.\nPHP runtime: ".\PHP_VERSION;
 
-        $pattern = sprintf(
-            '/^(?:%s)?(?:%s)?(?:%s)?(?:%s)?%s\n%s\n([\.S]{%d})%s\n%s$/',
+        $availableMaxProcesses = ParallelConfigFactory::detect()->getMaxProcesses();
+
+        $pattern = \sprintf(
+            '/^(?:%s)?(?:%s)?(?:%s)?(?:%s)?%s\n%s\n%s\n%s\n([\.S]{%d})%s\n%s$/',
             preg_quote($optionalDeprecatedVersionWarning, '/'),
             preg_quote($optionalIncompatibilityWarning, '/'),
             preg_quote($optionalXdebugWarning, '/'),
             preg_quote($optionalWarningsHelp, '/'),
             $aboutSubpattern,
+            'Running analysis on \d+ core(?: sequentially|s with \d+ files? per process)+\.',
+            $availableMaxProcesses > 1 ? preg_quote('You can enable parallel runner and speed up the analysis! Please see https://cs.symfony.com/doc/usage.html for more information.', '/') : '',
             preg_quote('Loaded config default from ".php-cs-fixer.dist.php".', '/'),
             \strlen($expectedResult3FilesDots),
             preg_quote($expectedResult3FilesPercentage, '/'),
-            preg_quote('Legend: .-no changes, F-fixed, S-skipped (cached or empty file), I-invalid file syntax (file ignored), E-error', '/')
+            preg_quote('Legend: .-no changes, F-fixed, S-skipped (cached or empty file), M-skipped (non-monolithic), I-invalid file syntax (file ignored), E-error', '/')
         );
 
         self::assertMatchesRegularExpression($pattern, $result3->getError());
 
-        preg_match($pattern, $result3->getError(), $matches);
+        Preg::match($pattern, $result3->getError(), $matches);
 
         self::assertArrayHasKey(1, $matches);
         self::assertSame(substr_count($expectedResult3FilesDots, '.'), substr_count($matches[1], '.'));
@@ -199,6 +213,9 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
         );
     }
 
+    /**
+     * @return iterable<string, array{string, list<string>, list<string>, list<string>, string}>
+     */
     public static function provideIntegrationCases(): iterable
     {
         yield 'random-changes' => [
@@ -286,6 +303,17 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
             ],
             '...                                                                 3 / 3 (100%)',
         ];
+    }
+
+    public function testWithUsingNonExistingFile(): void
+    {
+        $output = ScriptExecutor::create(
+            ['php php-cs-fixer check --config=tests/Fixtures/.php-cs-fixer.append-non-existing-file.php --show-progress=dots'],
+            __DIR__.'/../..'
+        )->getResult();
+
+        self::assertSame(0, $output->getCode());
+        self::assertStringContainsString(' (100%)', $output->getError());
     }
 
     private static function executeCommand(string $command): CliResult

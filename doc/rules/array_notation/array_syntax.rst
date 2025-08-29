@@ -50,6 +50,10 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+- `@PER <./../../ruleSets/PER.rst>`_
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_
 - `@PHP54Migration <./../../ruleSets/PHP54Migration.rst>`_
 - `@PHP70Migration <./../../ruleSets/PHP70Migration.rst>`_
 - `@PHP71Migration <./../../ruleSets/PHP71Migration.rst>`_
@@ -58,6 +62,16 @@ The rule is part of the following rule sets:
 - `@PHP80Migration <./../../ruleSets/PHP80Migration.rst>`_
 - `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_
 - `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_
+- `@PHP83Migration <./../../ruleSets/PHP83Migration.rst>`_
+- `@PHP84Migration <./../../ruleSets/PHP84Migration.rst>`_
+- `@PHP85Migration <./../../ruleSets/PHP85Migration.rst>`_
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\ArrayNotation\\ArraySyntaxFixer <./../../../src/Fixer/ArrayNotation/ArraySyntaxFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ArrayNotation\\ArraySyntaxFixerTest <./../../../tests/Fixer/ArrayNotation/ArraySyntaxFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

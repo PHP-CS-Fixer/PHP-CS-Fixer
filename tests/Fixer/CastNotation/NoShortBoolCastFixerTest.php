@@ -20,6 +20,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\CastNotation\NoShortBoolCastFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\CastNotation\NoShortBoolCastFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoShortBoolCastFixerTest extends AbstractFixerTestCase
 {
@@ -31,6 +35,9 @@ final class NoShortBoolCastFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{string, string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [

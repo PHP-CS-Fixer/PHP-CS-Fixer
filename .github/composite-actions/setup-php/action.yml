@@ -1,0 +1,26 @@
+name: Setup PHP
+
+inputs:
+  version:
+    description: PHP version
+    required: true
+  coverage:
+    description: coverage mode
+    required: false
+    default: none
+  tools:
+    description: tools
+    required: false
+    default: none
+
+runs:
+  using: composite
+  steps:
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ inputs.version }}
+        coverage: ${{ inputs.coverage }}
+        tools: composer, ${{ inputs.tools }}
+        extensions: none, ctype, curl, dom, iconv, json, mbstring, opcache, openssl, simplexml, tokenizer, xml, xmlwriter, zip
+        ini-values: display_errors=On, display_startup_errors=On, error_reporting=-1, zend.assertions=1

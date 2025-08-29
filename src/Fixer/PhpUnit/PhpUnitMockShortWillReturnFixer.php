@@ -26,6 +26,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Michał Adamski <michal.adamski@gmail.com>
  * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpUnitMockShortWillReturnFixer extends AbstractPhpUnitFixer
 {
@@ -77,7 +79,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             }
 
             $functionToReplaceIndex = $tokens->getNextMeaningfulToken($index);
-            if (!$tokens[$functionToReplaceIndex]->equals([T_STRING, 'will'], false)) {
+            if (!$tokens[$functionToReplaceIndex]->equals([\T_STRING, 'will'], false)) {
                 continue;
             }
 
@@ -101,17 +103,13 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $openingBraceIndex = $tokens->getNextMeaningfulToken($functionToRemoveIndex);
 
-            if (!$tokens[$openingBraceIndex]->equals('(')) {
-                continue;
-            }
-
             if ($tokens[$tokens->getNextMeaningfulToken($openingBraceIndex)]->isGivenKind(CT::T_FIRST_CLASS_CALLABLE)) {
                 continue;
             }
 
             $closingBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingBraceIndex);
 
-            $tokens[$functionToReplaceIndex] = new Token([T_STRING, self::RETURN_METHODS_MAP[strtolower($tokens[$functionToRemoveIndex]->getContent())]]);
+            $tokens[$functionToReplaceIndex] = new Token([\T_STRING, self::RETURN_METHODS_MAP[strtolower($tokens[$functionToRemoveIndex]->getContent())]]);
             $tokens->clearTokenAndMergeSurroundingWhitespace($classReferenceIndex);
             $tokens->clearTokenAndMergeSurroundingWhitespace($objectOperatorIndex);
             $tokens->clearTokenAndMergeSurroundingWhitespace($functionToRemoveIndex);

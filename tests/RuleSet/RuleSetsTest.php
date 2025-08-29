@@ -14,12 +14,12 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\RuleSet;
 
-use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
-use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSets;
+use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -28,6 +28,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\RuleSet\RuleSets
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class RuleSetsTest extends TestCase
 {
@@ -55,7 +57,7 @@ final class RuleSetsTest extends TestCase
     {
         $name = 'Unknown';
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageMatches(sprintf('#^Set "%s" does not exist\.$#', $name));
+        $this->expectExceptionMessageMatches(\sprintf('#^Set "%s" does not exist\.$#', $name));
 
         RuleSets::getSetDefinition($name);
     }
@@ -68,6 +70,8 @@ final class RuleSetsTest extends TestCase
         $setsWithoutTests = [
             '@PER',
             '@PER:risky',
+            '@PER-CS',
+            '@PER-CS:risky',
             '@PHP56Migration',
             '@PHP56Migration:risky',
             '@PHP70Migration',
@@ -82,21 +86,22 @@ final class RuleSetsTest extends TestCase
             '@PHPUnit55Migration:risky',
             '@PHPUnit75Migration:risky',
             '@PHPUnit84Migration:risky',
+            '@PHPUnit91Migration:risky',
             '@PHPUnit100Migration:risky',
             '@PSR1',
         ];
 
         if (\in_array($setDefinitionName, $setsWithoutTests, true)) {
-            self::markTestIncomplete(sprintf('Set "%s" has no integration test.', $setDefinitionName));
+            self::markTestIncomplete(\sprintf('Set "%s" has no integration test.', $setDefinitionName));
         }
 
         $setDefinitionFileNamePrefix = str_replace(':', '-', $setDefinitionName);
         $dir = __DIR__.'/../../tests/Fixtures/Integration/set';
-        $file = sprintf('%s/%s.test', $dir, $setDefinitionFileNamePrefix);
+        $file = \sprintf('%s/%s.test', $dir, $setDefinitionFileNamePrefix);
 
         self::assertFileExists($file);
-        self::assertFileExists(sprintf('%s/%s.test-in.php', $dir, $setDefinitionFileNamePrefix));
-        self::assertFileExists(sprintf('%s/%s.test-out.php', $dir, $setDefinitionFileNamePrefix));
+        self::assertFileExists(\sprintf('%s/%s.test-in.php', $dir, $setDefinitionFileNamePrefix));
+        self::assertFileExists(\sprintf('%s/%s.test-out.php', $dir, $setDefinitionFileNamePrefix));
 
         $template = '--TEST--
 Integration of %s.
@@ -104,8 +109,8 @@ Integration of %s.
 {"%s": true}
 ';
         self::assertStringStartsWith(
-            sprintf($template, $setDefinitionName, $setDefinitionName),
-            file_get_contents($file)
+            \sprintf($template, $setDefinitionName, $setDefinitionName),
+            (string) file_get_contents($file)
         );
     }
 
@@ -122,14 +127,25 @@ Integration of %s.
      */
     public function testSetDefinitionsAreSorted(string $setDefinitionName): void
     {
+        \assert(\array_key_exists($setDefinitionName, RuleSets::getSetDefinitions()));
         $setDefinition = RuleSets::getSetDefinitions()[$setDefinitionName]->getRules();
         $sortedSetDefinition = $setDefinition;
         $this->sort($sortedSetDefinition);
 
-        self::assertSame($sortedSetDefinition, $setDefinition, sprintf(
+        self::assertSame($sortedSetDefinition, $setDefinition, \sprintf(
             'Failed to assert that the set definition for "%s" is sorted by key.',
             $setDefinitionName
         ));
+    }
+
+    /**
+     * @return iterable<int, array{string}>
+     */
+    public static function provideSetDefinitionNameCases(): iterable
+    {
+        $setDefinitionNames = RuleSets::getSetDefinitionNames();
+
+        return array_map(static fn (string $setDefinitionName): array => [$setDefinitionName], $setDefinitionNames);
     }
 
     public function testSetDefinitionsItselfIsSorted(): void
@@ -139,13 +155,6 @@ Integration of %s.
         natsort($sortedSetDefinition);
 
         self::assertSame($sortedSetDefinition, $setDefinition);
-    }
-
-    public static function provideSetDefinitionNameCases(): iterable
-    {
-        $setDefinitionNames = RuleSets::getSetDefinitionNames();
-
-        return array_map(static fn (string $setDefinitionName): array => [$setDefinitionName], $setDefinitionNames);
     }
 
     /**
@@ -170,42 +179,50 @@ Integration of %s.
     }
 
     /**
-     * @return string[][]
+     * @return iterable<int, array{string}>
      */
     public static function providePHPUnitMigrationTargetVersionsCases(): iterable
     {
         $setDefinitionNames = RuleSets::getSetDefinitionNames();
 
-        $setDefinitionPHPUnitMigrationNames = array_filter($setDefinitionNames, static fn (string $setDefinitionName): bool => 1 === preg_match('/^@PHPUnit\d+Migration:risky$/', $setDefinitionName));
+        $setDefinitionPHPUnitMigrationNames = array_filter($setDefinitionNames, static fn (string $setDefinitionName): bool => Preg::match('/^@PHPUnit\d+Migration:risky$/', $setDefinitionName));
 
         return array_map(static fn (string $setDefinitionName): array => [$setDefinitionName], $setDefinitionPHPUnitMigrationNames);
     }
 
     private static function assertPHPUnitVersionIsLargestAllowed(string $setName, string $ruleName, string $actualTargetVersion): void
     {
-        $maximumVersionForRuleset = preg_replace('/^@PHPUnit(\d+)(\d)Migration:risky$/', '$1.$2', $setName);
+        $maximumVersionForRuleset = Preg::replace('/^@PHPUnit(\d+)(\d)Migration:risky$/', '$1.$2', $setName);
 
-        $fixer = self::getFixerByName($ruleName);
+        $fixer = TestCaseUtils::getFixerByName($ruleName);
+
+        self::assertInstanceOf(ConfigurableFixerInterface::class, $fixer, \sprintf('The fixer "%s" shall be configurable.', $fixer->getName()));
 
         foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
             if ('target' === $option->getName()) {
-                $allowedVersionsForFixer = array_diff($option->getAllowedValues(), [PhpUnitTargetVersion::VERSION_NEWEST]);
+                /** @var non-empty-list<PhpUnitTargetVersion::VERSION_*> */
+                $allowedValues = $option->getAllowedValues();
+
+                $allowedVersionsForFixer = array_diff(
+                    $allowedValues,
+                    [PhpUnitTargetVersion::VERSION_NEWEST]
+                );
 
                 break;
             }
         }
 
         if (!isset($allowedVersionsForFixer)) {
-            throw new \Exception(sprintf('The fixer "%s" does not have option "target".', $fixer->getName()));
+            throw new \Exception(\sprintf('The fixer "%s" does not have option "target".', $fixer->getName()));
         }
 
-        /** @var string[] $allowedVersionsForRuleset */
+        /** @var list<PhpUnitTargetVersion::VERSION_*> */
         $allowedVersionsForRuleset = array_filter(
             $allowedVersionsForFixer,
             static fn (string $version): bool => version_compare($maximumVersionForRuleset, $version) >= 0
         );
 
-        self::assertTrue(\in_array($actualTargetVersion, $allowedVersionsForRuleset, true), sprintf(
+        self::assertTrue(\in_array($actualTargetVersion, $allowedVersionsForRuleset, true), \sprintf(
             'Rule "%s" (in rule set "%s") has target "%s", but the rule set is not allowing it (allowed are only "%s")',
             $fixer->getName(),
             $setName,
@@ -216,7 +233,7 @@ Integration of %s.
         rsort($allowedVersionsForRuleset);
         $maximumAllowedVersionForRuleset = reset($allowedVersionsForRuleset);
 
-        self::assertSame($maximumAllowedVersionForRuleset, $actualTargetVersion, sprintf(
+        self::assertSame($maximumAllowedVersionForRuleset, $actualTargetVersion, \sprintf(
             'Rule "%s" (in rule set "%s") has target "%s", but there is higher available target "%s"',
             $fixer->getName(),
             $setName,
@@ -242,7 +259,7 @@ Integration of %s.
      */
     private function doSort(array &$data, string $path): void
     {
-        if ('ordered_imports.imports_order' === $path) { // order matters
+        if (\in_array($path, ['ordered_imports.imports_order', 'phpdoc_order.order'], true)) { // order matters
             return;
         }
 
@@ -281,7 +298,7 @@ Integration of %s.
     private function getDefaultPHPUnitTargetOfRule(string $ruleName): ?string
     {
         $targetVersion = null;
-        $fixer = self::getFixerByName($ruleName);
+        $fixer = TestCaseUtils::getFixerByName($ruleName);
 
         if ($fixer instanceof ConfigurableFixerInterface) {
             foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
@@ -294,26 +311,5 @@ Integration of %s.
         }
 
         return $targetVersion;
-    }
-
-    private static function getFixerByName(string $name): AbstractFixer
-    {
-        $factory = new FixerFactory();
-        $factory->registerBuiltInFixers();
-        $factory->useRuleSet(new RuleSet([$name => true]));
-
-        $fixers = $factory->getFixers();
-
-        if (0 === \count($fixers)) {
-            throw new \RuntimeException('FixerFactory unexpectedly returned empty array.');
-        }
-
-        $fixer = current($fixers);
-
-        if (!$fixer instanceof AbstractFixer) {
-            throw new \RuntimeException(sprintf('Fixer class for "%s" rule does not extend "%s".', $name, AbstractFixer::class));
-        }
-
-        return $fixer;
     }
 }

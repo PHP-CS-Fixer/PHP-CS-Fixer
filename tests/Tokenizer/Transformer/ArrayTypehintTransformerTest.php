@@ -23,11 +23,15 @@ use PhpCsFixer\Tokenizer\CT;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\ArrayTypehintTransformer
+ *
+ * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ArrayTypehintTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
@@ -37,12 +41,15 @@ final class ArrayTypehintTransformerTest extends AbstractTransformerTestCase
             $source,
             $expectedTokens,
             [
-                T_ARRAY,
+                \T_ARRAY,
                 CT::T_ARRAY_TYPEHINT,
             ]
         );
     }
 
+    /**
+     * @return iterable<int, array{string, _TransformerTestExpectedKindsUnderIndex}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield [
@@ -52,7 +59,7 @@ function foo (array /** @type array */ $bar)
 {
 }',
             [
-                5 => T_ARRAY,
+                5 => \T_ARRAY,
                 22 => CT::T_ARRAY_TYPEHINT,
             ],
         ];
@@ -62,7 +69,7 @@ function foo (array /** @type array */ $bar)
 $a = array(1, 2, 3);
 $fn = fn(array /** @type array */ $bar) => null;',
             [
-                5 => T_ARRAY,
+                5 => \T_ARRAY,
                 23 => CT::T_ARRAY_TYPEHINT,
             ],
         ];

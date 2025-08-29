@@ -22,40 +22,44 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
+ * @phpstan-import-type _PhpTokenPrototypePartial from Token
+ *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SimplifiedIfReturnFixer extends AbstractFixer
 {
     /**
-     * @var list<array{isNegative: bool, sequence: array<int, list<int|string>|string>}>
+     * @var list<array{isNegative: bool, sequence: non-empty-list<_PhpTokenPrototypePartial>}>
      */
     private array $sequences = [
         [
             'isNegative' => false,
             'sequence' => [
-                '{', [T_RETURN], [T_STRING, 'true'], ';', '}',
-                [T_RETURN], [T_STRING, 'false'], ';',
+                '{', [\T_RETURN], [\T_STRING, 'true'], ';', '}',
+                [\T_RETURN], [\T_STRING, 'false'], ';',
             ],
         ],
         [
             'isNegative' => true,
             'sequence' => [
-                '{', [T_RETURN], [T_STRING, 'false'], ';', '}',
-                [T_RETURN], [T_STRING, 'true'], ';',
+                '{', [\T_RETURN], [\T_STRING, 'false'], ';', '}',
+                [\T_RETURN], [\T_STRING, 'true'], ';',
             ],
         ],
         [
             'isNegative' => false,
             'sequence' => [
-                [T_RETURN], [T_STRING, 'true'], ';',
-                [T_RETURN], [T_STRING, 'false'], ';',
+                [\T_RETURN], [\T_STRING, 'true'], ';',
+                [\T_RETURN], [\T_STRING, 'false'], ';',
             ],
         ],
         [
             'isNegative' => true,
             'sequence' => [
-                [T_RETURN], [T_STRING, 'false'], ';',
-                [T_RETURN], [T_STRING, 'true'], ';',
+                [\T_RETURN], [\T_STRING, 'false'], ';',
+                [\T_RETURN], [\T_STRING, 'true'], ';',
             ],
         ],
     ];
@@ -72,7 +76,7 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
      * {@inheritdoc}
      *
      * Must run before MultilineWhitespaceBeforeSemicolonsFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer.
-     * Must run after NoSuperfluousElseifFixer, NoUnneededCurlyBracesFixer, NoUselessElseFixer, SemicolonAfterInstructionFixer.
+     * Must run after NoSuperfluousElseifFixer, NoUnneededBracesFixer, NoUnneededCurlyBracesFixer, NoUselessElseFixer, SemicolonAfterInstructionFixer.
      */
     public function getPriority(): int
     {
@@ -81,13 +85,13 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAllTokenKindsFound([T_IF, T_RETURN, T_STRING]);
+        return $tokens->isAllTokenKindsFound([\T_IF, \T_RETURN, \T_STRING]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($ifIndex = $tokens->count() - 1; 0 <= $ifIndex; --$ifIndex) {
-            if (!$tokens[$ifIndex]->isGivenKind([T_IF, T_ELSEIF])) {
+            if (!$tokens[$ifIndex]->isGivenKind([\T_IF, \T_ELSEIF])) {
                 continue;
             }
 
@@ -106,7 +110,7 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
                     continue;
                 }
 
-                $firstSequenceIndex = key($sequenceFound);
+                $firstSequenceIndex = array_key_first($sequenceFound);
 
                 if ($firstSequenceIndex !== $firstCandidateIndex) {
                     continue;
@@ -121,14 +125,14 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
                 }
 
                 $newTokens = [
-                    new Token([T_RETURN, 'return']),
-                    new Token([T_WHITESPACE, ' ']),
+                    new Token([\T_RETURN, 'return']),
+                    new Token([\T_WHITESPACE, ' ']),
                 ];
 
                 if ($sequenceSpec['isNegative']) {
                     $newTokens[] = new Token('!');
                 } else {
-                    $newTokens[] = new Token([T_BOOL_CAST, '(bool)']);
+                    $newTokens[] = new Token([\T_BOOL_CAST, '(bool)']);
                 }
 
                 $tokens->overrideRange($ifIndex, $ifIndex, $newTokens);

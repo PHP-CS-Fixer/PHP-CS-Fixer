@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Console\Report\FixReport;
 
+use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Report\FixReport\JunitReporter;
 use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\PhpunitConstraintXmlMatchesXsd\Constraint\XmlMatchesXsd;
@@ -26,23 +27,28 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Report\FixReport\JunitReporter
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class JunitReporterTest extends AbstractReporterTestCase
 {
     /**
      * JUnit XML schema from Jenkins.
      *
-     * @var null|string
-     *
      * @see https://github.com/jenkinsci/xunit-plugin/blob/master/src/main/resources/org/jenkinsci/plugins/xunit/types/model/xsd/junit-10.xsd
      */
-    private static $xsd;
+    private static ?string $xsd = null;
 
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
 
-        self::$xsd = file_get_contents(__DIR__.'/../../../../doc/schemas/fix/junit-10.xsd');
+        $content = file_get_contents(__DIR__.'/../../../../doc/schemas/fix/junit-10.xsd');
+        if (false === $content) {
+            throw new \RuntimeException('Cannot read file.');
+        }
+
+        self::$xsd = $content;
     }
 
     public static function tearDownAfterClass(): void
@@ -59,10 +65,15 @@ final class JunitReporterTest extends AbstractReporterTestCase
 
     protected static function createNoErrorReport(): string
     {
-        return <<<'XML'
+        $about = Application::getAbout();
+
+        return <<<XML
             <?xml version="1.0" encoding="UTF-8"?>
             <testsuites>
               <testsuite name="PHP CS Fixer" tests="1" assertions="1" failures="0" errors="0">
+                <properties>
+                  <property name="about" value="{$about}"/>
+                </properties>
                 <testcase name="All OK" assertions="1"/>
               </testsuite>
             </testsuites>
@@ -71,10 +82,15 @@ final class JunitReporterTest extends AbstractReporterTestCase
 
     protected static function createSimpleReport(): string
     {
-        return <<<'XML'
+        $about = Application::getAbout();
+
+        return <<<XML
             <?xml version="1.0" encoding="UTF-8"?>
             <testsuites>
               <testsuite name="PHP CS Fixer" tests="1" assertions="1" failures="1" errors="0">
+                <properties>
+                  <property name="about" value="{$about}"/>
+                </properties>
                 <testcase name="someFile" file="someFile.php" assertions="1">
                   <failure type="code_style">Wrong code style
 
@@ -87,8 +103,8 @@ final class JunitReporterTest extends AbstractReporterTestCase
 
              class Foo
              {
-            -    public function bar($foo = 1, $bar)
-            +    public function bar($foo, $bar)
+            -    public function bar(\$foo = 1, \$bar)
+            +    public function bar(\$foo, \$bar)
                  {
                  }
              }</failure>
@@ -100,10 +116,15 @@ final class JunitReporterTest extends AbstractReporterTestCase
 
     protected static function createWithDiffReport(): string
     {
-        return <<<'XML'
+        $about = Application::getAbout();
+
+        return <<<XML
             <?xml version="1.0" encoding="UTF-8"?>
             <testsuites>
               <testsuite name="PHP CS Fixer" tests="1" assertions="1" failures="1" errors="0">
+                <properties>
+                  <property name="about" value="{$about}"/>
+                </properties>
                 <testcase name="someFile" file="someFile.php" assertions="1">
                   <failure type="code_style"><![CDATA[Wrong code style
 
@@ -116,8 +137,8 @@ final class JunitReporterTest extends AbstractReporterTestCase
 
              class Foo
              {
-            -    public function bar($foo = 1, $bar)
-            +    public function bar($foo, $bar)
+            -    public function bar(\$foo = 1, \$bar)
+            +    public function bar(\$foo, \$bar)
                  {
                  }
              }]]></failure>
@@ -129,10 +150,15 @@ final class JunitReporterTest extends AbstractReporterTestCase
 
     protected static function createWithAppliedFixersReport(): string
     {
-        return <<<'XML'
+        $about = Application::getAbout();
+
+        return <<<XML
             <?xml version="1.0" encoding="UTF-8"?>
             <testsuites>
               <testsuite name="PHP CS Fixer" tests="1" assertions="2" failures="2" errors="0">
+                <properties>
+                  <property name="about" value="{$about}"/>
+                </properties>
                 <testcase name="someFile" file="someFile.php" assertions="2">
                   <failure type="code_style">applied fixers:
             ---------------
@@ -146,10 +172,15 @@ final class JunitReporterTest extends AbstractReporterTestCase
 
     protected static function createWithTimeAndMemoryReport(): string
     {
-        return <<<'XML'
+        $about = Application::getAbout();
+
+        return <<<XML
             <?xml version="1.0" encoding="UTF-8"?>
             <testsuites>
               <testsuite name="PHP CS Fixer" tests="1" assertions="1" failures="1" errors="0" time="1.234">
+                <properties>
+                  <property name="about" value="{$about}"/>
+                </properties>
                 <testcase name="someFile" file="someFile.php" assertions="1">
                   <failure type="code_style">Wrong code style
 
@@ -162,8 +193,8 @@ final class JunitReporterTest extends AbstractReporterTestCase
 
              class Foo
              {
-            -    public function bar($foo = 1, $bar)
-            +    public function bar($foo, $bar)
+            -    public function bar(\$foo = 1, \$bar)
+            +    public function bar(\$foo, \$bar)
                  {
                  }
              }</failure>
@@ -175,10 +206,15 @@ final class JunitReporterTest extends AbstractReporterTestCase
 
     protected static function createComplexReport(): string
     {
-        return <<<'XML'
+        $about = Application::getAbout();
+
+        return <<<XML
             <?xml version="1.0"?>
             <testsuites>
               <testsuite assertions="3" errors="0" failures="3" name="PHP CS Fixer" tests="2" time="1.234">
+                <properties>
+                  <property name="about" value="{$about}"/>
+                </properties>
                 <testcase assertions="2" file="someFile.php" name="someFile">
                   <failure type="code_style">applied fixers:
             ---------------

@@ -14,7 +14,7 @@ Configuration
 Dictionary of ``const|method|property|trait_import|case`` =>
 ``none|one|only_if_meta`` values.
 
-Allowed types: ``array``
+Allowed types: ``array<string, string>``
 
 Default value: ``['const' => 'one', 'method' => 'one', 'property' => 'one', 'trait_import' => 'none', 'case' => 'none']``
 
@@ -144,4 +144,10 @@ The rule is part of the following rule sets:
 
   ``['elements' => ['method' => 'one']]``
 
+References
+----------
 
+- Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\ClassAttributesSeparationFixer <./../../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ClassNotation\\ClassAttributesSeparationFixerTest <./../../../tests/Fixer/ClassNotation/ClassAttributesSeparationFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

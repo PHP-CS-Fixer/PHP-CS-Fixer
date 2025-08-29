@@ -17,12 +17,16 @@ namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Nobu Funaki <nobu.funaki@gmail.com>
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocTrimConsecutiveBlankLineSeparationFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocTrimConsecutiveBlankLineSeparationFixer>
+ *
+ * @author Nobu Funaki <nobu.funaki@gmail.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocTrimConsecutiveBlankLineSeparationFixerTest extends AbstractFixerTestCase
 {
@@ -34,6 +38,9 @@ final class PhpdocTrimConsecutiveBlankLineSeparationFixerTest extends AbstractFi
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'no changes' => ['<?php /** Summary. */'];

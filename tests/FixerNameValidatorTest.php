@@ -22,6 +22,8 @@ use PhpCsFixer\FixerNameValidator;
  * @internal
  *
  * @covers \PhpCsFixer\FixerNameValidator
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FixerNameValidatorTest extends TestCase
 {
@@ -35,6 +37,9 @@ final class FixerNameValidatorTest extends TestCase
         self::assertSame($isValid, $validator->isValid($name, $isCustom));
     }
 
+    /**
+     * @return iterable<int, array{string, bool, bool}>
+     */
     public static function provideIsValidCases(): iterable
     {
         yield ['', true, false];
@@ -68,8 +73,6 @@ final class FixerNameValidatorTest extends TestCase
         yield ['Vendor4/foo', true, true];
 
         yield ['4vendor/foo', true, false];
-
-        yield ['Vendor/foo', true, true];
 
         yield ['FooBar/foo', true, true];
 

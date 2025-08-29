@@ -1,0 +1,26 @@
+--TEST--
+Integration of fixers: fully_qualified_strict_types,ordered_imports.
+--RULESET--
+{"fully_qualified_strict_types": {"import_symbols": true}, "ordered_imports": true}
+--EXPECT--
+<?php
+
+namespace Test;
+
+use Other\A;
+use Other\B;
+use Other\C;
+use Other\D;
+use Other\E;
+
+function foo(A $a, C $c): E {}
+
+--INPUT--
+<?php
+
+namespace Test;
+
+use Other\B;
+use Other\D;
+
+function foo(\Other\A $a, \Other\C $c): \Other\E {}

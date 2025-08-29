@@ -22,6 +22,9 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class SingleLineCommentSpacingFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
@@ -52,7 +55,7 @@ final class SingleLineCommentSpacingFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_COMMENT);
+        return $tokens->isTokenKindFound(\T_COMMENT);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -60,7 +63,7 @@ final class SingleLineCommentSpacingFixer extends AbstractFixer
         for ($index = \count($tokens) - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(T_COMMENT)) {
+            if (!$token->isGivenKind(\T_COMMENT)) {
                 continue;
             }
 
@@ -91,7 +94,7 @@ final class SingleLineCommentSpacingFixer extends AbstractFixer
             }
 
             if ($newContent !== $content) {
-                $tokens[$index] = new Token([T_COMMENT, $newContent]);
+                $tokens[$index] = new Token([\T_COMMENT, $newContent]);
             }
         }
     }
@@ -99,7 +102,7 @@ final class SingleLineCommentSpacingFixer extends AbstractFixer
     // fix space between comment open and leading text
     private function fixCommentLeadingSpace(string $content, string $prefix): string
     {
-        if (Preg::match(sprintf('@^%s\h+.*$@', preg_quote($prefix, '@')), $content)) {
+        if (Preg::match(\sprintf('@^%s\h+.*$@', preg_quote($prefix, '@')), $content)) {
             return $content;
         }
 

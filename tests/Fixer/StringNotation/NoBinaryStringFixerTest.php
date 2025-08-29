@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\StringNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author ntzm
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\StringNotation\NoBinaryStringFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\NoBinaryStringFixer>
+ *
+ * @author ntzm
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoBinaryStringFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class NoBinaryStringFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -63,11 +70,6 @@ final class NoBinaryStringFixerTest extends AbstractFixerTestCase
         yield [
             '<?php echo \'hello world\';',
             '<?php echo B\'hello world\';',
-        ];
-
-        yield [
-            '<?php echo "hello world";',
-            '<?php echo B"hello world";',
         ];
 
         yield [

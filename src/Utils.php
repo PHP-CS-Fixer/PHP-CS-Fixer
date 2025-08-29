@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Token;
  * @internal
  *
  * @deprecated This is a God Class anti-pattern. Don't expand it. It is fine to use logic that is already here (that's why we don't trigger deprecation warnings), but over time logic should be moved to dedicated, single-responsibility classes.
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class Utils
 {
@@ -43,7 +45,7 @@ final class Utils
      */
     public static function camelCaseToUnderscore(string $string): string
     {
-        return mb_strtolower(Preg::replace('/(?<!^)((?=[\p{Lu}][^\p{Lu}])|(?<![\p{Lu}])(?=[\p{Lu}]))/', '_', $string));
+        return mb_strtolower(Preg::replace('/(?<!^)(?<!_)((?=[\p{Lu}][^\p{Lu}])|(?<![\p{Lu}])(?=[\p{Lu}]))/', '_', $string));
     }
 
     /**
@@ -54,7 +56,7 @@ final class Utils
     public static function calculateTrailingWhitespaceIndent(Token $token): string
     {
         if (!$token->isWhitespace()) {
-            throw new \InvalidArgumentException(sprintf('The given token must be whitespace, got "%s".', $token->getName()));
+            throw new \InvalidArgumentException(\sprintf('The given token must be whitespace, got "%s".', $token->getName()));
         }
 
         $str = strrchr(
@@ -74,11 +76,14 @@ final class Utils
      *
      * Stability is ensured by using Schwartzian transform.
      *
-     * @param mixed[]  $elements
-     * @param callable $getComparedValue a callable that takes a single element and returns the value to compare
-     * @param callable $compareValues    a callable that compares two values
+     * @template T
+     * @template R
      *
-     * @return mixed[]
+     * @param list<T>             $elements
+     * @param callable(T): R      $getComparedValue a callable that takes a single element and returns the value to compare
+     * @param callable(R, R): int $compareValues    a callable that compares two values
+     *
+     * @return list<T>
      */
     public static function stableSort(array $elements, callable $getComparedValue, callable $compareValues): array
     {
@@ -102,9 +107,9 @@ final class Utils
     /**
      * Sort fixers by their priorities.
      *
-     * @param FixerInterface[] $fixers
+     * @param list<FixerInterface> $fixers
      *
-     * @return FixerInterface[]
+     * @return list<FixerInterface>
      */
     public static function sortFixers(array $fixers): array
     {
@@ -120,11 +125,11 @@ final class Utils
     /**
      * Join names in natural language using specified wrapper (double quote by default).
      *
-     * @param string[] $names
+     * @param list<string> $names
      *
      * @throws \InvalidArgumentException
      */
-    public static function naturalLanguageJoin(array $names, string $wrapper = '"'): string
+    public static function naturalLanguageJoin(array $names, string $wrapper = '"', string $lastJoin = 'and'): string
     {
         if (0 === \count($names)) {
             throw new \InvalidArgumentException('Array of names cannot be empty.');
@@ -134,12 +139,12 @@ final class Utils
             throw new \InvalidArgumentException('Wrapper should be a single-char string or empty.');
         }
 
-        $names = array_map(static fn (string $name): string => sprintf('%2$s%1$s%2$s', $name, $wrapper), $names);
+        $names = array_map(static fn (string $name): string => \sprintf('%2$s%1$s%2$s', $name, $wrapper), $names);
 
         $last = array_pop($names);
 
         if (\count($names) > 0) {
-            return implode(', ', $names).' and '.$last;
+            return implode(', ', $names).' '.$lastJoin.' '.$last;
         }
 
         return $last;
@@ -148,18 +153,26 @@ final class Utils
     /**
      * Join names in natural language wrapped in backticks, e.g. `a`, `b` and `c`.
      *
-     * @param string[] $names
+     * @param list<string> $names
      *
      * @throws \InvalidArgumentException
      */
-    public static function naturalLanguageJoinWithBackticks(array $names): string
+    public static function naturalLanguageJoinWithBackticks(array $names, string $lastJoin = 'and'): string
     {
-        return self::naturalLanguageJoin($names, '`');
+        return self::naturalLanguageJoin($names, '`', $lastJoin);
+    }
+
+    public static function isFutureModeEnabled(): bool
+    {
+        return filter_var(
+            getenv('PHP_CS_FIXER_FUTURE_MODE'),
+            \FILTER_VALIDATE_BOOL
+        );
     }
 
     public static function triggerDeprecation(\Exception $futureException): void
     {
-        if (getenv('PHP_CS_FIXER_FUTURE_MODE')) {
+        if (self::isFutureModeEnabled()) {
             throw new \RuntimeException(
                 'Your are using something deprecated, see previous exception. Aborting execution because `PHP_CS_FIXER_FUTURE_MODE` environment variable is set.',
                 0,
@@ -170,7 +183,7 @@ final class Utils
         $message = $futureException->getMessage();
 
         self::$deprecations[$message] = true;
-        @trigger_error($message, E_USER_DEPRECATED);
+        @trigger_error($message, \E_USER_DEPRECATED);
     }
 
     /**
@@ -182,6 +195,14 @@ final class Utils
         sort($triggeredDeprecations);
 
         return $triggeredDeprecations;
+    }
+
+    public static function convertArrayTypeToList(string $type): string
+    {
+        $parts = explode('[]', $type);
+        $count = \count($parts) - 1;
+
+        return str_repeat('list<', $count).$parts[0].str_repeat('>', $count);
     }
 
     /**
@@ -205,7 +226,7 @@ final class Utils
     }
 
     /**
-     * @param array<mixed> $value
+     * @param array<array-key, mixed> $value
      */
     private static function arrayToString(array $value): string
     {

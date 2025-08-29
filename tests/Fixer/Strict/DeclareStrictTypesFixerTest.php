@@ -21,6 +21,10 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DeclareStrictTypesFixerTest extends AbstractFixerTestCase
 {
@@ -32,6 +36,9 @@ final class DeclareStrictTypesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -49,8 +56,17 @@ class A {
             '<?php declare/* A b C*/(strict_types=1);',
         ];
 
-        yield [
-            '<?php /**/ /**/ deClarE  (strict_types=1)    ?>Test',
+        yield 'monolithic file with closing tag' => [
+            '<?php /**/ /**/ deClarE  (strict_types=1)    ?>',
+            '<?php /**/ /**/ deClarE  (STRICT_TYPES=1)    ?>',
+        ];
+
+        yield 'monolithic file with closing tag and extra new line' => [
+            '<?php /**/ /**/ deClarE  (strict_types=1)    ?>'."\n",
+            '<?php /**/ /**/ deClarE  (STRICT_TYPES=1)    ?>'."\n",
+        ];
+
+        yield 'monolithic file with closing tag and extra content' => [
             '<?php /**/ /**/ deClarE  (STRICT_TYPES=1)    ?>Test',
         ];
 
@@ -129,34 +145,69 @@ $a = 456;
             '<?php declare(strict_types=1);',
             '<?php declare(strict_types=0);',
         ];
-    }
 
-    /**
-     * @dataProvider provideDoNotFixCases
-     */
-    public function testDoNotFix(string $input): void
-    {
-        $this->doTest($input);
-    }
-
-    public static function provideDoNotFixCases(): iterable
-    {
         yield ['  <?php echo 123;']; // first statement must be an open tag
 
         yield ['<?= 123;']; // first token open with echo is not fixed
+
+        yield 'empty file /wo open tag' => [
+            '',
+        ];
+
+        yield 'empty file /w open tag' => [
+            '<?php declare(strict_types=1);',
+            '<?php',
+        ];
+
+        yield 'non-empty file /wo open tag' => [
+            'x',
+        ];
+
+        yield 'non-empty file /w open tag' => [
+            'x<?php',
+        ];
+
+        yield 'file with shebang /w open tag' => [
+            <<<'EOD'
+                #!x
+                <?php declare(strict_types=1);
+                EOD,
+            <<<'EOD'
+                #!x
+                <?php
+                EOD,
+        ];
+
+        yield 'file with shebang /wo open tag' => [
+            <<<'EOD'
+                #!x
+                y
+                EOD,
+        ];
+
+        yield 'file with shebang not followed by open tag' => [
+            <<<'EOD'
+                #!x
+                #!not_a_shebang
+                <?php
+                EOD,
+        ];
     }
 
     /**
-     * @dataProvider provideMessyWhitespacesCases
+     * @dataProvider provideWithWhitespacesConfigCases
      */
-    public function testMessyWhitespaces(string $expected, ?string $input = null): void
+    public function testWithWhitespacesConfig(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
         $this->doTest($expected, $input);
     }
 
-    public static function provideMessyWhitespacesCases(): iterable
+    /**
+     * @return iterable<int, array{string, string}>
+     */
+    public static function provideWithWhitespacesConfigCases(): iterable
     {
         yield [
             "<?php declare(strict_types=1);\r\nphpinfo();",

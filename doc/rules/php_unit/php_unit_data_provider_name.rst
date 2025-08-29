@@ -120,3 +120,10 @@ The rule is part of the following rule set:
 
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderNameFixer <./../../../src/Fixer/PhpUnit/PhpUnitDataProviderNameFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitDataProviderNameFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitDataProviderNameFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

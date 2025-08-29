@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\FixerConfiguration;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 interface FixerOptionInterface
 {
     public function getName(): string;
@@ -35,7 +38,7 @@ interface FixerOptionInterface
     public function getAllowedTypes(): ?array;
 
     /**
-     * @return null|list<null|(callable(mixed): bool)|scalar>
+     * @return null|non-empty-list<null|(callable(mixed): bool)|scalar>
      */
     public function getAllowedValues(): ?array;
 

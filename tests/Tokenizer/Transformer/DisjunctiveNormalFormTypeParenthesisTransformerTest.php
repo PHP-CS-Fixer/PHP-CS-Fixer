@@ -22,12 +22,16 @@ use PhpCsFixer\Tokenizer\CT;
  *
  * @internal
  *
+ * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
  * @requires PHP 8.2
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DisjunctiveNormalFormTypeParenthesisTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
@@ -36,6 +40,9 @@ final class DisjunctiveNormalFormTypeParenthesisTransformerTest extends Abstract
         $this->doTest($source, $expectedTokens, [CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE]);
     }
 
+    /**
+     * @return iterable<string, array{string, _TransformerTestExpectedKindsUnderIndex}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield 'lambda with lots of arguments and some others' => [
@@ -326,7 +333,7 @@ return new static();
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcess83Cases
      *
@@ -337,6 +344,9 @@ return new static();
         $this->doTest($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<string, array{string, _TransformerTestExpectedKindsUnderIndex}>
+     */
     public static function provideProcess83Cases(): iterable
     {
         yield 'typed const' => [

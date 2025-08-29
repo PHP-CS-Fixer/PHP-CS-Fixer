@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Gert de Pagter
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitSetUpTearDownVisibilityFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitSetUpTearDownVisibilityFixer>
+ *
+ * @author Gert de Pagter
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpUnitSetUpTearDownVisibilityFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class PhpUnitSetUpTearDownVisibilityFixerTest extends AbstractFixerTestCas
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'setUp and tearDown are made protected if they are public' => [
@@ -262,6 +269,39 @@ class OtherTest extends \PhpUnit\FrameWork\TestCase
     public function setUp() {}
 
     public function tearDown() {}
+}
+',
+        ];
+
+        yield 'It does not touch anonymous class' => [
+            '<?php
+class FooTest extends \PhpUnit\FrameWork\TestCase
+{
+    protected function setUp(): void {
+        $mock = new class {
+            public function setUp() {}
+        };
+    }
+    protected function testSomethingElse() {
+        $mock = new class implements SetupableInterface {
+            public function setUp() {}
+        };
+    }
+}
+',
+            '<?php
+class FooTest extends \PhpUnit\FrameWork\TestCase
+{
+    public function setUp(): void {
+        $mock = new class {
+            public function setUp() {}
+        };
+    }
+    protected function testSomethingElse() {
+        $mock = new class implements SetupableInterface {
+            public function setUp() {}
+        };
+    }
 }
 ',
         ];

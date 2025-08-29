@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Smoke;
 
 use Keradus\CliExecutor\CommandExecutor;
 use PhpCsFixer\Console\Application;
+use PhpCsFixer\Preg;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -29,10 +30,12 @@ use Symfony\Component\Filesystem\Filesystem;
  * @group covers-nothing
  *
  * @large
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class InstallViaComposerTest extends AbstractSmokeTestCase
 {
-    private Filesystem $fs;
+    private ?Filesystem $fs;
 
     /** @var array<string, mixed> */
     private array $currentCodeAsComposerDependency = [
@@ -51,7 +54,7 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
     ];
 
     /**
-     * @var string[]
+     * @var list<string>
      */
     private array $stepsToVerifyInstallation = [
         // Confirm we can install.
@@ -64,13 +67,6 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
         'vendor/bin/php-cs-fixer fix --help',
     ];
 
-    public function __construct()
-    {
-        $this->fs = new Filesystem();
-
-        parent::__construct();
-    }
-
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
@@ -82,20 +78,32 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
         try {
             CommandExecutor::create('php --version', __DIR__)->getResult();
         } catch (\RuntimeException $e) {
-            self::markTestSkippedOrFail('Missing `php` env script. Details:'."\n".$e->getMessage());
+            self::fail('Missing `php` env script. Details:'."\n".$e->getMessage());
         }
 
         try {
             CommandExecutor::create('composer --version', __DIR__)->getResult();
         } catch (\RuntimeException $e) {
-            self::markTestSkippedOrFail('Missing `composer` env script. Details:'."\n".$e->getMessage());
+            self::fail('Missing `composer` env script. Details:'."\n".$e->getMessage());
         }
 
         try {
             CommandExecutor::create('composer check', __DIR__.'/../..')->getResult();
         } catch (\RuntimeException $e) {
-            self::markTestSkippedOrFail('Composer check failed. Details:'."\n".$e->getMessage());
+            self::fail('Composer check failed. Details:'."\n".$e->getMessage());
         }
+    }
+
+    protected function setUp(): void
+    {
+        $this->fs = new Filesystem();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->fs = null;
+
+        parent::tearDown();
     }
 
     public function testInstallationViaPathIsPossible(): void
@@ -112,14 +120,15 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
     {
         // Composer Artifact Repository requires `zip` extension
         if (!\extension_loaded('zip')) {
-            self::markTestSkippedOrFail('No zip extension available.');
+            // We do not want to mark test as skipped, because we explicitly want to test this and `zip` is required
+            self::fail('No zip extension available.');
         }
 
         $tmpArtifactPath = tempnam(sys_get_temp_dir(), 'cs_fixer_tmp_');
         unlink($tmpArtifactPath);
         $this->fs->mkdir($tmpArtifactPath);
 
-        $fakeVersion = preg_replace('/\\-.+/', '', Application::VERSION, 1).'-alpha987654321';
+        $fakeVersion = Preg::replace('/\-.+/', '', Application::VERSION, 1).'-alpha987654321';
 
         $tmpPath = $this->createFakeComposerProject([
             'repositories' => [
@@ -191,7 +200,7 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
         try {
             file_put_contents(
                 $tmpPath.'/composer.json',
-                json_encode($initialComposerFileState, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT)
+                json_encode($initialComposerFileState, \JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT)
             );
         } catch (\JsonException $e) {
             throw new \InvalidArgumentException(

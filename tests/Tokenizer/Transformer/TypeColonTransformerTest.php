@@ -23,11 +23,15 @@ use PhpCsFixer\Tokenizer\CT;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\TypeColonTransformer
+ *
+ * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TypeColonTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param array<int, int|string> $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
@@ -42,6 +46,9 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
         );
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: _TransformerTestExpectedKindsUnderIndex}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield [
@@ -110,7 +117,7 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcess81Cases
      *
@@ -118,15 +125,12 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
      */
     public function testProcess81(string $source, array $expectedTokens = []): void
     {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            [
-                CT::T_TYPE_COLON,
-            ]
-        );
+        $this->testProcess($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<int, array{string, _TransformerTestExpectedKindsUnderIndex}>
+     */
     public static function provideProcess81Cases(): iterable
     {
         yield [

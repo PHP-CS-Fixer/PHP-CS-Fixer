@@ -23,6 +23,8 @@ use PhpCsFixer\PregException;
  * @covers \PhpCsFixer\Preg
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PregTest extends TestCase
 {
@@ -31,7 +33,7 @@ final class PregTest extends TestCase
         $this->expectException(PregException::class);
         $this->expectExceptionMessage('Preg::match(): Invalid PCRE pattern ""');
 
-        Preg::match('', 'foo', $matches);
+        Preg::match('', 'foo');
     }
 
     /**
@@ -46,33 +48,10 @@ final class PregTest extends TestCase
         self::assertSame($expectedMatches, $actualMatches);
     }
 
-    public static function providePatternValidationCases(): iterable
-    {
-        yield 'invalid_blank' => ['', null, PregException::class];
-
-        yield 'invalid_open' => ["\1", null, PregException::class, "'\1' found"];
-
-        yield 'valid_control_character_delimiter' => ["\1\1", true];
-
-        yield 'invalid_control_character_modifier' => ["\1\1\1", null, PregException::class, ' Unknown modifier '];
-
-        yield 'valid_slate' => ['//', true];
-
-        yield 'valid_paired' => ['()', true];
-
-        yield 'paired_non_utf8_only' => ["((*UTF8)\xFF)", null, PregException::class, 'UTF-8'];
-
-        yield 'valid_paired_non_utf8_only' => ["(\xFF)", true];
-
-        yield 'php_version_dependent' => ['([\\R])', false, PregException::class, 'Compilation failed: escape sequence is invalid '];
-
-        $nullByteMessage = \PHP_VERSION_ID >= 8_02_00 ? 'NUL is not a valid modifier' : 'Null byte in regex';
-
-        yield 'null_byte_injection' => ['()'."\0", null, PregException::class, " {$nullByteMessage} "];
-    }
-
     /**
      * @dataProvider providePatternValidationCases
+     *
+     * @param null|class-string<\Throwable> $expectedException
      */
     public function testPatternValidation(string $pattern, ?bool $expected = null, ?string $expectedException = null, ?string $expectedMessage = null): void
     {
@@ -86,10 +65,10 @@ final class PregTest extends TestCase
 
             if (null !== $expectedMessage) {
                 ++$i;
-                $this->expectExceptionMessage($expectedMessage);
+                $this->expectExceptionMessageMatches($expectedMessage);
             }
 
-            return (bool) $i;
+            return 0 !== $i;
         };
 
         try {
@@ -113,6 +92,8 @@ final class PregTest extends TestCase
 
     /**
      * @dataProvider providePatternValidationCases
+     *
+     * @param null|class-string<\Throwable> $expectedException
      */
     public function testPatternsValidation(string $pattern, ?bool $expected = null, ?string $expectedException = null, ?string $expectedMessage = null): void
     {
@@ -126,7 +107,7 @@ final class PregTest extends TestCase
 
             if (null !== $expectedMessage) {
                 ++$i;
-                $this->expectExceptionMessage($expectedMessage);
+                $this->expectExceptionMessageMatches($expectedMessage);
             }
 
             return (bool) $i;
@@ -152,12 +133,38 @@ final class PregTest extends TestCase
         }
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1: null|bool, 2?: string, 3?: string}>
+     */
+    public static function providePatternValidationCases(): iterable
+    {
+        yield 'invalid_blank' => ['', null, PregException::class];
+
+        yield 'invalid_open' => ["\1", null, PregException::class, "/'\x01' found/"];
+
+        yield 'valid_control_character_delimiter' => ["\1\1", true];
+
+        yield 'invalid_control_character_modifier' => ["\1\1\1", null, PregException::class, '/ Unknown modifier|Invalid PCRE pattern /'];
+
+        yield 'valid_slate' => ['//', true];
+
+        yield 'valid_paired' => ['()', true];
+
+        yield 'paired_non_utf8_only' => ["((*UTF8)\xFF)", null, PregException::class, '/UTF-8/'];
+
+        yield 'valid_paired_non_utf8_only' => ["(\xFF)", true];
+
+        yield 'php_version_dependent' => ['([\R])', false, PregException::class, '/Compilation failed: escape sequence is invalid/'];
+
+        yield 'null_byte_injection' => ['()'."\0", null, PregException::class, '/NUL( byte)? is not a valid modifier|Null byte in regex/'];
+    }
+
     public function testMatchAllFailing(): void
     {
         $this->expectException(PregException::class);
         $this->expectExceptionMessage('Preg::matchAll(): Invalid PCRE pattern ""');
 
-        Preg::matchAll('', 'foo', $matches);
+        Preg::matchAll('', 'foo');
     }
 
     /**
@@ -181,12 +188,9 @@ final class PregTest extends TestCase
     }
 
     /**
-     * @param string|string[] $pattern
-     * @param string|string[] $subject
-     *
      * @dataProvider provideCommonCases
      */
-    public function testReplace($pattern, $subject): void
+    public function testReplace(string $pattern, string $subject): void
     {
         $expectedResult = preg_replace($pattern, 'foo', $subject);
         $actualResult = Preg::replace($pattern, 'foo', $subject);
@@ -203,12 +207,9 @@ final class PregTest extends TestCase
     }
 
     /**
-     * @param string|string[] $pattern
-     * @param string|string[] $subject
-     *
      * @dataProvider provideCommonCases
      */
-    public function testReplaceCallback($pattern, $subject): void
+    public function testReplaceCallback(string $pattern, string $subject): void
     {
         $callback = static fn (array $x): string => implode('-', $x);
 
@@ -216,19 +217,6 @@ final class PregTest extends TestCase
         $actualResult = Preg::replaceCallback($pattern, $callback, $subject);
 
         self::assertSame($expectedResult, $actualResult);
-    }
-
-    public static function provideCommonCases(): iterable
-    {
-        yield ['/u/u', 'u'];
-
-        yield ['/u/u', 'u/u'];
-
-        yield ['/./', \chr(224).'bc'];
-
-        yield ['/à/', 'àbc'];
-
-        yield ['/'.\chr(224).'|í/', 'àbc'];
     }
 
     public function testSplitFailing(): void
@@ -248,6 +236,22 @@ final class PregTest extends TestCase
         $actualResult = Preg::split($pattern, $subject);
 
         self::assertSame($expectedResult, $actualResult);
+    }
+
+    /**
+     * @return iterable<int, array{string, string}>
+     */
+    public static function provideCommonCases(): iterable
+    {
+        yield ['/u/u', 'u'];
+
+        yield ['/u/u', 'u/u'];
+
+        yield ['/./', \chr(224).'bc'];
+
+        yield ['/à/', 'àbc'];
+
+        yield ['/'.\chr(224).'|í/', 'àbc'];
     }
 
     public function testCorrectnessForUtf8String(): void

@@ -15,9 +15,9 @@ Configuration
 Sets of annotation types to be grouped together. Use ``*`` to match any tag
 character.
 
-Allowed types: ``string[][]``
+Allowed types: ``list<list<string>>``
 
-Default value: ``[['deprecated', 'link', 'see', 'since'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write']]``
+Default value: ``[['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write'], ['deprecated', 'link', 'see', 'since']]``
 
 ``skip_unlisted_annotations``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -155,6 +155,18 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
-- `@Symfony <./../../ruleSets/Symfony.rst>`_
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 
+  ``['groups' => [['Annotation', 'NamedArgumentConstructor', 'Target'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write'], ['deprecated', 'link', 'see', 'since']]]``
+
+- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
+  ``['groups' => [['Annotation', 'NamedArgumentConstructor', 'Target'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write'], ['deprecated', 'link', 'see', 'since']]]``
+
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocSeparationFixer <./../../../src/Fixer/Phpdoc/PhpdocSeparationFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocSeparationFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocSeparationFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

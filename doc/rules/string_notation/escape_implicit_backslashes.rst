@@ -20,17 +20,16 @@ ensure that all backslashes are escaped. Both single and double backslashes are
 allowed in single-quoted strings, so the purpose in this context is mainly to
 have a uniformed way to have them written all over the codebase.
 
+Warning
+-------
+
+This rule is deprecated and will be removed in the next major version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You should use ``string_implicit_backslashes`` instead.
+
 Configuration
 -------------
-
-``single_quoted``
-~~~~~~~~~~~~~~~~~
-
-Whether to fix single-quoted strings.
-
-Allowed types: ``bool``
-
-Default value: ``false``
 
 ``double_quoted``
 ~~~~~~~~~~~~~~~~~
@@ -49,6 +48,15 @@ Whether to fix heredoc syntax.
 Allowed types: ``bool``
 
 Default value: ``true``
+
+``single_quoted``
+~~~~~~~~~~~~~~~~~
+
+Whether to fix single-quoted strings.
+
+Allowed types: ``bool``
+
+Default value: ``false``
 
 Examples
 --------
@@ -136,10 +144,10 @@ With configuration: ``['heredoc_syntax' => false]``.
     Interpret my \100 but not my \999
     HEREDOC;
 
-Rule sets
----------
+References
+----------
 
-The rule is part of the following rule set:
+- Fixer class: `PhpCsFixer\\Fixer\\StringNotation\\EscapeImplicitBackslashesFixer <./../../../src/Fixer/StringNotation/EscapeImplicitBackslashesFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\StringNotation\\EscapeImplicitBackslashesFixerTest <./../../../tests/Fixer/StringNotation/EscapeImplicitBackslashesFixerTest.php>`_
 
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
-
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

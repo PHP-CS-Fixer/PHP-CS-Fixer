@@ -48,3 +48,8 @@ class Aaa implements
 $a = new Foo();
 $b = (bool) 1;
 $c = true ? (int) '1' : 2;
+
+function callback($a, ...   $b)
+{
+    return (--$a) * ($b++);
+}

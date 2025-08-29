@@ -18,11 +18,15 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @author Ilija Tovilo <ilija.tovilo@me.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\StringNotation\StringLineEndingFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\StringLineEndingFixer>
+ *
+ * @author Ilija Tovilo <ilija.tovilo@me.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class StringLineEndingFixerTest extends AbstractFixerTestCase
 {
@@ -34,6 +38,9 @@ final class StringLineEndingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixCases(): iterable
     {
         $heredocTemplate = "<?php\n\$a=\n<<<EOT\n%s\n\nEOT;\n";
@@ -63,43 +70,43 @@ final class StringLineEndingFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            sprintf($heredocTemplate, $input),
-            sprintf($heredocTemplate, str_replace("\n", "\r", $input)),
+            \sprintf($heredocTemplate, $input),
+            \sprintf($heredocTemplate, str_replace("\n", "\r", $input)),
         ];
 
         yield [
-            sprintf($heredocTemplate, $input),
-            sprintf($heredocTemplate, str_replace("\n", "\r\n", $input)),
+            \sprintf($heredocTemplate, $input),
+            \sprintf($heredocTemplate, str_replace("\n", "\r\n", $input)),
         ];
 
         yield [
-            sprintf($nowdocTemplate, $input),
-            sprintf($nowdocTemplate, str_replace("\n", "\r", $input)),
+            \sprintf($nowdocTemplate, $input),
+            \sprintf($nowdocTemplate, str_replace("\n", "\r", $input)),
         ];
 
         yield [
-            sprintf($nowdocTemplate, $input),
-            sprintf($nowdocTemplate, str_replace("\n", "\r\n", $input)),
+            \sprintf($nowdocTemplate, $input),
+            \sprintf($nowdocTemplate, str_replace("\n", "\r\n", $input)),
         ];
 
         yield [
-            sprintf(str_replace('<<<', 'b<<<', $nowdocTemplate), $input),
-            sprintf(str_replace('<<<', 'b<<<', $nowdocTemplate), str_replace("\n", "\r\n", $input)),
+            \sprintf(str_replace('<<<', 'b<<<', $nowdocTemplate), $input),
+            \sprintf(str_replace('<<<', 'b<<<', $nowdocTemplate), str_replace("\n", "\r\n", $input)),
         ];
 
         yield [
-            sprintf(str_replace('<<<', 'B<<<', $nowdocTemplate), $input),
-            sprintf(str_replace('<<<', 'B<<<', $nowdocTemplate), str_replace("\n", "\r\n", $input)),
+            \sprintf(str_replace('<<<', 'B<<<', $nowdocTemplate), $input),
+            \sprintf(str_replace('<<<', 'B<<<', $nowdocTemplate), str_replace("\n", "\r\n", $input)),
         ];
 
         yield [
-            sprintf(str_replace('<<<', 'b<<<', $heredocTemplate), $input),
-            sprintf(str_replace('<<<', 'b<<<', $heredocTemplate), str_replace("\n", "\r\n", $input)),
+            \sprintf(str_replace('<<<', 'b<<<', $heredocTemplate), $input),
+            \sprintf(str_replace('<<<', 'b<<<', $heredocTemplate), str_replace("\n", "\r\n", $input)),
         ];
 
         yield [
-            sprintf(str_replace('<<<', 'B<<<', $heredocTemplate), $input),
-            sprintf(str_replace('<<<', 'B<<<', $heredocTemplate), str_replace("\n", "\r\n", $input)),
+            \sprintf(str_replace('<<<', 'B<<<', $heredocTemplate), $input),
+            \sprintf(str_replace('<<<', 'B<<<', $heredocTemplate), str_replace("\n", "\r\n", $input)),
         ];
 
         yield 'not T_CLOSE_TAG, do T_INLINE_HTML' => [
@@ -113,7 +120,7 @@ final class StringLineEndingFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    public function testWithDifferentLineEndingConfiguration(): void
+    public function testWithWhitespacesConfig(): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 

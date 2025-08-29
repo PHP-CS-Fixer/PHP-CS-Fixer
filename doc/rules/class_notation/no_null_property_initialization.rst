@@ -17,8 +17,10 @@ Example #1
    +++ New
     <?php
     class Foo {
-   -    public $foo = null;
-   +    public $foo;
+   -    public $bar = null;
+   +    public $bar;
+        public ?string $baz = null;
+        public ?string $baux;
     }
 
 Example #2
@@ -42,3 +44,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\NoNullPropertyInitializationFixer <./../../../src/Fixer/ClassNotation/NoNullPropertyInitializationFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ClassNotation\\NoNullPropertyInitializationFixerTest <./../../../tests/Fixer/ClassNotation/NoNullPropertyInitializationFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

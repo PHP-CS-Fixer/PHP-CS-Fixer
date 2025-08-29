@@ -20,6 +20,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\DateTimeCreateFromFormatCallFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\DateTimeCreateFromFormatCallFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DateTimeCreateFromFormatCallFixerTest extends AbstractFixerTestCase
 {
@@ -31,9 +35,12 @@ final class DateTimeCreateFromFormatCallFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
-        foreach (['DateTime', 'DateTimeImmutable'] as $class) {
+        foreach ([\DateTime::class, \DateTimeImmutable::class] as $class) {
             $lowerCaseClass = strtolower($class);
             $upperCaseClass = strtoupper($class);
 

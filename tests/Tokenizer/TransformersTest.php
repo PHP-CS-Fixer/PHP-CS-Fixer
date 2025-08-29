@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformers
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TransformersTest extends TestCase
 {
@@ -42,6 +44,9 @@ final class TransformersTest extends TestCase
         }
     }
 
+    /**
+     * @return iterable<string, array{string, array<int, int>}>
+     */
     public static function provideTransformCases(): iterable
     {
         yield 'use trait after complex string variable' => [
@@ -64,8 +69,7 @@ final class TransformersTest extends TestCase
                     }
                 }
 
-                SOURCE
-            ,
+                SOURCE,
             [46 => CT::T_USE_TRAIT],
         ];
     }

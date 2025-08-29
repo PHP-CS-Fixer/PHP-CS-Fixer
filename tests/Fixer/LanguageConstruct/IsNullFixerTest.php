@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Vladimir Reznichenko <kalessil@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer>
+ *
+ * @author Vladimir Reznichenko <kalessil@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class IsNullFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class IsNullFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         $multiLinePatternToFix = <<<'FIX'
@@ -63,25 +70,23 @@ final class IsNullFixerTest extends AbstractFixerTestCase
 
         yield ['<?php $x = ClassA::is_null(json_decode($x));'];
 
-        yield ['<?php $x = ScopeA\\is_null(json_decode($x));'];
+        yield ['<?php $x = ScopeA\is_null(json_decode($x));'];
 
-        yield ['<?php $x = namespace\\is_null(json_decode($x));'];
+        yield ['<?php $x = namespace\is_null(json_decode($x));'];
 
         yield ['<?php $x = $object->is_null(json_decode($x));'];
 
-        yield ['<?php $x = new \\is_null(json_decode($x));'];
+        yield ['<?php $x = new \is_null(json_decode($x));'];
 
         yield ['<?php $x = new is_null(json_decode($x));'];
 
-        yield ['<?php $x = new ScopeB\\is_null(json_decode($x));'];
+        yield ['<?php $x = new ScopeB\is_null(json_decode($x));'];
 
         yield ['<?php is_nullSmth(json_decode($x));'];
 
         yield ['<?php smth_is_null(json_decode($x));'];
 
         yield ['<?php namespace Foo; function &is_null($x) { return null === $x; }'];
-
-        yield ['<?php "SELECT ... is_null(json_decode($x)) ...";'];
 
         yield ['<?php "SELECT ... is_null(json_decode($x)) ...";'];
 
@@ -95,21 +100,21 @@ final class IsNullFixerTest extends AbstractFixerTestCase
 
         yield ['<?php $x = null !== json_decode($x);', '<?php $x = ! is_null( json_decode($x) );'];
 
-        yield ['<?php $x = null === json_decode($x);', '<?php $x = \\is_null(json_decode($x));'];
+        yield ['<?php $x = null === json_decode($x);', '<?php $x = \is_null(json_decode($x));'];
 
-        yield ['<?php $x = null !== json_decode($x);', '<?php $x = !\\is_null(json_decode($x));'];
+        yield ['<?php $x = null !== json_decode($x);', '<?php $x = !\is_null(json_decode($x));'];
 
-        yield ['<?php $x = null !== json_decode($x);', '<?php $x = ! \\is_null(json_decode($x));'];
+        yield ['<?php $x = null !== json_decode($x);', '<?php $x = ! \is_null(json_decode($x));'];
 
-        yield ['<?php $x = null !== json_decode($x);', '<?php $x = ! \\is_null( json_decode($x) );'];
+        yield ['<?php $x = null !== json_decode($x);', '<?php $x = ! \is_null( json_decode($x) );'];
 
         yield ['<?php $x = null === json_decode($x).".dist";', '<?php $x = is_null(json_decode($x)).".dist";'];
 
         yield ['<?php $x = null !== json_decode($x).".dist";', '<?php $x = !is_null(json_decode($x)).".dist";'];
 
-        yield ['<?php $x = null === json_decode($x).".dist";', '<?php $x = \\is_null(json_decode($x)).".dist";'];
+        yield ['<?php $x = null === json_decode($x).".dist";', '<?php $x = \is_null(json_decode($x)).".dist";'];
 
-        yield ['<?php $x = null !== json_decode($x).".dist";', '<?php $x = !\\is_null(json_decode($x)).".dist";'];
+        yield ['<?php $x = null !== json_decode($x).".dist";', '<?php $x = !\is_null(json_decode($x)).".dist";'];
 
         yield [$multiLinePatternFixed, $multiLinePatternToFix];
 
@@ -302,6 +307,9 @@ final class IsNullFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'first-class callable' => [

@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocVarAnnotationCorrectOrderFixer extends AbstractFixer
 {
@@ -51,17 +53,17 @@ $foo = 2 + 2;
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
-            if (false === stripos($token->getContent(), '@var') && false === stripos($token->getContent(), '@type')) {
+            if (!str_contains(strtolower($token->getContent()), strtolower('@var')) && !str_contains(strtolower($token->getContent()), strtolower('@type'))) {
                 continue;
             }
 

@@ -1,7 +1,7 @@
 --TEST--
 Integration of fixers: phpdoc_to_return_type,fully_qualified_strict_types.
 --RULESET--
-{"fully_qualified_strict_types": true, "phpdoc_to_return_type": true}
+{"fully_qualified_strict_types": {"phpdoc_tags": []}, "phpdoc_to_return_type": true}
 --EXPECT--
 <?php
 use \Foo\Bar\Baz;

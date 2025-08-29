@@ -20,11 +20,14 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class NoUselessReturnFixer extends AbstractFixer
 {
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAllTokenKindsFound([T_FUNCTION, T_RETURN]);
+        return $tokens->isAllTokenKindsFound([\T_FUNCTION, \T_RETURN]);
     }
 
     public function getDefinition(): FixerDefinitionInterface
@@ -50,7 +53,7 @@ function example($b) {
      * {@inheritdoc}
      *
      * Must run before BlankLineBeforeStatementFixer, NoExtraBlankLinesFixer, NoWhitespaceInBlankLineFixer, SingleLineCommentStyleFixer, SingleLineEmptyBodyFixer.
-     * Must run after NoEmptyStatementFixer, NoUnneededCurlyBracesFixer, NoUselessElseFixer, SimplifiedNullReturnFixer.
+     * Must run after NoEmptyStatementFixer, NoUnneededBracesFixer, NoUnneededCurlyBracesFixer, NoUselessElseFixer, SimplifiedNullReturnFixer.
      */
     public function getPriority(): int
     {
@@ -60,7 +63,7 @@ function example($b) {
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_FUNCTION)) {
+            if (!$token->isGivenKind(\T_FUNCTION)) {
                 continue;
             }
 
@@ -78,7 +81,7 @@ function example($b) {
     private function fixFunction(Tokens $tokens, int $start, int $end): void
     {
         for ($index = $end; $index > $start; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_RETURN)) {
+            if (!$tokens[$index]->isGivenKind(\T_RETURN)) {
                 continue;
             }
 
@@ -92,7 +95,7 @@ function example($b) {
             }
 
             $previous = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$previous]->equalsAny([[T_ELSE], ')'])) {
+            if ($tokens[$previous]->equalsAny([[\T_ELSE], ')'])) {
                 continue;
             }
 

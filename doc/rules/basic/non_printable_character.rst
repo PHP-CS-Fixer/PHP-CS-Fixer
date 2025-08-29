@@ -61,6 +61,14 @@ The rule is part of the following rule sets:
 - `@PHP71Migration:risky <./../../ruleSets/PHP71MigrationRisky.rst>`_
 - `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_
 - `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_
+- `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 - `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\Basic\\NonPrintableCharacterFixer <./../../../src/Fixer/Basic/NonPrintableCharacterFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Basic\\NonPrintableCharacterFixerTest <./../../../tests/Fixer/Basic/NonPrintableCharacterFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

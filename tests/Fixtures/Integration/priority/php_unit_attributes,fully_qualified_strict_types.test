@@ -1,0 +1,34 @@
+--TEST--
+Integration of fixers: php_unit_attributes,fully_qualified_strict_types.
+--RULESET--
+{"php_unit_attributes": true, "fully_qualified_strict_types": {"import_symbols": true} }
+--REQUIREMENTS--
+{"php": 80000}
+--EXPECT--
+<?php
+namespace Foo;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+class BarTest extends TestCase
+{
+    /**
+     */
+    #[DataProvider('getData')]
+    public function testSomething()
+    {
+    }
+}
+
+--INPUT--
+<?php
+namespace Foo;
+use PHPUnit\Framework\TestCase;
+class BarTest extends TestCase
+{
+    /**
+     * @dataProvider getData
+     */
+    public function testSomething()
+    {
+    }
+}

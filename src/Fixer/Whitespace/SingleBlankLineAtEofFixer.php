@@ -28,6 +28,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SingleBlankLineAtEofFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
@@ -57,7 +59,7 @@ final class SingleBlankLineAtEofFixer extends AbstractFixer implements Whitespac
     {
         $count = $tokens->count();
 
-        if ($count > 0 && !$tokens[$count - 1]->isGivenKind([T_INLINE_HTML, T_CLOSE_TAG, T_OPEN_TAG])) {
+        if ($count > 0 && !$tokens[$count - 1]->isGivenKind([\T_INLINE_HTML, \T_CLOSE_TAG, \T_OPEN_TAG])) {
             $tokens->ensureWhitespaceAtIndex($count - 1, 1, $this->whitespacesConfig->getLineEnding());
         }
     }

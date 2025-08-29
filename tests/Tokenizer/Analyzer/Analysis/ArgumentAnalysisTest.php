@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ArgumentAnalysisTest extends TestCase
 {
@@ -67,7 +69,7 @@ final class ArgumentAnalysisTest extends TestCase
     public function testNoTypeFound(): void
     {
         $analysis = new ArgumentAnalysis('$name', 1, null, null);
-        self::assertFalse($analysis->hasDefault());
-        self::assertNull($analysis->getDefault());
+        self::assertFalse($analysis->hasTypeAnalysis());
+        self::assertNull($analysis->getTypeAnalysis());
     }
 }

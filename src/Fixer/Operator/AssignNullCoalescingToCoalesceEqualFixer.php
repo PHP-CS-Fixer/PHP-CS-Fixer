@@ -21,6 +21,9 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class AssignNullCoalescingToCoalesceEqualFixer extends AbstractShortOperatorFixer
 {
     public function getDefinition(): FixerDefinitionInterface
@@ -48,24 +51,24 @@ final class AssignNullCoalescingToCoalesceEqualFixer extends AbstractShortOperat
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_COALESCE);
+        return $tokens->isTokenKindFound(\T_COALESCE);
     }
 
     protected function isOperatorTokenCandidate(Tokens $tokens, int $index): bool
     {
-        if (!$tokens[$index]->isGivenKind(T_COALESCE)) {
+        if (!$tokens[$index]->isGivenKind(\T_COALESCE)) {
             return false;
         }
 
         // make sure after '??' does not contain '? :'
 
-        $nextIndex = $tokens->getNextTokenOfKind($index, ['?', ';', [T_CLOSE_TAG]]);
+        $nextIndex = $tokens->getNextTokenOfKind($index, ['?', ';', [\T_CLOSE_TAG]]);
 
         return !$tokens[$nextIndex]->equals('?');
     }
 
     protected function getReplacementToken(Token $token): Token
     {
-        return new Token([T_COALESCE_EQUAL, '??=']);
+        return new Token([\T_COALESCE_EQUAL, '??=']);
     }
 }

@@ -2,27 +2,78 @@ includes:
     - dev-tools/vendor/phpstan/phpstan/conf/bleedingEdge.neon
 
     # Baseline, should only shrink! To regenerate it, just execute `composer phpstan:baseline`.
-    - dev-tools/phpstan/baseline.php
+    - dev-tools/phpstan/baseline/_loader.php
 
 parameters:
-    level: 6
+    level: 7
     paths:
         - src
         - tests
+        - php-cs-fixer
+        - dev-tools/phpstan/src
     excludePaths:
         - tests/Fixtures
+    polluteScopeWithLoopInitialAssignments: true # Do not enforce assignments outside of the loops
     reportUnmatchedIgnoredErrors: true # Do not allow outdated errors in the baseline
+    reportPossiblyNonexistentGeneralArrayOffset: true # enabled, but huge exceptions count; example fix: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/8089
+    reportPossiblyNonexistentConstantArrayOffset: true
     treatPhpDocTypesAsCertain: false
     ignoreErrors:
-        - '/^Class [a-zA-Z\\]+ extends @final class PhpCsFixer\\(ConfigurationException\\InvalidConfigurationException|ConfigurationException\\InvalidFixerConfigurationException|Tokenizer\\Tokens)\.$/'
+        - identifier: method.internal
+        - identifier: method.internalClass
+        - identifier: new.internalClass
+        - '/^Class [a-zA-Z\\]+ extends @final class PhpCsFixer\\(ConfigurationException\\InvalidConfigurationException|ConfigurationException\\InvalidFixerConfigurationException|Tokenizer\\Tokens|Console\\Command\\FixCommand)\.$/'
         - '/^\$this\(PhpCsFixer\\Tokenizer\\Tokens\) does not accept PhpCsFixer\\Tokenizer\\Token\|null\.$/'
 
-        # ignore PHPUnit data providers return type as they are not checked against the test methods anyway
-        - '#^Method PhpCsFixer\\Tests\\.+::provide.+Cases\(\) return type has no value type specified in iterable type (array|iterable)\.$#'
-
+        # We often need to iterate multiple times within single method and we re-use variable name
         -
-            message: '#Call to static method .+ with .+ will always evaluate to true.$#'
-            path: tests
-            count: 18
+            message: '/^For loop initial assignment overwrites variable \$(i|index|endIndex)+\.$/'
+            paths:
+                - src/Fixer/Comment/CommentToPhpdocFixer.php
+                - src/Fixer/ControlStructure/YodaStyleFixer.php
+                - src/Fixer/Import/GlobalNamespaceImportFixer.php
+                - src/Fixer/Import/OrderedImportsFixer.php
+                - src/Fixer/LanguageConstruct/SingleSpaceAroundConstructFixer.php
+                - src/Fixer/Operator/NoUselessConcatOperatorFixer.php
+                - src/Fixer/PhpUnit/PhpUnitDedicateAssertInternalTypeFixer.php
+                - src/Fixer/ReturnNotation/ReturnAssignmentFixer.php
+                - src/Fixer/Whitespace/StatementIndentationFixer.php
+                - tests/DocBlock/TypeExpressionTest.php
+        -
+            message: '/^Foreach overwrites \$index with its key variable.$/'
+            paths:
+                - src/Fixer/DoctrineAnnotation/DoctrineAnnotationIndentationFixer.php
+                - src/Fixer/Import/GlobalNamespaceImportFixer.php
+                - src/Fixer/LanguageConstruct/GetClassToClassKeywordFixer.php
+
+        # Types related to tokens collections are purposefully narrowed, because we expect only tokens there
+        - '/^Parameter #1 \$array \(array<int, PhpCsFixer\\(Tokenizer|Doctrine\\Annotation)+\\Token>\) of method PhpCsFixer\\(Tokenizer|Doctrine\\Annotation)+\\Tokens::fromArray\(\) should be contravariant with parameter \$array \(array<int, mixed>\) of method SplFixedArray<PhpCsFixer\\(Tokenizer|Doctrine\\Annotation)+\\Token>::fromArray\(\)$/'
+        - '/^Parameter .* of method PhpCsFixer\\Tokenizer\\Tokens::offsetSet\(\) should be contravariant with parameter .* of method .*::offsetSet\(\)$/'
+        - '/^Parameter .* of method PhpCsFixer\\Tests\\Test\\TokensWithObservedTransformers::offsetSet\(\) should be contravariant with parameter .* of method .*::offsetSet\(\)$/'
+
+        # We retrieve these FQNs in various ways, we process them along the way, let's assume it's always class-string
+        - '/^Parameter #2 \$fullName of class PhpCsFixer\\Tokenizer\\Analyzer\\Analysis\\NamespaceUseAnalysis constructor expects class-string, string given\.$/'
+
+        # Type for Command::$defaultName and ::$defaultDescription can not be specified because parent property also does not have a type
+        -
+            message: '/^Property PhpCsFixer\\Console\\Command\\\w+Command::\$default(?:Name|Description) has no type specified\.$/'
+            identifier: missingType.property
+        -
+            message: '/^Unused PhpCsFixer\\[a-zA-Z\\]+Interface::[a-zA-Z]+$/'
+            path: src
+            count: 17
     tipsOfTheDay: false
+    symfony:
+        consoleApplicationLoader: dev-tools/phpstan/console-application.php
     tmpDir: dev-tools/phpstan/cache
+
+services:
+    -
+        class: PhpCsFixer\PHPStan\Extension\PregMatchParameterOutExtension
+        tags:
+            - phpstan.staticMethodParameterOutTypeExtension
+
+    -
+        class: PhpCsFixer\PHPStan\Extension\PregMatchTypeSpecifyingExtension
+        tags:
+            - phpstan.typeSpecifier.staticMethodTypeSpecifyingExtension

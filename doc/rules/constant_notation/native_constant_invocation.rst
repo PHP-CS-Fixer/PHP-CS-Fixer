@@ -17,6 +17,15 @@ Risky when any of the constants are namespaced or overridden.
 Configuration
 -------------
 
+``exclude``
+~~~~~~~~~~~
+
+List of constants to ignore.
+
+Allowed types: ``list<string>``
+
+Default value: ``['null', 'false', 'true']``
+
 ``fix_built_in``
 ~~~~~~~~~~~~~~~~
 
@@ -32,18 +41,9 @@ Default value: ``true``
 
 List of additional constants to fix.
 
-Allowed types: ``array``
+Allowed types: ``list<string>``
 
 Default value: ``[]``
-
-``exclude``
-~~~~~~~~~~~
-
-List of constants to ignore.
-
-Allowed types: ``array``
-
-Default value: ``['null', 'false', 'true']``
 
 ``scope``
 ~~~~~~~~~
@@ -146,4 +146,10 @@ The rule is part of the following rule sets:
 
   ``['strict' => false]``
 
+References
+----------
 
+- Fixer class: `PhpCsFixer\\Fixer\\ConstantNotation\\NativeConstantInvocationFixer <./../../../src/Fixer/ConstantNotation/NativeConstantInvocationFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ConstantNotation\\NativeConstantInvocationFixerTest <./../../../tests/Fixer/ConstantNotation/NativeConstantInvocationFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

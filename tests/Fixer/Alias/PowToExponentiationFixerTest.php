@@ -21,6 +21,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
  * @covers \PhpCsFixer\Fixer\Alias\PowToExponentiationFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\PowToExponentiationFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PowToExponentiationFixerTest extends AbstractFixerTestCase
 {
@@ -32,6 +36,9 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -274,36 +281,7 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
             '<?php echo 10_0** 2;',
             '<?php echo pow(10_0, 2);',
         ];
-    }
 
-    /**
-     * @dataProvider provideFixPre80Cases
-     *
-     * @requires PHP <8.0
-     */
-    public function testFixPre80(string $expected, string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixPre80Cases(): iterable
-    {
-        yield [
-            '<?php echo $a{1}** $b{2+5};',
-            '<?php echo pow($a{1}, $b{2+5});',
-        ];
-    }
-
-    /**
-     * @dataProvider provideNotFixCases
-     */
-    public function testNotFix(string $expected): void
-    {
-        $this->doTest($expected);
-    }
-
-    public static function provideNotFixCases(): iterable
-    {
         yield [
             '<?php pow(); ++$a;++$a;++$a;++$a;++$a;++$a;// pow(1,2);',
         ];
@@ -322,6 +300,27 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
     }
 
     /**
+     * @dataProvider provideFixPre80Cases
+     *
+     * @requires PHP <8.0
+     */
+    public function testFixPre80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<int, array{string, string}>
+     */
+    public static function provideFixPre80Cases(): iterable
+    {
+        yield [
+            '<?php echo $a{1}** $b{2+5};',
+            '<?php echo pow($a{1}, $b{2+5});',
+        ];
+    }
+
+    /**
      * @requires PHP 8.0
      *
      * @dataProvider provideFix80Cases
@@ -331,6 +330,9 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{string, string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [

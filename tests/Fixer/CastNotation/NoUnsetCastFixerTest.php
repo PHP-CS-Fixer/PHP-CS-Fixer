@@ -22,6 +22,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\CastNotation\NoUnsetCastFixer
  *
  * @requires PHP <8.0
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\CastNotation\NoUnsetCastFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoUnsetCastFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class NoUnsetCastFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'simple form I' => [

@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class StrictComparisonFixer extends AbstractFixer
 {
@@ -48,7 +50,7 @@ final class StrictComparisonFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_IS_EQUAL, T_IS_NOT_EQUAL]);
+        return $tokens->isAnyTokenKindsFound([\T_IS_EQUAL, \T_IS_NOT_EQUAL]);
     }
 
     public function isRisky(): bool
@@ -58,22 +60,20 @@ final class StrictComparisonFixer extends AbstractFixer
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        static $map = [
-            T_IS_EQUAL => [
-                'id' => T_IS_IDENTICAL,
-                'content' => '===',
-            ],
-            T_IS_NOT_EQUAL => [
-                'id' => T_IS_NOT_IDENTICAL,
-                'content' => '!==',
-            ],
-        ];
-
         foreach ($tokens as $index => $token) {
-            $tokenId = $token->getId();
+            $newToken = [
+                \T_IS_EQUAL => [
+                    'id' => \T_IS_IDENTICAL,
+                    'content' => '===',
+                ],
+                \T_IS_NOT_EQUAL => [
+                    'id' => \T_IS_NOT_IDENTICAL,
+                    'content' => '!==',
+                ],
+            ][$token->getId()] ?? null;
 
-            if (isset($map[$tokenId])) {
-                $tokens[$index] = new Token([$map[$tokenId]['id'], $map[$tokenId]['content']]);
+            if (null !== $newToken) {
+                $tokens[$index] = new Token([$newToken['id'], $newToken['content']]);
             }
         }
     }

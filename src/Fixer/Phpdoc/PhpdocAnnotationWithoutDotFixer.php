@@ -25,11 +25,13 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
 {
     /**
-     * @var string[]
+     * @var non-empty-list<string>
      */
     private array $tags = ['throws', 'return', 'param', 'internal', 'deprecated', 'var', 'type'];
 
@@ -59,13 +61,13 @@ function foo ($bar) {}
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -106,7 +108,7 @@ function foo ($bar) {}
 
                 $startLine = $doc->getLine($annotation->getStart());
                 $optionalTypeRegEx = $annotation->supportTypes()
-                    ? sprintf('(?:%s\s+(?:\$\w+\s+)?)?', preg_quote(implode('|', $annotation->getTypes()), '/'))
+                    ? \sprintf('(?:%s\s+(?:\$\w+\s+)?)?', preg_quote(implode('|', $annotation->getTypes()), '/'))
                     : '';
                 $content = Preg::replaceCallback(
                     '/^(\s*\*\s*@\w+\s+'.$optionalTypeRegEx.')(\p{Lu}?(?=\p{Ll}|\p{Zs}))(.*)$/',
@@ -117,7 +119,7 @@ function foo ($bar) {}
                 $startLine->setContent($content);
             }
 
-            $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
+            $tokens[$index] = new Token([\T_DOC_COMMENT, $doc->getContent()]);
         }
     }
 }

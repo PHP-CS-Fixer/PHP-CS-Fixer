@@ -20,6 +20,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Alias\NoAliasLanguageConstructCallFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\NoAliasLanguageConstructCallFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoAliasLanguageConstructCallFixerTest extends AbstractFixerTestCase
 {
@@ -31,6 +35,9 @@ final class NoAliasLanguageConstructCallFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [

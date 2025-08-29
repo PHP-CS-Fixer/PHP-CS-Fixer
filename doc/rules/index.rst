@@ -19,7 +19,7 @@ Alias
   Replace non multibyte-safe functions with corresponding mb function.
 - `modernize_strpos <./alias/modernize_strpos.rst>`_ *(risky)*
 
-  Replace ``strpos()`` calls with ``str_starts_with()`` or ``str_contains()`` if possible.
+  Replace ``strpos()`` and ``stripos()`` calls with ``str_starts_with()`` or ``str_contains()`` if possible.
 - `no_alias_functions <./alias/no_alias_functions.rst>`_ *(risky)*
 
   Master functions shall be used instead of aliases.
@@ -70,13 +70,29 @@ Array Notation
 
   Yield from array must be unpacked to series of yields.
 
+Attribute Notation
+------------------
+
+- `attribute_empty_parentheses <./attribute_notation/attribute_empty_parentheses.rst>`_
+
+  PHP attributes declared without arguments must (not) be followed by empty parentheses.
+- `general_attribute_remove <./attribute_notation/general_attribute_remove.rst>`_
+
+  Removes configured attributes by their respective FQN.
+- `ordered_attributes <./attribute_notation/ordered_attributes.rst>`_
+
+  Sorts attributes using the configured sort algorithm.
+
 Basic
 -----
 
 - `braces <./basic/braces.rst>`_ *(deprecated)*
 
   The body of each structure MUST be enclosed by braces. Braces should be properly placed. Body of braces should be properly indented.
-- `curly_braces_position <./basic/curly_braces_position.rst>`_
+- `braces_position <./basic/braces_position.rst>`_
+
+  Braces must be placed as configured.
+- `curly_braces_position <./basic/curly_braces_position.rst>`_ *(deprecated)*
 
   Curly braces must be placed as configured.
 - `encoding <./basic/encoding.rst>`_
@@ -91,6 +107,9 @@ Basic
 - `non_printable_character <./basic/non_printable_character.rst>`_ *(risky)*
 
   Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other invisible unicode symbols.
+- `numeric_literal_separator <./basic/numeric_literal_separator.rst>`_
+
+  Adds separators to numeric literals of any kind.
 - `octal_notation <./basic/octal_notation.rst>`_
 
   Literal octal must be in ``0o`` notation.
@@ -128,9 +147,12 @@ Casing
 - `native_function_casing <./casing/native_function_casing.rst>`_
 
   Function defined by PHP should be called using the correct casing.
-- `native_function_type_declaration_casing <./casing/native_function_type_declaration_casing.rst>`_
+- `native_function_type_declaration_casing <./casing/native_function_type_declaration_casing.rst>`_ *(deprecated)*
 
-  Native type hints for functions should use the correct case.
+  Native type declarations for functions should use the correct case.
+- `native_type_declaration_casing <./casing/native_type_declaration_casing.rst>`_
+
+  Native type declarations should be used in the correct case.
 
 Cast Notation
 -------------
@@ -196,6 +218,9 @@ Class Notation
 - `ordered_types <./class_notation/ordered_types.rst>`_
 
   Sort union types and intersection types using configured order.
+- `phpdoc_readonly_class_comment_to_keyword <./class_notation/phpdoc_readonly_class_comment_to_keyword.rst>`_ *(risky)*
+
+  Converts readonly comment on classes to the readonly keyword.
 - `protected_to_private <./class_notation/protected_to_private.rst>`_
 
   Converts ``protected`` variables and methods to ``private`` where possible.
@@ -211,9 +236,12 @@ Class Notation
 - `single_trait_insert_per_statement <./class_notation/single_trait_insert_per_statement.rst>`_
 
   Each trait ``use`` must be done as single statement.
+- `static_private_method <./class_notation/static_private_method.rst>`_ *(risky)*
+
+  Converts private methods to ``static`` where possible.
 - `visibility_required <./class_notation/visibility_required.rst>`_
 
-  Visibility MUST be declared on all properties and methods; ``abstract`` and ``final`` MUST be declared before the visibility; ``static`` MUST be declared after the visibility.
+  Classes, constants, properties, and methods MUST have visibility declared, and keyword modifiers MUST be in the following order: inheritance modifier (``abstract`` or ``final``), visibility modifier (``public``, ``protected``, or ``private``), set-visibility modifier (``public(set)``, ``protected(set)``, or ``private(set)``), scope modifier (``static``), mutation modifier (``readonly``), type declaration, name.
 
 Class Usage
 -----------
@@ -274,7 +302,7 @@ Control Structure
   Empty loop-condition must be in configured style.
 - `include <./control_structure/include.rst>`_
 
-  Include/Require and file path should be divided with a single space. File path should not be placed under brackets.
+  Include/Require and file path should be divided with a single space. File path should not be placed within parentheses.
 - `no_alternative_syntax <./control_structure/no_alternative_syntax.rst>`_
 
   Replace control structure alternative syntax to use braces.
@@ -287,10 +315,13 @@ Control Structure
 - `no_trailing_comma_in_list_call <./control_structure/no_trailing_comma_in_list_call.rst>`_ *(deprecated)*
 
   Remove trailing commas in list function calls.
+- `no_unneeded_braces <./control_structure/no_unneeded_braces.rst>`_
+
+  Removes unneeded braces that are superfluous and aren't part of a control structure's body.
 - `no_unneeded_control_parentheses <./control_structure/no_unneeded_control_parentheses.rst>`_
 
   Removes unneeded parentheses around control statements.
-- `no_unneeded_curly_braces <./control_structure/no_unneeded_curly_braces.rst>`_
+- `no_unneeded_curly_braces <./control_structure/no_unneeded_curly_braces.rst>`_ *(deprecated)*
 
   Removes unneeded curly braces that are superfluous and aren't part of a control structure's body.
 - `no_useless_else <./control_structure/no_useless_else.rst>`_
@@ -310,7 +341,7 @@ Control Structure
   Switch case must not be ended with ``continue`` but with ``break``.
 - `trailing_comma_in_multiline <./control_structure/trailing_comma_in_multiline.rst>`_
 
-  Multi-line arrays, arguments list, parameters list and ``match`` expressions must have a trailing comma.
+  Arguments lists, array destructuring lists, arrays that are multi-line, ``match``-lines and parameters lists must have a trailing comma.
 - `yoda_style <./control_structure/yoda_style.rst>`_
 
   Write conditions in Yoda style (``true``), non-Yoda style (``['equal' => false, 'identical' => false, 'less_and_greater' => false]``) or ignore those conditions (``null``) based on configuration.
@@ -336,7 +367,7 @@ Function Notation
 
 - `combine_nested_dirname <./function_notation/combine_nested_dirname.rst>`_ *(risky)*
 
-  Replace multiple nested calls of ``dirname`` by only one call with second ``$level`` parameter. Requires PHP >= 7.0.
+  Replace multiple nested calls of ``dirname`` by only one call with second ``$level`` parameter.
 - `date_time_create_from_format_call <./function_notation/date_time_create_from_format_call.rst>`_ *(risky)*
 
   The first argument of ``DateTime::createFromFormat`` method must start with ``!``.
@@ -361,6 +392,9 @@ Function Notation
 - `method_argument_space <./function_notation/method_argument_space.rst>`_
 
   In method arguments and method call, there MUST NOT be a space before each comma and there MUST be one space after each comma. Argument lists MAY be split across multiple lines, where each subsequent line is indented once. When doing so, the first item in the list MUST be on the next line, and there MUST be only one argument per line.
+- `multiline_promoted_properties <./function_notation/multiline_promoted_properties.rst>`_ *(experimental)*
+
+  Promoted properties must be on separate lines.
 - `native_function_invocation <./function_notation/native_function_invocation.rst>`_ *(risky)*
 
   Add leading ``\`` before function invocation to speed up resolving.
@@ -373,21 +407,24 @@ Function Notation
 - `no_unreachable_default_argument_value <./function_notation/no_unreachable_default_argument_value.rst>`_ *(risky)*
 
   In function arguments there must not be arguments with default values before non-default ones.
+- `no_useless_printf <./function_notation/no_useless_printf.rst>`_ *(risky)*
+
+  There must be no ``printf`` calls with only the first argument.
 - `no_useless_sprintf <./function_notation/no_useless_sprintf.rst>`_ *(risky)*
 
   There must be no ``sprintf`` calls with only the first argument.
 - `nullable_type_declaration_for_default_null_value <./function_notation/nullable_type_declaration_for_default_null_value.rst>`_
 
   Adds or removes ``?`` before single type declarations or ``|null`` at the end of union types when parameters have a default ``null`` value.
-- `phpdoc_to_param_type <./function_notation/phpdoc_to_param_type.rst>`_ *(risky)*
+- `phpdoc_to_param_type <./function_notation/phpdoc_to_param_type.rst>`_ *(experimental, risky)*
 
-  EXPERIMENTAL: Takes ``@param`` annotations of non-mixed types and adjusts accordingly the function signature. Requires PHP >= 7.0.
-- `phpdoc_to_property_type <./function_notation/phpdoc_to_property_type.rst>`_ *(risky)*
+  Takes ``@param`` annotations of non-mixed types and adjusts accordingly the function signature.
+- `phpdoc_to_property_type <./function_notation/phpdoc_to_property_type.rst>`_ *(experimental, risky)*
 
-  EXPERIMENTAL: Takes ``@var`` annotation of non-mixed types and adjusts accordingly the property signature. Requires PHP >= 7.4.
-- `phpdoc_to_return_type <./function_notation/phpdoc_to_return_type.rst>`_ *(risky)*
+  Takes ``@var`` annotation of non-mixed types and adjusts accordingly the property signature..
+- `phpdoc_to_return_type <./function_notation/phpdoc_to_return_type.rst>`_ *(experimental, risky)*
 
-  EXPERIMENTAL: Takes ``@return`` annotation of non-mixed types and adjusts accordingly the function signature.
+  Takes ``@return`` annotation of non-mixed types and adjusts accordingly the function signature.
 - `regular_callable_call <./function_notation/regular_callable_call.rst>`_ *(risky)*
 
   Callables must be called without using ``call_user_func*`` when possible.
@@ -402,17 +439,17 @@ Function Notation
   Lambdas not (indirectly) referencing ``$this`` must be declared ``static``.
 - `use_arrow_functions <./function_notation/use_arrow_functions.rst>`_ *(risky)*
 
-  Anonymous functions with one-liner return statement must use arrow functions.
+  Anonymous functions with return as the only statement must use arrow functions.
 - `void_return <./function_notation/void_return.rst>`_ *(risky)*
 
-  Add ``void`` return type to functions with missing or empty return statements, but priority is given to ``@return`` annotations. Requires PHP >= 7.1.
+  Add ``void`` return type to functions with missing or empty return statements, but priority is given to ``@return`` annotations.
 
 Import
 ------
 
 - `fully_qualified_strict_types <./import/fully_qualified_strict_types.rst>`_
 
-  Transforms imported FQCN parameters and return types in function arguments to short version.
+  Removes the leading part of fully qualified symbol references if a given symbol is imported or belongs to the current namespace.
 - `global_namespace_import <./import/global_namespace_import.rst>`_
 
   Imports or fully qualifies global classes/functions/constants.
@@ -441,6 +478,9 @@ Import
 Language Construct
 ------------------
 
+- `class_keyword <./language_construct/class_keyword.rst>`_ *(experimental, risky)*
+
+  Converts FQCN strings to ``*::class`` keywords.
 - `class_keyword_remove <./language_construct/class_keyword_remove.rst>`_ *(deprecated)*
 
   Converts ``::class`` keywords to FQCN strings.
@@ -464,7 +504,7 @@ Language Construct
   Error control operator should be added to deprecation notices and/or removed from other cases.
 - `explicit_indirect_variable <./language_construct/explicit_indirect_variable.rst>`_
 
-  Add curly braces to indirect variables to make them clear to understand. Requires PHP >= 7.0.
+  Add curly braces to indirect variables to make them clear to understand.
 - `function_to_constant <./language_construct/function_to_constant.rst>`_ *(risky)*
 
   Replace core functions calls returning constants with the constants.
@@ -492,7 +532,7 @@ List Notation
 
 - `list_syntax <./list_notation/list_syntax.rst>`_
 
-  List (``array`` destructuring) assignment should be declared using the configured syntax. Requires PHP >= 7.1.
+  List (``array`` destructuring) assignment should be declared using the configured syntax.
 
 Namespace Notation
 ------------------
@@ -541,12 +581,18 @@ Operator
 - `logical_operators <./operator/logical_operators.rst>`_ *(risky)*
 
   Use ``&&`` and ``||`` logical operators instead of ``and`` and ``or``.
-- `long_to_shorthand_operator <./operator/long_to_shorthand_operator.rst>`_
+- `long_to_shorthand_operator <./operator/long_to_shorthand_operator.rst>`_ *(risky)*
 
   Shorthand notation for operators should be used if possible.
-- `new_with_braces <./operator/new_with_braces.rst>`_
+- `new_expression_parentheses <./operator/new_expression_parentheses.rst>`_
+
+  All ``new`` expressions with a further call must (not) be wrapped in parentheses.
+- `new_with_braces <./operator/new_with_braces.rst>`_ *(deprecated)*
 
   All instances created with ``new`` keyword must (not) be followed by braces.
+- `new_with_parentheses <./operator/new_with_parentheses.rst>`_
+
+  All instances created with ``new`` keyword must (not) be followed by parentheses.
 - `no_space_around_double_colon <./operator/no_space_around_double_colon.rst>`_
 
   There must be no space around double colons (also called Scope Resolution Operator or Paamayim Nekudotayim).
@@ -582,7 +628,7 @@ Operator
   Use the Elvis operator ``?:`` where possible.
 - `ternary_to_null_coalescing <./operator/ternary_to_null_coalescing.rst>`_
 
-  Use ``null`` coalescing operator ``??`` where possible. Requires PHP >= 7.0.
+  Use ``null`` coalescing operator ``??`` where possible.
 - `unary_operator_spaces <./operator/unary_operator_spaces.rst>`_
 
   Unary operators should be placed adjacent to their operands.
@@ -609,9 +655,18 @@ PHP Tag
 PHPUnit
 -------
 
+- `php_unit_assert_new_names <./php_unit/php_unit_assert_new_names.rst>`_ *(risky)*
+
+  Rename deprecated PHPUnit assertions like ``assertFileNotExists`` to new methods like ``assertFileDoesNotExist``.
+- `php_unit_attributes <./php_unit/php_unit_attributes.rst>`_
+
+  PHPUnit attributes must be used over their respective PHPDoc-based annotations.
 - `php_unit_construct <./php_unit/php_unit_construct.rst>`_ *(risky)*
 
   PHPUnit assertion method calls like ``->assertSame(true, $foo)`` should be written with dedicated method like ``->assertTrue($foo)``.
+- `php_unit_data_provider_method_order <./php_unit/php_unit_data_provider_method_order.rst>`_
+
+  Data provider method must be placed after/before the last/first test where used.
 - `php_unit_data_provider_name <./php_unit/php_unit_data_provider_name.rst>`_ *(risky)*
 
   Data provider names must match the name of the test.
@@ -678,7 +733,7 @@ PHPDoc
   Each line of multi-line DocComments must have an asterisk [PSR-5] and must be aligned with the first one.
 - `general_phpdoc_annotation_remove <./phpdoc/general_phpdoc_annotation_remove.rst>`_
 
-  Configured annotations should be omitted from PHPDoc.
+  Removes configured annotations from PHPDoc.
 - `general_phpdoc_tag_rename <./phpdoc/general_phpdoc_tag_rename.rst>`_
 
   Renames PHPDoc tags.
@@ -696,10 +751,13 @@ PHPDoc
   PHPDoc should contain ``@param`` for all params.
 - `phpdoc_align <./phpdoc/phpdoc_align.rst>`_
 
-  All items of the given phpdoc tags must be either left-aligned or (by default) aligned vertically.
+  All items of the given PHPDoc tags must be either left-aligned or (by default) aligned vertically.
 - `phpdoc_annotation_without_dot <./phpdoc/phpdoc_annotation_without_dot.rst>`_
 
   PHPDoc annotation descriptions should not be a sentence.
+- `phpdoc_array_type <./phpdoc/phpdoc_array_type.rst>`_ *(risky)*
+
+  PHPDoc ``array<T>`` type must be used instead of ``T[]``.
 - `phpdoc_indent <./phpdoc/phpdoc_indent.rst>`_
 
   Docblocks should have the same indentation as the documented subject.
@@ -709,24 +767,27 @@ PHPDoc
 - `phpdoc_line_span <./phpdoc/phpdoc_line_span.rst>`_
 
   Changes doc blocks from single to multi line, or reversed. Works for class constants, properties and methods only.
+- `phpdoc_list_type <./phpdoc/phpdoc_list_type.rst>`_ *(risky)*
+
+  PHPDoc ``list`` type must be used instead of ``array`` without a key.
 - `phpdoc_no_access <./phpdoc/phpdoc_no_access.rst>`_
 
-  ``@access`` annotations should be omitted from PHPDoc.
+  ``@access`` annotations must be removed from PHPDoc.
 - `phpdoc_no_alias_tag <./phpdoc/phpdoc_no_alias_tag.rst>`_
 
   No alias PHPDoc tags should be used.
 - `phpdoc_no_empty_return <./phpdoc/phpdoc_no_empty_return.rst>`_
 
-  ``@return void`` and ``@return null`` annotations should be omitted from PHPDoc.
+  ``@return void`` and ``@return null`` annotations must be removed from PHPDoc.
 - `phpdoc_no_package <./phpdoc/phpdoc_no_package.rst>`_
 
-  ``@package`` and ``@subpackage`` annotations should be omitted from PHPDoc.
+  ``@package`` and ``@subpackage`` annotations must be removed from PHPDoc.
 - `phpdoc_no_useless_inheritdoc <./phpdoc/phpdoc_no_useless_inheritdoc.rst>`_
 
   Classy that does not inherit must not have ``@inheritdoc`` tags.
 - `phpdoc_order_by_value <./phpdoc/phpdoc_order_by_value.rst>`_
 
-  Order phpdoc tags by value.
+  Order PHPDoc tags by value.
 - `phpdoc_order <./phpdoc/phpdoc_order.rst>`_
 
   Annotations in PHPDoc should be ordered in defined sequence.
@@ -751,6 +812,9 @@ PHPDoc
 - `phpdoc_tag_casing <./phpdoc/phpdoc_tag_casing.rst>`_
 
   Fixes casing of PHPDoc tags.
+- `phpdoc_tag_no_named_arguments <./phpdoc/phpdoc_tag_no_named_arguments.rst>`_
+
+  There must be ``@no-named-arguments`` tag in PHPDoc of a class/enum/interface/trait.
 - `phpdoc_tag_type <./phpdoc/phpdoc_tag_type.rst>`_
 
   Forces PHPDoc tags to be either regular annotations or inline.
@@ -813,7 +877,7 @@ Strict
 
 - `declare_strict_types <./strict/declare_strict_types.rst>`_ *(risky)*
 
-  Force strict types declaration in all files. Requires PHP >= 7.0.
+  Force strict types declaration in all files.
 - `strict_comparison <./strict/strict_comparison.rst>`_ *(risky)*
 
   Comparisons should be strict.
@@ -824,15 +888,21 @@ Strict
 String Notation
 ---------------
 
-- `escape_implicit_backslashes <./string_notation/escape_implicit_backslashes.rst>`_
+- `escape_implicit_backslashes <./string_notation/escape_implicit_backslashes.rst>`_ *(deprecated)*
 
   Escape implicit backslashes in strings and heredocs to ease the understanding of which are special chars interpreted by PHP and which not.
 - `explicit_string_variable <./string_notation/explicit_string_variable.rst>`_
 
   Converts implicit variables into explicit ones in double-quoted strings or heredoc syntax.
+- `heredoc_closing_marker <./string_notation/heredoc_closing_marker.rst>`_
+
+  Unify ``heredoc`` or ``nowdoc`` closing marker.
 - `heredoc_to_nowdoc <./string_notation/heredoc_to_nowdoc.rst>`_
 
   Convert ``heredoc`` to ``nowdoc`` where possible.
+- `multiline_string_to_heredoc <./string_notation/multiline_string_to_heredoc.rst>`_
+
+  Convert multiline string to ``heredoc`` or ``nowdoc``.
 - `no_binary_string <./string_notation/no_binary_string.rst>`_
 
   There should not be a binary flag before strings.
@@ -845,6 +915,9 @@ String Notation
 - `single_quote <./string_notation/single_quote.rst>`_
 
   Convert double quotes to single quotes for simple strings.
+- `string_implicit_backslashes <./string_notation/string_implicit_backslashes.rst>`_
+
+  Handles implicit backslashes in strings and heredocs. Depending on the chosen strategy, it can escape implicit backslashes to ease the understanding of which are special chars interpreted by PHP and which not (``escape``), or it can remove these additional backslashes if you find them superfluous (``unescape``). You can also leave them as-is using ``ignore`` strategy.
 - `string_length_to_empty <./string_notation/string_length_to_empty.rst>`_ *(risky)*
 
   String tests for empty must be done against ``''``, not with ``strlen``.
@@ -864,7 +937,10 @@ Whitespace
 - `blank_line_between_import_groups <./whitespace/blank_line_between_import_groups.rst>`_
 
   Putting blank lines between ``use`` statement groups.
-- `compact_nullable_typehint <./whitespace/compact_nullable_typehint.rst>`_
+- `compact_nullable_type_declaration <./whitespace/compact_nullable_type_declaration.rst>`_
+
+  Remove extra spaces in a nullable type declaration.
+- `compact_nullable_typehint <./whitespace/compact_nullable_typehint.rst>`_ *(deprecated)*
 
   Remove extra spaces in a nullable typehint.
 - `heredoc_indentation <./whitespace/heredoc_indentation.rst>`_

@@ -11,10 +11,10 @@ Description
 The reasoning behind this rule is the following:
 - When there are two valid ways of doing the same thing, using both is
 confusing, there should be a coding standard to follow.
-- PHP manual marks ``"$var"`` syntax as implicit and ``"${var}"`` syntax as
+- PHP manual marks ``"$var"`` syntax as implicit and ``"{$var}"`` syntax as
 explicit: explicit code should always be preferred.
 - Explicit syntax allows word concatenation inside strings, e.g.
-``"${var}IsAVar"``, implicit doesn't.
+``"{$var}IsAVar"``, implicit doesn't.
 - Explicit syntax is easier to detect for IDE/editors and therefore has
 colors/highlight with higher contrast, which is easier to read.
 Backtick operator is skipped because it is harder to handle; you can use
@@ -45,3 +45,10 @@ The rule is part of the following rule set:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\StringNotation\\ExplicitStringVariableFixer <./../../../src/Fixer/StringNotation/ExplicitStringVariableFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\StringNotation\\ExplicitStringVariableFixerTest <./../../../tests/Fixer/StringNotation/ExplicitStringVariableFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

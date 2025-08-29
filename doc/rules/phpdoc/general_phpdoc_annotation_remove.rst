@@ -2,7 +2,7 @@
 Rule ``general_phpdoc_annotation_remove``
 =========================================
 
-Configured annotations should be omitted from PHPDoc.
+Removes configured annotations from PHPDoc.
 
 Configuration
 -------------
@@ -12,7 +12,7 @@ Configuration
 
 List of annotations to remove, e.g. ``["author"]``.
 
-Allowed types: ``array``
+Allowed types: ``list<string>``
 
 Default value: ``[]``
 
@@ -79,3 +79,11 @@ With configuration: ``['annotations' => ['package', 'subpackage']]``.
      * @version 1.0
      */
     function foo() {}
+
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\GeneralPhpdocAnnotationRemoveFixer <./../../../src/Fixer/Phpdoc/GeneralPhpdocAnnotationRemoveFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\GeneralPhpdocAnnotationRemoveFixerTest <./../../../tests/Fixer/Phpdoc/GeneralPhpdocAnnotationRemoveFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -185,8 +185,18 @@ The rule is part of the following rule sets:
 
   ``['target' => '8.4']``
 
+- `@PHPUnit91Migration:risky <./../../ruleSets/PHPUnit91MigrationRisky.rst>`_ with config:
+
+  ``['target' => '8.4']``
+
 - `@PHPUnit100Migration:risky <./../../ruleSets/PHPUnit100MigrationRisky.rst>`_ with config:
 
   ``['target' => '8.4']``
 
+References
+----------
 
+- Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitExpectationFixer <./../../../src/Fixer/PhpUnit/PhpUnitExpectationFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitExpectationFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitExpectationFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -1,0 +1,23 @@
+--TEST--
+Integration of fixers: php_unit_attributes,no_empty_phpdoc.
+--RULESET--
+{"php_unit_attributes": true, "no_empty_phpdoc": true }
+--REQUIREMENTS--
+{"php": 80000}
+--EXPECT--
+<?php
+#[\PHPUnit\Framework\Attributes\CoversNothing]
+class FooTest extends TestCase
+{
+    public function fooBar() {}
+}
+
+--INPUT--
+<?php
+/**
+ * @coversNothing
+ */
+class FooTest extends TestCase
+{
+    public function fooBar() {}
+}

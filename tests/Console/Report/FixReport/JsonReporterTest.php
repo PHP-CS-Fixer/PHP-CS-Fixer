@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Console\Report\FixReport;
 
+use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Report\FixReport\JsonReporter;
 use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\Tests\Test\Assert\AssertJsonSchemaTrait;
@@ -25,6 +26,8 @@ use PhpCsFixer\Tests\Test\Assert\AssertJsonSchemaTrait;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Report\FixReport\JsonReporter
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class JsonReporterTest extends AbstractReporterTestCase
 {
@@ -32,11 +35,17 @@ final class JsonReporterTest extends AbstractReporterTestCase
 
     protected static function createSimpleReport(): string
     {
-        return <<<'JSON'
+        $about = Application::getAbout();
+        $diff = <<<'DIFF'
+            --- Original\n+++ New\n@@ -2,7 +2,7 @@\n\n class Foo\n {\n-    public function bar($foo = 1, $bar)\n+    public function bar($foo, $bar)\n     {\n     }\n }
+            DIFF;
+
+        return <<<JSON
             {
+                "about": "{$about}",
                 "files": [
                     {
-                        "diff": "--- Original\n+++ New\n@@ -2,7 +2,7 @@\n\n class Foo\n {\n-    public function bar($foo = 1, $bar)\n+    public function bar($foo, $bar)\n     {\n     }\n }",
+                        "diff": "{$diff}",
                         "name": "someFile.php"
                     }
                 ],
@@ -50,12 +59,18 @@ final class JsonReporterTest extends AbstractReporterTestCase
 
     protected static function createWithDiffReport(): string
     {
-        return <<<'JSON'
+        $about = Application::getAbout();
+        $diff = <<<'DIFF'
+            --- Original\n+++ New\n@@ -2,7 +2,7 @@\n\n class Foo\n {\n-    public function bar($foo = 1, $bar)\n+    public function bar($foo, $bar)\n     {\n     }\n }
+            DIFF;
+
+        return <<<JSON
             {
+                "about": "{$about}",
                 "files": [
                     {
                         "name": "someFile.php",
-                        "diff": "--- Original\n+++ New\n@@ -2,7 +2,7 @@\n\n class Foo\n {\n-    public function bar($foo = 1, $bar)\n+    public function bar($foo, $bar)\n     {\n     }\n }"
+                        "diff": "{$diff}"
                     }
                 ],
                 "time": {
@@ -68,8 +83,11 @@ final class JsonReporterTest extends AbstractReporterTestCase
 
     protected static function createWithAppliedFixersReport(): string
     {
-        return <<<'JSON'
+        $about = Application::getAbout();
+
+        return <<<JSON
             {
+                "about": "{$about}",
                 "files": [
                     {
                         "name": "someFile.php",
@@ -86,11 +104,17 @@ final class JsonReporterTest extends AbstractReporterTestCase
 
     protected static function createWithTimeAndMemoryReport(): string
     {
-        return <<<'JSON'
+        $about = Application::getAbout();
+        $diff = <<<'DIFF'
+            --- Original\n+++ New\n@@ -2,7 +2,7 @@\n\n class Foo\n {\n-    public function bar($foo = 1, $bar)\n+    public function bar($foo, $bar)\n     {\n     }\n }
+            DIFF;
+
+        return <<<JSON
             {
+                "about": "{$about}",
                 "files": [
                     {
-                        "diff": "--- Original\n+++ New\n@@ -2,7 +2,7 @@\n\n class Foo\n {\n-    public function bar($foo = 1, $bar)\n+    public function bar($foo, $bar)\n     {\n     }\n }",
+                        "diff": "{$diff}",
                         "name": "someFile.php"
                     }
                 ],
@@ -104,8 +128,11 @@ final class JsonReporterTest extends AbstractReporterTestCase
 
     protected static function createComplexReport(): string
     {
-        return <<<'JSON'
+        $about = Application::getAbout();
+
+        return <<<JSON
             {
+                "about": "{$about}",
                 "files": [
                     {
                         "name": "someFile.php",
@@ -138,8 +165,11 @@ final class JsonReporterTest extends AbstractReporterTestCase
 
     protected static function createNoErrorReport(): string
     {
-        return <<<'JSON'
+        $about = Application::getAbout();
+
+        return <<<JSON
             {
+                "about": "{$about}",
                 "files": [
                 ],
                 "time": {

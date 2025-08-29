@@ -67,10 +67,25 @@ The rule is part of the following rule sets:
 
   ``['spacing' => 'one']``
 
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
+
+  ``['spacing' => 'one']``
+
 - `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+
+  ``['spacing' => 'one']``
+
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
 
   ``['spacing' => 'one']``
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\Operator\\ConcatSpaceFixer <./../../../src/Fixer/Operator/ConcatSpaceFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Operator\\ConcatSpaceFixerTest <./../../../tests/Fixer/Operator/ConcatSpaceFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

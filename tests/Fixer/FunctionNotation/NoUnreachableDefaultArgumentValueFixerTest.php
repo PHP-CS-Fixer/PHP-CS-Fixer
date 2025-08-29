@@ -20,6 +20,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\NoUnreachableDefaultArgumentValueFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\NoUnreachableDefaultArgumentValueFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTestCase
 {
@@ -31,6 +35,9 @@ final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTest
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -68,14 +75,13 @@ final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTest
                                         function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
 
                                         function fFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
-                EOT
-            ,
+                EOT,
             <<<'EOT'
                                     <?php
                                         function eFunction($foo, $bar, \SplFileInfo $baz, $x = 'default') {};
 
                                         function fFunction($foo, $bar = 'removedValue', \SplFileInfo $baz, $x = 'default') {};
-                EOT
+                EOT,
         ];
 
         yield [
@@ -107,8 +113,7 @@ final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTest
                                             $c, // abc
                                             $d
                                         ) {}
-                EOT
-            ,
+                EOT,
             <<<'EOT'
                                     <?php
                                         function foo(
@@ -117,7 +122,7 @@ final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTest
                                             $c = null, // abc
                                             $d
                                         ) {}
-                EOT
+                EOT,
         ];
 
         yield [
@@ -216,6 +221,9 @@ $bar) {}',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield 'handle trailing comma' => [
@@ -259,10 +267,56 @@ $bar) {}',
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'do not crash' => [
             '<?php strlen( ... );',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->testFix($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield 'do not crash' => [<<<'PHP'
+            <?php class Foo
+            {
+                public function __construct(
+                    public string $myVar {
+                        set(string $value) {
+                            $this->myVar = $value;
+                        }
+                    },
+                ) {}
+            }
+            PHP
+        ];
+
+        yield 'do not crash 2' => [<<<'PHP'
+            <?php class Foo
+            {
+                public function __construct(
+                    public string $key {
+                        set(string $key) => $this->key = mb_strtolower($key);
+                    },
+                    public int $value,
+                ) {}
+            }
+            PHP
         ];
     }
 }

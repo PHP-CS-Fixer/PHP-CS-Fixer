@@ -14,18 +14,21 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests;
 
-use PhpCsFixer\Tests\Fixtures\FunctionReferenceTestFixer;
+use PhpCsFixer\AbstractFunctionReferenceFixer;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class AbstractFunctionReferenceFixerTest extends TestCase
 {
     /**
-     * @param null|int[] $expected
+     * @param null|list<int> $expected
      *
      * @dataProvider provideAbstractFunctionReferenceFixerCases
      */
@@ -36,7 +39,7 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
         int $start = 0,
         ?int $end = null
     ): void {
-        $fixer = new FunctionReferenceTestFixer();
+        $fixer = $this->createAbstractFunctionReferenceFixerDouble();
 
         self::assertTrue($fixer->isRisky());
 
@@ -44,17 +47,20 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
 
         self::assertSame(
             $expected,
-            $fixer->findTest(
+            \Closure::bind(static fn (AbstractFunctionReferenceFixer $fixer): ?array => $fixer->find(
                 $functionNameToSearch,
                 $tokens,
                 $start,
                 $end
-            )
+            ), null, AbstractFunctionReferenceFixer::class)($fixer)
         );
 
         self::assertFalse($tokens->isChanged());
     }
 
+    /**
+     * @return iterable<string, array{0: null|list<int>, 1: string, 2: string, 3?: int}>
+     */
     public static function provideAbstractFunctionReferenceFixerCases(): iterable
     {
         yield 'simple case I' => [
@@ -120,5 +126,25 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
             '<?php \A\foo();',
             'foo',
         ];
+    }
+
+    private function createAbstractFunctionReferenceFixerDouble(): AbstractFunctionReferenceFixer
+    {
+        return new class extends AbstractFunctionReferenceFixer {
+            public function getDefinition(): FixerDefinitionInterface
+            {
+                throw new \BadMethodCallException('Not implemented.');
+            }
+
+            public function isCandidate(Tokens $tokens): bool
+            {
+                throw new \BadMethodCallException('Not implemented.');
+            }
+
+            protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
+            {
+                throw new \BadMethodCallException('Not implemented.');
+            }
+        };
     }
 }

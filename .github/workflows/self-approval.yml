@@ -1,0 +1,41 @@
+# Flow for self-approving the PRs, used by maintainers for cases aligned between them.
+# To trigger it, the maintainer needs to commit and push:
+# $ git commit -m "self-approval" --allow-empty
+
+name: Self Approval
+
+on:
+  - pull_request_target
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  automate:
+    name: Automate
+    runs-on: ubuntu-latest
+    if: ${{ contains(fromJson('["gharlan", "julienfalque", "keradus", "keradus-ci", "kubawerlos", "localheinz", "Wirone"]'), github.actor) }}
+    env:
+      PR_URL: ${{github.event.pull_request.html_url}}
+      GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      MARKER: self-approval
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.after }}
+      - name: Determine whether PR should be automatically approved
+        id: marker
+        run: |
+          msg=$(git show -s --format=%s ${{ github.event.after }})
+          echo $msg
+          indicator=$([[ $msg == $MARKER ]] && echo yes || echo no)
+          echo $indicator
+          echo "indicator_value=${indicator}" >> "$GITHUB_OUTPUT"
+      - name: Approve pull request
+        if: steps.marker.outputs.indicator_value == 'yes'
+        run: |
+          gh pr review --approve "$PR_URL"
+          gh pr edit "$PR_URL" --add-label "status/self-approved"
+          echo "Approval from GH Bot - PR is now mergeable, use it wisely!"

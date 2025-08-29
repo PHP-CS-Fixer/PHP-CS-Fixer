@@ -116,4 +116,10 @@ final class FinalClass
     final function finalMethod(){}
 }
 
+function callback($a, ...   $b) { return (--   $a) * ($b   ++);}
+
+/** @var $a int */
+$a =& $b;
+$c =  &  $d;
+
 echo 1 ?>

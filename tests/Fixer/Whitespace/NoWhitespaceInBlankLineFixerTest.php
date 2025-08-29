@@ -18,11 +18,15 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Whitespace\NoWhitespaceInBlankLineFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\NoWhitespaceInBlankLineFixer>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoWhitespaceInBlankLineFixerTest extends AbstractFixerTestCase
 {
@@ -34,6 +38,9 @@ final class NoWhitespaceInBlankLineFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -157,16 +164,19 @@ $t = true> 9;       '.'
     }
 
     /**
-     * @dataProvider provideMessyWhitespacesCases
+     * @dataProvider provideWithWhitespacesConfigCases
      */
-    public function testMessyWhitespaces(string $expected, ?string $input = null): void
+    public function testWithWhitespacesConfig(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
         $this->doTest($expected, $input);
     }
 
-    public static function provideMessyWhitespacesCases(): iterable
+    /**
+     * @return iterable<int, array{string, string}>
+     */
+    public static function provideWithWhitespacesConfigCases(): iterable
     {
         yield [
             "<?php\r\n\r\n    \$a = 1;\r\n\r\n    \$b = 2;",

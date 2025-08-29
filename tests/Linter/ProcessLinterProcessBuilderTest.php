@@ -23,32 +23,52 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Linter\ProcessLinterProcessBuilder
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ProcessLinterProcessBuilderTest extends TestCase
 {
     /**
-     * @testWith ["php", "foo.php", "'php' '-l' 'foo.php'"]
-     *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "'C:\\Program Files\\php\\php.exe' '-l' 'foo bar\\baz.php'"]
+     * @dataProvider providePrepareCommandOnPhpOnLinuxOrMacCases
      *
      * @requires OS Linux|Darwin
      */
     public function testPrepareCommandOnPhpOnLinuxOrMac(string $executable, string $file, string $expected): void
     {
-        $builder = new ProcessLinterProcessBuilder($executable);
-
-        self::assertSame(
-            $expected,
-            $builder->build($file)->getCommandLine()
-        );
+        $this->testPrepareCommand($executable, $file, $expected);
     }
 
     /**
-     * @testWith ["php", "foo.php", "php -l foo.php"]
-     *           ["C:\\Program Files\\php\\php.exe", "foo bar\\baz.php", "\"C:\\Program Files\\php\\php.exe\" -l \"foo bar\\baz.php\""]
+     * @return iterable<string, array{string, string, string}>
+     */
+    public static function providePrepareCommandOnPhpOnLinuxOrMacCases(): iterable
+    {
+        yield 'Linux-like' => ['php', 'foo.php', "'php' '-l' 'foo.php'"];
+
+        yield 'Windows-like' => ['C:\Program Files\php\php.exe', 'foo bar\baz.php', "'C:\\Program Files\\php\\php.exe' '-l' 'foo bar\\baz.php'"];
+    }
+
+    /**
+     * @dataProvider providePrepareCommandOnPhpOnWindowsCases
      *
      * @requires OS ^Win
      */
     public function testPrepareCommandOnPhpOnWindows(string $executable, string $file, string $expected): void
+    {
+        $this->testPrepareCommand($executable, $file, $expected);
+    }
+
+    /**
+     * @return iterable<string, array{string, string, string}>
+     */
+    public static function providePrepareCommandOnPhpOnWindowsCases(): iterable
+    {
+        yield 'Linux-like' => ['php', 'foo.php', 'c:\tools\php\php.EXE -l foo.php'];
+
+        yield 'Windows-like' => ['C:\Program Files\php\php.exe', 'foo bar\baz.php', '"C:\Program Files\php\php.exe" -l "foo bar\baz.php"'];
+    }
+
+    private function testPrepareCommand(string $executable, string $file, string $expected): void
     {
         $builder = new ProcessLinterProcessBuilder($executable);
 

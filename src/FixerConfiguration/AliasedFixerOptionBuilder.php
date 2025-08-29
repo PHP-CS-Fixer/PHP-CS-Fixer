@@ -18,6 +18,8 @@ namespace PhpCsFixer\FixerConfiguration;
  * @author ntzm
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class AliasedFixerOptionBuilder
 {
@@ -52,7 +54,7 @@ final class AliasedFixerOptionBuilder
     }
 
     /**
-     * @param list<null|(callable(mixed): bool)|scalar> $allowedValues
+     * @param non-empty-list<null|(callable(mixed): bool)|scalar> $allowedValues
      */
     public function setAllowedValues(array $allowedValues): self
     {

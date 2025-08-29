@@ -62,11 +62,19 @@ The rule is part of the following rule sets:
 
   ``['group_to_single_imports' => false]``
 
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
+
+  ``['group_to_single_imports' => false]``
+
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
 
   ``['group_to_single_imports' => false]``
 
 - `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+
+  ``['group_to_single_imports' => false]``
+
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
 
   ``['group_to_single_imports' => false]``
 
@@ -78,3 +86,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\Import\\SingleImportPerStatementFixer <./../../../src/Fixer/Import/SingleImportPerStatementFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Import\\SingleImportPerStatementFixerTest <./../../../tests/Fixer/Import/SingleImportPerStatementFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

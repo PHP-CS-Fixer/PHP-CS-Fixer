@@ -19,20 +19,25 @@ use PhpCsFixer\Fixer\FixerInterface;
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 interface ConfigInterface
 {
+    /** @internal */
+    public const PHP_VERSION_SYNTAX_SUPPORTED = '8.4';
+
     /**
      * Returns the path to the cache file.
      *
-     * @return null|string Returns null if not using cache
+     * @return null|non-empty-string Returns null if not using cache
      */
     public function getCacheFile(): ?string;
 
     /**
      * Returns the custom fixers to use.
      *
-     * @return FixerInterface[]
+     * @return list<FixerInterface>
      */
     public function getCustomFixers(): array;
 
@@ -50,8 +55,14 @@ interface ConfigInterface
      */
     public function getHideProgress(): bool;
 
+    /**
+     * @return non-empty-string
+     */
     public function getIndent(): string;
 
+    /**
+     * @return non-empty-string
+     */
     public function getLineEnding(): string;
 
     /**
@@ -65,6 +76,10 @@ interface ConfigInterface
 
     /**
      * Get configured PHP executable, if any.
+     *
+     * @deprecated
+     *
+     * @TODO 4.0 remove me
      */
     public function getPhpExecutable(): ?string;
 
@@ -92,12 +107,14 @@ interface ConfigInterface
      *
      * Name of custom fixer should follow `VendorName/rule_name` convention.
      *
-     * @param FixerInterface[]|iterable|\Traversable $fixers
+     * @param iterable<FixerInterface> $fixers
      */
     public function registerCustomFixers(iterable $fixers): self;
 
     /**
      * Sets the path to the cache file.
+     *
+     * @param non-empty-string $cacheFile
      */
     public function setCacheFile(string $cacheFile): self;
 
@@ -110,12 +127,22 @@ interface ConfigInterface
 
     public function setHideProgress(bool $hideProgress): self;
 
+    /**
+     * @param non-empty-string $indent
+     */
     public function setIndent(string $indent): self;
 
+    /**
+     * @param non-empty-string $lineEnding
+     */
     public function setLineEnding(string $lineEnding): self;
 
     /**
      * Set PHP executable.
+     *
+     * @deprecated
+     *
+     * @TODO 4.0 remove me
      */
     public function setPhpExecutable(?string $phpExecutable): self;
 

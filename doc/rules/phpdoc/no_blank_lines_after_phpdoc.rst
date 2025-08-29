@@ -31,3 +31,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\NoBlankLinesAfterPhpdocFixer <./../../../src/Fixer/Phpdoc/NoBlankLinesAfterPhpdocFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\NoBlankLinesAfterPhpdocFixerTest <./../../../tests/Fixer/Phpdoc/NoBlankLinesAfterPhpdocFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

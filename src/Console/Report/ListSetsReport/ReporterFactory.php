@@ -20,6 +20,8 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  * @author Boris Gorbylev <ekho@ekho.name>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ReporterFactory
 {
@@ -38,8 +40,8 @@ final class ReporterFactory
 
             foreach (SymfonyFinder::create()->files()->name('*Reporter.php')->in(__DIR__) as $file) {
                 $relativeNamespace = $file->getRelativePath();
-                $builtInReporters[] = sprintf(
-                    '%s\\%s%s',
+                $builtInReporters[] = \sprintf(
+                    '%s\%s%s',
                     __NAMESPACE__,
                     '' !== $relativeNamespace ? $relativeNamespace.'\\' : '',
                     $file->getBasename('.php')
@@ -59,7 +61,7 @@ final class ReporterFactory
         $format = $reporter->getFormat();
 
         if (isset($this->reporters[$format])) {
-            throw new \UnexpectedValueException(sprintf('Reporter for format "%s" is already registered.', $format));
+            throw new \UnexpectedValueException(\sprintf('Reporter for format "%s" is already registered.', $format));
         }
 
         $this->reporters[$format] = $reporter;
@@ -81,7 +83,7 @@ final class ReporterFactory
     public function getReporter(string $format): ReporterInterface
     {
         if (!isset($this->reporters[$format])) {
-            throw new \UnexpectedValueException(sprintf('Reporter for format "%s" is not registered.', $format));
+            throw new \UnexpectedValueException(\sprintf('Reporter for format "%s" is not registered.', $format));
         }
 
         return $this->reporters[$format];

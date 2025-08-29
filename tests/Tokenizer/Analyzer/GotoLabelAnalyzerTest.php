@@ -22,20 +22,22 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class GotoLabelAnalyzerTest extends TestCase
 {
     /**
-     * @param int[] $expectedTrue
+     * @param list<int> $expectedTrue
      *
-     * @dataProvider provideGotoLabelAnalyzerTestCases
+     * @dataProvider provideGotoLabelCases
      */
-    public function testGotoLabelAnalyzerTest(string $source, array $expectedTrue): void
+    public function testGotoLabel(string $source, array $expectedTrue): void
     {
         $tokens = Tokens::fromCode($source);
         $analyzer = new GotoLabelAnalyzer();
 
-        foreach ($tokens as $index => $isClassy) {
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             self::assertSame(
                 \in_array($index, $expectedTrue, true),
                 $analyzer->belongsToGoToLabel($tokens, $index)
@@ -43,7 +45,10 @@ final class GotoLabelAnalyzerTest extends TestCase
         }
     }
 
-    public static function provideGotoLabelAnalyzerTestCases(): iterable
+    /**
+     * @return iterable<string, array{string, list<int>}>
+     */
+    public static function provideGotoLabelCases(): iterable
     {
         yield 'no candidates' => [
             '<?php
@@ -98,11 +103,28 @@ Bar3:
 ',
             [21, 24, 27],
         ];
+    }
 
-        if (\PHP_VERSION_ID >= 8_00_00) {
-            yield [
-                '<?php array_fill(start_index: 0, num: 100, value: 50);', [],
-            ];
-        }
+    /**
+     * @param list<int> $expectedTrue
+     *
+     * @dataProvider provideGotoLabel80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testGotoLabel80(string $source, array $expectedTrue): void
+    {
+        $this->testGotoLabel($source, $expectedTrue);
+    }
+
+    /**
+     * @return iterable<int, array{string, list<int>}>
+     */
+    public static function provideGotoLabel80Cases(): iterable
+    {
+        yield [
+            '<?php array_fill(start_index: 0, num: 100, value: 50);',
+            [],
+        ];
     }
 }

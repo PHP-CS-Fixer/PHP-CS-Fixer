@@ -20,10 +20,13 @@ use org\bovigo\vfs\vfsStreamException;
 use org\bovigo\vfs\vfsStreamWrapper;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\SelfUpdateCommand;
+use PhpCsFixer\Console\SelfUpdate\GithubClientInterface;
 use PhpCsFixer\Console\SelfUpdate\NewVersionChecker;
+use PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface;
+use PhpCsFixer\PharCheckerInterface;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfoInterface;
-use Prophecy\Argument;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -31,13 +34,12 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Command\SelfUpdateCommand
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SelfUpdateCommandTest extends TestCase
 {
-    /**
-     * @var null|vfsStreamDirectory
-     */
-    private $root;
+    private ?vfsStreamDirectory $root = null;
 
     protected function setUp(): void
     {
@@ -70,9 +72,9 @@ final class SelfUpdateCommandTest extends TestCase
     public function testCommandName(string $name): void
     {
         $command = new SelfUpdateCommand(
-            $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class)->reveal(),
-            $this->createToolInfo(),
-            $this->prophesize(\PhpCsFixer\PharCheckerInterface::class)->reveal()
+            $this->createNewVersionCheckerDouble(),
+            $this->createToolInfoDouble(),
+            $this->createPharCheckerDouble(),
         );
 
         $application = new Application();
@@ -81,6 +83,9 @@ final class SelfUpdateCommandTest extends TestCase
         self::assertSame($command, $application->find($name));
     }
 
+    /**
+     * @return iterable<int, array{string}>
+     */
     public static function provideCommandNameCases(): iterable
     {
         yield ['self-update'];
@@ -101,28 +106,12 @@ final class SelfUpdateCommandTest extends TestCase
         string $expectedFileContents,
         string $expectedDisplay
     ): void {
-        $versionChecker = $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class);
-
-        $versionChecker->getLatestVersion()->willReturn($latestVersion);
-
-        $versionChecker
-            ->getLatestVersionOfMajor(self::getCurrentMajorVersion())
-            ->willReturn($latestMinorVersion)
-        ;
-
-        $actualVersionCheck = new NewVersionChecker(
-            $this->prophesize(\PhpCsFixer\Console\SelfUpdate\GithubClientInterface::class)->reveal()
-        );
-
-        $versionChecker
-            ->compareVersions(Argument::type('string'), Argument::type('string'))
-            ->will(static fn (array $arguments): int => $actualVersionCheck->compareVersions($arguments[0], $arguments[1]))
-        ;
+        $versionChecker = $this->createNewVersionCheckerDouble($latestVersion, $latestMinorVersion);
 
         $command = new SelfUpdateCommand(
-            $versionChecker->reveal(),
-            $this->createToolInfo(),
-            $this->prophesize(\PhpCsFixer\PharCheckerInterface::class)->reveal()
+            $versionChecker,
+            $this->createToolInfoDouble(),
+            $this->createPharCheckerDouble(),
         );
 
         $commandTester = $this->execute($command, $input, $decorated);
@@ -132,6 +121,9 @@ final class SelfUpdateCommandTest extends TestCase
         self::assertSame(0, $commandTester->getStatusCode());
     }
 
+    /**
+     * @return iterable<int, array{string, null|string, array<string, bool|string>, bool, string, string}>
+     */
     public static function provideExecuteCases(): iterable
     {
         $currentVersion = Application::VERSION;
@@ -172,10 +164,6 @@ final class SelfUpdateCommandTest extends TestCase
 
         yield [Application::VERSION, Application::VERSION, ['-f' => true], false, $currentContents, $upToDateDisplay];
 
-        yield [Application::VERSION, Application::VERSION, ['--force' => true], true, $currentContents, $upToDateDisplay];
-
-        yield [Application::VERSION, Application::VERSION, ['-f' => true], false, $currentContents, $upToDateDisplay];
-
         // new minor version available
         yield [$minorRelease, $minorRelease, [], true, $minorContents, $newMinorDisplay];
 
@@ -198,18 +186,10 @@ final class SelfUpdateCommandTest extends TestCase
 
         yield [$majorRelease, Application::VERSION, ['-f' => true], false, $majorContents, $newMajorDisplay];
 
-        yield [$majorRelease, Application::VERSION, ['--force' => true], true, $majorContents, $newMajorDisplay];
-
-        yield [$majorRelease, Application::VERSION, ['-f' => true], false, $majorContents, $newMajorDisplay];
-
         // new minor version and new major version available
         yield [$majorRelease, $minorRelease, [], true, $minorContents, $majorInfoNewMinorDisplay];
 
         yield [$majorRelease, $minorRelease, [], false, $minorContents, $majorInfoNewMinorDisplay];
-
-        yield [$majorRelease, $minorRelease, ['--force' => true], true, $majorContents, $newMajorDisplay];
-
-        yield [$majorRelease, $minorRelease, ['-f' => true], false, $majorContents, $newMajorDisplay];
 
         yield [$majorRelease, $minorRelease, ['--force' => true], true, $majorContents, $newMajorDisplay];
 
@@ -224,17 +204,9 @@ final class SelfUpdateCommandTest extends TestCase
 
         yield ['v0.1.0', 'v0.1.0', ['-f' => true], false, $currentContents, $upToDateDisplay];
 
-        yield ['v0.1.0', 'v0.1.0', ['--force' => true], true, $currentContents, $upToDateDisplay];
-
-        yield ['v0.1.0', 'v0.1.0', ['-f' => true], false, $currentContents, $upToDateDisplay];
-
         yield ['v0.1.0', null, [], true, $currentContents, $upToDateDisplay];
 
         yield ['v0.1.0', null, [], false, $currentContents, $upToDateDisplay];
-
-        yield ['v0.1.0', null, ['--force' => true], true, $currentContents, $upToDateDisplay];
-
-        yield ['v0.1.0', null, ['-f' => true], false, $currentContents, $upToDateDisplay];
 
         yield ['v0.1.0', null, ['--force' => true], true, $currentContents, $upToDateDisplay];
 
@@ -248,17 +220,9 @@ final class SelfUpdateCommandTest extends TestCase
 
         yield ['v0.1.0', Application::VERSION, ['-f' => true], false, $currentContents, $upToDateDisplay];
 
-        yield ['v0.1.0', Application::VERSION, ['--force' => true], true, $currentContents, $upToDateDisplay];
-
-        yield ['v0.1.0', Application::VERSION, ['-f' => true], false, $currentContents, $upToDateDisplay];
-
         yield [Application::VERSION, 'v0.1.0', [], true, $currentContents, $upToDateDisplay];
 
         yield [Application::VERSION, 'v0.1.0', [], false, $currentContents, $upToDateDisplay];
-
-        yield [Application::VERSION, 'v0.1.0', ['--force' => true], true, $currentContents, $upToDateDisplay];
-
-        yield [Application::VERSION, 'v0.1.0', ['-f' => true], false, $currentContents, $upToDateDisplay];
 
         yield [Application::VERSION, 'v0.1.0', ['--force' => true], true, $currentContents, $upToDateDisplay];
 
@@ -271,38 +235,22 @@ final class SelfUpdateCommandTest extends TestCase
      * @dataProvider provideExecuteWhenNotAbleToGetLatestVersionsCases
      */
     public function testExecuteWhenNotAbleToGetLatestVersions(
-        bool $latestVersionSuccess,
+        bool $latestMajorVersionSuccess,
         bool $latestMinorVersionSuccess,
         array $input,
         bool $decorated
     ): void {
-        $versionChecker = $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class);
-
-        $newMajorVersion = self::getNewMajorReleaseVersion();
-        $versionChecker->getLatestVersion()->will(static function () use ($latestVersionSuccess, $newMajorVersion): string {
-            if ($latestVersionSuccess) {
-                return $newMajorVersion;
-            }
-
-            throw new \RuntimeException('Foo.');
-        });
-
-        $newMinorVersion = self::getNewMinorReleaseVersion();
-        $versionChecker
-            ->getLatestVersionOfMajor(self::getCurrentMajorVersion())
-            ->will(static function () use ($latestMinorVersionSuccess, $newMinorVersion): string {
-                if ($latestMinorVersionSuccess) {
-                    return $newMinorVersion;
-                }
-
-                throw new \RuntimeException('Foo.');
-            })
-        ;
+        $versionChecker = $this->createNewVersionCheckerDouble(
+            self::getNewMajorReleaseVersion(),
+            self::getNewMinorReleaseVersion(),
+            $latestMajorVersionSuccess,
+            $latestMinorVersionSuccess,
+        );
 
         $command = new SelfUpdateCommand(
-            $versionChecker->reveal(),
-            $this->createToolInfo(),
-            $this->prophesize(\PhpCsFixer\PharCheckerInterface::class)->reveal()
+            $versionChecker,
+            $this->createToolInfoDouble(),
+            $this->createPharCheckerDouble(),
         );
 
         $commandTester = $this->execute($command, $input, $decorated);
@@ -314,6 +262,9 @@ final class SelfUpdateCommandTest extends TestCase
         self::assertSame(1, $commandTester->getStatusCode());
     }
 
+    /**
+     * @return iterable<int, array{bool, bool, array<string, bool|string>, bool}>
+     */
     public static function provideExecuteWhenNotAbleToGetLatestVersionsCases(): iterable
     {
         yield [false, false, [], true];
@@ -361,9 +312,9 @@ final class SelfUpdateCommandTest extends TestCase
     public function testExecuteWhenNotInstalledAsPhar(array $input, bool $decorated): void
     {
         $command = new SelfUpdateCommand(
-            $this->prophesize(\PhpCsFixer\Console\SelfUpdate\NewVersionCheckerInterface::class)->reveal(),
-            $this->createToolInfo(false),
-            $this->prophesize(\PhpCsFixer\PharCheckerInterface::class)->reveal()
+            $this->createNewVersionCheckerDouble(),
+            $this->createToolInfoDouble(false),
+            $this->createPharCheckerDouble(),
         );
 
         $commandTester = $this->execute($command, $input, $decorated);
@@ -375,6 +326,9 @@ final class SelfUpdateCommandTest extends TestCase
         self::assertSame(1, $commandTester->getStatusCode());
     }
 
+    /**
+     * @return iterable<int, array{array<string, bool|string>, bool}>
+     */
     public static function provideExecuteWhenNotInstalledAsPharCases(): iterable
     {
         yield [[], true];
@@ -402,6 +356,7 @@ final class SelfUpdateCommandTest extends TestCase
 
         $commandTester = new CommandTester($command);
 
+        \assert(\array_key_exists('argv', $_SERVER));
         $realPath = $_SERVER['argv'][0];
         $_SERVER['argv'][0] = $this->getToolPath();
 
@@ -415,7 +370,7 @@ final class SelfUpdateCommandTest extends TestCase
     private static function assertDisplay(string $expectedDisplay, CommandTester $commandTester): void
     {
         if (!$commandTester->getOutput()->isDecorated()) {
-            $expectedDisplay = preg_replace("/\033\\[(\\d+;)*\\d+m/", '', $expectedDisplay);
+            $expectedDisplay = Preg::replace("/\033\\[(\\d+;)*\\d+m/", '', $expectedDisplay);
         }
 
         self::assertSame(
@@ -424,18 +379,53 @@ final class SelfUpdateCommandTest extends TestCase
         );
     }
 
-    private function createToolInfo(bool $isInstalledAsPhar = true): ToolInfoInterface
+    private function createToolInfoDouble(bool $isInstalledAsPhar = true): ToolInfoInterface
     {
-        $root = $this->root;
+        return new class($this->root, $isInstalledAsPhar) implements ToolInfoInterface {
+            private vfsStreamDirectory $directory;
+            private bool $isInstalledAsPhar;
 
-        $toolInfo = $this->prophesize(ToolInfoInterface::class);
-        $toolInfo->isInstalledAsPhar()->willReturn($isInstalledAsPhar);
-        $toolInfo
-            ->getPharDownloadUri(Argument::type('string'))
-            ->will(static fn (array $arguments): string => "{$root->url()}/{$arguments[0]}.phar")
-        ;
+            public function __construct(vfsStreamDirectory $directory, bool $isInstalledAsPhar)
+            {
+                $this->directory = $directory;
+                $this->isInstalledAsPhar = $isInstalledAsPhar;
+            }
 
-        return $toolInfo->reveal();
+            public function getComposerInstallationDetails(): array
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getComposerVersion(): string
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getVersion(): string
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function isInstalledAsPhar(): bool
+            {
+                return $this->isInstalledAsPhar;
+            }
+
+            public function isInstalledByComposer(): bool
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function isRunInsideDocker(): bool
+            {
+                return false;
+            }
+
+            public function getPharDownloadUri(string $version): string
+            {
+                return \sprintf('%s/%s.phar', $this->directory->url(), $version);
+            }
+        };
     }
 
     private function getToolPath(): string
@@ -445,7 +435,7 @@ final class SelfUpdateCommandTest extends TestCase
 
     private static function getCurrentMajorVersion(): int
     {
-        return (int) preg_replace('/^v?(\d+).*$/', '$1', Application::VERSION);
+        return (int) Preg::replace('/^v?(\d+).*$/', '$1', Application::VERSION);
     }
 
     private static function getNewMinorReleaseVersion(): string
@@ -461,5 +451,73 @@ final class SelfUpdateCommandTest extends TestCase
     private static function getNewMajorReleaseVersion(): string
     {
         return self::getNewMajorVersion().'.0.0';
+    }
+
+    private function createNewVersionCheckerDouble(
+        string $latestVersion = Application::VERSION,
+        ?string $latestMinorVersion = Application::VERSION,
+        bool $latestMajorVersionSuccess = true,
+        bool $latestMinorVersionSuccess = true
+    ): NewVersionCheckerInterface {
+        return new class($latestVersion, $latestMinorVersion, $latestMajorVersionSuccess, $latestMinorVersionSuccess) implements NewVersionCheckerInterface {
+            private string $latestVersion;
+            private ?string $latestMinorVersion;
+            private bool $latestMajorVersionSuccess;
+            private bool $latestMinorVersionSuccess;
+
+            public function __construct(
+                string $latestVersion,
+                ?string $latestMinorVersion,
+                bool $latestMajorVersionSuccess = true,
+                bool $latestMinorVersionSuccess = true
+            ) {
+                $this->latestVersion = $latestVersion;
+                $this->latestMinorVersion = $latestMinorVersion;
+                $this->latestMajorVersionSuccess = $latestMajorVersionSuccess;
+                $this->latestMinorVersionSuccess = $latestMinorVersionSuccess;
+            }
+
+            public function getLatestVersion(): string
+            {
+                if ($this->latestMajorVersionSuccess) {
+                    return $this->latestVersion;
+                }
+
+                throw new \RuntimeException('Foo.');
+            }
+
+            public function getLatestVersionOfMajor(int $majorVersion): ?string
+            {
+                TestCase::assertSame((int) Preg::replace('/^v?(\d+).*$/', '$1', Application::VERSION), $majorVersion);
+
+                if ($this->latestMinorVersionSuccess) {
+                    return $this->latestMinorVersion;
+                }
+
+                throw new \RuntimeException('Foo.');
+            }
+
+            public function compareVersions(string $versionA, string $versionB): int
+            {
+                return (new NewVersionChecker(
+                    new class implements GithubClientInterface {
+                        public function getTags(): array
+                        {
+                            throw new \LogicException('Not implemented.');
+                        }
+                    }
+                ))->compareVersions($versionA, $versionB);
+            }
+        };
+    }
+
+    private function createPharCheckerDouble(): PharCheckerInterface
+    {
+        return new class implements PharCheckerInterface {
+            public function checkFileValidity(string $filename): ?string
+            {
+                return null;
+            }
+        };
     }
 }

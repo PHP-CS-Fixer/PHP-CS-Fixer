@@ -80,6 +80,14 @@ Rule sets
 The rule is part of the following rule sets:
 
 - `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_
+- `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 - `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\NoUnneededFinalMethodFixer <./../../../src/Fixer/ClassNotation/NoUnneededFinalMethodFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ClassNotation\\NoUnneededFinalMethodFixerTest <./../../../tests/Fixer/ClassNotation/NoUnneededFinalMethodFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

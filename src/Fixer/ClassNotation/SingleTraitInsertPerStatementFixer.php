@@ -23,6 +23,9 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class SingleTraitInsertPerStatementFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
@@ -70,14 +73,14 @@ final class Example
     }
 
     /**
-     * @param int[] $candidates ',' indices to fix
+     * @param list<int> $candidates ',' indices to fix
      */
     private function fixTraitUse(Tokens $tokens, int $useTraitIndex, array $candidates): void
     {
         foreach ($candidates as $commaIndex) {
             $inserts = [
                 new Token([CT::T_USE_TRAIT, 'use']),
-                new Token([T_WHITESPACE, ' ']),
+                new Token([\T_WHITESPACE, ' ']),
             ];
 
             $nextImportStartIndex = $tokens->getNextMeaningfulToken($commaIndex);
@@ -95,7 +98,7 @@ final class Example
     }
 
     /**
-     * @return int[]
+     * @return list<int>
      */
     private function getCandidates(Tokens $tokens, int $index): array
     {

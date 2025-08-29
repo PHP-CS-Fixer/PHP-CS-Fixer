@@ -19,12 +19,14 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractFopenFlagFixer extends AbstractFunctionReferenceFixer
 {
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAllTokenKindsFound([T_STRING, T_CONSTANT_ENCAPSED_STRING]);
+        return $tokens->isAllTokenKindsFound([\T_STRING, \T_CONSTANT_ENCAPSED_STRING]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void

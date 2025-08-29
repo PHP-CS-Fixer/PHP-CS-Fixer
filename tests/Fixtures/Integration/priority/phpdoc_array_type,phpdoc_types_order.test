@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: phpdoc_array_type,phpdoc_types_order.
+--RULESET--
+{"phpdoc_array_type": true, "phpdoc_types_order": true}
+--EXPECT--
+<?php
+/**
+ * @return array<string>|int
+ */
+function foo() {}
+
+--INPUT--
+<?php
+/**
+ * @return int|string[]
+ */
+function foo() {}

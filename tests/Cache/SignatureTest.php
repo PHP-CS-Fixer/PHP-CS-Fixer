@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Cache;
 
 use PhpCsFixer\Cache\Signature;
+use PhpCsFixer\Cache\SignatureInterface;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -23,29 +24,31 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Cache\Signature
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SignatureTest extends TestCase
 {
     public function testIsFinal(): void
     {
-        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Signature::class);
+        $reflection = new \ReflectionClass(Signature::class);
 
         self::assertTrue($reflection->isFinal());
     }
 
     public function testImplementsSignatureInterface(): void
     {
-        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\Signature::class);
+        $reflection = new \ReflectionClass(Signature::class);
 
-        self::assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\SignatureInterface::class));
+        self::assertTrue($reflection->implementsInterface(SignatureInterface::class));
     }
 
     public function testConstructorSetsValues(): void
     {
-        $php = PHP_VERSION;
+        $php = \PHP_VERSION;
         $version = '3.0';
         $indent = '    ';
-        $lineEnding = PHP_EOL;
+        $lineEnding = \PHP_EOL;
         $rules = ['foo' => true, 'bar' => false];
 
         $signature = new Signature($php, $version, $indent, $lineEnding, $rules);
@@ -65,9 +68,12 @@ final class SignatureTest extends TestCase
         self::assertFalse($signature->equals($anotherSignature));
     }
 
+    /**
+     * @return iterable<string, array{Signature, Signature}>
+     */
     public static function provideEqualsReturnsFalseIfValuesAreNotIdenticalCases(): iterable
     {
-        $php = PHP_VERSION;
+        $php = \PHP_VERSION;
         $version = '2.0';
         $indent = '    ';
         $lineEnding = "\n";
@@ -103,10 +109,10 @@ final class SignatureTest extends TestCase
 
     public function testEqualsReturnsTrueIfValuesAreIdentical(): void
     {
-        $php = PHP_VERSION;
+        $php = \PHP_VERSION;
         $version = '2.0';
         $indent = '    ';
-        $lineEnding = PHP_EOL;
+        $lineEnding = \PHP_EOL;
         $rules = ['foo' => true, 'bar' => false];
 
         $signature = new Signature($php, $version, $indent, $lineEnding, $rules);

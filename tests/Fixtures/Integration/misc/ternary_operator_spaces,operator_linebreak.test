@@ -1,0 +1,25 @@
+--TEST--
+Integration of fixers: ternary_operator_spaces,operator_linebreak.
+--RULESET--
+{"ternary_operator_spaces": true, "operator_linebreak": true}
+--EXPECT--
+<?php
+switch ($foo) {
+    case 1:
+    case 2:
+        return 3 ? '4' : ''; // only change is space before ":" in this line
+    case 5:
+    case 6:
+        return 'more';
+}
+
+--INPUT--
+<?php
+switch ($foo) {
+    case 1:
+    case 2:
+        return 3 ? '4': ''; // only change is space before ":" in this line
+    case 5:
+    case 6:
+        return 'more';
+}

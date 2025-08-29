@@ -18,12 +18,16 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @author Ceeram <ceeram@cakephp.org>
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer>
+ *
+ * @author Ceeram <ceeram@cakephp.org>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class BlankLineAfterOpeningTagFixerTest extends AbstractFixerTestCase
 {
@@ -35,15 +39,16 @@ final class BlankLineAfterOpeningTagFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
             '<?php
 
-    $a = 0;
     echo 1;',
             '<?php
-    $a = 0;
     echo 1;',
         ];
 
@@ -138,19 +143,60 @@ Html here
 $foo = $bar;
 ?>',
         ];
+
+        yield 'empty file with open tag without new line' => [
+            '<?php',
+        ];
+
+        yield 'empty file with open tag with new line' => [
+            "<?php\n",
+        ];
+
+        yield 'file with shebang' => [
+            <<<'EOD'
+                #!x
+                <?php
+
+                echo 1;
+                EOD,
+            <<<'EOD'
+                #!x
+                <?php
+                echo 1;
+                EOD,
+        ];
+
+        yield 'file starting with multi-line comment' => [
+            <<<'PHP'
+                <?php
+
+                /**
+                 * @author yes
+                 */
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
+                 * @author yes
+                 */
+                PHP,
+        ];
     }
 
     /**
-     * @dataProvider provideMessyWhitespacesCases
+     * @dataProvider provideWithWhitespacesConfigCases
      */
-    public function testMessyWhitespaces(string $expected, ?string $input = null): void
+    public function testWithWhitespacesConfig(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
         $this->doTest($expected, $input);
     }
 
-    public static function provideMessyWhitespacesCases(): iterable
+    /**
+     * @return iterable<int, array{string, string}>
+     */
+    public static function provideWithWhitespacesConfigCases(): iterable
     {
         yield [
             "<?php\r\n\r\n\$foo = true;\r\n",

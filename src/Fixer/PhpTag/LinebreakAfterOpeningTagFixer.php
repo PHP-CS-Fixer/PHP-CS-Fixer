@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class LinebreakAfterOpeningTagFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
@@ -37,24 +39,21 @@ final class LinebreakAfterOpeningTagFixer extends AbstractFixer implements White
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_OPEN_TAG);
+        return $tokens->isMonolithicPhp() && !$tokens->isTokenKindFound(\T_OPEN_TAG_WITH_ECHO);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        // ignore files with short open tag and ignore non-monolithic files
-        if (!$tokens[0]->isGivenKind(T_OPEN_TAG) || !$tokens->isMonolithicPhp()) {
-            return;
-        }
+        $openTagIndex = $tokens[0]->isGivenKind(\T_INLINE_HTML) ? 1 : 0;
 
         // ignore if linebreak already present
-        if (str_contains($tokens[0]->getContent(), "\n")) {
+        if (str_contains($tokens[$openTagIndex]->getContent(), "\n")) {
             return;
         }
 
         $newlineFound = false;
         foreach ($tokens as $token) {
-            if ($token->isWhitespace() && str_contains($token->getContent(), "\n")) {
+            if (($token->isWhitespace() || $token->isGivenKind(\T_OPEN_TAG)) && str_contains($token->getContent(), "\n")) {
                 $newlineFound = true;
 
                 break;
@@ -66,6 +65,6 @@ final class LinebreakAfterOpeningTagFixer extends AbstractFixer implements White
             return;
         }
 
-        $tokens[0] = new Token([T_OPEN_TAG, rtrim($tokens[0]->getContent()).$this->whitespacesConfig->getLineEnding()]);
+        $tokens[$openTagIndex] = new Token([\T_OPEN_TAG, rtrim($tokens[$openTagIndex]->getContent()).$this->whitespacesConfig->getLineEnding()]);
     }
 }

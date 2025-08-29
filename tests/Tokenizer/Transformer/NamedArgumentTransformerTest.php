@@ -22,11 +22,15 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\NamedArgumentTransformer
+ *
+ * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcessCases
      *
@@ -37,6 +41,9 @@ final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
         $this->doTest($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<string, array{string, _TransformerTestExpectedKindsUnderIndex}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield 'function call' => [
@@ -95,6 +102,9 @@ final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
         self::assertNotChange($source);
     }
 
+    /**
+     * @return iterable<string, array{string}>
+     */
     public static function provideDoNotChangeCases(): iterable
     {
         yield 'switch/case/constants' => [

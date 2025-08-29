@@ -23,19 +23,11 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Command\DescribeNameNotFoundException
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DescribeNameNotFoundExceptionTest extends TestCase
 {
-    public function testIsInvalidArgumentException(): void
-    {
-        $exception = new DescribeNameNotFoundException(
-            'Peter',
-            'weird'
-        );
-
-        self::assertInstanceOf(\InvalidArgumentException::class, $exception);
-    }
-
     public function testConstructorSetsValues(): void
     {
         $name = 'Peter';

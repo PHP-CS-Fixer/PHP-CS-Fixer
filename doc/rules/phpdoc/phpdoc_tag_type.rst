@@ -12,7 +12,7 @@ Configuration
 
 The list of tags to fix.
 
-Allowed types: ``array``
+Allowed types: ``array<string, 'annotation'|'inline'>``
 
 Default value: ``['api' => 'annotation', 'author' => 'annotation', 'copyright' => 'annotation', 'deprecated' => 'annotation', 'example' => 'annotation', 'global' => 'annotation', 'inheritDoc' => 'annotation', 'internal' => 'annotation', 'license' => 'annotation', 'method' => 'annotation', 'package' => 'annotation', 'param' => 'annotation', 'property' => 'annotation', 'return' => 'annotation', 'see' => 'annotation', 'since' => 'annotation', 'throws' => 'annotation', 'todo' => 'annotation', 'uses' => 'annotation', 'var' => 'annotation', 'version' => 'annotation']``
 
@@ -62,4 +62,10 @@ The rule is part of the following rule sets:
 
   ``['tags' => ['inheritDoc' => 'inline']]``
 
+References
+----------
 
+- Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocTagTypeFixer <./../../../src/Fixer/Phpdoc/PhpdocTagTypeFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocTagTypeFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocTagTypeFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

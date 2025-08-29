@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\StringNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Dave van der Brugge <dmvdbrugge@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\StringNotation\SimpleToComplexStringVariableFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\SimpleToComplexStringVariableFixer>
+ *
+ * @author Dave van der Brugge <dmvdbrugge@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SimpleToComplexStringVariableFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class SimpleToComplexStringVariableFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'basic fix' => [
@@ -40,14 +47,12 @@ final class SimpleToComplexStringVariableFixerTest extends AbstractFixerTestCase
                 <?php
                 $name = "World";
                 echo "Hello {$name}!";
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 $name = "World";
                 echo "Hello ${name}!";
-                INPUT
-            ,
+                INPUT,
         ];
 
         yield 'heredoc' => [
@@ -58,8 +63,7 @@ final class SimpleToComplexStringVariableFixerTest extends AbstractFixerTestCase
                 Hello {$name}!
                 TEST;
 
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 $name = 'World';
@@ -67,8 +71,7 @@ final class SimpleToComplexStringVariableFixerTest extends AbstractFixerTestCase
                 Hello ${name}!
                 TEST;
 
-                INPUT
-            ,
+                INPUT,
         ];
 
         yield 'implicit' => [
@@ -76,8 +79,7 @@ final class SimpleToComplexStringVariableFixerTest extends AbstractFixerTestCase
                 <?php
                 $name = 'World';
                 echo "Hello $name!";
-                EXPECTED
-            ,
+                EXPECTED,
         ];
 
         yield 'implicit again' => [
@@ -85,8 +87,7 @@ final class SimpleToComplexStringVariableFixerTest extends AbstractFixerTestCase
                 <?php
                 $name = 'World';
                 echo "Hello { $name }!";
-                EXPECTED
-            ,
+                EXPECTED,
         ];
 
         yield 'escaped' => [
@@ -94,8 +95,7 @@ final class SimpleToComplexStringVariableFixerTest extends AbstractFixerTestCase
                 <?php
                 $name = 'World';
                 echo "Hello \${name}";
-                EXPECTED
-            ,
+                EXPECTED,
         ];
 
         yield 'double dollar' => [
@@ -103,14 +103,12 @@ final class SimpleToComplexStringVariableFixerTest extends AbstractFixerTestCase
                 <?php
                 $name = 'World';
                 echo "Hello \${$name}";
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 $name = 'World';
                 echo "Hello $${name}";
-                INPUT
-            ,
+                INPUT,
         ];
 
         yield 'double dollar heredoc' => [
@@ -121,8 +119,7 @@ final class SimpleToComplexStringVariableFixerTest extends AbstractFixerTestCase
                 Hello \${$name}!
                 TEST;
 
-                EXPECTED
-            ,
+                EXPECTED,
             <<<'INPUT'
                 <?php
                 $name = 'World';
@@ -130,8 +127,7 @@ final class SimpleToComplexStringVariableFixerTest extends AbstractFixerTestCase
                 Hello $${name}!
                 TEST;
 
-                INPUT
-            ,
+                INPUT,
         ];
 
         yield 'double dollar single quote' => [
@@ -139,8 +135,20 @@ final class SimpleToComplexStringVariableFixerTest extends AbstractFixerTestCase
                 <?php
                 $name = 'World';
                 echo 'Hello $${name}';
-                EXPECTED
-            ,
+                EXPECTED,
+        ];
+
+        yield 'array elements' => [
+            <<<'PHP'
+                <?php
+                "Hello {$array[0]}!";
+                "Hello {$array['index']}!";
+                PHP,
+            <<<'PHP'
+                <?php
+                "Hello ${array[0]}!";
+                "Hello ${array['index']}!";
+                PHP,
         ];
     }
 }

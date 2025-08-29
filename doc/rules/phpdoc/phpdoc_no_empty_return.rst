@@ -2,7 +2,7 @@
 Rule ``phpdoc_no_empty_return``
 ===============================
 
-``@return void`` and ``@return null`` annotations should be omitted from PHPDoc.
+``@return void`` and ``@return null`` annotations must be removed from PHPDoc.
 
 Examples
 --------
@@ -40,3 +40,10 @@ The rule is part of the following rule set:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoEmptyReturnFixer <./../../../src/Fixer/Phpdoc/PhpdocNoEmptyReturnFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocNoEmptyReturnFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocNoEmptyReturnFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

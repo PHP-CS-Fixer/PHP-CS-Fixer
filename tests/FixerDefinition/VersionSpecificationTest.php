@@ -23,6 +23,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\FixerDefinition\VersionSpecification
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class VersionSpecificationTest extends TestCase
 {
@@ -34,47 +36,42 @@ final class VersionSpecificationTest extends TestCase
     }
 
     /**
-     * @dataProvider provideInvalidVersionCases
+     * @dataProvider provideConstructorRejectsInvalidValuesCases
+     *
+     * @param null|int<1, max> $minimum
+     * @param null|int<1, max> $maximum
      */
-    public function testConstructorRejectsInvalidMinimum(int $minimum): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-
-        new VersionSpecification($minimum);
-    }
-
-    /**
-     * @dataProvider provideInvalidVersionCases
-     */
-    public function testConstructorRejectsInvalidMaximum(int $maximum): void
+    public function testConstructorRejectsInvalidValues(?int $minimum = null, ?int $maximum = null): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         new VersionSpecification(
-            \PHP_VERSION_ID,
+            $minimum,
             $maximum
         );
     }
 
-    public static function provideInvalidVersionCases(): iterable
+    /**
+     * @return iterable<string, array{null|int, null|int}>
+     */
+    public static function provideConstructorRejectsInvalidValuesCases(): iterable
     {
-        yield 'negative' => [-1];
+        yield 'minimum is negative' => [-1, null];
 
-        yield 'zero' => [0];
-    }
+        yield 'minimum is zero' => [0, null];
 
-    public function testConstructorRejectsMaximumLessThanMinimum(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
+        yield 'maximum is negative' => [null, -1];
 
-        new VersionSpecification(
-            \PHP_VERSION_ID,
-            \PHP_VERSION_ID - 1
-        );
+        yield 'maximum is zero' => [null, 0];
+
+        yield 'maximum less than minimum' => [32, 31];
     }
 
     /**
      * @dataProvider provideIsSatisfiedByReturnsTrueCases
+     *
+     * @param null|int<1, max> $minimum
+     * @param null|int<1, max> $maximum
      */
     public function testIsSatisfiedByReturnsTrue(?int $minimum, ?int $maximum, int $actual): void
     {
@@ -86,19 +83,25 @@ final class VersionSpecificationTest extends TestCase
         self::assertTrue($versionSpecification->isSatisfiedBy($actual));
     }
 
+    /**
+     * @return iterable<string, array{null|int, null|int, int}>
+     */
     public static function provideIsSatisfiedByReturnsTrueCases(): iterable
     {
-        yield 'version-same-as-maximum' => [null, \PHP_VERSION_ID, \PHP_VERSION_ID];
+        yield 'version-same-as-maximum' => [null, 100, 100];
 
-        yield 'version-same-as-minimum' => [\PHP_VERSION_ID, null, \PHP_VERSION_ID];
+        yield 'version-same-as-minimum' => [200, null, 200];
 
-        yield 'version-between-minimum-and-maximum' => [\PHP_VERSION_ID - 1, \PHP_VERSION_ID + 1, \PHP_VERSION_ID];
+        yield 'version-between-minimum-and-maximum' => [299, 301, 300];
 
-        yield 'version-same-as-minimum-and-maximum' => [\PHP_VERSION_ID, \PHP_VERSION_ID, \PHP_VERSION_ID];
+        yield 'version-same-as-minimum-and-maximum' => [400, 400, 400];
     }
 
     /**
      * @dataProvider provideIsSatisfiedByReturnsFalseCases
+     *
+     * @param null|int<1, max> $minimum
+     * @param null|int<1, max> $maximum
      */
     public function testIsSatisfiedByReturnsFalse(?int $minimum, ?int $maximum, int $actual): void
     {
@@ -110,10 +113,13 @@ final class VersionSpecificationTest extends TestCase
         self::assertFalse($versionSpecification->isSatisfiedBy($actual));
     }
 
+    /**
+     * @return iterable<string, array{null|int, null|int, int}>
+     */
     public static function provideIsSatisfiedByReturnsFalseCases(): iterable
     {
-        yield 'version-greater-than-maximum' => [null, \PHP_VERSION_ID, \PHP_VERSION_ID + 1];
+        yield 'version-greater-than-maximum' => [null, 1_000, 1_001];
 
-        yield 'version-less-than-minimum' => [\PHP_VERSION_ID, null, \PHP_VERSION_ID - 1];
+        yield 'version-less-than-minimum' => [2_000, null, 1_999];
     }
 }

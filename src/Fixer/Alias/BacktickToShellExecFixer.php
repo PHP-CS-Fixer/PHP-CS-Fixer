@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class BacktickToShellExecFixer extends AbstractFixer
 {
@@ -53,7 +55,7 @@ final class BacktickToShellExecFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before EscapeImplicitBackslashesFixer, ExplicitStringVariableFixer, NativeFunctionInvocationFixer, SingleQuoteFixer.
+     * Must run before ExplicitStringVariableFixer, NativeFunctionInvocationFixer, SingleQuoteFixer.
      */
     public function getPriority(): int
     {
@@ -95,9 +97,8 @@ final class BacktickToShellExecFixer extends AbstractFixer
     {
         // Track indices for final override
         ksort($backtickTokens);
-        $openingBacktickIndex = key($backtickTokens);
-        end($backtickTokens);
-        $closingBacktickIndex = key($backtickTokens);
+        $openingBacktickIndex = array_key_first($backtickTokens);
+        $closingBacktickIndex = array_key_last($backtickTokens);
 
         // Strip enclosing backticks
         array_shift($backtickTokens);
@@ -108,7 +109,7 @@ final class BacktickToShellExecFixer extends AbstractFixer
         $count = \count($backtickTokens);
 
         $newTokens = [
-            new Token([T_STRING, 'shell_exec']),
+            new Token([\T_STRING, 'shell_exec']),
             new Token('('),
         ];
 
@@ -117,7 +118,7 @@ final class BacktickToShellExecFixer extends AbstractFixer
         }
 
         foreach ($backtickTokens as $token) {
-            if (!$token->isGivenKind(T_ENCAPSED_AND_WHITESPACE)) {
+            if (!$token->isGivenKind(\T_ENCAPSED_AND_WHITESPACE)) {
                 $newTokens[] = $token;
 
                 continue;
@@ -129,11 +130,11 @@ final class BacktickToShellExecFixer extends AbstractFixer
                 return;
             }
 
-            $kind = T_ENCAPSED_AND_WHITESPACE;
+            $kind = \T_ENCAPSED_AND_WHITESPACE;
 
             if (1 === $count) {
                 $content = '"'.$content.'"';
-                $kind = T_CONSTANT_ENCAPSED_STRING;
+                $kind = \T_CONSTANT_ENCAPSED_STRING;
             }
 
             $newTokens[] = new Token([$kind, $content]);

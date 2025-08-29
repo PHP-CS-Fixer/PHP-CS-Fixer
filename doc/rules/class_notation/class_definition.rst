@@ -8,6 +8,15 @@ should be one space.
 Configuration
 -------------
 
+``inline_constructor_arguments``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether constructor argument list in anonymous classes should be single line.
+
+Allowed types: ``bool``
+
+Default value: ``true``
+
 ``multi_line_extends_each_single_line``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -44,15 +53,6 @@ Whether there should be a single space after the parenthesis of anonymous class
 Allowed types: ``bool``
 
 Default value: ``false``
-
-``inline_constructor_arguments``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Whether constructor argument list in anonymous classes should be single line.
-
-Allowed types: ``bool``
-
-Default value: ``true``
 
 Examples
 --------
@@ -176,11 +176,19 @@ The rule is part of the following rule sets:
 
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
 
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
+
+  ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
+
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
 
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
 
 - `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+
+  ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
+
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
 
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
 
@@ -197,4 +205,10 @@ The rule is part of the following rule sets:
 
   ``['single_line' => true]``
 
+References
+----------
 
+- Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\ClassDefinitionFixer <./../../../src/Fixer/ClassNotation/ClassDefinitionFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ClassNotation\\ClassDefinitionFixerTest <./../../../tests/Fixer/ClassNotation/ClassDefinitionFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

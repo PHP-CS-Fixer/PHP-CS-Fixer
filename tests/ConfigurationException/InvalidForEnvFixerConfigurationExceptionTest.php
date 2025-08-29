@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\ConfigurationException;
 
-use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\Console\Command\FixCommandExitStatusCalculator;
 use PhpCsFixer\Tests\TestCase;
@@ -23,6 +22,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class InvalidForEnvFixerConfigurationExceptionTest extends TestCase
 {
@@ -36,8 +37,7 @@ final class InvalidForEnvFixerConfigurationExceptionTest extends TestCase
             $message
         );
 
-        self::assertInstanceOf(InvalidFixerConfigurationException::class, $exception);
-        self::assertSame(sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
+        self::assertSame(\sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
         self::assertSame(FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG, $exception->getCode());
         self::assertSame($fixerName, $exception->getFixerName());
         self::assertNull($exception->getPrevious());

@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TypeAnalysisTest extends TestCase
 {
@@ -58,6 +60,9 @@ final class TypeAnalysisTest extends TestCase
         self::assertSame($expected, $analysis->isReservedType());
     }
 
+    /**
+     * @return iterable<int, array{string, bool}>
+     */
     public static function provideReservedCases(): iterable
     {
         yield ['array', true];
@@ -71,6 +76,8 @@ final class TypeAnalysisTest extends TestCase
         yield ['int', true];
 
         yield ['iterable', true];
+
+        yield ['list', true];
 
         yield ['mixed', true];
 
@@ -110,6 +117,9 @@ final class TypeAnalysisTest extends TestCase
         self::assertSame($expected, $analysis->isNullable());
     }
 
+    /**
+     * @return iterable<int, array{bool, string}>
+     */
     public static function provideIsNullableCases(): iterable
     {
         yield [false, 'string'];
@@ -123,75 +133,117 @@ final class TypeAnalysisTest extends TestCase
         yield [false, '\foo\bar'];
 
         yield [true, '?\foo\bar'];
+    }
 
-        if (\PHP_VERSION_ID >= 8_00_00) {
-            yield [false, 'string|int'];
+    /**
+     * @dataProvider provideIsNullable80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testIsNullable80(bool $expected, string $input): void
+    {
+        $this->testIsNullable($expected, $input);
+    }
 
-            yield [true, 'string|null'];
+    /**
+     * @return iterable<int, array{bool, string}>
+     */
+    public static function provideIsNullable80Cases(): iterable
+    {
+        yield [false, 'string|int'];
 
-            yield [true, 'null|string'];
+        yield [true, 'string|null'];
 
-            yield [true, 'string|NULL'];
+        yield [true, 'null|string'];
 
-            yield [true, 'NULL|string'];
+        yield [true, 'string|NULL'];
 
-            yield [true, 'string|int|null'];
+        yield [true, 'NULL|string'];
 
-            yield [true, 'null|string|int'];
+        yield [true, 'string|int|null'];
 
-            yield [true, 'string|null|int'];
+        yield [true, 'null|string|int'];
 
-            yield [true, 'string|int|NULL'];
+        yield [true, 'string|null|int'];
 
-            yield [true, 'NULL|string|int'];
+        yield [true, 'string|int|NULL'];
 
-            yield [true, 'string|NULL|int'];
+        yield [true, 'NULL|string|int'];
 
-            yield [false, 'string|\foo\bar'];
+        yield [true, 'string|NULL|int'];
 
-            yield [true, 'string|\foo\bar|null'];
+        yield [false, 'string|\foo\bar'];
 
-            yield [true, 'null|string|\foo\bar'];
+        yield [true, 'string|\foo\bar|null'];
 
-            yield [true, 'string|null|\foo\bar'];
+        yield [true, 'null|string|\foo\bar'];
 
-            yield [true, 'string |null| int'];
+        yield [true, 'string|null|\foo\bar'];
 
-            yield [true, 'string| null |int'];
+        yield [true, 'string |null| int'];
 
-            yield [true, 'string | null | int'];
+        yield [true, 'string| null |int'];
 
-            yield [false, 'Null2|int'];
+        yield [true, 'string | null | int'];
 
-            yield [false, 'string|Null2'];
+        yield [false, 'Null2|int'];
 
-            yield [false, 'string |Null2'];
+        yield [false, 'string|Null2'];
 
-            yield [false, 'Null2| int'];
+        yield [false, 'string |Null2'];
 
-            yield [false, 'string | Null2 | int'];
-        }
+        yield [false, 'Null2| int'];
 
-        if (\PHP_VERSION_ID >= 8_01_00) {
-            yield [false, '\foo\bar&\foo\baz'];
+        yield [false, 'string | Null2 | int'];
+    }
 
-            yield [false, '\foo\bar & \foo\baz'];
+    /**
+     * @dataProvider provideIsNullable81Cases
+     *
+     * @requires PHP 8.1
+     */
+    public function testIsNullable81(bool $expected, string $input): void
+    {
+        $this->testIsNullable($expected, $input);
+    }
 
-            yield [false, '\foo\bar&Null2'];
-        }
+    /**
+     * @return iterable<int, array{bool, string}>
+     */
+    public static function provideIsNullable81Cases(): iterable
+    {
+        yield [false, '\foo\bar&\foo\baz'];
 
-        if (\PHP_VERSION_ID >= 8_02_00) {
-            yield [true, '(\foo\bar&\foo\baz)|null'];
+        yield [false, '\foo\bar & \foo\baz'];
 
-            yield [true, '(\foo\bar&\foo\baz) | null'];
+        yield [false, '\foo\bar&Null2'];
+    }
 
-            yield [false, '(\foo\bar&\foo\baz)|Null2'];
+    /**
+     * @dataProvider provideIsNullable82Cases
+     *
+     * @requires PHP 8.2
+     */
+    public function testIsNullable82(bool $expected, string $input): void
+    {
+        $this->testIsNullable($expected, $input);
+    }
 
-            yield [true, 'null'];
+    /**
+     * @return iterable<int, array{bool, string}>
+     */
+    public static function provideIsNullable82Cases(): iterable
+    {
+        yield [true, '(\foo\bar&\foo\baz)|null'];
 
-            yield [true, 'Null'];
+        yield [true, '(\foo\bar&\foo\baz) | null'];
 
-            yield [true, 'NULL'];
-        }
+        yield [false, '(\foo\bar&\foo\baz)|Null2'];
+
+        yield [true, 'null'];
+
+        yield [true, 'Null'];
+
+        yield [true, 'NULL'];
     }
 }

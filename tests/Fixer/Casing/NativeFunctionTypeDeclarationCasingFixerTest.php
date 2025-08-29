@@ -14,15 +14,31 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Casing;
 
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Casing\NativeFunctionTypeDeclarationCasingFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\NativeFunctionTypeDeclarationCasingFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NativeFunctionTypeDeclarationCasingFixerTest extends AbstractFixerTestCase
 {
+    public function testFunctionIsDeprecatedProperly(): void
+    {
+        $fixer = $this->fixer;
+
+        self::assertInstanceOf(DeprecatedFixerInterface::class, $fixer);
+        self::assertSame(
+            ['native_type_declaration_casing'],
+            $fixer->getSuccessorsNames(),
+        );
+    }
+
     /**
      * @dataProvider provideFixCases
      */
@@ -31,245 +47,11 @@ final class NativeFunctionTypeDeclarationCasingFixerTest extends AbstractFixerTe
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
-        yield [
-            '<?php
-class Foo
-{
-    private function Bar(array $bar) {
-        return false;
-    }
-}
-',
-            '<?php
-class Foo
-{
-    private function Bar(ARRAY $bar) {
-        return false;
-    }
-}
-',
-        ];
-
-        yield [
-            '<?php
-interface Foo
-{
-    public function Bar(array $bar);
-}
-',
-            '<?php
-interface Foo
-{
-    public function Bar(ArrAY $bar);
-}
-',
-        ];
-
-        yield [
-            '<?php
-function Foo(/**/array/**/$bar) {
-    return false;
-}
-',
-            '<?php
-function Foo(/**/ARRAY/**/$bar) {
-    return false;
-}
-',
-        ];
-
-        yield [
-            '<?php
-class Bar { function Foo(array $a, callable $b, self $c) {} }
-                ',
-            '<?php
-class Bar { function Foo(ARRAY $a, CALLABLE $b, Self $c) {} }
-                ',
-        ];
-
-        yield [
-            '<?php
-function Foo(INTEGER $a) {}
-                ',
-        ];
-
-        yield [
-            '<?php function Foo(
-                    String\A $x,
-                    B\String\C $y
-                ) {}',
-        ];
-
-        yield [
-            '<?php final class Foo1 { final public function Foo(bool $A, float $B, int $C, string $D): int {} }',
-            '<?php final class Foo1 { final public function Foo(BOOL $A, FLOAT $B, INT $C, STRING $D): INT {} }',
-        ];
-
-        yield [
-            '<?php function Foo(bool $A, float $B, int $C, string $D): int {}',
-            '<?php function Foo(BOOL $A, FLOAT $B, INT $C, STRING $D): INT {}',
-        ];
-
-        yield [
-            '<?php function Foo(): Foo\A { return new Foo(); }',
-        ];
-
-        yield [
-            '<?php trait XYZ { function Foo(iterable $A): void {} }',
-            '<?php trait XYZ { function Foo(ITERABLE $A): VOID {} }',
-        ];
-
-        yield [
-            '<?php function Foo(iterable $A): void {}',
-            '<?php function Foo(ITERABLE $A): VOID {}',
-        ];
-
-        yield [
-            '<?php function Foo(?int $A): void {}',
-            '<?php function Foo(?INT $A): VOID {}',
-        ];
-
-        yield [
-            '<?php function Foo(string $A): ?/* */int {}',
-            '<?php function Foo(STRING $A): ?/* */INT {}',
-        ];
-
-        yield [
-            '<?php function Foo(object $A): void {}',
-            '<?php function Foo(OBJECT $A): VOID {}',
-        ];
-
-        yield [
-            '<?php return function (callable $c) {};',
-            '<?php return function (CALLABLE $c) {};',
-        ];
-
-        yield [
-            '<?php return fn (callable $c): int => 1;',
-            '<?php return fn (CALLABLE $c): INT => 1;',
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix80Cases
-     *
-     * @requires PHP 8.0
-     */
-    public function testFix80(string $expected, string $input): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFix80Cases(): iterable
-    {
-        yield [
-            '<?php class T { public function Foo(object $A): static {}}',
-            '<?php class T { public function Foo(object $A): StatiC {}}',
-        ];
-
-        yield [
-            '<?php class T { public function Foo(object $A): ?static {}}',
-            '<?php class T { public function Foo(object $A): ?StatiC {}}',
-        ];
-
-        yield [
-            '<?php class T { public function Foo(mixed $A): mixed {}}',
-            '<?php class T { public function Foo(Mixed $A): MIXED {}}',
-        ];
-
-        yield 'mixed in arrow function' => [
-            '<?php return fn (mixed $c): mixed => 1;',
-            '<?php return fn (MiXeD $c): MIXED => 1;',
-        ];
-
-        yield [
-            '<?php function foo(int|bool $x) {}',
-            '<?php function foo(INT|BOOL $x) {}',
-        ];
-
-        yield [
-            '<?php function foo(int | bool $x) {}',
-            '<?php function foo(INT | BOOL $x) {}',
-        ];
-
-        yield [
-            '<?php function foo(): int|bool {}',
-            '<?php function foo(): INT|BOOL {}',
-        ];
-
-        yield 'return type string|false' => [
-            '<?php function foo(): string|false {}',
-            '<?php function foo(): string|FALSE {}',
-        ];
-
-        yield 'return type string|null' => [
-            '<?php function foo(): string|null {}',
-            '<?php function foo(): string|NULL {}',
-        ];
-
-        yield 'union types in arrow function' => [
-            '<?php return fn (string|null $c): int|null => 1;',
-            '<?php return fn (string|NULL $c): INT|NULL => 1;',
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix81Cases
-     *
-     * @requires PHP 8.1
-     */
-    public function testFix81(string $expected, string $input): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFix81Cases(): iterable
-    {
-        yield 'return type `never`' => [
-            '<?php class T { public function Foo(object $A): never {die;}}',
-            '<?php class T { public function Foo(object $A): NEVER {die;}}',
-        ];
-    }
-
-    /**
-     * @dataProvider provideFix82Cases
-     *
-     * @requires PHP 8.2
-     */
-    public function testFix82(string $expected, string $input): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFix82Cases(): iterable
-    {
-        yield 'disjunctive normal form types in arrow function' => [
-            '<?php return fn ((A&B)|C|null $c): (X&Y)|Z|null => 1;',
-            '<?php return fn ((A&B)|C|Null $c): (X&Y)|Z|NULL => 1;',
-        ];
-
-        foreach (['true', 'false', 'null'] as $type) {
-            yield sprintf('standalone type `%s` in class method', $type) => [
-                sprintf('<?php class T { public function Foo(%s $A): %1$s {return $A;}}', $type),
-                sprintf('<?php class T { public function Foo(%s $A): %1$s {return $A;}}', strtoupper($type)),
-            ];
-
-            yield sprintf('standalone type `%s` in function', $type) => [
-                sprintf('<?php function Foo(%s $A): %1$s {return $A;}', $type),
-                sprintf('<?php function Foo(%s $A): %1$s {return $A;}', strtoupper($type)),
-            ];
-
-            yield sprintf('standalone type `%s` in closure', $type) => [
-                sprintf('<?php array_filter([], function (%s $A): %1$s {return $A;});', $type),
-                sprintf('<?php array_filter([], function (%s $A): %1$s {return $A;});', strtoupper($type)),
-            ];
-
-            yield sprintf('standalone type `%s` in arrow function', $type) => [
-                sprintf('<?php array_filter([], fn (%s $A): %1$s => $A);', $type),
-                sprintf('<?php array_filter([], fn (%s $A): %1$s => $A);', strtoupper($type)),
-            ];
-        }
+        yield from NativeTypeDeclarationCasingFixerTest::provideFixCases();
     }
 }

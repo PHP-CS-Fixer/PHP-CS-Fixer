@@ -1,0 +1,20 @@
+--TEST--
+Integration of fixers: multiline_string_to_heredoc,string_implicit_backslashes.
+--RULESET--
+{
+    "multiline_string_to_heredoc": true,
+    "string_implicit_backslashes": {"double_quoted": "unescape"}
+}
+--EXPECT--
+<?php
+$a = " \ ";
+$b = <<<EOD
+ \\
+line2
+EOD;
+
+--INPUT--
+<?php
+$a = " \ ";
+$b = " \
+line2";

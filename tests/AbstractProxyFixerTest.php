@@ -18,8 +18,6 @@ use PhpCsFixer\AbstractProxyFixer;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\Tests\Fixtures\Test\AbstractProxyFixerTest\SimpleFixer;
-use PhpCsFixer\Tests\Fixtures\Test\AbstractProxyFixerTest\SimpleWhitespacesAwareFixer;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
 
@@ -27,20 +25,22 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @internal
  *
  * @covers \PhpCsFixer\AbstractProxyFixer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class AbstractProxyFixerTest extends TestCase
 {
     public function testCandidate(): void
     {
-        $proxyFixer = $this->buildProxyFixer([new SimpleFixer(true)]);
+        $proxyFixer = $this->createProxyFixerDouble([$this->createFixerDouble(true)]);
         self::assertTrue($proxyFixer->isCandidate(new Tokens()));
 
-        $proxyFixer = $this->buildProxyFixer([new SimpleFixer(false)]);
+        $proxyFixer = $this->createProxyFixerDouble([$this->createFixerDouble(false)]);
         self::assertFalse($proxyFixer->isCandidate(new Tokens()));
 
-        $proxyFixer = $this->buildProxyFixer([
-            new SimpleFixer(false),
-            new SimpleFixer(true),
+        $proxyFixer = $this->createProxyFixerDouble([
+            $this->createFixerDouble(false),
+            $this->createFixerDouble(true),
         ]);
 
         self::assertTrue($proxyFixer->isCandidate(new Tokens()));
@@ -48,16 +48,16 @@ final class AbstractProxyFixerTest extends TestCase
 
     public function testRisky(): void
     {
-        $proxyFixer = $this->buildProxyFixer([new SimpleFixer(true, false)]);
+        $proxyFixer = $this->createProxyFixerDouble([$this->createFixerDouble(true, false)]);
         self::assertFalse($proxyFixer->isRisky());
 
-        $proxyFixer = $this->buildProxyFixer([new SimpleFixer(true, true)]);
+        $proxyFixer = $this->createProxyFixerDouble([$this->createFixerDouble(true, true)]);
         self::assertTrue($proxyFixer->isRisky());
 
-        $proxyFixer = $this->buildProxyFixer([
-            new SimpleFixer(true, false),
-            new SimpleFixer(true, true),
-            new SimpleFixer(true, false),
+        $proxyFixer = $this->createProxyFixerDouble([
+            $this->createFixerDouble(true, false),
+            $this->createFixerDouble(true, true),
+            $this->createFixerDouble(true, false),
         ]);
 
         self::assertTrue($proxyFixer->isRisky());
@@ -67,16 +67,16 @@ final class AbstractProxyFixerTest extends TestCase
     {
         $file = new \SplFileInfo(__FILE__);
 
-        $proxyFixer = $this->buildProxyFixer([new SimpleFixer(true, false, false)]);
+        $proxyFixer = $this->createProxyFixerDouble([$this->createFixerDouble(true, false, false)]);
         self::assertFalse($proxyFixer->supports($file));
 
-        $proxyFixer = $this->buildProxyFixer([new SimpleFixer(true, true, true)]);
+        $proxyFixer = $this->createProxyFixerDouble([$this->createFixerDouble(true, true, true)]);
         self::assertTrue($proxyFixer->supports($file));
 
-        $proxyFixer = $this->buildProxyFixer([
-            new SimpleFixer(true, false, false),
-            new SimpleFixer(true, true, false),
-            new SimpleFixer(true, false, true),
+        $proxyFixer = $this->createProxyFixerDouble([
+            $this->createFixerDouble(true, false, false),
+            $this->createFixerDouble(true, true, false),
+            $this->createFixerDouble(true, false, true),
         ]);
 
         self::assertTrue($proxyFixer->supports($file));
@@ -84,16 +84,18 @@ final class AbstractProxyFixerTest extends TestCase
 
     public function testPrioritySingleFixer(): void
     {
-        $proxyFixer = $this->buildProxyFixer([new SimpleFixer(true, false, false, 123)]);
+        $proxyFixer = $this->createProxyFixerDouble([
+            $this->createFixerDouble(true, false, false, 123),
+        ]);
         self::assertSame(123, $proxyFixer->getPriority());
     }
 
     public function testPriorityMultipleFixersNotSet(): void
     {
-        $proxyFixer = $this->buildProxyFixer([
-            new SimpleFixer(true),
-            new SimpleFixer(true, true),
-            new SimpleFixer(true, false, true),
+        $proxyFixer = $this->createProxyFixerDouble([
+            $this->createFixerDouble(true),
+            $this->createFixerDouble(true, true),
+            $this->createFixerDouble(true, false, true),
         ]);
 
         $this->expectException(\LogicException::class);
@@ -105,35 +107,150 @@ final class AbstractProxyFixerTest extends TestCase
     public function testWhitespacesConfig(): void
     {
         $config = new WhitespacesFixerConfig();
-        $whitespacesAwareFixer = new SimpleWhitespacesAwareFixer();
+        $whitespacesAwareFixer = $this->createWhitespacesAwareFixerDouble();
 
-        $proxyFixer = $this->buildProxyFixer([
-            new SimpleFixer(true, true),
+        $proxyFixer = $this->createProxyFixerDouble([
+            $this->createFixerDouble(true, true),
             $whitespacesAwareFixer,
-            new SimpleFixer(true, false, true),
+            $this->createFixerDouble(true, false, true),
         ]);
 
         $proxyFixer->setWhitespacesConfig($config);
 
-        self::assertSame($config, $whitespacesAwareFixer->getWhitespacesFixerConfig());
+        self::assertSame(
+            $config,
+            \Closure::bind(static fn ($fixer): WhitespacesFixerConfig => $fixer->whitespacesConfig, null, \get_class($whitespacesAwareFixer))($whitespacesAwareFixer),
+        );
     }
 
     public function testApplyFixInPriorityOrder(): void
     {
-        $fixer1 = new SimpleFixer(true, false, true, 1);
-        $fixer2 = new SimpleFixer(true, false, true, 10);
+        $fixer1 = $this->createFixerDouble(true, false, true, 1);
+        $fixer2 = $this->createFixerDouble(true, false, true, 10);
 
-        $proxyFixer = $this->buildProxyFixer([$fixer1, $fixer2]);
+        $proxyFixer = $this->createProxyFixerDouble([$fixer1, $fixer2]);
         $proxyFixer->fix(new \SplFileInfo(__FILE__), Tokens::fromCode('<?php echo 1;'));
 
-        self::assertSame(2, $fixer1->isFixCalled());
-        self::assertSame(1, $fixer2->isFixCalled());
+        self::assertSame(2, \Closure::bind(static fn ($fixer): int => $fixer->fixCalled, null, \get_class($fixer1))($fixer1));
+        self::assertSame(1, \Closure::bind(static fn ($fixer): int => $fixer->fixCalled, null, \get_class($fixer2))($fixer2));
+    }
+
+    private function createFixerDouble(
+        bool $isCandidate,
+        bool $isRisky = false,
+        bool $supports = false,
+        int $priority = 999
+    ): FixerInterface {
+        return new class($isCandidate, $isRisky, $supports, $priority) implements FixerInterface {
+            private bool $isCandidate;
+            private bool $isRisky;
+            private bool $supports;
+            private int $priority;
+            private int $fixCalled = 0;
+            private static int $callCount = 1;
+
+            public function __construct(bool $isCandidate, bool $isRisky, bool $supports, int $priority)
+            {
+                $this->isCandidate = $isCandidate;
+                $this->isRisky = $isRisky;
+                $this->supports = $supports;
+                $this->priority = $priority;
+            }
+
+            public function fix(\SplFileInfo $file, Tokens $tokens): void
+            {
+                if (0 !== $this->fixCalled) {
+                    throw new \RuntimeException('Fixer called multiple times.');
+                }
+
+                $this->fixCalled = self::$callCount;
+                ++self::$callCount;
+            }
+
+            public function getDefinition(): FixerDefinitionInterface
+            {
+                throw new \BadMethodCallException('Not implemented.');
+            }
+
+            public function getName(): string
+            {
+                return uniqid('abstract_proxy_test_');
+            }
+
+            public function getPriority(): int
+            {
+                return $this->priority;
+            }
+
+            public function isCandidate(Tokens $tokens): bool
+            {
+                return $this->isCandidate;
+            }
+
+            public function isRisky(): bool
+            {
+                return $this->isRisky;
+            }
+
+            public function supports(\SplFileInfo $file): bool
+            {
+                return $this->supports;
+            }
+        };
+    }
+
+    private function createWhitespacesAwareFixerDouble(): WhitespacesAwareFixerInterface
+    {
+        return new class implements WhitespacesAwareFixerInterface {
+            /** @phpstan-ignore-next-line to not complain that property is never read */
+            private WhitespacesFixerConfig $whitespacesConfig;
+
+            public function getDefinition(): FixerDefinitionInterface
+            {
+                throw new \BadMethodCallException('Not implemented.');
+            }
+
+            public function fix(\SplFileInfo $file, Tokens $tokens): void
+            {
+                throw new \BadMethodCallException('Not implemented.');
+            }
+
+            public function getName(): string
+            {
+                return uniqid('abstract_proxy_aware_test_');
+            }
+
+            public function getPriority(): int
+            {
+                return 1;
+            }
+
+            public function isCandidate(Tokens $tokens): bool
+            {
+                throw new \BadMethodCallException('Not implemented.');
+            }
+
+            public function isRisky(): bool
+            {
+                throw new \BadMethodCallException('Not implemented.');
+            }
+
+            public function setWhitespacesConfig(WhitespacesFixerConfig $config): void
+            {
+                $this->whitespacesConfig = $config;
+            }
+
+            public function supports(\SplFileInfo $file): bool
+            {
+                throw new \BadMethodCallException('Not implemented.');
+            }
+        };
     }
 
     /**
-     * @param FixerInterface[] $fixers
+     * @param list<FixerInterface> $fixers
      */
-    private function buildProxyFixer(array $fixers): AbstractProxyFixer
+    private function createProxyFixerDouble(array $fixers): AbstractProxyFixer
     {
         return new class($fixers) extends AbstractProxyFixer implements WhitespacesAwareFixerInterface {
             /**

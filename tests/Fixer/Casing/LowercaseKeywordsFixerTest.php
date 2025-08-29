@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\Casing;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Casing\LowercaseKeywordsFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\LowercaseKeywordsFixer>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class LowercaseKeywordsFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class LowercaseKeywordsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield ['<?php $x = (1 and 2);', '<?php $x = (1 AND 2);'];
@@ -47,11 +54,8 @@ final class LowercaseKeywordsFixerTest extends AbstractFixerTestCase
             '<?php $fn = fn() => true;',
             '<?php $fn = FN() => true;',
         ];
-    }
 
-    public function testHaltCompiler(): void
-    {
-        $this->doTest('<?php __HALT_COMPILER();');
+        yield ['<?php __HALT_COMPILER();'];
     }
 
     /**
@@ -64,6 +68,9 @@ final class LowercaseKeywordsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{string, string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [
@@ -111,6 +118,9 @@ class Point {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [
@@ -160,6 +170,41 @@ ENUM Suit {
     case Hearts;
 }
 ',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield 'asymmetric visibility' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public(set) Bar $a;
+                    protected(set) Bar $b;
+                    private(set) Baz $c;
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo
+                {
+                    PUBLIC(SET) Bar $a;
+                    PROTECTED(SET) Bar $b;
+                    PRIVATE(SET) Baz $c;
+                }
+                PHP,
         ];
     }
 }

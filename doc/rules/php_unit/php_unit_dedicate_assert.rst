@@ -133,8 +133,18 @@ The rule is part of the following rule sets:
 
   ``['target' => '5.6']``
 
+- `@PHPUnit91Migration:risky <./../../ruleSets/PHPUnit91MigrationRisky.rst>`_ with config:
+
+  ``['target' => '5.6']``
+
 - `@PHPUnit100Migration:risky <./../../ruleSets/PHPUnit100MigrationRisky.rst>`_ with config:
 
   ``['target' => '5.6']``
 
+References
+----------
 
+- Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDedicateAssertFixer <./../../../src/Fixer/PhpUnit/PhpUnitDedicateAssertFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitDedicateAssertFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitDedicateAssertFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

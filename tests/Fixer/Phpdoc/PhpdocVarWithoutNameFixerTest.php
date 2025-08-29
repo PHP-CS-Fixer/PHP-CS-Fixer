@@ -17,36 +17,36 @@ namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer>
+ *
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideFixVarCases
+     * @dataProvider provideFixCases
      */
-    public function testFixVar(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
-    }
 
-    /**
-     * @dataProvider provideFixVarCases
-     */
-    public function testFixType(string $expected, ?string $input = null): void
-    {
         $expected = str_replace('@var', '@type', $expected);
         if (null !== $input) {
             $input = str_replace('@var', '@type', $input);
         }
-
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixVarCases(): iterable
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
+    public static function provideFixCases(): iterable
     {
         yield 'testFixVar' => [
             <<<'EOF'
@@ -59,8 +59,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                      */
                     public $foo;
                 }
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
 
@@ -71,8 +70,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                      */
                     public $foo;
                 }
-                EOF
-            ,
+                EOF,
         ];
 
         yield 'testFixType' => [
@@ -86,8 +84,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                      */
                     public $bar;
                 }
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
 
@@ -98,8 +95,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                      */
                     public $bar;
                 }
-                EOF
-            ,
+                EOF,
         ];
 
         yield 'testDoNothing' => [
@@ -113,7 +109,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                      */
                     public $bar;
                 }
-                EOF
+                EOF,
         ];
 
         yield 'testFixVarWithNestedKeys' => [
@@ -130,8 +126,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                      */
                      public $options;
                 }
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
 
@@ -145,7 +140,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                      */
                      public $options;
                 }
-                EOF
+                EOF,
         ];
 
         yield 'testSingleLine' => [
@@ -157,8 +152,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                     /** @var Foo\Bar */
                     public $bar;
                 }
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
 
@@ -167,8 +161,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                     /** @var Foo\Bar $bar */
                     public $bar;
                 }
-                EOF
-            ,
+                EOF,
         ];
 
         yield 'testSingleLineProtected' => [
@@ -180,8 +173,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                     /** @var Foo\Bar */
                     protected $bar;
                 }
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
 
@@ -190,8 +182,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                     /** @var Foo\Bar $bar */
                     protected $bar;
                 }
-                EOF
-            ,
+                EOF,
         ];
 
         yield 'testSingleLinePrivate' => [
@@ -203,8 +194,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                     /** @var Foo\Bar */
                     private $bar;
                 }
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
 
@@ -213,8 +203,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                     /** @var Foo\Bar $bar */
                     private $bar;
                 }
-                EOF
-            ,
+                EOF,
         ];
 
         yield 'testSingleLineVar' => [
@@ -226,8 +215,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                     /** @var Foo\Bar */
                     var $bar;
                 }
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
 
@@ -236,8 +224,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                     /** @var Foo\Bar $bar */
                     var $bar;
                 }
-                EOF
-            ,
+                EOF,
         ];
 
         yield 'testSingleLineStatic' => [
@@ -249,8 +236,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                     /** @var Foo\Bar */
                     static public $bar;
                 }
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
 
@@ -259,8 +245,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                     /** @var Foo\Bar $bar */
                     static public $bar;
                 }
-                EOF
-            ,
+                EOF,
         ];
 
         yield 'testSingleLineNoSpace' => [
@@ -272,8 +257,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                     /** @var Foo\Bar*/
                     public $bar;
                 }
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
 
@@ -282,8 +266,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                     /** @var Foo\Bar $bar*/
                     public $bar;
                 }
-                EOF
-            ,
+                EOF,
         ];
 
         yield 'testInlineDoc' => [
@@ -305,8 +288,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                         // Do something
                     }
                 }
-                EOF
-            ,
+                EOF,
         ];
 
         yield 'testSingleLineNoProperty' => [
@@ -315,7 +297,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
 
                 /** @var Foo\Bar $bar */
                 $bar;
-                EOF
+                EOF,
         ];
 
         yield 'testMultiLineNoProperty' => [
@@ -326,7 +308,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                  * @var Foo\Bar $bar
                  */
                 $bar;
-                EOF
+                EOF,
         ];
 
         yield 'testVeryNestedInlineDoc' => [
@@ -352,8 +334,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                      */
                     public $nestedFoo;
                 }
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
 
@@ -376,7 +357,7 @@ final class PhpdocVarWithoutNameFixerTest extends AbstractFixerTestCase
                      */
                     public $nestedFoo;
                 }
-                EOF
+                EOF,
         ];
 
         yield [
@@ -425,8 +406,7 @@ class Foo{}
                         };
                     }
                 }
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
 
@@ -454,8 +434,7 @@ class Foo{}
                         };
                     }
                 }
-                EOF
-            ,
+                EOF,
         ];
 
         yield [
@@ -542,8 +521,7 @@ class A
                     /** @var int Hello! */
                     public $foo4;
                 }
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
 
@@ -563,8 +541,7 @@ class A
                     /** @var int $this2 Hello! */
                     public $foo4;
                 }
-                EOF
-            ,
+                EOF,
         ];
 
         yield 'testFixMultibyteVariableName' => [
@@ -579,8 +556,7 @@ class A
                     /** @var 🚀 🚀 */
                     public $foo2;
                 }
-                EOF
-            ,
+                EOF,
             <<<'EOF'
                 <?php
 
@@ -592,8 +568,28 @@ class A
                     /** @var 🚀 $my 🚀 */
                     public $foo2;
                 }
-                EOF
-            ,
+                EOF,
+        ];
+
+        yield '@var with callable syntax' => [
+            <<<'EOF'
+                <?php
+
+                class Foo
+                {
+                    /** @var array<callable(string, Buzz): void> */
+                    protected $bar;
+                }
+                EOF,
+            <<<'EOF'
+                <?php
+
+                class Foo
+                {
+                    /** @var array<callable(string $baz, Buzz $buzz): void> */
+                    protected $bar;
+                }
+                EOF,
         ];
     }
 
@@ -607,6 +603,9 @@ class A
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'readonly' => [
@@ -654,6 +653,51 @@ class A
     final public const SKIPPED_TYPES = ["a" => true];
 }
 ',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield 'asymmetric visibility' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    /** @var bool */
+                    public(set) bool $a;
+
+                    /** @var bool */
+                    protected(set) bool $b;
+
+                    /** @var bool */
+                    private(set) bool $c;
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo
+                {
+                    /** @var bool $a */
+                    public(set) bool $a;
+
+                    /** @var bool $b */
+                    protected(set) bool $b;
+
+                    /** @var bool $c */
+                    private(set) bool $c;
+                }
+                PHP,
         ];
     }
 }

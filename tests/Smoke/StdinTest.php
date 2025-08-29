@@ -29,6 +29,8 @@ use PhpCsFixer\Preg;
  * @group covers-nothing
  *
  * @large
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class StdinTest extends AbstractSmokeTestCase
 {
@@ -36,7 +38,7 @@ final class StdinTest extends AbstractSmokeTestCase
     {
         $cwd = __DIR__.'/../..';
 
-        $command = 'php php-cs-fixer fix --rules=@PSR2 --dry-run --diff --using-cache=no';
+        $command = 'php php-cs-fixer fix --sequential --rules=@PSR2 --dry-run --diff --using-cache=no';
         $inputFile = 'tests/Fixtures/Integration/set/@PSR2.test-in.php';
 
         $fileResult = CommandExecutor::create("{$command} {$inputFile}", $cwd)->getResult(false);
@@ -73,7 +75,7 @@ final class StdinTest extends AbstractSmokeTestCase
 
     private function unifyFooter(string $output): string
     {
-        return preg_replace(
+        return Preg::replace(
             '/Found \d+ of \d+ files that can be fixed in \d+\.\d+ seconds, \d+\.\d+ MB memory used/',
             'Footer',
             $output

@@ -6,7 +6,6 @@ Integration of fixers: php_unit_test_annotation,no_empty_phpdoc.
 <?php
 class Test extends TestCase
 {
-    
     public function testFooBar() {}
 }
 

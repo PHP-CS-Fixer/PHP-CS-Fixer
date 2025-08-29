@@ -21,13 +21,15 @@ use PhpCsFixer\ToolInfoInterface;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class WarningsDetector
 {
     private ToolInfoInterface $toolInfo;
 
     /**
-     * @var string[]
+     * @var list<string>
      */
     private array $warnings = [];
 
@@ -50,7 +52,7 @@ final class WarningsDetector
         if ($this->toolInfo->isInstalledByComposer()) {
             $details = $this->toolInfo->getComposerInstallationDetails();
             if (ToolInfo::COMPOSER_LEGACY_PACKAGE_NAME === $details['name']) {
-                $this->warnings[] = sprintf(
+                $this->warnings[] = \sprintf(
                     'You are running PHP CS Fixer installed with old vendor `%s`. Please update to `%s`.',
                     ToolInfo::COMPOSER_LEGACY_PACKAGE_NAME,
                     ToolInfo::COMPOSER_PACKAGE_NAME
@@ -59,8 +61,15 @@ final class WarningsDetector
         }
     }
 
+    public function detectNonMonolithic(): void
+    {
+        if (filter_var(getenv('PHP_CS_FIXER_NON_MONOLITHIC'), \FILTER_VALIDATE_BOOL)) {
+            $this->warnings[] = 'Processing non-monolithic files enabled, because `PHP_CS_FIXER_NON_MONOLITHIC` is set. Execution result may be unpredictable - non-monolithic files are not officially supported.';
+        }
+    }
+
     /**
-     * @return string[]
+     * @return list<string>
      */
     public function getWarnings(): array
     {
@@ -68,9 +77,9 @@ final class WarningsDetector
             return [];
         }
 
-        return array_unique(array_merge(
+        return array_values(array_unique(array_merge(
             $this->warnings,
-            ['If you need help while solving warnings, ask at https://gitter.im/PHP-CS-Fixer, we will help you!']
-        ));
+            ['If you need help while solving warnings, ask at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/discussions/, we will help you!']
+        )));
     }
 }

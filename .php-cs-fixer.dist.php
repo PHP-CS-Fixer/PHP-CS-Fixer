@@ -12,38 +12,85 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-$header = <<<'EOF'
-    This file is part of PHP CS Fixer.
+use PhpCsFixer\Config;
+use PhpCsFixer\Finder;
+use PhpCsFixer\Fixer\Internal\ConfigurableFixerTemplateFixer;
+use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
-    (c) Fabien Potencier <fabien@symfony.com>
-        Dariusz Rumiński <dariusz.ruminski@gmail.com>
+$fileHeaderParts = [
+    <<<'EOF'
+        This file is part of PHP CS Fixer.
 
-    This source file is subject to the MIT license that is bundled
-    with this source code in the file LICENSE.
-    EOF;
+        (c) Fabien Potencier <fabien@symfony.com>
+            Dariusz Rumiński <dariusz.ruminski@gmail.com>
 
-$finder = PhpCsFixer\Finder::create()
-    ->ignoreDotFiles(false)
-    ->ignoreVCSIgnored(true)
-    ->exclude(['dev-tools/phpstan', 'tests/Fixtures'])
-    ->in(__DIR__)
-;
+        EOF,
+    <<<'EOF'
 
-$config = new PhpCsFixer\Config();
-$config
+        This source file is subject to the MIT license that is bundled
+        with this source code in the file LICENSE.
+        EOF,
+];
+
+return (new Config())
+    ->setParallelConfig(ParallelConfigFactory::detect()) // @TODO 4.0 no need to call this manually
     ->setRiskyAllowed(true)
+    ->registerCustomFixers([
+        new ConfigurableFixerTemplateFixer(),
+    ])
     ->setRules([
         '@PHP74Migration' => true,
         '@PHP74Migration:risky' => true,
         '@PHPUnit100Migration:risky' => true,
         '@PhpCsFixer' => true,
         '@PhpCsFixer:risky' => true,
+        'PhpCsFixerInternal/configurable_fixer_template' => true, // internal rules, shall not be used outside of main repo
         'general_phpdoc_annotation_remove' => ['annotations' => ['expectedDeprecation']], // one should use PHPUnit built-in method instead
-        'header_comment' => ['header' => $header],
+        'header_comment' => [
+            'header' => implode('', $fileHeaderParts),
+            'validator' => implode('', [
+                '/',
+                preg_quote($fileHeaderParts[0], '/'),
+                '(?P<EXTRA>.*)??',
+                preg_quote($fileHeaderParts[1], '/'),
+                '/s',
+            ]),
+        ],
         'modernize_strpos' => true, // needs PHP 8+ or polyfill
+        'native_constant_invocation' => ['strict' => false], // strict:false to not remove `\` on low-end PHP versions for not-yet-known consts
         'no_useless_concat_operator' => false, // TODO switch back on when the `src/Console/Application.php` no longer needs the concat
+        'numeric_literal_separator' => true,
+        'phpdoc_order' => [
+            'order' => [
+                'type',
+                'template',
+                'template-covariant',
+                'template-extends',
+                'extends',
+                'implements',
+                'property',
+                'method',
+                'param',
+                'return',
+                'var',
+                'assert',
+                'assert-if-false',
+                'assert-if-true',
+                'throws',
+                'author',
+                'see',
+            ],
+        ],
+        'phpdoc_tag_no_named_arguments' => [
+            'description' => 'Parameter names are not covered by the backward compatibility promise.',
+        ],
     ])
-    ->setFinder($finder)
+    ->setFinder(
+        (new Finder())
+            ->ignoreDotFiles(false)
+            ->ignoreVCSIgnored(true)
+            ->exclude(['dev-tools/phpstan', 'tests/Fixtures'])
+            ->in(__DIR__)
+            ->append([__DIR__.'/php-cs-fixer'])
+    )
 ;
-
-return $config;

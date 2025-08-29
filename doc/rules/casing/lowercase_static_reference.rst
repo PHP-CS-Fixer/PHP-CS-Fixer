@@ -60,9 +60,18 @@ Rule sets
 The rule is part of the following rule sets:
 
 - `@PER <./../../ruleSets/PER.rst>`_
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_
 - `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_
 - `@PSR12 <./../../ruleSets/PSR12.rst>`_
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\Casing\\LowercaseStaticReferenceFixer <./../../../src/Fixer/Casing/LowercaseStaticReferenceFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Casing\\LowercaseStaticReferenceFixerTest <./../../../tests/Fixer/Casing/LowercaseStaticReferenceFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

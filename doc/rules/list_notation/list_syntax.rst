@@ -3,7 +3,7 @@ Rule ``list_syntax``
 ====================
 
 List (``array`` destructuring) assignment should be declared using the
-configured syntax. Requires PHP >= 7.1.
+configured syntax.
 
 Configuration
 -------------
@@ -57,4 +57,14 @@ The rule is part of the following rule sets:
 - `@PHP80Migration <./../../ruleSets/PHP80Migration.rst>`_
 - `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_
 - `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_
+- `@PHP83Migration <./../../ruleSets/PHP83Migration.rst>`_
+- `@PHP84Migration <./../../ruleSets/PHP84Migration.rst>`_
+- `@PHP85Migration <./../../ruleSets/PHP85Migration.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\ListNotation\\ListSyntaxFixer <./../../../src/Fixer/ListNotation/ListSyntaxFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ListNotation\\ListSyntaxFixerTest <./../../../tests/Fixer/ListNotation/ListSyntaxFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Kuba Werłos <werlos@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\ImplodeCallFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\ImplodeCallFixer>
+ *
+ * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ImplodeCallFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class ImplodeCallFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield ["<?php implode('', [1,2,3]);"];

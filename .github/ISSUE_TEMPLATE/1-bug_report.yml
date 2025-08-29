@@ -1,0 +1,78 @@
+name: Bug report 🐛
+description: Existing feature does not behave as expected.
+labels: [ kind/bug, status/to verify ]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before reporting a bug, make sure PHP CS Fixer is up-to-date and the problem is/was not reported already.
+  - type: textarea
+    id: problem-description
+    attributes:
+      label: Problem description
+      description: Please describe encountered problem and provide the background of it
+    validations:
+      required: true
+  - type: input
+    id: minimal-reproducer-command
+    attributes:
+      label: Minimal reproducer CLI command
+      description: |
+        Provide the CLI command that should be run to reproduce the problem. Remember to use `-vvv`.
+        Please see how to utilise `--rules` option on the [usage page](https://cs.symfony.com/doc/usage.html).
+
+        If it's not possible to prepare short CLI reproducer command, please provide complete config used in your project.
+
+        If relevant, provide the expected output, the actual output and/or the error that occurred, if any.
+
+        Please use markdown syntax for each code snippet.
+    validations:
+      required: true
+  - type: textarea
+    id: minimal-reproducer-snippet
+    attributes:
+      label: Minimal reproducer code snippet
+      description: |
+        Provide a minimal code snippet.
+
+        If relevant, provide the expected output, the actual output and/or the error that occurred, if any.
+
+        Please use markdown syntax for each code snippet.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Fixer version
+      description: Provide PHP CS Fixer version in X.Y.Z format (run `php-cs-fixer --version` to get it)
+    validations:
+      required: true
+  - type: input
+    id: php-version
+    attributes:
+      label: PHP version
+      description: Which PHP version Fixer is run on?
+    validations:
+      required: true
+  - type: dropdown
+    id: run-method
+    attributes:
+      label: How do you run Fixer?
+      multiple: false
+      options:
+        - Composer package
+        - Composer Shim package (binary only)
+        - PHAR (manually downloaded, e.g. from release page)
+        - PHIVE (phar.io)
+        - Docker
+    validations:
+      required: true
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Contribution Checks
+      options:
+        - label: I have verified if this problem was already reported
+          required: false
+        - label: I am familiar with ["Feature or bug?"](https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/master/feature-or-bug.rst)
+          required: false

@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocTrimFixer extends AbstractFixer
 {
@@ -47,7 +49,7 @@ final class Foo {}
      * {@inheritdoc}
      *
      * Must run before PhpdocAlignFixer.
-     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, GeneralPhpdocAnnotationRemoveFixer, PhpUnitTestAnnotationFixer, PhpdocIndentFixer, PhpdocNoAccessFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer, PhpdocOrderFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
+     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, GeneralPhpdocAnnotationRemoveFixer, PhpUnitAttributesFixer, PhpUnitTestAnnotationFixer, PhpdocIndentFixer, PhpdocNoAccessFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer, PhpdocOrderFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority(): int
     {
@@ -56,13 +58,13 @@ final class Foo {}
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -71,7 +73,7 @@ final class Foo {}
             // we need re-parse the docblock after fixing the start before
             // fixing the end in order for the lines to be correctly indexed
             $content = $this->fixEnd($content);
-            $tokens[$index] = new Token([T_DOC_COMMENT, $content]);
+            $tokens[$index] = new Token([\T_DOC_COMMENT, $content]);
         }
     }
 

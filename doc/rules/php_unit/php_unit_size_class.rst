@@ -57,3 +57,11 @@ With configuration: ``['group' => 'medium']``.
    + * @medium
    + */
     class MyTest extends TestCase {}
+
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitSizeClassFixer <./../../../src/Fixer/PhpUnit/PhpUnitSizeClassFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitSizeClassFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitSizeClassFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

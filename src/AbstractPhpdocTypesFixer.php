@@ -16,6 +16,7 @@ namespace PhpCsFixer;
 
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\DocBlock\TypeExpression;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -25,47 +26,35 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractPhpdocTypesFixer extends AbstractFixer
 {
-    /**
-     * The annotation tags search inside.
-     *
-     * @var string[]
-     */
-    protected array $tags;
-
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->tags = Annotation::getTagsWithTypes();
-    }
-
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
             $doc = new DocBlock($token->getContent());
-            $annotations = $doc->getAnnotationsOfType($this->tags);
+            $annotations = $doc->getAnnotationsOfType(Annotation::TAGS_WITH_TYPES);
 
             if (0 === \count($annotations)) {
                 continue;
             }
 
             foreach ($annotations as $annotation) {
-                $this->fixTypes($annotation);
+                $this->fixType($annotation);
             }
 
-            $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
+            $tokens[$index] = new Token([\T_DOC_COMMENT, $doc->getContent()]);
         }
     }
 
@@ -75,44 +64,30 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
     abstract protected function normalize(string $type): string;
 
     /**
-     * Fix the types at the given line.
+     * Fix the type at the given line.
      *
      * We must be super careful not to modify parts of words.
      *
      * This will be nicely handled behind the scenes for us by the annotation class.
      */
-    private function fixTypes(Annotation $annotation): void
+    private function fixType(Annotation $annotation): void
     {
-        $types = $annotation->getTypes();
+        $typeExpression = $annotation->getTypeExpression();
 
-        $new = $this->normalizeTypes($types);
-
-        if ($types !== $new) {
-            $annotation->setTypes($new);
-        }
-    }
-
-    /**
-     * @param string[] $types
-     *
-     * @return string[]
-     */
-    private function normalizeTypes(array $types): array
-    {
-        foreach ($types as $index => $type) {
-            $types[$index] = $this->normalizeType($type);
+        if (null === $typeExpression) {
+            return;
         }
 
-        return $types;
-    }
+        $newTypeExpression = $typeExpression->mapTypes(function (TypeExpression $type) {
+            if (!$type->isCompositeType()) {
+                $value = $this->normalize($type->toString());
 
-    /**
-     * Prepare the type and normalize it.
-     */
-    private function normalizeType(string $type): string
-    {
-        return str_ends_with($type, '[]')
-            ? $this->normalizeType(substr($type, 0, -2)).'[]'
-            : $this->normalize($type);
+                return new TypeExpression($value, null, []);
+            }
+
+            return $type;
+        });
+
+        $annotation->setTypes([$newTypeExpression->toString()]);
     }
 }

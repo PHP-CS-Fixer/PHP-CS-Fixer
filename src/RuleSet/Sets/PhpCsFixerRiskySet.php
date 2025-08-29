@@ -18,13 +18,15 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpCsFixerRiskySet extends AbstractRuleSetDescription
 {
     public function getRules(): array
     {
         return [
-            '@PER-CS2.0:risky' => true,
+            '@PER-CS:risky' => true,
             '@Symfony:risky' => true,
             'comment_to_phpdoc' => true,
             'final_internal_class' => true,
@@ -47,10 +49,11 @@ final class PhpCsFixerRiskySet extends AbstractRuleSetDescription
                     '@all',
                 ],
             ],
-            'no_unreachable_default_argument_value' => true,
+            'no_trailing_whitespace_in_string' => true, // override Symfony to mimics PER / CS
             'no_unset_on_property' => true,
             'php_unit_data_provider_name' => true,
             'php_unit_data_provider_return_type' => true,
+            'php_unit_data_provider_static' => ['force' => true],
             'php_unit_strict' => true,
             'php_unit_test_case_static_method_calls' => ['call_type' => 'self'],
             'static_lambda' => true,
@@ -62,6 +65,6 @@ final class PhpCsFixerRiskySet extends AbstractRuleSetDescription
 
     public function getDescription(): string
     {
-        return 'Rule set as used by the PHP-CS-Fixer development team, highly opinionated.';
+        return 'Rule set as used by the PHP CS Fixer development team, highly opinionated.';
     }
 }

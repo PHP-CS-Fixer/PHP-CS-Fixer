@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\Whitespace;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Marc Aubé
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Whitespace\NoSpacesInsideParenthesisFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\NoSpacesInsideParenthesisFixer>
+ *
+ * @author Marc Aubé
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoSpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
 {
@@ -33,29 +37,9 @@ final class NoSpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
-    public function testLeaveNewLinesAlone(): void
-    {
-        $expected = <<<'EOF'
-            <?php
-
-            class Foo
-            {
-                private function bar()
-                {
-                    if (foo(
-                        'foo' ,
-                        'bar'    ,
-                        [1, 2, 3],
-                        'baz' // a comment just to mix things up
-                    )) {
-                        return 1;
-                    };
-                }
-            }
-            EOF;
-        $this->doTest($expected);
-    }
-
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -135,6 +119,29 @@ $a = $b->test(  // do not remove space
         ];
     }
 
+    public function testLeaveNewLinesAlone(): void
+    {
+        $expected = <<<'EOF'
+            <?php
+
+            class Foo
+            {
+                private function bar()
+                {
+                    if (foo(
+                        'foo' ,
+                        'bar'    ,
+                        [1, 2, 3],
+                        'baz' // a comment just to mix things up
+                    )) {
+                        return 1;
+                    };
+                }
+            }
+            EOF;
+        $this->doTest($expected);
+    }
+
     /**
      * @dataProvider provideFix80Cases
      *
@@ -145,6 +152,9 @@ $a = $b->test(  // do not remove space
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{string, string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [
@@ -163,6 +173,9 @@ $a = $b->test(  // do not remove space
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'first callable class' => [

@@ -17,44 +17,62 @@ namespace PhpCsFixer\Tokenizer\Analyzer;
 use PhpCsFixer\DocBlock\TypeExpression;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\DataProviderAnalysis;
+use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>
  *
  * @internal
+ *
+ * @phpstan-import-type _AttributeItem from \PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DataProviderAnalyzer
 {
-    private const REGEX_CLASS = '(?:\\\\?+'.TypeExpression::REGEX_IDENTIFIER
+    private const REGEX_CLASS = '(?:\\\?+'.TypeExpression::REGEX_IDENTIFIER
         .'(\\\\'.TypeExpression::REGEX_IDENTIFIER.')*+)';
 
     /**
-     * @return array<DataProviderAnalysis>
+     * @return list<DataProviderAnalysis>
      */
     public function getDataProviders(Tokens $tokens, int $startIndex, int $endIndex): array
     {
+        $fullyQualifiedNameAnalyzer = new FullyQualifiedNameAnalyzer($tokens);
+
         $methods = $this->getMethods($tokens, $startIndex, $endIndex);
 
         $dataProviders = [];
         foreach ($methods as $methodIndex) {
-            $docCommentIndex = $tokens->getTokenNotOfKindSibling(
-                $methodIndex,
-                -1,
-                [[T_ABSTRACT], [T_COMMENT], [T_FINAL], [T_FUNCTION], [T_PRIVATE], [T_PROTECTED], [T_PUBLIC], [T_STATIC], [T_WHITESPACE]]
-            );
+            [$attributeIndex, $docCommentIndex] = $this->getAttributeIndexAndDocCommentIndices($tokens, $methodIndex);
 
-            if (!$tokens[$docCommentIndex]->isGivenKind(T_DOC_COMMENT)) {
-                continue;
+            if (null !== $attributeIndex) {
+                foreach (AttributeAnalyzer::collect($tokens, $attributeIndex) as $attributeAnalysis) {
+                    foreach ($attributeAnalysis->getAttributes() as $attribute) {
+                        $dataProviderNameIndex = $this->getDataProviderNameIndex($tokens, $fullyQualifiedNameAnalyzer, $attribute);
+                        if (null === $dataProviderNameIndex) {
+                            continue;
+                        }
+                        $dataProviders[substr($tokens[$dataProviderNameIndex]->getContent(), 1, -1)][] = [$dataProviderNameIndex, 0];
+                    }
+                }
             }
 
-            Preg::matchAll('/@dataProvider\h+(('.self::REGEX_CLASS.'::)?'.TypeExpression::REGEX_IDENTIFIER.')/', $tokens[$docCommentIndex]->getContent(), $matches);
+            if (null !== $docCommentIndex) {
+                Preg::matchAll(
+                    '/@dataProvider\h+(('.self::REGEX_CLASS.'::)?'.TypeExpression::REGEX_IDENTIFIER.')/',
+                    $tokens[$docCommentIndex]->getContent(),
+                    $matches,
+                    \PREG_OFFSET_CAPTURE
+                );
 
-            /** @var array<string> $matches */
-            $matches = $matches[1];
+                foreach ($matches[1] as $k => [$matchName]) {
+                    \assert(isset($matches[0][$k]));
 
-            foreach ($matches as $dataProviderName) {
-                $dataProviders[$dataProviderName][] = $docCommentIndex;
+                    $dataProviders[$matchName][] = [$docCommentIndex, $matches[0][$k][1]];
+                }
             }
         }
 
@@ -83,13 +101,13 @@ final class DataProviderAnalyzer
     {
         $functions = [];
         for ($index = $startIndex; $index < $endIndex; ++$index) {
-            if (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if (!$tokens[$index]->isGivenKind(\T_FUNCTION)) {
                 continue;
             }
 
             $functionNameIndex = $tokens->getNextNonWhitespace($index);
 
-            if (!$tokens[$functionNameIndex]->isGivenKind(T_STRING)) {
+            if (!$tokens[$functionNameIndex]->isGivenKind(\T_STRING)) {
                 continue;
             }
 
@@ -97,5 +115,58 @@ final class DataProviderAnalyzer
         }
 
         return $functions;
+    }
+
+    /**
+     * @return array{null|int, null|int}
+     */
+    private function getAttributeIndexAndDocCommentIndices(Tokens $tokens, int $index): array
+    {
+        $attributeIndex = null;
+        $docCommentIndex = null;
+        while (!$tokens[$index]->equalsAny([';', '{', '}', [\T_OPEN_TAG]])) {
+            --$index;
+
+            if ($tokens[$index]->isGivenKind(FCT::T_ATTRIBUTE)) {
+                $attributeIndex = $index;
+            } elseif ($tokens[$index]->isGivenKind(\T_DOC_COMMENT)) {
+                $docCommentIndex = $index;
+            }
+        }
+
+        return [$attributeIndex, $docCommentIndex];
+    }
+
+    /**
+     * @param _AttributeItem $attribute
+     */
+    private function getDataProviderNameIndex(Tokens $tokens, FullyQualifiedNameAnalyzer $fullyQualifiedNameAnalyzer, array $attribute): ?int
+    {
+        $fullyQualifiedName = $fullyQualifiedNameAnalyzer->getFullyQualifiedName(
+            $attribute['name'],
+            $tokens->getNextMeaningfulToken($attribute['start']),
+            NamespaceUseAnalysis::TYPE_CLASS,
+        );
+
+        if ('PHPUnit\Framework\Attributes\DataProvider' !== $fullyQualifiedName) {
+            return null;
+        }
+
+        $closeParenthesisIndex = $tokens->getPrevTokenOfKind($attribute['end'] + 1, [')', [\T_ATTRIBUTE]]);
+        if ($tokens[$closeParenthesisIndex]->isGivenKind(\T_ATTRIBUTE)) {
+            return null;
+        }
+
+        $dataProviderNameIndex = $tokens->getPrevMeaningfulToken($closeParenthesisIndex);
+        if (!$tokens[$dataProviderNameIndex]->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
+            return null;
+        }
+
+        $openParenthesisIndex = $tokens->getPrevMeaningfulToken($dataProviderNameIndex);
+        if (!$tokens[$openParenthesisIndex]->equals('(')) {
+            return null;
+        }
+
+        return $dataProviderNameIndex;
     }
 }

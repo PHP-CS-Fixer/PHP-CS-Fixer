@@ -21,7 +21,7 @@ Configuration
 
 List of ignored tags.
 
-Allowed types: ``array``
+Allowed types: ``list<string>``
 
 Default value: ``[]``
 
@@ -64,3 +64,10 @@ The rule is part of the following rule set:
 
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\Comment\\CommentToPhpdocFixer <./../../../src/Fixer/Comment/CommentToPhpdocFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Comment\\CommentToPhpdocFixerTest <./../../../tests/Fixer/Comment/CommentToPhpdocFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

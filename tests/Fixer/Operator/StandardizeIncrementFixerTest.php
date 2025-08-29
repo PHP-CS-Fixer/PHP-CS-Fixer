@@ -17,12 +17,16 @@ namespace PhpCsFixer\Tests\Fixer\Operator;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author ntzm
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\AbstractIncrementOperatorFixer
  * @covers \PhpCsFixer\Fixer\Operator\StandardizeIncrementFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\StandardizeIncrementFixer>
+ *
+ * @author ntzm
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class StandardizeIncrementFixerTest extends AbstractFixerTestCase
 {
@@ -34,6 +38,9 @@ final class StandardizeIncrementFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -393,10 +400,6 @@ final class StandardizeIncrementFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php $i + 1;',
-        ];
-
-        yield [
             '<?php $i += 1.0;',
         ];
 
@@ -734,11 +737,14 @@ $i#3
      *
      * @requires PHP <8.0
      */
-    public function testFixPre80(string $expected, string $input = null): void
+    public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{string, string}>
+     */
     public static function provideFixPre80Cases(): iterable
     {
         yield [

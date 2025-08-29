@@ -18,6 +18,7 @@ use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOption;
+use PhpCsFixer\FixerConfiguration\FixerOptionSorter;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
@@ -30,6 +31,8 @@ use Symfony\Component\OptionsResolver\Options;
  * @group legacy
  *
  * @covers \PhpCsFixer\FixerConfiguration\FixerConfigurationResolver
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FixerConfigurationResolverTest extends TestCase
 {
@@ -71,7 +74,11 @@ final class FixerConfigurationResolverTest extends TestCase
         ];
         $configuration = new FixerConfigurationResolver($options);
 
-        self::assertSame($options, $configuration->getOptions());
+        $fixerOptionSorter = new FixerOptionSorter();
+
+        $expected = $fixerOptionSorter->sort($options);
+
+        self::assertSame($expected, $configuration->getOptions());
     }
 
     public function testResolve(): void

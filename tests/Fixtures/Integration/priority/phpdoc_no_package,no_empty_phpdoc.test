@@ -10,7 +10,6 @@ Integration of fixers: phpdoc_no_package,no_empty_phpdoc.
 
 
 
-
 --INPUT--
 <?php
 

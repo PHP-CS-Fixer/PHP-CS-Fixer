@@ -20,6 +20,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\LanguageConstruct\CombineConsecutiveUnsetsFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\CombineConsecutiveUnsetsFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
 {
@@ -31,6 +35,9 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -142,11 +149,14 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
      *
      * @requires PHP <8.0
      */
-    public function testFixPre80(string $expected, string $input = null): void
+    public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{string}>
+     */
     public static function provideFixPre80Cases(): iterable
     {
         yield [

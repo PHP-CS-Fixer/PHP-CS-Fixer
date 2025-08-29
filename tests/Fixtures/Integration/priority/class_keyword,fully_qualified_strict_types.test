@@ -1,0 +1,14 @@
+--TEST--
+Integration of fixers: class_keyword,fully_qualified_strict_types.
+--RULESET--
+{"class_keyword": true, "fully_qualified_strict_types": {"import_symbols": true}}
+--EXPECT--
+<?php
+
+use PhpCsFixer\Fixer\FixerInterface;
+echo FixerInterface::class;
+
+--INPUT--
+<?php
+
+echo 'PhpCsFixer\Fixer\FixerInterface';

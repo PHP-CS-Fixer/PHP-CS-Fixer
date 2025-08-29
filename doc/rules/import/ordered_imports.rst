@@ -7,25 +7,6 @@ Ordering ``use`` statements.
 Configuration
 -------------
 
-``sort_algorithm``
-~~~~~~~~~~~~~~~~~~
-
-Whether the statements should be sorted alphabetically or by length, or not
-sorted.
-
-Allowed values: ``'alpha'``, ``'length'`` and ``'none'``
-
-Default value: ``'alpha'``
-
-``imports_order``
-~~~~~~~~~~~~~~~~~
-
-Defines the order of import types.
-
-Allowed types: ``array`` and ``null``
-
-Default value: ``null``
-
 ``case_sensitive``
 ~~~~~~~~~~~~~~~~~~
 
@@ -34,6 +15,25 @@ Whether the sorting should be case sensitive.
 Allowed types: ``bool``
 
 Default value: ``false``
+
+``imports_order``
+~~~~~~~~~~~~~~~~~
+
+Defines the order of import types.
+
+Allowed types: ``list<string>`` and ``null``
+
+Default value: ``null``
+
+``sort_algorithm``
+~~~~~~~~~~~~~~~~~~
+
+Whether the statements should be sorted alphabetically or by length
+(*deprecated*), or not sorted.
+
+Allowed values: ``'alpha'``, ``'length'`` and ``'none'``
+
+Default value: ``'alpha'``
 
 Examples
 --------
@@ -164,11 +164,19 @@ The rule is part of the following rule sets:
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
 
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
+
+  ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
+
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
 
 - `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+
+  ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
+
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
 
@@ -184,4 +192,10 @@ The rule is part of the following rule sets:
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'alpha']``
 
+References
+----------
 
+- Fixer class: `PhpCsFixer\\Fixer\\Import\\OrderedImportsFixer <./../../../src/Fixer/Import/OrderedImportsFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Import\\OrderedImportsFixerTest <./../../../tests/Fixer/Import/OrderedImportsFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\Operator;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Farhad Safarov <farhad.safarov@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Operator\ObjectOperatorWithoutWhitespaceFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\ObjectOperatorWithoutWhitespaceFixer>
+ *
+ * @author Farhad Safarov <farhad.safarov@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ObjectOperatorWithoutWhitespaceFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class ObjectOperatorWithoutWhitespaceFixerTest extends AbstractFixerTestCa
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -94,6 +101,9 @@ final class ObjectOperatorWithoutWhitespaceFixerTest extends AbstractFixerTestCa
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{string, string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [

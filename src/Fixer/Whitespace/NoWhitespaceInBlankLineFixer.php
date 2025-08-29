@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
@@ -38,7 +40,7 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
     /**
      * {@inheritdoc}
      *
-     * Must run after AssignNullCoalescingToCoalesceEqualFixer, CombineConsecutiveIssetsFixer, CombineConsecutiveUnsetsFixer, FunctionToConstantFixer, NoEmptyCommentFixer, NoEmptyPhpdocFixer, NoEmptyStatementFixer, NoUselessElseFixer, NoUselessReturnFixer, YieldFromArrayToYieldsFixer.
+     * Must run after AssignNullCoalescingToCoalesceEqualFixer, CombineConsecutiveIssetsFixer, CombineConsecutiveUnsetsFixer, FunctionToConstantFixer, NoEmptyCommentFixer, NoEmptyStatementFixer, NoUselessElseFixer, NoUselessReturnFixer, YieldFromArrayToYieldsFixer.
      */
     public function getPriority(): int
     {
@@ -70,12 +72,12 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
             // fix T_WHITESPACES with at least 3 lines (eg `\n   \n`)
             $lineCount > 2
             // and T_WHITESPACES with at least 2 lines at the end of file or after open tag with linebreak
-            || ($lineCount > 0 && (!isset($tokens[$index + 1]) || $tokens[$index - 1]->isGivenKind(T_OPEN_TAG)))
+            || ($lineCount > 0 && (!isset($tokens[$index + 1]) || $tokens[$index - 1]->isGivenKind(\T_OPEN_TAG)))
         ) {
             $lMax = isset($tokens[$index + 1]) ? $lineCount - 1 : $lineCount;
 
             $lStart = 1;
-            if ($tokens[$index - 1]->isGivenKind(T_OPEN_TAG) && "\n" === substr($tokens[$index - 1]->getContent(), -1)) {
+            if ($tokens[$index - 1]->isGivenKind(\T_OPEN_TAG) && "\n" === substr($tokens[$index - 1]->getContent(), -1)) {
                 $lStart = 0;
             }
 

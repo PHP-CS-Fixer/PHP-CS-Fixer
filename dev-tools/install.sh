@@ -19,13 +19,14 @@ cd "$(dirname "$0")"
 
 mkdir -p bin
 
-VERSION_CB="2.23.6"
 VERSION_SC="stable"
 
 echo λλλ checkbashisms
 if [ ! -x bin/checkbashisms ]; then
-    wget -qO- "https://deb.debian.org/debian/pool/main/d/devscripts/devscripts_${VERSION_CB}.tar.xz" \
-        | tar -xJv -O "devscripts-${VERSION_CB}/scripts/checkbashisms.pl" \
+    wget -qO- https://formulae.brew.sh/api/formula/checkbashisms.json \
+        | jq -r .urls.stable.url \
+        | xargs wget -qO- \
+        | tar -xJv -O "work/scripts/checkbashisms.pl" \
         > bin/checkbashisms
     chmod u+x bin/checkbashisms
 fi

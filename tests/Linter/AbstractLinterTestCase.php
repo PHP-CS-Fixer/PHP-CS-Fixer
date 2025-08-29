@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractLinterTestCase extends TestCase
 {
@@ -34,13 +36,15 @@ abstract class AbstractLinterTestCase extends TestCase
         $linter = $this->createLinter();
 
         $tokens = Tokens::fromCode("<?php \n#EOF\n");
-        $tokens->insertAt(1, new Token([T_NS_SEPARATOR, '\\']));
+        $tokens->insertAt(1, new Token([\T_NS_SEPARATOR, '\\']));
 
         $this->expectException(LintingException::class);
         $linter->lintSource($tokens->generateCode())->check();
     }
 
     /**
+     * @medium
+     *
      * @dataProvider provideLintFileCases
      */
     public function testLintFile(string $file, ?string $errorMessage = null): void
@@ -57,7 +61,7 @@ abstract class AbstractLinterTestCase extends TestCase
     }
 
     /**
-     * @medium
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideLintFileCases(): iterable
     {
@@ -67,7 +71,7 @@ abstract class AbstractLinterTestCase extends TestCase
 
         yield [
             __DIR__.'/../Fixtures/Linter/invalid.php',
-            sprintf('Parse error: syntax error, unexpected %s on line 5.', PHP_MAJOR_VERSION >= 8 ? 'token "echo"' : '\'echo\' (T_ECHO)'),
+            \sprintf('Parse error: syntax error, unexpected %s on line 5.', \PHP_MAJOR_VERSION >= 8 ? 'token "echo"' : '\'echo\' (T_ECHO)'),
         ];
 
         yield [
@@ -92,6 +96,9 @@ abstract class AbstractLinterTestCase extends TestCase
         $linter->lintSource($source)->check();
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideLintSourceCases(): iterable
     {
         yield [
@@ -105,7 +112,7 @@ abstract class AbstractLinterTestCase extends TestCase
                     print "line 4";
                     echo echo;
                 ',
-            sprintf('Parse error: syntax error, unexpected %s on line 5.', PHP_MAJOR_VERSION >= 8 ? 'token "echo"' : '\'echo\' (T_ECHO)'),
+            \sprintf('Parse error: syntax error, unexpected %s on line 5.', \PHP_MAJOR_VERSION >= 8 ? 'token "echo"' : '\'echo\' (T_ECHO)'),
         ];
     }
 

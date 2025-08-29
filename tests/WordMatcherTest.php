@@ -22,11 +22,13 @@ use PhpCsFixer\WordMatcher;
  * @internal
  *
  * @covers \PhpCsFixer\WordMatcher
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class WordMatcherTest extends TestCase
 {
     /**
-     * @param string[] $candidates
+     * @param list<string> $candidates
      *
      * @dataProvider provideMatchCases
      */
@@ -36,6 +38,9 @@ final class WordMatcherTest extends TestCase
         self::assertSame($expected, $matcher->match($needle));
     }
 
+    /**
+     * @return iterable<int, array{?string, string, list<string>}>
+     */
     public static function provideMatchCases(): iterable
     {
         yield [

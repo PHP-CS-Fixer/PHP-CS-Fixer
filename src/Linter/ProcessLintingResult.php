@@ -20,6 +20,8 @@ use Symfony\Component\Process\Process;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ProcessLintingResult implements LintingResultInterface
 {
@@ -53,25 +55,25 @@ final class ProcessLintingResult implements LintingResultInterface
         }
 
         if (null !== $this->path) {
-            $needle = sprintf('in %s ', $this->path);
+            $needle = \sprintf('in %s ', $this->path);
             $pos = strrpos($output, $needle);
 
             if (false !== $pos) {
-                $output = sprintf('%s%s', substr($output, 0, $pos), substr($output, $pos + \strlen($needle)));
+                $output = \sprintf('%s%s', substr($output, 0, $pos), substr($output, $pos + \strlen($needle)));
             }
         }
 
         $prefix = substr($output, 0, 18);
 
         if ('PHP Parse error:  ' === $prefix) {
-            return sprintf('Parse error: %s.', substr($output, 18));
+            return \sprintf('Parse error: %s.', substr($output, 18));
         }
 
         if ('PHP Fatal error:  ' === $prefix) {
-            return sprintf('Fatal error: %s.', substr($output, 18));
+            return \sprintf('Fatal error: %s.', substr($output, 18));
         }
 
-        return sprintf('%s.', $output);
+        return \sprintf('%s.', $output);
     }
 
     private function isSuccessful(): bool

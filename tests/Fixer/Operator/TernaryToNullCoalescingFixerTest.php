@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\Operator;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Filippo Tessarotto <zoeslam@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Operator\TernaryToNullCoalescingFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\TernaryToNullCoalescingFixer>
+ *
+ * @author Filippo Tessarotto <zoeslam@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TernaryToNullCoalescingFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class TernaryToNullCoalescingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield // Do not fix cases.
@@ -233,11 +240,14 @@ null
      *
      * @requires PHP <8.0
      */
-    public function testFixPre80(string $expected, string $input = null): void
+    public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFixPre80Cases(): iterable
     {
         yield ['<?php $x = $a ? $a : isset($b) ? $b : isset($c) ? $c : "";'];
@@ -245,11 +255,6 @@ null
         yield [
             '<?php $x = $a ?? isset($b) ? $b : isset($c) ? $c : "";',
             '<?php $x = isset($a) ? $a : isset($b) ? $b : isset($c) ? $c : "";',
-        ];
-
-        yield [
-            '<?php $x = /*a1*//*a2*/ /*b*/ $a /*c*/ ?? /*d*/ isset($b) /*e*/ ? /*f*/ $b /*g*/ : /*h*/ isset($c) /*i*/ ? /*j*/ $c /*k*/ : /*l*/ "";',
-            '<?php $x = isset($a) /*a1*//*a2*/ ? /*b*/ $a /*c*/ : /*d*/ isset($b) /*e*/ ? /*f*/ $b /*g*/ : /*h*/ isset($c) /*i*/ ? /*j*/ $c /*k*/ : /*l*/ "";',
         ];
 
         yield [

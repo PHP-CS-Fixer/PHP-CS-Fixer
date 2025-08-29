@@ -20,6 +20,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\NamespaceNotation\CleanNamespaceFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\NamespaceNotation\CleanNamespaceFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class CleanNamespaceFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class CleanNamespaceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{string, string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [

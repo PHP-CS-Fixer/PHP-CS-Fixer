@@ -18,11 +18,15 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @author Ceeram <ceeram@cakephp.org>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Import\SingleLineAfterImportsFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Import\SingleLineAfterImportsFixer>
+ *
+ * @author Ceeram <ceeram@cakephp.org>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SingleLineAfterImportsFixerTest extends AbstractFixerTestCase
 {
@@ -34,6 +38,9 @@ final class SingleLineAfterImportsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -474,7 +481,7 @@ use some\a\ClassA; use function some\a\fn_a; use const some\c;
 
         yield [
             "<?php use some\\a\\{ClassA, ClassZ};\nuse const some\\b\\{ClassB, ClassX};\nuse function some\\d;\n\n",
-            '<?php use some\a\{ClassA, ClassZ};use const some\b\{ClassB, ClassX};use function some\\d;',
+            '<?php use some\a\{ClassA, ClassZ};use const some\b\{ClassB, ClassX};use function some\d;',
         ];
 
         $imports = [
@@ -496,8 +503,8 @@ use some\a\ClassA; use function some\a\fn_a; use const some\c;
             ];
 
             yield [
-                str_replace('some', '\\some', $case[0]),
-                str_replace('some', '\\some', $case[1]),
+                str_replace('some', '\some', $case[0]),
+                str_replace('some', '\some', $case[1]),
             ];
 
             yield $case;
@@ -505,16 +512,19 @@ use some\a\ClassA; use function some\a\fn_a; use const some\c;
     }
 
     /**
-     * @dataProvider provideMessyWhitespacesCases
+     * @dataProvider provideWithWhitespacesConfigCases
      */
-    public function testMessyWhitespaces(string $expected, ?string $input = null): void
+    public function testWithWhitespacesConfig(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
 
         $this->doTest($expected, $input);
     }
 
-    public static function provideMessyWhitespacesCases(): iterable
+    /**
+     * @return iterable<int, array{string, string}>
+     */
+    public static function provideWithWhitespacesConfigCases(): iterable
     {
         yield [
             "<?php namespace A\\B;\r\n    use D;\r\n\r\n    class C {}",

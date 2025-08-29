@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\Operator;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Javier Spagnoletti <phansys@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Operator\NotOperatorWithSpaceFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\NotOperatorWithSpaceFixer>
+ *
+ * @author Javier Spagnoletti <phansys@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NotOperatorWithSpaceFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class NotOperatorWithSpaceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{string, string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [

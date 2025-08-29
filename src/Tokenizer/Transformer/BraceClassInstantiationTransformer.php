@@ -26,6 +26,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Sebastiaans Stok <s.stok@rollerscapes.net>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class BraceClassInstantiationTransformer extends AbstractTransformer
 {
@@ -42,7 +44,7 @@ final class BraceClassInstantiationTransformer extends AbstractTransformer
 
     public function process(Tokens $tokens, Token $token, int $index): void
     {
-        if (!$tokens[$index]->equals('(') || !$tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind(T_NEW)) {
+        if (!$tokens[$index]->equals('(') || !$tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind(\T_NEW)) {
             return;
         }
 
@@ -52,17 +54,17 @@ final class BraceClassInstantiationTransformer extends AbstractTransformer
             [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
             [CT::T_ARRAY_SQUARE_BRACE_CLOSE],
             [CT::T_BRACE_CLASS_INSTANTIATION_CLOSE],
-            [T_ARRAY],
-            [T_CLASS],
-            [T_ELSEIF],
-            [T_FOR],
-            [T_FOREACH],
-            [T_IF],
-            [T_STATIC],
-            [T_STRING],
-            [T_SWITCH],
-            [T_VARIABLE],
-            [T_WHILE],
+            [\T_ARRAY],
+            [\T_CLASS],
+            [\T_ELSEIF],
+            [\T_FOR],
+            [\T_FOREACH],
+            [\T_IF],
+            [\T_STATIC],
+            [\T_STRING],
+            [\T_SWITCH],
+            [\T_VARIABLE],
+            [\T_WHILE],
         ])) {
             return;
         }

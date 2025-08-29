@@ -26,6 +26,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpUnitDataProviderReturnTypeFixer extends AbstractPhpUnitFixer
 {
@@ -70,7 +72,7 @@ class FooTest extends TestCase {
      */
     public function getPriority(): int
     {
-        return 2;
+        return 9;
     }
 
     public function isRisky(): bool
@@ -94,8 +96,8 @@ class FooTest extends TestCase {
                     $argumentsEnd + 1,
                     [
                         new Token([CT::T_TYPE_COLON, ':']),
-                        new Token([T_WHITESPACE, ' ']),
-                        new Token([T_STRING, 'iterable']),
+                        new Token([\T_WHITESPACE, ' ']),
+                        new Token([\T_STRING, 'iterable']),
                     ],
                 );
 
@@ -114,7 +116,7 @@ class FooTest extends TestCase {
                 continue;
             }
 
-            $tokens->overrideRange($typeStartIndex, $typeEndIndex, [new Token([T_STRING, 'iterable'])]);
+            $tokens->overrideRange($typeStartIndex, $typeEndIndex, [new Token([\T_STRING, 'iterable'])]);
         }
     }
 }

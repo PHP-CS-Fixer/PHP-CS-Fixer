@@ -17,7 +17,6 @@ namespace PhpCsFixer\Tests\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecificationInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tests\TestCase;
-use Prophecy\Prophecy;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -25,6 +24,8 @@ use Prophecy\Prophecy;
  * @internal
  *
  * @covers \PhpCsFixer\FixerDefinition\VersionSpecificCodeSample
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class VersionSpecificCodeSampleTest extends TestCase
 {
@@ -37,7 +38,7 @@ final class VersionSpecificCodeSampleTest extends TestCase
 
         $codeSample = new VersionSpecificCodeSample(
             $code,
-            $this->createVersionSpecificationMock()->reveal(),
+            $this->createVersionSpecificationDouble(),
             $configuration
         );
 
@@ -49,7 +50,7 @@ final class VersionSpecificCodeSampleTest extends TestCase
     {
         $codeSample = new VersionSpecificCodeSample(
             '<php echo $foo;',
-            $this->createVersionSpecificationMock()->reveal()
+            $this->createVersionSpecificationDouble()
         );
 
         self::assertNull($codeSample->getConfiguration());
@@ -60,33 +61,38 @@ final class VersionSpecificCodeSampleTest extends TestCase
      */
     public function testIsSuitableForUsesVersionSpecification(int $version, bool $isSatisfied): void
     {
-        $versionSpecification = $this->createVersionSpecificationMock();
-
-        $versionSpecification
-            ->isSatisfiedBy($version)
-            ->willReturn($isSatisfied)
-        ;
-
         $codeSample = new VersionSpecificCodeSample(
             '<php echo $foo;',
-            $versionSpecification->reveal()
+            $this->createVersionSpecificationDouble($isSatisfied)
         );
 
         self::assertSame($isSatisfied, $codeSample->isSuitableFor($version));
     }
 
+    /**
+     * @return iterable<string, array{int, bool}>
+     */
     public static function provideIsSuitableForUsesVersionSpecificationCases(): iterable
     {
-        yield 'is-satisfied' => [\PHP_VERSION_ID, true];
+        yield 'is-satisfied' => [100, true];
 
-        yield 'is-not-satisfied' => [\PHP_VERSION_ID, false];
+        yield 'is-not-satisfied' => [100, false];
     }
 
-    /**
-     * @return Prophecy\ObjectProphecy|VersionSpecificationInterface
-     */
-    private function createVersionSpecificationMock()
+    private function createVersionSpecificationDouble(bool $isSatisfied = true): VersionSpecificationInterface
     {
-        return $this->prophesize(\PhpCsFixer\FixerDefinition\VersionSpecificationInterface::class);
+        return new class($isSatisfied) implements VersionSpecificationInterface {
+            private bool $isSatisfied;
+
+            public function __construct(bool $isSatisfied)
+            {
+                $this->isSatisfied = $isSatisfied;
+            }
+
+            public function isSatisfiedBy(int $version): bool
+            {
+                return $this->isSatisfied;
+            }
+        };
     }
 }

@@ -23,12 +23,17 @@ use PhpCsFixer\Tokenizer\CT;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\BraceClassInstantiationTransformer
+ *
+ * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestObservedKinds from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class BraceClassInstantiationTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param array<int, int|string> $expectedTokens
-     * @param list<int>              $observedKinds
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
+     * @param _TransformerTestObservedKinds           $observedKinds
      *
      * @dataProvider provideProcessCases
      */
@@ -41,6 +46,9 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         );
     }
 
+    /**
+     * @return iterable<int, array{string, _TransformerTestExpectedKindsUnderIndex, _TransformerTestExpectedKindsUnderIndex}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield [
@@ -89,24 +97,6 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
 
         yield [
             '<?php $foo[0](new Foo())->bar();',
-            [
-                5 => '(',
-                9 => '(',
-                10 => ')',
-                11 => ')',
-                14 => '(',
-                15 => ')',
-            ],
-            [
-                '(',
-                ')',
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-            ],
-        ];
-
-        yield [
-            '<?php $foo{0}(new Foo())->bar();',
             [
                 5 => '(',
                 9 => '(',
@@ -399,8 +389,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     }
 
     /**
-     * @param array<int, int|string> $expectedTokens
-     * @param list<int>              $observedKinds
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
+     * @param _TransformerTestObservedKinds           $observedKinds
      *
      * @dataProvider provideProcessPhp80Cases
      *
@@ -415,6 +405,9 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         );
     }
 
+    /**
+     * @return iterable<int, array{_TransformerTestExpectedKindsUnderIndex, _TransformerTestExpectedKindsUnderIndex, string}>
+     */
     public static function provideProcessPhp80Cases(): iterable
     {
         yield [
@@ -450,8 +443,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     }
 
     /**
-     * @param array<int, int|string> $expectedTokens
-     * @param list<int>              $observedKinds
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
+     * @param _TransformerTestObservedKinds           $observedKinds
      *
      * @dataProvider provideProcessPhp81Cases
      *
@@ -466,6 +459,9 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         );
     }
 
+    /**
+     * @return iterable<int, array{_TransformerTestExpectedKindsUnderIndex, _TransformerTestExpectedKindsUnderIndex, string}>
+     */
     public static function provideProcessPhp81Cases(): iterable
     {
         yield [
@@ -502,6 +498,47 @@ const C = new (Foo);
 
 function test2($param = (new Foo)) {}
 ',
+        ];
+    }
+
+    /**
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
+     * @param _TransformerTestObservedKinds           $observedKinds
+     *
+     * @dataProvider provideProcessPrePhp84Cases
+     *
+     * @requires PHP <8.4
+     */
+    public function testProcessPrePhp84(string $source, array $expectedTokens, array $observedKinds = []): void
+    {
+        $this->doTest(
+            $source,
+            $expectedTokens,
+            $observedKinds
+        );
+    }
+
+    /**
+     * @return iterable<int, array{string, _TransformerTestExpectedKindsUnderIndex, _TransformerTestObservedKinds}>
+     */
+    public static function provideProcessPrePhp84Cases(): iterable
+    {
+        yield [
+            '<?php $foo{0}(new Foo())->bar();',
+            [
+                5 => '(',
+                9 => '(',
+                10 => ')',
+                11 => ')',
+                14 => '(',
+                15 => ')',
+            ],
+            [
+                '(',
+                ')',
+                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+            ],
         ];
     }
 }

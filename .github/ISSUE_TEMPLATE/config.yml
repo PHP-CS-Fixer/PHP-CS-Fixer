@@ -2,7 +2,7 @@ blank_issues_enabled: false
 contact_links:
   - name: RFC ↔️
     url: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/discussions/categories/rfc
-    about: If you have an idea about Fixer development (new rules, supporting tools, processes), please open RFC
+    about: If you have an idea about Fixer development (core architecture, supporting tools, processes), please open RFC
   - name: Support question❓
     url: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/discussions/categories/q-a
-    about: If you have any questions about configuring, using or developing PHP-CS-Fixer, please open new Q&A discussion
+    about: If you have any questions about configuring, using or developing PHP CS Fixer, please open new Q&A discussion

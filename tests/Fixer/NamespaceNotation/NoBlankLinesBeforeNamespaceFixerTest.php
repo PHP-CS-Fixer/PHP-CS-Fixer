@@ -18,18 +18,22 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 
 /**
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\NamespaceNotation\NoBlankLinesBeforeNamespaceFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\NamespaceNotation\NoBlankLinesBeforeNamespaceFixer>
+ *
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null, WhitespacesFixerConfig $whitespaces = null): void
+    public function testFix(string $expected, ?string $input = null, ?WhitespacesFixerConfig $whitespaces = null): void
     {
         if (null !== $whitespaces) {
             $this->fixer->setWhitespacesConfig($whitespaces);
@@ -37,6 +41,9 @@ final class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string, 2?: WhitespacesFixerConfig}>
+     */
     public static function provideFixCases(): iterable
     {
         yield ['<?php namespace Some\Name\Space;'];

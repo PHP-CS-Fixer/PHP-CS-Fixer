@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\ArrayNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Jared Henderson <jared@netrivet.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ArrayNotation\TrimArraySpacesFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ArrayNotation\TrimArraySpacesFixer>
+ *
+ * @author Jared Henderson <jared@netrivet.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TrimArraySpacesFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class TrimArraySpacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -123,16 +130,6 @@ final class TrimArraySpacesFixerTest extends AbstractFixerTestCase
         yield [
             '<?php $foo = ["foo" => "bar"];',
             '<?php $foo = [ "foo" => "bar" ];',
-        ];
-
-        yield [
-            '<?php $foo = array("foo");',
-            '<?php $foo = array( "foo" );',
-        ];
-
-        yield [
-            '<?php $foo = ["foo"];',
-            '<?php $foo = [ "foo" ];',
         ];
 
         yield [
@@ -233,16 +230,6 @@ final class TrimArraySpacesFixerTest extends AbstractFixerTestCase
         yield [
             '<?php $foo = [["foo"], ["bar"]];',
             '<?php $foo = [[ "foo" ], [ "bar" ]];',
-        ];
-
-        yield [
-            '<?php $foo = array(array("foo"), array("bar"));',
-            '<?php $foo = array( array( "foo" ), array( "bar" ) );',
-        ];
-
-        yield [
-            '<?php $foo = [["foo"], ["bar"]];',
-            '<?php $foo = [ [ "foo" ], [ "bar" ] ];',
         ];
 
         yield [

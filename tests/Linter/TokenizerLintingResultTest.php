@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Linter;
 
+use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\TokenizerLintingResult;
 use PhpCsFixer\Tests\TestCase;
 
@@ -21,6 +22,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Linter\TokenizerLintingResult
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TokenizerLintingResultTest extends TestCase
 {
@@ -41,11 +44,11 @@ final class TokenizerLintingResultTest extends TestCase
         $result = new TokenizerLintingResult($error);
 
         $this->expectException(
-            \PhpCsFixer\Linter\LintingException::class
+            LintingException::class
         );
 
         $this->expectExceptionMessage(
-            sprintf('Parse error: syntax error, unexpected end of file, expecting \'{\' on line %d.', $line)
+            \sprintf('Parse error: syntax error, unexpected end of file, expecting \'{\' on line %d.', $line)
         );
 
         $this->expectExceptionCode(
@@ -63,11 +66,11 @@ final class TokenizerLintingResultTest extends TestCase
         $result = new TokenizerLintingResult($error);
 
         $this->expectException(
-            \PhpCsFixer\Linter\LintingException::class
+            LintingException::class
         );
 
         $this->expectExceptionMessage(
-            sprintf('Fatal error: Multiple access type modifiers are not allowed on line %d.', $line)
+            \sprintf('Fatal error: Multiple access type modifiers are not allowed on line %d.', $line)
         );
 
         $result->check();

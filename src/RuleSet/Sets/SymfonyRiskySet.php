@@ -18,6 +18,8 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SymfonyRiskySet extends AbstractRuleSetDescription
 {
@@ -40,6 +42,7 @@ final class SymfonyRiskySet extends AbstractRuleSetDescription
             'implode_call' => true,
             'is_null' => true,
             'logical_operators' => true,
+            'long_to_shorthand_operator' => true,
             'modernize_strpos' => true,
             'modernize_types_casting' => true,
             'native_constant_invocation' => ['strict' => false],
@@ -53,8 +56,8 @@ final class SymfonyRiskySet extends AbstractRuleSetDescription
             'no_alias_functions' => true,
             'no_homoglyph_names' => true,
             'no_php4_constructor' => true,
+            'no_trailing_whitespace_in_string' => false, // override PER / PSR
             'no_unneeded_final_method' => true,
-            'no_unreachable_default_argument_value' => false,
             'no_useless_sprintf' => true,
             'non_printable_character' => true,
             'ordered_traits' => true,

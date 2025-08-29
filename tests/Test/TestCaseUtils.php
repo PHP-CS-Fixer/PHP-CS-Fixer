@@ -14,28 +14,34 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Test;
 
+use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerFactory;
+
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TestCaseUtils
 {
-    /**
-     * @param iterable<array{0: string, 1?: string}> $cases
-     *
-     * @return iterable<array{0: string, 1?: string}>
-     */
-    public static function swapExpectedInputTestCases(iterable $cases): iterable
+    public static function getFixerByName(string $name): FixerInterface
     {
-        foreach ($cases as $case) {
-            if (1 === \count($case)) {
-                yield $case;
+        static $fixers = null;
 
-                continue;
+        if (null === $fixers) {
+            $factory = new FixerFactory();
+            $factory->registerBuiltInFixers();
+
+            $fixers = [];
+            foreach ($factory->getFixers() as $fixer) {
+                $fixers[$fixer->getName()] = $fixer;
             }
-
-            [$case[0], $case[1]] = [$case[1], $case[0]];
-
-            yield $case;
         }
+
+        if (!\array_key_exists($name, $fixers)) {
+            throw new \InvalidArgumentException(\sprintf('Fixer "%s" does not exist.', $name));
+        }
+
+        return $fixers[$name];
     }
 }

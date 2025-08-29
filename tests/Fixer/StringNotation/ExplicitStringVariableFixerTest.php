@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\StringNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Filippo Tessarotto <zoeslam@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\StringNotation\ExplicitStringVariableFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\ExplicitStringVariableFixer>
+ *
+ * @author Filippo Tessarotto <zoeslam@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ExplicitStringVariableFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class ExplicitStringVariableFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         $input = $expected = '<?php';

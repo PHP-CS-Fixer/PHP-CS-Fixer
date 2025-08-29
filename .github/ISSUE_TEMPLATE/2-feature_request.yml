@@ -1,0 +1,37 @@
+name: Feature request 🚀
+description: I have a suggestion about a new feature (and may want to implement it)!
+labels: [ kind/feature request, status/to verify ]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before requesting a new feature, make sure your version of PHP CS Fixer is up-to-date.
+
+        > [!IMPORTANT]
+        > For initial ideas it's preferable to use [discussions](https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/discussions/categories/feature-ideas).
+
+        As a maintainers we prefer to have only actionable issues in the backlog, with clear definition of done,
+        that's why Discussions are the best way to start. When scope of the request is established, then actual issue can be created.
+  - type: textarea
+    id: feature-request
+    attributes:
+      label: Feature request
+      description: Please describe the feature you would like to see implemented.
+    validations:
+      required: true
+  - type: input
+    id: discussion-reference
+    attributes:
+      label: Link to Discussion where feature request was formed
+      placeholder: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/discussions/<ID>
+    validations:
+      required: false
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Contribution Checks
+      options:
+        - label: I have verified if this feature request was already discussed
+          required: false
+        - label: I am familiar with ["Feature or bug?"](https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/master/feature-or-bug.rst)
+          required: false

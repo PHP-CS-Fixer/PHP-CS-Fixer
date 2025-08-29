@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Cache;
 
+use PhpCsFixer\Cache\CacheManagerInterface;
 use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Tests\TestCase;
 
@@ -23,21 +24,23 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Cache\NullCacheManager
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NullCacheManagerTest extends TestCase
 {
     public function testIsFinal(): void
     {
-        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\NullCacheManager::class);
+        $reflection = new \ReflectionClass(NullCacheManager::class);
 
         self::assertTrue($reflection->isFinal());
     }
 
     public function testImplementsCacheManagerInterface(): void
     {
-        $reflection = new \ReflectionClass(\PhpCsFixer\Cache\NullCacheManager::class);
+        $reflection = new \ReflectionClass(NullCacheManager::class);
 
-        self::assertTrue($reflection->implementsInterface(\PhpCsFixer\Cache\CacheManagerInterface::class));
+        self::assertTrue($reflection->implementsInterface(CacheManagerInterface::class));
     }
 
     public function testNeedFixingReturnsTrue(): void

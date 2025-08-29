@@ -24,6 +24,8 @@ use PhpCsFixer\Console\Report\FixReport\TextReporter;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Report\FixReport\TextReporter
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TextReporterTest extends AbstractReporterTestCase
 {
@@ -37,7 +39,7 @@ final class TextReporterTest extends AbstractReporterTestCase
     {
         return str_replace(
             "\n",
-            PHP_EOL,
+            \PHP_EOL,
             <<<'TEXT'
                    1) someFile.php
                       ---------- begin diff ----------
@@ -63,7 +65,7 @@ final class TextReporterTest extends AbstractReporterTestCase
     {
         return str_replace(
             "\n",
-            PHP_EOL,
+            \PHP_EOL,
             <<<'TEXT'
                    1) someFile.php
                       ---------- begin diff ----------
@@ -89,7 +91,7 @@ final class TextReporterTest extends AbstractReporterTestCase
     {
         return str_replace(
             "\n",
-            PHP_EOL,
+            \PHP_EOL,
             <<<'TEXT'
                    1) someFile.php (some_fixer_name_here_1, some_fixer_name_here_2)
 
@@ -101,7 +103,7 @@ final class TextReporterTest extends AbstractReporterTestCase
     {
         return str_replace(
             "\n",
-            PHP_EOL,
+            \PHP_EOL,
             <<<'TEXT'
                    1) someFile.php
                       ---------- begin diff ----------
@@ -119,7 +121,7 @@ final class TextReporterTest extends AbstractReporterTestCase
                       ----------- end diff -----------
 
 
-                Fixed 1 of 10 files in 1.234 seconds, 2.500 MB memory used
+                Fixed 1 of 10 files in 1.234 seconds, 2.50 MB memory used
 
                 TEXT
         );
@@ -129,7 +131,7 @@ final class TextReporterTest extends AbstractReporterTestCase
     {
         return str_replace(
             "\n",
-            PHP_EOL,
+            \PHP_EOL,
             <<<'TEXT'
                    1) someFile.php (<comment>some_fixer_name_here_1, some_fixer_name_here_2</comment>)
                 <comment>      ---------- begin diff ----------</comment>
@@ -142,7 +144,7 @@ final class TextReporterTest extends AbstractReporterTestCase
                 <comment>      ----------- end diff -----------</comment>
 
 
-                Found 2 of 10 files that can be fixed in 1.234 seconds, 2.500 MB memory used
+                Found 2 of 10 files that can be fixed in 1.234 seconds, 2.50 MB memory used
 
                 TEXT
         );

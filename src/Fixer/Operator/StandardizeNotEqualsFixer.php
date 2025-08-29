@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class StandardizeNotEqualsFixer extends AbstractFixer
 {
@@ -46,14 +48,14 @@ final class StandardizeNotEqualsFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_IS_NOT_EQUAL);
+        return $tokens->isTokenKindFound(\T_IS_NOT_EQUAL);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(T_IS_NOT_EQUAL)) {
-                $tokens[$index] = new Token([T_IS_NOT_EQUAL, '!=']);
+            if ($token->isGivenKind(\T_IS_NOT_EQUAL)) {
+                $tokens[$index] = new Token([\T_IS_NOT_EQUAL, '!=']);
             }
         }
     }

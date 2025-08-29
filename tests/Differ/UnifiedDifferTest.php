@@ -20,6 +20,8 @@ use PhpCsFixer\Differ\UnifiedDiffer;
  * @internal
  *
  * @covers \PhpCsFixer\Differ\UnifiedDiffer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class UnifiedDifferTest extends AbstractDifferTestCase
 {
@@ -54,7 +56,7 @@ final class UnifiedDifferTest extends AbstractDifferTestCase
 -a
 +b
 ',
-            $differ->diff("a\n", "b\n", new DummyTestSplFileInfo('/foo/bar/test test test.txt'))
+            $differ->diff("a\n", "b\n", $this->createSplFileInfoDouble('/foo/bar/test test test.txt'))
         );
     }
 
@@ -73,5 +75,15 @@ final class UnifiedDifferTest extends AbstractDifferTestCase
 ',
             $differ->diff('a', 'b')
         );
+    }
+
+    private function createSplFileInfoDouble(string $filename): \SplFileInfo
+    {
+        return new class($filename) extends \SplFileInfo {
+            public function getRealPath(): string
+            {
+                return $this->getFilename();
+            }
+        };
     }
 }

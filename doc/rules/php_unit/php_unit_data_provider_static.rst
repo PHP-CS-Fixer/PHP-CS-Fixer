@@ -94,10 +94,20 @@ With configuration: ``['force' => false]``.
 Rule sets
 ---------
 
-The rule is part of the following rule set:
+The rule is part of the following rule sets:
 
 - `@PHPUnit100Migration:risky <./../../ruleSets/PHPUnit100MigrationRisky.rst>`_ with config:
 
   ``['force' => true]``
 
+- `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ with config:
 
+  ``['force' => true]``
+
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitDataProviderStaticFixer <./../../../src/Fixer/PhpUnit/PhpUnitDataProviderStaticFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitDataProviderStaticFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitDataProviderStaticFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

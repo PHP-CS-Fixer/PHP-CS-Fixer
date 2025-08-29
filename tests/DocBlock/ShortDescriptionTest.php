@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\DocBlock\ShortDescription
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ShortDescriptionTest extends TestCase
 {
@@ -36,6 +38,9 @@ final class ShortDescriptionTest extends TestCase
         self::assertSame($expected, $shortDescription->getEnd());
     }
 
+    /**
+     * @return iterable<int, array{null|int, string}>
+     */
     public static function provideGetEndCases(): iterable
     {
         yield [1, '/**

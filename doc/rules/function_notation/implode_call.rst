@@ -44,6 +44,14 @@ The rule is part of the following rule sets:
 
 - `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_
 - `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_
+- `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 - `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\FunctionNotation\\ImplodeCallFixer <./../../../src/Fixer/FunctionNotation/ImplodeCallFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\FunctionNotation\\ImplodeCallFixerTest <./../../../tests/Fixer/FunctionNotation/ImplodeCallFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

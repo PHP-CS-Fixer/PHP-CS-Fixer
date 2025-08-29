@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: trailing_comma_in_multiline,binary_operator_spaces.
+--RULESET--
+{"trailing_comma_in_multiline": true, "binary_operator_spaces": {"default" : "align_single_space_minimal"}}
+--EXPECT--
+<?php $a = [
+    'key1'  => 'x',
+    'key11' => 'y',
+];
+
+--INPUT--
+<?php $a = [
+    'key1' => 'x',
+    'key11'=> 'y',
+];

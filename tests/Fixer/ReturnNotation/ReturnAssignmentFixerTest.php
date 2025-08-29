@@ -20,18 +20,25 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ReturnNotation\ReturnAssignmentFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ReturnNotation\ReturnAssignmentFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ReturnAssignmentFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideFixNestedFunctionsCases
+     * @dataProvider provideFixCases
      */
-    public function testFixNestedFunctions(string $expected, string $input): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixNestedFunctionsCases(): iterable
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
+    public static function provideFixCases(): iterable
     {
         yield [
             '<?php
@@ -179,18 +186,7 @@ function B($b0, $b1, $b2)
 }
 ',
         ];
-    }
 
-    /**
-     * @dataProvider provideFixCases
-     */
-    public function testFix(string $expected, string $input): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideFixCases(): iterable
-    {
         yield [
             '<?php
                     function A()
@@ -424,14 +420,16 @@ var names are case-insensitive */ return $a   ;}
                         return $a;
                     }
                 ',
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     function a($foos) {
                         return array_map(function ($foo) {
                             return (string) $foo;
                         }, $foos);
                     }',
-                '<?php
+            '<?php
                     function a($foos) {
                         $bars = array_map(function ($foo) {
                             return (string) $foo;
@@ -439,19 +437,19 @@ var names are case-insensitive */ return $a   ;}
 
                         return $bars;
                     }',
-            ],
-            [
-                '<?php
+        ];
+
+        yield [
+            '<?php
                     function a($foos) {
                         return ($foos = [\'bar\']);
                     }',
-                '<?php
+            '<?php
                     function a($foos) {
                         $bars = ($foos = [\'bar\']);
 
                         return $bars;
                     }',
-            ],
         ];
 
         yield [
@@ -809,18 +807,7 @@ var names are case-insensitive */ return $a   ;}
                 }
                 ',
         ];
-    }
 
-    /**
-     * @dataProvider provideDoNotFixCases
-     */
-    public function testDoNotFix(string $expected): void
-    {
-        $this->doTest($expected);
-    }
-
-    public static function provideDoNotFixCases(): iterable
-    {
         yield 'invalid reference stays invalid' => [
             '<?php
                     function bar() {
@@ -1195,7 +1182,7 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
                 ',
         ];
 
-        yield 'try/catch/finally' => [
+        yield 'try/catch/finally - do not fix' => [
             '<?php
                 function add($a, $b): mixed
                 {
@@ -1249,50 +1236,7 @@ var_dump($a); // $a = 2 here _╯°□°╯︵┻━┻
                 }
                 ',
         ];
-    }
 
-    /**
-     * @dataProvider provideDoNotFix80Cases
-     *
-     * @requires PHP 8.0
-     */
-    public function testDoNotFix80(string $expected): void
-    {
-        $this->doTest($expected);
-    }
-
-    public static function provideDoNotFix80Cases(): iterable
-    {
-        yield 'try with non-capturing catch block' => [
-            '<?php
-                function add($a, $b): mixed
-                {
-                    try {
-                        $result = $a + $b;
-
-                        return $result;
-                    }
-                    catch (\Throwable) {
-                        noop();
-                    }
-                    finally {
-                        echo \'result:\', $result, \PHP_EOL;
-                    }
-                }
-                ',
-        ];
-    }
-
-    /**
-     * @dataProvider provideRepetitiveFixCases
-     */
-    public function testRepetitiveFix(string $expected, ?string $input = null): void
-    {
-        $this->doTest($expected, $input);
-    }
-
-    public static function provideRepetitiveFixCases(): iterable
-    {
         yield [
             '<?php
 
@@ -1327,25 +1271,47 @@ function foo(&$c) {
         $input = "<?php\n";
 
         for ($i = 0; $i < 10; ++$i) {
-            $expected .= sprintf("\nfunction foo%d() {\n\treturn bar();\n}", $i);
-            $input .= sprintf("\nfunction foo%d() {\n\t\$a = bar();\n\t\$b = \$a;\n\nreturn \$b;\n}", $i);
+            $expected .= \sprintf("\nfunction foo%d() {\n\treturn bar();\n}", $i);
+            $input .= \sprintf("\nfunction foo%d() {\n\t\$a = bar();\n\t\$b = \$a;\n\nreturn \$b;\n}", $i);
         }
 
         yield [$expected, $input];
     }
 
     /**
-     * @requires PHP 8.0
-     *
      * @dataProvider provideFix80Cases
+     *
+     * @requires PHP 8.0
      */
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFix80Cases(): iterable
     {
+        yield 'try with non-capturing catch block' => [
+            '<?php
+                function add($a, $b): mixed
+                {
+                    try {
+                        $result = $a + $b;
+
+                        return $result;
+                    }
+                    catch (\Throwable) {
+                        noop();
+                    }
+                    finally {
+                        echo \'result:\', $result, \PHP_EOL;
+                    }
+                }
+                ',
+        ];
+
         yield 'match' => [
             '<?php
             function Foo($food) {
@@ -1387,14 +1353,17 @@ function foo(&$c) {
     /**
      * @requires PHP 8.3
      *
-     * @dataProvider provideFixPhp83Cases
+     * @dataProvider provideFix83Cases
      */
-    public function testFixPhp83(string $expected, ?string $input = null): void
+    public function testFix83(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixPhp83Cases(): iterable
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix83Cases(): iterable
     {
         yield 'anonymous readonly class' => [
             '<?php

@@ -92,4 +92,10 @@ The rule is part of the following rule sets:
 
   ``['comment_types' => ['hash']]``
 
+References
+----------
 
+- Fixer class: `PhpCsFixer\\Fixer\\Comment\\SingleLineCommentStyleFixer <./../../../src/Fixer/Comment/SingleLineCommentStyleFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Comment\\SingleLineCommentStyleFixerTest <./../../../tests/Fixer/Comment/SingleLineCommentStyleFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

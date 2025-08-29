@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class RegularCallableCallFixer extends AbstractFixer
 {
@@ -68,7 +70,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     public function isRisky(): bool
@@ -82,7 +84,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
         $argumentsAnalyzer = new ArgumentsAnalyzer();
 
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
-            if (!$tokens[$index]->equalsAny([[T_STRING, 'call_user_func'], [T_STRING, 'call_user_func_array']], false)) {
+            if (!$tokens[$index]->equalsAny([[\T_STRING, 'call_user_func'], [\T_STRING, 'call_user_func_array']], false)) {
                 continue;
             }
 
@@ -103,7 +105,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
     }
 
     /**
-     * @param array<int, int> $arguments
+     * @param non-empty-array<int, int> $arguments
      */
     private function processCall(Tokens $tokens, int $index, array $arguments): void
     {
@@ -111,10 +113,9 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
             $tokens->getNextMeaningfulToken($index)
         );
 
-        /** @var Token $firstArgToken */
         $firstArgToken = $tokens[$firstArgIndex];
 
-        if ($firstArgToken->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
+        if ($firstArgToken->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
             $afterFirstArgIndex = $tokens->getNextMeaningfulToken($firstArgIndex);
 
             if (!$tokens[$afterFirstArgIndex]->equalsAny([',', ')'])) {
@@ -135,10 +136,10 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
 
             $this->replaceCallUserFuncWithCallback($tokens, $index, $newCallTokens, $firstArgIndex, $firstArgIndex);
         } elseif (
-            $firstArgToken->isGivenKind(T_FUNCTION)
+            $firstArgToken->isGivenKind(\T_FUNCTION)
             || (
-                $firstArgToken->isGivenKind(T_STATIC)
-                && $tokens[$tokens->getNextMeaningfulToken($firstArgIndex)]->isGivenKind(T_FUNCTION)
+                $firstArgToken->isGivenKind(\T_STATIC)
+                && $tokens[$tokens->getNextMeaningfulToken($firstArgIndex)]->isGivenKind(\T_FUNCTION)
             )
         ) {
             $firstArgEndIndex = $tokens->findBlockEnd(
@@ -150,7 +151,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
             $newCallTokens->insertAt($newCallTokens->count(), new Token(')'));
             $newCallTokens->insertAt(0, new Token('('));
             $this->replaceCallUserFuncWithCallback($tokens, $index, $newCallTokens, $firstArgIndex, $firstArgEndIndex);
-        } elseif ($firstArgToken->isGivenKind(T_VARIABLE)) {
+        } elseif ($firstArgToken->isGivenKind(\T_VARIABLE)) {
             $firstArgEndIndex = reset($arguments);
 
             // check if the same variable is used multiple times and if so do not fix
@@ -173,7 +174,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
             $complex = false;
 
             for ($newCallIndex = \count($newCallTokens) - 1; $newCallIndex >= 0; --$newCallIndex) {
-                if ($newCallTokens[$newCallIndex]->isGivenKind([T_WHITESPACE, T_COMMENT, T_DOC_COMMENT, T_VARIABLE])) {
+                if ($newCallTokens[$newCallIndex]->isGivenKind([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT, \T_VARIABLE])) {
                     continue;
                 }
 
@@ -206,11 +207,11 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
         $afterFirstArgToken = $tokens[$afterFirstArgIndex];
 
         if ($afterFirstArgToken->equals(',')) {
-            $useEllipsis = $tokens[$callIndex]->equals([T_STRING, 'call_user_func_array'], false);
+            $useEllipsis = $tokens[$callIndex]->equals([\T_STRING, 'call_user_func_array'], false);
 
             if ($useEllipsis) {
                 $secondArgIndex = $tokens->getNextMeaningfulToken($afterFirstArgIndex);
-                $tokens->insertAt($secondArgIndex, new Token([T_ELLIPSIS, '...']));
+                $tokens->insertAt($secondArgIndex, new Token([\T_ELLIPSIS, '...']));
             }
 
             $tokens->clearAt($afterFirstArgIndex);
@@ -220,7 +221,7 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
         $tokens->overrideRange($callIndex, $callIndex, $newCallTokens);
         $prevIndex = $tokens->getPrevMeaningfulToken($callIndex);
 
-        if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
+        if ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
             $tokens->clearTokenAndMergeSurroundingWhitespace($prevIndex);
         }
     }
@@ -231,7 +232,6 @@ call_user_func(static function ($a, $b) { var_dump($a, $b); }, 1, 2);
         $subCollection = new Tokens($size);
 
         for ($i = 0; $i < $size; ++$i) {
-            /** @var Token $toClone */
             $toClone = $tokens[$i + $indexStart];
             $subCollection[$i] = clone $toClone;
         }

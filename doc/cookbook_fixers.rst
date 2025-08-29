@@ -21,7 +21,8 @@ discouraged - it is meant only to give more people more chance to
 contribute, and to detect bugs (`Linus's Law`_).
 
 If possible, try to get acquainted with the public interface for the
-`Tokens class`_ and `Token class`_ classes.
+`PhpCsFixer\\Tokenizer\\Tokens <./../src/Tokenizer/Tokens.php>`_ and
+`PhpCsFixer\\Tokenizer\\Token <./../src/Tokenizer/Token.php>`_ classes.
 
 Assumptions
 -----------
@@ -30,13 +31,13 @@ Assumptions
 * Forked PHP-CS-Fixer/PHP-CS-Fixer into your own GitHub Account.
 * Cloned your forked repository locally.
 * Installed the dependencies of PHP CS Fixer using Composer_.
-* You have read `CONTRIBUTING.md`_.
+* You have read `CONTRIBUTING.md <./../CONTRIBUTING.md>`_.
 
 Step by step
 ------------
 
 For this step-by-step, we are going to create a simple fixer that
-removes all comments from the code that are preceded by `;` (semicolon).
+removes all comments from the code that are preceded by ``;`` (semicolon).
 
 We are calling it ``remove_comments`` (code name), or,
 ``RemoveCommentsFixer`` (class name).
@@ -64,6 +65,7 @@ Put this content inside:
    namespace PhpCsFixer\Fixer\Comment;
 
    use PhpCsFixer\AbstractFixer;
+   use PhpCsFixer\FixerDefinition\FixerDefinition;
    use PhpCsFixer\Tokenizer\Tokens;
 
    /**
@@ -149,6 +151,7 @@ Keeping things as they are:
 
 .. code-block:: php
 
+   <?php
    // tests/Fixer/Comment/RemoveCommentsFixerTest.php
 
        // ...
@@ -164,6 +167,7 @@ Ensuring things change:
 
 .. code-block:: php
 
+   <?php
    // tests/Fixer/Comment/RemoveCommentsFixerTest.php
 
        // ...
@@ -238,6 +242,7 @@ First, we need to create one method to describe what this fixer does:
 
 .. code-block:: php
 
+   <?php
    // src/Fixer/Comment/RemoveCommentsFixer.php
 
    final class RemoveCommentsFixer extends AbstractFixer
@@ -267,6 +272,7 @@ Next, we must filter what type of tokens we want to fix. Here, we are interested
 
 .. code-block:: php
 
+   <?php
    // src/Fixer/Comment/RemoveCommentsFixer.php
 
    final class RemoveCommentsFixer extends AbstractFixer
@@ -283,6 +289,7 @@ For now, let us just make a fixer that applies no modification:
 
 .. code-block:: php
 
+   <?php
    // src/Fixer/Comment/RemoveCommentsFixer.php
 
    final class RemoveCommentsFixer extends AbstractFixer
@@ -320,8 +327,8 @@ Now you need to do some reading, because all these symbols obey a list
 defined by the PHP compiler. It is the `List of Parser Tokens`_.
 
 Internally, PHP CS Fixer transforms some of PHP native tokens into custom
-tokens through the use of Transformers_, they aim to help you reason about the
-changes you may want to do in the fixers.
+tokens through the use of `PhpCsFixer\\Tokenizer\\Transformer <./../src/Tokenizer/Transformer>`_ transformers,
+they aim to help you reason about the changes you may want to do in the fixers.
 
 So we can get to move forward, humor me in believing that comments have
 one symbol name: ``T_COMMENT``.
@@ -334,6 +341,7 @@ iterate the token(s) we are interested in.
 
 .. code-block:: php
 
+   <?php
    // src/Fixer/Comment/RemoveCommentsFixer.php
 
    final class RemoveCommentsFixer extends AbstractFixer
@@ -357,6 +365,7 @@ token is a semicolon.
 
 .. code-block:: php
 
+   <?php
    // src/Fixer/Comment/RemoveCommentsFixer.php
 
    final class RemoveCommentsFixer extends AbstractFixer
@@ -399,6 +408,8 @@ So the fixer in the end looks like this:
    namespace PhpCsFixer\Fixer\Comment;
 
    use PhpCsFixer\AbstractFixer;
+   use PhpCsFixer\FixerDefinition\CodeSample;
+   use PhpCsFixer\FixerDefinition\FixerDefinition;
    use PhpCsFixer\Tokenizer\Tokens;
 
    /**
@@ -516,10 +527,6 @@ Why am I asked to use ``getPrevMeaningfulToken()`` instead of ``getPrevNonWhites
   or a whitespace, the returned token will always be ``->``.
 
 .. _Composer: https://getcomposer.org
-.. _CONTRIBUTING.md: ../CONTRIBUTING.md
 .. _idempotent: https://en.wikipedia.org/wiki/Idempotence#Computer_science_meaning
 .. _Linus's Law: https://en.wikipedia.org/wiki/Linus%27s_Law
 .. _List of Parser Tokens: https://php.net/manual/en/tokens.php
-.. _Token class: ../src/Tokenizer/Token.php
-.. _Tokens class: ../src/Tokenizer/Tokens.php
-.. _Transformers: ../src/Tokenizer/Transformer

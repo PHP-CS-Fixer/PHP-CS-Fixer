@@ -7,12 +7,21 @@ Docblocks should only be used on structural elements.
 Configuration
 -------------
 
+``allow_before_return_statement``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether to allow PHPDoc before return statement.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 ``ignored_tags``
 ~~~~~~~~~~~~~~~~
 
 List of ignored tags (matched case insensitively).
 
-Allowed types: ``array``
+Allowed types: ``list<string>``
 
 Default value: ``[]``
 
@@ -60,6 +69,29 @@ With configuration: ``['ignored_tags' => ['todo']]``.
         $sqlite->open($path);
     }
 
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['allow_before_return_statement' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    $first = true;// needed because by default first docblock is never fixed.
+
+   -/** This should be a comment */
+   +/* This should be a comment */
+    foreach($connections as $key => $sqlite) {
+        $sqlite->open($path);
+    }
+
+    function returnClassName() {
+        /** @var class-string */
+        return \StdClass::class;
+    }
+
 Rule sets
 ---------
 
@@ -68,3 +100,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocToCommentFixer <./../../../src/Fixer/Phpdoc/PhpdocToCommentFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocToCommentFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocToCommentFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

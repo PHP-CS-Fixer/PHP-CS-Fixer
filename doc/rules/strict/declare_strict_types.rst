@@ -2,7 +2,7 @@
 Rule ``declare_strict_types``
 =============================
 
-Force strict types declaration in all files. Requires PHP >= 7.0.
+Force strict types declaration in all files.
 
 Warning
 -------
@@ -35,4 +35,12 @@ The rule is part of the following rule sets:
 - `@PHP71Migration:risky <./../../ruleSets/PHP71MigrationRisky.rst>`_
 - `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_
 - `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_
+- `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\Strict\\DeclareStrictTypesFixer <./../../../src/Fixer/Strict/DeclareStrictTypesFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Strict\\DeclareStrictTypesFixerTest <./../../../tests/Fixer/Strict/DeclareStrictTypesFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

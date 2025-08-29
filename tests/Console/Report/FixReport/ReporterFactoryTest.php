@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Console\Report\FixReport;
 
 use PhpCsFixer\Console\Report\FixReport\ReporterFactory;
 use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
+use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Tests\TestCase;
 
 /**
@@ -24,6 +25,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Report\FixReport\ReporterFactory
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ReporterFactoryTest extends TestCase
 {
@@ -109,9 +112,23 @@ final class ReporterFactoryTest extends TestCase
 
     private function createReporterDouble(string $format): ReporterInterface
     {
-        $reporter = $this->prophesize(ReporterInterface::class);
-        $reporter->getFormat()->willReturn($format);
+        return new class($format) implements ReporterInterface {
+            private string $format;
 
-        return $reporter->reveal();
+            public function __construct(string $format)
+            {
+                $this->format = $format;
+            }
+
+            public function getFormat(): string
+            {
+                return $this->format;
+            }
+
+            public function generate(ReportSummary $reportSummary): string
+            {
+                throw new \LogicException('Not implemented.');
+            }
+        };
     }
 }

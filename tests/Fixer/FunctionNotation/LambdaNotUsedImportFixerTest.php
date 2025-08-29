@@ -20,17 +20,24 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\LambdaNotUsedImportFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\LambdaNotUsedImportFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class LambdaNotUsedImportFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, string $input): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'simple' => [
@@ -125,18 +132,7 @@ $a = function() use ($b) { new class(){ public function foo($b){echo $b;}}; }; /
                     new class("bar") {};
                 };',
         ];
-    }
 
-    /**
-     * @dataProvider provideDoNotFixCases
-     */
-    public function testDoNotFix(string $expected): void
-    {
-        $this->doTest($expected);
-    }
-
-    public static function provideDoNotFixCases(): iterable
-    {
         yield 'reference' => [
             '<?php $fn = function() use(&$b) {} ?>',
         ];
@@ -214,6 +210,9 @@ $foo();
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield 'simple' => [

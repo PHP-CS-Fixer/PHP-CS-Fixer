@@ -16,16 +16,21 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\TypeIntersectionTransformer
+ *
+ * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param array<int, int|string> $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcessCases
      *
@@ -42,6 +47,9 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
         );
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: _TransformerTestExpectedKindsUnderIndex}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield 'do not fix cases' => [
@@ -62,29 +70,6 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
                 const B1 = D::X & C;
             ',
         ];
-
-        if (\PHP_VERSION_ID >= 8_01_00) {
-            yield 'ensure T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG is not modified' => [
-                '<?php $a = $b&$c;',
-                [
-                    6 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
-                ],
-            ];
-
-            yield 'do not fix, close/open' => [
-                '<?php fn() => 0 ?><?php $a = FOO|BAR|BAZ&$x;',
-                [
-                    20 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
-                ],
-            ];
-
-            yield 'do not fix, foreach' => [
-                '<?php while(foo()){} $a = FOO|BAR|BAZ&$x;',
-                [
-                    19 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
-                ],
-            ];
-        }
 
         yield 'arrow function' => [
             '<?php $a = fn(int&null $item): int&null => $item * 2;',
@@ -400,7 +385,46 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
+     *
+     * @dataProvider provideProcess81Cases
+     *
+     * @requires PHP 8.1
+     */
+    public function testProcess81(string $source, array $expectedTokens): void
+    {
+        $this->doTest($source, $expectedTokens);
+    }
+
+    /**
+     * @return iterable<string, array{string, _TransformerTestExpectedKindsUnderIndex}>
+     */
+    public static function provideProcess81Cases(): iterable
+    {
+        yield 'ensure T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG is not modified' => [
+            '<?php $a = $b&$c;',
+            [
+                6 => FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
+            ],
+        ];
+
+        yield 'do not fix, close/open' => [
+            '<?php fn() => 0 ?><?php $a = FOO|BAR|BAZ&$x;',
+            [
+                20 => FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
+            ],
+        ];
+
+        yield 'do not fix, foreach' => [
+            '<?php while(foo()){} $a = FOO|BAR|BAZ&$x;',
+            [
+                19 => FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
+            ],
+        ];
+    }
+
+    /**
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcess82Cases
      *
@@ -411,6 +435,9 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
         $this->doTest($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<string, array{string, _TransformerTestExpectedKindsUnderIndex}>
+     */
     public static function provideProcess82Cases(): iterable
     {
         yield 'disjunctive normal form types parameter' => [
@@ -511,7 +538,7 @@ class Dnf
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcess83Cases
      *
@@ -522,6 +549,9 @@ class Dnf
         $this->doTest($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<string, array{string, _TransformerTestExpectedKindsUnderIndex}>
+     */
     public static function provideProcess83Cases(): iterable
     {
         yield 'typed const DNF types 1' => [

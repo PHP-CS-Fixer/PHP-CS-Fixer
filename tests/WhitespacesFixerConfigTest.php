@@ -22,10 +22,16 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @internal
  *
  * @covers \PhpCsFixer\WhitespacesFixerConfig
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class WhitespacesFixerConfigTest extends TestCase
 {
     /**
+     * @param non-empty-string  $indent
+     * @param non-empty-string  $lineEnding
+     * @param ?non-empty-string $exceptionRegExp
+     *
      * @dataProvider provideFixCases
      */
     public function testFix(string $indent, string $lineEnding, ?string $exceptionRegExp = null): void
@@ -41,6 +47,9 @@ final class WhitespacesFixerConfigTest extends TestCase
         self::assertSame($lineEnding, $config->getLineEnding());
     }
 
+    /**
+     * @return iterable<int, array{0: non-empty-string, 1: non-empty-string, 2?: non-empty-string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield ['    ', "\n"];

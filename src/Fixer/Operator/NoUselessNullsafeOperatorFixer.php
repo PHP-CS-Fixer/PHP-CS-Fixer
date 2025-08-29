@@ -22,6 +22,9 @@ use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class NoUselessNullsafeOperatorFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
@@ -46,20 +49,20 @@ class Foo extends Bar
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 8_00_00 && $tokens->isAllTokenKindsFound([T_VARIABLE, T_NULLSAFE_OBJECT_OPERATOR]);
+        return \PHP_VERSION_ID >= 8_00_00 && $tokens->isAllTokenKindsFound([\T_VARIABLE, \T_NULLSAFE_OBJECT_OPERATOR]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_NULLSAFE_OBJECT_OPERATOR)) {
+            if (!$tokens[$index]->isGivenKind(\T_NULLSAFE_OBJECT_OPERATOR)) {
                 continue;
             }
 
             $nullsafeObjectOperatorIndex = $index;
             $index = $tokens->getPrevMeaningfulToken($index);
 
-            if (!$tokens[$index]->isGivenKind(T_VARIABLE)) {
+            if (!$tokens[$index]->isGivenKind(\T_VARIABLE)) {
                 continue;
             }
 
@@ -67,7 +70,7 @@ class Foo extends Bar
                 continue;
             }
 
-            $tokens[$nullsafeObjectOperatorIndex] = new Token([T_OBJECT_OPERATOR, '->']);
+            $tokens[$nullsafeObjectOperatorIndex] = new Token([\T_OBJECT_OPERATOR, '->']);
         }
     }
 }

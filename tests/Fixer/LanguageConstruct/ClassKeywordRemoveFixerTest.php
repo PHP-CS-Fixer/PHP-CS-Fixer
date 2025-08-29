@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Sullivan Senechal <soullivaneuh@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\LanguageConstruct\ClassKeywordRemoveFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\ClassKeywordRemoveFixer>
+ *
+ * @author Sullivan Senechal <soullivaneuh@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string, 2?: string, 3?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -50,7 +57,7 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
-                use Foo\\Bar;
+                use Foo\Bar;
             '."
                 echo 'Foo\\Bar\\Thing';
                 ",
@@ -69,8 +76,8 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
                 ",
             '<?php
                 namespace Foo;
-                use Foo\\Bar;
-                echo \\Foo\\Bar\\Baz::class;
+                use Foo\Bar;
+                echo \Foo\Bar\Baz::class;
                 ',
         ];
 
@@ -233,7 +240,7 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
                 ",
             '<?php
                 namespace Foo;
-                var_dump(Bar\\Baz::class);
+                var_dump(Bar\Baz::class);
                 ',
         ];
 
@@ -243,7 +250,7 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
                 var_dump('Foo\\Bar\\Baz');
                 ",
             '<?php
-                namespace Foo\\Bar;
+                namespace Foo\Bar;
                 var_dump(Baz::class);
                 ',
         ];
@@ -265,6 +272,9 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
                 echo ClassB::class;
                 echo C::class;
                 ',
+        ];
+
+        yield [
             "<?php
                 namespace {
                     var_dump('Foo');
@@ -289,18 +299,18 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
                     var_dump(Foo::class);
                 }
                 namespace A {
-                    use B\\C;
+                    use B\C;
                     var_dump(C::class);
                 }
                 namespace {
-                    var_dump(Bar\\Baz::class);
+                    var_dump(Bar\Baz::class);
                 }
                 namespace B {
-                    use A\\C\\D;
+                    use A\C\D;
                     var_dump(D::class);
                 }
                 namespace {
-                    var_dump(Qux\\Quux::class);
+                    var_dump(Qux\Quux::class);
                 }
                 ',
         ];

@@ -17,12 +17,16 @@ namespace PhpCsFixer\Tests\Fixer\CastNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Vladimir Reznichenko <kalessil@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
  * @covers \PhpCsFixer\Fixer\CastNotation\ModernizeTypesCastingFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\CastNotation\ModernizeTypesCastingFixer>
+ *
+ * @author Vladimir Reznichenko <kalessil@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
 {
@@ -34,6 +38,9 @@ final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         $multiLinePatternToFix = <<<'FIX'
@@ -103,17 +110,17 @@ final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
 
         yield ['<?php $x = ClassA::intval(mt_rand(0, 100));'];
 
-        yield ['<?php $x = ScopeA\\intval(mt_rand(0, 100));'];
+        yield ['<?php $x = ScopeA\intval(mt_rand(0, 100));'];
 
-        yield ['<?php $x = namespace\\intval(mt_rand(0, 100));'];
+        yield ['<?php $x = namespace\intval(mt_rand(0, 100));'];
 
         yield ['<?php $x = $object->intval(mt_rand(0, 100));'];
 
-        yield ['<?php $x = new \\intval(mt_rand(0, 100));'];
+        yield ['<?php $x = new \intval(mt_rand(0, 100));'];
 
         yield ['<?php $x = new intval(mt_rand(0, 100));'];
 
-        yield ['<?php $x = new ScopeB\\intval(mt_rand(0, 100));'];
+        yield ['<?php $x = new ScopeB\intval(mt_rand(0, 100));'];
 
         yield ['<?php intvalSmth(mt_rand(0, 100));'];
 
@@ -141,11 +148,11 @@ final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
 
         yield ['<?php $x = (int) (mt_rand(0, 100));', '<?php $x = intval(mt_rand(0, 100));'];
 
-        yield ['<?php $x = (int) (mt_rand(0, 100));', '<?php $x = \\intval(mt_rand(0, 100));'];
+        yield ['<?php $x = (int) (mt_rand(0, 100));', '<?php $x = \intval(mt_rand(0, 100));'];
 
         yield ['<?php $x = (int) (mt_rand(0, 100)).".dist";', '<?php $x = intval(mt_rand(0, 100)).".dist";'];
 
-        yield ['<?php $x = (int) (mt_rand(0, 100)).".dist";', '<?php $x = \\intval(mt_rand(0, 100)).".dist";'];
+        yield ['<?php $x = (int) (mt_rand(0, 100)).".dist";', '<?php $x = \intval(mt_rand(0, 100)).".dist";'];
 
         yield [$multiLinePatternFixed, $multiLinePatternToFix];
 
@@ -215,25 +222,22 @@ final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
      *
      * @requires PHP <8.0
      */
-    public function testFixPre80(string $expected, string $input = null): void
+    public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{string, string}>
+     */
     public static function provideFixPre80Cases(): iterable
     {
         yield [
             '<?php $foo = ((string) ($x + $y)){0};',
             '<?php $foo = strval($x + $y){0};',
         ];
-    }
 
-    /**
-     * @requires PHP <8.0
-     */
-    public function testFixPrePHP80(): void
-    {
-        $this->doTest(
+        yield [
             '<?php $a = #
 #
 #
@@ -252,8 +256,8 @@ intval#
 #
  $b#
  )#
- ;#'
-        );
+ ;#',
+        ];
     }
 
     /**
@@ -266,6 +270,9 @@ intval#
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [

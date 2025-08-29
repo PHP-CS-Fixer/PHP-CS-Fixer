@@ -21,6 +21,9 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class NoUnsetCastFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
@@ -33,7 +36,7 @@ final class NoUnsetCastFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_UNSET_CAST);
+        return $tokens->isTokenKindFound(\T_UNSET_CAST);
     }
 
     /**
@@ -49,7 +52,7 @@ final class NoUnsetCastFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = \count($tokens) - 1; $index > 0; --$index) {
-            if ($tokens[$index]->isGivenKind(T_UNSET_CAST)) {
+            if ($tokens[$index]->isGivenKind(\T_UNSET_CAST)) {
                 $this->fixUnsetCast($tokens, $index);
             }
         }
@@ -63,12 +66,12 @@ final class NoUnsetCastFixer extends AbstractFixer
         }
 
         $varIndex = $tokens->getNextMeaningfulToken($index);
-        if (null === $varIndex || !$tokens[$varIndex]->isGivenKind(T_VARIABLE)) {
+        if (null === $varIndex || !$tokens[$varIndex]->isGivenKind(\T_VARIABLE)) {
             return;
         }
 
         $afterVar = $tokens->getNextMeaningfulToken($varIndex);
-        if (null === $afterVar || !$tokens[$afterVar]->equalsAny([';', [T_CLOSE_TAG]])) {
+        if (null === $afterVar || !$tokens[$afterVar]->equalsAny([';', [\T_CLOSE_TAG]])) {
             return;
         }
 
@@ -79,10 +82,10 @@ final class NoUnsetCastFixer extends AbstractFixer
 
         ++$assignmentIndex;
         if (!$nextIsWhiteSpace) {
-            $tokens->insertAt($assignmentIndex, new Token([T_WHITESPACE, ' ']));
+            $tokens->insertAt($assignmentIndex, new Token([\T_WHITESPACE, ' ']));
         }
 
         ++$assignmentIndex;
-        $tokens->insertAt($assignmentIndex, new Token([T_STRING, 'null']));
+        $tokens->insertAt($assignmentIndex, new Token([\T_STRING, 'null']));
     }
 }

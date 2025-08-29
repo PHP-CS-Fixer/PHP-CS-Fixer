@@ -3,10 +3,12 @@ name: YAML Validation
 on:
   pull_request:
     paths:
-      - '**.y?ml'
+      - '**.yml'
+      - '**.yaml'
   push:
     paths:
-      - '**.y?ml'
+      - '**.yml'
+      - '**.yaml'
 
 permissions:
   contents: read # to fetch code (actions/checkout)
@@ -14,11 +16,11 @@ permissions:
 jobs:
   validate-yaml:
     name: Validate YAML
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Run yamllint
-        run: find . -path \*/vendor -prune -false -o -name \*.y*ml | xargs yamllint
+        run: git ls-files --cached -z -- '*.y*ml' | xargs --null -- yamllint

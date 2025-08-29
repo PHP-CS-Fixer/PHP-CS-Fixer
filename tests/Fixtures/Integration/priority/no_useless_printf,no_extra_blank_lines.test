@@ -1,0 +1,25 @@
+--TEST--
+Integration of fixers: no_useless_printf,no_extra_blank_lines.
+--RULESET--
+{"no_useless_printf": true, "no_extra_blank_lines": true}
+--EXPECT--
+<?php
+
+print /* a */
+
+$a
+
+;
+
+--INPUT--
+<?php
+
+printf/* a */
+
+(
+
+$a
+
+)
+
+;

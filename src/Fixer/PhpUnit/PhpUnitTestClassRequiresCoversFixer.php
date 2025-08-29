@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpUnitTestClassRequiresCoversFixer extends AbstractPhpUnitFixer implements WhitespacesAwareFixerInterface
 {
@@ -50,16 +52,16 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      *
-     * Must run before PhpdocSeparationFixer.
+     * Must run before PhpUnitAttributesFixer, PhpdocSeparationFixer.
      */
     public function getPriority(): int
     {
-        return 0;
+        return 9;
     }
 
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
-        $classIndex = $tokens->getPrevTokenOfKind($startIndex, [[T_CLASS]]);
+        $classIndex = $tokens->getPrevTokenOfKind($startIndex, [[\T_CLASS]]);
 
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $modifiers = $tokensAnalyzer->getClassyModifiers($classIndex);
@@ -68,7 +70,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             return; // don't add `@covers` annotation for abstract base classes
         }
 
-        $this->ensureIsDockBlockWithAnnotation(
+        $this->ensureIsDocBlockWithAnnotation(
             $tokens,
             $classIndex,
             'coversNothing',
@@ -76,7 +78,14 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 'covers',
                 'coversDefaultClass',
                 'coversNothing',
-            ]
+            ],
+            [
+                'phpunit\framework\attributes\coversclass',
+                'phpunit\framework\attributes\coversnothing',
+                'phpunit\framework\attributes\coversmethod',
+                'phpunit\framework\attributes\coversfunction',
+                'phpunit\framework\attributes\coverstrait',
+            ],
         );
     }
 }

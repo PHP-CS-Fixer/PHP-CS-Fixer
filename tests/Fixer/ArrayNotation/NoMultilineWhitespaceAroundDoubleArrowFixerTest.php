@@ -17,13 +17,17 @@ namespace PhpCsFixer\Tests\Fixer\ArrayNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
+ * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\ArrayNotation\NoMultilineWhitespaceAroundDoubleArrowFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ArrayNotation\NoMultilineWhitespaceAroundDoubleArrowFixer>
+ *
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
- * @internal
- *
- * @covers \PhpCsFixer\Fixer\ArrayNotation\NoMultilineWhitespaceAroundDoubleArrowFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixerTestCase
 {
@@ -35,6 +39,9 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixe
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [

@@ -22,13 +22,12 @@ namespace PhpCsFixer;
  * This reader unifies access to them.
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FileReader
 {
-    /**
-     * @var null|string
-     */
-    private $stdinContent;
+    private ?string $stdinContent = null;
 
     public static function createSingleton(): self
     {
@@ -61,7 +60,7 @@ final class FileReader
         if (false === $content) {
             $error = error_get_last();
 
-            throw new \RuntimeException(sprintf(
+            throw new \RuntimeException(\sprintf(
                 'Failed to read content from "%s".%s',
                 $realPath,
                 null !== $error ? ' '.$error['message'] : ''

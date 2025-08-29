@@ -38,6 +38,14 @@ Rule sets
 The rule is part of the following rule sets:
 
 - `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_
+- `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 - `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\NoPhp4ConstructorFixer <./../../../src/Fixer/ClassNotation/NoPhp4ConstructorFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ClassNotation\\NoPhp4ConstructorFixerTest <./../../../tests/Fixer/ClassNotation/NoPhp4ConstructorFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NamespacesAnalyzerTest extends TestCase
 {
@@ -44,6 +46,9 @@ final class NamespacesAnalyzerTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<int, array{string, list<NamespaceAnalysis>}>
+     */
     public static function provideNamespacesCases(): iterable
     {
         yield ['<?php // no namespaces', [
@@ -86,6 +91,29 @@ final class NamespacesAnalyzerTest extends TestCase
                 17
             ),
         ]];
+
+        yield [
+            <<<'PHP'
+                #!/usr/bin/php
+                <?php
+                return true;
+                PHP,
+            [
+                new NamespaceAnalysis(
+                    '',
+                    '',
+                    1,
+                    1,
+                    1,
+                    5
+                ),
+            ],
+        ];
+
+        yield [
+            'there is no namespace if there is no PHP code',
+            [],
+        ];
     }
 
     /**
@@ -102,6 +130,9 @@ final class NamespacesAnalyzerTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<int, array{string, int, NamespaceAnalysis}>
+     */
     public static function provideGetNamespaceAtCases(): iterable
     {
         yield [
@@ -153,19 +184,6 @@ final class NamespacesAnalyzerTest extends TestCase
                 16,
                 10,
                 17
-            ),
-        ];
-
-        yield [
-            ' ',
-            0,
-            new NamespaceAnalysis(
-                '',
-                '',
-                0,
-                0,
-                0,
-                0
             ),
         ];
     }

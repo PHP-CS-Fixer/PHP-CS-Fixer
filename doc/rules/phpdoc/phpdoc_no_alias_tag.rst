@@ -12,7 +12,7 @@ Configuration
 
 Mapping between replaced annotations with new ones.
 
-Allowed types: ``array``
+Allowed types: ``array<string, string>``
 
 Default value: ``['property-read' => 'property', 'property-write' => 'property', 'type' => 'var', 'link' => 'see']``
 
@@ -70,3 +70,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocNoAliasTagFixer <./../../../src/Fixer/Phpdoc/PhpdocNoAliasTagFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocNoAliasTagFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocNoAliasTagFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

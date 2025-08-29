@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Comment;
 
+use PhpCsFixer\Fixer\Comment\NoEmptyCommentFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -21,6 +22,10 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Comment\NoEmptyCommentFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Comment\NoEmptyCommentFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoEmptyCommentFixerTest extends AbstractFixerTestCase
 {
@@ -32,6 +37,9 @@ final class NoEmptyCommentFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         // fix cases
@@ -151,21 +159,6 @@ echo 1;
         ];
 
         yield [
-            '<?php
-                    '.'
-                    '.'
-                    '.'
-                    '.'
-                ',
-            '<?php
-                    //
-                    //
-                    //
-                    /**///
-                ',
-        ];
-
-        yield [
             "<?php\n                    \n                    \n                    \n                    \n                ",
             "<?php\n                    //\n                    //\n                    //\n                    /**///\n                ",
         ];
@@ -280,18 +273,18 @@ echo 1;
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
-        self::assertTrue($tokens[$startIndex]->isComment(), sprintf('Misconfiguration of test, expected comment token at index "%d".', $startIndex));
+        self::assertTrue($tokens[$startIndex]->isComment(), \sprintf('Misconfiguration of test, expected comment token at index "%d".', $startIndex));
 
-        $method = new \ReflectionMethod($this->fixer, 'getCommentBlock');
-        $method->setAccessible(true);
+        $foundInfo = \Closure::bind(static fn (NoEmptyCommentFixer $fixer): array => $fixer->getCommentBlock($tokens, $startIndex), null, NoEmptyCommentFixer::class)($this->fixer);
 
-        [$foundStart, $foundEnd, $foundIsEmpty] = $method->invoke($this->fixer, $tokens, $startIndex);
-
-        self::assertSame($startIndex, $foundStart, 'Find start index of block failed.');
-        self::assertSame($endIndex, $foundEnd, 'Find end index of block failed.');
-        self::assertSame($isEmpty, $foundIsEmpty, 'Is empty comment block detection failed.');
+        self::assertSame($startIndex, $foundInfo['blockStart'], 'Find start index of block failed.');
+        self::assertSame($endIndex, $foundInfo['blockEnd'], 'Find end index of block failed.');
+        self::assertSame($isEmpty, $foundInfo['isEmpty'], 'Is empty comment block detection failed.');
     }
 
+    /**
+     * @return iterable<int, array{string, int, int, bool}>
+     */
     public static function provideGetCommentBlockCases(): iterable
     {
         yield [

@@ -17,17 +17,21 @@ namespace PhpCsFixer;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
+ * @readonly
+ *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class WordMatcher
 {
     /**
-     * @var string[]
+     * @var list<string>
      */
     private array $candidates;
 
     /**
-     * @param string[] $candidates
+     * @param list<string> $candidates
      */
     public function __construct(array $candidates)
     {

@@ -22,6 +22,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractProxyFixer extends AbstractFixer
 {
@@ -100,7 +102,7 @@ abstract class AbstractProxyFixer extends AbstractFixer
     }
 
     /**
-     * @return FixerInterface[]
+     * @return list<FixerInterface>
      */
     abstract protected function createProxyFixers(): array;
 }

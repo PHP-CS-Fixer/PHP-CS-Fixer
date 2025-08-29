@@ -4,10 +4,13 @@ Rule ``compact_nullable_typehint``
 
 Remove extra spaces in a nullable typehint.
 
-Description
------------
+Warning
+-------
 
-Rule is applied only in a PHP 7.1+ environment.
+This rule is deprecated and will be removed in the next major version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You should use ``compact_nullable_type_declaration`` instead.
 
 Examples
 --------
@@ -24,15 +27,10 @@ Example #1
    +function sample(?string $str): ?string
     {}
 
-Rule sets
----------
+References
+----------
 
-The rule is part of the following rule sets:
+- Fixer class: `PhpCsFixer\\Fixer\\Whitespace\\CompactNullableTypehintFixer <./../../../src/Fixer/Whitespace/CompactNullableTypehintFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Whitespace\\CompactNullableTypehintFixerTest <./../../../tests/Fixer/Whitespace/CompactNullableTypehintFixerTest.php>`_
 
-- `@PER <./../../ruleSets/PER.rst>`_
-- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_
-- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_
-- `@PSR12 <./../../ruleSets/PSR12.rst>`_
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
-- `@Symfony <./../../ruleSets/Symfony.rst>`_
-
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

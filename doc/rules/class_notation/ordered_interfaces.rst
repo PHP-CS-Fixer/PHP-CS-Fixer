@@ -7,14 +7,14 @@ Orders the interfaces in an ``implements`` or ``interface extends`` clause.
 Configuration
 -------------
 
-``order``
-~~~~~~~~~
+``case_sensitive``
+~~~~~~~~~~~~~~~~~~
 
-How the interfaces should be ordered.
+Whether the sorting should be case sensitive.
 
-Allowed values: ``'alpha'`` and ``'length'``
+Allowed types: ``bool``
 
-Default value: ``'alpha'``
+Default value: ``false``
 
 ``direction``
 ~~~~~~~~~~~~~
@@ -25,14 +25,14 @@ Allowed values: ``'ascend'`` and ``'descend'``
 
 Default value: ``'ascend'``
 
-``case_sensitive``
-~~~~~~~~~~~~~~~~~~
+``order``
+~~~~~~~~~
 
-Whether the sorting should be case sensitive.
+How the interfaces should be ordered.
 
-Allowed types: ``bool``
+Allowed values: ``'alpha'`` and ``'length'``
 
-Default value: ``false``
+Default value: ``'alpha'``
 
 Examples
 --------
@@ -138,3 +138,11 @@ With configuration: ``['order' => 'alpha', 'case_sensitive' => true]``.
 
    -interface ExampleB extends Casesensitivea, CaseSensitiveA, CasesensitiveA {}
    +interface ExampleB extends CaseSensitiveA, CasesensitiveA, Casesensitivea {}
+
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\OrderedInterfacesFixer <./../../../src/Fixer/ClassNotation/OrderedInterfacesFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ClassNotation\\OrderedInterfacesFixerTest <./../../../tests/Fixer/ClassNotation/OrderedInterfacesFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

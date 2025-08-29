@@ -20,18 +20,25 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Whitespace\BlankLineBetweenImportGroupsFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\BlankLineBetweenImportGroupsFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class BlankLineBetweenImportGroupsFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @dataProvider provideFixTypesOrderAndNewlinesCases
+     * @dataProvider provideFixCases
      */
-    public function testFixTypesOrderAndNewlines(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixTypesOrderAndNewlinesCases(): iterable
+    /**
+     * @return iterable<array{string, string}>
+     */
+    public static function provideFixCases(): iterable
     {
         yield [
             '<?php
@@ -528,16 +535,19 @@ use const C\D; // bar
     }
 
     /**
-     * @dataProvider provideFixPre80Cases
+     * @dataProvider provideFix80Cases
      *
      * @requires PHP <8.0
      */
-    public function testFixPre80(string $expected, string $input = null): void
+    public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixPre80Cases(): iterable
+    /**
+     * @return iterable<int, array{string, string}>
+     */
+    public static function provideFix80Cases(): iterable
     {
         yield [
             '<?php

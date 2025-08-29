@@ -16,7 +16,7 @@ namespace PhpCsFixer\Tests\Console\Output\Progress;
 
 use PhpCsFixer\Console\Output\OutputContext;
 use PhpCsFixer\Console\Output\Progress\DotsOutput;
-use PhpCsFixer\FixerFileProcessedEvent;
+use PhpCsFixer\Runner\Event\FileProcessed;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -24,11 +24,13 @@ use Symfony\Component\Console\Output\BufferedOutput;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Output\Progress\DotsOutput
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DotsOutputTest extends TestCase
 {
     /**
-     * @param list<array{0: FixerFileProcessedEvent::STATUS_*, 1?: int}> $statuses
+     * @param list<array{0: FileProcessed::STATUS_*, 1?: int}> $statuses
      *
      * @dataProvider provideDotsProgressOutputCases
      */
@@ -44,17 +46,20 @@ final class DotsOutputTest extends TestCase
         $processOutput = new DotsOutput(new OutputContext($output, $width, $nbFiles));
 
         $this->foreachStatus($statuses, static function (int $status) use ($processOutput): void {
-            $processOutput->onFixerFileProcessed(new FixerFileProcessedEvent($status));
+            $processOutput->onFixerFileProcessed(new FileProcessed($status));
         });
 
         self::assertSame($expectedOutput, $output->fetch());
     }
 
+    /**
+     * @return iterable<int, array{list<array{0: FileProcessed::STATUS_*, 1?: int}>, string, int}>
+     */
     public static function provideDotsProgressOutputCases(): iterable
     {
         yield [
             [
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 4],
+                [FileProcessed::STATUS_NO_CHANGES, 4],
             ],
             '....                                                                4 / 4 (100%)',
             80,
@@ -62,9 +67,9 @@ final class DotsOutputTest extends TestCase
 
         yield [
             [
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES],
-                [FixerFileProcessedEvent::STATUS_FIXED],
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 4],
+                [FileProcessed::STATUS_NO_CHANGES],
+                [FileProcessed::STATUS_FIXED],
+                [FileProcessed::STATUS_NO_CHANGES, 4],
             ],
             '.F....                                                              6 / 6 (100%)',
             80,
@@ -72,7 +77,7 @@ final class DotsOutputTest extends TestCase
 
         yield [
             [
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 65],
+                [FileProcessed::STATUS_NO_CHANGES, 65],
             ],
             '................................................................. 65 / 65 (100%)',
             80,
@@ -80,35 +85,26 @@ final class DotsOutputTest extends TestCase
 
         yield [
             [
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 66],
+                [FileProcessed::STATUS_NO_CHANGES, 66],
             ],
-            '................................................................. 65 / 66 ( 98%)'.PHP_EOL.
-            '.                                                                 66 / 66 (100%)',
+            '................................................................. 65 / 66 ( 98%)'.\PHP_EOL
+            .'.                                                                 66 / 66 (100%)',
             80,
         ];
 
         yield [
             [
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 66],
+                [FileProcessed::STATUS_NO_CHANGES, 66],
             ],
-            '................................................................. 65 / 66 ( 98%)'.PHP_EOL.
-            '.                                                                 66 / 66 (100%)',
-            80,
-        ];
-
-        yield [
-            [
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 66],
-            ],
-            '......................... 25 / 66 ( 38%)'.PHP_EOL.
-            '......................... 50 / 66 ( 76%)'.PHP_EOL.
-            '................          66 / 66 (100%)',
+            '......................... 25 / 66 ( 38%)'.\PHP_EOL
+            .'......................... 50 / 66 ( 76%)'.\PHP_EOL
+            .'................          66 / 66 (100%)',
             40,
         ];
 
         yield [
             [
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 66],
+                [FileProcessed::STATUS_NO_CHANGES, 66],
             ],
             '..................................................................                    66 / 66 (100%)',
             100,
@@ -116,69 +112,47 @@ final class DotsOutputTest extends TestCase
 
         yield [
             [
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 19],
-                [FixerFileProcessedEvent::STATUS_EXCEPTION],
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 6],
-                [FixerFileProcessedEvent::STATUS_LINT],
-                [FixerFileProcessedEvent::STATUS_FIXED, 3],
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 50],
-                [FixerFileProcessedEvent::STATUS_SKIPPED],
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 49],
-                [FixerFileProcessedEvent::STATUS_INVALID],
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES],
-                [FixerFileProcessedEvent::STATUS_INVALID],
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 40],
-                [FixerFileProcessedEvent::STATUS_INVALID],
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 15],
+                [FileProcessed::STATUS_NO_CHANGES, 19],
+                [FileProcessed::STATUS_EXCEPTION],
+                [FileProcessed::STATUS_NO_CHANGES, 6],
+                [FileProcessed::STATUS_LINT],
+                [FileProcessed::STATUS_FIXED, 3],
+                [FileProcessed::STATUS_NO_CHANGES, 50],
+                [FileProcessed::STATUS_SKIPPED],
+                [FileProcessed::STATUS_NO_CHANGES, 49],
+                [FileProcessed::STATUS_INVALID],
+                [FileProcessed::STATUS_NO_CHANGES],
+                [FileProcessed::STATUS_INVALID],
+                [FileProcessed::STATUS_NO_CHANGES, 40],
+                [FileProcessed::STATUS_INVALID],
+                [FileProcessed::STATUS_NO_CHANGES, 14],
+                [FileProcessed::STATUS_NON_MONOLITHIC],
             ],
-            '...................E......EFFF.................................  63 / 189 ( 33%)'.PHP_EOL.
-            '.................S............................................. 126 / 189 ( 67%)'.PHP_EOL.
-            '....I.I........................................I............... 189 / 189 (100%)',
+            '...................E......EFFF.................................  63 / 189 ( 33%)'.\PHP_EOL
+            .'.................S............................................. 126 / 189 ( 67%)'.\PHP_EOL
+            .'....I.I........................................I..............M 189 / 189 (100%)',
             80,
         ];
 
         yield [
             [
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 19],
-                [FixerFileProcessedEvent::STATUS_EXCEPTION],
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 6],
-                [FixerFileProcessedEvent::STATUS_LINT],
-                [FixerFileProcessedEvent::STATUS_FIXED, 3],
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 50],
-                [FixerFileProcessedEvent::STATUS_SKIPPED],
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 49],
-                [FixerFileProcessedEvent::STATUS_INVALID],
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES],
-                [FixerFileProcessedEvent::STATUS_INVALID],
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 40],
-                [FixerFileProcessedEvent::STATUS_INVALID],
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 15],
+                [FileProcessed::STATUS_NO_CHANGES, 19],
+                [FileProcessed::STATUS_EXCEPTION],
+                [FileProcessed::STATUS_NO_CHANGES, 6],
+                [FileProcessed::STATUS_LINT],
+                [FileProcessed::STATUS_FIXED, 3],
+                [FileProcessed::STATUS_NO_CHANGES, 50],
+                [FileProcessed::STATUS_SKIPPED],
+                [FileProcessed::STATUS_NO_CHANGES, 49],
+                [FileProcessed::STATUS_INVALID],
+                [FileProcessed::STATUS_NO_CHANGES],
+                [FileProcessed::STATUS_INVALID],
+                [FileProcessed::STATUS_NO_CHANGES, 40],
+                [FileProcessed::STATUS_INVALID],
+                [FileProcessed::STATUS_NO_CHANGES, 15],
             ],
-            '...................E......EFFF.................................  63 / 189 ( 33%)'.PHP_EOL.
-            '.................S............................................. 126 / 189 ( 67%)'.PHP_EOL.
-            '....I.I........................................I............... 189 / 189 (100%)',
-            80,
-        ];
-
-        yield [
-            [
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 19],
-                [FixerFileProcessedEvent::STATUS_EXCEPTION],
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 6],
-                [FixerFileProcessedEvent::STATUS_LINT],
-                [FixerFileProcessedEvent::STATUS_FIXED, 3],
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 50],
-                [FixerFileProcessedEvent::STATUS_SKIPPED],
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 49],
-                [FixerFileProcessedEvent::STATUS_INVALID],
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES],
-                [FixerFileProcessedEvent::STATUS_INVALID],
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 40],
-                [FixerFileProcessedEvent::STATUS_INVALID],
-                [FixerFileProcessedEvent::STATUS_NO_CHANGES, 15],
-            ],
-            '...................E......EFFF..................................................S...................... 103 / 189 ( 54%)'.PHP_EOL.
-            '...........................I.I........................................I...............                  189 / 189 (100%)',
+            '...................E......EFFF..................................................S...................... 103 / 189 ( 54%)'.\PHP_EOL
+            .'...........................I.I........................................I...............                  189 / 189 (100%)',
             120,
         ];
     }
@@ -202,8 +176,8 @@ final class DotsOutputTest extends TestCase
     }
 
     /**
-     * @param list<array{0: FixerFileProcessedEvent::STATUS_*, 1?: int}> $statuses
-     * @param \Closure(FixerFileProcessedEvent::STATUS_*): void          $action
+     * @param list<array{0: FileProcessed::STATUS_*, 1?: int}> $statuses
+     * @param \Closure(FileProcessed::STATUS_*): void          $action
      */
     private function foreachStatus(array $statuses, \Closure $action): void
     {

@@ -24,11 +24,15 @@ use PhpCsFixer\Tokenizer\CT;
  *
  * @covers \PhpCsFixer\Tokenizer\AbstractTypeTransformer
  * @covers \PhpCsFixer\Tokenizer\Transformer\TypeAlternationTransformer
+ *
+ * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param array<int, int|string> $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
@@ -43,6 +47,9 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
         );
     }
 
+    /**
+     * @return iterable<string, array{string, _TransformerTestExpectedKindsUnderIndex}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield 'no namespace' => [
@@ -123,7 +130,7 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcess80Cases
      *
@@ -134,6 +141,9 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
         $this->doTest($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<array{string, _TransformerTestExpectedKindsUnderIndex}>
+     */
     public static function provideProcess80Cases(): iterable
     {
         yield 'arrow function' => [
@@ -414,7 +424,7 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideFix81Cases
      *
@@ -431,6 +441,9 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
         );
     }
 
+    /**
+     * @return iterable<string, array{_TransformerTestExpectedKindsUnderIndex, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'readonly' => [
@@ -480,7 +493,7 @@ class Foo
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcess81Cases
      *
@@ -491,6 +504,9 @@ class Foo
         $this->doTest($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<string, array{string, _TransformerTestExpectedKindsUnderIndex}>
+     */
     public static function provideProcess81Cases(): iterable
     {
         yield 'arrow function with intersection' => [
@@ -502,7 +518,7 @@ class Foo
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcess82Cases
      *
@@ -513,6 +529,9 @@ class Foo
         $this->doTest($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<string, array{string, _TransformerTestExpectedKindsUnderIndex}>
+     */
     public static function provideProcess82Cases(): iterable
     {
         yield 'disjunctive normal form types parameter' => [
@@ -589,7 +608,7 @@ class Dnf
     }
 
     /**
-     * @param array<int, int> $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcess83Cases
      *
@@ -600,6 +619,9 @@ class Dnf
         $this->doTest($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<string, array{string, _TransformerTestExpectedKindsUnderIndex}>
+     */
     public static function provideProcess83Cases(): iterable
     {
         yield 'typed const alternate types' => [

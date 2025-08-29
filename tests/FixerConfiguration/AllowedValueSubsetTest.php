@@ -21,14 +21,27 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\FixerConfiguration\AllowedValueSubset
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class AllowedValueSubsetTest extends TestCase
 {
-    public function testConstructor(): void
+    /**
+     * @param non-empty-list<string> $expected
+     * @param non-empty-list<string> $input
+     *
+     * @dataProvider provideGetAllowedValuesAreSortedCases
+     */
+    public function testGetAllowedValuesAreSorted(array $expected, array $input): void
     {
-        self::assertIsCallable(new AllowedValueSubset(['foo', 'bar']));
+        $subset = new AllowedValueSubset($input);
+
+        self::assertSame($expected, $subset->getAllowedValues());
     }
 
+    /**
+     * @return iterable<int, array{list<string>, list<string>}>
+     */
     public static function provideGetAllowedValuesAreSortedCases(): iterable
     {
         yield [
@@ -43,19 +56,6 @@ final class AllowedValueSubsetTest extends TestCase
     }
 
     /**
-     * @param list<string> $expected
-     * @param list<string> $input
-     *
-     * @dataProvider provideGetAllowedValuesAreSortedCases
-     */
-    public function testGetAllowedValuesAreSorted(array $expected, array $input): void
-    {
-        $subset = new AllowedValueSubset($input);
-
-        self::assertSame($expected, $subset->getAllowedValues());
-    }
-
-    /**
      * @param mixed $inputValue
      *
      * @dataProvider provideInvokeCases
@@ -67,6 +67,9 @@ final class AllowedValueSubsetTest extends TestCase
         self::assertSame($expectedResult, $subset($inputValue));
     }
 
+    /**
+     * @return iterable<int, array{mixed, bool}>
+     */
     public static function provideInvokeCases(): iterable
     {
         yield [

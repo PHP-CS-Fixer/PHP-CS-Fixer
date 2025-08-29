@@ -35,3 +35,10 @@ The rule is part of the following rule set:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitTestClassRequiresCoversFixer <./../../../src/Fixer/PhpUnit/PhpUnitTestClassRequiresCoversFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitTestClassRequiresCoversFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitTestClassRequiresCoversFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

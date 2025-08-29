@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: string_implicit_backslashes,single_quote.
+--RULESET--
+{"string_implicit_backslashes": {"double_quoted": "escape"}, "single_quote": {"strings_containing_single_quote_chars": true}}
+--EXPECT--
+<?php
+$baz = 'a\\\'b';
+
+--INPUT--
+<?php
+$baz = "a\'b";

@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\Comment;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Comment\NoTrailingWhitespaceInCommentFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Comment\NoTrailingWhitespaceInCommentFixer>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{string, string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [

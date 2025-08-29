@@ -49,7 +49,7 @@ Example #1
         {
    -        echo get_class();
    -        echo get_called_class();
-   +        echo __CLASS__;
+   +        echo self::class;
    +        echo static::class;
         }
     }
@@ -87,3 +87,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 - `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\LanguageConstruct\\FunctionToConstantFixer <./../../../src/Fixer/LanguageConstruct/FunctionToConstantFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\LanguageConstruct\\FunctionToConstantFixerTest <./../../../tests/Fixer/LanguageConstruct/FunctionToConstantFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

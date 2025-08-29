@@ -22,6 +22,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class WhitespacesAnalyzerTest extends TestCase
 {
@@ -35,6 +37,9 @@ final class WhitespacesAnalyzerTest extends TestCase
         self::assertSame($indent, WhitespacesAnalyzer::detectIndent($tokens, $index));
     }
 
+    /**
+     * @return iterable<int, array{string, string, int}>
+     */
     public static function provideIndentCases(): iterable
     {
         yield ['<?php function foo() { return true; }', '', 10];

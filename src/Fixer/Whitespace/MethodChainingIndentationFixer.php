@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Vladimir Boliev <voff.web@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class MethodChainingIndentationFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
@@ -34,6 +36,16 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
             'Method chaining MUST be properly indented. Method chaining with different levels of indentation is not supported.',
             [new CodeSample("<?php\n\$user->setEmail('voff.web@gmail.com')\n         ->setPassword('233434');\n")]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Must run after NoSpaceAroundDoubleColonFixer.
+     */
+    public function getPriority(): int
+    {
+        return 0;
     }
 
     public function isCandidate(Tokens $tokens): bool
@@ -50,14 +62,18 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
                 continue;
             }
 
-            $endParenthesisIndex = $tokens->getNextTokenOfKind($index, ['(', ';', ',', [T_CLOSE_TAG]]);
+            $endParenthesisIndex = $tokens->getNextTokenOfKind($index, ['(', ';', ',', [\T_CLOSE_TAG]]);
+            $previousEndParenthesisIndex = $tokens->getPrevTokenOfKind($index, [')']);
 
-            if (null === $endParenthesisIndex || !$tokens[$endParenthesisIndex]->equals('(')) {
+            if (
+                null === $endParenthesisIndex
+                || !$tokens[$endParenthesisIndex]->equals('(') && null === $previousEndParenthesisIndex
+            ) {
                 continue;
             }
 
             if ($this->canBeMovedToNextLine($index, $tokens)) {
-                $newline = new Token([T_WHITESPACE, $lineEnding]);
+                $newline = new Token([\T_WHITESPACE, $lineEnding]);
 
                 if ($tokens[$index - 1]->isWhitespace()) {
                     $tokens[$index - 1] = $newline;
@@ -77,7 +93,11 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
             $expectedIndent = $this->getExpectedIndentAt($tokens, $index);
 
             if ($currentIndent !== $expectedIndent) {
-                $tokens[$index - 1] = new Token([T_WHITESPACE, $lineEnding.$expectedIndent]);
+                $tokens[$index - 1] = new Token([\T_WHITESPACE, $lineEnding.$expectedIndent]);
+            }
+
+            if (!$tokens[$endParenthesisIndex]->equals('(')) {
+                continue;
             }
 
             $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $endParenthesisIndex);
@@ -171,13 +191,13 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
 
     private function getIndentContentAt(Tokens $tokens, int $index): string
     {
-        if (!$tokens[$index]->isGivenKind([T_WHITESPACE, T_INLINE_HTML])) {
+        if (!$tokens[$index]->isGivenKind([\T_WHITESPACE, \T_INLINE_HTML])) {
             return '';
         }
 
         $content = $tokens[$index]->getContent();
 
-        if ($tokens[$index]->isWhitespace() && $tokens[$index - 1]->isGivenKind(T_OPEN_TAG)) {
+        if ($tokens[$index]->isWhitespace() && $tokens[$index - 1]->isGivenKind(\T_OPEN_TAG)) {
             $content = $tokens[$index - 1]->getContent().$content;
         }
 

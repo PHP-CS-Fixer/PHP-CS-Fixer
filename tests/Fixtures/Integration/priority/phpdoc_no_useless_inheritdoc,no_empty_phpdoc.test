@@ -7,7 +7,6 @@ Integration of fixers: phpdoc_no_useless_inheritdoc,no_empty_phpdoc.
 
 class A
 {
-
 public function A()
 {
 }

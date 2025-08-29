@@ -12,7 +12,7 @@ Configuration
 
 List of tokens to fix.
 
-Allowed values: a subset of ``['attribute', 'break', 'case', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'return', 'square_brace_block', 'switch', 'throw', 'use', 'use_trait']``
+Allowed values: a subset of ``['attribute', 'break', 'case', 'comma', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'return', 'square_brace_block', 'switch', 'throw', 'use', 'use_trait']``
 
 Default value: ``['extra']``
 
@@ -219,6 +219,30 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+- `@PER <./../../ruleSets/PER.rst>`_ with config:
+
+  ``['tokens' => ['use']]``
+
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
+
+  ``['tokens' => ['use']]``
+
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
+
+  ``['tokens' => ['use']]``
+
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+
+  ``['tokens' => ['use']]``
+
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
+
+  ``['tokens' => ['use']]``
+
+- `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
+
+  ``['tokens' => ['use']]``
+
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 
   ``['tokens' => ['attribute', 'break', 'case', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'return', 'square_brace_block', 'switch', 'throw', 'use']]``
@@ -227,4 +251,10 @@ The rule is part of the following rule sets:
 
   ``['tokens' => ['attribute', 'case', 'continue', 'curly_brace_block', 'default', 'extra', 'parenthesis_brace_block', 'square_brace_block', 'switch', 'throw', 'use']]``
 
+References
+----------
 
+- Fixer class: `PhpCsFixer\\Fixer\\Whitespace\\NoExtraBlankLinesFixer <./../../../src/Fixer/Whitespace/NoExtraBlankLinesFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Whitespace\\NoExtraBlankLinesFixerTest <./../../../tests/Fixer/Whitespace/NoExtraBlankLinesFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

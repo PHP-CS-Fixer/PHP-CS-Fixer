@@ -20,11 +20,14 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class NoUselessElseFixer extends AbstractNoUselessElseFixer
 {
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_ELSE);
+        return $tokens->isTokenKindFound(\T_ELSE);
     }
 
     public function getDefinition(): FixerDefinitionInterface
@@ -41,7 +44,7 @@ final class NoUselessElseFixer extends AbstractNoUselessElseFixer
      * {@inheritdoc}
      *
      * Must run before BlankLineBeforeStatementFixer, BracesFixer, CombineConsecutiveUnsetsFixer, NoBreakCommentFixer, NoExtraBlankLinesFixer, NoTrailingWhitespaceFixer, NoUselessReturnFixer, NoWhitespaceInBlankLineFixer, SimplifiedIfReturnFixer, StatementIndentationFixer.
-     * Must run after NoAlternativeSyntaxFixer, NoEmptyStatementFixer, NoUnneededCurlyBracesFixer.
+     * Must run after NoAlternativeSyntaxFixer, NoEmptyStatementFixer, NoUnneededBracesFixer, NoUnneededCurlyBracesFixer.
      */
     public function getPriority(): int
     {
@@ -51,12 +54,12 @@ final class NoUselessElseFixer extends AbstractNoUselessElseFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_ELSE)) {
+            if (!$token->isGivenKind(\T_ELSE)) {
                 continue;
             }
 
             // `else if` vs. `else` and alternative syntax `else:` checks
-            if ($tokens[$tokens->getNextMeaningfulToken($index)]->equalsAny([':', [T_IF]])) {
+            if ($tokens[$tokens->getNextMeaningfulToken($index)]->equalsAny([':', [\T_IF]])) {
                 continue;
             }
 
@@ -94,7 +97,7 @@ final class NoUselessElseFixer extends AbstractNoUselessElseFixer
         }
 
         // short `else`
-        $end = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
+        $end = $tokens->getNextTokenOfKind($index, [';', [\T_CLOSE_TAG]]);
         if ($next === $end) {
             $this->clearElse($tokens, $index);
         }

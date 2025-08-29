@@ -21,6 +21,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @covers \PhpCsFixer\AbstractNoUselessElseFixer
  * @covers \PhpCsFixer\Fixer\ControlStructure\NoSuperfluousElseifFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\NoSuperfluousElseifFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoSuperfluousElseifFixerTest extends AbstractFixerTestCase
 {
@@ -32,6 +36,9 @@ final class NoSuperfluousElseifFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -280,6 +287,9 @@ if ($some) { return 1; } elseif ($a == 6){ $test = false; } //',
         $this->doTest($expected);
     }
 
+    /**
+     * @return iterable<int, array{string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [

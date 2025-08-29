@@ -13,7 +13,7 @@ Configuration
 
 Mapping between replaced return types with new ones.
 
-Allowed types: ``array``
+Allowed types: ``array<string, string>``
 
 Default value: ``['this' => '$this', '@this' => '$this', '$self' => 'self', '@self' => 'self', '$static' => 'static', '@static' => 'static']``
 
@@ -89,3 +89,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocReturnSelfReferenceFixer <./../../../src/Fixer/Phpdoc/PhpdocReturnSelfReferenceFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocReturnSelfReferenceFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocReturnSelfReferenceFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

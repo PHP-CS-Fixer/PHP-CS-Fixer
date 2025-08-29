@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Саша Стаменковић <umpirsky@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ControlStructure\IncludeFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\IncludeFixer>
+ *
+ * @author Саша Стаменковић <umpirsky@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class IncludeFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class IncludeFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -105,191 +112,191 @@ require_once #1
 
         foreach (['require', 'require_once', 'include', 'include_once'] as $statement) {
             yield [
-                sprintf($template.' "foo.php"?>', $statement),
-                sprintf($template.' ("foo.php") ?>', $statement),
+                \sprintf($template.' "foo.php"?>', $statement),
+                \sprintf($template.' ("foo.php") ?>', $statement),
             ];
 
             yield [
-                sprintf($template.' /**/"foo.php"// test
+                \sprintf($template.' /**/"foo.php"// test
                     ?>', $statement),
-                sprintf($template.'/**/ ("foo.php") // test
+                \sprintf($template.'/**/ ("foo.php") // test
                     ?>', $statement),
             ];
 
             yield [
-                sprintf($template.' $a;', $statement),
-                sprintf($template.'$a;', $statement),
+                \sprintf($template.' $a;', $statement),
+                \sprintf($template.'$a;', $statement),
             ];
 
             yield [
-                sprintf($template.' $a;', $statement),
-                sprintf($template.'            $a;', $statement),
+                \sprintf($template.' $a;', $statement),
+                \sprintf($template.'            $a;', $statement),
             ];
 
             yield [
-                sprintf($template.' $a; ', $statement),
-                sprintf($template.'            $a   ; ', $statement),
+                \sprintf($template.' $a; ', $statement),
+                \sprintf($template.'            $a   ; ', $statement),
             ];
 
             yield [
-                sprintf($template." /**/'foo.php';", $statement),
-                sprintf($template."/**/'foo.php';", $statement),
+                \sprintf($template." /**/'foo.php';", $statement),
+                \sprintf($template."/**/'foo.php';", $statement),
             ];
 
             yield [
-                sprintf($template." 'foo.php';", $statement),
-                sprintf($template."'foo.php';", $statement),
+                \sprintf($template." 'foo.php';", $statement),
+                \sprintf($template."'foo.php';", $statement),
             ];
 
             yield [
-                sprintf($template." 'foo.php';", $statement),
-                sprintf($template."           'foo.php';", $statement),
+                \sprintf($template." 'foo.php';", $statement),
+                \sprintf($template."           'foo.php';", $statement),
             ];
 
             yield [
-                sprintf($template." 'foo.php';", $statement),
-                sprintf($template."('foo.php');", $statement),
+                \sprintf($template." 'foo.php';", $statement),
+                \sprintf($template."('foo.php');", $statement),
             ];
 
             yield [
-                sprintf($template." 'foo.php';", $statement),
-                sprintf($template."(           'foo.php');", $statement),
+                \sprintf($template." 'foo.php';", $statement),
+                \sprintf($template."(           'foo.php');", $statement),
             ];
 
             yield [
-                sprintf($template." 'foo.php';", $statement),
-                sprintf($template."          ( 'foo.php' );", $statement),
+                \sprintf($template." 'foo.php';", $statement),
+                \sprintf($template."          ( 'foo.php' );", $statement),
             ];
 
             yield [
-                sprintf($template." '\".__DIR__.\"/../bootstrap.php';", $statement),
+                \sprintf($template." '\".__DIR__.\"/../bootstrap.php';", $statement),
             ];
 
             yield [
-                sprintf('<?php // %s foo', $statement),
+                \sprintf('<?php // %s foo', $statement),
             ];
 
             yield [
-                sprintf('<?php /* %s foo */', $statement),
+                \sprintf('<?php /* %s foo */', $statement),
             ];
 
             yield [
-                sprintf('<?php /** %s foo */', $statement),
+                \sprintf('<?php /** %s foo */', $statement),
             ];
 
             yield [
-                sprintf($template.'($a ? $b : $c) . $d;', $statement),
+                \sprintf($template.'($a ? $b : $c) . $d;', $statement),
             ];
 
             yield [
-                sprintf($template.' ($a ? $b : $c) . $d;', $statement),
+                \sprintf($template.' ($a ? $b : $c) . $d;', $statement),
             ];
 
             yield [
-                sprintf('<?php exit("POST must %s \"file\"");', $statement),
+                \sprintf('<?php exit("POST must %s \"file\"");', $statement),
             ];
 
             yield [
-                sprintf('<?php ClassCollectionLoader::load(%s($this->getCacheDir().\'classes.map\'), $this->getCacheDir(), $name, $this->debug, false, $extension);', $statement),
+                \sprintf('<?php ClassCollectionLoader::load(%s($this->getCacheDir().\'classes.map\'), $this->getCacheDir(), $name, $this->debug, false, $extension);', $statement),
             ];
 
             yield [
-                sprintf('<?php $foo = (false === %s($zfLibraryPath."/Zend/Loader/StandardAutoloader.php"));', $statement),
+                \sprintf('<?php $foo = (false === %s($zfLibraryPath."/Zend/Loader/StandardAutoloader.php"));', $statement),
             ];
 
             yield [
-                sprintf($template.' "Buzz/foo-Bar.php";', $statement),
-                sprintf($template.' (  "Buzz/foo-Bar.php" );', $statement),
+                \sprintf($template.' "Buzz/foo-Bar.php";', $statement),
+                \sprintf($template.' (  "Buzz/foo-Bar.php" );', $statement),
             ];
 
             yield [
-                sprintf($template.' "$buzz/foo-Bar.php";', $statement),
-                sprintf($template.' (  "$buzz/foo-Bar.php" );', $statement),
+                \sprintf($template.' "$buzz/foo-Bar.php";', $statement),
+                \sprintf($template.' (  "$buzz/foo-Bar.php" );', $statement),
             ];
 
             yield [
-                sprintf($template.' "{$buzz}/foo-Bar.php";', $statement),
-                sprintf($template.' (  "{$buzz}/foo-Bar.php" );', $statement),
+                \sprintf($template.' "{$buzz}/foo-Bar.php";', $statement),
+                \sprintf($template.' (  "{$buzz}/foo-Bar.php" );', $statement),
             ];
 
             yield [
-                sprintf($template.' $foo ? "foo.php" : "bar.php";', $statement),
-                sprintf($template.'($foo ? "foo.php" : "bar.php");', $statement),
+                \sprintf($template.' $foo ? "foo.php" : "bar.php";', $statement),
+                \sprintf($template.'($foo ? "foo.php" : "bar.php");', $statement),
             ];
 
             yield [
-                sprintf($template.' $foo  ?  "foo.php"  :  "bar.php";', $statement),
-                sprintf($template.'($foo  ?  "foo.php"  :  "bar.php");', $statement),
+                \sprintf($template.' $foo  ?  "foo.php"  :  "bar.php";', $statement),
+                \sprintf($template.'($foo  ?  "foo.php"  :  "bar.php");', $statement),
             ];
 
             yield [
-                sprintf("<?php return %s __DIR__.'foo.php';", $statement),
-                sprintf("<?php return %s  __DIR__.'foo.php';", $statement),
+                \sprintf("<?php return %s __DIR__.'foo.php';", $statement),
+                \sprintf("<?php return %s  __DIR__.'foo.php';", $statement),
             ];
 
             yield [
-                sprintf("<?php \$foo = %s __DIR__.('foo.php');", $statement),
-                sprintf("<?php \$foo = %s  __DIR__.('foo.php');", $statement),
+                \sprintf("<?php \$foo = %s __DIR__.('foo.php');", $statement),
+                \sprintf("<?php \$foo = %s  __DIR__.('foo.php');", $statement),
             ];
 
             yield [
-                sprintf("<?php     %s __DIR__.('foo.php');", $statement),
-                sprintf("<?php     %s  (__DIR__.('foo.php'));", $statement),
+                \sprintf("<?php     %s __DIR__.('foo.php');", $statement),
+                \sprintf("<?php     %s  (__DIR__.('foo.php'));", $statement),
             ];
 
             yield [
-                sprintf("<?php     %s __DIR__ . ('foo.php');", $statement),
-                sprintf("<?php     %s  (__DIR__ . ('foo.php'));", $statement),
+                \sprintf("<?php     %s __DIR__ . ('foo.php');", $statement),
+                \sprintf("<?php     %s  (__DIR__ . ('foo.php'));", $statement),
             ];
 
             yield [
-                sprintf("<?php %s dirname(__FILE__).'foo.php';", $statement),
-                sprintf("<?php %s (dirname(__FILE__).'foo.php');", $statement),
+                \sprintf("<?php %s dirname(__FILE__).'foo.php';", $statement),
+                \sprintf("<?php %s (dirname(__FILE__).'foo.php');", $statement),
             ];
 
             yield [
-                sprintf('<?php %s "foo/".CONSTANT."/bar.php";', $statement),
-                sprintf('<?php %s("foo/".CONSTANT."/bar.php");', $statement),
+                \sprintf('<?php %s "foo/".CONSTANT."/bar.php";', $statement),
+                \sprintf('<?php %s("foo/".CONSTANT."/bar.php");', $statement),
             ];
 
             yield [
-                sprintf('<?php %s "foo/".CONSTANT."/bar.php"; %s "foo/".CONSTANT."/bar.php";', $statement, $statement),
-                sprintf('<?php %s("foo/".CONSTANT."/bar.php"); %s("foo/".CONSTANT."/bar.php");', $statement, $statement),
+                \sprintf('<?php %s "foo/".CONSTANT."/bar.php"; %s "foo/".CONSTANT."/bar.php";', $statement, $statement),
+                \sprintf('<?php %s("foo/".CONSTANT."/bar.php"); %s("foo/".CONSTANT."/bar.php");', $statement, $statement),
             ];
 
             yield [
-                sprintf('<?php %s "foo/".CONSTANT."/bar.php"; $foo = "bar";', $statement),
-                sprintf('<?php %s("foo/".CONSTANT."/bar.php"); $foo = "bar";', $statement),
+                \sprintf('<?php %s "foo/".CONSTANT."/bar.php"; $foo = "bar";', $statement),
+                \sprintf('<?php %s("foo/".CONSTANT."/bar.php"); $foo = "bar";', $statement),
             ];
 
             yield [
-                sprintf('<?php %s "foo/".CONSTANT."/bar.php"; foo();', $statement),
-                sprintf('<?php %s("foo/".CONSTANT."/bar.php"); foo();', $statement),
+                \sprintf('<?php %s "foo/".CONSTANT."/bar.php"; foo();', $statement),
+                \sprintf('<?php %s("foo/".CONSTANT."/bar.php"); foo();', $statement),
             ];
 
             yield [
-                sprintf('<?php %s "foo/" . CONSTANT . "/bar.php";', $statement),
-                sprintf('<?php %s("foo/" . CONSTANT . "/bar.php");', $statement),
+                \sprintf('<?php %s "foo/" . CONSTANT . "/bar.php";', $statement),
+                \sprintf('<?php %s("foo/" . CONSTANT . "/bar.php");', $statement),
             ];
 
             yield [
-                sprintf('<?php %s SOME_CONST . "file.php"; %s Foo::Bar($baz);', $statement, $statement),
-                sprintf('<?php %s( SOME_CONST . "file.php" ); %s Foo::Bar($baz);', $statement, $statement),
+                \sprintf('<?php %s SOME_CONST . "file.php"; %s Foo::Bar($baz);', $statement, $statement),
+                \sprintf('<?php %s( SOME_CONST . "file.php" ); %s Foo::Bar($baz);', $statement, $statement),
             ];
 
             yield [
-                sprintf('<?php %s SOME_CONST . "file1.php"; %s Foo::Bar($baz);', $statement, $statement),
-                sprintf('<?php %s          SOME_CONST . "file1.php"; %s Foo::Bar($baz);', $statement, $statement),
+                \sprintf('<?php %s SOME_CONST . "file1.php"; %s Foo::Bar($baz);', $statement, $statement),
+                \sprintf('<?php %s          SOME_CONST . "file1.php"; %s Foo::Bar($baz);', $statement, $statement),
             ];
 
             yield $statement.': binary string lower case' => [
-                sprintf($template." b'foo.php';", $statement),
-                sprintf($template."(b'foo.php');", $statement),
+                \sprintf($template." b'foo.php';", $statement),
+                \sprintf($template."(b'foo.php');", $statement),
             ];
 
             yield $statement.': binary string upper case' => [
-                sprintf($template." B'foo.php';", $statement),
-                sprintf($template."(B'foo.php');", $statement),
+                \sprintf($template." B'foo.php';", $statement),
+                \sprintf($template."(B'foo.php');", $statement),
             ];
         }
     }

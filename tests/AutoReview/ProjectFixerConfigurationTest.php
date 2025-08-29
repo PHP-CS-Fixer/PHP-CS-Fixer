@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\Config;
 use PhpCsFixer\Console\ConfigurationResolver;
+use PhpCsFixer\Fixer\InternalFixerInterface;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
 
@@ -26,6 +27,8 @@ use PhpCsFixer\ToolInfo;
  *
  * @group auto-review
  * @group covers-nothing
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ProjectFixerConfigurationTest extends TestCase
 {
@@ -33,7 +36,7 @@ final class ProjectFixerConfigurationTest extends TestCase
     {
         $config = $this->loadConfig();
 
-        self::assertEmpty($config->getCustomFixers());
+        self::assertContainsOnlyInstancesOf(InternalFixerInterface::class, $config->getCustomFixers());
         self::assertNotEmpty($config->getRules());
 
         // call so the fixers get configured to reveal issue (like deprecated configuration used etc.)

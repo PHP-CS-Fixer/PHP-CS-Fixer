@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Doctrine\Annotation\Token
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TokenTest extends TestCase
 {
@@ -67,7 +69,7 @@ final class TokenTest extends TestCase
     /**
      * @dataProvider provideIsTypeReturnsTrueCases
      *
-     * @param int|int[] $types
+     * @param int|list<int> $types
      */
     public function testIsTypeReturnsTrue(int $type, $types): void
     {
@@ -78,6 +80,9 @@ final class TokenTest extends TestCase
         self::assertTrue($token->isType($types));
     }
 
+    /**
+     * @return iterable<string, array{int, int|list<int>}>
+     */
     public static function provideIsTypeReturnsTrueCases(): iterable
     {
         yield 'same-value' => [
@@ -89,7 +94,7 @@ final class TokenTest extends TestCase
             42,
             [
                 42,
-                9001,
+                9_001,
             ],
         ];
     }
@@ -97,7 +102,7 @@ final class TokenTest extends TestCase
     /**
      * @dataProvider provideIsTypeReturnsFalseCases
      *
-     * @param int|int[] $types
+     * @param int|list<int> $types
      */
     public function testIsTypeReturnsFalse(int $type, $types): void
     {
@@ -108,17 +113,20 @@ final class TokenTest extends TestCase
         self::assertFalse($token->isType($types));
     }
 
+    /**
+     * @return iterable<string, array{int, int|list<int>}>
+     */
     public static function provideIsTypeReturnsFalseCases(): iterable
     {
         yield 'different-value' => [
             42,
-            9001,
+            9_001,
         ];
 
         yield 'array-without-value' => [
             42,
             [
-                9001,
+                9_001,
             ],
         ];
     }

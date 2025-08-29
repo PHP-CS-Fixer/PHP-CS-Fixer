@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Filippo Tessarotto <zoeslam@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ControlStructure\SimplifiedIfReturnFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\SimplifiedIfReturnFixer>
+ *
+ * @author Filippo Tessarotto <zoeslam@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SimplifiedIfReturnFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class SimplifiedIfReturnFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'simple' => [
@@ -92,8 +99,7 @@ final class SimplifiedIfReturnFixerTest extends AbstractFixerTestCase
                 function f7() { return ! ($f7)      ; }
                 function f8() { return false; } return true;
                 function f9() { return ! ($f9)      ; }
-                EOT
-            ,
+                EOT,
             <<<'EOT'
                 <?php
                 function f1() { if ($f1) { return true; } return false; }
@@ -105,8 +111,7 @@ final class SimplifiedIfReturnFixerTest extends AbstractFixerTestCase
                 function f7() { if ($f7) { return false; } return true; }
                 function f8() { return false; } return true;
                 function f9() { if ($f9) { return false; } return true; }
-                EOT
-            ,
+                EOT,
         ];
 
         yield 'preserve-comments' => [
@@ -137,8 +142,7 @@ final class SimplifiedIfReturnFixerTest extends AbstractFixerTestCase
                 # C12
                 ;
                 /* C13 */
-                EOT
-            ,
+                EOT,
             <<<'EOT'
                 <?php
                 // C1
@@ -166,8 +170,7 @@ final class SimplifiedIfReturnFixerTest extends AbstractFixerTestCase
                 # C12
                 ;
                 /* C13 */
-                EOT
-            ,
+                EOT,
         ];
 
         yield 'preserve-comments-braceless' => [
@@ -196,8 +199,7 @@ final class SimplifiedIfReturnFixerTest extends AbstractFixerTestCase
                 # C12
                 ;
                 /* C13 */
-                EOT
-            ,
+                EOT,
             <<<'EOT'
                 <?php
                 // C1
@@ -223,8 +225,7 @@ final class SimplifiedIfReturnFixerTest extends AbstractFixerTestCase
                 # C12
                 ;
                 /* C13 */
-                EOT
-            ,
+                EOT,
         ];
 
         yield 'else-if' => [

@@ -25,10 +25,14 @@ use Symfony\Component\Console\Output\StreamOutput;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Output\ErrorOutput
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ErrorOutputTest extends TestCase
 {
     /**
+     * @param OutputInterface::VERBOSITY_* $verbosityLevel
+     *
      * @dataProvider provideErrorOutputCases
      */
     public function testErrorOutput(Error $error, int $verbosityLevel, int $lineNumber, int $exceptionLineNumber, string $process): void
@@ -42,7 +46,7 @@ final class ErrorOutputTest extends TestCase
 
         $displayed = $this->readFullStreamOutput($output);
 
-        $startWith = sprintf(
+        $startWith = \sprintf(
             '
 Files that were not fixed due to errors reported during %s:
    1) %s',
@@ -51,7 +55,7 @@ Files that were not fixed due to errors reported during %s:
         );
 
         if ($verbosityLevel >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
-            $startWith .= sprintf(
+            $startWith .= \sprintf(
                 '
 
                             '.'
@@ -66,7 +70,7 @@ Files that were not fixed due to errors reported during %s:
         }
 
         if ($verbosityLevel >= OutputInterface::VERBOSITY_DEBUG) {
-            $startWith .= sprintf(
+            $startWith .= \sprintf(
                 '
       PhpCsFixer\Tests\Console\Output\ErrorOutputTest::getErrorAndLineNumber()
         in %s at line %d
@@ -80,6 +84,9 @@ Files that were not fixed due to errors reported during %s:
         self::assertStringStartsWith($startWith, $displayed);
     }
 
+    /**
+     * @return iterable<int, array{Error, int, int, int, string}>
+     */
     public static function provideErrorOutputCases(): iterable
     {
         $lineNumber = __LINE__;
@@ -138,9 +145,15 @@ Files that were not fixed due to errors reported during %s:
         self::assertStringNotContainsString($invalidDiff, $displayed);
     }
 
+    /**
+     * @param OutputInterface::VERBOSITY_* $verbosityLevel
+     */
     private function createStreamOutput(int $verbosityLevel): StreamOutput
     {
-        $output = new StreamOutput(fopen('php://memory', 'w', false));
+        $steam = fopen('php://memory', 'w', false);
+        \assert(\is_resource($steam));
+
+        $output = new StreamOutput($steam);
         $output->setDecorated(false);
         $output->setVerbosity($verbosityLevel);
 
@@ -151,11 +164,12 @@ Files that were not fixed due to errors reported during %s:
     {
         rewind($output->getStream());
         $displayed = stream_get_contents($output->getStream());
+        \assert(\is_string($displayed));
 
         // normalize line breaks,
         // as we output using SF `writeln` we are not sure what line ending has been used as it is
         // based on the platform/console/terminal used
-        return str_replace(PHP_EOL, "\n", $displayed);
+        return str_replace(\PHP_EOL, "\n", $displayed);
     }
 
     /**

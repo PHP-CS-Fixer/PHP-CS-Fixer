@@ -20,6 +20,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\LanguageConstruct\CombineConsecutiveIssetsFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\CombineConsecutiveIssetsFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class CombineConsecutiveIssetsFixerTest extends AbstractFixerTestCase
 {
@@ -31,6 +35,9 @@ final class CombineConsecutiveIssetsFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -191,16 +198,13 @@ isset
         yield [
             '<?php $a = !isset($container[$a]) && isset($container[$b]) && !isset($container[$c]) && isset($container[$d]);',
         ];
-    }
 
-    public function testAnonymousClass(): void
-    {
-        $this->doTest(
+        yield 'anonymous class' => [
             '<?php
                 class A {function isset(){}} // isset($b) && isset($c)
                 $a = new A(); /** isset($b) && isset($c) */
                 if (isset($b) && $a->isset()) {}
-            '
-        );
+            ',
+        ];
     }
 }

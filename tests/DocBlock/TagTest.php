@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\DocBlock\Tag
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TagTest extends TestCase
 {
@@ -46,6 +48,9 @@ final class TagTest extends TestCase
         self::assertSame($new, $tag->getName());
     }
 
+    /**
+     * @return iterable<int, array{string, string, string}>
+     */
     public static function provideNameCases(): iterable
     {
         yield ['param', 'var', '     * @param Foo $foo'];
@@ -79,6 +84,9 @@ final class TagTest extends TestCase
         self::assertSame($expected, $tag->valid());
     }
 
+    /**
+     * @return iterable<int, array{bool, string}>
+     */
     public static function provideValidCases(): iterable
     {
         yield [true, '     * @param Foo $foo'];

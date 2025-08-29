@@ -19,9 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocVarAnnotationCorrectOrderFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocVarAnnotationCorrectOrderFixer>
+ *
  * @author Kuba Werłos <werlos@gmail.com>
  *
- * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocVarAnnotationCorrectOrderFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocVarAnnotationCorrectOrderFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class PhpdocVarAnnotationCorrectOrderFixerTest extends AbstractFixerTestCa
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [ // It's @param, we care only about @var

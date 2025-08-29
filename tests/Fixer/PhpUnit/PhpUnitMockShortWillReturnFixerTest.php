@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Michał Adamski <michal.adamski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitMockShortWillReturnFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitMockShortWillReturnFixer>
+ *
+ * @author Michał Adamski <michal.adamski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpUnitMockShortWillReturnFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class PhpUnitMockShortWillReturnFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'do not fix' => [

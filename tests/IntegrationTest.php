@@ -27,6 +27,8 @@ use PhpCsFixer\Tests\Test\InternalIntegrationCaseFactory;
  * @coversNothing
  *
  * @group covers-nothing
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class IntegrationTest extends AbstractIntegrationTestCase
 {
@@ -56,49 +58,15 @@ final class IntegrationTest extends AbstractIntegrationTestCase
         }
 
         if ($settings['isExplicitPriorityCheck']) {
-            if ($fixedInputCode === $fixedInputCodeWithReversedFixers) {
-                if (\in_array($case->getFileName(), [
-                    'priority'.\DIRECTORY_SEPARATOR.'backtick_to_shell_exec,escape_implicit_backslashes.test',
-                    'priority'.\DIRECTORY_SEPARATOR.'braces,indentation_type,no_break_comment.test',
-                    'priority'.\DIRECTORY_SEPARATOR.'standardize_not_equals,binary_operator_spaces.test',
-                ], true)) {
-                    self::markTestIncomplete(sprintf(
-                        'Integration test `%s` was defined as explicit priority test, but no priority conflict was detected.'
-                        ."\n".'Either integration test needs to be extended or moved from `priority` to `misc`.'
-                        ."\n".'But don\'t do it blindly - it deserves investigation!',
-                        $case->getFileName()
-                    ));
-                }
-            }
-
             self::assertNotSame(
                 $fixedInputCode,
                 $fixedInputCodeWithReversedFixers,
-                sprintf('Test "%s" in "%s" is expected to be priority check.', $case->getTitle(), $case->getFileName())
+                \sprintf(
+                    'Test "%s" in "%s" is expected to be priority check, but fixers applied in reversed order made the same changes.',
+                    $case->getTitle(),
+                    $case->getFileName(),
+                )
             );
         }
-    }
-
-    protected function doTest(IntegrationCase $case): void
-    {
-        $requirements = $case->getRequirements();
-
-        if (isset($requirements['php<'])) {
-            $phpUpperLimit = $requirements['php<'];
-
-            if (!\is_int($phpUpperLimit)) {
-                throw new \InvalidArgumentException(sprintf(
-                    'Expected int value like 50509 for "php<", got "%s". IN "%s".',
-                    get_debug_type($phpUpperLimit).'#'.$phpUpperLimit,
-                    $case->getFileName(),
-                ));
-            }
-
-            if (\PHP_VERSION_ID >= $phpUpperLimit) {
-                self::markTestSkipped(sprintf('PHP lower than %d is required for "%s", current "%d".', $phpUpperLimit, $case->getFileName(), \PHP_VERSION_ID));
-            }
-        }
-
-        parent::doTest($case);
     }
 }

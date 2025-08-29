@@ -23,15 +23,15 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\DocBlock\DocBlock
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DocBlockTest extends TestCase
 {
     /**
      * This represents the content an entire docblock.
-     *
-     * @var string
      */
-    private static $sample = '/**
+    private static string $sample = '/**
      * Test docblock.
      *
      * @param string $hello
@@ -70,7 +70,6 @@ final class DocBlockTest extends TestCase
         self::assertCount(15, $lines);
 
         foreach ($lines as $index => $line) {
-            self::assertInstanceOf(\PhpCsFixer\DocBlock\Line::class, $line);
             self::assertSame($doc->getLine($index), $line);
         }
 
@@ -85,7 +84,6 @@ final class DocBlockTest extends TestCase
         self::assertCount(5, $annotations);
 
         foreach ($annotations as $index => $annotation) {
-            self::assertInstanceOf(\PhpCsFixer\DocBlock\Annotation::class, $annotation);
             self::assertSame($doc->getAnnotation($index), $annotation);
         }
 
@@ -158,7 +156,7 @@ final class DocBlockTest extends TestCase
     /**
      * @dataProvider provideMakeMultiLIneCases
      */
-    public function testMakeMultiLIne(string $inputDocBlock, string $outputDocBlock = null, string $indent = '', string $newLine = "\n"): void
+    public function testMakeMultiLIne(string $inputDocBlock, ?string $outputDocBlock = null, string $indent = '', string $newLine = "\n"): void
     {
         $doc = new DocBlock($inputDocBlock);
         $doc->makeMultiLine($indent, $newLine);
@@ -170,6 +168,9 @@ final class DocBlockTest extends TestCase
         self::assertSame($outputDocBlock, $doc->getContent());
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string, 2?: string, 3?: string}>
+     */
     public static function provideMakeMultiLIneCases(): iterable
     {
         yield 'It keeps a multi line doc block as is' => [
@@ -206,7 +207,7 @@ final class DocBlockTest extends TestCase
     /**
      * @dataProvider provideMakeSingleLineCases
      */
-    public function testMakeSingleLine(string $inputDocBlock, string $outputDocBlock = null): void
+    public function testMakeSingleLine(string $inputDocBlock, ?string $outputDocBlock = null): void
     {
         $doc = new DocBlock($inputDocBlock);
         $doc->makeSingleLine();
@@ -218,6 +219,9 @@ final class DocBlockTest extends TestCase
         self::assertSame($outputDocBlock, $doc->getContent());
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideMakeSingleLineCases(): iterable
     {
         yield 'It keeps a single line doc block as is' => [

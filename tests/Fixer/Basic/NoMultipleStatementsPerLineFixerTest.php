@@ -20,6 +20,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Basic\NoMultipleStatementsPerLineFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\NoMultipleStatementsPerLineFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoMultipleStatementsPerLineFixerTest extends AbstractFixerTestCase
 {
@@ -31,6 +35,9 @@ final class NoMultipleStatementsPerLineFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'simple' => [
@@ -80,6 +87,31 @@ final class NoMultipleStatementsPerLineFixerTest extends AbstractFixerTestCase
 
         yield 'switch alternative syntax' => [
             '<?php switch ($foo): case true: foo(); endswitch;',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, 1?: string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield "don't touch property hooks" => [
+            '<?php interface I {
+    public string $readable { get; }
+    public string $writeable { set; }
+    public string $both { get; set; }
+    public string $differentCasing { GET; Set; }
+}',
         ];
     }
 }

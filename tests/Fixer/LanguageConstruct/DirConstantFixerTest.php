@@ -17,12 +17,16 @@ namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Vladimir Reznichenko <kalessil@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
  * @covers \PhpCsFixer\Fixer\LanguageConstruct\DirConstantFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\DirConstantFixer>
+ *
+ * @author Vladimir Reznichenko <kalessil@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DirConstantFixerTest extends AbstractFixerTestCase
 {
@@ -34,6 +38,9 @@ final class DirConstantFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         $multiLinePatternToFix = <<<'FIX'
@@ -61,17 +68,17 @@ final class DirConstantFixerTest extends AbstractFixerTestCase
 
         yield ['<?php $x = ClassA::dirname(__FILE__);'];
 
-        yield ['<?php $x = ScopeA\\dirname(__FILE__);'];
+        yield ['<?php $x = ScopeA\dirname(__FILE__);'];
 
-        yield ['<?php $x = namespace\\dirname(__FILE__);'];
+        yield ['<?php $x = namespace\dirname(__FILE__);'];
 
         yield ['<?php $x = $object->dirname(__FILE__);'];
 
-        yield ['<?php $x = new \\dirname(__FILE__);'];
+        yield ['<?php $x = new \dirname(__FILE__);'];
 
         yield ['<?php $x = new dirname(__FILE__);'];
 
-        yield ['<?php $x = new ScopeB\\dirname(__FILE__);'];
+        yield ['<?php $x = new ScopeB\dirname(__FILE__);'];
 
         yield ['<?php dirnameSmth(__FILE__);'];
 
@@ -185,7 +192,7 @@ final class DirConstantFixerTest extends AbstractFixerTestCase
     /**
      * @requires PHP <8.0
      */
-    public function testFixPrePHP80(): void
+    public function testFixPre80(): void
     {
         $this->doTest(
             '<?php $x =# A

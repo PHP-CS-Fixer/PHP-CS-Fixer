@@ -48,3 +48,11 @@ Example #1
    +$a = mb_stristr($a, $b);
    +$a = mb_strrchr($a, $b);
    +$a = mb_substr_count($a, $b);
+
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\Alias\\MbStrFunctionsFixer <./../../../src/Fixer/Alias/MbStrFunctionsFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Alias\\MbStrFunctionsFixerTest <./../../../tests/Fixer/Alias/MbStrFunctionsFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -21,6 +21,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 trait AssertTokensTrait
 {
@@ -28,20 +30,20 @@ trait AssertTokensTrait
     {
         foreach ($expectedTokens as $index => $expectedToken) {
             if (!isset($inputTokens[$index])) {
-                static::fail(sprintf("The token at index %d must be:\n%s, but is not set in the input collection.", $index, $expectedToken->toJson()));
+                static::fail(\sprintf("The token at index %d must be:\n%s, but is not set in the input collection.", $index, $expectedToken->toJson()));
             }
 
             $inputToken = $inputTokens[$index];
 
             self::assertTrue(
                 $expectedToken->equals($inputToken),
-                sprintf("The token at index %d must be:\n%s,\ngot:\n%s.", $index, $expectedToken->toJson(), $inputToken->toJson())
+                \sprintf("The token at index %d must be:\n%s,\ngot:\n%s.", $index, $expectedToken->toJson(), $inputToken->toJson())
             );
 
             $expectedTokenKind = $expectedToken->isArray() ? $expectedToken->getId() : $expectedToken->getContent();
             self::assertTrue(
                 $inputTokens->isTokenKindFound($expectedTokenKind),
-                sprintf(
+                \sprintf(
                     'The token kind %s (%s) must be found in tokens collection.',
                     $expectedTokenKind,
                     \is_string($expectedTokenKind) ? $expectedTokenKind : Token::getNameForId($expectedTokenKind)

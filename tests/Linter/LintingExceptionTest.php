@@ -23,20 +23,15 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Linter\LintingException
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class LintingExceptionTest extends TestCase
 {
-    public function testIsRuntimeException(): void
-    {
-        $exception = new LintingException();
-
-        self::assertInstanceOf(\RuntimeException::class, $exception);
-    }
-
     public function testConstructorSetsValues(): void
     {
         $message = 'Cannot lint this, sorry!';
-        $code = 9001;
+        $code = 9_001;
         $previous = new \RuntimeException();
 
         $exception = new LintingException(

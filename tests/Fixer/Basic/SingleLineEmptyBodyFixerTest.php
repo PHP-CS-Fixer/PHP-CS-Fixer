@@ -20,6 +20,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Basic\SingleLineEmptyBodyFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\SingleLineEmptyBodyFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
 {
@@ -32,7 +36,7 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<string, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -64,7 +68,7 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
             '<?php
             class Foo {}
             class Bar extends BarParent {}
-            class Baz implements BazInteface {}
+            class Baz implements BazInterface {}
             abstract class A {}
             final class F {}
             ',
@@ -74,7 +78,7 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
             }
             class Bar extends BarParent
             {}
-            class Baz implements BazInteface    {}
+            class Baz implements BazInterface    {}
             abstract class A
             {}
             final class F
@@ -273,7 +277,7 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<string, array{0: string, 1?: string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -324,7 +328,7 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<string, array{0: string, 1?: string}>
      */
     public static function provideFix81Cases(): iterable
     {

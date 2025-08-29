@@ -21,10 +21,9 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
  *
  * PER Coding Style v1.0.
  *
- * @TODO 4.0 Remove this class
- *
- * @deprecated Use `@PER-CS2.0` instead.
  * @see https://github.com/php-fig/per-coding-style/blob/1.0.0/spec.md
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PERCS1x0Set extends AbstractRuleSetDescription
 {
@@ -42,10 +41,6 @@ final class PERCS1x0Set extends AbstractRuleSetDescription
 
     public function getDescription(): string
     {
-        return <<<'DESC'
-            **This ruleset is deprecated** in favour of `@PER-CS2.0`.
-
-            Rules that follow `PER Coding Style 1.0 <https://www.php-fig.org/per/coding-style/>`_.
-            DESC;
+        return 'Rules that follow `PER Coding Style 1.0 <https://www.php-fig.org/per/coding-style/>`_.';
     }
 }

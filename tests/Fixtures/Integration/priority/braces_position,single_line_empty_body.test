@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: braces_position,single_line_empty_body.
+--RULESET--
+{"braces_position": true, "single_line_empty_body": true}
+--EXPECT--
+<?php
+function foo() {}
+
+--INPUT--
+<?php
+function foo()
+{
+}

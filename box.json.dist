@@ -7,14 +7,14 @@
         "KevinGH\\Box\\Compactor\\Php"
     ],
     "files": [
-        "ci-integration.sh",
         "LICENSE"
     ],
     "finder": [
         {
             "name": [
                 "*.php",
-                "*.php8"
+                "*.php8",
+                "completion.*"
             ],
             "exclude": [
                 "Test",

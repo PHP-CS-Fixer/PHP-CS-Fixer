@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Error\ErrorsManager
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ErrorsManagerTest extends TestCase
 {
@@ -99,5 +101,25 @@ final class ErrorsManagerTest extends TestCase
 
         self::assertCount(0, $errorsManager->getInvalidErrors());
         self::assertCount(0, $errorsManager->getExceptionErrors());
+    }
+
+    public function testThatCanReportAndRetrieveErrorsForSpecificPath(): void
+    {
+        $errorsManager = new ErrorsManager();
+
+        // All kind of errors for the same path
+        $errorsManager->report(new Error(Error::TYPE_LINT, 'foo.php'));
+        $errorsManager->report(new Error(Error::TYPE_EXCEPTION, 'foo.php'));
+        $errorsManager->report(new Error(Error::TYPE_INVALID, 'foo.php'));
+
+        // Additional errors for a different path
+        $errorsManager->report(new Error(Error::TYPE_INVALID, 'bar.php'));
+        $errorsManager->report(new Error(Error::TYPE_LINT, 'baz.php'));
+
+        self::assertFalse($errorsManager->isEmpty());
+
+        $errors = $errorsManager->forPath('foo.php');
+
+        self::assertCount(3, $errors);
     }
 }

@@ -21,6 +21,9 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class NoAliasLanguageConstructCallFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
@@ -39,13 +42,13 @@ die;
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_EXIT);
+        return $tokens->isTokenKindFound(\T_EXIT);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_EXIT)) {
+            if (!$token->isGivenKind(\T_EXIT)) {
                 continue;
             }
 
@@ -53,7 +56,7 @@ die;
                 continue;
             }
 
-            $tokens[$index] = new Token([T_EXIT, 'exit']);
+            $tokens[$index] = new Token([\T_EXIT, 'exit']);
         }
     }
 }

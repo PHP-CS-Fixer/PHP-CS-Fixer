@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Gregor Harlan <gharlan@web.de>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\SelfAccessorFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\SelfAccessorFixer>
+ *
+ * @author Gregor Harlan <gharlan@web.de>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SelfAccessorFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -93,11 +100,6 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php class Foo { function bar() { Baz\Foo::class; } }',
-        ];
-
-        yield [
-            '<?php class Foo { function bar() { function ($a = self::BAZ) { new self(); }; } }',
-            '<?php class Foo { function bar() { function ($a = Foo::BAZ) { new Foo(); }; } }',
         ];
 
         yield [
@@ -194,6 +196,33 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
             "<?php interface Foo{ public function bar()\t/**/:?/**/self; }",
             "<?php interface Foo{ public function bar()\t/**/:?/**/Foo; }",
         ];
+
+        yield 'do not replace in lambda' => [
+            '<?php
+
+final class A
+{
+    public static function Z(): void
+    {
+        (function () {
+            var_dump(self::class, A::class);
+        })->bindTo(null, B::class)();
+    }
+}',
+        ];
+
+        yield 'do not replace in arrow function' => [
+            '<?php
+
+final class A
+{
+    public function Z($b): void
+    {
+        $a = fn($b) => self::class. A::class . $b;
+        echo $a;
+    }
+}',
+        ];
     }
 
     /**
@@ -206,6 +235,9 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [
@@ -255,6 +287,9 @@ final class SelfAccessorFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{string, string}>
+     */
     public static function provideFix82Cases(): iterable
     {
         yield [

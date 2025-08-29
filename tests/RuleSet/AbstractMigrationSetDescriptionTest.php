@@ -21,12 +21,14 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\RuleSet\AbstractMigrationSetDescription
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class AbstractMigrationSetDescriptionTest extends TestCase
 {
     public function testGetDescriptionForPhpMigrationSet(): void
     {
-        $set = new class() extends AbstractMigrationSetDescription {
+        $set = new class extends AbstractMigrationSetDescription {
             public function getName(): string
             {
                 return '@PHP99MigrationSet';
@@ -43,7 +45,7 @@ final class AbstractMigrationSetDescriptionTest extends TestCase
 
     public function testGetDescriptionForPhpUnitMigrationSet(): void
     {
-        $set = new class() extends AbstractMigrationSetDescription {
+        $set = new class extends AbstractMigrationSetDescription {
             public function getName(): string
             {
                 return '@PHPUnit30Migration';
@@ -60,7 +62,7 @@ final class AbstractMigrationSetDescriptionTest extends TestCase
 
     public function testGetDescriptionForNoneMigrationSet(): void
     {
-        $set = new class() extends AbstractMigrationSetDescription {
+        $set = new class extends AbstractMigrationSetDescription {
             public function getName(): string
             {
                 return 'foo';

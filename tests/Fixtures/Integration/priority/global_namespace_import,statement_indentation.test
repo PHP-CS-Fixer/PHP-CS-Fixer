@@ -1,0 +1,22 @@
+--TEST--
+Integration of fixers: global_namespace_import,statement_indentation.
+--RULESET--
+{"global_namespace_import": {"import_classes": true}, "statement_indentation": true}
+--EXPECT--
+<?php
+
+namespace Test {
+    use Z;
+    use Foo;
+
+    new Foo();
+}
+
+--INPUT--
+<?php
+
+namespace Test {
+    use Z;
+
+    new \Foo();
+}

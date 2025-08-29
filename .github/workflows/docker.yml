@@ -1,0 +1,39 @@
+name: Docker
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    paths:
+      - compose.yaml
+      - Dockerfile
+      - docker/**
+      - .github/workflows/docker.yml
+  # Allow running on demand using Github UI
+  workflow_dispatch:
+  schedule:
+    - cron: 0 5 * * *
+
+jobs:
+  docker-compose-build:
+    name: Compose build ${{ matrix.docker-service }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - docker-service: php-7.4
+          - docker-service: php-8.0
+          - docker-service: php-8.1
+          - docker-service: php-8.2
+          - docker-service: php-8.3
+          - docker-service: php-8.4
+          - docker-service: sphinx-lint
+          - docker-service: markdown-lint
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Docker Compose build
+        run: docker compose build --no-cache --pull ${{ matrix.docker-service }}

@@ -19,7 +19,11 @@ use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
+ * @readonly
+ *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TextReporter implements ReporterInterface
 {
@@ -32,15 +36,15 @@ final class TextReporter implements ReporterInterface
     {
         $sets = $reportSummary->getSets();
 
-        usort($sets, static fn (RuleSetDescriptionInterface $a, RuleSetDescriptionInterface $b): int => strcmp($a->getName(), $b->getName()));
+        usort($sets, static fn (RuleSetDescriptionInterface $a, RuleSetDescriptionInterface $b): int => $a->getName() <=> $b->getName());
 
         $output = '';
 
         foreach ($sets as $i => $set) {
-            $output .= sprintf('%2d) %s', $i + 1, $set->getName()).PHP_EOL.'      '.$set->getDescription().PHP_EOL;
+            $output .= \sprintf('%2d) %s', $i + 1, $set->getName()).\PHP_EOL.'      '.$set->getDescription().\PHP_EOL;
 
             if ($set->isRisky()) {
-                $output .= '      Set contains risky rules.'.PHP_EOL;
+                $output .= '      Set contains risky rules.'.\PHP_EOL;
             }
         }
 

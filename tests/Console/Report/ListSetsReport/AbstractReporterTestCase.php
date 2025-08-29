@@ -24,13 +24,12 @@ use PhpCsFixer\Tests\TestCase;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractReporterTestCase extends TestCase
 {
-    /**
-     * @var null|ReporterInterface
-     */
-    protected $reporter;
+    protected ?ReporterInterface $reporter = null;
 
     protected function setUp(): void
     {
@@ -64,6 +63,9 @@ abstract class AbstractReporterTestCase extends TestCase
         $this->assertFormat($expectedReport, $actualReport);
     }
 
+    /**
+     * @return iterable<string, array{string, ReportSummary}>
+     */
     final public static function provideGenerateCases(): iterable
     {
         yield 'example' => [

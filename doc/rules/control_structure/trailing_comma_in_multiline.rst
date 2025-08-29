@@ -2,8 +2,8 @@
 Rule ``trailing_comma_in_multiline``
 ====================================
 
-Multi-line arrays, arguments list, parameters list and ``match`` expressions
-must have a trailing comma.
+Arguments lists, array destructuring lists, arrays that are multi-line,
+``match``-lines and parameters lists must have a trailing comma.
 
 Configuration
 -------------
@@ -23,7 +23,7 @@ Default value: ``false``
 Where to fix multiline trailing comma (PHP >= 8.0 for ``parameters`` and
 ``match``).
 
-Allowed values: a subset of ``['arguments', 'arrays', 'match', 'parameters']``
+Allowed values: a subset of ``['arguments', 'array_destructuring', 'arrays', 'match', 'parameters']``
 
 Default value: ``['arrays']``
 
@@ -103,6 +103,22 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+- `@PER <./../../ruleSets/PER.rst>`_ with config:
+
+  ``['after_heredoc' => true, 'elements' => ['arguments', 'array_destructuring', 'arrays', 'match', 'parameters']]``
+
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
+
+  ``['after_heredoc' => true, 'elements' => ['arguments', 'array_destructuring', 'arrays', 'match', 'parameters']]``
+
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+
+  ``['after_heredoc' => true, 'elements' => ['arguments', 'array_destructuring', 'arrays', 'match', 'parameters']]``
+
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
+
+  ``['after_heredoc' => true, 'elements' => ['arguments', 'array_destructuring', 'arrays', 'match', 'parameters']]``
+
 - `@PHP73Migration <./../../ruleSets/PHP73Migration.rst>`_ with config:
 
   ``['after_heredoc' => true]``
@@ -123,6 +139,30 @@ The rule is part of the following rule sets:
 
   ``['after_heredoc' => true]``
 
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
-- `@Symfony <./../../ruleSets/Symfony.rst>`_
+- `@PHP83Migration <./../../ruleSets/PHP83Migration.rst>`_ with config:
 
+  ``['after_heredoc' => true]``
+
+- `@PHP84Migration <./../../ruleSets/PHP84Migration.rst>`_ with config:
+
+  ``['after_heredoc' => true]``
+
+- `@PHP85Migration <./../../ruleSets/PHP85Migration.rst>`_ with config:
+
+  ``['after_heredoc' => true]``
+
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
+  ``['after_heredoc' => true, 'elements' => ['array_destructuring', 'arrays']]``
+
+- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
+  ``['after_heredoc' => true, 'elements' => ['array_destructuring', 'arrays', 'match', 'parameters']]``
+
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\ControlStructure\\TrailingCommaInMultilineFixer <./../../../src/Fixer/ControlStructure/TrailingCommaInMultilineFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ControlStructure\\TrailingCommaInMultilineFixerTest <./../../../tests/Fixer/ControlStructure/TrailingCommaInMultilineFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

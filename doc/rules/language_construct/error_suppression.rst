@@ -40,7 +40,7 @@ Default value: ``false``
 
 List of global functions to exclude from removing ``@``.
 
-Allowed types: ``array``
+Allowed types: ``list<string>``
 
 Default value: ``[]``
 
@@ -97,3 +97,10 @@ The rule is part of the following rule sets:
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 - `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\LanguageConstruct\\ErrorSuppressionFixer <./../../../src/Fixer/LanguageConstruct/ErrorSuppressionFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\LanguageConstruct\\ErrorSuppressionFixerTest <./../../../tests/Fixer/LanguageConstruct/ErrorSuppressionFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

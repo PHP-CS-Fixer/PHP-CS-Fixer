@@ -23,6 +23,9 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class ArrayPushFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
@@ -37,7 +40,7 @@ final class ArrayPushFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_STRING) && $tokens->count() > 7;
+        return $tokens->isTokenKindFound(\T_STRING) && $tokens->count() > 7;
     }
 
     public function isRisky(): bool
@@ -50,7 +53,7 @@ final class ArrayPushFixer extends AbstractFixer
         $functionsAnalyzer = new FunctionsAnalyzer();
 
         for ($index = $tokens->count() - 7; $index > 0; --$index) {
-            if (!$tokens[$index]->equals([T_STRING, 'array_push'], false)) {
+            if (!$tokens[$index]->equals([\T_STRING, 'array_push'], false)) {
                 continue;
             }
 
@@ -64,12 +67,12 @@ final class ArrayPushFixer extends AbstractFixer
             $index = $tokens->getPrevMeaningfulToken($index);
             $namespaceSeparatorIndex = null;
 
-            if ($tokens[$index]->isGivenKind(T_NS_SEPARATOR)) {
+            if ($tokens[$index]->isGivenKind(\T_NS_SEPARATOR)) {
                 $namespaceSeparatorIndex = $index;
                 $index = $tokens->getPrevMeaningfulToken($index);
             }
 
-            if (!$tokens[$index]->equalsAny([';', '{', '}', ')', [T_OPEN_TAG]])) {
+            if (!$tokens[$index]->equalsAny([';', '{', '}', ')', [\T_OPEN_TAG]])) {
                 continue;
             }
 
@@ -90,7 +93,7 @@ final class ArrayPushFixer extends AbstractFixer
 
             $afterCloseBraceIndex = $tokens->getNextMeaningfulToken($closeBraceIndex);
 
-            if (null !== $afterCloseBraceIndex && !$tokens[$afterCloseBraceIndex]->equalsAny([';', [T_CLOSE_TAG]])) {
+            if (null !== $afterCloseBraceIndex && !$tokens[$afterCloseBraceIndex]->equalsAny([';', [\T_CLOSE_TAG]])) {
                 continue;
             }
 
@@ -126,7 +129,7 @@ final class ArrayPushFixer extends AbstractFixer
                 [
                     new Token('['),
                     new Token(']'),
-                    new Token([T_WHITESPACE, ' ']),
+                    new Token([\T_WHITESPACE, ' ']),
                     new Token('='),
                 ]
             );
@@ -152,10 +155,10 @@ final class ArrayPushFixer extends AbstractFixer
             [CT::T_DYNAMIC_PROP_BRACE_OPEN],
             [CT::T_DYNAMIC_VAR_BRACE_OPEN],
             [CT::T_NAMESPACE_OPERATOR],
-            [T_NS_SEPARATOR],
-            [T_STATIC],
-            [T_STRING],
-            [T_VARIABLE],
+            [\T_NS_SEPARATOR],
+            [\T_STATIC],
+            [\T_STRING],
+            [\T_VARIABLE],
         ])) {
             $blockType = Tokens::detectBlockType($nextToken);
 
@@ -168,11 +171,11 @@ final class ArrayPushFixer extends AbstractFixer
             $nextToken = $tokens[$nextIndex];
         }
 
-        if ($nextToken->isGivenKind(T_OBJECT_OPERATOR)) {
+        if ($nextToken->isGivenKind(\T_OBJECT_OPERATOR)) {
             return $this->getFirstArgumentEnd($tokens, $nextIndex);
         }
 
-        if ($nextToken->isGivenKind(T_PAAMAYIM_NEKUDOTAYIM)) {
+        if ($nextToken->isGivenKind(\T_PAAMAYIM_NEKUDOTAYIM)) {
             return $this->getFirstArgumentEnd($tokens, $tokens->getNextMeaningfulToken($nextIndex));
         }
 
@@ -184,7 +187,7 @@ final class ArrayPushFixer extends AbstractFixer
      */
     private function getSecondArgumentEnd(Tokens $tokens, int $index, int $endIndex): ?int
     {
-        if ($tokens[$index]->isGivenKind(T_ELLIPSIS)) {
+        if ($tokens[$index]->isGivenKind(\T_ELLIPSIS)) {
             return null;
         }
 
@@ -197,7 +200,7 @@ final class ArrayPushFixer extends AbstractFixer
                 $blockType = Tokens::detectBlockType($tokens[$index]);
             }
 
-            if ($tokens[$index]->equals(',') || $tokens[$index]->isGivenKind([T_YIELD, T_YIELD_FROM, T_LOGICAL_AND, T_LOGICAL_OR, T_LOGICAL_XOR])) {
+            if ($tokens[$index]->equals(',') || $tokens[$index]->isGivenKind([\T_YIELD, \T_YIELD_FROM, \T_LOGICAL_AND, \T_LOGICAL_OR, \T_LOGICAL_XOR])) {
                 return null;
             }
         }

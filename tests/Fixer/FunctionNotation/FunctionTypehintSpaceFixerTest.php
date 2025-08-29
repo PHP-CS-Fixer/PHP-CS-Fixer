@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\FunctionTypehintSpaceFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\FunctionTypehintSpaceFixer>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FunctionTypehintSpaceFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class FunctionTypehintSpaceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -286,6 +293,9 @@ final class FunctionTypehintSpaceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{string, string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield [

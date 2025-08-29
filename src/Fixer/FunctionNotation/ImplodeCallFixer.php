@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ImplodeCallFixer extends AbstractFixer
 {
@@ -48,7 +50,7 @@ final class ImplodeCallFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     /**
@@ -67,7 +69,7 @@ final class ImplodeCallFixer extends AbstractFixer
         $functionsAnalyzer = new FunctionsAnalyzer();
 
         for ($index = \count($tokens) - 1; $index > 0; --$index) {
-            if (!$tokens[$index]->equals([T_STRING, 'implode'], false)) {
+            if (!$tokens[$index]->equals([\T_STRING, 'implode'], false)) {
                 continue;
             }
 
@@ -78,11 +80,11 @@ final class ImplodeCallFixer extends AbstractFixer
             $argumentsIndices = $this->getArgumentIndices($tokens, $index);
 
             if (1 === \count($argumentsIndices)) {
-                $firstArgumentIndex = key($argumentsIndices);
+                $firstArgumentIndex = array_key_first($argumentsIndices);
                 $tokens->insertAt($firstArgumentIndex, [
-                    new Token([T_CONSTANT_ENCAPSED_STRING, "''"]),
+                    new Token([\T_CONSTANT_ENCAPSED_STRING, "''"]),
                     new Token(','),
-                    new Token([T_WHITESPACE, ' ']),
+                    new Token([\T_WHITESPACE, ' ']),
                 ]);
 
                 continue;
@@ -92,18 +94,18 @@ final class ImplodeCallFixer extends AbstractFixer
                 [$firstArgumentIndex, $secondArgumentIndex] = array_keys($argumentsIndices);
 
                 // If the first argument is string we have nothing to do
-                if ($tokens[$firstArgumentIndex]->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
+                if ($tokens[$firstArgumentIndex]->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
                     continue;
                 }
                 // If the second argument is not string we cannot make a swap
-                if (!$tokens[$secondArgumentIndex]->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
+                if (!$tokens[$secondArgumentIndex]->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
                     continue;
                 }
 
                 // collect tokens from first argument
                 $firstArgumentEndIndex = $argumentsIndices[key($argumentsIndices)];
                 $newSecondArgumentTokens = [];
-                for ($i = key($argumentsIndices); $i <= $firstArgumentEndIndex; ++$i) {
+                for ($i = array_key_first($argumentsIndices); $i <= $firstArgumentEndIndex; ++$i) {
                     $newSecondArgumentTokens[] = clone $tokens[$i];
                     $tokens->clearAt($i);
                 }

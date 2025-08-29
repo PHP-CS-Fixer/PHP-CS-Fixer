@@ -22,6 +22,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\RangeAnalyzer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class RangeAnalyzerTest extends TestCase
 {
@@ -38,6 +40,9 @@ final class RangeAnalyzerTest extends TestCase
         self::assertSame($expected, RangeAnalyzer::rangeEqualsRange($tokens, $range1, $range2));
     }
 
+    /**
+     * @return iterable<array{bool, string, array{start: int, end: int}, array{start: int, end: int}}>
+     */
     public static function provideRangeEqualsRangeCases(): iterable
     {
         $ranges = [

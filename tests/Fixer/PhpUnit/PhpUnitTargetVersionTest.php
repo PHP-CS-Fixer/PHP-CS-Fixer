@@ -23,11 +23,15 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpUnitTargetVersionTest extends TestCase
 {
     /**
      * @dataProvider provideFulfillsCases
+     *
+     * @param null|class-string<\Throwable> $exception
      */
     public function testFulfills(bool $expected, string $candidate, string $target, ?string $exception = null): void
     {
@@ -41,6 +45,9 @@ final class PhpUnitTargetVersionTest extends TestCase
         );
     }
 
+    /**
+     * @return iterable<int, array{0: bool, 1: string, 2: string, 3?: string}>
+     */
     public static function provideFulfillsCases(): iterable
     {
         yield [true, PhpUnitTargetVersion::VERSION_NEWEST, PhpUnitTargetVersion::VERSION_5_6];
@@ -52,8 +59,6 @@ final class PhpUnitTargetVersionTest extends TestCase
         yield [true, PhpUnitTargetVersion::VERSION_5_6, PhpUnitTargetVersion::VERSION_5_2];
 
         yield [true, PhpUnitTargetVersion::VERSION_5_2, PhpUnitTargetVersion::VERSION_5_2];
-
-        yield [false, PhpUnitTargetVersion::VERSION_5_2, PhpUnitTargetVersion::VERSION_5_6];
 
         yield [false, PhpUnitTargetVersion::VERSION_5_2, PhpUnitTargetVersion::VERSION_5_6];
 

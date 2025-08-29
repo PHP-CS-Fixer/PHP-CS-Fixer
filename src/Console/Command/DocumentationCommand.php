@@ -16,7 +16,6 @@ namespace PhpCsFixer\Console\Command;
 
 use PhpCsFixer\Documentation\DocumentationLocator;
 use PhpCsFixer\Documentation\FixerDocumentGenerator;
-use PhpCsFixer\Documentation\ListDocumentGenerator;
 use PhpCsFixer\Documentation\RuleSetDocumentationGenerator;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSets;
@@ -26,27 +25,36 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-#[AsCommand(name: 'documentation')]
+#[AsCommand(name: 'documentation', description: 'Dumps the documentation of the project into its "/doc" directory.')]
 final class DocumentationCommand extends Command
 {
+    /** @TODO PHP 8.0 - remove the property */
     protected static $defaultName = 'documentation';
+
+    /** @TODO PHP 8.0 - remove the property */
+    protected static $defaultDescription = 'Dumps the documentation of the project into its "/doc" directory.';
+
+    private Filesystem $filesystem;
+
+    public function __construct(Filesystem $filesystem)
+    {
+        parent::__construct();
+        $this->filesystem = $filesystem;
+    }
 
     protected function configure(): void
     {
-        $this
-            ->setAliases(['doc'])
-            ->setDescription('Dumps the documentation of the project into its "/doc" directory.')
-        ;
+        $this->setAliases(['doc']);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $filesystem = new Filesystem();
         $locator = new DocumentationLocator();
 
         $fixerFactory = new FixerFactory();
@@ -57,7 +65,6 @@ final class DocumentationCommand extends Command
 
         $fixerDocumentGenerator = new FixerDocumentGenerator($locator);
         $ruleSetDocumentationGenerator = new RuleSetDocumentationGenerator($locator);
-        $listDocumentGenerator = new ListDocumentGenerator($locator);
 
         // Array of existing fixer docs.
         // We first override existing files, and then we will delete files that are no longer needed.
@@ -67,55 +74,46 @@ final class DocumentationCommand extends Command
 
         foreach ($fixers as $fixer) {
             $docForFixerRelativePaths[] = $locator->getFixerDocumentationFileRelativePath($fixer);
-            $filesystem->dumpFile(
+            $this->filesystem->dumpFile(
                 $locator->getFixerDocumentationFilePath($fixer),
                 $fixerDocumentGenerator->generateFixerDocumentation($fixer)
             );
         }
 
-        /** @var SplFileInfo $file */
         foreach (
             (new Finder())->files()
                 ->in($locator->getFixersDocumentationDirectoryPath())
                 ->notPath($docForFixerRelativePaths) as $file
         ) {
-            $filesystem->remove($file->getPathname());
+            $this->filesystem->remove($file->getPathname());
         }
 
         // Fixer doc. index
 
-        $filesystem->dumpFile(
+        $this->filesystem->dumpFile(
             $locator->getFixersDocumentationIndexFilePath(),
             $fixerDocumentGenerator->generateFixersDocumentationIndex($fixers)
         );
 
         // RuleSet docs.
 
-        /** @var SplFileInfo $file */
         foreach ((new Finder())->files()->in($locator->getRuleSetsDocumentationDirectoryPath()) as $file) {
-            $filesystem->remove($file->getPathname());
+            $this->filesystem->remove($file->getPathname());
         }
 
         $paths = [];
 
         foreach ($setDefinitions as $name => $definition) {
             $path = $locator->getRuleSetsDocumentationFilePath($name);
-            $paths[$name] = $path;
-            $filesystem->dumpFile($path, $ruleSetDocumentationGenerator->generateRuleSetsDocumentation($definition, $fixers));
+            $paths[$path] = $definition;
+            $this->filesystem->dumpFile($path, $ruleSetDocumentationGenerator->generateRuleSetsDocumentation($definition, $fixers));
         }
 
         // RuleSet doc. index
 
-        $filesystem->dumpFile(
+        $this->filesystem->dumpFile(
             $locator->getRuleSetsDocumentationIndexFilePath(),
             $ruleSetDocumentationGenerator->generateRuleSetsDocumentationIndex($paths)
-        );
-
-        // List file / Appendix
-
-        $filesystem->dumpFile(
-            $locator->getListingFilePath(),
-            $listDocumentGenerator->generateListingDocumentation($fixers)
         );
 
         $output->writeln('Docs updated.');

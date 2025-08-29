@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
  * It internally splits it up into "lines" that we can manipulate.
  *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DocBlock
 {
@@ -49,7 +51,7 @@ final class DocBlock
      */
     public function __construct(string $content, ?NamespaceAnalysis $namespace = null, array $namespaceUses = [])
     {
-        foreach (Preg::split('/([^\n\r]+\R*)/', $content, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE) as $line) {
+        foreach (Preg::split('/([^\n\r]+\R*)/', $content, -1, \PREG_SPLIT_NO_EMPTY | \PREG_SPLIT_DELIM_CAPTURE) as $line) {
             $this->lines[] = new Line($line);
         }
 
@@ -98,6 +100,7 @@ final class DocBlock
             if ($this->lines[$index]->containsATag()) {
                 // get all the lines that make up the annotation
                 $lines = \array_slice($this->lines, $index, $this->findAnnotationLength($index), true);
+                \assert([] !== $lines);
                 $annotation = new Annotation($lines, $this->namespace, $this->namespaceUses);
                 // move the index to the end of the annotation to avoid
                 // checking it again because we know the lines inside the
@@ -209,7 +212,7 @@ final class DocBlock
     {
         $index = $start;
 
-        while ($line = $this->getLine(++$index)) {
+        while (($line = $this->getLine(++$index)) !== null) {
             if ($line->containsATag()) {
                 // we've 100% reached the end of the description if we get here
                 break;

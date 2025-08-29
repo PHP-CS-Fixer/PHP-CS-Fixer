@@ -2,12 +2,16 @@
 List of Available Rule sets
 ===========================
 - `@DoctrineAnnotation <./DoctrineAnnotation.rst>`_
-- `@PER <./PER.rst>`_
+- `@PER <./PER.rst>`_ *(deprecated)*
+- `@PER-CS <./PER-CS.rst>`_
 - `@PER-CS1.0 <./PER-CS1.0.rst>`_
 - `@PER-CS1.0:risky <./PER-CS1.0Risky.rst>`_
 - `@PER-CS2.0 <./PER-CS2.0.rst>`_
 - `@PER-CS2.0:risky <./PER-CS2.0Risky.rst>`_
-- `@PER:risky <./PERRisky.rst>`_
+- `@PER-CS3.0 <./PER-CS3.0.rst>`_
+- `@PER-CS3.0:risky <./PER-CS3.0Risky.rst>`_
+- `@PER-CS:risky <./PER-CSRisky.rst>`_
+- `@PER:risky <./PERRisky.rst>`_ *(deprecated)*
 - `@PHP54Migration <./PHP54Migration.rst>`_
 - `@PHP56Migration:risky <./PHP56MigrationRisky.rst>`_
 - `@PHP70Migration <./PHP70Migration.rst>`_
@@ -21,6 +25,10 @@ List of Available Rule sets
 - `@PHP80Migration:risky <./PHP80MigrationRisky.rst>`_
 - `@PHP81Migration <./PHP81Migration.rst>`_
 - `@PHP82Migration <./PHP82Migration.rst>`_
+- `@PHP82Migration:risky <./PHP82MigrationRisky.rst>`_
+- `@PHP83Migration <./PHP83Migration.rst>`_
+- `@PHP84Migration <./PHP84Migration.rst>`_
+- `@PHP85Migration <./PHP85Migration.rst>`_
 - `@PHPUnit30Migration:risky <./PHPUnit30MigrationRisky.rst>`_
 - `@PHPUnit32Migration:risky <./PHPUnit32MigrationRisky.rst>`_
 - `@PHPUnit35Migration:risky <./PHPUnit35MigrationRisky.rst>`_
@@ -35,6 +43,7 @@ List of Available Rule sets
 - `@PHPUnit60Migration:risky <./PHPUnit60MigrationRisky.rst>`_
 - `@PHPUnit75Migration:risky <./PHPUnit75MigrationRisky.rst>`_
 - `@PHPUnit84Migration:risky <./PHPUnit84MigrationRisky.rst>`_
+- `@PHPUnit91Migration:risky <./PHPUnit91MigrationRisky.rst>`_
 - `@PHPUnit100Migration:risky <./PHPUnit100MigrationRisky.rst>`_
 - `@PSR1 <./PSR1.rst>`_
 - `@PSR2 <./PSR2.rst>`_

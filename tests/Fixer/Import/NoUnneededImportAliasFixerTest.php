@@ -20,6 +20,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Import\NoUnneededImportAliasFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Import\NoUnneededImportAliasFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoUnneededImportAliasFixerTest extends AbstractFixerTestCase
 {
@@ -31,6 +35,9 @@ final class NoUnneededImportAliasFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [

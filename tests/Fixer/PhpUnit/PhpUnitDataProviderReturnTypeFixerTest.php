@@ -20,6 +20,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderReturnTypeFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderReturnTypeFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpUnitDataProviderReturnTypeFixerTest extends AbstractFixerTestCase
 {
@@ -32,7 +36,7 @@ final class PhpUnitDataProviderReturnTypeFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<string, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -169,8 +173,8 @@ class FooTest extends TestCase {
         ];
 
         foreach (['abstract', 'final', 'private', 'protected', 'static', '/* private */'] as $modifier) {
-            yield sprintf('test function with %s modifier', $modifier) => [
-                sprintf('<?php
+            yield \sprintf('test function with %s modifier', $modifier) => [
+                \sprintf('<?php
                     abstract class FooTest extends TestCase {
                         /**
                          * @dataProvider provideFooCases
@@ -179,7 +183,7 @@ class FooTest extends TestCase {
                         public function provideFooCases(): iterable {}
                     }
                 ', $modifier, 'abstract' === $modifier ? ';' : '{}'),
-                sprintf('<?php
+                \sprintf('<?php
                     abstract class FooTest extends TestCase {
                         /**
                          * @dataProvider provideFooCases
@@ -193,19 +197,19 @@ class FooTest extends TestCase {
     }
 
     /**
-     * @requires PHP ^7.4
+     * @requires PHP <8.0
      *
-     * @dataProvider provideFix7Cases
+     * @dataProvider provideFixPre80Cases
      */
-    public function testFix7(string $expected, ?string $input = null): void
+    public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<string, array{string, 1?: string}>
      */
-    public static function provideFix7Cases(): iterable
+    public static function provideFixPre80Cases(): iterable
     {
         yield 'data provider with return type namespaced class starting with iterable' => self::mapToTemplate(
             ': iterable \ Foo',
@@ -217,27 +221,128 @@ class FooTest extends TestCase {
     }
 
     /**
-     * @return array<string>
+     * @requires PHP ^8.0
+     *
+     * @dataProvider provideFix80Cases
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function provideFix80Cases(): iterable
+    {
+        yield 'with an attribute between PHPDoc and test method' => [
+            <<<'PHP'
+                <?php
+                class FooTest extends TestCase {
+                    /**
+                     * @dataProvider provideFooCases
+                     */
+                    #[CustomAttribute]
+                    public function testFoo(): void {}
+                    public function provideFooCases(): iterable {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class FooTest extends TestCase {
+                    /**
+                     * @dataProvider provideFooCases
+                     */
+                    #[CustomAttribute]
+                    public function testFoo(): void {}
+                    public function provideFooCases() {}
+                }
+                PHP,
+        ];
+
+        yield 'with data provider as an attribute' => [
+            <<<'PHP'
+                <?php
+                class FooTest extends TestCase {
+                    #[\PHPUnit\Framework\Attributes\DataProvider('addTypeToMe')]
+                    public function testFoo(): void {}
+                    public function addTypeToMe(): iterable {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class FooTest extends TestCase {
+                    #[\PHPUnit\Framework\Attributes\DataProvider('addTypeToMe')]
+                    public function testFoo(): void {}
+                    public function addTypeToMe() {}
+                }
+                PHP,
+        ];
+
+        $withAttributesTemplate = <<<'PHP'
+            <?php
+            namespace N;
+            use PHPUnit\Framework as PphUnitAlias;
+            use PHPUnit\Framework\Attributes;
+            class FooTest extends TestCase {
+                #[\PHPUnit\Framework\Attributes\DataProvider('provider1')]
+                #[\PHPUnit\Framework\Attributes\DataProvider('doNotGetFooledByConcatenation' . 'notProvider1')]
+                #[PHPUnit\Framework\Attributes\DataProvider('notProvider2')]
+                #[
+                    \PHPUnit\Framework\Attributes\BackupGlobals(true),
+                    \PHPUnit\Framework\Attributes\DataProvider('provider2'),
+                    \PHPUnit\Framework\Attributes\Group('foo'),
+                ]
+                #[Attributes\DataProvider('provider3')]
+                #[PphUnitAlias\Attributes\DataProvider('provider4')]
+                #[\PHPUnit\Framework\Attributes\DataProvider]
+                #[\PHPUnit\Framework\Attributes\DataProvider('provider5')]
+                #[\PHPUnit\Framework\Attributes\DataProvider(123)]
+                public function testSomething(int $x): void {}
+                public function provider1()%1$s {}
+                public function provider2()%1$s {}
+                public function provider3()%1$s {}
+                public function provider4()%1$s {}
+                public function provider5()%1$s {}
+                public function notProvider1() {}
+                public function notProvider2() {}
+            }
+            PHP;
+
+        yield 'with multiple data providers as an attributes' => [
+            \sprintf($withAttributesTemplate, ': iterable'),
+            \sprintf($withAttributesTemplate, ''),
+        ];
+    }
+
+    /**
+     * @param array{string, 1?: string} ...$types
+     *
+     * @return array{string, 1?: string}
      */
     private static function mapToTemplate(string ...$types): array
     {
-        static $template = '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider provideFooCases
-     */
-    public function testFoo() {}
-    /**
-     * @dataProvider provider
-     */
-    public function testBar() {}
-    public function provideFooCases()%1$s {}
-    public function provider()%1$s {}
-    public function notProvider(): array {}
-}';
-
+        // @phpstan-ignore-next-line return.type
         return array_map(
-            static fn (string $type): string => sprintf($template, $type),
+            static fn (string $type): string => \sprintf(
+                <<<'PHP'
+                    <?php
+                    class FooTest extends TestCase {
+                        /**
+                         * @dataProvider provideFooCases
+                         */
+                        public function testFoo() {}
+                        /**
+                         * @dataProvider provider
+                         */
+                        public function testBar() {}
+                        public function provideFooCases()%1$s {}
+                        public function provider()%1$s {}
+                        public function notProvider(): array {}
+                    }
+                    PHP,
+                $type
+            ),
             $types
         );
     }

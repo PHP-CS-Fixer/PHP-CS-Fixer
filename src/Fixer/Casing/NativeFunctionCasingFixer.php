@@ -22,6 +22,9 @@ use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class NativeFunctionCasingFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
@@ -44,7 +47,7 @@ final class NativeFunctionCasingFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -69,7 +72,7 @@ final class NativeFunctionCasingFixer extends AbstractFixer
                 continue;
             }
 
-            $tokens[$index] = new Token([T_STRING, $nativeFunctionNames[$lower]]);
+            $tokens[$index] = new Token([\T_STRING, $nativeFunctionNames[$lower]]);
         }
     }
 

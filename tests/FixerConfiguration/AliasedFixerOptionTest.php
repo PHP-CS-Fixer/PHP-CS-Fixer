@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\FixerConfiguration\AliasedFixerOption
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class AliasedFixerOptionTest extends TestCase
 {
@@ -37,6 +39,9 @@ final class AliasedFixerOptionTest extends TestCase
         self::assertSame($name, $option->getName());
     }
 
+    /**
+     * @return iterable<int, array{string}>
+     */
     public static function provideGetNameCases(): iterable
     {
         yield ['foo'];
@@ -54,6 +59,9 @@ final class AliasedFixerOptionTest extends TestCase
         self::assertSame($description, $option->getDescription());
     }
 
+    /**
+     * @return iterable<int, array{string}>
+     */
     public static function provideGetDescriptionCases(): iterable
     {
         yield ['Foo.'];
@@ -69,6 +77,9 @@ final class AliasedFixerOptionTest extends TestCase
         self::assertSame($hasDefault, $input->hasDefault());
     }
 
+    /**
+     * @return iterable<int, array{bool, AliasedFixerOption}>
+     */
     public static function provideHasDefaultCases(): iterable
     {
         yield [
@@ -92,6 +103,9 @@ final class AliasedFixerOptionTest extends TestCase
         self::assertSame($default, $option->getDefault());
     }
 
+    /**
+     * @return iterable<int, array{string}>
+     */
     public static function provideGetDefaultCases(): iterable
     {
         yield ['baz'];
@@ -120,6 +134,9 @@ final class AliasedFixerOptionTest extends TestCase
         self::assertSame($allowedTypes, $option->getAllowedTypes());
     }
 
+    /**
+     * @return iterable<int, array{null|list<string>}>
+     */
     public static function provideGetAllowedTypesCases(): iterable
     {
         yield [null];
@@ -130,7 +147,7 @@ final class AliasedFixerOptionTest extends TestCase
     }
 
     /**
-     * @param null|list<null|(callable(mixed): bool)|scalar> $allowedValues
+     * @param null|non-empty-list<null|(callable(mixed): bool)|scalar> $allowedValues
      *
      * @dataProvider provideGetAllowedValuesCases
      */
@@ -141,6 +158,9 @@ final class AliasedFixerOptionTest extends TestCase
         self::assertSame($allowedValues, $option->getAllowedValues());
     }
 
+    /**
+     * @return iterable<int, array{null|non-empty-list<null|(callable(mixed): bool)|scalar>}>
+     */
     public static function provideGetAllowedValuesCases(): iterable
     {
         yield [null];
@@ -179,18 +199,13 @@ final class AliasedFixerOptionTest extends TestCase
         self::assertSame($alias, $options->getAlias());
     }
 
+    /**
+     * @return iterable<int, array{string}>
+     */
     public static function provideGetAliasCases(): iterable
     {
         yield ['bar'];
 
         yield ['baz'];
-    }
-
-    public function testRequiredWithDefaultValue(): void
-    {
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Required options cannot have a default value.');
-
-        new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, false), 'baz');
     }
 }

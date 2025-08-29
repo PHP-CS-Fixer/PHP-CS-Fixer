@@ -4,26 +4,43 @@ Rule ``curly_braces_position``
 
 Curly braces must be placed as configured.
 
+Warning
+-------
+
+This rule is deprecated and will be removed in the next major version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You should use ``braces_position`` instead.
+
 Configuration
 -------------
 
-``control_structures_opening_brace``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``allow_single_line_anonymous_functions``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The position of the opening brace of control structures‘ body.
+Allow anonymous functions to have opening and closing braces on the same line.
+
+Allowed types: ``bool``
+
+Default value: ``true``
+
+``allow_single_line_empty_anonymous_classes``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Allow anonymous classes to have opening and closing braces on the same line.
+
+Allowed types: ``bool``
+
+Default value: ``true``
+
+``anonymous_classes_opening_brace``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The position of the opening brace of anonymous classes‘ body.
 
 Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
 
 Default value: ``'same_line'``
-
-``functions_opening_brace``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The position of the opening brace of functions‘ body.
-
-Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
-
-Default value: ``'next_line_unless_newline_at_signature_end'``
 
 ``anonymous_functions_opening_brace``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -43,32 +60,23 @@ Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line
 
 Default value: ``'next_line_unless_newline_at_signature_end'``
 
-``anonymous_classes_opening_brace``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``control_structures_opening_brace``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The position of the opening brace of anonymous classes‘ body.
+The position of the opening brace of control structures‘ body.
 
 Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
 
 Default value: ``'same_line'``
 
-``allow_single_line_empty_anonymous_classes``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``functions_opening_brace``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Allow anonymous classes to have opening and closing braces on the same line.
+The position of the opening brace of functions‘ body.
 
-Allowed types: ``bool``
+Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
 
-Default value: ``true``
-
-``allow_single_line_anonymous_functions``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Allow anonymous functions to have opening and closing braces on the same line.
-
-Allowed types: ``bool``
-
-Default value: ``true``
+Default value: ``'next_line_unless_newline_at_signature_end'``
 
 Examples
 --------
@@ -219,34 +227,10 @@ With configuration: ``['allow_single_line_anonymous_functions' => true]``.
    +    return $result;
    +};
 
-Rule sets
----------
+References
+----------
 
-The rule is part of the following rule sets:
+- Fixer class: `PhpCsFixer\\Fixer\\Basic\\CurlyBracesPositionFixer <./../../../src/Fixer/Basic/CurlyBracesPositionFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Basic\\CurlyBracesPositionFixerTest <./../../../tests/Fixer/Basic/CurlyBracesPositionFixerTest.php>`_
 
-- `@PER <./../../ruleSets/PER.rst>`_ with config:
-
-  ``['allow_single_line_empty_anonymous_classes' => true]``
-
-- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
-
-  ``['allow_single_line_empty_anonymous_classes' => true]``
-
-- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
-
-  ``['allow_single_line_empty_anonymous_classes' => true]``
-
-- `@PSR2 <./../../ruleSets/PSR2.rst>`_
-- `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
-
-  ``['allow_single_line_empty_anonymous_classes' => true]``
-
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
-
-  ``['allow_single_line_anonymous_functions' => true, 'allow_single_line_empty_anonymous_classes' => true]``
-
-- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
-
-  ``['allow_single_line_anonymous_functions' => true, 'allow_single_line_empty_anonymous_classes' => true]``
-
-
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

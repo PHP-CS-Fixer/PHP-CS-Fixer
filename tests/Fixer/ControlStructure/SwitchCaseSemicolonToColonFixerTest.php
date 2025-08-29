@@ -20,6 +20,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ControlStructure\SwitchCaseSemicolonToColonFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\SwitchCaseSemicolonToColonFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
 {
@@ -31,6 +35,9 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -245,11 +252,14 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
      *
      * @requires PHP <8.0
      */
-    public function testFixPre80(string $expected, string $input = null): void
+    public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{string, string}>
+     */
     public static function provideFixPre80Cases(): iterable
     {
         yield [
@@ -278,6 +288,9 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield 'Simple match' => [
@@ -328,6 +341,9 @@ final class SwitchCaseSemicolonToColonFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{string, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'enums' => [

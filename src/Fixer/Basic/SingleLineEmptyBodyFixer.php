@@ -18,9 +18,13 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class SingleLineEmptyBodyFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
@@ -39,7 +43,7 @@ final class SingleLineEmptyBodyFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run after ClassDefinitionFixer, CurlyBracesPositionFixer, NoUselessReturnFixer.
+     * Must run after BracesPositionFixer, ClassDefinitionFixer, CurlyBracesPositionFixer, NoUselessReturnFixer.
      */
     public function getPriority(): int
     {
@@ -48,17 +52,13 @@ final class SingleLineEmptyBodyFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        if (\defined('T_ENUM') && $tokens->isTokenKindFound(T_ENUM)) { // @TODO: drop condition when PHP 8.1+ is required
-            return true;
-        }
-
-        return $tokens->isAnyTokenKindsFound([T_INTERFACE, T_CLASS, T_FUNCTION, T_TRAIT]);
+        return $tokens->isAnyTokenKindsFound([\T_INTERFACE, \T_CLASS, \T_FUNCTION, \T_TRAIT, FCT::T_ENUM]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
-            if (!$tokens[$index]->isGivenKind([...Token::getClassyTokenKinds(), T_FUNCTION])) {
+            if (!$tokens[$index]->isGivenKind([...Token::getClassyTokenKinds(), \T_FUNCTION])) {
                 continue;
             }
 
@@ -75,7 +75,7 @@ final class SingleLineEmptyBodyFixer extends AbstractFixer
             $tokens->ensureWhitespaceAtIndex($openBraceIndex + 1, 0, '');
 
             $beforeOpenBraceIndex = $tokens->getPrevNonWhitespace($openBraceIndex);
-            if (!$tokens[$beforeOpenBraceIndex]->isGivenKind([T_COMMENT, T_DOC_COMMENT])) {
+            if (!$tokens[$beforeOpenBraceIndex]->isGivenKind([\T_COMMENT, \T_DOC_COMMENT])) {
                 $tokens->ensureWhitespaceAtIndex($openBraceIndex - 1, 1, ' ');
             }
         }

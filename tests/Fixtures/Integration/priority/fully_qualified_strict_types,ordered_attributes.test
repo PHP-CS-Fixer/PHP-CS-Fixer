@@ -1,0 +1,42 @@
+--TEST--
+Integration of fixers: fully_qualified_strict_types,ordered_attributes.
+--RULESET--
+{"fully_qualified_strict_types": {"import_symbols": true}, "ordered_attributes": true}
+--REQUIREMENTS--
+{"php": 80000}
+--EXPECT--
+<?php
+
+namespace Test;
+use A\Bar;
+use B\Foo;
+use C\Baz;
+
+#[Bar]
+#[Baz]
+#[Foo]
+function foo() {}
+
+#[
+    Bar,
+    Baz,
+    Foo,
+]
+function bar() {}
+
+--INPUT--
+<?php
+
+namespace Test;
+
+#[\C\Baz]
+#[\A\Bar]
+#[\B\Foo]
+function foo() {}
+
+#[
+    \C\Baz,
+    \A\Bar,
+    \B\Foo,
+]
+function bar() {}

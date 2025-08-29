@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\Fixer\Indentation;
+use PhpCsFixer\Fixer\IndentationTrait;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
@@ -25,9 +25,12 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
-    use Indentation;
+    use IndentationTrait;
 
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -41,7 +44,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
+        return $tokens->isAnyTokenKindsFound([\T_ARRAY, \T_LIST, CT::T_ARRAY_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN]);
     }
 
     /**
@@ -70,13 +73,11 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
             }
 
             if (
-                $token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)
-                || ($token->equals('(') && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(T_ARRAY))
+                $token->isGivenKind([CT::T_ARRAY_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN])
+                || ($token->equals('(') && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind([\T_ARRAY, \T_LIST]))
             ) {
-                $endIndex = $tokens->findBlockEnd(
-                    $token->equals('(') ? Tokens::BLOCK_TYPE_PARENTHESIS_BRACE : Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE,
-                    $index
-                );
+                $blockType = Tokens::detectBlockType($token);
+                $endIndex = $tokens->findBlockEnd($blockType['type'], $index);
 
                 $scopes[] = [
                     'type' => 'array',
@@ -132,7 +133,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
                     );
                 }
 
-                $tokens[$index] = new Token([T_WHITESPACE, $content]);
+                $tokens[$index] = new Token([\T_WHITESPACE, $content]);
                 $lastIndent = $this->extractIndent($content);
 
                 continue;
@@ -175,7 +176,9 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
         for ($searchEndIndex = $index + 1; $searchEndIndex < $parentScopeEndIndex; ++$searchEndIndex) {
             $searchEndToken = $tokens[$searchEndIndex];
 
-            if ($searchEndToken->equalsAny(['(', '{']) || $searchEndToken->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+            if ($searchEndToken->equalsAny(['(', '{'])
+                || $searchEndToken->isGivenKind([CT::T_ARRAY_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN])
+            ) {
                 $type = Tokens::detectBlockType($searchEndToken);
                 $searchEndIndex = $tokens->findBlockEnd(
                     $type['type'],

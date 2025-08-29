@@ -18,15 +18,16 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpCsFixerSet extends AbstractRuleSetDescription
 {
     public function getRules(): array
     {
         return [
-            '@PER-CS2.0' => true,
+            '@PER-CS' => true,
             '@Symfony' => true,
-            'array_indentation' => true,
             'blank_line_before_statement' => [
                 'statements' => [
                     'break',
@@ -52,11 +53,14 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             'combine_consecutive_issets' => true,
             'combine_consecutive_unsets' => true,
             'empty_loop_body' => true,
-            'escape_implicit_backslashes' => true,
             'explicit_indirect_variable' => true,
             'explicit_string_variable' => true,
+            'fully_qualified_strict_types' => [
+                'import_symbols' => true,
+            ],
             'heredoc_to_nowdoc' => true,
             'method_argument_space' => [
+                'after_heredoc' => true,
                 'on_multiline' => 'ensure_fully_multiline',
             ],
             'method_chaining_indentation' => true,
@@ -83,6 +87,7 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             ],
             'no_superfluous_elseif' => true,
             'no_superfluous_phpdoc_tags' => [
+                'allow_hidden_params' => true,
                 'allow_mixed' => true,
                 'remove_inheritdoc' => true,
             ],
@@ -102,26 +107,32 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             ],
             'no_useless_else' => true,
             'no_useless_return' => true,
-            'nullable_type_declaration_for_default_null_value' => false,
+            'operator_linebreak' => true,
             'ordered_class_elements' => true,
+            'ordered_types' => [
+                'null_adjustment' => 'always_last',
+            ],
+            'php_unit_data_provider_method_order' => true,
             'php_unit_internal_class' => true,
             'php_unit_test_class_requires_covers' => true,
             'phpdoc_add_missing_param_annotation' => true,
             'phpdoc_no_empty_return' => true,
             'phpdoc_order_by_value' => true,
             'phpdoc_types_order' => true,
-            'phpdoc_var_annotation_correct_order' => true,
             'protected_to_private' => true,
             'return_assignment' => true,
             'self_static_accessor' => true,
             'single_line_comment_style' => true,
+            'single_line_empty_body' => true,
             'single_line_throw' => false,
+            'string_implicit_backslashes' => true,
+            'trailing_comma_in_multiline' => ['after_heredoc' => true, 'elements' => ['array_destructuring', 'arrays']],
             'whitespace_after_comma_in_array' => ['ensure_single_space' => true],
         ];
     }
 
     public function getDescription(): string
     {
-        return 'Rule set as used by the PHP-CS-Fixer development team, highly opinionated.';
+        return 'Rule set as used by the PHP CS Fixer development team, highly opinionated.';
     }
 }

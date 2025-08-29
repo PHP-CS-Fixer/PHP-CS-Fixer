@@ -17,19 +17,19 @@ Allowed values: ``'multi'``, ``'single'`` and ``null``
 
 Default value: ``'multi'``
 
-``property``
-~~~~~~~~~~~~
+``method``
+~~~~~~~~~~
 
-Whether property doc blocks should be single or multi line.
+Whether method doc blocks should be single or multi line.
 
 Allowed values: ``'multi'``, ``'single'`` and ``null``
 
 Default value: ``'multi'``
 
-``method``
-~~~~~~~~~~
+``property``
+~~~~~~~~~~~~
 
-Whether method doc blocks should be single or multi line.
+Whether property doc blocks should be single or multi line.
 
 Allowed values: ``'multi'``, ``'single'`` and ``null``
 
@@ -75,3 +75,11 @@ With configuration: ``['property' => 'single']``.
    +    /** @var bool */
         public $var;
     }
+
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\Phpdoc\\PhpdocLineSpanFixer <./../../../src/Fixer/Phpdoc/PhpdocLineSpanFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Phpdoc\\PhpdocLineSpanFixerTest <./../../../tests/Fixer/Phpdoc/PhpdocLineSpanFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

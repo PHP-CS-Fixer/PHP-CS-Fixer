@@ -17,18 +17,25 @@ namespace PhpCsFixer\Console\Command;
 use PhpCsFixer\Config;
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
+use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Console\Output\ErrorOutput;
 use PhpCsFixer\Console\Output\OutputContext;
 use PhpCsFixer\Console\Output\Progress\ProgressOutputFactory;
 use PhpCsFixer\Console\Output\Progress\ProgressOutputType;
+use PhpCsFixer\Console\Report\FixReport\ReporterFactory;
 use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Error\ErrorsManager;
-use PhpCsFixer\FixerFileProcessedEvent;
+use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\FixerFactory;
+use PhpCsFixer\RuleSet\RuleSets;
+use PhpCsFixer\Runner\Event\FileProcessed;
+use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\ToolInfoInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -43,12 +50,20 @@ use Symfony\Component\Stopwatch\Stopwatch;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
+ * @final
+ *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-#[AsCommand(name: 'fix')]
-final class FixCommand extends Command
+#[AsCommand(name: 'fix', description: 'Fixes a directory or a file.')]
+/* final */ class FixCommand extends Command
 {
+    /** @TODO PHP 8.0 - remove the property */
     protected static $defaultName = 'fix';
+
+    /** @TODO PHP 8.0 - remove the property */
+    protected static $defaultDescription = 'Fixes a directory or a file.';
 
     private EventDispatcherInterface $eventDispatcher;
 
@@ -82,7 +97,7 @@ final class FixCommand extends Command
     public function getHelp(): string
     {
         return <<<'EOF'
-            The <info>%command.name%</info> command tries to fix as much coding standards
+            The <info>%command.name%</info> command tries to %command.name% as much coding standards
             problems as possible on a given file or files in a given directory and its subdirectories:
 
                 <info>$ php %command.full_name% /path/to/dir</info>
@@ -94,7 +109,11 @@ final class FixCommand extends Command
 
                 <info>$ php %command.full_name% --path-mode=intersection /path/to/dir</info>
 
-            The <comment>--format</comment> option for the output format. Supported formats are `txt` (default one), `json`, `xml`, `checkstyle`, `junit` and `gitlab`.
+            The <comment>--format</comment> option for the output format. Supported formats are `@auto` (default one on v4+), `txt` (default one on v3), `json`, `xml`, `checkstyle`, `junit` and `gitlab`.
+
+            * `@auto` aims to auto-select best reporter for given CI or local execution (resolution into best format is outside of BC promise and is future-ready)
+              * `gitlab` for GitLab
+            * `@auto,{format}` takes `@auto` under CI, and {format} otherwise
 
             NOTE: the output for the following formats are generated in accordance with schemas
 
@@ -143,6 +162,8 @@ final class FixCommand extends Command
 
             The <comment>--dry-run</comment> flag will run the fixer without making changes to your files.
 
+            The <comment>--sequential</comment> flag will enforce sequential analysis even if parallel config is provided.
+
             The <comment>--diff</comment> flag can be used to let the fixer output all the changes it makes.
 
             The <comment>--allow-risky</comment> option (pass `yes` or `no`) allows you to set whether risky rules may run. Default value is taken from config file.
@@ -154,12 +175,13 @@ final class FixCommand extends Command
 
             * <comment>none</comment>: disables progress output;
             * <comment>dots</comment>: multiline progress output with number of files and percentage on each line.
+            * <comment>bar</comment>: single line progress output with number of files and calculated percentage.
 
-            If the option is not provided, it defaults to <comment>dots</comment> unless a config file that disables output is used, in which case it defaults to <comment>none</comment>. This option has no effect if the verbosity of the command is less than <comment>verbose</comment>.
+            If the option is not provided, it defaults to <comment>bar</comment> unless a config file that disables output is used, in which case it defaults to <comment>none</comment>. This option has no effect if the verbosity of the command is less than <comment>verbose</comment>.
 
                 <info>$ php %command.full_name% --verbose --show-progress=dots</info>
 
-            By using <command>--using-cache</command> option with `yes` or `no` you can set if the caching
+            By using <comment>--using-cache</comment> option with `yes` or `no` you can set if the caching
             mechanism should be used.
 
             The command can also read from standard input, in which case it won't
@@ -175,7 +197,7 @@ final class FixCommand extends Command
             Exit code
             ---------
 
-            Exit code of the fix command is built using following bit flags:
+            Exit code of the `%command.name%` command is built using following bit flags:
 
             *  0 - OK.
             *  1 - General error (or PHP minimal requirement not matched).
@@ -190,25 +212,37 @@ final class FixCommand extends Command
 
     protected function configure(): void
     {
-        $this
-            ->setDefinition(
-                [
-                    new InputArgument('path', InputArgument::IS_ARRAY, 'The path.'),
-                    new InputOption('path-mode', '', InputOption::VALUE_REQUIRED, 'Specify path mode (can be override or intersection).', ConfigurationResolver::PATH_MODE_OVERRIDE),
-                    new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be yes or no).'),
-                    new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
-                    new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified.'),
-                    new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'The rules.'),
-                    new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Does cache should be used (can be yes or no).'),
-                    new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file.'),
-                    new InputOption('diff', '', InputOption::VALUE_NONE, 'Also produce diff for each file.'),
-                    new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats.'),
-                    new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
-                    new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, 'Type of progress indicator (none, dots).'),
-                ]
-            )
-            ->setDescription('Fixes a directory or a file.')
-        ;
+        $reporterFactory = new ReporterFactory();
+        $reporterFactory->registerBuiltInReporters();
+        $formats = $reporterFactory->getFormats();
+        array_unshift($formats, '@auto', '@auto,txt');
+
+        $progessOutputTypes = ProgressOutputType::all();
+
+        $this->setDefinition(
+            [
+                new InputArgument('path', InputArgument::IS_ARRAY, 'The path(s) that rules will be run against (each path can be a file or directory).'),
+                new InputOption('path-mode', '', InputOption::VALUE_REQUIRED, HelpCommand::getDescriptionWithAllowedValues('Specify path mode (%s).', ConfigurationResolver::PATH_MODE_VALUES), ConfigurationResolver::PATH_MODE_OVERRIDE, ConfigurationResolver::PATH_MODE_VALUES),
+                new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, HelpCommand::getDescriptionWithAllowedValues('Are risky fixers allowed (%s).', ConfigurationResolver::BOOL_VALUES), null, ConfigurationResolver::BOOL_VALUES),
+                new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a config file.'),
+                new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified.'),
+                new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'List of rules that should be run against configured paths.', null, static function () {
+                    $fixerFactory = new FixerFactory();
+                    $fixerFactory->registerBuiltInFixers();
+                    $fixers = array_map(static fn (FixerInterface $fixer) => $fixer->getName(), $fixerFactory->getFixers());
+
+                    return array_merge(RuleSets::getSetDefinitionNames(), $fixers);
+                }),
+                new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, HelpCommand::getDescriptionWithAllowedValues('Should cache be used (%s).', ConfigurationResolver::BOOL_VALUES), null, ConfigurationResolver::BOOL_VALUES),
+                new InputOption('allow-unsupported-php-version', '', InputOption::VALUE_REQUIRED, HelpCommand::getDescriptionWithAllowedValues('Should the command refuse to run on unsupported PHP version (%s).', ConfigurationResolver::BOOL_VALUES), null, ConfigurationResolver::BOOL_VALUES),
+                new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file.'),
+                new InputOption('diff', '', InputOption::VALUE_NONE, 'Prints diff for each file.'),
+                new InputOption('format', '', InputOption::VALUE_REQUIRED, HelpCommand::getDescriptionWithAllowedValues('To output results in other formats (%s).', $formats), null, $formats),
+                new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
+                new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, HelpCommand::getDescriptionWithAllowedValues('Type of progress indicator (%s).', $progessOutputTypes), null, $progessOutputTypes),
+                new InputOption('sequential', '', InputOption::VALUE_NONE, 'Enforce sequential analysis.'),
+            ]
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -227,17 +261,19 @@ final class FixCommand extends Command
             [
                 'allow-risky' => $input->getOption('allow-risky'),
                 'config' => $passedConfig,
-                'dry-run' => $input->getOption('dry-run'),
+                'dry-run' => $this->isDryRun($input),
                 'rules' => $passedRules,
                 'path' => $input->getArgument('path'),
                 'path-mode' => $input->getOption('path-mode'),
                 'using-cache' => $input->getOption('using-cache'),
+                'allow-unsupported-php-version' => $input->getOption('allow-unsupported-php-version'),
                 'cache-file' => $input->getOption('cache-file'),
                 'format' => $input->getOption('format'),
                 'diff' => $input->getOption('diff'),
                 'stop-on-violation' => $input->getOption('stop-on-violation'),
                 'verbosity' => $verbosity,
                 'show-progress' => $input->getOption('show-progress'),
+                'sequential' => $input->getOption('sequential'),
             ],
             getcwd(),
             $this->toolInfo
@@ -250,27 +286,80 @@ final class FixCommand extends Command
             : ('txt' === $reporter->getFormat() ? $output : null);
 
         if (null !== $stdErr) {
-            if (OutputInterface::VERBOSITY_VERBOSE <= $verbosity) {
-                $stdErr->writeln($this->getApplication()->getLongVersion());
+            $stdErr->writeln(Application::getAboutWithRuntime(true));
+
+            if (version_compare(\PHP_VERSION, ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED.'.99', '>')) {
+                $message = \sprintf(
+                    'PHP CS Fixer currently supports PHP syntax only up to PHP %s, current PHP version: %s.',
+                    ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED,
+                    \PHP_VERSION
+                );
+
+                if (!$resolver->getUnsupportedPhpVersionAllowed()) {
+                    $message .= ' Add Config::setUnsupportedPhpVersionAllowed(true) to allow executions on unsupported PHP versions. Such execution may be unstable and you may experience code modified in a wrong way.';
+                    $stdErr->writeln(\sprintf(
+                        $stdErr->isDecorated() ? '<bg=red;fg=white;>%s</>' : '%s',
+                        $message
+                    ));
+
+                    return 1;
+                }
+                $message .= ' Execution may be unstable. You may experience code modified in a wrong way. Please report such cases at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer. Remove Config::setUnsupportedPhpVersionAllowed(true) to allow executions only on supported PHP versions.';
+                $stdErr->writeln(\sprintf(
+                    $stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s',
+                    $message
+                ));
+            }
+
+            $isParallel = $resolver->getParallelConfig()->getMaxProcesses() > 1;
+
+            $stdErr->writeln(\sprintf(
+                'Running analysis on %d core%s.',
+                $resolver->getParallelConfig()->getMaxProcesses(),
+                $isParallel ? \sprintf(
+                    's with %d file%s per process',
+                    $resolver->getParallelConfig()->getFilesPerProcess(),
+                    $resolver->getParallelConfig()->getFilesPerProcess() > 1 ? 's' : ''
+                ) : ' sequentially'
+            ));
+
+            /** @TODO v4 remove warnings related to parallel runner */
+            $availableMaxProcesses = ParallelConfigFactory::detect()->getMaxProcesses();
+            if ($isParallel || $availableMaxProcesses > 1) {
+                $usageDocs = 'https://cs.symfony.com/doc/usage.html';
+                $stdErr->writeln(\sprintf(
+                    $stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s',
+                    $isParallel
+                        ? 'Parallel runner is an experimental feature and may be unstable, use it at your own risk. Feedback highly appreciated!'
+                        : \sprintf(
+                            'You can enable parallel runner and speed up the analysis! Please see %s for more information.',
+                            $stdErr->isDecorated()
+                                ? \sprintf('<href=%s;bg=yellow;fg=red;bold>usage docs</>', OutputFormatter::escape($usageDocs))
+                                : $usageDocs
+                        )
+                ));
             }
 
             $configFile = $resolver->getConfigFile();
-            $stdErr->writeln(sprintf('Loaded config <comment>%s</comment>%s.', $resolver->getConfig()->getName(), null === $configFile ? '' : ' from "'.$configFile.'"'));
+            $stdErr->writeln(\sprintf('Loaded config <comment>%s</comment>%s.', $resolver->getConfig()->getName(), null === $configFile ? '' : ' from "'.$configFile.'"'));
 
             if ($resolver->getUsingCache()) {
                 $cacheFile = $resolver->getCacheFile();
 
                 if (is_file($cacheFile)) {
-                    $stdErr->writeln(sprintf('Using cache file "%s".', $cacheFile));
+                    $stdErr->writeln(\sprintf('Using cache file "%s".', $cacheFile));
                 }
             }
         }
 
-        $finder = new \ArrayIterator(iterator_to_array($resolver->getFinder()));
+        $finder = new \ArrayIterator(array_filter(
+            iterator_to_array($resolver->getFinder()),
+            static fn (\SplFileInfo $fileInfo) => false !== $fileInfo->getRealPath(),
+        ));
 
         if (null !== $stdErr && $resolver->configFinderIsOverridden()) {
             $stdErr->writeln(
-                sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'Paths from configuration file have been overridden by paths provided as command arguments.')
+                \sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'Paths from configuration file have been overridden by paths provided as command arguments.')
             );
         }
 
@@ -294,14 +383,17 @@ final class FixCommand extends Command
             $resolver->isDryRun(),
             $resolver->getCacheManager(),
             $resolver->getDirectory(),
-            $resolver->shouldStopOnViolation()
+            $resolver->shouldStopOnViolation(),
+            $resolver->getParallelConfig(),
+            $input,
+            $resolver->getConfigFile()
         );
 
-        $this->eventDispatcher->addListener(FixerFileProcessedEvent::NAME, [$progressOutput, 'onFixerFileProcessed']);
+        $this->eventDispatcher->addListener(FileProcessed::NAME, [$progressOutput, 'onFixerFileProcessed']);
         $this->stopwatch->start('fixFiles');
         $changed = $runner->fix();
         $this->stopwatch->stop('fixFiles');
-        $this->eventDispatcher->removeListener(FixerFileProcessedEvent::NAME, [$progressOutput, 'onFixerFileProcessed']);
+        $this->eventDispatcher->removeListener(FileProcessed::NAME, [$progressOutput, 'onFixerFileProcessed']);
 
         $progressOutput->printLegend();
 
@@ -350,5 +442,10 @@ final class FixCommand extends Command
             \count($exceptionErrors) > 0,
             \count($lintErrors) > 0
         );
+    }
+
+    protected function isDryRun(InputInterface $input): bool
+    {
+        return $input->getOption('dry-run'); // @phpstan-ignore symfonyConsole.optionNotFound (Because PHPStan doesn't recognise the method is overridden in the child class and this parameter is _not_ used in the child class.)
     }
 }

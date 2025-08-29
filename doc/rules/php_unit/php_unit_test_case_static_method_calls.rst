@@ -32,7 +32,7 @@ Default value: ``'static'``
 Dictionary of ``method`` => ``call_type`` values that differ from the default
 strategy.
 
-Allowed types: ``array``
+Allowed types: ``array<string, string>``
 
 Default value: ``[]``
 
@@ -58,6 +58,7 @@ Example #1
    +        static::assertSame(1, 2);
    +        static::assertSame(1, 2);
             static::assertSame(1, 2);
+            static::assertTrue(false);
         }
     }
 
@@ -78,8 +79,34 @@ With configuration: ``['call_type' => 'this']``.
             $this->assertSame(1, 2);
    -        self::assertSame(1, 2);
    -        static::assertSame(1, 2);
+   -        static::assertTrue(false);
    +        $this->assertSame(1, 2);
    +        $this->assertSame(1, 2);
+   +        $this->assertTrue(false);
+        }
+    }
+
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['methods' => ['assertTrue' => 'this']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        public function testMe()
+        {
+   -        $this->assertSame(1, 2);
+   -        self::assertSame(1, 2);
+            static::assertSame(1, 2);
+   -        static::assertTrue(false);
+   +        static::assertSame(1, 2);
+   +        static::assertSame(1, 2);
+   +        $this->assertTrue(false);
         }
     }
 
@@ -92,4 +119,10 @@ The rule is part of the following rule set:
 
   ``['call_type' => 'self']``
 
+References
+----------
 
+- Fixer class: `PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitTestCaseStaticMethodCallsFixer <./../../../src/Fixer/PhpUnit/PhpUnitTestCaseStaticMethodCallsFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\PhpUnit\\PhpUnitTestCaseStaticMethodCallsFixerTest <./../../../tests/Fixer/PhpUnit/PhpUnitTestCaseStaticMethodCallsFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\Alias;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Filippo Tessarotto <zoeslam@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Alias\BacktickToShellExecFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\BacktickToShellExecFixer>
+ *
+ * @author Filippo Tessarotto <zoeslam@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class BacktickToShellExecFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class BacktickToShellExecFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'plain' => [
@@ -50,8 +57,7 @@ final class BacktickToShellExecFixerTest extends AbstractFixerTestCase
                 <?php
                 `echo a\'b`;
                 `echo 'ab'`;
-                EOT
-            ,
+                EOT,
         ];
 
         yield 'with double quote' => [
@@ -59,8 +65,7 @@ final class BacktickToShellExecFixerTest extends AbstractFixerTestCase
                 <?php
                 `echo a\"b`;
                 `echo 'a"b'`;
-                EOT
-            ,
+                EOT,
         ];
 
         yield 'with backtick' => [
@@ -68,8 +73,7 @@ final class BacktickToShellExecFixerTest extends AbstractFixerTestCase
                 <?php
                 `echo 'a\`b'`;
                 `echo a\\\`b`;
-                EOT
-            ,
+                EOT,
         ];
     }
 }

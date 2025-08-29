@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\StringNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Gregor Harlan
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\StringNotation\NoTrailingWhitespaceInStringFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\NoTrailingWhitespaceInStringFixer>
+ *
+ * @author Gregor Harlan
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoTrailingWhitespaceInStringFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class NoTrailingWhitespaceInStringFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{string, string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [

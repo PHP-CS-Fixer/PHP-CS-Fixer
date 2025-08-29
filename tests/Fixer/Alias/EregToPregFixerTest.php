@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\Alias;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Matteo Beccati <matteo@beccati.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Alias\EregToPregFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\EregToPregFixer>
+ *
+ * @author Matteo Beccati <matteo@beccati.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class EregToPregFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class EregToPregFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield ['<?php $x = 1;'];
@@ -125,8 +132,8 @@ final class EregToPregFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'binary uppercase' => [
-            '<?php $x = preg_split(b"/[A-Z]/Di", $m);',
-            '<?php $x = spliti(b"[A-Z]", $m);',
+            '<?php $x = preg_split(B"/[A-Z]/Di", $m);',
+            '<?php $x = spliti(B"[A-Z]", $m);',
         ];
     }
 
@@ -140,6 +147,9 @@ final class EregToPregFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield [

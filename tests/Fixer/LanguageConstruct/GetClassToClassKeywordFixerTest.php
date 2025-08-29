@@ -17,13 +17,17 @@ namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author John Paul E. Balandan, CPA <paulbalandan@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\LanguageConstruct\GetClassToClassKeywordFixer
  *
  * @requires PHP 8.0
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\GetClassToClassKeywordFixer>
+ *
+ * @author John Paul E. Balandan, CPA <paulbalandan@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class GetClassToClassKeywordFixerTest extends AbstractFixerTestCase
 {
@@ -35,6 +39,9 @@ final class GetClassToClassKeywordFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [

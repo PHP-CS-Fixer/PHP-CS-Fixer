@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Console\Report\FixReport;
 
+use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\Console\Report\FixReport\XmlReporter;
 use PhpCsFixer\PhpunitConstraintXmlMatchesXsd\Constraint\XmlMatchesXsd;
@@ -26,19 +27,23 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Report\FixReport\XmlReporter
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class XmlReporterTest extends AbstractReporterTestCase
 {
-    /**
-     * @var null|string
-     */
-    private static $xsd;
+    private static ?string $xsd = null;
 
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
 
-        self::$xsd = file_get_contents(__DIR__.'/../../../../doc/schemas/fix/xml.xsd');
+        $content = file_get_contents(__DIR__.'/../../../../doc/schemas/fix/xml.xsd');
+        if (false === $content) {
+            throw new \RuntimeException('Cannot read file.');
+        }
+
+        self::$xsd = $content;
     }
 
     public static function tearDownAfterClass(): void
@@ -50,9 +55,12 @@ final class XmlReporterTest extends AbstractReporterTestCase
 
     protected static function createNoErrorReport(): string
     {
-        return <<<'XML'
+        $about = Application::getAbout();
+
+        return <<<XML
             <?xml version="1.0" encoding="UTF-8"?>
             <report>
+              <about value="{$about}"/>
               <files />
             </report>
             XML;
@@ -60,9 +68,12 @@ final class XmlReporterTest extends AbstractReporterTestCase
 
     protected static function createSimpleReport(): string
     {
-        return <<<'XML'
+        $about = Application::getAbout();
+
+        return <<<XML
             <?xml version="1.0" encoding="UTF-8"?>
             <report>
+              <about value="{$about}"/>
               <files>
                 <file id="1" name="someFile.php">
                   <diff>--- Original
@@ -71,8 +82,8 @@ final class XmlReporterTest extends AbstractReporterTestCase
 
              class Foo
              {
-            -    public function bar($foo = 1, $bar)
-            +    public function bar($foo, $bar)
+            -    public function bar(\$foo = 1, \$bar)
+            +    public function bar(\$foo, \$bar)
                  {
                  }
              }</diff>
@@ -84,9 +95,12 @@ final class XmlReporterTest extends AbstractReporterTestCase
 
     protected static function createWithDiffReport(): string
     {
-        return <<<'XML'
+        $about = Application::getAbout();
+
+        return <<<XML
             <?xml version="1.0" encoding="UTF-8"?>
             <report>
+              <about value="{$about}"/>
               <files>
                 <file id="1" name="someFile.php">
                   <diff>--- Original
@@ -95,8 +109,8 @@ final class XmlReporterTest extends AbstractReporterTestCase
 
              class Foo
              {
-            -    public function bar($foo = 1, $bar)
-            +    public function bar($foo, $bar)
+            -    public function bar(\$foo = 1, \$bar)
+            +    public function bar(\$foo, \$bar)
                  {
                  }
              }</diff>
@@ -108,9 +122,12 @@ final class XmlReporterTest extends AbstractReporterTestCase
 
     protected static function createWithAppliedFixersReport(): string
     {
-        return <<<'XML'
+        $about = Application::getAbout();
+
+        return <<<XML
             <?xml version="1.0" encoding="UTF-8"?>
             <report>
+              <about value="{$about}"/>
               <files>
                 <file id="1" name="someFile.php">
                   <applied_fixers>
@@ -125,9 +142,12 @@ final class XmlReporterTest extends AbstractReporterTestCase
 
     protected static function createWithTimeAndMemoryReport(): string
     {
-        return <<<'XML'
+        $about = Application::getAbout();
+
+        return <<<XML
             <?xml version="1.0" encoding="UTF-8"?>
             <report>
+              <about value="{$about}"/>
               <files>
                 <file id="1" name="someFile.php">
                   <diff>--- Original
@@ -136,8 +156,8 @@ final class XmlReporterTest extends AbstractReporterTestCase
 
              class Foo
              {
-            -    public function bar($foo = 1, $bar)
-            +    public function bar($foo, $bar)
+            -    public function bar(\$foo = 1, \$bar)
+            +    public function bar(\$foo, \$bar)
                  {
                  }
              }</diff>
@@ -153,9 +173,12 @@ final class XmlReporterTest extends AbstractReporterTestCase
 
     protected static function createComplexReport(): string
     {
-        return <<<'XML'
+        $about = Application::getAbout();
+
+        return <<<XML
             <?xml version="1.0" encoding="UTF-8"?>
             <report>
+              <about value="{$about}"/>
               <files>
                 <file id="1" name="someFile.php">
                   <applied_fixers>

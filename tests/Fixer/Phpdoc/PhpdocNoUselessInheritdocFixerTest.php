@@ -20,6 +20,10 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocNoUselessInheritdocFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocNoUselessInheritdocFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
 {
@@ -31,6 +35,9 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string, 2?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -269,26 +276,6 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     use T;
 
                     /** @inheritdoc */
-                    public function importFromTrait()
-                    {
-                    }
-                }
-                ',
-            '<?php
-                class B
-                {
-                    /** @inheritDoc */
-                    public function falseImportFromTrait()
-                    {
-                    }
-                }
-
-                /** @inheritDoc */
-                class A
-                {
-                    use T;
-
-                    /** @inheritDoc */
                     public function importFromTrait()
                     {
                     }

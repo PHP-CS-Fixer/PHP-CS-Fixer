@@ -2,7 +2,7 @@
 Rule ``use_arrow_functions``
 ============================
 
-Anonymous functions with one-liner return statement must use arrow functions.
+Anonymous functions with return as the only statement must use arrow functions.
 
 Warning
 -------
@@ -36,4 +36,12 @@ The rule is part of the following rule sets:
 
 - `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_
 - `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_
+- `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_
 
+References
+----------
+
+- Fixer class: `PhpCsFixer\\Fixer\\FunctionNotation\\UseArrowFunctionsFixer <./../../../src/Fixer/FunctionNotation/UseArrowFunctionsFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\FunctionNotation\\UseArrowFunctionsFixerTest <./../../../tests/Fixer/FunctionNotation/UseArrowFunctionsFixerTest.php>`_
+
+The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

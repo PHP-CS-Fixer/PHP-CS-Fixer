@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\Import;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Import\NoLeadingImportSlashFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Import\NoLeadingImportSlashFixer>
+ *
+ * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -213,16 +220,19 @@ use const \some\Z\{ConstX,ConstY,ConstZ,};
     }
 
     /**
-     * @dataProvider provideFixPrePHP80Cases
+     * @dataProvider provideFixPre80Cases
      *
      * @requires PHP <8.0
      */
-    public function testFixPrePHP80(string $expected, ?string $input = null): void
+    public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public static function provideFixPrePHP80Cases(): iterable
+    /**
+     * @return iterable<array{string, string}>
+     */
+    public static function provideFixPre80Cases(): iterable
     {
         yield [
             '<?php use /*1*/A\D;',

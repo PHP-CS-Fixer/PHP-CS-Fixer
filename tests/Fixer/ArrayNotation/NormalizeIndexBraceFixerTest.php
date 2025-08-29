@@ -17,17 +17,21 @@ namespace PhpCsFixer\Tests\Fixer\ArrayNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ArrayNotation\NormalizeIndexBraceFixer
  *
- * @requires PHP <8.0
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ArrayNotation\NormalizeIndexBraceFixer>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NormalizeIndexBraceFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @requires PHP <8.0
+     *
      * @dataProvider provideFixCases
      */
     public function testFix(string $expected, ?string $input = null): void
@@ -35,6 +39,9 @@ final class NormalizeIndexBraceFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{string, string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -50,6 +57,37 @@ final class NormalizeIndexBraceFixerTest extends AbstractFixerTestCase
         yield [
             '<?php echo $array[0]->foo . $collection->items[1]->property;',
             '<?php echo $array{0}->foo . $collection->items{1}->property;',
+        ];
+    }
+
+    /**
+     * @requires PHP 8.4
+     *
+     * @dataProvider provideFix84Cases
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield 'property hooks: property without default value' => [
+            <<<'PHP'
+                <?php
+
+                class PropertyHooks
+                {
+                    public string $bar {
+                        set(string $value) {
+                            $this -> foo = strtolower($value);
+                        }
+                    }
+                }
+                PHP,
         ];
     }
 }

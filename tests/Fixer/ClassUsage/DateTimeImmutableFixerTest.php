@@ -17,11 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\ClassUsage;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @author Kuba Werłos <werlos@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassUsage\DateTimeImmutableFixer>
+ *
+ * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DateTimeImmutableFixerTest extends AbstractFixerTestCase
 {
@@ -33,6 +37,9 @@ final class DateTimeImmutableFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<int, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield [
@@ -219,6 +226,9 @@ final class DateTimeImmutableFixerTest extends AbstractFixerTestCase
         $this->doTest($expected);
     }
 
+    /**
+     * @return iterable<int, array{string}>
+     */
     public static function provideFix80Cases(): iterable
     {
         yield ['<?php $foo?->DateTime();'];
