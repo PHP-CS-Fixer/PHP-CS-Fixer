@@ -703,13 +703,11 @@ final class ConfigurationResolver
         }
 
         if (str_starts_with($rules, '{')) {
-            $rules = json_decode($rules, true);
-
-            if (\JSON_ERROR_NONE !== json_last_error()) {
-                throw new InvalidConfigurationException(\sprintf('Invalid JSON rules input: "%s".', json_last_error_msg()));
+            try {
+                return json_decode($rules, true, 512, \JSON_THROW_ON_ERROR);
+            } catch (\JsonException $e) {
+                throw new InvalidConfigurationException(\sprintf('Invalid JSON rules input: "%s".', $e->getMessage()));
             }
-
-            return $rules;
         }
 
         $rules = [];
