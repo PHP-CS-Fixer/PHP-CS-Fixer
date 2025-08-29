@@ -9,7 +9,8 @@ changelog:
         - kind/revert
     - title: Breaking Changes 🛠
       labels:
-        - type/BC
+        # following kind/* instead of type/*, as it's a special type of entry in the release notes
+        - kind/BC break
     - title: New Features 🎉
       labels:
         - type/feat
