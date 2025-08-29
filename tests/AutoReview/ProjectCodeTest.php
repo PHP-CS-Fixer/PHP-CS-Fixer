@@ -373,7 +373,7 @@ final class ProjectCodeTest extends TestCase
         $rc = new \ReflectionClass($testClassName);
 
         $exceptionClasses = [
-            // @TODO remove while removing legacy `VisibilityRequiredFixer`
+            // @TODO 4.0 remove while removing legacy `VisibilityRequiredFixer`
             ModifierKeywordsFixerTest::class,
         ];
 
