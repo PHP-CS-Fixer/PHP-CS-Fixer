@@ -121,7 +121,7 @@ final class FileHandler implements FileHandlerInterface
                 return null;
             }
 
-            if ($fileObject->flock(LOCK_SH) === false) {
+            if (false === $fileObject->flock(\LOCK_SH)) {
                 return null;
             }
 
@@ -130,21 +130,21 @@ final class FileHandler implements FileHandlerInterface
                 $fileObject->rewind();
 
                 $content = '';
-                while ($fileObject->eof() === false) {
-                    $chunk = $fileObject->fread(8192);
+                while (false === $fileObject->eof()) {
+                    $chunk = $fileObject->fread(8_192);
 
-                    if ($chunk === false) {
+                    if (false === $chunk) {
                         return null;
                     }
 
-                    if ($chunk === '') {
+                    if ('' === $chunk) {
                         break;
                     }
 
                     $content .= $chunk;
                 }
             } finally {
-                $fileObject->flock(LOCK_UN);
+                $fileObject->flock(\LOCK_UN);
             }
 
             if (false === $content) {
