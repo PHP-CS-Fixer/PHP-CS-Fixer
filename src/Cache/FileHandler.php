@@ -26,6 +26,8 @@ use Symfony\Component\Filesystem\Exception\IOException;
  */
 final class FileHandler implements FileHandlerInterface
 {
+    private const READ_CHUNK_SIZE = 4_096;
+
     private \SplFileInfo $fileInfo;
 
     private int $fileMTime = 0;
@@ -132,12 +134,13 @@ final class FileHandler implements FileHandlerInterface
 
                 $content = '';
                 while (false === $fileObject->eof()) {
-                    $chunk = $fileObject->fread(8_192);
+                    $chunk = $fileObject->fread(self::READ_CHUNK_SIZE);
 
                     if (false === $chunk) {
                         return null;
                     }
 
+                    if ('' === $chunk) {
                         // If not at EOF, empty string means read error.
                         return null;
                     }
