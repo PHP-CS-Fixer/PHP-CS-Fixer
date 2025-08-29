@@ -27,6 +27,8 @@ use Symfony\Component\Yaml\Yaml;
  *
  * @group auto-review
  * @group covers-nothing
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PRTypeLabelsTest extends TestCase
 {
@@ -77,7 +79,7 @@ final class PRTypeLabelsTest extends TestCase
      */
     private function getTypesFromPRLint(): array
     {
-        $prlint = json_decode(file_get_contents(__DIR__.'/../../.github/prlint.json'), true, 512, JSON_THROW_ON_ERROR);
+        $prlint = json_decode(file_get_contents(__DIR__.'/../../.github/prlint.json'), true, 512, \JSON_THROW_ON_ERROR);
         $typesPattern = $prlint['title'][0]['pattern'];
 
         Preg::match('/(?<=\()[^)]+(?=\))/', $typesPattern, $matches);
