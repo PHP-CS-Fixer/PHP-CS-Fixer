@@ -38,11 +38,13 @@ final class PRTypeLabelsTest extends TestCase
         $expectedTypes = [
             ...$prLintTypes,
             '*',
-            'BC',
-            'deps',
+            'BC-break',
+            'dependencies', // @TODO @MARKER-7305 remove me
             'revert',
         ];
+
         sort($expectedTypes);
+        sort($templateTypes);
 
         self::assertSame($expectedTypes, $templateTypes);
     }
