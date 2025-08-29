@@ -178,7 +178,7 @@ class Sample
     /**
      * @protected
      *
-     * @todo move visibility from annotation to code when `VisibilityRequiredFixer` is removed
+     * @TODO 4.0 move visibility from annotation to code when `VisibilityRequiredFixer` is removed
      */
     public function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
