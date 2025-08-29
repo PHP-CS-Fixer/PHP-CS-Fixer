@@ -320,5 +320,35 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
                 class Foo {}
                 PHP,
         ];
+
+        yield [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    /**
+                     * @var int
+                     */
+                    const BAR = 1;
+
+                    /** @var int */
+                    const BAZ = 2;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    /**
+                     * @const int
+                     */
+                    const BAR = 1;
+
+                    /** @const int */
+                    const BAZ = 2;
+                }
+                PHP,
+            ['replacements' => ['const' => 'var']],
+        ];
     }
 }
