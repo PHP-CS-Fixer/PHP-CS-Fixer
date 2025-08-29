@@ -147,7 +147,7 @@ final class FileHandler implements FileHandlerInterface
                 $fileObject->flock(\LOCK_UN);
             }
 
-            if (false === $content) {
+            if ('' === $content) {
                 return null;
             }
 
