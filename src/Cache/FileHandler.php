@@ -137,8 +137,8 @@ final class FileHandler implements FileHandlerInterface
                         return null;
                     }
 
-                    if ('' === $chunk) {
-                        break;
+                        // If not at EOF, empty string means read error.
+                        return null;
                     }
 
                     $content .= $chunk;
