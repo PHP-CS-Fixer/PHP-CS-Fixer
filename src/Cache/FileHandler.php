@@ -121,7 +121,31 @@ final class FileHandler implements FileHandlerInterface
                 return null;
             }
 
-            $content = $fileObject->fread($size);
+            if ($fileObject->flock(LOCK_SH) === false) {
+                return null;
+            }
+
+            // Read cache file in chunks
+            try {
+                $fileObject->rewind();
+
+                $content = '';
+                while ($fileObject->eof() === false) {
+                    $chunk = $fileObject->fread(8192);
+
+                    if ($chunk === false) {
+                        return null;
+                    }
+
+                    if ($chunk === '') {
+                        break;
+                    }
+
+                    $content .= $chunk;
+                }
+            } finally {
+                $fileObject->flock(LOCK_UN);
+            }
 
             if (false === $content) {
                 return null;
