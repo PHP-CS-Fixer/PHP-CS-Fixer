@@ -34,7 +34,6 @@ use PhpCsFixer\Utils;
  * But our class takes care of it and always ensures correct size and indexes, so that these methods never return `null` instead of `Token`.
  *
  * @method Token                    offsetGet($offset)
- * @method Token                    current()
  * @method \Traversable<int, Token> getIterator()
  * @method array<int, Token>        toArray()
  *
