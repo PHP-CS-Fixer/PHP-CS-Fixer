@@ -16,7 +16,6 @@ namespace PhpCsFixer\Doctrine\Annotation;
 
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token as PhpToken;
-use Traversable;
 
 /**
  * A list of Doctrine annotation tokens.
@@ -25,12 +24,13 @@ use Traversable;
  *
  * @extends \SplFixedArray<Token>
  *
- * // `SplFixedArray` uses `T|null` in return types because value can be null if an offset is unset or if the size does not match the number of elements.
- * // But our class takes care of it and always ensures correct size and indexes, so that these methods never return `null` instead of `Token`.
- * @method Token offsetGet($offset)
- * @method Token current()
- * @method Traversable<int, Token> getIterator()
- * @method array<int, Token> toArray()
+ * `SplFixedArray` uses `T|null` in return types because value can be null if an offset is unset or if the size does not match the number of elements.
+ * But our class takes care of it and always ensures correct size and indexes, so that these methods never return `null` instead of `Token`.
+ *
+ * @method Token                    offsetGet($offset)
+ * @method Token                    current()
+ * @method \Traversable<int, Token> getIterator()
+ * @method array<int, Token>        toArray()
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
