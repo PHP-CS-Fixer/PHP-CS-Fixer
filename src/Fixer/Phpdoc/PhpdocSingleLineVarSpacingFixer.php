@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * Fixer for part of rule defined in PSR5 ¶7.22.
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
 {

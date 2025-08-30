@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Token;
  * @internal
  *
  * @deprecated This is a God Class anti-pattern. Don't expand it. It is fine to use logic that is already here (that's why we don't trigger deprecation warnings), but over time logic should be moved to dedicated, single-responsibility classes.
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class Utils
 {

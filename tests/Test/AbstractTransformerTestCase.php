@@ -31,6 +31,8 @@ use PhpCsFixer\Tokenizer\TransformerInterface;
  * @phpstan-type _TransformerTestObservedKinds list<_PhpTokenKind>
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractTransformerTestCase extends TestCase
 {
@@ -180,7 +182,10 @@ abstract class AbstractTransformerTestCase extends TestCase
 
         foreach ($expectedTokens as $index => $tokenIdOrContent) {
             if (\is_string($tokenIdOrContent)) {
-                self::assertTrue($tokens[$index]->equals($tokenIdOrContent), \sprintf('The token at index %d should be %s, got %s', $index, json_encode($tokenIdOrContent, \JSON_THROW_ON_ERROR), $tokens[$index]->toJson()));
+                self::assertTrue(
+                    $tokens[$index]->equals($tokenIdOrContent),
+                    \sprintf('The token at index %d should be %s, got %s', $index, json_encode($tokenIdOrContent, \JSON_THROW_ON_ERROR), $tokens[$index]->toJson())
+                );
 
                 continue;
             }

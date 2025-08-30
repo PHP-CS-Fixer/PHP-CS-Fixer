@@ -1,11 +1,11 @@
 /.* export-ignore
 /benchmark.sh export-ignore
 /box.json.dist export-ignore
+/compose.override.dist.yaml export-ignore
+/compose.yaml export-ignore
 /dev-tools/ export-ignore
 /doc/ export-ignore
 /docker/ export-ignore
-/compose.override.dist.yaml export-ignore
-/compose.yaml export-ignore
 /Dockerfile export-ignore
 /infection.json5.dist export-ignore
 /phpstan.dist.neon export-ignore
@@ -20,4 +20,5 @@
 *.rst   text whitespace=blank-at-eol,blank-at-eof
 *.yml   text whitespace=blank-at-eol,blank-at-eof,space-before-tab,tab-in-indent,tabwidth=4
 *.png   binary eol=unset
+
 /tests/Fixtures/**/* -text -filter

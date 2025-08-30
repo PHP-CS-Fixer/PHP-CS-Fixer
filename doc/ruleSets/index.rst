@@ -28,6 +28,7 @@ List of Available Rule sets
 - `@PHP82Migration:risky <./PHP82MigrationRisky.rst>`_
 - `@PHP83Migration <./PHP83Migration.rst>`_
 - `@PHP84Migration <./PHP84Migration.rst>`_
+- `@PHP85Migration <./PHP85Migration.rst>`_
 - `@PHPUnit30Migration:risky <./PHPUnit30MigrationRisky.rst>`_
 - `@PHPUnit32Migration:risky <./PHPUnit32MigrationRisky.rst>`_
 - `@PHPUnit35Migration:risky <./PHPUnit35MigrationRisky.rst>`_

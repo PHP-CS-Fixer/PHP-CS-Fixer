@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Mark Scherer
  * @author Lucas Manzke <lmanzke@outlook.com>
  * @author Gregor Harlan <gharlan@web.de>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoUnreachableDefaultArgumentValueFixer extends AbstractFixer
 {
@@ -128,17 +130,12 @@ function example($foo = "two words", $bar) {}
                 continue;
             }
 
-            if ($token->isGivenKind(\T_VARIABLE) && !$this->isEllipsis($tokens, $i)) {
+            if ($token->isGivenKind(\T_VARIABLE) && !$tokens[$tokens->getPrevMeaningfulToken($i)]->isGivenKind(\T_ELLIPSIS)) {
                 return $i;
             }
         }
 
         return null;
-    }
-
-    private function isEllipsis(Tokens $tokens, int $variableIndex): bool
-    {
-        return $tokens[$tokens->getPrevMeaningfulToken($variableIndex)]->isGivenKind(\T_ELLIPSIS);
     }
 
     private function getDefaultValueEndIndex(Tokens $tokens, int $index): int

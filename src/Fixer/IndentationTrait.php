@@ -19,8 +19,10 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-trait Indentation
+trait IndentationTrait
 {
     private function getLineIndentation(Tokens $tokens, int $index): string
     {

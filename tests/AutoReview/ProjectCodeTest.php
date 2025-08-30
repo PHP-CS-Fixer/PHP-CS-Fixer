@@ -27,6 +27,7 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitNamespacedFixer;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Runner\Parallel\ProcessUtils;
 use PhpCsFixer\Tests\PregTest;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tests\Test\AbstractIntegrationTestCase;
@@ -49,6 +50,8 @@ use Symfony\Component\Finder\SplFileInfo;
  *
  * @group auto-review
  * @group covers-nothing
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ProjectCodeTest extends TestCase
 {
@@ -127,11 +130,19 @@ final class ProjectCodeTest extends TestCase
             return; // public properties present, no need for class to be readonly
         }
 
-        $parentClass = $rc->getParentClass();
-        if (\PHP_VERSION_ID >= 8_02_00 && false !== $parentClass && !$parentClass->isReadOnly()) {
-            $this->addToAssertionCount(1);
+        if (\PHP_VERSION_ID >= 8_02_00) {
+            if ($rc->isReadOnly()) {
+                $this->addToAssertionCount(1);
 
-            return; // Parent class is _not_ readonly, child class cannot be readonly in such case
+                return; // Class is readonly, no need for further checks
+            }
+
+            $parentClass = $rc->getParentClass();
+            if (false !== $parentClass && !$parentClass->isReadOnly()) {
+                $this->addToAssertionCount(1);
+
+                return; // Parent class is _not_ readonly, child class cannot be readonly in such case
+            }
         }
 
         $rc = new \ReflectionClass($className);
@@ -520,12 +531,35 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
+     * @dataProvider provideSrcClassCases
+     * @dataProvider provideTestClassCases
+     *
+     * @param class-string $className
+     */
+    public function testThereIsNoUsageOfJsonLastError(string $className): void
+    {
+        $calledFunctions = $this->extractFunctionNamesCalledInClass($className);
+
+        $message = \sprintf('Class %s must not use "json_last_error()" nor "json_last_error_msg()", explicitly replace it to handle errors with "JSON_ERROR_NONE".', $className);
+        self::assertNotContains('json_last_error', $calledFunctions, $message);
+        self::assertNotContains('json_last_error_msg', $calledFunctions, $message);
+    }
+
+    /**
      * @dataProvider provideThereIsNoPregFunctionUsedDirectlyCases
      *
      * @param class-string $className
      */
     public function testThereIsNoPregFunctionUsedDirectly(string $className): void
     {
+        if (\in_array($className, [
+            ProcessUtils::class, // code copied from Symfony, we do not want to make custom adjustments there
+        ], true)) {
+            $this->expectNotToPerformAssertions();
+
+            return;
+        }
+
         $calledFunctions = $this->extractFunctionNamesCalledInClass($className);
 
         $message = \sprintf('Class %s must not use preg_*, it shall use Preg::* instead.', $className);
@@ -821,7 +855,7 @@ final class ProjectCodeTest extends TestCase
 
         $methodsWithInheritdoc = array_filter(
             $rc->getMethods(),
-            static fn (\ReflectionMethod $rm): bool => false !== $rm->getDocComment() && false !== stripos($rm->getDocComment(), '@inheritdoc')
+            static fn (\ReflectionMethod $rm): bool => false !== $rm->getDocComment() && str_contains(strtolower($rm->getDocComment()), '@inheritdoc')
         );
 
         $methodsWithInheritdoc = array_map(
@@ -1016,6 +1050,26 @@ final class ProjectCodeTest extends TestCase
             }
 
             yield [\get_class($fixer)];
+        }
+    }
+
+    /**
+     * @dataProvider provideSrcClassCases
+     * @dataProvider provideTestClassCases
+     *
+     * @param class-string $name
+     */
+    public function testConsistentClassyNaming(string $name): void
+    {
+        $reflection = new \ReflectionClass($name);
+
+        if ($reflection->isInterface()) {
+            self::assertStringEndsWith('Interface', $name);
+        } elseif ($reflection->isTrait()) {
+            self::assertStringEndsWith('Trait', $name);
+        } else {
+            self::assertStringEndsNotWith('Interface', $name);
+            self::assertStringEndsNotWith('Trait', $name);
         }
     }
 

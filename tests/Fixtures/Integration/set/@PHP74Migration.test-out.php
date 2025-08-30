@@ -7,4 +7,4 @@ declare(strict_types=1);
 $y = $f[1];
 
 // https://www.php.net/manual/en/migration74.deprecated.php#migration74.deprecated.core.real
-// $a = (real) $a; fails on PHP7.4 tokenizing deprecation error triggered
+$a = (float) $a;

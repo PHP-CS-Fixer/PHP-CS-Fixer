@@ -812,6 +812,9 @@ PHPDoc
 - `phpdoc_tag_casing <./phpdoc/phpdoc_tag_casing.rst>`_
 
   Fixes casing of PHPDoc tags.
+- `phpdoc_tag_no_named_arguments <./phpdoc/phpdoc_tag_no_named_arguments.rst>`_
+
+  There must be ``@no-named-arguments`` tag in PHPDoc of a class/enum/interface/trait.
 - `phpdoc_tag_type <./phpdoc/phpdoc_tag_type.rst>`_
 
   Forces PHPDoc tags to be either regular annotations or inline.

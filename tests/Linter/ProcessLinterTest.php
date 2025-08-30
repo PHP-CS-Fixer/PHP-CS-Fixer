@@ -24,6 +24,8 @@ use PhpCsFixer\Linter\ProcessLinter;
  *
  * @covers \PhpCsFixer\Linter\ProcessLinter
  * @covers \PhpCsFixer\Linter\ProcessLintingResult
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ProcessLinterTest extends AbstractLinterTestCase
 {

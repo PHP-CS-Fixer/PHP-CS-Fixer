@@ -26,6 +26,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Utils;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
@@ -40,6 +41,8 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Jakub Kwaśniewski <jakub@zero-85.pl>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -107,6 +110,18 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
                 ->setAllowedValues([static function (array $order): bool {
                     if (\count($order) < 2) {
                         throw new InvalidOptionsException('The option "order" value is invalid. Minimum two tags are required.');
+                    }
+
+                    $unique = array_unique($order);
+                    if (\count($order) !== \count($unique)) {
+                        $duplicates = array_keys(array_filter(array_count_values($order), static fn (int $count): bool => $count > 1));
+
+                        throw new InvalidOptionsException(\sprintf(
+                            'The option "order" value is invalid. Tag%s %s %s duplicated.',
+                            \count($duplicates) > 1 ? 's' : '',
+                            Utils::naturalLanguageJoin($duplicates),
+                            \count($duplicates) > 1 ? 'are' : 'is',
+                        ));
                     }
 
                     return true;

@@ -342,26 +342,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Casing/MagicConstantCasingFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset \'end\' might not exist on array\\{token\\: PhpCsFixer\\\\Tokenizer\\\\Token, type\\: string, index\\: int, start\\?\\: int, end\\?\\: int\\}\\.$#',
-    'count' => 3,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset \'start\' might not exist on array\\{token\\: PhpCsFixer\\\\Tokenizer\\\\Token, type\\: string, index\\: int, start\\?\\: int, end\\?\\: int\\}\\.$#',
-    'count' => 11,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset int might not exist on non\\-empty\\-list\\<array\\{token\\: PhpCsFixer\\\\Tokenizer\\\\Token, type\\: string, index\\: int, start\\?\\: int, end\\?\\: int\\}\\>\\.$#',
-    'count' => 3,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset int\\<1, max\\> might not exist on non\\-empty\\-list\\<array\\{token\\: PhpCsFixer\\\\Tokenizer\\\\Token, type\\: string, index\\: int, start\\?\\: int, end\\?\\: int\\}\\>\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php',
-];
-$ignoreErrors[] = [
     'message' => '#^Offset string might not exist on array\\<string, string\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php',
@@ -462,11 +442,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/ControlStructure/YodaStyleFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset 0 might not exist on list\\<int\\>\\.$#',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Fixer/FunctionNotation/CombineNestedDirnameFixer.php',
-];
-$ignoreErrors[] = [
     'message' => '#^Offset 1 might not exist on non\\-empty\\-list\\<int\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/FunctionNotation/ImplodeCallFixer.php',
@@ -532,27 +507,17 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Import/SingleImportPerStatementFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset 0 might not exist on list\\<mixed\\>\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Internal/ConfigurableFixerTemplateFixer.php',
-];
-$ignoreErrors[] = [
     'message' => '#^Offset 0 might not exist on list\\<string\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Internal/ConfigurableFixerTemplateFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset \'get_called_class\'\\|\'get_class\'\\|\'get_class_this\'\\|\'php_sapi_name\'\\|\'phpversion\'\\|\'pi\' might not exist on array\\<string, list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\>\\.$#',
+    'message' => '#^Offset \'get_called_class\'\\|\'get_class\'\\|\'get_class_this\'\\|\'php_sapi_name\'\\|\'phpversion\'\\|\'pi\' might not exist on array\\<string, non\\-empty\\-list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/LanguageConstruct/FunctionToConstantFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset 0 might not exist on list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\.$#',
-    'count' => 3,
-    'path' => __DIR__ . '/../../../src/Fixer/LanguageConstruct/FunctionToConstantFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset string might not exist on array\\<string, list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\>\\.$#',
+    'message' => '#^Offset string might not exist on array\\<string, non\\-empty\\-list\\<PhpCsFixer\\\\Tokenizer\\\\Token\\>\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/LanguageConstruct/FunctionToConstantFixer.php',
 ];
@@ -672,17 +637,12 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset 0 might not exist on list\\<array\\{int, string\\}\\>\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitTestCaseStaticMethodCallsFixer.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset 1 might not exist on list\\<array\\{int, string\\}\\>\\.$#',
+    'message' => '#^Offset 1 might not exist on non\\-empty\\-list\\<array\\{int, string\\}\\>\\.$#',
     'count' => 2,
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitTestCaseStaticMethodCallsFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset string might not exist on array\\<string, list\\<array\\{int, string\\}\\>\\>\\.$#',
+    'message' => '#^Offset string might not exist on non\\-empty\\-array\\<string, non\\-empty\\-list\\<array\\{int, string\\}\\>\\>\\.$#',
     'count' => 3,
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitTestCaseStaticMethodCallsFixer.php',
 ];

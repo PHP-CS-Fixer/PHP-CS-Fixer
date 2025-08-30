@@ -323,6 +323,10 @@ The rule is part of the following rule sets:
 
   ``['after_heredoc' => true]``
 
+- `@PHP85Migration <./../../ruleSets/PHP85Migration.rst>`_ with config:
+
+  ``['after_heredoc' => true]``
+
 - `@PSR2 <./../../ruleSets/PSR2.rst>`_ with config:
 
   ``['attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline']``

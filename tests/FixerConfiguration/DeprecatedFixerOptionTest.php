@@ -23,6 +23,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\FixerConfiguration\DeprecatedFixerOption
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DeprecatedFixerOptionTest extends TestCase
 {
@@ -165,7 +167,12 @@ final class DeprecatedFixerOptionTest extends TestCase
                 throw new \LogicException('Not implemented.');
             }
 
-            public function getDefault(): void
+            /**
+             * @return mixed
+             *
+             * @throws \LogicException when no default value is defined
+             */
+            public function getDefault()
             {
                 throw new \LogicException('Not implemented.');
             }
