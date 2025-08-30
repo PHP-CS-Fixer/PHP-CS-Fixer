@@ -278,7 +278,7 @@ return $foo === count($bar);
     private function fixTokens(Tokens $tokens): Tokens
     {
         for ($i = \count($tokens) - 1; $i > 1; --$i) {
-            if ($tokens[$i]->isGivenKind($this->candidateTypes)) {
+            if ($tokens[$i]->isKind($this->candidateTypes)) {
                 $yoda = $this->candidateTypesConfiguration[$tokens[$i]->getKind()];
             } else {
                 continue;

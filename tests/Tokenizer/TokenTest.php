@@ -237,20 +237,38 @@ final class TokenTest extends TestCase
         yield [new Token([FCT::T_NULLSAFE_OBJECT_OPERATOR, '?->']), true];
     }
 
+    public function testIsGivenKind(): void
+    {
+        $braceToken = self::getBraceToken();
+        $foreachToken = self::getForeachToken();
+
+        self::assertFalse($braceToken->isGivenKind(\T_FOR));
+        self::assertFalse($braceToken->isGivenKind(\T_FOREACH));
+        self::assertFalse($braceToken->isGivenKind([\T_FOR]));
+        self::assertFalse($braceToken->isGivenKind([\T_FOREACH]));
+        self::assertFalse($braceToken->isGivenKind([\T_FOR, \T_FOREACH]));
+
+        self::assertFalse($foreachToken->isGivenKind(\T_FOR));
+        self::assertTrue($foreachToken->isGivenKind(\T_FOREACH));
+        self::assertFalse($foreachToken->isGivenKind([\T_FOR]));
+        self::assertTrue($foreachToken->isGivenKind([\T_FOREACH]));
+        self::assertTrue($foreachToken->isGivenKind([\T_FOR, \T_FOREACH]));
+    }
+
     /**
-     * @dataProvider provideIsGivenKindCases
+     * @dataProvider provideIsKindCases
      *
      * @param _PhpTokenKind|list<_PhpTokenKind> $kind
      */
-    public function testIsGivenKind(bool $expected, Token $token, $kind): void
+    public function testIsKind(bool $expected, Token $token, $kind): void
     {
-        self::assertSame($expected, $token->isGivenKind($kind));
+        self::assertSame($expected, $token->isKind($kind));
     }
 
     /**
      * @return iterable<int, array{bool, Token, _PhpTokenKind|list<_PhpTokenKind>}>
      */
-    public static function provideIsGivenKindCases(): iterable
+    public static function provideIsKindCases(): iterable
     {
         $braceToken = self::getBraceToken();
 
