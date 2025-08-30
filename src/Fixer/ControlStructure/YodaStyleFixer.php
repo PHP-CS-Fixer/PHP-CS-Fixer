@@ -278,13 +278,8 @@ return $foo === count($bar);
     private function fixTokens(Tokens $tokens): Tokens
     {
         for ($i = \count($tokens) - 1; $i > 1; --$i) {
-            if ($tokens[$i]->isGivenKind($this->candidateTypes)) {
-                $yoda = $this->candidateTypesConfiguration[$tokens[$i]->getId()];
-            } elseif (
-                ($tokens[$i]->equals('<') && \in_array('<', $this->candidateTypes, true))
-                || ($tokens[$i]->equals('>') && \in_array('>', $this->candidateTypes, true))
-            ) {
-                $yoda = $this->candidateTypesConfiguration[$tokens[$i]->getContent()];
+            if ($tokens[$i]->isKind($this->candidateTypes)) {
+                $yoda = $this->candidateTypesConfiguration[$tokens[$i]->getKind()];
             } else {
                 continue;
             }
