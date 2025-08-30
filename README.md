@@ -7,11 +7,11 @@
 # PHP Coding Standards Fixer
 
 The PHP Coding Standards Fixer (PHP CS Fixer) tool fixes your code to follow standards;
-whether you want to follow PHP coding standards as defined in the PSR-1, PSR-2, etc.,
+whether you want to follow PHP coding standards as defined by [PER Coding Style](https://www.php-fig.org/per/coding-style/),
 or other community driven ones like the Symfony one.
 You can **also** define your (team's) style through configuration.
 
-It can modernize your code (like converting the ``pow`` function to the ``**`` operator on PHP 5.6)
+It can modernize your code (like converting the `pow` function to the `**` operator on PHP 5.6)
 and (micro) optimize it.
 
 If you are already using a linter to identify coding standards problems in your
@@ -27,7 +27,7 @@ projects. This tool does not only detect them, but also fixes them for you.
 * PHP 8.3
 * PHP 8.4
 
-> **Note**
+> [!NOTE]
 > Each new PHP version requires a huge effort to support the new syntax.
 > That's why the latest PHP version might not be supported yet. If you need it,
 > please, consider supporting the project in any convenient way, for example
@@ -40,7 +40,7 @@ projects. This tool does not only detect them, but also fixes them for you.
 
 The recommended way to install PHP CS Fixer is to use [Composer](https://getcomposer.org/download/):
 
-```console
+```sh
 composer require --dev friendsofphp/php-cs-fixer
 ## or when facing conflicts in dependencies:
 composer require --dev php-cs-fixer/shim
@@ -54,7 +54,7 @@ For more details and other installation methods (also with Docker or behind CI),
 Assuming you installed PHP CS Fixer as instructed above, you can run the
 following command to fix the PHP files in the `src` directory:
 
-```console
+```sh
 ./vendor/bin/php-cs-fixer fix src
 ```
 
