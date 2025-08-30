@@ -755,9 +755,9 @@ class Tokens extends \SplFixedArray
     /**
      * Get index for closest sibling token not of given kind.
      *
-     * @param int                 $index     token index
-     * @param -1|1                $direction
-     * @param list<_PhpTokenKind> $kinds     possible tokens kinds
+     * @param int       $index     token index
+     * @param -1|1      $direction
+     * @param list<int> $kinds     possible tokens kinds
      */
     public function getTokenNotOfKindsSibling(int $index, int $direction, array $kinds = []): ?int
     {
