@@ -20,6 +20,7 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Utils;
+use Traversable;
 
 /**
  * Collection of code tokens.
@@ -30,7 +31,12 @@ use PhpCsFixer\Utils;
  *
  * @extends \SplFixedArray<Token>
  *
+ * // `SplFixedArray` uses `T|null` in return types because value can be null if an offset is unset or if the size does not match the number of elements.
+ * // But our class takes care of it and always ensures correct size and indexes, so that these methods never return `null` instead of `Token`.
  * @method Token offsetGet($offset)
+ * @method Token current()
+ * @method Traversable<int, Token> getIterator()
+ * @method array<int, Token> toArray()
  *
  * @phpstan-import-type _PhpTokenKind from Token
  * @phpstan-import-type _PhpTokenArray from Token
