@@ -1,7 +1,7 @@
 --TEST--
-Integration of fixers: php_unit_data_provider_static,visibility_required.
+Integration of fixers: php_unit_data_provider_static,modifier_keywords.
 --RULESET--
-{"php_unit_data_provider_static": true, "visibility_required": true}
+{"php_unit_data_provider_static": true, "modifier_keywords": true}
 --EXPECT--
 <?php
 class FooTest extends TestCase {

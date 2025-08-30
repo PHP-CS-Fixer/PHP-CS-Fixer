@@ -42,6 +42,7 @@ final class PSR2Set extends AbstractRuleSetDescription
                 'attribute_placement' => 'ignore',
                 'on_multiline' => 'ensure_fully_multiline',
             ],
+            'modifier_keywords' => ['elements' => ['method', 'property']],
             'no_break_comment' => true,
             'no_closing_tag' => true,
             'no_multiple_statements_per_line' => true,
@@ -95,7 +96,6 @@ final class PSR2Set extends AbstractRuleSetDescription
             'statement_indentation' => true,
             'switch_case_semicolon_to_colon' => true,
             'switch_case_space' => true,
-            'visibility_required' => ['elements' => ['method', 'property']],
         ];
     }
 
