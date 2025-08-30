@@ -43,7 +43,7 @@ final class AlternativeSyntaxAnalyzer
 
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-        if ($tokens[$prevIndex]->isGivenKind(\T_ELSE)) {
+        if ($tokens[$prevIndex]->isKind(\T_ELSE)) {
             return true;
         }
 
@@ -54,7 +54,7 @@ final class AlternativeSyntaxAnalyzer
         $openParenthesisIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $prevIndex);
         $beforeOpenParenthesisIndex = $tokens->getPrevMeaningfulToken($openParenthesisIndex);
 
-        return $tokens[$beforeOpenParenthesisIndex]->isGivenKind([
+        return $tokens[$beforeOpenParenthesisIndex]->isKind([
             \T_DECLARE,
             \T_ELSEIF,
             \T_FOR,
@@ -91,7 +91,7 @@ final class AlternativeSyntaxAnalyzer
         while (true) {
             $index = $tokens->getNextTokenOfKind($index, $findKinds);
 
-            if ($tokens[$index]->isGivenKind($endTokenKinds)) {
+            if ($tokens[$index]->isKind($endTokenKinds)) {
                 return $index;
             }
 

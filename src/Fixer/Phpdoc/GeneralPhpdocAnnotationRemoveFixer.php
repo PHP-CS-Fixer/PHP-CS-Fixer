@@ -116,7 +116,7 @@ function foo() {}
         }
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
+            if (!$token->isKind(\T_DOC_COMMENT)) {
                 continue;
             }
 

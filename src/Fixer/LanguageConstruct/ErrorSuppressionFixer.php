@@ -139,7 +139,7 @@ final class ErrorSuppressionFixer extends AbstractFixer implements ConfigurableF
             $startIndex = $index;
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-            if ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+            if ($tokens[$prevIndex]->isKind(\T_NS_SEPARATOR)) {
                 $startIndex = $prevIndex;
                 $prevIndex = $tokens->getPrevMeaningfulToken($startIndex);
             }

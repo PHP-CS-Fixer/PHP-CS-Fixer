@@ -87,7 +87,7 @@ final class EmptyLoopBodyFixer extends AbstractFixer implements ConfigurableFixe
         if (self::STYLE_BRACES === $this->configuration['style']) {
             $analyzer = new TokensAnalyzer($tokens);
             $fixLoop = static function (int $index, int $endIndex) use ($tokens, $analyzer): void {
-                if ($tokens[$index]->isGivenKind(\T_WHILE) && $analyzer->isWhilePartOfDoWhile($index)) {
+                if ($tokens[$index]->isKind(\T_WHILE) && $analyzer->isWhilePartOfDoWhile($index)) {
                     return;
                 }
 
@@ -120,7 +120,7 @@ final class EmptyLoopBodyFixer extends AbstractFixer implements ConfigurableFixe
         }
 
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
-            if ($tokens[$index]->isGivenKind(self::TOKEN_LOOP_KINDS)) {
+            if ($tokens[$index]->isKind(self::TOKEN_LOOP_KINDS)) {
                 $endIndex = $tokens->getNextTokenOfKind($index, ['(']); // proceed to open '('
                 $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $endIndex); // proceed to close ')'
                 $fixLoop($index, $endIndex); // fix loop if needs fixing

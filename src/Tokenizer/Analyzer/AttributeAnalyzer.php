@@ -51,14 +51,14 @@ final class AttributeAnalyzer
     public static function isAttribute(Tokens $tokens, int $index): bool
     {
         if (
-            !$tokens[$index]->isGivenKind(\T_STRING) // checked token is not a string
+            !$tokens[$index]->isKind(\T_STRING) // checked token is not a string
             || !$tokens->isAnyTokenKindsFound([FCT::T_ATTRIBUTE]) // no attributes in the tokens collection
         ) {
             return false;
         }
 
         $attributeStartIndex = $tokens->getPrevTokenOfKind($index, self::TOKEN_KINDS_NOT_ALLOWED_IN_ATTRIBUTE);
-        if (!$tokens[$attributeStartIndex]->isGivenKind(\T_ATTRIBUTE)) {
+        if (!$tokens[$attributeStartIndex]->isKind(\T_ATTRIBUTE)) {
             return false;
         }
 
@@ -82,12 +82,12 @@ final class AttributeAnalyzer
      */
     public static function collect(Tokens $tokens, int $index): array
     {
-        if (!$tokens[$index]->isGivenKind(\T_ATTRIBUTE)) {
+        if (!$tokens[$index]->isKind(\T_ATTRIBUTE)) {
             throw new \InvalidArgumentException('Given index must point to an attribute.');
         }
 
         // Rewind to first attribute in group
-        while ($tokens[$prevIndex = $tokens->getPrevMeaningfulToken($index)]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+        while ($tokens[$prevIndex = $tokens->getPrevMeaningfulToken($index)]->isKind(CT::T_ATTRIBUTE_CLOSE)) {
             $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $prevIndex);
         }
 
@@ -97,7 +97,7 @@ final class AttributeAnalyzer
         do {
             $elements[] = $element = self::collectOne($tokens, $openingIndex);
             $openingIndex = $tokens->getNextMeaningfulToken($element->getEndIndex());
-        } while ($tokens[$openingIndex]->isGivenKind(\T_ATTRIBUTE));
+        } while ($tokens[$openingIndex]->isKind(\T_ATTRIBUTE));
 
         return $elements;
     }
@@ -107,14 +107,14 @@ final class AttributeAnalyzer
      */
     public static function collectOne(Tokens $tokens, int $index): AttributeAnalysis
     {
-        if (!$tokens[$index]->isGivenKind(\T_ATTRIBUTE)) {
+        if (!$tokens[$index]->isKind(\T_ATTRIBUTE)) {
             throw new \InvalidArgumentException('Given index must point to an attribute.');
         }
 
         $startIndex = $index;
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-        if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+        if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isKind(CT::T_ATTRIBUTE_CLOSE)) {
             // Include comments/PHPDoc if they are present
             $startIndex = $tokens->getNextNonWhitespace($prevIndex);
         }
@@ -137,7 +137,7 @@ final class AttributeAnalyzer
             return $name;
         }
 
-        if (!$tokens[$index]->isGivenKind([\T_STRING, \T_NS_SEPARATOR])) {
+        if (!$tokens[$index]->isKind([\T_STRING, \T_NS_SEPARATOR])) {
             $index = $tokens->getNextTokenOfKind($index, [[\T_STRING], [\T_NS_SEPARATOR]]);
         }
 

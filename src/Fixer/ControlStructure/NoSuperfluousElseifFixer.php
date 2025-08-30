@@ -65,13 +65,13 @@ final class NoSuperfluousElseifFixer extends AbstractNoUselessElseFixer
     private function isElseif(Tokens $tokens, int $index): bool
     {
         return
-            $tokens[$index]->isGivenKind(\T_ELSEIF)
-            || ($tokens[$index]->isGivenKind(\T_ELSE) && $tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind(\T_IF));
+            $tokens[$index]->isKind(\T_ELSEIF)
+            || ($tokens[$index]->isKind(\T_ELSE) && $tokens[$tokens->getNextMeaningfulToken($index)]->isKind(\T_IF));
     }
 
     private function convertElseifToIf(Tokens $tokens, int $index): void
     {
-        if ($tokens[$index]->isGivenKind(\T_ELSE)) {
+        if ($tokens[$index]->isKind(\T_ELSE)) {
             $tokens->clearTokenAndMergeSurroundingWhitespace($index);
         } else {
             $tokens[$index] = new Token([\T_IF, 'if']);

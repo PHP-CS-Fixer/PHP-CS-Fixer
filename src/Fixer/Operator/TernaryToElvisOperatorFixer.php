@@ -142,7 +142,7 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
         $before = ['end' => $index];
 
         while (!$tokens[$index]->equalsAny(self::VALID_BEFORE_ENDTYPES)) {
-            if ($tokens[$index]->isGivenKind([\T_INC, \T_DEC])) {
+            if ($tokens[$index]->isKind([\T_INC, \T_DEC])) {
                 return null;
             }
 
@@ -162,7 +162,7 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
             do {
                 $index = $tokens->getPrevMeaningfulToken($index);
 
-                if ($tokens[$index]->isGivenKind([\T_INC, \T_DEC])) {
+                if ($tokens[$index]->isKind([\T_INC, \T_DEC])) {
                     return null;
                 }
 

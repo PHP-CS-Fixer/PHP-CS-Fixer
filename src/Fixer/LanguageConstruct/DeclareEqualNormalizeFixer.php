@@ -74,7 +74,7 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = 0, $count = $tokens->count(); $index < $count - 6; ++$index) {
-            if (!$tokens[$index]->isGivenKind(\T_DECLARE)) {
+            if (!$tokens[$index]->isKind(\T_DECLARE)) {
                 continue;
             }
 

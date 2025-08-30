@@ -110,11 +110,11 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
     {
         $prevNonWhitespaceToken = $tokens[$tokens->getPrevNonWhitespace($index)];
 
-        if (!$prevNonWhitespaceToken->isGivenKind([\T_LNUMBER, \T_COMMENT, \T_DOC_COMMENT]) || str_starts_with($prevNonWhitespaceToken->getContent(), '/*')) {
+        if (!$prevNonWhitespaceToken->isKind([\T_LNUMBER, \T_COMMENT, \T_DOC_COMMENT]) || str_starts_with($prevNonWhitespaceToken->getContent(), '/*')) {
             $tokens->removeLeadingWhitespace($index, " \t");
         }
 
-        if (!$tokens[$tokens->getNextNonWhitespace($index)]->isGivenKind([\T_LNUMBER, \T_COMMENT, \T_DOC_COMMENT])) {
+        if (!$tokens[$tokens->getNextNonWhitespace($index)]->isKind([\T_LNUMBER, \T_COMMENT, \T_DOC_COMMENT])) {
             $tokens->removeTrailingWhitespace($index, " \t");
         }
     }

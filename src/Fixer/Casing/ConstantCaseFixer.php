@@ -113,16 +113,16 @@ final class ConstantCaseFixer extends AbstractFixer implements ConfigurableFixer
             }
 
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$prevIndex]->isGivenKind($forbiddenPrevKinds)) {
+            if ($tokens[$prevIndex]->isKind($forbiddenPrevKinds)) {
                 continue;
             }
 
             $nextIndex = $tokens->getNextMeaningfulToken($index);
-            if ($tokens[$nextIndex]->isGivenKind([\T_PAAMAYIM_NEKUDOTAYIM, \T_NS_SEPARATOR]) || $tokens[$nextIndex]->equals('=', false)) {
+            if ($tokens[$nextIndex]->isKind([\T_PAAMAYIM_NEKUDOTAYIM, \T_NS_SEPARATOR]) || $tokens[$nextIndex]->equals('=', false)) {
                 continue;
             }
 
-            if ($tokens[$prevIndex]->isGivenKind(\T_CASE) && $tokens[$nextIndex]->equals(';')) {
+            if ($tokens[$prevIndex]->isKind(\T_CASE) && $tokens[$nextIndex]->equals(';')) {
                 continue;
             }
 

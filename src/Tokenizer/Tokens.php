@@ -468,7 +468,7 @@ class Tokens extends \SplFixedArray
         $removeLastCommentLine = static function (self $tokens, int $index, int $indexOffset, string $whitespace): string {
             $token = $tokens[$index];
 
-            if (1 === $indexOffset && $token->isGivenKind(\T_OPEN_TAG)) {
+            if (1 === $indexOffset && $token->isKind(\T_OPEN_TAG)) {
                 if (str_starts_with($whitespace, "\r\n")) {
                     $tokens[$index] = new Token([\T_OPEN_TAG, rtrim($token->getContent())."\r\n"]);
 
@@ -867,7 +867,7 @@ class Tokens extends \SplFixedArray
                 $token = new Token($token);
             }
 
-            if ($token->isGivenKind($nonMeaningFullKind)) {
+            if ($token->isKind($nonMeaningFullKind)) {
                 throw new \InvalidArgumentException(\sprintf('Non-meaningful token at position: "%s".', $key));
             }
 

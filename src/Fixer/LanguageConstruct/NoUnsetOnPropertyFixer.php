@@ -73,7 +73,7 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(\T_UNSET)) {
+            if (!$tokens[$index]->isKind(\T_UNSET)) {
                 continue;
             }
 
@@ -121,10 +121,10 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
 
     private function isProperty(Tokens $tokens, int $index, int $endIndex): bool
     {
-        if ($tokens[$index]->isGivenKind(\T_VARIABLE)) {
+        if ($tokens[$index]->isKind(\T_VARIABLE)) {
             $nextIndex = $tokens->getNextMeaningfulToken($index);
 
-            if (null === $nextIndex || !$tokens[$nextIndex]->isGivenKind(\T_OBJECT_OPERATOR)) {
+            if (null === $nextIndex || !$tokens[$nextIndex]->isKind(\T_OBJECT_OPERATOR)) {
                 return false;
             }
 
@@ -135,10 +135,10 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
                 return false;
             }
 
-            return null !== $nextIndex && $tokens[$nextIndex]->isGivenKind(\T_STRING);
+            return null !== $nextIndex && $tokens[$nextIndex]->isKind(\T_STRING);
         }
 
-        if ($tokens[$index]->isGivenKind([\T_NS_SEPARATOR, \T_STRING])) {
+        if ($tokens[$index]->isKind([\T_NS_SEPARATOR, \T_STRING])) {
             $nextIndex = $tokens->getTokenNotOfKindsSibling($index, 1, [\T_DOUBLE_COLON, \T_NS_SEPARATOR, \T_STRING]);
             $nextNextIndex = $tokens->getNextMeaningfulToken($nextIndex);
 
@@ -146,7 +146,7 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
                 return false;
             }
 
-            return null !== $nextIndex && $tokens[$nextIndex]->isGivenKind(\T_VARIABLE);
+            return null !== $nextIndex && $tokens[$nextIndex]->isKind(\T_VARIABLE);
         }
 
         return false;

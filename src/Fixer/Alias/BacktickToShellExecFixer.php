@@ -118,7 +118,7 @@ final class BacktickToShellExecFixer extends AbstractFixer
         }
 
         foreach ($backtickTokens as $token) {
-            if (!$token->isGivenKind(\T_ENCAPSED_AND_WHITESPACE)) {
+            if (!$token->isKind(\T_ENCAPSED_AND_WHITESPACE)) {
                 $newTokens[] = $token;
 
                 continue;

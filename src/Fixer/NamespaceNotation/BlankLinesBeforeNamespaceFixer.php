@@ -126,7 +126,7 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(\T_NAMESPACE)) {
+            if ($token->isKind(\T_NAMESPACE)) {
                 $this->fixLinesBeforeNamespace(
                     $tokens,
                     $index,
@@ -156,7 +156,7 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
             if (isset($tokens[$index - $i])) {
                 $token = $tokens[$index - $i];
 
-                if ($token->isGivenKind(\T_OPEN_TAG)) {
+                if ($token->isKind(\T_OPEN_TAG)) {
                     $openingToken = $token;
                     $openingTokenIndex = $index - $i;
                     $newlineInOpening = str_contains($token->getContent(), "\n");
@@ -168,7 +168,7 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
                     break;
                 }
 
-                if (false === $token->isGivenKind(\T_WHITESPACE)) {
+                if (false === $token->isKind(\T_WHITESPACE)) {
                     break;
                 }
 

@@ -54,7 +54,7 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
         $tokenCount = $tokens->count();
 
         for ($index = 1; $index < $tokenCount; ++$index) {
-            if (!$tokens[$index]->isGivenKind(\T_ISSET)
+            if (!$tokens[$index]->isKind(\T_ISSET)
                 || !$tokens[$tokens->getPrevMeaningfulToken($index)]->equalsAny(['(', '{', ';', '=', [\T_OPEN_TAG], [\T_BOOLEAN_AND], [\T_BOOLEAN_OR]])) {
                 continue;
             }
@@ -65,9 +65,9 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
 
             $booleanAndTokenIndex = $tokens->getNextMeaningfulToken($issetCloseBraceIndex);
 
-            while ($tokens[$booleanAndTokenIndex]->isGivenKind(\T_BOOLEAN_AND)) {
+            while ($tokens[$booleanAndTokenIndex]->isKind(\T_BOOLEAN_AND)) {
                 $issetIndex = $tokens->getNextMeaningfulToken($booleanAndTokenIndex);
-                if (!$tokens[$issetIndex]->isGivenKind(\T_ISSET)) {
+                if (!$tokens[$issetIndex]->isKind(\T_ISSET)) {
                     $index = $issetIndex;
 
                     break;

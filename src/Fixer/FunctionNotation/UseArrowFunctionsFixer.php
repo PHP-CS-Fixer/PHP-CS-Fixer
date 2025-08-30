@@ -75,7 +75,7 @@ final class UseArrowFunctionsFixer extends AbstractFixer
         $analyzer = new TokensAnalyzer($tokens);
 
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(\T_FUNCTION) || !$analyzer->isLambda($index)) {
+            if (!$tokens[$index]->isKind(\T_FUNCTION) || !$analyzer->isLambda($index)) {
                 continue;
             }
 
@@ -83,7 +83,7 @@ final class UseArrowFunctionsFixer extends AbstractFixer
 
             $parametersStart = $tokens->getNextMeaningfulToken($index);
 
-            if ($tokens[$parametersStart]->isGivenKind(CT::T_RETURN_REF)) {
+            if ($tokens[$parametersStart]->isKind(CT::T_RETURN_REF)) {
                 $parametersStart = $tokens->getNextMeaningfulToken($parametersStart);
             }
 
@@ -97,10 +97,10 @@ final class UseArrowFunctionsFixer extends AbstractFixer
             $useStart = null;
             $useEnd = null;
 
-            if ($tokens[$next]->isGivenKind(CT::T_USE_LAMBDA)) {
+            if ($tokens[$next]->isKind(CT::T_USE_LAMBDA)) {
                 $useStart = $next;
 
-                if ($tokens[$useStart - 1]->isGivenKind(\T_WHITESPACE)) {
+                if ($tokens[$useStart - 1]->isKind(\T_WHITESPACE)) {
                     --$useStart;
                 }
 
@@ -125,11 +125,11 @@ final class UseArrowFunctionsFixer extends AbstractFixer
             $braceOpen = $tokens[$next]->equals('{') ? $next : $tokens->getNextTokenOfKind($next, ['{']);
             $return = $braceOpen + 1;
 
-            if ($tokens[$return]->isGivenKind(\T_WHITESPACE)) {
+            if ($tokens[$return]->isKind(\T_WHITESPACE)) {
                 ++$return;
             }
 
-            if (!$tokens[$return]->isGivenKind(\T_RETURN)) {
+            if (!$tokens[$return]->isKind(\T_RETURN)) {
                 continue;
             }
 
@@ -146,7 +146,7 @@ final class UseArrowFunctionsFixer extends AbstractFixer
 
             $braceClose = $semicolon + 1;
 
-            if ($tokens[$braceClose]->isGivenKind(\T_WHITESPACE)) {
+            if ($tokens[$braceClose]->isKind(\T_WHITESPACE)) {
                 ++$braceClose;
             }
 

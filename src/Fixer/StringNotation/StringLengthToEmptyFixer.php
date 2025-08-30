@@ -65,7 +65,7 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
             $nextIndex = $tokens->getNextMeaningfulToken($closeParenthesisIndex);
             $previousIndex = $tokens->getPrevMeaningfulToken($functionNameIndex);
 
-            if ($tokens[$previousIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+            if ($tokens[$previousIndex]->isKind(\T_NS_SEPARATOR)) {
                 $namespaceSeparatorIndex = $previousIndex;
                 $previousIndex = $tokens->getPrevMeaningfulToken($previousIndex);
             } else {
@@ -161,11 +161,11 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
         */
 
         if ('0' === $operand->getContent()) {
-            if ($operator->isGivenKind([\T_IS_IDENTICAL, \T_IS_GREATER_OR_EQUAL])) {
+            if ($operator->isKind([\T_IS_IDENTICAL, \T_IS_GREATER_OR_EQUAL])) {
                 return \T_IS_IDENTICAL;
             }
 
-            if ($operator->isGivenKind(\T_IS_NOT_IDENTICAL) || $operator->equals('<')) {
+            if ($operator->isKind(\T_IS_NOT_IDENTICAL) || $operator->equals('<')) {
                 return \T_IS_NOT_IDENTICAL;
             }
 
@@ -182,7 +182,7 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
         1 > strlen($b)   | '' === $b
         */
 
-        if ($operator->isGivenKind(\T_IS_SMALLER_OR_EQUAL)) {
+        if ($operator->isKind(\T_IS_SMALLER_OR_EQUAL)) {
             return \T_IS_NOT_IDENTICAL;
         }
 
@@ -206,11 +206,11 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
         */
 
         if ('0' === $operand->getContent()) {
-            if ($operator->isGivenKind([\T_IS_IDENTICAL, \T_IS_SMALLER_OR_EQUAL])) {
+            if ($operator->isKind([\T_IS_IDENTICAL, \T_IS_SMALLER_OR_EQUAL])) {
                 return \T_IS_IDENTICAL;
             }
 
-            if ($operator->isGivenKind(\T_IS_NOT_IDENTICAL) || $operator->equals('>')) {
+            if ($operator->isKind(\T_IS_NOT_IDENTICAL) || $operator->equals('>')) {
                 return \T_IS_NOT_IDENTICAL;
             }
 
@@ -227,7 +227,7 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
         strlen($b) > 1   | X         cannot simplify
         */
 
-        if ($operator->isGivenKind(\T_IS_GREATER_OR_EQUAL)) {
+        if ($operator->isKind(\T_IS_GREATER_OR_EQUAL)) {
             return \T_IS_NOT_IDENTICAL;
         }
 
@@ -240,7 +240,7 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
 
     private function isOperandOfInterest(Token $token): bool
     {
-        if (!$token->isGivenKind(\T_LNUMBER)) {
+        if (!$token->isKind(\T_LNUMBER)) {
             return false;
         }
 
@@ -252,13 +252,13 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
     private function isOperatorOfInterest(Token $token): bool
     {
         return
-            $token->isGivenKind([\T_IS_IDENTICAL, \T_IS_NOT_IDENTICAL, \T_IS_SMALLER_OR_EQUAL, \T_IS_GREATER_OR_EQUAL])
+            $token->isKind([\T_IS_IDENTICAL, \T_IS_NOT_IDENTICAL, \T_IS_SMALLER_OR_EQUAL, \T_IS_GREATER_OR_EQUAL])
             || $token->equals('<') || $token->equals('>');
     }
 
     private function isOfHigherPrecedence(Token $token): bool
     {
-        return $token->isGivenKind([\T_INSTANCEOF, \T_POW, \T_SL, \T_SR]) || $token->equalsAny([
+        return $token->isKind([\T_INSTANCEOF, \T_POW, \T_SL, \T_SR]) || $token->equalsAny([
             '!',
             '%',
             '*',
@@ -282,7 +282,7 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
         for (; $i < $closeParenthesisIndex; ++$i) {
             $token = $tokens[$i];
 
-            if ($token->isGivenKind([\T_VARIABLE, \T_STRING]) || $token->isObjectOperator() || $token->isWhitespace() || $token->isComment()) {
+            if ($token->isKind([\T_VARIABLE, \T_STRING]) || $token->isObjectOperator() || $token->isWhitespace() || $token->isComment()) {
                 continue;
             }
 

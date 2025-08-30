@@ -189,15 +189,15 @@ interface Bar
         );
 
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(\T_CATCH)) {
+            if ($token->isKind(\T_CATCH)) {
                 $elements[$index] = 'catch';
 
                 continue;
             }
 
             if (
-                $token->isGivenKind(\T_FN)
-                || ($token->isGivenKind(\T_FUNCTION) && !isset($elements[$index]))
+                $token->isKind(\T_FN)
+                || ($token->isKind(\T_FUNCTION) && !isset($elements[$index]))
             ) {
                 $elements[$index] = 'method';
             }
@@ -244,7 +244,7 @@ interface Bar
 
         do {
             $index = $tokens->getPrevMeaningfulToken($index);
-        } while (!$tokens[$index]->isGivenKind(self::PROPERTY_MODIFIERS));
+        } while (!$tokens[$index]->isKind(self::PROPERTY_MODIFIERS));
 
         $propertyType = $this->collectTypeAnalysis($tokens, $index, $propertyIndex);
 

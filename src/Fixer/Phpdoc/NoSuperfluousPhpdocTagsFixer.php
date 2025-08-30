@@ -199,11 +199,11 @@ class Foo {
                 continue;
             }
 
-            if ($token->isGivenKind(\T_CLASS) && $tokensAnalyzer->isAnonymousClass($index)) {
+            if ($token->isKind(\T_CLASS) && $tokensAnalyzer->isAnonymousClass($index)) {
                 continue;
             }
 
-            if ($token->isGivenKind(self::SYMBOL_KINDS)) {
+            if ($token->isKind(self::SYMBOL_KINDS)) {
                 $currentSymbol = $tokens[$tokens->getNextMeaningfulToken($index)]->getContent();
                 $currentSymbolEndIndex = $tokens->findBlockEnd(
                     Tokens::BLOCK_TYPE_CURLY_BRACE,
@@ -213,7 +213,7 @@ class Foo {
                 continue;
             }
 
-            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
+            if (!$token->isKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -297,11 +297,11 @@ class Foo {
 
         $index = $tokens->getNextMeaningfulToken($docCommentIndex);
 
-        if (null !== $index && $tokens[$index]->isGivenKind(FCT::T_ATTRIBUTE)) {
+        if (null !== $index && $tokens[$index]->isKind(FCT::T_ATTRIBUTE)) {
             do {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
                 $index = $tokens->getNextMeaningfulToken($index);
-            } while (null !== $index && $tokens[$index]->isGivenKind(\T_ATTRIBUTE));
+            } while (null !== $index && $tokens[$index]->isKind(\T_ATTRIBUTE));
         }
 
         while (true) {
@@ -316,23 +316,23 @@ class Foo {
                 return $element;
             }
 
-            if ($tokens[$index]->isGivenKind([\T_FUNCTION, \T_FN])) {
+            if ($tokens[$index]->isKind([\T_FUNCTION, \T_FN])) {
                 $element['index'] = $index;
                 $element['type'] = 'function';
 
                 return $element;
             }
 
-            if ($tokens[$index]->isGivenKind(\T_VARIABLE)) {
+            if ($tokens[$index]->isKind(\T_VARIABLE)) {
                 $element['index'] = $index;
                 $element['type'] = 'property';
 
                 return $element;
             }
 
-            if ($tokens[$index]->isGivenKind(self::MODIFIER_KINDS)) {
+            if ($tokens[$index]->isKind(self::MODIFIER_KINDS)) {
                 $element['modifiers'][$index] = $tokens[$index];
-            } elseif ($tokens[$index]->isGivenKind($typeKinds)) {
+            } elseif ($tokens[$index]->isKind($typeKinds)) {
                 $element['types'][$index] = $tokens[$index];
             } else {
                 break;
@@ -453,7 +453,7 @@ class Foo {
         for ($index = $start; $index <= $end; ++$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(\T_VARIABLE)) {
+            if (!$token->isKind(\T_VARIABLE)) {
                 continue;
             }
 
@@ -499,7 +499,7 @@ class Foo {
     {
         $colonIndex = $tokens->getNextMeaningfulToken($closingParenthesisIndex);
 
-        return $tokens[$colonIndex]->isGivenKind(CT::T_TYPE_COLON)
+        return $tokens[$colonIndex]->isKind(CT::T_TYPE_COLON)
             ? $this->parseTypeHint($tokens, $tokens->getNextMeaningfulToken($colonIndex))
             : self::NO_TYPE_INFO;
     }
@@ -518,22 +518,22 @@ class Foo {
         while (true) {
             $type = '';
 
-            if ($tokens[$index]->isGivenKind([FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET])) {
+            if ($tokens[$index]->isKind([FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET])) {
                 $index = $tokens->getNextMeaningfulToken($index);
             }
 
-            if ($tokens[$index]->isGivenKind([CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE])) {
+            if ($tokens[$index]->isKind([CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE])) {
                 $index = $tokens->getNextMeaningfulToken($index);
 
                 continue;
             }
 
-            if ($tokens[$index]->isGivenKind(CT::T_NULLABLE_TYPE)) {
+            if ($tokens[$index]->isKind(CT::T_NULLABLE_TYPE)) {
                 $allowsNull = true;
                 $index = $tokens->getNextMeaningfulToken($index);
             }
 
-            while ($tokens[$index]->isGivenKind([\T_NS_SEPARATOR, \T_STATIC, \T_STRING, CT::T_ARRAY_TYPEHINT, \T_CALLABLE])) {
+            while ($tokens[$index]->isKind([\T_NS_SEPARATOR, \T_STATIC, \T_STRING, CT::T_ARRAY_TYPEHINT, \T_CALLABLE])) {
                 $type .= $tokens[$index]->getContent();
                 $index = $tokens->getNextMeaningfulToken($index);
             }
@@ -544,7 +544,7 @@ class Foo {
 
             $types[] = $type;
 
-            if (!$tokens[$index]->isGivenKind([CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION])) {
+            if (!$tokens[$index]->isKind([CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION])) {
                 break;
             }
 
@@ -741,7 +741,7 @@ class Foo {
             $annotations = $docBlock->getAnnotationsOfType($annotationType);
 
             foreach ($element['modifiers'] as $token) {
-                if ($token->isGivenKind($modifierToken)) {
+                if ($token->isKind($modifierToken)) {
                     foreach ($annotations as $annotation) {
                         $annotation->remove();
                     }

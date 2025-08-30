@@ -81,7 +81,7 @@ final class VoidReturnFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
-            if (!$tokens[$index]->isGivenKind(\T_FUNCTION)) {
+            if (!$tokens[$index]->isKind(\T_FUNCTION)) {
                 continue;
             }
 
@@ -170,7 +170,7 @@ final class VoidReturnFixer extends AbstractFixer
         $endFuncIndex = $tokens->getPrevTokenOfKind($index, [')']);
         $nextIndex = $tokens->getNextMeaningfulToken($endFuncIndex);
 
-        return $tokens[$nextIndex]->isGivenKind(CT::T_TYPE_COLON);
+        return $tokens[$nextIndex]->isKind(CT::T_TYPE_COLON);
     }
 
     /**
@@ -186,9 +186,9 @@ final class VoidReturnFixer extends AbstractFixer
         for ($i = $startIndex; $i < $endIndex; ++$i) {
             if (
                 // skip anonymous classes
-                ($tokens[$i]->isGivenKind(\T_CLASS) && $tokensAnalyzer->isAnonymousClass($i))
+                ($tokens[$i]->isKind(\T_CLASS) && $tokensAnalyzer->isAnonymousClass($i))
                  // skip lambda functions
-                || ($tokens[$i]->isGivenKind(\T_FUNCTION) && $tokensAnalyzer->isLambda($i))
+                || ($tokens[$i]->isKind(\T_FUNCTION) && $tokensAnalyzer->isLambda($i))
             ) {
                 $i = $tokens->getNextTokenOfKind($i, ['{']);
                 $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $i);
@@ -196,11 +196,11 @@ final class VoidReturnFixer extends AbstractFixer
                 continue;
             }
 
-            if ($tokens[$i]->isGivenKind([\T_YIELD, \T_YIELD_FROM])) {
+            if ($tokens[$i]->isKind([\T_YIELD, \T_YIELD_FROM])) {
                 return false; // Generators cannot return void.
             }
 
-            if (!$tokens[$i]->isGivenKind(\T_RETURN)) {
+            if (!$tokens[$i]->isKind(\T_RETURN)) {
                 continue;
             }
 
@@ -238,12 +238,12 @@ final class VoidReturnFixer extends AbstractFixer
         do {
             $index = $tokens->getPrevNonWhitespace($index);
 
-            if ($tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+            if ($tokens[$index]->isKind(CT::T_ATTRIBUTE_CLOSE)) {
                 $index = $tokens->getPrevTokenOfKind($index, [[\T_ATTRIBUTE]]);
             }
-        } while ($tokens[$index]->isGivenKind(self::PREVIOUS_TOKENS));
+        } while ($tokens[$index]->isKind(self::PREVIOUS_TOKENS));
 
-        if (!$tokens[$index]->isGivenKind(\T_DOC_COMMENT)) {
+        if (!$tokens[$index]->isKind(\T_DOC_COMMENT)) {
             return [];
         }
 

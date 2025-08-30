@@ -40,7 +40,7 @@ final class TransformersTest extends TestCase
 
         foreach ($expectedTokenKinds as $index => $expected) {
             self::assertTrue($tokens->offsetExists($index));
-            self::assertTrue($tokens[$index]->isGivenKind($expected));
+            self::assertTrue($tokens[$index]->isKind($expected));
         }
     }
 

@@ -48,7 +48,7 @@ die;
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(\T_EXIT)) {
+            if (!$token->isKind(\T_EXIT)) {
                 continue;
             }
 

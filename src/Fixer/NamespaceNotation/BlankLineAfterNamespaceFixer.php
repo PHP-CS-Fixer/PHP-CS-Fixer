@@ -65,7 +65,7 @@ final class BlankLineAfterNamespaceFixer extends AbstractFixer implements Whites
         for ($index = $lastIndex; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(\T_NAMESPACE)) {
+            if (!$token->isKind(\T_NAMESPACE)) {
                 continue;
             }
 

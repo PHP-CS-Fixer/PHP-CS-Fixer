@@ -111,7 +111,7 @@ final class HeredocIndentationFixer extends AbstractFixer implements Configurabl
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = \count($tokens) - 1; 0 <= $index; --$index) {
-            if (!$tokens[$index]->isGivenKind(\T_END_HEREDOC)) {
+            if (!$tokens[$index]->isKind(\T_END_HEREDOC)) {
                 continue;
             }
 
@@ -144,7 +144,7 @@ final class HeredocIndentationFixer extends AbstractFixer implements Configurabl
         $index = $end - 1;
 
         for ($last = true; $index > $start; --$index, $last = false) {
-            if (!$tokens[$index]->isGivenKind([\T_ENCAPSED_AND_WHITESPACE, \T_WHITESPACE])) {
+            if (!$tokens[$index]->isKind([\T_ENCAPSED_AND_WHITESPACE, \T_WHITESPACE])) {
                 continue;
             }
 
@@ -162,7 +162,7 @@ final class HeredocIndentationFixer extends AbstractFixer implements Configurabl
 
         ++$index;
 
-        if (!$tokens[$index]->isGivenKind(\T_ENCAPSED_AND_WHITESPACE)) {
+        if (!$tokens[$index]->isKind(\T_ENCAPSED_AND_WHITESPACE)) {
             $tokens->insertAt($index, new Token([\T_ENCAPSED_AND_WHITESPACE, $indent]));
 
             return;

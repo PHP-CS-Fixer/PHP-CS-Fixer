@@ -113,13 +113,13 @@ final class TypesSpacesFixer extends AbstractFixer implements ConfigurableFixerI
         $tokenCount = $tokens->count() - 1;
 
         for ($index = 0; $index < $tokenCount; ++$index) {
-            if ($tokens[$index]->isGivenKind([CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION])) {
+            if ($tokens[$index]->isKind([CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION])) {
                 $tokenCount += $this->fixSpacing($tokens, $index, 'single' === $this->configuration['space']);
 
                 continue;
             }
 
-            if ($tokens[$index]->isGivenKind(\T_CATCH)) {
+            if ($tokens[$index]->isKind(\T_CATCH)) {
                 while (true) {
                     $index = $tokens->getNextTokenOfKind($index, [')', [CT::T_TYPE_ALTERNATION]]);
 

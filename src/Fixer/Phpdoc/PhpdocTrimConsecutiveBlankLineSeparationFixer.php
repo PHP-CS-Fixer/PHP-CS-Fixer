@@ -80,7 +80,7 @@ function fnc($foo) {}
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
+            if (!$token->isKind(\T_DOC_COMMENT)) {
                 continue;
             }
 

@@ -229,15 +229,15 @@ if ($foo) {
 
             if (
                 $token->equalsAny(self::BLOCK_FIRST_TOKENS)
-                || ($token->equals('(') && !$tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(\T_ARRAY))
+                || ($token->equals('(') && !$tokens[$tokens->getPrevMeaningfulToken($index)]->isKind(\T_ARRAY))
                 || isset($alternativeBlockStarts[$index])
                 || isset($caseBlockStarts[$index])
             ) {
                 $endIndexInclusive = true;
 
-                if ($token->isGivenKind([\T_EXTENDS, \T_IMPLEMENTS])) {
+                if ($token->isKind([\T_EXTENDS, \T_IMPLEMENTS])) {
                     $endIndex = $tokens->getNextTokenOfKind($index, ['{']);
-                } elseif ($token->isGivenKind(CT::T_USE_TRAIT)) {
+                } elseif ($token->isKind(CT::T_USE_TRAIT)) {
                     $endIndex = $tokens->getNextTokenOfKind($index, [';']);
                 } elseif ($token->equals(':')) {
                     if (isset($caseBlockStarts[$index])) {
@@ -245,15 +245,15 @@ if ($foo) {
                     } elseif ($this->alternativeSyntaxAnalyzer->belongsToAlternativeSyntax($tokens, $index)) {
                         $endIndex = $this->alternativeSyntaxAnalyzer->findAlternativeSyntaxBlockEnd($tokens, $alternativeBlockStarts[$index]);
                     }
-                } elseif ($token->isGivenKind(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN)) {
+                } elseif ($token->isKind(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN)) {
                     $endIndex = $tokens->getNextTokenOfKind($index, [[CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE]]);
-                } elseif ($token->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
+                } elseif ($token->isKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                     $endIndex = $tokens->getNextTokenOfKind($index, [[CT::T_GROUP_IMPORT_BRACE_CLOSE]]);
                 } elseif ($token->equals('{')) {
                     $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
                 } elseif ($token->equals('(')) {
                     $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
-                } elseif ($token->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
+                } elseif ($token->isKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
                     $endIndex = $tokens->getNextTokenOfKind($index, [[CT::T_PROPERTY_HOOK_BRACE_CLOSE]]);
                 } else {
                     $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
@@ -271,7 +271,7 @@ if ($foo) {
                     if (null !== $prevIndex) {
                         $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
                     }
-                    if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind([\T_FUNCTION, \T_FN])) {
+                    if (null !== $prevIndex && $tokens[$prevIndex]->isKind([\T_FUNCTION, \T_FN])) {
                         $skip = true;
                     }
                 }
@@ -296,8 +296,8 @@ if ($foo) {
             }
 
             if (
-                $token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)
-                || ($token->equals('(') && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(\T_ARRAY))
+                $token->isKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)
+                || ($token->equals('(') && $tokens[$tokens->getPrevMeaningfulToken($index)]->isKind(\T_ARRAY))
             ) {
                 $blockType = $token->equals('(') ? Tokens::BLOCK_TYPE_PARENTHESIS_BRACE : Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE;
 
@@ -315,7 +315,7 @@ if ($foo) {
             }
 
             $isPropertyStart = $this->isPropertyStart($tokens, $index);
-            if ($isPropertyStart || $token->isGivenKind(self::BLOCK_SIGNATURE_FIRST_TOKENS)) {
+            if ($isPropertyStart || $token->isKind(self::BLOCK_SIGNATURE_FIRST_TOKENS)) {
                 $lastWhitespaceIndex = null;
                 $closingParenthesisIndex = null;
 
@@ -329,7 +329,7 @@ if ($foo) {
                         continue;
                     }
 
-                    if ($endToken->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+                    if ($endToken->isKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
                         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $endIndex);
 
                         continue;
@@ -340,7 +340,7 @@ if ($foo) {
                     }
 
                     if ($endToken->equals(':')) {
-                        if ($token->isGivenKind([\T_CASE, \T_DEFAULT])) {
+                        if ($token->isKind([\T_CASE, \T_DEFAULT])) {
                             $caseBlockStarts[$endIndex] = $index;
                         } else {
                             $alternativeBlockStarts[$endIndex] = $index;
@@ -349,7 +349,7 @@ if ($foo) {
                         break;
                     }
 
-                    if (!$token->isGivenKind(self::CONTROL_STRUCTURE_POSSIBIBLY_WITHOUT_BRACES_TOKENS)) {
+                    if (!$token->isKind(self::CONTROL_STRUCTURE_POSSIBIBLY_WITHOUT_BRACES_TOKENS)) {
                         continue;
                     }
 
@@ -375,13 +375,13 @@ if ($foo) {
                     'end_index' => $endIndex,
                     'end_index_inclusive' => true,
                     'initial_indent' => $this->getLineIndentationWithBracesCompatibility($tokens, $index, $lastIndent),
-                    'is_indented_block' => $isPropertyStart || $token->isGivenKind([\T_EXTENDS, \T_IMPLEMENTS, \T_CONST]),
+                    'is_indented_block' => $isPropertyStart || $token->isKind([\T_EXTENDS, \T_IMPLEMENTS, \T_CONST]),
                 ];
 
                 continue;
             }
 
-            if ($token->isGivenKind(\T_FUNCTION)) {
+            if ($token->isKind(\T_FUNCTION)) {
                 $endIndex = $index + 1;
 
                 for ($max = \count($tokens); $endIndex < $max; ++$endIndex) {
@@ -410,9 +410,9 @@ if ($foo) {
 
             if (
                 $token->isWhitespace()
-                || ($index > 0 && $tokens[$index - 1]->isGivenKind(\T_OPEN_TAG))
+                || ($index > 0 && $tokens[$index - 1]->isKind(\T_OPEN_TAG))
             ) {
-                $previousOpenTagContent = $tokens[$index - 1]->isGivenKind(\T_OPEN_TAG)
+                $previousOpenTagContent = $tokens[$index - 1]->isKind(\T_OPEN_TAG)
                     ? Preg::replace('/\S/', '', $tokens[$index - 1]->getContent())
                     : '';
 
@@ -469,7 +469,7 @@ if ($foo) {
                         ) {
                             if (
                                 // do we touch whitespace directly before comment...
-                                $tokens[$firstNonWhitespaceTokenIndex]->isGivenKind(\T_COMMENT)
+                                $tokens[$firstNonWhitespaceTokenIndex]->isKind(\T_COMMENT)
                                 // ...and afterwards, there is only comment or `}`
                                 && $tokens[$tokens->getNextMeaningfulToken($firstNonWhitespaceTokenIndex)]->equals('}')
                             ) {
@@ -484,7 +484,7 @@ if ($foo) {
                                     $nextIndex = $tokens->getNextMeaningfulToken($firstNonWhitespaceTokenIndex);
                                     $nextNextIndex = $tokens->getNextMeaningfulToken($nextIndex);
 
-                                    if (null !== $nextNextIndex && $tokens[$nextNextIndex]->isGivenKind([\T_ELSE, \T_ELSEIF])) {
+                                    if (null !== $nextNextIndex && $tokens[$nextNextIndex]->isKind([\T_ELSE, \T_ELSEIF])) {
                                         $indent = true !== $this->configuration['stick_comment_to_next_continuous_control_statement'];
                                     } else {
                                         $indent = true;
@@ -595,15 +595,15 @@ if ($foo) {
             $searchEndToken = $tokens[$searchEndIndex];
 
             if (
-                $searchEndToken->isGivenKind(\T_IF)
-                && !$tokens[$tokens->getPrevMeaningfulToken($searchEndIndex)]->isGivenKind(\T_ELSE)
+                $searchEndToken->isKind(\T_IF)
+                && !$tokens[$tokens->getPrevMeaningfulToken($searchEndIndex)]->isKind(\T_ELSE)
             ) {
                 ++$ifLevel;
 
                 continue;
             }
 
-            if ($searchEndToken->isGivenKind(\T_DO)) {
+            if ($searchEndToken->isKind(\T_DO)) {
                 ++$doWhileLevel;
 
                 continue;
@@ -631,11 +631,11 @@ if ($foo) {
             if (
                 $ifLevel > 0
                 && null !== $controlStructureContinuationIndex
-                && $tokens[$controlStructureContinuationIndex]->isGivenKind([\T_ELSE, \T_ELSEIF])
+                && $tokens[$controlStructureContinuationIndex]->isKind([\T_ELSE, \T_ELSEIF])
             ) {
                 if (
-                    $tokens[$controlStructureContinuationIndex]->isGivenKind(\T_ELSE)
-                    && !$tokens[$tokens->getNextMeaningfulToken($controlStructureContinuationIndex)]->isGivenKind(\T_IF)
+                    $tokens[$controlStructureContinuationIndex]->isKind(\T_ELSE)
+                    && !$tokens[$tokens->getNextMeaningfulToken($controlStructureContinuationIndex)]->isKind(\T_IF)
                 ) {
                     --$ifLevel;
                 }
@@ -648,7 +648,7 @@ if ($foo) {
             if (
                 $doWhileLevel > 0
                 && null !== $controlStructureContinuationIndex
-                && $tokens[$controlStructureContinuationIndex]->isGivenKind(\T_WHILE)
+                && $tokens[$controlStructureContinuationIndex]->isKind(\T_WHILE)
             ) {
                 --$doWhileLevel;
                 $searchEndIndex = $controlStructureContinuationIndex;
@@ -670,7 +670,7 @@ if ($foo) {
     private function findCaseBlockEnd(Tokens $tokens, int $index): array
     {
         for ($max = \count($tokens); $index < $max; ++$index) {
-            if ($tokens[$index]->isGivenKind(\T_SWITCH)) {
+            if ($tokens[$index]->isKind(\T_SWITCH)) {
                 $braceIndex = $tokens->getNextMeaningfulToken(
                     $tokens->findBlockEnd(
                         Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
@@ -693,7 +693,7 @@ if ($foo) {
                 continue;
             }
 
-            if ($tokens[$index]->isGivenKind([\T_CASE, \T_DEFAULT])) {
+            if ($tokens[$index]->isKind([\T_CASE, \T_DEFAULT])) {
                 return [$index, true];
             }
 
@@ -709,7 +709,7 @@ if ($foo) {
     {
         if (
             $this->bracesFixerCompatibility
-            && $tokens[$index]->isGivenKind(\T_OPEN_TAG)
+            && $tokens[$index]->isKind(\T_OPEN_TAG)
             && Preg::match('/\R/', $tokens[$index]->getContent())
             && isset($tokens[$index + 1])
             && $tokens[$index + 1]->isWhitespace()
@@ -730,14 +730,14 @@ if ($foo) {
         $nextIndex = $tokens->getNextMeaningfulToken($index);
         if (
             null === $nextIndex
-            || $tokens[$nextIndex]->isGivenKind(self::PROPERTY_KEYWORDS)
-            || $tokens[$nextIndex]->isGivenKind([\T_CONST, \T_FUNCTION])
+            || $tokens[$nextIndex]->isKind(self::PROPERTY_KEYWORDS)
+            || $tokens[$nextIndex]->isKind([\T_CONST, \T_FUNCTION])
         ) {
             return false;
         }
 
-        while ($tokens[$index]->isGivenKind(self::PROPERTY_KEYWORDS)) {
-            if ($tokens[$index]->isGivenKind([\T_VAR, \T_PUBLIC, \T_PROTECTED, \T_PRIVATE])) {
+        while ($tokens[$index]->isKind(self::PROPERTY_KEYWORDS)) {
+            if ($tokens[$index]->isKind([\T_VAR, \T_PUBLIC, \T_PROTECTED, \T_PRIVATE])) {
                 return true;
             }
 

@@ -344,11 +344,11 @@ $foo = new class(){};
             'readonly' => false,
         ];
 
-        if (!$tokens[$classyIndex]->isGivenKind(\T_TRAIT)) {
+        if (!$tokens[$classyIndex]->isKind(\T_TRAIT)) {
             $extends = $tokens->findGivenKind(\T_EXTENDS, $classyIndex, $openIndex);
             $def['extends'] = [] !== $extends ? $this->getClassyInheritanceInfo($tokens, array_key_first($extends)) : false;
 
-            if (!$tokens[$classyIndex]->isGivenKind(\T_INTERFACE)) {
+            if (!$tokens[$classyIndex]->isKind(\T_INTERFACE)) {
                 $implements = $tokens->findGivenKind(\T_IMPLEMENTS, $classyIndex, $openIndex);
                 $def['implements'] = [] !== $implements ? $this->getClassyInheritanceInfo($tokens, array_key_first($implements)) : false;
                 $def['anonymousClass'] = $tokensAnalyzer->isAnonymousClass($classyIndex);
@@ -406,7 +406,7 @@ $foo = new class(){};
         for ($i = $endIndex; $i >= $startIndex; --$i) {
             if ($tokens[$i]->isWhitespace()) {
                 if (str_contains($tokens[$i]->getContent(), "\n")) {
-                    if ($tokens[$i - 1]->isGivenKind(CT::T_ATTRIBUTE_CLOSE) || $tokens[$i + 1]->isGivenKind(FCT::T_ATTRIBUTE)) {
+                    if ($tokens[$i - 1]->isKind(CT::T_ATTRIBUTE_CLOSE) || $tokens[$i + 1]->isKind(FCT::T_ATTRIBUTE)) {
                         continue;
                     }
                     if (($tokens[$i - 1]->isComment() && str_ends_with($tokens[$i - 1]->getContent(), ']'))
@@ -415,7 +415,7 @@ $foo = new class(){};
                         continue;
                     }
 
-                    if ($tokens[$i - 1]->isGivenKind(\T_DOC_COMMENT) || $tokens[$i + 1]->isGivenKind(\T_DOC_COMMENT)) {
+                    if ($tokens[$i - 1]->isKind(\T_DOC_COMMENT) || $tokens[$i + 1]->isKind(\T_DOC_COMMENT)) {
                         continue;
                     }
                 }
@@ -438,7 +438,7 @@ $foo = new class(){};
                     continue;
                 }
 
-                if ($tokens[$i - 1]->isGivenKind(\T_CLASS) && $tokens[$i + 1]->equals('(')) {
+                if ($tokens[$i - 1]->isKind(\T_CLASS) && $tokens[$i + 1]->equals('(')) {
                     if (true === $this->configuration['space_before_parenthesis']) {
                         $tokens[$i] = new Token([\T_WHITESPACE, ' ']);
                     } else {
@@ -465,7 +465,7 @@ $foo = new class(){};
                 continue;
             }
 
-            if (true === $this->configuration['space_before_parenthesis'] && $tokens[$i]->isGivenKind(\T_CLASS) && !$tokens[$i + 1]->isWhitespace()) {
+            if (true === $this->configuration['space_before_parenthesis'] && $tokens[$i]->isKind(\T_CLASS) && !$tokens[$i + 1]->isWhitespace()) {
                 $tokens->insertAt($i + 1, new Token([\T_WHITESPACE, ' ']));
 
                 continue;

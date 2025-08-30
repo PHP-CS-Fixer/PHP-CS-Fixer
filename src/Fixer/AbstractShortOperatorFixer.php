@@ -192,7 +192,7 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
             if (null !== $blockType) {
                 $blockStart = $tokens->findBlockStart($blockType['type'], $previousIndex);
 
-                if ($tokens[$previousIndex]->equals(')') && $tokens[$tokens->getPrevMeaningfulToken($blockStart)]->isGivenKind($controlStructureWithoutBracesTypes)) {
+                if ($tokens[$previousIndex]->equals(')') && $tokens[$tokens->getPrevMeaningfulToken($blockStart)]->isKind($controlStructureWithoutBracesTypes)) {
                     break; // we went too far back
                 }
 
@@ -204,9 +204,9 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
             $previousToken = $tokens[$previousIndex];
         }
 
-        if ($previousToken->isGivenKind(\T_OBJECT_OPERATOR)) {
+        if ($previousToken->isKind(\T_OBJECT_OPERATOR)) {
             $index = $this->getBeforeOperatorRange($tokens, $previousIndex)['start'];
-        } elseif ($previousToken->isGivenKind(\T_PAAMAYIM_NEKUDOTAYIM)) {
+        } elseif ($previousToken->isKind(\T_PAAMAYIM_NEKUDOTAYIM)) {
             $index = $this->getBeforeOperatorRange($tokens, $tokens->getPrevMeaningfulToken($previousIndex))['start'];
         }
 
@@ -228,7 +228,7 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
 
     private function isOperatorCommutative(Token $operatorToken): bool
     {
-        if ($operatorToken->isGivenKind(\T_COALESCE)) {
+        if ($operatorToken->isKind(\T_COALESCE)) {
             return false;
         }
 
@@ -250,13 +250,13 @@ abstract class AbstractShortOperatorFixer extends AbstractFixer
         $candidate = $index;
         $index = $tokens->getPrevMeaningfulToken($candidate);
 
-        if ($tokens[$index]->isGivenKind(\T_DEFAULT)) {
+        if ($tokens[$index]->isKind(\T_DEFAULT)) {
             return true;
         }
 
         $index = $tokens->getPrevMeaningfulToken($index);
 
-        if ($tokens[$index]->isGivenKind(\T_CASE)) {
+        if ($tokens[$index]->isKind(\T_CASE)) {
             return true;
         }
 

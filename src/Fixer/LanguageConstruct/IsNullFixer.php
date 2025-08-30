@@ -94,7 +94,7 @@ final class IsNullFixer extends AbstractFixer
             $prevTokenIndex = $tokens->getPrevMeaningfulToken($matches[0]);
 
             // handle function references with namespaces
-            if ($tokens[$prevTokenIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+            if ($tokens[$prevTokenIndex]->isKind(\T_NS_SEPARATOR)) {
                 $tokens->removeTrailingWhitespace($prevTokenIndex);
                 $tokens->clearAt($prevTokenIndex);
 
@@ -128,7 +128,7 @@ final class IsNullFixer extends AbstractFixer
             $parentLeftToken = $tokens[$tokens->getPrevMeaningfulToken($isNullIndex)];
             $parentRightToken = $tokens[$tokens->getNextMeaningfulToken($referenceEnd)];
             $parentOperations = [\T_IS_EQUAL, \T_IS_NOT_EQUAL, \T_IS_IDENTICAL, \T_IS_NOT_IDENTICAL];
-            $wrapIntoParentheses = $parentLeftToken->isCast() || $parentLeftToken->isGivenKind($parentOperations) || $parentRightToken->isGivenKind($parentOperations);
+            $wrapIntoParentheses = $parentLeftToken->isCast() || $parentLeftToken->isKind($parentOperations) || $parentRightToken->isKind($parentOperations);
 
             // possible trailing comma removed
             $prevIndex = $tokens->getPrevMeaningfulToken($referenceEnd);

@@ -92,7 +92,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
             if (
                 null !== $nextNonWhiteSpace
                 && !$tokens[$nextNonWhiteSpace]->equals(';')
-                && $tokens[$lastTokenIndex]->isGivenKind([
+                && $tokens[$lastTokenIndex]->isKind([
                     \T_ECHO,
                     \T_PRINT,
                     \T_INCLUDE,
@@ -105,11 +105,11 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
             }
 
             // check if it is a function call
-            if ($tokens[$lastTokenIndex]->isGivenKind(self::FUNCTIONY_TOKEN_KINDS)) {
+            if ($tokens[$lastTokenIndex]->isKind(self::FUNCTIONY_TOKEN_KINDS)) {
                 $this->fixFunctionCall($tokens, $index);
-            } elseif ($tokens[$lastTokenIndex]->isGivenKind(\T_STRING)) { // for real function calls or definitions
+            } elseif ($tokens[$lastTokenIndex]->isKind(\T_STRING)) { // for real function calls or definitions
                 $possibleDefinitionIndex = $tokens->getPrevMeaningfulToken($lastTokenIndex);
-                if (!$tokens[$possibleDefinitionIndex]->isGivenKind(\T_FUNCTION)) {
+                if (!$tokens[$possibleDefinitionIndex]->isKind(\T_FUNCTION)) {
                     $this->fixFunctionCall($tokens, $index);
                 }
             } elseif ($tokens[$lastTokenIndex]->equalsAny([

@@ -178,7 +178,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
     private function fixFunctionCallToConstant(Tokens $tokens, int $index, int $braceOpenIndex, int $braceCloseIndex, array $replacements): void
     {
         for ($i = $braceCloseIndex; $i >= $braceOpenIndex; --$i) {
-            if ($tokens[$i]->isGivenKind([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT])) {
+            if ($tokens[$i]->isKind([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT])) {
                 continue;
             }
 
@@ -186,12 +186,12 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
         }
 
         if (
-            $replacements[0]->isGivenKind([\T_CLASS_C, \T_STATIC])
-            || ($replacements[0]->isGivenKind(\T_STRING) && 'self' === $replacements[0]->getContent())
+            $replacements[0]->isKind([\T_CLASS_C, \T_STATIC])
+            || ($replacements[0]->isKind(\T_STRING) && 'self' === $replacements[0]->getContent())
         ) {
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
             $prevToken = $tokens[$prevIndex];
-            if ($prevToken->isGivenKind(\T_NS_SEPARATOR)) {
+            if ($prevToken->isKind(\T_NS_SEPARATOR)) {
                 $tokens->clearAt($prevIndex);
             }
         }
@@ -208,7 +208,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
         FunctionsAnalyzer $functionAnalyzer,
         int $index
     ): ?array {
-        if (!$tokens[$index]->isGivenKind(\T_STRING)) {
+        if (!$tokens[$index]->isKind(\T_STRING)) {
             return null;
         }
 
@@ -271,7 +271,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
                     continue;
                 }
 
-                if ($tokens[$i]->isGivenKind(\T_VARIABLE) && '$this' === strtolower($tokens[$i]->getContent())) {
+                if ($tokens[$i]->isKind(\T_VARIABLE) && '$this' === strtolower($tokens[$i]->getContent())) {
                     $isThis = true;
 
                     continue;

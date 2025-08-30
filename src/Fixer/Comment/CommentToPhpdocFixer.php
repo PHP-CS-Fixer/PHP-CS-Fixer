@@ -114,7 +114,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
         for ($index = 0, $limit = \count($tokens); $index < $limit; ++$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(\T_COMMENT)) {
+            if (!$token->isKind(\T_COMMENT)) {
                 continue;
             }
 

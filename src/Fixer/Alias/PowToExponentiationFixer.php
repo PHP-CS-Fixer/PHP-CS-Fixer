@@ -84,7 +84,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
             }
 
             for ($i = $candidate[1]; $i < $candidate[2]; ++$i) {
-                if ($tokens[$i]->isGivenKind(\T_ELLIPSIS)) {
+                if ($tokens[$i]->isKind(\T_ELLIPSIS)) {
                     continue 2;
                 }
             }
@@ -160,7 +160,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
 
         $prevMeaningfulTokenIndex = $tokens->getPrevMeaningfulToken($functionNameIndex);
 
-        if ($tokens[$prevMeaningfulTokenIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+        if ($tokens[$prevMeaningfulTokenIndex]->isKind(\T_NS_SEPARATOR)) {
             $tokens->clearAt($prevMeaningfulTokenIndex);
         }
 
@@ -176,7 +176,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
         }
 
         for ($i = $argumentStartIndex; $i <= $argumentEndIndex; ++$i) {
-            if ($tokens[$i]->isGivenKind($allowedKinds) || $tokens->isEmptyAt($i)) {
+            if ($tokens[$i]->isKind($allowedKinds) || $tokens->isEmptyAt($i)) {
                 continue;
             }
 
@@ -190,7 +190,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
 
             if ($tokens[$i]->equals('$')) {
                 $i = $tokens->getNextMeaningfulToken($i);
-                if ($tokens[$i]->isGivenKind(CT::T_DYNAMIC_VAR_BRACE_OPEN)) {
+                if ($tokens[$i]->isKind(CT::T_DYNAMIC_VAR_BRACE_OPEN)) {
                     $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, $i);
 
                     continue;

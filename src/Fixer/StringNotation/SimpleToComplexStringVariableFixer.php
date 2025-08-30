@@ -75,12 +75,12 @@ final class SimpleToComplexStringVariableFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = \count($tokens) - 3; $index > 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(\T_DOLLAR_OPEN_CURLY_BRACES)) {
+            if (!$tokens[$index]->isKind(\T_DOLLAR_OPEN_CURLY_BRACES)) {
                 continue;
             }
             $varnameToken = $tokens[$index + 1];
 
-            if (!$varnameToken->isGivenKind(\T_STRING_VARNAME)) {
+            if (!$varnameToken->isKind(\T_STRING_VARNAME)) {
                 continue;
             }
 

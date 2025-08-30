@@ -106,7 +106,7 @@ final class ArgumentsAnalyzer
         for ($index = $argumentStart; $index <= $argumentEnd; ++$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(FCT::T_ATTRIBUTE)) {
+            if ($token->isKind(FCT::T_ATTRIBUTE)) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
 
                 continue;
@@ -115,13 +115,13 @@ final class ArgumentsAnalyzer
             if (
                 $token->isComment()
                 || $token->isWhitespace()
-                || $token->isGivenKind(self::ARGUMENT_INFO_SKIP_TYPES)
+                || $token->isKind(self::ARGUMENT_INFO_SKIP_TYPES)
                 || $token->equals('&')
             ) {
                 continue;
             }
 
-            if ($token->isGivenKind(\T_VARIABLE)) {
+            if ($token->isKind(\T_VARIABLE)) {
                 $sawName = true;
                 $info['name_index'] = $index;
                 $info['name'] = $token->getContent();

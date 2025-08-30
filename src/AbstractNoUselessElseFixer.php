@@ -68,7 +68,7 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
                 return false;
             }
 
-            if ($tokens[$candidateIndex]->isGivenKind(\T_THROW)) {
+            if ($tokens[$candidateIndex]->isKind(\T_THROW)) {
                 $previousIndex = $tokens->getPrevMeaningfulToken($candidateIndex);
 
                 if (!$tokens[$previousIndex]->equalsAny([';', '{'])) {
@@ -83,7 +83,7 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
             }
 
             // implicit continue, i.e. delete candidate
-        } while (!$tokens[$previousBlockStart]->isGivenKind(\T_IF));
+        } while (!$tokens[$previousBlockStart]->isKind(\T_IF));
 
         return true;
     }
@@ -107,9 +107,9 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
         }
 
         $open = $tokens->getPrevTokenOfKind($previous, [[\T_IF], [\T_ELSE], [\T_ELSEIF]]);
-        if ($tokens[$open]->isGivenKind(\T_IF)) {
+        if ($tokens[$open]->isKind(\T_IF)) {
             $elseCandidate = $tokens->getPrevMeaningfulToken($open);
-            if ($tokens[$elseCandidate]->isGivenKind(\T_ELSE)) {
+            if ($tokens[$elseCandidate]->isKind(\T_ELSE)) {
                 $open = $elseCandidate;
             }
         }
@@ -157,7 +157,7 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
             }
 
             $token = $tokens[$index];
-            if ($token->isGivenKind([\T_IF, \T_ELSEIF, \T_ELSE])) {
+            if ($token->isKind([\T_IF, \T_ELSEIF, \T_ELSE])) {
                 return true;
             }
 
@@ -170,7 +170,7 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
 
                 // OK if belongs to: for, do, while, foreach
                 // Not OK if belongs to: if, else, elseif
-                if ($tokens[$index]->isGivenKind(\T_DO)) {
+                if ($tokens[$index]->isKind(\T_DO)) {
                     --$index;
 
                     continue;
@@ -186,7 +186,7 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
                 );
 
                 $index = $tokens->getPrevMeaningfulToken($index);
-                if ($tokens[$index]->isGivenKind([\T_IF, \T_ELSEIF])) {
+                if ($tokens[$index]->isKind([\T_IF, \T_ELSEIF])) {
                     return false;
                 }
             } elseif ($token->equals(')')) {

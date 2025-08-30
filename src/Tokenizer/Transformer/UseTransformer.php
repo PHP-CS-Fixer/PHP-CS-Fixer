@@ -48,7 +48,7 @@ final class UseTransformer extends AbstractTransformer
 
     public function process(Tokens $tokens, Token $token, int $index): void
     {
-        if ($token->isGivenKind(\T_USE) && $this->isUseForLambda($tokens, $index)) {
+        if ($token->isKind(\T_USE) && $this->isUseForLambda($tokens, $index)) {
             $tokens[$index] = new Token([CT::T_USE_LAMBDA, $token->getContent()]);
 
             return;
@@ -57,11 +57,11 @@ final class UseTransformer extends AbstractTransformer
         // Only search inside class/trait body for `T_USE` for traits.
         // Cannot import traits inside interfaces or anywhere else
 
-        if ($token->isGivenKind(\T_CLASS)) {
-            if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(\T_DOUBLE_COLON)) {
+        if ($token->isKind(\T_CLASS)) {
+            if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isKind(\T_DOUBLE_COLON)) {
                 return;
             }
-        } elseif (!$token->isGivenKind(self::CLASS_TYPES)) {
+        } elseif (!$token->isKind(self::CLASS_TYPES)) {
             return;
         }
 
@@ -71,7 +71,7 @@ final class UseTransformer extends AbstractTransformer
         while ($index < $innerLimit) {
             $token = $tokens[++$index];
 
-            if (!$token->isGivenKind(\T_USE)) {
+            if (!$token->isKind(\T_USE)) {
                 continue;
             }
 

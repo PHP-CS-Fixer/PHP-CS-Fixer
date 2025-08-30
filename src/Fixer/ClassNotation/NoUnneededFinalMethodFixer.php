@@ -158,7 +158,7 @@ class Bar
             $classIndex = $element['classIndex'];
 
             if (!\array_key_exists($classIndex, $enums)) {
-                $enums[$classIndex] = $tokens[$classIndex]->isGivenKind(FCT::T_ENUM);
+                $enums[$classIndex] = $tokens[$classIndex]->isKind(FCT::T_ENUM);
             }
 
             $element['method_final_index'] = null;
@@ -169,12 +169,12 @@ class Bar
             do {
                 $previous = $tokens->getPrevMeaningfulToken($previous);
 
-                if ($tokens[$previous]->isGivenKind(\T_PRIVATE)) {
+                if ($tokens[$previous]->isKind(\T_PRIVATE)) {
                     $element['method_is_private'] = true;
-                } elseif ($tokens[$previous]->isGivenKind(\T_FINAL)) {
+                } elseif ($tokens[$previous]->isKind(\T_FINAL)) {
                     $element['method_final_index'] = $previous;
                 }
-            } while ($tokens[$previous]->isGivenKind($modifierKinds));
+            } while ($tokens[$previous]->isKind($modifierKinds));
 
             if ($enums[$classIndex]) {
                 $element['method_of_enum'] = true;

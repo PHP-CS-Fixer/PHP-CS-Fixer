@@ -127,7 +127,7 @@ $f = fn () => null;
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind([\T_FUNCTION, \T_FN])) {
+            if (!$token->isKind([\T_FUNCTION, \T_FN])) {
                 continue;
             }
 
@@ -168,7 +168,7 @@ $f = fn () => null;
             $afterParenthesisIndex = $tokens->getNextNonWhitespace($endParenthesisIndex);
             $afterParenthesisToken = $tokens[$afterParenthesisIndex];
 
-            if ($afterParenthesisToken->isGivenKind(CT::T_USE_LAMBDA)) {
+            if ($afterParenthesisToken->isKind(CT::T_USE_LAMBDA)) {
                 // fix whitespace after CT:T_USE_LAMBDA (we might add a token, so do this before determining start and end parenthesis)
                 $tokens->ensureWhitespaceAtIndex($afterParenthesisIndex + 1, 0, ' ');
 
@@ -202,7 +202,7 @@ $f = fn () => null;
                 $tokens->clearAt($startParenthesisIndex - 1);
             }
 
-            $option = $token->isGivenKind(\T_FN) ? 'closure_fn_spacing' : 'closure_function_spacing';
+            $option = $token->isKind(\T_FN) ? 'closure_fn_spacing' : 'closure_function_spacing';
 
             if ($isLambda && self::SPACING_NONE === $this->configuration[$option]) {
                 // optionally remove whitespace after T_FUNCTION of a closure
@@ -219,7 +219,7 @@ $f = fn () => null;
             if ($isLambda) {
                 $prev = $tokens->getPrevMeaningfulToken($index);
 
-                if ($tokens[$prev]->isGivenKind(\T_STATIC)) {
+                if ($tokens[$prev]->isKind(\T_STATIC)) {
                     // fix whitespace after T_STATIC
                     // eg: `$a = static     function(){};` => `$a = static function(){};`
                     $tokens->ensureWhitespaceAtIndex($prev + 1, 0, ' ');

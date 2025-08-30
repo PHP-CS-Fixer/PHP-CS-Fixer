@@ -146,14 +146,14 @@ final class NewWithParenthesesFixer extends AbstractFixer implements Configurabl
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 3; $index > 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(\T_NEW)) {
+            if (!$tokens[$index]->isKind(\T_NEW)) {
                 continue;
             }
 
             $nextIndex = $tokens->getNextTokenOfKind($index, self::NEXT_TOKEN_KINDS);
 
             // new anonymous class definition
-            if ($tokens[$nextIndex]->isGivenKind(\T_CLASS)) {
+            if ($tokens[$nextIndex]->isKind(\T_CLASS)) {
                 $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
 
                 if (true === $this->configuration['anonymous_class']) {
@@ -167,7 +167,7 @@ final class NewWithParenthesesFixer extends AbstractFixer implements Configurabl
 
             // entrance into array index syntax - need to look for exit
 
-            while ($tokens[$nextIndex]->equals('[') || $tokens[$nextIndex]->isGivenKind(CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN)) {
+            while ($tokens[$nextIndex]->equals('[') || $tokens[$nextIndex]->isKind(CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN)) {
                 $nextIndex = $tokens->findBlockEnd(Tokens::detectBlockType($tokens[$nextIndex])['type'], $nextIndex);
                 $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
             }

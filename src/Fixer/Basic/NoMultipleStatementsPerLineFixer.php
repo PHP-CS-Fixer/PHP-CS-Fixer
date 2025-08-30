@@ -60,7 +60,7 @@ final class NoMultipleStatementsPerLineFixer extends AbstractFixer implements Wh
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = 1, $max = \count($tokens) - 1; $index < $max; ++$index) {
-            if ($tokens[$index]->isGivenKind(\T_FOR)) {
+            if ($tokens[$index]->isKind(\T_FOR)) {
                 $index = $tokens->findBlockEnd(
                     Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
                     $tokens->getNextTokenOfKind($index, ['('])
@@ -69,7 +69,7 @@ final class NoMultipleStatementsPerLineFixer extends AbstractFixer implements Wh
                 continue;
             }
 
-            if ($tokens[$index]->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
+            if ($tokens[$index]->isKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
                 $index = $tokens->findBlockEnd(
                     Tokens::BLOCK_TYPE_PROPERTY_HOOK,
                     $index

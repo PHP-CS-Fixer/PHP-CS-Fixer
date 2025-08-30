@@ -85,7 +85,7 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurableFixerIn
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
-            if ($tokens[$index]->isGivenKind($this->candidateTokenKind)) {
+            if ($tokens[$index]->isKind($this->candidateTokenKind)) {
                 if (\T_LIST === $this->candidateTokenKind) {
                     $this->fixToShortSyntax($tokens, $index);
                 } else {
@@ -111,7 +111,7 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurableFixerIn
             [CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE],
             '[', // [CT::T_ARRAY_SQUARE_BRACE_OPEN],
         ]);
-        if (!$tokens[$closeIndex]->isGivenKind(CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE)) {
+        if (!$tokens[$closeIndex]->isKind(CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE)) {
             return;
         }
 

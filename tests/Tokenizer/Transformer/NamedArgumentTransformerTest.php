@@ -155,7 +155,7 @@ final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
         Tokens::clearCache();
 
         foreach (Tokens::fromCode($source) as $token) {
-            self::assertFalse($token->isGivenKind([
+            self::assertFalse($token->isKind([
                 CT::T_NAMED_ARGUMENT_NAME,
                 CT::T_NAMED_ARGUMENT_COLON,
             ]));

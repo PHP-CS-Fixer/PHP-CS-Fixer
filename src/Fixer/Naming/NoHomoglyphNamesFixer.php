@@ -218,7 +218,7 @@ final class NoHomoglyphNamesFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind([\T_VARIABLE, \T_STRING])) {
+            if (!$token->isKind([\T_VARIABLE, \T_STRING])) {
                 continue;
             }
 

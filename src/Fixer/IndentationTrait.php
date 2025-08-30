@@ -65,7 +65,7 @@ trait IndentationTrait
     {
         $content = $tokens[$index]->getContent();
 
-        if (0 !== $index && $tokens[$index - 1]->isGivenKind([\T_OPEN_TAG, \T_CLOSE_TAG])) {
+        if (0 !== $index && $tokens[$index - 1]->isKind([\T_OPEN_TAG, \T_CLOSE_TAG])) {
             $content = Preg::replace('/\S/', '', $tokens[$index - 1]->getContent()).$content;
         }
 
@@ -77,7 +77,7 @@ trait IndentationTrait
         $token = $tokens[$index];
 
         if (
-            $token->isGivenKind(\T_OPEN_TAG)
+            $token->isKind(\T_OPEN_TAG)
             && isset($tokens[$index + 1])
             && !$tokens[$index + 1]->isWhitespace()
             && Preg::match('/\R/', $token->getContent())
@@ -85,7 +85,7 @@ trait IndentationTrait
             return true;
         }
 
-        if (!$tokens[$index]->isGivenKind([\T_WHITESPACE, \T_INLINE_HTML])) {
+        if (!$tokens[$index]->isKind([\T_WHITESPACE, \T_INLINE_HTML])) {
             return false;
         }
 

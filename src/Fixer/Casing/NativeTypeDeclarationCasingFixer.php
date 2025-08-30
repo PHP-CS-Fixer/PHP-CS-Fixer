@@ -132,18 +132,18 @@ final class NativeTypeDeclarationCasingFixer extends AbstractFixer
             }
 
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$prevIndex]->equals('=') || $tokens[$prevIndex]->isGivenKind([\T_CASE, \T_OBJECT_OPERATOR, \T_DOUBLE_COLON, \T_NS_SEPARATOR])) {
+            if ($tokens[$prevIndex]->equals('=') || $tokens[$prevIndex]->isKind([\T_CASE, \T_OBJECT_OPERATOR, \T_DOUBLE_COLON, \T_NS_SEPARATOR])) {
                 continue;
             }
 
             $nextIndex = $tokens->getNextMeaningfulToken($index);
-            if ($tokens[$nextIndex]->equals('=') || $tokens[$nextIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+            if ($tokens[$nextIndex]->equals('=') || $tokens[$nextIndex]->isKind(\T_NS_SEPARATOR)) {
                 continue;
             }
 
             if (
-                !$tokens[$prevIndex]->isGivenKind([\T_CONST, CT::T_NULLABLE_TYPE, CT::T_TYPE_ALTERNATION, CT::T_TYPE_COLON])
-                && !$tokens[$nextIndex]->isGivenKind([\T_VARIABLE, CT::T_TYPE_ALTERNATION])
+                !$tokens[$prevIndex]->isKind([\T_CONST, CT::T_NULLABLE_TYPE, CT::T_TYPE_ALTERNATION, CT::T_TYPE_COLON])
+                && !$tokens[$nextIndex]->isKind([\T_VARIABLE, CT::T_TYPE_ALTERNATION])
             ) {
                 continue;
             }

@@ -58,11 +58,11 @@ final class NoTrailingWhitespaceInStringFixer extends AbstractFixer
         for ($index = $tokens->count() - 1, $last = true; $index >= 0; --$index, $last = false) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind([\T_CONSTANT_ENCAPSED_STRING, \T_ENCAPSED_AND_WHITESPACE, \T_INLINE_HTML])) {
+            if (!$token->isKind([\T_CONSTANT_ENCAPSED_STRING, \T_ENCAPSED_AND_WHITESPACE, \T_INLINE_HTML])) {
                 continue;
             }
 
-            $isInlineHtml = $token->isGivenKind(\T_INLINE_HTML);
+            $isInlineHtml = $token->isKind(\T_INLINE_HTML);
             $regex = $isInlineHtml && $last ? '/\h+(?=\R|$)/' : '/\h+(?=\R)/';
             $content = Preg::replace($regex, '', $token->getContent());
 

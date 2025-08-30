@@ -37,10 +37,10 @@ trait DocBlockAnnotationTrait
         do {
             $index = $tokens->getPrevNonWhitespace($index);
 
-            if ($tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+            if ($tokens[$index]->isKind(CT::T_ATTRIBUTE_CLOSE)) {
                 $index = $tokens->getPrevTokenOfKind($index, [[\T_ATTRIBUTE]]);
             }
-        } while ($tokens[$index]->isGivenKind([\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_FINAL, \T_ABSTRACT, \T_COMMENT, FCT::T_ATTRIBUTE, FCT::T_READONLY]));
+        } while ($tokens[$index]->isKind([\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_FINAL, \T_ABSTRACT, \T_COMMENT, FCT::T_ATTRIBUTE, FCT::T_READONLY]));
 
         return $index;
     }
@@ -62,7 +62,7 @@ trait DocBlockAnnotationTrait
             return;
         }
 
-        if ($tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT)) {
+        if ($tokens[$docBlockIndex]->isKind(\T_DOC_COMMENT)) {
             $this->updateDocBlockIfNeeded($tokens, $docBlockIndex, $annotation, $preventingAnnotations);
         } else {
             $this->createDocBlock($tokens, $docBlockIndex, $annotation);
@@ -80,10 +80,10 @@ trait DocBlockAnnotationTrait
         $index = $tokens->getNextMeaningfulToken($docBlockIndex);
         $tokens->insertAt($index, $toInsert);
 
-        if (!$tokens[$index - 1]->isGivenKind(\T_WHITESPACE)) {
+        if (!$tokens[$index - 1]->isKind(\T_WHITESPACE)) {
             $extraNewLines = $this->whitespacesConfig->getLineEnding();
 
-            if (!$tokens[$index - 1]->isGivenKind(\T_OPEN_TAG)) {
+            if (!$tokens[$index - 1]->isKind(\T_OPEN_TAG)) {
                 $extraNewLines .= $this->whitespacesConfig->getLineEnding();
             }
 
@@ -128,8 +128,8 @@ trait DocBlockAnnotationTrait
 
         do {
             $index = $tokens->getPrevMeaningfulToken($index);
-        } while ($tokens[$index]->isGivenKind([\T_FINAL, FCT::T_READONLY]));
-        if (!$tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+        } while ($tokens[$index]->isKind([\T_FINAL, FCT::T_READONLY]));
+        if (!$tokens[$index]->isKind(CT::T_ATTRIBUTE_CLOSE)) {
             return false;
         }
         $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);

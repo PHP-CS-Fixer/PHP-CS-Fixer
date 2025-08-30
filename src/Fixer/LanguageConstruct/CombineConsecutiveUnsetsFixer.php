@@ -53,7 +53,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(\T_UNSET)) {
+            if (!$tokens[$index]->isKind(\T_UNSET)) {
                 continue;
             }
 
@@ -143,7 +143,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
             return $index;
         }
 
-        if (!$tokens[$previousUnset]->isGivenKind(\T_UNSET)) {
+        if (!$tokens[$previousUnset]->isKind(\T_UNSET)) {
             return $previousUnset;
         }
 

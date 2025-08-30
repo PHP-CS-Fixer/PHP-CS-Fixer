@@ -51,7 +51,7 @@ final class TypeColonTransformer extends AbstractTransformer
 
         $endIndex = $tokens->getPrevMeaningfulToken($index);
 
-        if ($tokens[$tokens->getPrevMeaningfulToken($endIndex)]->isGivenKind(FCT::T_ENUM)) {
+        if ($tokens[$tokens->getPrevMeaningfulToken($endIndex)]->isKind(FCT::T_ENUM)) {
             $tokens[$index] = new Token([CT::T_TYPE_COLON, ':']);
 
             return;
@@ -66,12 +66,12 @@ final class TypeColonTransformer extends AbstractTransformer
         $prevToken = $tokens[$prevIndex];
 
         // if this could be a function name we need to take one more step
-        if ($prevToken->isGivenKind(\T_STRING)) {
+        if ($prevToken->isKind(\T_STRING)) {
             $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
             $prevToken = $tokens[$prevIndex];
         }
 
-        if ($prevToken->isGivenKind([\T_FUNCTION, CT::T_RETURN_REF, CT::T_USE_LAMBDA, \T_FN])) {
+        if ($prevToken->isKind([\T_FUNCTION, CT::T_RETURN_REF, CT::T_USE_LAMBDA, \T_FN])) {
             $tokens[$index] = new Token([CT::T_TYPE_COLON, ':']);
         }
     }

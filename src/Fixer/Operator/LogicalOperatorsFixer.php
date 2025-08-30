@@ -59,9 +59,9 @@ if ($a == "foo" and ($b == "bar" or $c == "baz")) {
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(\T_LOGICAL_AND)) {
+            if ($token->isKind(\T_LOGICAL_AND)) {
                 $tokens[$index] = new Token([\T_BOOLEAN_AND, '&&']);
-            } elseif ($token->isGivenKind(\T_LOGICAL_OR)) {
+            } elseif ($token->isKind(\T_LOGICAL_OR)) {
                 $tokens[$index] = new Token([\T_BOOLEAN_OR, '||']);
             }
         }

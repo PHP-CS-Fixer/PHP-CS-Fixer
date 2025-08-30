@@ -63,7 +63,7 @@ final class NoBinaryStringFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind([\T_CONSTANT_ENCAPSED_STRING, \T_START_HEREDOC])) {
+            if ($token->isKind([\T_CONSTANT_ENCAPSED_STRING, \T_START_HEREDOC])) {
                 $content = $token->getContent();
 
                 if ('b' === strtolower($content[0])) {

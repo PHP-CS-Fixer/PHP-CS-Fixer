@@ -80,14 +80,14 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
 
             $fileCandidateRight = $tokens[$fileCandidateRightIndex];
 
-            if (!$fileCandidateRight->isGivenKind(\T_FILE)) {
+            if (!$fileCandidateRight->isKind(\T_FILE)) {
                 continue;
             }
 
             $fileCandidateLeftIndex = $tokens->getNextMeaningfulToken($openParenthesis);
             $fileCandidateLeft = $tokens[$fileCandidateLeftIndex];
 
-            if (!$fileCandidateLeft->isGivenKind(\T_FILE)) {
+            if (!$fileCandidateLeft->isKind(\T_FILE)) {
                 continue;
             }
 
@@ -95,7 +95,7 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
             $namespaceCandidateIndex = $tokens->getPrevMeaningfulToken($functionNameIndex);
             $namespaceCandidate = $tokens[$namespaceCandidateIndex];
 
-            if ($namespaceCandidate->isGivenKind(\T_NS_SEPARATOR)) {
+            if ($namespaceCandidate->isKind(\T_NS_SEPARATOR)) {
                 $tokens->removeTrailingWhitespace($namespaceCandidateIndex);
                 $tokens->clearAt($namespaceCandidateIndex);
             }

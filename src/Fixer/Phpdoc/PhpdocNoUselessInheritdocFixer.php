@@ -61,7 +61,7 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
     {
         // min. offset 4 as minimal candidate is @: <?php\n/** @inheritdoc */class min{}
         for ($index = 1, $count = \count($tokens) - 4; $index < $count; ++$index) {
-            if ($tokens[$index]->isGivenKind([\T_CLASS, \T_INTERFACE])) {
+            if ($tokens[$index]->isKind([\T_CLASS, \T_INTERFACE])) {
                 $index = $this->fixClassy($tokens, $index);
             }
         }
@@ -96,9 +96,9 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
     private function fixClassyInside(Tokens $tokens, int $classOpenIndex, int $classEndIndex, bool $fixThisLevel): void
     {
         for ($i = $classOpenIndex; $i < $classEndIndex; ++$i) {
-            if ($tokens[$i]->isGivenKind(\T_CLASS)) {
+            if ($tokens[$i]->isKind(\T_CLASS)) {
                 $i = $this->fixClassy($tokens, $i);
-            } elseif ($fixThisLevel && $tokens[$i]->isGivenKind(\T_DOC_COMMENT)) {
+            } elseif ($fixThisLevel && $tokens[$i]->isKind(\T_DOC_COMMENT)) {
                 $this->fixToken($tokens, $i);
             }
         }
@@ -107,7 +107,7 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
     private function fixClassyOutside(Tokens $tokens, int $classIndex): void
     {
         $previousIndex = $tokens->getPrevNonWhitespace($classIndex);
-        if ($tokens[$previousIndex]->isGivenKind(\T_DOC_COMMENT)) {
+        if ($tokens[$previousIndex]->isKind(\T_DOC_COMMENT)) {
             $this->fixToken($tokens, $previousIndex);
         }
     }
@@ -131,7 +131,7 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
     private function isExtendingOrImplementing(Tokens $tokens, int $classIndex, int $classOpenIndex): bool
     {
         for ($index = $classIndex; $index < $classOpenIndex; ++$index) {
-            if ($tokens[$index]->isGivenKind([\T_EXTENDS, \T_IMPLEMENTS])) {
+            if ($tokens[$index]->isKind([\T_EXTENDS, \T_IMPLEMENTS])) {
                 return true;
             }
         }
@@ -141,7 +141,7 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
 
     private function isUsingTrait(Tokens $tokens, int $classIndex, int $classOpenIndex, int $classCloseIndex): bool
     {
-        if ($tokens[$classIndex]->isGivenKind(\T_INTERFACE)) {
+        if ($tokens[$classIndex]->isKind(\T_INTERFACE)) {
             // cannot use Trait inside an interface
             return false;
         }

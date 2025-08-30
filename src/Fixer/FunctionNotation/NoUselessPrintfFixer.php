@@ -73,7 +73,7 @@ final class NoUselessPrintfFixer extends AbstractFixer
         $printfIndices = [];
 
         for ($index = \count($tokens) - 1; $index > 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(\T_STRING)) {
+            if (!$tokens[$index]->isKind(\T_STRING)) {
                 continue;
             }
 
@@ -87,7 +87,7 @@ final class NoUselessPrintfFixer extends AbstractFixer
 
             $openParenthesisIndex = $tokens->getNextTokenOfKind($index, ['(']);
 
-            if ($tokens[$tokens->getNextMeaningfulToken($openParenthesisIndex)]->isGivenKind([\T_ELLIPSIS, CT::T_FIRST_CLASS_CALLABLE])) {
+            if ($tokens[$tokens->getNextMeaningfulToken($openParenthesisIndex)]->isKind([\T_ELLIPSIS, CT::T_FIRST_CLASS_CALLABLE])) {
                 continue;
             }
 
@@ -110,7 +110,7 @@ final class NoUselessPrintfFixer extends AbstractFixer
 
             $prevMeaningfulTokenIndex = $tokens->getPrevMeaningfulToken($index);
 
-            if ($tokens[$prevMeaningfulTokenIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+            if ($tokens[$prevMeaningfulTokenIndex]->isKind(\T_NS_SEPARATOR)) {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($prevMeaningfulTokenIndex);
             }
 

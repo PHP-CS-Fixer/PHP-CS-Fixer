@@ -115,7 +115,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 );
 
                 if (
-                    !$tokens[$index]->isGivenKind(\T_DOC_COMMENT)
+                    !$tokens[$index]->isKind(\T_DOC_COMMENT)
                     || !Preg::match($findPattern, $tokens[$index]->getContent())
                 ) {
                     continue;

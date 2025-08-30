@@ -52,7 +52,7 @@ final class SemicolonAfterInstructionFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = \count($tokens) - 1; $index > 1; --$index) {
-            if (!$tokens[$index]->isGivenKind(\T_CLOSE_TAG)) {
+            if (!$tokens[$index]->isKind(\T_CLOSE_TAG)) {
                 continue;
             }
 

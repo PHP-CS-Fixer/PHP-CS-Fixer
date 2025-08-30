@@ -159,7 +159,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
     private function isHigherPrecedenceAssociativityOperator(Token $token): bool
     {
         return
-            $token->isGivenKind([
+            $token->isKind([
                 \T_ARRAY_CAST,
                 \T_BOOLEAN_AND,
                 \T_BOOLEAN_OR,
@@ -207,7 +207,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
     private function hasChangingContent(Tokens $tokens): bool
     {
         foreach ($tokens as $token) {
-            if ($token->isGivenKind([
+            if ($token->isKind([
                 \T_DEC,
                 \T_INC,
                 \T_YIELD,

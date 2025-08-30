@@ -376,29 +376,29 @@ Custom values:
                     return $elements;
                 }
 
-                if ($token->isGivenKind(\T_ABSTRACT)) {
+                if ($token->isKind(\T_ABSTRACT)) {
                     $element['abstract'] = true;
 
                     continue;
                 }
 
-                if ($token->isGivenKind(\T_STATIC)) {
+                if ($token->isKind(\T_STATIC)) {
                     $element['static'] = true;
 
                     continue;
                 }
 
-                if ($token->isGivenKind(FCT::T_READONLY)) {
+                if ($token->isKind(FCT::T_READONLY)) {
                     $element['readonly'] = true;
                 }
 
-                if ($token->isGivenKind([\T_PROTECTED, \T_PRIVATE])) {
+                if ($token->isKind([\T_PROTECTED, \T_PRIVATE])) {
                     $element['visibility'] = strtolower($token->getContent());
 
                     continue;
                 }
 
-                if (!$token->isGivenKind([CT::T_USE_TRAIT, \T_CASE, \T_CONST, \T_VARIABLE, \T_FUNCTION])) {
+                if (!$token->isKind([CT::T_USE_TRAIT, \T_CASE, \T_CONST, \T_VARIABLE, \T_FUNCTION])) {
                     continue;
                 }
 
@@ -437,19 +437,19 @@ Custom values:
     {
         $token = $tokens[$index];
 
-        if ($token->isGivenKind(CT::T_USE_TRAIT)) {
+        if ($token->isKind(CT::T_USE_TRAIT)) {
             return 'use_trait';
         }
 
-        if ($token->isGivenKind(\T_CASE)) {
+        if ($token->isKind(\T_CASE)) {
             return 'case';
         }
 
-        if ($token->isGivenKind(\T_CONST)) {
+        if ($token->isKind(\T_CONST)) {
             return 'constant';
         }
 
-        if ($token->isGivenKind(\T_VARIABLE)) {
+        if ($token->isKind(\T_VARIABLE)) {
             return 'property';
         }
 
@@ -496,7 +496,7 @@ Custom values:
             $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
         }
 
-        if ($tokens[$index]->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
+        if ($tokens[$index]->isKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
             $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PROPERTY_HOOK, $index);
         }
 

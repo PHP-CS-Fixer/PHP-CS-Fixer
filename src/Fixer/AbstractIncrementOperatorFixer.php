@@ -46,9 +46,9 @@ abstract class AbstractIncrementOperatorFixer extends AbstractFixer
             return $this->findStart($tokens, $prevIndex);
         }
 
-        if ($prevToken->isGivenKind(\T_PAAMAYIM_NEKUDOTAYIM)) {
+        if ($prevToken->isKind(\T_PAAMAYIM_NEKUDOTAYIM)) {
             $prevPrevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
-            if (!$tokens[$prevPrevIndex]->isGivenKind([\T_STATIC, \T_STRING])) {
+            if (!$tokens[$prevPrevIndex]->isKind([\T_STATIC, \T_STRING])) {
                 return $this->findStart($tokens, $prevIndex);
             }
 

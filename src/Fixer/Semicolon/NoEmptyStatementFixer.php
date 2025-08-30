@@ -60,7 +60,7 @@ final class NoEmptyStatementFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
-            if ($tokens[$index]->isGivenKind([\T_BREAK, \T_CONTINUE])) {
+            if ($tokens[$index]->isKind([\T_BREAK, \T_CONTINUE])) {
                 $index = $tokens->getNextMeaningfulToken($index);
 
                 if ($tokens[$index]->equals([\T_LNUMBER, '1'])) {
@@ -71,7 +71,7 @@ final class NoEmptyStatementFixer extends AbstractFixer
             }
 
             // skip T_FOR parenthesis to ignore double `;` like `for ($i = 1; ; ++$i) {...}`
-            if ($tokens[$index]->isGivenKind(\T_FOR)) {
+            if ($tokens[$index]->isKind(\T_FOR)) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $tokens->getNextMeaningfulToken($index)) + 1;
 
                 continue;
@@ -98,7 +98,7 @@ final class NoEmptyStatementFixer extends AbstractFixer
             }
 
             $nextIndex = $tokens->getNextMeaningfulToken($index);
-            if (null !== $nextIndex && $tokens[$nextIndex]->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_CLOSE)) {
+            if (null !== $nextIndex && $tokens[$nextIndex]->isKind(CT::T_PROPERTY_HOOK_BRACE_CLOSE)) {
                 continue;
             }
 
@@ -107,7 +107,7 @@ final class NoEmptyStatementFixer extends AbstractFixer
 
             if (
                 $tokens[$prePreviousMeaningfulIndex]->equalsAny([';', '{', '}', [\T_OPEN_TAG]])
-                && $tokens[$previousMeaningfulIndex]->isGivenKind([\T_CONSTANT_ENCAPSED_STRING, \T_DNUMBER, \T_LNUMBER, \T_STRING, \T_VARIABLE])
+                && $tokens[$previousMeaningfulIndex]->isKind([\T_CONSTANT_ENCAPSED_STRING, \T_DNUMBER, \T_LNUMBER, \T_STRING, \T_VARIABLE])
             ) {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index);
                 $tokens->clearTokenAndMergeSurroundingWhitespace($previousMeaningfulIndex);
@@ -136,24 +136,24 @@ final class NoEmptyStatementFixer extends AbstractFixer
         $curlyOpeningIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $curlyCloseIndex);
         $beforeCurlyOpeningIndex = $tokens->getPrevMeaningfulToken($curlyOpeningIndex);
 
-        if ($tokens[$beforeCurlyOpeningIndex]->isGivenKind([\T_ELSE, \T_FINALLY, \T_NAMESPACE, \T_OPEN_TAG]) || $tokens[$beforeCurlyOpeningIndex]->equalsAny([';', '{', '}'])) {
+        if ($tokens[$beforeCurlyOpeningIndex]->isKind([\T_ELSE, \T_FINALLY, \T_NAMESPACE, \T_OPEN_TAG]) || $tokens[$beforeCurlyOpeningIndex]->equalsAny([';', '{', '}'])) {
             $tokens->clearTokenAndMergeSurroundingWhitespace($index);
 
             return;
         }
 
         // check for namespaces and class, interface and trait definitions
-        if ($tokens[$beforeCurlyOpeningIndex]->isGivenKind(\T_STRING)) {
+        if ($tokens[$beforeCurlyOpeningIndex]->isKind(\T_STRING)) {
             $classyTestIndex = $tokens->getPrevMeaningfulToken($beforeCurlyOpeningIndex);
 
-            while ($tokens[$classyTestIndex]->equals(',') || $tokens[$classyTestIndex]->isGivenKind([\T_STRING, \T_NS_SEPARATOR, \T_EXTENDS, \T_IMPLEMENTS])) {
+            while ($tokens[$classyTestIndex]->equals(',') || $tokens[$classyTestIndex]->isKind([\T_STRING, \T_NS_SEPARATOR, \T_EXTENDS, \T_IMPLEMENTS])) {
                 $classyTestIndex = $tokens->getPrevMeaningfulToken($classyTestIndex);
             }
 
             $tokensAnalyzer = new TokensAnalyzer($tokens);
 
             if (
-                $tokens[$classyTestIndex]->isGivenKind(\T_NAMESPACE)
+                $tokens[$classyTestIndex]->isKind(\T_NAMESPACE)
                 || ($tokens[$classyTestIndex]->isClassy() && !$tokensAnalyzer->isAnonymousClass($classyTestIndex))
             ) {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index);
@@ -170,17 +170,17 @@ final class NoEmptyStatementFixer extends AbstractFixer
         $openingBraceIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $beforeCurlyOpeningIndex);
         $beforeOpeningBraceIndex = $tokens->getPrevMeaningfulToken($openingBraceIndex);
 
-        if ($tokens[$beforeOpeningBraceIndex]->isGivenKind([\T_IF, \T_ELSEIF, \T_FOR, \T_FOREACH, \T_WHILE, \T_SWITCH, \T_CATCH, \T_DECLARE])) {
+        if ($tokens[$beforeOpeningBraceIndex]->isKind([\T_IF, \T_ELSEIF, \T_FOR, \T_FOREACH, \T_WHILE, \T_SWITCH, \T_CATCH, \T_DECLARE])) {
             $tokens->clearTokenAndMergeSurroundingWhitespace($index);
 
             return;
         }
 
         // check for function definition
-        if ($tokens[$beforeOpeningBraceIndex]->isGivenKind(\T_STRING)) {
+        if ($tokens[$beforeOpeningBraceIndex]->isKind(\T_STRING)) {
             $beforeStringIndex = $tokens->getPrevMeaningfulToken($beforeOpeningBraceIndex);
 
-            if ($tokens[$beforeStringIndex]->isGivenKind(\T_FUNCTION)) {
+            if ($tokens[$beforeStringIndex]->isKind(\T_FUNCTION)) {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index); // implicit return
             }
         }

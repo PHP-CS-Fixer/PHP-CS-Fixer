@@ -50,13 +50,13 @@ final class PhpUnitTestCaseAnalyzer
 
     private function isPhpUnitClass(Tokens $tokens, int $index): bool
     {
-        if (!$tokens[$index]->isGivenKind(\T_CLASS)) {
+        if (!$tokens[$index]->isKind(\T_CLASS)) {
             return false;
         }
 
         $extendsIndex = $tokens->getNextTokenOfKind($index, ['{', [\T_EXTENDS]]);
 
-        if (!$tokens[$extendsIndex]->isGivenKind(\T_EXTENDS)) {
+        if (!$tokens[$extendsIndex]->isKind(\T_EXTENDS)) {
             return false;
         }
 
@@ -69,7 +69,7 @@ final class PhpUnitTestCaseAnalyzer
                 break; // end of class signature
             }
 
-            if (!$tokens[$index]->isGivenKind(\T_STRING)) {
+            if (!$tokens[$index]->isKind(\T_STRING)) {
                 continue; // not part of extends nor part of implements; so continue
             }
 

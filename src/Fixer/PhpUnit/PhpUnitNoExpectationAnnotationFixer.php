@@ -147,7 +147,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         for ($i = $endIndex - 1; $i > $startIndex; --$i) {
-            if (!$tokens[$i]->isGivenKind(\T_FUNCTION) || $tokensAnalyzer->isLambda($i)) {
+            if (!$tokens[$i]->isKind(\T_FUNCTION) || $tokensAnalyzer->isLambda($i)) {
                 continue;
             }
 
@@ -162,9 +162,9 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             do {
                 $docBlockIndex = $tokens->getPrevNonWhitespace($docBlockIndex);
-            } while ($tokens[$docBlockIndex]->isGivenKind([\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_FINAL, \T_ABSTRACT, \T_COMMENT]));
+            } while ($tokens[$docBlockIndex]->isKind([\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_FINAL, \T_ABSTRACT, \T_COMMENT]));
 
-            if (!$tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT)) {
+            if (!$tokens[$docBlockIndex]->isKind(\T_DOC_COMMENT)) {
                 continue;
             }
 

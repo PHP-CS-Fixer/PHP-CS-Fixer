@@ -351,7 +351,7 @@ iterate the token(s) we are interested in.
        protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
        {
            foreach ($tokens as $index => $token) {
-               if (!$token->isGivenKind(T_COMMENT)) {
+               if (!$token->isKind(T_COMMENT)) {
                    continue;
                }
 
@@ -375,7 +375,7 @@ token is a semicolon.
        protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
        {
            foreach ($tokens as $index => $token) {
-               if (!$token->isGivenKind(T_COMMENT)) {
+               if (!$token->isKind(T_COMMENT)) {
                    continue;
                }
 
@@ -437,7 +437,7 @@ So the fixer in the end looks like this:
        protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
        {
            foreach ($tokens as $index => $token) {
-               if (!$token->isGivenKind(T_COMMENT)) {
+               if (!$token->isKind(T_COMMENT)) {
                    continue;
                }
 

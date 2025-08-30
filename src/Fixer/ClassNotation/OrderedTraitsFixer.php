@@ -102,7 +102,7 @@ final class OrderedTraitsFixer extends AbstractFixer implements ConfigurableFixe
                 continue;
             }
 
-            if (!$token->isGivenKind(CT::T_USE_TRAIT)) {
+            if (!$token->isKind(CT::T_USE_TRAIT)) {
                 if (\count($uses) > 0) {
                     yield $uses;
 
@@ -152,7 +152,7 @@ final class OrderedTraitsFixer extends AbstractFixer implements ConfigurableFixe
         for ($index = 0, $max = \count($use); $index < $max; ++$index) {
             $token = $use[$index];
 
-            if ($token->isGivenKind([\T_STRING, \T_NS_SEPARATOR])) {
+            if ($token->isKind([\T_STRING, \T_NS_SEPARATOR])) {
                 $name[] = $token;
 
                 if (null === $indexOfName) {
@@ -190,7 +190,7 @@ final class OrderedTraitsFixer extends AbstractFixer implements ConfigurableFixe
                     break;
                 }
 
-                if ($token->isGivenKind([\T_NS_SEPARATOR, \T_STRING])) {
+                if ($token->isKind([\T_NS_SEPARATOR, \T_STRING])) {
                     $string .= $token->getContent();
                 }
             }

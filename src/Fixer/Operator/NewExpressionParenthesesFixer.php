@@ -104,7 +104,7 @@ final class NewExpressionParenthesesFixer extends AbstractFixer implements Confi
         $useParentheses = $this->configuration['use_parentheses'];
 
         for ($index = $tokens->count() - 3; $index > 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(\T_NEW)) {
+            if (!$tokens[$index]->isKind(\T_NEW)) {
                 continue;
             }
 
@@ -115,7 +115,7 @@ final class NewExpressionParenthesesFixer extends AbstractFixer implements Confi
             }
 
             // anonymous class
-            if ($tokens[$classStartIndex]->isGivenKind(\T_CLASS)) {
+            if ($tokens[$classStartIndex]->isKind(\T_CLASS)) {
                 $nextIndex = $tokens->getNextMeaningfulToken($classStartIndex);
 
                 if ($tokens[$nextIndex]->equals('(')) {
@@ -166,13 +166,13 @@ final class NewExpressionParenthesesFixer extends AbstractFixer implements Confi
         $prevIndex = $tokens->getPrevMeaningfulToken($exprStartIndex);
         $nextIndex = $tokens->getNextMeaningfulToken($exprEndIndex);
 
-        if ($tokens[$prevIndex]->isGivenKind(CT::T_BRACE_CLASS_INSTANTIATION_OPEN)
-            && $tokens[$nextIndex]->isGivenKind(CT::T_BRACE_CLASS_INSTANTIATION_CLOSE)
+        if ($tokens[$prevIndex]->isKind(CT::T_BRACE_CLASS_INSTANTIATION_OPEN)
+            && $tokens[$nextIndex]->isKind(CT::T_BRACE_CLASS_INSTANTIATION_CLOSE)
         ) {
             return;
         }
 
-        if (!$tokens[$nextIndex]->isObjectOperator() && !$tokens[$nextIndex]->isGivenKind(\T_PAAMAYIM_NEKUDOTAYIM)) {
+        if (!$tokens[$nextIndex]->isObjectOperator() && !$tokens[$nextIndex]->isKind(\T_PAAMAYIM_NEKUDOTAYIM)) {
             return;
         }
 
@@ -185,15 +185,15 @@ final class NewExpressionParenthesesFixer extends AbstractFixer implements Confi
         $prevIndex = $tokens->getPrevMeaningfulToken($exprStartIndex);
         $nextIndex = $tokens->getNextMeaningfulToken($exprEndIndex);
 
-        if (!$tokens[$prevIndex]->isGivenKind(CT::T_BRACE_CLASS_INSTANTIATION_OPEN)
-            || !$tokens[$nextIndex]->isGivenKind(CT::T_BRACE_CLASS_INSTANTIATION_CLOSE)
+        if (!$tokens[$prevIndex]->isKind(CT::T_BRACE_CLASS_INSTANTIATION_OPEN)
+            || !$tokens[$nextIndex]->isKind(CT::T_BRACE_CLASS_INSTANTIATION_CLOSE)
         ) {
             return;
         }
 
         $operatorIndex = $tokens->getNextMeaningfulToken($nextIndex);
 
-        if (!$tokens[$operatorIndex]->isObjectOperator() && !$tokens[$operatorIndex]->isGivenKind(\T_PAAMAYIM_NEKUDOTAYIM)) {
+        if (!$tokens[$operatorIndex]->isObjectOperator() && !$tokens[$operatorIndex]->isKind(\T_PAAMAYIM_NEKUDOTAYIM)) {
             return;
         }
 

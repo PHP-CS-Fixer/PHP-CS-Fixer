@@ -66,7 +66,7 @@ include_once("sample4.php");
         $blocksAnalyzer = new BlocksAnalyzer();
 
         foreach ($includies as $includy) {
-            if (!$tokens[$includy['end']]->isGivenKind(\T_CLOSE_TAG)) {
+            if (!$tokens[$includy['end']]->isKind(\T_CLOSE_TAG)) {
                 $afterEndIndex = $tokens->getNextNonWhitespace($includy['end']);
 
                 if (null === $afterEndIndex || !$tokens[$afterEndIndex]->isComment()) {
@@ -95,7 +95,7 @@ include_once("sample4.php");
 
             if ($tokens[$nextIndex]->isWhitespace()) {
                 $tokens[$nextIndex] = new Token([\T_WHITESPACE, ' ']);
-            } elseif (null !== $braces || $tokens[$nextIndex]->isGivenKind([\T_VARIABLE, \T_CONSTANT_ENCAPSED_STRING, \T_COMMENT])) {
+            } elseif (null !== $braces || $tokens[$nextIndex]->isKind([\T_VARIABLE, \T_CONSTANT_ENCAPSED_STRING, \T_COMMENT])) {
                 $tokens->insertAt($includy['begin'] + 1, new Token([\T_WHITESPACE, ' ']));
             }
         }

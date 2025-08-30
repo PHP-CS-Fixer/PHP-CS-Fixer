@@ -151,7 +151,7 @@ namespace Foo {
         $namespaceIsNamed = false;
 
         $index = $tokens->getNextMeaningfulToken($index);
-        while ($tokens[$index]->isGivenKind([\T_STRING, \T_NS_SEPARATOR])) {
+        while ($tokens[$index]->isKind([\T_STRING, \T_NS_SEPARATOR])) {
             $index = $tokens->getNextMeaningfulToken($index);
             $namespaceIsNamed = true;
         }
@@ -167,7 +167,7 @@ namespace Foo {
         $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
         $afterCloseIndex = $tokens->getNextMeaningfulToken($closeIndex);
 
-        if (null !== $afterCloseIndex && (!$tokens[$afterCloseIndex]->isGivenKind(\T_CLOSE_TAG) || null !== $tokens->getNextMeaningfulToken($afterCloseIndex))) {
+        if (null !== $afterCloseIndex && (!$tokens[$afterCloseIndex]->isKind(\T_CLOSE_TAG) || null !== $tokens->getNextMeaningfulToken($afterCloseIndex))) {
             return;
         }
 

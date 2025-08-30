@@ -35,7 +35,7 @@ final class NamespacesAnalyzer
         for ($index = 1, $count = \count($tokens); $index < $count; ++$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(\T_NAMESPACE)) {
+            if (!$token->isKind(\T_NAMESPACE)) {
                 continue;
             }
 
@@ -71,7 +71,7 @@ final class NamespacesAnalyzer
             $namespaces[] = new NamespaceAnalysis(
                 '',
                 '',
-                $openTagIndex = $tokens[0]->isGivenKind(\T_INLINE_HTML) ? 1 : 0,
+                $openTagIndex = $tokens[0]->isKind(\T_INLINE_HTML) ? 1 : 0,
                 $openTagIndex,
                 $openTagIndex,
                 \count($tokens) - 1,

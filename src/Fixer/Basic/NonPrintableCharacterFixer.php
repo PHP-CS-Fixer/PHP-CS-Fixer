@@ -132,7 +132,7 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
 
             if (
                 true === $this->configuration['use_escape_sequences_in_strings']
-                && $token->isGivenKind([\T_CONSTANT_ENCAPSED_STRING, \T_ENCAPSED_AND_WHITESPACE])
+                && $token->isKind([\T_CONSTANT_ENCAPSED_STRING, \T_ENCAPSED_AND_WHITESPACE])
             ) {
                 if (!Preg::match('/'.implode('|', array_keys($escapeSequences)).'/', $content)) {
                     continue;
@@ -142,7 +142,7 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
                 $stringTypeChanged = false;
                 $swapQuotes = false;
 
-                if ($previousToken->isGivenKind(\T_START_HEREDOC)) {
+                if ($previousToken->isKind(\T_START_HEREDOC)) {
                     $previousTokenContent = $previousToken->getContent();
 
                     if (str_contains($previousTokenContent, '\'')) {
@@ -173,16 +173,16 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
                 continue;
             }
 
-            if ($token->isGivenKind(self::TOKENS)) {
+            if ($token->isKind(self::TOKENS)) {
                 $newContent = strtr($content, $replacements);
 
                 // variable name cannot contain space
-                if ($token->isGivenKind([\T_STRING_VARNAME, \T_VARIABLE]) && str_contains($newContent, ' ')) {
+                if ($token->isKind([\T_STRING_VARNAME, \T_VARIABLE]) && str_contains($newContent, ' ')) {
                     continue;
                 }
 
                 // multiline comment must have "*/" only at the end
-                if ($token->isGivenKind([\T_COMMENT, \T_DOC_COMMENT]) && str_starts_with($newContent, '/*') && strpos($newContent, '*/') !== \strlen($newContent) - 2) {
+                if ($token->isKind([\T_COMMENT, \T_DOC_COMMENT]) && str_starts_with($newContent, '/*') && strpos($newContent, '*/') !== \strlen($newContent) - 2) {
                     continue;
                 }
 

@@ -85,7 +85,7 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind($this->candidateTokenType)) {
+            if ($token->isKind($this->candidateTokenType)) {
                 if (\T_PRINT === $this->candidateTokenType) {
                     $this->fixPrintToEcho($tokens, $index);
                 } else {

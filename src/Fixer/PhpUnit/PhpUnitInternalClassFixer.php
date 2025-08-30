@@ -89,7 +89,7 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
         $classIndex = $tokens->getPrevTokenOfKind($startIndex, [[\T_CLASS]]);
 
         $prevIndex = $tokens->getPrevMeaningfulToken($classIndex);
-        if ($tokens[$prevIndex]->isGivenKind(\T_NEW)) {
+        if ($tokens[$prevIndex]->isKind(\T_NEW)) {
             return; // Skip instantiation of anonymous classes
         }
 

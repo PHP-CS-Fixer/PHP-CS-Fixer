@@ -133,7 +133,7 @@ final class Example
             $repeatToken = $tokens[$repeatIndex];
 
             if ($tokensAnalyzer->isArray($repeatIndex)) {
-                if ($repeatToken->isGivenKind(\T_ARRAY)) {
+                if ($repeatToken->isKind(\T_ARRAY)) {
                     $repeatIndex = $tokens->getNextTokenOfKind($repeatIndex, ['(']);
                     $repeatIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $repeatIndex);
                 } else {
@@ -183,7 +183,7 @@ final class Example
                 continue;
             }
 
-            if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
+            if ($token->isKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
                 $i = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $i);
 
                 continue;
@@ -227,7 +227,7 @@ final class Example
                 continue;
             }
 
-            if (!$tokens[$i]->isWhitespace() && !$tokens[$i]->isGivenKind($tokenKinds)) {
+            if (!$tokens[$i]->isWhitespace() && !$tokens[$i]->isKind($tokenKinds)) {
                 break;
             }
 

@@ -40,7 +40,7 @@ final class RangeAnalyzer
         $leftStart = $range1['start'];
         $leftEnd = $range1['end'];
 
-        if ($tokens[$leftStart]->isGivenKind([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT])) {
+        if ($tokens[$leftStart]->isKind([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT])) {
             $leftStart = $tokens->getNextMeaningfulToken($leftStart);
         }
 
@@ -52,7 +52,7 @@ final class RangeAnalyzer
         $rightStart = $range2['start'];
         $rightEnd = $range2['end'];
 
-        if ($tokens[$rightStart]->isGivenKind([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT])) {
+        if ($tokens[$rightStart]->isKind([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT])) {
             $rightStart = $tokens->getNextMeaningfulToken($rightStart);
         }
 

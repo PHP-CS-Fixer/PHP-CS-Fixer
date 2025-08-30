@@ -98,7 +98,7 @@ use Space\Models\ {
             $endIndex = $tokens->getNextTokenOfKind($index, [';', [\T_CLOSE_TAG]]);
             $groupClose = $tokens->getPrevMeaningfulToken($endIndex);
 
-            if ($tokens[$groupClose]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
+            if ($tokens[$groupClose]->isKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
                 if (true === $this->configuration['group_to_single_imports']) {
                     $this->fixGroupUse($tokens, $index, $endIndex);
                 }
@@ -128,7 +128,7 @@ use Space\Models\ {
         $groupOpenIndex = null;
 
         for ($i = $index + 1;; ++$i) {
-            if ($tokens[$i]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
+            if ($tokens[$i]->isKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                 $groupOpenIndex = $i;
 
                 break;
@@ -171,7 +171,7 @@ use Space\Models\ {
         for ($i = $groupOpenIndex + 1; $i <= $groupCloseIndex; ++$i) {
             $token = $tokens[$i];
 
-            if ($token->equals(',') && $tokens[$tokens->getNextMeaningfulToken($i)]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
+            if ($token->equals(',') && $tokens[$tokens->getNextMeaningfulToken($i)]->isKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
                 continue;
             }
 
@@ -185,13 +185,13 @@ use Space\Models\ {
             if ($token->isWhitespace()) {
                 $j = $tokens->getNextMeaningfulToken($i);
 
-                if ($tokens[$j]->isGivenKind(\T_AS)) {
+                if ($tokens[$j]->isKind(\T_AS)) {
                     $statement .= ' as ';
                     $i += 2;
-                } elseif ($tokens[$j]->isGivenKind(CT::T_FUNCTION_IMPORT)) {
+                } elseif ($tokens[$j]->isKind(CT::T_FUNCTION_IMPORT)) {
                     $statement = ' function'.$statement;
                     $i += 2;
-                } elseif ($tokens[$j]->isGivenKind(CT::T_CONST_IMPORT)) {
+                } elseif ($tokens[$j]->isKind(CT::T_CONST_IMPORT)) {
                     $statement = ' const'.$statement;
                     $i += 2;
                 }
@@ -233,12 +233,12 @@ use Space\Models\ {
     {
         $nextTokenIndex = $tokens->getNextMeaningfulToken($index);
 
-        if ($tokens[$nextTokenIndex]->isGivenKind(CT::T_FUNCTION_IMPORT)) {
+        if ($tokens[$nextTokenIndex]->isKind(CT::T_FUNCTION_IMPORT)) {
             $leadingTokens = [
                 new Token([CT::T_FUNCTION_IMPORT, 'function']),
                 new Token([\T_WHITESPACE, ' ']),
             ];
-        } elseif ($tokens[$nextTokenIndex]->isGivenKind(CT::T_CONST_IMPORT)) {
+        } elseif ($tokens[$nextTokenIndex]->isKind(CT::T_CONST_IMPORT)) {
             $leadingTokens = [
                 new Token([CT::T_CONST_IMPORT, 'const']),
                 new Token([\T_WHITESPACE, ' ']),

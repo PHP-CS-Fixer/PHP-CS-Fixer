@@ -74,7 +74,7 @@ final class PhpdocReadonlyClassCommentToKeywordFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
+            if (!$token->isKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -94,7 +94,7 @@ final class PhpdocReadonlyClassCommentToKeywordFixer extends AbstractFixer
             $index = $tokens->getNextMeaningfulToken($index);
             $addReadonly = true;
 
-            while ($tokens[$index]->isGivenKind([
+            while ($tokens[$index]->isKind([
                 \T_ABSTRACT,
                 \T_FINAL,
                 \T_PRIVATE,
@@ -102,14 +102,14 @@ final class PhpdocReadonlyClassCommentToKeywordFixer extends AbstractFixer
                 \T_PROTECTED,
                 \T_READONLY,
             ])) {
-                if ($tokens[$index]->isGivenKind(\T_READONLY)) {
+                if ($tokens[$index]->isKind(\T_READONLY)) {
                     $addReadonly = false;
                 }
 
                 $index = $tokens->getNextMeaningfulToken($index);
             }
 
-            if (!$tokens[$index]->isGivenKind(\T_CLASS)) {
+            if (!$tokens[$index]->isKind(\T_CLASS)) {
                 continue;
             }
 

@@ -209,7 +209,7 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
      */
     private function getConcatOperandType(Tokens $tokens, int $index, int $direction): ?array
     {
-        if ($tokens[$index]->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
+        if ($tokens[$index]->isKind(\T_CONSTANT_ENCAPSED_STRING)) {
             $firstChar = $tokens[$index]->getContent();
 
             if ('b' === $firstChar[0] || 'B' === $firstChar[0]) {
@@ -352,7 +352,7 @@ final class NoUselessConcatOperatorFixer extends AbstractFixer implements Config
         if (self::STR_DOUBLE_QUOTE_VAR !== $firstOperand['type']) {
             return false;
         }
-        if (!$tokens[$firstOperand['end'] - 1]->isGivenKind(\T_VARIABLE)) {
+        if (!$tokens[$firstOperand['end'] - 1]->isKind(\T_VARIABLE)) {
             return false;
         }
 

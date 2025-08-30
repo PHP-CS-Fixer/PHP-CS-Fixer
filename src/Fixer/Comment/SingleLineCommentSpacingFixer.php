@@ -63,7 +63,7 @@ final class SingleLineCommentSpacingFixer extends AbstractFixer
         for ($index = \count($tokens) - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(\T_COMMENT)) {
+            if (!$token->isKind(\T_COMMENT)) {
                 continue;
             }
 

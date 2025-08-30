@@ -103,7 +103,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $openingBraceIndex = $tokens->getNextMeaningfulToken($functionToRemoveIndex);
 
-            if ($tokens[$tokens->getNextMeaningfulToken($openingBraceIndex)]->isGivenKind(CT::T_FIRST_CLASS_CALLABLE)) {
+            if ($tokens[$tokens->getNextMeaningfulToken($openingBraceIndex)]->isKind(CT::T_FIRST_CLASS_CALLABLE)) {
                 continue;
             }
 

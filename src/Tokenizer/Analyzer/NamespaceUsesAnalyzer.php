@@ -99,7 +99,7 @@ final class NamespaceUsesAnalyzer
             $qualifiedName = $this->getNearestQualifiedName($tokens, $index);
             $token = $tokens[$qualifiedName['afterIndex']];
 
-            if ($token->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
+            if ($token->isKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                 $groupStart = $groupIndex = $qualifiedName['afterIndex'];
                 $groupEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, $groupStart);
 
@@ -107,7 +107,7 @@ final class NamespaceUsesAnalyzer
                     $chunkStart = $tokens->getNextMeaningfulToken($groupIndex);
 
                     // Finish parsing on trailing comma (no more chunks there)
-                    if ($tokens[$chunkStart]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
+                    if ($tokens[$chunkStart]->isKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
                         break;
                     }
 
@@ -131,7 +131,7 @@ final class NamespaceUsesAnalyzer
             } elseif ($token->equalsAny([',', ';', [\T_CLOSE_TAG]])) {
                 $previousToken = $tokens->getPrevMeaningfulToken($qualifiedName['afterIndex']);
 
-                if (!$tokens[$previousToken]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
+                if (!$tokens[$previousToken]->isKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
                     $imports[] = new NamespaceUseAnalysis(
                         $type,
                         $qualifiedName['fullName'],
@@ -161,11 +161,11 @@ final class NamespaceUsesAnalyzer
     {
         $potentialType = $tokens[$tokens->getNextMeaningfulToken($startIndex)];
 
-        if ($potentialType->isGivenKind(CT::T_FUNCTION_IMPORT)) {
+        if ($potentialType->isKind(CT::T_FUNCTION_IMPORT)) {
             return NamespaceUseAnalysis::TYPE_FUNCTION;
         }
 
-        if ($potentialType->isGivenKind(CT::T_CONST_IMPORT)) {
+        if ($potentialType->isKind(CT::T_CONST_IMPORT)) {
             return NamespaceUseAnalysis::TYPE_CONSTANT;
         }
 
@@ -183,14 +183,14 @@ final class NamespaceUsesAnalyzer
         while (null !== $index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(\T_STRING)) {
+            if ($token->isKind(\T_STRING)) {
                 $shortName = $token->getContent();
                 if (!$aliased) {
                     $fullName .= $shortName;
                 }
-            } elseif ($token->isGivenKind(\T_NS_SEPARATOR)) {
+            } elseif ($token->isKind(\T_NS_SEPARATOR)) {
                 $fullName .= $token->getContent();
-            } elseif ($token->isGivenKind(\T_AS)) {
+            } elseif ($token->isKind(\T_AS)) {
                 $aliased = true;
             } elseif ($token->equalsAny([
                 ',',

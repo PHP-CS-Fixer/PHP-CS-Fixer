@@ -117,7 +117,7 @@ final class StrictParamFixer extends AbstractFixer
                 continue;
             }
 
-            if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+            if ($token->isKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
 
                 continue;

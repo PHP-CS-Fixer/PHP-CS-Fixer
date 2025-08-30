@@ -52,7 +52,7 @@ final class NoUnsetCastFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = \count($tokens) - 1; $index > 0; --$index) {
-            if ($tokens[$index]->isGivenKind(\T_UNSET_CAST)) {
+            if ($tokens[$index]->isKind(\T_UNSET_CAST)) {
                 $this->fixUnsetCast($tokens, $index);
             }
         }
@@ -66,7 +66,7 @@ final class NoUnsetCastFixer extends AbstractFixer
         }
 
         $varIndex = $tokens->getNextMeaningfulToken($index);
-        if (null === $varIndex || !$tokens[$varIndex]->isGivenKind(\T_VARIABLE)) {
+        if (null === $varIndex || !$tokens[$varIndex]->isKind(\T_VARIABLE)) {
             return;
         }
 

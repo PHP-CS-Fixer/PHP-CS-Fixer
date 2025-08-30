@@ -79,7 +79,7 @@ final class ExplicitStringVariableFixer extends AbstractFixer
                 continue;
             }
 
-            if ($backtickStarted || !$token->isGivenKind(\T_VARIABLE)) {
+            if ($backtickStarted || !$token->isKind(\T_VARIABLE)) {
                 continue;
             }
 
@@ -102,9 +102,9 @@ final class ExplicitStringVariableFixer extends AbstractFixer
             $squareBracketCount = 0;
 
             while (!$this->isStringPartToken($tokens[$nextIndex])) {
-                if ($tokens[$nextIndex]->isGivenKind(\T_CURLY_OPEN)) {
+                if ($tokens[$nextIndex]->isKind(\T_CURLY_OPEN)) {
                     $nextIndex = $tokens->getNextTokenOfKind($nextIndex, [[CT::T_CURLY_CLOSE]]);
-                } elseif ($tokens[$nextIndex]->isGivenKind(\T_VARIABLE) && 1 !== $squareBracketCount) {
+                } elseif ($tokens[$nextIndex]->isKind(\T_VARIABLE) && 1 !== $squareBracketCount) {
                     $distinctVariableIndex = $nextIndex;
                     $variableTokens[$distinctVariableIndex] = [
                         'tokens' => [$nextIndex => $tokens[$nextIndex]],
@@ -135,13 +135,13 @@ final class ExplicitStringVariableFixer extends AbstractFixer
                     ]);
                 } else {
                     foreach ($distinctVariableSet['tokens'] as $variablePartIndex => $variablePartToken) {
-                        if ($variablePartToken->isGivenKind(\T_NUM_STRING)) {
+                        if ($variablePartToken->isKind(\T_NUM_STRING)) {
                             $tokens[$variablePartIndex] = new Token([\T_LNUMBER, $variablePartToken->getContent()]);
 
                             continue;
                         }
 
-                        if ($variablePartToken->isGivenKind(\T_STRING) && $tokens[$variablePartIndex + 1]->equals(']')) {
+                        if ($variablePartToken->isKind(\T_STRING) && $tokens[$variablePartIndex + 1]->equals(']')) {
                             $tokens[$variablePartIndex] = new Token([\T_CONSTANT_ENCAPSED_STRING, "'".$variablePartToken->getContent()."'"]);
                         }
                     }
@@ -160,8 +160,8 @@ final class ExplicitStringVariableFixer extends AbstractFixer
      */
     private function isStringPartToken(Token $token): bool
     {
-        return $token->isGivenKind(\T_ENCAPSED_AND_WHITESPACE)
-            || $token->isGivenKind(\T_START_HEREDOC)
+        return $token->isKind(\T_ENCAPSED_AND_WHITESPACE)
+            || $token->isKind(\T_START_HEREDOC)
             || '"' === $token->getContent()
             || 'b"' === strtolower($token->getContent());
     }

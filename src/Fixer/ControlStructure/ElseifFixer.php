@@ -61,14 +61,14 @@ final class ElseifFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(\T_ELSE)) {
+            if (!$token->isKind(\T_ELSE)) {
                 continue;
             }
 
             $ifTokenIndex = $tokens->getNextMeaningfulToken($index);
 
             // if next meaningful token is not T_IF - continue searching, this is not the case for fixing
-            if (!$tokens[$ifTokenIndex]->isGivenKind(\T_IF)) {
+            if (!$tokens[$ifTokenIndex]->isKind(\T_IF)) {
                 continue;
             }
 

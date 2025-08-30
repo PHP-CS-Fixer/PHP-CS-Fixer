@@ -77,8 +77,8 @@ final class NullableTypeTransformer extends AbstractTransformer
         }
 
         if (
-            $tokens[$prevIndex]->isGivenKind(\T_STATIC)
-            && $tokens[$tokens->getPrevMeaningfulToken($prevIndex)]->isGivenKind(\T_INSTANCEOF)
+            $tokens[$prevIndex]->isKind(\T_STATIC)
+            && $tokens[$tokens->getPrevMeaningfulToken($prevIndex)]->isKind(\T_INSTANCEOF)
         ) {
             return;
         }
