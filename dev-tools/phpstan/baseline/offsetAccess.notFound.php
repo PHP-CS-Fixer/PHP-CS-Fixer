@@ -977,11 +977,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Tokenizer/Tokens.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset int\\|string might not exist on non\\-empty\\-array\\<int\\|string, array\\<int, PhpCsFixer\\\\Tokenizer\\\\Token\\>\\>\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Tokenizer/Tokens.php',
-];
-$ignoreErrors[] = [
     'message' => '#^Offset non\\-empty\\-string might not exist on array\\<non\\-empty\\-string, PhpCsFixer\\\\Tokenizer\\\\Tokens\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Tokenizer/Tokens.php',
