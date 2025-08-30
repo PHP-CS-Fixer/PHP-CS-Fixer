@@ -116,7 +116,10 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
     private array $cacheUseNameByShortNameLower;
 
     /** @var _Uses */
-    private array $cacheUseShortNameByNameLower;
+    private array $cacheUseShortNameByName;
+
+    /** @var _Uses */
+    private array $cacheUseShortNameByNormalizedName;
 
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -409,19 +412,17 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         $this->cacheUsesLast = $uses;
 
         $this->cacheUseNameByShortNameLower = [];
-        $this->cacheUseShortNameByNameLower = [];
+        $this->cacheUseShortNameByName = [];
+        $this->cacheUseShortNameByNormalizedName = [];
 
         foreach ($uses as $kind => $kindUses) {
             foreach ($kindUses as $useLongName => $useShortName) {
                 $this->cacheUseNameByShortNameLower[$kind][strtolower($useShortName)] = $useLongName;
+                $this->cacheUseShortNameByName[$kind][$useLongName] = $useShortName;
 
-                /**
-                 * @var class-string $normalisedUseLongName
-                 *
-                 * @phpstan-ignore varTag.nativeType
-                 */
-                $normalisedUseLongName = strtolower($useLongName);
-                $this->cacheUseShortNameByNameLower[$kind][$normalisedUseLongName] = $useShortName;
+                /** @var class-string */
+                $normalizedUseLongName = $this->normalizeFqcn($useLongName);
+                $this->cacheUseShortNameByNormalizedName[$kind][$normalizedUseLongName] = $useShortName;
             }
         }
     }
@@ -504,8 +505,8 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         // try to shorten the name using uses
         $tmp = $fqcn;
         for ($i = substr_count($fqcn, '\\'); $i >= $iMin; --$i) {
-            if (isset($this->cacheUseShortNameByNameLower[$importKind][strtolower($tmp)])) {
-                $tmpRes = $this->cacheUseShortNameByNameLower[$importKind][strtolower($tmp)].substr($fqcn, \strlen($tmp));
+            if (isset($this->cacheUseShortNameByName[$importKind][$tmp])) {
+                $tmpRes = $this->cacheUseShortNameByName[$importKind][$tmp].substr($fqcn, \strlen($tmp));
                 if (!$this->isReservedIdentifier($tmpRes)) {
                     $res = $tmpRes;
 
@@ -515,6 +516,14 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
 
             if ($i > 0) {
                 $tmp = substr($tmp, 0, strrpos($tmp, '\\'));
+            }
+        }
+
+        if (null === $res) {
+            $normalizedFqcn = $this->normalizeFqcn($fqcn);
+            $tmpRes = $this->cacheUseShortNameByNormalizedName[$importKind][$normalizedFqcn] ?? null;
+            if (null !== $tmpRes && !$this->isReservedIdentifier($tmpRes)) {
+                $res = $tmpRes;
             }
         }
 
@@ -973,6 +982,20 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
         }
 
         return $tokens;
+    }
+
+    private function normalizeFqcn(string $input): string
+    {
+        $backslashPosition = strrpos($input, '\\');
+        if (false === $backslashPosition) {
+            return $input;
+        }
+
+        $namespacePartEndPosition = $backslashPosition + 1;
+        $mainPart = substr($input, 0, $namespacePartEndPosition);
+        $lastPart = substr($input, $namespacePartEndPosition);
+
+        return $mainPart.strtolower($lastPart);
     }
 
     /**
