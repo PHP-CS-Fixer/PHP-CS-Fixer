@@ -129,7 +129,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind($tokenKinds)) {
+            if (!$token->isKind($tokenKinds)) {
                 continue;
             }
 
@@ -161,7 +161,7 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
             if (\PHP_VERSION_ID >= 8_00_00 && false === $this->configuration['use_nullable_type_declaration']) {
                 $visibility = $tokens[$tokens->getPrevMeaningfulToken($argumentTypeInfo->getStartIndex())];
 
-                if ($visibility->isGivenKind(self::CONSTRUCTOR_PROPERTY_MODIFIERS)) {
+                if ($visibility->isKind(self::CONSTRUCTOR_PROPERTY_MODIFIERS)) {
                     continue;
                 }
             }

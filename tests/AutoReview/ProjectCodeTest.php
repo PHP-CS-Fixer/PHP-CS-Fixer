@@ -802,13 +802,13 @@ final class ProjectCodeTest extends TestCase
                 break;
             }
 
-            if ($tokens[$index]->isGivenKind(FCT::T_ATTRIBUTE)) {
+            if ($tokens[$index]->isKind(FCT::T_ATTRIBUTE)) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
 
                 continue;
             }
 
-            if (!$tokens[$index]->isGivenKind($headerTypes) && !$tokens[$index]->equalsAny([';', '=', '(', ')'])) {
+            if (!$tokens[$index]->isKind($headerTypes) && !$tokens[$index]->equalsAny([';', '=', '(', ')'])) {
                 self::fail(\sprintf('File for "%s" should only contains single classy, found "%s" @ %d.', $className, $tokens[$index]->toJson(), $index));
             }
         }
@@ -1144,7 +1144,7 @@ final class ProjectCodeTest extends TestCase
         /** @var list<Token> $stringTokens */
         $stringTokens = array_filter(
             $tokens,
-            static fn (Token $token): bool => $token->isGivenKind(\T_STRING)
+            static fn (Token $token): bool => $token->isKind(\T_STRING)
         );
 
         $strings = array_map(
@@ -1211,7 +1211,7 @@ final class ProjectCodeTest extends TestCase
         $tokens = $this->createTokensForClass($testClassName);
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
+            if (!$token->isKind(\T_DOC_COMMENT)) {
                 continue;
             }
 

@@ -75,7 +75,7 @@ final class DateTimeCreateFromFormatCallFixer extends AbstractFixer
             $useDeclarations = $namespaceUsesAnalyzer->getDeclarationsInNamespace($tokens, $namespace);
 
             for ($index = $namespace->getScopeEndIndex(); $index > $scopeStartIndex; --$index) {
-                if (!$tokens[$index]->isGivenKind(\T_DOUBLE_COLON)) {
+                if (!$tokens[$index]->isKind(\T_DOUBLE_COLON)) {
                     continue;
                 }
 
@@ -97,8 +97,8 @@ final class DateTimeCreateFromFormatCallFixer extends AbstractFixer
 
                 $preClassNameIndex = $tokens->getPrevMeaningfulToken($classNameIndex);
 
-                if ($tokens[$preClassNameIndex]->isGivenKind(\T_NS_SEPARATOR)) {
-                    if ($tokens[$tokens->getPrevMeaningfulToken($preClassNameIndex)]->isGivenKind(\T_STRING)) {
+                if ($tokens[$preClassNameIndex]->isKind(\T_NS_SEPARATOR)) {
+                    if ($tokens[$tokens->getPrevMeaningfulToken($preClassNameIndex)]->isKind(\T_STRING)) {
                         continue;
                     }
                 } elseif (!$namespace->isGlobalNamespace()) {
@@ -160,7 +160,7 @@ final class DateTimeCreateFromFormatCallFixer extends AbstractFixer
             return null; // argument is not a simple single string
         }
 
-        return !$tokens[$argumentStartIndex]->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)
+        return !$tokens[$argumentStartIndex]->isKind(\T_CONSTANT_ENCAPSED_STRING)
             ? null // first argument is not a string
             : $argumentStartIndex;
     }

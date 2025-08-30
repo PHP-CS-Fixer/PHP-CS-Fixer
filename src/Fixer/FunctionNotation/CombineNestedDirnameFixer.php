@@ -122,7 +122,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
         $info = ['indices' => []];
         $prev = $tokens->getPrevMeaningfulToken($index);
 
-        if ($tokens[$prev]->isGivenKind(\T_NS_SEPARATOR)) {
+        if ($tokens[$prev]->isKind(\T_NS_SEPARATOR)) {
             $info['indices'][] = $prev;
         }
 
@@ -166,7 +166,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
             return $info;
         }
 
-        if (!$tokens[$next]->isGivenKind(\T_LNUMBER)) {
+        if (!$tokens[$next]->isKind(\T_LNUMBER)) {
             return false;
         }
 

@@ -66,7 +66,7 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(\T_RETURN)) {
+            if (!$token->isKind(\T_RETURN)) {
                 continue;
             }
 
@@ -130,7 +130,7 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
         } while ($closingCurlyBraceIndex < $returnIndex);
 
         $possibleVoidIndex = $tokens->getPrevMeaningfulToken($openingCurlyBraceIndex);
-        $isStrictReturnType = $tokens[$possibleVoidIndex]->isGivenKind([\T_STRING, CT::T_ARRAY_TYPEHINT])
+        $isStrictReturnType = $tokens[$possibleVoidIndex]->isKind([\T_STRING, CT::T_ARRAY_TYPEHINT])
             && 'void' !== $tokens[$possibleVoidIndex]->getContent();
 
         $nullableTypeIndex = $tokens->getNextTokenOfKind($functionIndex, [[CT::T_NULLABLE_TYPE]]);
@@ -162,7 +162,7 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
 
         if (
             $tokens[$index + 1]->isComment()
-            || $tokens[$index + 1]->isGivenKind(\T_CLOSE_TAG)
+            || $tokens[$index + 1]->isKind(\T_CLOSE_TAG)
             || ($tokens[$index - 1]->isComment() && $tokens[$index + 1]->equals(';'))
         ) {
             return false;

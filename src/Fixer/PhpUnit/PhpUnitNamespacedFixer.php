@@ -164,7 +164,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $prevIndex = $tokens->getPrevMeaningfulToken($currIndex);
 
-            if ($tokens[$prevIndex]->isGivenKind([\T_CONST, \T_DOUBLE_COLON])) {
+            if ($tokens[$prevIndex]->isKind([\T_CONST, \T_DOUBLE_COLON])) {
                 continue;
             }
 
@@ -187,12 +187,12 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             );
 
             $prevIndex = $tokens->getPrevMeaningfulToken($currIndex);
-            if ($tokens[$prevIndex]->isGivenKind(\T_USE)) {
+            if ($tokens[$prevIndex]->isKind(\T_USE)) {
                 $importedOriginalClassesMap[$originalClass] = true;
-            } elseif ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+            } elseif ($tokens[$prevIndex]->isKind(\T_NS_SEPARATOR)) {
                 $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
 
-                if ($tokens[$prevIndex]->isGivenKind(\T_USE)) {
+                if ($tokens[$prevIndex]->isKind(\T_USE)) {
                     $importedOriginalClassesMap[$originalClass] = true;
                 }
             }
@@ -238,10 +238,10 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     {
         $prevIndex = $tokens->getPrevMeaningfulToken($currIndex);
 
-        if ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+        if ($tokens[$prevIndex]->isKind(\T_NS_SEPARATOR)) {
             $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
         }
 
-        return $tokens[$prevIndex]->isGivenKind(\T_USE);
+        return $tokens[$prevIndex]->isKind(\T_USE);
     }
 }

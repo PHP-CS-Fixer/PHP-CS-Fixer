@@ -63,11 +63,11 @@ final class NoLeadingImportSlashFixer extends AbstractFixer
             $nextTokenIdx = $tokens->getNextMeaningfulToken($idx);
             $nextToken = $tokens[$nextTokenIdx];
 
-            if ($nextToken->isGivenKind(\T_NS_SEPARATOR)) {
+            if ($nextToken->isKind(\T_NS_SEPARATOR)) {
                 $this->removeLeadingImportSlash($tokens, $nextTokenIdx);
-            } elseif ($nextToken->isGivenKind([CT::T_FUNCTION_IMPORT, CT::T_CONST_IMPORT])) {
+            } elseif ($nextToken->isKind([CT::T_FUNCTION_IMPORT, CT::T_CONST_IMPORT])) {
                 $nextTokenIdx = $tokens->getNextMeaningfulToken($nextTokenIdx);
-                if ($tokens[$nextTokenIdx]->isGivenKind(\T_NS_SEPARATOR)) {
+                if ($tokens[$nextTokenIdx]->isKind(\T_NS_SEPARATOR)) {
                     $this->removeLeadingImportSlash($tokens, $nextTokenIdx);
                 }
             }

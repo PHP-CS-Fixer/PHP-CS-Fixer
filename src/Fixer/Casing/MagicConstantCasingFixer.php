@@ -61,7 +61,7 @@ final class MagicConstantCasingFixer extends AbstractFixer
         $magicConstantTokens = $this->getMagicConstantTokens();
 
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind($magicConstantTokens)) {
+            if ($token->isKind($magicConstantTokens)) {
                 $tokens[$index] = new Token([$token->getId(), self::MAGIC_CONSTANTS[$token->getId()]]);
             }
         }

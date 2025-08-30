@@ -101,13 +101,13 @@ final class DataProviderAnalyzer
     {
         $functions = [];
         for ($index = $startIndex; $index < $endIndex; ++$index) {
-            if (!$tokens[$index]->isGivenKind(\T_FUNCTION)) {
+            if (!$tokens[$index]->isKind(\T_FUNCTION)) {
                 continue;
             }
 
             $functionNameIndex = $tokens->getNextNonWhitespace($index);
 
-            if (!$tokens[$functionNameIndex]->isGivenKind(\T_STRING)) {
+            if (!$tokens[$functionNameIndex]->isKind(\T_STRING)) {
                 continue;
             }
 
@@ -127,9 +127,9 @@ final class DataProviderAnalyzer
         while (!$tokens[$index]->equalsAny([';', '{', '}', [\T_OPEN_TAG]])) {
             --$index;
 
-            if ($tokens[$index]->isGivenKind(FCT::T_ATTRIBUTE)) {
+            if ($tokens[$index]->isKind(FCT::T_ATTRIBUTE)) {
                 $attributeIndex = $index;
-            } elseif ($tokens[$index]->isGivenKind(\T_DOC_COMMENT)) {
+            } elseif ($tokens[$index]->isKind(\T_DOC_COMMENT)) {
                 $docCommentIndex = $index;
             }
         }
@@ -153,12 +153,12 @@ final class DataProviderAnalyzer
         }
 
         $closeParenthesisIndex = $tokens->getPrevTokenOfKind($attribute['end'] + 1, [')', [\T_ATTRIBUTE]]);
-        if ($tokens[$closeParenthesisIndex]->isGivenKind(\T_ATTRIBUTE)) {
+        if ($tokens[$closeParenthesisIndex]->isKind(\T_ATTRIBUTE)) {
             return null;
         }
 
         $dataProviderNameIndex = $tokens->getPrevMeaningfulToken($closeParenthesisIndex);
-        if (!$tokens[$dataProviderNameIndex]->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
+        if (!$tokens[$dataProviderNameIndex]->isKind(\T_CONSTANT_ENCAPSED_STRING)) {
             return null;
         }
 

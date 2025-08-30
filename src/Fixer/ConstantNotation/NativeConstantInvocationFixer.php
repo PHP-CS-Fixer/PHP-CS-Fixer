@@ -260,7 +260,7 @@ namespace {
             $token = $tokens[$index];
 
             // test if we are at a constant call
-            if (!$token->isGivenKind(\T_STRING)) {
+            if (!$token->isKind(\T_STRING)) {
                 continue;
             }
 
@@ -276,13 +276,13 @@ namespace {
                     continue;
                 }
 
-                if (!$tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+                if (!$tokens[$prevIndex]->isKind(\T_NS_SEPARATOR)) {
                     continue;
                 }
 
                 $prevPrevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
 
-                if ($tokens[$prevPrevIndex]->isGivenKind(\T_STRING)) {
+                if ($tokens[$prevPrevIndex]->isKind(\T_STRING)) {
                     continue;
                 }
 
@@ -295,7 +295,7 @@ namespace {
                 continue;
             }
 
-            if ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+            if ($tokens[$prevIndex]->isKind(\T_NS_SEPARATOR)) {
                 continue;
             }
 

@@ -121,7 +121,7 @@ final class StringImplicitBackslashesFixer extends AbstractFixer implements Conf
                 $doubleQuoteOpened = !$doubleQuoteOpened;
             }
 
-            if (!$token->isGivenKind([\T_ENCAPSED_AND_WHITESPACE, \T_CONSTANT_ENCAPSED_STRING])) {
+            if (!$token->isKind([\T_ENCAPSED_AND_WHITESPACE, \T_CONSTANT_ENCAPSED_STRING])) {
                 continue;
             }
 
@@ -131,14 +131,14 @@ final class StringImplicitBackslashesFixer extends AbstractFixer implements Conf
             }
 
             // nowdoc syntax
-            if ($token->isGivenKind(\T_ENCAPSED_AND_WHITESPACE) && '\'' === substr(rtrim($tokens[$index - 1]->getContent()), -1)) {
+            if ($token->isKind(\T_ENCAPSED_AND_WHITESPACE) && '\'' === substr(rtrim($tokens[$index - 1]->getContent()), -1)) {
                 continue;
             }
 
             $firstTwoCharacters = strtolower(substr($content, 0, 2));
-            $isSingleQuotedString = $token->isGivenKind(\T_CONSTANT_ENCAPSED_STRING) && ('\'' === $content[0] || 'b\'' === $firstTwoCharacters);
-            $isDoubleQuotedString = ($token->isGivenKind(\T_CONSTANT_ENCAPSED_STRING) && ('"' === $content[0] || 'b"' === $firstTwoCharacters))
-                || ($token->isGivenKind(\T_ENCAPSED_AND_WHITESPACE) && $doubleQuoteOpened);
+            $isSingleQuotedString = $token->isKind(\T_CONSTANT_ENCAPSED_STRING) && ('\'' === $content[0] || 'b\'' === $firstTwoCharacters);
+            $isDoubleQuotedString = ($token->isKind(\T_CONSTANT_ENCAPSED_STRING) && ('"' === $content[0] || 'b"' === $firstTwoCharacters))
+                || ($token->isKind(\T_ENCAPSED_AND_WHITESPACE) && $doubleQuoteOpened);
 
             if ($isSingleQuotedString
                 ? 'ignore' === $this->configuration['single_quoted']

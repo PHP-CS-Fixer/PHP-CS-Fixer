@@ -105,7 +105,7 @@ $foo->__INVOKE(1);
                 }
             }
 
-            if (!$tokens[$index]->isGivenKind(\T_STRING)) {
+            if (!$tokens[$index]->isKind(\T_STRING)) {
                 continue; // wrong type
             }
 
@@ -153,7 +153,7 @@ $foo->__INVOKE(1);
     private function isFunctionSignature(Tokens $tokens, int $index): bool
     {
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
-        if (!$tokens[$prevIndex]->isGivenKind(\T_FUNCTION)) {
+        if (!$tokens[$prevIndex]->isKind(\T_FUNCTION)) {
             return false; // not a method signature
         }
 
@@ -173,7 +173,7 @@ $foo->__INVOKE(1);
     private function isStaticMethodCall(Tokens $tokens, int $index): bool
     {
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
-        if (!$tokens[$prevIndex]->isGivenKind(\T_DOUBLE_COLON)) {
+        if (!$tokens[$prevIndex]->isKind(\T_DOUBLE_COLON)) {
             return false; // not a "simple" static method call
         }
 

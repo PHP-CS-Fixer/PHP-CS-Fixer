@@ -72,7 +72,7 @@ final class MultilineStringToHeredocFixer extends AbstractFixer
         $complexStringStartIndex = null;
         foreach ($tokens as $index => $token) {
             if (null === $complexStringStartIndex) {
-                if ($token->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
+                if ($token->isKind(\T_CONSTANT_ENCAPSED_STRING)) {
                     $this->convertStringToHeredoc($tokens, $index, $index);
                 } elseif ($token->equalsAny(['"', 'b"', 'B"'])) {
                     $complexStringStartIndex = $index;
@@ -89,7 +89,7 @@ final class MultilineStringToHeredocFixer extends AbstractFixer
     {
         $closingMarker = 'EOD';
 
-        if ($tokens[$stringStartIndex]->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
+        if ($tokens[$stringStartIndex]->isKind(\T_CONSTANT_ENCAPSED_STRING)) {
             $content = $tokens[$stringStartIndex]->getContent();
             if ('b' === strtolower(substr($content, 0, 1))) {
                 $content = substr($content, 1);
@@ -130,7 +130,7 @@ final class MultilineStringToHeredocFixer extends AbstractFixer
             ]);
         } else {
             for ($i = $stringStartIndex + 1; $i < $stringEndIndex; ++$i) {
-                if ($tokens[$i]->isGivenKind(\T_ENCAPSED_AND_WHITESPACE)) {
+                if ($tokens[$i]->isKind(\T_ENCAPSED_AND_WHITESPACE)) {
                     $tokens[$i] = new Token([
                         $tokens[$i]->getId(),
                         Preg::replace('~(\\\\\\\)|\\\(")~', '$1$2', $tokens[$i]->getContent()),
@@ -140,7 +140,7 @@ final class MultilineStringToHeredocFixer extends AbstractFixer
 
             $tokens[$stringStartIndex] = $heredocStartToken;
             $tokens[$stringEndIndex] = $heredocEndToken;
-            if ($tokens[$stringEndIndex - 1]->isGivenKind(\T_ENCAPSED_AND_WHITESPACE)) {
+            if ($tokens[$stringEndIndex - 1]->isKind(\T_ENCAPSED_AND_WHITESPACE)) {
                 $tokens[$stringEndIndex - 1] = new Token([
                     $tokens[$stringEndIndex - 1]->getId(),
                     $tokens[$stringEndIndex - 1]->getContent()."\n",

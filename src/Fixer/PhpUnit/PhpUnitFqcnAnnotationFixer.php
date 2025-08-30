@@ -76,7 +76,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     private function fixPhpUnitClass(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         for ($index = $startIndex; $index < $endIndex; ++$index) {
-            if ($tokens[$index]->isGivenKind(\T_DOC_COMMENT)) {
+            if ($tokens[$index]->isKind(\T_DOC_COMMENT)) {
                 $tokens[$index] = new Token([\T_DOC_COMMENT, Preg::replace(
                     '~^(\s*\*\s*@(?:expectedException|covers|coversDefaultClass|uses)\h+)(?!(?:self|static)::)(\w.*)$~m',
                     '$1\\\$2',

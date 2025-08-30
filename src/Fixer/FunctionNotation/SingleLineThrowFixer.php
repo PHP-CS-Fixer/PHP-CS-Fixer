@@ -61,7 +61,7 @@ final class SingleLineThrowFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
-            if (!$tokens[$index]->isGivenKind(\T_THROW)) {
+            if (!$tokens[$index]->isKind(\T_THROW)) {
                 continue;
             }
 
@@ -90,7 +90,7 @@ final class SingleLineThrowFixer extends AbstractFixer
         for ($index = $startIndex; $index < $endIndex; ++$index) {
             $content = $tokens[$index]->getContent();
 
-            if ($tokens[$index]->isGivenKind(\T_COMMENT)) {
+            if ($tokens[$index]->isKind(\T_COMMENT)) {
                 if (str_starts_with($content, '//')) {
                     $content = '/*'.substr($content, 2).' */';
                     $tokens->clearAt($index + 1);
@@ -106,7 +106,7 @@ final class SingleLineThrowFixer extends AbstractFixer
                 continue;
             }
 
-            if (!$tokens[$index]->isGivenKind(\T_WHITESPACE)) {
+            if (!$tokens[$index]->isKind(\T_WHITESPACE)) {
                 continue;
             }
 
@@ -126,7 +126,7 @@ final class SingleLineThrowFixer extends AbstractFixer
 
             if (
                 $this->isNextTokenToClear($tokens[$nextIndex])
-                && !$tokens[$prevIndex]->isGivenKind(\T_FUNCTION)
+                && !$tokens[$prevIndex]->isKind(\T_FUNCTION)
             ) {
                 $tokens->clearAt($index);
 

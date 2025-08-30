@@ -136,7 +136,7 @@ final class MyTest extends \PHPUnit\Framework\TestCase
         $tokenAnalyzer = new TokensAnalyzer($tokens);
 
         for ($index = $startIndex; $index < $endIndex; ++$index) {
-            if (!$tokens[$index]->isGivenKind(\T_CLASS) || !$tokenAnalyzer->isAnonymousClass($index)) {
+            if (!$tokens[$index]->isKind(\T_CLASS) || !$tokenAnalyzer->isAnonymousClass($index)) {
                 continue;
             }
 
@@ -153,7 +153,7 @@ final class MyTest extends \PHPUnit\Framework\TestCase
                 continue;
             }
 
-            if (!$tokens[$index]->isGivenKind(\T_STRING)) {
+            if (!$tokens[$index]->isKind(\T_STRING)) {
                 continue;
             }
 
@@ -172,7 +172,7 @@ final class MyTest extends \PHPUnit\Framework\TestCase
             $expectedTypeTokenIndex = $tokens->getNextMeaningfulToken($bracketTokenIndex);
             $expectedTypeToken = $tokens[$expectedTypeTokenIndex];
 
-            if (!$expectedTypeToken->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
+            if (!$expectedTypeToken->isKind(\T_CONSTANT_ENCAPSED_STRING)) {
                 continue;
             }
 

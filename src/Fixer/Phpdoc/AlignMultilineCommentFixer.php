@@ -117,7 +117,7 @@ with a line not prefixed with asterisk
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind($this->tokenKinds)) {
+            if (!$token->isKind($this->tokenKinds)) {
                 continue;
             }
 
@@ -129,7 +129,7 @@ with a line not prefixed with asterisk
                 --$previousIndex;
             }
 
-            if ($tokens[$previousIndex]->isGivenKind(\T_OPEN_TAG)) {
+            if ($tokens[$previousIndex]->isKind(\T_OPEN_TAG)) {
                 $whitespace = Preg::replace('/\S/', '', $tokens[$previousIndex]->getContent()).$whitespace;
             }
 
@@ -137,7 +137,7 @@ with a line not prefixed with asterisk
                 continue;
             }
 
-            if ($token->isGivenKind(\T_COMMENT) && 'all_multiline' !== $this->configuration['comment_type'] && Preg::match('/\R(?:\R|\s*[^\s\*])/', $token->getContent())) {
+            if ($token->isKind(\T_COMMENT) && 'all_multiline' !== $this->configuration['comment_type'] && Preg::match('/\R(?:\R|\s*[^\s\*])/', $token->getContent())) {
                 continue;
             }
 
@@ -151,7 +151,7 @@ with a line not prefixed with asterisk
 
                 $line = ltrim($line);
 
-                if ($token->isGivenKind(\T_COMMENT) && (!isset($line[0]) || '*' !== $line[0])) {
+                if ($token->isKind(\T_COMMENT) && (!isset($line[0]) || '*' !== $line[0])) {
                     continue;
                 }
 

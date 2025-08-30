@@ -148,7 +148,7 @@ class MyTest extends \PhpUnit\FrameWork\TestCase
 
             $docBlockIndex = $this->getDocBlockIndex($tokens, $index);
 
-            if ($tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT)) {
+            if ($tokens[$docBlockIndex]->isKind(\T_DOC_COMMENT)) {
                 $this->updateDocBlock($tokens, $docBlockIndex);
             }
         }
@@ -196,7 +196,7 @@ class MyTest extends \PhpUnit\FrameWork\TestCase
         $docBlockIndex = $this->getDocBlockIndex($tokens, $index);
 
         return
-            $tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT) // If the function doesn't have test in its name, and no doc block, it's not a test
+            $tokens[$docBlockIndex]->isKind(\T_DOC_COMMENT) // If the function doesn't have test in its name, and no doc block, it's not a test
             && str_contains($tokens[$docBlockIndex]->getContent(), '@test');
     }
 
@@ -204,7 +204,7 @@ class MyTest extends \PhpUnit\FrameWork\TestCase
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        return $tokens[$index]->isGivenKind(\T_FUNCTION) && !$tokensAnalyzer->isLambda($index);
+        return $tokens[$index]->isKind(\T_FUNCTION) && !$tokensAnalyzer->isLambda($index);
     }
 
     private function updateDocBlock(Tokens $tokens, int $docBlockIndex): void

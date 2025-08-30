@@ -116,7 +116,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer implements Configurab
      */
     private function fixOpenCloseControls(int $index, Token $token, Tokens $tokens): void
     {
-        if ($token->isGivenKind([\T_IF, \T_FOREACH, \T_WHILE, \T_FOR, \T_SWITCH, \T_DECLARE])) {
+        if ($token->isKind([\T_IF, \T_FOREACH, \T_WHILE, \T_FOR, \T_SWITCH, \T_DECLARE])) {
             $openIndex = $tokens->getNextTokenOfKind($index, ['(']);
             $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
             $afterParenthesisIndex = $tokens->getNextMeaningfulToken($closeIndex);
@@ -142,7 +142,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer implements Configurab
             $tokens->insertAt($afterParenthesisIndex, $items);
         }
 
-        if (!$token->isGivenKind([\T_ENDIF, \T_ENDFOREACH, \T_ENDWHILE, \T_ENDFOR, \T_ENDSWITCH, \T_ENDDECLARE])) {
+        if (!$token->isKind([\T_ENDIF, \T_ENDFOREACH, \T_ENDWHILE, \T_ENDFOR, \T_ENDSWITCH, \T_ENDDECLARE])) {
             return;
         }
 
@@ -164,7 +164,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer implements Configurab
      */
     private function fixElse(int $index, Token $token, Tokens $tokens): void
     {
-        if (!$token->isGivenKind(\T_ELSE)) {
+        if (!$token->isKind(\T_ELSE)) {
             return;
         }
 
@@ -187,7 +187,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer implements Configurab
      */
     private function fixElseif(int $index, Token $token, Tokens $tokens): void
     {
-        if (!$token->isGivenKind(\T_ELSEIF)) {
+        if (!$token->isKind(\T_ELSEIF)) {
             return;
         }
 

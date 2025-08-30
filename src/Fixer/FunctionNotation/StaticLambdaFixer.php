@@ -64,13 +64,13 @@ final class StaticLambdaFixer extends AbstractFixer
         $expectedFunctionKinds = [\T_FUNCTION, \T_FN];
 
         for ($index = $tokens->count() - 4; $index > 0; --$index) {
-            if (!$tokens[$index]->isGivenKind($expectedFunctionKinds) || !$analyzer->isLambda($index)) {
+            if (!$tokens[$index]->isKind($expectedFunctionKinds) || !$analyzer->isLambda($index)) {
                 continue;
             }
 
             $prev = $tokens->getPrevMeaningfulToken($index);
 
-            if ($tokens[$prev]->isGivenKind(\T_STATIC)) {
+            if ($tokens[$prev]->isKind(\T_STATIC)) {
                 continue; // lambda is already 'static'
             }
 
@@ -79,7 +79,7 @@ final class StaticLambdaFixer extends AbstractFixer
 
             // figure out where the lambda starts and ends
 
-            if ($tokens[$index]->isGivenKind(\T_FUNCTION)) {
+            if ($tokens[$index]->isKind(\T_FUNCTION)) {
                 $lambdaOpenIndex = $tokens->getNextTokenOfKind($argumentsEndIndex, ['{']);
                 $lambdaEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $lambdaOpenIndex);
             } else { // T_FN
@@ -110,11 +110,11 @@ final class StaticLambdaFixer extends AbstractFixer
     private function hasPossibleReferenceToThis(Tokens $tokens, int $startIndex, int $endIndex): bool
     {
         for ($i = $startIndex; $i <= $endIndex; ++$i) {
-            if ($tokens[$i]->isGivenKind(\T_VARIABLE) && '$this' === strtolower($tokens[$i]->getContent())) {
+            if ($tokens[$i]->isKind(\T_VARIABLE) && '$this' === strtolower($tokens[$i]->getContent())) {
                 return true; // directly accessing '$this'
             }
 
-            if ($tokens[$i]->isGivenKind([
+            if ($tokens[$i]->isKind([
                 \T_INCLUDE,                    // loading additional symbols we cannot analyze here
                 \T_INCLUDE_ONCE,               // "
                 \T_REQUIRE,                    // "
@@ -135,7 +135,7 @@ final class StaticLambdaFixer extends AbstractFixer
             if ($tokens[$i]->equals('$')) {
                 $nextIndex = $tokens->getNextMeaningfulToken($i);
 
-                if ($tokens[$nextIndex]->isGivenKind(\T_VARIABLE)) {
+                if ($tokens[$nextIndex]->isKind(\T_VARIABLE)) {
                     return true; // "$$a" case
                 }
             }

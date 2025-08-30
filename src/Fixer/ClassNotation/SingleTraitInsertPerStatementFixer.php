@@ -63,7 +63,7 @@ final class Example
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = \count($tokens) - 1; 1 < $index; --$index) {
-            if ($tokens[$index]->isGivenKind(CT::T_USE_TRAIT)) {
+            if ($tokens[$index]->isKind(CT::T_USE_TRAIT)) {
                 $candidates = $this->getCandidates($tokens, $index);
                 if (\count($candidates) > 0) {
                     $this->fixTraitUse($tokens, $index, $candidates);

@@ -54,7 +54,7 @@ final class NoUselessElseFixer extends AbstractNoUselessElseFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(\T_ELSE)) {
+            if (!$token->isKind(\T_ELSE)) {
                 continue;
             }
 

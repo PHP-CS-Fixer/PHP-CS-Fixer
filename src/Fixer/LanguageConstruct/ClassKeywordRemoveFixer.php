@@ -99,7 +99,7 @@ $className = Baz::class;
 
             $import = '';
             while (($index = $tokens->getNextMeaningfulToken($index)) !== null) {
-                if ($tokens[$index]->equalsAny([';', [CT::T_GROUP_IMPORT_BRACE_OPEN]]) || $tokens[$index]->isGivenKind(\T_AS)) {
+                if ($tokens[$index]->equalsAny([';', [CT::T_GROUP_IMPORT_BRACE_OPEN]]) || $tokens[$index]->isKind(\T_AS)) {
                     break;
                 }
 
@@ -107,7 +107,7 @@ $className = Baz::class;
             }
 
             // Imports group (PHP 7 spec)
-            if ($tokens[$index]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
+            if ($tokens[$index]->isKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                 $groupEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, $index);
                 $groupImports = array_map(
                     static fn (string $import): string => trim($import),
@@ -121,7 +121,7 @@ $className = Baz::class;
                         $this->imports[] = $import.$groupImport;
                     }
                 }
-            } elseif ($tokens[$index]->isGivenKind(\T_AS)) {
+            } elseif ($tokens[$index]->isKind(\T_AS)) {
                 $aliasIndex = $tokens->getNextMeaningfulToken($index);
                 $alias = $tokens[$aliasIndex]->getContent();
                 $this->imports[$alias] = $import;
@@ -150,7 +150,7 @@ $className = Baz::class;
         $classEndIndex = $tokens->getPrevMeaningfulToken($classIndex);
         $classEndIndex = $tokens->getPrevMeaningfulToken($classEndIndex);
 
-        if (!$tokens[$classEndIndex]->isGivenKind(\T_STRING)) {
+        if (!$tokens[$classEndIndex]->isKind(\T_STRING)) {
             return;
         }
 
@@ -161,7 +161,7 @@ $className = Baz::class;
         $classBeginIndex = $classEndIndex;
         while (true) {
             $prev = $tokens->getPrevMeaningfulToken($classBeginIndex);
-            if (!$tokens[$prev]->isGivenKind([\T_NS_SEPARATOR, \T_STRING])) {
+            if (!$tokens[$prev]->isKind([\T_NS_SEPARATOR, \T_STRING])) {
                 break;
             }
 
@@ -169,14 +169,14 @@ $className = Baz::class;
         }
 
         $classString = $tokens->generatePartialCode(
-            $tokens[$classBeginIndex]->isGivenKind(\T_NS_SEPARATOR)
+            $tokens[$classBeginIndex]->isKind(\T_NS_SEPARATOR)
                 ? $tokens->getNextMeaningfulToken($classBeginIndex)
                 : $classBeginIndex,
             $classEndIndex
         );
 
         $classImport = false;
-        if ($tokens[$classBeginIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+        if ($tokens[$classBeginIndex]->isKind(\T_NS_SEPARATOR)) {
             $namespacePrefix = '';
         } else {
             foreach ($this->imports as $alias => $import) {

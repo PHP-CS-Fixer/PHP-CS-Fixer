@@ -28,7 +28,7 @@ final class ReferenceAnalyzer
 {
     public function isReference(Tokens $tokens, int $index): bool
     {
-        if ($tokens[$index]->isGivenKind(CT::T_RETURN_REF)) {
+        if ($tokens[$index]->isKind(CT::T_RETURN_REF)) {
             return true;
         }
 
@@ -42,7 +42,7 @@ final class ReferenceAnalyzer
             return true;
         }
 
-        if ($tokens[$index]->isGivenKind(\T_STRING)) {
+        if ($tokens[$index]->isKind(\T_STRING)) {
             $index = $tokens->getPrevMeaningfulToken($index);
         }
 

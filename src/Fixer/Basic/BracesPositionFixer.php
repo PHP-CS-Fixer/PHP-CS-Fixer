@@ -221,7 +221,7 @@ $bar = function () { $result = true;
             $allowSingleLine = false;
             $allowSingleLineIfEmpty = false;
 
-            if ($token->isGivenKind($classyTokens)) {
+            if ($token->isKind($classyTokens)) {
                 $openBraceIndex = $tokens->getNextTokenOfKind($index, ['{']);
 
                 if ($tokensAnalyzer->isAnonymousClass($index)) {
@@ -230,7 +230,7 @@ $bar = function () { $result = true;
                 } else {
                     $positionOption = 'classes_opening_brace';
                 }
-            } elseif ($token->isGivenKind(\T_FUNCTION)) {
+            } elseif ($token->isKind(\T_FUNCTION)) {
                 $openBraceIndex = $tokens->getNextTokenOfKind($index, ['{', ';', [CT::T_PROPERTY_HOOK_BRACE_OPEN]]);
 
                 if (!$tokens[$openBraceIndex]->equals('{')) {
@@ -243,7 +243,7 @@ $bar = function () { $result = true;
                 } else {
                     $positionOption = 'functions_opening_brace';
                 }
-            } elseif ($token->isGivenKind(self::CONTROL_STRUCTURE_TOKENS)) {
+            } elseif ($token->isKind(self::CONTROL_STRUCTURE_TOKENS)) {
                 $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
                 $openBraceIndex = $tokens->getNextMeaningfulToken($parenthesisEndIndex);
 
@@ -252,15 +252,15 @@ $bar = function () { $result = true;
                 }
 
                 $positionOption = 'control_structures_opening_brace';
-            } elseif ($token->isGivenKind(\T_VARIABLE)) {
+            } elseif ($token->isKind(\T_VARIABLE)) {
                 // handle default value - explicitly skip array as default value
                 $nextMeaningfulIndex = $tokens->getNextMeaningfulToken($index);
                 if ($tokens[$nextMeaningfulIndex]->equals('=')) {
                     $nextMeaningfulIndex = $tokens->getNextMeaningfulToken($nextMeaningfulIndex);
 
-                    if ($tokens[$nextMeaningfulIndex]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+                    if ($tokens[$nextMeaningfulIndex]->isKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
                         $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $nextMeaningfulIndex);
-                    } elseif ($tokens[$nextMeaningfulIndex]->isGivenKind(\T_ARRAY)) {
+                    } elseif ($tokens[$nextMeaningfulIndex]->isKind(\T_ARRAY)) {
                         $nextMeaningfulIndex = $tokens->getNextMeaningfulToken($nextMeaningfulIndex);
                         if ($tokens[$nextMeaningfulIndex]->equals('(')) {
                             $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextMeaningfulIndex);
@@ -270,7 +270,7 @@ $bar = function () { $result = true;
 
                 $openBraceIndex = $tokens->getNextTokenOfKind($index, ['{', ';', '.', [CT::T_CURLY_CLOSE], [CT::T_PROPERTY_HOOK_BRACE_OPEN], [\T_ENCAPSED_AND_WHITESPACE], [\T_CLOSE_TAG]]);
 
-                if (!$tokens[$openBraceIndex]->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
+                if (!$tokens[$openBraceIndex]->isKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
                     continue;
                 }
 
@@ -280,7 +280,7 @@ $bar = function () { $result = true;
                 }
 
                 $positionOption = 'control_structures_opening_brace';
-            } elseif ($token->isGivenKind(\T_STRING)) {
+            } elseif ($token->isKind(\T_STRING)) {
                 $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $index);
                 $openBraceIndex = $tokens->getNextMeaningfulToken($parenthesisEndIndex);
                 if (!$tokens[$openBraceIndex]->equals('{')) {
@@ -325,7 +325,7 @@ $bar = function () { $result = true;
                 $addNewlinesInsideBraces
                 && !$this->isFollowedByNewLine($tokens, $openBraceIndex)
                 && !$this->hasCommentOnSameLine($tokens, $openBraceIndex)
-                && !$tokens[$tokens->getNextMeaningfulToken($openBraceIndex)]->isGivenKind(\T_CLOSE_TAG)
+                && !$tokens[$tokens->getNextMeaningfulToken($openBraceIndex)]->isKind(\T_CLOSE_TAG)
             ) {
                 $whitespace = $this->whitespacesConfig->getLineEnding().$this->getLineIndentation($tokens, $openBraceIndex);
                 if ($tokens->ensureWhitespaceAtIndex($openBraceIndex + 1, 0, $whitespace)) {
@@ -340,7 +340,7 @@ $bar = function () { $result = true;
                 $previousTokenIndex = $openBraceIndex;
                 do {
                     $previousTokenIndex = $tokens->getPrevMeaningfulToken($previousTokenIndex);
-                } while ($tokens[$previousTokenIndex]->isGivenKind([CT::T_TYPE_COLON, CT::T_NULLABLE_TYPE, \T_STRING, \T_NS_SEPARATOR, CT::T_ARRAY_TYPEHINT, \T_STATIC, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, \T_CALLABLE, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE]));
+                } while ($tokens[$previousTokenIndex]->isKind([CT::T_TYPE_COLON, CT::T_NULLABLE_TYPE, \T_STRING, \T_NS_SEPARATOR, CT::T_ARRAY_TYPEHINT, \T_STATIC, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, \T_CALLABLE, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE]));
 
                 if ($tokens[$previousTokenIndex]->equals(')')) {
                     if ($tokens[--$previousTokenIndex]->isComment()) {
@@ -428,7 +428,7 @@ $bar = function () { $result = true;
 
             if (
                 !$addNewlinesInsideBraces
-                || $tokens[$tokens->getPrevMeaningfulToken($closeBraceIndex)]->isGivenKind(\T_OPEN_TAG)
+                || $tokens[$tokens->getPrevMeaningfulToken($closeBraceIndex)]->isKind(\T_OPEN_TAG)
             ) {
                 continue;
             }

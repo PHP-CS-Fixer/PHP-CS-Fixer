@@ -100,7 +100,7 @@ settype($bar, "null");
                 $firstArgumentStart = $tokens->getNextMeaningfulToken($firstArgumentStart);
             }
 
-            if (!$tokens[$firstArgumentStart]->isGivenKind(\T_VARIABLE)) {
+            if (!$tokens[$firstArgumentStart]->isKind(\T_VARIABLE)) {
                 continue; // settype only works with variables pass by reference, function must be overridden
             }
 
@@ -121,7 +121,7 @@ settype($bar, "null");
             }
 
             if (
-                !$tokens[$secondArgumentStart]->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)
+                !$tokens[$secondArgumentStart]->isKind(\T_CONSTANT_ENCAPSED_STRING)
                 || $tokens->getNextMeaningfulToken($secondArgumentStart) < $secondArgumentEnd
             ) {
                 continue; // second argument is of the wrong type or is a (complex) statement of some sort (function is overridden)

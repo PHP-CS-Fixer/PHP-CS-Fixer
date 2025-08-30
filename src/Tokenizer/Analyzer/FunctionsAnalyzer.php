@@ -42,7 +42,7 @@ final class FunctionsAnalyzer
      */
     public function isGlobalFunctionCall(Tokens $tokens, int $index): bool
     {
-        if (!$tokens[$index]->isGivenKind(\T_STRING)) {
+        if (!$tokens[$index]->isKind(\T_STRING)) {
             return false;
         }
 
@@ -55,16 +55,16 @@ final class FunctionsAnalyzer
         $previousIsNamespaceSeparator = false;
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-        if ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+        if ($tokens[$prevIndex]->isKind(\T_NS_SEPARATOR)) {
             $previousIsNamespaceSeparator = true;
             $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
         }
 
-        if ($tokens[$prevIndex]->isGivenKind(self::POSSIBLE_KINDS)) {
+        if ($tokens[$prevIndex]->isKind(self::POSSIBLE_KINDS)) {
             return false;
         }
 
-        if ($tokens[$tokens->getNextMeaningfulToken($openParenthesisIndex)]->isGivenKind(CT::T_FIRST_CLASS_CALLABLE)) {
+        if ($tokens[$tokens->getNextMeaningfulToken($openParenthesisIndex)]->isKind(CT::T_FIRST_CLASS_CALLABLE)) {
             return false;
         }
 
@@ -165,7 +165,7 @@ final class FunctionsAnalyzer
         $argumentsEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $argumentsStart);
         $typeColonIndex = $tokens->getNextMeaningfulToken($argumentsEnd);
 
-        if (!$tokens[$typeColonIndex]->isGivenKind(CT::T_TYPE_COLON)) {
+        if (!$tokens[$typeColonIndex]->isKind(CT::T_TYPE_COLON)) {
             return null;
         }
 
@@ -198,7 +198,7 @@ final class FunctionsAnalyzer
             return false;
         }
 
-        if (!$tokens[$operatorIndex]->isObjectOperator() && !$tokens[$operatorIndex]->isGivenKind(\T_DOUBLE_COLON)) {
+        if (!$tokens[$operatorIndex]->isObjectOperator() && !$tokens[$operatorIndex]->isKind(\T_DOUBLE_COLON)) {
             return false;
         }
 
@@ -230,7 +230,7 @@ final class FunctionsAnalyzer
 
             for ($i = 0; $i < $end; ++$i) {
                 // skip classy, we are looking for functions not methods
-                if ($tokens[$i]->isGivenKind(Token::getClassyTokenKinds())) {
+                if ($tokens[$i]->isKind(Token::getClassyTokenKinds())) {
                     $i = $tokens->getNextTokenOfKind($i, ['(', '{']);
 
                     if ($tokens[$i]->equals('(')) { // anonymous class
@@ -243,17 +243,17 @@ final class FunctionsAnalyzer
                     continue;
                 }
 
-                if (!$tokens[$i]->isGivenKind(\T_FUNCTION)) {
+                if (!$tokens[$i]->isKind(\T_FUNCTION)) {
                     continue;
                 }
 
                 $i = $tokens->getNextMeaningfulToken($i);
 
-                if ($tokens[$i]->isGivenKind(CT::T_RETURN_REF)) {
+                if ($tokens[$i]->isKind(CT::T_RETURN_REF)) {
                     $i = $tokens->getNextMeaningfulToken($i);
                 }
 
-                if (!$tokens[$i]->isGivenKind(\T_STRING)) {
+                if (!$tokens[$i]->isKind(\T_STRING)) {
                     continue;
                 }
 

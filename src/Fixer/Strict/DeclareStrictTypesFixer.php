@@ -65,7 +65,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $openTagIndex = $tokens[0]->isGivenKind(\T_INLINE_HTML) ? 1 : 0;
+        $openTagIndex = $tokens[0]->isKind(\T_INLINE_HTML) ? 1 : 0;
 
         $sequenceLocation = $tokens->findSequence([[\T_DECLARE, 'declare'], '(', [\T_STRING, 'strict_types'], '=', [\T_LNUMBER], ')'], $openTagIndex, null, false);
         if (null === $sequenceLocation) {
@@ -83,12 +83,12 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Whitespaces
     private function fixStrictTypesCasingAndValue(Tokens $tokens, array $sequence): void
     {
         foreach ($sequence as $index => $token) {
-            if ($token->isGivenKind(\T_STRING)) {
+            if ($token->isKind(\T_STRING)) {
                 $tokens[$index] = new Token([\T_STRING, strtolower($token->getContent())]);
 
                 continue;
             }
-            if ($token->isGivenKind(\T_LNUMBER)) {
+            if ($token->isKind(\T_LNUMBER)) {
                 $tokens[$index] = new Token([\T_LNUMBER, '1']);
 
                 break;

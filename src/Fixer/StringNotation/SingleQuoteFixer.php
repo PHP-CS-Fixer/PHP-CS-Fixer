@@ -87,7 +87,7 @@ final class SingleQuoteFixer extends AbstractFixer implements ConfigurableFixerI
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
+            if (!$token->isKind(\T_CONSTANT_ENCAPSED_STRING)) {
                 continue;
             }
 

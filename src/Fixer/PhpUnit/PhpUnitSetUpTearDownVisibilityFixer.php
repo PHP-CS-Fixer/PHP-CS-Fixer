@@ -81,7 +81,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 continue;
             }
 
-            if (!$tokens[$index]->isGivenKind(\T_FUNCTION)) {
+            if (!$tokens[$index]->isKind(\T_FUNCTION)) {
                 continue;
             }
 

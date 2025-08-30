@@ -105,13 +105,13 @@ final class NoUnusedImportsFixer extends AbstractFixer
         for ($index = $namespace->getScopeStartIndex(); $index <= $namespaceEndIndex; ++$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(FCT::T_ATTRIBUTE)) {
+            if ($token->isKind(FCT::T_ATTRIBUTE)) {
                 $inAttribute = true;
 
                 continue;
             }
 
-            if ($token->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+            if ($token->isKind(CT::T_ATTRIBUTE_CLOSE)) {
                 $inAttribute = false;
 
                 continue;
@@ -123,21 +123,21 @@ final class NoUnusedImportsFixer extends AbstractFixer
                 continue;
             }
 
-            if ($token->isGivenKind(\T_STRING)) {
+            if ($token->isKind(\T_STRING)) {
                 if (0 !== strcasecmp($import->getShortName(), $token->getContent())) {
                     continue;
                 }
 
                 $prevMeaningfulToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
 
-                if ($prevMeaningfulToken->isGivenKind(\T_NAMESPACE)) {
+                if ($prevMeaningfulToken->isKind(\T_NAMESPACE)) {
                     $index = $tokens->getNextTokenOfKind($index, [';', '{', [\T_CLOSE_TAG]]);
 
                     continue;
                 }
 
                 if (
-                    $prevMeaningfulToken->isGivenKind([\T_NS_SEPARATOR, \T_FUNCTION, \T_CONST, \T_DOUBLE_COLON])
+                    $prevMeaningfulToken->isKind([\T_NS_SEPARATOR, \T_FUNCTION, \T_CONST, \T_DOUBLE_COLON])
                     || $prevMeaningfulToken->isObjectOperator()
                 ) {
                     continue;
@@ -157,7 +157,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
                 if ($analyzer->isConstantInvocation($index)) {
                     $type = NamespaceUseAnalysis::TYPE_CONSTANT;
-                } elseif ($nextMeaningfulToken->equals('(') && !$prevMeaningfulToken->isGivenKind(self::TOKENS_NOT_BEFORE_FUNCTION_CALL)) {
+                } elseif ($nextMeaningfulToken->equals('(') && !$prevMeaningfulToken->isKind(self::TOKENS_NOT_BEFORE_FUNCTION_CALL)) {
                     $type = NamespaceUseAnalysis::TYPE_FUNCTION;
                 } else {
                     $type = NamespaceUseAnalysis::TYPE_CLASS;
@@ -299,7 +299,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
             if (
                 $tokens[$nextTokenIndex]->equals(',')
                 || $tokens[$nextTokenIndex]->equals(';')
-                || $tokens[$nextTokenIndex]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)
+                || $tokens[$nextTokenIndex]->isKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)
             ) {
                 $tokens->clearAt($index);
             } else {
@@ -307,7 +307,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
             }
 
             $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$prevTokenIndex]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
+            if ($tokens[$prevTokenIndex]->isKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                 $tokens->clearAt($index);
             }
         }
@@ -375,7 +375,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
         if ($endingBraceIndex > $useDeclaration->getStartIndex()) {
             $openingBraceIndex = $tokens->getPrevMeaningfulToken($endingBraceIndex);
 
-            if ($tokens[$openingBraceIndex]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
+            if ($tokens[$openingBraceIndex]->isKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                 $this->removeUseDeclaration($tokens, $useDeclaration, true);
             }
         }
@@ -383,7 +383,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
         // Second we look for empty groups where all comma-separated chunks were removed (`use;`).
         $beforeSemicolonIndex = $tokens->getPrevMeaningfulToken($useDeclaration->getEndIndex());
         if (
-            $tokens[$beforeSemicolonIndex]->isGivenKind(\T_USE)
+            $tokens[$beforeSemicolonIndex]->isKind(\T_USE)
             || \in_array($tokens[$beforeSemicolonIndex]->getContent(), ['function', 'const'], true)
         ) {
             $this->removeUseDeclaration($tokens, $useDeclaration, true);

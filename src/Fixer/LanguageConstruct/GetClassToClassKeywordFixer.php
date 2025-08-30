@@ -101,7 +101,7 @@ final class GetClassToClassKeywordFixer extends AbstractFixer
                     ++$meaningfulTokensCount;
                 }
 
-                if (!$tokens[$i]->isGivenKind(\T_VARIABLE)) {
+                if (!$tokens[$i]->isKind(\T_VARIABLE)) {
                     continue;
                 }
 
@@ -142,7 +142,7 @@ final class GetClassToClassKeywordFixer extends AbstractFixer
     private function clearGetClassCall(Tokens $tokens, int $index, int $braceOpenIndex, int $braceCloseIndex): void
     {
         for ($i = $braceOpenIndex; $i <= $braceCloseIndex; ++$i) {
-            if ($tokens[$i]->isGivenKind([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT])) {
+            if ($tokens[$i]->isKind([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT])) {
                 continue;
             }
 
@@ -151,7 +151,7 @@ final class GetClassToClassKeywordFixer extends AbstractFixer
 
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-        if ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+        if ($tokens[$prevIndex]->isKind(\T_NS_SEPARATOR)) {
             $tokens->clearAt($prevIndex);
         }
 

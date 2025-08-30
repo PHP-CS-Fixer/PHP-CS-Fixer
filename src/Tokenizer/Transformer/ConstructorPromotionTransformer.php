@@ -37,13 +37,13 @@ final class ConstructorPromotionTransformer extends AbstractTransformer
 
     public function process(Tokens $tokens, Token $token, int $index): void
     {
-        if (!$tokens[$index]->isGivenKind(\T_FUNCTION)) {
+        if (!$tokens[$index]->isKind(\T_FUNCTION)) {
             return;
         }
 
         $functionNameIndex = $tokens->getNextMeaningfulToken($index);
 
-        if (!$tokens[$functionNameIndex]->isGivenKind(\T_STRING) || '__construct' !== strtolower($tokens[$functionNameIndex]->getContent())) {
+        if (!$tokens[$functionNameIndex]->isKind(\T_STRING) || '__construct' !== strtolower($tokens[$functionNameIndex]->getContent())) {
             return;
         }
 
@@ -52,11 +52,11 @@ final class ConstructorPromotionTransformer extends AbstractTransformer
         $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesisIndex);
 
         for ($argsIndex = $openParenthesisIndex; $argsIndex < $closeParenthesisIndex; ++$argsIndex) {
-            if ($tokens[$argsIndex]->isGivenKind(\T_PUBLIC)) {
+            if ($tokens[$argsIndex]->isKind(\T_PUBLIC)) {
                 $tokens[$argsIndex] = new Token([CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, $tokens[$argsIndex]->getContent()]);
-            } elseif ($tokens[$argsIndex]->isGivenKind(\T_PROTECTED)) {
+            } elseif ($tokens[$argsIndex]->isKind(\T_PROTECTED)) {
                 $tokens[$argsIndex] = new Token([CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, $tokens[$argsIndex]->getContent()]);
-            } elseif ($tokens[$argsIndex]->isGivenKind(\T_PRIVATE)) {
+            } elseif ($tokens[$argsIndex]->isKind(\T_PRIVATE)) {
                 $tokens[$argsIndex] = new Token([CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE, $tokens[$argsIndex]->getContent()]);
             }
         }

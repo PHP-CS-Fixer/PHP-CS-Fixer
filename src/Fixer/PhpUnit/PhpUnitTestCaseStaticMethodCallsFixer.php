@@ -487,7 +487,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
         for ($index = $startIndex; $index < $endIndex; ++$index) {
             // skip anonymous classes
-            if ($tokens[$index]->isGivenKind(\T_CLASS)) {
+            if ($tokens[$index]->isKind(\T_CLASS)) {
                 $index = $this->findEndOfNextBlock($tokens, $index);
 
                 continue;
@@ -495,7 +495,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $callType = $this->configuration['call_type'];
 
-            if ($tokens[$index]->isGivenKind(\T_FUNCTION)) {
+            if ($tokens[$index]->isKind(\T_FUNCTION)) {
                 // skip lambda
                 if ($analyzer->isLambda($index)) {
                     $index = $this->findEndOfNextBlock($tokens, $index);
@@ -515,7 +515,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 }
             }
 
-            if (!$tokens[$index]->isGivenKind(\T_STRING) || !isset(self::STATIC_METHODS[$tokens[$index]->getContent()])) {
+            if (!$tokens[$index]->isKind(\T_STRING) || !isset(self::STATIC_METHODS[$tokens[$index]->getContent()])) {
                 continue;
             }
 
@@ -527,7 +527,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 continue;
             }
 
-            if ($tokens[$tokens->getNextMeaningfulToken($nextIndex)]->isGivenKind(CT::T_FIRST_CLASS_CALLABLE)) {
+            if ($tokens[$tokens->getNextMeaningfulToken($nextIndex)]->isKind(CT::T_FIRST_CLASS_CALLABLE)) {
                 continue;
             }
 

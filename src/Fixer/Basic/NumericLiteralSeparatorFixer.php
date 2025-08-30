@@ -128,7 +128,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind([\T_DNUMBER, \T_LNUMBER])) {
+            if (!$token->isKind([\T_DNUMBER, \T_LNUMBER])) {
                 continue;
             }
 

@@ -55,14 +55,14 @@ class Foo extends Bar
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(\T_NULLSAFE_OBJECT_OPERATOR)) {
+            if (!$tokens[$index]->isKind(\T_NULLSAFE_OBJECT_OPERATOR)) {
                 continue;
             }
 
             $nullsafeObjectOperatorIndex = $index;
             $index = $tokens->getPrevMeaningfulToken($index);
 
-            if (!$tokens[$index]->isGivenKind(\T_VARIABLE)) {
+            if (!$tokens[$index]->isKind(\T_VARIABLE)) {
                 continue;
             }
 

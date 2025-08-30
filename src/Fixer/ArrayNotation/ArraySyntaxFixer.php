@@ -92,7 +92,7 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
-            if ($tokens[$index]->isGivenKind($this->candidateTokenKind)) {
+            if ($tokens[$index]->isKind($this->candidateTokenKind)) {
                 if ('short' === $this->configuration['syntax']) {
                     $this->fixToShortArraySyntax($tokens, $index);
                 } else {

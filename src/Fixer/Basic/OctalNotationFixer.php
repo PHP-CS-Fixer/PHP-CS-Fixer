@@ -49,7 +49,7 @@ final class OctalNotationFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(\T_LNUMBER)) {
+            if (!$token->isKind(\T_LNUMBER)) {
                 continue;
             }
 

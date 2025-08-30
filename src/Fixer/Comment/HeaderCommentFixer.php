@@ -337,7 +337,7 @@ echo 1;
 
         $next = $index + 1;
 
-        if (!isset($tokens[$next]) || \in_array($this->configuration['separate'], ['top', 'none'], true) || !$tokens[$index]->isGivenKind(\T_DOC_COMMENT)) {
+        if (!isset($tokens[$next]) || \in_array($this->configuration['separate'], ['top', 'none'], true) || !$tokens[$index]->isKind(\T_DOC_COMMENT)) {
             return $index;
         }
 
@@ -349,7 +349,7 @@ echo 1;
             ++$next;
         }
 
-        if (!isset($tokens[$next]) || !$tokens[$next]->isClassy() && !$tokens[$next]->isGivenKind(\T_FUNCTION)) {
+        if (!isset($tokens[$next]) || !$tokens[$next]->isClassy() && !$tokens[$next]->isKind(\T_FUNCTION)) {
             return $index;
         }
 
@@ -368,7 +368,7 @@ echo 1;
      */
     private function findHeaderCommentInsertionIndex(Tokens $tokens, string $location): int
     {
-        $openTagIndex = $tokens[0]->isGivenKind(\T_INLINE_HTML) ? 1 : 0;
+        $openTagIndex = $tokens[0]->isKind(\T_INLINE_HTML) ? 1 : 0;
 
         if ('after_open' === $location) {
             return $openTagIndex + 1;
@@ -380,7 +380,7 @@ echo 1;
             return $openTagIndex + 1; // file without meaningful tokens but an open tag, comment should always be placed directly after the open tag
         }
 
-        if (!$tokens[$index]->isGivenKind(\T_DECLARE)) {
+        if (!$tokens[$index]->isKind(\T_DECLARE)) {
             return $openTagIndex + 1;
         }
 
@@ -404,7 +404,7 @@ echo 1;
 
         $next = $tokens->getNextMeaningfulToken($next);
 
-        if (null === $next || !$tokens[$next]->isGivenKind(\T_LNUMBER)) {
+        if (null === $next || !$tokens[$next]->isKind(\T_LNUMBER)) {
             return $openTagIndex + 1;
         }
 
@@ -465,7 +465,7 @@ echo 1;
 
         $regex = '/\h$/';
 
-        if ($tokens[$prev]->isGivenKind(\T_OPEN_TAG) && Preg::match($regex, $tokens[$prev]->getContent())) {
+        if ($tokens[$prev]->isKind(\T_OPEN_TAG) && Preg::match($regex, $tokens[$prev]->getContent())) {
             $tokens[$prev] = new Token([\T_OPEN_TAG, Preg::replace($regex, $lineEnding, $tokens[$prev]->getContent())]);
         }
 
@@ -490,7 +490,7 @@ echo 1;
                 continue;
             }
 
-            if (-1 === $direction && $token->isGivenKind(\T_OPEN_TAG)) {
+            if (-1 === $direction && $token->isKind(\T_OPEN_TAG)) {
                 $whitespace .= $token->getContent();
             }
 

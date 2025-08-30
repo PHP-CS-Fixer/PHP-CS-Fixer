@@ -155,7 +155,7 @@ final class EchoTagSyntaxFixer extends AbstractFixer implements ConfigurableFixe
         $count = $tokens->count();
 
         for ($index = 0; $index < $count; ++$index) {
-            if (!$tokens[$index]->isGivenKind(\T_OPEN_TAG)) {
+            if (!$tokens[$index]->isKind(\T_OPEN_TAG)) {
                 continue;
             }
 
@@ -165,7 +165,7 @@ final class EchoTagSyntaxFixer extends AbstractFixer implements ConfigurableFixe
                 return;
             }
 
-            if (!$tokens[$nextMeaningful]->isGivenKind([\T_ECHO, \T_PRINT])) {
+            if (!$tokens[$nextMeaningful]->isKind([\T_ECHO, \T_PRINT])) {
                 $index = $nextMeaningful;
 
                 continue;
@@ -229,7 +229,7 @@ final class EchoTagSyntaxFixer extends AbstractFixer implements ConfigurableFixe
         for ($count = $tokens->count(); $index < $count; ++$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(\T_CLOSE_TAG)) {
+            if ($token->isKind(\T_CLOSE_TAG)) {
                 return false;
             }
 

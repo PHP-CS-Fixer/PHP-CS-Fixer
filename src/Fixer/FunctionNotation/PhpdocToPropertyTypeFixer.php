@@ -124,12 +124,12 @@ class Foo {
         $typesToExclude = [];
 
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(\T_DOC_COMMENT)) {
+            if ($token->isKind(\T_DOC_COMMENT)) {
                 $typesToExclude = array_merge($typesToExclude, self::getTypesToExclude($token->getContent()));
 
                 continue;
             }
-            if ($tokens[$index]->isGivenKind([\T_CLASS, \T_TRAIT])) {
+            if ($tokens[$index]->isKind([\T_CLASS, \T_TRAIT])) {
                 $tokensToInsert += $this->fixClass($tokens, $index, $typesToExclude);
             }
         }
@@ -160,7 +160,7 @@ class Foo {
         $classEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
 
         for (; $index < $classEndIndex; ++$index) {
-            if ($tokens[$index]->isGivenKind(\T_FUNCTION)) {
+            if ($tokens[$index]->isKind(\T_FUNCTION)) {
                 $index = $tokens->getNextTokenOfKind($index, ['{', ';']);
 
                 if ($tokens[$index]->equals('{')) {
@@ -170,7 +170,7 @@ class Foo {
                 continue;
             }
 
-            if (!$tokens[$index]->isGivenKind(\T_DOC_COMMENT)) {
+            if (!$tokens[$index]->isKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -225,7 +225,7 @@ class Foo {
     {
         do {
             $index = $tokens->getNextMeaningfulToken($index);
-        } while ($tokens[$index]->isGivenKind([
+        } while ($tokens[$index]->isKind([
             \T_PRIVATE,
             \T_PROTECTED,
             \T_PUBLIC,
@@ -233,14 +233,14 @@ class Foo {
             \T_VAR,
         ]));
 
-        if (!$tokens[$index]->isGivenKind(\T_VARIABLE)) {
+        if (!$tokens[$index]->isKind(\T_VARIABLE)) {
             return [];
         }
 
         $properties = [];
 
         while (!$tokens[$index]->equals(';')) {
-            if ($tokens[$index]->isGivenKind(\T_VARIABLE)) {
+            if ($tokens[$index]->isKind(\T_VARIABLE)) {
                 $properties[$tokens[$index]->getContent()] = $index;
             }
 

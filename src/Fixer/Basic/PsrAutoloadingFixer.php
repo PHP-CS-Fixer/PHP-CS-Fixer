@@ -169,7 +169,7 @@ class InvalidName {}
         $classyIndex = null;
 
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(\T_NAMESPACE)) {
+            if ($token->isKind(\T_NAMESPACE)) {
                 if (null !== $namespace) {
                     return;
                 }

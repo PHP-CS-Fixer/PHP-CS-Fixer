@@ -141,7 +141,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
-            if (!$tokens[$index]->isGivenKind(\T_CLASS) || !$this->isClassCandidate($tokensAnalyzer, $tokens, $index)) {
+            if (!$tokens[$index]->isKind(\T_CLASS) || !$this->isClassCandidate($tokensAnalyzer, $tokens, $index)) {
                 continue;
             }
 
@@ -245,18 +245,18 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         while (null !== $currentIndex) {
             $currentIndex = $tokens->getPrevNonWhitespace($currentIndex);
 
-            if (!$tokens[$currentIndex]->isGivenKind(self::CLASS_CANDIDATE_ACCEPT_TYPES)) {
+            if (!$tokens[$currentIndex]->isKind(self::CLASS_CANDIDATE_ACCEPT_TYPES)) {
                 break;
             }
 
-            if ($this->checkAttributes && $tokens[$currentIndex]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+            if ($this->checkAttributes && $tokens[$currentIndex]->isKind(CT::T_ATTRIBUTE_CLOSE)) {
                 $attributeStartIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $currentIndex);
                 $decisions[] = $this->isClassCandidateBasedOnAttribute($tokens, $attributeStartIndex, $currentIndex);
 
                 $currentIndex = $attributeStartIndex;
             }
 
-            if ($tokens[$currentIndex]->isGivenKind(\T_DOC_COMMENT)) {
+            if ($tokens[$currentIndex]->isKind(\T_DOC_COMMENT)) {
                 $decisions[] = $this->isClassCandidateBasedOnPhpDoc($tokens, $currentIndex);
             }
         }
@@ -301,7 +301,7 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
         $currentIndex = $startIndex;
 
         while ($currentIndex < $endIndex && null !== ($currentIndex = $tokens->getNextMeaningfulToken($currentIndex))) {
-            if (!$tokens[$currentIndex]->isGivenKind([\T_STRING, \T_NS_SEPARATOR])) {
+            if (!$tokens[$currentIndex]->isKind([\T_STRING, \T_NS_SEPARATOR])) {
                 if ('' !== $attributeString) {
                     $attributeCandidates[$attributeString] = true;
                     $attributeString = '';

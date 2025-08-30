@@ -98,7 +98,7 @@ switch ($foo) {
     {
         $token = $tokens[$index];
 
-        if ($token->isGivenKind([\T_FOREACH, \T_FOR, \T_WHILE])) {
+        if ($token->isKind([\T_FOREACH, \T_FOR, \T_WHILE])) {
             // go to first `(`, go to its close ')', go to first of '{', ';', '? >'
             $index = $tokens->getNextTokenOfKind($index, ['(']);
             $index = $tokens->getNextTokenOfKind($index, [')']);
@@ -111,15 +111,15 @@ switch ($foo) {
             return $this->fixInLoop($tokens, $index, $depth + 1);
         }
 
-        if ($token->isGivenKind(\T_DO)) {
+        if ($token->isKind(\T_DO)) {
             return $this->fixInLoop($tokens, $tokens->getNextTokenOfKind($index, ['{']), $depth + 1);
         }
 
-        if ($token->isGivenKind(\T_SWITCH)) {
+        if ($token->isKind(\T_SWITCH)) {
             return $this->fixInSwitch($tokens, $index, $depth + 1);
         }
 
-        if ($token->isGivenKind(\T_CONTINUE)) {
+        if ($token->isKind(\T_CONTINUE)) {
             return $this->fixContinueWhenActsAsBreak($tokens, $index, $isInSwitch, $depth);
         }
 
@@ -186,7 +186,7 @@ switch ($foo) {
             return $followingContinueIndex;
         }
 
-        if (!$followingContinueToken->isGivenKind(\T_LNUMBER)) {
+        if (!$followingContinueToken->isKind(\T_LNUMBER)) {
             return $followingContinueIndex;
         }
 

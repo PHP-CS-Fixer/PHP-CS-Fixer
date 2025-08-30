@@ -107,7 +107,7 @@ final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer
             }
 
             // fast precedence check
-            if ($otherToken->equals('?') || $otherToken->isGivenKind(\T_INSTANCEOF)) {
+            if ($otherToken->equals('?') || $otherToken->isKind(\T_INSTANCEOF)) {
                 return false;
             }
 

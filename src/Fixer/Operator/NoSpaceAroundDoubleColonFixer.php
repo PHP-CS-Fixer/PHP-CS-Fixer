@@ -51,7 +51,7 @@ final class NoSpaceAroundDoubleColonFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = \count($tokens) - 2; $index > 1; --$index) {
-            if ($tokens[$index]->isGivenKind(\T_DOUBLE_COLON)) {
+            if ($tokens[$index]->isKind(\T_DOUBLE_COLON)) {
                 $this->removeSpace($tokens, $index, 1);
                 $this->removeSpace($tokens, $index, -1);
             }

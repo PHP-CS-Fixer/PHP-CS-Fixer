@@ -56,18 +56,18 @@ abstract class AbstractTypeTransformer extends AbstractTransformer
     {
         // return types and non-capturing catches
         $typeColonIndex = $tokens->getTokenNotOfKindSibling($index, -1, self::TYPE_TOKENS);
-        if ($tokens[$typeColonIndex]->isGivenKind([\T_CATCH, CT::T_TYPE_COLON, \T_CONST])) {
+        if ($tokens[$typeColonIndex]->isKind([\T_CATCH, CT::T_TYPE_COLON, \T_CONST])) {
             return true;
         }
 
         // for parameter there will be splat operator or variable after the type ("&" is ambiguous and can be reference or bitwise and)
         $afterTypeIndex = $tokens->getTokenNotOfKindSibling($index, 1, self::TYPE_TOKENS);
 
-        if ($tokens[$afterTypeIndex]->isGivenKind(\T_ELLIPSIS)) {
+        if ($tokens[$afterTypeIndex]->isKind(\T_ELLIPSIS)) {
             return true;
         }
 
-        if (!$tokens[$afterTypeIndex]->isGivenKind(\T_VARIABLE)) {
+        if (!$tokens[$afterTypeIndex]->isKind(\T_VARIABLE)) {
             return false;
         }
 
@@ -85,7 +85,7 @@ abstract class AbstractTypeTransformer extends AbstractTransformer
                 ],
             );
 
-            return null !== $prevIndex && $tokens[$prevIndex]->isGivenKind([\T_FN, \T_FUNCTION]);
+            return null !== $prevIndex && $tokens[$prevIndex]->isKind([\T_FN, \T_FUNCTION]);
         }
 
         return $tokens[$beforeVariableIndex]->equalsAny(self::TYPE_END_TOKENS);

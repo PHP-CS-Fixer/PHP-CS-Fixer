@@ -134,13 +134,13 @@ function bar($foo) {}
         $typesToExclude = [];
 
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(\T_DOC_COMMENT)) {
+            if ($token->isKind(\T_DOC_COMMENT)) {
                 $typesToExclude = array_merge($typesToExclude, self::getTypesToExclude($token->getContent()));
 
                 continue;
             }
 
-            if (!$token->isGivenKind([\T_FUNCTION, \T_FN])) {
+            if (!$token->isKind([\T_FUNCTION, \T_FN])) {
                 continue;
             }
 
@@ -236,7 +236,7 @@ function bar($foo) {}
         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
 
         for ($index = $startIndex + 1; $index < $endIndex; ++$index) {
-            if (!$tokens[$index]->isGivenKind(\T_VARIABLE)) {
+            if (!$tokens[$index]->isKind(\T_VARIABLE)) {
                 continue;
             }
 

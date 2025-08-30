@@ -54,7 +54,7 @@ final class NoEmptyPhpdocFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
+            if (!$token->isKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -63,9 +63,9 @@ final class NoEmptyPhpdocFixer extends AbstractFixer
             }
 
             if (
-                $tokens[$index - 1]->isGivenKind([\T_OPEN_TAG, \T_WHITESPACE])
+                $tokens[$index - 1]->isKind([\T_OPEN_TAG, \T_WHITESPACE])
                 && substr_count($tokens[$index - 1]->getContent(), "\n") > 0
-                && $tokens[$index + 1]->isGivenKind(\T_WHITESPACE)
+                && $tokens[$index + 1]->isKind(\T_WHITESPACE)
                 && Preg::match('/^\R/', $tokens[$index + 1]->getContent())
             ) {
                 $tokens[$index - 1] = new Token([

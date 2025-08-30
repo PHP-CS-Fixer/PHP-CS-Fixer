@@ -188,7 +188,7 @@ return $foo === count($bar);
         while ($index < $count) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT])) {
+            if ($token->isKind([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT])) {
                 ++$index;
 
                 continue;
@@ -215,7 +215,7 @@ return $foo === count($bar);
 
         $prev = $tokens->getPrevMeaningfulToken($index);
 
-        return $tokens[$prev]->isGivenKind(\T_CLOSE_TAG) ? $tokens->getPrevMeaningfulToken($prev) : $prev;
+        return $tokens[$prev]->isKind(\T_CLOSE_TAG) ? $tokens->getPrevMeaningfulToken($prev) : $prev;
     }
 
     /**
@@ -239,13 +239,13 @@ return $foo === count($bar);
         while (0 <= $index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT])) {
+            if ($token->isKind([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT])) {
                 --$index;
 
                 continue;
             }
 
-            if ($token->isGivenKind(CT::T_NAMED_ARGUMENT_COLON)) {
+            if ($token->isKind(CT::T_NAMED_ARGUMENT_COLON)) {
                 break;
             }
 
@@ -427,7 +427,7 @@ return $foo === count($bar);
     private function isListStatement(Tokens $tokens, int $index, int $end): bool
     {
         for ($i = $index; $i <= $end; ++$i) {
-            if ($tokens[$i]->isGivenKind([\T_LIST, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE])) {
+            if ($tokens[$i]->isKind([\T_LIST, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE])) {
                 return true;
             }
         }
@@ -446,7 +446,7 @@ return $foo === count($bar);
     private function isOfLowerPrecedence(Token $token): bool
     {
         return $this->isOfLowerPrecedenceAssignment($token)
-            || $token->isGivenKind([
+            || $token->isKind([
                 \T_BOOLEAN_AND,  // &&
                 \T_BOOLEAN_OR,   // ||
                 \T_CASE,         // case
@@ -485,7 +485,7 @@ return $foo === count($bar);
      */
     private function isOfLowerPrecedenceAssignment(Token $token): bool
     {
-        return $token->equals('=') || $token->isGivenKind([
+        return $token->equals('=') || $token->isKind([
             \T_AND_EQUAL,      // &=
             \T_CONCAT_EQUAL,   // .=
             \T_DIV_EQUAL,      // /=
@@ -518,7 +518,7 @@ return $foo === count($bar);
         $tokenAnalyzer = new TokensAnalyzer($tokens);
 
         if ($start === $end) {
-            return $tokens[$start]->isGivenKind(\T_VARIABLE);
+            return $tokens[$start]->isKind(\T_VARIABLE);
         }
 
         if ($tokens[$start]->equals('(')) {
@@ -529,7 +529,7 @@ return $foo === count($bar);
             for ($index = $start; $index <= $end; ++$index) {
                 if (
                     $tokens[$index]->isCast()
-                    || $tokens[$index]->isGivenKind(\T_INSTANCEOF)
+                    || $tokens[$index]->isKind(\T_INSTANCEOF)
                     || $tokens[$index]->equals('!')
                     || $tokenAnalyzer->isBinaryOperator($index)
                 ) {
@@ -561,10 +561,10 @@ return $foo === count($bar);
 
             // check if this is the last token
             if ($index === $end) {
-                return $current->isGivenKind($expectString ? \T_STRING : \T_VARIABLE);
+                return $current->isKind($expectString ? \T_STRING : \T_VARIABLE);
             }
 
-            if ($current->isGivenKind([\T_LIST, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE])) {
+            if ($current->isKind([\T_LIST, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE])) {
                 return false;
             }
 
@@ -572,28 +572,28 @@ return $foo === count($bar);
             $next = $tokens[$nextIndex];
 
             // self:: or ClassName::
-            if ($current->isGivenKind(\T_STRING) && $next->isGivenKind(\T_DOUBLE_COLON)) {
+            if ($current->isKind(\T_STRING) && $next->isKind(\T_DOUBLE_COLON)) {
                 $index = $tokens->getNextMeaningfulToken($nextIndex);
 
                 continue;
             }
 
             // \ClassName
-            if ($current->isGivenKind(\T_NS_SEPARATOR) && $next->isGivenKind(\T_STRING)) {
+            if ($current->isKind(\T_NS_SEPARATOR) && $next->isKind(\T_STRING)) {
                 $index = $nextIndex;
 
                 continue;
             }
 
             // ClassName\
-            if ($current->isGivenKind(\T_STRING) && $next->isGivenKind(\T_NS_SEPARATOR)) {
+            if ($current->isKind(\T_STRING) && $next->isKind(\T_NS_SEPARATOR)) {
                 $index = $nextIndex;
 
                 continue;
             }
 
             // $a-> or a-> (as in $b->a->c)
-            if ($current->isGivenKind([\T_STRING, \T_VARIABLE]) && $next->isObjectOperator()) {
+            if ($current->isKind([\T_STRING, \T_VARIABLE]) && $next->isObjectOperator()) {
                 $index = $tokens->getNextMeaningfulToken($nextIndex);
                 $expectString = true;
 
@@ -602,7 +602,7 @@ return $foo === count($bar);
 
             // $a[...], a[...] (as in $c->a[$b]), $a{...} or a{...} (as in $c->a{$b})
             if (
-                $current->isGivenKind($expectString ? \T_STRING : \T_VARIABLE)
+                $current->isKind($expectString ? \T_STRING : \T_VARIABLE)
                 && $next->equalsAny(['[', [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN, '{']])
             ) {
                 $index = $tokens->findBlockEnd(
@@ -627,12 +627,12 @@ return $foo === count($bar);
             }
 
             // $a(...) or $a->b(...)
-            if ($strict && $current->isGivenKind([\T_STRING, \T_VARIABLE]) && $next->equals('(')) {
+            if ($strict && $current->isKind([\T_STRING, \T_VARIABLE]) && $next->equals('(')) {
                 return false;
             }
 
             // {...} (as in $a->{$b})
-            if ($expectString && $current->isGivenKind(CT::T_DYNAMIC_PROP_BRACE_OPEN)) {
+            if ($expectString && $current->isKind(CT::T_DYNAMIC_PROP_BRACE_OPEN)) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DYNAMIC_PROP_BRACE, $index);
                 if ($index === $end) {
                     return true;
@@ -681,13 +681,13 @@ return $foo === count($bar);
                 return false;
             }
 
-            if ($token->isGivenKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+            if ($token->isKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
                 $expectArrayOnly = true;
 
                 continue;
             }
 
-            if ($expectNumberOnly && !$token->isGivenKind([\T_LNUMBER, \T_DNUMBER])) {
+            if ($expectNumberOnly && !$token->isKind([\T_LNUMBER, \T_DNUMBER])) {
                 return false;
             }
 
@@ -698,7 +698,7 @@ return $foo === count($bar);
             }
 
             if (
-                $token->isGivenKind([\T_LNUMBER, \T_DNUMBER, \T_CONSTANT_ENCAPSED_STRING])
+                $token->isKind([\T_LNUMBER, \T_DNUMBER, \T_CONSTANT_ENCAPSED_STRING])
                 || $token->equalsAny([[\T_STRING, 'true'], [\T_STRING, 'false'], [\T_STRING, 'null']])
             ) {
                 $expectNothing = true;

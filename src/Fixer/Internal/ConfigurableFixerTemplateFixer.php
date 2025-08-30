@@ -129,7 +129,7 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
         $classIndex = $tokens->getNextTokenOfKind(0, [[\T_CLASS]]);
 
         $docBlockIndex = $this->getDocBlockIndex($tokens, $classIndex);
-        if (!$tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT)) {
+        if (!$tokens[$docBlockIndex]->isKind(\T_DOC_COMMENT)) {
             $docBlockIndex = $tokens->getNextMeaningfulToken($docBlockIndex);
             $tokens->insertAt($docBlockIndex, [
                 new Token([\T_DOC_COMMENT, "/**\n */"]),
@@ -342,7 +342,7 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
         $classIndex = $tokens->getNextTokenOfKind(0, [[\T_CLASS]]);
 
         $docBlockIndex = $this->getDocBlockIndex($tokens, $classIndex);
-        if (!$tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT)) {
+        if (!$tokens[$docBlockIndex]->isKind(\T_DOC_COMMENT)) {
             $docBlockIndex = $tokens->getNextMeaningfulToken($docBlockIndex);
             $tokens->insertAt($docBlockIndex, [
                 new Token([\T_DOC_COMMENT, "/**\n */"]),
@@ -433,10 +433,10 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
         do {
             $index = $tokens->getPrevNonWhitespace($index);
 
-            if ($tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+            if ($tokens[$index]->isKind(CT::T_ATTRIBUTE_CLOSE)) {
                 $index = $tokens->getPrevTokenOfKind($index, [[\T_ATTRIBUTE]]);
             }
-        } while ($tokens[$index]->isGivenKind(self::MODIFIERS));
+        } while ($tokens[$index]->isKind(self::MODIFIERS));
 
         return $index;
     }

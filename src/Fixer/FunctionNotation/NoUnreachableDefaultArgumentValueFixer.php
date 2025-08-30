@@ -71,7 +71,7 @@ function example($foo = "two words", $bar) {}
         $functionKinds = [\T_FUNCTION, \T_FN];
 
         for ($i = 0, $l = $tokens->count(); $i < $l; ++$i) {
-            if (!$tokens[$i]->isGivenKind($functionKinds)) {
+            if (!$tokens[$i]->isKind($functionKinds)) {
                 continue;
             }
 
@@ -93,13 +93,13 @@ function example($foo = "two words", $bar) {}
         for ($i = $lastArgumentIndex; $i > $startIndex; --$i) {
             $token = $tokens[$i];
 
-            if ($token->isGivenKind(\T_VARIABLE)) {
+            if ($token->isKind(\T_VARIABLE)) {
                 $lastArgumentIndex = $i;
 
                 continue;
             }
 
-            if ($token->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_CLOSE)) {
+            if ($token->isKind(CT::T_PROPERTY_HOOK_BRACE_CLOSE)) {
                 $i = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PROPERTY_HOOK, $i);
 
                 continue;
@@ -124,13 +124,13 @@ function example($foo = "two words", $bar) {}
                 continue;
             }
 
-            if ($token->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_CLOSE)) {
+            if ($token->isKind(CT::T_PROPERTY_HOOK_BRACE_CLOSE)) {
                 $i = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PROPERTY_HOOK, $i);
 
                 continue;
             }
 
-            if ($token->isGivenKind(\T_VARIABLE) && !$tokens[$tokens->getPrevMeaningfulToken($i)]->isGivenKind(\T_ELLIPSIS)) {
+            if ($token->isKind(\T_VARIABLE) && !$tokens[$tokens->getPrevMeaningfulToken($i)]->isKind(\T_ELLIPSIS)) {
                 return $i;
             }
         }
@@ -143,7 +143,7 @@ function example($foo = "two words", $bar) {}
         do {
             $index = $tokens->getPrevMeaningfulToken($index);
 
-            if ($tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+            if ($tokens[$index]->isKind(CT::T_ATTRIBUTE_CLOSE)) {
                 $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
             }
         } while (!$tokens[$index]->equals(','));
@@ -178,11 +178,11 @@ function example($foo = "two words", $bar) {}
 
         $prevIndex = $tokens->getPrevTokenOfKind($variableIndex, $searchTokens);
 
-        if (!$tokens[$prevIndex]->isGivenKind($typehintKinds)) {
+        if (!$tokens[$prevIndex]->isKind($typehintKinds)) {
             return false;
         }
 
-        return !$tokens[$tokens->getPrevMeaningfulToken($prevIndex)]->isGivenKind(CT::T_NULLABLE_TYPE);
+        return !$tokens[$tokens->getPrevMeaningfulToken($prevIndex)]->isKind(CT::T_NULLABLE_TYPE);
     }
 
     private function clearWhitespacesBeforeIndex(Tokens $tokens, int $index): void

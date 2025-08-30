@@ -98,7 +98,7 @@ function foo($a, ...   $b) { return (--   $a) * ($b   ++);}
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if (true === $this->configuration['only_dec_inc'] && !$tokens[$index]->isGivenKind([\T_DEC, \T_INC])) {
+            if (true === $this->configuration['only_dec_inc'] && !$tokens[$index]->isKind([\T_DEC, \T_INC])) {
                 continue;
             }
 

@@ -130,9 +130,9 @@ use Bar;
             $startIndex = $tokens->getNextMeaningfulToken($index + 1);
             $endIndex = $tokens->getNextTokenOfKind($startIndex, [';', [\T_CLOSE_TAG]]);
 
-            if ($tokens[$startIndex]->isGivenKind(CT::T_CONST_IMPORT)) {
+            if ($tokens[$startIndex]->isKind(CT::T_CONST_IMPORT)) {
                 $type = self::IMPORT_TYPE_CONST;
-            } elseif ($tokens[$startIndex]->isGivenKind(CT::T_FUNCTION_IMPORT)) {
+            } elseif ($tokens[$startIndex]->isKind(CT::T_FUNCTION_IMPORT)) {
                 $type = self::IMPORT_TYPE_FUNCTION;
             } else {
                 $type = self::IMPORT_TYPE_CLASS;

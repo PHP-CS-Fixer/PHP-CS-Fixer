@@ -57,7 +57,7 @@ final class ExplicitIndirectVariableFixer extends AbstractFixer
     {
         for ($index = $tokens->count() - 1; $index > 1; --$index) {
             $token = $tokens[$index];
-            if (!$token->isGivenKind(\T_VARIABLE)) {
+            if (!$token->isKind(\T_VARIABLE)) {
                 continue;
             }
 

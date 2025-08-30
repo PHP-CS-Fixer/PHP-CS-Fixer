@@ -31,7 +31,7 @@ final class GotoLabelAnalyzer
 
         $prevMeaningfulTokenIndex = $tokens->getPrevMeaningfulToken($index);
 
-        if (!$tokens[$prevMeaningfulTokenIndex]->isGivenKind(\T_STRING)) {
+        if (!$tokens[$prevMeaningfulTokenIndex]->isKind(\T_STRING)) {
             return false;
         }
 
