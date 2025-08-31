@@ -20,6 +20,8 @@ use PhpCsFixer\Preg;
  * @internal
  *
  * @TODO v4 remove me
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractMajorMinorDeprecationSetDescription extends AbstractMigrationSetDescription implements DeprecatedRuleSetDescriptionInterface
 {

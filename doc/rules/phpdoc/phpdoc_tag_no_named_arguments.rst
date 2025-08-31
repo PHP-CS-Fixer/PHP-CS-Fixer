@@ -60,7 +60,7 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
-With configuration: ``['description' => 'the reason']``.
+With configuration: ``['description' => 'Parameter names are not covered by the backward compatibility promise.']``.
 
 .. code-block:: diff
 
@@ -69,7 +69,7 @@ With configuration: ``['description' => 'the reason']``.
     <?php
    +
    +/**
-   + * @no-named-arguments the reason
+   + * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
    + */
     class Foo
     {

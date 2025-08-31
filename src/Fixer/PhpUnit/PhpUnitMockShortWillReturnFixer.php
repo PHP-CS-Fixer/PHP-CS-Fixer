@@ -26,6 +26,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Michał Adamski <michal.adamski@gmail.com>
  * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpUnitMockShortWillReturnFixer extends AbstractPhpUnitFixer
 {

@@ -32,6 +32,8 @@ use Symfony\Component\Finder\Finder;
  *
  * @group legacy
  * @group auto-review
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DocumentationTest extends TestCase
 {
@@ -187,6 +189,24 @@ final class DocumentationTest extends TestCase
             (string) file_get_contents($installationDocPath),
             \sprintf('Files %s needs to contain information "%s"', $installationDocPath, $minimumVersionInformation)
         );
+    }
+
+    public function testCiIntegrationSampleMatches(): void
+    {
+        $locator = new DocumentationLocator();
+        $usage = $locator->getUsageFilePath();
+        self::assertFileExists($usage);
+
+        $usage = file_get_contents($usage);
+        self::assertIsString($usage);
+
+        $expectedCiIntegrationContent = file_get_contents(__DIR__.'/../../doc/examples/ci-integration.sh');
+        self::assertIsString($expectedCiIntegrationContent);
+
+        $expectedCiIntegrationContent = trim(str_replace(['#!/bin/sh', 'set -eu'], ['', ''], $expectedCiIntegrationContent));
+        $expectedCiIntegrationContent = '    '.implode("\n    ", explode("\n", $expectedCiIntegrationContent));
+
+        self::assertStringContainsString($expectedCiIntegrationContent, $usage);
     }
 
     public function testAllReportFormatsAreInUsageDoc(): void

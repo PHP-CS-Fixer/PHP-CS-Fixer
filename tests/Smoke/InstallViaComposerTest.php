@@ -30,6 +30,8 @@ use Symfony\Component\Filesystem\Filesystem;
  * @group covers-nothing
  *
  * @large
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class InstallViaComposerTest extends AbstractSmokeTestCase
 {

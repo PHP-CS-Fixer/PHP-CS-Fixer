@@ -61,6 +61,8 @@ use PhpCsFixer\Utils;
  * @internal
  *
  * @warning Does not support PHPUnit attributes
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ConfigurableFixerTemplateFixer extends AbstractFixer implements InternalFixerInterface
 {

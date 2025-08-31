@@ -53,6 +53,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
  * @final
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 #[AsCommand(name: 'fix', description: 'Fixes a directory or a file.')]
 /* final */ class FixCommand extends Command

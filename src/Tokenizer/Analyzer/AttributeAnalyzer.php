@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @phpstan-import-type _AttributeItems from AttributeAnalysis
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class AttributeAnalyzer
 {

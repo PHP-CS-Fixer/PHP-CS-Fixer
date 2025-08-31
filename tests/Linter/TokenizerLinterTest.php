@@ -24,6 +24,8 @@ use PhpCsFixer\Linter\TokenizerLinter;
  *
  * @covers \PhpCsFixer\Linter\TokenizerLinter
  * @covers \PhpCsFixer\Linter\TokenizerLintingResult
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TokenizerLinterTest extends AbstractLinterTestCase
 {

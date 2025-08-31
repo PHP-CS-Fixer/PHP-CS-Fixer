@@ -18,6 +18,10 @@ use PhpCsFixer\RuleSet\AbstractMigrationSetDescription;
 
 /**
  * @internal
+ *
+ * @covers \PhpCsFixer\RuleSet\Sets\PHP5x4MigrationSet
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PHP5x4MigrationSet extends AbstractMigrationSetDescription
 {

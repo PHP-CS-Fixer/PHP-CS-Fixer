@@ -21,6 +21,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class InvalidOptionsForEnvExceptionTest extends TestCase
 {
