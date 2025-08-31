@@ -142,70 +142,78 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
             'Orders the elements of classes/interfaces/traits/enums.',
             [
                 new CodeSample(
-                    '<?php
-final class Example
-{
-    use BarTrait;
-    use BazTrait;
-    const C1 = 1;
-    const C2 = 2;
-    protected static $protStatProp;
-    public static $pubStatProp1;
-    public $pubProp1;
-    protected $protProp;
-    var $pubProp2;
-    private static $privStatProp;
-    private $privProp;
-    public static $pubStatProp2;
-    public $pubProp3;
-    protected function __construct() {}
-    private static function privStatFunc() {}
-    public function pubFunc1() {}
-    public function __toString() {}
-    protected function protFunc() {}
-    function pubFunc2() {}
-    public static function pubStatFunc1() {}
-    public function pubFunc3() {}
-    static function pubStatFunc2() {}
-    private function privFunc() {}
-    public static function pubStatFunc3() {}
-    protected static function protStatFunc() {}
-    public function __destruct() {}
-}
-'
+                    <<<'PHP'
+                        <?php
+                        final class Example
+                        {
+                            use BarTrait;
+                            use BazTrait;
+                            const C1 = 1;
+                            const C2 = 2;
+                            protected static $protStatProp;
+                            public static $pubStatProp1;
+                            public $pubProp1;
+                            protected $protProp;
+                            var $pubProp2;
+                            private static $privStatProp;
+                            private $privProp;
+                            public static $pubStatProp2;
+                            public $pubProp3;
+                            protected function __construct() {}
+                            private static function privStatFunc() {}
+                            public function pubFunc1() {}
+                            public function __toString() {}
+                            protected function protFunc() {}
+                            function pubFunc2() {}
+                            public static function pubStatFunc1() {}
+                            public function pubFunc3() {}
+                            static function pubStatFunc2() {}
+                            private function privFunc() {}
+                            public static function pubStatFunc3() {}
+                            protected static function protStatFunc() {}
+                            public function __destruct() {}
+                        }
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-class Example
-{
-    public function A(){}
-    private function B(){}
-}
-',
+                    <<<'PHP'
+                        <?php
+                        class Example
+                        {
+                            public function A(){}
+                            private function B(){}
+                        }
+
+                        PHP,
                     ['order' => ['method_private', 'method_public']]
                 ),
                 new CodeSample(
-                    '<?php
-class Example
-{
-    public function D(){}
-    public function B(){}
-    public function A(){}
-    public function C(){}
-}
-',
+                    <<<'PHP'
+                        <?php
+                        class Example
+                        {
+                            public function D(){}
+                            public function B(){}
+                            public function A(){}
+                            public function C(){}
+                        }
+
+                        PHP,
                     ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA]
                 ),
                 new CodeSample(
-                    '<?php
-class Example
-{
-    public function Aa(){}
-    public function AA(){}
-    public function AwS(){}
-    public function AWs(){}
-}
-',
+                    <<<'PHP'
+                        <?php
+                        class Example
+                        {
+                            public function Aa(){}
+                            public function AA(){}
+                            public function AwS(){}
+                            public function AWs(){}
+                        }
+
+                        PHP,
                     ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA, 'case_sensitive' => true]
                 ),
             ],

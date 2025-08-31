@@ -33,16 +33,18 @@ final class PhpdocNoAccessFixer extends AbstractProxyFixer
             '`@access` annotations must be removed from PHPDoc.',
             [
                 new CodeSample(
-                    '<?php
-class Foo
-{
-    /**
-     * @internal
-     * @access private
-     */
-    private $bar;
-}
-'
+                    <<<'PHP'
+                        <?php
+                        class Foo
+                        {
+                            /**
+                             * @internal
+                             * @access private
+                             */
+                            private $bar;
+                        }
+
+                        PHP
                 ),
             ]
         );

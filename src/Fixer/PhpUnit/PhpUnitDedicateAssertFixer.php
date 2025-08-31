@@ -138,29 +138,33 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
             'PHPUnit assertions like `assertInternalType`, `assertFileExists`, should be used over `assertTrue`.',
             [
                 new CodeSample(
-                    '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testSomeTest()
-    {
-        $this->assertTrue(is_float( $a), "my message");
-        $this->assertTrue(is_nan($a));
-    }
-}
-'
+                    <<<'PHP'
+                        <?php
+                        final class MyTest extends \PHPUnit_Framework_TestCase
+                        {
+                            public function testSomeTest()
+                            {
+                                $this->assertTrue(is_float( $a), "my message");
+                                $this->assertTrue(is_nan($a));
+                            }
+                        }
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testSomeTest()
-    {
-        $this->assertTrue(is_dir($a));
-        $this->assertTrue(is_writable($a));
-        $this->assertTrue(is_readable($a));
-    }
-}
-',
+                    <<<'PHP'
+                        <?php
+                        final class MyTest extends \PHPUnit_Framework_TestCase
+                        {
+                            public function testSomeTest()
+                            {
+                                $this->assertTrue(is_dir($a));
+                                $this->assertTrue(is_writable($a));
+                                $this->assertTrue(is_readable($a));
+                            }
+                        }
+
+                        PHP,
                     ['target' => PhpUnitTargetVersion::VERSION_5_6]
                 ),
             ],

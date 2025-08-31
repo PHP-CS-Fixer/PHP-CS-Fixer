@@ -41,20 +41,24 @@ final class PhpdocNoEmptyReturnFixer extends AbstractFixer
             '`@return void` and `@return null` annotations must be removed from PHPDoc.',
             [
                 new CodeSample(
-                    '<?php
-/**
- * @return null
-*/
-function foo() {}
-'
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @return null
+                        */
+                        function foo() {}
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-/**
- * @return void
-*/
-function foo() {}
-'
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @return void
+                        */
+                        function foo() {}
+
+                        PHP
                 ),
             ]
         );

@@ -54,30 +54,34 @@ final class PhpUnitMockFixer extends AbstractPhpUnitFixer implements Configurabl
             'Usages of `->getMock` and `->getMockWithoutInvokingTheOriginalConstructor` methods MUST be replaced by `->createMock` or `->createPartialMock` methods.',
             [
                 new CodeSample(
-                    '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testFoo()
-    {
-        $mock = $this->getMockWithoutInvokingTheOriginalConstructor("Foo");
-        $mock1 = $this->getMock("Foo");
-        $mock1 = $this->getMock("Bar", ["aaa"]);
-        $mock1 = $this->getMock("Baz", ["aaa"], ["argument"]); // version with more than 2 params is not supported
-    }
-}
-'
+                    <<<'PHP'
+                        <?php
+                        final class MyTest extends \PHPUnit_Framework_TestCase
+                        {
+                            public function testFoo()
+                            {
+                                $mock = $this->getMockWithoutInvokingTheOriginalConstructor("Foo");
+                                $mock1 = $this->getMock("Foo");
+                                $mock1 = $this->getMock("Bar", ["aaa"]);
+                                $mock1 = $this->getMock("Baz", ["aaa"], ["argument"]); // version with more than 2 params is not supported
+                            }
+                        }
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testFoo()
-    {
-        $mock1 = $this->getMock("Foo");
-        $mock1 = $this->getMock("Bar", ["aaa"]); // version with multiple params is not supported
-    }
-}
-',
+                    <<<'PHP'
+                        <?php
+                        final class MyTest extends \PHPUnit_Framework_TestCase
+                        {
+                            public function testFoo()
+                            {
+                                $mock1 = $this->getMock("Foo");
+                                $mock1 = $this->getMock("Bar", ["aaa"]); // version with multiple params is not supported
+                            }
+                        }
+
+                        PHP,
                     ['target' => PhpUnitTargetVersion::VERSION_5_4]
                 ),
             ],

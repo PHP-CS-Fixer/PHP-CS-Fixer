@@ -74,86 +74,94 @@ final class VisibilityRequiredFixer extends AbstractFixer implements Configurabl
                 .' type declaration, name.',
             [
                 new CodeSample(
-                    '<?php
-abstract class ClassName
-{
-    const SAMPLE = 1;
+                    <<<'PHP'
+                        <?php
+                        abstract class ClassName
+                        {
+                            const SAMPLE = 1;
 
-    var $a;
+                            var $a;
 
-    protected string $foo;
+                            protected string $foo;
 
-    static protected int $beep;
+                            static protected int $beep;
 
-    static public final function bar() {}
+                            static public final function bar() {}
 
-    protected abstract function zim();
+                            protected abstract function zim();
 
-    function zex() {}
-}
-',
+                            function zex() {}
+                        }
+
+                        PHP,
                 ),
                 new VersionSpecificCodeSample(
-                    '<?php
-abstract class ClassName
-{
-    const SAMPLE = 1;
+                    <<<'PHP'
+                        <?php
+                        abstract class ClassName
+                        {
+                            const SAMPLE = 1;
 
-    var $a;
+                            var $a;
 
-    readonly protected string $foo;
+                            readonly protected string $foo;
 
-    static protected int $beep;
+                            static protected int $beep;
 
-    static public final function bar() {}
+                            static public final function bar() {}
 
-    protected abstract function zim();
+                            protected abstract function zim();
 
-    function zex() {}
-}
+                            function zex() {}
+                        }
 
-readonly final class ValueObject
-{
-    // ...
-}
-',
+                        readonly final class ValueObject
+                        {
+                            // ...
+                        }
+
+                        PHP,
                     new VersionSpecification(8_02_00)
                 ),
                 new VersionSpecificCodeSample(
-                    '<?php
-abstract class ClassName
-{
-    const SAMPLE = 1;
+                    <<<'PHP'
+                        <?php
+                        abstract class ClassName
+                        {
+                            const SAMPLE = 1;
 
-    var $a;
+                            var $a;
 
-    protected abstract string $bar { get => "a"; set; }
+                            protected abstract string $bar { get => "a"; set; }
 
-    readonly final protected string $foo;
+                            readonly final protected string $foo;
 
-    static protected final int $beep;
+                            static protected final int $beep;
 
-    static public final function bar() {}
+                            static public final function bar() {}
 
-    protected abstract function zim();
+                            protected abstract function zim();
 
-    function zex() {}
-}
+                            function zex() {}
+                        }
 
-readonly final class ValueObject
-{
-    // ...
-}
-',
+                        readonly final class ValueObject
+                        {
+                            // ...
+                        }
+
+                        PHP,
                     new VersionSpecification(8_04_00)
                 ),
                 new CodeSample(
-                    '<?php
-class Sample
-{
-    const SAMPLE = 1;
-}
-',
+                    <<<'PHP'
+                        <?php
+                        class Sample
+                        {
+                            const SAMPLE = 1;
+                        }
+
+                        PHP,
                     ['elements' => ['const']]
                 ),
             ]

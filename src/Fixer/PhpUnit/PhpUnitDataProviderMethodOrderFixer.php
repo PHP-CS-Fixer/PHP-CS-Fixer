@@ -52,26 +52,30 @@ final class PhpUnitDataProviderMethodOrderFixer extends AbstractPhpUnitFixer imp
             'Data provider method must be placed after/before the last/first test where used.',
             [
                 new CodeSample(
-                    '<?php
-class FooTest extends TestCase {
-    public function dataProvider() {}
-    /**
-     * @dataProvider dataProvider
-     */
-    public function testSomething($expected, $actual) {}
-}
-',
+                    <<<'PHP'
+                        <?php
+                        class FooTest extends TestCase {
+                            public function dataProvider() {}
+                            /**
+                             * @dataProvider dataProvider
+                             */
+                            public function testSomething($expected, $actual) {}
+                        }
+
+                        PHP,
                 ),
                 new CodeSample(
-                    '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider dataProvider
-     */
-    public function testSomething($expected, $actual) {}
-    public function dataProvider() {}
-}
-',
+                    <<<'PHP'
+                        <?php
+                        class FooTest extends TestCase {
+                            /**
+                             * @dataProvider dataProvider
+                             */
+                            public function testSomething($expected, $actual) {}
+                            public function dataProvider() {}
+                        }
+
+                        PHP,
                     [
                         'placement' => 'before',
                     ]

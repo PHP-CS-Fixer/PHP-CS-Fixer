@@ -55,30 +55,34 @@ final class PhpdocNoAliasTagFixer extends AbstractProxyFixer implements Configur
             'No alias PHPDoc tags should be used.',
             [
                 new CodeSample(
-                    '<?php
-/**
- * @property string $foo
- * @property-read string $bar
- *
- * @link baz
- */
-final class Example
-{
-}
-'
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @property string $foo
+                         * @property-read string $bar
+                         *
+                         * @link baz
+                         */
+                        final class Example
+                        {
+                        }
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-/**
- * @property string $foo
- * @property-read string $bar
- *
- * @link baz
- */
-final class Example
-{
-}
-',
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @property string $foo
+                         * @property-read string $bar
+                         *
+                         * @link baz
+                         */
+                        final class Example
+                        {
+                        }
+
+                        PHP,
                     ['replacements' => ['link' => 'website']]
                 ),
             ]

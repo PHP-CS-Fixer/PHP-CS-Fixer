@@ -58,35 +58,41 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFixer implement
             'PHPDoc should contain `@param` for all params.',
             [
                 new CodeSample(
-                    '<?php
-/**
- * @param int $bar
- *
- * @return void
- */
-function f9(string $foo, $bar, $baz) {}
-'
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @param int $bar
+                         *
+                         * @return void
+                         */
+                        function f9(string $foo, $bar, $baz) {}
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-/**
- * @param int $bar
- *
- * @return void
- */
-function f9(string $foo, $bar, $baz) {}
-',
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @param int $bar
+                         *
+                         * @return void
+                         */
+                        function f9(string $foo, $bar, $baz) {}
+
+                        PHP,
                     ['only_untyped' => true]
                 ),
                 new CodeSample(
-                    '<?php
-/**
- * @param int $bar
- *
- * @return void
- */
-function f9(string $foo, $bar, $baz) {}
-',
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @param int $bar
+                         *
+                         * @return void
+                         */
+                        function f9(string $foo, $bar, $baz) {}
+
+                        PHP,
                     ['only_untyped' => false]
                 ),
             ]
