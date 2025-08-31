@@ -88,6 +88,8 @@ final class ProjectCodeTest extends TestCase
      */
     public function testThatSrcClassHaveTestClass(string $className): void
     {
+        assert(class_exists($className));
+
         // It is OK for deprecated ruleset to have no tests, as it would be only proxy to renamed ruleset.
         if (\in_array(DeprecatedRuleSetDescriptionInterface::class, class_implements($className), true)) {
             $this->expectNotToPerformAssertions();
