@@ -22,6 +22,8 @@ use PhpCsFixer\FixerNameValidator;
  * @internal
  *
  * @covers \PhpCsFixer\FixerNameValidator
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FixerNameValidatorTest extends TestCase
 {

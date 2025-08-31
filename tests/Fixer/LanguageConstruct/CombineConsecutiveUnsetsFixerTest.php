@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\LanguageConstruct\CombineConsecutiveUnsetsFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\CombineConsecutiveUnsetsFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
 {

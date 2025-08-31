@@ -25,11 +25,13 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @phpstan-import-type _PhpTokenArray from Token
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer
 {
     /**
-     * @var array<string, _PhpTokenArray>
+     * @var non-empty-array<string, _PhpTokenArray>
      */
     private const OPERATORS = [
         '+' => [\T_PLUS_EQUAL, '+='],
@@ -44,7 +46,7 @@ final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer
     ];
 
     /**
-     * @var list<string>
+     * @var non-empty-list<string>
      */
     private array $operatorTypes;
 

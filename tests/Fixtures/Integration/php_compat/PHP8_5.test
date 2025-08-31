@@ -24,7 +24,7 @@ class Foo
 
 // https://wiki.php.net/rfc/pipe-operator-v3
 $numberOfAdmins = getUsers()
-    |> fn ($list) => array_filter($list, isAdmin(...))
+    |> (fn ($list) => array_filter($list, isAdmin(...)))
     |> count(...);
 
 // https://wiki.php.net/rfc/marking_return_value_as_important
@@ -55,7 +55,7 @@ class Foo
 
 // https://wiki.php.net/rfc/pipe-operator-v3
 $numberOfAdmins = getUsers() |>
-    fn ($list) => array_filter($list, isAdmin(...)) |>
+    (fn ($list) => array_filter($list, isAdmin(...))) |>
     count(...);
 
 // https://wiki.php.net/rfc/marking_return_value_as_important

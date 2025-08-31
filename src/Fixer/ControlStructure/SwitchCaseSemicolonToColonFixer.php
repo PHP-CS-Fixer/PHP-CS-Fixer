@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * Fixer for rules defined in PSR2 ¶5.2.
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
 {
