@@ -1,0 +1,6 @@
+--TEST--
+Integration of @PHPUnit6.0Migration:risky [whitespace version].
+--RULESET--
+{"@PHPUnit6.0Migration:risky": true}
+--CONFIG--
+{"indent": "\t", "lineEnding": "\r\n"}
