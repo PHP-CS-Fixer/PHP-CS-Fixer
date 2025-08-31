@@ -361,6 +361,13 @@ class Tokens extends \SplFixedArray
             )));
         }
 
+        if (!$newval instanceof Token) {
+            Utils::triggerDeprecation(new \InvalidArgumentException(\sprintf(
+                'Tokens should be a list of Token instances - newval must be a Token. This will be enforced in version %d.0.',
+                Application::getMajorVersion() + 1
+            )));
+        }
+
         if (isset($this[$index])) {
             if (isset($this->blockStartCache[$index])) {
                 unset($this->blockEndCache[$this->blockStartCache[$index]], $this->blockStartCache[$index]);
