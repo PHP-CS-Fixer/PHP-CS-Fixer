@@ -39,12 +39,18 @@ final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'PHPDoc annotation descriptions should not be a sentence.',
-            [new CodeSample('<?php
-/**
- * @param string $bar Some string.
- */
-function foo ($bar) {}
-')]
+            [
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @param string $bar Some string.
+                         */
+                        function foo ($bar) {}
+
+                        PHP
+                ),
+            ],
         );
     }
 

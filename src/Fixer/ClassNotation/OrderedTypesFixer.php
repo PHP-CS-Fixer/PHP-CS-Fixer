@@ -64,47 +64,55 @@ final class OrderedTypesFixer extends AbstractFixer implements ConfigurableFixer
             'Sort union types and intersection types using configured order.',
             [
                 new CodeSample(
-                    '<?php
-try {
-    cache()->save($foo);
-} catch (\RuntimeException|CacheException $e) {
-    logger($e);
+                    <<<'PHP'
+                        <?php
+                        try {
+                            cache()->save($foo);
+                        } catch (\RuntimeException|CacheException $e) {
+                            logger($e);
 
-    throw $e;
-}
-'
+                            throw $e;
+                        }
+
+                        PHP
                 ),
                 new VersionSpecificCodeSample(
-                    '<?php
-interface Foo
-{
-    public function bar(\Aaa|\AA $foo): string|int;
-}
-',
+                    <<<'PHP'
+                        <?php
+                        interface Foo
+                        {
+                            public function bar(\Aaa|\AA $foo): string|int;
+                        }
+
+                        PHP,
                     new VersionSpecification(8_00_00),
                     [
                         'case_sensitive' => true,
                     ]
                 ),
                 new VersionSpecificCodeSample(
-                    '<?php
-interface Foo
-{
-    public function bar(null|string|int $foo): string|int;
+                    <<<'PHP'
+                        <?php
+                        interface Foo
+                        {
+                            public function bar(null|string|int $foo): string|int;
 
-    public function foo(\Stringable&\Countable $obj): int;
-}
-',
+                            public function foo(\Stringable&\Countable $obj): int;
+                        }
+
+                        PHP,
                     new VersionSpecification(8_01_00),
                     ['null_adjustment' => 'always_last']
                 ),
                 new VersionSpecificCodeSample(
-                    '<?php
-interface Bar
-{
-    public function bar(null|string|int $foo): string|int;
-}
-',
+                    <<<'PHP'
+                        <?php
+                        interface Bar
+                        {
+                            public function bar(null|string|int $foo): string|int;
+                        }
+
+                        PHP,
                     new VersionSpecification(8_00_00),
                     [
                         'sort_algorithm' => 'none',

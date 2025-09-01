@@ -74,28 +74,32 @@ final class PhpUnitDedicateAssertInternalTypeFixer extends AbstractPhpUnitFixer 
             'PHPUnit assertions like `assertIsArray` should be used over `assertInternalType`.',
             [
                 new CodeSample(
-                    '<?php
-final class MyTest extends \PHPUnit\Framework\TestCase
-{
-    public function testMe()
-    {
-        $this->assertInternalType("array", $var);
-        $this->assertInternalType("boolean", $var);
-    }
-}
-'
+                    <<<'PHP'
+                        <?php
+                        final class MyTest extends \PHPUnit\Framework\TestCase
+                        {
+                            public function testMe()
+                            {
+                                $this->assertInternalType("array", $var);
+                                $this->assertInternalType("boolean", $var);
+                            }
+                        }
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-final class MyTest extends \PHPUnit\Framework\TestCase
-{
-    public function testMe()
-    {
-        $this->assertInternalType("array", $var);
-        $this->assertInternalType("boolean", $var);
-    }
-}
-',
+                    <<<'PHP'
+                        <?php
+                        final class MyTest extends \PHPUnit\Framework\TestCase
+                        {
+                            public function testMe()
+                            {
+                                $this->assertInternalType("array", $var);
+                                $this->assertInternalType("boolean", $var);
+                            }
+                        }
+
+                        PHP,
                     ['target' => PhpUnitTargetVersion::VERSION_7_5]
                 ),
             ],

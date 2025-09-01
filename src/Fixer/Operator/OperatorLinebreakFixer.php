@@ -70,29 +70,35 @@ final class OperatorLinebreakFixer extends AbstractFixer implements Configurable
             'Operators - when multiline - must always be at the beginning or at the end of the line.',
             [
                 new CodeSample(
-                    '<?php
-$a = $b ||
-    $c;
-$d = $e +
-    $f;
-',
+                    <<<'PHP'
+                        <?php
+                        $a = $b ||
+                            $c;
+                        $d = $e +
+                            $f;
+
+                        PHP,
                 ),
                 new CodeSample(
-                    '<?php
-$a = $b ||
-    $c;
-$d = $e +
-    $f;
-',
+                    <<<'PHP'
+                        <?php
+                        $a = $b ||
+                            $c;
+                        $d = $e +
+                            $f;
+
+                        PHP,
                     ['only_booleans' => true]
                 ),
                 new CodeSample(
-                    '<?php
-$a = $b
-    || $c;
-$d = $e
-    + $f;
-',
+                    <<<'PHP'
+                        <?php
+                        $a = $b
+                            || $c;
+                        $d = $e
+                            + $f;
+
+                        PHP,
                     ['position' => 'end']
                 ),
             ],

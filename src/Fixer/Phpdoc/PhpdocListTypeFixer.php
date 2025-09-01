@@ -41,14 +41,16 @@ final class PhpdocListTypeFixer extends AbstractPhpdocTypesFixer
         return new FixerDefinition(
             'PHPDoc `list` type must be used instead of `array` without a key.',
             [
-                new CodeSample(<<<'PHP'
-                    <?php
-                    /**
-                     * @param array<int> $x
-                     * @param array<array<string>> $y
-                     */
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @param array<int> $x
+                         * @param array<array<string>> $y
+                         */
 
-                    PHP),
+                        PHP
+                ),
             ],
             null,
             'Risky when `array` key should be present, but is missing.'

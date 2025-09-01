@@ -34,12 +34,14 @@ final class SingleTraitInsertPerStatementFixer extends AbstractFixer
             'Each trait `use` must be done as single statement.',
             [
                 new CodeSample(
-                    '<?php
-final class Example
-{
-    use Foo, Bar;
-}
-'
+                    <<<'PHP'
+                        <?php
+                        final class Example
+                        {
+                            use Foo, Bar;
+                        }
+
+                        PHP
                 ),
             ]
         );

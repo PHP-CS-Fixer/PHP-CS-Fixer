@@ -36,14 +36,16 @@ final class NoUselessReturnFixer extends AbstractFixer
             'There should not be an empty `return` statement at the end of a function.',
             [
                 new CodeSample(
-                    '<?php
-function example($b) {
-    if ($b) {
-        return;
-    }
-    return;
-}
-'
+                    <<<'PHP'
+                        <?php
+                        function example($b) {
+                            if ($b) {
+                                return;
+                            }
+                            return;
+                        }
+
+                        PHP
                 ),
             ]
         );

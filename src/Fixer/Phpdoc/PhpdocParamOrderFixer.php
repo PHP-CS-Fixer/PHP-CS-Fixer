@@ -56,16 +56,18 @@ final class PhpdocParamOrderFixer extends AbstractFixer
             'Orders all `@param` annotations in DocBlocks according to method signature.',
             [
                 new CodeSample(
-                    '<?php
-/**
- * Annotations in wrong order
- *
- * @param int   $a
- * @param Foo   $c
- * @param array $b
- */
-function m($a, array $b, Foo $c) {}
-'
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * Annotations in wrong order
+                         *
+                         * @param int   $a
+                         * @param Foo   $c
+                         * @param array $b
+                         */
+                        function m($a, array $b, Foo $c) {}
+
+                        PHP
                 ),
             ]
         );

@@ -61,17 +61,26 @@ final class PhpUnitTestAnnotationFixer extends AbstractPhpUnitFixer implements C
         return new FixerDefinition(
             'Adds or removes @test annotations from tests, following configuration.',
             [
-                new CodeSample('<?php
-class Test extends \PhpUnit\FrameWork\TestCase
-{
-    /**
-     * @test
-     */
-    public function itDoesSomething() {} }'.$this->whitespacesConfig->getLineEnding()),
-                new CodeSample('<?php
-class Test extends \PhpUnit\FrameWork\TestCase
-{
-public function testItDoesSomething() {}}'.$this->whitespacesConfig->getLineEnding(), ['style' => 'annotation']),
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        class Test extends \PhpUnit\FrameWork\TestCase
+                        {
+                            /**
+                             * @test
+                             */
+                            public function itDoesSomething() {} }
+                        PHP.$this->whitespacesConfig->getLineEnding()
+                ),
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        class Test extends \PhpUnit\FrameWork\TestCase
+                        {
+                        public function testItDoesSomething() {}}
+                        PHP.$this->whitespacesConfig->getLineEnding(),
+                    ['style' => 'annotation'],
+                ),
             ],
             null,
             'This fixer may change the name of your tests, and could cause incompatibility with'

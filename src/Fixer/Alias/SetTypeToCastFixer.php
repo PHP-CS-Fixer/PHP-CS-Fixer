@@ -33,11 +33,13 @@ final class SetTypeToCastFixer extends AbstractFunctionReferenceFixer
             'Cast shall be used, not `settype`.',
             [
                 new CodeSample(
-                    '<?php
-settype($foo, "integer");
-settype($bar, "string");
-settype($bar, "null");
-'
+                    <<<'PHP'
+                        <?php
+                        settype($foo, "integer");
+                        settype($bar, "string");
+                        settype($bar, "null");
+
+                        PHP
                 ),
             ],
             null,
