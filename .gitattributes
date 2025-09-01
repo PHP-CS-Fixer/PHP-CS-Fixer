@@ -13,8 +13,6 @@
 /src/Fixer/Internal/ export-ignore
 /tests/ export-ignore
 /feature-or-bug.rst export-ignore
-/logo.md export-ignore
-/logo.png export-ignore
 /CHANGELOG.md export-ignore
 /ci-integration.sh export-ignore
 /CONTRIBUTING.md export-ignore
