@@ -95,6 +95,11 @@ final class RuleSetsTest extends TestCase
             self::markTestIncomplete(\sprintf('Set "%s" has no integration test.', $setDefinitionName));
         }
 
+        // @TODO v4: remove me @MARKER_deprecated_migration_ruleset
+        if (Preg::match('/^@PHP(Unit)?\d+Migration(:risky)?$/', $setDefinitionName)) {
+            self::markTestSkipped(\sprintf('Set "%s" is deprecated and will be removed in next MAJOR.', $setDefinitionName));
+        }
+
         $setDefinitionFileNamePrefix = str_replace(':', '-', $setDefinitionName);
         $dir = __DIR__.'/../../tests/Fixtures/Integration/set';
         $file = \sprintf('%s/%s.test', $dir, $setDefinitionFileNamePrefix);
