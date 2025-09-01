@@ -64,24 +64,34 @@ final class NullableTypeDeclarationFixer extends AbstractFixer implements Config
             'Nullable single type declaration should be standardised using configured syntax.',
             [
                 new VersionSpecificCodeSample(
-                    "<?php\nfunction bar(null|int \$value, null|\\Closure \$callable): int|null {}\n",
+                    <<<'PHP'
+                        <?php
+                        function bar(null|int $value, null|\Closure $callable): int|null {}
+
+                        PHP,
                     new VersionSpecification(8_00_00)
                 ),
                 new VersionSpecificCodeSample(
-                    "<?php\nfunction baz(?int \$value, ?\\stdClass \$obj, ?array \$config): ?int {}\n",
+                    <<<'PHP'
+                        <?php
+                        function baz(?int $value, ?\stdClass $obj, ?array $config): ?int {}
+
+                        PHP,
                     new VersionSpecification(8_00_00),
                     ['syntax' => self::OPTION_SYNTAX_UNION]
                 ),
                 new VersionSpecificCodeSample(
-                    '<?php
-class ValueObject
-{
-    public null|string $name;
-    public ?int $count;
-    public null|bool $internal;
-    public null|\Closure $callback;
-}
-',
+                    <<<'PHP'
+                        <?php
+                        class ValueObject
+                        {
+                            public null|string $name;
+                            public ?int $count;
+                            public null|bool $internal;
+                            public null|\Closure $callback;
+                        }
+
+                        PHP,
                     new VersionSpecification(8_00_00),
                     ['syntax' => self::OPTION_SYNTAX_QUESTION_MARK]
                 ),

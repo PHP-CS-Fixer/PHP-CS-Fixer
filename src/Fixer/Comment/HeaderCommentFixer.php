@@ -74,25 +74,29 @@ final class HeaderCommentFixer extends AbstractFixer implements ConfigurableFixe
             'Add, replace or remove header comment.',
             [
                 new CodeSample(
-                    '<?php
-declare(strict_types=1);
+                    <<<'PHP'
+                        <?php
+                        declare(strict_types=1);
 
-namespace A\B;
+                        namespace A\B;
 
-echo 1;
-',
+                        echo 1;
+
+                        PHP,
                     [
                         'header' => 'Made with love.',
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-declare(strict_types=1);
+                    <<<'PHP'
+                        <?php
+                        declare(strict_types=1);
 
-namespace A\B;
+                        namespace A\B;
 
-echo 1;
-',
+                        echo 1;
+
+                        PHP,
                     [
                         'header' => 'Made with love.',
                         'comment_type' => self::HEADER_PHPDOC,
@@ -101,13 +105,15 @@ echo 1;
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-declare(strict_types=1);
+                    <<<'PHP'
+                        <?php
+                        declare(strict_types=1);
 
-namespace A\B;
+                        namespace A\B;
 
-echo 1;
-',
+                        echo 1;
+
+                        PHP,
                     [
                         'header' => 'Made with love.',
                         'comment_type' => self::HEADER_COMMENT,
@@ -115,17 +121,19 @@ echo 1;
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-declare(strict_types=1);
-/*
- * Made with love.
- *
- * Extra content.
- */
-namespace A\B;
+                    <<<'PHP'
+                        <?php
+                        declare(strict_types=1);
+                        /*
+                         * Made with love.
+                         *
+                         * Extra content.
+                         */
+                        namespace A\B;
 
-echo 1;
-',
+                        echo 1;
+
+                        PHP,
                     [
                         'header' => 'Made with love.',
                         'validator' => '/Made with love(?P<EXTRA>.*)??/s',
@@ -134,17 +142,19 @@ echo 1;
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-declare(strict_types=1);
+                    <<<'PHP'
+                        <?php
+                        declare(strict_types=1);
 
-/*
- * Comment is not wanted here.
- */
+                        /*
+                         * Comment is not wanted here.
+                         */
 
-namespace A\B;
+                        namespace A\B;
 
-echo 1;
-',
+                        echo 1;
+
+                        PHP,
                     [
                         'header' => '',
                     ]

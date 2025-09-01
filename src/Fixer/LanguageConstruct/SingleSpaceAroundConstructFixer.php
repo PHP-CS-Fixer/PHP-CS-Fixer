@@ -163,16 +163,20 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
             'Ensures a single space after language constructs.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-throw  new  \Exception();
-'
+                        throw  new  \Exception();
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-function foo() { yield  from  baz(); }
-',
+                        function foo() { yield  from  baz(); }
+
+                        PHP,
                     [
                         'constructs_contain_a_single_space' => [
                             'yield_from',
@@ -183,11 +187,13 @@ function foo() { yield  from  baz(); }
                     ]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-$foo = function& ()use($bar) {
-};
-',
+                        $foo = function& ()use($bar) {
+                        };
+
+                        PHP,
                     [
                         'constructs_preceded_by_a_single_space' => [
                             'use_lambda',
@@ -198,10 +204,12 @@ $foo = function& ()use($bar) {
                     ]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-echo  "Hello!";
-',
+                        echo  "Hello!";
+
+                        PHP,
                     [
                         'constructs_followed_by_a_single_space' => [
                             'echo',
@@ -209,10 +217,12 @@ echo  "Hello!";
                     ]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-yield  from  baz();
-',
+                        yield  from  baz();
+
+                        PHP,
                     [
                         'constructs_followed_by_a_single_space' => [
                             'yield_from',

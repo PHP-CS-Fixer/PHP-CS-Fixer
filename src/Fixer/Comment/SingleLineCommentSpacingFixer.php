@@ -33,11 +33,13 @@ final class SingleLineCommentSpacingFixer extends AbstractFixer
             'Single-line comments must have proper spacing.',
             [
                 new CodeSample(
-                    '<?php
-//comment 1
-#comment 2
-/*comment 3*/
-'
+                    <<<'PHP'
+                        <?php
+                        //comment 1
+                        #comment 2
+                        /*comment 3*/
+
+                        PHP
                 ),
             ]
         );

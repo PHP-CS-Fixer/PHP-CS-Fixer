@@ -58,28 +58,32 @@ final class PhpUnitConstructFixer extends AbstractPhpUnitFixer implements Config
             'PHPUnit assertion method calls like `->assertSame(true, $foo)` should be written with dedicated method like `->assertTrue($foo)`.',
             [
                 new CodeSample(
-                    '<?php
-final class FooTest extends \PHPUnit_Framework_TestCase {
-    public function testSomething() {
-        $this->assertEquals(false, $b);
-        $this->assertSame(true, $a);
-        $this->assertNotEquals(null, $c);
-        $this->assertNotSame(null, $d);
-    }
-}
-'
+                    <<<'PHP'
+                        <?php
+                        final class FooTest extends \PHPUnit_Framework_TestCase {
+                            public function testSomething() {
+                                $this->assertEquals(false, $b);
+                                $this->assertSame(true, $a);
+                                $this->assertNotEquals(null, $c);
+                                $this->assertNotSame(null, $d);
+                            }
+                        }
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-final class FooTest extends \PHPUnit_Framework_TestCase {
-    public function testSomething() {
-        $this->assertEquals(false, $b);
-        $this->assertSame(true, $a);
-        $this->assertNotEquals(null, $c);
-        $this->assertNotSame(null, $d);
-    }
-}
-',
+                    <<<'PHP'
+                        <?php
+                        final class FooTest extends \PHPUnit_Framework_TestCase {
+                            public function testSomething() {
+                                $this->assertEquals(false, $b);
+                                $this->assertSame(true, $a);
+                                $this->assertNotEquals(null, $c);
+                                $this->assertNotSame(null, $d);
+                            }
+                        }
+
+                        PHP,
                     ['assertions' => ['assertSame', 'assertNotSame']]
                 ),
             ],

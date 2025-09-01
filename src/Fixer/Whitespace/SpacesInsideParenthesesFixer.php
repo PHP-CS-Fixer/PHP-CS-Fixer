@@ -54,23 +54,43 @@ final class SpacesInsideParenthesesFixer extends AbstractFixer implements Config
         return new FixerDefinition(
             'Parentheses must be declared using the configured whitespace.',
             [
-                new CodeSample("<?php\nif ( \$a ) {\n    foo( );\n}\n"),
                 new CodeSample(
-                    "<?php
-function foo( \$bar, \$baz )
-{
-}\n",
+                    <<<'PHP'
+                        <?php
+                        if ( $a ) {
+                            foo( );
+                        }
+
+                        PHP
+                ),
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        function foo( $bar, $baz )
+                        {
+                        }
+
+                        PHP,
                     ['space' => 'none']
                 ),
                 new CodeSample(
-                    "<?php\nif (\$a) {\n    foo( );\n}\n",
+                    <<<'PHP'
+                        <?php
+                        if ($a) {
+                            foo( );
+                        }
+
+                        PHP,
                     ['space' => 'single']
                 ),
                 new CodeSample(
-                    "<?php
-function foo(\$bar, \$baz)
-{
-}\n",
+                    <<<'PHP'
+                        <?php
+                        function foo($bar, $baz)
+                        {
+                        }
+
+                        PHP,
                     ['space' => 'single']
                 ),
             ],

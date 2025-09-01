@@ -49,23 +49,27 @@ final class NoUnneededBracesFixer extends AbstractFixer implements ConfigurableF
             'Removes unneeded braces that are superfluous and aren\'t part of a control structure\'s body.',
             [
                 new CodeSample(
-                    '<?php {
-    echo 1;
-}
+                    <<<'PHP'
+                        <?php {
+                            echo 1;
+                        }
 
-switch ($b) {
-    case 1: {
-        break;
-    }
-}
-'
+                        switch ($b) {
+                            case 1: {
+                                break;
+                            }
+                        }
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-namespace Foo {
-    function Bar(){}
-}
-',
+                    <<<'PHP'
+                        <?php
+                        namespace Foo {
+                            function Bar(){}
+                        }
+
+                        PHP,
                     ['namespaces' => true]
                 ),
             ]

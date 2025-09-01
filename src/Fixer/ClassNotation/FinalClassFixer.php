@@ -32,9 +32,11 @@ final class FinalClassFixer extends AbstractProxyFixer
             'All classes must be final, except abstract ones and Doctrine entities.',
             [
                 new CodeSample(
-                    '<?php
-class MyApp {}
-'
+                    <<<'PHP'
+                        <?php
+                        class MyApp {}
+
+                        PHP
                 ),
             ],
             'No exception and no configuration are intentional. Beside Doctrine entities and of course abstract classes, there is no single reason not to declare all classes final. '

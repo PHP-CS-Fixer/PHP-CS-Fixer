@@ -59,30 +59,36 @@ final class AlignMultilineCommentFixer extends AbstractFixer implements Configur
             'Each line of multi-line DocComments must have an asterisk [PSR-5] and must be aligned with the first one.',
             [
                 new CodeSample(
-                    '<?php
-    /**
-            * This is a DOC Comment
-with a line not prefixed with asterisk
+                    <<<'PHP'
+                        <?php
+                            /**
+                                    * This is a DOC Comment
+                        with a line not prefixed with asterisk
 
-   */
-'
+                           */
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-    /*
-            * This is a doc-like multiline comment
-*/
-',
+                    <<<'PHP'
+                        <?php
+                            /*
+                                    * This is a doc-like multiline comment
+                        */
+
+                        PHP,
                     ['comment_type' => 'phpdocs_like']
                 ),
                 new CodeSample(
-                    '<?php
-    /*
-            * This is a doc-like multiline comment
-with a line not prefixed with asterisk
+                    <<<'PHP'
+                        <?php
+                            /*
+                                    * This is a doc-like multiline comment
+                        with a line not prefixed with asterisk
 
-   */
-',
+                           */
+
+                        PHP,
                     ['comment_type' => 'all_multiline']
                 ),
             ]

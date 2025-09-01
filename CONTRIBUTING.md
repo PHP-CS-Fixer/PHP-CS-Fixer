@@ -63,26 +63,26 @@ Next, copy [`compose.override.dist.yaml`](./compose.override.dist.yaml) to `comp
 
 You can then build the images:
 
-```console
+```sh
 docker compose build --parallel
 ```
 
 Now you can run commands needed to work on the project. For example, say you want to run PHPUnit tests on PHP 8.2:
 
-```console
+```sh
 docker compose run php-8.2 vendor/bin/phpunit
 ```
 
 Sometimes it can be more convenient to have a shell inside the container:
 
-```console
+```sh
 docker compose run php-7.4 sh
 /fixer vendor/bin/phpunit
 ```
 
 The images come with an [`xdebug` script](github.com/julienfalque/xdebug/) that allows running any PHP command with Xdebug enabled to help debug problems.
 
-```console
+```sh
 docker compose run php-8.2 xdebug vendor/bin/phpunit
 ```
 

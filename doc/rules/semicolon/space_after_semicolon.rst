@@ -29,13 +29,13 @@ Example #1
    --- Original
    +++ New
     <?php
-   -                        sample();     $test = 1;
-   -                        sample();$test = 2;
-   -                        for ( ;;++$sample) {
-   +                        sample(); $test = 1;
-   +                        sample(); $test = 2;
-   +                        for ( ; ; ++$sample) {
-                            }
+   -sample();     $test = 1;
+   -sample();$test = 2;
+   -for ( ;;++$sample) {
+   +sample(); $test = 1;
+   +sample(); $test = 2;
+   +for ( ; ; ++$sample) {
+    }
 
 Example #2
 ~~~~~~~~~~

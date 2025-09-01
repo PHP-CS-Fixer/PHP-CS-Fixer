@@ -40,15 +40,17 @@ final class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer implements 
             'There should be no empty lines after class opening brace.',
             [
                 new CodeSample(
-                    '<?php
-final class Sample
-{
+                    <<<'PHP'
+                        <?php
+                        final class Sample
+                        {
 
-    protected function foo()
-    {
-    }
-}
-'
+                            protected function foo()
+                            {
+                            }
+                        }
+
+                        PHP
                 ),
             ]
         );
