@@ -56,58 +56,64 @@ final class PhpUnitDataProviderNameFixer extends AbstractPhpUnitFixer implements
             'Data provider names must match the name of the test.',
             [
                 new CodeSample(
-                    '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider dataProvider
-     */
-    public function testSomething($expected, $actual) {}
-    public function dataProvider() {}
-}
-',
+                    <<<'PHP'
+                        <?php
+                        class FooTest extends TestCase {
+                            /**
+                             * @dataProvider dataProvider
+                             */
+                            public function testSomething($expected, $actual) {}
+                            public function dataProvider() {}
+                        }
+
+                        PHP,
                 ),
                 new CodeSample(
-                    '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider dt_prvdr_ftr
-     */
-    public function test_feature($expected, $actual) {}
-    public function dt_prvdr_ftr() {}
-}
-',
+                    <<<'PHP'
+                        <?php
+                        class FooTest extends TestCase {
+                            /**
+                             * @dataProvider dt_prvdr_ftr
+                             */
+                            public function test_feature($expected, $actual) {}
+                            public function dt_prvdr_ftr() {}
+                        }
+
+                        PHP,
                     [
                         'prefix' => 'data_',
                         'suffix' => '',
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider dataProviderUsedInMultipleTests
-     */
-    public function testA($expected, $actual) {}
-    /**
-     * @dataProvider dataProviderUsedInMultipleTests
-     */
-    public function testB($expected, $actual) {}
-    /**
-     * @dataProvider dataProviderUsedInSingleTest
-     */
-    public function testC($expected, $actual) {}
-    /**
-     * @dataProvider dataProviderUsedAsFirstInTest
-     * @dataProvider dataProviderUsedAsSecondInTest
-     */
-    public function testD($expected, $actual) {}
+                    <<<'PHP'
+                        <?php
+                        class FooTest extends TestCase {
+                            /**
+                             * @dataProvider dataProviderUsedInMultipleTests
+                             */
+                            public function testA($expected, $actual) {}
+                            /**
+                             * @dataProvider dataProviderUsedInMultipleTests
+                             */
+                            public function testB($expected, $actual) {}
+                            /**
+                             * @dataProvider dataProviderUsedInSingleTest
+                             */
+                            public function testC($expected, $actual) {}
+                            /**
+                             * @dataProvider dataProviderUsedAsFirstInTest
+                             * @dataProvider dataProviderUsedAsSecondInTest
+                             */
+                            public function testD($expected, $actual) {}
 
-    public function dataProviderUsedInMultipleTests() {}
-    public function dataProviderUsedInSingleTest() {}
-    public function dataProviderUsedAsFirstInTest() {}
-    public function dataProviderUsedAsSecondInTest() {}
-}
-',
+                            public function dataProviderUsedInMultipleTests() {}
+                            public function dataProviderUsedInSingleTest() {}
+                            public function dataProviderUsedAsFirstInTest() {}
+                            public function dataProviderUsedAsSecondInTest() {}
+                        }
+
+                        PHP,
                     [
                         'prefix' => 'provides',
                         'suffix' => 'Data',

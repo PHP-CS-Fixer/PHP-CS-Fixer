@@ -83,45 +83,51 @@ final class PhpdocToCommentFixer extends AbstractFixer implements ConfigurableFi
             'Docblocks should only be used on structural elements.',
             [
                 new CodeSample(
-                    '<?php
-$first = true;// needed because by default first docblock is never fixed.
+                    <<<'PHP'
+                        <?php
+                        $first = true;// needed because by default first docblock is never fixed.
 
-/** This should be a comment */
-foreach($connections as $key => $sqlite) {
-    $sqlite->open($path);
-}
-'
+                        /** This should be a comment */
+                        foreach($connections as $key => $sqlite) {
+                            $sqlite->open($path);
+                        }
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-$first = true;// needed because by default first docblock is never fixed.
+                    <<<'PHP'
+                        <?php
+                        $first = true;// needed because by default first docblock is never fixed.
 
-/** This should be a comment */
-foreach($connections as $key => $sqlite) {
-    $sqlite->open($path);
-}
+                        /** This should be a comment */
+                        foreach($connections as $key => $sqlite) {
+                            $sqlite->open($path);
+                        }
 
-/** @todo This should be a PHPDoc as the tag is on "ignored_tags" list */
-foreach($connections as $key => $sqlite) {
-    $sqlite->open($path);
-}
-',
+                        /** @todo This should be a PHPDoc as the tag is on "ignored_tags" list */
+                        foreach($connections as $key => $sqlite) {
+                            $sqlite->open($path);
+                        }
+
+                        PHP,
                     ['ignored_tags' => ['todo']]
                 ),
                 new CodeSample(
-                    '<?php
-$first = true;// needed because by default first docblock is never fixed.
+                    <<<'PHP'
+                        <?php
+                        $first = true;// needed because by default first docblock is never fixed.
 
-/** This should be a comment */
-foreach($connections as $key => $sqlite) {
-    $sqlite->open($path);
-}
+                        /** This should be a comment */
+                        foreach($connections as $key => $sqlite) {
+                            $sqlite->open($path);
+                        }
 
-function returnClassName() {
-    /** @var class-string */
-    return \StdClass::class;
-}
-',
+                        function returnClassName() {
+                            /** @var class-string */
+                            return \StdClass::class;
+                        }
+
+                        PHP,
                     ['allow_before_return_statement' => true]
                 ),
             ]

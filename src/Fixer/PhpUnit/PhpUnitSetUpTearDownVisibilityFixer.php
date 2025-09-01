@@ -35,21 +35,23 @@ final class PhpUnitSetUpTearDownVisibilityFixer extends AbstractPhpUnitFixer
             'Changes the visibility of the `setUp()` and `tearDown()` functions of PHPUnit to `protected`, to match the PHPUnit TestCase.',
             [
                 new CodeSample(
-                    '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    private $hello;
-    public function setUp()
-    {
-        $this->hello = "hello";
-    }
+                    <<<'PHP'
+                        <?php
+                        final class MyTest extends \PHPUnit_Framework_TestCase
+                        {
+                            private $hello;
+                            public function setUp()
+                            {
+                                $this->hello = "hello";
+                            }
 
-    public function tearDown()
-    {
-        $this->hello = null;
-    }
-}
-'
+                            public function tearDown()
+                            {
+                                $this->hello = null;
+                            }
+                        }
+
+                        PHP
                 ),
             ],
             null,

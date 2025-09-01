@@ -53,42 +53,48 @@ final class PhpUnitDataProviderStaticFixer extends AbstractPhpUnitFixer implemen
             'Data providers must be static.',
             [
                 new CodeSample(
-                    '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider provideSomethingCases
-     */
-    public function testSomething($expected, $actual) {}
-    public function provideSomethingCases() {}
-}
-'
+                    <<<'PHP'
+                        <?php
+                        class FooTest extends TestCase {
+                            /**
+                             * @dataProvider provideSomethingCases
+                             */
+                            public function testSomething($expected, $actual) {}
+                            public function provideSomethingCases() {}
+                        }
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider provideSomethingCases1
-     * @dataProvider provideSomethingCases2
-     */
-    public function testSomething($expected, $actual) {}
-    public function provideSomethingCases1() { $this->getData1(); }
-    public function provideSomethingCases2() { self::getData2(); }
-}
-',
+                    <<<'PHP'
+                        <?php
+                        class FooTest extends TestCase {
+                            /**
+                             * @dataProvider provideSomethingCases1
+                             * @dataProvider provideSomethingCases2
+                             */
+                            public function testSomething($expected, $actual) {}
+                            public function provideSomethingCases1() { $this->getData1(); }
+                            public function provideSomethingCases2() { self::getData2(); }
+                        }
+
+                        PHP,
                     ['force' => true]
                 ),
                 new CodeSample(
-                    '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider provideSomething1Cases
-     * @dataProvider provideSomething2Cases
-     */
-    public function testSomething($expected, $actual) {}
-    public function provideSomething1Cases() { $this->getData1(); }
-    public function provideSomething2Cases() { self::getData2(); }
-}
-',
+                    <<<'PHP'
+                        <?php
+                        class FooTest extends TestCase {
+                            /**
+                             * @dataProvider provideSomething1Cases
+                             * @dataProvider provideSomething2Cases
+                             */
+                            public function testSomething($expected, $actual) {}
+                            public function provideSomething1Cases() { $this->getData1(); }
+                            public function provideSomething2Cases() { self::getData2(); }
+                        }
+
+                        PHP,
                     ['force' => false]
                 ),
             ],

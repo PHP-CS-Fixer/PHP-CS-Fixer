@@ -60,35 +60,41 @@ final class PhpdocToPropertyTypeFixer extends AbstractPhpdocToTypeDeclarationFix
             'Takes `@var` annotation of non-mixed types and adjusts accordingly the property signature..',
             [
                 new CodeSample(
-                    '<?php
-class Foo {
-    /** @var int */
-    private $foo;
-    /** @var \Traversable */
-    private $bar;
-}
-',
+                    <<<'PHP'
+                        <?php
+                        class Foo {
+                            /** @var int */
+                            private $foo;
+                            /** @var \Traversable */
+                            private $bar;
+                        }
+
+                        PHP,
                 ),
                 new CodeSample(
-                    '<?php
-class Foo {
-    /** @var int */
-    private $foo;
-    /** @var \Traversable */
-    private $bar;
-}
-',
+                    <<<'PHP'
+                        <?php
+                        class Foo {
+                            /** @var int */
+                            private $foo;
+                            /** @var \Traversable */
+                            private $bar;
+                        }
+
+                        PHP,
                     ['scalar_types' => false]
                 ),
                 new CodeSample(
-                    '<?php
-class Foo {
-    /** @var int|string */
-    private $foo;
-    /** @var \Traversable */
-    private $bar;
-}
-',
+                    <<<'PHP'
+                        <?php
+                        class Foo {
+                            /** @var int|string */
+                            private $foo;
+                            /** @var \Traversable */
+                            private $bar;
+                        }
+
+                        PHP,
                     ['union_types' => false]
                 ),
             ],

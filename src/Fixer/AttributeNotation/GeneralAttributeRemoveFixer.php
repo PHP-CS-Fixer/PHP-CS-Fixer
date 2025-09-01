@@ -56,20 +56,24 @@ final class GeneralAttributeRemoveFixer extends AbstractFixer implements Configu
             'Removes configured attributes by their respective FQN.',
             [
                 new CodeSample(
-                    '<?php
-#[\A\B\Foo]
-function foo() {}
-',
+                    <<<'PHP'
+                        <?php
+                        #[\A\B\Foo]
+                        function foo() {}
+
+                        PHP,
                     ['attributes' => ['\A\B\Foo']]
                 ),
                 new CodeSample(
-                    '<?php
-use A\B\Bar as BarAlias;
+                    <<<'PHP'
+                        <?php
+                        use A\B\Bar as BarAlias;
 
-#[\A\B\Foo]
-#[BarAlias]
-function foo() {}
-',
+                        #[\A\B\Foo]
+                        #[BarAlias]
+                        function foo() {}
+
+                        PHP,
                     ['attributes' => ['\A\B\Foo', 'A\B\Bar']]
                 ),
             ]

@@ -33,16 +33,18 @@ final class PhpdocNoPackageFixer extends AbstractProxyFixer
             '`@package` and `@subpackage` annotations must be removed from PHPDoc.',
             [
                 new CodeSample(
-                    '<?php
-/**
- * @internal
- * @package Foo
- * subpackage Bar
- */
-class Baz
-{
-}
-'
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @internal
+                         * @package Foo
+                         * subpackage Bar
+                         */
+                        class Baz
+                        {
+                        }
+
+                        PHP
                 ),
             ]
         );

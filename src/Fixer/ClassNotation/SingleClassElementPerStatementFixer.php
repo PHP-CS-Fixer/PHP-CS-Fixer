@@ -74,22 +74,26 @@ final class SingleClassElementPerStatementFixer extends AbstractFixer implements
             'There MUST NOT be more than one property or constant declared per statement.',
             [
                 new CodeSample(
-                    '<?php
-final class Example
-{
-    const FOO_1 = 1, FOO_2 = 2;
-    private static $bar1 = array(1,2,3), $bar2 = [1,2,3];
-}
-'
+                    <<<'PHP'
+                        <?php
+                        final class Example
+                        {
+                            const FOO_1 = 1, FOO_2 = 2;
+                            private static $bar1 = array(1,2,3), $bar2 = [1,2,3];
+                        }
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-final class Example
-{
-    const FOO_1 = 1, FOO_2 = 2;
-    private static $bar1 = array(1,2,3), $bar2 = [1,2,3];
-}
-',
+                    <<<'PHP'
+                        <?php
+                        final class Example
+                        {
+                            const FOO_1 = 1, FOO_2 = 2;
+                            private static $bar1 = array(1,2,3), $bar2 = [1,2,3];
+                        }
+
+                        PHP,
                     ['elements' => ['property']]
                 ),
             ]
