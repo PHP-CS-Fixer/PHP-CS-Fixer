@@ -22,6 +22,8 @@ use PhpCsFixer\StdinFileInfo;
  * @internal
  *
  * @covers \PhpCsFixer\StdinFileInfo
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class StdinFileInfoTest extends TestCase
 {

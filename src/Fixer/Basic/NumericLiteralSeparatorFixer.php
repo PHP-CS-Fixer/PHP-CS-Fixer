@@ -47,6 +47,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Marvin Heilemann <marvin.heilemann+github@googlemail.com>
  * @author Greg Korba <greg@codito.dev>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NumericLiteralSeparatorFixer extends AbstractFixer implements ConfigurableFixerInterface
 {

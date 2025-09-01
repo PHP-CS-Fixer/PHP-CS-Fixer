@@ -51,6 +51,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @internal
  *
  * @covers \PhpCsFixer\Console\ConfigurationResolver
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ConfigurationResolverTest extends TestCase
 {

@@ -21,6 +21,8 @@ use PhpCsFixer\ToolInfo;
  * @internal
  *
  * @covers \PhpCsFixer\ToolInfo
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ToolInfoTest extends TestCase
 {

@@ -27,6 +27,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 trait DocBlockAnnotationTrait
 {
@@ -146,7 +148,7 @@ trait DocBlockAnnotationTrait
     }
 
     /**
-     * @return list<Line>
+     * @return non-empty-list<Line>
      */
     private function addAnnotation(
         DocBlock $docBlock,

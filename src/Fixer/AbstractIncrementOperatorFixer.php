@@ -17,6 +17,9 @@ namespace PhpCsFixer\Fixer;
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 abstract class AbstractIncrementOperatorFixer extends AbstractFixer
 {
     final protected function findStart(Tokens $tokens, int $index): int

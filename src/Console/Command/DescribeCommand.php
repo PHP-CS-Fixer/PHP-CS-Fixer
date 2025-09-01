@@ -53,6 +53,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 #[AsCommand(name: 'describe', description: 'Describe rule / ruleset.')]
 final class DescribeCommand extends Command
@@ -223,17 +225,22 @@ final class DescribeCommand extends Command
                 $allowed = HelpCommand::getDisplayableAllowedValues($option);
 
                 if (null === $allowed) {
-                    $allowed = array_map(
-                        static fn (string $type): string => '<comment>'.$type.'</comment>',
-                        $option->getAllowedTypes(),
-                    );
+                    $allowedTypes = $option->getAllowedTypes();
+                    if (null !== $allowedTypes) {
+                        $allowed = array_map(
+                            static fn (string $type): string => '<comment>'.$type.'</comment>',
+                            $allowedTypes,
+                        );
+                    }
                 } else {
                     $allowed = array_map(static fn ($value): string => $value instanceof AllowedValueSubset
                         ? 'a subset of <comment>'.Utils::toString($value->getAllowedValues()).'</comment>'
                         : '<comment>'.Utils::toString($value).'</comment>', $allowed);
                 }
 
-                $line .= ' ('.Utils::naturalLanguageJoin($allowed, '').')';
+                if (null !== $allowed) {
+                    $line .= ' ('.Utils::naturalLanguageJoin($allowed, '').')';
+                }
 
                 $description = Preg::replace('/(`.+?`)/', '<info>$1</info>', OutputFormatter::escape($option->getDescription()));
                 $line .= ': '.lcfirst(Preg::replace('/\.$/', '', $description)).'; ';

@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @internal
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\NoSpaceAroundDoubleColonFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoSpaceAroundDoubleColonFixerTest extends AbstractFixerTestCase
 {

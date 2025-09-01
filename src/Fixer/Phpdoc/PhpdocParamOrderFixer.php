@@ -27,6 +27,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Jonathan Gruber <gruberjonathan@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocParamOrderFixer extends AbstractFixer
 {
@@ -54,16 +56,18 @@ final class PhpdocParamOrderFixer extends AbstractFixer
             'Orders all `@param` annotations in DocBlocks according to method signature.',
             [
                 new CodeSample(
-                    '<?php
-/**
- * Annotations in wrong order
- *
- * @param int   $a
- * @param Foo   $c
- * @param array $b
- */
-function m($a, array $b, Foo $c) {}
-'
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * Annotations in wrong order
+                         *
+                         * @param int   $a
+                         * @param Foo   $c
+                         * @param array $b
+                         */
+                        function m($a, array $b, Foo $c) {}
+
+                        PHP
                 ),
             ]
         );

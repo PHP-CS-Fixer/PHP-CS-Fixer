@@ -24,6 +24,8 @@ use Symfony\Component\Console\Tester\ApplicationTester;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Application
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ApplicationTest extends TestCase
 {
