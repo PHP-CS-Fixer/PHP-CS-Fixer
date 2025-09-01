@@ -41,14 +41,16 @@ final class PhpdocArrayTypeFixer extends AbstractPhpdocTypesFixer
         return new FixerDefinition(
             'PHPDoc `array<T>` type must be used instead of `T[]`.',
             [
-                new CodeSample(<<<'PHP'
-                    <?php
-                    /**
-                     * @param int[] $x
-                     * @param string[][] $y
-                     */
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @param int[] $x
+                         * @param string[][] $y
+                         */
 
-                    PHP),
+                        PHP
+                ),
             ],
             null,
             'Risky when using `T[]` in union types.'

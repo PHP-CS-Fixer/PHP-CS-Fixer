@@ -71,34 +71,40 @@ final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer 
             'Takes `@param` annotations of non-mixed types and adjusts accordingly the function signature.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-/**
- * @param string $foo
- * @param string|null $bar
- */
-function f($foo, $bar)
-{}
-'
+                        /**
+                         * @param string $foo
+                         * @param string|null $bar
+                         */
+                        function f($foo, $bar)
+                        {}
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-/** @param Foo $foo */
-function foo($foo) {}
-/** @param string $foo */
-function bar($foo) {}
-',
+                        /** @param Foo $foo */
+                        function foo($foo) {}
+                        /** @param string $foo */
+                        function bar($foo) {}
+
+                        PHP,
                     ['scalar_types' => false]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-/** @param Foo $foo */
-function foo($foo) {}
-/** @param int|string $foo */
-function bar($foo) {}
-',
+                        /** @param Foo $foo */
+                        function foo($foo) {}
+                        /** @param int|string $foo */
+                        function bar($foo) {}
+
+                        PHP,
                     ['union_types' => false]
                 ),
             ],

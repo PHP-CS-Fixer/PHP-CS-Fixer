@@ -40,20 +40,26 @@ final class PhpdocVarWithoutNameFixer extends AbstractFixer
     {
         return new FixerDefinition(
             '`@var` and `@type` annotations of classy properties should not contain the name.',
-            [new CodeSample('<?php
-final class Foo
-{
-    /**
-     * @var int $bar
-     */
-    public $bar;
+            [
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        final class Foo
+                        {
+                            /**
+                             * @var int $bar
+                             */
+                            public $bar;
 
-    /**
-     * @type $baz float
-     */
-    public $baz;
-}
-')]
+                            /**
+                             * @type $baz float
+                             */
+                            public $baz;
+                        }
+
+                        PHP
+                ),
+            ]
         );
     }
 

@@ -73,52 +73,60 @@ final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
             'Takes `@return` annotation of non-mixed types and adjusts accordingly the function signature.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-/** @return \My\Bar */
-function f1()
-{}
+                        /** @return \My\Bar */
+                        function f1()
+                        {}
 
-/** @return void */
-function f2()
-{}
+                        /** @return void */
+                        function f2()
+                        {}
 
-/** @return object */
-function my_foo()
-{}
-',
+                        /** @return object */
+                        function my_foo()
+                        {}
+
+                        PHP,
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-/** @return Foo */
-function foo() {}
-/** @return string */
-function bar() {}
-',
+                        /** @return Foo */
+                        function foo() {}
+                        /** @return string */
+                        function bar() {}
+
+                        PHP,
                     ['scalar_types' => false]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-/** @return Foo */
-function foo() {}
-/** @return int|string */
-function bar() {}
-',
+                        /** @return Foo */
+                        function foo() {}
+                        /** @return int|string */
+                        function bar() {}
+
+                        PHP,
                     ['union_types' => false]
                 ),
                 new VersionSpecificCodeSample(
-                    '<?php
-final class Foo {
-    /**
-     * @return static
-     */
-    public function create($prototype) {
-        return new static($prototype);
-    }
-}
-',
+                    <<<'PHP'
+                        <?php
+                        final class Foo {
+                            /**
+                             * @return static
+                             */
+                            public function create($prototype) {
+                                return new static($prototype);
+                            }
+                        }
+
+                        PHP,
                     new VersionSpecification(8_00_00)
                 ),
             ],
