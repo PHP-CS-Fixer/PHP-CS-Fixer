@@ -10,9 +10,9 @@ Warning
 This rule set is deprecated and will be removed in the next major version
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You should use ``@PHP8x5Migration`` instead.
+You should use ``@PHP8.5Migration`` instead.
 
 Rules
 -----
 
-- `@PHP8x5Migration <./PHP8x5Migration.rst>`_
+- `@PHP8.5Migration <./PHP8.5Migration.rst>`_

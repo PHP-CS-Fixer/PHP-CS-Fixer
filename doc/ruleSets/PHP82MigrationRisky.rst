@@ -10,7 +10,7 @@ Warnings
 This rule set is deprecated and will be removed in the next major version
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You should use ``@PHP8x2Migration:risky`` instead.
+You should use ``@PHP8.2Migration:risky`` instead.
 
 This set contains rules that are risky
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -20,4 +20,4 @@ Using this rule set may lead to changes in your code's logic and behaviour. Use 
 Rules
 -----
 
-- `@PHP8x2Migration:risky <./PHP8x2MigrationRisky.rst>`_
+- `@PHP8.2Migration:risky <./PHP8.2MigrationRisky.rst>`_

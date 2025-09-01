@@ -15,7 +15,7 @@ Using this rule set may lead to changes in your code's logic and behaviour. Use 
 Rules
 -----
 
-- `@PHP5x6Migration:risky <./PHP5x6MigrationRisky.rst>`_
+- `@PHP5.6Migration:risky <./PHP5.6MigrationRisky.rst>`_
 - `@PSR12:risky <./PSR12Risky.rst>`_
 - `array_push <./../rules/alias/array_push.rst>`_
 - `combine_nested_dirname <./../rules/function_notation/combine_nested_dirname.rst>`_

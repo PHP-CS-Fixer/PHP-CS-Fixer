@@ -78,39 +78,39 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PHPUnit5x4Migration:risky <./../../ruleSets/PHPUnit5x4MigrationRisky.rst>`_ with config:
+- `@PHPUnit5.4Migration:risky <./../../ruleSets/PHPUnit5.4MigrationRisky.rst>`_ with config:
 
   ``['target' => '5.4']``
 
-- `@PHPUnit5x5Migration:risky <./../../ruleSets/PHPUnit5x5MigrationRisky.rst>`_ with config:
+- `@PHPUnit5.5Migration:risky <./../../ruleSets/PHPUnit5.5MigrationRisky.rst>`_ with config:
 
   ``['target' => '5.5']``
 
-- `@PHPUnit5x6Migration:risky <./../../ruleSets/PHPUnit5x6MigrationRisky.rst>`_ with config:
+- `@PHPUnit5.6Migration:risky <./../../ruleSets/PHPUnit5.6MigrationRisky.rst>`_ with config:
 
   ``['target' => '5.5']``
 
-- `@PHPUnit5x7Migration:risky <./../../ruleSets/PHPUnit5x7MigrationRisky.rst>`_ with config:
+- `@PHPUnit5.7Migration:risky <./../../ruleSets/PHPUnit5.7MigrationRisky.rst>`_ with config:
 
   ``['target' => '5.5']``
 
-- `@PHPUnit6x0Migration:risky <./../../ruleSets/PHPUnit6x0MigrationRisky.rst>`_ with config:
+- `@PHPUnit6.0Migration:risky <./../../ruleSets/PHPUnit6.0MigrationRisky.rst>`_ with config:
 
   ``['target' => '5.5']``
 
-- `@PHPUnit7x5Migration:risky <./../../ruleSets/PHPUnit7x5MigrationRisky.rst>`_ with config:
+- `@PHPUnit7.5Migration:risky <./../../ruleSets/PHPUnit7.5MigrationRisky.rst>`_ with config:
 
   ``['target' => '5.5']``
 
-- `@PHPUnit8x4Migration:risky <./../../ruleSets/PHPUnit8x4MigrationRisky.rst>`_ with config:
+- `@PHPUnit8.4Migration:risky <./../../ruleSets/PHPUnit8.4MigrationRisky.rst>`_ with config:
 
   ``['target' => '5.5']``
 
-- `@PHPUnit9x1Migration:risky <./../../ruleSets/PHPUnit9x1MigrationRisky.rst>`_ with config:
+- `@PHPUnit9.1Migration:risky <./../../ruleSets/PHPUnit9.1MigrationRisky.rst>`_ with config:
 
   ``['target' => '5.5']``
 
-- `@PHPUnit10x0Migration:risky <./../../ruleSets/PHPUnit10x0MigrationRisky.rst>`_ with config:
+- `@PHPUnit10.0Migration:risky <./../../ruleSets/PHPUnit10.0MigrationRisky.rst>`_ with config:
 
   ``['target' => '5.5']``
 

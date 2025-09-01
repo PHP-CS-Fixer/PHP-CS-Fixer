@@ -10,7 +10,7 @@ Warnings
 This rule set is deprecated and will be removed in the next major version
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You should use ``@PHPUnit4x8Migration:risky`` instead.
+You should use ``@PHPUnit4.8Migration:risky`` instead.
 
 This set contains rules that are risky
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -20,4 +20,4 @@ Using this rule set may lead to changes in your code's logic and behaviour. Use 
 Rules
 -----
 
-- `@PHPUnit4x8Migration:risky <./PHPUnit4x8MigrationRisky.rst>`_
+- `@PHPUnit4.8Migration:risky <./PHPUnit4.8MigrationRisky.rst>`_
