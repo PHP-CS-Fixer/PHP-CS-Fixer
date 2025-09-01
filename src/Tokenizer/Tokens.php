@@ -658,6 +658,24 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Require index for closest next token which is non whitespace.
+     *
+     * This method is shorthand for getNonWhitespaceSibling method.
+     *
+     * @param int         $index       token index
+     * @param null|string $whitespaces whitespaces characters for Token::isWhitespace
+     */
+    public function requireNextNonWhitespace(int $index, ?string $whitespaces = null): int
+    {
+        $index = $this->getNonWhitespaceSibling($index, 1, $whitespaces);
+        if (null === $index) {
+            throw new IndexNotFoundException(__FUNCTION__);
+        }
+
+        return $index;
+    }
+
+    /**
      * Get index for closest next token of given kind.
      *
      * This method is shorthand for getTokenOfKindSibling method.
@@ -829,6 +847,21 @@ class Tokens extends \SplFixedArray
     }
 
     /**
+     * Require index for closest next token that is not a whitespace or comment.
+     *
+     * @param int $index token index
+     */
+    public function requireNextMeaningfulToken(int $index): int
+    {
+        $index = $this->getMeaningfulTokenSibling($index, 1);
+        if (null === $index) {
+            throw new IndexNotFoundException(__FUNCTION__);
+        }
+
+        return $index;
+    }
+
+    /**
      * Get index for closest previous token that is not a whitespace or comment.
      *
      * @param int $index token index
@@ -836,6 +869,21 @@ class Tokens extends \SplFixedArray
     public function getPrevMeaningfulToken(int $index): ?int
     {
         return $this->getMeaningfulTokenSibling($index, -1);
+    }
+
+    /**
+     * Require index for closest previous token that is not a whitespace or comment.
+     *
+     * @param int $index token index
+     */
+    public function requirePrevMeaningfulToken(int $index): int
+    {
+        $index = $this->getMeaningfulTokenSibling($index, -1);
+        if (null === $index) {
+            throw new IndexNotFoundException(__FUNCTION__);
+        }
+
+        return $index;
     }
 
     /**
