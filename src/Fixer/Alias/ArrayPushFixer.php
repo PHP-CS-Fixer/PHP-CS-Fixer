@@ -67,7 +67,7 @@ final class ArrayPushFixer extends AbstractFixer
             $index = $tokens->getPrevMeaningfulToken($index);
             $namespaceSeparatorIndex = null;
 
-            if ($tokens[$index]->isGivenKind(\T_NS_SEPARATOR)) {
+            if ($tokens[$index]->isKind(\T_NS_SEPARATOR)) {
                 $namespaceSeparatorIndex = $index;
                 $index = $tokens->getPrevMeaningfulToken($index);
             }
@@ -171,11 +171,11 @@ final class ArrayPushFixer extends AbstractFixer
             $nextToken = $tokens[$nextIndex];
         }
 
-        if ($nextToken->isGivenKind(\T_OBJECT_OPERATOR)) {
+        if ($nextToken->isKind(\T_OBJECT_OPERATOR)) {
             return $this->getFirstArgumentEnd($tokens, $nextIndex);
         }
 
-        if ($nextToken->isGivenKind(\T_PAAMAYIM_NEKUDOTAYIM)) {
+        if ($nextToken->isKind(\T_PAAMAYIM_NEKUDOTAYIM)) {
             return $this->getFirstArgumentEnd($tokens, $tokens->getNextMeaningfulToken($nextIndex));
         }
 
@@ -187,7 +187,7 @@ final class ArrayPushFixer extends AbstractFixer
      */
     private function getSecondArgumentEnd(Tokens $tokens, int $index, int $endIndex): ?int
     {
-        if ($tokens[$index]->isGivenKind(\T_ELLIPSIS)) {
+        if ($tokens[$index]->isKind(\T_ELLIPSIS)) {
             return null;
         }
 
@@ -200,7 +200,7 @@ final class ArrayPushFixer extends AbstractFixer
                 $blockType = Tokens::detectBlockType($tokens[$index]);
             }
 
-            if ($tokens[$index]->equals(',') || $tokens[$index]->isGivenKind([\T_YIELD, \T_YIELD_FROM, \T_LOGICAL_AND, \T_LOGICAL_OR, \T_LOGICAL_XOR])) {
+            if ($tokens[$index]->equals(',') || $tokens[$index]->isKind([\T_YIELD, \T_YIELD_FROM, \T_LOGICAL_AND, \T_LOGICAL_OR, \T_LOGICAL_XOR])) {
                 return null;
             }
         }

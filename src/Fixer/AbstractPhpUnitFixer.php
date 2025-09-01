@@ -95,7 +95,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
     final protected function isTestAttributePresent(Tokens $tokens, int $index): bool
     {
         $attributeIndex = $tokens->getPrevTokenOfKind($index, ['{', [FCT::T_ATTRIBUTE]]);
-        if (!$tokens[$attributeIndex]->isGivenKind(FCT::T_ATTRIBUTE)) {
+        if (!$tokens[$attributeIndex]->isKind(FCT::T_ATTRIBUTE)) {
             return false;
         }
 

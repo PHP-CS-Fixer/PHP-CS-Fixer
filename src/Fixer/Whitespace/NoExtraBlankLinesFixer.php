@@ -348,7 +348,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
     private function fixByToken(Token $token, int $index): void
     {
         foreach ($this->tokenKindCallbackMap as $kind => $callback) {
-            if (!$token->isGivenKind($kind)) {
+            if (!$token->isKind($kind)) {
                 continue;
             }
 
@@ -372,13 +372,13 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
     {
         $next = $this->tokens->getNextTokenOfKind($index, [';', [\T_CLOSE_TAG]]);
 
-        if (null === $next || $this->tokens[$next]->isGivenKind(\T_CLOSE_TAG)) {
+        if (null === $next || $this->tokens[$next]->isKind(\T_CLOSE_TAG)) {
             return;
         }
 
         $nextUseCandidate = $this->tokens->getNextMeaningfulToken($next);
 
-        if (null === $nextUseCandidate || !$this->tokens[$nextUseCandidate]->isGivenKind($this->tokens[$index]->getId()) || !$this->containsLinebreak($index, $nextUseCandidate)) {
+        if (null === $nextUseCandidate || !$this->tokens[$nextUseCandidate]->isKind($this->tokens[$index]->getId()) || !$this->containsLinebreak($index, $nextUseCandidate)) {
             return;
         }
 
@@ -387,7 +387,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
 
     private function removeMultipleBlankLines(int $index): void
     {
-        $expected = $this->tokens[$index - 1]->isGivenKind(\T_OPEN_TAG) && Preg::match('/\R$/', $this->tokens[$index - 1]->getContent()) ? 1 : 2;
+        $expected = $this->tokens[$index - 1]->isKind(\T_OPEN_TAG) && Preg::match('/\R$/', $this->tokens[$index - 1]->getContent()) ? 1 : 2;
 
         $parts = Preg::split('/(.*\R)/', $this->tokens[$index]->getContent(), -1, \PREG_SPLIT_DELIM_CAPTURE | \PREG_SPLIT_NO_EMPTY);
         $count = \count($parts);
@@ -400,15 +400,15 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
     private function fixAfterToken(int $index): void
     {
         for ($i = $index - 1; $i > 0; --$i) {
-            if ($this->tokens[$i]->isGivenKind(\T_FUNCTION) && $this->tokensAnalyzer->isLambda($i)) {
+            if ($this->tokens[$i]->isKind(\T_FUNCTION) && $this->tokensAnalyzer->isLambda($i)) {
                 return;
             }
 
-            if ($this->tokens[$i]->isGivenKind(\T_CLASS) && $this->tokensAnalyzer->isAnonymousClass($i)) {
+            if ($this->tokens[$i]->isKind(\T_CLASS) && $this->tokensAnalyzer->isAnonymousClass($i)) {
                 return;
             }
 
-            if ($this->tokens[$i]->isGivenKind([CT::T_ARRAY_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN])) {
+            if ($this->tokens[$i]->isKind([CT::T_ARRAY_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN])) {
                 return;
             }
 
@@ -424,7 +424,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
     {
         $enumSwitchIndex = $this->tokens->getPrevTokenOfKind($index, [[\T_SWITCH], [FCT::T_ENUM]]);
 
-        if (!$this->tokens[$enumSwitchIndex]->isGivenKind(\T_SWITCH)) {
+        if (!$this->tokens[$enumSwitchIndex]->isKind(\T_SWITCH)) {
             return;
         }
 

@@ -292,12 +292,12 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
         $testDefaultNamespaceTokenIndex = null;
         $testIndex = $tokens->getNextMeaningfulToken($assertCall['openBraceIndex']);
 
-        if (!$tokens[$testIndex]->isGivenKind([\T_EMPTY, \T_STRING])) {
+        if (!$tokens[$testIndex]->isKind([\T_EMPTY, \T_STRING])) {
             if ($this->fixAssertTrueFalseInstanceof($tokens, $assertCall, $testIndex)) {
                 return;
             }
 
-            if (!$tokens[$testIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+            if (!$tokens[$testIndex]->isKind(\T_NS_SEPARATOR)) {
                 return;
             }
 
@@ -402,13 +402,13 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
             $isPositiveCondition = true;
         }
 
-        if (!$tokens[$variableIndex]->isGivenKind(\T_VARIABLE)) {
+        if (!$tokens[$variableIndex]->isKind(\T_VARIABLE)) {
             return false;
         }
 
         $instanceOfIndex = $tokens->getNextMeaningfulToken($variableIndex);
 
-        if (!$tokens[$instanceOfIndex]->isGivenKind(\T_INSTANCEOF)) {
+        if (!$tokens[$instanceOfIndex]->isKind(\T_INSTANCEOF)) {
             return false;
         }
 
@@ -418,11 +418,11 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
         do {
             $classEndIndex = $tokens->getNextMeaningfulToken($classEndIndex);
             $classPartTokens[] = $tokens[$classEndIndex];
-        } while ($tokens[$classEndIndex]->isGivenKind([\T_STRING, \T_NS_SEPARATOR, \T_VARIABLE]));
+        } while ($tokens[$classEndIndex]->isKind([\T_STRING, \T_NS_SEPARATOR, \T_VARIABLE]));
 
         if ($tokens[$classEndIndex]->equalsAny([',', ')'])) { // do the fixing
             array_pop($classPartTokens);
-            $isInstanceOfVar = reset($classPartTokens)->isGivenKind(\T_VARIABLE);
+            $isInstanceOfVar = reset($classPartTokens)->isKind(\T_VARIABLE);
             $insertIndex = $testIndex - 1;
             $newTokens = [];
 
@@ -473,11 +473,11 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
         // let $a = [1,2]; $b = "2";
         // "$this->assertEquals("2", count($a)); $this->assertEquals($b, count($a)); $this->assertEquals(2.1, count($a));"
 
-        if ($tokens[$expectedIndex]->isGivenKind(\T_VARIABLE)) {
+        if ($tokens[$expectedIndex]->isKind(\T_VARIABLE)) {
             if (!$tokens[$tokens->getNextMeaningfulToken($expectedIndex)]->equals(',')) {
                 return;
             }
-        } elseif (!$tokens[$expectedIndex]->isGivenKind([\T_LNUMBER, \T_VARIABLE])) {
+        } elseif (!$tokens[$expectedIndex]->isKind([\T_LNUMBER, \T_VARIABLE])) {
             return;
         }
 
@@ -491,14 +491,14 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
         // @ $this->/self::assertEquals/Same([$nextIndex,$commaIndex,$countCallIndex])
         $countCallIndex = $tokens->getNextMeaningfulToken($commaIndex);
 
-        if ($tokens[$countCallIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+        if ($tokens[$countCallIndex]->isKind(\T_NS_SEPARATOR)) {
             $defaultNamespaceTokenIndex = $countCallIndex;
             $countCallIndex = $tokens->getNextMeaningfulToken($countCallIndex);
         } else {
             $defaultNamespaceTokenIndex = null;
         }
 
-        if (!$tokens[$countCallIndex]->isGivenKind(\T_STRING)) {
+        if (!$tokens[$countCallIndex]->isKind(\T_STRING)) {
             return;
         }
 

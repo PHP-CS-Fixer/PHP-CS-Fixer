@@ -77,13 +77,13 @@ final class StandardizeIncrementFixer extends AbstractIncrementOperatorFixer
 
             $numberIndex = $tokens->getPrevMeaningfulToken($index);
             $number = $tokens[$numberIndex];
-            if (!$number->isGivenKind(\T_LNUMBER) || '1' !== $number->getContent()) {
+            if (!$number->isKind(\T_LNUMBER) || '1' !== $number->getContent()) {
                 continue;
             }
 
             $operatorIndex = $tokens->getPrevMeaningfulToken($numberIndex);
             $operator = $tokens[$operatorIndex];
-            if (!$operator->isGivenKind([\T_PLUS_EQUAL, \T_MINUS_EQUAL])) {
+            if (!$operator->isKind([\T_PLUS_EQUAL, \T_MINUS_EQUAL])) {
                 continue;
             }
 
@@ -97,7 +97,7 @@ final class StandardizeIncrementFixer extends AbstractIncrementOperatorFixer
 
             $tokens->insertAt(
                 $startIndex,
-                new Token($operator->isGivenKind(\T_PLUS_EQUAL) ? [\T_INC, '++'] : [\T_DEC, '--'])
+                new Token($operator->isKind(\T_PLUS_EQUAL) ? [\T_INC, '++'] : [\T_DEC, '--'])
             );
         }
     }

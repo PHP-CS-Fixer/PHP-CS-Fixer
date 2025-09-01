@@ -104,7 +104,7 @@ final class IncrementStyleFixer extends AbstractIncrementOperatorFixer implement
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind([\T_INC, \T_DEC])) {
+            if (!$token->isKind([\T_INC, \T_DEC])) {
                 continue;
             }
 
@@ -172,7 +172,7 @@ final class IncrementStyleFixer extends AbstractIncrementOperatorFixer implement
             return $this->findEnd($tokens, $nextIndex);
         }
 
-        if ($nextToken->isGivenKind(\T_PAAMAYIM_NEKUDOTAYIM)) {
+        if ($nextToken->isKind(\T_PAAMAYIM_NEKUDOTAYIM)) {
             return $this->findEnd($tokens, $tokens->getNextMeaningfulToken($nextIndex));
         }
 

@@ -74,7 +74,7 @@ final class PhpdocIndentFixer extends AbstractFixer
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
+            if (!$token->isKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -90,8 +90,8 @@ final class PhpdocIndentFixer extends AbstractFixer
 
             // ignore inline docblocks
             if (
-                $prevToken->isGivenKind(\T_OPEN_TAG)
-                || ($prevToken->isWhitespace(" \t") && !$tokens[$index - 2]->isGivenKind(\T_OPEN_TAG))
+                $prevToken->isKind(\T_OPEN_TAG)
+                || ($prevToken->isWhitespace(" \t") && !$tokens[$index - 2]->isKind(\T_OPEN_TAG))
                 || $prevToken->equalsAny([';', ',', '{', '('])
             ) {
                 continue;

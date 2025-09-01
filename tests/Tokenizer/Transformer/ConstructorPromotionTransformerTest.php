@@ -125,7 +125,7 @@ class Point {
         Tokens::clearCache();
 
         foreach (Tokens::fromCode($code) as $token) {
-            self::assertFalse($token->isGivenKind([
+            self::assertFalse($token->isKind([
                 CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
                 CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
                 CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE,

@@ -131,7 +131,7 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
         $tokensCount = $tokens->count();
         $index = 0;
         while (++$index < $tokensCount) {
-            if (!$tokens[$index]->isGivenKind(\T_YIELD_FROM)) {
+            if (!$tokens[$index]->isKind(\T_YIELD_FROM)) {
                 continue;
             }
 
@@ -142,11 +142,11 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
 
             $arrayStartIndex = $tokens->getNextMeaningfulToken($index);
 
-            if (!$tokens[$arrayStartIndex]->isGivenKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+            if (!$tokens[$arrayStartIndex]->isKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
                 continue;
             }
 
-            if ($tokens[$arrayStartIndex]->isGivenKind(\T_ARRAY)) {
+            if ($tokens[$arrayStartIndex]->isKind(\T_ARRAY)) {
                 $startIndex = $tokens->getNextTokenOfKind($arrayStartIndex, ['(']);
                 $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
             } else {

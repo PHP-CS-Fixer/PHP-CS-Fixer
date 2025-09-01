@@ -140,7 +140,7 @@ final class PhpUnitDedicateAssertInternalTypeFixer extends AbstractPhpUnitFixer 
         $tokenAnalyzer = new TokensAnalyzer($tokens);
 
         for ($index = $startIndex; $index < $endIndex; ++$index) {
-            if (!$tokens[$index]->isGivenKind(\T_CLASS) || !$tokenAnalyzer->isAnonymousClass($index)) {
+            if (!$tokens[$index]->isKind(\T_CLASS) || !$tokenAnalyzer->isAnonymousClass($index)) {
                 continue;
             }
 
@@ -157,7 +157,7 @@ final class PhpUnitDedicateAssertInternalTypeFixer extends AbstractPhpUnitFixer 
                 continue;
             }
 
-            if (!$tokens[$index]->isGivenKind(\T_STRING)) {
+            if (!$tokens[$index]->isKind(\T_STRING)) {
                 continue;
             }
 
@@ -176,7 +176,7 @@ final class PhpUnitDedicateAssertInternalTypeFixer extends AbstractPhpUnitFixer 
             $expectedTypeTokenIndex = $tokens->getNextMeaningfulToken($bracketTokenIndex);
             $expectedTypeToken = $tokens[$expectedTypeTokenIndex];
 
-            if (!$expectedTypeToken->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
+            if (!$expectedTypeToken->isKind(\T_CONSTANT_ENCAPSED_STRING)) {
                 continue;
             }
 

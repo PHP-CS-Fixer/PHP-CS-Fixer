@@ -83,7 +83,7 @@ final class PhpdocInlineTagNormalizerFixer extends AbstractFixer implements Conf
         }
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
+            if (!$token->isKind(\T_DOC_COMMENT)) {
                 continue;
             }
 

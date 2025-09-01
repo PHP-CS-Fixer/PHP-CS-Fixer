@@ -121,7 +121,7 @@ final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imple
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
         for ($index = 0, $count = \count($tokens); $index < $count; ++$index) {
-            if ($tokens[$index]->isGivenKind(\T_CONST)) {
+            if ($tokens[$index]->isKind(\T_CONST)) {
                 $index = $tokens->getNextTokenOfKind($index, [';']);
 
                 continue;
@@ -212,7 +212,7 @@ final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imple
             \T_CONSTANT_ENCAPSED_STRING,
         ];
         for ($index; $index > 0; --$index) {
-            if ($tokens[$index]->isGivenKind($stopTokens) || $tokens[$index]->equals(')')) {
+            if ($tokens[$index]->isKind($stopTokens) || $tokens[$index]->equals(')')) {
                 return $index;
             }
         }
@@ -245,7 +245,7 @@ final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imple
                 continue;
             }
 
-            if ($tokens[$index]->isObjectOperator() || $tokens[$index]->isGivenKind(\T_DOUBLE_COLON)) {
+            if ($tokens[$index]->isObjectOperator() || $tokens[$index]->isKind(\T_DOUBLE_COLON)) {
                 $prevIndex = $tokens->getPrevMeaningfulToken($index);
                 $isMultilineCall = $isMultilineCall || $tokens->isPartialCodeMultiline($prevIndex, $index);
             }

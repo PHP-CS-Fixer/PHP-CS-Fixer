@@ -144,7 +144,7 @@ final class MbStrFunctionsFixer extends AbstractFixer
         $functionsAnalyzer = new FunctionsAnalyzer();
 
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(\T_STRING)) {
+            if (!$tokens[$index]->isKind(\T_STRING)) {
                 continue;
             }
 
@@ -168,14 +168,14 @@ final class MbStrFunctionsFixer extends AbstractFixer
 
             // is it a global function import?
             $functionIndex = $tokens->getPrevMeaningfulToken($index);
-            if ($tokens[$functionIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+            if ($tokens[$functionIndex]->isKind(\T_NS_SEPARATOR)) {
                 $functionIndex = $tokens->getPrevMeaningfulToken($functionIndex);
             }
-            if (!$tokens[$functionIndex]->isGivenKind(CT::T_FUNCTION_IMPORT)) {
+            if (!$tokens[$functionIndex]->isKind(CT::T_FUNCTION_IMPORT)) {
                 continue;
             }
             $useIndex = $tokens->getPrevMeaningfulToken($functionIndex);
-            if (!$tokens[$useIndex]->isGivenKind(\T_USE)) {
+            if (!$tokens[$useIndex]->isKind(\T_USE)) {
                 continue;
             }
             $tokens[$index] = new Token([\T_STRING, $this->functions[$lowercasedContent]['alternativeName']]);

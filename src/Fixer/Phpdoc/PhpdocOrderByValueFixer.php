@@ -119,7 +119,7 @@ final class PhpdocOrderByValueFixer extends AbstractFixer implements Configurabl
                 );
 
                 if (
-                    !$tokens[$index]->isGivenKind(\T_DOC_COMMENT)
+                    !$tokens[$index]->isKind(\T_DOC_COMMENT)
                     || !Preg::match($findPattern, $tokens[$index]->getContent())
                 ) {
                     continue;

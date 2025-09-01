@@ -178,7 +178,7 @@ final class PhpUnitDataProviderNameFixer extends AbstractPhpUnitFixer implements
             foreach ($dataProviderAnalysis->getUsageIndices() as [$usageIndex]) {
                 $tokens[$dataProviderAnalysis->getNameIndex()] = new Token([\T_STRING, $dataProviderNewName]);
 
-                $newContent = $tokens[$usageIndex]->isGivenKind(\T_DOC_COMMENT)
+                $newContent = $tokens[$usageIndex]->isKind(\T_DOC_COMMENT)
                     ? Preg::replace(
                         \sprintf('/(@dataProvider\s+)%s/', $dataProviderAnalysis->getName()),
                         \sprintf('$1%s', $dataProviderNewName),
@@ -194,11 +194,11 @@ final class PhpUnitDataProviderNameFixer extends AbstractPhpUnitFixer implements
     private function getDataProviderNameForUsageIndex(Tokens $tokens, int $index): string
     {
         do {
-            if ($tokens[$index]->isGivenKind(FCT::T_ATTRIBUTE)) {
+            if ($tokens[$index]->isKind(FCT::T_ATTRIBUTE)) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
             }
             $index = $tokens->getNextMeaningfulToken($index);
-        } while (!$tokens[$index]->isGivenKind(\T_STRING));
+        } while (!$tokens[$index]->isKind(\T_STRING));
 
         $name = $tokens[$index]->getContent();
 

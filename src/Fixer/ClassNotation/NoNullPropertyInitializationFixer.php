@@ -67,7 +67,7 @@ final class NoNullPropertyInitializationFixer extends AbstractFixer
         $classLevel = 0;
 
         for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
-            if ($tokens[$index]->isGivenKind([\T_CLASS, \T_TRAIT])) { // Enums and interfaces do not have properties
+            if ($tokens[$index]->isKind([\T_CLASS, \T_TRAIT])) { // Enums and interfaces do not have properties
                 ++$classLevel;
                 $inClass[$classLevel] = 1;
 
@@ -102,18 +102,18 @@ final class NoNullPropertyInitializationFixer extends AbstractFixer
                 continue;
             }
 
-            if (!$tokens[$index]->isGivenKind([\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_VAR, \T_STATIC])) {
+            if (!$tokens[$index]->isKind([\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_VAR, \T_STATIC])) {
                 continue;
             }
 
             while (true) {
                 $varTokenIndex = $index = $tokens->getNextMeaningfulToken($index);
 
-                if ($tokens[$index]->isGivenKind(\T_STATIC)) {
+                if ($tokens[$index]->isKind(\T_STATIC)) {
                     $varTokenIndex = $index = $tokens->getNextMeaningfulToken($index);
                 }
 
-                if (!$tokens[$index]->isGivenKind(\T_VARIABLE)) {
+                if (!$tokens[$index]->isKind(\T_VARIABLE)) {
                     break;
                 }
 
@@ -122,7 +122,7 @@ final class NoNullPropertyInitializationFixer extends AbstractFixer
                 if ($tokens[$index]->equals('=')) {
                     $index = $tokens->getNextMeaningfulToken($index);
 
-                    if ($tokens[$index]->isGivenKind(\T_NS_SEPARATOR)) {
+                    if ($tokens[$index]->isKind(\T_NS_SEPARATOR)) {
                         $index = $tokens->getNextMeaningfulToken($index);
                     }
 

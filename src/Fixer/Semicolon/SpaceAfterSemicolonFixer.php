@@ -105,7 +105,7 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer implements Configurab
 
         for ($index = 0, $max = \count($tokens) - 1; $index < $max; ++$index) {
             if (true === $this->configuration['remove_in_empty_for_expressions']) {
-                if ($tokens[$index]->isGivenKind(\T_FOR)) {
+                if ($tokens[$index]->isKind(\T_FOR)) {
                     $index = $tokens->getNextMeaningfulToken($index);
                     $insideForParenthesesUntil = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 

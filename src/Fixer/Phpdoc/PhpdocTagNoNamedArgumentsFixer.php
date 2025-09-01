@@ -122,7 +122,7 @@ final class PhpdocTagNoNamedArgumentsFixer extends AbstractFixer implements Conf
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
             \assert(\is_int($prevIndex));
 
-            if ($tokens[$prevIndex]->isGivenKind(\T_NEW)) {
+            if ($tokens[$prevIndex]->isKind(\T_NEW)) {
                 continue;
             }
 
@@ -153,12 +153,12 @@ final class PhpdocTagNoNamedArgumentsFixer extends AbstractFixer implements Conf
 
     private static function isAttributeClass(Tokens $tokens, int $index): bool
     {
-        while ($tokens[$index]->isGivenKind([\T_FINAL, FCT::T_READONLY])) {
+        while ($tokens[$index]->isKind([\T_FINAL, FCT::T_READONLY])) {
             $index = $tokens->getPrevMeaningfulToken($index);
             \assert(\is_int($index));
         }
 
-        if (!$tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+        if (!$tokens[$index]->isKind(CT::T_ATTRIBUTE_CLOSE)) {
             return false;
         }
 

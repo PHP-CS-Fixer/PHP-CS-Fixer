@@ -134,7 +134,7 @@ final class PhpUnitTestAnnotationFixer extends AbstractPhpUnitFixer implements C
 
             $docBlockIndex = $this->getDocBlockIndex($tokens, $i);
 
-            if ($tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT)) {
+            if ($tokens[$docBlockIndex]->isKind(\T_DOC_COMMENT)) {
                 $lines = $this->updateDocBlock($tokens, $docBlockIndex);
                 $lines = $this->addTestAnnotation($lines, $tokens, $docBlockIndex);
                 $lines = implode('', $lines);
@@ -157,7 +157,7 @@ final class PhpUnitTestAnnotationFixer extends AbstractPhpUnitFixer implements C
 
             $docBlockIndex = $this->getDocBlockIndex($tokens, $i);
 
-            if (!$tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT)) {
+            if (!$tokens[$docBlockIndex]->isKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -196,7 +196,7 @@ final class PhpUnitTestAnnotationFixer extends AbstractPhpUnitFixer implements C
 
         // If the function doesn't have test in its name, and no doc block, it is not a test
         return
-            $tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT)
+            $tokens[$docBlockIndex]->isKind(\T_DOC_COMMENT)
             && str_contains($tokens[$docBlockIndex]->getContent(), '@test');
     }
 
@@ -204,7 +204,7 @@ final class PhpUnitTestAnnotationFixer extends AbstractPhpUnitFixer implements C
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        return $tokens[$index]->isGivenKind(\T_FUNCTION) && !$tokensAnalyzer->isLambda($index);
+        return $tokens[$index]->isKind(\T_FUNCTION) && !$tokensAnalyzer->isLambda($index);
     }
 
     private function hasTestPrefix(string $functionName): bool

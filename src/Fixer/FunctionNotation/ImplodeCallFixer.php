@@ -94,11 +94,11 @@ final class ImplodeCallFixer extends AbstractFixer
                 [$firstArgumentIndex, $secondArgumentIndex] = array_keys($argumentsIndices);
 
                 // If the first argument is string we have nothing to do
-                if ($tokens[$firstArgumentIndex]->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
+                if ($tokens[$firstArgumentIndex]->isKind(\T_CONSTANT_ENCAPSED_STRING)) {
                     continue;
                 }
                 // If the second argument is not string we cannot make a swap
-                if (!$tokens[$secondArgumentIndex]->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
+                if (!$tokens[$secondArgumentIndex]->isKind(\T_CONSTANT_ENCAPSED_STRING)) {
                     continue;
                 }
 

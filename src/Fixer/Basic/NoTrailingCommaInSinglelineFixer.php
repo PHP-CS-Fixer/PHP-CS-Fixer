@@ -79,7 +79,7 @@ final class NoTrailingCommaInSinglelineFixer extends AbstractFixer implements Co
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if (!$tokens[$index]->equals(')') && !$tokens[$index]->isGivenKind([CT::T_ARRAY_SQUARE_BRACE_CLOSE, CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, CT::T_GROUP_IMPORT_BRACE_CLOSE])) {
+            if (!$tokens[$index]->equals(')') && !$tokens[$index]->isKind([CT::T_ARRAY_SQUARE_BRACE_CLOSE, CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, CT::T_GROUP_IMPORT_BRACE_CLOSE])) {
                 continue;
             }
 
@@ -113,15 +113,15 @@ final class NoTrailingCommaInSinglelineFixer extends AbstractFixer implements Co
     {
         $elements = $this->configuration['elements'];
 
-        if ($tokens[$openIndex]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+        if ($tokens[$openIndex]->isKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
             return \in_array('array', $elements, true);
         }
 
-        if ($tokens[$openIndex]->isGivenKind(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN)) {
+        if ($tokens[$openIndex]->isKind(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN)) {
             return \in_array('array_destructuring', $elements, true);
         }
 
-        if ($tokens[$openIndex]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
+        if ($tokens[$openIndex]->isKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
             return \in_array('group_import', $elements, true);
         }
 
@@ -131,19 +131,19 @@ final class NoTrailingCommaInSinglelineFixer extends AbstractFixer implements Co
 
         $beforeOpen = $tokens->getPrevMeaningfulToken($openIndex);
 
-        if ($tokens[$beforeOpen]->isGivenKind(\T_ARRAY)) {
+        if ($tokens[$beforeOpen]->isKind(\T_ARRAY)) {
             return \in_array('array', $elements, true);
         }
 
-        if ($tokens[$beforeOpen]->isGivenKind(\T_LIST)) {
+        if ($tokens[$beforeOpen]->isKind(\T_LIST)) {
             return \in_array('array_destructuring', $elements, true);
         }
 
-        if ($tokens[$beforeOpen]->isGivenKind([\T_UNSET, \T_ISSET, \T_VARIABLE, \T_CLASS])) {
+        if ($tokens[$beforeOpen]->isKind([\T_UNSET, \T_ISSET, \T_VARIABLE, \T_CLASS])) {
             return \in_array('arguments', $elements, true);
         }
 
-        if ($tokens[$beforeOpen]->isGivenKind(\T_STRING)) {
+        if ($tokens[$beforeOpen]->isKind(\T_STRING)) {
             return !AttributeAnalyzer::isAttribute($tokens, $beforeOpen) && \in_array('arguments', $elements, true);
         }
 

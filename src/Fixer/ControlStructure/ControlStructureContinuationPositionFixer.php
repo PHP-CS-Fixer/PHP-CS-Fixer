@@ -130,7 +130,7 @@ final class ControlStructureContinuationPositionFixer extends AbstractFixer impl
         for ($index = \count($tokens) - 1; 0 < $index; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(self::CONTROL_CONTINUATION_TOKENS)) {
+            if (!$token->isKind(self::CONTROL_CONTINUATION_TOKENS)) {
                 continue;
             }
 
@@ -141,12 +141,12 @@ final class ControlStructureContinuationPositionFixer extends AbstractFixer impl
                 continue;
             }
 
-            if ($token->isGivenKind(\T_WHILE)) {
+            if ($token->isKind(\T_WHILE)) {
                 $prevIndex = $tokens->getPrevMeaningfulToken(
                     $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $prevIndex)
                 );
 
-                if (!$tokens[$prevIndex]->isGivenKind(\T_DO)) {
+                if (!$tokens[$prevIndex]->isKind(\T_DO)) {
                     continue;
                 }
             }

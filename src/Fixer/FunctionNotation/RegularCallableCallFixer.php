@@ -119,7 +119,7 @@ final class RegularCallableCallFixer extends AbstractFixer
 
         $firstArgToken = $tokens[$firstArgIndex];
 
-        if ($firstArgToken->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
+        if ($firstArgToken->isKind(\T_CONSTANT_ENCAPSED_STRING)) {
             $afterFirstArgIndex = $tokens->getNextMeaningfulToken($firstArgIndex);
 
             if (!$tokens[$afterFirstArgIndex]->equalsAny([',', ')'])) {
@@ -140,10 +140,10 @@ final class RegularCallableCallFixer extends AbstractFixer
 
             $this->replaceCallUserFuncWithCallback($tokens, $index, $newCallTokens, $firstArgIndex, $firstArgIndex);
         } elseif (
-            $firstArgToken->isGivenKind(\T_FUNCTION)
+            $firstArgToken->isKind(\T_FUNCTION)
             || (
-                $firstArgToken->isGivenKind(\T_STATIC)
-                && $tokens[$tokens->getNextMeaningfulToken($firstArgIndex)]->isGivenKind(\T_FUNCTION)
+                $firstArgToken->isKind(\T_STATIC)
+                && $tokens[$tokens->getNextMeaningfulToken($firstArgIndex)]->isKind(\T_FUNCTION)
             )
         ) {
             $firstArgEndIndex = $tokens->findBlockEnd(
@@ -155,7 +155,7 @@ final class RegularCallableCallFixer extends AbstractFixer
             $newCallTokens->insertAt($newCallTokens->count(), new Token(')'));
             $newCallTokens->insertAt(0, new Token('('));
             $this->replaceCallUserFuncWithCallback($tokens, $index, $newCallTokens, $firstArgIndex, $firstArgEndIndex);
-        } elseif ($firstArgToken->isGivenKind(\T_VARIABLE)) {
+        } elseif ($firstArgToken->isKind(\T_VARIABLE)) {
             $firstArgEndIndex = reset($arguments);
 
             // check if the same variable is used multiple times and if so do not fix
@@ -178,7 +178,7 @@ final class RegularCallableCallFixer extends AbstractFixer
             $complex = false;
 
             for ($newCallIndex = \count($newCallTokens) - 1; $newCallIndex >= 0; --$newCallIndex) {
-                if ($newCallTokens[$newCallIndex]->isGivenKind([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT, \T_VARIABLE])) {
+                if ($newCallTokens[$newCallIndex]->isKind([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT, \T_VARIABLE])) {
                     continue;
                 }
 
@@ -225,7 +225,7 @@ final class RegularCallableCallFixer extends AbstractFixer
         $tokens->overrideRange($callIndex, $callIndex, $newCallTokens);
         $prevIndex = $tokens->getPrevMeaningfulToken($callIndex);
 
-        if ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+        if ($tokens[$prevIndex]->isKind(\T_NS_SEPARATOR)) {
             $tokens->clearTokenAndMergeSurroundingWhitespace($prevIndex);
         }
     }

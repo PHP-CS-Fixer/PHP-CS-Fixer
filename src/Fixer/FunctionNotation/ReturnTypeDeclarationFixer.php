@@ -86,7 +86,7 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
         $oneSpaceBefore = 'one' === $this->configuration['space_before'];
 
         for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
-            if (!$tokens[$index]->isGivenKind(CT::T_TYPE_COLON)) {
+            if (!$tokens[$index]->isKind(CT::T_TYPE_COLON)) {
                 continue;
             }
 

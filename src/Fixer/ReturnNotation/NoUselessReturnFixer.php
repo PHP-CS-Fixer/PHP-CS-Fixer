@@ -65,7 +65,7 @@ final class NoUselessReturnFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(\T_FUNCTION)) {
+            if (!$token->isKind(\T_FUNCTION)) {
                 continue;
             }
 
@@ -83,7 +83,7 @@ final class NoUselessReturnFixer extends AbstractFixer
     private function fixFunction(Tokens $tokens, int $start, int $end): void
     {
         for ($index = $end; $index > $start; --$index) {
-            if (!$tokens[$index]->isGivenKind(\T_RETURN)) {
+            if (!$tokens[$index]->isKind(\T_RETURN)) {
                 continue;
             }
 

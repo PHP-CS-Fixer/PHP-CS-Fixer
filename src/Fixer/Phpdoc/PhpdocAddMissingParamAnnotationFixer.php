@@ -122,7 +122,7 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFixer implement
         for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
+            if (!$token->isKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -144,7 +144,7 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFixer implement
                 return;
             }
 
-            while ($tokens[$index]->isGivenKind([
+            while ($tokens[$index]->isKind([
                 \T_ABSTRACT,
                 \T_FINAL,
                 \T_PRIVATE,
@@ -155,7 +155,7 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFixer implement
                 $index = $tokens->getNextMeaningfulToken($index);
             }
 
-            if (!$tokens[$index]->isGivenKind(\T_FUNCTION)) {
+            if (!$tokens[$index]->isKind(\T_FUNCTION)) {
                 continue;
             }
 
@@ -257,7 +257,7 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFixer implement
             if (
                 $token->isComment()
                 || $token->isWhitespace()
-                || $token->isGivenKind([
+                || $token->isKind([
                     CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE,
                     CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
                     CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
@@ -270,7 +270,7 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFixer implement
                 continue;
             }
 
-            if ($token->isGivenKind(\T_VARIABLE)) {
+            if ($token->isKind(\T_VARIABLE)) {
                 $sawName = true;
                 $info['name'] = $token->getContent();
 
@@ -284,7 +284,7 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFixer implement
             if ($sawName) {
                 $info['default'] .= $token->getContent();
             } elseif (!$token->equals('&')) {
-                if ($token->isGivenKind(\T_ELLIPSIS)) {
+                if ($token->isKind(\T_ELLIPSIS)) {
                     if ('' === $info['type']) {
                         $info['type'] = 'array';
                     } else {

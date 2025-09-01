@@ -887,7 +887,7 @@ namespace {
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
-        self::assertTrue($tokens[$expected['start']]->isGivenKind([\T_IMPLEMENTS, \T_EXTENDS]), \sprintf('Token must be "implements" or "extends", got "%s".', $tokens[$expected['start']]->getContent()));
+        self::assertTrue($tokens[$expected['start']]->isKind([\T_IMPLEMENTS, \T_EXTENDS]), \sprintf('Token must be "implements" or "extends", got "%s".', $tokens[$expected['start']]->getContent()));
 
         $result = \Closure::bind(static fn (ClassDefinitionFixer $fixer): array => $fixer->getClassyInheritanceInfo($tokens, $expected['start']), null, ClassDefinitionFixer::class)($this->fixer);
 

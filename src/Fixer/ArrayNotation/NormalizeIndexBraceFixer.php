@@ -49,9 +49,9 @@ final class NormalizeIndexBraceFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN)) {
+            if ($token->isKind(CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN)) {
                 $tokens[$index] = new Token('[');
-            } elseif ($token->isGivenKind(CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE)) {
+            } elseif ($token->isKind(CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE)) {
                 $tokens[$index] = new Token(']');
             }
         }

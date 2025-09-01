@@ -140,7 +140,7 @@ final class SelfStaticAccessorFixer extends AbstractFixer
         $classyIndex = $tokens->getNextTokenOfKind(0, self::CLASSY_TOKENS_OF_INTEREST);
 
         while (null !== $classyIndex) {
-            if ($tokens[$classyIndex]->isGivenKind(\T_CLASS)) {
+            if ($tokens[$classyIndex]->isKind(\T_CLASS)) {
                 $modifiers = $this->tokensAnalyzer->getClassyModifiers($classyIndex);
 
                 if (
@@ -177,7 +177,7 @@ final class SelfStaticAccessorFixer extends AbstractFixer
                 continue;
             }
 
-            if ($tokens[$index]->isGivenKind(\T_FUNCTION)) {
+            if ($tokens[$index]->isKind(\T_FUNCTION)) {
                 // do not fix inside lambda
                 if ($this->tokensAnalyzer->isLambda($index)) {
                     // figure out where the lambda starts
@@ -199,24 +199,24 @@ final class SelfStaticAccessorFixer extends AbstractFixer
                 continue;
             }
 
-            if ($tokens[$index]->isGivenKind([\T_NEW, \T_INSTANCEOF])) {
+            if ($tokens[$index]->isKind([\T_NEW, \T_INSTANCEOF])) {
                 $index = $tokens->getNextMeaningfulToken($index);
 
-                if ($tokens[$index]->isGivenKind(\T_STATIC)) {
+                if ($tokens[$index]->isKind(\T_STATIC)) {
                     $tokens[$index] = new Token([\T_STRING, 'self']);
                 }
 
                 continue;
             }
 
-            if (!$tokens[$index]->isGivenKind(\T_STATIC)) {
+            if (!$tokens[$index]->isKind(\T_STATIC)) {
                 continue;
             }
 
             $staticIndex = $index;
             $index = $tokens->getNextMeaningfulToken($index);
 
-            if (!$tokens[$index]->isGivenKind(\T_DOUBLE_COLON)) {
+            if (!$tokens[$index]->isKind(\T_DOUBLE_COLON)) {
                 continue;
             }
 

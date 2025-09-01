@@ -165,7 +165,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
 
             if (
                 $meaningfulTokenBeforeParenthesis->isKeyword()
-                && !$meaningfulTokenBeforeParenthesis->isGivenKind($expectedTokens)
+                && !$meaningfulTokenBeforeParenthesis->isKind($expectedTokens)
             ) {
                 continue;
             }
@@ -175,7 +175,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
             if (
                 $isMultiline
                 && 'ensure_fully_multiline' === $this->configuration['on_multiline']
-                && !$meaningfulTokenBeforeParenthesis->isGivenKind(\T_LIST)
+                && !$meaningfulTokenBeforeParenthesis->isKind(\T_LIST)
             ) {
                 $this->ensureFunctionFullyMultiline($tokens, $index);
             }
@@ -253,7 +253,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                 continue;
             }
 
-            if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
+            if ($token->isKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
                 $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
 
                 continue;
@@ -332,7 +332,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
 
         if (null === $prevWhitespaceTokenIndex) {
             $existingIndentation = '';
-        } elseif (!$tokens[$prevWhitespaceTokenIndex]->isGivenKind(\T_WHITESPACE)) {
+        } elseif (!$tokens[$prevWhitespaceTokenIndex]->isKind(\T_WHITESPACE)) {
             return;
         } else {
             $existingIndentation = $tokens[$prevWhitespaceTokenIndex]->getContent();
@@ -366,7 +366,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
             }
 
             // skip nested arrays
-            if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
+            if ($token->isKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
                 $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
 
                 continue;
@@ -382,7 +382,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                 continue;
             }
 
-            if ($token->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+            if ($token->isKind(CT::T_ATTRIBUTE_CLOSE)) {
                 if ('standalone' === $this->configuration['attribute_placement']) {
                     $this->fixNewline($tokens, $index, $indentation);
                 } elseif ('same_line' === $this->configuration['attribute_placement']) {
@@ -448,7 +448,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
 
             if (
                 !$tokens[$prevIndex]->equals(',') && !$tokens[$prevIndex]->isComment()
-                && (true === $this->configuration['after_heredoc'] || !$tokens[$prevIndex]->isGivenKind(\T_END_HEREDOC))
+                && (true === $this->configuration['after_heredoc'] || !$tokens[$prevIndex]->isKind(\T_END_HEREDOC))
             ) {
                 $tokens->clearAt($index - 1);
             }

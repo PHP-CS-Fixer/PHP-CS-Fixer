@@ -125,7 +125,7 @@ final class SpacesInsideParenthesesFixer extends AbstractFixer implements Config
                 $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
                 // ignore parenthesis for T_ARRAY
-                if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(\T_ARRAY)) {
+                if (null !== $prevIndex && $tokens[$prevIndex]->isKind(\T_ARRAY)) {
                     continue;
                 }
 
@@ -170,7 +170,7 @@ final class SpacesInsideParenthesesFixer extends AbstractFixer implements Config
                 $afterParenthesisIndex = $tokens->getNextNonWhitespace($endParenthesisIndex);
                 $afterParenthesisToken = $tokens[$afterParenthesisIndex];
 
-                if ($afterParenthesisToken->isGivenKind(CT::T_USE_LAMBDA)) {
+                if ($afterParenthesisToken->isKind(CT::T_USE_LAMBDA)) {
                     $useStartParenthesisIndex = $tokens->getNextTokenOfKind($afterParenthesisIndex, ['(']);
                     $useEndParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $useStartParenthesisIndex);
 

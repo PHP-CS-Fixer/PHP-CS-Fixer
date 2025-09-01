@@ -48,7 +48,7 @@ final class DescribeFixtureFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
+            if (!$tokens[$index]->isKind(T_CONSTANT_ENCAPSED_STRING)) {
                 continue;
             }
 

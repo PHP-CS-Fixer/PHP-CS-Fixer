@@ -1800,7 +1800,7 @@ abstract class Baz
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(\T_STRING)) {
+            if (!$token->isKind(\T_STRING)) {
                 continue;
             }
 
@@ -2701,7 +2701,7 @@ class TestClass {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(\T_WHILE)) {
+            if (!$token->isKind(\T_WHILE)) {
                 continue;
             }
 
@@ -2728,7 +2728,7 @@ class TestClass {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(\T_CASE)) {
+            if (!$token->isKind(\T_CASE)) {
                 try {
                     $tokensAnalyzer->isEnumCase($index);
                     self::fail('TokensAnalyzer::isEnumCase() did not throw LogicException.');

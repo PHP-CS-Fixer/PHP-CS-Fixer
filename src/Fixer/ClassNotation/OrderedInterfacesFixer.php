@@ -146,8 +146,8 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(\T_IMPLEMENTS)) {
-                if (!$token->isGivenKind(\T_EXTENDS)) {
+            if (!$token->isKind(\T_IMPLEMENTS)) {
+                if (!$token->isKind(\T_EXTENDS)) {
                     continue;
                 }
 
@@ -155,7 +155,7 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
                 $interfaceTokenIndex = $tokens->getPrevMeaningfulToken($nameTokenIndex);
                 $interfaceToken = $tokens[$interfaceTokenIndex];
 
-                if (!$interfaceToken->isGivenKind(\T_INTERFACE)) {
+                if (!$interfaceToken->isKind(\T_INTERFACE)) {
                     continue;
                 }
             }

@@ -53,19 +53,19 @@ final class NoUnneededImportAliasFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = \count($tokens) - 1; 0 <= $index; --$index) {
-            if (!$tokens[$index]->isGivenKind(\T_AS)) {
+            if (!$tokens[$index]->isKind(\T_AS)) {
                 continue;
             }
 
             $aliasIndex = $tokens->getNextMeaningfulToken($index);
 
-            if (!$tokens[$aliasIndex]->isGivenKind(\T_STRING)) {
+            if (!$tokens[$aliasIndex]->isKind(\T_STRING)) {
                 continue;
             }
 
             $importIndex = $tokens->getPrevMeaningfulToken($index);
 
-            if (!$tokens[$importIndex]->isGivenKind(\T_STRING)) {
+            if (!$tokens[$importIndex]->isKind(\T_STRING)) {
                 continue;
             }
 
@@ -75,13 +75,13 @@ final class NoUnneededImportAliasFixer extends AbstractFixer
 
             do {
                 $importIndex = $tokens->getPrevMeaningfulToken($importIndex);
-            } while ($tokens[$importIndex]->isGivenKind([\T_NS_SEPARATOR, \T_STRING, \T_AS]) || $tokens[$importIndex]->equals(','));
+            } while ($tokens[$importIndex]->isKind([\T_NS_SEPARATOR, \T_STRING, \T_AS]) || $tokens[$importIndex]->equals(','));
 
-            if ($tokens[$importIndex]->isGivenKind([CT::T_FUNCTION_IMPORT, CT::T_CONST_IMPORT])) {
+            if ($tokens[$importIndex]->isKind([CT::T_FUNCTION_IMPORT, CT::T_CONST_IMPORT])) {
                 $importIndex = $tokens->getPrevMeaningfulToken($importIndex);
             }
 
-            if (!$tokens[$importIndex]->isGivenKind([\T_USE, CT::T_GROUP_IMPORT_BRACE_OPEN])) {
+            if (!$tokens[$importIndex]->isKind([\T_USE, CT::T_GROUP_IMPORT_BRACE_OPEN])) {
                 continue;
             }
 

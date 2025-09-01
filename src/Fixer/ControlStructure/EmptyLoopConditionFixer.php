@@ -118,7 +118,7 @@ final class EmptyLoopConditionFixer extends AbstractFixer implements Configurabl
         }
 
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
-            if ($tokens[$index]->isGivenKind($candidateLoopKinds)) {
+            if ($tokens[$index]->isKind($candidateLoopKinds)) {
                 $openIndex = $tokens->getNextTokenOfKind($index, ['(']); // proceed to open '('
                 $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex); // proceed to close ')'
                 $fixLoop($index, $openIndex, $endIndex); // fix loop if needed
@@ -171,12 +171,12 @@ final class EmptyLoopConditionFixer extends AbstractFixer implements Configurabl
         $startIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $endIndex);
         $index = $tokens->getPrevMeaningfulToken($startIndex);
 
-        return null === $index || !$tokens[$index]->isGivenKind(\T_DO) ? null : $index;
+        return null === $index || !$tokens[$index]->isKind(\T_DO) ? null : $index;
     }
 
     private static function isForLoopWithEmptyCondition(Tokens $tokens, int $index, int $openIndex, int $endIndex): bool
     {
-        if (!$tokens[$index]->isGivenKind(\T_FOR)) {
+        if (!$tokens[$index]->isKind(\T_FOR)) {
             return false;
         }
 
@@ -193,7 +193,7 @@ final class EmptyLoopConditionFixer extends AbstractFixer implements Configurabl
 
     private static function isWhileLoopWithEmptyCondition(Tokens $tokens, int $index, int $openIndex, int $endIndex): bool
     {
-        if (!$tokens[$index]->isGivenKind(\T_WHILE)) {
+        if (!$tokens[$index]->isKind(\T_WHILE)) {
             return false;
         }
 

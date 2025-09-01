@@ -76,11 +76,11 @@ final class ReturnToYieldFromFixer extends AbstractFixer
     private function shouldBeFixed(Tokens $tokens, int $returnIndex): bool
     {
         $arrayStartIndex = $tokens->getNextMeaningfulToken($returnIndex);
-        if (!$tokens[$arrayStartIndex]->isGivenKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+        if (!$tokens[$arrayStartIndex]->isKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
             return false;
         }
 
-        if ($tokens[$arrayStartIndex]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+        if ($tokens[$arrayStartIndex]->isKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
             $arrayEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $arrayStartIndex);
         } else {
             $arrayOpenParenthesisIndex = $tokens->getNextTokenOfKind($arrayStartIndex, ['(']);
@@ -98,7 +98,7 @@ final class ReturnToYieldFromFixer extends AbstractFixer
         $functionStartIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $functionEndIndex);
 
         $returnTypeIndex = $tokens->getPrevMeaningfulToken($functionStartIndex);
-        if (!$tokens[$returnTypeIndex]->isGivenKind(\T_STRING)) {
+        if (!$tokens[$returnTypeIndex]->isKind(\T_STRING)) {
             return false;
         }
 
@@ -108,6 +108,6 @@ final class ReturnToYieldFromFixer extends AbstractFixer
 
         $beforeReturnTypeIndex = $tokens->getPrevMeaningfulToken($returnTypeIndex);
 
-        return $tokens[$beforeReturnTypeIndex]->isGivenKind(CT::T_TYPE_COLON);
+        return $tokens[$beforeReturnTypeIndex]->isKind(CT::T_TYPE_COLON);
     }
 }

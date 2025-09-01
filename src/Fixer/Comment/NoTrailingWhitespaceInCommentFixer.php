@@ -58,13 +58,13 @@ final class NoTrailingWhitespaceInCommentFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(\T_DOC_COMMENT)) {
+            if ($token->isKind(\T_DOC_COMMENT)) {
                 $tokens[$index] = new Token([\T_DOC_COMMENT, Preg::replace('/(*ANY)[\h]+$/m', '', $token->getContent())]);
 
                 continue;
             }
 
-            if ($token->isGivenKind(\T_COMMENT)) {
+            if ($token->isKind(\T_COMMENT)) {
                 if (str_starts_with($token->getContent(), '/*')) {
                     $tokens[$index] = new Token([\T_COMMENT, Preg::replace('/(*ANY)[\h]+$/m', '', $token->getContent())]);
                 } elseif (isset($tokens[$index + 1]) && $tokens[$index + 1]->isWhitespace()) {

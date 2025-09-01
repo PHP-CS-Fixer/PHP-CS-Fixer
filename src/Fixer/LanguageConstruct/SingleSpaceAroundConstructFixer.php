@@ -293,11 +293,11 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
         $tokenKindsContainASingleSpace = array_values($this->fixTokenMapContainASingleSpace);
 
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
-            if ($tokens[$index]->isGivenKind($tokenKindsContainASingleSpace)) {
+            if ($tokens[$index]->isKind($tokenKindsContainASingleSpace)) {
                 $token = $tokens[$index];
 
                 if (
-                    $token->isGivenKind(\T_YIELD_FROM)
+                    $token->isKind(\T_YIELD_FROM)
                     && 'yield from' !== strtolower($token->getContent())
                 ) {
                     $tokens[$index] = new Token([\T_YIELD_FROM, Preg::replace(
@@ -312,7 +312,7 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
         $tokenKindsPrecededByASingleSpace = array_values($this->fixTokenMapPrecededByASingleSpace);
 
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
-            if ($tokens[$index]->isGivenKind($tokenKindsPrecededByASingleSpace)) {
+            if ($tokens[$index]->isKind($tokenKindsPrecededByASingleSpace)) {
                 if (!$this->isFullLineCommentBefore($tokens, $index)) {
                     $tokens->ensureWhitespaceAtIndex($index - 1, 1, ' ');
                 }
@@ -324,7 +324,7 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
         for ($index = $tokens->count() - 2; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind($tokenKindsFollowedByASingleSpace)) {
+            if (!$token->isKind($tokenKindsFollowedByASingleSpace)) {
                 continue;
             }
 
@@ -335,38 +335,38 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
             }
 
             if (
-                $token->isGivenKind(\T_STATIC)
-                && !$tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind([\T_FN, \T_FUNCTION, \T_NS_SEPARATOR, \T_STRING, \T_VARIABLE, CT::T_ARRAY_TYPEHINT, CT::T_NULLABLE_TYPE])
+                $token->isKind(\T_STATIC)
+                && !$tokens[$tokens->getNextMeaningfulToken($index)]->isKind([\T_FN, \T_FUNCTION, \T_NS_SEPARATOR, \T_STRING, \T_VARIABLE, CT::T_ARRAY_TYPEHINT, CT::T_NULLABLE_TYPE])
             ) {
                 continue;
             }
 
-            if ($token->isGivenKind(\T_OPEN_TAG)) {
-                if ($tokens[$whitespaceTokenIndex]->isGivenKind(\T_WHITESPACE) && !str_contains($tokens[$whitespaceTokenIndex]->getContent(), "\n") && !str_contains($token->getContent(), "\n")) {
+            if ($token->isKind(\T_OPEN_TAG)) {
+                if ($tokens[$whitespaceTokenIndex]->isKind(\T_WHITESPACE) && !str_contains($tokens[$whitespaceTokenIndex]->getContent(), "\n") && !str_contains($token->getContent(), "\n")) {
                     $tokens->clearAt($whitespaceTokenIndex);
                 }
 
                 continue;
             }
 
-            if ($token->isGivenKind(\T_CLASS) && $tokens[$tokens->getNextMeaningfulToken($index)]->equals('(')) {
+            if ($token->isKind(\T_CLASS) && $tokens[$tokens->getNextMeaningfulToken($index)]->equals('(')) {
                 continue;
             }
 
-            if ($token->isGivenKind([\T_EXTENDS, \T_IMPLEMENTS]) && $this->isMultilineExtendsOrImplementsWithMoreThanOneAncestor($tokens, $index)) {
+            if ($token->isKind([\T_EXTENDS, \T_IMPLEMENTS]) && $this->isMultilineExtendsOrImplementsWithMoreThanOneAncestor($tokens, $index)) {
                 continue;
             }
 
-            if ($token->isGivenKind(\T_RETURN) && $this->isMultiLineReturn($tokens, $index)) {
+            if ($token->isKind(\T_RETURN) && $this->isMultiLineReturn($tokens, $index)) {
                 continue;
             }
 
-            if ($token->isGivenKind(\T_CONST) && $this->isMultilineCommaSeparatedConstant($tokens, $index)) {
+            if ($token->isKind(\T_CONST) && $this->isMultilineCommaSeparatedConstant($tokens, $index)) {
                 continue;
             }
 
-            if ($token->isComment() || $token->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
-                if ($tokens[$whitespaceTokenIndex]->isGivenKind(\T_WHITESPACE) && str_contains($tokens[$whitespaceTokenIndex]->getContent(), "\n")) {
+            if ($token->isComment() || $token->isKind(CT::T_ATTRIBUTE_CLOSE)) {
+                if ($tokens[$whitespaceTokenIndex]->isKind(\T_WHITESPACE) && str_contains($tokens[$whitespaceTokenIndex]->getContent(), "\n")) {
                     continue;
                 }
             }
@@ -374,13 +374,13 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
             if ($tokens[$whitespaceTokenIndex]->isWhitespace() && str_contains($tokens[$whitespaceTokenIndex]->getContent(), "\n")) {
                 $nextNextToken = $tokens[$whitespaceTokenIndex + 1];
                 if (
-                    $nextNextToken->isGivenKind(FCT::T_ATTRIBUTE)
+                    $nextNextToken->isKind(FCT::T_ATTRIBUTE)
                     || $nextNextToken->isComment() && str_starts_with($nextNextToken->getContent(), '#[')
                 ) {
                     continue;
                 }
 
-                if ($nextNextToken->isGivenKind(\T_DOC_COMMENT)) {
+                if ($nextNextToken->isKind(\T_DOC_COMMENT)) {
                     continue;
                 }
             }
@@ -420,7 +420,7 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
         $tokenFollowingReturn = $tokens[$index];
 
         if (
-            !$tokenFollowingReturn->isGivenKind(\T_WHITESPACE)
+            !$tokenFollowingReturn->isKind(\T_WHITESPACE)
             || !str_contains($tokenFollowingReturn->getContent(), "\n")
         ) {
             return false;
@@ -499,7 +499,7 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
     {
         $beforeIndex = $tokens->getPrevNonWhitespace($index);
 
-        if (!$tokens[$beforeIndex]->isGivenKind(\T_COMMENT)) {
+        if (!$tokens[$beforeIndex]->isKind(\T_COMMENT)) {
             return false;
         }
 

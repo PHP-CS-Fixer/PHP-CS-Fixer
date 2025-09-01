@@ -69,13 +69,13 @@ final class NoBlankLinesAfterPhpdocFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
+            if (!$token->isKind(\T_DOC_COMMENT)) {
                 continue;
             }
             // get the next non-whitespace token inc comments, provided
             // that there is whitespace between it and the current token
             $next = $tokens->getNextNonWhitespace($index);
-            if ($index + 2 === $next && false === $tokens[$next]->isGivenKind([
+            if ($index + 2 === $next && false === $tokens[$next]->isKind([
                 \T_BREAK,
                 \T_COMMENT,
                 \T_CONTINUE,

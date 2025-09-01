@@ -101,10 +101,10 @@ final class AttributeEmptyParenthesesFixer extends AbstractFixer implements Conf
                 }
 
                 // In case there's a comma right before T_ATTRIBUTE_CLOSE
-                if (!$tokens[$nextIndex]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+                if (!$tokens[$nextIndex]->isKind(CT::T_ATTRIBUTE_CLOSE)) {
                     $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
                 }
-            } while (!$tokens[$nextIndex]->isGivenKind(CT::T_ATTRIBUTE_CLOSE));
+            } while (!$tokens[$nextIndex]->isKind(CT::T_ATTRIBUTE_CLOSE));
         }
     }
 

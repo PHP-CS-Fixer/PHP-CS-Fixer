@@ -125,7 +125,7 @@ final class SingleLineCommentStyleFixer extends AbstractFixer implements Configu
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(\T_COMMENT)) {
+            if (!$token->isKind(\T_COMMENT)) {
                 continue;
             }
 

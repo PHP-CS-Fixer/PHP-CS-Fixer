@@ -104,6 +104,6 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
     {
         $typeIndex = $tokens->getPrevMeaningfulToken($i);
 
-        return $tokens[$typeIndex]->isGivenKind(\T_ABSTRACT);
+        return $tokens[$typeIndex]->isKind(\T_ABSTRACT);
     }
 }

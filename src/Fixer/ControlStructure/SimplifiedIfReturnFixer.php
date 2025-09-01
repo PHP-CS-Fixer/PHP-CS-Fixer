@@ -91,7 +91,7 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($ifIndex = $tokens->count() - 1; 0 <= $ifIndex; --$ifIndex) {
-            if (!$tokens[$ifIndex]->isGivenKind([\T_IF, \T_ELSEIF])) {
+            if (!$tokens[$ifIndex]->isKind([\T_IF, \T_ELSEIF])) {
                 continue;
             }
 

@@ -195,7 +195,7 @@ final class PhpdocReturnSelfReferenceFixer extends AbstractFixer implements Conf
         // find PHPDoc of method (if any)
         while (true) {
             $tokenIndex = $tokens->getPrevMeaningfulToken($index);
-            if (!$tokens[$tokenIndex]->isGivenKind([\T_STATIC, \T_FINAL, \T_ABSTRACT, \T_PRIVATE, \T_PROTECTED, \T_PUBLIC])) {
+            if (!$tokens[$tokenIndex]->isKind([\T_STATIC, \T_FINAL, \T_ABSTRACT, \T_PRIVATE, \T_PROTECTED, \T_PUBLIC])) {
                 break;
             }
 
@@ -203,7 +203,7 @@ final class PhpdocReturnSelfReferenceFixer extends AbstractFixer implements Conf
         }
 
         $docIndex = $tokens->getPrevNonWhitespace($index);
-        if (!$tokens[$docIndex]->isGivenKind(\T_DOC_COMMENT)) {
+        if (!$tokens[$docIndex]->isKind(\T_DOC_COMMENT)) {
             return;
         }
 

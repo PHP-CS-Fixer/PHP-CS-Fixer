@@ -88,7 +88,7 @@ final class FullOpeningTagFixer extends AbstractFixer
         $tokensOldContentLength = 0;
 
         foreach ($newTokens as $index => $token) {
-            if ($token->isGivenKind(\T_OPEN_TAG)) {
+            if ($token->isKind(\T_OPEN_TAG)) {
                 $tokenContent = $token->getContent();
                 $possibleOpenContent = substr($content, $tokensOldContentLength, 5);
 
@@ -101,7 +101,7 @@ final class FullOpeningTagFixer extends AbstractFixer
                 continue;
             }
 
-            if ($token->isGivenKind([\T_COMMENT, \T_DOC_COMMENT, \T_CONSTANT_ENCAPSED_STRING, \T_ENCAPSED_AND_WHITESPACE, \T_STRING])) {
+            if ($token->isKind([\T_COMMENT, \T_DOC_COMMENT, \T_CONSTANT_ENCAPSED_STRING, \T_ENCAPSED_AND_WHITESPACE, \T_STRING])) {
                 $tokenContent = '';
                 $tokenContentLength = 0;
                 $parts = explode('<?php', $token->getContent());

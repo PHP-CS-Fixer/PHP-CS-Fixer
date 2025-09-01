@@ -54,7 +54,7 @@ final class StandardizeNotEqualsFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(\T_IS_NOT_EQUAL)) {
+            if ($token->isKind(\T_IS_NOT_EQUAL)) {
                 $tokens[$index] = new Token([\T_IS_NOT_EQUAL, '!=']);
             }
         }

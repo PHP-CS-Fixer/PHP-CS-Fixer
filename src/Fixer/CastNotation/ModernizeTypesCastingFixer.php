@@ -107,7 +107,7 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
 
                 for ($paramContentIndex = $openParenthesis + 1; $paramContentIndex < $paramContentEnd; ++$paramContentIndex) {
                     // not a space, means some sensible token
-                    if (!$tokens[$paramContentIndex]->isGivenKind(\T_WHITESPACE)) {
+                    if (!$tokens[$paramContentIndex]->isKind(\T_WHITESPACE)) {
                         ++$countParamTokens;
                     }
                 }
@@ -116,12 +116,12 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
 
                 $afterCloseParenthesisIndex = $tokens->getNextMeaningfulToken($closeParenthesis);
                 $afterCloseParenthesisToken = $tokens[$afterCloseParenthesisIndex];
-                $wrapInParentheses = $afterCloseParenthesisToken->equalsAny(['[', '{']) || $afterCloseParenthesisToken->isGivenKind(\T_POW);
+                $wrapInParentheses = $afterCloseParenthesisToken->equalsAny(['[', '{']) || $afterCloseParenthesisToken->isKind(\T_POW);
 
                 // analyse namespace specification (root one or none) and decide what to do
                 $prevTokenIndex = $tokens->getPrevMeaningfulToken($functionName);
 
-                if ($tokens[$prevTokenIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+                if ($tokens[$prevTokenIndex]->isKind(\T_NS_SEPARATOR)) {
                     // get rid of root namespace when it used
                     $tokens->removeTrailingWhitespace($prevTokenIndex);
                     $tokens->clearAt($prevTokenIndex);

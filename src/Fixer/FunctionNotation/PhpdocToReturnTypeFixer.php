@@ -162,13 +162,13 @@ final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
         $typesToExclude = [];
 
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(\T_DOC_COMMENT)) {
+            if ($token->isKind(\T_DOC_COMMENT)) {
                 $typesToExclude = array_merge($typesToExclude, self::getTypesToExclude($token->getContent()));
 
                 continue;
             }
 
-            if (!$tokens[$index]->isGivenKind([\T_FUNCTION, \T_FN])) {
+            if (!$tokens[$index]->isKind([\T_FUNCTION, \T_FN])) {
                 continue;
             }
 
@@ -268,6 +268,6 @@ final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
         $endFuncIndex = $tokens->getPrevTokenOfKind($index, [')']);
         $nextIndex = $tokens->getNextMeaningfulToken($endFuncIndex);
 
-        return $tokens[$nextIndex]->isGivenKind(CT::T_TYPE_COLON);
+        return $tokens[$nextIndex]->isKind(CT::T_TYPE_COLON);
     }
 }

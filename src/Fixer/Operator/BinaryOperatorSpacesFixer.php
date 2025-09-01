@@ -546,11 +546,11 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     private function isEqualPartOfDeclareStatement(Tokens $tokens, int $index)
     {
         $prevMeaningfulIndex = $tokens->getPrevMeaningfulToken($index);
-        if ($tokens[$prevMeaningfulIndex]->isGivenKind(\T_STRING)) {
+        if ($tokens[$prevMeaningfulIndex]->isKind(\T_STRING)) {
             $prevMeaningfulIndex = $tokens->getPrevMeaningfulToken($prevMeaningfulIndex);
             if ($tokens[$prevMeaningfulIndex]->equals('(')) {
                 $prevMeaningfulIndex = $tokens->getPrevMeaningfulToken($prevMeaningfulIndex);
-                if ($tokens[$prevMeaningfulIndex]->isGivenKind(\T_DECLARE)) {
+                if ($tokens[$prevMeaningfulIndex]->isKind(\T_DECLARE)) {
                     return $prevMeaningfulIndex;
                 }
             }
@@ -617,7 +617,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
             ) {
                 if ('=>' === $tokenContent) {
                     for ($index = $tokens->count() - 2; $index > 0; --$index) {
-                        if ($tokens[$index]->isGivenKind(\T_DOUBLE_ARROW)) { // always binary operator, never part of declare statement
+                        if ($tokens[$index]->isKind(\T_DOUBLE_ARROW)) { // always binary operator, never part of declare statement
                             $this->fixWhiteSpaceBeforeOperator($tokensClone, $index, $alignStrategy);
                         }
                     }
@@ -665,7 +665,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                 continue;
             }
 
-            if ($token->isGivenKind(\T_FN)) {
+            if ($token->isKind(\T_FN)) {
                 $from = $tokens->getNextMeaningfulToken($index);
                 $until = $this->tokensAnalyzer->getLastTokenIndexOfArrowFunction($index);
                 $this->injectAlignmentPlaceholders($tokens, $from + 1, $until - 1, $tokenContent);
@@ -674,7 +674,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                 continue;
             }
 
-            if ($token->isGivenKind([\T_FUNCTION, \T_CLASS])) {
+            if ($token->isKind([\T_FUNCTION, \T_CLASS])) {
                 $index = $tokens->getNextTokenOfKind($index, ['{', ';', '(']);
                 // We don't align `=` on multi-line definition of function parameters with default values
                 if ($tokens[$index]->equals('(')) {
@@ -713,7 +713,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                 continue;
             }
 
-            if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+            if ($token->isKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
                 $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
                 $this->injectAlignmentPlaceholders($tokens, $index + 1, $until - 1, $tokenContent);
                 $index = $until;
@@ -748,11 +748,11 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                 $newLineFoundSinceLastPlaceholder = true;
             }
 
-            if ($token->isGivenKind(\T_YIELD)) {
+            if ($token->isKind(\T_YIELD)) {
                 $yieldFoundSinceLastPlaceholder = true;
             }
 
-            if ($token->isGivenKind(\T_FN)) {
+            if ($token->isKind(\T_FN)) {
                 $yieldFoundSinceLastPlaceholder = false;
                 $from = $tokens->getNextMeaningfulToken($index);
                 $until = $this->tokensAnalyzer->getLastTokenIndexOfArrowFunction($index);
@@ -762,7 +762,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                 continue;
             }
 
-            if ($token->isGivenKind(\T_ARRAY)) { // don't use "$tokens->isArray()" here, short arrays are handled in the next case
+            if ($token->isKind(\T_ARRAY)) { // don't use "$tokens->isArray()" here, short arrays are handled in the next case
                 $yieldFoundSinceLastPlaceholder = false;
                 $from = $tokens->getNextMeaningfulToken($index);
                 $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $from);
@@ -773,7 +773,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                 continue;
             }
 
-            if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+            if ($token->isKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
                 $yieldFoundSinceLastPlaceholder = false;
                 $from = $index;
                 $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $from);
@@ -786,7 +786,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
 
             // no need to analyze for `isBinaryOperator` (always true), nor if part of declare statement (not valid PHP)
             // there is also no need to analyse the second arrow of a line
-            if ($token->isGivenKind(\T_DOUBLE_ARROW) && $newLineFoundSinceLastPlaceholder) {
+            if ($token->isKind(\T_DOUBLE_ARROW) && $newLineFoundSinceLastPlaceholder) {
                 if ($yieldFoundSinceLastPlaceholder) {
                     ++$this->deepestLevel;
                     ++$this->currentLevel;
@@ -822,8 +822,8 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                         break;
                     }
 
-                    if ($tokens[$i + 1]->isGivenKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
-                        $arrayStartIndex = $tokens[$i + 1]->isGivenKind(\T_ARRAY)
+                    if ($tokens[$i + 1]->isKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+                        $arrayStartIndex = $tokens[$i + 1]->isKind(\T_ARRAY)
                             ? $tokens->getNextMeaningfulToken($i + 1)
                             : $i + 1;
                         $blockType = Tokens::detectBlockType($tokens[$arrayStartIndex]);

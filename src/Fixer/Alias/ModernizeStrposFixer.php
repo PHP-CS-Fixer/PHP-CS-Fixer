@@ -211,7 +211,7 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
                 $negateInsertIndex = $functionIndex;
 
                 $prevFunctionIndex = $tokens->getPrevMeaningfulToken($functionIndex);
-                if ($tokens[$prevFunctionIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+                if ($tokens[$prevFunctionIndex]->isKind(\T_NS_SEPARATOR)) {
                     $negateInsertIndex = $prevFunctionIndex;
                 }
 
@@ -232,7 +232,7 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
     private function wrapArgumentsWithStrToLower(Tokens $tokens, int $functionIndex): void
     {
         $argumentsAnalyzer = new ArgumentsAnalyzer();
-        $shouldAddNamespace = $tokens[$functionIndex - 1]->isGivenKind(\T_NS_SEPARATOR);
+        $shouldAddNamespace = $tokens[$functionIndex - 1]->isKind(\T_NS_SEPARATOR);
 
         $openIndex = $tokens->getNextMeaningfulToken($functionIndex);
         $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
@@ -244,7 +244,7 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
         }
         $firstArgumentIndexEnd = $arguments[$firstArgumentIndexStart] + 3 + ($shouldAddNamespace ? 1 : 0);
 
-        $isSecondArgumentTokenWhiteSpace = $tokens[array_key_last($arguments)]->isGivenKind(\T_WHITESPACE);
+        $isSecondArgumentTokenWhiteSpace = $tokens[array_key_last($arguments)]->isKind(\T_WHITESPACE);
 
         if ($isSecondArgumentTokenWhiteSpace) {
             $secondArgumentIndexStart = $tokens->getNextMeaningfulToken(array_key_last($arguments));
@@ -284,11 +284,11 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
     {
         $operatorIndex = $tokens->getMeaningfulTokenSibling($offsetIndex, $direction);
 
-        if (null !== $operatorIndex && $tokens[$operatorIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+        if (null !== $operatorIndex && $tokens[$operatorIndex]->isKind(\T_NS_SEPARATOR)) {
             $operatorIndex = $tokens->getMeaningfulTokenSibling($operatorIndex, $direction);
         }
 
-        if (null === $operatorIndex || !$tokens[$operatorIndex]->isGivenKind([\T_IS_IDENTICAL, \T_IS_NOT_IDENTICAL])) {
+        if (null === $operatorIndex || !$tokens[$operatorIndex]->isKind([\T_IS_IDENTICAL, \T_IS_NOT_IDENTICAL])) {
             return null;
         }
 
@@ -316,7 +316,7 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
     private function isOfHigherPrecedence(Token $token): bool
     {
         return
-            $token->isGivenKind([
+            $token->isKind([
                 \T_DEC,                 // --
                 \T_INC,                 // ++
                 \T_INSTANCEOF,          // instanceof

@@ -123,12 +123,12 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
 
         $classIndex = $tokens->getPrevTokenOfKind($startIndex, [[\T_CLASS]]);
         $docBlockIndex = $this->getDocBlockIndex($tokens, $classIndex);
-        if ($tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT)) {
+        if ($tokens[$docBlockIndex]->isKind(\T_DOC_COMMENT)) {
             $startIndex = $docBlockIndex;
         }
 
         for ($index = $endIndex; $index >= $startIndex; --$index) {
-            if (!$tokens[$index]->isGivenKind(\T_DOC_COMMENT)) {
+            if (!$tokens[$index]->isKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -137,7 +137,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
                 1,
                 [[\T_ABSTRACT], [\T_COMMENT], [\T_FINAL], [\T_FUNCTION], [\T_PRIVATE], [\T_PROTECTED], [\T_PUBLIC], [\T_STATIC], [\T_WHITESPACE]],
             );
-            $annotationScope = $tokens[$targetIndex]->isGivenKind(\T_CLASS) ? 'class' : 'method';
+            $annotationScope = $tokens[$targetIndex]->isKind(\T_CLASS) ? 'class' : 'method';
 
             $docBlock = new DocBlock($tokens[$index]->getContent());
 
@@ -248,13 +248,13 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
         array $tokensToInsert
     ): bool {
         $attributeIndex = $tokens->getNextMeaningfulToken($index);
-        if (!$tokens[$attributeIndex]->isGivenKind(\T_ATTRIBUTE)) {
+        if (!$tokens[$attributeIndex]->isKind(\T_ATTRIBUTE)) {
             return false;
         }
 
         $insertedClassName = '';
         foreach (\array_slice($tokensToInsert, 3) as $token) {
-            if ($token->equals('(') || $token->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+            if ($token->equals('(') || $token->isKind(CT::T_ATTRIBUTE_CLOSE)) {
                 break;
             }
             $insertedClassName .= $token->getContent();

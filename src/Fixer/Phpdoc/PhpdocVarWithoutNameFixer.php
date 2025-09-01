@@ -82,7 +82,7 @@ final class PhpdocVarWithoutNameFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
+            if (!$token->isKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -93,12 +93,12 @@ final class PhpdocVarWithoutNameFixer extends AbstractFixer
             }
 
             // For people writing "static public $foo" instead of "public static $foo"
-            if ($tokens[$nextIndex]->isGivenKind(\T_STATIC)) {
+            if ($tokens[$nextIndex]->isKind(\T_STATIC)) {
                 $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
             }
 
             // We want only doc blocks that are for properties and thus have specified access modifiers next
-            if (!$tokens[$nextIndex]->isGivenKind(self::PROPERTY_MODIFIER_KINDS)) {
+            if (!$tokens[$nextIndex]->isKind(self::PROPERTY_MODIFIER_KINDS)) {
                 continue;
             }
 

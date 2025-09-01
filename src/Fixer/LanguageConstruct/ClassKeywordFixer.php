@@ -73,7 +73,7 @@ final class ClassKeywordFixer extends AbstractFixer implements ExperimentalFixer
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
+            if ($token->isKind(\T_CONSTANT_ENCAPSED_STRING)) {
                 $name = substr($token->getContent(), 1, -1);
                 $name = ltrim($name, '\\');
                 $name = str_replace('\\\\', '\\', $name);

@@ -56,7 +56,7 @@ final class AssignNullCoalescingToCoalesceEqualFixer extends AbstractShortOperat
 
     protected function isOperatorTokenCandidate(Tokens $tokens, int $index): bool
     {
-        if (!$tokens[$index]->isGivenKind(\T_COALESCE)) {
+        if (!$tokens[$index]->isKind(\T_COALESCE)) {
             return false;
         }
 

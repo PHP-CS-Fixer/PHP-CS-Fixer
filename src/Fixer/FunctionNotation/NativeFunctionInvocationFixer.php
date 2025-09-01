@@ -304,14 +304,14 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
                     continue;
                 }
 
-                if ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+                if ($tokens[$prevIndex]->isKind(\T_NS_SEPARATOR)) {
                     $tokens->clearTokenAndMergeSurroundingWhitespace($prevIndex);
                 }
 
                 continue;
             }
 
-            if ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+            if ($tokens[$prevIndex]->isKind(\T_NS_SEPARATOR)) {
                 continue; // do not bother if previous token is already namespace separator
             }
 

@@ -390,7 +390,7 @@ final class NoPhp4ConstructorFixer extends AbstractFixer
 
         $prevBlock = $tokens->getPrevMeaningfulToken($function[0]);
 
-        while (null !== $prevBlock && $tokens[$prevBlock]->isGivenKind($possibleModifiers)) {
+        while (null !== $prevBlock && $tokens[$prevBlock]->isKind($possibleModifiers)) {
             $modifiers[$tokens[$prevBlock]->getId()] = $prevBlock;
             $prevBlock = $tokens->getPrevMeaningfulToken($prevBlock);
         }

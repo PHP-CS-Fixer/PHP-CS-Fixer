@@ -57,7 +57,7 @@ final class NoLeadingNamespaceWhitespaceFixer extends AbstractFixer implements W
         for ($index = \count($tokens) - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(\T_NAMESPACE)) {
+            if (!$token->isKind(\T_NAMESPACE)) {
                 continue;
             }
 

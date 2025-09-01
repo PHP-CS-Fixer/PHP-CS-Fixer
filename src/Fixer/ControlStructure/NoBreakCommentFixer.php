@@ -130,11 +130,11 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = \count($tokens) - 1; $index >= 0; --$index) {
-            if ($tokens[$index]->isGivenKind(\T_DEFAULT)) {
-                if ($tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind(\T_DOUBLE_ARROW)) {
+            if ($tokens[$index]->isKind(\T_DEFAULT)) {
+                if ($tokens[$tokens->getNextMeaningfulToken($index)]->isKind(\T_DOUBLE_ARROW)) {
                     continue; // this is "default" from "match"
                 }
-            } elseif (!$tokens[$index]->isGivenKind(\T_CASE)) {
+            } elseif (!$tokens[$index]->isKind(\T_CASE)) {
                 continue;
             }
 
@@ -149,20 +149,20 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
         $commentPosition = null;
 
         for ($i = $casePosition + 1, $max = \count($tokens); $i < $max; ++$i) {
-            if ($tokens[$i]->isGivenKind([...self::STRUCTURE_KINDS, \T_ELSE, \T_DO, \T_CLASS])) {
+            if ($tokens[$i]->isKind([...self::STRUCTURE_KINDS, \T_ELSE, \T_DO, \T_CLASS])) {
                 $empty = false;
                 $i = $this->getStructureEnd($tokens, $i);
 
                 continue;
             }
 
-            if ($tokens[$i]->isGivenKind([\T_BREAK, \T_CONTINUE, \T_RETURN, \T_EXIT, \T_GOTO])) {
+            if ($tokens[$i]->isKind([\T_BREAK, \T_CONTINUE, \T_RETURN, \T_EXIT, \T_GOTO])) {
                 $fallThrough = false;
 
                 continue;
             }
 
-            if ($tokens[$i]->isGivenKind(\T_THROW)) {
+            if ($tokens[$i]->isKind(\T_THROW)) {
                 $previousIndex = $tokens->getPrevMeaningfulToken($i);
 
                 if ($previousIndex === $casePosition || $tokens[$previousIndex]->equalsAny(['{', ';', '}', [\T_OPEN_TAG]])) {
@@ -172,7 +172,7 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
                 continue;
             }
 
-            if ($tokens[$i]->equals('}') || $tokens[$i]->isGivenKind(\T_ENDSWITCH)) {
+            if ($tokens[$i]->equals('}') || $tokens[$i]->isKind(\T_ENDSWITCH)) {
                 if (null !== $commentPosition) {
                     $this->removeComment($tokens, $commentPosition);
                 }
@@ -186,7 +186,7 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
                 continue;
             }
 
-            if ($tokens[$i]->isGivenKind([\T_CASE, \T_DEFAULT])) {
+            if ($tokens[$i]->isKind([\T_CASE, \T_DEFAULT])) {
                 if (!$empty && $fallThrough) {
                     if (null !== $commentPosition && $tokens->getPrevNonWhitespace($i) !== $commentPosition) {
                         $this->removeComment($tokens, $commentPosition);
@@ -211,7 +211,7 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
                 break;
             }
 
-            if (!$tokens[$i]->isGivenKind([\T_COMMENT, \T_WHITESPACE])) {
+            if (!$tokens[$i]->isKind([\T_COMMENT, \T_WHITESPACE])) {
                 $empty = false;
             }
         }
@@ -235,9 +235,9 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
         $newlineToken = $tokens[$newlinePosition];
         $nbNewlines = substr_count($newlineToken->getContent(), $lineEnding);
 
-        if ($newlineToken->isGivenKind(\T_OPEN_TAG) && Preg::match('/\R/', $newlineToken->getContent())) {
+        if ($newlineToken->isKind(\T_OPEN_TAG) && Preg::match('/\R/', $newlineToken->getContent())) {
             ++$nbNewlines;
-        } elseif ($tokens[$newlinePosition - 1]->isGivenKind(\T_OPEN_TAG) && Preg::match('/\R/', $tokens[$newlinePosition - 1]->getContent())) {
+        } elseif ($tokens[$newlinePosition - 1]->isKind(\T_OPEN_TAG) && Preg::match('/\R/', $tokens[$newlinePosition - 1]->getContent())) {
             ++$nbNewlines;
 
             if (!Preg::match('/\R/', $newlineToken->getContent())) {
@@ -266,8 +266,8 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
         $content = $lineEnding.WhitespacesAnalyzer::detectIndent($tokens, $position);
         $whitespaceToken = $tokens[$position - 1];
 
-        if (!$whitespaceToken->isGivenKind(\T_WHITESPACE)) {
-            if ($whitespaceToken->isGivenKind(\T_OPEN_TAG)) {
+        if (!$whitespaceToken->isKind(\T_WHITESPACE)) {
+            if ($whitespaceToken->isKind(\T_OPEN_TAG)) {
                 $content = Preg::replace('/\R/', '', $content);
 
                 if (!Preg::match('/\R/', $whitespaceToken->getContent())) {
@@ -284,7 +284,7 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
             return $position - 1;
         }
 
-        if ($tokens[$position - 2]->isGivenKind(\T_OPEN_TAG) && Preg::match('/\R/', $tokens[$position - 2]->getContent())) {
+        if ($tokens[$position - 2]->isKind(\T_OPEN_TAG) && Preg::match('/\R/', $tokens[$position - 2]->getContent())) {
             $content = Preg::replace('/^\R/', '', $content);
         }
 
@@ -297,7 +297,7 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
 
     private function removeComment(Tokens $tokens, int $commentPosition): void
     {
-        if ($tokens[$tokens->getPrevNonWhitespace($commentPosition)]->isGivenKind(\T_OPEN_TAG)) {
+        if ($tokens[$tokens->getPrevNonWhitespace($commentPosition)]->isKind(\T_OPEN_TAG)) {
             $whitespacePosition = $commentPosition + 1;
             $regex = '/^\R\h*/';
         } else {
@@ -307,7 +307,7 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
 
         $whitespaceToken = $tokens[$whitespacePosition];
 
-        if ($whitespaceToken->isGivenKind(\T_WHITESPACE)) {
+        if ($whitespaceToken->isKind(\T_WHITESPACE)) {
             $content = Preg::replace($regex, '', $whitespaceToken->getContent());
 
             $tokens->ensureWhitespaceAtIndex($whitespacePosition, 0, $content);
@@ -320,12 +320,12 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
     {
         $initialToken = $tokens[$position];
 
-        if ($initialToken->isGivenKind(self::STRUCTURE_KINDS)) {
+        if ($initialToken->isKind(self::STRUCTURE_KINDS)) {
             $position = $tokens->findBlockEnd(
                 Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
                 $tokens->getNextTokenOfKind($position, ['('])
             );
-        } elseif ($initialToken->isGivenKind(\T_CLASS)) {
+        } elseif ($initialToken->isKind(\T_CLASS)) {
             $openParenthesisPosition = $tokens->getNextMeaningfulToken($position);
 
             if ('(' === $tokens[$openParenthesisPosition]->getContent()) {
@@ -336,7 +336,7 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
             }
         }
 
-        if ($initialToken->isGivenKind(\T_FUNCTION)) {
+        if ($initialToken->isKind(\T_FUNCTION)) {
             $position = $tokens->getNextTokenOfKind($position, ['{']);
         } else {
             $position = $tokens->getNextMeaningfulToken($position);
@@ -348,7 +348,7 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
 
         $position = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $position);
 
-        if ($initialToken->isGivenKind(\T_DO)) {
+        if ($initialToken->isKind(\T_DO)) {
             $position = $tokens->findBlockEnd(
                 Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
                 $tokens->getNextTokenOfKind($position, ['('])

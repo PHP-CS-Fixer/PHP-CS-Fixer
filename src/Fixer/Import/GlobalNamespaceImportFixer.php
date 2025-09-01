@@ -223,7 +223,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
                 continue;
             }
 
-            if (!$token->isGivenKind(\T_CONST)) {
+            if (!$token->isKind(\T_CONST)) {
                 continue;
             }
 
@@ -237,7 +237,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(\T_STRING)) {
+            if (!$token->isKind(\T_STRING)) {
                 continue;
             }
 
@@ -252,7 +252,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
             }
 
             $nsSeparatorIndex = $tokens->getPrevMeaningfulToken($index);
-            if (!$tokens[$nsSeparatorIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+            if (!$tokens[$nsSeparatorIndex]->isKind(\T_NS_SEPARATOR)) {
                 if (!isset($global[$name])) {
                     // found an unqualified constant invocation
                     // add it to the not importable names (already used)
@@ -263,7 +263,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
             }
 
             $prevIndex = $tokens->getPrevMeaningfulToken($nsSeparatorIndex);
-            if ($tokens[$prevIndex]->isGivenKind([CT::T_NAMESPACE_OPERATOR, \T_STRING])) {
+            if ($tokens[$prevIndex]->isKind([CT::T_NAMESPACE_OPERATOR, \T_STRING])) {
                 continue;
             }
 
@@ -294,7 +294,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(\T_STRING)) {
+            if (!$token->isKind(\T_STRING)) {
                 continue;
             }
 
@@ -309,7 +309,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
             }
 
             $nsSeparatorIndex = $tokens->getPrevMeaningfulToken($index);
-            if (!$tokens[$nsSeparatorIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+            if (!$tokens[$nsSeparatorIndex]->isKind(\T_NS_SEPARATOR)) {
                 if (!isset($global[$name])) {
                     $other[$name] = true;
                 }
@@ -340,7 +340,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
         for ($index = 0, $count = $tokens->count(); $index < $count; ++$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(\T_DOC_COMMENT)) {
+            if ($token->isKind(\T_DOC_COMMENT)) {
                 $docBlocks[$index] = new DocBlock($token->getContent());
 
                 $this->traverseDocBlockTypes($docBlocks[$index], static function (string $type) use ($global, &$other): void {
@@ -362,7 +362,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
 
             $index = $tokens->getNextMeaningfulToken($index);
 
-            if ($tokens[$index]->isGivenKind(\T_STRING)) {
+            if ($tokens[$index]->isKind(\T_STRING)) {
                 $other[strtolower($tokens[$index]->getContent())] = true;
             }
         }
@@ -373,7 +373,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(\T_STRING)) {
+            if (!$token->isKind(\T_STRING)) {
                 continue;
             }
 
@@ -388,7 +388,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
             }
 
             $nsSeparatorIndex = $tokens->getPrevMeaningfulToken($index);
-            if (!$tokens[$nsSeparatorIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+            if (!$tokens[$nsSeparatorIndex]->isKind(\T_NS_SEPARATOR)) {
                 if (!isset($global[$name])) {
                     $other[$name] = true;
                 }
@@ -396,7 +396,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
                 continue;
             }
 
-            if ($tokens[$tokens->getPrevMeaningfulToken($nsSeparatorIndex)]->isGivenKind([CT::T_NAMESPACE_OPERATOR, \T_STRING])) {
+            if ($tokens[$tokens->getPrevMeaningfulToken($nsSeparatorIndex)]->isKind([CT::T_NAMESPACE_OPERATOR, \T_STRING])) {
                 continue;
             }
 
@@ -491,7 +491,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(\T_STRING)) {
+            if (!$token->isKind(\T_STRING)) {
                 continue;
             }
 
@@ -499,7 +499,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
                 continue;
             }
 
-            if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(\T_NS_SEPARATOR)) {
+            if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isKind(\T_NS_SEPARATOR)) {
                 continue;
             }
 
@@ -531,7 +531,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(\T_STRING)) {
+            if (!$token->isKind(\T_STRING)) {
                 continue;
             }
 
@@ -539,7 +539,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
                 continue;
             }
 
-            if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(\T_NS_SEPARATOR)) {
+            if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isKind(\T_NS_SEPARATOR)) {
                 continue;
             }
 
@@ -571,7 +571,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(\T_DOC_COMMENT)) {
+            if ($token->isKind(\T_DOC_COMMENT)) {
                 $doc = new DocBlock($token->getContent());
 
                 $changed = $this->traverseDocBlockTypes($doc, static function (string $type) use ($global): string {
@@ -589,7 +589,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
                 continue;
             }
 
-            if (!$token->isGivenKind(\T_STRING)) {
+            if (!$token->isKind(\T_STRING)) {
                 continue;
             }
 
@@ -597,7 +597,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
                 continue;
             }
 
-            if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(\T_NS_SEPARATOR)) {
+            if ($tokens[$tokens->getPrevMeaningfulToken($index)]->isKind(\T_NS_SEPARATOR)) {
                 continue;
             }
 
@@ -654,7 +654,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
                 $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classStart);
 
                 for ($index = $classStart; $index <= $classEnd; ++$index) {
-                    if (!$tokens[$index]->isGivenKind(\T_FUNCTION)) {
+                    if (!$tokens[$index]->isKind(\T_FUNCTION)) {
                         continue;
                     }
 
@@ -678,17 +678,17 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
                 continue;
             }
 
-            if (!$token->isGivenKind(\T_FUNCTION)) {
+            if (!$token->isKind(\T_FUNCTION)) {
                 continue;
             }
 
             $index = $tokens->getNextMeaningfulToken($index);
 
-            if ($tokens[$index]->isGivenKind(CT::T_RETURN_REF)) {
+            if ($tokens[$index]->isKind(CT::T_RETURN_REF)) {
                 $index = $tokens->getNextMeaningfulToken($index);
             }
 
-            if ($tokens[$index]->isGivenKind(\T_STRING)) {
+            if ($tokens[$index]->isKind(\T_STRING)) {
                 yield $tokens[$index]->getContent();
             }
         }

@@ -83,7 +83,7 @@ final class PhpUnitSetUpTearDownVisibilityFixer extends AbstractPhpUnitFixer
                 continue;
             }
 
-            if (!$tokens[$index]->isGivenKind(\T_FUNCTION)) {
+            if (!$tokens[$index]->isKind(\T_FUNCTION)) {
                 continue;
             }
 

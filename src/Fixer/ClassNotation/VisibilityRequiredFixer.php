@@ -225,16 +225,16 @@ final class VisibilityRequiredFixer extends AbstractFixer implements Configurabl
                 ? self::EXPECTED_KINDS_PROPERTY_KINDS
                 : self::EXPECTED_KINDS_GENERIC;
 
-            while ($tokens[$prevIndex]->isGivenKind($expectedKinds) || $tokens[$prevIndex]->equals('&')) {
-                if ($tokens[$prevIndex]->isGivenKind([\T_ABSTRACT, \T_FINAL])) {
+            while ($tokens[$prevIndex]->isKind($expectedKinds) || $tokens[$prevIndex]->equals('&')) {
+                if ($tokens[$prevIndex]->isKind([\T_ABSTRACT, \T_FINAL])) {
                     $abstractFinalIndex = $prevIndex;
-                } elseif ($tokens[$prevIndex]->isGivenKind(\T_STATIC)) {
+                } elseif ($tokens[$prevIndex]->isKind(\T_STATIC)) {
                     $staticIndex = $prevIndex;
-                } elseif ($tokens[$prevIndex]->isGivenKind(FCT::T_READONLY)) {
+                } elseif ($tokens[$prevIndex]->isKind(FCT::T_READONLY)) {
                     $readOnlyIndex = $prevIndex;
-                } elseif ($tokens[$prevIndex]->isGivenKind([FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET])) {
+                } elseif ($tokens[$prevIndex]->isKind([FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET])) {
                     $visibilitySetIndex = $prevIndex;
-                } elseif ($tokens[$prevIndex]->isGivenKind(self::PROPERTY_TYPE_DECLARATION_KINDS)) {
+                } elseif ($tokens[$prevIndex]->isKind(self::PROPERTY_TYPE_DECLARATION_KINDS)) {
                     $typeIndex = $prevIndex;
                 } elseif (!$tokens[$prevIndex]->equals('&')) {
                     $visibilityIndex = $prevIndex;
@@ -272,7 +272,7 @@ final class VisibilityRequiredFixer extends AbstractFixer implements Configurabl
             if (null === $visibilityIndex) {
                 $tokens->insertAt($index, [new Token(['promoted_property' === $element['type'] ? CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC : \T_PUBLIC, 'public']), new Token([\T_WHITESPACE, ' '])]);
             } else {
-                if ($tokens[$visibilityIndex]->isGivenKind(\T_VAR)) {
+                if ($tokens[$visibilityIndex]->isKind(\T_VAR)) {
                     $tokens[$visibilityIndex] = new Token([\T_PUBLIC, 'public']);
                 }
                 if ($this->isKeywordPlacedProperly($tokens, $visibilityIndex, $index)) {

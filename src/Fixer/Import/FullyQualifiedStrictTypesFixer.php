@@ -341,30 +341,30 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
                     } elseif ($token->equals('}')) {
                         unset($this->reservedIdentifiersByLevel[$openedCurlyBrackets]);
                         --$openedCurlyBrackets;
-                    } elseif ($token->isGivenKind(\T_VARIABLE)) {
+                    } elseif ($token->isKind(\T_VARIABLE)) {
                         $prevIndex = $tokens->getPrevMeaningfulToken($index);
-                        if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(\T_STRING)) {
+                        if (null !== $prevIndex && $tokens[$prevIndex]->isKind(\T_STRING)) {
                             $this->fixPrevName($tokens, $index, $uses, $namespaceName);
                         }
-                    } elseif ($token->isGivenKind(\T_DOUBLE_COLON)) {
+                    } elseif ($token->isKind(\T_DOUBLE_COLON)) {
                         $this->fixPrevName($tokens, $index, $uses, $namespaceName);
-                    } elseif ($token->isGivenKind(\T_FUNCTION)) {
+                    } elseif ($token->isKind(\T_FUNCTION)) {
                         $this->fixFunction($functionsAnalyzer, $tokens, $index, $uses, $namespaceName);
-                    } elseif ($token->isGivenKind(FCT::T_ATTRIBUTE)) {
+                    } elseif ($token->isKind(FCT::T_ATTRIBUTE)) {
                         $this->fixAttribute($tokens, $index, $uses, $namespaceName);
-                    } elseif ($token->isGivenKind(\T_CATCH)) {
+                    } elseif ($token->isKind(\T_CATCH)) {
                         $this->fixCatch($tokens, $index, $uses, $namespaceName);
-                    } elseif ($discoverSymbolsPhase && $token->isGivenKind(self::CLASSY_KINDS)) {
+                    } elseif ($discoverSymbolsPhase && $token->isKind(self::CLASSY_KINDS)) {
                         $this->fixNextName($tokens, $index, $uses, $namespaceName);
-                    } elseif ($token->isGivenKind([\T_EXTENDS, \T_IMPLEMENTS])) {
+                    } elseif ($token->isKind([\T_EXTENDS, \T_IMPLEMENTS])) {
                         $this->fixExtendsImplements($tokens, $index, $uses, $namespaceName);
-                    } elseif ($token->isGivenKind([\T_INSTANCEOF, \T_NEW, CT::T_USE_TRAIT, CT::T_TYPE_COLON])) {
+                    } elseif ($token->isKind([\T_INSTANCEOF, \T_NEW, CT::T_USE_TRAIT, CT::T_TYPE_COLON])) {
                         $this->fixNextName($tokens, $index, $uses, $namespaceName);
-                    } elseif ($discoverSymbolsPhase && $token->isGivenKind(\T_COMMENT) && Preg::match('/#\[\s*('.self::REGEX_CLASS.')/', $token->getContent(), $matches)) { // @TODO: drop when PHP 8.0+ is required
+                    } elseif ($discoverSymbolsPhase && $token->isKind(\T_COMMENT) && Preg::match('/#\[\s*('.self::REGEX_CLASS.')/', $token->getContent(), $matches)) { // @TODO: drop when PHP 8.0+ is required
                         /** @var class-string $attributeClass */
                         $attributeClass = $matches[1];
                         $this->determineShortType($attributeClass, 'class', $uses, $namespaceName);
-                    } elseif ($token->isGivenKind(\T_DOC_COMMENT)) {
+                    } elseif ($token->isKind(\T_DOC_COMMENT)) {
                         Preg::matchAll('/\*\h*@(?:psalm-|phpstan-)?(?:template(?:-covariant|-contravariant)?|(?:import-)?type)\h+('.TypeExpression::REGEX_IDENTIFIER.')(?!\S)/i', $token->getContent(), $matches);
                         foreach ($matches[1] as $reservedIdentifier) {
                             $this->reservedIdentifiersByLevel[$openedCurlyBrackets + 1][$reservedIdentifier] = true;
@@ -390,7 +390,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
                     $atIndex = $namespace->getEndIndex() + 1;
                 } else {
                     $firstTokenIndex = $tokens->getNextMeaningfulToken($namespace->getScopeStartIndex());
-                    if (null !== $firstTokenIndex && $tokens[$firstTokenIndex]->isGivenKind(\T_DECLARE)) {
+                    if (null !== $firstTokenIndex && $tokens[$firstTokenIndex]->isKind(\T_DECLARE)) {
                         $atIndex = $tokens->getNextTokenOfKind($firstTokenIndex, [';']) + 1;
                     } else {
                         $atIndex = $namespace->getScopeStartIndex() + 1;
@@ -708,7 +708,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
     private function fixExtendsImplements(Tokens $tokens, int $index, array $uses, string $namespaceName): void
     {
         // We handle `extends` and `implements` with similar logic, but we need to exit the loop under different conditions.
-        $isExtends = $tokens[$index]->isGivenKind(\T_EXTENDS);
+        $isExtends = $tokens[$index]->isKind(\T_EXTENDS);
         $index = $tokens->getNextMeaningfulToken($index);
 
         $typeStartIndex = null;
@@ -778,7 +778,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
 
         foreach ($attributeAnalysis->getAttributes() as $attribute) {
             $index = $attribute['start'];
-            while ($tokens[$index]->isGivenKind([\T_STRING, \T_NS_SEPARATOR])) {
+            while ($tokens[$index]->isKind([\T_STRING, \T_NS_SEPARATOR])) {
                 $index = $tokens->getPrevMeaningfulToken($index);
             }
             $this->fixNextName($tokens, $index, $uses, $namespaceName);
@@ -799,7 +799,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
                 break;
             }
 
-            if ($tokens[$index]->isGivenKind([\T_STRING, \T_NS_SEPARATOR])) {
+            if ($tokens[$index]->isKind([\T_STRING, \T_NS_SEPARATOR])) {
                 $typeStartIndex = $index;
                 if (null === $typeEndIndex) {
                     $typeEndIndex = $index;
@@ -825,7 +825,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
         while (true) {
             $index = $tokens->getNextMeaningfulToken($index);
 
-            if ($tokens[$index]->isGivenKind([\T_STRING, \T_NS_SEPARATOR])) {
+            if ($tokens[$index]->isKind([\T_STRING, \T_NS_SEPARATOR])) {
                 if (null === $typeStartIndex) {
                     $typeStartIndex = $index;
                 }
@@ -864,7 +864,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
     {
         $typeStartIndex = $type->getStartIndex();
 
-        if ($tokens[$typeStartIndex]->isGivenKind(CT::T_NULLABLE_TYPE)) {
+        if ($tokens[$typeStartIndex]->isKind(CT::T_NULLABLE_TYPE)) {
             $typeStartIndex = $tokens->getNextMeaningfulToken($typeStartIndex);
         }
 
@@ -916,7 +916,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
         $skipNextYield = false;
         $typeStartIndex = $typeEndIndex = null;
         while (true) {
-            if ($tokens[$index]->isGivenKind(CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN)) {
+            if ($tokens[$index]->isKind(CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN)) {
                 $index = $tokens->getNextMeaningfulToken($index);
                 $typeStartIndex = $typeEndIndex = null;
 
@@ -924,7 +924,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
             }
 
             if (
-                $tokens[$index]->isGivenKind([CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE])
+                $tokens[$index]->isKind([CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE])
                 || $index > $endIndex
             ) {
                 if (!$skipNextYield && null !== $typeStartIndex) {

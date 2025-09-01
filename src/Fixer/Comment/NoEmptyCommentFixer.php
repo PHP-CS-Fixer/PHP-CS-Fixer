@@ -59,7 +59,7 @@ final class NoEmptyCommentFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = 1, $count = \count($tokens); $index < $count; ++$index) {
-            if (!$tokens[$index]->isGivenKind(\T_COMMENT)) {
+            if (!$tokens[$index]->isKind(\T_COMMENT)) {
                 continue;
             }
 

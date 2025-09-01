@@ -207,7 +207,7 @@ final class GroupImportFixer extends AbstractFixer implements ConfigurableFixerI
             $useStatementTokens = [\T_USE, \T_WHITESPACE, \T_STRING, \T_NS_SEPARATOR, \T_AS, CT::T_CONST_IMPORT, CT::T_FUNCTION_IMPORT];
 
             while ($index !== $endIndex) {
-                if ($tokens[$index]->isGivenKind($useStatementTokens)) {
+                if ($tokens[$index]->isKind($useStatementTokens)) {
                     $tokens->clearAt($index);
                 }
 
@@ -220,7 +220,7 @@ final class GroupImportFixer extends AbstractFixer implements ConfigurableFixerI
 
             ++$index;
 
-            if (isset($tokens[$index]) && $tokens[$index]->isGivenKind(\T_WHITESPACE)) {
+            if (isset($tokens[$index]) && $tokens[$index]->isKind(\T_WHITESPACE)) {
                 $tokens->clearAt($index);
             }
         }

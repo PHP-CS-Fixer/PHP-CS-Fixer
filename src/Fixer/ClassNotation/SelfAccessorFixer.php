@@ -84,7 +84,7 @@ final class SelfAccessorFixer extends AbstractFixer
 
         foreach ($tokens->getNamespaceDeclarations() as $namespace) {
             for ($index = $namespace->getScopeStartIndex(); $index < $namespace->getScopeEndIndex(); ++$index) {
-                if (!$tokens[$index]->isGivenKind([\T_CLASS, \T_INTERFACE]) || $tokensAnalyzer->isAnonymousClass($index)) {
+                if (!$tokens[$index]->isKind([\T_CLASS, \T_INTERFACE]) || $tokensAnalyzer->isAnonymousClass($index)) {
                     continue;
                 }
 
@@ -117,21 +117,21 @@ final class SelfAccessorFixer extends AbstractFixer
             $token = $tokens[$i];
 
             // skip anonymous classes
-            if ($token->isGivenKind(\T_CLASS) && $tokensAnalyzer->isAnonymousClass($i)) {
+            if ($token->isKind(\T_CLASS) && $tokensAnalyzer->isAnonymousClass($i)) {
                 $i = $tokens->getNextTokenOfKind($i, ['{']);
                 $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $i);
 
                 continue;
             }
 
-            if ($token->isGivenKind(\T_FN)) {
+            if ($token->isKind(\T_FN)) {
                 $i = $tokensAnalyzer->getLastTokenIndexOfArrowFunction($i);
                 $i = $tokens->getNextMeaningfulToken($i);
 
                 continue;
             }
 
-            if ($token->isGivenKind(\T_FUNCTION)) {
+            if ($token->isKind(\T_FUNCTION)) {
                 if ($tokensAnalyzer->isLambda($i)) {
                     $i = $tokens->getNextTokenOfKind($i, ['{']);
                     $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $i);
@@ -150,26 +150,26 @@ final class SelfAccessorFixer extends AbstractFixer
             }
 
             $nextToken = $tokens[$tokens->getNextMeaningfulToken($i)];
-            if ($nextToken->isGivenKind(\T_NS_SEPARATOR)) {
+            if ($nextToken->isKind(\T_NS_SEPARATOR)) {
                 continue;
             }
 
             $classStartIndex = $i;
             $prevToken = $tokens[$tokens->getPrevMeaningfulToken($i)];
-            if ($prevToken->isGivenKind(\T_NS_SEPARATOR)) {
+            if ($prevToken->isKind(\T_NS_SEPARATOR)) {
                 $classStartIndex = $this->getClassStart($tokens, $i, $namespace);
                 if (null === $classStartIndex) {
                     continue;
                 }
                 $prevToken = $tokens[$tokens->getPrevMeaningfulToken($classStartIndex)];
             }
-            if ($prevToken->isGivenKind(\T_STRING) || $prevToken->isObjectOperator()) {
+            if ($prevToken->isKind(\T_STRING) || $prevToken->isObjectOperator()) {
                 continue;
             }
 
             if (
-                $prevToken->isGivenKind([\T_INSTANCEOF, \T_NEW])
-                || $nextToken->isGivenKind(\T_PAAMAYIM_NEKUDOTAYIM)
+                $prevToken->isKind([\T_INSTANCEOF, \T_NEW])
+                || $nextToken->isKind(\T_PAAMAYIM_NEKUDOTAYIM)
                 || (
                     null !== $insideMethodSignatureUntil
                     && $i < $insideMethodSignatureUntil
@@ -191,7 +191,7 @@ final class SelfAccessorFixer extends AbstractFixer
         foreach (array_reverse(Preg::split('/(\\\)/', $namespace, -1, \PREG_SPLIT_NO_EMPTY | \PREG_SPLIT_DELIM_CAPTURE)) as $piece) {
             $index = $tokens->getPrevMeaningfulToken($index);
             if ('\\' === $piece) {
-                if (!$tokens[$index]->isGivenKind(\T_NS_SEPARATOR)) {
+                if (!$tokens[$index]->isKind(\T_NS_SEPARATOR)) {
                     return null;
                 }
             } elseif (!$tokens[$index]->equals([\T_STRING, $piece], false)) {

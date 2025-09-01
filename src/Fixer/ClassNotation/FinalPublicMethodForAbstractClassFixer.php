@@ -89,7 +89,7 @@ final class FinalPublicMethodForAbstractClassFixer extends AbstractFixer
 
         foreach (array_reverse($abstracts) as $abstractIndex) {
             $classIndex = $tokens->getNextTokenOfKind($abstractIndex, [[\T_CLASS], [\T_FUNCTION]]);
-            if (!$tokens[$classIndex]->isGivenKind(\T_CLASS)) {
+            if (!$tokens[$classIndex]->isKind(\T_CLASS)) {
                 continue;
             }
 
@@ -111,20 +111,20 @@ final class FinalPublicMethodForAbstractClassFixer extends AbstractFixer
             }
 
             // skip non public methods
-            if (!$tokens[$index]->isGivenKind(\T_PUBLIC)) {
+            if (!$tokens[$index]->isKind(\T_PUBLIC)) {
                 continue;
             }
 
             $nextIndex = $tokens->getNextMeaningfulToken($index);
             $nextToken = $tokens[$nextIndex];
 
-            if ($nextToken->isGivenKind(\T_STATIC)) {
+            if ($nextToken->isKind(\T_STATIC)) {
                 $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
                 $nextToken = $tokens[$nextIndex];
             }
 
             // skip uses, attributes, constants etc
-            if (!$nextToken->isGivenKind(\T_FUNCTION)) {
+            if (!$nextToken->isKind(\T_FUNCTION)) {
                 continue;
             }
 
@@ -139,14 +139,14 @@ final class FinalPublicMethodForAbstractClassFixer extends AbstractFixer
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
             $prevToken = $tokens[$prevIndex];
 
-            if ($prevToken->isGivenKind(\T_STATIC)) {
+            if ($prevToken->isKind(\T_STATIC)) {
                 $index = $prevIndex;
                 $prevIndex = $tokens->getPrevMeaningfulToken($index);
                 $prevToken = $tokens[$prevIndex];
             }
 
             // skip abstract or already final methods
-            if ($prevToken->isGivenKind([\T_ABSTRACT, \T_FINAL])) {
+            if ($prevToken->isKind([\T_ABSTRACT, \T_FINAL])) {
                 $index = $prevIndex;
 
                 continue;

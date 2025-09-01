@@ -71,7 +71,7 @@ final class ControlCaseStructuresAnalyzer
         $isTypeOfInterest = false;
 
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(self::SUPPORTED_TYPES_WITH_CASE_OR_DEFAULT)) {
+            if ($token->isKind(self::SUPPORTED_TYPES_WITH_CASE_OR_DEFAULT)) {
                 ++$depth;
 
                 $stack[$depth] = [
@@ -85,18 +85,18 @@ final class ControlCaseStructuresAnalyzer
 
                 $isTypeOfInterest = \in_array($stack[$depth]['kind'], $types, true);
 
-                if ($token->isGivenKind(\T_SWITCH)) {
+                if ($token->isKind(\T_SWITCH)) {
                     $index = $tokens->getNextMeaningfulToken($index);
                     $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
                     $stack[$depth]['open'] = $tokens->getNextMeaningfulToken($index);
                     $stack[$depth]['alternative_syntax'] = $tokens[$stack[$depth]['open']]->equals(':');
-                } elseif ($token->isGivenKind(FCT::T_MATCH)) {
+                } elseif ($token->isKind(FCT::T_MATCH)) {
                     $index = $tokens->getNextMeaningfulToken($index);
                     $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
                     $stack[$depth]['open'] = $tokens->getNextMeaningfulToken($index);
-                } elseif ($token->isGivenKind(FCT::T_ENUM)) {
+                } elseif ($token->isKind(FCT::T_ENUM)) {
                     $stack[$depth]['open'] = $tokens->getNextTokenOfKind($index, ['{']);
                 }
 
@@ -142,7 +142,7 @@ final class ControlCaseStructuresAnalyzer
                 continue;
             }
 
-            if ($tokens[$index]->isGivenKind(\T_ENDSWITCH)) {
+            if ($tokens[$index]->isKind(\T_ENDSWITCH)) {
                 if (!$stack[$depth]['alternative_syntax']) {
                     throw new \RuntimeException('Analysis syntax failure, unexpected "T_ENDSWITCH".');
                 }
@@ -179,9 +179,9 @@ final class ControlCaseStructuresAnalyzer
                 continue; // don't bother to analyze stuff that caller is not interested in
             }
 
-            if ($token->isGivenKind(\T_CASE)) {
+            if ($token->isKind(\T_CASE)) {
                 $stack[$depth]['cases'][] = ['index' => $index, 'open' => self::findCaseOpen($tokens, $stack[$depth]['kind'], $index)];
-            } elseif ($token->isGivenKind(\T_DEFAULT)) {
+            } elseif ($token->isKind(\T_DEFAULT)) {
                 if (null !== $stack[$depth]['default']) {
                     throw new \RuntimeException('Analysis multiple "default" found.');
                 }

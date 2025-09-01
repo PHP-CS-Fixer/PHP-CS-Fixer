@@ -43,7 +43,7 @@ final class DeclareParenthesesFixer extends AbstractFixer
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(\T_DECLARE)) {
+            if (!$token->isKind(\T_DECLARE)) {
                 continue;
             }
 

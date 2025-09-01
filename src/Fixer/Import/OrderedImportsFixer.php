@@ -262,7 +262,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
             for ($index = 0; $index < $count - 1; ++$index) {
                 $nextGroupUse = $tokens->getNextTokenOfKind($usesPerNamespaceIndices[$index], [';', [\T_CLOSE_TAG]]);
 
-                if ($tokens[$nextGroupUse]->isGivenKind(\T_CLOSE_TAG)) {
+                if ($tokens[$nextGroupUse]->isKind(\T_CLOSE_TAG)) {
                     $nextGroupUse = $tokens->getNextTokenOfKind($usesPerNamespaceIndices[$index], [[\T_OPEN_TAG]]);
                 }
 
@@ -402,11 +402,11 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
             $endIndex = $tokens->getNextTokenOfKind($startIndex, [';', [\T_CLOSE_TAG]]);
             $previous = $tokens->getPrevMeaningfulToken($endIndex);
 
-            $group = $tokens[$previous]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE);
-            if ($tokens[$startIndex]->isGivenKind(CT::T_CONST_IMPORT)) {
+            $group = $tokens[$previous]->isKind(CT::T_GROUP_IMPORT_BRACE_CLOSE);
+            if ($tokens[$startIndex]->isKind(CT::T_CONST_IMPORT)) {
                 $type = self::IMPORT_TYPE_CONST;
                 $index = $tokens->getNextNonWhitespace($startIndex);
-            } elseif ($tokens[$startIndex]->isGivenKind(CT::T_FUNCTION_IMPORT)) {
+            } elseif ($tokens[$startIndex]->isKind(CT::T_FUNCTION_IMPORT)) {
                 $type = self::IMPORT_TYPE_FUNCTION;
                 $index = $tokens->getNextNonWhitespace($startIndex);
             } else {
@@ -427,7 +427,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
                         $namespaceTokensCount = \count($namespaceTokens) - 1;
                         $namespace = '';
                         for ($k = 0; $k < $namespaceTokensCount; ++$k) {
-                            if ($namespaceTokens[$k]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
+                            if ($namespaceTokens[$k]->isKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                                 $namespace .= '{';
 
                                 break;

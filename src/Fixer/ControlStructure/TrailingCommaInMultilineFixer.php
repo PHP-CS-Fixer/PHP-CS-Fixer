@@ -146,7 +146,7 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
         $fixDestructuring = \in_array(self::ARRAY_DESTRUCTURING, $configuredElements, true);
 
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if ($tokens[$index]->isGivenKind(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN)) {
+            if ($tokens[$index]->isKind(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN)) {
                 if ($fixDestructuring) { // array destructing short syntax
                     $this->fixBlock($tokens, $index);
                 }
@@ -154,7 +154,7 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
                 continue;
             }
 
-            if ($tokens[$index]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+            if ($tokens[$index]->isKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
                 if ($fixArrays) { // array short syntax
                     $this->fixBlock($tokens, $index);
                 }
@@ -168,7 +168,7 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
 
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-            if ($tokens[$prevIndex]->isGivenKind(\T_ARRAY)) {
+            if ($tokens[$prevIndex]->isKind(\T_ARRAY)) {
                 if ($fixArrays) { // array long syntax
                     $this->fixBlock($tokens, $index);
                 }
@@ -176,7 +176,7 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
                 continue;
             }
 
-            if ($tokens[$prevIndex]->isGivenKind(\T_LIST)) {
+            if ($tokens[$prevIndex]->isKind(\T_LIST)) {
                 if ($fixDestructuring || $fixArguments) { // array destructing long syntax
                     $this->fixBlock($tokens, $index);
                 }
@@ -184,7 +184,7 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
                 continue;
             }
 
-            if ($fixMatch && $tokens[$prevIndex]->isGivenKind(\T_MATCH)) {
+            if ($fixMatch && $tokens[$prevIndex]->isKind(\T_MATCH)) {
                 $this->fixBlock($tokens, $tokens->getNextTokenOfKind($index, ['{']));
 
                 continue;
@@ -194,7 +194,7 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
 
             if ($fixArguments
                 && $tokens[$prevIndex]->equalsAny([']', [\T_CLASS], [\T_STRING], [\T_VARIABLE], [\T_STATIC], [\T_ISSET], [\T_UNSET], [\T_LIST]])
-                && !$tokens[$prevPrevIndex]->isGivenKind(\T_FUNCTION)
+                && !$tokens[$prevPrevIndex]->isKind(\T_FUNCTION)
             ) {
                 $this->fixBlock($tokens, $index);
 
@@ -204,9 +204,9 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
             if (
                 $fixParameters
                 && (
-                    $tokens[$prevIndex]->isGivenKind(\T_STRING)
-                    && $tokens[$prevPrevIndex]->isGivenKind(\T_FUNCTION)
-                    || $tokens[$prevIndex]->isGivenKind([\T_FN, \T_FUNCTION])
+                    $tokens[$prevIndex]->isKind(\T_STRING)
+                    && $tokens[$prevPrevIndex]->isKind(\T_FUNCTION)
+                    || $tokens[$prevIndex]->isKind([\T_FN, \T_FUNCTION])
                 )
             ) {
                 $this->fixBlock($tokens, $index);
@@ -234,7 +234,7 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
         // if there is some item between braces then add `,` after it
         if (
             $startIndex !== $beforeEndIndex && !$beforeEndToken->equals(',')
-            && (true === $this->configuration['after_heredoc'] || !$beforeEndToken->isGivenKind(\T_END_HEREDOC))
+            && (true === $this->configuration['after_heredoc'] || !$beforeEndToken->isKind(\T_END_HEREDOC))
         ) {
             $tokens->insertAt($beforeEndIndex + 1, new Token(','));
 

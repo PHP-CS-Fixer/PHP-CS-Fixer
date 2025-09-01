@@ -295,15 +295,15 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind($this->fixTokenMap)) {
+            if (!$token->isKind($this->fixTokenMap)) {
                 continue;
             }
 
-            if ($token->isGivenKind(\T_WHILE) && $analyzer->isWhilePartOfDoWhile($index)) {
+            if ($token->isKind(\T_WHILE) && $analyzer->isWhilePartOfDoWhile($index)) {
                 continue;
             }
 
-            if ($token->isGivenKind(\T_CASE) && $analyzer->isEnumCase($index)) {
+            if ($token->isKind(\T_CASE) && $analyzer->isEnumCase($index)) {
                 continue;
             }
 

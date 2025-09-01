@@ -125,10 +125,10 @@ final class Token
     public function equals($other, bool $caseSensitive = true): bool
     {
         if ('&' === $other) {
-            return '&' === $this->content && (null === $this->id || $this->isGivenKind([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]));
+            return '&' === $this->content && (null === $this->id || $this->isKind([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]));
         }
         if (null === $this->id && '&' === $this->content) {
-            return $other instanceof self && '&' === $other->content && (null === $other->id || $other->isGivenKind([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]));
+            return $other instanceof self && '&' === $other->content && (null === $other->id || $other->isKind([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]));
         }
 
         if ($other instanceof self) {
@@ -368,7 +368,7 @@ final class Token
      */
     public function isCast(): bool
     {
-        return $this->isGivenKind(self::getCastTokenKinds());
+        return $this->isKind(self::getCastTokenKinds());
     }
 
     /**
@@ -378,7 +378,7 @@ final class Token
      */
     public function isClassy(): bool
     {
-        return $this->isGivenKind(self::getClassyTokenKinds());
+        return $this->isKind(self::getClassyTokenKinds());
     }
 
     /**
@@ -388,7 +388,7 @@ final class Token
      */
     public function isComment(): bool
     {
-        return $this->isGivenKind([\T_COMMENT, \T_DOC_COMMENT]);
+        return $this->isKind([\T_COMMENT, \T_DOC_COMMENT]);
     }
 
     /**
@@ -398,7 +398,7 @@ final class Token
      */
     public function isObjectOperator(): bool
     {
-        return $this->isGivenKind(self::getObjectOperatorKinds());
+        return $this->isKind(self::getObjectOperatorKinds());
     }
 
     /**
@@ -461,7 +461,7 @@ final class Token
             $whitespaces = " \t\n\r\0\x0B";
         }
 
-        if ($this->isArray && !$this->isGivenKind(\T_WHITESPACE)) {
+        if ($this->isArray && !$this->isKind(\T_WHITESPACE)) {
             return false;
         }
 

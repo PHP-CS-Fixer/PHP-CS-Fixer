@@ -286,7 +286,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
         }
 
         // deal with comments above an element
-        if ($tokens[$nonWhiteAbove]->isGivenKind(\T_COMMENT)) {
+        if ($tokens[$nonWhiteAbove]->isKind(\T_COMMENT)) {
             // check if the comment belongs to the previous element
             if ($elementAboveEnd === $nonWhiteAbove) {
                 $this->correctLineBreaks($tokens, $nonWhiteAbove, $element['start'], $this->determineRequiredLineCount($tokens, $class, $elementIndex));
@@ -331,7 +331,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
         }
 
         // deal with element with a PHPDoc/attribute above it
-        if ($tokens[$nonWhiteAbove]->isGivenKind([\T_DOC_COMMENT, CT::T_ATTRIBUTE_CLOSE])) {
+        if ($tokens[$nonWhiteAbove]->isKind([\T_DOC_COMMENT, CT::T_ATTRIBUTE_CLOSE])) {
             // there should be one linebreak between the element and the attribute above it
             $this->correctLineBreaks($tokens, $nonWhiteAbove, $element['start'], 1);
 
@@ -373,13 +373,13 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
 
             $aboveElementDocCandidateIndex = $tokens->getPrevNonWhitespace($aboveElement['start']);
 
-            return $tokens[$aboveElementDocCandidateIndex]->isGivenKind([\T_DOC_COMMENT, CT::T_ATTRIBUTE_CLOSE]) ? 2 : 1;
+            return $tokens[$aboveElementDocCandidateIndex]->isKind([\T_DOC_COMMENT, CT::T_ATTRIBUTE_CLOSE]) ? 2 : 1;
         }
 
         if (self::SPACING_ONLY_IF_META === $spacing) {
             $aboveElementDocCandidateIndex = $tokens->getPrevNonWhitespace($class['elements'][$elementIndex]['start']);
 
-            return $tokens[$aboveElementDocCandidateIndex]->isGivenKind([\T_DOC_COMMENT, CT::T_ATTRIBUTE_CLOSE]) ? 2 : 1;
+            return $tokens[$aboveElementDocCandidateIndex]->isKind([\T_DOC_COMMENT, CT::T_ATTRIBUTE_CLOSE]) ? 2 : 1;
         }
 
         throw new \RuntimeException(\sprintf('Unknown spacing "%s".', $spacing));
@@ -466,7 +466,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
     private function findCommentBlockStart(Tokens $tokens, int $start, int $elementAboveEnd): int
     {
         for ($i = $start; $i > $elementAboveEnd; --$i) {
-            if ($tokens[$i]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+            if ($tokens[$i]->isKind(CT::T_ATTRIBUTE_CLOSE)) {
                 $start = $i = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $i);
 
                 continue;
@@ -537,7 +537,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
         do {
             $nonWhiteAbove = $tokens->getPrevMeaningfulToken($firstElementAttributeIndex);
 
-            if (null !== $nonWhiteAbove && $tokens[$nonWhiteAbove]->isGivenKind(self::MODIFIER_TYPES)) {
+            if (null !== $nonWhiteAbove && $tokens[$nonWhiteAbove]->isKind(self::MODIFIER_TYPES)) {
                 $firstElementAttributeIndex = $nonWhiteAbove;
             } else {
                 break;
@@ -553,7 +553,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
     private function getLastTokenIndexOfClassElement(Tokens $tokens, int $classIndex, int $elementIndex, string $elementType, TokensAnalyzer $tokensAnalyzer): int
     {
         // find last token of the element
-        if ('method' === $elementType && !$tokens[$classIndex]->isGivenKind(\T_INTERFACE)) {
+        if ('method' === $elementType && !$tokens[$classIndex]->isKind(\T_INTERFACE)) {
             $attributes = $tokensAnalyzer->getMethodAttributes($elementIndex);
 
             if (true === $attributes['abstract']) {
@@ -566,7 +566,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
 
             do {
                 $elementEndIndex = $tokens->getNextMeaningfulToken($elementEndIndex);
-            } while ($tokens[$elementEndIndex]->isGivenKind([\T_STRING, \T_NS_SEPARATOR]) || $tokens[$elementEndIndex]->equals(','));
+            } while ($tokens[$elementEndIndex]->isKind([\T_STRING, \T_NS_SEPARATOR]) || $tokens[$elementEndIndex]->equals(','));
 
             if (!$tokens[$elementEndIndex]->equals(';')) {
                 $elementEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $tokens->getNextTokenOfKind($elementIndex, ['{']));

@@ -178,8 +178,8 @@ final class TypeDeclarationSpacesFixer extends AbstractFixer implements Configur
 
         foreach ($tokens as $index => $token) {
             if (
-                $token->isGivenKind(\T_FN)
-                || ($token->isGivenKind(\T_FUNCTION) && !isset($elements[$index]))
+                $token->isKind(\T_FN)
+                || ($token->isKind(\T_FUNCTION) && !isset($elements[$index]))
             ) {
                 $elements[$index] = 'method';
             }
@@ -207,7 +207,7 @@ final class TypeDeclarationSpacesFixer extends AbstractFixer implements Configur
 
         do {
             $index = $tokens->getPrevMeaningfulToken($index);
-        } while (!$tokens[$index]->isGivenKind(self::PROPERTY_MODIFIERS));
+        } while (!$tokens[$index]->isKind(self::PROPERTY_MODIFIERS));
 
         $propertyType = $this->collectTypeAnalysis($tokens, $index, $propertyIndex);
 
@@ -229,13 +229,13 @@ final class TypeDeclarationSpacesFixer extends AbstractFixer implements Configur
 
         $nameIndex = $tokens->getPrevMeaningfulToken($equalsIndex);
 
-        if (!$tokens[$nameIndex]->isGivenKind(\T_STRING)) {
+        if (!$tokens[$nameIndex]->isKind(\T_STRING)) {
             return;
         }
 
         $typeEndIndex = $tokens->getPrevMeaningfulToken($nameIndex);
 
-        if (null === $typeEndIndex || $tokens[$typeEndIndex]->isGivenKind(\T_CONST)) {
+        if (null === $typeEndIndex || $tokens[$typeEndIndex]->isKind(\T_CONST)) {
             return;
         }
 

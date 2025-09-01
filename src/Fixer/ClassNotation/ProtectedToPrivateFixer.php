@@ -106,16 +106,16 @@ final class ProtectedToPrivateFixer extends AbstractFixer
             do {
                 $previousIndex = $tokens->getPrevMeaningfulToken($previousIndex);
 
-                if ($tokens[$previousIndex]->isGivenKind(\T_PROTECTED)) {
+                if ($tokens[$previousIndex]->isKind(\T_PROTECTED)) {
                     $protectedIndex = $previousIndex;
-                } elseif ($tokens[$previousIndex]->isGivenKind(CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED)) {
+                } elseif ($tokens[$previousIndex]->isKind(CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED)) {
                     $protectedPromotedIndex = $previousIndex;
-                } elseif ($tokens[$previousIndex]->isGivenKind(FCT::T_PROTECTED_SET)) {
+                } elseif ($tokens[$previousIndex]->isKind(FCT::T_PROTECTED_SET)) {
                     $protectedSetIndex = $previousIndex;
-                } elseif ($tokens[$previousIndex]->isGivenKind(\T_FINAL)) {
+                } elseif ($tokens[$previousIndex]->isKind(\T_FINAL)) {
                     $isFinal = true;
                 }
-            } while ($tokens[$previousIndex]->isGivenKind(self::MODIFIER_KINDS));
+            } while ($tokens[$previousIndex]->isKind(self::MODIFIER_KINDS));
 
             if ($isFinal && 'const' === $element['type']) {
                 continue; // Final constants cannot be private
@@ -144,11 +144,11 @@ final class ProtectedToPrivateFixer extends AbstractFixer
      */
     private function isClassCandidate(Tokens $tokens, int $classIndex): bool
     {
-        if ($tokens[$classIndex]->isGivenKind(FCT::T_ENUM)) {
+        if ($tokens[$classIndex]->isKind(FCT::T_ENUM)) {
             return true;
         }
 
-        if (!$tokens[$classIndex]->isGivenKind(\T_CLASS) || $this->tokensAnalyzer->isAnonymousClass($classIndex)) {
+        if (!$tokens[$classIndex]->isKind(\T_CLASS) || $this->tokensAnalyzer->isAnonymousClass($classIndex)) {
             return false;
         }
 
@@ -161,7 +161,7 @@ final class ProtectedToPrivateFixer extends AbstractFixer
         $classNameIndex = $tokens->getNextMeaningfulToken($classIndex); // move to class name as anonymous class is never "final"
         $classExtendsIndex = $tokens->getNextMeaningfulToken($classNameIndex); // move to possible "extends"
 
-        if ($tokens[$classExtendsIndex]->isGivenKind(\T_EXTENDS)) {
+        if ($tokens[$classExtendsIndex]->isKind(\T_EXTENDS)) {
             return false;
         }
 

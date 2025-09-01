@@ -102,7 +102,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements Confi
             $endIndex = $tokens->getNextTokenOfKind($index, [';', [\T_CLOSE_TAG]]);
             $groupClose = $tokens->getPrevMeaningfulToken($endIndex);
 
-            if ($tokens[$groupClose]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
+            if ($tokens[$groupClose]->isKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
                 if (true === $this->configuration['group_to_single_imports']) {
                     $this->fixGroupUse($tokens, $index, $endIndex);
                 }
@@ -132,7 +132,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements Confi
         $groupOpenIndex = null;
 
         for ($i = $index + 1;; ++$i) {
-            if ($tokens[$i]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
+            if ($tokens[$i]->isKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                 $groupOpenIndex = $i;
 
                 break;
@@ -175,7 +175,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements Confi
         for ($i = $groupOpenIndex + 1; $i <= $groupCloseIndex; ++$i) {
             $token = $tokens[$i];
 
-            if ($token->equals(',') && $tokens[$tokens->getNextMeaningfulToken($i)]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
+            if ($token->equals(',') && $tokens[$tokens->getNextMeaningfulToken($i)]->isKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
                 continue;
             }
 
@@ -189,13 +189,13 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements Confi
             if ($token->isWhitespace()) {
                 $j = $tokens->getNextMeaningfulToken($i);
 
-                if ($tokens[$j]->isGivenKind(\T_AS)) {
+                if ($tokens[$j]->isKind(\T_AS)) {
                     $statement .= ' as ';
                     $i += 2;
-                } elseif ($tokens[$j]->isGivenKind(CT::T_FUNCTION_IMPORT)) {
+                } elseif ($tokens[$j]->isKind(CT::T_FUNCTION_IMPORT)) {
                     $statement = ' function'.$statement;
                     $i += 2;
-                } elseif ($tokens[$j]->isGivenKind(CT::T_CONST_IMPORT)) {
+                } elseif ($tokens[$j]->isKind(CT::T_CONST_IMPORT)) {
                     $statement = ' const'.$statement;
                     $i += 2;
                 }
@@ -237,12 +237,12 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements Confi
     {
         $nextTokenIndex = $tokens->getNextMeaningfulToken($index);
 
-        if ($tokens[$nextTokenIndex]->isGivenKind(CT::T_FUNCTION_IMPORT)) {
+        if ($tokens[$nextTokenIndex]->isKind(CT::T_FUNCTION_IMPORT)) {
             $leadingTokens = [
                 new Token([CT::T_FUNCTION_IMPORT, 'function']),
                 new Token([\T_WHITESPACE, ' ']),
             ];
-        } elseif ($tokens[$nextTokenIndex]->isGivenKind(CT::T_CONST_IMPORT)) {
+        } elseif ($tokens[$nextTokenIndex]->isKind(CT::T_CONST_IMPORT)) {
             $leadingTokens = [
                 new Token([CT::T_CONST_IMPORT, 'const']),
                 new Token([\T_WHITESPACE, ' ']),

@@ -56,7 +56,7 @@ final class NoMultilineWhitespaceAroundDoubleArrowFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(\T_DOUBLE_ARROW)) {
+            if (!$token->isKind(\T_DOUBLE_ARROW)) {
                 continue;
             }
 

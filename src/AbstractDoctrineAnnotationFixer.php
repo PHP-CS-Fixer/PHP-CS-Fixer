@@ -209,13 +209,13 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
             if (null === $index) {
                 return false;
             }
-        } while ($tokens[$index]->isGivenKind(self::CLASS_MODIFIERS));
+        } while ($tokens[$index]->isKind(self::CLASS_MODIFIERS));
 
-        if ($tokens[$index]->isGivenKind(\T_CLASS)) {
+        if ($tokens[$index]->isKind(\T_CLASS)) {
             return true;
         }
 
-        while ($tokens[$index]->isGivenKind(self::MODIFIER_KINDS)) {
+        while ($tokens[$index]->isKind(self::MODIFIER_KINDS)) {
             $index = $tokens->getNextMeaningfulToken($index);
         }
 
@@ -223,6 +223,6 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
             return false;
         }
 
-        return $tokens[$this->classyElements[$index]['classIndex']]->isGivenKind(\T_CLASS); // interface, enums and traits cannot have doctrine annotations
+        return $tokens[$this->classyElements[$index]['classIndex']]->isKind(\T_CLASS); // interface, enums and traits cannot have doctrine annotations
     }
 }

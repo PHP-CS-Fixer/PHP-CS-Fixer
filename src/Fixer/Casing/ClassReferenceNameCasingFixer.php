@@ -100,20 +100,20 @@ final class ClassReferenceNameCasingFixer extends AbstractFixer
         $namespaceIsGlobal = $namespace->isGlobalNamespace();
 
         for ($index = $namespace->getScopeStartIndex(); $index < $namespace->getScopeEndIndex(); ++$index) {
-            if (!$tokens[$index]->isGivenKind(\T_STRING)) {
+            if (!$tokens[$index]->isKind(\T_STRING)) {
                 continue;
             }
 
             $nextIndex = $tokens->getNextMeaningfulToken($index);
 
-            if ($tokens[$nextIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+            if ($tokens[$nextIndex]->isKind(\T_NS_SEPARATOR)) {
                 continue;
             }
 
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
             $nextIndex = $tokens->getNextMeaningfulToken($index);
 
-            $isNamespaceSeparator = $tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR);
+            $isNamespaceSeparator = $tokens[$prevIndex]->isKind(\T_NS_SEPARATOR);
 
             if (!$isNamespaceSeparator && !$namespaceIsGlobal) {
                 continue;
@@ -122,10 +122,10 @@ final class ClassReferenceNameCasingFixer extends AbstractFixer
             if ($isNamespaceSeparator) {
                 $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
 
-                if ($tokens[$prevIndex]->isGivenKind(\T_STRING)) {
+                if ($tokens[$prevIndex]->isKind(\T_STRING)) {
                     continue;
                 }
-            } elseif ($tokens[$prevIndex]->isGivenKind(self::NOT_BEFORE_KINDS)) {
+            } elseif ($tokens[$prevIndex]->isKind(self::NOT_BEFORE_KINDS)) {
                 continue;
             }
 
@@ -133,7 +133,7 @@ final class ClassReferenceNameCasingFixer extends AbstractFixer
                 continue;
             }
 
-            if (!$tokens[$prevIndex]->isGivenKind(\T_NEW) && $tokens[$nextIndex]->equalsAny(['(', ';', [\T_CLOSE_TAG]])) {
+            if (!$tokens[$prevIndex]->isKind(\T_NEW) && $tokens[$nextIndex]->equalsAny(['(', ';', [\T_CLOSE_TAG]])) {
                 continue;
             }
 

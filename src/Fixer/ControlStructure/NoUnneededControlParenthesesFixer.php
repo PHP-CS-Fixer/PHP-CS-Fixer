@@ -248,7 +248,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         foreach ($tokens as $openIndex => $token) {
             if ($token->equals('(')) {
                 $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
-            } elseif ($token->isGivenKind(CT::T_BRACE_CLASS_INSTANTIATION_OPEN)) {
+            } elseif ($token->isKind(CT::T_BRACE_CLASS_INSTANTIATION_OPEN)) {
                 $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION, $openIndex);
             } else {
                 continue;
@@ -260,7 +260,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
             // do a cheap check for negative case: `X()`
 
             if ($tokens->getNextMeaningfulToken($openIndex) === $closeIndex) {
-                if ($tokens[$beforeOpenIndex]->isGivenKind(\T_EXIT)) {
+                if ($tokens[$beforeOpenIndex]->isKind(\T_EXIT)) {
                     $this->removeUselessParenthesisPair($tokens, $beforeOpenIndex, $afterCloseIndex, $openIndex, $closeIndex, 'others');
                 }
 
@@ -283,7 +283,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
 
             // handle `clone` statements
 
-            if ($tokens[$beforeOpenIndex]->isGivenKind(\T_CLONE)) {
+            if ($tokens[$beforeOpenIndex]->isKind(\T_CLONE)) {
                 if ($this->isWrappedCloneArgument($tokens, $beforeOpenIndex, $openIndex, $closeIndex, $afterCloseIndex)) {
                     $this->removeUselessParenthesisPair($tokens, $beforeOpenIndex, $afterCloseIndex, $openIndex, $closeIndex, 'clone');
                 }
@@ -363,7 +363,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
 
         $newCandidateIndex = $tokens->getNextMeaningfulToken($openIndex);
 
-        if ($tokens[$newCandidateIndex]->isGivenKind(\T_NEW)) {
+        if ($tokens[$newCandidateIndex]->isKind(\T_NEW)) {
             $openIndex = $newCandidateIndex; // `clone (new X)`, `clone (new X())`, clone (new X(Y))`
         }
 
@@ -455,7 +455,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         if ($tokens[$beforeOpenIndex]->equals('}')) {
             $beforeIsStatementOpen = !$this->closeCurlyBelongsToDynamicElement($tokens, $beforeOpenIndex);
         } else {
-            $beforeIsStatementOpen = $beforeToken->equalsAny(self::BEFORE_TYPES) || $beforeToken->isGivenKind(\T_CASE);
+            $beforeIsStatementOpen = $beforeToken->equalsAny(self::BEFORE_TYPES) || $beforeToken->isKind(\T_CASE);
         }
 
         $afterIsStatementEnd = $afterToken->equalsAny([';', [\T_CLOSE_TAG]]);
@@ -468,7 +468,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     // bounded `print|yield|yield from|require|require_once|include|include_once (X)`
     private function isWrappedLanguageConstructArgument(Tokens $tokens, int $beforeOpenIndex, int $afterCloseIndex): bool
     {
-        if (!$tokens[$beforeOpenIndex]->isGivenKind([\T_PRINT, \T_YIELD, \T_YIELD_FROM, \T_REQUIRE, \T_REQUIRE_ONCE, \T_INCLUDE, \T_INCLUDE_ONCE])) {
+        if (!$tokens[$beforeOpenIndex]->isKind([\T_PRINT, \T_YIELD, \T_YIELD_FROM, \T_REQUIRE, \T_REQUIRE_ONCE, \T_INCLUDE, \T_INCLUDE_ONCE])) {
             return false;
         }
 
@@ -480,7 +480,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     // any of `<?php|<?|<?=|;|throw|return|... (X) ;|T_CLOSE`
     private function isSingleStatement(Tokens $tokens, int $beforeOpenIndex, int $afterCloseIndex): bool
     {
-        if ($tokens[$beforeOpenIndex]->isGivenKind(\T_CASE)) {
+        if ($tokens[$beforeOpenIndex]->isKind(\T_CASE)) {
             return $tokens[$afterCloseIndex]->equalsAny([':', ';']); // `switch case`
         }
 
@@ -530,28 +530,28 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
             $forCandidateIndex = $tokens->getPrevMeaningfulToken($forCandidateIndex);
         }
 
-        return null !== $forCandidateIndex && $tokens[$forCandidateIndex]->isGivenKind(\T_FOR);
+        return null !== $forCandidateIndex && $tokens[$forCandidateIndex]->isKind(\T_FOR);
     }
 
     // `fn() => (X);`
     private function isWrappedFnBody(Tokens $tokens, int $beforeOpenIndex, int $afterCloseIndex): bool
     {
-        if (!$tokens[$beforeOpenIndex]->isGivenKind(\T_DOUBLE_ARROW)) {
+        if (!$tokens[$beforeOpenIndex]->isKind(\T_DOUBLE_ARROW)) {
             return false;
         }
 
         $beforeOpenIndex = $tokens->getPrevMeaningfulToken($beforeOpenIndex);
 
-        if ($tokens[$beforeOpenIndex]->isGivenKind(\T_STRING)) {
+        if ($tokens[$beforeOpenIndex]->isKind(\T_STRING)) {
             while (true) {
                 $beforeOpenIndex = $tokens->getPrevMeaningfulToken($beforeOpenIndex);
 
-                if (!$tokens[$beforeOpenIndex]->isGivenKind([\T_STRING, CT::T_TYPE_INTERSECTION, CT::T_TYPE_ALTERNATION])) {
+                if (!$tokens[$beforeOpenIndex]->isKind([\T_STRING, CT::T_TYPE_INTERSECTION, CT::T_TYPE_ALTERNATION])) {
                     break;
                 }
             }
 
-            if (!$tokens[$beforeOpenIndex]->isGivenKind(CT::T_TYPE_COLON)) {
+            if (!$tokens[$beforeOpenIndex]->isKind(CT::T_TYPE_COLON)) {
                 return false;
             }
 
@@ -565,11 +565,11 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         $beforeOpenIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $beforeOpenIndex);
         $beforeOpenIndex = $tokens->getPrevMeaningfulToken($beforeOpenIndex);
 
-        if ($tokens[$beforeOpenIndex]->isGivenKind(CT::T_RETURN_REF)) {
+        if ($tokens[$beforeOpenIndex]->isKind(CT::T_RETURN_REF)) {
             $beforeOpenIndex = $tokens->getPrevMeaningfulToken($beforeOpenIndex);
         }
 
-        if (!$tokens[$beforeOpenIndex]->isGivenKind(\T_FN)) {
+        if (!$tokens[$beforeOpenIndex]->isKind(\T_FN)) {
             return false;
         }
 
@@ -595,7 +595,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     {
         $token = $tokens[$index];
 
-        return $token->isObjectOperator() || $token->equals('[') || $token->isGivenKind(CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN);
+        return $token->isObjectOperator() || $token->equals('[') || $token->isKind(CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN);
     }
 
     private function getAfterAccess(Tokens $tokens, int $index): int
@@ -662,12 +662,12 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
 
     private function getConfigType(Tokens $tokens, int $beforeOpenIndex): ?string
     {
-        if ($tokens[$beforeOpenIndex]->isGivenKind(self::TOKEN_TYPE_NO_CONFIG)) {
+        if ($tokens[$beforeOpenIndex]->isKind(self::TOKEN_TYPE_NO_CONFIG)) {
             return null;
         }
 
         foreach (self::TOKEN_TYPE_CONFIG_MAP as $type => $configItem) {
-            if ($tokens[$beforeOpenIndex]->isGivenKind($type)) {
+            if ($tokens[$beforeOpenIndex]->isKind($type)) {
                 return $configItem;
             }
         }
@@ -692,7 +692,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         $needsSpaceAfter = !$this->isAccess($tokens, $afterCloseIndex)
             && !$tokens[$afterCloseIndex]->equalsAny([';', ',', [\T_CLOSE_TAG]])
             && null === $this->getBlock($tokens, $afterCloseIndex, false)
-            && !($tokens[$afterCloseIndex]->equalsAny([':', ';']) && $tokens[$beforeOpenIndex]->isGivenKind(\T_CASE));
+            && !($tokens[$afterCloseIndex]->equalsAny([':', ';']) && $tokens[$beforeOpenIndex]->isKind(\T_CASE));
 
         $needsSpaceBefore = !$this->isPreUnaryOperation($tokens, $beforeOpenIndex)
             && !$tokens[$beforeOpenIndex]->equalsAny(['}', [\T_EXIT], [\T_OPEN_TAG]])
@@ -728,14 +728,14 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $beforeOpenIndex);
         $index = $tokens->getPrevMeaningfulToken($index);
 
-        if ($tokens[$index]->isGivenKind(\T_DOUBLE_COLON)) {
+        if ($tokens[$index]->isKind(\T_DOUBLE_COLON)) {
             return true;
         }
 
         if ($tokens[$index]->equals(':')) {
             $index = $tokens->getPrevTokenOfKind($index, [[\T_CASE], '?']);
 
-            return !$tokens[$index]->isGivenKind(\T_CASE);
+            return !$tokens[$index]->isKind(\T_CASE);
         }
 
         return false;
