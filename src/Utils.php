@@ -77,21 +77,23 @@ final class Utils
      * Stability is ensured by using Schwartzian transform.
      *
      * @template T
+     * @template L of list<T>
      * @template R
      *
-     * @param list<T>             $elements
+     * @param L                   $elements
      * @param callable(T): R      $getComparedValue a callable that takes a single element and returns the value to compare
      * @param callable(R, R): int $compareValues    a callable that compares two values
      *
-     * @return list<T>
+     * @return L
      */
     public static function stableSort(array $elements, callable $getComparedValue, callable $compareValues): array
     {
-        array_walk($elements, static function (&$element, int $index) use ($getComparedValue): void {
-            $element = [$element, $index, $getComparedValue($element)];
-        });
+        $sortItems = [];
+        foreach ($elements as $index => $element) {
+            $sortItems[] = [$element, $index, $getComparedValue($element)];
+        }
 
-        usort($elements, static function ($a, $b) use ($compareValues): int {
+        usort($sortItems, static function ($a, $b) use ($compareValues): int {
             $comparison = $compareValues($a[2], $b[2]);
 
             if (0 !== $comparison) {
@@ -101,15 +103,17 @@ final class Utils
             return $a[1] <=> $b[1];
         });
 
-        return array_map(static fn (array $item) => $item[0], $elements);
+        return array_map(static fn (array $item) => $item[0], $sortItems); // @phpstan-ignore return.type (PHPStan cannot understand that the result will still be L template)
     }
 
     /**
      * Sort fixers by their priorities.
      *
-     * @param list<FixerInterface> $fixers
+     * @template T of list<FixerInterface>
      *
-     * @return list<FixerInterface>
+     * @param T $fixers
+     *
+     * @return T
      */
     public static function sortFixers(array $fixers): array
     {
