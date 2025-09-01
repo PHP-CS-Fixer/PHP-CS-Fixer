@@ -2,7 +2,6 @@
 /benchmark.sh export-ignore
 /box.json.dist export-ignore
 /CHANGELOG.md export-ignore
-/ci-integration.sh export-ignore
 /compose.override.dist.yaml export-ignore
 /compose.yaml export-ignore
 /CONTRIBUTING.md export-ignore
