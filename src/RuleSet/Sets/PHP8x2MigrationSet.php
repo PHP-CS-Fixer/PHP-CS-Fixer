@@ -26,7 +26,7 @@ final class PHP8x2MigrationSet extends AbstractMigrationSetDescription
     public function getRules(): array
     {
         return [
-            '@PHP8x1Migration' => true,
+            '@PHP8.1Migration' => true,
             'simple_to_complex_string_variable' => true,
         ];
     }

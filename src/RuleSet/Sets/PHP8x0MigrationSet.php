@@ -26,7 +26,7 @@ final class PHP8x0MigrationSet extends AbstractMigrationSetDescription
     public function getRules(): array
     {
         return [
-            '@PHP7x4Migration' => true,
+            '@PHP7.4Migration' => true,
             'clean_namespace' => true,
             'no_unset_cast' => true,
         ];

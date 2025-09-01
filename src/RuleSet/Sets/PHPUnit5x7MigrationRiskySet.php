@@ -27,7 +27,7 @@ final class PHPUnit5x7MigrationRiskySet extends AbstractMigrationSetDescription
     public function getRules(): array
     {
         return [
-            '@PHPUnit5x6Migration:risky' => true,
+            '@PHPUnit5.6Migration:risky' => true,
             'php_unit_namespaced' => [
                 'target' => PhpUnitTargetVersion::VERSION_5_7,
             ],

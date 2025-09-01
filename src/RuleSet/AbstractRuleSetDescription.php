@@ -27,7 +27,12 @@ abstract class AbstractRuleSetDescription implements RuleSetDescriptionInterface
     {
         $name = substr(static::class, 1 + strrpos(static::class, '\\'), -3);
 
-        return '@'.str_replace('Risky', ':risky', $name);
+        return '@'
+            .\PhpCsFixer\Preg::replace(
+                '/(\d)x(\d)/',
+                '$1.$2',
+                str_replace('Risky', ':risky', $name)
+            );
     }
 
     public function isRisky(): bool

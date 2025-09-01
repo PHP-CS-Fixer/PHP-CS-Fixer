@@ -26,7 +26,7 @@ final class PHP7x4MigrationSet extends AbstractMigrationSetDescription
     public function getRules(): array
     {
         return [
-            '@PHP7x3Migration' => true,
+            '@PHP7.3Migration' => true,
             'assign_null_coalescing_to_coalesce_equal' => true,
             'normalize_index_brace' => true,
             'short_scalar_cast' => true,
