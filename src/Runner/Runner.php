@@ -56,6 +56,8 @@ use Symfony\Contracts\EventDispatcher\Event;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Greg Korba <greg@codito.dev>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class Runner
 {
@@ -261,12 +263,13 @@ final class Runner
                 (int) ceil($this->fileCount / $this->parallelConfig->getFilesPerProcess()),
             )
         );
-        $processFactory = new ProcessFactory($this->input);
+        $processFactory = new ProcessFactory();
 
         for ($i = 0; $i < $processesToSpawn; ++$i) {
             $identifier = ProcessIdentifier::create();
             $process = $processFactory->create(
                 $streamSelectLoop,
+                $this->input,
                 new RunnerConfig(
                     $this->isDryRun,
                     $this->stopOnViolation,
@@ -361,7 +364,9 @@ final class Runner
                     );
 
                     if ($errorsReported > 0) {
-                        throw WorkerException::fromRaw(json_decode($matches[1][0], true));
+                        throw WorkerException::fromRaw(
+                            json_decode($matches[1][0], true, 512, \JSON_THROW_ON_ERROR)
+                        );
                     }
                 }
             );

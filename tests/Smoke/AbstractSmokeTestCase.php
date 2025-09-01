@@ -26,5 +26,7 @@ use PhpCsFixer\Tests\TestCase;
  * @coversNothing
  *
  * @group covers-nothing
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractSmokeTestCase extends TestCase {}

@@ -2,7 +2,7 @@
     "type": "project",
     "require": {
         "php": "^8.4",
-        "ergebnis/composer-normalize": "^2.47.0",
+        "ergebnis/composer-normalize": "^2.48.1",
         "icanhazstring/composer-unused": "^0.9.4",
         "kubawerlos/composer-smaller-lock": "^1.1.0",
         "maglnet/composer-require-checker": "^4.16.1",
@@ -15,7 +15,7 @@
         "phpstan/phpstan-phpunit": "^2.0.7",
         "phpstan/phpstan-strict-rules": "^2.0.6",
         "phpstan/phpstan-symfony": "^2.0.7",
-        "shipmonk/dead-code-detector": "^0.13.2",
+        "shipmonk/dead-code-detector": "^0.13.3",
         "shipmonk/phpstan-baseline-per-identifier": "^2.1.6"
     },
     "config": {

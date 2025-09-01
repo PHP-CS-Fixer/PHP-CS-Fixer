@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\ClassNotation\SelfStaticAccessorFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\SelfStaticAccessorFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SelfStaticAccessorFixerTest extends AbstractFixerTestCase
 {

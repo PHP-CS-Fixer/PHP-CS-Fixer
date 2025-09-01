@@ -26,6 +26,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Report\ListSetsReport\ReporterFactory
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ReporterFactoryTest extends TestCase
 {

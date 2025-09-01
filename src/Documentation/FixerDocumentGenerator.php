@@ -37,6 +37,8 @@ use PhpCsFixer\Utils;
  * @readonly
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FixerDocumentGenerator
 {
@@ -168,10 +170,13 @@ final class FixerDocumentGenerator
 
                 if (null === $allowed) {
                     $allowedKind = 'Allowed types';
-                    $allowed = array_map(
-                        static fn (string $value): string => '``'.Utils::convertArrayTypeToList($value).'``',
-                        $option->getAllowedTypes(),
-                    );
+                    $allowedTypes = $option->getAllowedTypes();
+                    if (null !== $allowedTypes) {
+                        $allowed = array_map(
+                            static fn (string $value): string => '``'.Utils::convertArrayTypeToList($value).'``',
+                            $allowedTypes,
+                        );
+                    }
                 } else {
                     $allowedKind = 'Allowed values';
                     $allowed = array_map(static fn ($value): string => $value instanceof AllowedValueSubset
@@ -179,8 +184,10 @@ final class FixerDocumentGenerator
                         : '``'.Utils::toString($value).'``', $allowed);
                 }
 
-                $allowed = Utils::naturalLanguageJoin($allowed, '');
-                $optionInfo .= "\n\n{$allowedKind}: {$allowed}";
+                if (null !== $allowed) {
+                    $allowed = Utils::naturalLanguageJoin($allowed, '');
+                    $optionInfo .= "\n\n{$allowedKind}: {$allowed}";
+                }
 
                 if ($option->hasDefault()) {
                     $default = Utils::toString($option->getDefault());

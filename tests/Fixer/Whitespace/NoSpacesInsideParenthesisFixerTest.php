@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\NoSpacesInsideParenthesisFixer>
  *
  * @author Marc Aubé
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoSpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
 {

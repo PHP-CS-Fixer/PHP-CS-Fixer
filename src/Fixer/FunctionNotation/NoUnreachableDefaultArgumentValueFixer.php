@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Mark Scherer
  * @author Lucas Manzke <lmanzke@outlook.com>
  * @author Gregor Harlan <gharlan@web.de>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoUnreachableDefaultArgumentValueFixer extends AbstractFixer
 {
@@ -34,9 +36,11 @@ final class NoUnreachableDefaultArgumentValueFixer extends AbstractFixer
             'In function arguments there must not be arguments with default values before non-default ones.',
             [
                 new CodeSample(
-                    '<?php
-function example($foo = "two words", $bar) {}
-'
+                    <<<'PHP'
+                        <?php
+                        function example($foo = "two words", $bar) {}
+
+                        PHP
                 ),
             ],
             null,

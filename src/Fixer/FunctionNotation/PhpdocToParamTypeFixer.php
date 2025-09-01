@@ -41,13 +41,15 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @phpstan-import-type _PhpTokenArray from Token
  *
  * @author Jan Gantzert <jan@familie-gantzert.de>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer implements ConfigurableFixerInterface, ExperimentalFixerInterface
 {
     private const TYPE_CHECK_TEMPLATE = '<?php function f(%s $x) {}';
 
     /**
-     * @var list<_PhpTokenArray>
+     * @var non-empty-list<_PhpTokenArray>
      */
     private const EXCLUDE_FUNC_NAMES = [
         [\T_STRING, '__clone'],
@@ -69,34 +71,40 @@ final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer 
             'Takes `@param` annotations of non-mixed types and adjusts accordingly the function signature.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-/**
- * @param string $foo
- * @param string|null $bar
- */
-function f($foo, $bar)
-{}
-'
+                        /**
+                         * @param string $foo
+                         * @param string|null $bar
+                         */
+                        function f($foo, $bar)
+                        {}
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-/** @param Foo $foo */
-function foo($foo) {}
-/** @param string $foo */
-function bar($foo) {}
-',
+                        /** @param Foo $foo */
+                        function foo($foo) {}
+                        /** @param string $foo */
+                        function bar($foo) {}
+
+                        PHP,
                     ['scalar_types' => false]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-/** @param Foo $foo */
-function foo($foo) {}
-/** @param int|string $foo */
-function bar($foo) {}
-',
+                        /** @param Foo $foo */
+                        function foo($foo) {}
+                        /** @param int|string $foo */
+                        function bar($foo) {}
+
+                        PHP,
                     ['union_types' => false]
                 ),
             ],

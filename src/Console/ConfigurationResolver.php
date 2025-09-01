@@ -75,6 +75,8 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ConfigurationResolver
 {
@@ -701,13 +703,11 @@ final class ConfigurationResolver
         }
 
         if (str_starts_with($rules, '{')) {
-            $rules = json_decode($rules, true);
-
-            if (\JSON_ERROR_NONE !== json_last_error()) {
-                throw new InvalidConfigurationException(\sprintf('Invalid JSON rules input: "%s".', json_last_error_msg()));
+            try {
+                return json_decode($rules, true, 512, \JSON_THROW_ON_ERROR);
+            } catch (\JsonException $e) {
+                throw new InvalidConfigurationException(\sprintf('Invalid JSON rules input: "%s".', $e->getMessage()));
             }
-
-            return $rules;
         }
 
         $rules = [];

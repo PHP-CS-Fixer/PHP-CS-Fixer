@@ -24,6 +24,9 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class LambdaNotUsedImportFixer extends AbstractFixer
 {
     private ArgumentsAnalyzer $argumentsAnalyzer;

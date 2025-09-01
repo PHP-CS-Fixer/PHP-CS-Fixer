@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class StaticPrivateMethodFixer extends AbstractFixer
 {
@@ -43,20 +45,22 @@ final class StaticPrivateMethodFixer extends AbstractFixer
             'Converts private methods to `static` where possible.',
             [
                 new CodeSample(
-                    '<?php
-class Foo
-{
-    public function bar()
-    {
-        return $this->baz();
-    }
+                    <<<'PHP'
+                        <?php
+                        class Foo
+                        {
+                            public function bar()
+                            {
+                                return $this->baz();
+                            }
 
-    private function baz()
-    {
-        return 1;
-    }
-}
-'
+                            private function baz()
+                            {
+                                return 1;
+                            }
+                        }
+
+                        PHP
                 ),
             ],
             null,

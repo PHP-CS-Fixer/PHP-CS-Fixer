@@ -40,6 +40,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  * @author Julien Falque <julien.falque@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class AlignMultilineCommentFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
@@ -47,7 +49,7 @@ final class AlignMultilineCommentFixer extends AbstractFixer implements Configur
     use ConfigurableFixerTrait;
 
     /**
-     * @var null|list<int>
+     * @var null|non-empty-list<int>
      */
     private ?array $tokenKinds = null;
 
@@ -57,30 +59,36 @@ final class AlignMultilineCommentFixer extends AbstractFixer implements Configur
             'Each line of multi-line DocComments must have an asterisk [PSR-5] and must be aligned with the first one.',
             [
                 new CodeSample(
-                    '<?php
-    /**
-            * This is a DOC Comment
-with a line not prefixed with asterisk
+                    <<<'PHP'
+                        <?php
+                            /**
+                                    * This is a DOC Comment
+                        with a line not prefixed with asterisk
 
-   */
-'
+                           */
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-    /*
-            * This is a doc-like multiline comment
-*/
-',
+                    <<<'PHP'
+                        <?php
+                            /*
+                                    * This is a doc-like multiline comment
+                        */
+
+                        PHP,
                     ['comment_type' => 'phpdocs_like']
                 ),
                 new CodeSample(
-                    '<?php
-    /*
-            * This is a doc-like multiline comment
-with a line not prefixed with asterisk
+                    <<<'PHP'
+                        <?php
+                            /*
+                                    * This is a doc-like multiline comment
+                        with a line not prefixed with asterisk
 
-   */
-',
+                           */
+
+                        PHP,
                     ['comment_type' => 'all_multiline']
                 ),
             ]

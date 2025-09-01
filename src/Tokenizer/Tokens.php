@@ -30,7 +30,12 @@ use PhpCsFixer\Utils;
  *
  * @extends \SplFixedArray<Token>
  *
- * @method Token offsetGet($offset)
+ * `SplFixedArray` uses `T|null` in return types because value can be null if an offset is unset or if the size does not match the number of elements.
+ * But our class takes care of it and always ensures correct size and indexes, so that these methods never return `null` instead of `Token`.
+ *
+ * @method Token                    offsetGet($offset)
+ * @method \Traversable<int, Token> getIterator()
+ * @method array<int, Token>        toArray()
  *
  * @phpstan-import-type _PhpTokenKind from Token
  * @phpstan-import-type _PhpTokenArray from Token
@@ -41,6 +46,8 @@ use PhpCsFixer\Utils;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @final
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 class Tokens extends \SplFixedArray
 {
@@ -357,6 +364,13 @@ class Tokens extends \SplFixedArray
         if (0 > $index || \count($this) <= $index) {
             Utils::triggerDeprecation(new \InvalidArgumentException(\sprintf(
                 'Tokens should be a list - index must be within the existing range. This will be enforced in version %d.0.',
+                Application::getMajorVersion() + 1
+            )));
+        }
+
+        if (!$newval instanceof Token) {
+            Utils::triggerDeprecation(new \InvalidArgumentException(\sprintf(
+                'Tokens should be a list of Token instances - newval must be a Token. This will be enforced in version %d.0.',
                 Application::getMajorVersion() + 1
             )));
         }
