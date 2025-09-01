@@ -1,21 +1,21 @@
 /.* export-ignore
 /benchmark.sh export-ignore
 /box.json.dist export-ignore
+/CHANGELOG.md export-ignore
+/ci-integration.sh export-ignore
+/compose.override.dist.yaml export-ignore
+/compose.yaml export-ignore
+/CONTRIBUTING.md export-ignore
 /dev-tools/ export-ignore
 /doc/ export-ignore
 /docker/ export-ignore
-/compose.override.dist.yaml export-ignore
-/compose.yaml export-ignore
 /Dockerfile export-ignore
+/feature-or-bug.rst export-ignore
 /infection.json5.dist export-ignore
 /phpstan.dist.neon export-ignore
 /phpunit.xml.dist export-ignore
 /src/Fixer/Internal/ export-ignore
 /tests/ export-ignore
-/feature-or-bug.rst export-ignore
-/CHANGELOG.md export-ignore
-/ci-integration.sh export-ignore
-/CONTRIBUTING.md export-ignore
 /UPGRADE-v3.md export-ignore
 
 *       text=auto eol=lf
