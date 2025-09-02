@@ -6,17 +6,21 @@
 
 # PHP Coding Standards Fixer
 
-The PHP Coding Standards Fixer (PHP CS Fixer) tool fixes your code to follow standards;
-whether you want to follow PHP coding standards as defined by [PER Coding Style](https://www.php-fig.org/per/coding-style/),
-or other community driven ones like the Symfony one.
-You can **also** define your (team's) style through configuration.
-
-It can modernize your code (like converting the `pow` function to the `**` operator on PHP 5.6)
-and (micro) optimize it.
+The PHP Coding Standards Fixer (PHP CS Fixer) fixes your code to follow the standards.
 
 If you are already using a linter to identify coding standards problems in your
 code, you know that fixing them by hand is tedious, especially on large
-projects. This tool does not only detect them, but also fixes them for you.
+projects. This tool not only detects them, but also fixes them for you.
+
+PHP CS Fixer has built-in rule sets, whether you want to follow PHP coding standards as defined by [PHP-FIG's PER Coding Style](https://www.php-fig.org/per/coding-style/),
+a wide community like the [Symfony](https://symfony.com/doc/current/contributing/code/standards.html),
+or [our opinionated one](./doc/ruleSets/PhpCsFixer.rst).
+You can **also** define your (team's) style through the [configuration file](./doc/config.rst).
+
+PHP CS Fixer can not only unify the style of your code, but also help to modernize your codebase with
+PHP rule sets like [@PHP85Migration](./doc/ruleSets/PHP85Migration.rst) - helping you to migrate to
+modern syntax, or simply move away from deprecated one - like [no_unset_cast](./doc/rules/cast_notation/no_unset_cast.rst), as well as to
+upgrade your PHPUnit tests with sets like [@PHPUnit91Migration:risky](./doc/ruleSets/PHPUnit91MigrationRisky.rst).
 
 ## Supported PHP Versions
 
