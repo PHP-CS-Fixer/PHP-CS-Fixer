@@ -69,11 +69,11 @@ The rule is part of the following rule sets:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 
-  ``['replacements' => ['property-read' => 'property', 'property-write' => 'property', 'type' => 'var', 'const' => 'var', 'link' => 'see']]``
+  ``['replacements' => ['const' => 'var', 'property-read' => 'property', 'property-write' => 'property', 'type' => 'var', 'link' => 'see']]``
 
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
-  ``['replacements' => ['property-read' => 'property', 'property-write' => 'property', 'type' => 'var', 'const' => 'var', 'link' => 'see']]``
+  ``['replacements' => ['const' => 'var', 'property-read' => 'property', 'property-write' => 'property', 'type' => 'var', 'link' => 'see']]``
 
 References
 ----------
