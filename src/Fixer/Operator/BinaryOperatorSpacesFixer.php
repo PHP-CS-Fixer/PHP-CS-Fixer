@@ -100,7 +100,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     /**
      * @internal
      *
-     * Placeholder used as anchor for right alignment.
+     * Placeholder used as anchor for right alignment
      */
     public const ALIGN_PLACEHOLDER = "\x2 ALIGNABLE%d \x3";
 

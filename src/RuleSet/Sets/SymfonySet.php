@@ -164,7 +164,7 @@ final class SymfonySet extends AbstractRuleSetDescription
                     'type' => 'var',
                     'const' => 'var', // @TODO 4.0 add to @PhpdocNoAliasTagFixer defaults
                     'link' => 'see',
-                ]
+                ],
             ],
             'phpdoc_no_package' => true,
             'phpdoc_no_useless_inheritdoc' => true,
