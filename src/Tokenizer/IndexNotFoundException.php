@@ -26,6 +26,7 @@ final class IndexNotFoundException extends \RuntimeException
         parent::__construct($message);
     }
 
+    /** @internal */
     public static function fromMethod(string $methodName): self
     {
         return new self(\sprintf('No matching index found by method "%s".', $methodName));
