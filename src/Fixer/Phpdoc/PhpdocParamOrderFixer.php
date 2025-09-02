@@ -128,8 +128,8 @@ final class PhpdocParamOrderFixer extends AbstractFixer
     /**
      * Overwrite the param annotations in order.
      *
-     * @param list<Token>      $paramNames
-     * @param list<Annotation> $paramAnnotations
+     * @param list<Token>                $paramNames
+     * @param non-empty-list<Annotation> $paramAnnotations
      */
     private function rewriteDocBlock(DocBlock $doc, array $paramNames, array $paramAnnotations): DocBlock
     {
@@ -165,27 +165,22 @@ final class PhpdocParamOrderFixer extends AbstractFixer
     /**
      * Sort the param annotations according to the function parameters.
      *
-     * @param list<Token>      $funcParamNames
-     * @param list<Annotation> $paramAnnotations
+     * @param list<Token>                $funcParamNames
+     * @param non-empty-list<Annotation> $paramAnnotations
      *
-     * @return list<string>
+     * @return non-empty-list<string>
      */
     private function sortParamAnnotations(array $funcParamNames, array $paramAnnotations): array
     {
         $validParams = [];
         foreach ($funcParamNames as $paramName) {
-            $indices = $this->findParamAnnotationByIdentifier($paramAnnotations, $paramName->getContent());
-
-            // Found an exactly matching @param annotation
-            if (\is_array($indices)) {
-                foreach ($indices as $index) {
-                    $validParams[$index] = $paramAnnotations[$index]->getContent();
-                }
+            foreach ($this->findParamAnnotationByIdentifier($paramAnnotations, $paramName->getContent()) as $index => $annotation) {
+                // Found an exactly matching @param annotation
+                $validParams[$index] = $annotation->getContent();
             }
         }
 
         // Detect superfluous annotations
-        /** @var list<Annotation> $invalidParams */
         $invalidParams = array_values(
             array_diff_key($paramAnnotations, $validParams)
         );
@@ -195,6 +190,7 @@ final class PhpdocParamOrderFixer extends AbstractFixer
         foreach ($invalidParams as $params) {
             $orderedParams[] = $params->getContent();
         }
+        \assert(\count($orderedParams) > 0);
 
         return $orderedParams;
     }
@@ -234,9 +230,9 @@ final class PhpdocParamOrderFixer extends AbstractFixer
      *
      * @param list<Annotation> $paramAnnotations
      *
-     * @return ?list<int>
+     * @return array<int, Annotation> Mapping of found indices and corresponding Annotations
      */
-    private function findParamAnnotationByIdentifier(array $paramAnnotations, string $identifier): ?array
+    private function findParamAnnotationByIdentifier(array $paramAnnotations, string $identifier): array
     {
         $blockLevel = 0;
         $blockMatch = false;
@@ -252,7 +248,7 @@ final class PhpdocParamOrderFixer extends AbstractFixer
                 if ($blockStart) {
                     $blockMatch = true; // Start of a nested block
                 } else {
-                    return [$i]; // Top level match
+                    return [$i => $param]; // Top level match
                 }
             }
 
@@ -265,13 +261,13 @@ final class PhpdocParamOrderFixer extends AbstractFixer
             }
 
             if ($blockMatch) {
-                $blockIndices[] = $i;
+                $blockIndices[$i] = $param;
                 if (0 === $blockLevel) {
                     return $blockIndices;
                 }
             }
         }
 
-        return null;
+        return [];
     }
 }

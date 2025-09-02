@@ -421,7 +421,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
         } while ($tokens[$classEndIndex]->isGivenKind([\T_STRING, \T_NS_SEPARATOR, \T_VARIABLE]));
 
         if ($tokens[$classEndIndex]->equalsAny([',', ')'])) { // do the fixing
-            $isInstanceOfVar = reset($classPartTokens)->isGivenKind(\T_VARIABLE);
+            $isInstanceOfVar = $classPartTokens[0]->isGivenKind(\T_VARIABLE);
             $insertIndex = $testIndex - 1;
             $newTokens = [];
 

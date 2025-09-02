@@ -752,11 +752,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/PhpdocNoUselessInheritdocFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset int might not exist on list\\<PhpCsFixer\\\\DocBlock\\\\Annotation\\>\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/PhpdocParamOrderFixer.php',
-];
-$ignoreErrors[] = [
     'message' => '#^Offset int\\<1, max\\> might not exist on array\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/PhpdocSingleLineVarSpacingFixer.php',
