@@ -29,8 +29,8 @@ upgrade your PHPUnit tests with sets like [@PHPUnit91Migration:risky](./doc/rule
 > [!NOTE]
 > Each new PHP version requires a huge effort to support the new syntax.
 > That's why the latest PHP version might not be supported yet. If you need it,
-> please, consider supporting the project in any convenient way, for example
-> with code contribution or reviewing existing PRs. To run PHP CS Fixer on yet
+> please consider supporting the project in any convenient way, for example,
+> with code contributions or reviewing existing PRs. To run PHP CS Fixer on yet
 > unsupported versions "at your own risk" - use `--allow-unsupported-php-version=yes` option.
 
 ## Documentation
