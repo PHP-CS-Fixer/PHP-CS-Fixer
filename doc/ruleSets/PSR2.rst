@@ -15,13 +15,16 @@ Rules
 - `control_structure_braces <./../rules/control_structure/control_structure_braces.rst>`_
 - `control_structure_continuation_position <./../rules/control_structure/control_structure_continuation_position.rst>`_
 - `elseif <./../rules/control_structure/elseif.rst>`_
-- `function_declaration <./../rules/function_notation/function_declaration.rst>`_
+- `function_declaration <./../rules/function_notation/function_declaration.rst>`_ with config:
+
+  ``['closure_fn_spacing' => 'one']``
+
 - `indentation_type <./../rules/whitespace/indentation_type.rst>`_
 - `line_ending <./../rules/whitespace/line_ending.rst>`_
 - `lowercase_keywords <./../rules/casing/lowercase_keywords.rst>`_
 - `method_argument_space <./../rules/function_notation/method_argument_space.rst>`_ with config:
 
-  ``['attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline']``
+  ``['attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline', 'after_heredoc' => false]``
 
 - `no_break_comment <./../rules/control_structure/no_break_comment.rst>`_
 - `no_closing_tag <./../rules/php_tag/no_closing_tag.rst>`_

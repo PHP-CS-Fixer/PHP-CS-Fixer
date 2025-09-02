@@ -287,14 +287,26 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PER <./../../ruleSets/PER.rst>`_
-- `@PER-CS <./../../ruleSets/PER-CS.rst>`_
+- `@PER <./../../ruleSets/PER.rst>`_ with config:
+
+  ``['after_heredoc' => false]``
+
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
+
+  ``['after_heredoc' => false]``
+
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
 
-  ``['attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline']``
+  ``['attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline', 'after_heredoc' => false]``
 
-- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_
-- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+
+  ``['after_heredoc' => false]``
+
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
+
+  ``['after_heredoc' => false]``
+
 - `@PHP73Migration <./../../ruleSets/PHP73Migration.rst>`_ with config:
 
   ``['after_heredoc' => true]``
@@ -329,11 +341,11 @@ The rule is part of the following rule sets:
 
 - `@PSR2 <./../../ruleSets/PSR2.rst>`_ with config:
 
-  ``['attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline']``
+  ``['attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline', 'after_heredoc' => false]``
 
 - `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
 
-  ``['attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline']``
+  ``['attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline', 'after_heredoc' => false]``
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 
