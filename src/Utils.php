@@ -166,17 +166,9 @@ final class Utils
         return self::naturalLanguageJoin($names, '`', $lastJoin);
     }
 
-    public static function isFutureModeEnabled(): bool
-    {
-        return filter_var(
-            getenv('PHP_CS_FIXER_FUTURE_MODE'),
-            \FILTER_VALIDATE_BOOL
-        );
-    }
-
     public static function triggerDeprecation(\Exception $futureException): void
     {
-        if (self::isFutureModeEnabled()) {
+        if (Future::isFutureModeEnabled()) {
             throw new \RuntimeException(
                 'Your are using something deprecated, see previous exception. Aborting execution because `PHP_CS_FIXER_FUTURE_MODE` environment variable is set.',
                 0,

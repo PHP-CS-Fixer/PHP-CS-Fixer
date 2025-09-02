@@ -27,4 +27,12 @@ final class Future
     {
         // cannot create instance
     }
+
+    public static function isFutureModeEnabled(): bool
+    {
+        return filter_var(
+            getenv('PHP_CS_FIXER_FUTURE_MODE'),
+            \FILTER_VALIDATE_BOOL
+        );
+    }
 }
