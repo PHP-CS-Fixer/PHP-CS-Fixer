@@ -3,6 +3,12 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.87.1
+---------------------
+
+* chore: `AbstractProxyFixer` - require non-empty list of proxy fixers (#9010)
+* deps: update justinrainbow/json-schema (#9019)
+
 Changelog for v3.87.0
 ---------------------
 
