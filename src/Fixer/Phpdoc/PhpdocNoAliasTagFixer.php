@@ -130,6 +130,7 @@ final class PhpdocNoAliasTagFixer extends AbstractProxyFixer implements Configur
                     'property-read' => 'property',
                     'property-write' => 'property',
                     'type' => 'var',
+                    'const' => 'var',
                     'link' => 'see',
                 ])
                 ->getOption(),
