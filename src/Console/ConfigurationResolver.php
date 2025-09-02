@@ -998,7 +998,7 @@ final class ConfigurationResolver
 
         // verify that the config has an instance of Config
         if (!$config instanceof ConfigInterface) {
-            throw new InvalidConfigurationException(\sprintf('The config file: "%s" does not return a "PhpCsFixer\ConfigInterface" instance. Got: "%s".', $path, \is_object($config) ? \get_class($config) : \gettype($config)));
+            throw new InvalidConfigurationException(\sprintf('The config file: "%s" does not return a "%s" instance. Got: "%s".', $path, ConfigInterface::class, get_debug_type($config)));
         }
 
         return $config;
