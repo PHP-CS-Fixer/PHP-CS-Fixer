@@ -15,7 +15,7 @@ projects. This tool not only detects them, but also fixes them for you.
 PHP CS Fixer has built-in rule sets, whether you want to follow PHP coding standards as defined by [PHP-FIG's PER Coding Style](https://www.php-fig.org/per/coding-style/),
 a wide community like the [Symfony](https://symfony.com/doc/current/contributing/code/standards.html),
 or [our opinionated one](./doc/ruleSets/PhpCsFixer.rst).
-You can **also** define your (team's) style through the [configuration file](./doc/config.rst).
+You can also define your (team's) style through the [configuration file](./doc/config.rst).
 
 PHP CS Fixer can not only unify the style of your code, but also help to modernize your codebase towards
 newer PHP (e.g. [`@PHP85Migration`](./doc/ruleSets/PHP85Migration.rst)) and newer PHPUnit (e.g. [`@PHPUnit91Migration:risky`](./doc/ruleSets/PHPUnit91MigrationRisky.rst)).
