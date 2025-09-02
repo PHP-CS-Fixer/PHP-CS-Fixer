@@ -118,7 +118,10 @@ Rules
 - `phpdoc_indent <./../rules/phpdoc/phpdoc_indent.rst>`_
 - `phpdoc_inline_tag_normalizer <./../rules/phpdoc/phpdoc_inline_tag_normalizer.rst>`_
 - `phpdoc_no_access <./../rules/phpdoc/phpdoc_no_access.rst>`_
-- `phpdoc_no_alias_tag <./../rules/phpdoc/phpdoc_no_alias_tag.rst>`_
+- `phpdoc_no_alias_tag <./../rules/phpdoc/phpdoc_no_alias_tag.rst>`_ with config:
+
+  ``['replacements' => ['property-read' => 'property', 'property-write' => 'property', 'type' => 'var', 'const' => 'var', 'link' => 'see']]``
+
 - `phpdoc_no_package <./../rules/phpdoc/phpdoc_no_package.rst>`_
 - `phpdoc_no_useless_inheritdoc <./../rules/phpdoc/phpdoc_no_useless_inheritdoc.rst>`_
 - `phpdoc_order <./../rules/phpdoc/phpdoc_order.rst>`_ with config:
