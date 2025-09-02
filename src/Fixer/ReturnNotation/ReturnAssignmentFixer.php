@@ -238,13 +238,13 @@ final class ReturnAssignmentFixer extends AbstractFixer
 
             // Note: here we are @ "; return $a;" (or "; return $a ? >")
             while (true) {
-                $prevMeaningFul = $tokens->getPrevMeaningfulToken($assignVarEndIndex);
+                $prevMeaningful = $tokens->getprevMeaningfulToken($assignVarEndIndex);
 
-                if (!$tokens[$prevMeaningFul]->equals(')')) {
+                if (!$tokens[$prevMeaningful]->equals(')')) {
                     break;
                 }
 
-                $assignVarEndIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $prevMeaningFul);
+                $assignVarEndIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $prevMeaningful);
             }
 
             $assignVarOperatorIndex = $tokens->getPrevTokenOfKind(
@@ -259,7 +259,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
                     continue;
                 }
 
-                $assignVarOperatorIndex = $tokens->getPrevMeaningfulToken($startIndex);
+                $assignVarOperatorIndex = $tokens->getprevMeaningfulToken($startIndex);
             }
 
             if (!$tokens[$assignVarOperatorIndex]->equals('=')) {
@@ -267,13 +267,13 @@ final class ReturnAssignmentFixer extends AbstractFixer
             }
 
             // Note: here we are @ "= [^;{<? ? >] ; return $a;"
-            $assignVarIndex = $tokens->getPrevMeaningfulToken($assignVarOperatorIndex);
+            $assignVarIndex = $tokens->getprevMeaningfulToken($assignVarOperatorIndex);
             if (!$tokens[$assignVarIndex]->equals($tokens[$returnVarIndex], false)) {
                 continue;
             }
 
             // Note: here we are @ "$a = [^;{<? ? >] ; return $a;"
-            $beforeAssignVarIndex = $tokens->getPrevMeaningfulToken($assignVarIndex);
+            $beforeAssignVarIndex = $tokens->getprevMeaningfulToken($assignVarIndex);
             if (!$tokens[$beforeAssignVarIndex]->equalsAny([';', '{', '}'])) {
                 continue;
             }
@@ -399,12 +399,12 @@ final class ReturnAssignmentFixer extends AbstractFixer
     private function isOpenBraceOfAnonymousClass(Tokens $tokens, int $index): ?int
     {
         do {
-            $index = $tokens->getPrevMeaningfulToken($index);
+            $index = $tokens->getprevMeaningfulToken($index);
         } while ($tokens[$index]->equalsAny([',', [\T_STRING], [\T_IMPLEMENTS], [\T_EXTENDS], [\T_NS_SEPARATOR]]));
 
         if ($tokens[$index]->equals(')')) { // skip constructor braces and content within
             $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
-            $index = $tokens->getPrevMeaningfulToken($index);
+            $index = $tokens->getprevMeaningfulToken($index);
         }
 
         if (!$tokens[$index]->isGivenKind(\T_CLASS) || !$this->tokensAnalyzer->isAnonymousClass($index)) {
@@ -421,30 +421,30 @@ final class ReturnAssignmentFixer extends AbstractFixer
      */
     private function isOpenBraceOfLambda(Tokens $tokens, int $index): ?int
     {
-        $index = $tokens->getPrevMeaningfulToken($index);
+        $index = $tokens->getprevMeaningfulToken($index);
 
         if (!$tokens[$index]->equals(')')) {
             return null;
         }
 
         $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
-        $index = $tokens->getPrevMeaningfulToken($index);
+        $index = $tokens->getprevMeaningfulToken($index);
 
         if ($tokens[$index]->isGivenKind(CT::T_USE_LAMBDA)) {
             $index = $tokens->getPrevTokenOfKind($index, [')']);
             $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
-            $index = $tokens->getPrevMeaningfulToken($index);
+            $index = $tokens->getprevMeaningfulToken($index);
         }
 
         if ($tokens[$index]->isGivenKind(CT::T_RETURN_REF)) {
-            $index = $tokens->getPrevMeaningfulToken($index);
+            $index = $tokens->getprevMeaningfulToken($index);
         }
 
         if (!$tokens[$index]->isGivenKind(\T_FUNCTION)) {
             return null;
         }
 
-        $staticCandidate = $tokens->getPrevMeaningfulToken($index);
+        $staticCandidate = $tokens->getprevMeaningfulToken($index);
 
         return $tokens[$staticCandidate]->isGivenKind(\T_STATIC) ? $staticCandidate : $index;
     }
@@ -460,14 +460,14 @@ final class ReturnAssignmentFixer extends AbstractFixer
             return null;
         }
 
-        $index = $tokens->getPrevMeaningfulToken($index);
+        $index = $tokens->getprevMeaningfulToken($index);
 
         if (!$tokens[$index]->equals(')')) {
             return null;
         }
 
         $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
-        $index = $tokens->getPrevMeaningfulToken($index);
+        $index = $tokens->getprevMeaningfulToken($index);
 
         return $tokens[$index]->isGivenKind(\T_MATCH) ? $index : null;
     }

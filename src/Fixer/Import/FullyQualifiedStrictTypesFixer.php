@@ -985,7 +985,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
     }
 
     /**
-     * We need to create import processor dynamically (not in costructor), because actual whitespace configuration
+     * We need to create import processor dynamically (not in constructor), because actual whitespace configuration
      * is set later, not when fixer's instance is created.
      */
     private function createImportProcessor(): ImportProcessor
