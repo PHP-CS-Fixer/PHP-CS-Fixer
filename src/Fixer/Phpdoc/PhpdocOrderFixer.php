@@ -50,7 +50,7 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
     use ConfigurableFixerTrait;
 
     /**
-     * @var string[]
+     * @var list<string>
      *
      * @TODO: 4.0 - change default to ['param', 'return', 'throws']
      */
