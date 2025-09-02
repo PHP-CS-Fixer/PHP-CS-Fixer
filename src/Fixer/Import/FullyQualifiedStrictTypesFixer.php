@@ -341,6 +341,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
                     } elseif ($token->equals('}')) {
                         unset($this->reservedIdentifiersByLevel[$openedCurlyBrackets]);
                         --$openedCurlyBrackets;
+                        \assert($openedCurlyBrackets >= 0);
                     } elseif ($token->isGivenKind(\T_VARIABLE)) {
                         $prevIndex = $tokens->getPrevMeaningfulToken($index);
                         if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(\T_STRING)) {
