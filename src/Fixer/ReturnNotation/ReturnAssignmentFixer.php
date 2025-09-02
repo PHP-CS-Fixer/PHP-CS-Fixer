@@ -238,13 +238,13 @@ final class ReturnAssignmentFixer extends AbstractFixer
 
             // Note: here we are @ "; return $a;" (or "; return $a ? >")
             while (true) {
-                $prevMeaningFul = $tokens->getPrevMeaningfulToken($assignVarEndIndex);
+                $prevMeaningful = $tokens->getPrevMeaningfulToken($assignVarEndIndex);
 
-                if (!$tokens[$prevMeaningFul]->equals(')')) {
+                if (!$tokens[$prevMeaningful]->equals(')')) {
                     break;
                 }
 
-                $assignVarEndIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $prevMeaningFul);
+                $assignVarEndIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $prevMeaningful);
             }
 
             $assignVarOperatorIndex = $tokens->getPrevTokenOfKind(

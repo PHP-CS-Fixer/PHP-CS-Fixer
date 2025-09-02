@@ -217,7 +217,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
         $formats = $reporterFactory->getFormats();
         array_unshift($formats, '@auto', '@auto,txt');
 
-        $progessOutputTypes = ProgressOutputType::all();
+        $progressOutputTypes = ProgressOutputType::all();
 
         $this->setDefinition(
             [
@@ -239,7 +239,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 new InputOption('diff', '', InputOption::VALUE_NONE, 'Prints diff for each file.'),
                 new InputOption('format', '', InputOption::VALUE_REQUIRED, HelpCommand::getDescriptionWithAllowedValues('To output results in other formats (%s).', $formats), null, $formats),
                 new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
-                new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, HelpCommand::getDescriptionWithAllowedValues('Type of progress indicator (%s).', $progessOutputTypes), null, $progessOutputTypes),
+                new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, HelpCommand::getDescriptionWithAllowedValues('Type of progress indicator (%s).', $progressOutputTypes), null, $progressOutputTypes),
                 new InputOption('sequential', '', InputOption::VALUE_NONE, 'Enforce sequential analysis.'),
             ]
         );
