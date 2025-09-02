@@ -160,10 +160,10 @@ final class SymfonySet extends AbstractRuleSetDescription
             'phpdoc_no_alias_tag' => [
                 'replacements' => [
                     'const' => 'var', // @TODO 4.0 add to @PhpdocNoAliasTagFixer defaults
+                    'link' => 'see',
                     'property-read' => 'property',
                     'property-write' => 'property',
                     'type' => 'var',
-                    'link' => 'see',
                 ],
             ],
             'phpdoc_no_package' => true,

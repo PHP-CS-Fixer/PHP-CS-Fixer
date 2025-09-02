@@ -120,7 +120,7 @@ Rules
 - `phpdoc_no_access <./../rules/phpdoc/phpdoc_no_access.rst>`_
 - `phpdoc_no_alias_tag <./../rules/phpdoc/phpdoc_no_alias_tag.rst>`_ with config:
 
-  ``['replacements' => ['const' => 'var', 'property-read' => 'property', 'property-write' => 'property', 'type' => 'var', 'link' => 'see']]``
+  ``['replacements' => ['const' => 'var', 'link' => 'see', 'property-read' => 'property', 'property-write' => 'property', 'type' => 'var']]``
 
 - `phpdoc_no_package <./../rules/phpdoc/phpdoc_no_package.rst>`_
 - `phpdoc_no_useless_inheritdoc <./../rules/phpdoc/phpdoc_no_useless_inheritdoc.rst>`_

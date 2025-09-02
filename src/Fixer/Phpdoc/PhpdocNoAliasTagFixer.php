@@ -128,10 +128,10 @@ final class PhpdocNoAliasTagFixer extends AbstractProxyFixer implements Configur
                 ->setAllowedTypes(['array<string, string>'])
                 ->setDefault([
                     // 'const' => 'var', @TODO 4.0 (and remove explicitly listed defaults from Symfony ruleset)
+                    'link' => 'see',
                     'property-read' => 'property',
                     'property-write' => 'property',
                     'type' => 'var',
-                    'link' => 'see',
                 ])
                 ->getOption(),
         ]);
