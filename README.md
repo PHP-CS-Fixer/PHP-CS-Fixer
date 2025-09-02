@@ -20,12 +20,7 @@ projects. This tool does not only detect them, but also fixes them for you.
 
 ## Supported PHP Versions
 
-* PHP 7.4
-* PHP 8.0
-* PHP 8.1
-* PHP 8.2
-* PHP 8.3
-* PHP 8.4
+* PHP 7.4 - PHP 8.4
 
 > [!NOTE]
 > Each new PHP version requires a huge effort to support the new syntax.
