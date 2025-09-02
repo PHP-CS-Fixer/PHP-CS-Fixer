@@ -17,10 +17,8 @@ a wide community like the [Symfony](https://symfony.com/doc/current/contributing
 or [our opinionated one](./doc/ruleSets/PhpCsFixer.rst).
 You can **also** define your (team's) style through the [configuration file](./doc/config.rst).
 
-PHP CS Fixer can not only unify the style of your code, but also help to modernize your codebase with
-PHP rule sets like [@PHP85Migration](./doc/ruleSets/PHP85Migration.rst) - helping you to migrate to
-modern syntax, or simply move away from deprecated one - like [no_unset_cast](./doc/rules/cast_notation/no_unset_cast.rst), as well as to
-upgrade your PHPUnit tests with sets like [@PHPUnit91Migration:risky](./doc/ruleSets/PHPUnit91MigrationRisky.rst).
+PHP CS Fixer can not only unify the style of your code, but also help to modernize your codebase towards
+newer PHP (e.g. [@PHP85Migration](./doc/ruleSets/PHP85Migration.rst)) and newer PHPUnit (e.g. [@PHPUnit91Migration:risky](./doc/ruleSets/PHPUnit91MigrationRisky.rst)).
 
 ## Supported PHP Versions
 
