@@ -297,7 +297,7 @@ The rule is part of the following rule sets:
 
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
 
-  ``['attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline', 'after_heredoc' => false]``
+  ``['after_heredoc' => false, 'attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline']``
 
 - `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
 
@@ -341,11 +341,11 @@ The rule is part of the following rule sets:
 
 - `@PSR2 <./../../ruleSets/PSR2.rst>`_ with config:
 
-  ``['attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline', 'after_heredoc' => false]``
+  ``['after_heredoc' => false, 'attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline']``
 
 - `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
 
-  ``['attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline', 'after_heredoc' => false]``
+  ``['after_heredoc' => false, 'attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline']``
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 

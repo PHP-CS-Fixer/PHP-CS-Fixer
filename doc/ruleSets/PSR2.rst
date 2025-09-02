@@ -24,7 +24,7 @@ Rules
 - `lowercase_keywords <./../rules/casing/lowercase_keywords.rst>`_
 - `method_argument_space <./../rules/function_notation/method_argument_space.rst>`_ with config:
 
-  ``['attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline', 'after_heredoc' => false]``
+  ``['after_heredoc' => false, 'attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline']``
 
 - `no_break_comment <./../rules/control_structure/no_break_comment.rst>`_
 - `no_closing_tag <./../rules/php_tag/no_closing_tag.rst>`_
