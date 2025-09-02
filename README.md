@@ -83,4 +83,4 @@ project, configuration, possible improvements, ideas and questions.
 ## Contribute
 
 The tool comes with quite a few built-in fixers, but everyone is more than
-welcome to [contribute](CONTRIBUTING.md) more of them.
+welcome to [contribute](./CONTRIBUTING.md) more of them.
