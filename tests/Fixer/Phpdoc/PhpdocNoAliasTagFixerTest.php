@@ -348,6 +348,7 @@ final class PhpdocNoAliasTagFixerTest extends AbstractFixerTestCase
                     const BAZ = 2;
                 }
                 PHP,
+            ['replacements' => ['const' => 'var']],
         ];
     }
 }

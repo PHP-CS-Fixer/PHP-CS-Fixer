@@ -14,7 +14,7 @@ Mapping between replaced annotations with new ones.
 
 Allowed types: ``array<string, string>``
 
-Default value: ``['property-read' => 'property', 'property-write' => 'property', 'type' => 'var', 'const' => 'var', 'link' => 'see']``
+Default value: ``['property-read' => 'property', 'property-write' => 'property', 'type' => 'var', 'link' => 'see']``
 
 Examples
 --------
