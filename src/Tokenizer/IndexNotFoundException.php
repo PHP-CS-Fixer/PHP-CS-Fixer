@@ -23,8 +23,13 @@ namespace PhpCsFixer\Tokenizer;
  */
 final class IndexNotFoundException extends \RuntimeException
 {
-    public function __construct(string $methodName)
+    private function __construct(string $message)
     {
-        parent::__construct(\sprintf('No matching index found by method "%s".', $methodName));
+        parent::__construct($message);
+    }
+
+    public static function fromMethod(string $methodName): self
+    {
+        return new self(\sprintf('No matching index found by method "%s".', $methodName));
     }
 }

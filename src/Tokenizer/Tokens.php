@@ -669,7 +669,7 @@ class Tokens extends \SplFixedArray
     {
         $index = $this->getNonWhitespaceSibling($index, 1, $whitespaces);
         if (null === $index) {
-            throw new IndexNotFoundException(__FUNCTION__);
+            throw IndexNotFoundException::fromMethod(__FUNCTION__);
         }
 
         return $index;
@@ -855,7 +855,7 @@ class Tokens extends \SplFixedArray
     {
         $index = $this->getMeaningfulTokenSibling($index, 1);
         if (null === $index) {
-            throw new IndexNotFoundException(__FUNCTION__);
+            throw IndexNotFoundException::fromMethod(__FUNCTION__);
         }
 
         return $index;
@@ -880,7 +880,7 @@ class Tokens extends \SplFixedArray
     {
         $index = $this->getMeaningfulTokenSibling($index, -1);
         if (null === $index) {
-            throw new IndexNotFoundException(__FUNCTION__);
+            throw IndexNotFoundException::fromMethod(__FUNCTION__);
         }
 
         return $index;
