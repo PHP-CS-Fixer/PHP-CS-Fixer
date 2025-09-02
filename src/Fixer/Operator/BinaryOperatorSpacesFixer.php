@@ -98,7 +98,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     public const ALIGN_SINGLE_SPACE_MINIMAL_BY_SCOPE = 'align_single_space_minimal_by_scope';
 
     /**
-     * Placeholder used as anchor for right alignment
+     * Placeholder used as anchor for right alignment.
      *
      * @internal
      */
