@@ -23,6 +23,11 @@ namespace PhpCsFixer;
  */
 final class Future
 {
+    /**
+     * @var array<string, true>
+     */
+    private static array $deprecations = [];
+
     private function __construct()
     {
         // cannot create instance
@@ -34,5 +39,32 @@ final class Future
             getenv('PHP_CS_FIXER_FUTURE_MODE'),
             \FILTER_VALIDATE_BOOL
         );
+    }
+
+    public static function triggerDeprecation(\Exception $futureException): void
+    {
+        if (self::isFutureModeEnabled()) {
+            throw new \RuntimeException(
+                'Your are using something deprecated, see previous exception. Aborting execution because `PHP_CS_FIXER_FUTURE_MODE` environment variable is set.',
+                0,
+                $futureException
+            );
+        }
+
+        $message = $futureException->getMessage();
+
+        self::$deprecations[$message] = true;
+        @trigger_error($message, \E_USER_DEPRECATED);
+    }
+
+    /**
+     * @return list<string>
+     */
+    public static function getTriggeredDeprecations(): array
+    {
+        $triggeredDeprecations = array_keys(self::$deprecations);
+        sort($triggeredDeprecations);
+
+        return $triggeredDeprecations;
     }
 }

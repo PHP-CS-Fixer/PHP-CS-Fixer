@@ -43,4 +43,40 @@ final class FutureTest extends TestCase
 
         parent::tearDown();
     }
+
+    /**
+     * @group legacy
+     */
+    public function testTriggerDeprecationWhenFutureModeIsOff(): void
+    {
+        putenv('PHP_CS_FIXER_FUTURE_MODE=0');
+
+        $message = __METHOD__.'::The message';
+        $this->expectDeprecation($message);
+
+        Future::triggerDeprecation(new \DomainException($message));
+
+        $triggered = Future::getTriggeredDeprecations();
+        self::assertContains($message, $triggered);
+    }
+
+    public function testTriggerDeprecationWhenFutureModeIsOn(): void
+    {
+        putenv('PHP_CS_FIXER_FUTURE_MODE=1');
+
+        $message = __METHOD__.'::The message';
+        $exception = new \DomainException($message);
+        $futureModeException = null;
+
+        try {
+            Future::triggerDeprecation($exception);
+        } catch (\Exception $futureModeException) {
+        }
+
+        self::assertInstanceOf(\RuntimeException::class, $futureModeException);
+        self::assertSame($exception, $futureModeException->getPrevious());
+
+        $triggered = Future::getTriggeredDeprecations();
+        self::assertNotContains($message, $triggered);
+    }
 }

@@ -292,7 +292,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
                 ->setDefault(self::SORT_ALPHA)
                 ->setNormalizer(static function (Options $options, ?string $value) use ($fixerName): ?string {
                     if (self::SORT_LENGTH === $value) {
-                        Utils::triggerDeprecation(new InvalidFixerConfigurationException($fixerName, \sprintf(
+                        Future::triggerDeprecation(new InvalidFixerConfigurationException($fixerName, \sprintf(
                             'Option "sort_algorithm:%s" is deprecated and will be removed in version %d.0.',
                             self::SORT_LENGTH,
                             Application::getMajorVersion() + 1,

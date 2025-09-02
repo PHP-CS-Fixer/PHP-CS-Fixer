@@ -33,6 +33,7 @@ use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Future;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\ParallelAwareConfigInterface;
@@ -263,7 +264,7 @@ final class ConfigurationResolver
 
                 if (null !== $this->deprecatedNestedConfigDir && str_starts_with($configFile, $this->deprecatedNestedConfigDir)) {
                     // @TODO v4: when removing, remove also TODO with `MARKER-multi-paths-vs-only-cwd-config`
-                    Utils::triggerDeprecation(
+                    Future::triggerDeprecation(
                         new InvalidConfigurationException("Configuration file `{$configFile}` is picked as file inside passed `path` CLI argument. This will be ignored in the future and only config file in `cwd` will be picked. Please use `config` CLI option instead if you want to keep current behaviour."),
                     );
                 }
@@ -855,7 +856,7 @@ final class ConfigurationResolver
                     ? \sprintf(' and will be removed in version %d.0.', Application::getMajorVersion() + 1)
                     : \sprintf('. Use %s instead.', str_replace('`', '"', Utils::naturalLanguageJoinWithBackticks($successors)));
 
-                Utils::triggerDeprecation(new \RuntimeException("Rule \"{$fixerName}\" is deprecated{$messageEnd}"));
+                Future::triggerDeprecation(new \RuntimeException("Rule \"{$fixerName}\" is deprecated{$messageEnd}"));
             }
         }
     }
