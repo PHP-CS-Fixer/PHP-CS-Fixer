@@ -22,6 +22,8 @@ use PhpCsFixer\Future;
  * @internal
  *
  * @covers \PhpCsFixer\Future
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FutureTest extends TestCase
 {
