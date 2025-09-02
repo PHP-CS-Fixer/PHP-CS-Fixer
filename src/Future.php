@@ -21,4 +21,8 @@ namespace PhpCsFixer;
  */
 final class Future
 {
+    private function __construct()
+    {
+        // cannot create instance
+    }
 }

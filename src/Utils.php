@@ -37,7 +37,7 @@ final class Utils
 
     private function __construct()
     {
-        // cannot create instance of util. class
+        // cannot create instance
     }
 
     /**
