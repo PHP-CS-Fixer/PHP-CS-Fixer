@@ -230,7 +230,7 @@ final class PhpdocParamOrderFixer extends AbstractFixer
      *
      * @param list<Annotation> $paramAnnotations
      *
-     * @return array<int, Annotation>
+     * @return array<int, Annotation> Mapping of found indices and corresponding Annotations
      */
     private function findParamAnnotationByIdentifier(array $paramAnnotations, string $identifier): array
     {
