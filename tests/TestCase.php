@@ -89,22 +89,29 @@ abstract class TestCase extends BaseTestCase
      */
     protected function expectDeprecationOfDeprecatedRuleSets(): void
     {
-        $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
+        $this->expectDeprecation('Rule set "@PER-CS1.0:risky" is deprecated. Use "@PER-CS1x0:risky" instead.');
+        $this->expectDeprecation('Rule set "@PER-CS1.0" is deprecated. Use "@PER-CS1x0" instead.');
+        $this->expectDeprecation('Rule set "@PER-CS2.0:risky" is deprecated. Use "@PER-CS2x0:risky" instead.');
+        $this->expectDeprecation('Rule set "@PER-CS2.0" is deprecated. Use "@PER-CS2x0" instead.');
+        $this->expectDeprecation('Rule set "@PER-CS3.0:risky" is deprecated. Use "@PER-CS3x0:risky" instead.');
+        $this->expectDeprecation('Rule set "@PER-CS3.0" is deprecated. Use "@PER-CS3x0" instead.');
         $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
+        $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
+        $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
         $this->expectDeprecation('Rule set "@PHP54Migration" is deprecated. Use "@PHP5x4Migration" instead.');
         $this->expectDeprecation('Rule set "@PHP56Migration:risky" is deprecated. Use "@PHP5x6Migration:risky" instead.');
-        $this->expectDeprecation('Rule set "@PHP70Migration" is deprecated. Use "@PHP7x0Migration" instead.');
         $this->expectDeprecation('Rule set "@PHP70Migration:risky" is deprecated. Use "@PHP7x0Migration:risky" instead.');
-        $this->expectDeprecation('Rule set "@PHP71Migration" is deprecated. Use "@PHP7x1Migration" instead.');
+        $this->expectDeprecation('Rule set "@PHP70Migration" is deprecated. Use "@PHP7x0Migration" instead.');
         $this->expectDeprecation('Rule set "@PHP71Migration:risky" is deprecated. Use "@PHP7x1Migration:risky" instead.');
+        $this->expectDeprecation('Rule set "@PHP71Migration" is deprecated. Use "@PHP7x1Migration" instead.');
         $this->expectDeprecation('Rule set "@PHP73Migration" is deprecated. Use "@PHP7x3Migration" instead.');
-        $this->expectDeprecation('Rule set "@PHP74Migration" is deprecated. Use "@PHP7x4Migration" instead.');
         $this->expectDeprecation('Rule set "@PHP74Migration:risky" is deprecated. Use "@PHP7x4Migration:risky" instead.');
-        $this->expectDeprecation('Rule set "@PHP80Migration" is deprecated. Use "@PHP8x0Migration" instead.');
+        $this->expectDeprecation('Rule set "@PHP74Migration" is deprecated. Use "@PHP7x4Migration" instead.');
         $this->expectDeprecation('Rule set "@PHP80Migration:risky" is deprecated. Use "@PHP8x0Migration:risky" instead.');
+        $this->expectDeprecation('Rule set "@PHP80Migration" is deprecated. Use "@PHP8x0Migration" instead.');
         $this->expectDeprecation('Rule set "@PHP81Migration" is deprecated. Use "@PHP8x1Migration" instead.');
-        $this->expectDeprecation('Rule set "@PHP82Migration" is deprecated. Use "@PHP8x2Migration" instead.');
         $this->expectDeprecation('Rule set "@PHP82Migration:risky" is deprecated. Use "@PHP8x2Migration:risky" instead.');
+        $this->expectDeprecation('Rule set "@PHP82Migration" is deprecated. Use "@PHP8x2Migration" instead.');
         $this->expectDeprecation('Rule set "@PHP83Migration" is deprecated. Use "@PHP8x3Migration" instead.');
         $this->expectDeprecation('Rule set "@PHP84Migration" is deprecated. Use "@PHP8x4Migration" instead.');
         $this->expectDeprecation('Rule set "@PHP85Migration" is deprecated. Use "@PHP8x5Migration" instead.');
