@@ -26,7 +26,7 @@ final class PHP7x0MigrationSet extends AbstractMigrationSetDescription
     public function getRules(): array
     {
         return [
-            '@PHP5.4Migration' => true,
+            '@PHP5x4Migration' => true,
             'ternary_to_null_coalescing' => true,
         ];
     }

@@ -26,7 +26,7 @@ final class PHP8x2MigrationRiskySet extends AbstractMigrationSetDescription
     public function getRules(): array
     {
         return [
-            '@PHP8.0Migration:risky' => true,
+            '@PHP8x0Migration:risky' => true,
             'phpdoc_readonly_class_comment_to_keyword' => true,
         ];
     }

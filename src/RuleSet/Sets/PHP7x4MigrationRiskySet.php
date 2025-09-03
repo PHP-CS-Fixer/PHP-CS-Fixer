@@ -26,7 +26,7 @@ final class PHP7x4MigrationRiskySet extends AbstractMigrationSetDescription
     public function getRules(): array
     {
         return [
-            '@PHP7.1Migration:risky' => true,
+            '@PHP7x1Migration:risky' => true,
             'implode_call' => true,
             'no_alias_functions' => true,
             'use_arrow_functions' => true,

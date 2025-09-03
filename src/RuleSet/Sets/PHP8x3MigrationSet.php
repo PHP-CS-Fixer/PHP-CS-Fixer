@@ -26,7 +26,7 @@ final class PHP8x3MigrationSet extends AbstractMigrationSetDescription
     public function getRules(): array
     {
         return [
-            '@PHP8.2Migration' => true,
+            '@PHP8x2Migration' => true,
         ];
     }
 }

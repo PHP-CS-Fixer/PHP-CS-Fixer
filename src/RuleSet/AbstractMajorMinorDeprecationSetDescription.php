@@ -27,7 +27,7 @@ abstract class AbstractMajorMinorDeprecationSetDescription extends AbstractMigra
 {
     public function getRules(): array
     {
-        $newName = Preg::replace('#(\d+)(\d)#', '\1.\2', $this->getName());
+        $newName = Preg::replace('#(\d+)(\d)#', '\1x\2', $this->getName());
 
         return [
             $newName => true,

@@ -26,7 +26,7 @@ final class PHP7x1MigrationSet extends AbstractMigrationSetDescription
     public function getRules(): array
     {
         return [
-            '@PHP7.0Migration' => true,
+            '@PHP7x0Migration' => true,
             'list_syntax' => true,
             'visibility_required' => true,
         ];

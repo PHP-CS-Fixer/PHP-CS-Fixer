@@ -26,7 +26,7 @@ final class PHP7x0MigrationRiskySet extends AbstractMigrationSetDescription
     public function getRules(): array
     {
         return [
-            '@PHP5.6Migration:risky' => true,
+            '@PHP5x6Migration:risky' => true,
             'combine_nested_dirname' => true,
             'declare_strict_types' => true,
             'non_printable_character' => true,

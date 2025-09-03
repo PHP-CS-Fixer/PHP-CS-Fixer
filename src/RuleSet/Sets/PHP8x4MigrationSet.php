@@ -26,7 +26,7 @@ final class PHP8x4MigrationSet extends AbstractMigrationSetDescription
     public function getRules(): array
     {
         return [
-            '@PHP8.3Migration' => true,
+            '@PHP8x3Migration' => true,
             'new_expression_parentheses' => true,
             'nullable_type_declaration_for_default_null_value' => true,
         ];

@@ -26,7 +26,7 @@ final class PHP8x5MigrationSet extends AbstractMigrationSetDescription
     public function getRules(): array
     {
         return [
-            '@PHP8.4Migration' => true,
+            '@PHP8x4Migration' => true,
             'switch_case_semicolon_to_colon' => true,
         ];
     }

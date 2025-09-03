@@ -26,7 +26,7 @@ final class PHP8x1MigrationSet extends AbstractMigrationSetDescription
     public function getRules(): array
     {
         return [
-            '@PHP8.0Migration' => true,
+            '@PHP8x0Migration' => true,
             'octal_notation' => true,
         ];
     }

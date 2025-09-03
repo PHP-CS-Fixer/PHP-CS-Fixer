@@ -27,7 +27,7 @@ final class PHPUnit4x3MigrationRiskySet extends AbstractMigrationSetDescription
     public function getRules(): array
     {
         return [
-            '@PHPUnit3.5Migration:risky' => true,
+            '@PHPUnit3x5Migration:risky' => true,
             'php_unit_no_expectation_annotation' => [
                 'target' => PhpUnitTargetVersion::VERSION_4_3,
             ],

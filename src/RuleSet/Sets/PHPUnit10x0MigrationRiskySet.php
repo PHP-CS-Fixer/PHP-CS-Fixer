@@ -26,7 +26,7 @@ final class PHPUnit10x0MigrationRiskySet extends AbstractMigrationSetDescription
     public function getRules(): array
     {
         return [
-            '@PHPUnit9.1Migration:risky' => true,
+            '@PHPUnit9x1Migration:risky' => true,
             'php_unit_data_provider_static' => ['force' => true],
         ];
     }
