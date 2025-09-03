@@ -39,8 +39,8 @@ $typesMap = [
 ];
 
 $config->setRules(array_merge($config->getRules(), [
-    '@PHP8.4Migration' => true,
-    '@PHP8.2Migration:risky' => true,
+    '@PHP84Migration' => true,
+    '@PHP82Migration:risky' => true,
     'phpdoc_to_param_type' => ['types_map' => $typesMap],
     'phpdoc_to_return_type' => ['types_map' => $typesMap],
     'phpdoc_to_property_type' => ['types_map' => $typesMap],
