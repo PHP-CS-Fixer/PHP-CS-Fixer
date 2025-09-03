@@ -35,8 +35,11 @@ The rule is part of the following rule sets:
 - `@PER <./../../ruleSets/PER.rst>`_
 - `@PER-CS <./../../ruleSets/PER-CS.rst>`_
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_
+- `@PER-CS1x0 <./../../ruleSets/PER-CS1x0.rst>`_
 - `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_
+- `@PER-CS2x0 <./../../ruleSets/PER-CS2x0.rst>`_
 - `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_
+- `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_
 - `@PHP7x4Migration <./../../ruleSets/PHP7x4Migration.rst>`_
 - `@PHP8x0Migration <./../../ruleSets/PHP8x0Migration.rst>`_
 - `@PHP8x1Migration <./../../ruleSets/PHP8x1Migration.rst>`_

@@ -1,16 +1,11 @@
 =============================
-Rule set ``@PER-CS1.0:risky``
+Rule set ``@PER-CS1x0:risky``
 =============================
 
 Rules that follow `PER Coding Style 1.0 <https://www.php-fig.org/per/coding-style/>`_.
 
-Warnings
---------
-
-This rule set is deprecated and will be removed in the next major version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You should use ``@PER-CS1x0:risky`` instead.
+Warning
+-------
 
 This set contains rules that are risky
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

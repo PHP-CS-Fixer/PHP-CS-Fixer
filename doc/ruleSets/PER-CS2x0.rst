@@ -1,16 +1,8 @@
 =======================
-Rule set ``@PER-CS2.0``
+Rule set ``@PER-CS2x0``
 =======================
 
 Rules that follow `PER Coding Style 2.0 <https://www.php-fig.org/per/coding-style/>`_.
-
-Warning
--------
-
-This rule set is deprecated and will be removed in the next major version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You should use ``@PER-CS2x0`` instead.
 
 Rules
 -----
