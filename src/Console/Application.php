@@ -24,10 +24,10 @@ use PhpCsFixer\Console\Command\SelfUpdateCommand;
 use PhpCsFixer\Console\Command\WorkerCommand;
 use PhpCsFixer\Console\SelfUpdate\GithubClient;
 use PhpCsFixer\Console\SelfUpdate\NewVersionChecker;
+use PhpCsFixer\Future;
 use PhpCsFixer\PharChecker;
 use PhpCsFixer\Runner\Parallel\WorkerException;
 use PhpCsFixer\ToolInfo;
-use PhpCsFixer\Utils;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\CompleteCommand;
@@ -119,7 +119,7 @@ final class Application extends BaseApplication
             null !== $stdErr
             && $output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE
         ) {
-            $triggeredDeprecations = Utils::getTriggeredDeprecations();
+            $triggeredDeprecations = Future::getTriggeredDeprecations();
 
             if (\count($triggeredDeprecations) > 0) {
                 $stdErr->writeln('');
