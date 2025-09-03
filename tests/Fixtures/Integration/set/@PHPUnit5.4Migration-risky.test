@@ -1,4 +1,0 @@
---TEST--
-Integration of @PHPUnit5.4Migration:risky.
---RULESET--
-{"@PHPUnit5.4Migration:risky": true}
