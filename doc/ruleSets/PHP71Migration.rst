@@ -10,9 +10,9 @@ Warning
 This rule set is deprecated and will be removed in the next major version
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You should use ``@PHP7.1Migration`` instead.
+You should use ``@PHP7x1Migration`` instead.
 
 Rules
 -----
 
-- `@PHP7.1Migration <./PHP7.1Migration.rst>`_
+- `@PHP7x1Migration <./PHP7x1Migration.rst>`_

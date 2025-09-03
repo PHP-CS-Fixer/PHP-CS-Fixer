@@ -12,23 +12,23 @@ List of Available Rule sets
 - `@PER-CS3.0:risky <./PER-CS3.0Risky.rst>`_
 - `@PER-CS:risky <./PER-CSRisky.rst>`_
 - `@PER:risky <./PERRisky.rst>`_ *(deprecated)*
-- `@PHP5.4Migration <./PHP5.4Migration.rst>`_
-- `@PHP5.6Migration:risky <./PHP5.6MigrationRisky.rst>`_
-- `@PHP7.0Migration <./PHP7.0Migration.rst>`_
-- `@PHP7.0Migration:risky <./PHP7.0MigrationRisky.rst>`_
-- `@PHP7.1Migration <./PHP7.1Migration.rst>`_
-- `@PHP7.1Migration:risky <./PHP7.1MigrationRisky.rst>`_
-- `@PHP7.3Migration <./PHP7.3Migration.rst>`_
-- `@PHP7.4Migration <./PHP7.4Migration.rst>`_
-- `@PHP7.4Migration:risky <./PHP7.4MigrationRisky.rst>`_
-- `@PHP8.0Migration <./PHP8.0Migration.rst>`_
-- `@PHP8.0Migration:risky <./PHP8.0MigrationRisky.rst>`_
-- `@PHP8.1Migration <./PHP8.1Migration.rst>`_
-- `@PHP8.2Migration <./PHP8.2Migration.rst>`_
-- `@PHP8.2Migration:risky <./PHP8.2MigrationRisky.rst>`_
-- `@PHP8.3Migration <./PHP8.3Migration.rst>`_
-- `@PHP8.4Migration <./PHP8.4Migration.rst>`_
-- `@PHP8.5Migration <./PHP8.5Migration.rst>`_
+- `@PHP5x4Migration <./PHP5x4Migration.rst>`_
+- `@PHP5x6Migration:risky <./PHP5x6MigrationRisky.rst>`_
+- `@PHP7x0Migration <./PHP7x0Migration.rst>`_
+- `@PHP7x0Migration:risky <./PHP7x0MigrationRisky.rst>`_
+- `@PHP7x1Migration <./PHP7x1Migration.rst>`_
+- `@PHP7x1Migration:risky <./PHP7x1MigrationRisky.rst>`_
+- `@PHP7x3Migration <./PHP7x3Migration.rst>`_
+- `@PHP7x4Migration <./PHP7x4Migration.rst>`_
+- `@PHP7x4Migration:risky <./PHP7x4MigrationRisky.rst>`_
+- `@PHP8x0Migration <./PHP8x0Migration.rst>`_
+- `@PHP8x0Migration:risky <./PHP8x0MigrationRisky.rst>`_
+- `@PHP8x1Migration <./PHP8x1Migration.rst>`_
+- `@PHP8x2Migration <./PHP8x2Migration.rst>`_
+- `@PHP8x2Migration:risky <./PHP8x2MigrationRisky.rst>`_
+- `@PHP8x3Migration <./PHP8x3Migration.rst>`_
+- `@PHP8x4Migration <./PHP8x4Migration.rst>`_
+- `@PHP8x5Migration <./PHP8x5Migration.rst>`_
 - `@PHP54Migration <./PHP54Migration.rst>`_ *(deprecated)*
 - `@PHP56Migration:risky <./PHP56MigrationRisky.rst>`_ *(deprecated)*
 - `@PHP70Migration <./PHP70Migration.rst>`_ *(deprecated)*
@@ -46,22 +46,22 @@ List of Available Rule sets
 - `@PHP83Migration <./PHP83Migration.rst>`_ *(deprecated)*
 - `@PHP84Migration <./PHP84Migration.rst>`_ *(deprecated)*
 - `@PHP85Migration <./PHP85Migration.rst>`_ *(deprecated)*
-- `@PHPUnit3.0Migration:risky <./PHPUnit3.0MigrationRisky.rst>`_
-- `@PHPUnit3.2Migration:risky <./PHPUnit3.2MigrationRisky.rst>`_
-- `@PHPUnit3.5Migration:risky <./PHPUnit3.5MigrationRisky.rst>`_
-- `@PHPUnit4.3Migration:risky <./PHPUnit4.3MigrationRisky.rst>`_
-- `@PHPUnit4.8Migration:risky <./PHPUnit4.8MigrationRisky.rst>`_
-- `@PHPUnit5.0Migration:risky <./PHPUnit5.0MigrationRisky.rst>`_
-- `@PHPUnit5.2Migration:risky <./PHPUnit5.2MigrationRisky.rst>`_
-- `@PHPUnit5.4Migration:risky <./PHPUnit5.4MigrationRisky.rst>`_
-- `@PHPUnit5.5Migration:risky <./PHPUnit5.5MigrationRisky.rst>`_
-- `@PHPUnit5.6Migration:risky <./PHPUnit5.6MigrationRisky.rst>`_
-- `@PHPUnit5.7Migration:risky <./PHPUnit5.7MigrationRisky.rst>`_
-- `@PHPUnit6.0Migration:risky <./PHPUnit6.0MigrationRisky.rst>`_
-- `@PHPUnit7.5Migration:risky <./PHPUnit7.5MigrationRisky.rst>`_
-- `@PHPUnit8.4Migration:risky <./PHPUnit8.4MigrationRisky.rst>`_
-- `@PHPUnit9.1Migration:risky <./PHPUnit9.1MigrationRisky.rst>`_
-- `@PHPUnit10.0Migration:risky <./PHPUnit10.0MigrationRisky.rst>`_
+- `@PHPUnit3x0Migration:risky <./PHPUnit3x0MigrationRisky.rst>`_
+- `@PHPUnit3x2Migration:risky <./PHPUnit3x2MigrationRisky.rst>`_
+- `@PHPUnit3x5Migration:risky <./PHPUnit3x5MigrationRisky.rst>`_
+- `@PHPUnit4x3Migration:risky <./PHPUnit4x3MigrationRisky.rst>`_
+- `@PHPUnit4x8Migration:risky <./PHPUnit4x8MigrationRisky.rst>`_
+- `@PHPUnit5x0Migration:risky <./PHPUnit5x0MigrationRisky.rst>`_
+- `@PHPUnit5x2Migration:risky <./PHPUnit5x2MigrationRisky.rst>`_
+- `@PHPUnit5x4Migration:risky <./PHPUnit5x4MigrationRisky.rst>`_
+- `@PHPUnit5x5Migration:risky <./PHPUnit5x5MigrationRisky.rst>`_
+- `@PHPUnit5x6Migration:risky <./PHPUnit5x6MigrationRisky.rst>`_
+- `@PHPUnit5x7Migration:risky <./PHPUnit5x7MigrationRisky.rst>`_
+- `@PHPUnit6x0Migration:risky <./PHPUnit6x0MigrationRisky.rst>`_
+- `@PHPUnit7x5Migration:risky <./PHPUnit7x5MigrationRisky.rst>`_
+- `@PHPUnit8x4Migration:risky <./PHPUnit8x4MigrationRisky.rst>`_
+- `@PHPUnit9x1Migration:risky <./PHPUnit9x1MigrationRisky.rst>`_
+- `@PHPUnit10x0Migration:risky <./PHPUnit10x0MigrationRisky.rst>`_
 - `@PHPUnit30Migration:risky <./PHPUnit30MigrationRisky.rst>`_ *(deprecated)*
 - `@PHPUnit32Migration:risky <./PHPUnit32MigrationRisky.rst>`_ *(deprecated)*
 - `@PHPUnit35Migration:risky <./PHPUnit35MigrationRisky.rst>`_ *(deprecated)*

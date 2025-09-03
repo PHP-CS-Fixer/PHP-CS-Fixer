@@ -96,7 +96,7 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PHPUnit10.0Migration:risky <./../../ruleSets/PHPUnit10.0MigrationRisky.rst>`_ with config:
+- `@PHPUnit10x0Migration:risky <./../../ruleSets/PHPUnit10x0MigrationRisky.rst>`_ with config:
 
   ``['force' => true]``
 

@@ -78,23 +78,23 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PHP7.0Migration:risky <./../../ruleSets/PHP7.0MigrationRisky.rst>`_ with config:
+- `@PHP7x0Migration:risky <./../../ruleSets/PHP7x0MigrationRisky.rst>`_ with config:
 
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
 
-- `@PHP7.1Migration:risky <./../../ruleSets/PHP7.1MigrationRisky.rst>`_ with config:
+- `@PHP7x1Migration:risky <./../../ruleSets/PHP7x1MigrationRisky.rst>`_ with config:
 
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
 
-- `@PHP7.4Migration:risky <./../../ruleSets/PHP7.4MigrationRisky.rst>`_ with config:
+- `@PHP7x4Migration:risky <./../../ruleSets/PHP7x4MigrationRisky.rst>`_ with config:
 
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
 
-- `@PHP8.0Migration:risky <./../../ruleSets/PHP8.0MigrationRisky.rst>`_ with config:
+- `@PHP8x0Migration:risky <./../../ruleSets/PHP8x0MigrationRisky.rst>`_ with config:
 
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
 
-- `@PHP8.2Migration:risky <./../../ruleSets/PHP8.2MigrationRisky.rst>`_ with config:
+- `@PHP8x2Migration:risky <./../../ruleSets/PHP8x2MigrationRisky.rst>`_ with config:
 
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
 
