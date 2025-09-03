@@ -27,7 +27,7 @@ final class SymfonySet extends AbstractRuleSetDescription
     public function getRules(): array
     {
         return [
-            '@PER-CS3.0' => true,
+            '@PER-CS3x0' => true,
             'align_multiline_comment' => true,
             'backtick_to_shell_exec' => true,
             'binary_operator_spaces' => true,
