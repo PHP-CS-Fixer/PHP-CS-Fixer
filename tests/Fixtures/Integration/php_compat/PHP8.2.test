@@ -3,7 +3,7 @@ PHP 8.2 test.
 --RULESET--
 {
     "@PhpCsFixer": true,
-    "@PHP8.2Migration": true
+    "@PHP8x2Migration": true
 }
 --REQUIREMENTS--
 {"php": 80200}

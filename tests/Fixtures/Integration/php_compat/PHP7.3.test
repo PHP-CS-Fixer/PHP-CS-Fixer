@@ -4,8 +4,8 @@ PHP 7.3 test.
 {
     "@Symfony": true,
     "@Symfony:risky": true,
-    "@PHP7.3Migration": true,
-    "@PHP7.1Migration:risky": true,
+    "@PHP7x3Migration": true,
+    "@PHP7x1Migration:risky": true,
     "list_syntax": {"syntax": "short"},
     "mb_str_functions": true,
     "method_chaining_indentation": true,

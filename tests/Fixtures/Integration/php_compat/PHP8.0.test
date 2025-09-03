@@ -2,8 +2,8 @@
 PHP 8.0 test.
 --RULESET--
 {
-    "@PHP8.0Migration": true,
-    "@PHP8.0Migration:risky": true,
+    "@PHP8x0Migration": true,
+    "@PHP8x0Migration:risky": true,
     "@PhpCsFixer": true,
     "@PhpCsFixer:risky": true,
     "phpdoc_to_return_type": true

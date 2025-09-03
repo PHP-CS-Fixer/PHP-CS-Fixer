@@ -6,7 +6,7 @@ PHP 8.3 test.
 --RULESET--
 {
     "@PhpCsFixer": true,
-    "@PHP8.3Migration": true
+    "@PHP8x3Migration": true
 }
 --REQUIREMENTS--
 {"php": 80300}
