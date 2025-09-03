@@ -67,7 +67,7 @@ final class RuleSetsTest extends TestCase
      */
     public function testHasIntegrationTest(string $setDefinitionName): void
     {
-        // @TODO v4 remove deprecated sets
+        /** @TODO v4 remove deprecated sets */
         $setsWithoutTests = [
             '@PER-CS:risky',
             '@PER-CS',
