@@ -24,6 +24,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Future;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -198,7 +199,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                 ->getOption(),
             (new FixerOptionBuilder('after_heredoc', 'Whether the whitespace between heredoc end and comma should be removed.'))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(false) // @TODO 4.0: set to true
+                ->setDefault(Future::getV4OrV3(true, false))
                 ->getOption(),
             (new FixerOptionBuilder(
                 'attribute_placement',

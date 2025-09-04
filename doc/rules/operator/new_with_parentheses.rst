@@ -86,7 +86,10 @@ The rule is part of the following rule sets:
 
   ``['anonymous_class' => false]``
 
-- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
+
+  ``['anonymous_class' => true]``
+
 - `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
 
   ``['anonymous_class' => false]``
@@ -95,7 +98,10 @@ The rule is part of the following rule sets:
 
   ``['anonymous_class' => false]``
 
-- `@PSR12 <./../../ruleSets/PSR12.rst>`_
+- `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
+
+  ``['anonymous_class' => true]``
+
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 
   ``['anonymous_class' => false]``

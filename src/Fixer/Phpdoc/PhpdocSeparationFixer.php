@@ -25,6 +25,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Future;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -193,7 +194,7 @@ final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableF
                 ->getOption(),
             (new FixerOptionBuilder('skip_unlisted_annotations', 'Whether to skip annotations that are not listed in any group.'))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(false) // @TODO 4.0: set to `true`.
+                ->setDefault(Future::getV4OrV3(true, false))
                 ->getOption(),
         ]);
     }
