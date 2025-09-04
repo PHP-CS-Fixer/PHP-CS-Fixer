@@ -259,7 +259,7 @@ final class ConfigTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: null|class-string<\Throwable>, 1: list<class-string>}>
+     * @return iterable<int, array{0: null|class-string<\Throwable>, 1: list<class-string>}>
      */
     public static function provideRegisterCustomRuleSetsCases(): iterable
     {

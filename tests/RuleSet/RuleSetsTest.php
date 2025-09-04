@@ -41,10 +41,11 @@ final class RuleSetsTest extends TestCase
 
         // Since we register custom rule sets statically, we need to clear custom rule sets between runs.
         // We don't need to clear the built-in rule sets, because they don't change between runs.
-        $reflection = new \ReflectionClass(RuleSets::class);
-        $customRuleSetDefinitionsProperty = $reflection->getProperty('customRuleSetDefinitions');
-        $customRuleSetDefinitionsProperty->setAccessible(true);
-        $customRuleSetDefinitionsProperty->setValue($reflection, []);
+        \Closure::bind(
+            static function (): void { RuleSets::$customRuleSetDefinitions = []; },
+            null,
+            RuleSets::class
+        )();
     }
 
     public function testGetSetDefinitionNames(): void
