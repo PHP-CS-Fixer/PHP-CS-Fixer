@@ -4,15 +4,9 @@ Rule set ``@PHP84Migration``
 
 Rules to improve code for PHP 8.4 compatibility.
 
-Warning
--------
-
-This rule set is deprecated and will be removed in the next major version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You should use ``@PHP8x4Migration`` instead.
-
 Rules
 -----
 
-- `@PHP8x4Migration <./PHP8x4Migration.rst>`_
+- `@PHP83Migration <./PHP83Migration.rst>`_
+- `new_expression_parentheses <./../rules/operator/new_expression_parentheses.rst>`_
+- `nullable_type_declaration_for_default_null_value <./../rules/function_notation/nullable_type_declaration_for_default_null_value.rst>`_

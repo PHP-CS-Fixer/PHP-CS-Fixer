@@ -33,9 +33,8 @@ Example #1
 Rule sets
 ---------
 
-The rule is part of the following rule sets:
+The rule is part of the following rule set:
 
-- `@PHP8x2Migration:risky <./../../ruleSets/PHP8x2MigrationRisky.rst>`_
 - `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_
 
 References

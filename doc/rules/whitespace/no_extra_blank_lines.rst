@@ -231,23 +231,11 @@ The rule is part of the following rule sets:
 
   ``['tokens' => ['use']]``
 
-- `@PER-CS1x0 <./../../ruleSets/PER-CS1x0.rst>`_ with config:
-
-  ``['tokens' => ['use']]``
-
 - `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
 
   ``['tokens' => ['use']]``
 
-- `@PER-CS2x0 <./../../ruleSets/PER-CS2x0.rst>`_ with config:
-
-  ``['tokens' => ['use']]``
-
 - `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
-
-  ``['tokens' => ['use']]``
-
-- `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_ with config:
 
   ``['tokens' => ['use']]``
 

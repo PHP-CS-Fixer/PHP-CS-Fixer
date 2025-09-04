@@ -34,11 +34,8 @@ Rule sets
 The rule is part of the following rule sets:
 
 - `@PER-CS1.0:risky <./../../ruleSets/PER-CS1.0Risky.rst>`_
-- `@PER-CS1x0:risky <./../../ruleSets/PER-CS1x0Risky.rst>`_
 - `@PER-CS2.0:risky <./../../ruleSets/PER-CS2.0Risky.rst>`_
-- `@PER-CS2x0:risky <./../../ruleSets/PER-CS2x0Risky.rst>`_
 - `@PER-CS3.0:risky <./../../ruleSets/PER-CS3.0Risky.rst>`_
-- `@PER-CS3x0:risky <./../../ruleSets/PER-CS3x0Risky.rst>`_
 - `@PER-CS:risky <./../../ruleSets/PER-CSRisky.rst>`_
 - `@PER:risky <./../../ruleSets/PERRisky.rst>`_
 - `@PSR12:risky <./../../ruleSets/PSR12Risky.rst>`_

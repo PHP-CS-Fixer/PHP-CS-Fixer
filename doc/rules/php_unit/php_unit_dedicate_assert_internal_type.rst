@@ -76,22 +76,6 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PHPUnit7x5Migration:risky <./../../ruleSets/PHPUnit7x5MigrationRisky.rst>`_ with config:
-
-  ``['target' => '7.5']``
-
-- `@PHPUnit8x4Migration:risky <./../../ruleSets/PHPUnit8x4MigrationRisky.rst>`_ with config:
-
-  ``['target' => '7.5']``
-
-- `@PHPUnit9x1Migration:risky <./../../ruleSets/PHPUnit9x1MigrationRisky.rst>`_ with config:
-
-  ``['target' => '7.5']``
-
-- `@PHPUnit10x0Migration:risky <./../../ruleSets/PHPUnit10x0MigrationRisky.rst>`_ with config:
-
-  ``['target' => '7.5']``
-
 - `@PHPUnit75Migration:risky <./../../ruleSets/PHPUnit75MigrationRisky.rst>`_ with config:
 
   ``['target' => '7.5']``

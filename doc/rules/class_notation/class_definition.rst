@@ -184,23 +184,11 @@ The rule is part of the following rule sets:
 
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
 
-- `@PER-CS1x0 <./../../ruleSets/PER-CS1x0.rst>`_ with config:
-
-  ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
-
 - `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
 
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
 
-- `@PER-CS2x0 <./../../ruleSets/PER-CS2x0.rst>`_ with config:
-
-  ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
-
 - `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
-
-  ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
-
-- `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_ with config:
 
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
 

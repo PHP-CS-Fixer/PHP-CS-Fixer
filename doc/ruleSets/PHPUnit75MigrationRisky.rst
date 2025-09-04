@@ -4,13 +4,8 @@ Rule set ``@PHPUnit75Migration:risky``
 
 Rules to improve tests code for PHPUnit 7.5 compatibility.
 
-Warnings
---------
-
-This rule set is deprecated and will be removed in the next major version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You should use ``@PHPUnit7x5Migration:risky`` instead.
+Warning
+-------
 
 This set contains rules that are risky
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -20,4 +15,8 @@ Using this rule set may lead to changes in your code's logic and behaviour. Use 
 Rules
 -----
 
-- `@PHPUnit7x5Migration:risky <./PHPUnit7x5MigrationRisky.rst>`_
+- `@PHPUnit60Migration:risky <./PHPUnit60MigrationRisky.rst>`_
+- `php_unit_dedicate_assert_internal_type <./../rules/php_unit/php_unit_dedicate_assert_internal_type.rst>`_ with config:
+
+  ``['target' => '7.5']``
+

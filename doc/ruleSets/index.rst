@@ -4,86 +4,47 @@ List of Available Rule sets
 - `@DoctrineAnnotation <./DoctrineAnnotation.rst>`_
 - `@PER <./PER.rst>`_ *(deprecated)*
 - `@PER-CS <./PER-CS.rst>`_
-- `@PER-CS1.0 <./PER-CS1.0.rst>`_ *(deprecated)*
-- `@PER-CS1.0:risky <./PER-CS1.0Risky.rst>`_ *(deprecated)*
-- `@PER-CS1x0 <./PER-CS1x0.rst>`_
-- `@PER-CS1x0:risky <./PER-CS1x0Risky.rst>`_
-- `@PER-CS2.0 <./PER-CS2.0.rst>`_ *(deprecated)*
-- `@PER-CS2.0:risky <./PER-CS2.0Risky.rst>`_ *(deprecated)*
-- `@PER-CS2x0 <./PER-CS2x0.rst>`_
-- `@PER-CS2x0:risky <./PER-CS2x0Risky.rst>`_
-- `@PER-CS3.0 <./PER-CS3.0.rst>`_ *(deprecated)*
-- `@PER-CS3.0:risky <./PER-CS3.0Risky.rst>`_ *(deprecated)*
-- `@PER-CS3x0 <./PER-CS3x0.rst>`_
-- `@PER-CS3x0:risky <./PER-CS3x0Risky.rst>`_
+- `@PER-CS1.0 <./PER-CS1.0.rst>`_
+- `@PER-CS1.0:risky <./PER-CS1.0Risky.rst>`_
+- `@PER-CS2.0 <./PER-CS2.0.rst>`_
+- `@PER-CS2.0:risky <./PER-CS2.0Risky.rst>`_
+- `@PER-CS3.0 <./PER-CS3.0.rst>`_
+- `@PER-CS3.0:risky <./PER-CS3.0Risky.rst>`_
 - `@PER-CS:risky <./PER-CSRisky.rst>`_
 - `@PER:risky <./PERRisky.rst>`_ *(deprecated)*
-- `@PHP5x4Migration <./PHP5x4Migration.rst>`_
-- `@PHP5x6Migration:risky <./PHP5x6MigrationRisky.rst>`_
-- `@PHP7x0Migration <./PHP7x0Migration.rst>`_
-- `@PHP7x0Migration:risky <./PHP7x0MigrationRisky.rst>`_
-- `@PHP7x1Migration <./PHP7x1Migration.rst>`_
-- `@PHP7x1Migration:risky <./PHP7x1MigrationRisky.rst>`_
-- `@PHP7x3Migration <./PHP7x3Migration.rst>`_
-- `@PHP7x4Migration <./PHP7x4Migration.rst>`_
-- `@PHP7x4Migration:risky <./PHP7x4MigrationRisky.rst>`_
-- `@PHP8x0Migration <./PHP8x0Migration.rst>`_
-- `@PHP8x0Migration:risky <./PHP8x0MigrationRisky.rst>`_
-- `@PHP8x1Migration <./PHP8x1Migration.rst>`_
-- `@PHP8x2Migration <./PHP8x2Migration.rst>`_
-- `@PHP8x2Migration:risky <./PHP8x2MigrationRisky.rst>`_
-- `@PHP8x3Migration <./PHP8x3Migration.rst>`_
-- `@PHP8x4Migration <./PHP8x4Migration.rst>`_
-- `@PHP8x5Migration <./PHP8x5Migration.rst>`_
-- `@PHP54Migration <./PHP54Migration.rst>`_ *(deprecated)*
-- `@PHP56Migration:risky <./PHP56MigrationRisky.rst>`_ *(deprecated)*
-- `@PHP70Migration <./PHP70Migration.rst>`_ *(deprecated)*
-- `@PHP70Migration:risky <./PHP70MigrationRisky.rst>`_ *(deprecated)*
-- `@PHP71Migration <./PHP71Migration.rst>`_ *(deprecated)*
-- `@PHP71Migration:risky <./PHP71MigrationRisky.rst>`_ *(deprecated)*
-- `@PHP73Migration <./PHP73Migration.rst>`_ *(deprecated)*
-- `@PHP74Migration <./PHP74Migration.rst>`_ *(deprecated)*
-- `@PHP74Migration:risky <./PHP74MigrationRisky.rst>`_ *(deprecated)*
-- `@PHP80Migration <./PHP80Migration.rst>`_ *(deprecated)*
-- `@PHP80Migration:risky <./PHP80MigrationRisky.rst>`_ *(deprecated)*
-- `@PHP81Migration <./PHP81Migration.rst>`_ *(deprecated)*
-- `@PHP82Migration <./PHP82Migration.rst>`_ *(deprecated)*
-- `@PHP82Migration:risky <./PHP82MigrationRisky.rst>`_ *(deprecated)*
-- `@PHP83Migration <./PHP83Migration.rst>`_ *(deprecated)*
-- `@PHP84Migration <./PHP84Migration.rst>`_ *(deprecated)*
-- `@PHP85Migration <./PHP85Migration.rst>`_ *(deprecated)*
-- `@PHPUnit3x0Migration:risky <./PHPUnit3x0MigrationRisky.rst>`_
-- `@PHPUnit3x2Migration:risky <./PHPUnit3x2MigrationRisky.rst>`_
-- `@PHPUnit3x5Migration:risky <./PHPUnit3x5MigrationRisky.rst>`_
-- `@PHPUnit4x3Migration:risky <./PHPUnit4x3MigrationRisky.rst>`_
-- `@PHPUnit4x8Migration:risky <./PHPUnit4x8MigrationRisky.rst>`_
-- `@PHPUnit5x0Migration:risky <./PHPUnit5x0MigrationRisky.rst>`_
-- `@PHPUnit5x2Migration:risky <./PHPUnit5x2MigrationRisky.rst>`_
-- `@PHPUnit5x4Migration:risky <./PHPUnit5x4MigrationRisky.rst>`_
-- `@PHPUnit5x5Migration:risky <./PHPUnit5x5MigrationRisky.rst>`_
-- `@PHPUnit5x6Migration:risky <./PHPUnit5x6MigrationRisky.rst>`_
-- `@PHPUnit5x7Migration:risky <./PHPUnit5x7MigrationRisky.rst>`_
-- `@PHPUnit6x0Migration:risky <./PHPUnit6x0MigrationRisky.rst>`_
-- `@PHPUnit7x5Migration:risky <./PHPUnit7x5MigrationRisky.rst>`_
-- `@PHPUnit8x4Migration:risky <./PHPUnit8x4MigrationRisky.rst>`_
-- `@PHPUnit9x1Migration:risky <./PHPUnit9x1MigrationRisky.rst>`_
-- `@PHPUnit10x0Migration:risky <./PHPUnit10x0MigrationRisky.rst>`_
-- `@PHPUnit30Migration:risky <./PHPUnit30MigrationRisky.rst>`_ *(deprecated)*
-- `@PHPUnit32Migration:risky <./PHPUnit32MigrationRisky.rst>`_ *(deprecated)*
-- `@PHPUnit35Migration:risky <./PHPUnit35MigrationRisky.rst>`_ *(deprecated)*
-- `@PHPUnit43Migration:risky <./PHPUnit43MigrationRisky.rst>`_ *(deprecated)*
-- `@PHPUnit48Migration:risky <./PHPUnit48MigrationRisky.rst>`_ *(deprecated)*
-- `@PHPUnit50Migration:risky <./PHPUnit50MigrationRisky.rst>`_ *(deprecated)*
-- `@PHPUnit52Migration:risky <./PHPUnit52MigrationRisky.rst>`_ *(deprecated)*
-- `@PHPUnit54Migration:risky <./PHPUnit54MigrationRisky.rst>`_ *(deprecated)*
-- `@PHPUnit55Migration:risky <./PHPUnit55MigrationRisky.rst>`_ *(deprecated)*
-- `@PHPUnit56Migration:risky <./PHPUnit56MigrationRisky.rst>`_ *(deprecated)*
-- `@PHPUnit57Migration:risky <./PHPUnit57MigrationRisky.rst>`_ *(deprecated)*
-- `@PHPUnit60Migration:risky <./PHPUnit60MigrationRisky.rst>`_ *(deprecated)*
-- `@PHPUnit75Migration:risky <./PHPUnit75MigrationRisky.rst>`_ *(deprecated)*
-- `@PHPUnit84Migration:risky <./PHPUnit84MigrationRisky.rst>`_ *(deprecated)*
-- `@PHPUnit91Migration:risky <./PHPUnit91MigrationRisky.rst>`_ *(deprecated)*
-- `@PHPUnit100Migration:risky <./PHPUnit100MigrationRisky.rst>`_ *(deprecated)*
+- `@PHP54Migration <./PHP54Migration.rst>`_
+- `@PHP56Migration:risky <./PHP56MigrationRisky.rst>`_
+- `@PHP70Migration <./PHP70Migration.rst>`_
+- `@PHP70Migration:risky <./PHP70MigrationRisky.rst>`_
+- `@PHP71Migration <./PHP71Migration.rst>`_
+- `@PHP71Migration:risky <./PHP71MigrationRisky.rst>`_
+- `@PHP73Migration <./PHP73Migration.rst>`_
+- `@PHP74Migration <./PHP74Migration.rst>`_
+- `@PHP74Migration:risky <./PHP74MigrationRisky.rst>`_
+- `@PHP80Migration <./PHP80Migration.rst>`_
+- `@PHP80Migration:risky <./PHP80MigrationRisky.rst>`_
+- `@PHP81Migration <./PHP81Migration.rst>`_
+- `@PHP82Migration <./PHP82Migration.rst>`_
+- `@PHP82Migration:risky <./PHP82MigrationRisky.rst>`_
+- `@PHP83Migration <./PHP83Migration.rst>`_
+- `@PHP84Migration <./PHP84Migration.rst>`_
+- `@PHP85Migration <./PHP85Migration.rst>`_
+- `@PHPUnit30Migration:risky <./PHPUnit30MigrationRisky.rst>`_
+- `@PHPUnit32Migration:risky <./PHPUnit32MigrationRisky.rst>`_
+- `@PHPUnit35Migration:risky <./PHPUnit35MigrationRisky.rst>`_
+- `@PHPUnit43Migration:risky <./PHPUnit43MigrationRisky.rst>`_
+- `@PHPUnit48Migration:risky <./PHPUnit48MigrationRisky.rst>`_
+- `@PHPUnit50Migration:risky <./PHPUnit50MigrationRisky.rst>`_
+- `@PHPUnit52Migration:risky <./PHPUnit52MigrationRisky.rst>`_
+- `@PHPUnit54Migration:risky <./PHPUnit54MigrationRisky.rst>`_
+- `@PHPUnit55Migration:risky <./PHPUnit55MigrationRisky.rst>`_
+- `@PHPUnit56Migration:risky <./PHPUnit56MigrationRisky.rst>`_
+- `@PHPUnit57Migration:risky <./PHPUnit57MigrationRisky.rst>`_
+- `@PHPUnit60Migration:risky <./PHPUnit60MigrationRisky.rst>`_
+- `@PHPUnit75Migration:risky <./PHPUnit75MigrationRisky.rst>`_
+- `@PHPUnit84Migration:risky <./PHPUnit84MigrationRisky.rst>`_
+- `@PHPUnit91Migration:risky <./PHPUnit91MigrationRisky.rst>`_
+- `@PHPUnit100Migration:risky <./PHPUnit100MigrationRisky.rst>`_
 - `@PSR1 <./PSR1.rst>`_
 - `@PSR2 <./PSR2.rst>`_
 - `@PSR12 <./PSR12.rst>`_

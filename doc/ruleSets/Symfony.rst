@@ -7,7 +7,7 @@ Rules that follow the official `Symfony Coding Standards <https://symfony.com/do
 Rules
 -----
 
-- `@PER-CS3x0 <./PER-CS3x0.rst>`_
+- `@PER-CS3.0 <./PER-CS3.0.rst>`_
 - `align_multiline_comment <./../rules/phpdoc/align_multiline_comment.rst>`_
 - `backtick_to_shell_exec <./../rules/alias/backtick_to_shell_exec.rst>`_
 - `binary_operator_spaces <./../rules/operator/binary_operator_spaces.rst>`_

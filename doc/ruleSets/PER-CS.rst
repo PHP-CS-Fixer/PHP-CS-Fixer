@@ -7,4 +7,4 @@ Alias for the latest revision of PER-CS rules. Use it if you always want to be i
 Rules
 -----
 
-- `@PER-CS3x0 <./PER-CS3x0.rst>`_
+- `@PER-CS3.0 <./PER-CS3.0.rst>`_

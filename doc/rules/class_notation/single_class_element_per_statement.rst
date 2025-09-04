@@ -68,20 +68,11 @@ The rule is part of the following rule sets:
 
   ``['elements' => ['property']]``
 
-- `@PER-CS1x0 <./../../ruleSets/PER-CS1x0.rst>`_ with config:
-
-  ``['elements' => ['property']]``
-
 - `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
 
   ``['elements' => ['property']]``
 
-- `@PER-CS2x0 <./../../ruleSets/PER-CS2x0.rst>`_ with config:
-
-  ``['elements' => ['property']]``
-
 - `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_
-- `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_
 - `@PSR2 <./../../ruleSets/PSR2.rst>`_ with config:
 
   ``['elements' => ['property']]``

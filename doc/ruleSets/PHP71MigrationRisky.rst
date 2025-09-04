@@ -4,13 +4,8 @@ Rule set ``@PHP71Migration:risky``
 
 Rules to improve code for PHP 7.1 compatibility.
 
-Warnings
---------
-
-This rule set is deprecated and will be removed in the next major version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You should use ``@PHP7x1Migration:risky`` instead.
+Warning
+-------
 
 This set contains rules that are risky
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -20,4 +15,5 @@ Using this rule set may lead to changes in your code's logic and behaviour. Use 
 Rules
 -----
 
-- `@PHP7x1Migration:risky <./PHP7x1MigrationRisky.rst>`_
+- `@PHP70Migration:risky <./PHP70MigrationRisky.rst>`_
+- `void_return <./../rules/function_notation/void_return.rst>`_
