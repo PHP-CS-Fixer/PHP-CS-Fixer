@@ -34,10 +34,15 @@ Rule sets
 The rule is part of the following rule sets:
 
 - `@PER-CS1.0:risky <./../../ruleSets/PER-CS1.0Risky.rst>`_
+- `@PER-CS1x0:risky <./../../ruleSets/PER-CS1x0Risky.rst>`_
 - `@PER-CS2.0:risky <./../../ruleSets/PER-CS2.0Risky.rst>`_
+- `@PER-CS2x0:risky <./../../ruleSets/PER-CS2x0Risky.rst>`_
 - `@PER-CS3.0:risky <./../../ruleSets/PER-CS3.0Risky.rst>`_
+- `@PER-CS3x0:risky <./../../ruleSets/PER-CS3x0Risky.rst>`_
 - `@PER-CS:risky <./../../ruleSets/PER-CSRisky.rst>`_
 - `@PER:risky <./../../ruleSets/PERRisky.rst>`_
+- `@PHP8x0Migration:risky <./../../ruleSets/PHP8x0MigrationRisky.rst>`_
+- `@PHP8x2Migration:risky <./../../ruleSets/PHP8x2MigrationRisky.rst>`_
 - `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_
 - `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_
 - `@PSR12:risky <./../../ruleSets/PSR12Risky.rst>`_

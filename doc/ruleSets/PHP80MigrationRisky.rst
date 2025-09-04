@@ -4,8 +4,13 @@ Rule set ``@PHP80Migration:risky``
 
 Rules to improve code for PHP 8.0 compatibility.
 
-Warning
--------
+Warnings
+--------
+
+This rule set is deprecated and will be removed in the next major version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You should use ``@PHP8x0Migration:risky`` instead.
 
 This set contains rules that are risky
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -15,13 +20,4 @@ Using this rule set may lead to changes in your code's logic and behaviour. Use 
 Rules
 -----
 
-- `@PHP74Migration:risky <./PHP74MigrationRisky.rst>`_
-- `get_class_to_class_keyword <./../rules/language_construct/get_class_to_class_keyword.rst>`_
-- `modernize_strpos <./../rules/alias/modernize_strpos.rst>`_
-- `no_alias_functions <./../rules/alias/no_alias_functions.rst>`_ with config:
-
-  ``['sets' => ['@all']]``
-
-- `no_php4_constructor <./../rules/class_notation/no_php4_constructor.rst>`_
-- `no_unneeded_final_method <./../rules/class_notation/no_unneeded_final_method.rst>`_
-- `no_unreachable_default_argument_value <./../rules/function_notation/no_unreachable_default_argument_value.rst>`_
+- `@PHP8x0Migration:risky <./PHP8x0MigrationRisky.rst>`_
