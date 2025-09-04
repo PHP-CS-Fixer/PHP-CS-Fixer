@@ -51,7 +51,6 @@ final class DescribeCommandTest extends TestCase
             $this->expectDeprecation($message);
         }
 
-        // @TODO 4.0 Remove this expectations
         $this->expectDeprecationOfDeprecatedRuleSets();
 
         if ('ordered_imports' === $fixerName) {
