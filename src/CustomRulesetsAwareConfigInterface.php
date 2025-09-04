@@ -20,6 +20,8 @@ use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
  * @author Greg Korba <greg@codito.dev>
  *
  * @TODO 4.0 Include support for custom rulesets in main ConfigInterface
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 interface CustomRulesetsAwareConfigInterface extends ConfigInterface
 {

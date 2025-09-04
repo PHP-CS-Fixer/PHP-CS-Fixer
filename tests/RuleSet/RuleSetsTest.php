@@ -208,6 +208,18 @@ Integration of %s.
         }
     }
 
+    /**
+     * @return iterable<int, array{string}>
+     */
+    public static function providePHPUnitMigrationTargetVersionsCases(): iterable
+    {
+        $setDefinitionNames = RuleSets::getSetDefinitionNames();
+
+        $setDefinitionPHPUnitMigrationNames = array_filter($setDefinitionNames, static fn (string $setDefinitionName): bool => Preg::match('/^@PHPUnit\d+Migration:risky$/', $setDefinitionName));
+
+        return array_map(static fn (string $setDefinitionName): array => [$setDefinitionName], $setDefinitionPHPUnitMigrationNames);
+    }
+
     public function testRegisteringNonExistingRulesetCausesException(): void
     {
         self::expectException(\InvalidArgumentException::class);
@@ -234,18 +246,6 @@ Integration of %s.
         RuleSets::registerCustomRuleSet(SampleRulesOk::class);
         $set = RuleSets::getSetDefinition('@Vendor/RulesOk');
         self::assertSame('@Vendor/RulesOk', $set->getName());
-    }
-
-    /**
-     * @return iterable<int, array{string}>
-     */
-    public static function providePHPUnitMigrationTargetVersionsCases(): iterable
-    {
-        $setDefinitionNames = RuleSets::getSetDefinitionNames();
-
-        $setDefinitionPHPUnitMigrationNames = array_filter($setDefinitionNames, static fn (string $setDefinitionName): bool => Preg::match('/^@PHPUnit\d+Migration:risky$/', $setDefinitionName));
-
-        return array_map(static fn (string $setDefinitionName): array => [$setDefinitionName], $setDefinitionPHPUnitMigrationNames);
     }
 
     private static function assertPHPUnitVersionIsLargestAllowed(string $setName, string $ruleName, string $actualTargetVersion): void
