@@ -91,6 +91,20 @@ final class FileHandlerTest extends TestCase
         self::assertTrue($cached->getSignature()->equals($signature));
     }
 
+    public function testReadFullJsonEvenForExtraBigCacheFile(): void
+    {
+        $file = __DIR__.'/../Fixtures/cache-file-handler/ultra-big-cache-file.json';
+
+        $handler = new FileHandler($file);
+
+        $cache = $handler->read();
+        self::assertNotNull($cache);
+
+        $hashes = \Closure::bind(static fn (Cache $cache): array => $cache->hashes, null, \get_class($cache))($cache);
+
+        self::assertCount(421_875, $hashes); // ensure we have all the keys, number manually extracted from json file structure
+    }
+
     public function testWriteThrowsIOExceptionIfFileCanNotBeWritten(): void
     {
         $file = '/../"/out/of/range/cache.json'; // impossible path
