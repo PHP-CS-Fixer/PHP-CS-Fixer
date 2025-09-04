@@ -233,6 +233,37 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
             ['groups' => ['simple', 'meta']],
         ];
 
+        yield 'soft-reserved' => [
+            '<?php
+    /**
+     * @extends resource<string>
+     */
+
+',
+            '<?php
+    /**
+     * @extends Resource<String>
+     */
+
+',
+        ];
+
+        yield 'no soft-reserved' => [
+            '<?php
+    /**
+     * @extends Resource<string>
+     */
+
+',
+            '<?php
+    /**
+     * @extends Resource<String>
+     */
+
+',
+            ['groups' => ['alias', 'simple', 'meta']],
+        ];
+
         yield 'generics' => [
             '<?php
             /**
