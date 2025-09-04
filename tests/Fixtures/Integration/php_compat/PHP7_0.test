@@ -3,9 +3,9 @@ PHP 7.0 test.
 --RULESET--
 {
     "@Symfony": true,
+    "modifier_keywords": {"elements": ["property", "method"]},
     "ordered_imports": true,
-    "random_api_migration": true,
-    "visibility_required": {"elements": ["property", "method"]}
+    "random_api_migration": true
 }
 --EXPECT--
 <?php

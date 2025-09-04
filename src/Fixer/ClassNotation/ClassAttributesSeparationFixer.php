@@ -175,7 +175,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
      * {@inheritdoc}
      *
      * Must run before BracesFixer, IndentationTypeFixer, NoExtraBlankLinesFixer, StatementIndentationFixer.
-     * Must run after OrderedClassElementsFixer, PhpUnitDataProviderMethodOrderFixer, SingleClassElementPerStatementFixer, VisibilityRequiredFixer.
+     * Must run after ModifierKeywordsFixer, OrderedClassElementsFixer, PhpUnitDataProviderMethodOrderFixer, SingleClassElementPerStatementFixer.
      */
     public function getPriority(): int
     {

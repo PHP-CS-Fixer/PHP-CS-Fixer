@@ -297,6 +297,7 @@ final class FixerFactoryTest extends TestCase
         $knownIssues = [ // should only shrink
             'no_trailing_comma_in_singleline_function_call' => true, // had prio case but no longer, left prio the same for BC reasons, rule has been deprecated
             'simple_to_complex_string_variable' => true, // had prio case but no longer, left prio the same for BC reasons
+            'visibility_required' => true, // deprecated, legacy name of `ModifierKeywordsFixer`
         ];
 
         $factory = new FixerFactory();
@@ -554,6 +555,9 @@ final class FixerFactoryTest extends TestCase
             ],
             'modernize_types_casting' => [
                 'no_unneeded_control_parentheses',
+            ],
+            'modifier_keywords' => [
+                'class_attributes_separation',
             ],
             'multiline_promoted_properties' => [
                 'braces_position',
@@ -996,9 +1000,6 @@ final class FixerFactoryTest extends TestCase
             ],
             'use_arrow_functions' => [
                 'function_declaration',
-            ],
-            'visibility_required' => [
-                'class_attributes_separation',
             ],
             'void_return' => [
                 'phpdoc_no_empty_return',
