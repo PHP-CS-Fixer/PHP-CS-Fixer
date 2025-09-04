@@ -4,8 +4,13 @@ Rule set ``@PHPUnit48Migration:risky``
 
 Rules to improve tests code for PHPUnit 4.8 compatibility.
 
-Warning
--------
+Warnings
+--------
+
+This rule set is deprecated and will be removed in the next major version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You should use ``@PHPUnit4x8Migration:risky`` instead.
 
 This set contains rules that are risky
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -15,8 +20,4 @@ Using this rule set may lead to changes in your code's logic and behaviour. Use 
 Rules
 -----
 
-- `@PHPUnit43Migration:risky <./PHPUnit43MigrationRisky.rst>`_
-- `php_unit_namespaced <./../rules/php_unit/php_unit_namespaced.rst>`_ with config:
-
-  ``['target' => '4.8']``
-
+- `@PHPUnit4x8Migration:risky <./PHPUnit4x8MigrationRisky.rst>`_

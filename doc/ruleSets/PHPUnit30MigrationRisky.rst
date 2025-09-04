@@ -4,8 +4,13 @@ Rule set ``@PHPUnit30Migration:risky``
 
 Rules to improve tests code for PHPUnit 3.0 compatibility.
 
-Warning
--------
+Warnings
+--------
+
+This rule set is deprecated and will be removed in the next major version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You should use ``@PHPUnit3x0Migration:risky`` instead.
 
 This set contains rules that are risky
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -15,7 +20,4 @@ Using this rule set may lead to changes in your code's logic and behaviour. Use 
 Rules
 -----
 
-- `php_unit_dedicate_assert <./../rules/php_unit/php_unit_dedicate_assert.rst>`_ with config:
-
-  ``['target' => '3.0']``
-
+- `@PHPUnit3x0Migration:risky <./PHPUnit3x0MigrationRisky.rst>`_

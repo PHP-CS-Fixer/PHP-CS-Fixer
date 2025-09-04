@@ -75,7 +75,15 @@ The rule is part of the following rule sets:
 
   ``['spacing' => 'one']``
 
+- `@PER-CS2x0 <./../../ruleSets/PER-CS2x0.rst>`_ with config:
+
+  ``['spacing' => 'one']``
+
 - `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
+
+  ``['spacing' => 'one']``
+
+- `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_ with config:
 
   ``['spacing' => 'one']``
 

@@ -1,4 +1,0 @@
---TEST--
-Integration of @PER-CS2.0:risky.
---RULESET--
-{"@PER-CS2.0:risky": true}

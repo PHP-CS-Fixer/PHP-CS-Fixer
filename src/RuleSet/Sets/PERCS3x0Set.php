@@ -29,13 +29,13 @@ final class PERCS3x0Set extends AbstractRuleSetDescription
 {
     public function getName(): string
     {
-        return '@PER-CS3.0';
+        return '@PER-CS3x0';
     }
 
     public function getRules(): array
     {
         return [
-            '@PER-CS2.0' => true,
+            '@PER-CS2x0' => true,
             'nullable_type_declaration' => true,
             'operator_linebreak' => true,
             'ordered_types' => [

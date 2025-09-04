@@ -186,11 +186,23 @@ The rule is part of the following rule sets:
 
   ``['order' => ['use_trait']]``
 
+- `@PER-CS1x0 <./../../ruleSets/PER-CS1x0.rst>`_ with config:
+
+  ``['order' => ['use_trait']]``
+
 - `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
 
   ``['order' => ['use_trait']]``
 
+- `@PER-CS2x0 <./../../ruleSets/PER-CS2x0.rst>`_ with config:
+
+  ``['order' => ['use_trait']]``
+
 - `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
+
+  ``['order' => ['use_trait']]``
+
+- `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_ with config:
 
   ``['order' => ['use_trait']]``
 

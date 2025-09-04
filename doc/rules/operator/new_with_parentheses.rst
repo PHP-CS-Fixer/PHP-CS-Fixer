@@ -87,11 +87,20 @@ The rule is part of the following rule sets:
   ``['anonymous_class' => false]``
 
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_
+- `@PER-CS1x0 <./../../ruleSets/PER-CS1x0.rst>`_
 - `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
 
   ``['anonymous_class' => false]``
 
+- `@PER-CS2x0 <./../../ruleSets/PER-CS2x0.rst>`_ with config:
+
+  ``['anonymous_class' => false]``
+
 - `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
+
+  ``['anonymous_class' => false]``
+
+- `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_ with config:
 
   ``['anonymous_class' => false]``
 

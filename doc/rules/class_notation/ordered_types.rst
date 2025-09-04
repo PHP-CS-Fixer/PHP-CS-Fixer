@@ -124,6 +124,10 @@ The rule is part of the following rule sets:
 
   ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``
 
+- `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_ with config:
+
+  ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``
+
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 
   ``['null_adjustment' => 'always_last']``

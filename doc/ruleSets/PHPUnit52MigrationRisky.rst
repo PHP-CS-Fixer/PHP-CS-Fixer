@@ -4,8 +4,13 @@ Rule set ``@PHPUnit52Migration:risky``
 
 Rules to improve tests code for PHPUnit 5.2 compatibility.
 
-Warning
--------
+Warnings
+--------
+
+This rule set is deprecated and will be removed in the next major version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You should use ``@PHPUnit5x2Migration:risky`` instead.
 
 This set contains rules that are risky
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -15,8 +20,4 @@ Using this rule set may lead to changes in your code's logic and behaviour. Use 
 Rules
 -----
 
-- `@PHPUnit50Migration:risky <./PHPUnit50MigrationRisky.rst>`_
-- `php_unit_expectation <./../rules/php_unit/php_unit_expectation.rst>`_ with config:
-
-  ``['target' => '5.2']``
-
+- `@PHPUnit5x2Migration:risky <./PHPUnit5x2MigrationRisky.rst>`_

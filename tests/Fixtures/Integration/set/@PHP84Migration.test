@@ -1,6 +1,0 @@
---TEST--
-Integration of @PHP84Migration.
---RULESET--
-{"@PHP84Migration": true}
---REQUIREMENTS--
-{"php": 80400}
