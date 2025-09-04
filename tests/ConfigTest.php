@@ -258,6 +258,16 @@ final class ConfigTest extends TestCase
         }
     }
 
+    /**
+     * @return iterable<array{0: null|class-string<\Throwable>, 1: list<class-string>}>
+     */
+    public static function provideRegisterCustomRuleSetsCases(): iterable
+    {
+        yield [null, [SampleRulesOk::class]];
+
+        yield [\UnexpectedValueException::class, [SampleRulesBad::class]];
+    }
+
     public function testConfigDefault(): void
     {
         $config = new Config();
@@ -302,16 +312,6 @@ final class ConfigTest extends TestCase
 
         $config->setUnsupportedPhpVersionAllowed(true);
         self::assertTrue($config->getUnsupportedPhpVersionAllowed());
-    }
-
-    /**
-     * @return iterable<array{0: null|class-string<\Throwable>, 1: list<class-string>}>
-     */
-    public static function provideRegisterCustomRuleSetsCases(): iterable
-    {
-        yield [null, [SampleRulesOk::class]];
-
-        yield [\UnexpectedValueException::class, [SampleRulesBad::class]];
     }
 
     public function testConfigConstructorWithName(): void

@@ -20,6 +20,8 @@ use PhpCsFixer\RuleSetNameValidator;
  * @internal
  *
  * @coversNothing
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class RuleSetNameValidatorTest extends TestCase
 {
