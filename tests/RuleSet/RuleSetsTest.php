@@ -19,6 +19,8 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSets;
+use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\SampleRulesBad;
+use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\SampleRulesOk;
 use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
 
@@ -33,6 +35,19 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class RuleSetsTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Since we register custom rule sets statically, we need to clear custom rule sets between runs.
+        // We don't need to clear the built-in rule sets, because they don't change between runs.
+        \Closure::bind(
+            static function (): void { RuleSets::$customRuleSetDefinitions = []; },
+            null,
+            RuleSets::class
+        )();
+    }
+
     public function testGetSetDefinitionNames(): void
     {
         self::assertSame(
@@ -43,7 +58,7 @@ final class RuleSetsTest extends TestCase
 
     public function testGetSetDefinitions(): void
     {
-        $sets = RuleSets::getSetDefinitions();
+        $sets = RuleSets::getBuiltInSetDefinitions();
 
         foreach ($sets as $name => $set) {
             self::assertIsString($name);
@@ -188,6 +203,34 @@ Integration of %s.
         $setDefinitionPHPUnitMigrationNames = array_filter($setDefinitionNames, static fn (string $setDefinitionName): bool => Preg::match('/^@PHPUnit\d+Migration:risky$/', $setDefinitionName));
 
         return array_map(static fn (string $setDefinitionName): array => [$setDefinitionName], $setDefinitionPHPUnitMigrationNames);
+    }
+
+    public function testRegisteringNonExistingRulesetCausesException(): void
+    {
+        self::expectException(\InvalidArgumentException::class);
+        // @phpstan-ignore-next-line
+        RuleSets::registerCustomRuleSet('\This\Class\Does\Not\Exists');
+    }
+
+    public function testRegisteringRulesetMultipleTimesCausesAnException(): void
+    {
+        RuleSets::registerCustomRuleSet(SampleRulesOk::class);
+        self::expectException(\InvalidArgumentException::class);
+        RuleSets::registerCustomRuleSet(SampleRulesOk::class);
+    }
+
+    public function testRegisterRuleSetThatDoesNotSatisfyContractCausesException(): void
+    {
+        self::expectException(\InvalidArgumentException::class);
+
+        RuleSets::registerCustomRuleSet(SampleRulesBad::class); // @phpstan-ignore-line
+    }
+
+    public function testCanReadCustomRegisteredRuleSet(): void
+    {
+        RuleSets::registerCustomRuleSet(SampleRulesOk::class);
+        $set = RuleSets::getSetDefinition('@Vendor/RulesOk');
+        self::assertSame('@Vendor/RulesOk', $set->getName());
     }
 
     private static function assertPHPUnitVersionIsLargestAllowed(string $setName, string $ruleName, string $actualTargetVersion): void
