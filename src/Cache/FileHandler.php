@@ -26,6 +26,8 @@ use Symfony\Component\Filesystem\Exception\IOException;
  */
 final class FileHandler implements FileHandlerInterface
 {
+    private const READ_CHUNK_SIZE = 4_096;
+
     private \SplFileInfo $fileInfo;
 
     private int $fileMTime = 0;
@@ -121,9 +123,35 @@ final class FileHandler implements FileHandlerInterface
                 return null;
             }
 
-            $content = $fileObject->fread($size);
+            if (false === $fileObject->flock(\LOCK_SH)) {
+                // Lock failed, OK - we continue without the lock.
+                // noop
+            }
 
-            if (false === $content) {
+            // Read cache file in chunks
+            try {
+                $fileObject->rewind();
+
+                $content = '';
+                while (false === $fileObject->eof()) {
+                    $chunk = $fileObject->fread(self::READ_CHUNK_SIZE);
+
+                    if (false === $chunk) {
+                        return null;
+                    }
+
+                    if ('' === $chunk) {
+                        // If not at EOF, empty string means read error.
+                        return null;
+                    }
+
+                    $content .= $chunk;
+                }
+            } finally {
+                $fileObject->flock(\LOCK_UN);
+            }
+
+            if ('' === $content) {
                 return null;
             }
 
