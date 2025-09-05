@@ -37,9 +37,9 @@ final class ImportProcessor
 
     /**
      * @param array{
-     *     const?: array<int|string, class-string>,
-     *     class?: array<int|string, class-string>,
-     *     function?: array<int|string, class-string>
+     *     const?: array<int|string, non-empty-string>,
+     *     class?: array<int|string, non-empty-string>,
+     *     function?: array<int|string, non-empty-string>
      * } $imports
      */
     public function insertImports(Tokens $tokens, array $imports, int $atIndex): void
@@ -79,7 +79,7 @@ final class ImportProcessor
     }
 
     /**
-     * @param class-string $name
+     * @param non-empty-string $name
      *
      * @return list<Token>
      */

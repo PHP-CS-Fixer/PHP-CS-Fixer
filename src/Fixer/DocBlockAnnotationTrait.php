@@ -46,8 +46,8 @@ trait DocBlockAnnotationTrait
     }
 
     /**
-     * @param list<string>       $preventingAnnotations
-     * @param list<class-string> $preventingAttributes
+     * @param list<string>                     $preventingAnnotations
+     * @param list<non-empty-lowercase-string> $preventingAttributes
      */
     final protected function ensureIsDocBlockWithAnnotation(
         Tokens $tokens,
@@ -118,7 +118,7 @@ trait DocBlockAnnotationTrait
     }
 
     /**
-     * @param list<class-string> $preventingAttributes
+     * @param list<lowercase-string> $preventingAttributes
      */
     private function isPreventedByAttribute(Tokens $tokens, int $index, array $preventingAttributes): bool
     {
