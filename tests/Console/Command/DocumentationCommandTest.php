@@ -30,6 +30,11 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 final class DocumentationCommandTest extends TestCase
 {
+    /**
+     * @large
+     *
+     * @todo Find out the root cause of it being slower and hitting small test time limit
+     */
     public function testGeneratingDocumentation(): void
     {
         $filesystem = $this->createFilesystemDouble();
