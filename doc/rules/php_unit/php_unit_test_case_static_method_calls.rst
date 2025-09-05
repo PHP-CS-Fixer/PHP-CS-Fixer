@@ -36,6 +36,15 @@ Allowed types: ``array<string, string>``
 
 Default value: ``[]``
 
+``target``
+~~~~~~~~~~
+
+Target version of PHPUnit.
+
+Allowed values: ``'10.0'``, ``'11.0'`` and ``'newest'``
+
+Default value: ``'10.0'``
+
 Examples
 --------
 
@@ -113,7 +122,11 @@ With configuration: ``['methods' => ['assertTrue' => 'this']]``.
 Rule sets
 ---------
 
-The rule is part of the following rule set:
+The rule is part of the following rule sets:
+
+- `@PHPUnit110Migration:risky <./../../ruleSets/PHPUnit110MigrationRisky.rst>`_ with config:
+
+  ``['target' => '11.0']``
 
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ with config:
 

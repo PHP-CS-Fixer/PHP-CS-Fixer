@@ -88,6 +88,7 @@ final class RuleSetsTest extends TestCase
             '@PHPUnit84Migration:risky',
             '@PHPUnit91Migration:risky',
             '@PHPUnit100Migration:risky',
+            '@PHPUnit110Migration:risky',
             '@PSR1',
         ];
 
