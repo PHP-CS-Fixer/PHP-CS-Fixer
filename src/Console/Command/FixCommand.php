@@ -426,6 +426,10 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
             if (\count($exceptionErrors) > 0) {
                 $errorOutput->listErrors('fixing', $exceptionErrors);
+                \assert(isset($isParallel));
+                if ($isParallel) {
+                    $stdErr->writeln('To see details of the error(s), re-run the command with `--sequential -vvv [file]`');
+                }
             }
 
             if (\count($lintErrors) > 0) {
