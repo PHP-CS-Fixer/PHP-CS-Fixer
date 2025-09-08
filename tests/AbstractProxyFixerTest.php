@@ -248,18 +248,18 @@ final class AbstractProxyFixerTest extends TestCase
     }
 
     /**
-     * @param list<FixerInterface> $fixers
+     * @param non-empty-list<FixerInterface> $fixers
      */
     private function createProxyFixerDouble(array $fixers): AbstractProxyFixer
     {
         return new class($fixers) extends AbstractProxyFixer implements WhitespacesAwareFixerInterface {
             /**
-             * @var list<FixerInterface>
+             * @var non-empty-list<FixerInterface>
              */
             private array $fixers;
 
             /**
-             * @param list<FixerInterface> $fixers
+             * @param non-empty-list<FixerInterface> $fixers
              */
             public function __construct(array $fixers)
             {
