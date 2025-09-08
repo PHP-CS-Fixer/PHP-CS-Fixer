@@ -78,7 +78,7 @@ final class Future
      *
      * @TODO v4.0: remove this method, ensure code compiles, create getV5OrV4. While removing, ensure to document in `UPGRADE-vX.md` file.
      */
-    public static function getV4OrV3(mixed $new, mixed $old): mixed
+    public static function getV4OrV3($new, $old)
     {
         return self::getNewOrOld($new, $old);
     }
@@ -91,7 +91,7 @@ final class Future
      *
      * @return T
      */
-    private static function getNewOrOld(mixed $new, mixed $old): mixed
+    private static function getNewOrOld($new, $old)
     {
         return self::isFutureModeEnabled() ? $new : $old;
     }
