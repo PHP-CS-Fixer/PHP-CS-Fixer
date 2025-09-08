@@ -758,7 +758,7 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                     function my_foo($bar) {}',
         ];
 
-        yield 'skip Templated aliased to mixed type of param' => [
+        yield 'skip T aliased to mixed type of param, while mixed is not yet available <8.0' => [
             '<?php
                     /**
                     * @param T $bar
