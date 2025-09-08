@@ -737,7 +737,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/PhpdocInlineTagNormalizerFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset \'general_phpdoc_tag_rename\' might not exist on array\\<string, PhpCsFixer\\\\Fixer\\\\FixerInterface\\>\\.$#',
+    'message' => '#^Offset \'general_phpdoc_tag_rename\' might not exist on non\\-empty\\-array\\<string, PhpCsFixer\\\\Fixer\\\\FixerInterface\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/PhpdocNoAliasTagFixer.php',
 ];
@@ -747,17 +747,12 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/PhpdocNoUselessInheritdocFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset int might not exist on list\\<PhpCsFixer\\\\DocBlock\\\\Annotation\\>\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/PhpdocParamOrderFixer.php',
-];
-$ignoreErrors[] = [
     'message' => '#^Offset int\\<1, max\\> might not exist on array\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/PhpdocSingleLineVarSpacingFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset \'general_phpdoc_tag_rename\' might not exist on array\\<string, PhpCsFixer\\\\Fixer\\\\FixerInterface\\>\\.$#',
+    'message' => '#^Offset \'general_phpdoc_tag_rename\' might not exist on non\\-empty\\-array\\<string, PhpCsFixer\\\\Fixer\\\\FixerInterface\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/PhpdocTagCasingFixer.php',
 ];
@@ -787,7 +782,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Strict/StrictParamFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Offset \'string_implicit_backslashes\' might not exist on array\\<string, PhpCsFixer\\\\Fixer\\\\FixerInterface\\>\\.$#',
+    'message' => '#^Offset \'string_implicit_backslashes\' might not exist on non\\-empty\\-array\\<string, PhpCsFixer\\\\Fixer\\\\FixerInterface\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/StringNotation/EscapeImplicitBackslashesFixer.php',
 ];
@@ -980,11 +975,6 @@ $ignoreErrors[] = [
     'message' => '#^Offset non\\-empty\\-string might not exist on array\\<non\\-empty\\-string, PhpCsFixer\\\\Tokenizer\\\\Tokens\\>\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Tokenizer/Tokens.php',
-];
-$ignoreErrors[] = [
-    'message' => '#^Offset 0 does not exist on array&T of mixed\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Utils.php',
 ];
 
 return ['parameters' => ['ignoreErrors' => $ignoreErrors]];

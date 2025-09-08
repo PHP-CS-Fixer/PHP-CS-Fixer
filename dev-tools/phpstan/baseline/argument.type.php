@@ -162,11 +162,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/NoBlankLinesAfterPhpdocFixer.php',
 ];
 $ignoreErrors[] = [
-    'message' => '#^Parameter \\#1 \\$content of method PhpCsFixer\\\\DocBlock\\\\Line\\:\\:setContent\\(\\) expects string, string\\|false given\\.$#',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/PhpdocParamOrderFixer.php',
-];
-$ignoreErrors[] = [
     'message' => '#^Parameter \\#1 \\$str of function preg_quote expects string, int\\|string given\\.$#',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Whitespace/ArrayIndentationFixer.php',

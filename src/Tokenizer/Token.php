@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tokenizer;
 
-use PhpCsFixer\Utils;
+use PhpCsFixer\Future;
 
 /**
  * Representation of single token.
@@ -213,7 +213,7 @@ final class Token
      */
     public static function isKeyCaseSensitive($caseSensitive, int $key): bool
     {
-        Utils::triggerDeprecation(new \InvalidArgumentException(\sprintf(
+        Future::triggerDeprecation(new \InvalidArgumentException(\sprintf(
             'Method "%s" is deprecated and will be removed in the next major version.',
             __METHOD__
         )));

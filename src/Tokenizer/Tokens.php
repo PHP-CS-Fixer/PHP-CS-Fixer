@@ -15,11 +15,11 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer;
 
 use PhpCsFixer\Console\Application;
+use PhpCsFixer\Future;
 use PhpCsFixer\Hasher;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
-use PhpCsFixer\Utils;
 
 /**
  * Collection of code tokens.
@@ -186,7 +186,7 @@ class Tokens extends \SplFixedArray
         $tokens = new self(\count($array));
 
         if (false !== $saveIndices && !array_is_list($array)) {
-            Utils::triggerDeprecation(new \InvalidArgumentException(\sprintf(
+            Future::triggerDeprecation(new \InvalidArgumentException(\sprintf(
                 'Parameter "array" should be a list. This will be enforced in version %d.0.',
                 Application::getMajorVersion() + 1
             )));
@@ -322,7 +322,7 @@ class Tokens extends \SplFixedArray
     public function offsetUnset($index): void
     {
         if (\count($this) - 1 !== $index) {
-            Utils::triggerDeprecation(new \InvalidArgumentException(\sprintf(
+            Future::triggerDeprecation(new \InvalidArgumentException(\sprintf(
                 'Tokens should be a list - only the last index can be unset. This will be enforced in version %d.0.',
                 Application::getMajorVersion() + 1
             )));
@@ -359,14 +359,14 @@ class Tokens extends \SplFixedArray
     public function offsetSet($index, $newval): void
     {
         if (0 > $index || \count($this) <= $index) {
-            Utils::triggerDeprecation(new \InvalidArgumentException(\sprintf(
+            Future::triggerDeprecation(new \InvalidArgumentException(\sprintf(
                 'Tokens should be a list - index must be within the existing range. This will be enforced in version %d.0.',
                 Application::getMajorVersion() + 1
             )));
         }
 
         if (!$newval instanceof Token) {
-            Utils::triggerDeprecation(new \InvalidArgumentException(\sprintf(
+            Future::triggerDeprecation(new \InvalidArgumentException(\sprintf(
                 'Tokens should be a list of Token instances - newval must be a Token. This will be enforced in version %d.0.',
                 Application::getMajorVersion() + 1
             )));
