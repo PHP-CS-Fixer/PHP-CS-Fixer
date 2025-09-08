@@ -42,7 +42,7 @@ jobs:
     steps:
       # Config reference: https://github.com/actions/stale
       - name: Handle stale issues and pull requests
-        uses: actions/stale@v9
+        uses: actions/stale@v10
         with:
           close-issue-message: ${{ env.CLOSE_MESSAGE }}
           close-pr-message: ${{ env.CLOSE_MESSAGE }} When it comes to pull requests it may be better to create new one, on top of main branch.
