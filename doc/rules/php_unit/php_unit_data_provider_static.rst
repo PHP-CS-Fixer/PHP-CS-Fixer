@@ -100,7 +100,7 @@ The rule is part of the following rule sets:
 
   ``['force' => true]``
 
-- `@PHPUnit100Migration:risky <./../../ruleSets/PHPUnit100MigrationRisky.rst>`_ with config:
+- `@PHPUnit100Migration:risky <./../../ruleSets/PHPUnit100MigrationRisky.rst>`_ *(deprecated)* with config:
 
   ``['force' => true]``
 

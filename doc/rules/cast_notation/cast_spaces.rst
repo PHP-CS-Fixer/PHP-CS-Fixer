@@ -71,9 +71,9 @@ The rule is part of the following rule sets:
 
 - `@PER <./../../ruleSets/PER.rst>`_ *(deprecated)*
 - `@PER-CS <./../../ruleSets/PER-CS.rst>`_
-- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ *(deprecated)*
 - `@PER-CS2x0 <./../../ruleSets/PER-CS2x0.rst>`_
-- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ *(deprecated)*
 - `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_

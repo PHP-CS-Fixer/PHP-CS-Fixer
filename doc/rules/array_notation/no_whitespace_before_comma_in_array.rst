@@ -85,35 +85,35 @@ The rule is part of the following rule sets:
 
   ``['after_heredoc' => true]``
 
-- `@PHP73Migration <./../../ruleSets/PHP73Migration.rst>`_ with config:
+- `@PHP73Migration <./../../ruleSets/PHP73Migration.rst>`_ *(deprecated)* with config:
 
   ``['after_heredoc' => true]``
 
-- `@PHP74Migration <./../../ruleSets/PHP74Migration.rst>`_ with config:
+- `@PHP74Migration <./../../ruleSets/PHP74Migration.rst>`_ *(deprecated)* with config:
 
   ``['after_heredoc' => true]``
 
-- `@PHP80Migration <./../../ruleSets/PHP80Migration.rst>`_ with config:
+- `@PHP80Migration <./../../ruleSets/PHP80Migration.rst>`_ *(deprecated)* with config:
 
   ``['after_heredoc' => true]``
 
-- `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_ with config:
+- `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_ *(deprecated)* with config:
 
   ``['after_heredoc' => true]``
 
-- `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_ with config:
+- `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_ *(deprecated)* with config:
 
   ``['after_heredoc' => true]``
 
-- `@PHP83Migration <./../../ruleSets/PHP83Migration.rst>`_ with config:
+- `@PHP83Migration <./../../ruleSets/PHP83Migration.rst>`_ *(deprecated)* with config:
 
   ``['after_heredoc' => true]``
 
-- `@PHP84Migration <./../../ruleSets/PHP84Migration.rst>`_ with config:
+- `@PHP84Migration <./../../ruleSets/PHP84Migration.rst>`_ *(deprecated)* with config:
 
   ``['after_heredoc' => true]``
 
-- `@PHP85Migration <./../../ruleSets/PHP85Migration.rst>`_ with config:
+- `@PHP85Migration <./../../ruleSets/PHP85Migration.rst>`_ *(deprecated)* with config:
 
   ``['after_heredoc' => true]``
 

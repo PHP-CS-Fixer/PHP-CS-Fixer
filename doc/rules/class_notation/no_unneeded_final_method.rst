@@ -81,8 +81,8 @@ The rule is part of the following rule sets:
 
 - `@PHP8x0Migration:risky <./../../ruleSets/PHP8x0MigrationRisky.rst>`_
 - `@PHP8x2Migration:risky <./../../ruleSets/PHP8x2MigrationRisky.rst>`_
-- `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_
-- `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_
+- `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ *(deprecated)*
+- `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_ *(deprecated)*
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 - `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 

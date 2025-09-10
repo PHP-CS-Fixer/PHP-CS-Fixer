@@ -180,7 +180,7 @@ The rule is part of the following rule sets:
 
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
 
-- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ *(deprecated)* with config:
 
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
 
@@ -188,7 +188,7 @@ The rule is part of the following rule sets:
 
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
 
-- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ *(deprecated)* with config:
 
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
 
@@ -196,7 +196,7 @@ The rule is part of the following rule sets:
 
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
 
-- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ *(deprecated)* with config:
 
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
 

@@ -289,7 +289,7 @@ The rule is part of the following rule sets:
 
 - `@PER <./../../ruleSets/PER.rst>`_ *(deprecated)*
 - `@PER-CS <./../../ruleSets/PER-CS.rst>`_
-- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ *(deprecated)* with config:
 
   ``['attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline']``
 
@@ -297,9 +297,9 @@ The rule is part of the following rule sets:
 
   ``['attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline']``
 
-- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ *(deprecated)*
 - `@PER-CS2x0 <./../../ruleSets/PER-CS2x0.rst>`_
-- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ *(deprecated)*
 - `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_
 - `@PHP7x3Migration <./../../ruleSets/PHP7x3Migration.rst>`_ with config:
 
@@ -333,35 +333,35 @@ The rule is part of the following rule sets:
 
   ``['after_heredoc' => true]``
 
-- `@PHP73Migration <./../../ruleSets/PHP73Migration.rst>`_ with config:
+- `@PHP73Migration <./../../ruleSets/PHP73Migration.rst>`_ *(deprecated)* with config:
 
   ``['after_heredoc' => true]``
 
-- `@PHP74Migration <./../../ruleSets/PHP74Migration.rst>`_ with config:
+- `@PHP74Migration <./../../ruleSets/PHP74Migration.rst>`_ *(deprecated)* with config:
 
   ``['after_heredoc' => true]``
 
-- `@PHP80Migration <./../../ruleSets/PHP80Migration.rst>`_ with config:
+- `@PHP80Migration <./../../ruleSets/PHP80Migration.rst>`_ *(deprecated)* with config:
 
   ``['after_heredoc' => true]``
 
-- `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_ with config:
+- `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_ *(deprecated)* with config:
 
   ``['after_heredoc' => true]``
 
-- `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_ with config:
+- `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_ *(deprecated)* with config:
 
   ``['after_heredoc' => true]``
 
-- `@PHP83Migration <./../../ruleSets/PHP83Migration.rst>`_ with config:
+- `@PHP83Migration <./../../ruleSets/PHP83Migration.rst>`_ *(deprecated)* with config:
 
   ``['after_heredoc' => true]``
 
-- `@PHP84Migration <./../../ruleSets/PHP84Migration.rst>`_ with config:
+- `@PHP84Migration <./../../ruleSets/PHP84Migration.rst>`_ *(deprecated)* with config:
 
   ``['after_heredoc' => true]``
 
-- `@PHP85Migration <./../../ruleSets/PHP85Migration.rst>`_ with config:
+- `@PHP85Migration <./../../ruleSets/PHP85Migration.rst>`_ *(deprecated)* with config:
 
   ``['after_heredoc' => true]``
 

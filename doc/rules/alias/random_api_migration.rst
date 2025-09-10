@@ -98,23 +98,23 @@ The rule is part of the following rule sets:
 
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
 
-- `@PHP70Migration:risky <./../../ruleSets/PHP70MigrationRisky.rst>`_ with config:
+- `@PHP70Migration:risky <./../../ruleSets/PHP70MigrationRisky.rst>`_ *(deprecated)* with config:
 
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
 
-- `@PHP71Migration:risky <./../../ruleSets/PHP71MigrationRisky.rst>`_ with config:
+- `@PHP71Migration:risky <./../../ruleSets/PHP71MigrationRisky.rst>`_ *(deprecated)* with config:
 
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
 
-- `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_ with config:
+- `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_ *(deprecated)* with config:
 
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
 
-- `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ with config:
+- `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ *(deprecated)* with config:
 
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
 
-- `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_ with config:
+- `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_ *(deprecated)* with config:
 
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
 

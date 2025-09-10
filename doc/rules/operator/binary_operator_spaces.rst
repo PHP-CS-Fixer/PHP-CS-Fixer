@@ -257,7 +257,7 @@ The rule is part of the following rule sets:
 
   ``['default' => 'at_least_single_space']``
 
-- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ *(deprecated)* with config:
 
   ``['default' => 'at_least_single_space']``
 
@@ -265,7 +265,7 @@ The rule is part of the following rule sets:
 
   ``['default' => 'at_least_single_space']``
 
-- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ *(deprecated)* with config:
 
   ``['default' => 'at_least_single_space']``
 
@@ -273,7 +273,7 @@ The rule is part of the following rule sets:
 
   ``['default' => 'at_least_single_space']``
 
-- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ *(deprecated)* with config:
 
   ``['default' => 'at_least_single_space']``
 

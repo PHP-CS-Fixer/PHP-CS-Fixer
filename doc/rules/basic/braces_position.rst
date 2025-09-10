@@ -232,7 +232,7 @@ The rule is part of the following rule sets:
 
   ``['allow_single_line_empty_anonymous_classes' => true]``
 
-- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ *(deprecated)* with config:
 
   ``['allow_single_line_empty_anonymous_classes' => true]``
 
@@ -240,7 +240,7 @@ The rule is part of the following rule sets:
 
   ``['allow_single_line_empty_anonymous_classes' => true]``
 
-- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ *(deprecated)* with config:
 
   ``['allow_single_line_empty_anonymous_classes' => true]``
 
@@ -248,7 +248,7 @@ The rule is part of the following rule sets:
 
   ``['allow_single_line_empty_anonymous_classes' => true]``
 
-- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ *(deprecated)* with config:
 
   ``['allow_single_line_empty_anonymous_classes' => true]``
 

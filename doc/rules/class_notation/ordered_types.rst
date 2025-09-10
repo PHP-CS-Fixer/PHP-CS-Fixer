@@ -120,7 +120,7 @@ The rule is part of the following rule sets:
 
   ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``
 
-- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ *(deprecated)* with config:
 
   ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``
 
