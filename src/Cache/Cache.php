@@ -132,7 +132,7 @@ final class Cache implements CacheInterface
         $cache = new self($signature);
 
         // before v3.11.1 the hashes were crc32 encoded and saved as integers
-        // @TODO: remove the to string cast/array_map in v4.0
+        // @TODO v4: remove the to string cast/array_map
         $cache->hashes = array_map(static fn ($v): string => \is_int($v) ? (string) $v : $v, $data['hashes']);
 
         return $cache;

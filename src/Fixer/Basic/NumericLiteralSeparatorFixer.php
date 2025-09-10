@@ -183,7 +183,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
         // All other types
 
         /** If its a negative value we need an offset */
-        $negativeOffset = static fn ($v) => str_contains($v, '-') ? 1 : 0;
+        $negativeOffset = static fn (string $v): int => str_contains($v, '-') ? 1 : 0;
 
         Preg::matchAll('/([0-9-_]+)?((\.)([0-9_]*))?((e)([0-9-_]+))?/i', $value, $result);
 
