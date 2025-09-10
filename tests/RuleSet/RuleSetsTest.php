@@ -67,32 +67,44 @@ final class RuleSetsTest extends TestCase
      */
     public function testHasIntegrationTest(string $setDefinitionName): void
     {
+        /** @TODO v4 remove deprecated sets */
         $setsWithoutTests = [
-            '@PER',
-            '@PER:risky',
-            '@PER-CS',
             '@PER-CS:risky',
-            '@PHP56Migration',
-            '@PHP56Migration:risky',
-            '@PHP70Migration',
-            '@PHP70Migration:risky',
-            '@PHP71Migration',
-            '@PHP71Migration:risky',
-            '@PHP73Migration',
-            '@PHP80Migration',
-            '@PhpCsFixer',
+            '@PER-CS',
+            '@PER-CS1.0:risky',
+            '@PER-CS1.0',
+            '@PER-CS2.0:risky',
+            '@PER-CS2.0',
+            '@PER-CS3.0:risky',
+            '@PER-CS3.0',
+            '@PER:risky',
+            '@PER',
+            '@PHP5x6Migration:risky',
+            '@PHP5x6Migration',
+            '@PHP7x0Migration:risky',
+            '@PHP7x0Migration',
+            '@PHP7x1Migration:risky',
+            '@PHP7x1Migration',
+            '@PHP7x3Migration',
+            '@PHP8x0Migration',
             '@PhpCsFixer:risky',
-            '@PHPUnit48Migration',
-            '@PHPUnit55Migration:risky',
-            '@PHPUnit75Migration:risky',
-            '@PHPUnit84Migration:risky',
-            '@PHPUnit91Migration:risky',
-            '@PHPUnit100Migration:risky',
+            '@PhpCsFixer',
+            '@PHPUnit10x0Migration:risky',
+            '@PHPUnit4x8Migration',
+            '@PHPUnit5x5Migration:risky',
+            '@PHPUnit7x5Migration:risky',
+            '@PHPUnit8x4Migration:risky',
+            '@PHPUnit9x1Migration:risky',
             '@PSR1',
         ];
 
         if (\in_array($setDefinitionName, $setsWithoutTests, true)) {
             self::markTestIncomplete(\sprintf('Set "%s" has no integration test.', $setDefinitionName));
+        }
+
+        // @TODO v4: remove me @MARKER_deprecated_migration_ruleset
+        if (Preg::match('/^@PHP(Unit)?\d+Migration(:risky)?$/', $setDefinitionName)) {
+            self::markTestSkipped(\sprintf('Set "%s" is deprecated and will be removed in next MAJOR.', $setDefinitionName));
         }
 
         $setDefinitionFileNamePrefix = str_replace(':', '-', $setDefinitionName);

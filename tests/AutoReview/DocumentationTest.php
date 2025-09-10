@@ -42,9 +42,8 @@ final class DocumentationTest extends TestCase
      */
     public function testFixerDocumentationFileIsUpToDate(FixerInterface $fixer): void
     {
-        // @TODO 4.0 Remove this expectations
-        $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
-        $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
+        $this->expectDeprecationOfDeprecatedRuleSets();
+
         if ('ordered_imports' === $fixer->getName()) {
             $this->expectDeprecation('[ordered_imports] Option "sort_algorithm:length" is deprecated and will be removed in version 4.0.');
         }

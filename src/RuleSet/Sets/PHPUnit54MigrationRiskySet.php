@@ -14,23 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
-use PhpCsFixer\RuleSet\AbstractMigrationSetDescription;
+use PhpCsFixer\RuleSet\AbstractMajorMinorDeprecationSetDescription;
 
 /**
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PHPUnit54MigrationRiskySet extends AbstractMigrationSetDescription
-{
-    public function getRules(): array
-    {
-        return [
-            '@PHPUnit52Migration:risky' => true,
-            'php_unit_mock' => [
-                'target' => PhpUnitTargetVersion::VERSION_5_4,
-            ],
-        ];
-    }
-}
+final class PHPUnit54MigrationRiskySet extends AbstractMajorMinorDeprecationSetDescription {}

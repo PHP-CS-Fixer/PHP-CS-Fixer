@@ -1,0 +1,4 @@
+--TEST--
+Integration of @PER-CS3x0.
+--RULESET--
+{"@PER-CS3x0": true}

@@ -78,23 +78,43 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PHP70Migration:risky <./../../ruleSets/PHP70MigrationRisky.rst>`_ with config:
+- `@PHP7x0Migration:risky <./../../ruleSets/PHP7x0MigrationRisky.rst>`_ with config:
 
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
 
-- `@PHP71Migration:risky <./../../ruleSets/PHP71MigrationRisky.rst>`_ with config:
+- `@PHP7x1Migration:risky <./../../ruleSets/PHP7x1MigrationRisky.rst>`_ with config:
 
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
 
-- `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_ with config:
+- `@PHP7x4Migration:risky <./../../ruleSets/PHP7x4MigrationRisky.rst>`_ with config:
 
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
 
-- `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ with config:
+- `@PHP8x0Migration:risky <./../../ruleSets/PHP8x0MigrationRisky.rst>`_ with config:
 
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
 
-- `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_ with config:
+- `@PHP8x2Migration:risky <./../../ruleSets/PHP8x2MigrationRisky.rst>`_ with config:
+
+  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
+
+- `@PHP70Migration:risky <./../../ruleSets/PHP70MigrationRisky.rst>`_ *(deprecated)* with config:
+
+  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
+
+- `@PHP71Migration:risky <./../../ruleSets/PHP71MigrationRisky.rst>`_ *(deprecated)* with config:
+
+  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
+
+- `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_ *(deprecated)* with config:
+
+  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
+
+- `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ *(deprecated)* with config:
+
+  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
+
+- `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_ *(deprecated)* with config:
 
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
 

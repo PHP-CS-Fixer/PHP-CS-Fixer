@@ -1,0 +1,6 @@
+--TEST--
+Integration of @PHP8x1Migration.
+--RULESET--
+{"@PHP8x1Migration": true}
+--REQUIREMENTS--
+{"php": 80100}
