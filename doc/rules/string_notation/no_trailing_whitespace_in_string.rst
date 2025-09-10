@@ -40,7 +40,7 @@ The rule is part of the following rule sets:
 - `@PER-CS3.0:risky <./../../ruleSets/PER-CS3.0Risky.rst>`_
 - `@PER-CS3x0:risky <./../../ruleSets/PER-CS3x0Risky.rst>`_
 - `@PER-CS:risky <./../../ruleSets/PER-CSRisky.rst>`_
-- `@PER:risky <./../../ruleSets/PERRisky.rst>`_
+- `@PER:risky <./../../ruleSets/PERRisky.rst>`_ *(deprecated)*
 - `@PSR12:risky <./../../ruleSets/PSR12Risky.rst>`_
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 
