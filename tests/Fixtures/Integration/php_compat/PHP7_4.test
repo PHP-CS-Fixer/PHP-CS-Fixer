@@ -8,11 +8,11 @@ PHP 7.4 test.
     "braces_position": false,
     "class_definition": false,
     "curly_braces_position": false,
+    "modifier_keywords": false,
     "no_null_property_initialization": true,
     "no_unset_on_property": true,
     "pow_to_exponentiation": true,
-    "trailing_comma_in_multiline": {"after_heredoc": true},
-    "visibility_required": false
+    "trailing_comma_in_multiline": {"after_heredoc": true}
 }
 --REQUIREMENTS--
 {"php": 70400}
