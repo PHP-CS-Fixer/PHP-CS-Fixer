@@ -23,6 +23,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Future;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -146,7 +147,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
                 }])
                 ->setDefault([
                     'getrandmax' => 'mt_getrandmax',
-                    'rand' => 'mt_rand', // @TODO change to `random_int` as default on 4.0
+                    'rand' => Future::getV4OrV3('random_int', 'mt_rand'),
                     'srand' => 'mt_srand',
                 ])
                 ->getOption(),

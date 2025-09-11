@@ -19,7 +19,10 @@ Rules
 
   ``['closure_fn_spacing' => 'none']``
 
-- `method_argument_space <./../rules/function_notation/method_argument_space.rst>`_
+- `method_argument_space <./../rules/function_notation/method_argument_space.rst>`_ with config:
+
+  ``['after_heredoc' => false]``
+
 - `new_with_parentheses <./../rules/operator/new_with_parentheses.rst>`_ with config:
 
   ``['anonymous_class' => false]``

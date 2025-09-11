@@ -23,6 +23,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Future;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
@@ -145,7 +146,7 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('modernize_stripos', 'Whether to modernize `stripos` calls as well.'))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(false) // @TODO change to "true" on next major 4.0
+                ->setDefault(Future::getV4OrV3(true, false))
                 ->getOption(),
         ]);
     }

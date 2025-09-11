@@ -328,7 +328,9 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
 
                     return true;
                 }])
-                ->setDefault(null) // @TODO 4.0 set to ['class', 'function', 'const']
+                ->setDefault(
+                    Future::getV4OrV3(['class', 'function', 'const'], null)
+                )
                 ->getOption(),
             (new FixerOptionBuilder('case_sensitive', 'Whether the sorting should be case sensitive.'))
                 ->setAllowedTypes(['bool'])
