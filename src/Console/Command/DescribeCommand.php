@@ -341,7 +341,7 @@ final class DescribeCommand extends Command
         if ([] !== $ruleSetConfigs) {
             ksort($ruleSetConfigs);
             $plural = 1 !== \count($ruleSetConfigs) ? 's' : '';
-            $output->writeln("Fixer is part of the following rule set{$plural}:");
+            $output->writeln("The fixer is part of the following rule set{$plural}:");
 
             $ruleSetDefinitions = RuleSets::getSetDefinitions();
 

@@ -27,7 +27,9 @@ use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
 use PhpCsFixer\RuleSet\RuleSet;
+use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -46,10 +48,14 @@ final class FixerDocumentGenerator
 
     private FullDiffer $differ;
 
+    /** @var array<string, RuleSetDescriptionInterface> */
+    private array $ruleSetDefinitions;
+
     public function __construct(DocumentationLocator $locator)
     {
         $this->locator = $locator;
         $this->differ = new FullDiffer();
+        $this->ruleSetDefinitions = RuleSets::getSetDefinitions();
     }
 
     public function generateFixerDocumentation(FixerInterface $fixer): string
@@ -247,12 +253,16 @@ final class FixerDocumentGenerator
                 $ruleSetPath = $this->locator->getRuleSetsDocumentationFilePath($set);
                 $ruleSetPath = substr($ruleSetPath, strrpos($ruleSetPath, '/'));
 
+                \assert(isset($this->ruleSetDefinitions[$set]));
+                $ruleSetDescription = $this->ruleSetDefinitions[$set];
+                $deprecatedDesc = ($ruleSetDescription instanceof DeprecatedRuleSetDescriptionInterface) ? ' *(deprecated)*' : '';
+
                 $configInfo = (null !== $config)
                     ? " with config:\n\n  ``".Utils::toString($config)."``\n"
                     : '';
 
                 $doc .= <<<RST
-                    - `{$set} <./../../ruleSets{$ruleSetPath}>`_{$configInfo}\n
+                    - `{$set} <./../../ruleSets{$ruleSetPath}>`_{$deprecatedDesc}{$configInfo}\n
                     RST;
             }
 

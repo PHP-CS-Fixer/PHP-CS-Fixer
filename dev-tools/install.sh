@@ -19,15 +19,13 @@ cd "$(dirname "$0")"
 
 mkdir -p bin
 
-VERSION_SC="stable"
+VERSION_CB="v2.25.19"
+VERSION_SC="v0.11.0"
 
 echo λλλ checkbashisms
 if [ ! -x bin/checkbashisms ]; then
-    wget -qO- https://formulae.brew.sh/api/formula/checkbashisms.json \
-        | jq -r .urls.stable.url \
-        | xargs wget -qO- \
-        | tar -xJv -O "work/scripts/checkbashisms.pl" \
-        > bin/checkbashisms
+    wget -q "https://salsa.debian.org/debian/devscripts/-/raw/${VERSION_CB}/scripts/checkbashisms.pl" \
+        --output-document=bin/checkbashisms
     chmod u+x bin/checkbashisms
 fi
 bin/checkbashisms --version

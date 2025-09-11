@@ -3,6 +3,19 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.87.2
+---------------------
+
+* fix: `phpdoc_to_param_type`, `phpdoc_to_return_type`, `phpdoc_to_property_type` - handle type aliasing before handling PHP version (#9031)
+* docs: unify docs around deprecated sets (#9036)
+* chore: fix typos (#9022)
+* chore: provide few missing types for callbacks (#9026)
+* deps: bump actions/stale from 9 to 10 (#9029)
+* deps: pin checkbashisms and shellcheck to stable URL with pinned version (#9032)
+* DX: suggest `--sequential` when facing fixing error (#9023)
+* refactor: Future - centralize class for future-looking logic (#9021)
+* test: Mark `DocumentationCommandTest::testGeneratingDocumentation()` as large test (#9028)
+
 Changelog for v3.87.1
 ---------------------
 
