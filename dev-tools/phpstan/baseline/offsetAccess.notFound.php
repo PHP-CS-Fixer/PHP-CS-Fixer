@@ -62,11 +62,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Console/Command/WorkerCommand.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset \'line\' might not exist on array{function?: string, line?: int, file: string, class?: class-string, type?: \'->\'|\'::\', args?: array<mixed>, object?: object}.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/Output/ErrorOutput.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset 0 might not exist on list<string>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Console/SelfUpdate/NewVersionChecker.php',
