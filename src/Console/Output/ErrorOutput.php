@@ -126,7 +126,7 @@ final class ErrorOutput
      *     file?: string,
      *     class?: class-string,
      *     type?: '->'|'::',
-     *     args?: mixed[],
+     *     args?: list<mixed>,
      *     object?: object,
      * } $trace
      */
