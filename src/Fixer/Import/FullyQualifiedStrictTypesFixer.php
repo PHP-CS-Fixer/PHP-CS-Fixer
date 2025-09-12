@@ -986,7 +986,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     {
         $backslashPosition = strrpos($input, '\\');
         if (false === $backslashPosition) {
-            return $input;
+            return strtolower($input);
         }
 
         $namespacePartEndPosition = $backslashPosition + 1;
