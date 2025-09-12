@@ -1,8 +1,10 @@
 name: Static Code Analysis
 
 on:
-  - pull_request
-  - push
+  pull_request:
+  push:
+    branches:
+      - master
 
 permissions:
   contents: read # to fetch code (actions/checkout)

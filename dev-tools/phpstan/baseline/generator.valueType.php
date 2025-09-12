@@ -2,7 +2,7 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
-    'message' => '#^Generator expects value type array\\<int, PhpCsFixer\\\\Tokenizer\\\\Tokens\\>, array\\<int\\|string, PhpCsFixer\\\\Tokenizer\\\\Tokens\\> given\\.$#',
+    'rawMessage' => 'Generator expects value type array<int, PhpCsFixer\\Tokenizer\\Tokens>, array<int|string, PhpCsFixer\\Tokenizer\\Tokens> given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedTraitsFixer.php',
 ];

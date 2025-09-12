@@ -50,6 +50,11 @@ parameters:
         - '/^Parameter .* of method PhpCsFixer\\Tokenizer\\Tokens::offsetSet\(\) should be contravariant with parameter .* of method .*::offsetSet\(\)$/'
         - '/^Parameter .* of method PhpCsFixer\\Tests\\Test\\TokensWithObservedTransformers::offsetSet\(\) should be contravariant with parameter .* of method .*::offsetSet\(\)$/'
 
+        # We often access tokens collection with `int|null` because our token traversing methods (`getNextMeaningfulToken` etc.) have nullable return type at the moment
+        -
+            message: '/^Offset int(<0, max>)?\|null might not exist on (\$this\()?PhpCsFixer\\Tokenizer\\Tokens\)?\.$/'
+            identifier: offsetAccess.notFound
+
         # We retrieve these FQNs in various ways, we process them along the way, let's assume it's always class-string
         - '/^Parameter #2 \$fullName of class PhpCsFixer\\Tokenizer\\Analyzer\\Analysis\\NamespaceUseAnalysis constructor expects class-string, string given\.$/'
 
