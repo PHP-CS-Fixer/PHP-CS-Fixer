@@ -137,20 +137,20 @@ jobs:
             php-version: '8.4'
             job-description: Fixer on Windows
             run-fixer: 'yes'
-            FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
+            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
 
           - operating-system: windows-latest
             php-version: '8.4'
             job-description: tests on Windows
             run-tests: 'yes'
-            FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
+            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
 
           - operating-system: macos-latest
             php-version: '8.4'
             job-description: Fixer on macOS
             run-fixer: 'yes'
             allow-to-fail: 'yes' # we experience random failures on macOS
-            FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
+            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
 
           - operating-system: macos-latest
             php-version: '8.4'
@@ -158,7 +158,7 @@ jobs:
             run-tests: 'yes'
             allow-to-fail: 'yes' # we experience random failures on macOS
             AVOID_PARAUNIT: 'yes' # macOS job is having weird issue on CI under ParaUnit
-            FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
+            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
 
           - operating-system: ubuntu-24.04
             php-version: '8.4'
@@ -188,7 +188,6 @@ jobs:
             job-description: tests
             run-tests: 'yes'
             allow-to-fail: 'yes' # with newest 8.5 development, we are not longer (and not yet) compatible with 8.5
-            AVOID_PARAUNIT: 'yes' # for easier issues debugging
             PHP_CS_FIXER_IGNORE_ENV: 1
 
     name: PHP ${{ matrix.php-version }} ${{ matrix.job-description }}
@@ -236,36 +235,40 @@ jobs:
         if: matrix.run-tests == 'yes' && matrix.install-phpunit-12 == 'yes'
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
-          FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
+          PHP_CS_FIXER_FAST_LINT_TEST_CASES: ${{ matrix.PHP_CS_FIXER_FAST_LINT_TEST_CASES }}
         run: |
           composer require --dev --with-all-dependencies phpunit/phpunit:^12.1.5
           php php-cs-fixer fix --quiet --rules=php_unit_attributes
+
+      - name: Check configuration for PHPUnit
+        if: matrix.php-version != '7.4' && matrix.php-version != '8.0' # These run PHPUnit 9, which does not have the option
+        run: vendor/bin/phpunit --check-php-configuration
 
       - name: Run tests (via PHPUnit)
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes' && matrix.AVOID_PARAUNIT == 'yes'
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
-          FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
+          PHP_CS_FIXER_FAST_LINT_TEST_CASES: ${{ matrix.PHP_CS_FIXER_FAST_LINT_TEST_CASES }}
         run: vendor/bin/phpunit --testsuite unit,integration ${{ matrix.phpunit-flags }}
 
       - name: Run tests (via ParaUnit)
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes' && matrix.AVOID_PARAUNIT != 'yes'
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
-          FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
+          PHP_CS_FIXER_FAST_LINT_TEST_CASES: ${{ matrix.PHP_CS_FIXER_FAST_LINT_TEST_CASES }}
         run: vendor/bin/paraunit run --testsuite unit,integration
 
       - name: Run tests with "short_open_tag" enabled
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes'
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
-          FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
+          PHP_CS_FIXER_FAST_LINT_TEST_CASES: ${{ matrix.PHP_CS_FIXER_FAST_LINT_TEST_CASES }}
         run: composer test:short-open-tag
 
       - name: Run tests and collect code coverage
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
         env:
-          FAST_LINT_TEST_CASES: 1
+          PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
         run: vendor/bin/paraunit coverage --testsuite unit --pass-through=--exclude-group=covers-nothing --clover=build/logs/clover.xml
 
@@ -273,7 +276,7 @@ jobs:
         # Run only on pull requests because we run mutations tests only for diff between branches
         if: github.event_name == 'pull_request' && matrix.run-mutation-tests == 'yes'
         env:
-          FAST_LINT_TEST_CASES: 1
+          PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
         run: |
           git fetch origin $GITHUB_BASE_REF
@@ -335,7 +338,10 @@ jobs:
       - name: Build phar
         run: ./dev-tools/build.sh
 
+      - name: Check configuration for PHPUnit
+        run: vendor/bin/phpunit --check-php-configuration
+
       - name: Run smoke tests
         env:
-          FAST_LINT_TEST_CASES: 1
+          PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1
         run: vendor/bin/phpunit --testsuite smoke ${{ matrix.phpunit-flags }}

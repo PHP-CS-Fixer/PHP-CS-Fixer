@@ -18,6 +18,8 @@ use PhpCsFixer\RuleSet\AbstractMigrationSetDescription;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PHP71MigrationSet extends AbstractMigrationSetDescription
 {
@@ -26,7 +28,7 @@ final class PHP71MigrationSet extends AbstractMigrationSetDescription
         return [
             '@PHP70Migration' => true,
             'list_syntax' => true,
-            'visibility_required' => true,
+            'modifier_keywords' => true,
         ];
     }
 }

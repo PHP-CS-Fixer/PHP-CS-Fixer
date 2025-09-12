@@ -39,6 +39,8 @@ use Symfony\Component\Finder\Finder;
  * @internal
  *
  * @covers \PhpCsFixer\Runner\Runner
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class RunnerTest extends TestCase
 {
@@ -51,12 +53,12 @@ final class RunnerTest extends TestCase
         $linter = $this->createLinterDouble();
 
         $fixers = [
-            new Fixer\ClassNotation\VisibilityRequiredFixer(),
+            new Fixer\ClassNotation\ModifierKeywordsFixer(),
             new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
         ];
 
         $expectedChangedInfo = [
-            'appliedFixers' => ['visibility_required'],
+            'appliedFixers' => ['modifier_keywords'],
             'diff' => '',
         ];
 
@@ -113,7 +115,7 @@ final class RunnerTest extends TestCase
         $runner = new Runner(
             Finder::create()->in($path),
             [
-                new Fixer\ClassNotation\VisibilityRequiredFixer(),
+                new Fixer\ClassNotation\ModifierKeywordsFixer(),
                 new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
             ],
             new NullDiffer(),
@@ -151,7 +153,7 @@ final class RunnerTest extends TestCase
         $runner = new Runner(
             Finder::create()->in($path),
             [
-                new Fixer\ClassNotation\VisibilityRequiredFixer(),
+                new Fixer\ClassNotation\ModifierKeywordsFixer(),
                 new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
             ],
             new NullDiffer(),
@@ -199,7 +201,7 @@ final class RunnerTest extends TestCase
         $runner = new Runner(
             Finder::create()->in($paths),
             [
-                new Fixer\ClassNotation\VisibilityRequiredFixer(),
+                new Fixer\ClassNotation\ModifierKeywordsFixer(),
                 new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
             ],
             new NullDiffer(),
@@ -266,7 +268,7 @@ final class RunnerTest extends TestCase
         $runner = new Runner(
             Finder::create()->in($path),
             [
-                new Fixer\ClassNotation\VisibilityRequiredFixer(),
+                new Fixer\ClassNotation\ModifierKeywordsFixer(),
                 new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
             ],
             new NullDiffer(),
@@ -303,7 +305,7 @@ final class RunnerTest extends TestCase
         $differ = $this->createDifferDouble();
         $path = __DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'fix';
         $fixers = [
-            new Fixer\ClassNotation\VisibilityRequiredFixer(),
+            new Fixer\ClassNotation\ModifierKeywordsFixer(),
         ];
 
         $runner = new Runner(

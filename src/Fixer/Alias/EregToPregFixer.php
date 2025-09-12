@@ -26,12 +26,14 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Matteo Beccati <matteo@beccati.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class EregToPregFixer extends AbstractFixer
 {
     /**
-     * @var list<array<int, string>> the list of the ext/ereg function names, their preg equivalent and the preg modifier(s), if any
-     *                               all condensed in an array of arrays
+     * @var non-empty-list<non-empty-array<int, string>> the list of the ext/ereg function names, their preg equivalent and the preg modifier(s), if any
+     *                                                   all condensed in an array of arrays
      */
     private const FUNCTIONS = [
         ['ereg', 'preg_match', ''],
@@ -43,9 +45,9 @@ final class EregToPregFixer extends AbstractFixer
     ];
 
     /**
-     * @var list<string> the list of preg delimiters, in order of preference
+     * @var non-empty-list<string> the list of preg delimiters, in order of preference
      */
-    private static array $delimiters = ['/', '#', '!'];
+    private const DELIMITERS = ['/', '#', '!'];
 
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -171,7 +173,7 @@ final class EregToPregFixer extends AbstractFixer
         // try to find something that's not used
         $delimiters = [];
 
-        foreach (self::$delimiters as $k => $d) {
+        foreach (self::DELIMITERS as $k => $d) {
             if (!str_contains($pattern, $d)) {
                 return $d;
             }

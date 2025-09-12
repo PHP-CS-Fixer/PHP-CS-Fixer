@@ -22,6 +22,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Output writer to show the progress of a FixCommand using dots and meaningful letters.
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DotsOutput implements ProgressOutputInterface
 {

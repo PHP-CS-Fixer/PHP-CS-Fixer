@@ -28,6 +28,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * @deprecated
  *
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ClassKeywordRemoveFixer extends AbstractFixer implements DeprecatedFixerInterface
 {
@@ -42,12 +44,14 @@ final class ClassKeywordRemoveFixer extends AbstractFixer implements DeprecatedF
             'Converts `::class` keywords to FQCN strings.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-use Foo\Bar\Baz;
+                        use Foo\Bar\Baz;
 
-$className = Baz::class;
-'
+                        $className = Baz::class;
+
+                        PHP
                 ),
             ]
         );

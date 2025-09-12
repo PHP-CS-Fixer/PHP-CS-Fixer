@@ -22,6 +22,8 @@ use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 class Config implements ConfigInterface, ParallelAwareConfigInterface, UnsupportedPhpVersionAllowedConfigInterface
 {
@@ -76,7 +78,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     public function __construct(string $name = 'default')
     {
         // @TODO 4.0 cleanup
-        if (Utils::isFutureModeEnabled()) {
+        if (Future::isFutureModeEnabled()) {
             $this->name = $name.' (future mode)';
             $this->rules = ['@PER-CS' => true];
             $this->format = '@auto';
@@ -87,7 +89,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
         }
 
         // @TODO 4.0 cleanup
-        if (Utils::isFutureModeEnabled() || filter_var(getenv('PHP_CS_FIXER_PARALLEL'), \FILTER_VALIDATE_BOOL)) {
+        if (Future::isFutureModeEnabled() || filter_var(getenv('PHP_CS_FIXER_PARALLEL'), \FILTER_VALIDATE_BOOL)) {
             $this->parallelConfig = ParallelConfigFactory::detect();
         } else {
             $this->parallelConfig = ParallelConfigFactory::sequential();

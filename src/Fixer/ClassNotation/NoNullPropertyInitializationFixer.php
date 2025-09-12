@@ -22,6 +22,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author ntzm
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoNullPropertyInitializationFixer extends AbstractFixer
 {
@@ -31,20 +33,24 @@ final class NoNullPropertyInitializationFixer extends AbstractFixer
             'Properties MUST not be explicitly initialized with `null` except when they have a type declaration (PHP 7.4).',
             [
                 new CodeSample(
-                    '<?php
-class Foo {
-    public $bar = null;
-    public ?string $baz = null;
-    public ?string $baux;
-}
-'
+                    <<<'PHP'
+                        <?php
+                        class Foo {
+                            public $bar = null;
+                            public ?string $baz = null;
+                            public ?string $baux;
+                        }
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-class Foo {
-    public static $foo = null;
-}
-'
+                    <<<'PHP'
+                        <?php
+                        class Foo {
+                            public static $foo = null;
+                        }
+
+                        PHP
                 ),
             ]
         );

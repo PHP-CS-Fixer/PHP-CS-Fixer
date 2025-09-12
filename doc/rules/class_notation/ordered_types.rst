@@ -112,7 +112,7 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PER <./../../ruleSets/PER.rst>`_ with config:
+- `@PER <./../../ruleSets/PER.rst>`_ *(deprecated)* with config:
 
   ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``
 
@@ -124,7 +124,10 @@ The rule is part of the following rule sets:
 
   ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``
 
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
+  ``['null_adjustment' => 'always_last']``
+
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
   ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``

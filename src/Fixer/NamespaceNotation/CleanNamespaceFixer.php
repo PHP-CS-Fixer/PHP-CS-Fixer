@@ -21,6 +21,9 @@ use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class CleanNamespaceFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface

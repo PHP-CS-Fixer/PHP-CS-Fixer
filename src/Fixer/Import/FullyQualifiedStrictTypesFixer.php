@@ -62,6 +62,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Michael Vorisek <https://github.com/mvorisek>
  *
  * @phpstan-import-type _ImportType from \PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
@@ -125,93 +127,101 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
             'Removes the leading part of fully qualified symbol references if a given symbol is imported or belongs to the current namespace.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-use Foo\Bar;
-use Foo\Bar\Baz;
-use Foo\OtherClass;
-use Foo\SomeContract;
-use Foo\SomeException;
+                        use Foo\Bar;
+                        use Foo\Bar\Baz;
+                        use Foo\OtherClass;
+                        use Foo\SomeContract;
+                        use Foo\SomeException;
 
-/**
- * @see \Foo\Bar\Baz
- */
-class SomeClass extends \Foo\OtherClass implements \Foo\SomeContract
-{
-    /**
-     * @var \Foo\Bar\Baz
-     */
-    public $baz;
+                        /**
+                         * @see \Foo\Bar\Baz
+                         */
+                        class SomeClass extends \Foo\OtherClass implements \Foo\SomeContract
+                        {
+                            /**
+                             * @var \Foo\Bar\Baz
+                             */
+                            public $baz;
 
-    /**
-     * @param \Foo\Bar\Baz $baz
-     */
-    public function __construct($baz) {
-        $this->baz = $baz;
-    }
+                            /**
+                             * @param \Foo\Bar\Baz $baz
+                             */
+                            public function __construct($baz) {
+                                $this->baz = $baz;
+                            }
 
-    /**
-     * @return \Foo\Bar\Baz
-     */
-    public function getBaz() {
-        return $this->baz;
-    }
+                            /**
+                             * @return \Foo\Bar\Baz
+                             */
+                            public function getBaz() {
+                                return $this->baz;
+                            }
 
-    public function doX(\Foo\Bar $foo, \Exception $e): \Foo\Bar\Baz
-    {
-        try {}
-        catch (\Foo\SomeException $e) {}
-    }
-}
-'
+                            public function doX(\Foo\Bar $foo, \Exception $e): \Foo\Bar\Baz
+                            {
+                                try {}
+                                catch (\Foo\SomeException $e) {}
+                            }
+                        }
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-class SomeClass
-{
-    public function doY(Foo\NotImported $u, \Foo\NotImported $v)
-    {
-    }
-}
-',
+                        class SomeClass
+                        {
+                            public function doY(Foo\NotImported $u, \Foo\NotImported $v)
+                            {
+                            }
+                        }
+
+                        PHP,
                     ['leading_backslash_in_global_namespace' => true]
                 ),
                 new CodeSample(
-                    '<?php
-namespace {
-    use Foo\A;
-    try {
-        foo();
-    } catch (\Exception|\Foo\A $e) {
-    }
-}
-namespace Foo\Bar {
-    class SomeClass implements \Foo\Bar\Baz
-    {
-    }
-}
-',
+                    <<<'PHP'
+                        <?php
+                        namespace {
+                            use Foo\A;
+                            try {
+                                foo();
+                            } catch (\Exception|\Foo\A $e) {
+                            }
+                        }
+                        namespace Foo\Bar {
+                            class SomeClass implements \Foo\Bar\Baz
+                            {
+                            }
+                        }
+
+                        PHP,
                     ['leading_backslash_in_global_namespace' => true]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-namespace Foo\Test;
+                        namespace Foo\Test;
 
-class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interface2
-{
-    /** @var \Other\PropertyPhpDoc */
-    private $array;
-    public function __construct(\Other\FunctionArgument $arg) {}
-    public function foo(): \Other\FunctionReturnType
-    {
-        try {
-            \Other\StaticFunctionCall::bar();
-        } catch (\Other\CaughtThrowable $e) {}
-    }
-}
-',
+                        class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interface2
+                        {
+                            /** @var \Other\PropertyPhpDoc */
+                            private $array;
+                            public function __construct(\Other\FunctionArgument $arg) {}
+                            public function foo(): \Other\FunctionReturnType
+                            {
+                                try {
+                                    \Other\StaticFunctionCall::bar();
+                                } catch (\Other\CaughtThrowable $e) {}
+                            }
+                        }
+
+                        PHP,
                     ['import_symbols' => true]
                 ),
             ]
@@ -334,6 +344,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
                     } elseif ($token->equals('}')) {
                         unset($this->reservedIdentifiersByLevel[$openedCurlyBrackets]);
                         --$openedCurlyBrackets;
+                        \assert($openedCurlyBrackets >= 0);
                     } elseif ($token->isGivenKind(\T_VARIABLE)) {
                         $prevIndex = $tokens->getPrevMeaningfulToken($index);
                         if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(\T_STRING)) {
@@ -886,7 +897,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
      * @param _ImportType  $importKind
      * @param _Uses        $uses
      *
-     * @return null|list<Token>
+     * @return null|non-empty-list<Token>
      */
     private function determineShortType(string $typeName, string $importKind, array $uses, string $namespaceName): ?array
     {
@@ -959,7 +970,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     }
 
     /**
-     * @return list<Token>
+     * @return non-empty-list<Token>
      */
     private function namespacedStringToTokens(string $input): array
     {
@@ -997,7 +1008,7 @@ class Foo extends \Other\BaseClass implements \Other\Interface1, \Other\Interfac
     }
 
     /**
-     * We need to create import processor dynamically (not in costructor), because actual whitespace configuration
+     * We need to create import processor dynamically (not in constructor), because actual whitespace configuration
      * is set later, not when fixer's instance is created.
      */
     private function createImportProcessor(): ImportProcessor

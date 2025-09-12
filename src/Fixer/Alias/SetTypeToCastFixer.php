@@ -22,6 +22,9 @@ use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class SetTypeToCastFixer extends AbstractFunctionReferenceFixer
 {
     public function getDefinition(): FixerDefinitionInterface
@@ -30,11 +33,13 @@ final class SetTypeToCastFixer extends AbstractFunctionReferenceFixer
             'Cast shall be used, not `settype`.',
             [
                 new CodeSample(
-                    '<?php
-settype($foo, "integer");
-settype($bar, "string");
-settype($bar, "null");
-'
+                    <<<'PHP'
+                        <?php
+                        settype($foo, "integer");
+                        settype($bar, "string");
+                        settype($bar, "null");
+
+                        PHP
                 ),
             ],
             null,

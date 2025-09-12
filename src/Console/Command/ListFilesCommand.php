@@ -29,6 +29,8 @@ use Symfony\Component\Filesystem\Path;
  * @author Markus Staab <markus.staab@redaxo.org>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 #[AsCommand(name: 'list-files', description: 'List all files being fixed by the given config.')]
 final class ListFilesCommand extends Command

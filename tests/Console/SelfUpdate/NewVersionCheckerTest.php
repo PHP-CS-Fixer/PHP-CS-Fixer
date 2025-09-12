@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Console\SelfUpdate\NewVersionChecker
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NewVersionCheckerTest extends TestCase
 {
