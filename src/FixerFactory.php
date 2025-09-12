@@ -18,6 +18,7 @@ use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSetInterface;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -75,6 +76,17 @@ final class FixerFactory
         $this->fixers = Utils::sortFixers($this->fixers);
 
         return $this->fixers;
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function getRegisteredFixerNames(): array
+    {
+        $ruleNames = array_keys($this->fixersByName);
+        ksort($ruleNames);
+
+        return array_values($ruleNames);
     }
 
     /**
@@ -160,6 +172,8 @@ final class FixerFactory
 
         $fixerNames = array_keys($ruleSet->getRules());
         foreach ($fixerNames as $name) {
+            $name = RuleSet::normalizeRuleName($name);
+
             if (!\array_key_exists($name, $this->fixersByName)) {
                 throw new \UnexpectedValueException(\sprintf('Rule "%s" does not exist.', $name));
             }
@@ -192,6 +206,7 @@ final class FixerFactory
             throw new \UnexpectedValueException($this->generateConflictMessage($fixerConflicts));
         }
 
+        ksort($fixersByName);
         $this->fixers = $fixers;
         $this->fixersByName = $fixersByName;
 
@@ -203,7 +218,18 @@ final class FixerFactory
      */
     public function hasRule(string $name): bool
     {
-        return isset($this->fixersByName[$name]);
+        return isset($this->fixersByName[RuleSet::normalizeRuleName($name)]);
+    }
+
+    public function getRule(string $name): FixerInterface
+    {
+        $fixer = $this->fixersByName[RuleSet::normalizeRuleName($name)] ?? null;
+
+        if (null === $fixer) {
+            throw new \UnexpectedValueException(\sprintf('Rule "%s" does not exist.', $name));
+        }
+
+        return $fixer;
     }
 
     /**
