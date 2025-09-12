@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7a839f04097d3638b6b5722cdcfe3d1b",
+    "content-hash": "e8f66b112cf52ac714d5a16f4231d460",
     "packages": [
         {
             "name": "composer-unused/contracts",
@@ -1657,16 +1657,16 @@
         },
         {
             "name": "shipmonk/phpstan-baseline-per-identifier",
-            "version": "2.1.6",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shipmonk-rnd/phpstan-baseline-per-identifier.git",
-                "reference": "84ee6e3655e1ffa919b52d9fbaf007a9fb3e8a81"
+                "reference": "a096ae650296ffaabc13b6362eaed48faae812c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shipmonk-rnd/phpstan-baseline-per-identifier/zipball/84ee6e3655e1ffa919b52d9fbaf007a9fb3e8a81",
-                "reference": "84ee6e3655e1ffa919b52d9fbaf007a9fb3e8a81"
+                "url": "https://api.github.com/repos/shipmonk-rnd/phpstan-baseline-per-identifier/zipball/a096ae650296ffaabc13b6362eaed48faae812c0",
+                "reference": "a096ae650296ffaabc13b6362eaed48faae812c0"
             },
             "require": {
                 "nette/neon": "^3.3.3 || ^4.0",

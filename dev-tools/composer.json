@@ -16,7 +16,7 @@
         "phpstan/phpstan-strict-rules": "^2.0.6",
         "phpstan/phpstan-symfony": "^2.0.8",
         "shipmonk/dead-code-detector": "^0.13.3",
-        "shipmonk/phpstan-baseline-per-identifier": "^2.1.6"
+        "shipmonk/phpstan-baseline-per-identifier": "^2.2.0"
     },
     "config": {
         "allow-plugins": {
