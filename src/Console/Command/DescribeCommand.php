@@ -32,6 +32,7 @@ use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Future;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
@@ -172,7 +173,7 @@ final class DescribeCommand extends Command
                 : \sprintf('use %s instead', Utils::naturalLanguageJoinWithBackticks($successors));
 
             $endMessage = '. '.ucfirst($message);
-            Utils::triggerDeprecation(new \RuntimeException(str_replace('`', '"', "Rule \"{$name}\" is deprecated{$endMessage}.")));
+            Future::triggerDeprecation(new \RuntimeException(str_replace('`', '"', "Rule \"{$name}\" is deprecated{$endMessage}.")));
             $message = Preg::replace('/(`[^`]+`)/', '<info>$1</info>', $message);
             $output->writeln(\sprintf('<error>DEPRECATED</error>: %s.', $message));
             $output->writeln('');
@@ -340,7 +341,7 @@ final class DescribeCommand extends Command
         if ([] !== $ruleSetConfigs) {
             ksort($ruleSetConfigs);
             $plural = 1 !== \count($ruleSetConfigs) ? 's' : '';
-            $output->writeln("Fixer is part of the following rule set{$plural}:");
+            $output->writeln("The fixer is part of the following rule set{$plural}:");
 
             $ruleSetDefinitions = RuleSets::getSetDefinitions();
 
@@ -381,7 +382,7 @@ final class DescribeCommand extends Command
                 ? \sprintf('it will be removed in version %d.0', Application::getMajorVersion() + 1)
                 : \sprintf('use %s instead', Utils::naturalLanguageJoinWithBackticks($successors));
 
-            Utils::triggerDeprecation(new \RuntimeException(str_replace('`', '"', "Set \"{$name}\" is deprecated, {$message}.")));
+            Future::triggerDeprecation(new \RuntimeException(str_replace('`', '"', "Set \"{$name}\" is deprecated, {$message}.")));
             $message = Preg::replace('/(`[^`]+`)/', '<info>$1</info>', $message);
             $output->writeln(\sprintf('<error>DEPRECATED</error>: %s.', $message));
             $output->writeln('');

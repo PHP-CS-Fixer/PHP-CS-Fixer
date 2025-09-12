@@ -217,12 +217,12 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
             return null;
         }
 
-        if (isset($this->versionSpecificTypes[$commonType]) && \PHP_VERSION_ID < $this->versionSpecificTypes[$commonType]) {
-            return null;
-        }
-
         if (\array_key_exists($commonType, $this->configuration['types_map'])) {
             $commonType = $this->configuration['types_map'][$commonType];
+        }
+
+        if (isset($this->versionSpecificTypes[$commonType]) && \PHP_VERSION_ID < $this->versionSpecificTypes[$commonType]) {
+            return null;
         }
 
         if (isset($this->scalarTypes[$commonType])) {

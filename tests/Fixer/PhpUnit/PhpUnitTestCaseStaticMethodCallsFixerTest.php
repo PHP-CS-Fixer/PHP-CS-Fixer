@@ -76,12 +76,12 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
      */
     public static function provideInvalidConfigurationCases(): iterable
     {
-        yield 'wrong type fo methods key' => [
+        yield 'wrong type for methods key' => [
             ['methods' => [123 => 1]],
             '[php_unit_test_case_static_method_calls] Invalid configuration: The option "methods" with value array is expected to be of type "string[]", but one of the elements is of type "int".',
         ];
 
-        yield 'wrong type fo methods value' => [
+        yield 'wrong type for methods value' => [
             ['methods' => ['assertSame' => 123]],
             '[php_unit_test_case_static_method_calls] Invalid configuration: The option "methods" with value array is expected to be of type "string[]", but one of the elements is of type "int".',
         ];
