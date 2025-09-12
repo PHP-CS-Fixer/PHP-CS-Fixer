@@ -205,7 +205,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
     /**
      * @param list<NamespaceUseAnalysis> $useDeclarations
      *
-     * @return array<string, class-string>
+     * @return array<non-empty-string, non-empty-string>
      */
     private function importConstants(Tokens $tokens, array $useDeclarations): array
     {
@@ -276,7 +276,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
     /**
      * @param list<NamespaceUseAnalysis> $useDeclarations
      *
-     * @return array<string, class-string>
+     * @return array<non-empty-string, non-empty-string>
      */
     private function importFunctions(Tokens $tokens, array $useDeclarations): array
     {
@@ -326,7 +326,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
     /**
      * @param list<NamespaceUseAnalysis> $useDeclarations
      *
-     * @return array<string, class-string>
+     * @return array<non-empty-string, non-empty-string>
      */
     private function importClasses(Tokens $tokens, array $useDeclarations): array
     {
@@ -411,7 +411,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
                     return $type;
                 }
 
-                /** @var class-string $name */
+                /** @var non-empty-string $name */
                 $name = substr($type, 1);
 
                 $checkName = strtolower($name);
@@ -444,14 +444,14 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
      * @param array<string, string|true> $global
      * @param array<string, true>        $other
      *
-     * @return array<string, class-string> array keys contain the names that must be imported
+     * @return array<non-empty-string, non-empty-string> array keys contain the names that must be imported
      */
     private function prepareImports(Tokens $tokens, array $indices, array $global, array $other, bool $caseSensitive): array
     {
         $imports = [];
 
         foreach ($indices as $index) {
-            /** @var class-string $name */
+            /** @var non-empty-string $name */
             $name = $tokens[$index]->getContent();
             $checkName = $caseSensitive ? $name : strtolower($name);
 

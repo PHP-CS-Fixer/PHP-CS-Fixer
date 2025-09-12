@@ -600,7 +600,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
     }
 
     /**
-     * @param class-string $name
+     * @param non-empty-string $name
      *
      * @return list<Token>
      */
