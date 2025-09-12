@@ -37,7 +37,7 @@ The rule is part of the following rule sets:
 - `@PER-CS2.0:risky <./../../ruleSets/PER-CS2.0Risky.rst>`_
 - `@PER-CS3.0:risky <./../../ruleSets/PER-CS3.0Risky.rst>`_
 - `@PER-CS:risky <./../../ruleSets/PER-CSRisky.rst>`_
-- `@PER:risky <./../../ruleSets/PERRisky.rst>`_
+- `@PER:risky <./../../ruleSets/PERRisky.rst>`_ *(deprecated)*
 - `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_
 - `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_
 - `@PSR12:risky <./../../ruleSets/PSR12Risky.rst>`_
