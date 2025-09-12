@@ -5,6 +5,5 @@ extend-ignore-re = [
 
 [files]
 extend-exclude = [
-    "CHANGELOG.md",
     "tests/**/*.*",
 ]
