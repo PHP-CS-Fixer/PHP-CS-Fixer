@@ -106,7 +106,7 @@ Changelog for v3.86.0
 * chore: unify future default of after_heredoc (#8924)
 * chore: `@phpstan-ignore` for php version check (#8920)
 * chore: `PhpUnitTestAnnotationFixer` - use `foreach` instead of `for` (#8911)
-* CI: allow PHP 8.5 for failure, till it's officially releaed and we get the stable support (#8928)
+* CI: allow PHP 8.5 for failure, till it's officially released and we get the stable support (#8928)
 * ci: run tests under 8.5 via PHPUnit, as ParaUnit failing (#8933)
 * CI: temporarily skip problematic tests under Sf v8 (#8919)
 * deps: bump icanhazstring/composer-unused from 0.9.3 to 0.9.4 in /dev-tools (#8905)
@@ -114,7 +114,7 @@ Changelog for v3.86.0
 * docs: extend FullOpeningTagFixer samples (#8913)
 * docs: extend OperatorLinebreakFixer samples (#8914)
 * docs: more explicit msg for stop using deprecated code (#8922)
-* DX: .gitignore - ignore php-cs-fixer.cache, as it's existance is possible when using env var (#8929)
+* DX: .gitignore - ignore php-cs-fixer.cache, as it's existence is possible when using env var (#8929)
 
 Changelog for v3.85.1
 ---------------------
@@ -958,7 +958,7 @@ Changelog for v3.55.0
 * chore: few SCA fixes and dev-tools update (#7969)
 * chore: fix phpdoc types (#7977)
 * chore: narrow PHPDoc types (#7979)
-* chore: Normalize implicit backslahes in single quoted strings internally (#7786)
+* chore: Normalize implicit backslashes in single quoted strings internally (#7786)
 * chore: phpdoc - rely on strict list/tuple/assoc instead of array (#7978)
 * chore: PhpUnitDataProviderNameFixer - follow config creation pattern (#7980)
 * chore: Preg - drop half-support for array-pattern (#7976)
@@ -1273,7 +1273,7 @@ Changelog for v3.42.0
 * feat: Support more FQCNs cases in `fully_qualified_strict_types` (#7459)
 * fix: AbstractFixerTestCase - fix checking for correct casing (#7540)
 * fix: Better OS detection in integration tests (#7547)
-* fix: NativeTypeDeclarationCasingFixe - handle static property without type (#7589)
+* fix: NativeTypeDeclarationCasingFixer - handle static property without type (#7589)
 * test: AutoReview - unify data provider returns (#7544)
 * test: check to have DataProviders code agnostic of PHP version (#7575)
 
@@ -2163,7 +2163,7 @@ Changelog for v3.7.0
 * minor #6291 PHP7.4 - remove run time checks (SpacePossum)
 * minor #6292 PhpUnitDedicateAssertFixer - Fix more count cases (SpacePossum)
 * minor #6294 PhpUnitDedicateAssertFixer - add assertInstanceOf support (SpacePossum)
-* minor #6295 PhpUnitTestCaseIndicator - Check if PHPUnit-test class extends anothe… (SpacePossum)
+* minor #6295 PhpUnitTestCaseIndicator - Check if PHPUnit-test class extends another class (SpacePossum)
 * minor #6298 Fix checkbashisms download ans SCA violations (SpacePossum)
 * minor #6301 BracesFixer - handle enums (gharlan)
 * minor #6302 Bump checkbashisms version (kubawerlos)
@@ -4399,7 +4399,7 @@ Changelog for v2.10.1
 * bug #3458 SilencedDeprecationErrorFixer - fix edge cases (kubawerlos)
 * bug #3466 no_whitespace_in_blank_line and no_blank_lines_after_phpdoc fixers bug (kubawerlos, keradus)
 * bug #3472  YodaStyleFixer - do not un-Yoda if right side is assignment (SpacePossum, keradus)
-* bug #3492 PhpdocScalarFixer - Add callback pesudo-type to callable type (carusogabriel)
+* bug #3492 PhpdocScalarFixer - Add callback pseudo-type to callable type (carusogabriel)
 * minor #3354 Added missing types to the PhpdocTypesFixer (GrahamCampbell)
 * minor #3406 Fix for escaping in README (kubawerlos)
 * minor #3430 Fix integration test (SpacePossum)
