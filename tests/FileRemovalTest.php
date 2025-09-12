@@ -104,13 +104,13 @@ final class FileRemovalTest extends TestCase
         self::assertFileDoesNotExist($fs->url().'/foo.php');
     }
 
-    public function testSleep(): void
+    public function testSerialize(): void
     {
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage('Cannot serialize PhpCsFixer\FileRemoval');
 
         $fileRemoval = new FileRemoval();
-        $fileRemoval->__sleep();
+        $fileRemoval->__serialize();
     }
 
     public function testWakeup(): void
