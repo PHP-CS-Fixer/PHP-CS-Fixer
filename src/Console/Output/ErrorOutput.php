@@ -145,7 +145,7 @@ final class ErrorOutput
 
         if (isset($trace['file'])) {
             $this->output->writeln(
-                \sprintf('        in <info>%s</info> ', $this->prepareOutput($trace['file']))
+                \sprintf('        in <info>%s</info>', $this->prepareOutput($trace['file']))
                 .(isset($trace['line']) ? \sprintf(' at line <info>%d</info>', $trace['line']) : ' at unknown line')
             );
         }
