@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tokenizer;
 
-use PhpCsFixer\Utils;
+use PhpCsFixer\Future;
 
 /**
  * Representation of single token.
@@ -204,7 +204,7 @@ final class Token
      */
     public static function isKeyCaseSensitive($caseSensitive, int $key): bool
     {
-        Utils::triggerDeprecation(new \InvalidArgumentException(\sprintf(
+        Future::triggerDeprecation(new \InvalidArgumentException(\sprintf(
             'Method "%s" is deprecated and will be removed in the next major version.',
             __METHOD__
         )));
@@ -493,21 +493,17 @@ final class Token
      */
     public function toJson(): string
     {
-        $jsonResult = json_encode($this->toArray(), \JSON_PRETTY_PRINT | \JSON_NUMERIC_CHECK);
-
-        if (\JSON_ERROR_NONE !== json_last_error()) {
-            $jsonResult = json_encode(
+        try {
+            return json_encode($this->toArray(), \JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT | \JSON_NUMERIC_CHECK);
+        } catch (\JsonException $e) {
+            return json_encode(
                 [
                     'errorDescription' => 'Cannot encode Tokens to JSON.',
-                    'rawErrorMessage' => json_last_error_msg(),
+                    'rawErrorMessage' => $e->getMessage(),
                 ],
-                \JSON_PRETTY_PRINT | \JSON_NUMERIC_CHECK
+                \JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT | \JSON_NUMERIC_CHECK
             );
         }
-
-        \assert(false !== $jsonResult);
-
-        return $jsonResult;
     }
 
     /**

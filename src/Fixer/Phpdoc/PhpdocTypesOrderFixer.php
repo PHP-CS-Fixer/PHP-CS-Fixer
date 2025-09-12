@@ -57,56 +57,68 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
             'Sorts PHPDoc types.',
             [
                 new CodeSample(
-                    '<?php
-/**
- * @param string|null $bar
- */
-'
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @param string|null $bar
+                         */
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-/**
- * @param null|string $bar
- */
-',
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @param null|string $bar
+                         */
+
+                        PHP,
                     ['null_adjustment' => 'always_last']
                 ),
                 new CodeSample(
-                    '<?php
-/**
- * @param null|string|int|\Foo $bar
- */
-',
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @param null|string|int|\Foo $bar
+                         */
+
+                        PHP,
                     ['sort_algorithm' => 'alpha']
                 ),
                 new CodeSample(
-                    '<?php
-/**
- * @param null|string|int|\Foo $bar
- */
-',
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @param null|string|int|\Foo $bar
+                         */
+
+                        PHP,
                     [
                         'sort_algorithm' => 'alpha',
                         'null_adjustment' => 'always_last',
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-/**
- * @param null|string|int|\Foo $bar
- */
-',
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @param null|string|int|\Foo $bar
+                         */
+
+                        PHP,
                     [
                         'sort_algorithm' => 'alpha',
                         'null_adjustment' => 'none',
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-/**
- * @param Aaa|AA $bar
- */
-',
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @param Aaa|AA $bar
+                         */
+
+                        PHP,
                     ['case_sensitive' => true]
                 ),
             ]

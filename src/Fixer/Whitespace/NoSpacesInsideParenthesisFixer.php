@@ -38,12 +38,23 @@ final class NoSpacesInsideParenthesisFixer extends AbstractProxyFixer implements
         return new FixerDefinition(
             'There MUST NOT be a space after the opening parenthesis. There MUST NOT be a space before the closing parenthesis.',
             [
-                new CodeSample("<?php\nif ( \$a ) {\n    foo( );\n}\n"),
                 new CodeSample(
-                    "<?php
-function foo( \$bar, \$baz )
-{
-}\n"
+                    <<<'PHP'
+                        <?php
+                        if ( $a ) {
+                            foo( );
+                        }
+
+                        PHP
+                ),
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        function foo( $bar, $baz )
+                        {
+                        }
+
+                        PHP
                 ),
             ]
         );

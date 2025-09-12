@@ -526,7 +526,6 @@ abstract class AbstractFixerTestCase extends TestCase
 
             self::assertSameSize(
                 $tokens,
-                // @phpstan-ignore-next-line argument.type as all elements in `$tokens->toArray()` always objects of `Token`
                 array_unique(array_map(static fn (Token $token): string => spl_object_hash($token), $tokens->toArray())),
                 'Token items inside Tokens collection must be unique.'
             );
@@ -591,7 +590,9 @@ abstract class AbstractFixerTestCase extends TestCase
 
         if (null === $linter) {
             $linter = new CachingLinter(
-                '1' === getenv('FAST_LINT_TEST_CASES') ? new Linter() : new ProcessLinter()
+                filter_var(getenv('PHP_CS_FIXER_FAST_LINT_TEST_CASES'), \FILTER_VALIDATE_BOOLEAN)
+                    ? new Linter()
+                    : new ProcessLinter()
             );
         }
 

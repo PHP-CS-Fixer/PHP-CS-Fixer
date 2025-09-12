@@ -31,12 +31,18 @@ final class SingleLineEmptyBodyFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Empty body of class, interface, trait, enum or function must be abbreviated as `{}` and placed on the same line as the previous symbol, separated by a single space.',
-            [new CodeSample('<?php function foo(
-    int $x
-)
-{
-}
-')],
+            [
+                new CodeSample(
+                    <<<'PHP'
+                        <?php function foo(
+                            int $x
+                        )
+                        {
+                        }
+
+                        PHP
+                ),
+            ],
         );
     }
 

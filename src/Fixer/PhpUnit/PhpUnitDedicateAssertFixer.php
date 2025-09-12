@@ -138,29 +138,33 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
             'PHPUnit assertions like `assertInternalType`, `assertFileExists`, should be used over `assertTrue`.',
             [
                 new CodeSample(
-                    '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testSomeTest()
-    {
-        $this->assertTrue(is_float( $a), "my message");
-        $this->assertTrue(is_nan($a));
-    }
-}
-'
+                    <<<'PHP'
+                        <?php
+                        final class MyTest extends \PHPUnit_Framework_TestCase
+                        {
+                            public function testSomeTest()
+                            {
+                                $this->assertTrue(is_float( $a), "my message");
+                                $this->assertTrue(is_nan($a));
+                            }
+                        }
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testSomeTest()
-    {
-        $this->assertTrue(is_dir($a));
-        $this->assertTrue(is_writable($a));
-        $this->assertTrue(is_readable($a));
-    }
-}
-',
+                    <<<'PHP'
+                        <?php
+                        final class MyTest extends \PHPUnit_Framework_TestCase
+                        {
+                            public function testSomeTest()
+                            {
+                                $this->assertTrue(is_dir($a));
+                                $this->assertTrue(is_writable($a));
+                                $this->assertTrue(is_readable($a));
+                            }
+                        }
+
+                        PHP,
                     ['target' => PhpUnitTargetVersion::VERSION_5_6]
                 ),
             ],
@@ -408,17 +412,16 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             return false;
         }
 
-        $classEndIndex = $instanceOfIndex;
+        $classEndIndex = $tokens->getNextMeaningfulToken($instanceOfIndex);
         $classPartTokens = [];
 
         do {
-            $classEndIndex = $tokens->getNextMeaningfulToken($classEndIndex);
             $classPartTokens[] = $tokens[$classEndIndex];
+            $classEndIndex = $tokens->getNextMeaningfulToken($classEndIndex);
         } while ($tokens[$classEndIndex]->isGivenKind([\T_STRING, \T_NS_SEPARATOR, \T_VARIABLE]));
 
         if ($tokens[$classEndIndex]->equalsAny([',', ')'])) { // do the fixing
-            array_pop($classPartTokens);
-            $isInstanceOfVar = reset($classPartTokens)->isGivenKind(\T_VARIABLE);
+            $isInstanceOfVar = $classPartTokens[0]->isGivenKind(\T_VARIABLE);
             $insertIndex = $testIndex - 1;
             $newTokens = [];
 

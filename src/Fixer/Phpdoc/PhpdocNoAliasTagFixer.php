@@ -55,30 +55,34 @@ final class PhpdocNoAliasTagFixer extends AbstractProxyFixer implements Configur
             'No alias PHPDoc tags should be used.',
             [
                 new CodeSample(
-                    '<?php
-/**
- * @property string $foo
- * @property-read string $bar
- *
- * @link baz
- */
-final class Example
-{
-}
-'
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @property string $foo
+                         * @property-read string $bar
+                         *
+                         * @link baz
+                         */
+                        final class Example
+                        {
+                        }
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-/**
- * @property string $foo
- * @property-read string $bar
- *
- * @link baz
- */
-final class Example
-{
-}
-',
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @property string $foo
+                         * @property-read string $bar
+                         *
+                         * @link baz
+                         */
+                        final class Example
+                        {
+                        }
+
+                        PHP,
                     ['replacements' => ['link' => 'website']]
                 ),
             ]
@@ -123,10 +127,11 @@ final class Example
             (new FixerOptionBuilder('replacements', 'Mapping between replaced annotations with new ones.'))
                 ->setAllowedTypes(['array<string, string>'])
                 ->setDefault([
+                    // 'const' => 'var', @TODO 4.0 (and remove explicitly listed defaults from Symfony ruleset)
+                    'link' => 'see',
                     'property-read' => 'property',
                     'property-write' => 'property',
                     'type' => 'var',
-                    'link' => 'see',
                 ])
                 ->getOption(),
         ]);

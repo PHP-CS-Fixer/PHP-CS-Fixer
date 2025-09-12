@@ -77,18 +77,22 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurableFixerInt
             'Write conditions in Yoda style (`true`), non-Yoda style (`[\'equal\' => false, \'identical\' => false, \'less_and_greater\' => false]`) or ignore those conditions (`null`) based on configuration.',
             [
                 new CodeSample(
-                    '<?php
-    if ($a === null) {
-        echo "null";
-    }
-'
+                    <<<'PHP'
+                        <?php
+                            if ($a === null) {
+                                echo "null";
+                            }
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-    $b = $c != 1;  // equal
-    $a = 1 === $b; // identical
-    $c = $c > 3;   // less than
-',
+                    <<<'PHP'
+                        <?php
+                            $b = $c != 1;  // equal
+                            $a = 1 === $b; // identical
+                            $c = $c > 3;   // less than
+
+                        PHP,
                     [
                         'equal' => true,
                         'identical' => false,
@@ -96,20 +100,24 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurableFixerInt
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-return $foo === count($bar);
-',
+                    <<<'PHP'
+                        <?php
+                        return $foo === count($bar);
+
+                        PHP,
                     [
                         'always_move_variable' => true,
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-    // Enforce non-Yoda style.
-    if (null === $a) {
-        echo "null";
-    }
-',
+                    <<<'PHP'
+                        <?php
+                            // Enforce non-Yoda style.
+                            if (null === $a) {
+                                echo "null";
+                            }
+
+                        PHP,
                     [
                         'equal' => false,
                         'identical' => false,

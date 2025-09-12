@@ -82,24 +82,28 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
             'Replace `strpos()` and `stripos()` calls with `str_starts_with()` or `str_contains()` if possible.',
             [
                 new CodeSample(
-                    '<?php
-if (strpos($haystack, $needle) === 0) {}
-if (strpos($haystack, $needle) !== 0) {}
-if (strpos($haystack, $needle) !== false) {}
-if (strpos($haystack, $needle) === false) {}
-',
+                    <<<'PHP'
+                        <?php
+                        if (strpos($haystack, $needle) === 0) {}
+                        if (strpos($haystack, $needle) !== 0) {}
+                        if (strpos($haystack, $needle) !== false) {}
+                        if (strpos($haystack, $needle) === false) {}
+
+                        PHP,
                 ),
                 new CodeSample(
-                    '<?php
-if (strpos($haystack, $needle) === 0) {}
-if (strpos($haystack, $needle) !== 0) {}
-if (strpos($haystack, $needle) !== false) {}
-if (strpos($haystack, $needle) === false) {}
-if (stripos($haystack, $needle) === 0) {}
-if (stripos($haystack, $needle) !== 0) {}
-if (stripos($haystack, $needle) !== false) {}
-if (stripos($haystack, $needle) === false) {}
-',
+                    <<<'PHP'
+                        <?php
+                        if (strpos($haystack, $needle) === 0) {}
+                        if (strpos($haystack, $needle) !== 0) {}
+                        if (strpos($haystack, $needle) !== false) {}
+                        if (strpos($haystack, $needle) === false) {}
+                        if (stripos($haystack, $needle) === 0) {}
+                        if (stripos($haystack, $needle) !== 0) {}
+                        if (stripos($haystack, $needle) !== false) {}
+                        if (stripos($haystack, $needle) === false) {}
+
+                        PHP,
                     ['modernize_stripos' => true]
                 ),
             ],

@@ -98,9 +98,9 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     public const ALIGN_SINGLE_SPACE_MINIMAL_BY_SCOPE = 'align_single_space_minimal_by_scope';
 
     /**
-     * @internal
+     * Placeholder used as anchor for right alignment.
      *
-     * @const Placeholder used as anchor for right alignment.
+     * @internal
      */
     public const ALIGN_PLACEHOLDER = "\x2 ALIGNABLE%d \x3";
 
@@ -200,115 +200,141 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
             'Binary operators should be surrounded by space as configured.',
             [
                 new CodeSample(
-                    "<?php\n\$a= 1  + \$b^ \$d !==  \$e or   \$f;\n"
+                    <<<'PHP'
+                        <?php
+                        $a= 1  + $b^ $d !==  $e or   $f;
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-$aa=  1;
-$b=2;
+                    <<<'PHP'
+                        <?php
+                        $aa=  1;
+                        $b=2;
 
-$c = $d    xor    $e;
-$f    -=  1;
-',
+                        $c = $d    xor    $e;
+                        $f    -=  1;
+
+                        PHP,
                     ['operators' => ['=' => self::ALIGN, 'xor' => null]]
                 ),
                 new CodeSample(
-                    '<?php
-$a = $b +=$c;
-$d = $ee+=$f;
+                    <<<'PHP'
+                        <?php
+                        $a = $b +=$c;
+                        $d = $ee+=$f;
 
-$g = $b     +=$c;
-$h = $ee+=$f;
-',
+                        $g = $b     +=$c;
+                        $h = $ee+=$f;
+
+                        PHP,
                     ['operators' => ['+=' => self::ALIGN_SINGLE_SPACE]]
                 ),
                 new CodeSample(
-                    '<?php
-$a = $b===$c;
-$d = $f   ===  $g;
-$h = $i===  $j;
-',
+                    <<<'PHP'
+                        <?php
+                        $a = $b===$c;
+                        $d = $f   ===  $g;
+                        $h = $i===  $j;
+
+                        PHP,
                     ['operators' => ['===' => self::ALIGN_SINGLE_SPACE_MINIMAL]]
                 ),
                 new CodeSample(
-                    '<?php
-$foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
-',
+                    <<<'PHP'
+                        <?php
+                        $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
+
+                        PHP,
                     ['operators' => ['|' => self::NO_SPACE]]
                 ),
                 new CodeSample(
-                    '<?php
-$array = [
-    "foo"            =>   1,
-    "baaaaaaaaaaar"  =>  11,
-];
-',
+                    <<<'PHP'
+                        <?php
+                        $array = [
+                            "foo"            =>   1,
+                            "baaaaaaaaaaar"  =>  11,
+                        ];
+
+                        PHP,
                     ['operators' => ['=>' => self::SINGLE_SPACE]]
                 ),
                 new CodeSample(
-                    '<?php
-$array = [
-    "foo" => 12,
-    "baaaaaaaaaaar"  => 13,
+                    <<<'PHP'
+                        <?php
+                        $array = [
+                            "foo" => 12,
+                            "baaaaaaaaaaar"  => 13,
 
-    "baz" => 1,
-];
-',
+                            "baz" => 1,
+                        ];
+
+                        PHP,
                     ['operators' => ['=>' => self::ALIGN]]
                 ),
                 new CodeSample(
-                    '<?php
-$array = [
-    "foo" => 12,
-    "baaaaaaaaaaar"  => 13,
+                    <<<'PHP'
+                        <?php
+                        $array = [
+                            "foo" => 12,
+                            "baaaaaaaaaaar"  => 13,
 
-    "baz" => 1,
-];
-',
+                            "baz" => 1,
+                        ];
+
+                        PHP,
                     ['operators' => ['=>' => self::ALIGN_BY_SCOPE]]
                 ),
                 new CodeSample(
-                    '<?php
-$array = [
-    "foo" => 12,
-    "baaaaaaaaaaar"  => 13,
+                    <<<'PHP'
+                        <?php
+                        $array = [
+                            "foo" => 12,
+                            "baaaaaaaaaaar"  => 13,
 
-    "baz" => 1,
-];
-',
+                            "baz" => 1,
+                        ];
+
+                        PHP,
                     ['operators' => ['=>' => self::ALIGN_SINGLE_SPACE]]
                 ),
                 new CodeSample(
-                    '<?php
-$array = [
-    "foo" => 12,
-    "baaaaaaaaaaar"  => 13,
+                    <<<'PHP'
+                        <?php
+                        $array = [
+                            "foo" => 12,
+                            "baaaaaaaaaaar"  => 13,
 
-    "baz" => 1,
-];
-',
+                            "baz" => 1,
+                        ];
+
+                        PHP,
                     ['operators' => ['=>' => self::ALIGN_SINGLE_SPACE_BY_SCOPE]]
                 ),
                 new CodeSample(
-                    '<?php
-$array = [
-    "foo" => 12,
-    "baaaaaaaaaaar"  => 13,
+                    <<<'PHP'
+                        <?php
+                        $array = [
+                            "foo" => 12,
+                            "baaaaaaaaaaar"  => 13,
 
-    "baz" => 1,
-];
-',
+                            "baz" => 1,
+                        ];
+
+                        PHP,
                     ['operators' => ['=>' => self::ALIGN_SINGLE_SPACE_MINIMAL]]
                 ),
                 new CodeSample(
-                    '<?php
-$array = [
-    "foo" => 12,
-    "baaaaaaaaaaar"  => 13,
+                    <<<'PHP'
+                        <?php
+                        $array = [
+                            "foo" => 12,
+                            "baaaaaaaaaaar"  => 13,
 
-    "baz" => 1,
-];
-',
+                            "baz" => 1,
+                        ];
+
+                        PHP,
                     ['operators' => ['=>' => self::ALIGN_SINGLE_SPACE_MINIMAL_BY_SCOPE]]
                 ),
             ]

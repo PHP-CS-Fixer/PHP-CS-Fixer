@@ -3,6 +3,92 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.87.2
+---------------------
+
+* fix: `phpdoc_to_param_type`, `phpdoc_to_return_type`, `phpdoc_to_property_type` - handle type aliasing before handling PHP version (#9031)
+* docs: unify docs around deprecated sets (#9036)
+* chore: fix typos (#9022)
+* chore: provide few missing types for callbacks (#9026)
+* deps: bump actions/stale from 9 to 10 (#9029)
+* deps: pin checkbashisms and shellcheck to stable URL with pinned version (#9032)
+* DX: suggest `--sequential` when facing fixing error (#9023)
+* refactor: Future - centralize class for future-looking logic (#9021)
+* test: Mark `DocumentationCommandTest::testGeneratingDocumentation()` as large test (#9028)
+
+Changelog for v3.87.1
+---------------------
+
+* chore: `AbstractProxyFixer` - require non-empty list of proxy fixers (#9010)
+* deps: update justinrainbow/json-schema (#9019)
+
+Changelog for v3.87.0
+---------------------
+
+* feat: add `PhpdocTagNoNamedArgumentsFixer` (#8906)
+* feat: deprecate using config from passed 'path' CLI argument (#8923)
+* feat: introduce `@PHP85Migration` set (#8941)
+* feat: upgrade `@PhpCsFixer` set towards new defaults of selected rules (#8981)
+* fix: `PhpdocOrderFixer` - do not allow duplicated tags in configuration (#8945)
+* fix: `PhpdocOrderFixer` when `phpstan-` / `psalm-` order is specified (#8853)
+* docs: README.md updates (#9013)
+* docs: update README.md (#9015)
+* docs: update `README.md` and `CONTRIBUTING.md` (#8974)
+* DX: remove methods for kind checks (#8954)
+* DX: unify class/interface/trait naming (#8957)
+* chore: Add CS commit to .git-blame-ignore-revs
+* chore: Add TODO for ENUM conversion in ProgressOutputType (#8991)
+* chore: always use `JSON_THROW_ON_ERROR` (#8993)
+* chore: apply (partially) `multiline_string_to_heredoc` (#9002)
+* chore: apply phpdoc_tag_no_named_arguments (#8969)
+* chore: configure phpdoc_tag_no_named_arguments (#8970)
+* chore: convert private methods to constants (#8976)
+* chore: deprecate `Annotation::getTagsWithTypes` in favor of `TAGS_WITH_TYPES` constant (#8977)
+* chore: exclude files in .gitattributes (#8960)
+* chore: extract token types for PHPStan (#8925)
+* chore: handle fixer options without allowed types defined (#8973)
+* chore: ignore deprecations in `token_get_all` (#8963)
+* chore: minor CS fixes (#8979)
+* chore: PhpdocTagNoNamedArgumentsFixer - better example (#8971)
+* chore: PHPUnit - enforce no memory_limit (#8940)
+* chore: remove not-needed reset-call (#9014)
+* chore: revert wrong `_PhpTokenArray` usages (#8947)
+* chore: rework `ci-integration.sh` (#8989)
+* chore: sort .gitattributes (#8966)
+* chore: unify entries in `.gitignore` (#8982)
+* chore: unify env var `FAST_LINT_TEST_CASES` into `PHP_CS_FIXER_FAST_LINT_TEST_CASES` (#8992)
+* chore: use `get_debug_type` and `::class` in exception messages (#9006)
+* chore: use `non-empty-list` where appropriate (#8972)
+* chore: `AbstractPhpdocTypesFixer` - remove `$tags` property (#8980)
+* chore: `CheckCommand` - use regex instead of `explode` & `substr` (#8936)
+* chore: `ClassAttributesSeparationFixer` - improve code (#8950)
+* chore: `EregToPregFixer` - use constant instead of static property (#8978)
+* chore: `FullyQualifiedStrictTypesFixer` - ensure matching number of opening/closing braces (#9009)
+* chore: `OrderedClassElementsFixer` - use private method instead of anonymous function (#8931)
+* chore: `PhpdocParamOrderFixer` - improve/simplify code (#9012)
+* chore: `PhpUnitDedicateAssertFixer` - improve code for phpstan (#9011)
+* chore: `Tokens::offsetSet` - explicit validation of input (#9004)
+* chore: `Tokens` - override nullability of `SplFixedArray` (#9001)
+* refactor: add `DocBlockAnnotation` trait (#8953)
+* refactor: `PhpdocOrderFixer` - calculate order only once (#8944)
+* CI: add `vendor/bin/phpunit --check-php-configuration` (#8934)
+* CI: more self-fixing checks on lowest/highest PHP (#8943)
+* CI: Re-enable Paraunit in CI under PHP 8.5 (#8964)
+* CI: update checkbashisms (#8951)
+* test: extend ProjectCodeTest to check classy names in tests too (#8959)
+* test: split test so more of them can run under Windows (#8986)
+* test: TypeDeclarationSpacesFixer - demonstrate PHP 8.3 related config doesn't harm older envs (#8999)
+* test: update pipe operator tests after pipe & arrow function combination was prohibited (#8990)
+* test: `NoUnneededControlParenthesesFixer` - add tests for "clone with" (#8937)
+* test: `PhpdocNoAliasTagFixerTest` - add test for `@const` to `@var` (#8998)
+* CS: re-apply rules (#8988)
+* deps: bump actions/checkout from 4 to 5 (#8938)
+* deps: bump shipmonk/dead-code-detector from 0.13.1 to 0.13.2 in /dev-tools (#8939)
+* deps: drop support for justinrainbow/json-schema:^5 (#8984)
+* deps: minor upgrades (#8983)
+* deps: remove `php-cs-fixer/accessible-object` (#8948)
+* deps: update dev-tools (#9007)
+
 Changelog for v3.86.0
 ---------------------
 

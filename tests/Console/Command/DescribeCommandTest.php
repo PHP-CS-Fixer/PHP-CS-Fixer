@@ -274,7 +274,7 @@ Fixing examples cannot be demonstrated on the current PHP version.
 .*
    ----------- end diff -----------
 
-'.preg_quote("Fixer is part of the following rule sets:
+'.preg_quote("The fixer is part of the following rule sets:
 * @PER *(deprecated)* with config: ['default' => 'at_least_single_space']
 * @PER-CS with config: ['default' => 'at_least_single_space']
 * @PER-CS1.0 with config: ['default' => 'at_least_single_space']

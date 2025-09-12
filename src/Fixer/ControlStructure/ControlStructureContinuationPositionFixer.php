@@ -68,23 +68,27 @@ final class ControlStructureContinuationPositionFixer extends AbstractFixer impl
             'Control structure continuation keyword must be on the configured line.',
             [
                 new CodeSample(
-                    '<?php
-if ($baz == true) {
-    echo "foo";
-}
-else {
-    echo "bar";
-}
-'
+                    <<<'PHP'
+                        <?php
+                        if ($baz == true) {
+                            echo "foo";
+                        }
+                        else {
+                            echo "bar";
+                        }
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-if ($baz == true) {
-    echo "foo";
-} else {
-    echo "bar";
-}
-',
+                    <<<'PHP'
+                        <?php
+                        if ($baz == true) {
+                            echo "foo";
+                        } else {
+                            echo "bar";
+                        }
+
+                        PHP,
                     ['position' => self::NEXT_LINE]
                 ),
             ]

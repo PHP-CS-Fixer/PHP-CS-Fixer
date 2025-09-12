@@ -26,6 +26,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Future;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -120,33 +121,48 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
             'Ordering `use` statements.',
             [
                 new CodeSample(
-                    "<?php\nuse function AAC;\nuse const AAB;\nuse AAA;\n"
+                    <<<'PHP'
+                        <?php
+                        use function AAC;
+                        use const AAB;
+                        use AAA;
+
+                        PHP
                 ),
                 new CodeSample(
-                    "<?php\nuse function Aaa;\nuse const AA;\n",
+                    <<<'PHP'
+                        <?php
+                        use function Aaa;
+                        use const AA;
+
+                        PHP,
                     ['case_sensitive' => true]
                 ),
                 new CodeSample(
-                    '<?php
-use Acme\Bar;
-use Bar1;
-use Acme;
-use Bar;
-',
+                    <<<'PHP'
+                        <?php
+                        use Acme\Bar;
+                        use Bar1;
+                        use Acme;
+                        use Bar;
+
+                        PHP,
                     ['sort_algorithm' => self::SORT_LENGTH]
                 ),
                 new CodeSample(
-                    '<?php
-use const AAAA;
-use const BBB;
+                    <<<'PHP'
+                        <?php
+                        use const AAAA;
+                        use const BBB;
 
-use Bar;
-use AAC;
-use Acme;
+                        use Bar;
+                        use AAC;
+                        use Acme;
 
-use function CCC\AA;
-use function DDD;
-',
+                        use function CCC\AA;
+                        use function DDD;
+
+                        PHP,
                     [
                         'sort_algorithm' => self::SORT_LENGTH,
                         'imports_order' => [
@@ -157,17 +173,19 @@ use function DDD;
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-use const BBB;
-use const AAAA;
+                    <<<'PHP'
+                        <?php
+                        use const BBB;
+                        use const AAAA;
 
-use Acme;
-use AAC;
-use Bar;
+                        use Acme;
+                        use AAC;
+                        use Bar;
 
-use function DDD;
-use function CCC\AA;
-',
+                        use function DDD;
+                        use function CCC\AA;
+
+                        PHP,
                     [
                         'sort_algorithm' => self::SORT_ALPHA,
                         'imports_order' => [
@@ -178,17 +196,19 @@ use function CCC\AA;
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-use const BBB;
-use const AAAA;
+                    <<<'PHP'
+                        <?php
+                        use const BBB;
+                        use const AAAA;
 
-use function DDD;
-use function CCC\AA;
+                        use function DDD;
+                        use function CCC\AA;
 
-use Acme;
-use AAC;
-use Bar;
-',
+                        use Acme;
+                        use AAC;
+                        use Bar;
+
+                        PHP,
                     [
                         'sort_algorithm' => self::SORT_NONE,
                         'imports_order' => [
@@ -273,7 +293,7 @@ use Bar;
                 ->setDefault(self::SORT_ALPHA)
                 ->setNormalizer(static function (Options $options, ?string $value) use ($fixerName): ?string {
                     if (self::SORT_LENGTH === $value) {
-                        Utils::triggerDeprecation(new InvalidFixerConfigurationException($fixerName, \sprintf(
+                        Future::triggerDeprecation(new InvalidFixerConfigurationException($fixerName, \sprintf(
                             'Option "sort_algorithm:%s" is deprecated and will be removed in version %d.0.',
                             self::SORT_LENGTH,
                             Application::getMajorVersion() + 1,

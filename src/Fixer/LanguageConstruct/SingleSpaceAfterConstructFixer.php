@@ -135,16 +135,20 @@ final class SingleSpaceAfterConstructFixer extends AbstractProxyFixer implements
             'Ensures a single space after language constructs.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-throw  new  \Exception();
-'
+                        throw  new  \Exception();
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-echo  "Hello!";
-',
+                        echo  "Hello!";
+
+                        PHP,
                     [
                         'constructs' => [
                             'echo',
@@ -152,10 +156,12 @@ echo  "Hello!";
                     ]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-yield  from  baz();
-',
+                        yield  from  baz();
+
+                        PHP,
                     [
                         'constructs' => [
                             'yield_from',

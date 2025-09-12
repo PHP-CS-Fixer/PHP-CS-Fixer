@@ -400,18 +400,20 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
 
     public function getDefinition(): FixerDefinitionInterface
     {
-        $codeSample = '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testMe()
-    {
-        $this->assertSame(1, 2);
-        self::assertSame(1, 2);
-        static::assertSame(1, 2);
-        static::assertTrue(false);
-    }
-}
-';
+        $codeSample = <<<'PHP'
+            <?php
+            final class MyTest extends \PHPUnit_Framework_TestCase
+            {
+                public function testMe()
+                {
+                    $this->assertSame(1, 2);
+                    self::assertSame(1, 2);
+                    static::assertSame(1, 2);
+                    static::assertTrue(false);
+                }
+            }
+
+            PHP;
 
         return new FixerDefinition(
             'Calls to `PHPUnit\Framework\TestCase` static methods must all be of the same type, either `$this->`, `self::` or `static::`.',
