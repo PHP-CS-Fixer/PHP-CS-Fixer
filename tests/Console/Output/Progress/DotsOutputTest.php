@@ -157,22 +157,22 @@ final class DotsOutputTest extends TestCase
         ];
     }
 
-    public function testSleep(): void
+    public function testSerialize(): void
     {
+        $processOutput = new DotsOutput(new OutputContext(new BufferedOutput(), 1, 1));
+
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage('Cannot serialize '.DotsOutput::class);
 
-        $processOutput = new DotsOutput(new OutputContext(new BufferedOutput(), 1, 1));
-        $processOutput->__sleep();
+        serialize($processOutput);
     }
 
-    public function testWakeup(): void
+    public function testUnserialize(): void
     {
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage('Cannot unserialize '.DotsOutput::class);
 
-        $processOutput = new DotsOutput(new OutputContext(new BufferedOutput(), 1, 1));
-        $processOutput->__wakeup();
+        unserialize(\sprintf('O:%d:"%s":0:{}', \strlen(DotsOutput::class), DotsOutput::class));
     }
 
     /**
