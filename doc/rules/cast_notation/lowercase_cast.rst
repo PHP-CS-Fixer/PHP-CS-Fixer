@@ -22,7 +22,7 @@ Example #1
    -    $a = (DOUBLE) $b;
    -    $a = (FLoaT) $b;
    -    $a = (flOAT) $b;
-   -    $a = (sTRING) $b;
+   -    $a = (stRING) $b;
    -    $a = (ARRAy) $b;
    -    $a = (OBJect) $b;
    -    $a = (UNset) $b;
