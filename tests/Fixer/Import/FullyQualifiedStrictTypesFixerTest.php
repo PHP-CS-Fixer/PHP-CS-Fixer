@@ -1417,7 +1417,25 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
-        yield 'the root namespace of the imported class is equal to the imported global class name in lowercase' => [
+        yield 'the root namespace of the imported class is equal to the imported global class name in lowercase (default behavior)' => [
+            <<<'EOD'
+                <?php
+
+                use App;
+
+                class Some extends \app\components\Some
+                {
+                    public function getDef()
+                    {
+                        $a = App::getA();
+
+                        return new \app\components\Def($a);
+                    }
+                }
+                EOD,
+        ];
+
+        yield 'the root namespace of the imported class is equal to the imported global class name in lowercase (with import_symbols option)' => [
             <<<'EOD'
                 <?php
 
@@ -1452,7 +1470,25 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
-        yield 'the namespace of the imported class contains multiple occurrences of the imported global class name in lowercase' => [
+        yield 'the namespace of the imported class contains multiple occurrences of the imported global class name in lowercase (default behavior)' => [
+            <<<'EOD'
+                <?php
+
+                use App;
+
+                class Some extends \app\app\Some
+                {
+                    public function getDef()
+                    {
+                        $a = App::getA();
+
+                        return new \app\components\Def($a);
+                    }
+                }
+                EOD,
+        ];
+
+        yield 'the namespace of the imported class contains multiple occurrences of the imported global class name in lowercase (with import_symbols option)' => [
             <<<'EOD'
                 <?php
 
