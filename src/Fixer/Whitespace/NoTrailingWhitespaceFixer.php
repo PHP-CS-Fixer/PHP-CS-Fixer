@@ -45,7 +45,7 @@ final class NoTrailingWhitespaceFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run after CombineConsecutiveIssetsFixer, CombineConsecutiveUnsetsFixer, EmptyLoopBodyFixer, EmptyLoopConditionFixer, FunctionToConstantFixer, ModernizeStrposFixer, NoEmptyCommentFixer, NoEmptyPhpdocFixer, NoEmptyStatementFixer, NoUnneededControlParenthesesFixer, NoUselessElseFixer, StringLengthToEmptyFixer, TernaryToElvisOperatorFixer.
+     * Must run after CombineConsecutiveIssetsFixer, CombineConsecutiveUnsetsFixer, EmptyLoopBodyFixer, EmptyLoopConditionFixer, FunctionToConstantFixer, ModernizeStrposFixer, NoEmptyBlockFixer, NoEmptyCommentFixer, NoEmptyPhpdocFixer, NoEmptyStatementFixer, NoUnneededControlParenthesesFixer, NoUselessElseFixer, StringLengthToEmptyFixer, TernaryToElvisOperatorFixer.
      */
     public function getPriority(): int
     {
