@@ -2,7 +2,7 @@
 Rule set ``@PHP8x2Migration``
 =============================
 
-Rules to improve code for PHP 8.0 compatibility.
+Rules to improve code for PHP 8.2 compatibility.
 
 Rules
 -----

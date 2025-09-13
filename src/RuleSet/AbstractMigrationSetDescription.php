@@ -33,8 +33,8 @@ abstract class AbstractMigrationSetDescription extends AbstractRuleSetDescriptio
         }
 
         // @TODO v4 - `x?` -> `x`
-        if (Preg::match('#^@PHP(\dx?\d)Migration.*$#', $name, $matches)) {
-            return \sprintf('Rules to improve code for PHP %d.%d compatibility.', $matches[1][0], $matches[1][1]);
+        if (Preg::match('#^@PHP(\d)x?(\d)Migration.*$#', $name, $matches)) {
+            return \sprintf('Rules to improve code for PHP %d.%d compatibility.', $matches[1], $matches[2]);
         }
 
         throw new \RuntimeException(\sprintf('Cannot generate description for "%s" "%s".', static::class, $name));

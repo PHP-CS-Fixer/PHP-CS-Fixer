@@ -2,7 +2,7 @@
 Rule set ``@PHP7x4Migration``
 =============================
 
-Rules to improve code for PHP 7.0 compatibility.
+Rules to improve code for PHP 7.4 compatibility.
 
 Rules
 -----
