@@ -24,6 +24,7 @@ Rules
 
   ``['anonymous_class' => false]``
 
+- `no_space_before_named_argument_colon <./../rules/function_notation/no_space_before_named_argument_colon.rst>`_
 - `single_line_empty_body <./../rules/basic/single_line_empty_body.rst>`_
 - `single_space_around_construct <./../rules/language_construct/single_space_around_construct.rst>`_ with config:
 

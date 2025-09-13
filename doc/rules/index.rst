@@ -401,6 +401,9 @@ Function Notation
 - `native_function_invocation <./function_notation/native_function_invocation.rst>`_ *(risky)*
 
   Add leading ``\`` before function invocation to speed up resolving.
+- `no_space_before_named_argument_colon <./function_notation/no_space_before_named_argument_colon.rst>`_
+
+  There must be no space before named arguments colons.
 - `no_spaces_after_function_name <./function_notation/no_spaces_after_function_name.rst>`_
 
   When making a method or function call, there MUST NOT be a space between the method or function name and the opening parenthesis.
