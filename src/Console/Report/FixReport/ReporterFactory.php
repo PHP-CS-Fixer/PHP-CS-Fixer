@@ -38,6 +38,7 @@ final class ReporterFactory
 
             foreach (SymfonyFinder::create()->files()->name('*Reporter.php')->in(__DIR__) as $file) {
                 $relativeNamespace = $file->getRelativePath();
+
                 /** @var class-string<ReporterInterface> $class */
                 $class = \sprintf(
                     '%s\%s%s',
