@@ -2,7 +2,6 @@
 extend-ignore-re = [
     "@author .*",
     "(feature|minor) #[0-9]+ .+ (.*)",
-    "resolvement",
 ]
 
 [files]
