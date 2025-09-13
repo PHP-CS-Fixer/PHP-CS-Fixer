@@ -5303,7 +5303,7 @@ Warning, this release breaks BC due to introduction of:
 
 That PR was reverted in v2.2.3, which should be used instead of v2.2.2.
 
-* bug #2545 RuleSet - change resolvement (SpacePossum)
+* bug #2545 RuleSet - fix rule set subtraction (SpacePossum)
 * bug #2686 Commands readme and describe - fix rare casing when not displaying some possible options of configuration (keradus)
 * bug #2711 FixCommand - fix diff optional value handling (keradus)
 * minor #2688 AppVeyor - Remove github oauth (keradus)
