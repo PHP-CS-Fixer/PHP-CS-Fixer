@@ -27,11 +27,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/LanguageConstruct/CombineConsecutiveIssetsFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Only numeric types are allowed in +, int|false given on the left side.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/NamespaceNotation/BlankLinesBeforeNamespaceFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Only numeric types are allowed in +, int<0, max>|false given on the left side.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php',
