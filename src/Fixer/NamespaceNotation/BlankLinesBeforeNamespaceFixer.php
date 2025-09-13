@@ -228,12 +228,9 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
 
         if ($previous->isWhitespace()) {
             // Fix the previous whitespace token
-            $tokens[$previousIndex] = new Token(
-                [
-                    \T_WHITESPACE,
-                    str_repeat($lineEnding, $newlinesForWhitespaceToken).Str::afterLast($previous->getContent(), "\n"),
-                ]
-            );
+            $content = $previous->getContent();
+            $content = str_contains($content, "\n") ? Str::afterLast($content, "\n") : $content;
+            $tokens[$previousIndex] = new Token([\T_WHITESPACE, str_repeat($lineEnding, $newlinesForWhitespaceToken).$content]);
         } else {
             // Add a new whitespace token
             $tokens->insertAt($index, new Token([\T_WHITESPACE, str_repeat($lineEnding, $newlinesForWhitespaceToken)]));
