@@ -177,8 +177,7 @@ final class Preg
 
         $delimiter = $pattern[0];
 
-        $endDelimiterPosition = strrpos($pattern, $delimiter);
-        \assert(\is_int($endDelimiterPosition));
+        $endDelimiterPosition = Str::findLast($pattern, $delimiter);
 
         return substr($pattern, 0, $endDelimiterPosition).str_replace('u', '', substr($pattern, $endDelimiterPosition));
     }

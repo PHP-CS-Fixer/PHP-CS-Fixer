@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet;
 
+use PhpCsFixer\Str;
+
 /**
  * @internal
  *
@@ -25,7 +27,7 @@ abstract class AbstractRuleSetDescription implements RuleSetDescriptionInterface
 
     public function getName(): string
     {
-        $name = substr(static::class, 1 + strrpos(static::class, '\\'), -3);
+        $name = substr(Str::afterLast(static::class, '\\'), 0, -3);
 
         return '@'.str_replace('Risky', ':risky', $name);
     }
