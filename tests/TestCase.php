@@ -83,4 +83,9 @@ abstract class TestCase extends BaseTestCase
             );
         }
     }
+
+    final protected static function createSerializedStringOfClassName(string $className): string
+    {
+        return \sprintf('O:%d:"%s":0:{}', \strlen($className), $className);
+    }
 }

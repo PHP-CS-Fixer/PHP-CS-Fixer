@@ -119,7 +119,7 @@ final class FileRemovalTest extends TestCase
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage('Cannot unserialize '.FileRemoval::class);
 
-        unserialize(\sprintf('O:%d:"%s":0:{}', \strlen(FileRemoval::class), FileRemoval::class));
+        unserialize(self::createSerializedStringOfClassName(FileRemoval::class));
     }
 
     /**

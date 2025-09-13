@@ -172,7 +172,7 @@ final class DotsOutputTest extends TestCase
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage('Cannot unserialize '.DotsOutput::class);
 
-        unserialize(\sprintf('O:%d:"%s":0:{}', \strlen(DotsOutput::class), DotsOutput::class));
+        unserialize(self::createSerializedStringOfClassName(DotsOutput::class));
     }
 
     /**

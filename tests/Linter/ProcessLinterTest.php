@@ -49,7 +49,7 @@ final class ProcessLinterTest extends AbstractLinterTestCase
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage('Cannot unserialize '.ProcessLinter::class);
 
-        unserialize(\sprintf('O:%d:"%s":0:{}', \strlen(ProcessLinter::class), ProcessLinter::class));
+        unserialize(self::createSerializedStringOfClassName(ProcessLinter::class));
     }
 
     protected function createLinter(): LinterInterface
