@@ -19,6 +19,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Str;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer;
@@ -209,7 +210,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
 
             if ($tokens[$prevIndex]->isComment()) {
                 $content = $tokens[$index]->getContent();
-                $tokens[$index] = new Token([\T_WHITESPACE, substr($content, strrpos($content, "\n"))]); // preserve indent only
+                $tokens[$index] = new Token([\T_WHITESPACE, Str::fromLast($content, "\n")]); // preserve indent only
             } else {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index);
             }

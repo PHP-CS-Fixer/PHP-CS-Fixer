@@ -25,6 +25,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Str;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use Symfony\Component\OptionsResolver\Options;
@@ -230,10 +231,7 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
             $tokens[$previousIndex] = new Token(
                 [
                     \T_WHITESPACE,
-                    str_repeat($lineEnding, $newlinesForWhitespaceToken).substr(
-                        $previous->getContent(),
-                        strrpos($previous->getContent(), "\n") + 1
-                    ),
+                    str_repeat($lineEnding, $newlinesForWhitespaceToken).Str::afterLast($previous->getContent(), "\n"),
                 ]
             );
         } else {

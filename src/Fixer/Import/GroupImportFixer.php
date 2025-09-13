@@ -23,6 +23,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Str;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
@@ -296,7 +297,7 @@ final class GroupImportFixer extends AbstractFixer implements ConfigurableFixerI
     private function insertToGroupUseWithAlias(Tokens $tokens, int $insertIndex, NamespaceUseAnalysis $useDeclaration): int
     {
         $newTokens = [
-            new Token([\T_STRING, substr($useDeclaration->getFullName(), strripos($useDeclaration->getFullName(), '\\') + 1)]),
+            new Token([\T_STRING, Str::afterLast($useDeclaration->getFullName(), '\\')]),
             new Token([\T_WHITESPACE, ' ']),
             new Token([\T_AS, 'as']),
             new Token([\T_WHITESPACE, ' ']),
