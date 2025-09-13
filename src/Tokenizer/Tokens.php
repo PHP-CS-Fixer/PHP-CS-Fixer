@@ -567,7 +567,7 @@ class Tokens extends \SplFixedArray
             $elements[$kind] = [];
         }
 
-        $possibleKinds = array_filter($possibleKinds, fn ($kind): bool => $this->isTokenKindFound($kind));
+        $possibleKinds = array_values(array_filter($possibleKinds, fn ($kind): bool => $this->isTokenKindFound($kind)));
 
         if (\count($possibleKinds) > 0) {
             for ($i = $start; $i < $end; ++$i) {
