@@ -29,6 +29,7 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
 use PhpCsFixer\Runner\Parallel\ProcessUtils;
+use PhpCsFixer\Tests\Fixer\ClassNotation\ModifierKeywordsFixerTest;
 use PhpCsFixer\Tests\PregTest;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tests\Test\AbstractIntegrationTestCase;
@@ -381,8 +382,13 @@ final class ProjectCodeTest extends TestCase
     {
         $rc = new \ReflectionClass($testClassName);
 
+        $exceptionClasses = [
+            // @TODO 4.0 remove while removing legacy `VisibilityRequiredFixer`
+            ModifierKeywordsFixerTest::class,
+        ];
+
         self::assertTrue(
-            $rc->isTrait() || $rc->isAbstract() || $rc->isFinal(),
+            $rc->isTrait() || $rc->isAbstract() || $rc->isFinal() || \in_array($testClassName, $exceptionClasses, true),
             \sprintf('Test class %s should be trait, abstract or final.', $testClassName)
         );
     }

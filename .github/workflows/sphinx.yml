@@ -5,6 +5,8 @@ on:
     paths:
       - '**/*.rst'
   push:
+    branches:
+      - master
     paths:
       - '**/*.rst'
 
