@@ -2,7 +2,7 @@
 Rule set ``@PHP5x6Migration:risky``
 ===================================
 
-Rules to improve code for PHP 5.0 compatibility.
+Rules to improve code for PHP 5.6 compatibility.
 
 Warning
 -------
