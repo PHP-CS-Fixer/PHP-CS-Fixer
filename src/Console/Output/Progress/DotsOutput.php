@@ -63,7 +63,7 @@ final class DotsOutput implements ProgressOutputInterface
      * This class is not intended to be serialized,
      * and cannot be deserialized (see __wakeup method).
      */
-    public function __sleep(): array
+    public function __serialize(): array
     {
         throw new \BadMethodCallException('Cannot serialize '.self::class);
     }

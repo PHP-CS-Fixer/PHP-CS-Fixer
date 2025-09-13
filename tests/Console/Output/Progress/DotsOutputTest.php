@@ -157,13 +157,13 @@ final class DotsOutputTest extends TestCase
         ];
     }
 
-    public function testSleep(): void
+    public function testSerialize(): void
     {
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage('Cannot serialize '.DotsOutput::class);
 
         $processOutput = new DotsOutput(new OutputContext(new BufferedOutput(), 1, 1));
-        $processOutput->__sleep();
+        $processOutput->__serialize();
     }
 
     public function testWakeup(): void
