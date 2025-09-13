@@ -163,6 +163,7 @@ final class OrderedTraitsFixer extends AbstractFixer implements ConfigurableFixe
             }
 
             if ($token->equalsAny([',', ';', '{'])) {
+                assert(null !== $indexOfName);
                 $traits[$indexOfName] = Tokens::fromArray($name);
 
                 $name = [];
