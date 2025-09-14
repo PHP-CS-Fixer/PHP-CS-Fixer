@@ -1,0 +1,6 @@
+--TEST--
+Integration of @PHP7x4Migration:risky.
+--RULESET--
+{"@PHP7x4Migration:risky": true}
+--REQUIREMENTS--
+{"php": 70400}

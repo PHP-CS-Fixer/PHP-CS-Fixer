@@ -29,13 +29,13 @@ final class PERCS2x0RiskySet extends AbstractRuleSetDescription
 {
     public function getName(): string
     {
-        return '@PER-CS2.0:risky';
+        return '@PER-CS2x0:risky';
     }
 
     public function getRules(): array
     {
         return [
-            '@PER-CS1.0:risky' => true,
+            '@PER-CS1x0:risky' => true,
         ];
     }
 
