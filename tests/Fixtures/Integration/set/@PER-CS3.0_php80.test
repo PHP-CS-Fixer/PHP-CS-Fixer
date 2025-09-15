@@ -1,6 +1,0 @@
---TEST--
-Integration of @PER-CS3.0 [PHP 8.0 version].
---RULESET--
-{"@PER-CS3.0": true}
---REQUIREMENTS--
-{"php": 80000}

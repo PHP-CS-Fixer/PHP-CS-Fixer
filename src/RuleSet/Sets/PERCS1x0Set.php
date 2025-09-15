@@ -29,7 +29,7 @@ final class PERCS1x0Set extends AbstractRuleSetDescription
 {
     public function getName(): string
     {
-        return '@PER-CS1.0';
+        return '@PER-CS1x0';
     }
 
     public function getRules(): array
