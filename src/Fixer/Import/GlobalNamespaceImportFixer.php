@@ -707,7 +707,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
         foreach ($annotations as $annotation) {
             $types = $annotation->getTypes();
 
-            $new = array_map(function (string $fullType) use ($callback): string {
+            $new = array_map(static function (string $fullType) use ($callback): string {
                 Preg::matchAll('/[\\\\\w]+(?![\\\\\w:])/', $fullType, $matches, \PREG_OFFSET_CAPTURE);
 
                 foreach (array_reverse($matches[0]) as [$type, $offset]) {
