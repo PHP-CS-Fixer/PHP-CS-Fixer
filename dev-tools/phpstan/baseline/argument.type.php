@@ -32,16 +32,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Console/Report/FixReport/GitlabReporter.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $reporter of method PhpCsFixer\\Console\\Report\\FixReport\\ReporterFactory::registerReporter() expects PhpCsFixer\\Console\\Report\\FixReport\\ReporterInterface, object given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/Report/FixReport/ReporterFactory.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $reporter of method PhpCsFixer\\Console\\Report\\ListSetsReport\\ReporterFactory::registerReporter() expects PhpCsFixer\\Console\\Report\\ListSetsReport\\ReporterInterface, object given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/Report/ListSetsReport/ReporterFactory.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #2 $offset of function substr expects int, int|false given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Documentation/FixerDocumentGenerator.php',
