@@ -66,8 +66,8 @@ final class ListFilesCommand extends Command
     {
         $passedConfig = $input->getOption('config');
 
-        /** @var non-empty-string $cwd */
         $cwd = getcwd();
+        \assert(false !== $cwd);
 
         $resolver = new ConfigurationResolver(
             $this->defaultConfig,
