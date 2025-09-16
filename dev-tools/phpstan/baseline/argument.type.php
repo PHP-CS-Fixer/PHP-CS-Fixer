@@ -12,11 +12,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Console/Command/FixCommand.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $time of class PhpCsFixer\\Console\\Report\\FixReport\\ReportSummary constructor expects int, float|int given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/Command/FixCommand.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #2 $basePath of static method Symfony\\Component\\Filesystem\\Path::makeRelative() expects string, string|false given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Console/Command/ListFilesCommand.php',
@@ -27,24 +22,9 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Console/Command/ListFilesCommand.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $filename of function is_file expects string, string|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/ConfigurationResolver.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $diffs of static method PhpCsFixer\\Console\\Report\\FixReport\\GitlabReporter::getLines() expects list<SebastianBergmann\\Diff\\Diff>, array<SebastianBergmann\\Diff\\Diff> given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Console/Report/FixReport/GitlabReporter.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $reporter of method PhpCsFixer\\Console\\Report\\FixReport\\ReporterFactory::registerReporter() expects PhpCsFixer\\Console\\Report\\FixReport\\ReporterInterface, object given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/Report/FixReport/ReporterFactory.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $reporter of method PhpCsFixer\\Console\\Report\\ListSetsReport\\ReporterFactory::registerReporter() expects PhpCsFixer\\Console\\Report\\ListSetsReport\\ReporterInterface, object given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/Report/ListSetsReport/ReporterFactory.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Parameter #2 $offset of function substr expects int, int|false given.',
@@ -87,11 +67,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $elements of method PhpCsFixer\\Fixer\\ClassNotation\\OrderedTraitsFixer::sort() expects array<int, PhpCsFixer\\Tokenizer\\Tokens>, array<int<0, max>|string, PhpCsFixer\\Tokenizer\\Tokens> given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedTraitsFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $possibleKind of method PhpCsFixer\\Tokenizer\\Token::isGivenKind() expects int|list<int>, list<int|string> given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ControlStructure/YodaStyleFixer.php',
@@ -100,11 +75,6 @@ $ignoreErrors[] = [
     'rawMessage' => 'Parameter #3 $length of function substr expects int|null, int|false given.',
     'count' => 2,
     'path' => __DIR__ . '/../../../src/Fixer/Import/FullyQualifiedStrictTypesFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $types of method PhpCsFixer\\DocBlock\\Annotation::setTypes() expects list<string>, array<int<0, max>, string> given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Import/GlobalNamespaceImportFixer.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Parameter #2 $offset of function substr expects int, int|false given.',

@@ -27,6 +27,7 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitNamespacedFixer;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
+use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
 use PhpCsFixer\Runner\Parallel\ProcessUtils;
 use PhpCsFixer\Tests\Fixer\ClassNotation\ModifierKeywordsFixerTest;
 use PhpCsFixer\Tests\PregTest;
@@ -88,6 +89,15 @@ final class ProjectCodeTest extends TestCase
      */
     public function testThatSrcClassHaveTestClass(string $className): void
     {
+        \assert(class_exists($className));
+
+        // It is OK for deprecated ruleset to have no tests, as it would be only proxy to renamed ruleset.
+        if (\in_array(DeprecatedRuleSetDescriptionInterface::class, class_implements($className), true)) {
+            $this->expectNotToPerformAssertions();
+
+            return;
+        }
+
         $testClassName = 'PhpCsFixer\Tests'.substr($className, 10).'Test';
 
         self::assertTrue(class_exists($testClassName), \sprintf('Expected test class "%s" for "%s" not found.', $testClassName, $className));
