@@ -24,6 +24,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Str;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -930,7 +931,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                 if (self::ALIGN !== $alignStrategy) {
                     // move placeholders to match strategy
                     foreach ($group as $index) {
-                        $currentPosition = strpos($lines[$index], $placeholder);
+                        $currentPosition = Str::findFirst($lines[$index], $placeholder);
                         $before = substr($lines[$index], 0, $currentPosition);
 
                         if (
@@ -978,11 +979,6 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
 
     private function getSubstringWidth(string $haystack, string $needle): int
     {
-        $position = strpos($haystack, $needle);
-        \assert(\is_int($position));
-
-        $substring = substr($haystack, 0, $position);
-
-        return mb_strwidth($substring);
+        return mb_strwidth(Str::beforeFirst($haystack, $needle));
     }
 }

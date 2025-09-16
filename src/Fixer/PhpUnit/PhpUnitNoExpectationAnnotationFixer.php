@@ -27,6 +27,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Str;
 use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -256,7 +257,7 @@ final class PhpUnitNoExpectationAnnotationFixer extends AbstractPhpUnitFixer imp
         $exceptionClass = ltrim($annotations['expectedException'], '\\');
 
         if (str_contains($exceptionClass, '*')) {
-            $exceptionClass = substr($exceptionClass, 0, strpos($exceptionClass, '*'));
+            $exceptionClass = Str::beforeFirst($exceptionClass, '*');
         }
 
         $exceptionClass = trim($exceptionClass);
