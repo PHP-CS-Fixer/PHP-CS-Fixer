@@ -91,6 +91,16 @@ final class BlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestCase
             "<?php\n\n\n\n\nnamespace X;",
             ['min_line_breaks' => 0, 'max_line_breaks' => 0],
         ];
+
+        yield 'no newline' => [
+            "<?php\n\nnamespace X;",
+            '<?php namespace X;',
+        ];
+
+        yield 'no newline with additional spaces' => [
+            "<?php\n\nnamespace X;",
+            '<?php   namespace X;',
+        ];
     }
 
     /**
