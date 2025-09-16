@@ -24,6 +24,8 @@ use PhpCsFixer\FileRemoval;
  * @internal
  *
  * @covers \PhpCsFixer\FileRemoval
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FileRemovalTest extends TestCase
 {
@@ -102,22 +104,22 @@ final class FileRemovalTest extends TestCase
         self::assertFileDoesNotExist($fs->url().'/foo.php');
     }
 
-    public function testSleep(): void
+    public function testSerialize(): void
     {
-        $this->expectException(\BadMethodCallException::class);
-        $this->expectExceptionMessage('Cannot serialize PhpCsFixer\FileRemoval');
-
         $fileRemoval = new FileRemoval();
-        $fileRemoval->__sleep();
+
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('Cannot serialize '.FileRemoval::class);
+
+        serialize($fileRemoval);
     }
 
-    public function testWakeup(): void
+    public function testUnserialize(): void
     {
         $this->expectException(\BadMethodCallException::class);
-        $this->expectExceptionMessage('Cannot unserialize PhpCsFixer\FileRemoval');
+        $this->expectExceptionMessage('Cannot unserialize '.FileRemoval::class);
 
-        $fileRemoval = new FileRemoval();
-        $fileRemoval->__wakeup();
+        unserialize(self::createSerializedStringOfClassName(FileRemoval::class));
     }
 
     /**

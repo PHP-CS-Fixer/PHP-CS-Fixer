@@ -27,7 +27,9 @@ use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
 use PhpCsFixer\RuleSet\RuleSet;
+use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -37,6 +39,8 @@ use PhpCsFixer\Utils;
  * @readonly
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FixerDocumentGenerator
 {
@@ -44,10 +48,14 @@ final class FixerDocumentGenerator
 
     private FullDiffer $differ;
 
+    /** @var array<string, RuleSetDescriptionInterface> */
+    private array $ruleSetDefinitions;
+
     public function __construct(DocumentationLocator $locator)
     {
         $this->locator = $locator;
         $this->differ = new FullDiffer();
+        $this->ruleSetDefinitions = RuleSets::getSetDefinitions();
     }
 
     public function generateFixerDocumentation(FixerInterface $fixer): string
@@ -168,10 +176,13 @@ final class FixerDocumentGenerator
 
                 if (null === $allowed) {
                     $allowedKind = 'Allowed types';
-                    $allowed = array_map(
-                        static fn (string $value): string => '``'.Utils::convertArrayTypeToList($value).'``',
-                        $option->getAllowedTypes(),
-                    );
+                    $allowedTypes = $option->getAllowedTypes();
+                    if (null !== $allowedTypes) {
+                        $allowed = array_map(
+                            static fn (string $value): string => '``'.Utils::convertArrayTypeToList($value).'``',
+                            $allowedTypes,
+                        );
+                    }
                 } else {
                     $allowedKind = 'Allowed values';
                     $allowed = array_map(static fn ($value): string => $value instanceof AllowedValueSubset
@@ -179,8 +190,10 @@ final class FixerDocumentGenerator
                         : '``'.Utils::toString($value).'``', $allowed);
                 }
 
-                $allowed = Utils::naturalLanguageJoin($allowed, '');
-                $optionInfo .= "\n\n{$allowedKind}: {$allowed}";
+                if (null !== $allowed) {
+                    $allowed = Utils::naturalLanguageJoin($allowed, '');
+                    $optionInfo .= "\n\n{$allowedKind}: {$allowed}";
+                }
 
                 if ($option->hasDefault()) {
                     $default = Utils::toString($option->getDefault());
@@ -240,12 +253,16 @@ final class FixerDocumentGenerator
                 $ruleSetPath = $this->locator->getRuleSetsDocumentationFilePath($set);
                 $ruleSetPath = substr($ruleSetPath, strrpos($ruleSetPath, '/'));
 
+                \assert(isset($this->ruleSetDefinitions[$set]));
+                $ruleSetDescription = $this->ruleSetDefinitions[$set];
+                $deprecatedDesc = ($ruleSetDescription instanceof DeprecatedRuleSetDescriptionInterface) ? ' *(deprecated)*' : '';
+
                 $configInfo = (null !== $config)
                     ? " with config:\n\n  ``".Utils::toString($config)."``\n"
                     : '';
 
                 $doc .= <<<RST
-                    - `{$set} <./../../ruleSets{$ruleSetPath}>`_{$configInfo}\n
+                    - `{$set} <./../../ruleSets{$ruleSetPath}>`_{$deprecatedDesc}{$configInfo}\n
                     RST;
             }
 

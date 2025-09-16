@@ -18,6 +18,8 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PERCSRiskySet extends AbstractRuleSetDescription
 {
@@ -29,7 +31,7 @@ final class PERCSRiskySet extends AbstractRuleSetDescription
     public function getRules(): array
     {
         return [
-            '@PER-CS3.0:risky' => true,
+            '@PER-CS3x0:risky' => true,
         ];
     }
 

@@ -18,6 +18,8 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PERCSSet extends AbstractRuleSetDescription
 {
@@ -29,7 +31,7 @@ final class PERCSSet extends AbstractRuleSetDescription
     public function getRules(): array
     {
         return [
-            '@PER-CS3.0' => true,
+            '@PER-CS3x0' => true,
         ];
     }
 

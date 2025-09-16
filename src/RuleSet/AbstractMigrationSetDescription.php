@@ -18,6 +18,8 @@ use PhpCsFixer\Preg;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractMigrationSetDescription extends AbstractRuleSetDescription
 {
@@ -25,12 +27,14 @@ abstract class AbstractMigrationSetDescription extends AbstractRuleSetDescriptio
     {
         $name = $this->getName();
 
-        if (Preg::match('#^@PHPUnit(\d+)(\d)Migration.*$#', $name, $matches)) {
+        // @TODO v4 - `x?` -> `x`
+        if (Preg::match('#^@PHPUnit(\d+)x?(\d)Migration.*$#', $name, $matches)) {
             return \sprintf('Rules to improve tests code for PHPUnit %d.%d compatibility.', $matches[1], $matches[2]);
         }
 
-        if (Preg::match('#^@PHP([\d]{2})Migration.*$#', $name, $matches)) {
-            return \sprintf('Rules to improve code for PHP %d.%d compatibility.', $matches[1][0], $matches[1][1]);
+        // @TODO v4 - `x?` -> `x`
+        if (Preg::match('#^@PHP(\d)x?(\d)Migration.*$#', $name, $matches)) {
+            return \sprintf('Rules to improve code for PHP %d.%d compatibility.', $matches[1], $matches[2]);
         }
 
         throw new \RuntimeException(\sprintf('Cannot generate description for "%s" "%s".', static::class, $name));

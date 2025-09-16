@@ -31,6 +31,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @group legacy
  * @group auto-review
  * @group covers-nothing
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DescribeCommandTest extends TestCase
 {
@@ -49,9 +51,8 @@ final class DescribeCommandTest extends TestCase
             $this->expectDeprecation($message);
         }
 
-        // @TODO 4.0 Remove this expectations
-        $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
-        $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
+        $this->expectDeprecationOfDeprecatedRuleSets();
+
         if ('ordered_imports' === $fixerName) {
             $this->expectDeprecation('[ordered_imports] Option "sort_algorithm:length" is deprecated and will be removed in version 4.0.');
         }

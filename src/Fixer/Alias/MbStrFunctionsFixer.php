@@ -26,6 +26,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class MbStrFunctionsFixer extends AbstractFixer
 {
@@ -113,20 +115,22 @@ final class MbStrFunctionsFixer extends AbstractFixer
             'Replace non multibyte-safe functions with corresponding mb function.',
             [
                 new CodeSample(
-                    '<?php
-$a = strlen($a);
-$a = strpos($a, $b);
-$a = strrpos($a, $b);
-$a = substr($a, $b);
-$a = strtolower($a);
-$a = strtoupper($a);
-$a = stripos($a, $b);
-$a = strripos($a, $b);
-$a = strstr($a, $b);
-$a = stristr($a, $b);
-$a = strrchr($a, $b);
-$a = substr_count($a, $b);
-'
+                    <<<'PHP'
+                        <?php
+                        $a = strlen($a);
+                        $a = strpos($a, $b);
+                        $a = strrpos($a, $b);
+                        $a = substr($a, $b);
+                        $a = strtolower($a);
+                        $a = strtoupper($a);
+                        $a = stripos($a, $b);
+                        $a = strripos($a, $b);
+                        $a = strstr($a, $b);
+                        $a = stristr($a, $b);
+                        $a = strrchr($a, $b);
+                        $a = substr_count($a, $b);
+
+                        PHP
                 ),
             ],
             null,

@@ -194,6 +194,9 @@ Class Notation
 - `final_public_method_for_abstract_class <./class_notation/final_public_method_for_abstract_class.rst>`_ *(risky)*
 
   All ``public`` methods of ``abstract`` classes should be ``final``.
+- `modifier_keywords <./class_notation/modifier_keywords.rst>`_
+
+  Classes, constants, properties, and methods MUST have visibility declared, and keyword modifiers MUST be in the following order: inheritance modifier (``abstract`` or ``final``), visibility modifier (``public``, ``protected``, or ``private``), set-visibility modifier (``public(set)``, ``protected(set)``, or ``private(set)``), scope modifier (``static``), mutation modifier (``readonly``), type declaration, name.
 - `no_blank_lines_after_class_opening <./class_notation/no_blank_lines_after_class_opening.rst>`_
 
   There should be no empty lines after class opening brace.
@@ -239,7 +242,7 @@ Class Notation
 - `static_private_method <./class_notation/static_private_method.rst>`_ *(risky)*
 
   Converts private methods to ``static`` where possible.
-- `visibility_required <./class_notation/visibility_required.rst>`_
+- `visibility_required <./class_notation/visibility_required.rst>`_ *(deprecated)*
 
   Classes, constants, properties, and methods MUST have visibility declared, and keyword modifiers MUST be in the following order: inheritance modifier (``abstract`` or ``final``), visibility modifier (``public``, ``protected``, or ``private``), set-visibility modifier (``public(set)``, ``protected(set)``, or ``private(set)``), scope modifier (``static``), mutation modifier (``readonly``), type declaration, name.
 
@@ -812,6 +815,9 @@ PHPDoc
 - `phpdoc_tag_casing <./phpdoc/phpdoc_tag_casing.rst>`_
 
   Fixes casing of PHPDoc tags.
+- `phpdoc_tag_no_named_arguments <./phpdoc/phpdoc_tag_no_named_arguments.rst>`_
+
+  There must be ``@no-named-arguments`` tag in PHPDoc of a class/enum/interface/trait.
 - `phpdoc_tag_type <./phpdoc/phpdoc_tag_type.rst>`_
 
   Forces PHPDoc tags to be either regular annotations or inline.

@@ -22,18 +22,20 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
  * PER Coding Style v2.0.
  *
  * @see https://github.com/php-fig/per-coding-style/blob/2.0.0/spec.md
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PERCS2x0Set extends AbstractRuleSetDescription
 {
     public function getName(): string
     {
-        return '@PER-CS2.0';
+        return '@PER-CS2x0';
     }
 
     public function getRules(): array
     {
         return [
-            '@PER-CS1.0' => true,
+            '@PER-CS1x0' => true,
             'array_indentation' => true,
             'array_syntax' => true,
             'cast_spaces' => true,

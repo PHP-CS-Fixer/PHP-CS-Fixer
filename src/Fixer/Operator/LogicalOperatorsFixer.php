@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Haralan Dobrev <hkdobrev@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class LogicalOperatorsFixer extends AbstractFixer
 {
@@ -32,11 +34,13 @@ final class LogicalOperatorsFixer extends AbstractFixer
             'Use `&&` and `||` logical operators instead of `and` and `or`.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-if ($a == "foo" and ($b == "bar" or $c == "baz")) {
-}
-'
+                        if ($a == "foo" and ($b == "bar" or $c == "baz")) {
+                        }
+
+                        PHP
                 ),
             ],
             null,

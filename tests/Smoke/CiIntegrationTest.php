@@ -33,6 +33,8 @@ use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
  * @group covers-nothing
  *
  * @large
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class CiIntegrationTest extends AbstractSmokeTestCase
 {
@@ -110,7 +112,7 @@ final class CiIntegrationTest extends AbstractSmokeTestCase
             $caseCommands
         ));
 
-        $integrationScript = explode("\n", str_replace('vendor/bin/', './../../../', (string) file_get_contents(__DIR__.'/../../ci-integration.sh')));
+        $integrationScript = explode("\n", str_replace('vendor/bin/', './../../../', (string) file_get_contents(__DIR__.'/../../doc/examples/ci-integration.sh')));
 
         self::assertArrayHasKey(3, $integrationScript);
         self::assertArrayHasKey(4, $integrationScript);

@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ReturnToYieldFromFixer extends AbstractFixer
 {
@@ -31,10 +33,16 @@ final class ReturnToYieldFromFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'If the function explicitly returns an array, and has the return type `iterable`, then `yield from` must be used instead of `return`.',
-            [new CodeSample('<?php function giveMeData(): iterable {
-    return [1, 2, 3];
-}
-')],
+            [
+                new CodeSample(
+                    <<<'PHP'
+                        <?php function giveMeData(): iterable {
+                            return [1, 2, 3];
+                        }
+
+                        PHP
+                ),
+            ],
         );
     }
 

@@ -18,13 +18,15 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SymfonyRiskySet extends AbstractRuleSetDescription
 {
     public function getRules(): array
     {
         return [
-            '@PHP56Migration:risky' => true,
+            '@PHP5x6Migration:risky' => true,
             '@PSR12:risky' => true,
             'array_push' => true,
             'combine_nested_dirname' => true,

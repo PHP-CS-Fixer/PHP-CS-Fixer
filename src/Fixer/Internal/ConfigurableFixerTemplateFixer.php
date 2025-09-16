@@ -61,6 +61,8 @@ use PhpCsFixer\Utils;
  * @internal
  *
  * @warning Does not support PHPUnit attributes
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ConfigurableFixerTemplateFixer extends AbstractFixer implements InternalFixerInterface
 {
@@ -150,7 +152,7 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
         );
         $covers = array_filter(
             $covers,
-            static fn ($className): bool => !str_contains($className, '\Abstract') && str_ends_with($className, 'Fixer')
+            static fn (string $className): bool => !str_contains($className, '\Abstract') && str_ends_with($className, 'Fixer')
         );
 
         if (1 !== \count($covers)) {

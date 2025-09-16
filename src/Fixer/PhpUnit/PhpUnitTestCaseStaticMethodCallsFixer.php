@@ -46,6 +46,8 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  * @phpstan-import-type _PhpTokenArray from Token
  *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer implements ConfigurableFixerInterface
 {
@@ -388,7 +390,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
     ];
 
     /**
-     * @var array<string, list<_PhpTokenArray>>
+     * @var non-empty-array<string, non-empty-list<_PhpTokenArray>>
      */
     private array $conversionMap = [
         self::CALL_TYPE_THIS => [[\T_OBJECT_OPERATOR, '->'], [\T_VARIABLE, '$this']],
@@ -398,18 +400,20 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
 
     public function getDefinition(): FixerDefinitionInterface
     {
-        $codeSample = '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testMe()
-    {
-        $this->assertSame(1, 2);
-        self::assertSame(1, 2);
-        static::assertSame(1, 2);
-        static::assertTrue(false);
-    }
-}
-';
+        $codeSample = <<<'PHP'
+            <?php
+            final class MyTest extends \PHPUnit_Framework_TestCase
+            {
+                public function testMe()
+                {
+                    $this->assertSame(1, 2);
+                    self::assertSame(1, 2);
+                    static::assertSame(1, 2);
+                    static::assertTrue(false);
+                }
+            }
+
+            PHP;
 
         return new FixerDefinition(
             'Calls to `PHPUnit\Framework\TestCase` static methods must all be of the same type, either `$this->`, `self::` or `static::`.',

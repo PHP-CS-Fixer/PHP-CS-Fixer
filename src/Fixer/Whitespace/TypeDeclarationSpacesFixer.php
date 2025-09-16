@@ -45,6 +45,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author John Paul E. Balandan, CPA <paulbalandan@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TypeDeclarationSpacesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -59,48 +61,56 @@ final class TypeDeclarationSpacesFixer extends AbstractFixer implements Configur
             'Ensure single space between a variable and its type declaration in function arguments and properties.',
             [
                 new CodeSample(
-                    '<?php
-class Bar
-{
-    private string    $a;
-    private bool   $b;
+                    <<<'PHP'
+                        <?php
+                        class Bar
+                        {
+                            private string    $a;
+                            private bool   $b;
 
-    public function __invoke(array   $c) {}
-}
-'
+                            public function __invoke(array   $c) {}
+                        }
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-class Foo
-{
-    public int   $bar;
+                    <<<'PHP'
+                        <?php
+                        class Foo
+                        {
+                            public int   $bar;
 
-    public function baz(string     $a)
-    {
-        return fn(bool    $c): string => (string) $c;
-    }
-}
-',
+                            public function baz(string     $a)
+                            {
+                                return fn(bool    $c): string => (string) $c;
+                            }
+                        }
+
+                        PHP,
                     ['elements' => ['function']]
                 ),
                 new CodeSample(
-                    '<?php
-class Foo
-{
-    public int   $bar;
+                    <<<'PHP'
+                        <?php
+                        class Foo
+                        {
+                            public int   $bar;
 
-    public function baz(string     $a) {}
-}
-',
+                            public function baz(string     $a) {}
+                        }
+
+                        PHP,
                     ['elements' => ['property']]
                 ),
                 new VersionSpecificCodeSample(
-                    '<?php
-class Foo
-{
-    public  const string   BAR = "";
-}
-',
+                    <<<'PHP'
+                        <?php
+                        class Foo
+                        {
+                            public  const string   BAR = "";
+                        }
+
+                        PHP,
                     new VersionSpecification(8_03_00),
                     ['elements' => ['constant']]
                 ),

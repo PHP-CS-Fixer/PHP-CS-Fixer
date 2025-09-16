@@ -14,18 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractMigrationSetDescription;
+use PhpCsFixer\RuleSet\AbstractMajorMinorDeprecationSetDescription;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PHP82MigrationRiskySet extends AbstractMigrationSetDescription
-{
-    public function getRules(): array
-    {
-        return [
-            '@PHP80Migration:risky' => true,
-            'phpdoc_readonly_class_comment_to_keyword' => true,
-        ];
-    }
-}
+final class PHP82MigrationRiskySet extends AbstractMajorMinorDeprecationSetDescription {}

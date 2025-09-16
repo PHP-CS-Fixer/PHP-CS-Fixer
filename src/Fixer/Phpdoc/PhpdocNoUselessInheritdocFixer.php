@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * Remove inheritdoc tags from classy that does not inherit.
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
 {

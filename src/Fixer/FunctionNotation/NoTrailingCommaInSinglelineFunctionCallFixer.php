@@ -23,6 +23,8 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 
 /**
  * @deprecated
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoTrailingCommaInSinglelineFunctionCallFixer extends AbstractProxyFixer implements DeprecatedFixerInterface
 {

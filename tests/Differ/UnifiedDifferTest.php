@@ -20,6 +20,8 @@ use PhpCsFixer\Differ\UnifiedDiffer;
  * @internal
  *
  * @covers \PhpCsFixer\Differ\UnifiedDiffer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class UnifiedDifferTest extends AbstractDifferTestCase
 {

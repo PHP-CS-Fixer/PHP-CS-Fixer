@@ -24,10 +24,10 @@ use PhpCsFixer\Console\Command\SelfUpdateCommand;
 use PhpCsFixer\Console\Command\WorkerCommand;
 use PhpCsFixer\Console\SelfUpdate\GithubClient;
 use PhpCsFixer\Console\SelfUpdate\NewVersionChecker;
+use PhpCsFixer\Future;
 use PhpCsFixer\PharChecker;
 use PhpCsFixer\Runner\Parallel\WorkerException;
 use PhpCsFixer\ToolInfo;
-use PhpCsFixer\Utils;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\CompleteCommand;
@@ -42,11 +42,13 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class Application extends BaseApplication
 {
     public const NAME = 'PHP CS Fixer';
-    public const VERSION = '3.86.1-DEV';
+    public const VERSION = '3.87.2-DEV';
     public const VERSION_CODENAME = 'Alexander';
 
     /**
@@ -117,7 +119,7 @@ final class Application extends BaseApplication
             null !== $stdErr
             && $output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE
         ) {
-            $triggeredDeprecations = Utils::getTriggeredDeprecations();
+            $triggeredDeprecations = Future::getTriggeredDeprecations();
 
             if (\count($triggeredDeprecations) > 0) {
                 $stdErr->writeln('');
@@ -207,7 +209,8 @@ final class Application extends BaseApplication
                     'line' => $e->getLine(),
                     'code' => $e->getCode(),
                     'trace' => $e->getTraceAsString(),
-                ]
+                ],
+                \JSON_THROW_ON_ERROR
             ));
 
             return;
