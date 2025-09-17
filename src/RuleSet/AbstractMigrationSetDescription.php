@@ -83,6 +83,6 @@ abstract class AbstractMigrationSetDescription extends AbstractRuleSetDescriptio
             return;
         }
 
-        throw new \RuntimeException(\sprintf('Cannot parse name of "%s" / "%s".', static::class, $name));
+        throw new \RuntimeException(\sprintf('Cannot generate name of "%s" / "%s".', static::class, $name));
     }
 }
