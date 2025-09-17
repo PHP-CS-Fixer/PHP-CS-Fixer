@@ -39,9 +39,9 @@ return (new Config())
         new ConfigurableFixerTemplateFixer(),
     ])
     ->setRules([
-        '@PHP7x4Migration' => true,
-        '@PHP7x4Migration:risky' => true,
-        '@PHPUnit10x0Migration:risky' => true,
+        '@autoPHPMigration' => true,
+        '@autoPHPMigration:risky' => true,
+        '@autoPHPUnitMigration:risky' => true,
         '@PhpCsFixer' => true,
         '@PhpCsFixer:risky' => true,
         'PhpCsFixerInternal/configurable_fixer_template' => true, // internal rules, shall not be used outside of main repo
