@@ -74,7 +74,6 @@ abstract class AbstractMigrationSetDescription extends AbstractRuleSetDescriptio
         // @TODO v4 - `x?` -> `x`
         if (Preg::match('#^@PHP(\d)x?(\d)Migration.*$#', $name, $matches)) {
             $this->entity = 'PHP';
-            // var_dump("FRS", $name, $matches);
             $this->version = [
                 'major' => (int) $matches[1],
                 'minor' => (int) $matches[2],
