@@ -16,6 +16,7 @@ namespace PhpCsFixer\RuleSet;
 
 use Composer\Semver\Semver;
 use PhpCsFixer\ComposerJsonReader;
+use PhpCsFixer\ConfigurationException\UnresolvableAutoRuleSetConfigurationException;
 
 /**
  * @internal
@@ -45,7 +46,7 @@ trait AutomaticMigrationSetTrait
             }
 
             if (null === $set) {
-                throw new \PhpCsFixer\ConfigurationException\UnresolvableAutoRuleSetConfigurationException(\sprintf('No migration set found feasible for %s %s.', $entity, $actualVersion));
+                throw new UnresolvableAutoRuleSetConfigurationException(\sprintf('No migration set found feasible for %s %s.', $entity, $actualVersion));
             }
         }
 
@@ -82,7 +83,7 @@ trait AutomaticMigrationSetTrait
         }
 
         if (null === $version) {
-            throw new \PhpCsFixer\ConfigurationException\UnresolvableAutoRuleSetConfigurationException(\sprintf('Cannot detect %s version from "composer.json".', $entity));
+            throw new UnresolvableAutoRuleSetConfigurationException(\sprintf('Cannot detect %s version from "composer.json".', $entity));
         }
 
         return $version;

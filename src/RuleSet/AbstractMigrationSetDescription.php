@@ -74,7 +74,6 @@ abstract class AbstractMigrationSetDescription extends AbstractRuleSetDescriptio
         // @TODO v4 - `x?` -> `x`
         if (Preg::match('#^@PHP(\d)x?(\d)Migration.*$#', $name, $matches)) {
             $this->entity = 'PHP';
-            // var_dump("FRS", $name, $matches);
             $this->version = [
                 'major' => (int) $matches[1],
                 'minor' => (int) $matches[2],
@@ -83,6 +82,6 @@ abstract class AbstractMigrationSetDescription extends AbstractRuleSetDescriptio
             return;
         }
 
-        throw new \RuntimeException(\sprintf('Cannot parse name of "%s" / "%s".', static::class, $name));
+        throw new \RuntimeException(\sprintf('Cannot generate name of "%s" / "%s".', static::class, $name));
     }
 }
