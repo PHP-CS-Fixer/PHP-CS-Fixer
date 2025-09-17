@@ -42,16 +42,6 @@ abstract class AbstractMigrationSetDescription extends AbstractRuleSetDescriptio
         return $this->entity;
     }
 
-    /**
-     * @return array{'major': int, 'minor': int}
-     *
-     * @internal
-     */
-    public function getVersion(): array
-    {
-        return $this->version;
-    }
-
     public function getVersionMajorMinor(): string
     {
         return \sprintf('%s.%s', $this->version['major'], $this->version['minor']);

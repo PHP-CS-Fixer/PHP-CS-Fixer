@@ -45,8 +45,7 @@ trait AutomaticMigrationSetTrait
             }
 
             if (null === $set) {
-                // @TODO: custom exception
-                throw new \RuntimeException(\sprintf('No migration set found feasible for %s %s.', $entity, $actualVersion));
+                throw new \PhpCsFixer\ConfigurationException\UnresolvableAutoRuleSetConfigurationException(\sprintf('No migration set found feasible for %s %s.', $entity, $actualVersion));
             }
         }
 
@@ -83,8 +82,7 @@ trait AutomaticMigrationSetTrait
         }
 
         if (null === $version) {
-            // @TODO: custom exception
-            throw new \RuntimeException(\sprintf('Cannot detect %s version from "composer.json".', $entity));
+            throw new \PhpCsFixer\ConfigurationException\UnresolvableAutoRuleSetConfigurationException(\sprintf('Cannot detect %s version from "composer.json".', $entity));
         }
 
         return $version;
