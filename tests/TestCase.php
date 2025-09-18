@@ -84,6 +84,12 @@ abstract class TestCase extends BaseTestCase
         }
     }
 
+    /** @TODO find better place for me */
+    final protected static function createSerializedStringOfClassName(string $className): string
+    {
+        return \sprintf('O:%d:"%s":0:{}', \strlen($className), $className);
+    }
+
     /**
      * @TODO v4 remove the content and make ready for v5
      */

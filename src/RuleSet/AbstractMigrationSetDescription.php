@@ -27,12 +27,12 @@ abstract class AbstractMigrationSetDescription extends AbstractRuleSetDescriptio
     {
         $name = $this->getName();
 
-        // @TODO v4 - `x?` -> `x`
+        // @TODO v4 - `x?` -> `x` @MARKER_deprecated_migration_name_pattern
         if (Preg::match('#^@PHPUnit(\d+)x?(\d)Migration.*$#', $name, $matches)) {
             return \sprintf('Rules to improve tests code for PHPUnit %d.%d compatibility.', $matches[1], $matches[2]);
         }
 
-        // @TODO v4 - `x?` -> `x`
+        // @TODO v4 - `x?` -> `x` @MARKER_deprecated_migration_name_pattern
         if (Preg::match('#^@PHP(\d)x?(\d)Migration.*$#', $name, $matches)) {
             return \sprintf('Rules to improve code for PHP %d.%d compatibility.', $matches[1], $matches[2]);
         }
