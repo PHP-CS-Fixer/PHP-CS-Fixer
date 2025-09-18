@@ -994,6 +994,9 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
         return $tokens;
     }
 
+    /**
+     * @return non-empty-string
+     */
     private function normalizeFqcn(string $input): string
     {
         $backslashPosition = strrpos($input, '\\');
