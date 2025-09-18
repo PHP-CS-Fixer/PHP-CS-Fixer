@@ -402,7 +402,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
         $reportSummary = new ReportSummary(
             $changed,
             \count($finder),
-            $fixEvent->getDuration(),
+            (int) $fixEvent->getDuration(), // ignore microseconds fraction
             $fixEvent->getMemory(),
             OutputInterface::VERBOSITY_VERBOSE <= $verbosity,
             $resolver->isDryRun(),

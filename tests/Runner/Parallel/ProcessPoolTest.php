@@ -50,7 +50,7 @@ final class ProcessPoolTest extends TestCase
         $application->addCommands([$fixCommand]);
 
         // In order to have full list of options supported by the command (e.g. `--verbose`)
-        $fixCommand->mergeApplicationDefinition(false);
+        $fixCommand->mergeApplicationDefinition(false); // @phpstan-ignore method.internal
 
         $this->arrayInput = new ArrayInput([], $fixCommand->getDefinition());
 
