@@ -430,6 +430,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
                 $this->cacheUseNameByShortNameLower[$kind][strtolower($useShortName)] = $useLongName;
                 $this->cacheUseShortNameByName[$kind][$useLongName] = $useShortName;
 
+                /** @var non-empty-string */
                 $normalizedUseLongName = $this->normalizeFqcn($useLongName);
                 $this->cacheUseShortNameByNormalizedName[$kind][$normalizedUseLongName] = $useShortName;
             }
@@ -994,9 +995,6 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
         return $tokens;
     }
 
-    /**
-     * @return non-empty-string
-     */
     private function normalizeFqcn(string $input): string
     {
         $backslashPosition = strrpos($input, '\\');
