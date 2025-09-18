@@ -7,7 +7,7 @@ Rules that follow the official `Symfony Coding Standards <https://symfony.com/do
 Rules
 -----
 
-- `@PER-CS3.0 <./PER-CS3.0.rst>`_
+- `@PER-CS3x0 <./PER-CS3x0.rst>`_
 - `align_multiline_comment <./../rules/phpdoc/align_multiline_comment.rst>`_
 - `backtick_to_shell_exec <./../rules/alias/backtick_to_shell_exec.rst>`_
 - `binary_operator_spaces <./../rules/operator/binary_operator_spaces.rst>`_
@@ -118,7 +118,10 @@ Rules
 - `phpdoc_indent <./../rules/phpdoc/phpdoc_indent.rst>`_
 - `phpdoc_inline_tag_normalizer <./../rules/phpdoc/phpdoc_inline_tag_normalizer.rst>`_
 - `phpdoc_no_access <./../rules/phpdoc/phpdoc_no_access.rst>`_
-- `phpdoc_no_alias_tag <./../rules/phpdoc/phpdoc_no_alias_tag.rst>`_
+- `phpdoc_no_alias_tag <./../rules/phpdoc/phpdoc_no_alias_tag.rst>`_ with config:
+
+  ``['replacements' => ['const' => 'var', 'link' => 'see', 'property-read' => 'property', 'property-write' => 'property', 'type' => 'var']]``
+
 - `phpdoc_no_package <./../rules/phpdoc/phpdoc_no_package.rst>`_
 - `phpdoc_no_useless_inheritdoc <./../rules/phpdoc/phpdoc_no_useless_inheritdoc.rst>`_
 - `phpdoc_order <./../rules/phpdoc/phpdoc_order.rst>`_ with config:

@@ -27,7 +27,7 @@ final class SymfonySet extends AbstractRuleSetDescription
     public function getRules(): array
     {
         return [
-            '@PER-CS3.0' => true,
+            '@PER-CS3x0' => true,
             'align_multiline_comment' => true,
             'backtick_to_shell_exec' => true,
             'binary_operator_spaces' => true,
@@ -157,7 +157,15 @@ final class SymfonySet extends AbstractRuleSetDescription
             'phpdoc_indent' => true,
             'phpdoc_inline_tag_normalizer' => true,
             'phpdoc_no_access' => true,
-            'phpdoc_no_alias_tag' => true,
+            'phpdoc_no_alias_tag' => [
+                'replacements' => [
+                    'const' => 'var', // @TODO 4.0 add to @PhpdocNoAliasTagFixer defaults
+                    'link' => 'see',
+                    'property-read' => 'property',
+                    'property-write' => 'property',
+                    'type' => 'var',
+                ],
+            ],
             'phpdoc_no_package' => true,
             'phpdoc_no_useless_inheritdoc' => true,
             'phpdoc_order' => [
