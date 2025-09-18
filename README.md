@@ -18,7 +18,7 @@ or [our opinionated one](./doc/ruleSets/PhpCsFixer.rst).
 You can also define your (team's) style through the [configuration file](./doc/config.rst).
 
 PHP CS Fixer can not only unify the style of your code, but also help to modernize your codebase towards
-newer PHP (e.g. [`@PHP8x5Migration`](./doc/ruleSets/PHP8x5Migration.rst)) and newer PHPUnit (e.g. [`@PHPUnit9x1Migration:risky`](./doc/ruleSets/PHPUnit9x1MigrationRisky.rst)).
+newer PHP (e.g. [`@autoPHPMigration`](./doc/ruleSets/autoPHPMigration.rst)) and newer PHPUnit (e.g. [`@autoPHPUnitMigration:risky`](./doc/ruleSets/autoPHPUnitMigrationRisky.rst)).
 
 ## Supported PHP Versions
 
