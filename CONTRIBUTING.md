@@ -96,8 +96,9 @@ There is a [cookbook](doc/cookbook_fixers.rst) with basic instructions on how to
 
 ## Project's Standards
 
-* [PSR-1: Basic Coding Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md)
-* [PSR-2: Coding Style Guide](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
-* [PSR-4: Autoloading Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md)
-* [PSR-5: PHPDoc (draft)](https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md)
+We follow our own recommended standard [@PhpCsFixer](doc/ruleSets/PhpCsFixer.rst), which includes:
 * [Symfony Coding Standards](https://symfony.com/doc/current/contributing/code/standards.html)
+* [PER Coding Style](https://www.php-fig.org/per/coding-style/)
+* [PSR-5: PHPDoc Standard (draft)](https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc.md) + [PSR-19: PHPDoc tags (draft)](https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc-tags.md)
+* [PSR-4: Autoloading Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md)
+* and many additional rules to make things even more strict and unified
