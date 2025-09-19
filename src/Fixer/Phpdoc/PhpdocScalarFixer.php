@@ -52,6 +52,7 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer implements Config
         'callback' => 'callable',
         'double' => 'float',
         'integer' => 'int',
+        'no-return' => 'never',
         'real' => 'float',
         'str' => 'string',
     ];
