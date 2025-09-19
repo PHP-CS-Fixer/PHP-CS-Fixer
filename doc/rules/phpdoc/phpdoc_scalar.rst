@@ -13,9 +13,9 @@ Configuration
 
 A list of types to fix.
 
-Allowed values: a subset of ``['boolean', 'callback', 'double', 'integer', 'real', 'str']``
+Allowed values: a subset of ``['boolean', 'callback', 'double', 'integer', 'no-return', 'real', 'str']``
 
-Default value: ``['boolean', 'callback', 'double', 'integer', 'real', 'str']``
+Default value: ``['boolean', 'callback', 'double', 'integer', 'no-return', 'real', 'str']``
 
 Examples
 --------
