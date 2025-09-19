@@ -275,7 +275,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 'show-progress' => $input->getOption('show-progress'),
                 'sequential' => $input->getOption('sequential'),
             ],
-            getcwd(),
+            getcwd(), // @phpstan-ignore argument.type
             $this->toolInfo
         );
 

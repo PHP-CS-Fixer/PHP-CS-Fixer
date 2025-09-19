@@ -65,7 +65,9 @@ final class ListFilesCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $passedConfig = $input->getOption('config');
+
         $cwd = getcwd();
+        \assert(false !== $cwd);
 
         $resolver = new ConfigurationResolver(
             $this->defaultConfig,
