@@ -99,7 +99,7 @@ final class CiConfigurationTest extends TestCase
         self::assertSame($composeServices, $ciServices);
     }
 
-    public static function testThatReleaseAndDockerUsesSameAlpineVersion(): void
+    public static function testThatAlpineVersionsAreInSync(): void
     {
         $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/release.yml');
         $releaseMap = [];
@@ -116,6 +116,24 @@ final class CiConfigurationTest extends TestCase
         }
 
         self::assertSame($dockerMap, $releaseMap, 'Expects release.yml and compose.yaml to use same Alpine versions for same PHP versions.');
+
+        $dockerPregResult = Preg::matchAll(
+            '/(?:ALPINE_VERSION=|alpine:)(\d+\.\d+)/',
+            (string) file_get_contents(__DIR__.'/../../Dockerfile'),
+            $dockerVersions
+        );
+
+        if (!$dockerPregResult) {
+            throw new \LogicException('Can\'t parse Docker file.');
+        }
+
+        $dockerVersions = $dockerVersions[1];
+        self::assertCount(2, $dockerVersions);
+        self::assertSame($dockerVersions[0], $dockerVersions[1], 'Expects both Alpine versions in Dockerfile to be the same.');
+        natsort($dockerMap);
+        $alpineHighestVersion = end($dockerMap);
+
+        self::assertSame($alpineHighestVersion, $dockerVersions[0], 'Expects Alpine version used in Dockerfile to be highest Alpine version used in compose.yaml.');
     }
 
     /**
