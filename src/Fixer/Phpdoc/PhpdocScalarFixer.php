@@ -127,7 +127,7 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer implements Config
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('types', 'A list of types to fix.'))
                 ->setAllowedValues([new AllowedValueSubset($allowedTypes)])
-                ->setDefault($defaultTypes)
+                ->setDefault($defaultTypes) // @TODO v3.x Future::getV4OrV3($allowedTypes, $defaultTypes)
                 ->getOption(),
         ]);
     }
