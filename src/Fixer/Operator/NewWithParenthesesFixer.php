@@ -129,7 +129,11 @@ final class NewWithParenthesesFixer extends AbstractFixer implements Configurabl
         return $tokens->isTokenKindFound(\T_NEW);
     }
 
-    /** @protected */
+    /**
+     * @protected
+     *
+     * @TODO 4.0 move visibility from annotation to code when `NewWithBracesFixer` is removed
+     */
     public function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

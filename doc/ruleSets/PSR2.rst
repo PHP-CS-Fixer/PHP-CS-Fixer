@@ -26,6 +26,10 @@ Rules
 
   ``['after_heredoc' => false, 'attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline']``
 
+- `modifier_keywords <./../rules/class_notation/modifier_keywords.rst>`_ with config:
+
+  ``['elements' => ['method', 'property']]``
+
 - `no_break_comment <./../rules/control_structure/no_break_comment.rst>`_
 - `no_closing_tag <./../rules/php_tag/no_closing_tag.rst>`_
 - `no_multiple_statements_per_line <./../rules/basic/no_multiple_statements_per_line.rst>`_
@@ -48,7 +52,3 @@ Rules
 - `statement_indentation <./../rules/whitespace/statement_indentation.rst>`_
 - `switch_case_semicolon_to_colon <./../rules/control_structure/switch_case_semicolon_to_colon.rst>`_
 - `switch_case_space <./../rules/control_structure/switch_case_space.rst>`_
-- `visibility_required <./../rules/class_notation/visibility_required.rst>`_ with config:
-
-  ``['elements' => ['method', 'property']]``
-

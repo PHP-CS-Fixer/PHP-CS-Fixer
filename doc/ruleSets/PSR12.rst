@@ -27,6 +27,7 @@ Rules
 - `declare_equal_normalize <./../rules/language_construct/declare_equal_normalize.rst>`_
 - `lowercase_cast <./../rules/cast_notation/lowercase_cast.rst>`_
 - `lowercase_static_reference <./../rules/casing/lowercase_static_reference.rst>`_
+- `modifier_keywords <./../rules/class_notation/modifier_keywords.rst>`_
 - `new_with_parentheses <./../rules/operator/new_with_parentheses.rst>`_ with config:
 
   ``['anonymous_class' => true]``
@@ -62,4 +63,3 @@ Rules
 
   ``['only_dec_inc' => true]``
 
-- `visibility_required <./../rules/class_notation/visibility_required.rst>`_

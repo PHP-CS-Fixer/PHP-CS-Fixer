@@ -44,6 +44,7 @@ final class PSR12Set extends AbstractRuleSetDescription
             'declare_equal_normalize' => true,
             'lowercase_cast' => true,
             'lowercase_static_reference' => true,
+            'modifier_keywords' => true,
             'new_with_parentheses' => [
                 'anonymous_class' => true,
             ],
@@ -116,7 +117,6 @@ final class PSR12Set extends AbstractRuleSetDescription
             'unary_operator_spaces' => [
                 'only_dec_inc' => true,
             ],
-            'visibility_required' => true,
         ];
     }
 
