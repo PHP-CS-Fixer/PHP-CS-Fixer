@@ -26,6 +26,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\Future;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\FCT;
@@ -129,7 +130,9 @@ final class TypeDeclarationSpacesFixer extends AbstractFixer implements Configur
             (new FixerOptionBuilder('elements', 'Structural elements where the spacing after the type declaration should be fixed.'))
                 ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([new AllowedValueSubset(['function', 'property', 'constant'])])
-                ->setDefault(['function', 'property']) // @TODO add 'constant' on next major 4.0
+                ->setDefault(
+                    Future::getV4OrV3(['function', 'property', 'constant'], ['function', 'property'])
+                )
                 ->getOption(),
         ]);
     }

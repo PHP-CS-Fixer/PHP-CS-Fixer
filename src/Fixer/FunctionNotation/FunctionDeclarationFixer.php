@@ -23,6 +23,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Future;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
@@ -242,7 +243,12 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
                 ->setAllowedValues(self::SUPPORTED_SPACINGS)
                 ->getOption(),
             (new FixerOptionBuilder('closure_fn_spacing', 'Spacing to use before open parenthesis for short arrow functions.'))
-                ->setDefault(self::SPACING_ONE) // @TODO change to SPACING_NONE on next major 4.0
+                ->setDefault(
+                    Future::getV4OrV3(
+                        self::SPACING_NONE,
+                        self::SPACING_ONE
+                    )
+                )
                 ->setAllowedValues(self::SUPPORTED_SPACINGS)
                 ->getOption(),
             (new FixerOptionBuilder('trailing_comma_single_line', 'Whether trailing commas are allowed in single line signatures.'))

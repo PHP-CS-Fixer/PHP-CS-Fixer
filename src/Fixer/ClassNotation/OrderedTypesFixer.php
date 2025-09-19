@@ -25,6 +25,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\Future;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
@@ -148,7 +149,12 @@ final class OrderedTypesFixer extends AbstractFixer implements ConfigurableFixer
                 ->getOption(),
             (new FixerOptionBuilder('null_adjustment', 'Forces the position of `null` (overrides `sort_algorithm`).'))
                 ->setAllowedValues(['always_first', 'always_last', 'none'])
-                ->setDefault('always_first') // @TODO 4.0 change to 'always_last', as recommended in https://github.com/php-fig/per-coding-style/blob/master/migration-3.0.md#section-25---keywords-and-types
+                ->setDefault(
+                    Future::getV4OrV3(
+                        'always_last', // as recommended in https://github.com/php-fig/per-coding-style/blob/master/migration-3.0.md#section-25---keywords-and-types
+                        'always_first'
+                    )
+                )
                 ->getOption(),
             (new FixerOptionBuilder('case_sensitive', 'Whether the sorting should be case sensitive.'))
                 ->setAllowedTypes(['bool'])

@@ -67,4 +67,32 @@ final class Future
 
         return $triggeredDeprecations;
     }
+
+    /**
+     * @template T
+     *
+     * @param T $new
+     * @param T $old
+     *
+     * @return T
+     *
+     * @TODO v4.0: remove this method, ensure code compiles, create getV5OrV4. While removing, ensure to document in `UPGRADE-vX.md` file.
+     */
+    public static function getV4OrV3($new, $old)
+    {
+        return self::getNewOrOld($new, $old);
+    }
+
+    /**
+     * @template T
+     *
+     * @param T $new
+     * @param T $old
+     *
+     * @return T
+     */
+    private static function getNewOrOld($new, $old)
+    {
+        return self::isFutureModeEnabled() ? $new : $old;
+    }
 }
