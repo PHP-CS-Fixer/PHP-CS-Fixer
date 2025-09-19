@@ -111,8 +111,6 @@ final class CiConfigurationTest extends TestCase
         $dockerMap = [];
         foreach ($yaml['services'] as $item) {
             if (isset($item['build']['args']['PHP_VERSION'], $item['build']['args']['ALPINE_VERSION'])) {
-                $phpVersion = $item['build']['args']['PHP_VERSION'];
-                $alpineVersion = $item['build']['args']['ALPINE_VERSION'] ?? 'default';
                 $dockerMap[$item['build']['args']['PHP_VERSION']] = $item['build']['args']['ALPINE_VERSION'];
             }
         }
