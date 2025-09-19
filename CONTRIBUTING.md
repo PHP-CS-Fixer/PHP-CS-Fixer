@@ -97,6 +97,7 @@ There is a [cookbook](doc/cookbook_fixers.rst) with basic instructions on how to
 ## Project's Standards
 
 We follow our own recommended standard [@PhpCsFixer](doc/ruleSets/PhpCsFixer.rst), which includes:
+
 * [Symfony Coding Standards](https://symfony.com/doc/current/contributing/code/standards.html)
 * [PER Coding Style](https://www.php-fig.org/per/coding-style/)
 * [PSR-5: PHPDoc Standard (draft)](https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc.md) + [PSR-19: PHPDoc tags (draft)](https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc-tags.md)
