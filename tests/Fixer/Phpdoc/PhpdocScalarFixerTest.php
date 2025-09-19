@@ -304,5 +304,17 @@ final class PhpdocScalarFixerTest extends AbstractFixerTestCase
             '<?php /** @return no-return */',
             ['types' => ['no-return']],
         ];
+
+        yield [
+            '<?php /** @return never */',
+            '<?php /** @return never-return */',
+            ['types' => ['never-return']],
+        ];
+
+        yield [
+            '<?php /** @return never */',
+            '<?php /** @return never-returns */',
+            ['types' => ['never-returns']],
+        ];
     }
 }
