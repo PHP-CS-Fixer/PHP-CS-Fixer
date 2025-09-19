@@ -117,7 +117,7 @@ final class CiConfigurationTest extends TestCase
 
         self::assertSame($dockerMap, $releaseMap, 'Expects release.yml and compose.yaml to use same Alpine versions for same PHP versions.');
 
-        $dockerPregResult = Preg::matchAll(
+        Preg::matchAll(
             '/(?:ALPINE_VERSION=|alpine:)(\d+\.\d+)/',
             (string) file_get_contents(__DIR__.'/../../Dockerfile'),
             $dockerVersions
