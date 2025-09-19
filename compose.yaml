@@ -25,7 +25,7 @@ services:
     <<: *php
     build:
       args:
-        ALPINE_VERSION: '3.21'
+        ALPINE_VERSION: '3.22'
         PHP_VERSION: '8.1'
         PHP_XDEBUG_VERSION: 3.4.2
 
@@ -33,7 +33,7 @@ services:
     <<: *php
     build:
       args:
-        ALPINE_VERSION: '3.21'
+        ALPINE_VERSION: '3.22'
         PHP_VERSION: '8.2'
         PHP_XDEBUG_VERSION: 3.4.2
 
@@ -41,7 +41,7 @@ services:
     <<: *php
     build:
       args:
-        ALPINE_VERSION: '3.21'
+        ALPINE_VERSION: '3.22'
         PHP_VERSION: '8.3'
         PHP_XDEBUG_VERSION: 3.4.2
 
