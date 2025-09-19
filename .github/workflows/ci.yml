@@ -282,7 +282,7 @@ jobs:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
         run: |
           git fetch origin $GITHUB_BASE_REF
-          vendor/bin/infection --threads=max --map-source-class-to-test --git-diff-lines --git-diff-base=origin/$GITHUB_BASE_REF --ignore-msi-with-no-mutations --only-covered
+          vendor/bin/infection --threads=max --map-source-class-to-test --git-diff-lines --git-diff-base=origin/$GITHUB_BASE_REF --ignore-msi-with-no-mutations --only-covered --logger-github=false
 
       - name: Upload coverage results to Coveralls
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
