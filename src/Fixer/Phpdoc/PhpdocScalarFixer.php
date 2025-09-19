@@ -47,14 +47,18 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer implements Config
     /**
      * The types to fix.
      */
-    private const TYPES_MAP = [
+    private const DEFAULT_TYPES_MAP = [
         'boolean' => 'bool',
         'callback' => 'callable',
         'double' => 'float',
         'integer' => 'int',
-        'no-return' => 'never',
         'real' => 'float',
         'str' => 'string',
+    ];
+
+    private const ALLOWED_TYPES_MAP = [
+        ...self::DEFAULT_TYPES_MAP,
+        'no-return' => 'never',
     ];
 
     public function getDefinition(): FixerDefinitionInterface
@@ -121,12 +125,13 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer implements Config
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
-        $types = array_keys(self::TYPES_MAP);
+        $allowedTypes = array_keys(self::ALLOWED_TYPES_MAP);
+        $defaultTypes = array_keys(self::DEFAULT_TYPES_MAP);
 
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('types', 'A list of types to fix.'))
-                ->setAllowedValues([new AllowedValueSubset($types)])
-                ->setDefault($types)
+                ->setAllowedValues([new AllowedValueSubset($allowedTypes)])
+                ->setDefault($defaultTypes)
                 ->getOption(),
         ]);
     }
@@ -140,7 +145,7 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer implements Config
         }
 
         if (\in_array($type, $this->configuration['types'], true)) {
-            $type = self::TYPES_MAP[$type];
+            $type = self::ALLOWED_TYPES_MAP[$type];
         }
 
         return $type.$suffix;
