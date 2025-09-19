@@ -99,6 +99,25 @@ final class CiConfigurationTest extends TestCase
         self::assertSame($composeServices, $ciServices);
     }
 
+    public static function testThatReleaseAndDockerUsesSameAlpineVersion(): void
+    {
+        $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/release.yml');
+        $releaseMap = [];
+        foreach ($yaml['jobs']['docker-images']['strategy']['matrix']['include'] as $item) {
+            $releaseMap[$item['php-version']] = $item['alpine-version'];
+        }
+
+        $yaml = Yaml::parseFile(__DIR__.'/../../compose.yaml');
+        $dockerMap = [];
+        foreach ($yaml['services'] as $item) {
+            if (isset($item['build']['args']['PHP_VERSION'], $item['build']['args']['ALPINE_VERSION'])) {
+                $dockerMap[$item['build']['args']['PHP_VERSION']] = $item['build']['args']['ALPINE_VERSION'];
+            }
+        }
+
+        self::assertSame($dockerMap, $releaseMap, 'Expects release.yml and compose.yaml to use same Alpine versions for same PHP versions.');
+    }
+
     /**
      * @return list<numeric-string>
      */
