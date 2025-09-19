@@ -123,10 +123,6 @@ final class CiConfigurationTest extends TestCase
             $dockerVersions
         );
 
-        if (!$dockerPregResult) {
-            throw new \LogicException('Can\'t parse Docker file.');
-        }
-
         $dockerVersions = $dockerVersions[1];
         self::assertCount(2, $dockerVersions);
         self::assertSame($dockerVersions[0], $dockerVersions[1], 'Expects both Alpine versions in Dockerfile to be the same.');
