@@ -99,7 +99,7 @@ final class CiConfigurationTest extends TestCase
         self::assertSame($composeServices, $ciServices);
     }
 
-    public static function testxxxThatReleaseAndDockerUsesSameAlpineVersion(): void
+    public static function testThatReleaseAndDockerUsesSameAlpineVersion(): void
     {
         $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/release.yml');
         $releaseMap = [];
