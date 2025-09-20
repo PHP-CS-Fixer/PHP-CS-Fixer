@@ -232,9 +232,6 @@ final class TypeExpression
         'list' => 'array',
         'real' => 'float',
         'true' => 'bool',
-        'no-return' => 'never',
-        'never-return' => 'never',
-        'never-returns' => 'never',
     ];
 
     private string $value;
