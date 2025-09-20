@@ -93,6 +93,7 @@ final class PSR2Set extends AbstractRuleSetDescription
                 ],
             ],
             'spaces_inside_parentheses' => true,
+            'spaces_inside_dynamic_class_constant_fetch_braces' => true,
             'statement_indentation' => true,
             'switch_case_semicolon_to_colon' => true,
             'switch_case_space' => true,

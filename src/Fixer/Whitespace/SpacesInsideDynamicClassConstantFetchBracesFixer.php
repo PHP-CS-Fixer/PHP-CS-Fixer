@@ -92,44 +92,17 @@ final class SpacesInsideDynamicClassConstantFetchBracesFixer extends AbstractFix
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        if ('none' === $this->configuration['space']) {
-            foreach ($tokens as $index => $token) {
-                if (!$token->isGivenKind(CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN)) {
-                    continue;
-                }
-
-                $endIndex = $this->findMatchingCloseBrace($tokens, $index);
-
-                // remove space after opening `{`
-                $nextIndex = $index + 1;
-                if ($tokens[$nextIndex]->isWhitespace() && !$tokens[$tokens->getNextNonWhitespace($index)]->isComment()) {
-                    $tokens->clearAt($nextIndex);
-                }
-
-                // remove space before closing `}`
-                $prevIndex = $endIndex - 1;
-                if ($tokens[$prevIndex]->isWhitespace()) {
-                    $tokens->clearAt($prevIndex);
-                }
+        foreach ($tokens as $index => $token) {
+            if (!$token->isGivenKind(CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN)) {
+                continue;
             }
-        }
 
-        if ('single' === $this->configuration['space']) {
-            foreach ($tokens as $index => $token) {
-                if (!$token->isGivenKind(CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN)) {
-                    continue;
-                }
+            $endIndex = $this->findMatchingCloseBrace($tokens, $index);
 
-                $endIndex = $this->findMatchingCloseBrace($tokens, $index);
-
-                // don't process if the braces are empty
-                $nextMeaningfulTokenIndex = $tokens->getNextMeaningfulToken($index);
-                if ($tokens[$nextMeaningfulTokenIndex]->isGivenKind(CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE)) {
-                    continue;
-                }
-
-                // add single space after opening `{` and before closing `}`
-                $this->fixCurlyBraceInnerEdge($tokens, $index, $endIndex);
+            if ('none' === $this->configuration['space']) {
+                $this->removeSpacesInsideBraces($tokens, $index, $endIndex);
+            } elseif ('single' === $this->configuration['space']) {
+                $this->ensureSingleSpaceInsideBraces($tokens, $index, $endIndex);
             }
         }
     }
@@ -144,6 +117,56 @@ final class SpacesInsideDynamicClassConstantFetchBracesFixer extends AbstractFix
         ]);
     }
 
+    private function removeSpacesInsideBraces(Tokens $tokens, int $openIndex, int $closeIndex): void
+    {
+        // Remove spaces immediately after opening brace
+        $nextIndex = $openIndex + 1;
+        while ($nextIndex < $closeIndex && $tokens[$nextIndex]->isWhitespace()) {
+            $tokens->clearAt($nextIndex);
+            ++$nextIndex;
+        }
+
+        // Remove spaces immediately before closing brace
+        $prevIndex = $closeIndex - 1;
+        while ($prevIndex > $openIndex && $tokens[$prevIndex]->isWhitespace()) {
+            $tokens->clearAt($prevIndex);
+            --$prevIndex;
+        }
+    }
+
+    private function ensureSingleSpaceInsideBraces(Tokens $tokens, int $openIndex, int $closeIndex): void
+    {
+        // Check if braces are empty
+        $nextMeaningfulIndex = $tokens->getNextMeaningfulToken($openIndex);
+        if ($nextMeaningfulIndex === $closeIndex) {
+            return; // Empty braces, don't add spaces
+        }
+
+        // Ensure single space after opening brace
+        $this->ensureSpaceAt($tokens, $openIndex + 1, $nextMeaningfulIndex, true);
+
+        // Ensure single space before closing brace
+        $prevMeaningfulIndex = $tokens->getPrevMeaningfulToken($closeIndex);
+        if ($prevMeaningfulIndex !== $openIndex) {
+            $this->ensureSpaceAt($tokens, $prevMeaningfulIndex + 1, $closeIndex, true);
+        }
+    }
+
+    private function ensureSpaceAt(Tokens $tokens, int $startIndex, int $endIndex, bool $addSpace): void
+    {
+        // Clear existing whitespace
+        for ($i = $startIndex; $i < $endIndex; ++$i) {
+            if ($tokens[$i]->isWhitespace()) {
+                $tokens->clearAt($i);
+            }
+        }
+
+        // Add space if requested
+        if ($addSpace && $startIndex < $endIndex) {
+            $tokens->insertAt($startIndex, new Token([\T_WHITESPACE, ' ']));
+        }
+    }
+
     private function findMatchingCloseBrace(Tokens $tokens, int $openIndex): int
     {
         $level = 1;
@@ -154,51 +177,14 @@ final class SpacesInsideDynamicClassConstantFetchBracesFixer extends AbstractFix
                 ++$level;
             } elseif ($tokens[$index]->isGivenKind(CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE)) {
                 --$level;
+                if ($level === 0) {
+                    return $index;
+                }
             }
-
-            if ($level > 0) {
-                ++$index;
-            }
+            ++$index;
         }
 
-        return $index;
-    }
-
-    private function removeSpaceAroundToken(Tokens $tokens, int $index): void
-    {
-        if ($tokens[$index]->isWhitespace()) {
-            $tokens->clearAt($index);
-        }
-    }
-
-    private function fixCurlyBraceInnerEdge(Tokens $tokens, int $startIndex, int $endIndex): void
-    {
-        $afterStartBraceIndex = $tokens->getNextNonWhitespace($startIndex);
-        $beforeEndBraceIndex = $tokens->getPrevNonWhitespace($endIndex);
-
-        if ($afterStartBraceIndex === $beforeEndBraceIndex) {
-            return; // empty braces
-        }
-
-        // ensure single space after opening brace
-        $this->ensureSingleSpaceAt($tokens, $startIndex + 1, $afterStartBraceIndex);
-
-        // ensure single space before closing brace
-        $this->ensureSingleSpaceAt($tokens, $beforeEndBraceIndex + 1, $endIndex);
-    }
-
-    private function ensureSingleSpaceAt(Tokens $tokens, int $position, int $nextNonWhitespaceIndex): void
-    {
-        // Clear any existing whitespace between position and nextNonWhitespaceIndex
-        for ($i = $position; $i < $nextNonWhitespaceIndex; ++$i) {
-            if ($tokens[$i]->isWhitespace()) {
-                $tokens->clearAt($i);
-            }
-        }
-
-        // Insert a single space if there's room
-        if ($position < $nextNonWhitespaceIndex) {
-            $tokens->insertAt($position, new Token([\T_WHITESPACE, ' ']));
-        }
+        // If we reach here, no matching brace was found
+        throw new \RuntimeException(sprintf('No matching closing brace found for opening brace at index %d', $openIndex));
     }
 }
