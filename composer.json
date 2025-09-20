@@ -164,7 +164,7 @@
         ],
         "test:mutation": [
             "Composer\\Config::disableProcessTimeout",
-            "infection --threads=max --only-covered --min-covered-msi=80"
+            "infection --threads=max --only-covering-test-cases --min-covered-msi=80"
         ],
         "test:short-open-tag": [
             "Composer\\Config::disableProcessTimeout",
