@@ -142,6 +142,11 @@ final class WorkerCommand extends Command
 
                         // Parallelisation operator does not have more to do, let's close the connection
                         if (ParallelAction::RUNNER_THANK_YOU === $action) {
+                            // Send peak memory usage before shutting down
+                            $out->write([
+                                'action' => ParallelAction::WORKER_GOODBYE,
+                                'memoryUsage' => memory_get_peak_usage(true),
+                            ]);
                             $loop->stop();
 
                             return;

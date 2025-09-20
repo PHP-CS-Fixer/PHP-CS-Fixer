@@ -152,7 +152,7 @@ final class WorkerCommandTest extends TestCase
         $streamSelectLoop->run();
 
         self::assertSame(Command::SUCCESS, $process->getExitCode());
-        self::assertCount(3, $workerScope['messages']);
+        self::assertCount(4, $workerScope['messages']);
         self::assertArrayHasKey('action', $workerScope['messages'][0]);
         self::assertSame(ParallelAction::WORKER_HELLO, $workerScope['messages'][0]['action']);
         self::assertArrayHasKey('action', $workerScope['messages'][1]);
@@ -161,6 +161,11 @@ final class WorkerCommandTest extends TestCase
         self::assertSame(FileProcessed::STATUS_FIXED, $workerScope['messages'][1]['status']);
         self::assertArrayHasKey('action', $workerScope['messages'][2]);
         self::assertSame(ParallelAction::WORKER_GET_FILE_CHUNK, $workerScope['messages'][2]['action']);
+        self::assertArrayHasKey('action', $workerScope['messages'][3]);
+        self::assertSame(ParallelAction::WORKER_GOODBYE, $workerScope['messages'][3]['action']);
+        self::assertArrayHasKey('memoryUsage', $workerScope['messages'][3]);
+        self::assertIsInt($workerScope['messages'][3]['memoryUsage']);
+        self::assertGreaterThan(0, $workerScope['messages'][3]['memoryUsage']);
 
         $server->close();
     }

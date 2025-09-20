@@ -399,11 +399,17 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
         $fixEvent = $this->stopwatch->getEvent('fixFiles');
 
+        // Include workers' memory usage when running in parallel
+        $totalMemory = $fixEvent->getMemory();
+        if ($isParallel) {
+            $totalMemory += $runner->getWorkersMemoryUsage();
+        }
+
         $reportSummary = new ReportSummary(
             $changed,
             \count($finder),
             (int) $fixEvent->getDuration(), // ignore microseconds fraction
-            $fixEvent->getMemory(),
+            $totalMemory,
             OutputInterface::VERBOSITY_VERBOSE <= $verbosity,
             $resolver->isDryRun(),
             $output->isDecorated()
