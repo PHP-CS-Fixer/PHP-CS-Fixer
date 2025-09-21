@@ -61,10 +61,10 @@ trait AutomaticMigrationSetTrait
         static $sets = null;
 
         if (null === $sets) {
-            $sets = array_filter(
+            $sets = array_values(array_filter(
                 RuleSets::getSetDefinitions(),
                 static fn ($set) => !($set instanceof DeprecatedRuleSetDescriptionInterface) && is_subclass_of($set, AbstractMigrationSetDescription::class),
-            );
+            ));
         }
 
         return $sets;
