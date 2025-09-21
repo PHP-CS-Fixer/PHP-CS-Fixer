@@ -97,6 +97,6 @@ final class AbstractMigrationSetDescriptionTest extends TestCase
             }
         };
 
-        $set->getName();
+        $set->getName(); // @phpstan-ignore method.resultUnused
     }
 }
