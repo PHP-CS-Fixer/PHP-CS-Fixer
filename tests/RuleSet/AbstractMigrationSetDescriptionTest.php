@@ -82,6 +82,9 @@ final class AbstractMigrationSetDescriptionTest extends TestCase
 
     public function testGetDescriptionForNoneMigrationSet(): void
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessageMatches('/^Cannot generate name of ".*" \/ "foo"\.$/');
+
         $set = new class extends AbstractMigrationSetDescription {
             public function getName(): string
             {
@@ -94,9 +97,6 @@ final class AbstractMigrationSetDescriptionTest extends TestCase
             }
         };
 
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessageMatches('/^Cannot generate description for ".*" "foo"\.$/');
-
-        $set->getDescription();
+        $set->getName(); // @phpstan-ignore method.resultUnused
     }
 }
