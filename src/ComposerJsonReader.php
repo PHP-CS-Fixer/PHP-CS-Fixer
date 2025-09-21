@@ -84,7 +84,6 @@ final class ComposerJsonReader
         }
 
         $composerJson = json_decode($json, true, 512, \JSON_THROW_ON_ERROR);
-        $isComposerFilePresent = true;
 
         $this->php = self::getMinSemVer(self::detectPhp($composerJson));
         $this->phpUnit = self::getMinSemVer(self::detectPackage($composerJson, 'phpunit/phpunit'));
