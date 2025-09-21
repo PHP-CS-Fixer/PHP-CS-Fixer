@@ -92,7 +92,7 @@ trait AutomaticMigrationSetTrait
     /**
      * @return array<string, string> [ 'major.minor' => '@SetName', ... ]
      */
-    private static function calculateCandidateSets(string $entity, bool $isRisky)
+    private static function calculateCandidateSets(string $entity, bool $isRisky): array
     {
         $candidates = [];
         foreach (self::getMigrationSets() as $set) {
