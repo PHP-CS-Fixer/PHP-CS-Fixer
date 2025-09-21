@@ -60,7 +60,7 @@ abstract class AbstractMigrationSetDescription extends AbstractRuleSetDescriptio
     {
         $name = $this->getName();
 
-        // @TODO v4 - `x?` -> `x`
+        // @TODO v4 - `x?` -> `x` @MARKER_deprecated_migration_name_pattern
         if (Preg::match('#^@PHPUnit(\d+)x?(\d)Migration.*$#', $name, $matches)) {
             $this->entity = 'PHPUnit';
             $this->version = [
@@ -71,7 +71,7 @@ abstract class AbstractMigrationSetDescription extends AbstractRuleSetDescriptio
             return;
         }
 
-        // @TODO v4 - `x?` -> `x`
+        // @TODO v4 - `x?` -> `x` @MARKER_deprecated_migration_name_pattern
         if (Preg::match('#^@PHP(\d)x?(\d)Migration.*$#', $name, $matches)) {
             $this->entity = 'PHP';
             $this->version = [

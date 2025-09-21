@@ -31,6 +31,26 @@ final class AbstractMigrationSetDescriptionTest extends TestCase
         $set = new class extends AbstractMigrationSetDescription {
             public function getName(): string
             {
+                return '@PHP9x9MigrationSet';
+            }
+
+            public function getRules(): array
+            {
+                return [];
+            }
+        };
+
+        self::assertSame('Rules to improve code for PHP 9.9 compatibility.', $set->getDescription());
+    }
+
+    /**
+     * @TODO v4 - remove the test while solving @MARKER_deprecated_migration_name_pattern
+     */
+    public function testGetDescriptionForPhpMigrationSetLegacy(): void
+    {
+        $set = new class extends AbstractMigrationSetDescription {
+            public function getName(): string
+            {
                 return '@PHP99MigrationSet';
             }
 
