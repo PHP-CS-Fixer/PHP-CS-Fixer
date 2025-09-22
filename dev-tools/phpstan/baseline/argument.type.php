@@ -97,7 +97,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Operator/BinaryOperatorSpacesFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $name of static method PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitAttributesFixer::toClassConstant() expects class-string, string given.',
+    'rawMessage' => 'Parameter #1 $name of static method PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitAttributesFixer::toClassConstant() expects non-empty-string, string given.',
     'count' => 5,
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitAttributesFixer.php',
 ];
@@ -157,7 +157,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Tokenizer/Tokens.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $name of static method PhpCsFixer\\Tokenizer\\Processor\\ImportProcessor::tokenizeName() expects class-string, string given.',
+    'rawMessage' => 'Parameter #1 $name of static method PhpCsFixer\\Tokenizer\\Processor\\ImportProcessor::tokenizeName() expects non-empty-string, string given.',
     'count' => 2,
     'path' => __DIR__ . '/../../../src/Tokenizer/Transformer/NameQualifiedTransformer.php',
 ];
