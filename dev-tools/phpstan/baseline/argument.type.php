@@ -2,41 +2,6 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $cwd of class PhpCsFixer\\Console\\ConfigurationResolver constructor expects string, string|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/Command/DescribeCommand.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $cwd of class PhpCsFixer\\Console\\ConfigurationResolver constructor expects string, string|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/Command/FixCommand.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $time of class PhpCsFixer\\Console\\Report\\FixReport\\ReportSummary constructor expects int, float|int given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/Command/FixCommand.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $basePath of static method Symfony\\Component\\Filesystem\\Path::makeRelative() expects string, string|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/Command/ListFilesCommand.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $cwd of class PhpCsFixer\\Console\\ConfigurationResolver constructor expects string, string|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/Command/ListFilesCommand.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $filename of function is_file expects string, string|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/ConfigurationResolver.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $names of static method PhpCsFixer\\Utils::naturalLanguageJoin() expects list<string>, non-empty-array<int<0, max>, string> given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/ConfigurationResolver.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $diffs of static method PhpCsFixer\\Console\\Report\\FixReport\\GitlabReporter::getLines() expects list<SebastianBergmann\\Diff\\Diff>, array<SebastianBergmann\\Diff\\Diff> given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Console/Report/FixReport/GitlabReporter.php',
@@ -67,19 +32,9 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $elements of method PhpCsFixer\\Fixer\\ClassNotation\\OrderedTraitsFixer::sort() expects array<int, PhpCsFixer\\Tokenizer\\Tokens>, array<int<0, max>|string, PhpCsFixer\\Tokenizer\\Tokens> given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedTraitsFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $possibleKind of method PhpCsFixer\\Tokenizer\\Token::isGivenKind() expects int|list<int>, list<int|string> given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ControlStructure/YodaStyleFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $types of method PhpCsFixer\\DocBlock\\Annotation::setTypes() expects list<string>, array<int<0, max>, string> given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Import/GlobalNamespaceImportFixer.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $indices of method PhpCsFixer\\Fixer\\Import\\OrderedImportsFixer::sortByAlgorithm() expects array<int, array{namespace: non-empty-string, startIndex: int, endIndex: int, importType: \'class\'|\'const\'|\'function\', group: bool}>, array<\'\'|int, array{namespace: string, startIndex: int|null, endIndex: int, importType: \'class\'|\'const\'|\'function\', group: bool}> given.',
@@ -92,17 +47,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Import/OrderedImportsFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $names of static method PhpCsFixer\\Utils::naturalLanguageJoin() expects list<string>, non-empty-array given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Import/OrderedImportsFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $names of static method PhpCsFixer\\Utils::naturalLanguageJoin() expects list<string>, non-empty-array<0|1|2, \'class\'|\'const\'|\'function\'> given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Import/OrderedImportsFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $name of static method PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitAttributesFixer::toClassConstant() expects class-string, string given.',
+    'rawMessage' => 'Parameter #1 $name of static method PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitAttributesFixer::toClassConstant() expects non-empty-string, string given.',
     'count' => 5,
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitAttributesFixer.php',
 ];
@@ -122,16 +67,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Whitespace/ArrayIndentationFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $fixerConflicts of method PhpCsFixer\\FixerFactory::generateConflictMessage() expects array<string, list<string>>, non-empty-array<string, non-empty-array<int<0, max>, string>> given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/FixerFactory.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $names of static method PhpCsFixer\\Utils::naturalLanguageJoin() expects list<string>, non-empty-array<int<0, max>, string> given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/FixerFactory.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $code of static method PhpCsFixer\\Hasher::calculate() expects string, string|false given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Linter/CachingLinter.php',
@@ -147,12 +82,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $possibleKind of method PhpCsFixer\\Tokenizer\\Token::isGivenKind() expects int|list<int>, non-empty-array<int<0, max>, int> given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Tokenizer/Tokens.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $name of static method PhpCsFixer\\Tokenizer\\Processor\\ImportProcessor::tokenizeName() expects class-string, string given.',
+    'rawMessage' => 'Parameter #1 $name of static method PhpCsFixer\\Tokenizer\\Processor\\ImportProcessor::tokenizeName() expects non-empty-string, string given.',
     'count' => 2,
     'path' => __DIR__ . '/../../../src/Tokenizer/Transformer/NameQualifiedTransformer.php',
 ];

@@ -16,6 +16,7 @@ namespace PhpCsFixer\Documentation;
 
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\RuleSet\AutomaticRuleSetDescriptionInterface;
 use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
 use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
 use PhpCsFixer\Str;
@@ -100,45 +101,50 @@ final class RuleSetDocumentationGenerator
             );
         }
 
-        $rules = $definition->getRules();
-
-        if ([] === $rules) {
-            $doc .= "\n\nThis is an empty set.";
+        if ($definition instanceof AutomaticRuleSetDescriptionInterface) {
+            $doc .= "\n\nRules\n-----\n\n"
+.strip_tags(AutomaticRuleSetDescriptionInterface::WARNING_MESSAGE_DECORATED);
         } else {
-            $enabledRules = array_filter($rules, static fn ($config) => false !== $config);
-            $disabledRules = array_filter($rules, static fn ($config) => false === $config);
+            $rules = $definition->getRules();
 
-            $listRules = function (array $rules) use (&$doc, $fixerNames): void {
-                foreach ($rules as $rule => $config) {
-                    if (str_starts_with($rule, '@')) {
-                        $ruleSetPath = $this->locator->getRuleSetsDocumentationFilePath($rule);
-                        $ruleSetPath = Str::fromLast($ruleSetPath, '/');
+            if ([] === $rules) {
+                $doc .= "\n\nThis is an empty set.";
+            } else {
+                $enabledRules = array_filter($rules, static fn ($config) => false !== $config);
+                $disabledRules = array_filter($rules, static fn ($config) => false === $config);
 
-                        $doc .= "\n- `{$rule} <.{$ruleSetPath}>`_";
-                    } else {
-                        $path = Preg::replace(
-                            '#^'.preg_quote($this->locator->getFixersDocumentationDirectoryPath(), '#').'/#',
-                            './../rules/',
-                            $this->locator->getFixerDocumentationFilePath($fixerNames[$rule])
-                        );
+                $listRules = function (array $rules) use (&$doc, $fixerNames): void {
+                    foreach ($rules as $rule => $config) {
+                        if (str_starts_with($rule, '@')) {
+                            $ruleSetPath = $this->locator->getRuleSetsDocumentationFilePath($rule);
+                            $ruleSetPath = Str::fromLast($ruleSetPath, '/');
 
-                        $doc .= "\n- `{$rule} <{$path}>`_";
+                            $doc .= "\n- `{$rule} <.{$ruleSetPath}>`_";
+                        } else {
+                            $path = Preg::replace(
+                                '#^'.preg_quote($this->locator->getFixersDocumentationDirectoryPath(), '#').'/#',
+                                './../rules/',
+                                $this->locator->getFixerDocumentationFilePath($fixerNames[$rule])
+                            );
+
+                            $doc .= "\n- `{$rule} <{$path}>`_";
+                        }
+
+                        if (!\is_bool($config)) {
+                            $doc .= " with config:\n\n  ``".Utils::toString($config)."``\n";
+                        }
                     }
+                };
 
-                    if (!\is_bool($config)) {
-                        $doc .= " with config:\n\n  ``".Utils::toString($config)."``\n";
-                    }
+                if ([] !== $enabledRules) {
+                    $doc .= "\n\nRules\n-----\n";
+                    $listRules($enabledRules);
                 }
-            };
 
-            if ([] !== $enabledRules) {
-                $doc .= "\n\nRules\n-----\n";
-                $listRules($enabledRules);
-            }
-
-            if ([] !== $disabledRules) {
-                $doc .= "\n\nDisabled rules\n--------------\n";
-                $listRules($disabledRules);
+                if ([] !== $disabledRules) {
+                    $doc .= "\n\nDisabled rules\n--------------\n";
+                    $listRules($disabledRules);
+                }
             }
         }
 

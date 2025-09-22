@@ -27,6 +27,7 @@ use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\RuleSet\AutomaticRuleSetDescriptionInterface;
 use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
@@ -256,6 +257,11 @@ final class FixerDocumentGenerator
 
                 \assert(isset($this->ruleSetDefinitions[$set]));
                 $ruleSetDescription = $this->ruleSetDefinitions[$set];
+
+                if ($ruleSetDescription instanceof AutomaticRuleSetDescriptionInterface) {
+                    continue;
+                }
+
                 $deprecatedDesc = ($ruleSetDescription instanceof DeprecatedRuleSetDescriptionInterface) ? ' *(deprecated)*' : '';
 
                 $configInfo = (null !== $config)

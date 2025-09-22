@@ -22,13 +22,13 @@ jobs:
           - php-version: '8.0'
             alpine-version: '3.16'
           - php-version: '8.1'
-            alpine-version: '3.21'
+            alpine-version: '3.22'
           - php-version: '8.2'
-            alpine-version: '3.21'
+            alpine-version: '3.22'
           - php-version: '8.3'
-            alpine-version: '3.21'
+            alpine-version: '3.22'
           - php-version: '8.4'
-            alpine-version: '3.21'
+            alpine-version: '3.22'
 
     permissions:
       contents: read

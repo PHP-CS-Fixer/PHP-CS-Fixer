@@ -892,7 +892,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Whitespace/StatementIndentationFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset string might not exist on non-empty-array<string, array<int<0, max>, string>>.',
+    'rawMessage' => 'Offset string might not exist on non-empty-array<string, list<string>>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/FixerFactory.php',
 ];

@@ -275,7 +275,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 'show-progress' => $input->getOption('show-progress'),
                 'sequential' => $input->getOption('sequential'),
             ],
-            getcwd(),
+            getcwd(), // @phpstan-ignore argument.type
             $this->toolInfo
         );
 
@@ -402,7 +402,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
         $reportSummary = new ReportSummary(
             $changed,
             \count($finder),
-            $fixEvent->getDuration(),
+            (int) $fixEvent->getDuration(), // ignore microseconds fraction
             $fixEvent->getMemory(),
             OutputInterface::VERBOSITY_VERBOSE <= $verbosity,
             $resolver->isDryRun(),
