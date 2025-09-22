@@ -24,12 +24,12 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * Fixer for rules defined in PSR2 ¶4.3, ¶4.6, ¶5.
  *
- * @author Marc Aubé
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @deprecated in favor of SpacesInsideParenthesisFixer
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Marc Aubé
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class NoSpacesInsideParenthesisFixer extends AbstractProxyFixer implements DeprecatedFixerInterface
 {

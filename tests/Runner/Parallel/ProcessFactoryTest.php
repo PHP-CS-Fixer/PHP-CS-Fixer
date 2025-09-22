@@ -29,13 +29,13 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputDefinition;
 
 /**
- * @author Greg Korba <greg@codito.dev>
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @covers \PhpCsFixer\Runner\Parallel\ProcessFactory
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Greg Korba <greg@codito.dev>
  */
 final class ProcessFactoryTest extends TestCase
 {

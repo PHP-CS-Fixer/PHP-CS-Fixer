@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Differ;
 use PhpCsFixer\Differ\NullDiffer;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @covers \PhpCsFixer\Differ\NullDiffer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class NullDifferTest extends AbstractDifferTestCase
 {

@@ -22,9 +22,9 @@ use Symfony\Component\Process\Process;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Linter\ProcessLintingResult
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Linter\ProcessLintingResult
  */
 final class ProcessLintingResultTest extends TestCase
 {

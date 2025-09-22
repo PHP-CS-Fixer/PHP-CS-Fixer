@@ -21,13 +21,13 @@ use PhpCsFixer\PhpunitConstraintXmlMatchesXsd\Constraint\XmlMatchesXsd;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
- * @author Kévin Gomez <contact@kevingomez.fr>
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @covers \PhpCsFixer\Console\Report\FixReport\CheckstyleReporter
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Kévin Gomez <contact@kevingomez.fr>
  */
 final class CheckstyleReporterTest extends AbstractReporterTestCase
 {

@@ -24,9 +24,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\AbstractProxyFixer
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\AbstractProxyFixer
  */
 final class AbstractProxyFixerTest extends TestCase
 {

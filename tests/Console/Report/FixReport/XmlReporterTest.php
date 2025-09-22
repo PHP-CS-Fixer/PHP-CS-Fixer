@@ -21,14 +21,14 @@ use PhpCsFixer\PhpunitConstraintXmlMatchesXsd\Constraint\XmlMatchesXsd;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
- * @author Boris Gorbylev <ekho@ekho.name>
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @covers \PhpCsFixer\Console\Report\FixReport\XmlReporter
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Boris Gorbylev <ekho@ekho.name>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class XmlReporterTest extends AbstractReporterTestCase
 {

@@ -20,11 +20,11 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Casing\MagicMethodCasingFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\MagicMethodCasingFixer>
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @covers \PhpCsFixer\Fixer\Casing\MagicMethodCasingFixer
  */
 final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
 {

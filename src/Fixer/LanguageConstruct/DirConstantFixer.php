@@ -22,9 +22,9 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Vladimir Reznichenko <kalessil@gmail.com>
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Vladimir Reznichenko <kalessil@gmail.com>
  */
 final class DirConstantFixer extends AbstractFunctionReferenceFixer
 {

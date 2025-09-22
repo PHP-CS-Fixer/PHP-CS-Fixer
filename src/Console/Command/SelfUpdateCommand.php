@@ -27,14 +27,14 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
+ * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
  * @author Igor Wiedler <igor@wiedler.ch>
  * @author Stephane PY <py.stephane1@gmail.com>
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @internal
- *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 #[AsCommand(name: 'self-update', description: 'Update php-cs-fixer.phar to the latest stable version.')]
 final class SelfUpdateCommand extends Command

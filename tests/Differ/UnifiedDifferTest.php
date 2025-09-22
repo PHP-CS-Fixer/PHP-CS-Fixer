@@ -19,9 +19,9 @@ use PhpCsFixer\Differ\UnifiedDiffer;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Differ\UnifiedDiffer
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Differ\UnifiedDiffer
  */
 final class UnifiedDifferTest extends AbstractDifferTestCase
 {

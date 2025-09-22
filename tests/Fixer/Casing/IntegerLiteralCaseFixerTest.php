@@ -19,11 +19,11 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Casing\IntegerLiteralCaseFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\IntegerLiteralCaseFixer>
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @covers \PhpCsFixer\Fixer\Casing\IntegerLiteralCaseFixer
  */
 final class IntegerLiteralCaseFixerTest extends AbstractFixerTestCase
 {

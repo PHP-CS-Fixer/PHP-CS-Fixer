@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\WordMatcher;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @covers \PhpCsFixer\WordMatcher
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class WordMatcherTest extends TestCase
 {

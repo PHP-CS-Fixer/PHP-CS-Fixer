@@ -17,15 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\Casing;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @covers \PhpCsFixer\Fixer\Casing\LowercaseStaticReferenceFixer
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\LowercaseStaticReferenceFixer>
  *
- * @author Kuba Werłos <werlos@gmail.com>
+ * @covers \PhpCsFixer\Fixer\Casing\LowercaseStaticReferenceFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Kuba Werłos <werlos@gmail.com>
  */
 final class LowercaseStaticReferenceFixerTest extends AbstractFixerTestCase
 {

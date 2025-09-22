@@ -20,13 +20,13 @@ use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\Tests\Test\Assert\AssertJsonSchemaTrait;
 
 /**
- * @author Hans-Christian Otto <c.otto@suora.com>
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @covers \PhpCsFixer\Console\Report\FixReport\GitlabReporter
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Hans-Christian Otto <c.otto@suora.com>
  */
 final class GitlabReporterTest extends AbstractReporterTestCase
 {

@@ -19,8 +19,6 @@ use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Console\Command\Command;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @coversNothing
@@ -29,6 +27,8 @@ use Symfony\Component\Console\Command\Command;
  * @group covers-nothing
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class CommandTest extends TestCase
 {

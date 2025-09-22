@@ -19,11 +19,11 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Comment\SingleLineCommentSpacingFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Comment\SingleLineCommentSpacingFixer>
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @covers \PhpCsFixer\Fixer\Comment\SingleLineCommentSpacingFixer
  */
 final class SingleLineCommentSpacingFixerTest extends AbstractFixerTestCase
 {

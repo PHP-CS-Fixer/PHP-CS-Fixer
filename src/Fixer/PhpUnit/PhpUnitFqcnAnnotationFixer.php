@@ -23,9 +23,9 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Roland Franssen <franssen.roland@gmail.com>
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Roland Franssen <franssen.roland@gmail.com>
  */
 final class PhpUnitFqcnAnnotationFixer extends AbstractPhpUnitFixer
 {

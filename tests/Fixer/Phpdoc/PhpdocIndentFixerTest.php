@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocIndentFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocIndentFixer>
  *
- * @author Ceeram <ceeram@cakephp.org>
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocIndentFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Ceeram <ceeram@cakephp.org>
  */
 final class PhpdocIndentFixerTest extends AbstractFixerTestCase
 {

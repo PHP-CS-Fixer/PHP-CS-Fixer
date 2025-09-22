@@ -22,9 +22,9 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Jared Henderson <jared@netrivet.com>
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Jared Henderson <jared@netrivet.com>
  */
 final class TrimArraySpacesFixer extends AbstractFixer
 {

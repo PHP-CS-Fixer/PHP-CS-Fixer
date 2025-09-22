@@ -18,13 +18,13 @@ use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @covers \PhpCsFixer\DocBlock\DocBlock
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  */
 final class DocBlockTest extends TestCase
 {

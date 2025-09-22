@@ -20,14 +20,14 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\NamespaceNotation\NoLeadingNamespaceWhitespaceFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\NamespaceNotation\NoLeadingNamespaceWhitespaceFixer>
  *
+ * @covers \PhpCsFixer\Fixer\NamespaceNotation\NoLeadingNamespaceWhitespaceFixer
+ *
  * @author Bram Gotink <bram@gotink.me>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoLeadingNamespaceWhitespaceFixerTest extends AbstractFixerTestCase
 {

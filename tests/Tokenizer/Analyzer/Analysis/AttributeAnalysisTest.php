@@ -18,11 +18,11 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis;
 
 /**
- * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis
  */
 final class AttributeAnalysisTest extends TestCase
 {

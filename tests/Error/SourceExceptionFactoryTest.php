@@ -20,11 +20,11 @@ use PhpCsFixer\Runner\Parallel\WorkerException;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @covers \PhpCsFixer\Error\SourceExceptionFactory
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Error\SourceExceptionFactory
  */
 final class SourceExceptionFactoryTest extends TestCase
 {

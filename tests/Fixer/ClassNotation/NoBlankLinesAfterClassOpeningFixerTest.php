@@ -20,13 +20,13 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ClassNotation\NoBlankLinesAfterClassOpeningFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\NoBlankLinesAfterClassOpeningFixer>
  *
- * @author Ceeram <ceeram@cakephp.org>
+ * @covers \PhpCsFixer\Fixer\ClassNotation\NoBlankLinesAfterClassOpeningFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Ceeram <ceeram@cakephp.org>
  */
 final class NoBlankLinesAfterClassOpeningFixerTest extends AbstractFixerTestCase
 {

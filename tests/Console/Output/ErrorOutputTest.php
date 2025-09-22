@@ -24,9 +24,9 @@ use Symfony\Component\Console\Output\StreamOutput;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Console\Output\ErrorOutput
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Console\Output\ErrorOutput
  */
 final class ErrorOutputTest extends TestCase
 {

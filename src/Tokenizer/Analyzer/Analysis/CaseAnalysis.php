@@ -15,13 +15,13 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
 
 /**
- * @author Kuba Werłos <werlos@gmail.com>
- *
  * @readonly
  *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Kuba Werłos <werlos@gmail.com>
  */
 final class CaseAnalysis
 {

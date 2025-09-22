@@ -21,13 +21,13 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * Handle PHP code linting.
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @readonly
  *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class TokenizerLinter implements LinterInterface
 {

@@ -21,9 +21,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\DocBlock\ShortDescription
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\DocBlock\ShortDescription
  */
 final class ShortDescriptionTest extends TestCase
 {

@@ -38,9 +38,9 @@ use Symfony\Component\Finder\Finder;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Runner\Runner
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Runner\Runner
  */
 final class RunnerTest extends TestCase
 {
@@ -185,11 +185,11 @@ final class RunnerTest extends TestCase
     }
 
     /**
-     * @param list<string> $paths
-     *
      * @covers \PhpCsFixer\Runner\Runner::fix
      * @covers \PhpCsFixer\Runner\Runner::fixParallel
      * @covers \PhpCsFixer\Runner\Runner::fixSequential
+     *
+     * @param list<string> $paths
      *
      * @dataProvider provideRunnerUsesProperAnalysisModeCases
      */

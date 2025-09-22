@@ -18,13 +18,13 @@ use PhpCsFixer\Linter\ProcessLinterProcessBuilder;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @covers \PhpCsFixer\Linter\ProcessLinterProcessBuilder
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class ProcessLinterProcessBuilderTest extends TestCase
 {

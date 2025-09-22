@@ -17,13 +17,13 @@ namespace PhpCsFixer\Error;
 /**
  * An abstraction for errors that can occur before and during fixing.
  *
- * @author Andreas Möller <am@localheinz.com>
- *
  * @readonly
  *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class Error implements \JsonSerializable
 {

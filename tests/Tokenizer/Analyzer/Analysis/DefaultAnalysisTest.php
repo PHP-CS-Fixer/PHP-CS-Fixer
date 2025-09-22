@@ -18,11 +18,11 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\DefaultAnalysis;
 
 /**
- * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\DefaultAnalysis
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\DefaultAnalysis
  */
 final class DefaultAnalysisTest extends TestCase
 {

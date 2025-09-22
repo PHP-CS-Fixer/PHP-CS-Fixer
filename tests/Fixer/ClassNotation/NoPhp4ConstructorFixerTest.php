@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ClassNotation\NoPhp4ConstructorFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\NoPhp4ConstructorFixer>
  *
- * @author Matteo Beccati <matteo@beccati.com>
+ * @covers \PhpCsFixer\Fixer\ClassNotation\NoPhp4ConstructorFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Matteo Beccati <matteo@beccati.com>
  */
 final class NoPhp4ConstructorFixerTest extends AbstractFixerTestCase
 {

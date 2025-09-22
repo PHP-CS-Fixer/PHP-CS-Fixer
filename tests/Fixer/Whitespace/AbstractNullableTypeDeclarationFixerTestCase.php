@@ -18,15 +18,15 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @template TFixer of AbstractFixer
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @template TFixer of AbstractFixer
  *
  * @extends AbstractFixerTestCase<TFixer>
  *
  * @author Jack Cherng <jfcherng@gmail.com>
- *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractNullableTypeDeclarationFixerTestCase extends AbstractFixerTestCase
 {

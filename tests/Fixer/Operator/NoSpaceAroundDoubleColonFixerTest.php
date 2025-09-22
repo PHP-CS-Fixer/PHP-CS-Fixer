@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests\Fixer\Operator;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @covers \PhpCsFixer\Fixer\Operator\NoSpaceAroundDoubleColonFixer
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\NoSpaceAroundDoubleColonFixer>
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @covers \PhpCsFixer\Fixer\Operator\NoSpaceAroundDoubleColonFixer
  */
 final class NoSpaceAroundDoubleColonFixerTest extends AbstractFixerTestCase
 {

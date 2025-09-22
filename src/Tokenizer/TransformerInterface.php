@@ -22,11 +22,11 @@ namespace PhpCsFixer\Tokenizer;
  * Custom token is a user defined token type and is used to separate different meaning of original token type.
  * For example T_ARRAY is a token for both creating new array and typehinting a parameter. This two meaning should have two token types.
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 interface TransformerInterface
 {

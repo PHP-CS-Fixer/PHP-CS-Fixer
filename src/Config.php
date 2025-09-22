@@ -19,11 +19,11 @@ use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 class Config implements ConfigInterface, ParallelAwareConfigInterface, UnsupportedPhpVersionAllowedConfigInterface
 {

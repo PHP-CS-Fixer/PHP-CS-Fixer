@@ -17,11 +17,11 @@ namespace PhpCsFixer\Cache;
 use PhpCsFixer\Utils;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class Cache implements CacheInterface
 {

@@ -23,11 +23,11 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * This abstract fixer provides a base for fixers to fix types in PHPDoc.
  *
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  */
 abstract class AbstractPhpdocTypesFixer extends AbstractFixer
 {

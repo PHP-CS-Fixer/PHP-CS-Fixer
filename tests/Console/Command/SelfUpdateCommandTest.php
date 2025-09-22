@@ -33,9 +33,9 @@ use Symfony\Component\Console\Tester\CommandTester;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Console\Command\SelfUpdateCommand
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Console\Command\SelfUpdateCommand
  */
 final class SelfUpdateCommandTest extends TestCase
 {

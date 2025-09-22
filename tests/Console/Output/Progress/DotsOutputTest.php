@@ -23,9 +23,9 @@ use Symfony\Component\Console\Output\BufferedOutput;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Console\Output\Progress\DotsOutput
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Console\Output\Progress\DotsOutput
  */
 final class DotsOutputTest extends TestCase
 {

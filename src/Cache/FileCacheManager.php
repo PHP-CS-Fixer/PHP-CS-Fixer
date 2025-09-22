@@ -28,11 +28,11 @@ use PhpCsFixer\Hasher;
  *  - file is new
  *  - file changed
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class FileCacheManager implements CacheManagerInterface
 {

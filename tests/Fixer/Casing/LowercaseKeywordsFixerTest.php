@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Casing\LowercaseKeywordsFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\LowercaseKeywordsFixer>
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @covers \PhpCsFixer\Fixer\Casing\LowercaseKeywordsFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class LowercaseKeywordsFixerTest extends AbstractFixerTestCase
 {

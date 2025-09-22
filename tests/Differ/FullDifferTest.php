@@ -19,9 +19,9 @@ use PhpCsFixer\Differ\FullDiffer;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Differ\FullDiffer
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Differ\FullDiffer
  */
 final class FullDifferTest extends AbstractDifferTestCase
 {

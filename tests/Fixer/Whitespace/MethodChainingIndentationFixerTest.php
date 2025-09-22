@@ -20,13 +20,13 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Whitespace\MethodChainingIndentationFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\MethodChainingIndentationFixer>
  *
- * @author Vladimir Boliev <voff.web@gmail.com>
+ * @covers \PhpCsFixer\Fixer\Whitespace\MethodChainingIndentationFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Vladimir Boliev <voff.web@gmail.com>
  */
 final class MethodChainingIndentationFixerTest extends AbstractFixerTestCase
 {

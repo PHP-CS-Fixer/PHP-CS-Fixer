@@ -23,9 +23,9 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Filippo Tessarotto <zoeslam@gmail.com>
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
 final class MultilineCommentOpeningClosingFixer extends AbstractFixer
 {

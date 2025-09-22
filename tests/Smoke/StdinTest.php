@@ -18,8 +18,6 @@ use Keradus\CliExecutor\CommandExecutor;
 use PhpCsFixer\Preg;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @requires OS Linux|Darwin
@@ -31,6 +29,8 @@ use PhpCsFixer\Preg;
  * @large
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class StdinTest extends AbstractSmokeTestCase
 {

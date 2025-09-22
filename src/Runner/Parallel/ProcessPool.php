@@ -20,11 +20,11 @@ use React\Socket\ServerInterface;
  * Represents collection of active processes that are being run in parallel.
  * Inspired by {@see https://github.com/phpstan/phpstan-src/blob/ed68345a82992775112acc2c2bd639d1bd3a1a02/src/Parallel/ProcessPool.php}.
  *
- * @author Greg Korba <greg@codito.dev>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Greg Korba <greg@codito.dev>
  */
 final class ProcessPool
 {
@@ -34,9 +34,9 @@ final class ProcessPool
     private ServerInterface $server;
 
     /**
-     * @var null|(callable(): void)
-     *
      * @readonly
+     *
+     * @var null|(callable(): void)
      */
     private $onServerClose;
 

@@ -26,10 +26,10 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * Fixer for rules defined in PSR2 ¶2.2.
  *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class LineEndingFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {

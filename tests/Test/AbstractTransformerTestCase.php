@@ -22,17 +22,17 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TransformerInterface;
 
 /**
+ * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
  * @phpstan-import-type _PhpTokenKind from Token
  * @phpstan-import-type _PhpTokenPrototypePartial from Token
- *
- * @internal
  *
  * @phpstan-type _TransformerTestExpectedKindsUnderIndex array<int, _PhpTokenKind>
  * @phpstan-type _TransformerTestObservedKinds list<_PhpTokenKind>
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractTransformerTestCase extends TestCase
 {

@@ -18,10 +18,10 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Fabien Potencier <fabien@symfony.com>
- *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 interface FixerInterface
 {

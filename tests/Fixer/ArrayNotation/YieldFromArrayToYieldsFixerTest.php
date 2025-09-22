@@ -19,11 +19,11 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ArrayNotation\YieldFromArrayToYieldsFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ArrayNotation\YieldFromArrayToYieldsFixer>
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @covers \PhpCsFixer\Fixer\ArrayNotation\YieldFromArrayToYieldsFixer
  */
 final class YieldFromArrayToYieldsFixerTest extends AbstractFixerTestCase
 {

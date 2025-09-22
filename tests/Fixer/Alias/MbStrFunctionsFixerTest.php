@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Alias\MbStrFunctionsFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\MbStrFunctionsFixer>
  *
- * @author Filippo Tessarotto <zoeslam@gmail.com>
+ * @covers \PhpCsFixer\Fixer\Alias\MbStrFunctionsFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
 final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
 {

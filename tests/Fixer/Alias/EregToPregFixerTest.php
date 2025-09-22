@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Alias\EregToPregFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\EregToPregFixer>
  *
- * @author Matteo Beccati <matteo@beccati.com>
+ * @covers \PhpCsFixer\Fixer\Alias\EregToPregFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Matteo Beccati <matteo@beccati.com>
  */
 final class EregToPregFixerTest extends AbstractFixerTestCase
 {

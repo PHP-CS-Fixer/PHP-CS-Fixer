@@ -20,11 +20,11 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer>
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @covers \PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer
  */
 final class DeclareStrictTypesFixerTest extends AbstractFixerTestCase
 {

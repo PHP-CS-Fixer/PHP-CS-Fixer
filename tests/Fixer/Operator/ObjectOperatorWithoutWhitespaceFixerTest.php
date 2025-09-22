@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Operator\ObjectOperatorWithoutWhitespaceFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\ObjectOperatorWithoutWhitespaceFixer>
  *
- * @author Farhad Safarov <farhad.safarov@gmail.com>
+ * @covers \PhpCsFixer\Fixer\Operator\ObjectOperatorWithoutWhitespaceFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Farhad Safarov <farhad.safarov@gmail.com>
  */
 final class ObjectOperatorWithoutWhitespaceFixerTest extends AbstractFixerTestCase
 {

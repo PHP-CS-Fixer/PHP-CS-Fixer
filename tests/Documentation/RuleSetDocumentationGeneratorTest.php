@@ -25,9 +25,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Documentation\RuleSetDocumentationGenerator
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Documentation\RuleSetDocumentationGenerator
  */
 final class RuleSetDocumentationGeneratorTest extends TestCase
 {

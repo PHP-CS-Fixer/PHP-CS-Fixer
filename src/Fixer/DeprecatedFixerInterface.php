@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer;
 
 /**
- * @author Kuba Werłos <werlos@gmail.com>
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Kuba Werłos <werlos@gmail.com>
  */
 interface DeprecatedFixerInterface extends FixerInterface
 {

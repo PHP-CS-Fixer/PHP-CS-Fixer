@@ -17,13 +17,13 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\StdinFileInfo;
 
 /**
- * @author ntzm
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @covers \PhpCsFixer\StdinFileInfo
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author ntzm
  */
 final class StdinFileInfoTest extends TestCase
 {

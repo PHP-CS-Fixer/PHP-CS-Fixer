@@ -18,13 +18,13 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 
 /**
- * @author VeeWee <toonverwerft@gmail.com>
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author VeeWee <toonverwerft@gmail.com>
  */
 final class NamespaceUseAnalysisTest extends TestCase
 {

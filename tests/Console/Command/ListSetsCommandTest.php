@@ -22,9 +22,9 @@ use Symfony\Component\Console\Tester\CommandTester;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Console\Command\ListSetsCommand
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Console\Command\ListSetsCommand
  */
 final class ListSetsCommandTest extends TestCase
 {

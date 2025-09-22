@@ -24,10 +24,10 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 /**
  * @deprecated
  *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
- *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoTrailingCommaInSinglelineArrayFixer extends AbstractProxyFixer implements DeprecatedFixerInterface
 {

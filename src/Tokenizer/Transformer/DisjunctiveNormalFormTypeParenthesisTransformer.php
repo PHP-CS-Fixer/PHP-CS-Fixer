@@ -22,11 +22,11 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * Transform DNF parentheses into CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN and CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE.
  *
- * @see https://wiki.php.net/rfc/dnf_types
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @see https://wiki.php.net/rfc/dnf_types
  */
 final class DisjunctiveNormalFormTypeParenthesisTransformer extends AbstractTransformer
 {

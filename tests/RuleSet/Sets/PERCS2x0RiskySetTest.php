@@ -17,8 +17,8 @@ namespace PhpCsFixer\Tests\RuleSet\Sets;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\RuleSet\Sets\PERCS2x0RiskySet
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\RuleSet\Sets\PERCS2x0RiskySet
  */
 final class PERCS2x0RiskySetTest extends AbstractSetTestCase {}

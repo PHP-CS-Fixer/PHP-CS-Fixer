@@ -20,13 +20,13 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\NamespaceNotation\NoBlankLinesBeforeNamespaceFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\NamespaceNotation\NoBlankLinesBeforeNamespaceFixer>
  *
- * @author Graham Campbell <hello@gjcampbell.co.uk>
+ * @covers \PhpCsFixer\Fixer\NamespaceNotation\NoBlankLinesBeforeNamespaceFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  */
 final class NoBlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestCase
 {

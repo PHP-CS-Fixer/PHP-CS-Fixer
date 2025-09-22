@@ -24,12 +24,12 @@ use PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer;
  *
  * @internal
  *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
  * @phpstan-type _ClassyElementType 'case'|'const'|'method'|'property'|'promoted_property'|'trait_import'
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>
- *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TokensAnalyzer
 {

@@ -25,9 +25,9 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Matteo Beccati <matteo@beccati.com>
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Matteo Beccati <matteo@beccati.com>
  */
 final class EregToPregFixer extends AbstractFixer
 {

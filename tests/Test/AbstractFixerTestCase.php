@@ -44,15 +44,15 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @template TFixer of FixerInterface
- *
- * @phpstan-import-type _PhpTokenArrayPartial from Token
- *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @phpstan-import-type _PhpTokenArrayPartial from Token
+ *
+ * @template TFixer of FixerInterface
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 abstract class AbstractFixerTestCase extends TestCase
 {

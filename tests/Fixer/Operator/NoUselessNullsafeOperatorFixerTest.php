@@ -17,15 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\Operator;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
- * @internal
- *
  * @requires PHP 8.0
  *
- * @covers \PhpCsFixer\Fixer\Operator\NoUselessNullsafeOperatorFixer
+ * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\NoUselessNullsafeOperatorFixer>
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @covers \PhpCsFixer\Fixer\Operator\NoUselessNullsafeOperatorFixer
  */
 final class NoUselessNullsafeOperatorFixerTest extends AbstractFixerTestCase
 {

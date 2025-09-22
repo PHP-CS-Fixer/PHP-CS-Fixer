@@ -15,11 +15,11 @@ declare(strict_types=1);
 namespace PhpCsFixer\Cache;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Andreas Möller <am@localheinz.com>
  */
 interface FileHandlerInterface
 {

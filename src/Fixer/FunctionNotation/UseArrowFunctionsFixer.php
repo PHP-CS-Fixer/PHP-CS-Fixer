@@ -24,9 +24,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
- * @author Gregor Harlan
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Gregor Harlan
  */
 final class UseArrowFunctionsFixer extends AbstractFixer
 {

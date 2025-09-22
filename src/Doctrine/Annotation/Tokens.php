@@ -22,6 +22,8 @@ use PhpCsFixer\Tokenizer\Token as PhpToken;
  *
  * @internal
  *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
  * @extends \SplFixedArray<Token>
  *
  * `SplFixedArray` uses `T|null` in return types because value can be null if an offset is unset or if the size does not match the number of elements.
@@ -30,8 +32,6 @@ use PhpCsFixer\Tokenizer\Token as PhpToken;
  * @method Token                    offsetGet($offset)
  * @method \Traversable<int, Token> getIterator()
  * @method array<int, Token>        toArray()
- *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class Tokens extends \SplFixedArray
 {

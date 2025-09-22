@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\RuleSet;
 
 /**
- * @author Greg Korba <greg@codito.dev>
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Greg Korba <greg@codito.dev>
  */
 interface DeprecatedRuleSetDescriptionInterface extends RuleSetDescriptionInterface
 {

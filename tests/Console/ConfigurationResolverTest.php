@@ -45,14 +45,14 @@ use PhpCsFixer\Utils;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @covers \PhpCsFixer\Console\ConfigurationResolver
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class ConfigurationResolverTest extends TestCase
 {

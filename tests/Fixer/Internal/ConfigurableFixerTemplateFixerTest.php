@@ -19,15 +19,15 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Internal\ConfigurableFixerTemplateFixer
- *
- * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Internal\ConfigurableFixerTemplateFixer>
- *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @requires OS Linux|Darwin
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Internal\ConfigurableFixerTemplateFixer>
+ *
+ * @covers \PhpCsFixer\Fixer\Internal\ConfigurableFixerTemplateFixer
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class ConfigurableFixerTemplateFixerTest extends AbstractFixerTestCase
 {

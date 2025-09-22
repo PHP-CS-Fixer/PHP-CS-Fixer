@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfoInterface;
 
 /**
- * @author ntzm
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @covers \PhpCsFixer\Console\WarningsDetector
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author ntzm
  */
 final class WarningsDetectorTest extends TestCase
 {

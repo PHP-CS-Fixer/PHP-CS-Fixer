@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\StringNotation\NoBinaryStringFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\NoBinaryStringFixer>
  *
- * @author ntzm
+ * @covers \PhpCsFixer\Fixer\StringNotation\NoBinaryStringFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author ntzm
  */
 final class NoBinaryStringFixerTest extends AbstractFixerTestCase
 {

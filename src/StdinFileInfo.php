@@ -15,11 +15,11 @@ declare(strict_types=1);
 namespace PhpCsFixer;
 
 /**
- * @author Davi Koscianski Vidal <davividal@gmail.com>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Davi Koscianski Vidal <davividal@gmail.com>
  */
 final class StdinFileInfo extends \SplFileInfo
 {

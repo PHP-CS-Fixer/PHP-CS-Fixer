@@ -19,9 +19,9 @@ use PhpCsFixer\Console\Command\FixCommandExitStatusCalculator;
 /**
  * Exception thrown by Fixers on misconfiguration.
  *
- * @internal
- *
  * @final Only internal extending this class is supported
+ *
+ * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */

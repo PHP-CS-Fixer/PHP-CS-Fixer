@@ -18,15 +18,15 @@ use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
- * @covers \PhpCsFixer\Tokenizer\Transformer\ReturnRefTransformer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @covers \PhpCsFixer\Tokenizer\Transformer\ReturnRefTransformer
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class ReturnRefTransformerTest extends AbstractTransformerTestCase
 {

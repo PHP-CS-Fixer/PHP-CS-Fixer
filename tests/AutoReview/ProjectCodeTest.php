@@ -44,8 +44,6 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @coversNothing
@@ -54,6 +52,8 @@ use Symfony\Component\Finder\SplFileInfo;
  * @group covers-nothing
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class ProjectCodeTest extends TestCase
 {

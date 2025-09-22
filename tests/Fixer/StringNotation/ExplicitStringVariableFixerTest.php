@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\StringNotation\ExplicitStringVariableFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\ExplicitStringVariableFixer>
  *
- * @author Filippo Tessarotto <zoeslam@gmail.com>
+ * @covers \PhpCsFixer\Fixer\StringNotation\ExplicitStringVariableFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
 final class ExplicitStringVariableFixerTest extends AbstractFixerTestCase
 {

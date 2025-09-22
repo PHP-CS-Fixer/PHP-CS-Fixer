@@ -19,15 +19,15 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @phpstan-import-type _PhpTokenArray from Token
- *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @phpstan-import-type _PhpTokenArray from Token
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\WhitespacyCommentTransformer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class WhitespacyCommentTransformerTest extends AbstractTransformerTestCase
 {

@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ControlStructure\SwitchCaseSpaceFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\SwitchCaseSpaceFixer>
  *
- * @author Sullivan Senechal <soullivaneuh@gmail.com>
+ * @covers \PhpCsFixer\Fixer\ControlStructure\SwitchCaseSpaceFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
 final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
 {

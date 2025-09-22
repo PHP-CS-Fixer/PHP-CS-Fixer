@@ -21,9 +21,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Error\ErrorsManager
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Error\ErrorsManager
  */
 final class ErrorsManagerTest extends TestCase
 {

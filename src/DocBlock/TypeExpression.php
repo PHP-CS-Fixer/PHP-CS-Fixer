@@ -20,11 +20,11 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Utils;
 
 /**
- * @author Michael Vorisek <https://github.com/mvorisek>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Michael Vorisek <https://github.com/mvorisek>
  */
 final class TypeExpression
 {

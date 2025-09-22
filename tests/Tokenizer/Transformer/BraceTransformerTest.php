@@ -19,15 +19,15 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
- * @covers \PhpCsFixer\Tokenizer\Transformer\BraceTransformer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @covers \PhpCsFixer\Tokenizer\Transformer\BraceTransformer
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class BraceTransformerTest extends AbstractTransformerTestCase
 {

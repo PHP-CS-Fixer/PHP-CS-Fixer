@@ -17,17 +17,17 @@ namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
+ * @requires PHP 8.0
+ *
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\LanguageConstruct\GetClassToClassKeywordFixer
- *
- * @requires PHP 8.0
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\GetClassToClassKeywordFixer>
  *
- * @author John Paul E. Balandan, CPA <paulbalandan@gmail.com>
+ * @covers \PhpCsFixer\Fixer\LanguageConstruct\GetClassToClassKeywordFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author John Paul E. Balandan, CPA <paulbalandan@gmail.com>
  */
 final class GetClassToClassKeywordFixerTest extends AbstractFixerTestCase
 {

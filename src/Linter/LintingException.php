@@ -15,12 +15,12 @@ declare(strict_types=1);
 namespace PhpCsFixer\Linter;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @final
  *
  * @TODO 4.0 make class "final"
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 class LintingException extends \RuntimeException {}

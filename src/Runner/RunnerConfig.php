@@ -17,13 +17,13 @@ namespace PhpCsFixer\Runner;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 
 /**
- * @author Greg Korba <greg@codito.dev>
- *
  * @readonly
  *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Greg Korba <greg@codito.dev>
  */
 final class RunnerConfig
 {

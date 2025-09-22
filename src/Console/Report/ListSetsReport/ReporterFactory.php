@@ -17,11 +17,11 @@ namespace PhpCsFixer\Console\Report\ListSetsReport;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 
 /**
- * @author Boris Gorbylev <ekho@ekho.name>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Boris Gorbylev <ekho@ekho.name>
  */
 final class ReporterFactory
 {

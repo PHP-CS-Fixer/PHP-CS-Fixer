@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Runner\Parallel\ParallelConfig
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Runner\Parallel\ParallelConfig
  */
 final class ParallelConfigTest extends TestCase
 {

@@ -19,11 +19,11 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitAssertNewNamesFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitAssertNewNamesFixer>
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitAssertNewNamesFixer
  */
 final class PhpUnitAssertNewNamesFixerTest extends AbstractFixerTestCase
 {

@@ -17,8 +17,8 @@ namespace PhpCsFixer\Tests\RuleSet\Sets;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\RuleSet\Sets\PHP7x3MigrationSet
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\RuleSet\Sets\PHP7x3MigrationSet
  */
 final class PHP7x3MigrationSetTest extends AbstractSetTestCase {}

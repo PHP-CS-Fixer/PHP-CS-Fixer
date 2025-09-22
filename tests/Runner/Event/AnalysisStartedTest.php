@@ -18,11 +18,11 @@ use PhpCsFixer\Runner\Event\AnalysisStarted;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @covers \PhpCsFixer\Runner\Event\AnalysisStarted
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Runner\Event\AnalysisStarted
  */
 final class AnalysisStartedTest extends TestCase
 {

@@ -21,9 +21,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Documentation\DocumentationLocator
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Documentation\DocumentationLocator
  */
 final class DocumentationLocatorTest extends TestCase
 {

@@ -15,10 +15,10 @@ declare(strict_types=1);
 namespace PhpCsFixer\ConfigurationException;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class RequiredFixerConfigurationException extends InvalidFixerConfigurationException {}

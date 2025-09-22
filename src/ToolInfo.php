@@ -19,11 +19,11 @@ use PhpCsFixer\Console\Application;
 /**
  * Obtain information about using version of tool.
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class ToolInfo implements ToolInfoInterface
 {

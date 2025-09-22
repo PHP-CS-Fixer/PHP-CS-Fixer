@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Naming\NoHomoglyphNamesFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Naming\NoHomoglyphNamesFixer>
  *
- * @author Fred Cox <mcfedr@gmail.com>
+ * @covers \PhpCsFixer\Fixer\Naming\NoHomoglyphNamesFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Fred Cox <mcfedr@gmail.com>
  */
 final class NoHomoglyphNamesFixerTest extends AbstractFixerTestCase
 {

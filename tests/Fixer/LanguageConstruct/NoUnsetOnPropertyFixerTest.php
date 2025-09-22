@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\LanguageConstruct\NoUnsetOnPropertyFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\NoUnsetOnPropertyFixer>
  *
- * @author Gert de Pagter <BackEndTea@gmail.com>
+ * @covers \PhpCsFixer\Fixer\LanguageConstruct\NoUnsetOnPropertyFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Gert de Pagter <BackEndTea@gmail.com>
  */
 final class NoUnsetOnPropertyFixerTest extends AbstractFixerTestCase
 {

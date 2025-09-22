@@ -18,15 +18,15 @@ use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
 
 /**
- * @author Gregor Harlan <gharlan@web.de>
- *
  * @internal
  *
- * @covers \PhpCsFixer\Tokenizer\Transformer\NamespaceOperatorTransformer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @covers \PhpCsFixer\Tokenizer\Transformer\NamespaceOperatorTransformer
+ *
+ * @author Gregor Harlan <gharlan@web.de>
  */
 final class NamespaceOperatorTransformerTest extends AbstractTransformerTestCase
 {

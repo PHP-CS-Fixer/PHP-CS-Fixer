@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Console\SelfUpdate\GithubClient
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Console\SelfUpdate\GithubClient
  */
 final class GithubClientTest extends TestCase
 {

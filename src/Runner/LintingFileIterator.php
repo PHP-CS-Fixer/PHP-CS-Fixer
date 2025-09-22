@@ -20,11 +20,11 @@ use PhpCsFixer\Linter\LintingResultInterface;
 /**
  * @internal
  *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
  * @extends \IteratorIterator<mixed, \SplFileInfo, \Traversable<\SplFileInfo>>
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class LintingFileIterator extends \IteratorIterator implements LintingResultAwareFileIteratorInterface
 {

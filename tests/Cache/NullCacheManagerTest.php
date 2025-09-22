@@ -19,13 +19,13 @@ use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @covers \PhpCsFixer\Cache\NullCacheManager
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class NullCacheManagerTest extends TestCase
 {

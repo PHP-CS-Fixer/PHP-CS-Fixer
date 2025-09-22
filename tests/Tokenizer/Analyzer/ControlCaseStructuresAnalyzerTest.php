@@ -26,11 +26,11 @@ use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @covers \PhpCsFixer\Tokenizer\Analyzer\ControlCaseStructuresAnalyzer
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Tokenizer\Analyzer\ControlCaseStructuresAnalyzer
  */
 final class ControlCaseStructuresAnalyzerTest extends TestCase
 {

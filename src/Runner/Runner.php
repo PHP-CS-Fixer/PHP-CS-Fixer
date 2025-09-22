@@ -52,12 +52,12 @@ use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
  * @phpstan-type _RunResult array<string, array{appliedFixers: list<string>, diff: string}>
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Greg Korba <greg@codito.dev>
- *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class Runner
 {

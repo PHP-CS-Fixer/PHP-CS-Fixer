@@ -21,11 +21,11 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * Move trailing whitespaces from comments and docs into following T_WHITESPACE token.
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class WhitespacyCommentTransformer extends AbstractTransformer
 {

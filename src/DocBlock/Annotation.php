@@ -21,10 +21,10 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 /**
  * This represents an entire annotation from a docblock.
  *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class Annotation
 {
@@ -121,9 +121,9 @@ final class Annotation
     /**
      * Get all the annotation tag names with types.
      *
-     * @return non-empty-list<string>
-     *
      * @deprecated Use `Annotation::TAGS_WITH_TYPES` constant instead
+     *
+     * @return non-empty-list<string>
      *
      * @TODO 4.0 remove me
      */

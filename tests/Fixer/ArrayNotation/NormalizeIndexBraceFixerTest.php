@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ArrayNotation\NormalizeIndexBraceFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ArrayNotation\NormalizeIndexBraceFixer>
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @covers \PhpCsFixer\Fixer\ArrayNotation\NormalizeIndexBraceFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class NormalizeIndexBraceFixerTest extends AbstractFixerTestCase
 {

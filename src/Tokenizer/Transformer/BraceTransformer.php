@@ -32,11 +32,11 @@ use PhpCsFixer\Tokenizer\Tokens;
  * - in `use some\a\{ClassA, ClassB, ClassC as C}` into CT::T_GROUP_IMPORT_BRACE_OPEN, CT::T_GROUP_IMPORT_BRACE_CLOSE,
  * - in `class PropertyHooks { public string $bar _{_ set(string $value) { } _}_` into CT::T_PROPERTY_HOOK_BRACE_OPEN, CT::T_PROPERTY_HOOK_BRACE_CLOSE.
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class BraceTransformer extends AbstractTransformer
 {

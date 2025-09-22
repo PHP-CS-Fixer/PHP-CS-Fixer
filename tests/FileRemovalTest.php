@@ -19,13 +19,13 @@ use org\bovigo\vfs\vfsStreamDirectory;
 use PhpCsFixer\FileRemoval;
 
 /**
- * @author ntzm
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @covers \PhpCsFixer\FileRemoval
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author ntzm
  */
 final class FileRemovalTest extends TestCase
 {

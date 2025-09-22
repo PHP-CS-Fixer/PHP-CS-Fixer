@@ -19,17 +19,17 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author Max Voloshin <voloshin.dp@gmail.com>
- * @author Gregor Harlan <gharlan@web.de>
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @phpstan-import-type _ClassyElementType from \PhpCsFixer\Tokenizer\TokensAnalyzer
  *
  * @covers \PhpCsFixer\Tokenizer\TokensAnalyzer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Max Voloshin <voloshin.dp@gmail.com>
+ * @author Gregor Harlan <gharlan@web.de>
  */
 final class TokensAnalyzerTest extends TestCase
 {

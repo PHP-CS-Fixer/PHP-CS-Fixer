@@ -19,8 +19,6 @@ use PhpCsFixer\Tokenizer\TransformerInterface;
 use PhpCsFixer\Tokenizer\Transformers;
 
 /**
- * @author Dave van der Brugge <dmvdbrugge@gmail.com>
- *
  * @internal
  *
  * @coversNothing
@@ -29,6 +27,8 @@ use PhpCsFixer\Tokenizer\Transformers;
  * @group covers-nothing
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Dave van der Brugge <dmvdbrugge@gmail.com>
  */
 final class TransformerTest extends TestCase
 {

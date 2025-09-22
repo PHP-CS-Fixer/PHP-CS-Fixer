@@ -24,9 +24,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
- * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
  */
 final class NoLeadingImportSlashFixer extends AbstractFixer
 {

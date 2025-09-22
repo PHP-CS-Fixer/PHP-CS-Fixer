@@ -19,13 +19,13 @@ use PhpCsFixer\Console\Command\FixCommandExitStatusCalculator;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @covers \PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class RequiredFixerConfigurationExceptionTest extends TestCase
 {

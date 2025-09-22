@@ -19,13 +19,13 @@ use PhpCsFixer\Tokenizer\Analyzer\ReferenceAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Kuba Werłos <werlos@gmail.com>
- *
- * @covers \PhpCsFixer\Tokenizer\Analyzer\ReferenceAnalyzer
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Tokenizer\Analyzer\ReferenceAnalyzer
+ *
+ * @author Kuba Werłos <werlos@gmail.com>
  */
 final class ReferenceAnalyzerTest extends TestCase
 {

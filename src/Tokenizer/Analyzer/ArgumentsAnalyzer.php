@@ -21,12 +21,12 @@ use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author Vladimir Reznichenko <kalessil@gmail.com>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Vladimir Reznichenko <kalessil@gmail.com>
  */
 final class ArgumentsAnalyzer
 {

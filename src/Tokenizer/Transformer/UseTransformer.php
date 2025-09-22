@@ -25,11 +25,11 @@ use PhpCsFixer\Tokenizer\Tokens;
  * - CT::T_USE_TRAIT for imports,
  * - CT::T_USE_LAMBDA for lambda variable uses.
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class UseTransformer extends AbstractTransformer
 {

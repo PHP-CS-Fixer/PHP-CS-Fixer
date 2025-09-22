@@ -23,13 +23,13 @@ use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Filesystem\Exception\IOException;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @covers \PhpCsFixer\Cache\FileHandler
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class FileHandlerTest extends TestCase
 {

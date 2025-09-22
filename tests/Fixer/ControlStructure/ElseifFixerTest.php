@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ControlStructure\ElseifFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\ElseifFixer>
  *
- * @author Leszek Prabucki <leszek.prabucki@gmail.com>
+ * @covers \PhpCsFixer\Fixer\ControlStructure\ElseifFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Leszek Prabucki <leszek.prabucki@gmail.com>
  */
 final class ElseifFixerTest extends AbstractFixerTestCase
 {

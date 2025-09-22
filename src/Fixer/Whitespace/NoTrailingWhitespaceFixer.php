@@ -27,10 +27,10 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * Don't add trailing spaces at the end of non-blank lines.
  *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoTrailingWhitespaceFixer extends AbstractFixer
 {

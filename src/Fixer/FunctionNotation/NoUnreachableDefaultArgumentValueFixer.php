@@ -22,11 +22,11 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
  * @author Mark Scherer
  * @author Lucas Manzke <lmanzke@outlook.com>
  * @author Gregor Harlan <gharlan@web.de>
- *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoUnreachableDefaultArgumentValueFixer extends AbstractFixer
 {

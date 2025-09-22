@@ -15,13 +15,13 @@ declare(strict_types=1);
 namespace PhpCsFixer\FixerConfiguration;
 
 /**
- * @author ntzm
- *
  * @readonly
  *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author ntzm
  */
 final class AliasedFixerOption implements FixerOptionInterface
 {

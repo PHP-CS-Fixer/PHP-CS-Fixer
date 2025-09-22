@@ -22,9 +22,9 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Jack Cherng <jfcherng@gmail.com>
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Jack Cherng <jfcherng@gmail.com>
  */
 final class CompactNullableTypeDeclarationFixer extends AbstractFixer
 {
