@@ -19,6 +19,7 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\AutomaticRuleSetDescriptionInterface;
 use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
 use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
+use PhpCsFixer\Str;
 use PhpCsFixer\Utils;
 
 /**
@@ -116,7 +117,7 @@ final class RuleSetDocumentationGenerator
                     foreach ($rules as $rule => $config) {
                         if (str_starts_with($rule, '@')) {
                             $ruleSetPath = $this->locator->getRuleSetsDocumentationFilePath($rule);
-                            $ruleSetPath = substr($ruleSetPath, strrpos($ruleSetPath, '/'));
+                            $ruleSetPath = Str::fromLast($ruleSetPath, '/');
 
                             $doc .= "\n- `{$rule} <.{$ruleSetPath}>`_";
                         } else {
@@ -162,7 +163,7 @@ final class RuleSetDocumentationGenerator
             RST;
 
         foreach ($setDefinitions as $path => $definition) {
-            $path = substr($path, strrpos($path, '/'));
+            $path = Str::fromLast($path, '/');
 
             $attributes = [];
 

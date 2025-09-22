@@ -7,21 +7,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Console/Report/FixReport/GitlabReporter.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $offset of function substr expects int, int|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Documentation/FixerDocumentGenerator.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $subject of function str_replace expects array<string>|string, string|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Documentation/FixerDocumentGenerator.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $offset of function substr expects int, int|false given.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Documentation/RuleSetDocumentationGenerator.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $index of method PhpCsFixer\\Tokenizer\\Tokens::getNextTokenOfKind() expects int, int|false given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Alias/PowToExponentiationFixer.php',
@@ -52,16 +37,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/ControlStructure/YodaStyleFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $length of function substr expects int|null, int|false given.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Fixer/Import/FullyQualifiedStrictTypesFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $offset of function substr expects int, int|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Import/NoUnusedImportsFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $indices of method PhpCsFixer\\Fixer\\Import\\OrderedImportsFixer::sortByAlgorithm() expects array<int, array{namespace: non-empty-string, startIndex: int, endIndex: int, importType: \'class\'|\'const\'|\'function\', group: bool}>, array<\'\'|int, array{namespace: string, startIndex: int|null, endIndex: int, importType: \'class\'|\'const\'|\'function\', group: bool}> given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Import/OrderedImportsFixer.php',
@@ -72,34 +47,14 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Import/OrderedImportsFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $offset of function substr expects int, int<0, max>|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Operator/BinaryOperatorSpacesFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $length of function substr expects int|null, int<0, max>|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Operator/BinaryOperatorSpacesFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $name of static method PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitAttributesFixer::toClassConstant() expects non-empty-string, string given.',
     'count' => 5,
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitAttributesFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $length of function substr expects int|null, int<0, max>|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitNoExpectationAnnotationFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $lines of method PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitTestAnnotationFixer::splitUpDocBlock() expects non-empty-list<PhpCsFixer\\DocBlock\\Line>, list<PhpCsFixer\\DocBlock\\Line> given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $offset of function substr expects int, int|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/NoBlankLinesAfterPhpdocFixer.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $str of function preg_quote expects string, int|string given.',

@@ -18,6 +18,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Str;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -106,7 +107,7 @@ final class NoBlankLinesAfterPhpdocFixer extends AbstractFixer
         // if there is more than one new line in the whitespace, then we need to fix it
         if (substr_count($content, "\n") > 1) {
             // the final bit of the whitespace must be the next statement's indentation
-            $tokens[$index] = new Token([\T_WHITESPACE, substr($content, strrpos($content, "\n"))]);
+            $tokens[$index] = new Token([\T_WHITESPACE, Str::fromLast($content, "\n")]);
         }
     }
 }
