@@ -2,26 +2,6 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $cwd of class PhpCsFixer\\Console\\ConfigurationResolver constructor expects string, string|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/Command/DescribeCommand.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $cwd of class PhpCsFixer\\Console\\ConfigurationResolver constructor expects string, string|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/Command/FixCommand.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $basePath of static method Symfony\\Component\\Filesystem\\Path::makeRelative() expects string, string|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/Command/ListFilesCommand.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $cwd of class PhpCsFixer\\Console\\ConfigurationResolver constructor expects string, string|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/Command/ListFilesCommand.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $diffs of static method PhpCsFixer\\Console\\Report\\FixReport\\GitlabReporter::getLines() expects list<SebastianBergmann\\Diff\\Diff>, array<SebastianBergmann\\Diff\\Diff> given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Console/Report/FixReport/GitlabReporter.php',

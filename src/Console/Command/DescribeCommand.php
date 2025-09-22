@@ -111,7 +111,7 @@ final class DescribeCommand extends Command
         $resolver = new ConfigurationResolver(
             new Config(),
             ['config' => $input->getOption('config')],
-            getcwd(),
+            getcwd(), // @phpstan-ignore argument.type
             new ToolInfo()
         );
 
