@@ -107,6 +107,10 @@ final class RuleSetsTest extends TestCase
             self::markTestSkipped(\sprintf('Set "%s" is deprecated and will be removed in next MAJOR.', $setDefinitionName));
         }
 
+        if (str_starts_with($setDefinitionName, '@auto')) {
+            self::markTestSkipped(\sprintf('Set "%s" is automatic and it\'s definition depends on individual project.', $setDefinitionName));
+        }
+
         $setDefinitionFileNamePrefix = str_replace(':', '-', $setDefinitionName);
         $dir = __DIR__.'/../../tests/Fixtures/Integration/set';
         $file = \sprintf('%s/%s.test', $dir, $setDefinitionFileNamePrefix);
