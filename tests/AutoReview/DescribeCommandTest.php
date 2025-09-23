@@ -69,7 +69,6 @@ final class DescribeCommandTest extends TestCase
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => $fixerName,
-            '--config' => realpath(__DIR__.'/../../.php-cs-fixer.dist.php'),
         ]);
 
         self::assertSame(0, $commandTester->getStatusCode());
