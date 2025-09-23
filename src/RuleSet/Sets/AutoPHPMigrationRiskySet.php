@@ -43,4 +43,12 @@ final class AutoPHPMigrationRiskySet extends AbstractRuleSetDescription implemen
     {
         return 'Rules to improve code for PHP. Target version is automatically detected from project\'s "composer.json" file.';
     }
+
+    public function getRulesCandidates(): array
+    {
+        $sets = array_values(self::calculateCandidateSets('PHP', $this->isRisky()));
+        ksort($sets);
+
+        return array_combine($sets, array_fill(0, \count($sets), true));
+    }
 }

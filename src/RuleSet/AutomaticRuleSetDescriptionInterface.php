@@ -24,4 +24,9 @@ namespace PhpCsFixer\RuleSet;
 interface AutomaticRuleSetDescriptionInterface
 {
     public const WARNING_MESSAGE_DECORATED = '<comment>This rule is automatic</comment>: it\'s definition depends on your project, eg "composer.json" file.';
+
+    /**
+     * @return array<string, array<string, mixed>|bool>
+     */
+    public function getRulesCandidates(): array;
 }
