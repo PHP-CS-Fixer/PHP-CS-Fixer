@@ -19,8 +19,7 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSets;
-use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\SampleRulesBad;
-use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\SampleRulesOk;
+use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleset;
 use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
 
@@ -221,32 +220,18 @@ Integration of %s.
         return array_map(static fn (string $setDefinitionName): array => [$setDefinitionName], $setDefinitionPHPUnitMigrationNames);
     }
 
-    public function testRegisteringNonExistingRulesetCausesException(): void
-    {
-        self::expectException(\InvalidArgumentException::class);
-        // @phpstan-ignore-next-line
-        RuleSets::registerCustomRuleSet('\This\Class\Does\Not\Exists');
-    }
-
     public function testRegisteringRulesetMultipleTimesCausesAnException(): void
     {
-        RuleSets::registerCustomRuleSet(SampleRulesOk::class);
+        RuleSets::registerCustomRuleSet(new ExampleRuleset());
         self::expectException(\InvalidArgumentException::class);
-        RuleSets::registerCustomRuleSet(SampleRulesOk::class);
-    }
-
-    public function testRegisterRuleSetThatDoesNotSatisfyContractCausesException(): void
-    {
-        self::expectException(\InvalidArgumentException::class);
-
-        RuleSets::registerCustomRuleSet(SampleRulesBad::class); // @phpstan-ignore-line
+        RuleSets::registerCustomRuleSet(new ExampleRuleset());
     }
 
     public function testCanReadCustomRegisteredRuleSet(): void
     {
-        RuleSets::registerCustomRuleSet(SampleRulesOk::class);
-        $set = RuleSets::getSetDefinition('@Vendor/RulesOk');
-        self::assertSame('@Vendor/RulesOk', $set->getName());
+        RuleSets::registerCustomRuleSet(new ExampleRuleset());
+        $set = RuleSets::getSetDefinition('@Vendor/Ruleset');
+        self::assertSame('@Vendor/Ruleset', $set->getName());
     }
 
     private static function assertPHPUnitVersionIsLargestAllowed(string $setName, string $ruleName, string $actualTargetVersion): void

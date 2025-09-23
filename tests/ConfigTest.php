@@ -24,8 +24,7 @@ use PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer;
 use PhpCsFixer\Fixer\ControlStructure\IncludeFixer;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
-use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\SampleRulesBad;
-use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\SampleRulesOk;
+use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleset;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -238,34 +237,14 @@ final class ConfigTest extends TestCase
         yield [$fixers, new \ArrayIterator($fixers)];
     }
 
-    /**
-     * @param null|class-string<\Throwable> $expectedException
-     * @param list<class-string>            $ruleSets
-     *
-     * @dataProvider provideRegisterCustomRuleSetsCases
-     */
-    public function testRegisterCustomRuleSets(?string $expectedException, array $ruleSets): void
+    public function testRegisterCustomRuleSets(): void
     {
-        if (null !== $expectedException) {
-            $this->expectException($expectedException);
-        }
+        $ruleset = new ExampleRuleset();
 
         $config = new Config();
-        $config->registerCustomRuleSets($ruleSets); // @phpstan-ignore argument.type
+        $config->registerCustomRuleSets([$ruleset]);
 
-        if (null === $expectedException) {
-            self::assertSame($ruleSets, $config->getCustomRuleSets());
-        }
-    }
-
-    /**
-     * @return iterable<int, array{0: null|class-string<\Throwable>, 1: list<class-string>}>
-     */
-    public static function provideRegisterCustomRuleSetsCases(): iterable
-    {
-        yield [null, [SampleRulesOk::class]];
-
-        yield [\UnexpectedValueException::class, [SampleRulesBad::class]];
+        self::assertSame([$ruleset], $config->getCustomRuleSets());
     }
 
     public function testConfigDefault(): void

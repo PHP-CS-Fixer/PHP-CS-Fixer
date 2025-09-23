@@ -39,7 +39,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     private array $customFixers = [];
 
     /**
-     * @var list<class-string<RuleSetDescriptionInterface>>
+     * @var array<string, RuleSetDescriptionInterface>
      */
     private array $customRuleSets = [];
 
@@ -122,7 +122,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
 
     public function getCustomRuleSets(): array
     {
-        return $this->customRuleSets;
+        return array_values($this->customRuleSets);
     }
 
     /**
@@ -200,21 +200,13 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     }
 
     /**
-     * @param list<class-string<RuleSetDescriptionInterface>> $ruleSets
+     * @param list<RuleSetDescriptionInterface> $ruleSets
      */
     public function registerCustomRuleSets(array $ruleSets): ConfigInterface
     {
-        foreach ($ruleSets as $class) {
-            if (!class_exists($class)) {
-                throw new \UnexpectedValueException(\sprintf('Rule set "%s" does not exist.', $class));
-            }
-
-            if (!\in_array(RuleSetDescriptionInterface::class, class_implements($class), true)) {
-                throw new \UnexpectedValueException(\sprintf('Rule set "%s" does not implement "%s".', $class, RuleSetDescriptionInterface::class));
-            }
+        foreach ($ruleSets as $ruleset) {
+            $this->customRuleSets[$ruleset->getName()] = $ruleset;
         }
-
-        $this->customRuleSets = array_values(array_unique(array_merge($this->customRuleSets, $ruleSets)));
 
         return $this;
     }

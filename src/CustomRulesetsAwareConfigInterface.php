@@ -28,14 +28,14 @@ interface CustomRulesetsAwareConfigInterface extends ConfigInterface
     /**
      * Registers custom rule sets to be used the same way as built-in rule sets.
      *
-     * @param list<class-string<RuleSetDescriptionInterface>> $ruleSets
+     * @param list<RuleSetDescriptionInterface> $ruleSets
      *
      * @todo v4 Introduce it in main ConfigInterface
      */
     public function registerCustomRuleSets(array $ruleSets): ConfigInterface;
 
     /**
-     * @return list<class-string<RuleSetDescriptionInterface>>
+     * @return list<RuleSetDescriptionInterface>
      */
     public function getCustomRuleSets(): array;
 }

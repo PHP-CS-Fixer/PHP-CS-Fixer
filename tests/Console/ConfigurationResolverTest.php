@@ -39,7 +39,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
-use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\SampleRulesOk;
+use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleset;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\ToolInfoInterface;
@@ -1352,9 +1352,9 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
     public function testItCanRegisterCustomRuleSets(): void
     {
-        $ruleSet = new SampleRulesOk();
+        $ruleSet = new ExampleRuleset();
         $config = new Config();
-        $config->registerCustomRuleSets([\get_class($ruleSet)]);
+        $config->registerCustomRuleSets([$ruleSet]);
         $this
             ->createConfigurationResolver([], $config)
             ->getConfig() // IMPORTANT! Triggers custom rule sets registration

@@ -14,17 +14,18 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixtures\ExternalRuleSet;
 
+use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
+
 /**
  * Sample external RuleSet.
  *
- * This class is not implementing the required interface `\PhpCsFixer\RuleSet\RuleSetDescriptionInterface`,
- * so it will not be a valid class to be registered as a RuleSet.
+ * The name is intentionally NOT ending with "Set" to better test real-life usage.
  */
-class SampleRulesBad
+class ExampleRuleset implements RuleSetDescriptionInterface
 {
     public function getName(): string
     {
-        return '@RulesBad';
+        return '@Vendor/Ruleset';
     }
 
     public function isRisky(): bool
@@ -37,9 +38,6 @@ class SampleRulesBad
         return 'Description';
     }
 
-    /**
-     * @return array<string, array<string, mixed>|bool>
-     */
     public function getRules(): array
     {
         return [

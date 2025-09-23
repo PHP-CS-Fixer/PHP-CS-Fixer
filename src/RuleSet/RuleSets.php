@@ -98,32 +98,12 @@ final class RuleSets
         return $definitions[$name];
     }
 
-    /**
-     * @param class-string<RuleSetDescriptionInterface> $class
-     */
-    public static function registerCustomRuleSet(string $class): void
+    public static function registerCustomRuleSet(RuleSetDescriptionInterface $ruleset): void
     {
-        if (!class_exists($class)
-            || !\in_array(RuleSetDescriptionInterface::class, class_implements($class), true)
-        ) {
-            throw new \InvalidArgumentException(
-                \sprintf(
-                    'Class "%s" must be an instance of "%s".',
-                    $class,
-                    RuleSetDescriptionInterface::class
-                )
-            );
-        }
-
-        $ruleset = new $class();
         $name = $ruleset->getName();
 
         if (!RuleSetNameValidator::isValid($name, true)) {
             throw new \InvalidArgumentException('RuleSet name must begin with "@" and a letter (a-z, A-Z), and can contain only letters (a-z, A-Z), numbers, underscores, slashes, colons, dots and hyphens.');
-        }
-
-        if (!class_exists($class, true)) {
-            throw new \InvalidArgumentException(\sprintf('Class "%s" does not exist.', $class));
         }
 
         if (\array_key_exists($name, self::getSetDefinitions())) {
