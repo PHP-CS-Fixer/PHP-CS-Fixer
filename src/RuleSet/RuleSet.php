@@ -15,8 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\RuleSet;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Future;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Future;
 use PhpCsFixer\Utils;
 
 /**
