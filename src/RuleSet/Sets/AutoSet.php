@@ -16,7 +16,7 @@ namespace PhpCsFixer\RuleSet\Sets;
 
 use PhpCsFixer\ConfigurationException\UnresolvableAutoRuleSetConfigurationException;
 use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
-use PhpCsFixer\RuleSet\AutomaticRuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
 
 /**
@@ -26,7 +26,7 @@ use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
  *
  * @todo refactor for DRY between Auto*Set classes
  */
-final class AutoSet extends AbstractRuleSetDescription implements AutomaticRuleSetDescriptionInterface
+final class AutoSet extends AbstractRuleSetDescription implements AutomaticRuleSetDefinitionInterface
 {
     public function getName(): string
     {
