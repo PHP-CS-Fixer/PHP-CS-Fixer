@@ -15,8 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\RuleSet;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
-use PhpCsFixer\Future;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Future;
 use PhpCsFixer\Utils;
 
 /**
@@ -141,7 +141,7 @@ final class RuleSet implements RuleSetInterface
 
                 $resolvedRules = array_merge(
                     $resolvedRules,
-                    $this->resolveSubset($name, $value)
+                    $this->resolveSubset($name, $value),
                 );
             } else {
                 $resolvedRules[$name] = $value;

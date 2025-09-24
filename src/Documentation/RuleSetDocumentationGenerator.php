@@ -80,9 +80,10 @@ final class RuleSetDocumentationGenerator
             $doc .= "\n\n".$header($warningsHeader).implode("\n", $warnings);
         }
 
-        $rules = RuleSet::normaliseConfig($definition instanceof AutomaticRuleSetDefinitionInterface
+        $rules = RuleSet::normaliseConfig(
+            $definition instanceof AutomaticRuleSetDefinitionInterface
             ? $definition->getRulesCandidates()
-            : $definition->getRules()
+            : $definition->getRules(),
         );
 
         if ([] === $rules) {

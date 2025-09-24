@@ -188,6 +188,7 @@ final class RuleSetTest extends TestCase
      *
      * @dataProvider provideResolveRulesWithSetCases
      */
+    #[DataProvider('provideResolveRulesWithSetCases')]
     public function testResolveRulesWithSet(array $input, array $output): void
     {
         $ruleSet = new RuleSet($input);

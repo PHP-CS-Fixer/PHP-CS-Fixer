@@ -164,12 +164,12 @@ final class ConfigTest extends TestCase
             [
                 'decorated' => false,
                 'verbosity' => OutputInterface::VERBOSITY_VERY_VERBOSE,
-            ]
+            ],
         );
 
         self::assertStringContainsString(
             '.php-cs-fixer.fqcn.php (declare_strict_types, blank_line_after_opening_tag, multiline_whitespace_before_semicolons)',
-            $commandTester->getDisplay(true)
+            $commandTester->getDisplay(true),
         );
     }
 
