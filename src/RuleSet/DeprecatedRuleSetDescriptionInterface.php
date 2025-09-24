@@ -16,7 +16,7 @@ namespace PhpCsFixer\RuleSet;
 
 /*
  * @deprecated
- * @TODO v4 remove me
+ * @TODO v4 remove me @MARKER_deprecated_DeprecatedRuleSetDescriptionInterface
  */
 class_alias(
     DeprecatedRuleSetDefinitionInterface::class,

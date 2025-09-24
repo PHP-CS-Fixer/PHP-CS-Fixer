@@ -28,6 +28,7 @@ use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\DeprecatedRuleSetDefinitionInterface;
+use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
 use PhpCsFixer\Runner\Parallel\ProcessUtils;
 use PhpCsFixer\Tests\Fixer\ClassNotation\ModifierKeywordsFixerTest;
 use PhpCsFixer\Tests\PregTest;
@@ -787,6 +788,17 @@ final class ProjectCodeTest extends TestCase
      */
     public function testAllCodeContainSingleClassy(string $className): void
     {
+        // @TODO v4 remove me @MARKER_deprecated_DeprecatedRuleSetDescriptionInterface
+        if (\in_array(
+            $className,
+            [
+                DeprecatedRuleSetDescriptionInterface::class,
+            ],
+            true
+        )) {
+            self::markTestSkipped(\sprintf("Classy '%s' is deprecated alias and thus exception.", $className));
+        }
+
         $headerTypes = [
             \T_ABSTRACT,
             \T_AS,
