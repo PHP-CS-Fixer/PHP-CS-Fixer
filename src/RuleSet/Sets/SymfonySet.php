@@ -238,7 +238,7 @@ final class SymfonySet extends AbstractRuleSetDescription
             ],
             'trim_array_spaces' => true,
             'type_declaration_spaces' => [
-                'elements' => ['function', 'property'], // @TOOD v4.0 and before consider to add 'constant' (default value)
+                'elements' => ['function', 'property'], // @TODO v4.0 and before consider to add 'constant' (default value)
             ],
             'unary_operator_spaces' => true,
             'whitespace_after_comma_in_array' => true,
