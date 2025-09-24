@@ -45,7 +45,9 @@ final class PSR12Set extends AbstractRuleSetDescription
             'lowercase_cast' => true,
             'lowercase_static_reference' => true,
             'modifier_keywords' => true,
-            'new_with_parentheses' => true,
+            'new_with_parentheses' => [
+                'anonymous_class' => true,
+            ],
             'no_blank_lines_after_class_opening' => true,
             'no_extra_blank_lines' => [
                 'tokens' => [

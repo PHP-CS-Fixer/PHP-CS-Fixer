@@ -56,7 +56,9 @@ final class SymfonySet extends AbstractRuleSetDescription
             'empty_loop_body' => ['style' => 'braces'],
             'empty_loop_condition' => true,
             'fully_qualified_strict_types' => true,
-            'function_declaration' => true, // overrides @PER-CS2.0
+            'function_declaration' => [ // overrides @PER-CS2.0
+                'closure_fn_spacing' => 'one', // @TODO: default value of this option changed, consider to switch to new default
+            ],
             'general_phpdoc_tag_rename' => [
                 'replacements' => [
                     'inheritDocs' => 'inheritDoc',
@@ -182,6 +184,7 @@ final class SymfonySet extends AbstractRuleSetDescription
                     ['Annotation', 'NamedArgumentConstructor', 'Target'],
                     ...PhpdocSeparationFixer::OPTION_GROUPS_DEFAULT,
                 ],
+                'skip_unlisted_annotations' => false, // @TODO: default value of this option changed, consider to switch to new default
             ],
             'phpdoc_single_line_var_spacing' => true,
             'phpdoc_summary' => true,
@@ -190,7 +193,9 @@ final class SymfonySet extends AbstractRuleSetDescription
                     'inheritDoc' => 'inline',
                 ],
             ],
-            'phpdoc_to_comment' => true,
+            'phpdoc_to_comment' => [
+                'allow_before_return_statement' => false, // @TODO: default value of this option changed, consider to switch to new default
+            ],
             'phpdoc_trim' => true,
             'phpdoc_trim_consecutive_blank_line_separation' => true,
             'phpdoc_types' => true,
@@ -232,7 +237,9 @@ final class SymfonySet extends AbstractRuleSetDescription
                 ],
             ],
             'trim_array_spaces' => true,
-            'type_declaration_spaces' => true,
+            'type_declaration_spaces' => [
+                'elements' => ['function', 'property'], // @TODO v4.0 and before consider to add 'constant' (default value)
+            ],
             'unary_operator_spaces' => true,
             'whitespace_after_comma_in_array' => true,
             'yoda_style' => true,

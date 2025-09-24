@@ -43,7 +43,9 @@ final class PERCS2x0Set extends AbstractRuleSetDescription
             'function_declaration' => [
                 'closure_fn_spacing' => 'none',
             ],
-            'method_argument_space' => true,
+            'method_argument_space' => [
+                'after_heredoc' => false, // @TODO: default value of this option changed, consider to switch to new default
+            ],
             'new_with_parentheses' => [
                 'anonymous_class' => false,
             ],
