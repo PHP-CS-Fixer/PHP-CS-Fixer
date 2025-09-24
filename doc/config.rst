@@ -142,7 +142,7 @@ configure them in your config file.
         ->setLineEnding("\r\n")
     ;
 
-It's possible to register custom rule sets, which makes it easier to reuse custom configuration between multiple projects. If you have prepared rule set, you can register it, and then enable it in the rules. Custom rule sets (in this example ``\MyNameSpace\MyRuleSetClass``) must implement ``\PhpCsFixer\RuleSet\RuleSetDescriptionInterface``.
+It's possible to register custom rule sets, which makes it easier to reuse custom configuration between multiple projects. If you have prepared rule set, you can register it, and then enable it in the rules. Custom rule sets (in this example ``\MyNameSpace\MyRuleSetClass``) must implement ``\PhpCsFixer\RuleSet\RuleSetDefinitionInterface``.
 
 .. code-block:: php
 

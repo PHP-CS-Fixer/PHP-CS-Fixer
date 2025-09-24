@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer;
 
-use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 
 /**
  * @author Greg Korba <greg@codito.dev>
@@ -28,14 +28,14 @@ interface CustomRulesetsAwareConfigInterface extends ConfigInterface
     /**
      * Registers custom rule sets to be used the same way as built-in rule sets.
      *
-     * @param list<RuleSetDescriptionInterface> $ruleSets
+     * @param list<RuleSetDefinitionInterface> $ruleSets
      *
      * @todo v4 Introduce it in main ConfigInterface
      */
     public function registerCustomRuleSets(array $ruleSets): ConfigInterface;
 
     /**
-     * @return list<RuleSetDescriptionInterface>
+     * @return list<RuleSetDefinitionInterface>
      */
     public function getCustomRuleSets(): array;
 }

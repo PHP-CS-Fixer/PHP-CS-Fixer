@@ -135,7 +135,7 @@ final class RuleSet implements RuleSetInterface
     {
         $ruleSet = RuleSets::getSetDefinition($setName);
 
-        if ($ruleSet instanceof DeprecatedRuleSetDescriptionInterface) {
+        if ($ruleSet instanceof DeprecatedRuleSetDefinitionInterface) {
             $messageEnd = [] === $ruleSet->getSuccessorsNames()
                 ? 'No replacement available'
                 : \sprintf('Use %s instead', Utils::naturalLanguageJoin($ruleSet->getSuccessorsNames()));

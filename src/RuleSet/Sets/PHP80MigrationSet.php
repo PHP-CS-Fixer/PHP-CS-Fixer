@@ -14,11 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractMajorMinorDeprecationSetDescription;
+use PhpCsFixer\RuleSet\AbstractMajorMinorDeprecationSetDefinition;
 
 /**
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PHP80MigrationSet extends AbstractMajorMinorDeprecationSetDescription {}
+final class PHP80MigrationSet extends AbstractMajorMinorDeprecationSetDefinition {}

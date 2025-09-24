@@ -15,14 +15,14 @@ declare(strict_types=1);
 namespace PhpCsFixer\RuleSet\Sets;
 
 use PhpCsFixer\Fixer\Phpdoc\PhpdocSeparationFixer;
-use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
+use PhpCsFixer\RuleSet\AbstractRuleSetDefinition;
 
 /**
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class SymfonySet extends AbstractRuleSetDescription
+final class SymfonySet extends AbstractRuleSetDefinition
 {
     public function getRules(): array
     {

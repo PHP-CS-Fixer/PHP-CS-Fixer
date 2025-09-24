@@ -14,16 +14,16 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
+use PhpCsFixer\RuleSet\AbstractRuleSetDefinition;
 use PhpCsFixer\RuleSet\AutomaticMigrationSetTrait;
-use PhpCsFixer\RuleSet\AutomaticRuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
 
 /**
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class AutoPHPUnitMigrationRiskySet extends AbstractRuleSetDescription implements AutomaticRuleSetDescriptionInterface
+final class AutoPHPUnitMigrationRiskySet extends AbstractRuleSetDefinition implements AutomaticRuleSetDefinitionInterface
 {
     use AutomaticMigrationSetTrait;
 

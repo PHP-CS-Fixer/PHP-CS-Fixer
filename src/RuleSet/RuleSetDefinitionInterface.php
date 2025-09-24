@@ -17,7 +17,7 @@ namespace PhpCsFixer\RuleSet;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-interface RuleSetDescriptionInterface
+interface RuleSetDefinitionInterface
 {
     public function getDescription(): string;
 

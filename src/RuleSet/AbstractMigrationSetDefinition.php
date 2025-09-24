@@ -21,7 +21,7 @@ use PhpCsFixer\Preg;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-abstract class AbstractMigrationSetDescription extends AbstractRuleSetDescription
+abstract class AbstractMigrationSetDefinition extends AbstractRuleSetDefinition
 {
     private string $entity;
 

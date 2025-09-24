@@ -27,17 +27,17 @@ use Symfony\Component\Finder\Finder;
 final class RuleSets
 {
     /**
-     * @var null|array<string, RuleSetDescriptionInterface>
+     * @var null|array<string, RuleSetDefinitionInterface>
      */
     private static ?array $builtInSetDefinitions = null;
 
     /**
-     * @var array<string, RuleSetDescriptionInterface>
+     * @var array<string, RuleSetDefinitionInterface>
      */
     private static array $customRuleSetDefinitions = [];
 
     /**
-     * @return array<string, RuleSetDescriptionInterface>
+     * @return array<string, RuleSetDefinitionInterface>
      */
     public static function getSetDefinitions(): array
     {
@@ -52,7 +52,7 @@ final class RuleSets
     }
 
     /**
-     * @return array<string, RuleSetDescriptionInterface>
+     * @return array<string, RuleSetDefinitionInterface>
      */
     public static function getBuiltInSetDefinitions(): array
     {
@@ -60,10 +60,10 @@ final class RuleSets
             self::$builtInSetDefinitions = [];
 
             foreach (Finder::create()->files()->in(__DIR__.'/Sets') as $file) {
-                /** @var class-string<RuleSetDescriptionInterface> $class */
+                /** @var class-string<RuleSetDefinitionInterface> $class */
                 $class = 'PhpCsFixer\RuleSet\Sets\\'.$file->getBasename('.php');
 
-                /** @var RuleSetDescriptionInterface */
+                /** @var RuleSetDefinitionInterface */
                 $set = new $class();
 
                 if (!RuleSetNameValidator::isValid($set->getName(), false)) {
@@ -87,7 +87,7 @@ final class RuleSets
         return array_keys(self::getSetDefinitions());
     }
 
-    public static function getSetDefinition(string $name): RuleSetDescriptionInterface
+    public static function getSetDefinition(string $name): RuleSetDefinitionInterface
     {
         $definitions = self::getSetDefinitions();
 
@@ -98,7 +98,7 @@ final class RuleSets
         return $definitions[$name];
     }
 
-    public static function registerCustomRuleSet(RuleSetDescriptionInterface $ruleset): void
+    public static function registerCustomRuleSet(RuleSetDefinitionInterface $ruleset): void
     {
         $name = $ruleset->getName();
 
