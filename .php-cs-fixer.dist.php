@@ -34,6 +34,7 @@ $fileHeaderParts = [
 
 return (new Config())
     ->setParallelConfig(ParallelConfigFactory::detect()) // @TODO 4.0 no need to call this manually
+    ->setUnsupportedPhpVersionAllowed(true)
     ->setRiskyAllowed(true)
     ->registerCustomFixers([
         new ConfigurableFixerTemplateFixer(),
