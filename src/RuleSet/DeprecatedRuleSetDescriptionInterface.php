@@ -20,5 +20,5 @@ namespace PhpCsFixer\RuleSet;
  */
 class_alias(
     DeprecatedRuleSetDefinitionInterface::class,
-    DeprecatedRuleSetDescriptionInterface::class
+    DeprecatedRuleSetDescriptionInterface::class // @phpstan-ignore class.notFound
 );

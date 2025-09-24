@@ -792,7 +792,7 @@ final class ProjectCodeTest extends TestCase
         if (\in_array(
             $className,
             [
-                DeprecatedRuleSetDescriptionInterface::class,
+                DeprecatedRuleSetDescriptionInterface::class, // @phpstan-ignore class.notFound
             ],
             true
         )) {
