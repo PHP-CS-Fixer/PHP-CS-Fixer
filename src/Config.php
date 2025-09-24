@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer;
 
 use PhpCsFixer\Fixer\FixerInterface;
-use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
@@ -39,7 +39,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     private array $customFixers = [];
 
     /**
-     * @var array<string, RuleSetDescriptionInterface>
+     * @var array<string, RuleSetDefinitionInterface>
      */
     private array $customRuleSets = [];
 
@@ -200,7 +200,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     }
 
     /**
-     * @param list<RuleSetDescriptionInterface> $ruleSets
+     * @param list<RuleSetDefinitionInterface> $ruleSets
      */
     public function registerCustomRuleSets(array $ruleSets): ConfigInterface
     {

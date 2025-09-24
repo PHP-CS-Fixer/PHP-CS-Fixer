@@ -14,14 +14,14 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixtures\ExternalRuleSet;
 
-use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 
 /**
  * Sample external RuleSet.
  *
  * The name is intentionally NOT ending with "Set" to better test real-life usage.
  */
-class ExampleRuleset implements RuleSetDescriptionInterface
+class ExampleRuleset implements RuleSetDefinitionInterface
 {
     public function getName(): string
     {

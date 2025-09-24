@@ -32,7 +32,7 @@ final class RuleSets
     private static ?array $builtInSetDefinitions = null;
 
     /**
-     * @var array<string, RuleSetDescriptionInterface>
+     * @var array<string, RuleSetDefinitionInterface>
      */
     private static array $customRuleSetDefinitions = [];
 
@@ -52,7 +52,7 @@ final class RuleSets
     }
 
     /**
-     * @return array<string, RuleSetDescriptionInterface>
+     * @return array<string, RuleSetDefinitionInterface>
      */
     public static function getBuiltInSetDefinitions(): array
     {
@@ -60,7 +60,7 @@ final class RuleSets
             self::$builtInSetDefinitions = [];
 
             foreach (Finder::create()->files()->in(__DIR__.'/Sets') as $file) {
-                /** @var class-string<RuleSetDescriptionInterface> $class */
+                /** @var class-string<RuleSetDefinitionInterface> $class */
                 $class = 'PhpCsFixer\RuleSet\Sets\\'.$file->getBasename('.php');
 
                 /** @var RuleSetDefinitionInterface */
@@ -98,7 +98,7 @@ final class RuleSets
         return $definitions[$name];
     }
 
-    public static function registerCustomRuleSet(RuleSetDescriptionInterface $ruleset): void
+    public static function registerCustomRuleSet(RuleSetDefinitionInterface $ruleset): void
     {
         $name = $ruleset->getName();
 
