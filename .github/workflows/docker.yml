@@ -30,6 +30,7 @@ jobs:
           - docker-service: php-8.4
           - docker-service: sphinx-lint
           - docker-service: markdown-lint
+          - docker-service: yaml-lint
 
     steps:
       - name: Checkout repository
