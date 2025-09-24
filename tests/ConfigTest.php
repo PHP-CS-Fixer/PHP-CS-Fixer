@@ -136,6 +136,34 @@ final class ConfigTest extends TestCase
         );
     }
 
+    public function testConfigWithFullyQualifiedClassNamesAsFixersNames(): void
+    {
+        $customConfigFile = __DIR__.'/Fixtures/.php-cs-fixer.fqcn.php';
+
+        $application = new Application();
+        $application->add(new FixCommand(new ToolInfo()));
+
+        $commandTester = new CommandTester($application->find('fix'));
+
+        $commandTester->execute(
+            [
+                '--config' => $customConfigFile,
+                '--diff' => true,
+                '--dry-run' => true,
+                'path' => [$customConfigFile],
+            ],
+            [
+                'decorated' => false,
+                'verbosity' => OutputInterface::VERBOSITY_VERY_VERBOSE,
+            ]
+        );
+
+        self::assertStringContainsString(
+            '.php-cs-fixer.fqcn.php (declare_strict_types, blank_line_after_opening_tag, multiline_whitespace_before_semicolons)',
+            $commandTester->getDisplay(true)
+        );
+    }
+
     public function testThatFinderWorksWithDirSetOnConfig(): void
     {
         $config = new Config();

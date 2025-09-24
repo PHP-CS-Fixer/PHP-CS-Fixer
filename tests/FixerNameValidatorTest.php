@@ -66,7 +66,7 @@ final class FixerNameValidatorTest extends TestCase
 
         yield ['vendor/foo', false, false];
 
-        yield ['bendor/foo', true, false];
+        yield ['vendor/foo', true, true];
 
         yield ['Vendor/foo', true, true];
 
@@ -76,11 +76,31 @@ final class FixerNameValidatorTest extends TestCase
 
         yield ['FooBar/foo', true, true];
 
+        yield ['foo\bar', true, true];
+
+        yield ['Foo\Bar', true, true];
+
+        yield ['Foo\Bar\Baz', true, true];
+
+        yield ['FooBar\B4z\MyFixer123', true, true];
+
         yield ['Foo-Bar/foo', true, false];
 
         yield ['Foo_Bar/foo', true, false];
 
         yield ['Foo/foo/bar', true, false];
+
+        yield ['OneFoo\2Bar', true, false];
+
+        yield ['PhpCsFixer\Restricted', true, false];
+
+        yield ['phpcsfixer\Restricted', true, false];
+
+        yield ['PHPCSFIXER\Restricted', true, false];
+
+        yield ['_Foo\bar', true, false];
+
+        yield ['Foo\Bar-Bara', true, false];
 
         yield ['/foo', true, false];
 
