@@ -32,7 +32,7 @@ trait AutomaticMigrationSetTrait
         static $set = null;
 
         if (null === $set) {
-            $actualVersion = self::calculateActualVersion($setName, $entity);
+            $actualVersion = self::calculateActualVersion($entity);
 
             $candidates = self::calculateCandidateSets($entity, $isRisky);
             $composerCandidates = Semver::rsort(array_keys($candidates));
@@ -46,7 +46,7 @@ trait AutomaticMigrationSetTrait
             }
 
             if (null === $set) {
-                throw new UnresolvableAutoRuleSetConfigurationException(\sprintf('No migration set found feasible for %s %s.', $entity, $actualVersion));
+                throw new UnresolvableAutoRuleSetConfigurationException(\sprintf('No migration set found feasible for %s (%s %s).', $setName, $entity, $actualVersion));
             }
         }
 
@@ -70,7 +70,7 @@ trait AutomaticMigrationSetTrait
         return $sets;
     }
 
-    private static function calculateActualVersion(string $setName, string $entity): string
+    private static function calculateActualVersion(string $entity): string
     {
         $composerJsonReader = ComposerJsonReader::createSingleton();
 
