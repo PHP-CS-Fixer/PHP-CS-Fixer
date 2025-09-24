@@ -34,14 +34,13 @@ $fileHeaderParts = [
 
 return (new Config())
     ->setParallelConfig(ParallelConfigFactory::detect()) // @TODO 4.0 no need to call this manually
+    ->setUnsupportedPhpVersionAllowed(true)
     ->setRiskyAllowed(true)
     ->registerCustomFixers([
         new ConfigurableFixerTemplateFixer(),
     ])
     ->setRules([
-        '@autoPHPMigration' => true,
-        '@autoPHPMigration:risky' => true,
-        '@autoPHPUnitMigration:risky' => true,
+        '@auto' => true,
         '@PhpCsFixer' => true,
         '@PhpCsFixer:risky' => true,
         'general_phpdoc_annotation_remove' => ['annotations' => ['expectedDeprecation']], // one should use PHPUnit built-in method instead

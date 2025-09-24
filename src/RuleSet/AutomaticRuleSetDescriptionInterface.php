@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\RuleSet;
 
 /**
- * Used to indicate that the ruleset can automatically determined and will differ based on runtime conditions.
+ * Used to indicate that the ruleset can be automatically determined and will differ based on runtime conditions.
  *
  * @internal
  *

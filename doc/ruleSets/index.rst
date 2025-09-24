@@ -92,6 +92,8 @@ List of Available Rule sets
 - `@PhpCsFixer:risky <./PhpCsFixerRisky.rst>`_
 - `@Symfony <./Symfony.rst>`_
 - `@Symfony:risky <./SymfonyRisky.rst>`_
+- `@auto <./Auto.rst>`_
+- `@auto:risky <./AutoRisky.rst>`_
 - `@autoPHPMigration <./AutoPHPMigration.rst>`_
 - `@autoPHPMigration:risky <./AutoPHPMigrationRisky.rst>`_
 - `@autoPHPUnitMigration:risky <./AutoPHPUnitMigrationRisky.rst>`_
