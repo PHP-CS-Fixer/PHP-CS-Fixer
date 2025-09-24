@@ -367,7 +367,7 @@ final class RuleSetTest extends TestCase
      */
     public static function provideDuplicateRuleConfigurationInSetDefinitionsCases(): iterable
     {
-        foreach (RuleSets::getSetDefinitions() as $name => $set) {
+        foreach (RuleSets::getBuiltInSetDefinitions() as $name => $set) {
             yield $name => [$set];
         }
     }
