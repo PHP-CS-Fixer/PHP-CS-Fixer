@@ -4,8 +4,13 @@ Rule set ``@autoPHPMigration``
 
 Rules to improve code for PHP. Target version is automatically detected from project's "composer.json" file.
 
-⚡ This rule is automatic: it's definition depends on your project, eg "composer.json" file.
+Warning
+-------
 
+Automatic rule set
+~~~~~~~~~~~~~~~~~~
+
+⚡ This rule is automatic: it's definition depends on your project, eg "composer.json" file.
 
 Rules candidates
 ----------------

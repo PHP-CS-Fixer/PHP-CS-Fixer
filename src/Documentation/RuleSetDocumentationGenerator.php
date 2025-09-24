@@ -86,11 +86,15 @@ final class RuleSetDocumentationGenerator
                 RST;
         }
 
-        $header = static function (string $message): string {
-            $line = str_repeat('-', \strlen($message));
+        $header = static function (string $message, string $underline = '-'): string {
+            $line = str_repeat($underline, \strlen($message));
 
             return "{$message}\n{$line}\n";
         };
+
+        if ($definition instanceof AutomaticRuleSetDescriptionInterface) {
+            $warnings[] = "\n".$header('Automatic rule set', '~')."\n⚡ ".strip_tags(AutomaticRuleSetDescriptionInterface::WARNING_MESSAGE_DECORATED);
+        }
 
         if ([] !== $warnings) {
             $warningsHeader = 1 === \count($warnings) ? 'Warning' : 'Warnings';
@@ -130,10 +134,6 @@ final class RuleSetDocumentationGenerator
                     }
                 }
             };
-
-            if ($definition instanceof AutomaticRuleSetDescriptionInterface) {
-                $doc .= "\n\n⚡ ".strip_tags(AutomaticRuleSetDescriptionInterface::WARNING_MESSAGE_DECORATED)."\n";
-            }
 
             $rulesCandidatesDescriptionHeader = $definition instanceof AutomaticRuleSetDescriptionInterface
                 ? ' candidates'
