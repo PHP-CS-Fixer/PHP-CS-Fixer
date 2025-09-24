@@ -87,5 +87,11 @@ final class RuleSetNameValidatorTest extends TestCase
         yield 'Contains comma 2' => ['@MyRules,', true];
 
         yield 'Contains hash' => ['@MyRules#', true];
+
+        yield 'Uses PhpCsFixer as part of vendor' => ['@PhpCsFixerExtensions', true];
+
+        yield 'Uses PhpCsFixer as part of vendor, with subnamespace' => ['@PhpCsFixerExtensions/CS', true];
+
+        yield 'Invalid :suffix' => ['@Vendor/CS:custom', true];
     }
 }

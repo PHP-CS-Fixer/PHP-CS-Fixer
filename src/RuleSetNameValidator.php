@@ -25,6 +25,7 @@ final class RuleSetNameValidator
             return Preg::match('/^@[a-zA-Z][a-zA-Z0-9:_\/\.-]*$/', $name);
         }
 
-        return Preg::match('/^@[a-zA-Z][a-zA-Z0-9:_\/\.-]*$/', $name);
+        // See: https://regex101.com/r/VcOnNr/7
+        return Preg::match('/^@(?!PhpCsFixer)[a-z][a-z0-9_]*\/[a-z][a-z0-9_\-\.]*(:risky)?$/i', $name);
     }
 }
