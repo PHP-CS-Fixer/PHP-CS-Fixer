@@ -86,64 +86,68 @@ final class RuleSetDocumentationGenerator
                 RST;
         }
 
+        $header = static function (string $message, string $underline = '-'): string {
+            $line = str_repeat($underline, \strlen($message));
+
+            return "{$message}\n{$line}\n";
+        };
+
+        if ($definition instanceof AutomaticRuleSetDescriptionInterface) {
+            $warnings[] = "\n".$header('Automatic rule set', '~')."\n⚡ ".strip_tags(AutomaticRuleSetDescriptionInterface::WARNING_MESSAGE_DECORATED);
+        }
+
         if ([] !== $warnings) {
             $warningsHeader = 1 === \count($warnings) ? 'Warning' : 'Warnings';
 
-            $warningsHeaderLine = str_repeat('-', \strlen($warningsHeader));
-            $doc .= "\n\n".implode(
-                "\n",
-                [
-                    $warningsHeader,
-                    $warningsHeaderLine,
-                    ...$warnings,
-                ]
-            );
+            $doc .= "\n\n".$header($warningsHeader).implode("\n", $warnings);
         }
 
-        if ($definition instanceof AutomaticRuleSetDescriptionInterface) {
-            $doc .= "\n\nRules\n-----\n\n"
-.strip_tags(AutomaticRuleSetDescriptionInterface::WARNING_MESSAGE_DECORATED);
+        $rules = $definition instanceof AutomaticRuleSetDescriptionInterface
+                ? $definition->getRulesCandidates()
+                : $definition->getRules();
+
+        if ([] === $rules) {
+            $doc .= "\n\nThis is an empty set.";
         } else {
-            $rules = $definition->getRules();
+            $enabledRules = array_filter($rules, static fn ($config) => false !== $config);
+            $disabledRules = array_filter($rules, static fn ($config) => false === $config);
 
-            if ([] === $rules) {
-                $doc .= "\n\nThis is an empty set.";
-            } else {
-                $enabledRules = array_filter($rules, static fn ($config) => false !== $config);
-                $disabledRules = array_filter($rules, static fn ($config) => false === $config);
+            $listRules = function (array $rules) use (&$doc, $fixerNames): void {
+                foreach ($rules as $rule => $config) {
+                    if (str_starts_with($rule, '@')) {
+                        $ruleSetPath = $this->locator->getRuleSetsDocumentationFilePath($rule);
+                        $ruleSetPath = substr($ruleSetPath, strrpos($ruleSetPath, '/'));
 
-                $listRules = function (array $rules) use (&$doc, $fixerNames): void {
-                    foreach ($rules as $rule => $config) {
-                        if (str_starts_with($rule, '@')) {
-                            $ruleSetPath = $this->locator->getRuleSetsDocumentationFilePath($rule);
-                            $ruleSetPath = substr($ruleSetPath, strrpos($ruleSetPath, '/'));
+                        $doc .= "\n- `{$rule} <.{$ruleSetPath}>`_";
+                    } else {
+                        $path = Preg::replace(
+                            '#^'.preg_quote($this->locator->getFixersDocumentationDirectoryPath(), '#').'/#',
+                            './../rules/',
+                            $this->locator->getFixerDocumentationFilePath($fixerNames[$rule])
+                        );
 
-                            $doc .= "\n- `{$rule} <.{$ruleSetPath}>`_";
-                        } else {
-                            $path = Preg::replace(
-                                '#^'.preg_quote($this->locator->getFixersDocumentationDirectoryPath(), '#').'/#',
-                                './../rules/',
-                                $this->locator->getFixerDocumentationFilePath($fixerNames[$rule])
-                            );
-
-                            $doc .= "\n- `{$rule} <{$path}>`_";
-                        }
-
-                        if (!\is_bool($config)) {
-                            $doc .= " with config:\n\n  ``".Utils::toString($config)."``\n";
-                        }
+                        $doc .= "\n- `{$rule} <{$path}>`_";
                     }
-                };
 
-                if ([] !== $enabledRules) {
-                    $doc .= "\n\nRules\n-----\n";
-                    $listRules($enabledRules);
+                    if (!\is_bool($config)) {
+                        $doc .= " with config:\n\n  ``".Utils::toString($config)."``\n";
+                    }
                 }
+            };
 
-                if ([] !== $disabledRules) {
-                    $doc .= "\n\nDisabled rules\n--------------\n";
-                    $listRules($disabledRules);
-                }
+            $rulesCandidatesDescriptionHeader = $definition instanceof AutomaticRuleSetDescriptionInterface
+                ? ' candidates'
+                : '';
+
+            if ([] !== $enabledRules) {
+                $doc .= "\n\n".$header("Rules{$rulesCandidatesDescriptionHeader}");
+                $listRules($enabledRules);
+            }
+
+            if ([] !== $disabledRules) {
+                $doc .= "\n\n".$header("Disabled rules{$rulesCandidatesDescriptionHeader}");
+
+                $listRules($disabledRules);
             }
         }
 
