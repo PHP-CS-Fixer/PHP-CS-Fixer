@@ -31,7 +31,6 @@
         "fidry/cpu-core-counter": "^1.3",
         "react/child-process": "^0.6.6",
         "react/event-loop": "^1.5",
-        "react/promise": "^3.3",
         "react/socket": "^1.16",
         "react/stream": "^1.4",
         "sebastian/diff": "^4.0.6 || ^5.1.1 || ^6.0.2 || ^7.0",
