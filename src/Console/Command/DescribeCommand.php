@@ -34,7 +34,7 @@ use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Future;
 use PhpCsFixer\Preg;
-use PhpCsFixer\RuleSet\AutomaticRuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\StdinFileInfo;
@@ -350,7 +350,7 @@ final class DescribeCommand extends Command
                 \assert(isset($ruleSetDefinitions[$set]));
                 $ruleSetDescription = $ruleSetDefinitions[$set];
 
-                if ($ruleSetDescription instanceof AutomaticRuleSetDescriptionInterface) {
+                if ($ruleSetDescription instanceof AutomaticRuleSetDefinitionInterface) {
                     continue;
                 }
 
@@ -399,8 +399,8 @@ final class DescribeCommand extends Command
             $output->writeln('');
         }
 
-        if ($ruleSetDescription instanceof AutomaticRuleSetDescriptionInterface) {
-            $output->writeln(AutomaticRuleSetDescriptionInterface::WARNING_MESSAGE_DECORATED);
+        if ($ruleSetDescription instanceof AutomaticRuleSetDefinitionInterface) {
+            $output->writeln(AutomaticRuleSetDefinitionInterface::WARNING_MESSAGE_DECORATED);
             $output->writeln('');
         }
 

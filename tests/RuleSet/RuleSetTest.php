@@ -21,7 +21,7 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOptionInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSet;
-use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
@@ -311,7 +311,7 @@ final class RuleSetTest extends TestCase
     /**
      * @dataProvider provideDuplicateRuleConfigurationInSetDefinitionsCases
      */
-    public function testDuplicateRuleConfigurationInSetDefinitions(RuleSetDescriptionInterface $set): void
+    public function testDuplicateRuleConfigurationInSetDefinitions(RuleSetDefinitionInterface $set): void
     {
         $rules = [];
         $setRules = [];
@@ -355,7 +355,7 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{RuleSetDescriptionInterface}>
+     * @return iterable<string, array{RuleSetDefinitionInterface}>
      */
     public static function provideDuplicateRuleConfigurationInSetDefinitionsCases(): iterable
     {

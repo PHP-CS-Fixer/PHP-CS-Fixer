@@ -27,10 +27,10 @@ use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\Preg;
-use PhpCsFixer\RuleSet\AutomaticRuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
 use PhpCsFixer\RuleSet\RuleSet;
-use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -49,7 +49,7 @@ final class FixerDocumentGenerator
 
     private FullDiffer $differ;
 
-    /** @var array<string, RuleSetDescriptionInterface> */
+    /** @var array<string, RuleSetDefinitionInterface> */
     private array $ruleSetDefinitions;
 
     public function __construct(DocumentationLocator $locator)
@@ -257,7 +257,7 @@ final class FixerDocumentGenerator
                 \assert(isset($this->ruleSetDefinitions[$set]));
                 $ruleSetDescription = $this->ruleSetDefinitions[$set];
 
-                if ($ruleSetDescription instanceof AutomaticRuleSetDescriptionInterface) {
+                if ($ruleSetDescription instanceof AutomaticRuleSetDefinitionInterface) {
                     continue;
                 }
 

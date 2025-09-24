@@ -26,12 +26,12 @@ use Symfony\Component\Finder\Finder;
 final class RuleSets
 {
     /**
-     * @var null|array<string, RuleSetDescriptionInterface>
+     * @var null|array<string, RuleSetDefinitionInterface>
      */
     private static ?array $setDefinitions = null;
 
     /**
-     * @return array<string, RuleSetDescriptionInterface>
+     * @return array<string, RuleSetDefinitionInterface>
      */
     public static function getSetDefinitions(): array
     {
@@ -41,7 +41,7 @@ final class RuleSets
             foreach (Finder::create()->files()->in(__DIR__.'/Sets') as $file) {
                 $class = 'PhpCsFixer\RuleSet\Sets\\'.$file->getBasename('.php');
 
-                /** @var RuleSetDescriptionInterface */
+                /** @var RuleSetDefinitionInterface */
                 $set = new $class();
 
                 self::$setDefinitions[$set->getName()] = $set;
@@ -61,7 +61,7 @@ final class RuleSets
         return array_keys(self::getSetDefinitions());
     }
 
-    public static function getSetDefinition(string $name): RuleSetDescriptionInterface
+    public static function getSetDefinition(string $name): RuleSetDefinitionInterface
     {
         $definitions = self::getSetDefinitions();
 

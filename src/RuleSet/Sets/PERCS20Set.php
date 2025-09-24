@@ -16,7 +16,7 @@ namespace PhpCsFixer\RuleSet\Sets;
 
 use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
 use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
-use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 
 /**
  * @internal
@@ -49,7 +49,7 @@ final class PERCS20Set extends AbstractRuleSetDescription implements DeprecatedR
         return [$this->getProxiedSet()->getName()];
     }
 
-    private function getProxiedSet(): RuleSetDescriptionInterface
+    private function getProxiedSet(): RuleSetDefinitionInterface
     {
         return new PERCS2x0Set();
     }

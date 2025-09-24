@@ -18,8 +18,11 @@ namespace PhpCsFixer\RuleSet;
  * @author Greg Korba <greg@codito.dev>
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ *  @TODO v4 | v3.xx rename to AbstractRuleSetDefinition // keradus
+ *  @TODO v4 consider internal ? // keradus
  */
-interface DeprecatedRuleSetDescriptionInterface extends RuleSetDescriptionInterface
+interface DeprecatedRuleSetDescriptionInterface extends RuleSetDefinitionInterface
 {
     /**
      * Returns names of rule sets to use instead, if any.
