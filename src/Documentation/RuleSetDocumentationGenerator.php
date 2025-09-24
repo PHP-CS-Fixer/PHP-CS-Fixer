@@ -17,7 +17,7 @@ namespace PhpCsFixer\Documentation;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
-use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\DeprecatedRuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 use PhpCsFixer\Utils;
 
@@ -53,7 +53,7 @@ final class RuleSetDocumentationGenerator
         $doc = "{$titleLine}\n{$title}\n{$titleLine}\n\n".$definition->getDescription();
 
         $warnings = [];
-        if ($definition instanceof DeprecatedRuleSetDescriptionInterface) {
+        if ($definition instanceof DeprecatedRuleSetDefinitionInterface) {
             $deprecationDescription = <<<'RST'
 
                 This rule set is deprecated and will be removed in the next major version
@@ -170,7 +170,7 @@ final class RuleSetDocumentationGenerator
 
             $attributes = [];
 
-            if ($definition instanceof DeprecatedRuleSetDescriptionInterface) {
+            if ($definition instanceof DeprecatedRuleSetDefinitionInterface) {
                 $attributes[] = 'deprecated';
             }
 

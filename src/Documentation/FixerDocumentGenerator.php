@@ -28,7 +28,7 @@ use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
-use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\DeprecatedRuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
@@ -261,7 +261,7 @@ final class FixerDocumentGenerator
                     continue;
                 }
 
-                $deprecatedDesc = ($ruleSetDescription instanceof DeprecatedRuleSetDescriptionInterface) ? ' *(deprecated)*' : '';
+                $deprecatedDesc = ($ruleSetDescription instanceof DeprecatedRuleSetDefinitionInterface) ? ' *(deprecated)*' : '';
 
                 $configInfo = (null !== $config)
                     ? " with config:\n\n  ``".Utils::toString($config)."``\n"

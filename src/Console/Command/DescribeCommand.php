@@ -35,7 +35,7 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Future;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
-use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\DeprecatedRuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -354,7 +354,7 @@ final class DescribeCommand extends Command
                     continue;
                 }
 
-                $deprecatedDesc = ($ruleSetDescription instanceof DeprecatedRuleSetDescriptionInterface) ? ' *(deprecated)*' : '';
+                $deprecatedDesc = ($ruleSetDescription instanceof DeprecatedRuleSetDefinitionInterface) ? ' *(deprecated)*' : '';
                 if (null !== $config) {
                     $output->writeln(\sprintf('* <info>%s</info> with config: <comment>%s</comment>', $set.$deprecatedDesc, Utils::toString($config)));
                 } else {
@@ -382,7 +382,7 @@ final class DescribeCommand extends Command
         $output->writeln($this->replaceRstLinks($ruleSetDescription->getDescription()));
         $output->writeln('');
 
-        if ($ruleSetDescription instanceof DeprecatedRuleSetDescriptionInterface) {
+        if ($ruleSetDescription instanceof DeprecatedRuleSetDefinitionInterface) {
             $successors = $ruleSetDescription->getSuccessorsNames();
             $message = [] === $successors
                 ? \sprintf('it will be removed in version %d.0', Application::getMajorVersion() + 1)

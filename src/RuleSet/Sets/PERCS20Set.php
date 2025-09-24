@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\RuleSet\Sets;
 
 use PhpCsFixer\RuleSet\AbstractRuleSetDefinition;
-use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\DeprecatedRuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 
 /**
@@ -27,7 +27,7 @@ use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PERCS20Set extends AbstractRuleSetDefinition implements DeprecatedRuleSetDescriptionInterface
+final class PERCS20Set extends AbstractRuleSetDefinition implements DeprecatedRuleSetDefinitionInterface
 {
     public function getName(): string
     {

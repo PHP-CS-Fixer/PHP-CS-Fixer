@@ -63,7 +63,7 @@ trait AutomaticMigrationSetTrait
         if (null === $sets) {
             $sets = array_values(array_filter(
                 RuleSets::getSetDefinitions(),
-                static fn (RuleSetDefinitionInterface $set): bool => !($set instanceof DeprecatedRuleSetDescriptionInterface) && is_subclass_of($set, AbstractMigrationSetDefinition::class),
+                static fn (RuleSetDefinitionInterface $set): bool => !($set instanceof DeprecatedRuleSetDefinitionInterface) && is_subclass_of($set, AbstractMigrationSetDefinition::class),
             ));
         }
 
