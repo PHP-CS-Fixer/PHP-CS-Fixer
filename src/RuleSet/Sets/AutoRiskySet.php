@@ -16,15 +16,15 @@ namespace PhpCsFixer\RuleSet\Sets;
 
 use PhpCsFixer\ConfigurationException\UnresolvableAutoRuleSetConfigurationException;
 use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
-use PhpCsFixer\RuleSet\AutomaticRuleSetDescriptionInterface;
-use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
+use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 
 /**
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class AutoRiskySet extends AbstractRuleSetDescription implements AutomaticRuleSetDescriptionInterface
+final class AutoRiskySet extends AbstractRuleSetDescription implements AutomaticRuleSetDefinitionInterface
 {
     public function getName(): string
     {
@@ -35,10 +35,10 @@ final class AutoRiskySet extends AbstractRuleSetDescription implements Automatic
     {
         $sets = array_filter(
             $this->getCandidates(),
-            fn (RuleSetDescriptionInterface $set): bool => $this->isSetDiscoverable($set),
+            fn (RuleSetDefinitionInterface $set): bool => $this->isSetDiscoverable($set),
         );
         $sets = array_map(
-            static fn (RuleSetDescriptionInterface $set): string => $set->getName(),
+            static fn (RuleSetDefinitionInterface $set): string => $set->getName(),
             $sets,
         );
 
@@ -53,14 +53,14 @@ final class AutoRiskySet extends AbstractRuleSetDescription implements Automatic
     public function getRulesCandidates(): array
     {
         $sets = array_map(
-            static fn (RuleSetDescriptionInterface $set): string => $set->getName(),
+            static fn (RuleSetDefinitionInterface $set): string => $set->getName(),
             $this->getCandidates()
         );
 
         return array_combine($sets, array_fill(0, \count($sets), true));
     }
 
-    /** @return list<RuleSetDescriptionInterface> */
+    /** @return list<RuleSetDefinitionInterface> */
     private function getCandidates(): array
     {
         // order matters
@@ -71,7 +71,7 @@ final class AutoRiskySet extends AbstractRuleSetDescription implements Automatic
         ];
     }
 
-    private function isSetDiscoverable(RuleSetDescriptionInterface $set): bool
+    private function isSetDiscoverable(RuleSetDefinitionInterface $set): bool
     {
         try {
             $set->getRules();

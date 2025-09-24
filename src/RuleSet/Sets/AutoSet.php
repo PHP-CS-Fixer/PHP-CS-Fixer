@@ -16,8 +16,8 @@ namespace PhpCsFixer\RuleSet\Sets;
 
 use PhpCsFixer\ConfigurationException\UnresolvableAutoRuleSetConfigurationException;
 use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
-use PhpCsFixer\RuleSet\AutomaticRuleSetDescriptionInterface;
-use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
+use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 
 /**
  * @internal
@@ -26,7 +26,7 @@ use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
  *
  * @todo refactor for DRY between Auto*Set classes
  */
-final class AutoSet extends AbstractRuleSetDescription implements AutomaticRuleSetDescriptionInterface
+final class AutoSet extends AbstractRuleSetDescription implements AutomaticRuleSetDefinitionInterface
 {
     public function getName(): string
     {
@@ -37,10 +37,10 @@ final class AutoSet extends AbstractRuleSetDescription implements AutomaticRuleS
     {
         $sets = array_filter(
             $this->getCandidates(),
-            fn (RuleSetDescriptionInterface $set): bool => $this->isSetDiscoverable($set),
+            fn (RuleSetDefinitionInterface $set): bool => $this->isSetDiscoverable($set),
         );
         $sets = array_map(
-            static fn (RuleSetDescriptionInterface $set): string => $set->getName(),
+            static fn (RuleSetDefinitionInterface $set): string => $set->getName(),
             $sets,
         );
 
@@ -55,14 +55,14 @@ final class AutoSet extends AbstractRuleSetDescription implements AutomaticRuleS
     public function getRulesCandidates(): array
     {
         $sets = array_map(
-            static fn (RuleSetDescriptionInterface $set): string => $set->getName(),
+            static fn (RuleSetDefinitionInterface $set): string => $set->getName(),
             $this->getCandidates()
         );
 
         return array_combine($sets, array_fill(0, \count($sets), true));
     }
 
-    /** @return list<RuleSetDescriptionInterface> */
+    /** @return list<RuleSetDefinitionInterface> */
     private function getCandidates(): array
     {
         // order matters
@@ -72,7 +72,7 @@ final class AutoSet extends AbstractRuleSetDescription implements AutomaticRuleS
         ];
     }
 
-    private function isSetDiscoverable(RuleSetDescriptionInterface $set): bool
+    private function isSetDiscoverable(RuleSetDefinitionInterface $set): bool
     {
         try {
             $set->getRules();
