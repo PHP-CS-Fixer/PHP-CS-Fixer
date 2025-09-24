@@ -24,7 +24,7 @@ use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
- * @todo refactor for DRY between Auto*Set classes
+ * @TODO refactor for DRY between Auto*Set classes // keradus
  */
 final class AutoSet extends AbstractRuleSetDescription implements AutomaticRuleSetDefinitionInterface
 {
