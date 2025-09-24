@@ -22,7 +22,7 @@ final class RuleSetNameValidator
     public static function isValid(string $name, bool $isCustom): bool
     {
         if (!$isCustom) {
-            return Preg::match('/^@[a-zA-Z][a-zA-Z0-9:_\/\.-]*$/', $name);
+            return Preg::match('/^@[a-z][a-z0-9\/_\-\.]*(:risky)?$/i', $name);
         }
 
         // See: https://regex101.com/r/VcOnNr/7

@@ -26,9 +26,9 @@ use PhpCsFixer\RuleSetNameValidator;
 final class RuleSetNameValidatorTest extends TestCase
 {
     /**
-     * @dataProvider provideIsValidOkCases
+     * @dataProvider provideValidNamesCases
      */
-    public function testIsValidOk(string $name, bool $isCustom): void
+    public function testValidNames(string $name, bool $isCustom): void
     {
         self::assertTrue(RuleSetNameValidator::isValid($name, $isCustom));
     }
@@ -36,13 +36,17 @@ final class RuleSetNameValidatorTest extends TestCase
     /**
      * @return iterable<string, array{0: string, 1: bool}>
      */
-    public static function provideIsValidOkCases(): iterable
+    public static function provideValidNamesCases(): iterable
     {
         yield 'Built-in' => ['@Foo', false];
+
+        yield 'Built-in lowercase' => ['@foo', false];
 
         yield 'Built-in risky' => ['@Foo:risky', false];
 
         yield 'Built-in with sub-namespace' => ['@PhpCsFixer/testing', false];
+
+        yield 'Built-in with sub-namespace + risky' => ['@PhpCsFixer/testing:risky', false];
 
         yield 'Built-in with dot-based namespace' => ['@PhpCsFixer.testing', false];
 
@@ -59,12 +63,14 @@ final class RuleSetNameValidatorTest extends TestCase
         yield 'Short name 1' => ['@Vendor/X', true];
 
         yield 'Short name 2' => ['@Vendor/y', true];
+
+        yield 'Short name lowercase' => ['@vendor/y', true];
     }
 
     /**
-     * @dataProvider provideIsValidBadNameCases
+     * @dataProvider provideInvalidNamesCases
      */
-    public function testIsValidBadName(string $name, bool $isCustom): void
+    public function testInvalidNames(string $name, bool $isCustom): void
     {
         self::assertFalse(RuleSetNameValidator::isValid($name, $isCustom));
     }
@@ -72,9 +78,11 @@ final class RuleSetNameValidatorTest extends TestCase
     /**
      * @return iterable<string, array{0: string, 1: bool}>
      */
-    public static function provideIsValidBadNameCases(): iterable
+    public static function provideInvalidNamesCases(): iterable
     {
         yield 'Built-in without @' => ['Foo', false];
+
+        yield 'Built-in with invalid :suffix' => ['Foo:bar', false];
 
         yield 'Built-in starting with number' => ['@100rules', false];
 
