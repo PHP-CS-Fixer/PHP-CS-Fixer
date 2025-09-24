@@ -54,7 +54,7 @@ trait AutomaticMigrationSetTrait
     }
 
     /**
-     * @return list<AbstractMigrationSetDescription>
+     * @return list<AbstractMigrationSetDefinition>
      */
     private static function getMigrationSets(): array
     {
@@ -63,7 +63,7 @@ trait AutomaticMigrationSetTrait
         if (null === $sets) {
             $sets = array_values(array_filter(
                 RuleSets::getSetDefinitions(),
-                static fn (RuleSetDefinitionInterface $set): bool => !($set instanceof DeprecatedRuleSetDescriptionInterface) && is_subclass_of($set, AbstractMigrationSetDescription::class),
+                static fn (RuleSetDefinitionInterface $set): bool => !($set instanceof DeprecatedRuleSetDescriptionInterface) && is_subclass_of($set, AbstractMigrationSetDefinition::class),
             ));
         }
 

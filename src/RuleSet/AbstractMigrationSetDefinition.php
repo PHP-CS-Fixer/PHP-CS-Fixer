@@ -20,10 +20,8 @@ use PhpCsFixer\Preg;
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
- *
- * @TODO rename to Definition // keradus
  */
-abstract class AbstractMigrationSetDescription extends AbstractRuleSetDefinition
+abstract class AbstractMigrationSetDefinition extends AbstractRuleSetDefinition
 {
     private string $entity;
 

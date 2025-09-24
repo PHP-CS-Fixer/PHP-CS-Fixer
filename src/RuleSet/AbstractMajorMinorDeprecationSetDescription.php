@@ -25,7 +25,7 @@ use PhpCsFixer\Preg;
  *
  * @TODO rename to Definition // keradus
  */
-abstract class AbstractMajorMinorDeprecationSetDescription extends AbstractMigrationSetDescription implements DeprecatedRuleSetDescriptionInterface
+abstract class AbstractMajorMinorDeprecationSetDescription extends AbstractMigrationSetDefinition implements DeprecatedRuleSetDescriptionInterface
 {
     public function getRules(): array
     {
