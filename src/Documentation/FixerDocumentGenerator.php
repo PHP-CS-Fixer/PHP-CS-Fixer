@@ -255,13 +255,13 @@ final class FixerDocumentGenerator
                 $ruleSetPath = substr($ruleSetPath, strrpos($ruleSetPath, '/'));
 
                 \assert(isset($this->ruleSetDefinitions[$set]));
-                $ruleSetDescription = $this->ruleSetDefinitions[$set];
+                $ruleSetDefinition = $this->ruleSetDefinitions[$set];
 
-                if ($ruleSetDescription instanceof AutomaticRuleSetDefinitionInterface) {
+                if ($ruleSetDefinition instanceof AutomaticRuleSetDefinitionInterface) {
                     continue;
                 }
 
-                $deprecatedDesc = ($ruleSetDescription instanceof DeprecatedRuleSetDefinitionInterface) ? ' *(deprecated)*' : '';
+                $deprecatedDesc = ($ruleSetDefinition instanceof DeprecatedRuleSetDefinitionInterface) ? ' *(deprecated)*' : '';
 
                 $configInfo = (null !== $config)
                     ? " with config:\n\n  ``".Utils::toString($config)."``\n"
