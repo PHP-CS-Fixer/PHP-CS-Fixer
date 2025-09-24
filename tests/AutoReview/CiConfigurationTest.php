@@ -111,6 +111,11 @@ final class CiConfigurationTest extends TestCase
         $dockerMap = [];
         foreach ($yaml['services'] as $item) {
             if (isset($item['build']['args']['PHP_VERSION'], $item['build']['args']['ALPINE_VERSION'])) {
+                // PHP 8.5 at this point is only allowed for local development and is not a part of Docker releases
+                if (str_starts_with($item['build']['args']['PHP_VERSION'], '8.5')) {
+                    continue;
+                }
+
                 $dockerMap[$item['build']['args']['PHP_VERSION']] = $item['build']['args']['ALPINE_VERSION'];
             }
         }
