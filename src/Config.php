@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer;
 
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
@@ -25,7 +26,7 @@ use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-class Config implements ConfigInterface, ParallelAwareConfigInterface, UnsupportedPhpVersionAllowedConfigInterface
+class Config implements ConfigInterface, ParallelAwareConfigInterface, UnsupportedPhpVersionAllowedConfigInterface, CustomRulesetsAwareConfigInterface
 {
     /**
      * @var non-empty-string
@@ -36,6 +37,11 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
      * @var list<FixerInterface>
      */
     private array $customFixers = [];
+
+    /**
+     * @var array<string, RuleSetDescriptionInterface>
+     */
+    private array $customRuleSets = [];
 
     /**
      * @var null|iterable<\SplFileInfo>
@@ -114,6 +120,11 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
         return $this->customFixers;
     }
 
+    public function getCustomRuleSets(): array
+    {
+        return array_values($this->customRuleSets);
+    }
+
     /**
      * @return Finder
      */
@@ -183,6 +194,18 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     {
         foreach ($fixers as $fixer) {
             $this->addCustomFixer($fixer);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param list<RuleSetDescriptionInterface> $ruleSets
+     */
+    public function registerCustomRuleSets(array $ruleSets): ConfigInterface
+    {
+        foreach ($ruleSets as $ruleset) {
+            $this->customRuleSets[$ruleset->getName()] = $ruleset;
         }
 
         return $this;
