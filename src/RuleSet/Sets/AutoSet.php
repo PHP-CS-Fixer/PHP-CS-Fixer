@@ -78,7 +78,7 @@ final class AutoSet extends AbstractRuleSetDescription implements AutomaticRuleS
             $set->getRules();
 
             return true;
-        } catch (UnresolvableAutoRuleSetConfigurationException) {
+        } catch (UnresolvableAutoRuleSetConfigurationException $unused) {
             return false;
         }
     }
