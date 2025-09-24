@@ -39,9 +39,7 @@ return (new Config())
         new ConfigurableFixerTemplateFixer(),
     ])
     ->setRules([
-        '@autoPHPMigration' => true,
-        '@autoPHPMigration:risky' => true,
-        '@autoPHPUnitMigration:risky' => true,
+        '@auto' => true,
         '@PhpCsFixer' => true,
         '@PhpCsFixer:risky' => true,
         'general_phpdoc_annotation_remove' => ['annotations' => ['expectedDeprecation']], // one should use PHPUnit built-in method instead

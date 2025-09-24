@@ -80,7 +80,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
         // @TODO 4.0 cleanup
         if (Future::isFutureModeEnabled()) {
             $this->name = $name.' (future mode)';
-            $this->rules = ['@PER-CS' => true];
+            $this->rules = ['@PER-CS' => true]; // @TODO 4.0 | 3.x switch to '@auto'
             $this->format = '@auto';
         } else {
             $this->name = $name;
