@@ -23,9 +23,6 @@ namespace PhpCsFixer\Tests\RuleSet\Sets;
  */
 final class AutoRiskySetTest extends AbstractSetTestCase
 {
-    /**
-     * @covers \PhpCsFixer\RuleSet\AutomaticMigrationSetTrait
-     */
     public function testCorrectResolutionTowardsOurOwnRepoConfig(): void
     {
         $set = self::getSet();
