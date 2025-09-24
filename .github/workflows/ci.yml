@@ -173,6 +173,7 @@ jobs:
             job-description: code coverage
             run-tests: 'yes'
             collect-code-coverage: 'yes'
+            allow-to-fail: 'yes' # don't prevent the build when remote coverage reporting service is down
 
           - operating-system: ubuntu-24.04
             php-version: '8.4'
