@@ -21,7 +21,7 @@ namespace PhpCsFixer\RuleSet;
  *
  * @TODO rename to AbstractRuleSetDefinition // keradus
  */
-abstract class AbstractRuleSetDescription implements RuleSetDefinitionInterface
+abstract class AbstractRuleSetDefinition implements RuleSetDefinitionInterface
 {
     public function __construct() {}
 

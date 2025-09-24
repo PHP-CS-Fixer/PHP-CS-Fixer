@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\RuleSet\Sets;
 
 use PhpCsFixer\ConfigurationException\UnresolvableAutoRuleSetConfigurationException;
-use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
+use PhpCsFixer\RuleSet\AbstractRuleSetDefinition;
 use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 
@@ -26,7 +26,7 @@ use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
  *
  * @TODO refactor for DRY between Auto*Set classes // keradus
  */
-final class AutoSet extends AbstractRuleSetDescription implements AutomaticRuleSetDefinitionInterface
+final class AutoSet extends AbstractRuleSetDefinition implements AutomaticRuleSetDefinitionInterface
 {
     public function getName(): string
     {

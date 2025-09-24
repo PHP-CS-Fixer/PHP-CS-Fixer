@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\RuleSet\Sets;
 
 use PhpCsFixer\ConfigurationException\UnresolvableAutoRuleSetConfigurationException;
-use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
+use PhpCsFixer\RuleSet\AbstractRuleSetDefinition;
 use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 
@@ -24,7 +24,7 @@ use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class AutoRiskySet extends AbstractRuleSetDescription implements AutomaticRuleSetDefinitionInterface
+final class AutoRiskySet extends AbstractRuleSetDefinition implements AutomaticRuleSetDefinitionInterface
 {
     public function getName(): string
     {

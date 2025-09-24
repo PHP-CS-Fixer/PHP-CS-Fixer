@@ -23,7 +23,7 @@ use PhpCsFixer\Preg;
  *
  * @TODO rename to Definition // keradus
  */
-abstract class AbstractMigrationSetDescription extends AbstractRuleSetDescription
+abstract class AbstractMigrationSetDescription extends AbstractRuleSetDefinition
 {
     private string $entity;
 

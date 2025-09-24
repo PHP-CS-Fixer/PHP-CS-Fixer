@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
+use PhpCsFixer\RuleSet\AbstractRuleSetDefinition;
 use PhpCsFixer\RuleSet\AutomaticMigrationSetTrait;
 use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
 
@@ -23,7 +23,7 @@ use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class AutoPHPMigrationSet extends AbstractRuleSetDescription implements AutomaticRuleSetDefinitionInterface
+final class AutoPHPMigrationSet extends AbstractRuleSetDefinition implements AutomaticRuleSetDefinitionInterface
 {
     use AutomaticMigrationSetTrait;
 
