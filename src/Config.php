@@ -78,7 +78,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     public function __construct(string $name = 'default')
     {
         $this->name = $name.(Future::isFutureModeEnabled() ? ' (future mode)' : '');
-        $this->rules = Future::getV4OrV3(['@PER-CS' => true], ['@PSR12' => true]);
+        $this->rules = Future::getV4OrV3(['@PER-CS' => true], ['@PSR12' => true]); // @TODO 4.0 | 3.x switch to '@auto' for v4
         $this->format = Future::getV4OrV3('@auto', 'txt');
 
         // @TODO 4.0 cleanup

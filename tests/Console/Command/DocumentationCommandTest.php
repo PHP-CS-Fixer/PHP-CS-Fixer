@@ -37,10 +37,8 @@ final class DocumentationCommandTest extends TestCase
      */
     public function testGeneratingDocumentation(): void
     {
-        $filesystem = $this->createFilesystemDouble();
-
         $application = new Application();
-        $application->add(new DocumentationCommand($filesystem));
+        $application->add(new DocumentationCommand($this->createFilesystemDouble()));
 
         $command = $application->find('documentation');
         $commandTester = new CommandTester($command);

@@ -34,6 +34,7 @@ use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Future;
 use PhpCsFixer\Preg;
+use PhpCsFixer\RuleSet\AutomaticRuleSetDescriptionInterface;
 use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\StdinFileInfo;
@@ -110,7 +111,7 @@ final class DescribeCommand extends Command
         $resolver = new ConfigurationResolver(
             new Config(),
             ['config' => $input->getOption('config')],
-            getcwd(),
+            getcwd(), // @phpstan-ignore argument.type
             new ToolInfo()
         );
 
@@ -348,6 +349,11 @@ final class DescribeCommand extends Command
             foreach ($ruleSetConfigs as $set => $config) {
                 \assert(isset($ruleSetDefinitions[$set]));
                 $ruleSetDescription = $ruleSetDefinitions[$set];
+
+                if ($ruleSetDescription instanceof AutomaticRuleSetDescriptionInterface) {
+                    continue;
+                }
+
                 $deprecatedDesc = ($ruleSetDescription instanceof DeprecatedRuleSetDescriptionInterface) ? ' *(deprecated)*' : '';
                 if (null !== $config) {
                     $output->writeln(\sprintf('* <info>%s</info> with config: <comment>%s</comment>', $set.$deprecatedDesc, Utils::toString($config)));
@@ -390,6 +396,11 @@ final class DescribeCommand extends Command
 
         if ($ruleSetDescription->isRisky()) {
             $output->writeln('<error>This set contains risky rules.</error>');
+            $output->writeln('');
+        }
+
+        if ($ruleSetDescription instanceof AutomaticRuleSetDescriptionInterface) {
+            $output->writeln(AutomaticRuleSetDescriptionInterface::WARNING_MESSAGE_DECORATED);
             $output->writeln('');
         }
 

@@ -312,7 +312,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
                             throw new InvalidOptionsException(\sprintf(
                                 'Missing sort %s %s.',
                                 1 === \count($missing) ? 'type' : 'types',
-                                Utils::naturalLanguageJoin($missing)
+                                Utils::naturalLanguageJoin(array_values($missing))
                             ));
                         }
 
@@ -321,7 +321,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
                             throw new InvalidOptionsException(\sprintf(
                                 'Unknown sort %s %s.',
                                 1 === \count($unknown) ? 'type' : 'types',
-                                Utils::naturalLanguageJoin($unknown)
+                                Utils::naturalLanguageJoin(array_values($unknown))
                             ));
                         }
                     }

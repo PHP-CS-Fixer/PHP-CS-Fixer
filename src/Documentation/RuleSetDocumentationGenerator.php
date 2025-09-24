@@ -16,6 +16,7 @@ namespace PhpCsFixer\Documentation;
 
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\RuleSet\AutomaticRuleSetDescriptionInterface;
 use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
 use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
 use PhpCsFixer\Utils;
@@ -85,21 +86,25 @@ final class RuleSetDocumentationGenerator
                 RST;
         }
 
+        $header = static function (string $message, string $underline = '-'): string {
+            $line = str_repeat($underline, \strlen($message));
+
+            return "{$message}\n{$line}\n";
+        };
+
+        if ($definition instanceof AutomaticRuleSetDescriptionInterface) {
+            $warnings[] = "\n".$header('Automatic rule set', '~')."\n⚡ ".strip_tags(AutomaticRuleSetDescriptionInterface::WARNING_MESSAGE_DECORATED);
+        }
+
         if ([] !== $warnings) {
             $warningsHeader = 1 === \count($warnings) ? 'Warning' : 'Warnings';
 
-            $warningsHeaderLine = str_repeat('-', \strlen($warningsHeader));
-            $doc .= "\n\n".implode(
-                "\n",
-                [
-                    $warningsHeader,
-                    $warningsHeaderLine,
-                    ...$warnings,
-                ]
-            );
+            $doc .= "\n\n".$header($warningsHeader).implode("\n", $warnings);
         }
 
-        $rules = $definition->getRules();
+        $rules = $definition instanceof AutomaticRuleSetDescriptionInterface
+                ? $definition->getRulesCandidates()
+                : $definition->getRules();
 
         if ([] === $rules) {
             $doc .= "\n\nThis is an empty set.";
@@ -130,13 +135,18 @@ final class RuleSetDocumentationGenerator
                 }
             };
 
+            $rulesCandidatesDescriptionHeader = $definition instanceof AutomaticRuleSetDescriptionInterface
+                ? ' candidates'
+                : '';
+
             if ([] !== $enabledRules) {
-                $doc .= "\n\nRules\n-----\n";
+                $doc .= "\n\n".$header("Rules{$rulesCandidatesDescriptionHeader}");
                 $listRules($enabledRules);
             }
 
             if ([] !== $disabledRules) {
-                $doc .= "\n\nDisabled rules\n--------------\n";
+                $doc .= "\n\n".$header("Disabled rules{$rulesCandidatesDescriptionHeader}");
+
                 $listRules($disabledRules);
             }
         }
