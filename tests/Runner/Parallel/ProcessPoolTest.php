@@ -32,9 +32,9 @@ use Symfony\Component\Console\Input\ArrayInput;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Runner\Parallel\ProcessPool
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Runner\Parallel\ProcessPool
  */
 final class ProcessPoolTest extends TestCase
 {

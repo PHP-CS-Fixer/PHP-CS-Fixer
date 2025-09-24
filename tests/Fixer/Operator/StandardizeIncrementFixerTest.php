@@ -19,14 +19,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\AbstractIncrementOperatorFixer
- * @covers \PhpCsFixer\Fixer\Operator\StandardizeIncrementFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\StandardizeIncrementFixer>
  *
- * @author ntzm
+ * @covers \PhpCsFixer\Fixer\AbstractIncrementOperatorFixer
+ * @covers \PhpCsFixer\Fixer\Operator\StandardizeIncrementFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author ntzm
  */
 final class StandardizeIncrementFixerTest extends AbstractFixerTestCase
 {

@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\FunctionNotation\UseArrowFunctionsFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\UseArrowFunctionsFixer>
  *
- * @author Gregor Harlan
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\UseArrowFunctionsFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Gregor Harlan
  */
 final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
 {

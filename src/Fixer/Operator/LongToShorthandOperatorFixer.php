@@ -24,9 +24,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
- * @phpstan-import-type _PhpTokenArray from Token
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @phpstan-import-type _PhpTokenArray from Token
  */
 final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer
 {

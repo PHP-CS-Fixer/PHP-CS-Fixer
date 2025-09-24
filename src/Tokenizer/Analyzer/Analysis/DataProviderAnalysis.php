@@ -18,9 +18,9 @@ use PhpCsFixer\Console\Application;
 use PhpCsFixer\Future;
 
 /**
- * @internal
- *
  * @readonly
+ *
+ * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */

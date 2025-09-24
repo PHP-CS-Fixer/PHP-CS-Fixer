@@ -20,9 +20,9 @@ use PhpCsFixer\Tokenizer\FCT;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Tokenizer\FCT
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Tokenizer\FCT
  */
 final class FCTTest extends TestCase
 {

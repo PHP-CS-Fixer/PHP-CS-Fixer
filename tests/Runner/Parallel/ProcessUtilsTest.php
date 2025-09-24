@@ -19,9 +19,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Runner\Parallel\ProcessUtils
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Runner\Parallel\ProcessUtils
  */
 final class ProcessUtilsTest extends TestCase
 {

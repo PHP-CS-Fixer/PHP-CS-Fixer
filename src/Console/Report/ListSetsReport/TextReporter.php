@@ -17,13 +17,13 @@ namespace PhpCsFixer\Console\Report\ListSetsReport;
 use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @readonly
  *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class TextReporter implements ReporterInterface
 {

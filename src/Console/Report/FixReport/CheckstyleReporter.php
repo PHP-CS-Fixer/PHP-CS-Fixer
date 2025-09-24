@@ -18,13 +18,13 @@ use PhpCsFixer\Console\Application;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
- * @author Kévin Gomez <contact@kevingomez.fr>
- *
  * @readonly
  *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Kévin Gomez <contact@kevingomez.fr>
  */
 final class CheckstyleReporter implements ReporterInterface
 {

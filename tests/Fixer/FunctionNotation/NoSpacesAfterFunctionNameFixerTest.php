@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\FunctionNotation\NoSpacesAfterFunctionNameFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\NoSpacesAfterFunctionNameFixer>
  *
- * @author Varga Bence <vbence@czentral.org>
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\NoSpacesAfterFunctionNameFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Varga Bence <vbence@czentral.org>
  */
 final class NoSpacesAfterFunctionNameFixerTest extends AbstractFixerTestCase
 {

@@ -15,13 +15,13 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer;
 
 /**
- * @phpstan-import-type _PhpTokenPrototype from Token
- *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @phpstan-import-type _PhpTokenPrototype from Token
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 abstract class AbstractTypeTransformer extends AbstractTransformer
 {

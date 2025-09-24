@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\StringNotation\NoTrailingWhitespaceInStringFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\NoTrailingWhitespaceInStringFixer>
  *
- * @author Gregor Harlan
+ * @covers \PhpCsFixer\Fixer\StringNotation\NoTrailingWhitespaceInStringFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Gregor Harlan
  */
 final class NoTrailingWhitespaceInStringFixerTest extends AbstractFixerTestCase
 {

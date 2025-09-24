@@ -21,9 +21,9 @@ use PhpCsFixer\ConfigurationException\UnresolvableAutoRuleSetConfigurationExcept
 /**
  * @internal
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 trait AutomaticMigrationSetTrait
 {

@@ -21,9 +21,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
  */
 final class AbstractFunctionReferenceFixerTest extends TestCase
 {

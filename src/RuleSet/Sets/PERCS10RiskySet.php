@@ -23,9 +23,9 @@ use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
  *
  * PER Coding Style v1.0.
  *
- * @see https://github.com/php-fig/per-coding-style/blob/1.0.0/spec.md
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @see https://github.com/php-fig/per-coding-style/blob/1.0.0/spec.md
  */
 final class PERCS10RiskySet extends AbstractRuleSetDescription implements DeprecatedRuleSetDescriptionInterface
 {

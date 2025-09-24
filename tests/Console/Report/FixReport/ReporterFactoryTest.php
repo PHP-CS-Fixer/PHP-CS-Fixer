@@ -20,13 +20,13 @@ use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Boris Gorbylev <ekho@ekho.name>
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @covers \PhpCsFixer\Console\Report\FixReport\ReporterFactory
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Boris Gorbylev <ekho@ekho.name>
  */
 final class ReporterFactoryTest extends TestCase
 {

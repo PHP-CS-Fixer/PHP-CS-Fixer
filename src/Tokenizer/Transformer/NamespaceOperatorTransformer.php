@@ -22,11 +22,11 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * Transform `namespace` operator from T_NAMESPACE into CT::T_NAMESPACE_OPERATOR.
  *
- * @author Gregor Harlan <gharlan@web.de>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Gregor Harlan <gharlan@web.de>
  */
 final class NamespaceOperatorTransformer extends AbstractTransformer
 {

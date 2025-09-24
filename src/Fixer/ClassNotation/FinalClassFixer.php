@@ -20,9 +20,9 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 
 /**
- * @author Filippo Tessarotto <zoeslam@gmail.com>
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Filippo Tessarotto <zoeslam@gmail.com>
  */
 final class FinalClassFixer extends AbstractProxyFixer
 {

@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Whitespace\NoSpacesInsideParenthesisFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\NoSpacesInsideParenthesisFixer>
  *
- * @author Marc Aubé
+ * @covers \PhpCsFixer\Fixer\Whitespace\NoSpacesInsideParenthesisFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Marc Aubé
  */
 final class NoSpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
 {

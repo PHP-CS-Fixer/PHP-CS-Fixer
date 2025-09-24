@@ -19,13 +19,13 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 
 /**
- * @author VeeWee <toonverwerft@gmail.com>
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author VeeWee <toonverwerft@gmail.com>
  */
 final class ArgumentAnalysisTest extends TestCase
 {

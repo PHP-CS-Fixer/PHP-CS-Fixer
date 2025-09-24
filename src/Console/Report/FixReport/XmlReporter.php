@@ -18,13 +18,13 @@ use PhpCsFixer\Console\Application;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
- * @author Boris Gorbylev <ekho@ekho.name>
- *
  * @readonly
  *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Boris Gorbylev <ekho@ekho.name>
  */
 final class XmlReporter implements ReporterInterface
 {

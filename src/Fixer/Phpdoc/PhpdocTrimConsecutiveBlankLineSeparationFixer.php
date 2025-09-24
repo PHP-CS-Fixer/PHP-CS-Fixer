@@ -25,10 +25,10 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
  * @author Nobu Funaki <nobu.funaki@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocTrimConsecutiveBlankLineSeparationFixer extends AbstractFixer
 {

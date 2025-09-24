@@ -21,13 +21,13 @@ use PhpCsFixer\Utils;
 /**
  * Set of rules to be used by fixer.
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @readonly
  *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class RuleSet implements RuleSetInterface
 {

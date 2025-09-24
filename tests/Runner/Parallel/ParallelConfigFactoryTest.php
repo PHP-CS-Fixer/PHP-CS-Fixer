@@ -23,9 +23,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Runner\Parallel\ParallelConfigFactory
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Runner\Parallel\ParallelConfigFactory
  */
 final class ParallelConfigFactoryTest extends TestCase
 {

@@ -25,9 +25,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * Fixer for rules defined in PSR2 ¶5.2.
  *
- * @author Sullivan Senechal <soullivaneuh@gmail.com>
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
 final class SwitchCaseSpaceFixer extends AbstractFixer
 {

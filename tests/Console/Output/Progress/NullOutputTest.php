@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Console\Output\Progress\NullOutput
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Console\Output\Progress\NullOutput
  */
 final class NullOutputTest extends TestCase
 {

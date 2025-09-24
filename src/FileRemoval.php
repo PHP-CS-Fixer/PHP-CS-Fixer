@@ -17,12 +17,12 @@ namespace PhpCsFixer;
 /**
  * Handles files removal with possibility to remove them on shutdown.
  *
- * @author Adam Klvač <adam@klva.cz>
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Adam Klvač <adam@klva.cz>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class FileRemoval
 {

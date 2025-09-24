@@ -20,9 +20,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @internal
  *
- * @author Vladimir Reznichenko <kalessil@gmail.com>
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Vladimir Reznichenko <kalessil@gmail.com>
  */
 abstract class AbstractFunctionReferenceFixer extends AbstractFixer
 {

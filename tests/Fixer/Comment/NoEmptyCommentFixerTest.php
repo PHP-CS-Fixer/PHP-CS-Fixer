@@ -21,11 +21,11 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Comment\NoEmptyCommentFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Comment\NoEmptyCommentFixer>
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @covers \PhpCsFixer\Fixer\Comment\NoEmptyCommentFixer
  */
 final class NoEmptyCommentFixerTest extends AbstractFixerTestCase
 {

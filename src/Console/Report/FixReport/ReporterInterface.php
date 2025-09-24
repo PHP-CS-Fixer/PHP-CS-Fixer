@@ -15,11 +15,11 @@ declare(strict_types=1);
 namespace PhpCsFixer\Console\Report\FixReport;
 
 /**
- * @author Boris Gorbylev <ekho@ekho.name>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Boris Gorbylev <ekho@ekho.name>
  */
 interface ReporterInterface
 {

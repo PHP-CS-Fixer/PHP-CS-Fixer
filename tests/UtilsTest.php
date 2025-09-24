@@ -22,17 +22,17 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
 
 /**
+ * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
  * @phpstan-import-type _PhpTokenPrototype from Token
+ *
+ * @covers \PhpCsFixer\Utils
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Odín del Río <odin.drp@gmail.com>
- *
- * @internal
- *
- * @covers \PhpCsFixer\Utils
- *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class UtilsTest extends TestCase
 {

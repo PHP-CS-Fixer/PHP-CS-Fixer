@@ -24,9 +24,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * Fixer for rules defined in PSR2 ¶5.1.
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class ElseifFixer extends AbstractFixer
 {

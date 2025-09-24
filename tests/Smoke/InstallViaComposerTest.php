@@ -20,9 +20,6 @@ use PhpCsFixer\Preg;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author Greg Korba <greg@codito.dev>
- *
  * @internal
  *
  * @coversNothing
@@ -32,6 +29,9 @@ use Symfony\Component\Filesystem\Filesystem;
  * @large
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Greg Korba <greg@codito.dev>
  */
 final class InstallViaComposerTest extends AbstractSmokeTestCase
 {

@@ -20,14 +20,14 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer>
  *
+ * @covers \PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer
+ *
  * @author Ceeram <ceeram@cakephp.org>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class LinebreakAfterOpeningTagFixerTest extends AbstractFixerTestCase
 {

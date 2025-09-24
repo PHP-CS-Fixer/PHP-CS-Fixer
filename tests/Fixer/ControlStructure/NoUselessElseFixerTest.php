@@ -21,12 +21,12 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\AbstractNoUselessElseFixer
- * @covers \PhpCsFixer\Fixer\ControlStructure\NoUselessElseFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\NoUselessElseFixer>
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @covers \PhpCsFixer\AbstractNoUselessElseFixer
+ * @covers \PhpCsFixer\Fixer\ControlStructure\NoUselessElseFixer
  */
 final class NoUselessElseFixerTest extends AbstractFixerTestCase
 {

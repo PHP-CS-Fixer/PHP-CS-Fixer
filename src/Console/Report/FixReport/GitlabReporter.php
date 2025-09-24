@@ -23,15 +23,15 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 /**
  * Generates a report according to gitlabs subset of codeclimate json files.
  *
- * @author Hans-Christian Otto <c.otto@suora.com>
- *
- * @see https://github.com/codeclimate/platform/blob/master/spec/analyzers/SPEC.md#data-types
- *
  * @readonly
  *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Hans-Christian Otto <c.otto@suora.com>
+ *
+ * @see https://github.com/codeclimate/platform/blob/master/spec/analyzers/SPEC.md#data-types
  */
 final class GitlabReporter implements ReporterInterface
 {

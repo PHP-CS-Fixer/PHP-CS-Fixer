@@ -18,14 +18,14 @@ use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\TokenizerLinter;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @covers \PhpCsFixer\Linter\TokenizerLinter
  * @covers \PhpCsFixer\Linter\TokenizerLintingResult
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class TokenizerLinterTest extends AbstractLinterTestCase
 {

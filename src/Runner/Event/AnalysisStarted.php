@@ -19,11 +19,11 @@ use Symfony\Contracts\EventDispatcher\Event;
 /**
  * Event that is fired when Fixer starts analysis.
  *
- * @author Greg Korba <greg@codito.dev>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Greg Korba <greg@codito.dev>
  */
 final class AnalysisStarted extends Event
 {

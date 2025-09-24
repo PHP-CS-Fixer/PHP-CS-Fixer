@@ -61,12 +61,21 @@ return (new Config())
         'PhpCsFixerInternal/configurable_fixer_template' => true, // internal rules, shall not be used outside of main repo
         'phpdoc_order' => [
             'order' => [
+                'deprecated',
+                'final',
+                'readonly',
+                'internal',
+                'no-named-arguments',
+                'import-type',
                 'type',
                 'template',
                 'template-covariant',
                 'template-extends',
                 'extends',
                 'implements',
+                'require-extends',
+                'require-implements',
+                'covers',
                 'property',
                 'method',
                 'param',

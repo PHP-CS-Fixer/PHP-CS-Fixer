@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ArrayNotation\TrimArraySpacesFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ArrayNotation\TrimArraySpacesFixer>
  *
- * @author Jared Henderson <jared@netrivet.com>
+ * @covers \PhpCsFixer\Fixer\ArrayNotation\TrimArraySpacesFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Jared Henderson <jared@netrivet.com>
  */
 final class TrimArraySpacesFixerTest extends AbstractFixerTestCase
 {

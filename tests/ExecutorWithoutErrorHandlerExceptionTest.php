@@ -19,9 +19,9 @@ use PhpCsFixer\ExecutorWithoutErrorHandlerException;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\ExecutorWithoutErrorHandlerException
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\ExecutorWithoutErrorHandlerException
  */
 final class ExecutorWithoutErrorHandlerExceptionTest extends TestCase
 {

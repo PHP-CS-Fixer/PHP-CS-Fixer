@@ -21,9 +21,9 @@ use Symfony\Component\Console\Output\NullOutput;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Console\Output\OutputContext
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Console\Output\OutputContext
  */
 final class OutputContextTest extends TestCase
 {

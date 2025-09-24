@@ -17,15 +17,15 @@ namespace PhpCsFixer\Tests\Fixer\CastNotation;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
+ * @requires PHP <8.0
+ *
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\CastNotation\NoUnsetCastFixer
- *
- * @requires PHP <8.0
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\CastNotation\NoUnsetCastFixer>
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @covers \PhpCsFixer\Fixer\CastNotation\NoUnsetCastFixer
  */
 final class NoUnsetCastFixerTest extends AbstractFixerTestCase
 {

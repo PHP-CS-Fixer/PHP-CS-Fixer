@@ -17,12 +17,12 @@ namespace PhpCsFixer\Cache;
 use Symfony\Component\Filesystem\Exception\IOException;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Andreas Möller <am@localheinz.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class FileHandler implements FileHandlerInterface
 {

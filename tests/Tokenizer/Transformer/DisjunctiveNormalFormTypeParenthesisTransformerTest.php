@@ -18,15 +18,15 @@ use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
 
 /**
- * @covers \PhpCsFixer\Tokenizer\Transformer\DisjunctiveNormalFormTypeParenthesisTransformer
- *
  * @internal
- *
- * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
  *
  * @requires PHP 8.2
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @covers \PhpCsFixer\Tokenizer\Transformer\DisjunctiveNormalFormTypeParenthesisTransformer
  */
 final class DisjunctiveNormalFormTypeParenthesisTransformerTest extends AbstractTransformerTestCase
 {

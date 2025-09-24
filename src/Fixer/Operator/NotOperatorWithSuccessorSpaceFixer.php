@@ -21,9 +21,9 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Javier Spagnoletti <phansys@gmail.com>
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Javier Spagnoletti <phansys@gmail.com>
  */
 final class NotOperatorWithSuccessorSpaceFixer extends AbstractFixer
 {

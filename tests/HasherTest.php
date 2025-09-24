@@ -19,9 +19,9 @@ use PhpCsFixer\Hasher;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Hasher
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Hasher
  */
 final class HasherTest extends TestCase
 {

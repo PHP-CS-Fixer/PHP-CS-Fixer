@@ -20,13 +20,13 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
- * @author Greg Korba <greg@codito.dev>
- *
  * @readonly
  *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Greg Korba <greg@codito.dev>
  */
 final class ProcessFactory
 {

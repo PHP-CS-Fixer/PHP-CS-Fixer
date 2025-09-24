@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\FunctionNotation\VoidReturnFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\VoidReturnFixer>
  *
- * @author Mark Nielsen
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\VoidReturnFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Mark Nielsen
  */
 final class VoidReturnFixerTest extends AbstractFixerTestCase
 {

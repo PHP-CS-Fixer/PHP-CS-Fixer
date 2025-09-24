@@ -20,13 +20,13 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\DefaultAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
 
 /**
- * @author Kuba Werłos <werlos@gmail.com>
- *
- * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis
+ *
+ * @author Kuba Werłos <werlos@gmail.com>
  */
 final class SwitchAnalysisTest extends TestCase
 {

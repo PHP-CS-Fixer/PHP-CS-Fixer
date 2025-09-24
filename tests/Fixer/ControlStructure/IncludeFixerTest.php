@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ControlStructure\IncludeFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\IncludeFixer>
  *
- * @author Саша Стаменковић <umpirsky@gmail.com>
+ * @covers \PhpCsFixer\Fixer\ControlStructure\IncludeFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Саша Стаменковић <umpirsky@gmail.com>
  */
 final class IncludeFixerTest extends AbstractFixerTestCase
 {

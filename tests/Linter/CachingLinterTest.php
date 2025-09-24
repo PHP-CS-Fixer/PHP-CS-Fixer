@@ -21,13 +21,13 @@ use PhpCsFixer\Linter\LintingResultInterface;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author ntzm
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @covers \PhpCsFixer\Linter\CachingLinter
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author ntzm
  */
 final class CachingLinterTest extends TestCase
 {

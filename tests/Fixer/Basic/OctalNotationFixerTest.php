@@ -17,17 +17,17 @@ namespace PhpCsFixer\Tests\Fixer\Basic;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
 /**
+ * @requires PHP 8.1
+ *
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Basic\OctalNotationFixer
- *
- * @requires PHP 8.1
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\OctalNotationFixer>
  *
- * @author SpacePossum
+ * @covers \PhpCsFixer\Fixer\Basic\OctalNotationFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author SpacePossum
  */
 final class OctalNotationFixerTest extends AbstractFixerTestCase
 {

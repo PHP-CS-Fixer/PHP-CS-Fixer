@@ -19,9 +19,9 @@ use PhpCsFixer\PharChecker;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\PharChecker
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\PharChecker
  */
 final class PharCheckerTest extends TestCase
 {

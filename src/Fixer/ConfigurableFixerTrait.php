@@ -28,12 +28,12 @@ use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 /**
  * @internal
  *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
  * @template TFixerInputConfig of array<string, mixed>
  * @template TFixerComputedConfig of array<string, mixed>
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 trait ConfigurableFixerTrait
 {

@@ -23,9 +23,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Tokenizer\Processor\ImportProcessor
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Tokenizer\Processor\ImportProcessor
  */
 final class ImportProcessorTest extends TestCase
 {

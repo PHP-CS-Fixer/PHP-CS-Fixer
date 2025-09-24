@@ -17,10 +17,10 @@ namespace PhpCsFixer;
 /**
  * Exception that is thrown when PCRE function encounters an error.
  *
- * @author Kuba Werłos <werlos@gmail.com>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Kuba Werłos <werlos@gmail.com>
  */
 final class PregException extends \RuntimeException {}

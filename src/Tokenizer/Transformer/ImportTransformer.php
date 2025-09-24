@@ -26,11 +26,11 @@ use PhpCsFixer\Tokenizer\Tokens;
  * - T_CONST into CT::T_CONST_IMPORT
  * - T_FUNCTION into CT::T_FUNCTION_IMPORT
  *
- * @author Gregor Harlan <gharlan@web.de>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Gregor Harlan <gharlan@web.de>
  */
 final class ImportTransformer extends AbstractTransformer
 {

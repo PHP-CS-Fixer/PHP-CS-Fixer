@@ -21,9 +21,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer
  */
 final class GotoLabelAnalyzerTest extends TestCase
 {

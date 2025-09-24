@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Operator\NotOperatorWithSpaceFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\NotOperatorWithSpaceFixer>
  *
- * @author Javier Spagnoletti <phansys@gmail.com>
+ * @covers \PhpCsFixer\Fixer\Operator\NotOperatorWithSpaceFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Javier Spagnoletti <phansys@gmail.com>
  */
 final class NotOperatorWithSpaceFixerTest extends AbstractFixerTestCase
 {

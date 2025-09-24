@@ -21,13 +21,13 @@ use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author VeeWee <toonverwerft@gmail.com>
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author VeeWee <toonverwerft@gmail.com>
  */
 final class FunctionsAnalyzerTest extends TestCase
 {

@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocNoEmptyReturnFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocNoEmptyReturnFixer>
  *
- * @author Graham Campbell <hello@gjcampbell.co.uk>
+ * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocNoEmptyReturnFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
  */
 final class PhpdocNoEmptyReturnFixerTest extends AbstractFixerTestCase
 {

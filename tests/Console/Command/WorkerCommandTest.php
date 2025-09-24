@@ -38,13 +38,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * @author Greg Korba <greg@codito.dev>
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @covers \PhpCsFixer\Console\Command\WorkerCommand
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Greg Korba <greg@codito.dev>
  */
 final class WorkerCommandTest extends TestCase
 {

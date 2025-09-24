@@ -23,9 +23,9 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Gregor Harlan
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Gregor Harlan
  */
 final class CombineNestedDirnameFixer extends AbstractFixer
 {

@@ -20,9 +20,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Documentation\RstUtils
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Documentation\RstUtils
  */
 final class RstUtilsTest extends TestCase
 {

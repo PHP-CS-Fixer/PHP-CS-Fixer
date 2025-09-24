@@ -20,14 +20,14 @@ use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\Tests\Test\Assert\AssertJsonSchemaTrait;
 
 /**
- * @author Boris Gorbylev <ekho@ekho.name>
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @covers \PhpCsFixer\Console\Report\FixReport\JsonReporter
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Boris Gorbylev <ekho@ekho.name>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class JsonReporterTest extends AbstractReporterTestCase
 {

@@ -20,11 +20,11 @@ use PhpCsFixer\Tokenizer\CT;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Tokenizer\Transformer\FirstClassCallableTransformer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @covers \PhpCsFixer\Tokenizer\Transformer\FirstClassCallableTransformer
  */
 final class FirstClassCallableTransformerTest extends AbstractTransformerTestCase
 {

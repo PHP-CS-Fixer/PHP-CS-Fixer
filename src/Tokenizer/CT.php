@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class CT
 {

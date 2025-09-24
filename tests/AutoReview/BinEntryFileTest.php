@@ -17,8 +17,6 @@ namespace PhpCsFixer\Tests\AutoReview;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Victor Bocharsky <bocharsky.bw@gmail.com>
- *
  * @internal
  *
  * @coversNothing
@@ -27,6 +25,8 @@ use PhpCsFixer\Tests\TestCase;
  * @group covers-nothing
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Victor Bocharsky <bocharsky.bw@gmail.com>
  */
 final class BinEntryFileTest extends TestCase
 {

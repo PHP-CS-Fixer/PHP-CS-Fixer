@@ -27,9 +27,9 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 /**
  * @deprecated
  *
- * @author Sullivan Senechal <soullivaneuh@gmail.com>
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
 final class ClassKeywordRemoveFixer extends AbstractFixer implements DeprecatedFixerInterface
 {

@@ -24,9 +24,9 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Marcel Behrmann <marcel@behrmann.dev>
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Marcel Behrmann <marcel@behrmann.dev>
  */
 final class PhpdocReadonlyClassCommentToKeywordFixer extends AbstractFixer
 {

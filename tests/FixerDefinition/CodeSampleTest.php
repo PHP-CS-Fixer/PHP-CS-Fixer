@@ -18,13 +18,13 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Andreas Möller <am@localheinz.com>
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @covers \PhpCsFixer\FixerDefinition\CodeSample
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Andreas Möller <am@localheinz.com>
  */
 final class CodeSampleTest extends TestCase
 {

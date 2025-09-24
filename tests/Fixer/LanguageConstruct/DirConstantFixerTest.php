@@ -19,14 +19,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
- * @covers \PhpCsFixer\Fixer\LanguageConstruct\DirConstantFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\DirConstantFixer>
  *
- * @author Vladimir Reznichenko <kalessil@gmail.com>
+ * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
+ * @covers \PhpCsFixer\Fixer\LanguageConstruct\DirConstantFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Vladimir Reznichenko <kalessil@gmail.com>
  */
 final class DirConstantFixerTest extends AbstractFixerTestCase
 {

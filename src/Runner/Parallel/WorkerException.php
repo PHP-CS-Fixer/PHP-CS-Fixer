@@ -15,11 +15,11 @@ declare(strict_types=1);
 namespace PhpCsFixer\Runner\Parallel;
 
 /**
- * @author Greg Korba <gre@codito.dev>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Greg Korba <gre@codito.dev>
  */
 final class WorkerException extends \RuntimeException
 {

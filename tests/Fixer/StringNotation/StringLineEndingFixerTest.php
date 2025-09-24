@@ -20,13 +20,13 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\StringNotation\StringLineEndingFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\StringLineEndingFixer>
  *
- * @author Ilija Tovilo <ilija.tovilo@me.com>
+ * @covers \PhpCsFixer\Fixer\StringNotation\StringLineEndingFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Ilija Tovilo <ilija.tovilo@me.com>
  */
 final class StringLineEndingFixerTest extends AbstractFixerTestCase
 {

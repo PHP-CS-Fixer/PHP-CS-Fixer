@@ -21,9 +21,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Runner\Parallel\ParallelisationException
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Runner\Parallel\ParallelisationException
  */
 final class ParallelisationExceptionTest extends TestCase
 {

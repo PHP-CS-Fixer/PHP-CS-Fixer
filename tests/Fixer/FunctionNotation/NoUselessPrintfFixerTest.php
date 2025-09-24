@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\FunctionNotation\NoUselessPrintfFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\NoUselessPrintfFixer>
  *
- * @author John Paul E. Balandan, CPA <paulbalandan@gmail.com>
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\NoUselessPrintfFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author John Paul E. Balandan, CPA <paulbalandan@gmail.com>
  */
 final class NoUselessPrintfFixerTest extends AbstractFixerTestCase
 {

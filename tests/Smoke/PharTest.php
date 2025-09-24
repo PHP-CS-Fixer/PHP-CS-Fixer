@@ -21,8 +21,6 @@ use PhpCsFixer\Console\Command\DescribeCommand;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @coversNothing
@@ -33,6 +31,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @large
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class PharTest extends AbstractSmokeTestCase
 {

@@ -17,11 +17,11 @@ namespace PhpCsFixer;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 
 /**
- * @author Greg Korba <greg@codito.dev>
- *
  * @TODO 4.0 Include parallel runner config in main ConfigInterface
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Greg Korba <greg@codito.dev>
  */
 interface ParallelAwareConfigInterface extends ConfigInterface
 {

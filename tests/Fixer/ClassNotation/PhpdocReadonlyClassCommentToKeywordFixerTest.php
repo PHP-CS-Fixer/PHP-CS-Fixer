@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ClassNotation\PhpdocReadonlyClassCommentToKeywordFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\PhpdocReadonlyClassCommentToKeywordFixer>
  *
- * @author Marcel Behrmann <marcel@behrmann.dev>
+ * @covers \PhpCsFixer\Fixer\ClassNotation\PhpdocReadonlyClassCommentToKeywordFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Marcel Behrmann <marcel@behrmann.dev>
  */
 final class PhpdocReadonlyClassCommentToKeywordFixerTest extends AbstractFixerTestCase
 {

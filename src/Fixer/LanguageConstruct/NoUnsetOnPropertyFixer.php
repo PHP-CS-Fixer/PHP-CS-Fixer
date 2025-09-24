@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
  * @phpstan-type _UnsetInfo array{
  *     startIndex: int,
  *     endIndex: int,
@@ -31,8 +33,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  * }
  *
  * @author Gert de Pagter <BackEndTea@gmail.com>
- *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoUnsetOnPropertyFixer extends AbstractFixer
 {

@@ -21,9 +21,9 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Differ\DiffConsoleFormatter
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Differ\DiffConsoleFormatter
  */
 final class DiffConsoleFormatterTest extends TestCase
 {

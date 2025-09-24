@@ -21,9 +21,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Runner\RunnerConfig
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Runner\RunnerConfig
  */
 final class RunnerConfigTest extends TestCase
 {

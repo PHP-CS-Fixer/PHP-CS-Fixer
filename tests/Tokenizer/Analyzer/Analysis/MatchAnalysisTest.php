@@ -19,11 +19,11 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\DefaultAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\MatchAnalysis;
 
 /**
- * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\MatchAnalysis
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\MatchAnalysis
  */
 final class MatchAnalysisTest extends TestCase
 {

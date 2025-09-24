@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\Import\NoLeadingImportSlashFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Import\NoLeadingImportSlashFixer>
  *
- * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
+ * @covers \PhpCsFixer\Fixer\Import\NoLeadingImportSlashFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
  */
 final class NoLeadingImportSlashFixerTest extends AbstractFixerTestCase
 {

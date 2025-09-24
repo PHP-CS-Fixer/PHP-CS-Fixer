@@ -22,8 +22,6 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @requires OS Linux|Darwin
@@ -35,6 +33,8 @@ use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
  * @large
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class CiIntegrationTest extends AbstractSmokeTestCase
 {

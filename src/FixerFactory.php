@@ -31,11 +31,11 @@ use Symfony\Component\Finder\SplFileInfo;
  *
  * Finally factory creates a ready to use group of fixers.
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class FixerFactory
 {

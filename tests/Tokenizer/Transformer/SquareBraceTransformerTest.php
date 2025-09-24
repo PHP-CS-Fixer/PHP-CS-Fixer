@@ -20,15 +20,15 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
- * @covers \PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @covers \PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class SquareBraceTransformerTest extends AbstractTransformerTestCase
 {

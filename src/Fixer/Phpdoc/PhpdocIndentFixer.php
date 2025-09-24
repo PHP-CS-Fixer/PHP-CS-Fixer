@@ -24,10 +24,10 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
  * @author Ceeram <ceeram@cakephp.org>
  * @author Graham Campbell <hello@gjcampbell.co.uk>
- *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocIndentFixer extends AbstractFixer
 {

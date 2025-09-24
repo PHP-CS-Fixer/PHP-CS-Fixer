@@ -17,11 +17,11 @@ namespace PhpCsFixer\Runner\Parallel;
 /**
  * Common exception for all the errors related to parallelisation.
  *
- * @author Greg Korba <greg@codito.dev>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Greg Korba <greg@codito.dev>
  */
 final class ParallelisationException extends \RuntimeException
 {

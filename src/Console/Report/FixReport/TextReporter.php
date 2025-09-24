@@ -17,13 +17,13 @@ namespace PhpCsFixer\Console\Report\FixReport;
 use PhpCsFixer\Differ\DiffConsoleFormatter;
 
 /**
- * @author Boris Gorbylev <ekho@ekho.name>
- *
  * @readonly
  *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Boris Gorbylev <ekho@ekho.name>
  */
 final class TextReporter implements ReporterInterface
 {

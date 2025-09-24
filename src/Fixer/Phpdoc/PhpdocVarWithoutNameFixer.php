@@ -27,10 +27,10 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dave van der Brugge <dmvdbrugge@gmail.com>
- *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocVarWithoutNameFixer extends AbstractFixer
 {

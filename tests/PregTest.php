@@ -18,13 +18,13 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\PregException;
 
 /**
- * @author Kuba Werłos <werlos@gmail.com>
- *
- * @covers \PhpCsFixer\Preg
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\Preg
+ *
+ * @author Kuba Werłos <werlos@gmail.com>
  */
 final class PregTest extends TestCase
 {

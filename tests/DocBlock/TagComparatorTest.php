@@ -20,14 +20,14 @@ use PhpCsFixer\DocBlock\TagComparator;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- * @author Jakub Kwaśniewski <jakub@zero-85.pl>
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @covers \PhpCsFixer\DocBlock\TagComparator
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
+ * @author Jakub Kwaśniewski <jakub@zero-85.pl>
  */
 final class TagComparatorTest extends TestCase
 {

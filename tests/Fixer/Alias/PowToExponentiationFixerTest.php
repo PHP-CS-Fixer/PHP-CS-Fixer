@@ -19,12 +19,12 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
- * @covers \PhpCsFixer\Fixer\Alias\PowToExponentiationFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\PowToExponentiationFixer>
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
+ * @covers \PhpCsFixer\Fixer\Alias\PowToExponentiationFixer
  */
 final class PowToExponentiationFixerTest extends AbstractFixerTestCase
 {

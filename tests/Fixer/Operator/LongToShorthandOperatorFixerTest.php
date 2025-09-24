@@ -20,12 +20,12 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\AbstractShortOperatorFixer
- * @covers \PhpCsFixer\Fixer\Operator\LongToShorthandOperatorFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\LongToShorthandOperatorFixer>
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @covers \PhpCsFixer\Fixer\AbstractShortOperatorFixer
+ * @covers \PhpCsFixer\Fixer\Operator\LongToShorthandOperatorFixer
  */
 final class LongToShorthandOperatorFixerTest extends AbstractFixerTestCase
 {

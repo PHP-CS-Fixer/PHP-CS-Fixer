@@ -17,8 +17,6 @@ namespace PhpCsFixer\Tests\Smoke;
 use PhpCsFixer\Tests\TestCase;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @requires OS Linux|Darwin
@@ -28,5 +26,7 @@ use PhpCsFixer\Tests\TestCase;
  * @group covers-nothing
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 abstract class AbstractSmokeTestCase extends TestCase {}

@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ArrayNotation\NoTrailingCommaInSinglelineArrayFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ArrayNotation\NoTrailingCommaInSinglelineArrayFixer>
  *
- * @author Sebastiaan Stok <s.stok@rollerscapes.net>
+ * @covers \PhpCsFixer\Fixer\ArrayNotation\NoTrailingCommaInSinglelineArrayFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  */
 final class NoTrailingCommaInSinglelineArrayFixerTest extends AbstractFixerTestCase
 {

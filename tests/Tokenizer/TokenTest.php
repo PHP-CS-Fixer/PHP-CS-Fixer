@@ -20,15 +20,15 @@ use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 
 /**
- * @phpstan-import-type _PhpTokenPrototypePartial from Token
- *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @phpstan-import-type _PhpTokenPrototypePartial from Token
  *
  * @covers \PhpCsFixer\Tokenizer\Token
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class TokenTest extends TestCase
 {

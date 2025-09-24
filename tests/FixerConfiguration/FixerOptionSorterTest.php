@@ -21,9 +21,9 @@ use PhpCsFixer\Tests\TestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\FixerConfiguration\FixerOptionSorter
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\FixerConfiguration\FixerOptionSorter
  */
 final class FixerOptionSorterTest extends TestCase
 {

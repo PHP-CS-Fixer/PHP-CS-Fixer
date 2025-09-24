@@ -21,14 +21,14 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
- * @author VeeWee <toonverwerft@gmail.com>
- * @author Greg Korba <greg@codito.dev>
- *
  * @internal
  *
  * @TODO Drop `allowMultiUses` opt-in flag when all fixers are updated and can handle multi-use statements.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author VeeWee <toonverwerft@gmail.com>
+ * @author Greg Korba <greg@codito.dev>
  */
 final class NamespaceUsesAnalyzer
 {

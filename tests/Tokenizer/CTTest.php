@@ -18,13 +18,13 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\CT;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @covers \PhpCsFixer\Tokenizer\CT
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class CTTest extends TestCase
 {

@@ -19,14 +19,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
- * @covers \PhpCsFixer\Fixer\CastNotation\ModernizeTypesCastingFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\CastNotation\ModernizeTypesCastingFixer>
  *
- * @author Vladimir Reznichenko <kalessil@gmail.com>
+ * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
+ * @covers \PhpCsFixer\Fixer\CastNotation\ModernizeTypesCastingFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Vladimir Reznichenko <kalessil@gmail.com>
  */
 final class ModernizeTypesCastingFixerTest extends AbstractFixerTestCase
 {

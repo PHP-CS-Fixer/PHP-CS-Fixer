@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\FunctionNotation\ImplodeCallFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\ImplodeCallFixer>
  *
- * @author Kuba Werłos <werlos@gmail.com>
+ * @covers \PhpCsFixer\Fixer\FunctionNotation\ImplodeCallFixer
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @author Kuba Werłos <werlos@gmail.com>
  */
 final class ImplodeCallFixerTest extends AbstractFixerTestCase
 {

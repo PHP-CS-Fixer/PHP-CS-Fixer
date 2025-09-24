@@ -21,11 +21,11 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 
 /**
- * @covers \PhpCsFixer\DocBlock\TypeExpression
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\DocBlock\TypeExpression
  */
 final class TypeExpressionTest extends TestCase
 {

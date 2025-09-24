@@ -23,9 +23,9 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\AbstractFixer
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @covers \PhpCsFixer\AbstractFixer
  */
 final class AbstractFixerTest extends TestCase
 {

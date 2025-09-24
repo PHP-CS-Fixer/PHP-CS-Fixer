@@ -22,11 +22,11 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * Transform `class` class' constant from T_CLASS into CT::T_CLASS_CONSTANT.
  *
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  */
 final class ClassConstantTransformer extends AbstractTransformer
 {

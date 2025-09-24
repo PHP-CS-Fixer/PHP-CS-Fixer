@@ -18,16 +18,16 @@ use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
 
 /**
- * @author Sebastiaans Stok <s.stok@rollerscapes.net>
- *
  * @internal
  *
- * @covers \PhpCsFixer\Tokenizer\Transformer\BraceClassInstantiationTransformer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
  * @phpstan-import-type _TransformerTestObservedKinds from AbstractTransformerTestCase
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @covers \PhpCsFixer\Tokenizer\Transformer\BraceClassInstantiationTransformer
+ *
+ * @author Sebastiaans Stok <s.stok@rollerscapes.net>
  */
 final class BraceClassInstantiationTransformerTest extends AbstractTransformerTestCase
 {

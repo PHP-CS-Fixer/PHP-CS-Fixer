@@ -19,12 +19,12 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\AbstractNoUselessElseFixer
- * @covers \PhpCsFixer\Fixer\ControlStructure\NoSuperfluousElseifFixer
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\NoSuperfluousElseifFixer>
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ * @covers \PhpCsFixer\AbstractNoUselessElseFixer
+ * @covers \PhpCsFixer\Fixer\ControlStructure\NoSuperfluousElseifFixer
  */
 final class NoSuperfluousElseifFixerTest extends AbstractFixerTestCase
 {

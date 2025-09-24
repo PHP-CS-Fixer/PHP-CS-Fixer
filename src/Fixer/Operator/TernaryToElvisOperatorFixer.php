@@ -24,9 +24,9 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @phpstan-import-type _PhpTokenPrototypePartial from Token
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @phpstan-import-type _PhpTokenPrototypePartial from Token
  */
 final class TernaryToElvisOperatorFixer extends AbstractFixer
 {
