@@ -24,6 +24,7 @@ use PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer;
 use PhpCsFixer\Fixer\ControlStructure\IncludeFixer;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
+use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleset;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -234,6 +235,16 @@ final class ConfigTest extends TestCase
         yield [$fixers, $fixers];
 
         yield [$fixers, new \ArrayIterator($fixers)];
+    }
+
+    public function testRegisterCustomRuleSets(): void
+    {
+        $ruleset = new ExampleRuleset();
+
+        $config = new Config();
+        $config->registerCustomRuleSets([$ruleset]);
+
+        self::assertSame([$ruleset], $config->getCustomRuleSets());
     }
 
     public function testConfigDefault(): void
