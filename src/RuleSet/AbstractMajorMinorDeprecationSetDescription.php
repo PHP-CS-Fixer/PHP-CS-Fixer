@@ -22,6 +22,8 @@ use PhpCsFixer\Preg;
  * @TODO v4 remove me @MARKER_deprecated_migration_ruleset
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @TODO rename to Definition // keradus
  */
 abstract class AbstractMajorMinorDeprecationSetDescription extends AbstractMigrationSetDescription implements DeprecatedRuleSetDescriptionInterface
 {
