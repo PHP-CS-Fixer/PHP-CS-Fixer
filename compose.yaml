@@ -74,6 +74,13 @@ services:
     volumes:
       - .:/fixer
 
+  yaml-lint:
+    image: sdesbure/yamllint
+    command: yamllint .
+    working_dir: /fixer
+    volumes:
+      - .:/fixer
+
   markdown-lint:
     image: registry.gitlab.com/pipeline-components/markdownlint:latest
     command: mdl --git-recurse .
