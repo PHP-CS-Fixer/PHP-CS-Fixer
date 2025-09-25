@@ -112,7 +112,7 @@ final class OrderedTraitsFixer extends AbstractFixer implements ConfigurableFixe
                 continue;
             }
 
-            $startIndex = $tokens->getNextNonWhitespace($tokens->getPrevMeaningfulToken($index));
+            $startIndex = $tokens->requireNextNonWhitespace($tokens->getPrevMeaningfulToken($index));
             $endIndex = $tokens->getNextTokenOfKind($index, [';', '{']);
 
             if ($tokens[$endIndex]->equals('{')) {

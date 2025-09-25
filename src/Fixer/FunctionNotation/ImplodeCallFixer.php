@@ -133,7 +133,7 @@ final class ImplodeCallFixer extends AbstractFixer
         $indices = [];
 
         foreach ($argumentsAnalyzer->getArguments($tokens, $openParenthesis, $closeParenthesis) as $startIndexCandidate => $endIndex) {
-            $indices[$tokens->getNextMeaningfulToken($startIndexCandidate - 1)] = $tokens->getPrevMeaningfulToken($endIndex + 1);
+            $indices[$tokens->requireNextMeaningfulToken($startIndexCandidate - 1)] = $tokens->requirePrevMeaningfulToken($endIndex + 1);
         }
 
         return $indices;
