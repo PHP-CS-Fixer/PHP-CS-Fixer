@@ -50,6 +50,7 @@
     </source>
 
     <extensions>
+        <bootstrap class="Ergebnis\PHPUnit\SlowTestDetector\Extension"/>
         <bootstrap class="Paraunit\Configuration\ParaunitExtension"/>
     </extensions>
 
