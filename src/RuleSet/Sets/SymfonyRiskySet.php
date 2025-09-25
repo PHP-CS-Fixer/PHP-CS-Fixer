@@ -56,7 +56,7 @@ final class SymfonyRiskySet extends AbstractRuleSetDefinition
             'no_alias_functions' => true,
             'no_homoglyph_names' => true,
             'no_php4_constructor' => true,
-            'no_trailing_whitespace_in_string' => false, // override PER / PSR
+            'no_trailing_whitespace_in_string' => false, // override PER-CS
             'no_unneeded_final_method' => true,
             'no_useless_sprintf' => true,
             'non_printable_character' => true,
@@ -76,6 +76,6 @@ final class SymfonyRiskySet extends AbstractRuleSetDefinition
 
     public function getDescription(): string
     {
-        return 'Rules that follow the official `Symfony Coding Standards <https://symfony.com/doc/current/contributing/code/standards.html>`_.';
+        return 'Rules that follow the official `Symfony Coding Standards <https://symfony.com/doc/current/contributing/code/standards.html>`_. Extends `@PER-CS:risky`.';
     }
 }

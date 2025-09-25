@@ -133,6 +133,6 @@ final class PhpCsFixerSet extends AbstractRuleSetDefinition
 
     public function getDescription(): string
     {
-        return 'Rule set as used by the PHP CS Fixer development team, highly opinionated.';
+        return 'Rules recommended by PHP CS Fixer team, highly opinionated. Extends `@PER-CS` and `@Symfony`.';
     }
 }
