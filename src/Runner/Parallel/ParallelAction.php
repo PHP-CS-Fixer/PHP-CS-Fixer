@@ -32,6 +32,7 @@ final class ParallelAction
     public const WORKER_GET_FILE_CHUNK = 'getFileChunk';
     public const WORKER_HELLO = 'hello';
     public const WORKER_RESULT = 'result';
+    public const WORKER_GOODBYE = 'goodbye';
 
     private function __construct() {}
 }

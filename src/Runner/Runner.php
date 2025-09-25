@@ -89,6 +89,13 @@ final class Runner
 
     private int $fileCount;
 
+    private int $workersMemoryUsage = 0;
+
+    public function getWorkersMemoryUsage(): int
+    {
+        return $this->workersMemoryUsage;
+    }
+
     /**
      * @var list<FixerInterface>
      */
@@ -331,6 +338,13 @@ final class Runner
                         }
 
                         $process->request(['action' => ParallelAction::RUNNER_REQUEST_ANALYSIS, 'files' => $fileChunk]);
+
+                        return;
+                    }
+
+                    if (ParallelAction::WORKER_GOODBYE === $workerResponse['action']) {
+                        // Collect memory usage from worker
+                        $this->workersMemoryUsage += $workerResponse['memoryUsage'] ?? 0;
 
                         return;
                     }
