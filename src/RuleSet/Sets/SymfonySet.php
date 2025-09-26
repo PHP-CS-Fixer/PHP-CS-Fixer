@@ -178,7 +178,19 @@ final class SymfonySet extends AbstractRuleSetDefinition
                 ],
             ],
             'phpdoc_return_self_reference' => true,
-            'phpdoc_scalar' => true,
+            'phpdoc_scalar' => [
+                'types' => [ // @TODO v4 drop custom config with => true, as v4 defaults are same
+                    'boolean',
+                    'callback',
+                    'double',
+                    'integer',
+                    'never-return',
+                    'never-returns',
+                    'no-return',
+                    'real',
+                    'str',
+                ],
+            ],
             'phpdoc_separation' => [
                 'groups' => [
                     ['Annotation', 'NamedArgumentConstructor', 'Target'],
