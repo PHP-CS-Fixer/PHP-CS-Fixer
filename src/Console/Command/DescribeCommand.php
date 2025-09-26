@@ -36,6 +36,7 @@ use PhpCsFixer\Future;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\DeprecatedRuleSetDefinitionInterface;
+use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\StdinFileInfo;
@@ -397,37 +398,16 @@ final class DescribeCommand extends Command
         }
 
         if ('@' === $name) {
-            $defaultRuleSetDefinition = new class(\sprintf('@ - %s', $resolver->getConfig()->getName()), null === $resolver->getConfigFile() ? 'Default rules, no config file.' : 'Rules defined in the config file.', $resolver->getRiskyAllowed(), $resolver->getConfig()->getRules()) implements RuleSetDefinitionInterface {
-                /**
-                 * @param array<string, array<string, mixed>|bool> $rules
-                 */
-                public function __construct(
-                    private string $name,
-                    private string $description,
-                    private bool $isRisky,
-                    private array $rules,
-                ) {}
-
-                public function getDescription(): string
-                {
-                    return $this->description;
-                }
-
-                public function getName(): string
-                {
-                    return $this->name;
-                }
-
-                public function getRules(): array
-                {
-                    return $this->rules;
-                }
-
-                public function isRisky(): bool
-                {
-                    return $this->isRisky;
-                }
-            };
+            $defaultRuleSetDefinition = $this->createRuleSetDefinition(
+                null,
+                [],
+                [
+                    'getDescription' => null === $resolver->getConfigFile() ? 'Default rules, no config file.' : 'Rules defined in used config.',
+                    'getName' => \sprintf('@ - %s', $resolver->getConfig()->getName()),
+                    'getRules' => $resolver->getConfig()->getRules(),
+                    'isRisky' => $resolver->getRiskyAllowed(),
+                ]
+            );
         }
 
         $ruleSetDefinitions = RuleSets::getSetDefinitions();
@@ -566,5 +546,70 @@ final class DescribeCommand extends Command
             ),
             $content
         );
+    }
+
+    /**
+     * @param list<'expand'>                                                                                                        $adjustments
+     * @param array{getDescription?: string, getName?: string, getRules?: array<string, array<string, mixed>|bool>, isRisky?: bool} $overrides
+     */
+    private function createRuleSetDefinition(?RuleSetDefinitionInterface $ruleSetDefinition, array $adjustments, array $overrides): RuleSetDefinitionInterface
+    {
+        return new class($ruleSetDefinition, $adjustments, $overrides) implements RuleSetDefinitionInterface {
+            private ?RuleSetDefinitionInterface $original;
+
+            /** @var list<'expand'> */
+            private array $adjustments;
+
+            /** @var array{getDescription?: string, getName?: string, getRules?: array<string, array<string, mixed>|bool>, isRisky?: bool} */
+            private array $overrides;
+
+            /**
+             * @param list<'expand'>                                                                                                        $adjustments
+             * @param array{getDescription?: string, getName?: string, getRules?: array<string, array<string, mixed>|bool>, isRisky?: bool} $overrides
+             */
+            public function __construct(
+                ?RuleSetDefinitionInterface $original,
+                array $adjustments,
+                array $overrides,
+            ) {
+                $this->original = $original;
+                $this->adjustments = $adjustments;
+                $this->overrides = $overrides;
+            }
+
+            public function getDescription(): string
+            {
+                return $this->overrides[__FUNCTION__] ?? $this->original?->{__FUNCTION__}() ?? 'unknown description'; // @phpstan-ignore method.dynamicName
+            }
+
+            public function getName(): string
+            {
+                return $this->overrides[__FUNCTION__] ?? $this->original?->{__FUNCTION__}() ?? 'unknown name' // @phpstan-ignore method.dynamicName
+                    .(\in_array('expand', $this->adjustments, true) ? ' (expanded)' : '');
+            }
+
+            public function getRules(): array
+            {
+                $value = $this->overrides[__FUNCTION__] ?? $this->original?->{__FUNCTION__}(); // @phpstan-ignore method.dynamicName
+                if (null === $value) {
+                    throw new \LogicException('Cannot get rules from unknown original rule set and missing overrides.');
+                }
+                if (\in_array('expand', $this->adjustments, true)) {
+                    return (new RuleSet($value))->getRules();
+                }
+
+                return $value;
+            }
+
+            public function isRisky(): bool
+            {
+                $value = $this->overrides[__FUNCTION__] ?? $this->original?->{__FUNCTION__}(); // @phpstan-ignore method.dynamicName
+                if (null === $value) {
+                    throw new \LogicException('Cannot get isRisky from unknown original rule set and missing overrides.');
+                }
+
+                return $value;
+            }
+        };
     }
 }
