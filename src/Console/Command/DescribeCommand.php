@@ -547,7 +547,7 @@ final class DescribeCommand extends Command
             public function getName(): string
             {
                 return $this->original->getName()
-                .(\in_array('expand', $this->adjustments, true) ? ' (expanded)' : '');
+                    .(\in_array('expand', $this->adjustments, true) ? ' (expanded)' : '');
             }
 
             public function getRules(): array
