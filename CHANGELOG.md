@@ -3,6 +3,14 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.88.1
+---------------------
+
+* chore: use accidentally missing `@auto:risky` (#9102)
+* deps: bump crate-ci/typos from 1.36.2 to 1.36.3 (#9099)
+* deps: bump icanhazstring/composer-unused from 0.9.4 to 0.9.5 in /dev-tools (#9100)
+* DX: Ability to run `yamllint` locally (#9093)
+
 Changelog for v3.88.0
 ---------------------
 
