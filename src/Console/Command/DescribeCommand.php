@@ -125,7 +125,7 @@ final class DescribeCommand extends Command
 
         if (null === $name) {
             if (false === $input->isInteractive()) {
-                throw new \InvalidArgumentException('The name argument is required when not running interactively.');
+                throw new \Symfony\Component\Console\Exception\RuntimeException('Not enough arguments (missing: "name") when not running interactively.');
             }
 
             $io = new SymfonyStyle($input, $output);

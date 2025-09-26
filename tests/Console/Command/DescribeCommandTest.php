@@ -344,10 +344,10 @@ $/s',
         $commandTester = new CommandTester($command);
 
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessageMatches('/^Not enough arguments( \(missing: "name"\))?\.$/');
+        $this->expectExceptionMessage('Not enough arguments (missing: "name") when not running interactively.');
         $commandTester->execute([
             'command' => $command->getName(),
-        ]);
+        ], ['interactive' => false]);
     }
 
     public function testGetAlternativeSuggestion(): void
