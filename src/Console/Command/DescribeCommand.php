@@ -36,6 +36,7 @@ use PhpCsFixer\Future;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\DeprecatedRuleSetDefinitionInterface;
+use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -50,6 +51,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -95,7 +97,7 @@ final class DescribeCommand extends Command
     {
         $this->setDefinition(
             [
-                new InputArgument('name', InputArgument::REQUIRED, 'Name of rule / set.', null, fn () => array_merge($this->getSetNames(), array_keys($this->getFixers()))),
+                new InputArgument('name', InputArgument::OPTIONAL, 'Name of rule / set.', null, fn () => array_merge($this->getSetNames(), array_keys($this->getFixers()))),
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
             ]
         );
@@ -117,11 +119,33 @@ final class DescribeCommand extends Command
 
         $this->fixerFactory->registerCustomFixers($resolver->getConfig()->getCustomFixers());
 
+        /** @var ?string $name */
         $name = $input->getArgument('name');
+
+        if (null === $name) {
+            if (false === $input->isInteractive()) {
+                throw new \InvalidArgumentException('The name argument is required when not running interactively.');
+            }
+
+            $io = new SymfonyStyle($input, $output);
+            $shallDescribeConfigInUse = 'yes' === $io->choice(
+                'Do you want to describe used configuration? (alias:`@`',
+                ['yes', 'no'],
+                'yes',
+            );
+            if ($shallDescribeConfigInUse) {
+                $name = '@'; // '@' means "describe config file"
+            } else {
+                $name = $io->choice(
+                    'Please select rule / set to describe',
+                    array_merge($this->getSetNames(), array_keys($this->getFixers()))
+                );
+            }
+        }
 
         try {
             if (str_starts_with($name, '@')) {
-                $this->describeSet($output, $name);
+                $this->describeSet($output, $name, $resolver);
 
                 return 0;
             }
@@ -366,14 +390,48 @@ final class DescribeCommand extends Command
         }
     }
 
-    private function describeSet(OutputInterface $output, string $name): void
+    private function describeSet(OutputInterface $output, string $name, ConfigurationResolver $resolver): void
     {
-        if (!\in_array($name, $this->getSetNames(), true)) {
+        if ('@' !== $name && !\in_array($name, $this->getSetNames(), true)) {
             throw new DescribeNameNotFoundException($name, 'set');
         }
 
+        if ('@' === $name) {
+            $defaultRuleSetDefinition = new class(\sprintf('@ - %s', $resolver->getConfig()->getName()), null === $resolver->getConfigFile() ? 'Default rules, no config file.' : 'Rules defined in the config file.', $resolver->getRiskyAllowed(), $resolver->getConfig()->getRules()) implements RuleSetDefinitionInterface {
+                /**
+                 * @param array<string, array<string, mixed>|bool> $rules
+                 */
+                public function __construct(
+                    private string $name,
+                    private string $description,
+                    private bool $isRisky,
+                    private array $rules,
+                ) {}
+
+                public function getDescription(): string
+                {
+                    return $this->description;
+                }
+
+                public function getName(): string
+                {
+                    return $this->name;
+                }
+
+                public function getRules(): array
+                {
+                    return $this->rules;
+                }
+
+                public function isRisky(): bool
+                {
+                    return $this->isRisky;
+                }
+            };
+        }
+
         $ruleSetDefinitions = RuleSets::getSetDefinitions();
-        $ruleSetDefinition = $ruleSetDefinitions[$name];
+        $ruleSetDefinition = $defaultRuleSetDefinition ?? $ruleSetDefinitions[$name];
         $fixers = $this->getFixers();
 
         $output->writeln(\sprintf('<fg=blue>Description of the <info>`%s`</info> set.</>', $ruleSetDefinition->getName()));
