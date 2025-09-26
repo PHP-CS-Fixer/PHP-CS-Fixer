@@ -46,6 +46,7 @@ use PhpCsFixer\Utils;
 use PhpCsFixer\WordMatcher;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -125,7 +126,7 @@ final class DescribeCommand extends Command
 
         if (null === $name) {
             if (false === $input->isInteractive()) {
-                throw new \Symfony\Component\Console\Exception\RuntimeException('Not enough arguments (missing: "name") when not running interactively.');
+                throw new RuntimeException('Not enough arguments (missing: "name") when not running interactively.');
             }
 
             $io = new SymfonyStyle($input, $output);
