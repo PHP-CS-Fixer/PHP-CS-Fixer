@@ -534,6 +534,9 @@ final class DescribeCommand extends Command
     private function createRuleSetDefinition(RuleSetDefinitionInterface $ruleSetDefinition, array $adjustments): RuleSetDefinitionInterface
     {
         return new class($ruleSetDefinition, $adjustments) implements RuleSetDefinitionInterface {
+            /**
+             * @param array<string, array<string, mixed>|bool> $rules
+             */
             public function __construct(
                 private RuleSetDefinitionInterface $original,
                 private array $adjustments,
