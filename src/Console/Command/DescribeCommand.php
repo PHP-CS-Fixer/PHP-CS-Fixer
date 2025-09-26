@@ -389,7 +389,7 @@ final class DescribeCommand extends Command
         $fixers = $this->getFixers();
 
         if (true === $input->getOption('expand')) {
-            $ruleSetDefinition = $this->createRuleSetDefinition($ruleSetDefinition, ['expand']);
+            $ruleSetDefinition = $this->createRuleSetDefinition($ruleSetDefinition, ['expand'], []);
         } else {
             $output->writeln("You may the '--expand' option to see nested sets expanded into nested rules.");
         }
