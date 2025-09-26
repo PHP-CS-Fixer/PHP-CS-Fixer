@@ -36,6 +36,8 @@ use PhpCsFixer\Future;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\DeprecatedRuleSetDefinitionInterface;
+use PhpCsFixer\RuleSet\RuleSet;
+use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -97,6 +99,7 @@ final class DescribeCommand extends Command
             [
                 new InputArgument('name', InputArgument::REQUIRED, 'Name of rule / set.', null, fn () => array_merge($this->getSetNames(), array_keys($this->getFixers()))),
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
+                new InputOption('expand', '', InputOption::VALUE_NONE, 'Shall nested sets be expanded into nested rules.'),
             ]
         );
     }
@@ -108,6 +111,17 @@ final class DescribeCommand extends Command
             $stdErr->writeln(Application::getAboutWithRuntime(true));
         }
 
+        $name = $input->getArgument('name');
+        $expand = $input->getOption('expand');
+
+        if (!str_starts_with($name, '@')) {
+            if ('expand' === $expand) {
+                throw new \InvalidArgumentException(
+                    'The "--expand" option is available only when describing a set (name starting with "@").',
+                );
+            }
+        }
+
         $resolver = new ConfigurationResolver(
             new Config(),
             ['config' => $input->getOption('config')],
@@ -117,11 +131,9 @@ final class DescribeCommand extends Command
 
         $this->fixerFactory->registerCustomFixers($resolver->getConfig()->getCustomFixers());
 
-        $name = $input->getArgument('name');
-
         try {
             if (str_starts_with($name, '@')) {
-                $this->describeSet($output, $name);
+                $this->describeSet($input, $output, $name);
 
                 return 0;
             }
@@ -366,7 +378,7 @@ final class DescribeCommand extends Command
         }
     }
 
-    private function describeSet(OutputInterface $output, string $name): void
+    private function describeSet(InputInterface $input, OutputInterface $output, string $name): void
     {
         if (!\in_array($name, $this->getSetNames(), true)) {
             throw new DescribeNameNotFoundException($name, 'set');
@@ -375,6 +387,12 @@ final class DescribeCommand extends Command
         $ruleSetDefinitions = RuleSets::getSetDefinitions();
         $ruleSetDefinition = $ruleSetDefinitions[$name];
         $fixers = $this->getFixers();
+
+        if (true === $input->getOption('expand')) {
+            $ruleSetDefinition = $this->createRuleSetDefinition($ruleSetDefinition, ['expand']);
+        } else {
+            $output->writeln("You may the '--expand' option to see nested sets expanded into nested rules.");
+        }
 
         $output->writeln(\sprintf('<fg=blue>Description of the <info>`%s`</info> set.</>', $ruleSetDefinition->getName()));
         $output->writeln('');
@@ -508,5 +526,43 @@ final class DescribeCommand extends Command
             ),
             $content
         );
+    }
+
+    /**
+     * @param list<'expand'> $adjustments
+     */
+    private function createRuleSetDefinition(RuleSetDefinitionInterface $ruleSetDefinition, array $adjustments): RuleSetDefinitionInterface
+    {
+        return new class($ruleSetDefinition, $adjustments) implements RuleSetDefinitionInterface {
+            public function __construct(
+                private RuleSetDefinitionInterface $original,
+                private array $adjustments,
+            ) {}
+
+            public function getDescription(): string
+            {
+                return $this->original->getDescription();
+            }
+
+            public function getName(): string
+            {
+                return $this->original->getName()
+                .(\in_array('expand', $this->adjustments, true) ? ' (expanded)' : '');
+            }
+
+            public function getRules(): array
+            {
+                if (\in_array('expand', $this->adjustments, true)) {
+                    return (new RuleSet($this->original->getRules()))->getRules();
+                }
+
+                return $this->original->getRules();
+            }
+
+            public function isRisky(): bool
+            {
+                return $this->original->isRisky();
+            }
+        };
     }
 }
