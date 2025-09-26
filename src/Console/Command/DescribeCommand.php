@@ -36,6 +36,8 @@ use PhpCsFixer\Future;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\DeprecatedRuleSetDefinitionInterface;
+use PhpCsFixer\RuleSet\RuleSet;
+use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -44,12 +46,14 @@ use PhpCsFixer\Utils;
 use PhpCsFixer\WordMatcher;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -95,7 +99,7 @@ final class DescribeCommand extends Command
     {
         $this->setDefinition(
             [
-                new InputArgument('name', InputArgument::REQUIRED, 'Name of rule / set.', null, fn () => array_merge($this->getSetNames(), array_keys($this->getFixers()))),
+                new InputArgument('name', InputArgument::OPTIONAL, 'Name of rule / set.', null, fn () => array_merge($this->getSetNames(), array_keys($this->getFixers()))),
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
             ]
         );
@@ -117,11 +121,33 @@ final class DescribeCommand extends Command
 
         $this->fixerFactory->registerCustomFixers($resolver->getConfig()->getCustomFixers());
 
+        /** @var ?string $name */
         $name = $input->getArgument('name');
+
+        if (null === $name) {
+            if (false === $input->isInteractive()) {
+                throw new RuntimeException('Not enough arguments (missing: "name") when not running interactively.');
+            }
+
+            $io = new SymfonyStyle($input, $output);
+            $shallDescribeConfigInUse = 'yes' === $io->choice(
+                'Do you want to describe used configuration? (alias:`@`',
+                ['yes', 'no'],
+                'yes',
+            );
+            if ($shallDescribeConfigInUse) {
+                $name = '@'; // '@' means "describe config file"
+            } else {
+                $name = $io->choice(
+                    'Please select rule / set to describe',
+                    array_merge($this->getSetNames(), array_keys($this->getFixers()))
+                );
+            }
+        }
 
         try {
             if (str_starts_with($name, '@')) {
-                $this->describeSet($output, $name);
+                $this->describeSet($output, $name, $resolver);
 
                 return 0;
             }
@@ -366,14 +392,27 @@ final class DescribeCommand extends Command
         }
     }
 
-    private function describeSet(OutputInterface $output, string $name): void
+    private function describeSet(OutputInterface $output, string $name, ConfigurationResolver $resolver): void
     {
-        if (!\in_array($name, $this->getSetNames(), true)) {
+        if ('@' !== $name && !\in_array($name, $this->getSetNames(), true)) {
             throw new DescribeNameNotFoundException($name, 'set');
         }
 
+        if ('@' === $name) {
+            $defaultRuleSetDefinition = $this->createRuleSetDefinition(
+                null,
+                [],
+                [
+                    'getDescription' => null === $resolver->getConfigFile() ? 'Default rules, no config file.' : 'Rules defined in used config.',
+                    'getName' => \sprintf('@ - %s', $resolver->getConfig()->getName()),
+                    'getRules' => $resolver->getConfig()->getRules(),
+                    'isRisky' => $resolver->getRiskyAllowed(),
+                ]
+            );
+        }
+
         $ruleSetDefinitions = RuleSets::getSetDefinitions();
-        $ruleSetDefinition = $ruleSetDefinitions[$name];
+        $ruleSetDefinition = $defaultRuleSetDefinition ?? $ruleSetDefinitions[$name];
         $fixers = $this->getFixers();
 
         $output->writeln(\sprintf('<fg=blue>Description of the <info>`%s`</info> set.</>', $ruleSetDefinition->getName()));
@@ -508,5 +547,82 @@ final class DescribeCommand extends Command
             ),
             $content
         );
+    }
+
+    /**
+     * @param list<'expand'>                                                                                                        $adjustments
+     * @param array{getDescription?: string, getName?: string, getRules?: array<string, array<string, mixed>|bool>, isRisky?: bool} $overrides
+     */
+    private function createRuleSetDefinition(?RuleSetDefinitionInterface $ruleSetDefinition, array $adjustments, array $overrides): RuleSetDefinitionInterface
+    {
+        return new class($ruleSetDefinition, $adjustments, $overrides) implements RuleSetDefinitionInterface {
+            private ?RuleSetDefinitionInterface $original;
+
+            /** @var list<'expand'> */
+            private array $adjustments;
+
+            /** @var array{getDescription?: string, getName?: string, getRules?: array<string, array<string, mixed>|bool>, isRisky?: bool} */
+            private array $overrides;
+
+            /**
+             * @param list<'expand'>                                                                                                        $adjustments
+             * @param array{getDescription?: string, getName?: string, getRules?: array<string, array<string, mixed>|bool>, isRisky?: bool} $overrides
+             */
+            public function __construct(
+                ?RuleSetDefinitionInterface $original,
+                array $adjustments,
+                array $overrides
+            ) {
+                $this->original = $original;
+                $this->adjustments = $adjustments;
+                $this->overrides = $overrides;
+            }
+
+            public function getDescription(): string
+            {
+                return $this->overrides[__FUNCTION__]
+                    ?? (null !== $this->original ? $this->original->{__FUNCTION__}() : 'unknown description'); // @phpstan-ignore method.dynamicName
+            }
+
+            public function getName(): string
+            {
+                $value = $this->overrides[__FUNCTION__]
+                    ?? (null !== $this->original ? $this->original->{__FUNCTION__}() : 'unknown name'); // @phpstan-ignore method.dynamicName
+
+                if (\in_array('expand', $this->adjustments, true)) {
+                    $value .= ' (expanded)';
+                }
+
+                return $value;
+            }
+
+            public function getRules(): array
+            {
+                $value = $this->overrides[__FUNCTION__]
+                    ?? (null !== $this->original ? $this->original->{__FUNCTION__}() : null); // @phpstan-ignore method.dynamicName
+
+                if (null === $value) {
+                    throw new \LogicException('Cannot get rules from unknown original rule set and missing overrides.');
+                }
+
+                if (\in_array('expand', $this->adjustments, true)) {
+                    $value = (new RuleSet($value))->getRules();
+                }
+
+                return $value;
+            }
+
+            public function isRisky(): bool
+            {
+                $value = $this->overrides[__FUNCTION__]
+                    ?? (null !== $this->original ? $this->original->{__FUNCTION__}() : null); // @phpstan-ignore method.dynamicName
+
+                if (null === $value) {
+                    throw new \LogicException('Cannot get isRisky from unknown original rule set and missing overrides.');
+                }
+
+                return $value;
+            }
+        };
     }
 }
