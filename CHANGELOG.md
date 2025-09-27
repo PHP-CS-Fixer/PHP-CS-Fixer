@@ -3,6 +3,12 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.88.2
+---------------------
+
+* docs: describe command - allow to describe config in use (#9103)
+* docs: describe command - allow to expand sets (#9104)
+
 Changelog for v3.88.1
 ---------------------
 
