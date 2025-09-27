@@ -13,7 +13,7 @@ Configuration
 
 A list of types to fix.
 
-Allowed values: a subset of ``['boolean', 'callback', 'double', 'integer', 'real', 'str']``
+Allowed values: a subset of ``['boolean', 'callback', 'double', 'integer', 'never-return', 'never-returns', 'no-return', 'real', 'str']``
 
 Default value: ``['boolean', 'callback', 'double', 'integer', 'real', 'str']``
 
@@ -72,8 +72,13 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
-- `@Symfony <./../../ruleSets/Symfony.rst>`_
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
+  ``['types' => ['boolean', 'callback', 'double', 'integer', 'never-return', 'never-returns', 'no-return', 'real', 'str']]``
+
+- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
+  ``['types' => ['boolean', 'callback', 'double', 'integer', 'never-return', 'never-returns', 'no-return', 'real', 'str']]``
 
 References
 ----------
