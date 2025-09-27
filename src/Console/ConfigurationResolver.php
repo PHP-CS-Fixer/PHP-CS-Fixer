@@ -30,6 +30,7 @@ use PhpCsFixer\CustomRulesetsAwareConfigInterface;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Differ\UnifiedDiffer;
+use PhpCsFixer\FilterFixerByFileAwareConfigInterface;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
@@ -180,6 +181,13 @@ final class ConfigurationResolver
     private ?bool $usingCache = null;
 
     private ?bool $isUnsupportedPhpVersionAllowed = null;
+
+    private bool $isFilterFixerByFileResolved = false;
+
+    /**
+     * @var ?\Closure(FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface
+     */
+    private ?\Closure $filterFixerByFile;
 
     private ?FixerFactory $fixerFactory = null;
 
@@ -526,6 +534,19 @@ final class ConfigurationResolver
         }
 
         return $this->isUnsupportedPhpVersionAllowed;
+    }
+
+    public function getFilterFixerByFile(): ?\Closure
+    {
+        if (false === $this->isFilterFixerByFileResolved) {
+            $config = $this->getConfig();
+            $this->filterFixerByFile = $config instanceof FilterFixerByFileAwareConfigInterface
+                ? $config->getFilterFixerByFile()
+                : null;
+            $this->isFilterFixerByFileResolved = true;
+        }
+
+        return $this->filterFixerByFile;
     }
 
     /**
