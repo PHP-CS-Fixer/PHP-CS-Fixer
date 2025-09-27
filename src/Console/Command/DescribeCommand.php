@@ -113,18 +113,6 @@ final class DescribeCommand extends Command
             $stdErr->writeln(Application::getAboutWithRuntime(true));
         }
 
-        /** @var ?string $name */
-        $name = $input->getArgument('name');
-        $expand = $input->getOption('expand');
-
-        if (!str_starts_with($name, '@')) {
-            if ('expand' === $expand) {
-                throw new \InvalidArgumentException(
-                    'The "--expand" option is available only when describing a set (name starting with "@").',
-                );
-            }
-        }
-
         $resolver = new ConfigurationResolver(
             new Config(),
             ['config' => $input->getOption('config')],
@@ -133,6 +121,10 @@ final class DescribeCommand extends Command
         );
 
         $this->fixerFactory->registerCustomFixers($resolver->getConfig()->getCustomFixers());
+
+        /** @var ?string $name */
+        $name = $input->getArgument('name');
+        $expand = $input->getOption('expand');
 
         if (null === $name) {
             if (false === $input->isInteractive()) {
@@ -151,6 +143,14 @@ final class DescribeCommand extends Command
                 $name = $io->choice(
                     'Please select rule / set to describe',
                     array_merge($this->getSetNames(), array_keys($this->getFixers()))
+                );
+            }
+        }
+
+        if (!str_starts_with($name, '@')) {
+            if (true === $expand) {
+                throw new \InvalidArgumentException(
+                    'The "--expand" option is available only when describing a set (name starting with "@").',
                 );
             }
         }
