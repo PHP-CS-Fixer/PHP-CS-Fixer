@@ -4,68 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b9845fafda02d7ed7b63673b6fe34c14",
+    "content-hash": "f30280c37fcf3377cedd431e3f7c4010",
     "packages": [
-        {
-            "name": "composer-unused/contracts",
-            "version": "0.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/composer-unused/contracts.git",
-                "reference": "5ec448d3ee80735dccad6a21a3266c377d0845ae"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/composer-unused/contracts/zipball/5ec448d3ee80735dccad6a21a3266c377d0845ae",
-                "reference": "5ec448d3ee80735dccad6a21a3266c377d0845ae"
-            },
-            "require": {
-                "php": "^7.4 || ^8.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "ComposerUnused\\Contracts\\": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Contract repository for composer-unused"
-        },
-        {
-            "name": "composer-unused/symbol-parser",
-            "version": "0.3.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/composer-unused/symbol-parser.git",
-                "reference": "a55ecd3c10867be27a2eabf31cd1600160d250ae"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/composer-unused/symbol-parser/zipball/a55ecd3c10867be27a2eabf31cd1600160d250ae",
-                "reference": "a55ecd3c10867be27a2eabf31cd1600160d250ae"
-            },
-            "require": {
-                "composer-unused/contracts": "^0.3",
-                "nikic/php-parser": "^5.0",
-                "php": "^7.4 || ^8.0",
-                "phpstan/phpdoc-parser": "^1.25 || ^2",
-                "psr/container": "^1.0 || ^2.0",
-                "psr/log": "^1.1 || ^2 || ^3",
-                "symfony/finder": "^5.3 || ^6.0 || ^7.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "ComposerUnused\\SymbolParser\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Toolkit to parse symbols from a composer package"
-        },
         {
             "name": "composer/pcre",
             "version": "3.3.2",
@@ -403,59 +343,6 @@
             "description": "Provides a JSON schema validator, building on top of justinrainbow/json-schema."
         },
         {
-            "name": "icanhazstring/composer-unused",
-            "version": "0.9.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/composer-unused/composer-unused.git",
-                "reference": "13b1d32e35e7c6dc997c01342c4fe1b217b6d767"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/composer-unused/composer-unused/zipball/13b1d32e35e7c6dc997c01342c4fe1b217b6d767",
-                "reference": "13b1d32e35e7c6dc997c01342c4fe1b217b6d767"
-            },
-            "require": {
-                "composer-runtime-api": "^2.0",
-                "composer-unused/contracts": "^0.3",
-                "composer-unused/symbol-parser": "^0.3.1",
-                "composer/xdebug-handler": "^3.0",
-                "ext-json": "*",
-                "nikic/php-parser": "^5.0",
-                "ondram/ci-detector": "^4.1",
-                "php": "^8.1",
-                "phpstan/phpdoc-parser": "^1.25 || ^2",
-                "psr/container": "^1.0 || ^2.0",
-                "psr/log": "^1.1 || ^2 || ^3",
-                "symfony/config": "^6.0 || ^7.0",
-                "symfony/console": "^6.0 || ^7.0",
-                "symfony/dependency-injection": "^6.0 || ^7.0",
-                "symfony/property-access": "^6.0 || ^7.0",
-                "symfony/serializer": "^6.0 || ^7.0",
-                "webmozart/assert": "^1.10",
-                "webmozart/glob": "^4.4"
-            },
-            "bin": [
-                "bin/composer-unused"
-            ],
-            "type": "library",
-            "extra": {
-                "bamarni-bin": {
-                    "bin-links": true,
-                    "forward-command": true
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "ComposerUnused\\ComposerUnused\\": "src"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Show unused packages by scanning your code"
-        },
-        {
             "name": "justinrainbow/json-schema",
             "version": "6.5.2",
             "source": {
@@ -550,47 +437,6 @@
                 "BSD-3-Clause"
             ],
             "description": "Fork of sebastian/diff for use with ergebnis/composer-normalize"
-        },
-        {
-            "name": "maglnet/composer-require-checker",
-            "version": "4.16.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/maglnet/ComposerRequireChecker.git",
-                "reference": "2449a6298a0c39d940287d5d3afaf05a6f80fd0c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/maglnet/ComposerRequireChecker/zipball/2449a6298a0c39d940287d5d3afaf05a6f80fd0c",
-                "reference": "2449a6298a0c39d940287d5d3afaf05a6f80fd0c"
-            },
-            "require": {
-                "composer-runtime-api": "^2.0.0",
-                "ext-phar": "*",
-                "nikic/php-parser": "^5.4.0",
-                "php": "~8.2.0 || ~8.3.0 || ~8.4.0",
-                "symfony/console": "^6.4.1 || ^7.0.1",
-                "webmozart/assert": "^1.11.0",
-                "webmozart/glob": "^4.7.0"
-            },
-            "bin": [
-                "bin/composer-require-checker"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "ComposerRequireChecker\\": "src/ComposerRequireChecker"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "CLI tool to analyze composer dependencies and verify that no unknown symbols are used in the sources of a package"
         },
         {
             "name": "marc-mabe/php-enum",
@@ -693,71 +539,6 @@
                 "GPL-3.0-only"
             ],
             "description": "🍸 Nette NEON: encodes and decodes NEON file format."
-        },
-        {
-            "name": "nikic/php-parser",
-            "version": "v5.6.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "f103601b29efebd7ff4a1ca7b3eeea9e3336a2a2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/f103601b29efebd7ff4a1ca7b3eeea9e3336a2a2",
-                "reference": "f103601b29efebd7ff4a1ca7b3eeea9e3336a2a2"
-            },
-            "require": {
-                "ext-ctype": "*",
-                "ext-json": "*",
-                "ext-tokenizer": "*",
-                "php": ">=7.4"
-            },
-            "bin": [
-                "bin/php-parse"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "PhpParser\\": "lib/PhpParser"
-                }
-            },
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "A PHP parser written in PHP"
-        },
-        {
-            "name": "ondram/ci-detector",
-            "version": "4.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/OndraM/ci-detector.git",
-                "reference": "8b0223b5ed235fd377c75fdd1bfcad05c0f168b8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/OndraM/ci-detector/zipball/8b0223b5ed235fd377c75fdd1bfcad05c0f168b8",
-                "reference": "8b0223b5ed235fd377c75fdd1bfcad05c0f168b8"
-            },
-            "require": {
-                "php": "^7.4 || ^8.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "OndraM\\CiDetector\\": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Detect continuous integration environment and provide unified access to properties of current build"
         },
         {
             "name": "pdepend/pdepend",
@@ -1000,35 +781,6 @@
             "description": "Composer plugin for automatic installation of PHPStan extensions"
         },
         {
-            "name": "phpstan/phpdoc-parser",
-            "version": "2.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "1e0cd5370df5dd2e556a36b9c62f62e555870495"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/1e0cd5370df5dd2e556a36b9c62f62e555870495",
-                "reference": "1e0cd5370df5dd2e556a36b9c62f62e555870495"
-            },
-            "require": {
-                "php": "^7.4 || ^8.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "PHPStan\\PhpDocParser\\": [
-                        "src/"
-                    ]
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "PHPDoc parser with support for nullable, intersection and generic types"
-        },
-        {
             "name": "phpstan/phpstan",
             "version": "2.1.28",
             "source": {
@@ -1232,6 +984,38 @@
             "description": "Common interface for logging libraries"
         },
         {
+            "name": "shipmonk/composer-dependency-analyser",
+            "version": "1.8.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/shipmonk-rnd/composer-dependency-analyser.git",
+                "reference": "ca6b2725cd4854d97c1ce08e6954a74fbdd25372"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/shipmonk-rnd/composer-dependency-analyser/zipball/ca6b2725cd4854d97c1ce08e6954a74fbdd25372",
+                "reference": "ca6b2725cd4854d97c1ce08e6954a74fbdd25372"
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-tokenizer": "*",
+                "php": "^7.2 || ^8.0"
+            },
+            "bin": [
+                "bin/composer-dependency-analyser"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ShipMonk\\ComposerDependencyAnalyser\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Fast detection of composer dependency issues (dead dependencies, shadow dependencies, misplaced dependencies)"
+        },
+        {
             "name": "shipmonk/dead-code-detector",
             "version": "0.13.3",
             "source": {
@@ -1368,43 +1152,6 @@
             "description": "Helps you find, load, combine, autofill and validate configuration values of any kind"
         },
         {
-            "name": "symfony/console",
-            "version": "v7.3.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/console.git",
-                "reference": "cb0102a1c5ac3807cf3fdf8bea96007df7fdbea7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/cb0102a1c5ac3807cf3fdf8bea96007df7fdbea7",
-                "reference": "cb0102a1c5ac3807cf3fdf8bea96007df7fdbea7"
-            },
-            "require": {
-                "php": ">=8.2",
-                "symfony/deprecation-contracts": "^2.5|^3",
-                "symfony/polyfill-mbstring": "~1.0",
-                "symfony/service-contracts": "^2.5|^3",
-                "symfony/string": "^7.2"
-            },
-            "provide": {
-                "psr/log-implementation": "1.0|2.0|3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Console\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Eases the creation of beautiful and testable command line interfaces"
-        },
-        {
             "name": "symfony/dependency-injection",
             "version": "v7.3.3",
             "source": {
@@ -1511,36 +1258,6 @@
             "description": "Provides basic utilities for the filesystem"
         },
         {
-            "name": "symfony/finder",
-            "version": "v7.3.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/finder.git",
-                "reference": "2a6614966ba1074fa93dae0bc804227422df4dfe"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/2a6614966ba1074fa93dae0bc804227422df4dfe",
-                "reference": "2a6614966ba1074fa93dae0bc804227422df4dfe"
-            },
-            "require": {
-                "php": ">=8.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Finder\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Finds files and directories via an intuitive fluent interface"
-        },
-        {
             "name": "symfony/polyfill-ctype",
             "version": "v1.33.0",
             "source": {
@@ -1578,81 +1295,6 @@
                 "MIT"
             ],
             "description": "Symfony polyfill for ctype functions"
-        },
-        {
-            "name": "symfony/polyfill-intl-grapheme",
-            "version": "v1.33.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-intl-grapheme.git",
-                "reference": "380872130d3a5dd3ace2f4010d95125fde5d5c70"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-grapheme/zipball/380872130d3a5dd3ace2f4010d95125fde5d5c70",
-                "reference": "380872130d3a5dd3ace2f4010d95125fde5d5c70"
-            },
-            "require": {
-                "php": ">=7.2"
-            },
-            "type": "library",
-            "extra": {
-                "thanks": {
-                    "url": "https://github.com/symfony/polyfill",
-                    "name": "symfony/polyfill"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "bootstrap.php"
-                ],
-                "psr-4": {
-                    "Symfony\\Polyfill\\Intl\\Grapheme\\": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Symfony polyfill for intl's grapheme_* functions"
-        },
-        {
-            "name": "symfony/polyfill-intl-normalizer",
-            "version": "v1.33.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-intl-normalizer.git",
-                "reference": "3833d7255cc303546435cb650316bff708a1c75c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-normalizer/zipball/3833d7255cc303546435cb650316bff708a1c75c",
-                "reference": "3833d7255cc303546435cb650316bff708a1c75c"
-            },
-            "require": {
-                "php": ">=7.2"
-            },
-            "type": "library",
-            "extra": {
-                "thanks": {
-                    "url": "https://github.com/symfony/polyfill",
-                    "name": "symfony/polyfill"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "bootstrap.php"
-                ],
-                "psr-4": {
-                    "Symfony\\Polyfill\\Intl\\Normalizer\\": ""
-                },
-                "classmap": [
-                    "Resources/stubs"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Symfony polyfill for intl's Normalizer class and related functions"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -1693,142 +1335,6 @@
                 "MIT"
             ],
             "description": "Symfony polyfill for the Mbstring extension"
-        },
-        {
-            "name": "symfony/polyfill-php84",
-            "version": "v1.33.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-php84.git",
-                "reference": "d8ced4d875142b6a7426000426b8abc631d6b191"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php84/zipball/d8ced4d875142b6a7426000426b8abc631d6b191",
-                "reference": "d8ced4d875142b6a7426000426b8abc631d6b191"
-            },
-            "require": {
-                "php": ">=7.2"
-            },
-            "type": "library",
-            "extra": {
-                "thanks": {
-                    "url": "https://github.com/symfony/polyfill",
-                    "name": "symfony/polyfill"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "bootstrap.php"
-                ],
-                "psr-4": {
-                    "Symfony\\Polyfill\\Php84\\": ""
-                },
-                "classmap": [
-                    "Resources/stubs"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Symfony polyfill backporting some PHP 8.4+ features to lower PHP versions"
-        },
-        {
-            "name": "symfony/property-access",
-            "version": "v7.3.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/property-access.git",
-                "reference": "4a4389e5c8bd1d0320d80a23caa6a1ac71cb81a7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/property-access/zipball/4a4389e5c8bd1d0320d80a23caa6a1ac71cb81a7",
-                "reference": "4a4389e5c8bd1d0320d80a23caa6a1ac71cb81a7"
-            },
-            "require": {
-                "php": ">=8.2",
-                "symfony/property-info": "^6.4|^7.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\PropertyAccess\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Provides functions to read and write from/to an object or array using a simple string notation"
-        },
-        {
-            "name": "symfony/property-info",
-            "version": "v7.3.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/property-info.git",
-                "reference": "90586acbf2a6dd13bee4f09f09111c8bd4773970"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/property-info/zipball/90586acbf2a6dd13bee4f09f09111c8bd4773970",
-                "reference": "90586acbf2a6dd13bee4f09f09111c8bd4773970"
-            },
-            "require": {
-                "php": ">=8.2",
-                "symfony/deprecation-contracts": "^2.5|^3",
-                "symfony/string": "^6.4|^7.0",
-                "symfony/type-info": "~7.2.8|^7.3.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\PropertyInfo\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Extracts information about PHP class' properties using metadata of popular sources"
-        },
-        {
-            "name": "symfony/serializer",
-            "version": "v7.3.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/serializer.git",
-                "reference": "5608b04d8daaf29432d76ecc618b0fac169c2dfb"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/serializer/zipball/5608b04d8daaf29432d76ecc618b0fac169c2dfb",
-                "reference": "5608b04d8daaf29432d76ecc618b0fac169c2dfb"
-            },
-            "require": {
-                "php": ">=8.2",
-                "symfony/deprecation-contracts": "^2.5|^3",
-                "symfony/polyfill-ctype": "~1.8",
-                "symfony/polyfill-php84": "^1.30"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Serializer\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Handles serializing and deserializing data structures, including object graphs, into array structures or other formats like XML and JSON."
         },
         {
             "name": "symfony/service-contracts",
@@ -1872,75 +1378,6 @@
             "description": "Generic abstractions related to writing services"
         },
         {
-            "name": "symfony/string",
-            "version": "v7.3.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/string.git",
-                "reference": "17a426cce5fd1f0901fefa9b2a490d0038fd3c9c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/17a426cce5fd1f0901fefa9b2a490d0038fd3c9c",
-                "reference": "17a426cce5fd1f0901fefa9b2a490d0038fd3c9c"
-            },
-            "require": {
-                "php": ">=8.2",
-                "symfony/polyfill-ctype": "~1.8",
-                "symfony/polyfill-intl-grapheme": "~1.0",
-                "symfony/polyfill-intl-normalizer": "~1.0",
-                "symfony/polyfill-mbstring": "~1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "Resources/functions.php"
-                ],
-                "psr-4": {
-                    "Symfony\\Component\\String\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Provides an object-oriented API to strings and deals with bytes, UTF-8 code points and grapheme clusters in a unified way"
-        },
-        {
-            "name": "symfony/type-info",
-            "version": "v7.3.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/type-info.git",
-                "reference": "aa64b58ed04517d4d730202dd035895743c23273"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/type-info/zipball/aa64b58ed04517d4d730202dd035895743c23273",
-                "reference": "aa64b58ed04517d4d730202dd035895743c23273"
-            },
-            "require": {
-                "php": ">=8.2",
-                "psr/container": "^1.1|^2.0",
-                "symfony/deprecation-contracts": "^2.5|^3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\TypeInfo\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Extracts PHP types information."
-        },
-        {
             "name": "symfony/var-exporter",
             "version": "v7.3.3",
             "source": {
@@ -1970,71 +1407,6 @@
                 "MIT"
             ],
             "description": "Allows exporting any serializable PHP data structure to plain PHP code"
-        },
-        {
-            "name": "webmozart/assert",
-            "version": "1.11.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/webmozarts/assert.git",
-                "reference": "11cb2199493b2f8a3b53e7f19068fc6aac760991"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/webmozarts/assert/zipball/11cb2199493b2f8a3b53e7f19068fc6aac760991",
-                "reference": "11cb2199493b2f8a3b53e7f19068fc6aac760991"
-            },
-            "require": {
-                "ext-ctype": "*",
-                "php": "^7.2 || ^8.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.10-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Webmozart\\Assert\\": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Assertions to validate method input/output with nice error messages."
-        },
-        {
-            "name": "webmozart/glob",
-            "version": "4.7.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/webmozarts/glob.git",
-                "reference": "8a2842112d6916e61e0e15e316465b611f3abc17"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/webmozarts/glob/zipball/8a2842112d6916e61e0e15e316465b611f3abc17",
-                "reference": "8a2842112d6916e61e0e15e316465b611f3abc17"
-            },
-            "require": {
-                "php": "^7.3 || ^8.0.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Webmozart\\Glob\\": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "A PHP implementation of Ant's glob."
         }
     ],
     "packages-dev": [],

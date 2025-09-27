@@ -87,11 +87,8 @@ jobs:
       - name: Check - PHP compatibility
         run: composer php-compatibility
 
-      - name: Check - composer-unused
-        run: ./dev-tools/vendor/bin/composer-unused --no-progress --excludePackage=composer/xdebug-handler
-
-      - name: Check - composer-require-checker
-        run: ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file .composer-require-checker.json
+      - name: Analyse Composer dependencies
+        run: ./dev-tools/vendor/bin/composer-dependency-analyser
 
       - name: Check - composer normalize
         run: |
