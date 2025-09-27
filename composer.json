@@ -96,6 +96,7 @@
         "post-autoload-dump": [
             "@install-tools"
         ],
+        "analyse-deps": "@php dev-tools/vendor/bin/composer-dependency-analyser",
         "auto-review": [
             "Composer\\Config::disableProcessTimeout",
             "paraunit run --testsuite auto-review"
@@ -133,15 +134,13 @@
             "@static-analysis",
             "@test"
         ],
-        "require-checker": "@php dev-tools/vendor/bin/composer-require-checker check composer.json --config-file .composer-require-checker.json",
         "sa": "@static-analysis",
         "self-check": [
             "./dev-tools/check_file_permissions.sh",
             "./dev-tools/check_trailing_spaces.sh",
             "@composer dump-autoload --dry-run --optimize --strict-psr",
             "@normalize",
-            "@unused-deps",
-            "@require-checker",
+            "@analyse-deps",
             "@auto-review"
         ],
         "static-analysis": [
@@ -177,10 +176,10 @@
         "test:unit": [
             "Composer\\Config::disableProcessTimeout",
             "paraunit run --testsuite unit"
-        ],
-        "unused-deps": "@php dev-tools/vendor/bin/composer-unused --excludePackage=composer/xdebug-handler"
+        ]
     },
     "scripts-descriptions": {
+        "analyse-deps": "Analyse Composer dependencies",
         "auto-review": "Execute Auto-review",
         "cs:check": "Check coding standards",
         "cs:fix": "Fix coding standards",
@@ -197,7 +196,6 @@
         "post-autoload-dump": "Run additional tasks after installing/updating main dependencies",
         "qa": "Alias for 'quality-assurance'",
         "quality-assurance": "Run QA suite",
-        "require-checker": "Verifies if codebase does not contain soft dependencies",
         "sa": "Alias for 'static-analysis'",
         "self-check": "Run set of self-checks ensuring repository's validity",
         "static-analysis": "Run static analysis",
@@ -208,7 +206,6 @@
         "test:mutation": "Run mutation tests",
         "test:short-open-tag": "Run tests with \"short_open_tag\" enabled",
         "test:smoke": "Run Smoke tests",
-        "test:unit": "Run Unit tests",
-        "unused-deps": "Verifies if app has dependencies that are not used"
+        "test:unit": "Run Unit tests"
     }
 }
