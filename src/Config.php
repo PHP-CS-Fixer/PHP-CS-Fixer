@@ -26,7 +26,7 @@ use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-class Config implements ConfigInterface, ParallelAwareConfigInterface, UnsupportedPhpVersionAllowedConfigInterface, CustomRulesetsAwareConfigInterface
+class Config implements ConfigInterface, ParallelAwareConfigInterface, UnsupportedPhpVersionAllowedConfigInterface, CustomRulesetsAwareConfigInterface, FilterFixerByFileAwareConfigInterface
 {
     /**
      * @var non-empty-string
@@ -80,6 +80,11 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     private bool $usingCache = true;
 
     private bool $isUnsupportedPhpVersionAllowed = false;
+
+    /**
+     * @var ?\Closure(FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface
+     */
+    private ?\Closure $filterFixerByFile = null;
 
     public function __construct(string $name = 'default')
     {
@@ -181,6 +186,11 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     public function getUnsupportedPhpVersionAllowed(): bool
     {
         return $this->isUnsupportedPhpVersionAllowed;
+    }
+
+    public function getFilterFixerByFile(): ?\Closure
+    {
+        return $this->filterFixerByFile;
     }
 
     public function registerCustomFixers(iterable $fixers): ConfigInterface
@@ -293,6 +303,16 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     public function setUnsupportedPhpVersionAllowed(bool $isUnsupportedPhpVersionAllowed): ConfigInterface
     {
         $this->isUnsupportedPhpVersionAllowed = $isUnsupportedPhpVersionAllowed;
+
+        return $this;
+    }
+
+    /**
+     * @param ?\Closure(FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface
+     */
+    public function setFilterFixerByFile(?\Closure $filterFixerByFile): ConfigInterface
+    {
+        $this->filterFixerByFile = $filterFixerByFile;
 
         return $this;
     }
