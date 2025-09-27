@@ -101,6 +101,7 @@ final class DescribeCommand extends Command
             [
                 new InputArgument('name', InputArgument::OPTIONAL, 'Name of rule / set.', null, fn () => array_merge($this->getSetNames(), array_keys($this->getFixers()))),
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
+                new InputOption('expand', '', InputOption::VALUE_NONE, 'Shall nested sets be expanded into nested rules.'),
             ]
         );
     }
@@ -123,6 +124,7 @@ final class DescribeCommand extends Command
 
         /** @var ?string $name */
         $name = $input->getArgument('name');
+        $expand = $input->getOption('expand');
 
         if (null === $name) {
             if (false === $input->isInteractive()) {
@@ -145,9 +147,17 @@ final class DescribeCommand extends Command
             }
         }
 
+        if (!str_starts_with($name, '@')) {
+            if (true === $expand) {
+                throw new \InvalidArgumentException(
+                    'The "--expand" option is available only when describing a set (name starting with "@").',
+                );
+            }
+        }
+
         try {
             if (str_starts_with($name, '@')) {
-                $this->describeSet($output, $name, $resolver);
+                $this->describeSet($input, $output, $name, $resolver);
 
                 return 0;
             }
@@ -392,7 +402,7 @@ final class DescribeCommand extends Command
         }
     }
 
-    private function describeSet(OutputInterface $output, string $name, ConfigurationResolver $resolver): void
+    private function describeSet(InputInterface $input, OutputInterface $output, string $name, ConfigurationResolver $resolver): void
     {
         if ('@' !== $name && !\in_array($name, $this->getSetNames(), true)) {
             throw new DescribeNameNotFoundException($name, 'set');
@@ -414,6 +424,12 @@ final class DescribeCommand extends Command
         $ruleSetDefinitions = RuleSets::getSetDefinitions();
         $ruleSetDefinition = $defaultRuleSetDefinition ?? $ruleSetDefinitions[$name];
         $fixers = $this->getFixers();
+
+        if (true === $input->getOption('expand')) {
+            $ruleSetDefinition = $this->createRuleSetDefinition($ruleSetDefinition, ['expand'], []);
+        } else {
+            $output->writeln("You may the '--expand' option to see nested sets expanded into nested rules.");
+        }
 
         $output->writeln(\sprintf('<fg=blue>Description of the <info>`%s`</info> set.</>', $ruleSetDefinition->getName()));
         $output->writeln('');
