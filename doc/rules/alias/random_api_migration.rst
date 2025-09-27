@@ -98,6 +98,10 @@ The rule is part of the following rule sets:
 
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
 
+- `@PHP8x5Migration:risky <./../../ruleSets/PHP8x5MigrationRisky.rst>`_ with config:
+
+  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
+
 - `@PHP70Migration:risky <./../../ruleSets/PHP70MigrationRisky.rst>`_ *(deprecated)* with config:
 
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
