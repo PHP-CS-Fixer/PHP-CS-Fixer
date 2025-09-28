@@ -103,14 +103,15 @@ final class Runner
     private ?string $configFile;
 
     /**
-     * @var ?\Closure(FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface
+     * @phpstan-var ?\Closure(FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface
      */
     private ?\Closure $filterFixerByFile;
 
     /**
-     * @param null|\Traversable<array-key, \SplFileInfo>                            $fileIterator
-     * @param list<FixerInterface>                                                  $fixers
-     * @param ?\Closure(FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface $filterFixerByFile
+     * @param null|\Traversable<array-key, \SplFileInfo> $fileIterator
+     * @param list<FixerInterface>                       $fixers
+     *
+     * @phpstan-param ?\Closure(FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface $filterFixerByFile
      */
     public function __construct(
         ?\Traversable $fileIterator,
@@ -462,8 +463,11 @@ final class Runner
 
         try {
             foreach ($this->fixers as $fixer) {
-                if (null !== $filterFixerByFile && null === ($fixer = $filterFixerByFile($fixer, $file))) {
-                    continue;
+                if (null !== $filterFixerByFile) {
+                    $fixer = $filterFixerByFile($fixer, $file);
+                    if (null === $fixer) {
+                        continue;
+                    }
                 }
                 // for custom fixers we don't know is it safe to run `->fix()` without checking `->supports()` and `->isCandidate()`,
                 // thus we need to check it and conditionally skip fixing
