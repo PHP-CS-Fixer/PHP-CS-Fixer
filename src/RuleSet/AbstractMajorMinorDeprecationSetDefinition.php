@@ -23,7 +23,7 @@ use PhpCsFixer\Preg;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-abstract class AbstractMajorMinorDeprecationSetDescription extends AbstractMigrationSetDescription implements DeprecatedRuleSetDescriptionInterface
+abstract class AbstractMajorMinorDeprecationSetDefinition extends AbstractMigrationSetDefinition implements DeprecatedRuleSetDefinitionInterface
 {
     public function getRules(): array
     {

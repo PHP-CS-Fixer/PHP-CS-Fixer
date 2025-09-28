@@ -19,18 +19,19 @@ namespace PhpCsFixer\RuleSet;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-interface RuleSetDescriptionInterface
+abstract class AbstractRuleSetDefinition implements RuleSetDefinitionInterface
 {
-    public function getDescription(): string;
+    public function __construct() {}
 
-    public function getName(): string;
+    public function getName(): string
+    {
+        $name = substr(static::class, 1 + strrpos(static::class, '\\'), -3);
 
-    /**
-     * Get all rules from rules set.
-     *
-     * @return array<string, array<string, mixed>|bool>
-     */
-    public function getRules(): array;
+        return '@'.str_replace('Risky', ':risky', $name);
+    }
 
-    public function isRisky(): bool;
+    public function isRisky(): bool
+    {
+        return str_contains(static::class, 'Risky');
+    }
 }

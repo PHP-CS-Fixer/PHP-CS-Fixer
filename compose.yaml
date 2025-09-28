@@ -56,9 +56,27 @@ services:
       <<: *default_environment
       XDEBUG_MODE: coverage
 
+  php-8.5:
+    <<: *php
+    build:
+      args:
+        ALPINE_VERSION: '3.22'
+        PHP_VERSION: 8.5.0beta3
+        PHP_XDEBUG_VERSION: ''
+    environment:
+      <<: *default_environment
+      XDEBUG_MODE: coverage
+
   sphinx-lint:
     build:
       target: sphinx-lint
+    working_dir: /fixer
+    volumes:
+      - .:/fixer
+
+  yaml-lint:
+    image: sdesbure/yamllint
+    command: yamllint .
     working_dir: /fixer
     volumes:
       - .:/fixer

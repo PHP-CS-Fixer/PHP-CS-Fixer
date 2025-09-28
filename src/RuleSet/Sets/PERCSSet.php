@@ -14,14 +14,14 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
+use PhpCsFixer\RuleSet\AbstractRuleSetDefinition;
 
 /**
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PERCSSet extends AbstractRuleSetDescription
+final class PERCSSet extends AbstractRuleSetDefinition
 {
     public function getName(): string
     {

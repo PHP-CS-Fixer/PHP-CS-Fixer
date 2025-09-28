@@ -15,13 +15,16 @@ declare(strict_types=1);
 namespace PhpCsFixer\RuleSet;
 
 /**
- * Used to indicate that the ruleset can automatically determined and will differ based on runtime conditions.
- *
- * @internal
+ * @author Greg Korba <greg@codito.dev>
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-interface AutomaticRuleSetDescriptionInterface
+interface DeprecatedRuleSetDefinitionInterface extends RuleSetDefinitionInterface
 {
-    public const WARNING_MESSAGE_DECORATED = '<comment>This rule is automatic</comment>: it\'s definition depends on your project, eg "composer.json" file.';
+    /**
+     * Returns names of rule sets to use instead, if any.
+     *
+     * @return list<string>
+     */
+    public function getSuccessorsNames(): array;
 }

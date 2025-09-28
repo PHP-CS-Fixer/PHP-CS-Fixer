@@ -32,7 +32,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Console/Command/DescribeCommand.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset non-falsy-string might not exist on array<string, PhpCsFixer\\RuleSet\\RuleSetDescriptionInterface>.',
+    'rawMessage' => 'Offset non-falsy-string might not exist on array<string, PhpCsFixer\\RuleSet\\RuleSetDefinitionInterface>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Console/Command/DescribeCommand.php',
 ];
@@ -42,7 +42,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Console/Command/DescribeCommand.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset string might not exist on array<string, PhpCsFixer\\RuleSet\\RuleSetDescriptionInterface>.',
+    'rawMessage' => 'Offset string might not exist on array<string, PhpCsFixer\\RuleSet\\RuleSetDefinitionInterface>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Console/Command/DescribeCommand.php',
 ];

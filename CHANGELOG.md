@@ -3,6 +3,68 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.88.2
+---------------------
+
+* docs: describe command - allow to describe config in use (#9103)
+* docs: describe command - allow to expand sets (#9104)
+
+Changelog for v3.88.1
+---------------------
+
+* chore: use accidentally missing `@auto:risky` (#9102)
+* deps: bump crate-ci/typos from 1.36.2 to 1.36.3 (#9099)
+* deps: bump icanhazstring/composer-unused from 0.9.4 to 0.9.5 in /dev-tools (#9100)
+* DX: Ability to run `yamllint` locally (#9093)
+
+Changelog for v3.88.0
+---------------------
+
+* feat: Support custom rulesets (#6083)
+* feat: introduce `@auto`, `@auto:risky` sets (#9090)
+* feat: introduce `@autoPHPMigration`, `@autoPHPMigration:risky`, `@autoPHPUnitMigration:risky` sets (#9068)
+* feat: start using new defaults for rules under future mode (#9020)
+* feat: rename rule sets from `MAJORMINOR` and `MAJOR.MINOR` into `MAJORxMINOR` (#9005)
+* feat: rename visibility_required into modifier_keywords (#8995)
+* feat: `symfony` ruleset: Add `@const` to `phpdoc_no_alias_tag` (#9016)
+* fix: `BlankLinesBeforeNamespaceFixer` - handle namespace without newline before (#9059)
+* docs: fix typo (#9060)
+* docs: update CONTRIBUTING.md (#9074)
+* docs: update README for updated PHP/PHPUnit set names (#9070)
+* DX: Allow development on PHP 8.5 (#9092)
+* chore: enforce list via `array_values()` (#9054)
+* chore: ErrorOutput - line is optional (#9047)
+* chore: fix cs in entry point file (#9064)
+* chore: fix CS, somehow it missed the CI of `.php-cs-fixer.well-defined-arrays.php` (#8987)
+* chore: fix some `argument.type` errors (#9056)
+* chore: groom Automatic rulesets code (#9091)
+* chore: phpstan - do not ignore all `internal` usage errors (#9063)
+* chore: replace wrong `class-string` usages (#8968)
+* chore: `getcwd()` - ignore `false` return value (#9057)
+* chore: `ReporterFactory` - use `class-string` type (#9055)
+* CI: check for typos (#9048)
+* CI: don't prevent the build when remote coverage reporting service is down (#9095)
+* CI: fix smoke tests after #9005 (#9061)
+* CI: fix typos in `CHANGELOG.md` (#9052)
+* CI: mutation tests - disable github annotations (#9062)
+* CI: Test docs generation only once per CI pipeline (#9089)
+* CI: `push` event only for master branch (#9046)
+* CI: `push` event only for master branch (#9050)
+* deps: bump box version (#9042)
+* deps: bump ergebnis/composer-normalize from 2.48.1 to 2.48.2 in /dev-tools (#9045)
+* deps: bump phpstan/phpstan from 2.1.25 to 2.1.28 in /dev-tools in the phpstan group (#9072)
+* deps: unify alpine version for PHP 8.4 (#9077)
+* deps: update phpstan and phpstan-baseline-per-identifier (#9051)
+* deps: update squizlabs/php_codesniffer to v4.0 and other related packages (#9075)
+* deps: upgrade alpine wherever possible (#9078)
+* deps: upgrade infection/infection to ^0.31.0 (#9079)
+* refactor: introduce concept of AutomaticRuleSet (#9067)
+* refactor: rename `RuleSetDescriptionInterface` into `RuleSetDefinitionInterface` (#9094)
+* test: ensure alpine version same between Dockerfile and compose.yaml (#9076)
+* test: ensure alpine version same in compose.yaml and release.yml (#9071)
+* test: extend tests to cover new migration rule set names (#9069)
+* test: improve testing that objects cannot be serialized/unserialized (#9049)
+
 Changelog for v3.87.2
 ---------------------
 

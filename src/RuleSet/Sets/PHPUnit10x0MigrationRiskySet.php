@@ -14,14 +14,14 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractMigrationSetDescription;
+use PhpCsFixer\RuleSet\AbstractMigrationSetDefinition;
 
 /**
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PHPUnit10x0MigrationRiskySet extends AbstractMigrationSetDescription
+final class PHPUnit10x0MigrationRiskySet extends AbstractMigrationSetDefinition
 {
     public function getRules(): array
     {

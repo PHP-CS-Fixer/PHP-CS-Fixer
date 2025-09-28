@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
-use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
-use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\AbstractRuleSetDefinition;
+use PhpCsFixer\RuleSet\DeprecatedRuleSetDefinitionInterface;
+use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 
 /**
  * @internal
@@ -27,7 +27,7 @@ use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PERCS30Set extends AbstractRuleSetDescription implements DeprecatedRuleSetDescriptionInterface
+final class PERCS30Set extends AbstractRuleSetDefinition implements DeprecatedRuleSetDefinitionInterface
 {
     public function getName(): string
     {
@@ -49,7 +49,7 @@ final class PERCS30Set extends AbstractRuleSetDescription implements DeprecatedR
         return [$this->getProxiedSet()->getName()];
     }
 
-    private function getProxiedSet(): RuleSetDescriptionInterface
+    private function getProxiedSet(): RuleSetDefinitionInterface
     {
         return new PERCS3x0Set();
     }

@@ -25,6 +25,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Future;
 use PhpCsFixer\Preg;
 
 /**
@@ -126,13 +127,15 @@ final class PhpdocNoAliasTagFixer extends AbstractProxyFixer implements Configur
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('replacements', 'Mapping between replaced annotations with new ones.'))
                 ->setAllowedTypes(['array<string, string>'])
-                ->setDefault([
-                    // 'const' => 'var', @TODO 4.0 (and remove explicitly listed defaults from Symfony ruleset)
-                    'link' => 'see',
-                    'property-read' => 'property',
-                    'property-write' => 'property',
-                    'type' => 'var',
-                ])
+                ->setDefault(
+                    Future::getV4OrV3(['const' => 'var'], [])
+                    + [
+                        'property-read' => 'property',
+                        'property-write' => 'property',
+                        'type' => 'var',
+                        'link' => 'see',
+                    ]
+                )
                 ->getOption(),
         ]);
     }

@@ -79,4 +79,24 @@ final class FutureTest extends TestCase
         $triggered = Future::getTriggeredDeprecations();
         self::assertNotContains($message, $triggered);
     }
+
+    public function testGetV4OrV3ForOldBehaviour(): void
+    {
+        putenv('PHP_CS_FIXER_FUTURE_MODE=0');
+
+        self::assertSame(
+            'old',
+            Future::getV4OrV3('new', 'old')
+        );
+    }
+
+    public function testGetV4OrV3ForNewBehaviour(): void
+    {
+        putenv('PHP_CS_FIXER_FUTURE_MODE=1');
+
+        self::assertSame(
+            'new',
+            Future::getV4OrV3('new', 'old')
+        );
+    }
 }

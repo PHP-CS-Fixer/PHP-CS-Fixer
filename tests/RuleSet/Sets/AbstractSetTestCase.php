@@ -18,7 +18,7 @@ use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSet;
-use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Tests\TestCase;
 
@@ -76,10 +76,10 @@ abstract class AbstractSetTestCase extends TestCase
         self::assertNotSame('', $string);
     }
 
-    protected static function getSet(): RuleSetDescriptionInterface
+    protected static function getSet(): RuleSetDefinitionInterface
     {
         $setClassName = Preg::replace('/^(PhpCsFixer)\\\Tests(\\\.+)Test$/', '$1$2', static::class);
-        \assert(is_a($setClassName, RuleSetDescriptionInterface::class, true));
+        \assert(is_a($setClassName, RuleSetDefinitionInterface::class, true));
 
         return new $setClassName();
     }

@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixtures;
 
-use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
+use PhpCsFixer\RuleSet\AbstractRuleSetDefinition;
 
-final class TestRuleSet extends AbstractRuleSetDescription
+final class TestRuleSet extends AbstractRuleSetDefinition
 {
     public function getDescription(): string
     {
