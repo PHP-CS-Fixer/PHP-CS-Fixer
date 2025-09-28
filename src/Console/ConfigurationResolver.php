@@ -185,7 +185,7 @@ final class ConfigurationResolver
     private bool $isFilterFixerByFileResolved = false;
 
     /**
-     * @var ?\Closure(FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface
+     * @phpstan-var ?\Closure(FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface
      */
     private ?\Closure $filterFixerByFile;
 

@@ -82,7 +82,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     private bool $isUnsupportedPhpVersionAllowed = false;
 
     /**
-     * @var ?\Closure(FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface
+     * @phpstan-var ?\Closure(FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface
      */
     private ?\Closure $filterFixerByFile = null;
 
@@ -308,7 +308,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     }
 
     /**
-     * @param ?\Closure(FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface
+     * @phpstan-param ?\Closure(FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface $filterFixerByFile
      */
     public function setFilterFixerByFile(?\Closure $filterFixerByFile): ConfigInterface
     {
