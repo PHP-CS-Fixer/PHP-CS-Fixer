@@ -132,7 +132,10 @@ Rules
   ``['order' => ['param', 'return', 'throws']]``
 
 - `phpdoc_return_self_reference <./../rules/phpdoc/phpdoc_return_self_reference.rst>`_
-- `phpdoc_scalar <./../rules/phpdoc/phpdoc_scalar.rst>`_
+- `phpdoc_scalar <./../rules/phpdoc/phpdoc_scalar.rst>`_ with config:
+
+  ``['types' => ['boolean', 'callback', 'double', 'integer', 'never-return', 'never-returns', 'no-return', 'real', 'str']]``
+
 - `phpdoc_separation <./../rules/phpdoc/phpdoc_separation.rst>`_ with config:
 
   ``['groups' => [['Annotation', 'NamedArgumentConstructor', 'Target'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write'], ['deprecated', 'link', 'see', 'since']], 'skip_unlisted_annotations' => false]``
