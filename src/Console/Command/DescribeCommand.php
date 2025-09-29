@@ -15,6 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\Console\Command;
 
 use PhpCsFixer\Config;
+use Symfony\Component\Console\Helper\TreeHelper;
+use Symfony\Component\Console\Helper\TreeNode;
+use Symfony\Component\Console\Input\ArrayInput;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Differ\DiffConsoleFormatter;
@@ -102,6 +105,7 @@ final class DescribeCommand extends Command
                 new InputArgument('name', InputArgument::OPTIONAL, 'Name of rule / set.', null, fn () => array_merge($this->getSetNames(), array_keys($this->getFixers()))),
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
                 new InputOption('expand', '', InputOption::VALUE_NONE, 'Shall nested sets be expanded into nested rules.'),
+                new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats (txt, tree).', 'txt', ['txt', 'tree']),
             ]
         );
     }
@@ -125,6 +129,7 @@ final class DescribeCommand extends Command
         /** @var ?string $name */
         $name = $input->getArgument('name');
         $expand = $input->getOption('expand');
+        $format = $input->getOption('format');
 
         if (null === $name) {
             if (false === $input->isInteractive()) {
@@ -144,6 +149,17 @@ final class DescribeCommand extends Command
                     'Please select rule / set to describe',
                     array_merge($this->getSetNames(), array_keys($this->getFixers()))
                 );
+            }
+        }
+
+        if ('tree' === $format) {
+            if (!str_starts_with($name, '@')) {
+                throw new \InvalidArgumentException(
+                    'The "--format=tree" option is available only when describing a set (name starting with "@").',
+                );
+            }
+            if (!class_exists(TreeHelper::class)) {
+                throw new \RuntimeException('The "--format=tree" option requires symfony/console 7.3+.');
             }
         }
 
@@ -459,6 +475,63 @@ final class DescribeCommand extends Command
             $output->writeln('');
         }
 
+        if ('tree' === $input->getOption('format')) {
+            $this->describeSetContentAsTree($output, $ruleSetDefinition, $ruleSetDefinitions, $fixers);
+        } else {
+            $this->describeSetContentAsTxt($output, $ruleSetDefinition, $ruleSetDefinitions, $fixers);
+        }
+    }
+
+
+    private function createTreeNode(RuleSetDefinitionInterface $ruleSetDefinition, array $ruleSetDefinitions, array $fixers): TreeNode
+    {
+        $node = new TreeNode($ruleSetDefinition->getName());
+
+        $rules = $ruleSetDefinition->getRules();
+        $rulesKeys = array_keys($rules);
+        natcasesort($rulesKeys);
+
+        foreach ($rulesKeys as $rule) {
+            $config = $rules[$rule];
+            if (str_starts_with($rule, '@')) {
+                $child = $this->createTreeNode($ruleSetDefinitions[$rule], $ruleSetDefinitions, $fixers);
+            } else {
+                $extra = '';
+                if (false === $config) {
+                    $extra = \sprintf('    | <error>Configuration: %s</>', Utils::toString($config));
+                } elseif (true !== $config) {
+                    $extra = \sprintf('    | <comment>Configuration: %s</>', Utils::toString($config));
+                }
+                $child = new TreeNode($rule.$extra);
+            }
+            $node->addChild($child);
+        }
+
+        return $node;
+    }
+
+    /**
+     * @param array<string, RuleSetDefinitionInterface> $ruleSetDefinitions
+     * @param array<string, FixerInterface>             $fixers
+     */
+    private function describeSetContentAsTree(OutputInterface $output, RuleSetDefinitionInterface $ruleSetDefinition, array $ruleSetDefinitions, array $fixers): void
+    {
+        $io = new SymfonyStyle(
+            new ArrayInput([]),
+            $output
+        );
+
+        $root = $this->createTreeNode($ruleSetDefinition, $ruleSetDefinitions, $fixers);
+        $tree = TreeHelper::createTree($io, $root);
+        $tree->render();
+    }
+
+    /**
+     * @param array<string, RuleSetDefinitionInterface> $ruleSetDefinitions
+     * @param array<string, FixerInterface>             $fixers
+     */
+    private function describeSetContentAsTxt(OutputInterface $output, RuleSetDefinitionInterface $ruleSetDefinition, array $ruleSetDefinitions, array $fixers): void
+    {
         $help = '';
 
         foreach ($ruleSetDefinition->getRules() as $rule => $config) {
