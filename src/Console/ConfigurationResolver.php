@@ -127,6 +127,8 @@ final class ConfigurationResolver
 
     private ?bool $configFinderIsOverridden = null;
 
+    private ?bool $configRulesAreOverridden = null;
+
     private ToolInfoInterface $toolInfo;
 
     /**
@@ -573,6 +575,15 @@ final class ConfigurationResolver
         return $this->configFinderIsOverridden;
     }
 
+    public function configRulesAreOverridden(): bool
+    {
+        if (null === $this->configRulesAreOverridden) {
+            $this->parseRules();
+        }
+
+        return $this->configRulesAreOverridden;
+    }
+
     /**
      * Compute file candidates for config file.
      *
@@ -709,6 +720,7 @@ final class ConfigurationResolver
     private function parseRules(): array
     {
         if (null === $this->options['rules']) {
+            $this->configRulesAreOverridden = false;
             return $this->getConfig()->getRules();
         }
 
@@ -741,6 +753,7 @@ final class ConfigurationResolver
             }
         }
 
+        $this->configRulesAreOverridden = true;
         return $rules;
     }
 

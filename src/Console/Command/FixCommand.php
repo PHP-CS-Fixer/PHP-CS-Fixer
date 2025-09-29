@@ -345,10 +345,18 @@ use Symfony\Component\Stopwatch\Stopwatch;
             static fn (\SplFileInfo $fileInfo) => false !== $fileInfo->getRealPath(),
         ));
 
-        if (null !== $stdErr && $resolver->configFinderIsOverridden()) {
-            $stdErr->writeln(
-                \sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'Paths from configuration file have been overridden by paths provided as command arguments.')
-            );
+        if (null !== $stdErr) {
+            if ($resolver->configFinderIsOverridden()) {
+                $stdErr->writeln(
+                    \sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'Paths from configuration have been overridden by paths provided as command arguments.')
+                );
+            }
+
+               if ($resolver->configRulesAreOverridden()) {
+                $stdErr->writeln(
+                    \sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'Rules from configuration have been overridden by rules provided as command arguments.')
+                );
+            }
         }
 
         $progressType = $resolver->getProgressType();
