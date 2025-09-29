@@ -84,39 +84,23 @@ NOTE: if there is an error like "errors reported during linting after fixing", y
 * ``-vv``: very verbose
 * ``-vvv``: debug
 
-The ``--rules`` option limits the rules to apply to the
-project:
+The ``--rules`` option allows to explicitly select rules to use, overriding the default PSR-12 or your own project config:
 
 .. code-block:: console
 
-    php php-cs-fixer.phar fix /path/to/project --rules=@PSR12
+    php php-cs-fixer.phar fix . --rules=line_ending,full_opening_tag,indentation_type
 
-By default the ``PSR12`` rules are used. If the ``--rules`` option is used rules from config files are ignored.
-
-The ``--rules`` option lets you choose the exact rules to apply (the rule names must be separated by a comma):
+You can also exclude the rules you don't want by placing a dash in front of the rule name, like ``-name_of_fixer``.
 
 .. code-block:: console
 
-    php php-cs-fixer.phar fix /path/to/dir --rules=line_ending,full_opening_tag,indentation_type
+    php php-cs-fixer.phar fix . --rules=@Symfony,-@PSR1,-blank_line_before_statement,strict_comparison
 
-You can also exclude the rules you don't want by placing a dash in front of the rule name, if this is more convenient,
-using ``-name_of_fixer``:
-
-.. code-block:: console
-
-    php php-cs-fixer.phar fix /path/to/dir --rules=-full_opening_tag,-indentation_type
-
-When using combinations of exact and exclude rules, applying exact rules along with above excluded results:
+Complete configuration for rules can be supplied using a ``json`` formatted string as well.
 
 .. code-block:: console
 
-    php php-cs-fixer.phar fix /path/to/project --rules=@Symfony,-@PSR1,-blank_line_before_statement,strict_comparison
-
-Complete configuration for rules can be supplied using a ``json`` formatted string.
-
-.. code-block:: console
-
-    php php-cs-fixer.phar fix /path/to/project --rules='{"concat_space": {"spacing": "none"}}'
+    php php-cs-fixer.phar fix . --rules='{"concat_space": {"spacing": "none"}}'
 
 The ``--dry-run`` flag will run the fixer without making changes to your files (implicitly set when you use ``check`` command).
 
