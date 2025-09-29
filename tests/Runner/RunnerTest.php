@@ -333,6 +333,68 @@ final class RunnerTest extends TestCase
         );
     }
 
+    /**
+     * @covers \PhpCsFixer\Runner\Runner::fix
+     * @covers \PhpCsFixer\Runner\Runner::fixFile
+     */
+    public function testFilterFixerByFile(): void
+    {
+        $differ = $this->createDifferDouble();
+        $path = __DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'fix';
+        $fixer1 = $this->createMock(Fixer\FixerInterface::class);
+        $fixer1->expects(self::never())->method(self::anything());
+        $fixer2 = $this->createMock(Fixer\FixerInterface::class);
+        $fixer2->expects(self::never())->method(self::anything());
+        $fixer3 = $this->createMock(Fixer\FixerInterface::class);
+        $fixer3->expects(self::atLeastOnce())->method('supports')->willReturn(false);
+
+        $runner = new Runner(
+            // $fileIterator
+            Finder::create()->in($path),
+            // $fixers
+            [
+                $fixer1,
+                $fixer2,
+            ],
+            // $differ
+            $differ,
+            // $eventDispatcher
+            null,
+            // $errorsManager
+            new ErrorsManager(),
+            // $linter
+            new Linter(),
+            // $isDryRun
+            true,
+            // $cacheManager
+            new NullCacheManager(),
+            // $directory
+            new Directory($path),
+            // $stopOnViolation
+            true,
+            // $parallelConfig
+            null,
+            // $input
+            null,
+            // $configFile
+            null,
+            // $filterFixerByFile
+            static function (Fixer\FixerInterface $fixer, \SplFileInfo $file) use ($fixer1, $fixer2, $fixer3): ?Fixer\FixerInterface {
+                if ($fixer === $fixer1) {
+                    return null;
+                }
+                if ($fixer === $fixer2) {
+                    return $fixer3;
+                }
+                self::fail('Unexpected fixer passed to filter.');
+            }
+        );
+
+        $fixInfo = $runner->fix();
+
+        self::assertSame([], $fixInfo);
+    }
+
     private function createDifferDouble(): DifferInterface
     {
         return new class implements DifferInterface {

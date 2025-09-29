@@ -292,11 +292,9 @@ final class ConfigTest extends TestCase
         $config->setUnsupportedPhpVersionAllowed(true);
         self::assertTrue($config->getUnsupportedPhpVersionAllowed());
 
-        $config->setFilterFixerByFile(null);
         self::assertNull($config->getFilterFixerByFile());
 
-        // @phpstan-ignore return.unusedType
-        $callback = static fn (FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface => $fixer;
+        $callback = static fn (FixerInterface $fixer, \SplFileInfo $file): FixerInterface => $fixer;
         $config->setFilterFixerByFile($callback);
         self::assertSame($callback, $config->getFilterFixerByFile());
 
