@@ -270,7 +270,7 @@ Comment
   There should not be any empty comments.
 - `no_trailing_whitespace_in_comment <./comment/no_trailing_whitespace_in_comment.rst>`_
 
-  There must be no trailing whitespace at the end of lines in comment or PHPDoc.
+  There must be no trailing whitespace at the end of lines in comments and PHPDocs.
 - `single_line_comment_spacing <./comment/single_line_comment_spacing.rst>`_
 
   Single-line comments must have proper spacing.
