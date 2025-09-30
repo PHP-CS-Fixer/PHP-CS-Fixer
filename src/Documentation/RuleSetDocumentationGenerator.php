@@ -16,8 +16,9 @@ namespace PhpCsFixer\Documentation;
 
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Preg;
-use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
-use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
+use PhpCsFixer\RuleSet\DeprecatedRuleSetDefinitionInterface;
+use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 use PhpCsFixer\Utils;
 
 /**
@@ -39,7 +40,7 @@ final class RuleSetDocumentationGenerator
     /**
      * @param list<FixerInterface> $fixers
      */
-    public function generateRuleSetsDocumentation(RuleSetDescriptionInterface $definition, array $fixers): string
+    public function generateRuleSetsDocumentation(RuleSetDefinitionInterface $definition, array $fixers): string
     {
         $fixerNames = [];
 
@@ -52,7 +53,7 @@ final class RuleSetDocumentationGenerator
         $doc = "{$titleLine}\n{$title}\n{$titleLine}\n\n".$definition->getDescription();
 
         $warnings = [];
-        if ($definition instanceof DeprecatedRuleSetDescriptionInterface) {
+        if ($definition instanceof DeprecatedRuleSetDefinitionInterface) {
             $deprecationDescription = <<<'RST'
 
                 This rule set is deprecated and will be removed in the next major version
@@ -85,21 +86,25 @@ final class RuleSetDocumentationGenerator
                 RST;
         }
 
+        $header = static function (string $message, string $underline = '-'): string {
+            $line = str_repeat($underline, \strlen($message));
+
+            return "{$message}\n{$line}\n";
+        };
+
+        if ($definition instanceof AutomaticRuleSetDefinitionInterface) {
+            $warnings[] = "\n".$header('Automatic rule set', '~')."\n⚡ ".strip_tags(AutomaticRuleSetDefinitionInterface::WARNING_MESSAGE_DECORATED);
+        }
+
         if ([] !== $warnings) {
             $warningsHeader = 1 === \count($warnings) ? 'Warning' : 'Warnings';
 
-            $warningsHeaderLine = str_repeat('-', \strlen($warningsHeader));
-            $doc .= "\n\n".implode(
-                "\n",
-                [
-                    $warningsHeader,
-                    $warningsHeaderLine,
-                    ...$warnings,
-                ]
-            );
+            $doc .= "\n\n".$header($warningsHeader).implode("\n", $warnings);
         }
 
-        $rules = $definition->getRules();
+        $rules = $definition instanceof AutomaticRuleSetDefinitionInterface
+                ? $definition->getRulesCandidates()
+                : $definition->getRules();
 
         if ([] === $rules) {
             $doc .= "\n\nThis is an empty set.";
@@ -130,13 +135,18 @@ final class RuleSetDocumentationGenerator
                 }
             };
 
+            $rulesCandidatesDescriptionHeader = $definition instanceof AutomaticRuleSetDefinitionInterface
+                ? ' candidates'
+                : '';
+
             if ([] !== $enabledRules) {
-                $doc .= "\n\nRules\n-----\n";
+                $doc .= "\n\n".$header("Rules{$rulesCandidatesDescriptionHeader}");
                 $listRules($enabledRules);
             }
 
             if ([] !== $disabledRules) {
-                $doc .= "\n\nDisabled rules\n--------------\n";
+                $doc .= "\n\n".$header("Disabled rules{$rulesCandidatesDescriptionHeader}");
+
                 $listRules($disabledRules);
             }
         }
@@ -145,7 +155,7 @@ final class RuleSetDocumentationGenerator
     }
 
     /**
-     * @param array<string, RuleSetDescriptionInterface> $setDefinitions
+     * @param array<string, RuleSetDefinitionInterface> $setDefinitions
      */
     public function generateRuleSetsDocumentationIndex(array $setDefinitions): string
     {
@@ -160,7 +170,7 @@ final class RuleSetDocumentationGenerator
 
             $attributes = [];
 
-            if ($definition instanceof DeprecatedRuleSetDescriptionInterface) {
+            if ($definition instanceof DeprecatedRuleSetDefinitionInterface) {
                 $attributes[] = 'deprecated';
             }
 

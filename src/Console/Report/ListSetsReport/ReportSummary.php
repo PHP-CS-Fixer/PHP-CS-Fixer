@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Console\Report\ListSetsReport;
 
-use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -28,12 +28,12 @@ use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
 final class ReportSummary
 {
     /**
-     * @var list<RuleSetDescriptionInterface>
+     * @var list<RuleSetDefinitionInterface>
      */
     private array $sets;
 
     /**
-     * @param list<RuleSetDescriptionInterface> $sets
+     * @param list<RuleSetDefinitionInterface> $sets
      */
     public function __construct(array $sets)
     {
@@ -41,7 +41,7 @@ final class ReportSummary
     }
 
     /**
-     * @return list<RuleSetDescriptionInterface>
+     * @return list<RuleSetDefinitionInterface>
      */
     public function getSets(): array
     {

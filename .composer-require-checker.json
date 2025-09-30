@@ -1,5 +1,6 @@
 {
     "symbol-whitelist" : [
+        "PhpCsFixer\\RuleSet\\DeprecatedRuleSetDescriptionInterface",
         "Symfony\\Contracts\\EventDispatcher\\Event",
         "T_PIPE",
         "T_VOID_CAST"

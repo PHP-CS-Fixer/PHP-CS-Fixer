@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
+use PhpCsFixer\RuleSet\AbstractRuleSetDefinition;
 
 /**
  * @internal
@@ -25,7 +25,7 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PERCS2x0Set extends AbstractRuleSetDescription
+final class PERCS2x0Set extends AbstractRuleSetDefinition
 {
     public function getName(): string
     {
@@ -43,7 +43,9 @@ final class PERCS2x0Set extends AbstractRuleSetDescription
             'function_declaration' => [
                 'closure_fn_spacing' => 'none',
             ],
-            'method_argument_space' => true,
+            'method_argument_space' => [
+                'after_heredoc' => false, // @TODO: default value of this option changed, consider to switch to new default
+            ],
             'new_with_parentheses' => [
                 'anonymous_class' => false,
             ],

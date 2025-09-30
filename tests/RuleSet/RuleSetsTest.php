@@ -19,6 +19,7 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSets;
+use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleset;
 use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
 
@@ -33,6 +34,19 @@ use PhpCsFixer\Tests\TestCase;
  */
 final class RuleSetsTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Since we register custom rule sets statically, we need to clear custom rule sets between runs.
+        // We don't need to clear the built-in rule sets, because they don't change between runs.
+        \Closure::bind(
+            static function (): void { RuleSets::$customRuleSetDefinitions = []; },
+            null,
+            RuleSets::class
+        )();
+    }
+
     public function testGetSetDefinitionNames(): void
     {
         self::assertSame(
@@ -43,7 +57,7 @@ final class RuleSetsTest extends TestCase
 
     public function testGetSetDefinitions(): void
     {
-        $sets = RuleSets::getSetDefinitions();
+        $sets = RuleSets::getBuiltInSetDefinitions();
 
         foreach ($sets as $name => $set) {
             self::assertIsString($name);
@@ -105,6 +119,10 @@ final class RuleSetsTest extends TestCase
         // @TODO v4: remove me @MARKER_deprecated_migration_ruleset
         if (Preg::match('/^@PHP(Unit)?\d+Migration(:risky)?$/', $setDefinitionName)) {
             self::markTestSkipped(\sprintf('Set "%s" is deprecated and will be removed in next MAJOR.', $setDefinitionName));
+        }
+
+        if (str_starts_with($setDefinitionName, '@auto')) {
+            self::markTestSkipped(\sprintf('Set "%s" is automatic and it\'s definition depends on individual project.', $setDefinitionName));
         }
 
         $setDefinitionFileNamePrefix = str_replace(':', '-', $setDefinitionName);
@@ -200,6 +218,20 @@ Integration of %s.
         $setDefinitionPHPUnitMigrationNames = array_filter($setDefinitionNames, static fn (string $setDefinitionName): bool => Preg::match('/^@PHPUnit\d+Migration:risky$/', $setDefinitionName));
 
         return array_map(static fn (string $setDefinitionName): array => [$setDefinitionName], $setDefinitionPHPUnitMigrationNames);
+    }
+
+    public function testRegisteringRulesetMultipleTimesCausesAnException(): void
+    {
+        RuleSets::registerCustomRuleSet(new ExampleRuleset());
+        self::expectException(\InvalidArgumentException::class);
+        RuleSets::registerCustomRuleSet(new ExampleRuleset());
+    }
+
+    public function testCanReadCustomRegisteredRuleSet(): void
+    {
+        RuleSets::registerCustomRuleSet(new ExampleRuleset());
+        $set = RuleSets::getSetDefinition('@Vendor/Ruleset');
+        self::assertSame('@Vendor/Ruleset', $set->getName());
     }
 
     private static function assertPHPUnitVersionIsLargestAllowed(string $setName, string $ruleName, string $actualTargetVersion): void

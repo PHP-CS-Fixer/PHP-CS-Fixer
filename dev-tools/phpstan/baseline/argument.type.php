@@ -2,27 +2,12 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $cwd of class PhpCsFixer\\Console\\ConfigurationResolver constructor expects string, string|false given.',
+    'rawMessage' => 'Parameter #2 of function sprintf is expected to be int by placeholder #1 ("%%d"), string given.',
     'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/Command/DescribeCommand.php',
+    'path' => __DIR__ . '/../../../src/Console/Command/WorkerCommand.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $cwd of class PhpCsFixer\\Console\\ConfigurationResolver constructor expects string, string|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/Command/FixCommand.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $basePath of static method Symfony\\Component\\Filesystem\\Path::makeRelative() expects string, string|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/Command/ListFilesCommand.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $cwd of class PhpCsFixer\\Console\\ConfigurationResolver constructor expects string, string|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/Command/ListFilesCommand.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $names of static method PhpCsFixer\\Utils::naturalLanguageJoin() expects list<string>, non-empty-array<int<0, max>, string> given.',
+    'rawMessage' => 'Parameter #5 of function sprintf is expected to be __stringandstringable by placeholder #4 ("%%s"), bool|string given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Console/ConfigurationResolver.php',
 ];
@@ -97,16 +82,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Import/OrderedImportsFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $names of static method PhpCsFixer\\Utils::naturalLanguageJoin() expects list<string>, non-empty-array given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Import/OrderedImportsFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $names of static method PhpCsFixer\\Utils::naturalLanguageJoin() expects list<string>, non-empty-array<0|1|2, \'class\'|\'const\'|\'function\'> given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Import/OrderedImportsFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #2 $offset of function substr expects int, int<0, max>|false given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Operator/BinaryOperatorSpacesFixer.php',
@@ -147,16 +122,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Whitespace/ArrayIndentationFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $fixerConflicts of method PhpCsFixer\\FixerFactory::generateConflictMessage() expects array<string, list<string>>, non-empty-array<string, non-empty-array<int<0, max>, string>> given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/FixerFactory.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $names of static method PhpCsFixer\\Utils::naturalLanguageJoin() expects list<string>, non-empty-array<int<0, max>, string> given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/FixerFactory.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $code of static method PhpCsFixer\\Hasher::calculate() expects string, string|false given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Linter/CachingLinter.php',
@@ -172,11 +137,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $possibleKind of method PhpCsFixer\\Tokenizer\\Token::isGivenKind() expects int|list<int>, non-empty-array<int<0, max>, int> given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Tokenizer/Tokens.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $name of static method PhpCsFixer\\Tokenizer\\Processor\\ImportProcessor::tokenizeName() expects non-empty-string, string given.',
     'count' => 2,
     'path' => __DIR__ . '/../../../src/Tokenizer/Transformer/NameQualifiedTransformer.php',
@@ -185,6 +145,56 @@ $ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $json of function json_decode expects string, string|false given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/ToolInfo.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Parameter #2 of function sprintf is expected to be float by placeholder #1 ("%%.1f"), string given.',
+    'count' => 2,
+    'path' => __DIR__ . '/../../../tests/AutoReview/CiConfigurationTest.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Parameter #2 of function sprintf is expected to be int by placeholder #1 ("%%d"), string given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../tests/AutoReview/CiConfigurationTest.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Parameter #3 of function sprintf is expected to be int by placeholder #2 ("%%d"), string given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../tests/AutoReview/CiConfigurationTest.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Parameter #2 of function sprintf is expected to be __stringandstringable by placeholder #1 ("%%s"), string|false given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../tests/Cache/FileHandlerTest.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Parameter #2 of function sprintf is expected to be __stringandstringable by placeholder #1 ("%%s"), class-string<Throwable>|false given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../tests/Console/Output/ErrorOutputTest.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Parameter #2 of function sprintf is expected to be int by placeholder #1 ("%%d"), string given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../tests/RuleSet/Sets/AbstractSetTestCase.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Parameter #3 of function sprintf is expected to be int by placeholder #2 ("%%d"), string given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../tests/RuleSet/Sets/AbstractSetTestCase.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Parameter #4 of function sprintf is expected to be int by placeholder #3 ("%%d"), int<0, max>|false given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../tests/Test/AbstractFixerTestCase.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Parameter #2 of function sprintf is expected to be __stringandstringable by placeholder #1 ("%%s"), false given.',
+    'count' => 5,
+    'path' => __DIR__ . '/../../../tests/Test/AbstractIntegrationCaseFactory.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Parameter #2 of function sprintf is expected to be int by placeholder #1 ("%%d"), string given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../tests/Test/AbstractTransformerTestCase.php',
 ];
 
 return ['parameters' => ['ignoreErrors' => $ignoreErrors]];

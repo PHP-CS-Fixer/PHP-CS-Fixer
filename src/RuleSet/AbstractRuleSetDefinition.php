@@ -19,7 +19,7 @@ namespace PhpCsFixer\RuleSet;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-abstract class AbstractRuleSetDescription implements RuleSetDescriptionInterface
+abstract class AbstractRuleSetDefinition implements RuleSetDefinitionInterface
 {
     public function __construct() {}
 

@@ -14,21 +14,21 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\RuleSet;
 
-use PhpCsFixer\RuleSet\AbstractMigrationSetDescription;
+use PhpCsFixer\RuleSet\AbstractMigrationSetDefinition;
 use PhpCsFixer\Tests\TestCase;
 
 /**
  * @internal
  *
- * @covers \PhpCsFixer\RuleSet\AbstractMigrationSetDescription
+ * @covers \PhpCsFixer\RuleSet\AbstractMigrationSetDefinition
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class AbstractMigrationSetDescriptionTest extends TestCase
+final class AbstractMigrationSetDefinitionTest extends TestCase
 {
     public function testGetDescriptionForPhpMigrationSet(): void
     {
-        $set = new class extends AbstractMigrationSetDescription {
+        $set = new class extends AbstractMigrationSetDefinition {
             public function getName(): string
             {
                 return '@PHP9x9MigrationSet';
@@ -48,7 +48,7 @@ final class AbstractMigrationSetDescriptionTest extends TestCase
      */
     public function testGetDescriptionForPhpMigrationSetLegacy(): void
     {
-        $set = new class extends AbstractMigrationSetDescription {
+        $set = new class extends AbstractMigrationSetDefinition {
             public function getName(): string
             {
                 return '@PHP99MigrationSet';
@@ -65,7 +65,7 @@ final class AbstractMigrationSetDescriptionTest extends TestCase
 
     public function testGetDescriptionForPhpUnitMigrationSet(): void
     {
-        $set = new class extends AbstractMigrationSetDescription {
+        $set = new class extends AbstractMigrationSetDefinition {
             public function getName(): string
             {
                 return '@PHPUnit30Migration';
@@ -82,7 +82,10 @@ final class AbstractMigrationSetDescriptionTest extends TestCase
 
     public function testGetDescriptionForNoneMigrationSet(): void
     {
-        $set = new class extends AbstractMigrationSetDescription {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessageMatches('/^Cannot generate name of ".*" \/ "foo"\.$/');
+
+        $set = new class extends AbstractMigrationSetDefinition {
             public function getName(): string
             {
                 return 'foo';
@@ -94,9 +97,6 @@ final class AbstractMigrationSetDescriptionTest extends TestCase
             }
         };
 
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessageMatches('/^Cannot generate description for ".*" "foo"\.$/');
-
-        $set->getDescription();
+        $set->getName(); // @phpstan-ignore method.resultUnused
     }
 }

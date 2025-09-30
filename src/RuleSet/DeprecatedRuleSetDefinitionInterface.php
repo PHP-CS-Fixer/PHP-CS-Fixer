@@ -15,22 +15,16 @@ declare(strict_types=1);
 namespace PhpCsFixer\RuleSet;
 
 /**
- * @internal
+ * @author Greg Korba <greg@codito.dev>
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-interface RuleSetDescriptionInterface
+interface DeprecatedRuleSetDefinitionInterface extends RuleSetDefinitionInterface
 {
-    public function getDescription(): string;
-
-    public function getName(): string;
-
     /**
-     * Get all rules from rules set.
+     * Returns names of rule sets to use instead, if any.
      *
-     * @return array<string, array<string, mixed>|bool>
+     * @return list<string>
      */
-    public function getRules(): array;
-
-    public function isRisky(): bool;
+    public function getSuccessorsNames(): array;
 }

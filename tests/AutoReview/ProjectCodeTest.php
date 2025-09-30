@@ -27,6 +27,7 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitNamespacedFixer;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
+use PhpCsFixer\RuleSet\DeprecatedRuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
 use PhpCsFixer\Runner\Parallel\ProcessUtils;
 use PhpCsFixer\Tests\Fixer\ClassNotation\ModifierKeywordsFixerTest;
@@ -92,7 +93,7 @@ final class ProjectCodeTest extends TestCase
         \assert(class_exists($className));
 
         // It is OK for deprecated ruleset to have no tests, as it would be only proxy to renamed ruleset.
-        if (\in_array(DeprecatedRuleSetDescriptionInterface::class, class_implements($className), true)) {
+        if (\in_array(DeprecatedRuleSetDefinitionInterface::class, class_implements($className), true)) {
             $this->expectNotToPerformAssertions();
 
             return;
@@ -787,6 +788,17 @@ final class ProjectCodeTest extends TestCase
      */
     public function testAllCodeContainSingleClassy(string $className): void
     {
+        // @TODO v4 remove me @MARKER_deprecated_DeprecatedRuleSetDescriptionInterface
+        if (\in_array(
+            $className,
+            [
+                DeprecatedRuleSetDescriptionInterface::class, // @phpstan-ignore class.notFound
+            ],
+            true
+        )) {
+            self::markTestSkipped(\sprintf("Classy '%s' is deprecated alias and thus exception.", $className));
+        }
+
         $headerTypes = [
             \T_ABSTRACT,
             \T_AS,
