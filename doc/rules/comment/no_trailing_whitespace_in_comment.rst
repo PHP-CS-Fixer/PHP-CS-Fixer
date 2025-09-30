@@ -2,7 +2,7 @@
 Rule ``no_trailing_whitespace_in_comment``
 ==========================================
 
-There MUST be no trailing spaces inside comment or PHPDoc.
+There must be no trailing whitespace at the end of lines in comment or PHPDoc.
 
 Examples
 --------
