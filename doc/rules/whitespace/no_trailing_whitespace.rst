@@ -2,7 +2,7 @@
 Rule ``no_trailing_whitespace``
 ===============================
 
-Remove trailing whitespace at the end of non-blank lines.
+There must be no trailing whitespace at the end of non-blank lines.
 
 Examples
 --------

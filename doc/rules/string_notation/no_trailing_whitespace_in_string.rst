@@ -2,7 +2,7 @@
 Rule ``no_trailing_whitespace_in_string``
 =========================================
 
-There must be no trailing whitespace in strings.
+There must be no trailing whitespace at the end of lines in strings.
 
 Warning
 -------
