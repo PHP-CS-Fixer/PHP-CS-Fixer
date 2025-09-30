@@ -13,13 +13,10 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-
 namespace PhpCsFixer;
 
 use Composer\XdebugHandler\XdebugHandler;
-use PhpCsFixer\Console\Command\DocumentationCommand;
-use Symfony\Component\Console\Application;
-use Symfony\Component\Filesystem\Filesystem;
+use PhpCsFixer\Console\Internal\Application;
 
 error_reporting(\E_ALL & ~\E_DEPRECATED & ~\E_USER_DEPRECATED);
 
@@ -41,11 +38,5 @@ $xdebug = new XdebugHandler('PHP_CS_FIXER');
 $xdebug->check();
 unset($xdebug);
 
-$command = new DocumentationCommand(new Filesystem());
-
 $application = new Application();
-$application->addCommands([$command]);
-$application
-    ->setDefaultCommand($command->getName(), true)
-    ->run()
-;
+$application->run();
