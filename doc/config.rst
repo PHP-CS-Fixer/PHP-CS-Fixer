@@ -125,6 +125,8 @@ If you need to disable or reconfigure a rule for specific files, you can use the
 
     <?php
 
+    use PhpCsFixer\Fixer\FixerInterface;
+
     $finder = (new PhpCsFixer\Finder())
         ->in(__DIR__)
     ;
@@ -135,7 +137,7 @@ If you need to disable or reconfigure a rule for specific files, you can use the
             'strict_param' => true,
         ])
         ->setFinder($finder)
-        ->setFilterFixerByFile(static function (PhpCsFixer\Fixer\FixerInterface $fixer, SplFileInfo $file): ?PhpCsFixer\Fixer\FixerInterface {
+        ->setFilterFixerByFile(static function (FixerInterface $fixer, SplFileInfo $file): ?FixerInterface {
             // disable the 'strict_param' rule for all files in the "tests" directory
             if ('strict_param' === $fixer->getName() && strpos($file->getPathname(), '/tests/') !== false) {
                 return null;
