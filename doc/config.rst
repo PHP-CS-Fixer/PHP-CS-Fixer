@@ -150,6 +150,15 @@ If you need to disable or reconfigure a rule for specific files, you can use the
         })
     ;
 
+.. warning::
+
+    **⚠️ WARNING ⚠️**
+
+    If you need to reconfigure a fixer instance in the callback passed to ``setFilterFixerByFile()``:
+
+    - make sure to clone it first (as in the example above), as the same instance is used for all files.
+    - if you update the configuration of a fixer, the PHP-CS-Fixer cache won't consider that: you'll need to clear the cache manually (e.g. by deleting the cache file).
+
 Configuring whitespaces
 -----------------------
 
