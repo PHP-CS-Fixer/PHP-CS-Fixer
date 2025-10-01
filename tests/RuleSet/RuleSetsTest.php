@@ -248,14 +248,14 @@ Integration of %s.
 
     public function testRegisteringRulesetMultipleTimesCausesAnException(): void
     {
-        RuleSets::registerCustomRuleSet(new ExampleRuleset());
+        RuleSets::registerCustomRuleSet(new ExampleRuleSet());
         self::expectException(\InvalidArgumentException::class);
-        RuleSets::registerCustomRuleSet(new ExampleRuleset());
+        RuleSets::registerCustomRuleSet(new ExampleRuleSet());
     }
 
     public function testCanReadCustomRegisteredRuleSet(): void
     {
-        RuleSets::registerCustomRuleSet(new ExampleRuleset());
+        RuleSets::registerCustomRuleSet(new ExampleRuleSet());
         $set = RuleSets::getSetDefinition('@Vendor/Ruleset');
         self::assertSame('@Vendor/Ruleset', $set->getName());
     }
