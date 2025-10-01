@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Console\Command;
 
 use PhpCsFixer\Config;
+use PhpCsFixer\CustomRulesetsAwareConfigInterface;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Differ\DiffConsoleFormatter;
@@ -128,6 +129,12 @@ final class DescribeCommand extends Command
         );
 
         $this->fixerFactory->registerCustomFixers($resolver->getConfig()->getCustomFixers());
+
+        if ($resolver->getConfig() instanceof CustomRulesetsAwareConfigInterface) {
+            foreach ($resolver->getConfig()->getCustomRuleSets() as $ruleSet) {
+                RuleSets::registerCustomRuleSet($ruleSet);
+            }
+        }
 
         /** @var ?string $name */
         $name = $input->getArgument('name');
