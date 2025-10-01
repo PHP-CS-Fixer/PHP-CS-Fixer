@@ -35,7 +35,7 @@ class ExampleRuleSet implements RuleSetDefinitionInterface
 
     public function getDescription(): string
     {
-        return 'Description';
+        return 'Purpose of example rule set description.';
     }
 
     public function getRules(): array
