@@ -23,6 +23,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -88,14 +89,14 @@ final class NoUnneededBracesFixer extends AbstractFixer implements ConfigurableF
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound('}');
+        return $tokens->isAnyTokenKindsFound(['}', CT::T_GROUP_IMPORT_BRACE_CLOSE]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($this->findBraceOpen($tokens) as $index) {
             if ($this->isOverComplete($tokens, $index)) {
-                $this->clearOverCompleteBraces($tokens, $index, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index));
+                $this->clearOverCompleteBraces($tokens, $index);
             }
         }
 
@@ -115,11 +116,14 @@ final class NoUnneededBracesFixer extends AbstractFixer implements ConfigurableF
     }
 
     /**
-     * @param int $openIndex  index of `{` token
-     * @param int $closeIndex index of `}` token
+     * @param int $openIndex index of `{` token
      */
-    private function clearOverCompleteBraces(Tokens $tokens, int $openIndex, int $closeIndex): void
+    private function clearOverCompleteBraces(Tokens $tokens, int $openIndex): void
     {
+        $blockType = Tokens::detectBlockType($tokens[$openIndex]);
+
+        $closeIndex = $tokens->findBlockEnd($blockType['type'], $openIndex);
+
         $tokens->clearTokenAndMergeSurroundingWhitespace($closeIndex);
         $tokens->clearTokenAndMergeSurroundingWhitespace($openIndex);
     }
@@ -130,7 +134,7 @@ final class NoUnneededBracesFixer extends AbstractFixer implements ConfigurableF
     private function findBraceOpen(Tokens $tokens): iterable
     {
         for ($i = \count($tokens) - 1; $i > 0; --$i) {
-            if ($tokens[$i]->equals('{')) {
+            if ($tokens[$i]->equalsAny(['{', [CT::T_GROUP_IMPORT_BRACE_OPEN]])) {
                 yield $i;
             }
         }
@@ -141,6 +145,12 @@ final class NoUnneededBracesFixer extends AbstractFixer implements ConfigurableF
      */
     private function isOverComplete(Tokens $tokens, int $index): bool
     {
+        if ($tokens[$index]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
+            $commaOrCloseBraceIndex = $tokens->getNextTokenOfKind($index, [',', [CT::T_GROUP_IMPORT_BRACE_CLOSE]]);
+
+            return $tokens[$commaOrCloseBraceIndex]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE);
+        }
+
         return $tokens[$tokens->getPrevMeaningfulToken($index)]->equalsAny(['{', '}', [\T_OPEN_TAG], ':', ';']);
     }
 

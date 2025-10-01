@@ -212,6 +212,23 @@ namespace Foo {
             null,
             ['namespaces' => true],
         ];
+
+        yield 'imports with single class in braces' => [
+            <<<'PHP'
+                <?php
+                use Foo1\Bar1;
+                use Foo2\Bar2\Baz2;
+                use NotFoo3\{Bar3, Baz3};
+                use NotFoo4\{Bar4\Baz4, Qux4};
+                PHP,
+            <<<'PHP'
+                <?php
+                use Foo1\{Bar1};
+                use Foo2\{Bar2\Baz2};
+                use NotFoo3\{Bar3, Baz3};
+                use NotFoo4\{Bar4\Baz4, Qux4};
+                PHP,
+        ];
     }
 
     /**
