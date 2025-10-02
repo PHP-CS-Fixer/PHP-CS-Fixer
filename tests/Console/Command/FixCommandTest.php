@@ -39,6 +39,7 @@ final class FixCommandTest extends TestCase
         $cmdTester = $this->doTestExecute([
             '--path-mode' => 'intersection',
             '--show-progress' => 'none',
+            '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php',
         ]);
 
         self::assertSame(
@@ -82,7 +83,7 @@ final class FixCommandTest extends TestCase
      */
     public function testSequentialRun(): void
     {
-        $pathToDistConfig = __DIR__.'/../../../.php-cs-fixer.dist.php';
+        $pathToDistConfig = __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php';
         $configWithFixedParallelConfig = <<<PHP
             <?php
 
@@ -122,7 +123,7 @@ final class FixCommandTest extends TestCase
      */
     public function testParallelRun(): void
     {
-        $pathToDistConfig = __DIR__.'/../../../.php-cs-fixer.dist.php';
+        $pathToDistConfig = __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php';
         $configWithFixedParallelConfig = <<<PHP
             <?php
 
@@ -157,7 +158,7 @@ final class FixCommandTest extends TestCase
             self::markTestSkipped('This test requires version of PHP higher than '.ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED);
         }
 
-        $pathToDistConfig = __DIR__.'/../../../.php-cs-fixer.dist.php';
+        $pathToDistConfig = __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php';
         $configWithFixedParallelConfig = <<<PHP
             <?php
 
@@ -186,7 +187,7 @@ final class FixCommandTest extends TestCase
             self::markTestSkipped('This test requires version of PHP higher than '.ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED);
         }
 
-        $pathToDistConfig = __DIR__.'/../../../.php-cs-fixer.dist.php';
+        $pathToDistConfig = __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php';
         $configWithFixedParallelConfig = <<<PHP
             <?php
 
@@ -249,6 +250,7 @@ final class FixCommandTest extends TestCase
             '--dry-run' => true,
             '--using-cache' => 'no',
             '--show-progress' => 'none',
+            '--config' => '-',
         ];
     }
 }

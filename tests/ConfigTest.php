@@ -58,6 +58,7 @@ final class ConfigTest extends TestCase
             $config,
             [
                 'rules' => 'cast_spaces,statement_indentation',
+                'config' => '-',
             ],
             (string) getcwd(),
             new ToolInfo()
@@ -79,6 +80,7 @@ final class ConfigTest extends TestCase
             $config,
             [
                 'rules' => '{"array_syntax": {"syntax": "short"}, "cast_spaces": true}',
+                'config' => '-',
             ],
             (string) getcwd(),
             new ToolInfo()
@@ -104,6 +106,7 @@ final class ConfigTest extends TestCase
             $config,
             [
                 'rules' => '{blah',
+                'config' => '-',
             ],
             (string) getcwd(),
             new ToolInfo()

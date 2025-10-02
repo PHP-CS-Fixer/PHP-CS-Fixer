@@ -165,7 +165,7 @@ final class RunnerTest extends TestCase
             null,
             false,
             new ParallelConfig(2, 1, 50),
-            new ArrayInput([], (new FixCommand(new ToolInfo()))->getDefinition())
+            new ArrayInput(['--config' => '-'], (new FixCommand(new ToolInfo()))->getDefinition())
         );
         $changed = $runner->fix();
         $pathToInvalidFile = $path.\DIRECTORY_SEPARATOR.'somefile.php';
@@ -213,7 +213,7 @@ final class RunnerTest extends TestCase
             null,
             false,
             $parallelConfig,
-            new ArrayInput([], (new FixCommand(new ToolInfo()))->getDefinition())
+            new ArrayInput(['--config' => '-'], (new FixCommand(new ToolInfo()))->getDefinition())
         );
 
         $eventDispatcher->addListener(AnalysisStarted::NAME, static function (AnalysisStarted $event) use ($expectedMode): void {
@@ -280,7 +280,7 @@ final class RunnerTest extends TestCase
             null,
             $stopOnViolation,
             new ParallelConfig(2, 1, 3),
-            new ArrayInput([], (new FixCommand(new ToolInfo()))->getDefinition())
+            new ArrayInput(['--config' => '-'], (new FixCommand(new ToolInfo()))->getDefinition())
         );
 
         self::assertCount($expectedChanges, $runner->fix());

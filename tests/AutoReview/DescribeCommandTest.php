@@ -19,6 +19,7 @@ use PhpCsFixer\Console\Command\DescribeCommand;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\Internal\ConfigurableFixerTemplateFixer;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Utils;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -36,12 +37,27 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class DescribeCommandTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        // Reset the global state of RuleSets::$customRuleSetDefinitions that was modified
+        // when using `.php-cs-fixer.dist.php`, which registers custom rules/sets.
+        //
+        // @TODO: ideally, we don't have the global state but inject the state instead
+        \Closure::bind(
+            static fn () => RuleSets::$customRuleSetDefinitions = [],
+            null,
+            RuleSets::class
+        )();
+    }
+
     /**
      * @dataProvider provideDescribeCommandCases
      *
      * @param list<string> $successorsNames
      */
-    public function testDescribeCommand(string $fixerName, ?array $successorsNames): void
+    public function testDescribeCommand(string $fixerName, ?array $successorsNames, ?string $configFile = null): void
     {
         if (null !== $successorsNames) {
             $message = "Rule \"{$fixerName}\" is deprecated. "
@@ -67,6 +83,7 @@ final class DescribeCommandTest extends TestCase
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => $fixerName,
+            '--config' => $configFile ?? '-',
         ]);
 
         self::assertSame(0, $commandTester->getStatusCode());
@@ -80,6 +97,7 @@ final class DescribeCommandTest extends TestCase
         yield [
             (new ConfigurableFixerTemplateFixer())->getName(),
             null,
+            __DIR__.'/../Fixtures/.php-cs-fixer.one-time-proxy.php',
         ];
 
         $factory = new FixerFactory();

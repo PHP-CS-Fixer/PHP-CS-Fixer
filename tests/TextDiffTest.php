@@ -46,6 +46,7 @@ final class TextDiffTest extends TestCase
                 '--format' => $format,
                 '--rules' => 'cast_spaces',
                 '--using-cache' => 'no',
+                '--config' => '-',
             ],
             [
                 'decorated' => $isDecorated,
