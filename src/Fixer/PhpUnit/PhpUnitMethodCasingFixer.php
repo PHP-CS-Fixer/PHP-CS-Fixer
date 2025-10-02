@@ -141,6 +141,16 @@ final class PhpUnitMethodCasingFixer extends AbstractPhpUnitFixer implements Con
 
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
+        $existingFunctionNamesLowercase = [];
+        for ($index = $endIndex - 1; $index > $startIndex; --$index) {
+            if (!$this->isMethod($tokens, $index)) {
+                continue;
+            }
+            $functionNameIndex = $tokens->getNextMeaningfulToken($index);
+            $existingFunctionNamesLowercase[strtolower($tokens[$functionNameIndex]->getContent())] = null;
+        }
+        unset($index);
+
         for ($index = $endIndex - 1; $index > $startIndex; --$index) {
             if (!$this->isTestMethod($tokens, $index)) {
                 continue;
@@ -148,7 +158,16 @@ final class PhpUnitMethodCasingFixer extends AbstractPhpUnitFixer implements Con
 
             $functionNameIndex = $tokens->getNextMeaningfulToken($index);
             $functionName = $tokens[$functionNameIndex]->getContent();
+            $functionNameLowercase = strtolower($functionName);
             $newFunctionName = $this->updateMethodCasing($functionName);
+            $newFunctionNameLowercase = strtolower($newFunctionName);
+            if (
+                \array_key_exists($newFunctionNameLowercase, $existingFunctionNamesLowercase)
+                && $functionNameLowercase !== $newFunctionNameLowercase
+            ) {
+                continue;
+            }
+            $existingFunctionNamesLowercase[$newFunctionNameLowercase] = null;
 
             if ($newFunctionName !== $functionName) {
                 $tokens[$functionNameIndex] = new Token([\T_STRING, $newFunctionName]);
