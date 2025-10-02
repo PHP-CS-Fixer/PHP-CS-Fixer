@@ -199,6 +199,12 @@ final class CommentsAnalyzer
             return true;
         }
 
+        if ($token->isGivenKind(\T_STRING)) {
+            $content = strtolower($token->getContent());
+
+            return 'get' === $content || 'set' === $content;
+        }
+
         if ($token->isGivenKind(\T_CASE)) {
             $enumParent = $tokens->getPrevTokenOfKind($index, [[FCT::T_ENUM], [\T_SWITCH]]);
 
