@@ -582,6 +582,10 @@ final class ConfigurationResolver
     {
         $configFile = $this->options['config'];
 
+        if ('-' === $configFile) {
+            return [];
+        }
+
         if (null !== $configFile) {
             if (false === file_exists($configFile) || false === is_readable($configFile)) {
                 throw new InvalidConfigurationException(\sprintf('Cannot read config file "%s".', $configFile));

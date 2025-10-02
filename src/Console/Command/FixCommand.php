@@ -240,7 +240,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
         $passedConfig = $input->getOption('config');
         $passedRules = $input->getOption('rules');
 
-        if (null !== $passedConfig && null !== $passedRules) {
+        if (null !== $passedConfig && '-' !== $passedConfig && null !== $passedRules) {
             throw new InvalidConfigurationException('Passing both `--config` and `--rules` options is not allowed.');
         }
 
