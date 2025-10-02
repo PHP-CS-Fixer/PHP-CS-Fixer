@@ -44,7 +44,7 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
-*Default* configuration.
+With configuration: ``['keep_loose_types' => false]``.
 
 .. code-block:: diff
 

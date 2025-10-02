@@ -159,8 +159,8 @@ $a = 456;
         ];
 
         yield [
-            '<?php declare(strict_types=1);',
             '<?php declare(strict_types=0);',
+            null,
             ['keep_loose_types' => true],
         ];
 

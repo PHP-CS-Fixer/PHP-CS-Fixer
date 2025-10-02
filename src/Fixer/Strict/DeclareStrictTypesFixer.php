@@ -56,6 +56,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Configurabl
                 ),
                 new CodeSample(
                     "<?php\ndeclare(Strict_Types=0);\n",
+                    ['keep_loose_types' => false]
                 ),
                 new CodeSample(
                     "<?php\ndeclare(Strict_Types=0);\n",
