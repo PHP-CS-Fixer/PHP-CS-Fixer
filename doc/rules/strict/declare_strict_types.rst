@@ -12,11 +12,26 @@ Using this rule is risky
 
 Forcing strict types will stop non strict code from working.
 
+Configuration
+-------------
+
+``keep_loose_types``
+~~~~~~~~~~~~~~~~~~~~
+
+Whether existing strict_types=0 should be preserved instead of upgrading to
+strict_types=1.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
 Examples
 --------
 
 Example #1
 ~~~~~~~~~~
+
+*Default* configuration.
 
 .. code-block:: diff
 
@@ -25,6 +40,32 @@ Example #1
    -<?php
    +<?php declare(strict_types=1);
    \ No newline at end of file
+
+Example #2
+~~~~~~~~~~
+
+*Default* configuration.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -declare(Strict_Types=0);
+   +declare(strict_types=1);
+
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['keep_loose_types' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -declare(Strict_Types=0);
+   +declare(strict_types=0);
 
 Rule sets
 ---------
