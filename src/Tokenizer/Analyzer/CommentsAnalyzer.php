@@ -201,6 +201,7 @@ final class CommentsAnalyzer
 
         if ($token->isGivenKind(\T_STRING)) {
             $content = strtolower($token->getContent());
+
             return 'get' === $content || 'set' === $content;
         }
 
