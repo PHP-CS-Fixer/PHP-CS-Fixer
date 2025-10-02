@@ -985,12 +985,20 @@ enum Foo: int
                 <?php
                 class Foo
                 {
-                    public int $bar {
+                    public int $a {
                         /** @var int */
-                        get => $this->bar;
+                        get => $this->a;
 
                         /** @var int */
-                        set => $this->bar = $value;
+                        set => $this->a = $value;
+                    }
+
+                    public int $b {
+                        /** @var int */
+                        GET => $this->b;
+
+                        /** @var int */
+                        SET => $this->b = $value;
                     }
                 }
                 PHP,

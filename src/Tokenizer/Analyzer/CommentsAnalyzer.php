@@ -200,7 +200,8 @@ final class CommentsAnalyzer
         }
 
         if ($token->isGivenKind(\T_STRING)) {
-            return 'get' === $token->getContent() || 'set' === $token->getContent();
+            $content = strtolower($token->getContent());
+            return 'get' === $content || 'set' === $content;
         }
 
         if ($token->isGivenKind(\T_CASE)) {
