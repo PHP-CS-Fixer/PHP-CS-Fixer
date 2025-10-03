@@ -103,8 +103,15 @@ final class Runner
     private ?string $configFile;
 
     /**
+     * @phpstan-var ?\Closure(FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface
+     */
+    private ?\Closure $filterFixerByFile;
+
+    /**
      * @param null|\Traversable<array-key, \SplFileInfo> $fileIterator
      * @param list<FixerInterface>                       $fixers
+     *
+     * @phpstan-param ?\Closure(FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface $filterFixerByFile
      */
     public function __construct(
         ?\Traversable $fileIterator,
@@ -120,7 +127,8 @@ final class Runner
         // @TODO Make these arguments required in 4.0
         ?ParallelConfig $parallelConfig = null,
         ?InputInterface $input = null,
-        ?string $configFile = null
+        ?string $configFile = null,
+        ?\Closure $filterFixerByFile = null
     ) {
         // Required only for main process (calculating workers count)
         $this->fileCount = null !== $fileIterator ? \count(iterator_to_array($fileIterator)) : 0;
@@ -138,6 +146,7 @@ final class Runner
         $this->parallelConfig = $parallelConfig ?? ParallelConfigFactory::sequential();
         $this->input = $input;
         $this->configFile = $configFile;
+        $this->filterFixerByFile = $filterFixerByFile;
     }
 
     /**
@@ -450,8 +459,16 @@ final class Runner
 
         $appliedFixers = [];
 
+        $filterFixerByFile = $this->filterFixerByFile;
+
         try {
             foreach ($this->fixers as $fixer) {
+                if (null !== $filterFixerByFile) {
+                    $fixer = $filterFixerByFile($fixer, $file);
+                    if (null === $fixer) {
+                        continue;
+                    }
+                }
                 // for custom fixers we don't know is it safe to run `->fix()` without checking `->supports()` and `->isCandidate()`,
                 // thus we need to check it and conditionally skip fixing
                 if (

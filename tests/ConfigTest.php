@@ -291,6 +291,15 @@ final class ConfigTest extends TestCase
 
         $config->setUnsupportedPhpVersionAllowed(true);
         self::assertTrue($config->getUnsupportedPhpVersionAllowed());
+
+        self::assertNull($config->getFilterFixerByFile());
+
+        $callback = static fn (FixerInterface $fixer, \SplFileInfo $file): FixerInterface => $fixer;
+        $config->setFilterFixerByFile($callback);
+        self::assertSame($callback, $config->getFilterFixerByFile());
+
+        $config->setFilterFixerByFile(null);
+        self::assertNull($config->getFilterFixerByFile());
     }
 
     public function testConfigConstructorWithName(): void
