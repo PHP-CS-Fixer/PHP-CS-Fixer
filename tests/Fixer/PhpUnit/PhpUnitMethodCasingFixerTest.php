@@ -77,6 +77,25 @@ final class PhpUnitMethodCasingFixerTest extends AbstractFixerTestCase
             '<?php class MyTest extends TestCase { function test_should_notFoo_When_Bar() {} }',
             ['case' => 'snake_case'],
         ];
+
+        yield 'does not fix if it would cause a duplicate method name' => [
+            <<<'PHP'
+                <?php
+                class MyTest extends TestCase {
+                    function test_Foo() {}
+                    function testFoo() {}
+                    function testBar() {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class MyTest extends TestCase {
+                    function test_Foo() {}
+                    function testFoo() {}
+                    function test_Bar() {}
+                }
+                PHP,
+        ];
     }
 
     /**
