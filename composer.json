@@ -137,6 +137,7 @@
         "self-check": [
             "./dev-tools/check_file_permissions.sh",
             "./dev-tools/check_trailing_spaces.sh",
+            "./dev-tools/check_shell_scripts.sh",
             "@composer dump-autoload --dry-run --optimize --strict-psr",
             "@normalize",
             "@analyse-deps",
@@ -145,11 +146,13 @@
         "static-analysis": [
             "@cs:check",
             "@phpstan",
+            "@php-compatibility",
             "@mess-detector"
         ],
         "test": "@test:all",
         "test:all": [
             "@test:unit",
+            "@test:short-open-tag",
             "@test:integration"
         ],
         "test:coverage": [
