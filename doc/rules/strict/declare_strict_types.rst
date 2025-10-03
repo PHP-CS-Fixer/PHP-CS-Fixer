@@ -15,11 +15,10 @@ Forcing strict types will stop non strict code from working.
 Configuration
 -------------
 
-``keep_loose_types``
-~~~~~~~~~~~~~~~~~~~~
+``preserve_existing_declaration``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Whether existing strict_types=0 should be preserved instead of upgrading to
-strict_types=1.
+Whether existing strict_types=? should be preserved and not overridden.
 
 Allowed types: ``bool``
 
@@ -44,7 +43,7 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
-With configuration: ``['keep_loose_types' => false]``.
+With configuration: ``['preserve_existing_declaration' => false]``.
 
 .. code-block:: diff
 
@@ -57,7 +56,7 @@ With configuration: ``['keep_loose_types' => false]``.
 Example #3
 ~~~~~~~~~~
 
-With configuration: ``['keep_loose_types' => true]``.
+With configuration: ``['preserve_existing_declaration' => true]``.
 
 .. code-block:: diff
 

@@ -155,13 +155,13 @@ $a = 456;
         yield [
             '<?php declare(strict_types=1);',
             '<?php declare(strict_types=0);',
-            ['keep_loose_types' => false],
+            ['preserve_existing_declaration' => false],
         ];
 
         yield [
             '<?php declare(strict_types=0);',
             null,
-            ['keep_loose_types' => true],
+            ['preserve_existing_declaration' => true],
         ];
 
         yield ['  <?php echo 123;']; // first statement must be an open tag
