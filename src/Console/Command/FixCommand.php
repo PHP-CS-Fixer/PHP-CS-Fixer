@@ -133,32 +133,20 @@ use Symfony\Component\Stopwatch\Stopwatch;
             * `-vv`: very verbose
             * `-vvv`: debug
 
-            The <comment>--rules</comment> option limits the rules to apply to the
-            project:
-
             EOF. /* @TODO: 4.0 - change to @PER */ <<<'EOF'
 
-                <info>$ php %command.full_name% /path/to/project --rules=@PSR12</info>
+            The <comment>--rules</comment> option allows to explicitly select rules to use,
+            overriding the default PSR-12 or your own project config:
 
-            By default the PSR-12 rules are used.
+                <info>$ php %command.full_name% . --rules=line_ending,full_opening_tag,indentation_type</info>
 
-            The <comment>--rules</comment> option lets you choose the exact rules to
-            apply (the rule names must be separated by a comma):
+            You can also exclude the rules you don't want by placing a dash in front of the rule name, like <comment>-name_of_fixer</comment>.
 
-                <info>$ php %command.full_name% /path/to/dir --rules=line_ending,full_opening_tag,indentation_type</info>
+                <info>$ php %command.full_name% . --rules=@Symfony,-@PSR1,-blank_line_before_statement,strict_comparison</info>
 
-            You can also exclude the rules you don't want by placing a dash in front of the rule name, if this is more convenient,
-            using <comment>-name_of_fixer</comment>:
+            Complete configuration for rules can be supplied using a `json` formatted string as well.
 
-                <info>$ php %command.full_name% /path/to/dir --rules=-full_opening_tag,-indentation_type</info>
-
-            When using combinations of exact and exclude rules, applying exact rules along with above excluded results:
-
-                <info>$ php %command.full_name% /path/to/project --rules=@Symfony,-@PSR1,-blank_line_before_statement,strict_comparison</info>
-
-            Complete configuration for rules can be supplied using a `json` formatted string.
-
-                <info>$ php %command.full_name% /path/to/project --rules='{"concat_space": {"spacing": "none"}}'</info>
+                <info>$ php %command.full_name% . --rules='{"concat_space": {"spacing": "none"}}'</info>
 
             The <comment>--dry-run</comment> flag will run the fixer without making changes to your files.
 
