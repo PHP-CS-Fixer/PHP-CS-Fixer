@@ -44,3 +44,5 @@ bin/shellcheck --version
 echo λλλ composer packages
 composer install -v
 composer info -D | sort
+
+printf '\033[0;32mDev-tools installation completed\033[0m\n'
