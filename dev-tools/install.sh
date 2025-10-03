@@ -22,6 +22,8 @@ mkdir -p bin
 VERSION_CB="v2.25.19"
 VERSION_SC="v0.11.0"
 
+OS_KERNEL=$(uname -s | tr '[:upper:]' '[:lower:]')
+
 echo λλλ checkbashisms
 if [ ! -x bin/checkbashisms ]; then
     wget -q "https://salsa.debian.org/debian/devscripts/-/raw/${VERSION_CB}/scripts/checkbashisms.pl" \
@@ -32,7 +34,7 @@ bin/checkbashisms --version
 
 echo λλλ shellcheck
 if [ ! -x bin/shellcheck ]; then
-    wget -qO- "https://github.com/koalaman/shellcheck/releases/download/${VERSION_SC}/shellcheck-${VERSION_SC}.linux.x86_64.tar.xz" \
+    wget -qO- "https://github.com/koalaman/shellcheck/releases/download/${VERSION_SC}/shellcheck-${VERSION_SC}.${OS_KERNEL}.x86_64.tar.xz" \
         | tar -xJv -O shellcheck-${VERSION_SC}/shellcheck \
         > bin/shellcheck
     chmod u+x bin/shellcheck
