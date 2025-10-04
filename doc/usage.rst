@@ -215,6 +215,24 @@ To visualize all the rules that belong to a ruleset:
 
     php php-cs-fixer.phar describe @PSR2
 
+The ``--expand`` option can be used to show all rules when describing a ruleset, including nested rulesets:
+
+.. code-block:: console
+
+    php php-cs-fixer.phar describe @PSR2 --expand
+
+You can also use the special ``@`` alias to describe the configuration currently in use:
+
+.. code-block:: console
+
+    php php-cs-fixer.phar describe @
+
+The ``--config`` option can be used to specify which config file to load:
+
+.. code-block:: console
+
+    php php-cs-fixer.phar describe @ --config=.php-cs-fixer.dist.php
+
 Command-line completion
 -----------------------
 
