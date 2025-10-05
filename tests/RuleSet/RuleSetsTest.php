@@ -256,8 +256,8 @@ Integration of %s.
     public function testCanReadCustomRegisteredRuleSet(): void
     {
         RuleSets::registerCustomRuleSet(new ExampleRuleSet());
-        $set = RuleSets::getSetDefinition('@Vendor/Ruleset');
-        self::assertSame('@Vendor/Ruleset', $set->getName());
+        $set = RuleSets::getSetDefinition('@Vendor/RuleSet');
+        self::assertSame('@Vendor/RuleSet', $set->getName());
     }
 
     private static function assertPHPUnitVersionIsLargestAllowed(string $setName, string $ruleName, string $actualTargetVersion): void
