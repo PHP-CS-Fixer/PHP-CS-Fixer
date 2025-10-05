@@ -83,6 +83,8 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  */
 final class ConfigurationResolver
 {
+    public const IGNORE_CONFIG_FILE = '-';
+
     public const PATH_MODE_OVERRIDE = 'override';
     public const PATH_MODE_INTERSECTION = 'intersection';
     public const PATH_MODE_VALUES = [
@@ -582,7 +584,7 @@ final class ConfigurationResolver
     {
         $configFile = $this->options['config'];
 
-        if ('-' === $configFile) {
+        if (self::IGNORE_CONFIG_FILE === $configFile) {
             return [];
         }
 

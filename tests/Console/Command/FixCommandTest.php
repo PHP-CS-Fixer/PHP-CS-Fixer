@@ -18,6 +18,7 @@ use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\FixCommand;
+use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
@@ -250,7 +251,7 @@ final class FixCommandTest extends TestCase
             '--dry-run' => true,
             '--using-cache' => 'no',
             '--show-progress' => 'none',
-            '--config' => '-',
+            '--config' => ConfigurationResolver::IGNORE_CONFIG_FILE,
         ];
     }
 }

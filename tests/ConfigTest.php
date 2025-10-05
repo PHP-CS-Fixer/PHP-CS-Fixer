@@ -58,7 +58,7 @@ final class ConfigTest extends TestCase
             $config,
             [
                 'rules' => 'cast_spaces,statement_indentation',
-                'config' => '-',
+                'config' => ConfigurationResolver::IGNORE_CONFIG_FILE,
             ],
             (string) getcwd(),
             new ToolInfo()
@@ -80,7 +80,7 @@ final class ConfigTest extends TestCase
             $config,
             [
                 'rules' => '{"array_syntax": {"syntax": "short"}, "cast_spaces": true}',
-                'config' => '-',
+                'config' => ConfigurationResolver::IGNORE_CONFIG_FILE,
             ],
             (string) getcwd(),
             new ToolInfo()
@@ -106,7 +106,7 @@ final class ConfigTest extends TestCase
             $config,
             [
                 'rules' => '{blah',
-                'config' => '-',
+                'config' => ConfigurationResolver::IGNORE_CONFIG_FILE,
             ],
             (string) getcwd(),
             new ToolInfo()

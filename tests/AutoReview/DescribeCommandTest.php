@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\DescribeCommand;
+use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\Internal\ConfigurableFixerTemplateFixer;
 use PhpCsFixer\FixerFactory;
@@ -83,7 +84,7 @@ final class DescribeCommandTest extends TestCase
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => $fixerName,
-            '--config' => $configFile ?? '-',
+            '--config' => $configFile ?? ConfigurationResolver::IGNORE_CONFIG_FILE,
         ]);
 
         self::assertSame(0, $commandTester->getStatusCode());

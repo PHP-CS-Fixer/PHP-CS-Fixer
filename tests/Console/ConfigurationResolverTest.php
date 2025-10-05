@@ -768,14 +768,14 @@ final class ConfigurationResolverTest extends TestCase
 
         yield [
             [
-                'config' => '-',
+                'config' => ConfigurationResolver::IGNORE_CONFIG_FILE,
             ],
             false,
         ];
 
         yield [
             [
-                'config' => '-',
+                'config' => ConfigurationResolver::IGNORE_CONFIG_FILE,
                 'path' => [$root.'/src'],
             ],
             false,
