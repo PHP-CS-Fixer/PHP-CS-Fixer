@@ -37,13 +37,14 @@ abstract class TestCase extends BaseTestCase
     protected function tearDown(): void
     {
         if (null !== $this->previouslyDefinedErrorHandler) {
+            restore_error_handler();
+
             $this->actualDeprecations = array_unique($this->actualDeprecations);
             sort($this->actualDeprecations);
             $this->expectedDeprecations = array_unique($this->expectedDeprecations);
             sort($this->expectedDeprecations);
-            self::assertSame($this->expectedDeprecations, $this->actualDeprecations);
 
-            restore_error_handler();
+            self::assertSame($this->expectedDeprecations, $this->actualDeprecations);
         }
 
         parent::tearDown();
