@@ -721,6 +721,7 @@ final class ConfigurationResolver
     {
         if (null === $this->options['rules']) {
             $this->configRulesAreOverridden = false;
+
             return $this->getConfig()->getRules();
         }
 
@@ -754,6 +755,7 @@ final class ConfigurationResolver
         }
 
         $this->configRulesAreOverridden = true;
+
         return $rules;
     }
 

@@ -352,7 +352,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 );
             }
 
-               if ($resolver->configRulesAreOverridden()) {
+            if ($resolver->configRulesAreOverridden()) {
                 $stdErr->writeln(
                     \sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'Rules from configuration have been overridden by rules provided as command arguments.')
                 );
