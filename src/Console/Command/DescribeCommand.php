@@ -482,6 +482,10 @@ final class DescribeCommand extends Command
         }
     }
 
+    /**
+     * @param array<string, RuleSetDefinitionInterface> $ruleSetDefinitions
+     * @param array<string, FixerInterface>             $fixers
+     */
     private function createTreeNode(RuleSetDefinitionInterface $ruleSetDefinition, array $ruleSetDefinitions, array $fixers): TreeNode
     {
         $node = new TreeNode($ruleSetDefinition->getName());
@@ -491,6 +495,7 @@ final class DescribeCommand extends Command
         natcasesort($rulesKeys);
 
         foreach ($rulesKeys as $rule) {
+            \assert(isset($rules[$rule]));
             $config = $rules[$rule];
             if (str_starts_with($rule, '@')) {
                 $child = $this->createTreeNode($ruleSetDefinitions[$rule], $ruleSetDefinitions, $fixers);
@@ -535,6 +540,7 @@ final class DescribeCommand extends Command
 
         foreach ($ruleSetDefinition->getRules() as $rule => $config) {
             if (str_starts_with($rule, '@')) {
+                \assert(isset($ruleSetDefinitions[$rule]));
                 $set = $ruleSetDefinitions[$rule];
                 $help .= \sprintf(
                     " * <info>%s</info>%s\n   | %s\n\n",
