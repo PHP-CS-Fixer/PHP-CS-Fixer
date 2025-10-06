@@ -88,6 +88,8 @@ final class ProjectCodeTest extends TestCase
         self::$srcClassCases = null;
         self::$testClassCases = null;
         self::$tokensCache = [];
+
+        parent::tearDownAfterClass();
     }
 
     /**
