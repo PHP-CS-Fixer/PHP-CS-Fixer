@@ -33,6 +33,7 @@ use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Tests\Fixtures\DescribeCommand\DescribeFixtureFixer;
+use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleSet;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -464,12 +465,12 @@ Fixing examples:
         $commandTester = new CommandTester($command);
         $commandTester->execute([
             'command' => $command->getName(),
-            'name' => (new \PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleset())->getName(),
+            'name' => (new ExampleRuleSet())->getName(),
             '--config' => __DIR__.'/../../Fixtures/DescribeCommand/.php-cs-fixer.custom-set.php',
         ]);
 
         $expected = "You may the '--expand' option to see nested sets expanded into nested rules.
-Description of the `@Vendor/Ruleset` set.
+Description of the `@Vendor/RuleSet` set.
 
 Purpose of example rule set description.
 
