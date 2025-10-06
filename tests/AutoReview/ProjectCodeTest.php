@@ -19,6 +19,7 @@ use PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer;
 use PhpCsFixer\AbstractPhpdocTypesFixer;
 use PhpCsFixer\AbstractProxyFixer;
 use PhpCsFixer\Console\Command\FixCommand;
+use PhpCsFixer\Console\Command\InitCommand;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
@@ -107,6 +108,18 @@ final class ProjectCodeTest extends TestCase
         }
 
         $testClassName = 'PhpCsFixer\Tests'.substr($className, 10).'Test';
+
+        $exceptions = [
+            InitCommand::class,
+        ];
+
+        // we allow exceptions to _not_ follow the rule,
+        // but when they are ready to start following it - we shall remove them from exceptions list
+        if (\in_array($className, $exceptions, true)) {
+            self::assertFalse(class_exists($testClassName));
+
+            return;
+        }
 
         self::assertTrue(class_exists($testClassName), \sprintf('Expected test class "%s" for "%s" not found.', $testClassName, $className));
     }

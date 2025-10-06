@@ -7,6 +7,7 @@
         "KevinGH\\Box\\Compactor\\Php"
     ],
     "files": [
+        "doc/.php-cs-fixer.dist.php.template",
         "LICENSE"
     ],
     "finder": [
