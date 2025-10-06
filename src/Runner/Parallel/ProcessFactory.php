@@ -75,8 +75,8 @@ final class ProcessFactory
             ProcessUtils::escapeArgument($phpBinary),
             ProcessUtils::escapeArgument($mainScript),
             'worker',
-            sprintf('--port=%s', (string) $serverPort),
-            sprintf('--identifier=%s', ProcessUtils::escapeArgument($identifier->toString())),
+            \sprintf('--port=%s', (string) $serverPort),
+            \sprintf('--identifier=%s', ProcessUtils::escapeArgument($identifier->toString())),
         ];
 
         if ($runnerConfig->isDryRun()) {
