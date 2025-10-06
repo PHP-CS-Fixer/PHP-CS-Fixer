@@ -80,7 +80,7 @@ final class ProcessFactoryTest extends TestCase
 
         self::assertSame(
             \sprintf(
-                'worker --port 1234 --identifier %s%s',
+                'worker --port=1234 --identifier=%s%s',
                 self::IS_WINDOWS
                     ? '"'.$identifier->toString().'"'
                     : '\''.$identifier->toString().'\'',
@@ -108,8 +108,8 @@ final class ProcessFactoryTest extends TestCase
             ],
             self::createRunnerConfig(true),
             self::IS_WINDOWS
-                ? '--dry-run --diff --stop-on-violation --config "conf.php" --using-cache "yes"'
-                : '--dry-run --diff --stop-on-violation --config \'conf.php\' --using-cache \'yes\'',
+                ? '--dry-run --diff --stop-on-violation --config="conf.php" --using-cache="yes"'
+                : '--dry-run --diff --stop-on-violation --config=\'conf.php\' --using-cache=\'yes\'',
         ];
     }
 
@@ -131,7 +131,7 @@ final class ProcessFactoryTest extends TestCase
 
         self::assertSame(
             \sprintf(
-                'worker --port 1234 --identifier %s%s',
+                'worker --port=1234 --identifier=%s%s',
                 self::IS_WINDOWS
                     ? '"'.$identifier->toString().'"'
                     : '\''.$identifier->toString().'\'',
@@ -158,32 +158,32 @@ final class ProcessFactoryTest extends TestCase
             ['--allow-risky' => 'yes'],
             self::createRunnerConfig(false),
             self::IS_WINDOWS
-                ? '--allow-risky "yes"'
-                : '--allow-risky \'yes\'',
+                ? '--allow-risky="yes"'
+                : '--allow-risky=\'yes\'',
         ];
 
         yield 'config' => [
             ['--config' => 'foo.php'],
             self::createRunnerConfig(false),
             self::IS_WINDOWS
-                ? '--config "foo.php"'
-                : '--config \'foo.php\'',
+                ? '--config="foo.php"'
+                : '--config=\'foo.php\'',
         ];
 
         yield 'using-cache' => [
             ['--using-cache' => 'no'],
             self::createRunnerConfig(false),
             self::IS_WINDOWS
-                ? '--using-cache "no"'
-                : '--using-cache \'no\'',
+                ? '--using-cache="no"'
+                : '--using-cache=\'no\'',
         ];
 
         yield 'cache-file' => [
             ['--cache-file' => 'cache.json'],
             self::createRunnerConfig(false),
             self::IS_WINDOWS
-                ? '--cache-file "cache.json"'
-                : '--cache-file \'cache.json\'',
+                ? '--cache-file="cache.json"'
+                : '--cache-file=\'cache.json\'',
         ];
 
         yield 'dry run with other options' => [
@@ -195,24 +195,24 @@ final class ProcessFactoryTest extends TestCase
             ],
             self::createRunnerConfig(true),
             self::IS_WINDOWS
-                ? '--dry-run --diff --stop-on-violation --config "conf.php" --using-cache "yes"'
-                : '--dry-run --diff --stop-on-violation --config \'conf.php\' --using-cache \'yes\'',
+                ? '--dry-run --diff --stop-on-violation --config="conf.php" --using-cache="yes"'
+                : '--dry-run --diff --stop-on-violation --config=\'conf.php\' --using-cache=\'yes\'',
         ];
 
         yield 'rules' => [
             ['--rules' => '@PhpCsFixer'],
             self::createRunnerConfig(false),
             self::IS_WINDOWS
-                ? '--rules "@PhpCsFixer"'
-                : '--rules \'@PhpCsFixer\'',
+                ? '--rules="@PhpCsFixer"'
+                : '--rules=\'@PhpCsFixer\'',
         ];
 
         yield 'rules (complex)' => [
             ['--rules' => '{"array_syntax":{"syntax":"short"},"binary_operator_spaces":{"operators":{"=>":"single_space"}}}'],
             self::createRunnerConfig(false),
             self::IS_WINDOWS
-                ? '--rules "{\"array_syntax\":{\"syntax\":\"short\"},\"binary_operator_spaces\":{\"operators\":{\"=>\":\"single_space\"}}}"'
-                : '--rules \'{"array_syntax":{"syntax":"short"},"binary_operator_spaces":{"operators":{"=>":"single_space"}}}\'',
+                ? '--rules="{\"array_syntax\":{\"syntax\":\"short\"},\"binary_operator_spaces\":{\"operators\":{\"=>\":\"single_space\"}}}"'
+                : '--rules=\'{"array_syntax":{"syntax":"short"},"binary_operator_spaces":{"operators":{"=>":"single_space"}}}\'',
         ];
     }
 
