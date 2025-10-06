@@ -15,9 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\Console\Command;
 
 use PhpCsFixer\Config;
-use Symfony\Component\Console\Helper\TreeHelper;
-use Symfony\Component\Console\Helper\TreeNode;
-use Symfony\Component\Console\Input\ArrayInput;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Differ\DiffConsoleFormatter;
@@ -51,6 +48,9 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Formatter\OutputFormatter;
+use Symfony\Component\Console\Helper\TreeHelper;
+use Symfony\Component\Console\Helper\TreeNode;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -481,7 +481,6 @@ final class DescribeCommand extends Command
             $this->describeSetContentAsTxt($output, $ruleSetDefinition, $ruleSetDefinitions, $fixers);
         }
     }
-
 
     private function createTreeNode(RuleSetDefinitionInterface $ruleSetDefinition, array $ruleSetDefinitions, array $fixers): TreeNode
     {
