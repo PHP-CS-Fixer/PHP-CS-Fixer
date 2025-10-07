@@ -30,7 +30,6 @@ use PhpCsFixer\CustomRulesetsAwareConfigInterface;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Differ\UnifiedDiffer;
-use PhpCsFixer\FilterFixerByFileAwareConfigInterface;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
@@ -39,6 +38,8 @@ use PhpCsFixer\Future;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\ParallelAwareConfigInterface;
+use PhpCsFixer\RuleCustomizationPolicyAwareConfigInterface;
+use PhpCsFixer\RuleCustomizationPolicyInterface;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSetInterface;
 use PhpCsFixer\RuleSet\RuleSets;
@@ -182,12 +183,9 @@ final class ConfigurationResolver
 
     private ?bool $isUnsupportedPhpVersionAllowed = null;
 
-    private bool $isFilterFixerByFileResolved = false;
+    private bool $isRuleCustomizationPolicyResolved = false;
 
-    /**
-     * @phpstan-var ?\Closure(FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface
-     */
-    private ?\Closure $filterFixerByFile;
+    private ?RuleCustomizationPolicyInterface $ruleCustomizationPolicy;
 
     private ?FixerFactory $fixerFactory = null;
 
@@ -536,17 +534,17 @@ final class ConfigurationResolver
         return $this->isUnsupportedPhpVersionAllowed;
     }
 
-    public function getFilterFixerByFile(): ?\Closure
+    public function getRuleCustomizationPolicy(): ?RuleCustomizationPolicyInterface
     {
-        if (false === $this->isFilterFixerByFileResolved) {
+        if (false === $this->isRuleCustomizationPolicyResolved) {
             $config = $this->getConfig();
-            $this->filterFixerByFile = $config instanceof FilterFixerByFileAwareConfigInterface
-                ? $config->getFilterFixerByFile()
+            $this->ruleCustomizationPolicy = $config instanceof RuleCustomizationPolicyAwareConfigInterface
+                ? $config->getRuleCustomizationPolicy()
                 : null;
-            $this->isFilterFixerByFileResolved = true;
+            $this->isRuleCustomizationPolicyResolved = true;
         }
 
-        return $this->filterFixerByFile;
+        return $this->ruleCustomizationPolicy;
     }
 
     /**

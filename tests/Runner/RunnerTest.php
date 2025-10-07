@@ -27,6 +27,7 @@ use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\LintingResultInterface;
+use PhpCsFixer\RuleCustomizationPolicyInterface;
 use PhpCsFixer\Runner\Event\AnalysisStarted;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Runner;
@@ -340,11 +341,27 @@ final class RunnerTest extends TestCase
      * @covers \PhpCsFixer\Runner\Runner::fix
      * @covers \PhpCsFixer\Runner\Runner::fixFile
      */
-    public function testFilterFixerByFile(): void
+    public function testRuleCustomizationPolicy(): void
     {
         $differ = $this->createDifferDouble();
         $path = __DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'fix';
-        $fixer1 = new class implements Fixer\FixerInterface {
+        $ruleCustomizationPolicy = new class implements RuleCustomizationPolicyInterface {
+            public Fixer\FixerInterface $fixer1;
+            public Fixer\FixerInterface $fixer2;
+            public Fixer\FixerInterface $fixer3;
+
+            public function customize(Fixer\FixerInterface $fixer, \SplFileInfo $file): ?Fixer\FixerInterface
+            {
+                if ($fixer === $this->fixer1) {
+                    return null;
+                }
+                if ($fixer === $this->fixer2) {
+                    return $this->fixer3;
+                }
+                Assert::fail('Unexpected fixer passed to filter.');
+            }
+        };
+        $ruleCustomizationPolicy->fixer1 = new class implements Fixer\FixerInterface {
             public function isCandidate(Tokens $tokens): bool
             {
                 Assert::fail(__FUNCTION__." shoudn't be called on this fixer");
@@ -380,7 +397,7 @@ final class RunnerTest extends TestCase
                 Assert::fail(__FUNCTION__." shoudn't be called on this fixer");
             }
         };
-        $fixer2 = new class implements Fixer\FixerInterface {
+        $ruleCustomizationPolicy->fixer2 = new class implements Fixer\FixerInterface {
             public function isCandidate(Tokens $tokens): bool
             {
                 Assert::fail(__FUNCTION__." shoudn't be called on this fixer");
@@ -416,7 +433,7 @@ final class RunnerTest extends TestCase
                 Assert::fail(__FUNCTION__." shoudn't be called on this fixer");
             }
         };
-        $fixer3 = new class implements Fixer\FixerInterface {
+        $ruleCustomizationPolicy->fixer3 = new class implements Fixer\FixerInterface {
             public bool $fixInvoked = false;
 
             public function isCandidate(Tokens $tokens): bool
@@ -462,8 +479,8 @@ final class RunnerTest extends TestCase
             Finder::create()->in($path),
             // $fixers
             [
-                $fixer1,
-                $fixer2,
+                $ruleCustomizationPolicy->fixer1,
+                $ruleCustomizationPolicy->fixer2,
             ],
             // $differ
             $differ,
@@ -487,23 +504,15 @@ final class RunnerTest extends TestCase
             null,
             // $configFile
             null,
-            // $filterFixerByFile
-            static function (Fixer\FixerInterface $fixer, \SplFileInfo $file) use ($fixer1, $fixer2, $fixer3): ?Fixer\FixerInterface {
-                if ($fixer === $fixer1) {
-                    return null;
-                }
-                if ($fixer === $fixer2) {
-                    return $fixer3;
-                }
-                self::fail('Unexpected fixer passed to filter.');
-            }
+            // $ruleCustomizationPolicy
+            $ruleCustomizationPolicy
         );
 
         $fixInfo = $runner->fix();
 
         self::assertTrue($errorsManager->isEmpty(), 'No errors should occur in the fix() method');
         self::assertSame([], $fixInfo);
-        self::assertTrue($fixer3->fixInvoked, 'The fix method on fixer3 should be invoked');
+        self::assertTrue($ruleCustomizationPolicy->fixer3->fixInvoked, 'The fix method on fixer3 should be invoked');
     }
 
     private function createDifferDouble(): DifferInterface

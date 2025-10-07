@@ -14,29 +14,24 @@ declare(strict_types=1);
 
 namespace PhpCsFixer;
 
-use PhpCsFixer\Fixer\FixerInterface;
-
 /**
  * @TODO 4.0 Include support for this in main ConfigInterface
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-interface FilterFixerByFileAwareConfigInterface extends ConfigInterface
+interface RuleCustomizationPolicyAwareConfigInterface extends ConfigInterface
 {
     /**
      * Registers a filter to be applied to fixers right before running them.
-     * The closure can cancel the fixer by returning null.
-     *
-     * @param ?\Closure(FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface $filterFixerByFile
      *
      * @todo v4 Introduce it in main ConfigInterface
      */
-    public function setFilterFixerByFile(?\Closure $filterFixerByFile): ConfigInterface;
+    public function setRuleCustomizationPolicy(?RuleCustomizationPolicyInterface $ruleCustomizationPolicy): ConfigInterface;
 
     /**
      * Gets the filter to be applied to fixers right before running them.
      *
-     * @return ?\Closure(FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface
+     * @todo v4 Introduce it in main ConfigInterface
      */
-    public function getFilterFixerByFile(): ?\Closure;
+    public function getRuleCustomizationPolicy(): ?RuleCustomizationPolicyInterface;
 }

@@ -26,7 +26,7 @@ use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-class Config implements ConfigInterface, ParallelAwareConfigInterface, UnsupportedPhpVersionAllowedConfigInterface, CustomRulesetsAwareConfigInterface, FilterFixerByFileAwareConfigInterface
+class Config implements ConfigInterface, ParallelAwareConfigInterface, UnsupportedPhpVersionAllowedConfigInterface, CustomRulesetsAwareConfigInterface, RuleCustomizationPolicyAwareConfigInterface
 {
     /**
      * @var non-empty-string
@@ -81,10 +81,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
 
     private bool $isUnsupportedPhpVersionAllowed = false;
 
-    /**
-     * @phpstan-var ?\Closure(FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface
-     */
-    private ?\Closure $filterFixerByFile = null;
+    private ?RuleCustomizationPolicyInterface $ruleCustomizationPolicy = null;
 
     public function __construct(string $name = 'default')
     {
@@ -188,9 +185,9 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
         return $this->isUnsupportedPhpVersionAllowed;
     }
 
-    public function getFilterFixerByFile(): ?\Closure
+    public function getRuleCustomizationPolicy(): ?RuleCustomizationPolicyInterface
     {
-        return $this->filterFixerByFile;
+        return $this->ruleCustomizationPolicy;
     }
 
     public function registerCustomFixers(iterable $fixers): ConfigInterface
@@ -307,12 +304,9 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
         return $this;
     }
 
-    /**
-     * @phpstan-param ?\Closure(FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface $filterFixerByFile
-     */
-    public function setFilterFixerByFile(?\Closure $filterFixerByFile): ConfigInterface
+    public function setRuleCustomizationPolicy(?RuleCustomizationPolicyInterface $ruleCustomizationPolicy): ConfigInterface
     {
-        $this->filterFixerByFile = $filterFixerByFile;
+        $this->ruleCustomizationPolicy = $ruleCustomizationPolicy;
 
         return $this;
     }

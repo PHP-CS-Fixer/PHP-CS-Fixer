@@ -119,44 +119,49 @@ The following example shows how to use all ``PhpCsFixer`` rules but without the 
         ->setFinder($finder)
     ;
 
-If you need to disable or reconfigure a rule for specific files, you can use the ``setFilterFixerByFile`` method:
+If you need to disable or reconfigure a rule for specific files, you can use the ``setRuleCustomizationPolicy`` method:
 
 .. code-block:: php
 
     <?php
 
+    use PhpCsFixer\Config;
+    use PhpCsFixer\Finder;
     use PhpCsFixer\Fixer\FixerInterface;
+    use PhpCsFixer\RuleCustomizationPolicyInterface;
 
-    $finder = (new PhpCsFixer\Finder())
-        ->in(__DIR__)
-    ;
-
-    return (new PhpCsFixer\Config())
-        ->setRules([
-            'array_syntax' => ['syntax' => 'short'],
-            'strict_param' => true,
-        ])
-        ->setFinder($finder)
-        ->setFilterFixerByFile(static function (FixerInterface $fixer, SplFileInfo $file): ?FixerInterface {
-            // disable the 'strict_param' rule for all files in the "tests" directory
-            if ('strict_param' === $fixer->getName() && strpos($file->getPathname(), '/tests/') !== false) {
-                return null;
-            }
-            // reconfigure the 'array_syntax' rule to use long syntax for all files in the "bin" directory
-            if ('array_syntax' === $fixer->getName() && strpos($file->getPathname(), '/bin/') !== false) {
-                $fixer = clone $fixer;
+    class MyPolicy implements RuleCustomizationPolicyInterface
+    {
+        public function customize(FixerInterface $fixer, SplFileInfo $file): ?FixerInterface
+        {
+            if ('array_syntax' === $fixer->getName()
+                && str_contains($file->getPathname(), '/bin/')
+            ) {
+                $fixer = clone $fixer; // IMPORTANT!
                 $fixer->configure(['syntax' => 'long']);
             }
 
             return $fixer;
-        })
+        }
+    }
+
+    return (new Config())
+        ->setRules([
+            'array_syntax' => ['syntax' => 'short'],
+        ])
+        ->setRuleCustomizationPolicy(new MyPolicy())
+        ->setFinder(
+            (new Finder())
+                ->in(__DIR__)
+        )
     ;
+
 
 .. warning::
 
     **⚠️ WARNING ⚠️**
 
-    If you need to reconfigure a fixer instance in the callback passed to ``setFilterFixerByFile()``:
+    If you need to reconfigure a fixer instance in the `customize()` method:
 
     - make sure to clone it first (as in the example above), as the same instance is used for all files.
     - if you update the configuration of a fixer, the PHP-CS-Fixer cache won't consider that: you'll need to clear the cache manually (e.g. by deleting the cache file).

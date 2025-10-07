@@ -23,6 +23,7 @@ use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer;
 use PhpCsFixer\Fixer\ControlStructure\IncludeFixer;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\RuleCustomizationPolicyInterface;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleset;
 use PhpCsFixer\ToolInfo;
@@ -292,14 +293,20 @@ final class ConfigTest extends TestCase
         $config->setUnsupportedPhpVersionAllowed(true);
         self::assertTrue($config->getUnsupportedPhpVersionAllowed());
 
-        self::assertNull($config->getFilterFixerByFile());
+        self::assertNull($config->getRuleCustomizationPolicy());
 
-        $callback = static fn (FixerInterface $fixer, \SplFileInfo $file): FixerInterface => $fixer;
-        $config->setFilterFixerByFile($callback);
-        self::assertSame($callback, $config->getFilterFixerByFile());
+        $ruleCustomizationPolicy = new class implements RuleCustomizationPolicyInterface {
+            /** @phpstan-ignore return.unusedType */
+            public function customize(FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface
+            {
+                return $fixer;
+            }
+        };
+        $config->setRuleCustomizationPolicy($ruleCustomizationPolicy);
+        self::assertSame($ruleCustomizationPolicy, $config->getRuleCustomizationPolicy());
 
-        $config->setFilterFixerByFile(null);
-        self::assertNull($config->getFilterFixerByFile());
+        $config->setRuleCustomizationPolicy(null);
+        self::assertNull($config->getRuleCustomizationPolicy());
     }
 
     public function testConfigConstructorWithName(): void

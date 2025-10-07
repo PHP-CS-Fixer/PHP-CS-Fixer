@@ -32,6 +32,7 @@ use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\LintingResultInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\RuleCustomizationPolicyInterface;
 use PhpCsFixer\Runner\Event\AnalysisStarted;
 use PhpCsFixer\Runner\Event\FileProcessed;
 use PhpCsFixer\Runner\Parallel\ParallelAction;
@@ -102,16 +103,11 @@ final class Runner
 
     private ?string $configFile;
 
-    /**
-     * @phpstan-var ?\Closure(FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface
-     */
-    private ?\Closure $filterFixerByFile;
+    private ?RuleCustomizationPolicyInterface $ruleCustomizationPolicy;
 
     /**
      * @param null|\Traversable<array-key, \SplFileInfo> $fileIterator
      * @param list<FixerInterface>                       $fixers
-     *
-     * @phpstan-param ?\Closure(FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface $filterFixerByFile
      */
     public function __construct(
         ?\Traversable $fileIterator,
@@ -128,7 +124,7 @@ final class Runner
         ?ParallelConfig $parallelConfig = null,
         ?InputInterface $input = null,
         ?string $configFile = null,
-        ?\Closure $filterFixerByFile = null
+        ?RuleCustomizationPolicyInterface $ruleCustomizationPolicy = null
     ) {
         // Required only for main process (calculating workers count)
         $this->fileCount = null !== $fileIterator ? \count(iterator_to_array($fileIterator)) : 0;
@@ -146,7 +142,7 @@ final class Runner
         $this->parallelConfig = $parallelConfig ?? ParallelConfigFactory::sequential();
         $this->input = $input;
         $this->configFile = $configFile;
-        $this->filterFixerByFile = $filterFixerByFile;
+        $this->ruleCustomizationPolicy = $ruleCustomizationPolicy;
     }
 
     /**
@@ -459,12 +455,10 @@ final class Runner
 
         $appliedFixers = [];
 
-        $filterFixerByFile = $this->filterFixerByFile;
-
         try {
             foreach ($this->fixers as $fixer) {
-                if (null !== $filterFixerByFile) {
-                    $fixer = $filterFixerByFile($fixer, $file);
+                if (null !== $this->ruleCustomizationPolicy) {
+                    $fixer = $this->ruleCustomizationPolicy->customize($fixer, $file);
                     if (null === $fixer) {
                         continue;
                     }
