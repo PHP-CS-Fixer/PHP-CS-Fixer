@@ -65,6 +65,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 #[AsCommand(name: 'describe', description: 'Describe rule / ruleset.')]
 final class DescribeCommand extends Command
 {
+    private const SET_ALIAS_TO_DESCRIBE_CONFIG = '@';
+
     /** @TODO PHP 8.0 - remove the property */
     protected static $defaultName = 'describe';
 
@@ -138,7 +140,7 @@ final class DescribeCommand extends Command
                 'yes',
             );
             if ($shallDescribeConfigInUse) {
-                $name = '@'; // '@' means "describe config file"
+                $name = self::SET_ALIAS_TO_DESCRIBE_CONFIG;
             } else {
                 $name = $io->choice(
                     'Please select rule / set to describe',
@@ -404,11 +406,11 @@ final class DescribeCommand extends Command
 
     private function describeSet(InputInterface $input, OutputInterface $output, string $name, ConfigurationResolver $resolver): void
     {
-        if ('@' !== $name && !\in_array($name, $this->getSetNames(), true)) {
+        if (self::SET_ALIAS_TO_DESCRIBE_CONFIG !== $name && !\in_array($name, $this->getSetNames(), true)) {
             throw new DescribeNameNotFoundException($name, 'set');
         }
 
-        if ('@' === $name) {
+        if (self::SET_ALIAS_TO_DESCRIBE_CONFIG === $name) {
             $defaultRuleSetDefinition = $this->createRuleSetDefinition(
                 null,
                 [],
