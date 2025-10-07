@@ -44,7 +44,7 @@ return (new Config())
     ->setUnsupportedPhpVersionAllowed(true)
     ->setRiskyAllowed(true)
     ->registerCustomFixers(class_exists(ConfigurableFixerTemplateFixer::class) ? [
-        new ConfigurableFixerTemplateFixer(),
+        new ConfigurableFixerTemplateFixer(), // available only on repo level, not exposed to external installations or phar build
     ] : [])
     ->setRules([
         '@auto' => true,
