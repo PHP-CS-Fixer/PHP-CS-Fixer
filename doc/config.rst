@@ -161,7 +161,7 @@ If you need to disable or reconfigure a rule for specific files, you can use the
 
     **⚠️ WARNING ⚠️**
 
-    If you need to reconfigure a fixer instance in the `customize()` method:
+    If you need to reconfigure a fixer instance in the ``customize()`` method:
 
     - make sure to clone it first (as in the example above), as the same instance is used for all files.
     - if you update the configuration of a fixer, the PHP-CS-Fixer cache won't consider that: you'll need to clear the cache manually (e.g. by deleting the cache file).
