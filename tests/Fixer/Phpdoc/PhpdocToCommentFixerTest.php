@@ -979,5 +979,29 @@ enum Foo: int
                 }
                 PHP,
         ];
+
+        yield 'property hooks' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public int $a {
+                        /** @var int */
+                        get => $this->a;
+
+                        /** @var int */
+                        set => $this->a = $value;
+                    }
+
+                    public int $b {
+                        /** @var int */
+                        GET => $this->b;
+
+                        /** @var int */
+                        SET => $this->b = $value;
+                    }
+                }
+                PHP,
+        ];
     }
 }

@@ -98,7 +98,7 @@
         "analyse-deps": "@php dev-tools/vendor/bin/composer-dependency-analyser",
         "auto-review": [
             "Composer\\Config::disableProcessTimeout",
-            "paraunit run --testsuite auto-review"
+            "@php ./vendor/bin/paraunit run --testsuite auto-review"
         ],
         "cs:check": "@php php-cs-fixer check --verbose --diff",
         "cs:fix": "@php php-cs-fixer fix",
@@ -137,6 +137,7 @@
         "self-check": [
             "./dev-tools/check_file_permissions.sh",
             "./dev-tools/check_trailing_spaces.sh",
+            "./dev-tools/check_shell_scripts.sh",
             "@composer dump-autoload --dry-run --optimize --strict-psr",
             "@normalize",
             "@analyse-deps",
@@ -145,11 +146,13 @@
         "static-analysis": [
             "@cs:check",
             "@phpstan",
+            "@php-compatibility",
             "@mess-detector"
         ],
         "test": "@test:all",
         "test:all": [
             "@test:unit",
+            "@test:short-open-tag",
             "@test:integration"
         ],
         "test:coverage": [
@@ -158,7 +161,7 @@
         ],
         "test:integration": [
             "Composer\\Config::disableProcessTimeout",
-            "paraunit run --testsuite integration"
+            "@php ./vendor/bin/paraunit run --testsuite integration"
         ],
         "test:mutation": [
             "Composer\\Config::disableProcessTimeout",
@@ -170,11 +173,11 @@
         ],
         "test:smoke": [
             "Composer\\Config::disableProcessTimeout",
-            "paraunit run --testsuite smoke"
+            "@php ./vendor/bin/paraunit run --testsuite smoke"
         ],
         "test:unit": [
             "Composer\\Config::disableProcessTimeout",
-            "paraunit run --testsuite unit"
+            "@php ./vendor/bin/paraunit run --testsuite unit"
         ]
     },
     "scripts-descriptions": {
