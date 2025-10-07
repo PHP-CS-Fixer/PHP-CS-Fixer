@@ -23,9 +23,10 @@ use PhpCsFixer\Tests\RuleSet\Sets\AbstractSetTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class InternalRiskySetTest extends AbstractSetTestCase {
-    public function testSet(): void {
+final class InternalRiskySetTest extends AbstractSetTestCase
+{
+    public function testSet(): void
+    {
         self::markTestSkipped('Skipped as contains internal rules');
-
     }
 }
