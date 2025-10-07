@@ -56,6 +56,15 @@ final class Application extends BaseApplication
         return parent::add($command);
     }
 
+    public function getLongVersion(): string
+    {
+        return str_replace(
+            PublicApplication::NAME,
+            $this->getName(),
+            PublicApplication::getAboutWithRuntime(true)
+        );
+    }
+
     protected function getDefaultCommands(): array
     {
         return [new HelpCommand(), new ListCommand(), new CompleteCommand(), new DumpCompletionCommand()];
