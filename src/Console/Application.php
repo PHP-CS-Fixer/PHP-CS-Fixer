@@ -103,6 +103,7 @@ final class Application extends BaseApplication
             $warningsDetector->detectOldVendor();
             $warningsDetector->detectOldMajor();
             $warningsDetector->detectNonMonolithic();
+            $warningsDetector->detectHigherPhpVersion();
             $warnings = $warningsDetector->getWarnings();
 
             if (\count($warnings) > 0) {
