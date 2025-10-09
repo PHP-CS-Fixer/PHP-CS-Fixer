@@ -76,6 +76,8 @@ final class WarningsDetector
             $minPhpVersion = $composerJsonReader->getPhp();
 
             if (null === $minPhpVersion) {
+                $this->warnings[] = 'No PHP version requirement found in composer.json. It is recommended to specify a minimum PHP version.';
+
                 return;
             }
 
@@ -93,8 +95,10 @@ final class WarningsDetector
                 );
             }
         } catch (\Throwable $e) {
-            // Silently ignore errors when reading composer.json
-            // (e.g., file not found, invalid JSON, etc.)
+            $this->warnings[] = \sprintf(
+                'Unable to read composer.json: %s',
+                $e->getMessage()
+            );
         }
     }
 

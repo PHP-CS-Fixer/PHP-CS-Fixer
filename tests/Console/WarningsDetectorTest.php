@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Console;
 
+use PhpCsFixer\ComposerJsonReader;
 use PhpCsFixer\Console\WarningsDetector;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfoInterface;
@@ -102,6 +103,87 @@ final class WarningsDetectorTest extends TestCase
 
         // The method either adds a warning or doesn't, but shouldn't crash
         self::assertIsArray($warningsDetector->getWarnings());
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testDetectHigherPhpVersionWithMissingComposerJson(): void
+    {
+        // This test verifies that a warning is shown when composer.json cannot be read
+        $originalDir = getcwd();
+        $tempDir = sys_get_temp_dir().\DIRECTORY_SEPARATOR.'phpcsfixer_test_'.uniqid('', true);
+        mkdir($tempDir);
+
+        try {
+            chdir($tempDir);
+
+            // Reset the singleton
+            $this->resetComposerJsonReaderSingleton();
+
+            $toolInfo = $this->createToolInfoDouble(false, 'not-installed-by-composer');
+            $warningsDetector = new WarningsDetector($toolInfo);
+            $warningsDetector->detectHigherPhpVersion();
+
+            $warnings = $warningsDetector->getWarnings();
+
+            self::assertNotEmpty($warnings);
+            self::assertStringContainsString('Unable to read composer.json:', $warnings[0]);
+        } finally {
+            chdir($originalDir);
+            rmdir($tempDir);
+        }
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testDetectHigherPhpVersionWithNoPhpRequirement(): void
+    {
+        // This test verifies that a warning is shown when composer.json has no PHP requirement
+        $originalDir = getcwd();
+        $tempDir = sys_get_temp_dir().\DIRECTORY_SEPARATOR.'phpcsfixer_test_'.uniqid('', true);
+        mkdir($tempDir);
+
+        try {
+            chdir($tempDir);
+
+            // Create a composer.json without PHP requirement
+            file_put_contents('composer.json', json_encode([
+                'name' => 'test/test',
+                'require' => [],
+            ]));
+
+            // Reset the singleton
+            $this->resetComposerJsonReaderSingleton();
+
+            $toolInfo = $this->createToolInfoDouble(false, 'not-installed-by-composer');
+            $warningsDetector = new WarningsDetector($toolInfo);
+            $warningsDetector->detectHigherPhpVersion();
+
+            $warnings = $warningsDetector->getWarnings();
+
+            self::assertNotEmpty($warnings);
+            self::assertSame(
+                'No PHP version requirement found in composer.json. It is recommended to specify a minimum PHP version.',
+                $warnings[0]
+            );
+        } finally {
+            chdir($originalDir);
+            if (file_exists($tempDir.'/composer.json')) {
+                unlink($tempDir.'/composer.json');
+            }
+            rmdir($tempDir);
+        }
+    }
+
+    private function resetComposerJsonReaderSingleton(): void
+    {
+        $closure = \Closure::bind(static function (): void {
+            static $instance = null;
+            $instance = null; // Reset singleton
+        }, null, ComposerJsonReader::class);
+        $closure();
     }
 
     private function createToolInfoDouble(bool $isInstalledByComposer, string $packageName): ToolInfoInterface
