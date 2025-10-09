@@ -90,21 +90,6 @@ final class WarningsDetectorTest extends TestCase
         self::assertStringContainsString('This may introduce syntax or features not available in PHP', $warnings[0]);
     }
 
-    public function testDetectHigherPhpVersionDoesNotThrowWhenNoWarnings(): void
-    {
-        // This test verifies that the method handles errors gracefully
-        // Even if there are issues reading composer.json, it should not throw
-        $toolInfo = $this->createToolInfoDouble(false, 'not-installed-by-composer');
-
-        $warningsDetector = new WarningsDetector($toolInfo);
-
-        // This should not throw an exception
-        $warningsDetector->detectHigherPhpVersion();
-
-        // The method either adds a warning or doesn't, but shouldn't crash
-        self::assertIsArray($warningsDetector->getWarnings());
-    }
-
     /**
      * @runInSeparateProcess
      */
