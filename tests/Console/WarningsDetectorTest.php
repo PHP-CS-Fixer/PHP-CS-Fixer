@@ -98,7 +98,7 @@ final class WarningsDetectorTest extends TestCase
         // This test verifies that a warning is shown when composer.json cannot be read
         $originalDir = getcwd();
         if (false === $originalDir) {
-            self::markTestSkipped('Unable to determine current working directory');
+            throw new \RuntimeException('Unable to determine current working directory');
         }
 
         $tempDir = sys_get_temp_dir().\DIRECTORY_SEPARATOR.'phpcsfixer_test_'.uniqid('', true);
