@@ -86,7 +86,7 @@ final class WarningsDetectorTest extends TestCase
         $warningsDetector->detectHigherPhpVersion();
 
         $warnings = $warningsDetector->getWarnings();
-        
+
         self::assertNotEmpty($warnings);
         self::assertStringStartsWith(
             \sprintf(
