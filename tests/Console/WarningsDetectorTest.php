@@ -68,17 +68,16 @@ final class WarningsDetectorTest extends TestCase
      */
     public function testDetectHigherPhpVersionWithHigherVersion(): void
     {
-        // Only run this test if we're actually running on a version higher than 7.4
-        $currentMajorMinor = \sprintf('%d.%d', \PHP_MAJOR_VERSION, \PHP_MINOR_VERSION);
-        if (version_compare($currentMajorMinor, '7.4', '<=')) {
-            self::markTestSkipped('This test requires running on PHP > 7.4');
-        }
+        // Extract the minimum PHP version from composer.json
+        $composerJsonReader = ComposerJsonReader::createSingleton();
+        $minPhpVersion = $composerJsonReader->getPhp();
+        self::assertSame('7.4', $minPhpVersion, 'Expected minimum PHP version to be 7.4');
 
-        // Assert that composer.json has the expected PHP requirement
-        $composerJsonContent = file_get_contents('composer.json');
-        self::assertNotFalse($composerJsonContent, 'Could not read composer.json');
-        $composerData = json_decode($composerJsonContent, true);
-        self::assertSame('^7.4 || ^8.0', $composerData['require']['php'], 'If you changed the PHP requirement in composer.json, please update this test');
+        // Only run this test if we're actually running on a version higher than the minimum required
+        $currentMajorMinor = \sprintf('%d.%d', \PHP_MAJOR_VERSION, \PHP_MINOR_VERSION);
+        if (version_compare($currentMajorMinor, $minPhpVersion, '<=')) {
+            self::markTestSkipped(\sprintf('This test requires running on PHP > %s', $minPhpVersion));
+        }
 
         $toolInfo = $this->createToolInfoDouble(false, 'not-installed-by-composer');
 
