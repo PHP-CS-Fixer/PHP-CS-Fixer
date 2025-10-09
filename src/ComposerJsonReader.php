@@ -34,15 +34,15 @@ final class ComposerJsonReader
 
     private ?string $phpUnit = null;
 
+    private static ?self $instance = null;
+
     public static function createSingleton(): self
     {
-        static $instance = null;
-
-        if (!$instance) {
-            $instance = new self();
+        if (null === self::$instance) {
+            self::$instance = new self();
         }
 
-        return $instance;
+        return self::$instance;
     }
 
     /**
@@ -52,8 +52,7 @@ final class ComposerJsonReader
      */
     public static function resetSingleton(): void
     {
-        static $instance = null;
-        $instance = null;
+        self::$instance = null;
     }
 
     public function getPhp(): ?string
