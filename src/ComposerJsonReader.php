@@ -45,6 +45,17 @@ final class ComposerJsonReader
         return $instance;
     }
 
+    /**
+     * Reset the singleton instance. Primarily used for testing.
+     *
+     * @internal
+     */
+    public static function resetSingleton(): void
+    {
+        static $instance = null;
+        $instance = null;
+    }
+
     public function getPhp(): ?string
     {
         $this->processFile();

@@ -68,14 +68,17 @@ final class WarningsDetectorTest extends TestCase
      */
     public function testDetectHigherPhpVersionWithHigherVersion(): void
     {
-        // This test assumes the composer.json requires PHP ^7.4 || ^8.0
-        // and that we're running on PHP >= 8.0
-        $currentMajorMinor = \sprintf('%d.%d', \PHP_MAJOR_VERSION, \PHP_MINOR_VERSION);
-
         // Only run this test if we're actually running on a version higher than 7.4
+        $currentMajorMinor = \sprintf('%d.%d', \PHP_MAJOR_VERSION, \PHP_MINOR_VERSION);
         if (version_compare($currentMajorMinor, '7.4', '<=')) {
             self::markTestSkipped('This test requires running on PHP > 7.4');
         }
+
+        // Assert that composer.json has the expected PHP requirement
+        $composerJsonContent = file_get_contents('composer.json');
+        self::assertNotFalse($composerJsonContent, 'Could not read composer.json');
+        $composerData = json_decode($composerJsonContent, true);
+        self::assertSame('^7.4 || ^8.0', $composerData['require']['php'], 'If you changed the PHP requirement in composer.json, please update this test');
 
         $toolInfo = $this->createToolInfoDouble(false, 'not-installed-by-composer');
 
@@ -83,11 +86,15 @@ final class WarningsDetectorTest extends TestCase
         $warningsDetector->detectHigherPhpVersion();
 
         $warnings = $warningsDetector->getWarnings();
-
+        
         self::assertNotEmpty($warnings);
-        self::assertStringContainsString('You are running PHP CS Fixer on PHP', $warnings[0]);
-        self::assertStringContainsString('but the minimum required version in composer.json is PHP', $warnings[0]);
-        self::assertStringContainsString('This may introduce syntax or features not available in PHP', $warnings[0]);
+        self::assertStringStartsWith(
+            \sprintf(
+                'You are running PHP CS Fixer on PHP %s, but the minimum supported version in composer.json is PHP',
+                \PHP_VERSION
+            ),
+            $warnings[0]
+        );
     }
 
     /**
@@ -108,7 +115,7 @@ final class WarningsDetectorTest extends TestCase
             chdir($tempDir);
 
             // Reset the singleton
-            $this->resetComposerJsonReaderSingleton();
+            ComposerJsonReader::resetSingleton();
 
             $toolInfo = $this->createToolInfoDouble(false, 'not-installed-by-composer');
             $warningsDetector = new WarningsDetector($toolInfo);
@@ -117,7 +124,7 @@ final class WarningsDetectorTest extends TestCase
             $warnings = $warningsDetector->getWarnings();
 
             self::assertNotEmpty($warnings);
-            self::assertStringContainsString('Unable to read composer.json:', $warnings[0]);
+            self::assertStringContainsString('Unable to determine minimum supported PHP version from composer.json:', $warnings[0]);
         } finally {
             chdir($originalDir);
             rmdir($tempDir);
@@ -131,6 +138,10 @@ final class WarningsDetectorTest extends TestCase
     {
         // This test verifies that a warning is shown when composer.json has no PHP requirement
         $originalDir = getcwd();
+        if (false === $originalDir) {
+            throw new \RuntimeException('Unable to determine current working directory');
+        }
+
         $tempDir = sys_get_temp_dir().\DIRECTORY_SEPARATOR.'phpcsfixer_test_'.uniqid('', true);
         mkdir($tempDir);
 
@@ -144,7 +155,7 @@ final class WarningsDetectorTest extends TestCase
             ]));
 
             // Reset the singleton
-            $this->resetComposerJsonReaderSingleton();
+            ComposerJsonReader::resetSingleton();
 
             $toolInfo = $this->createToolInfoDouble(false, 'not-installed-by-composer');
             $warningsDetector = new WarningsDetector($toolInfo);
@@ -164,15 +175,6 @@ final class WarningsDetectorTest extends TestCase
             }
             rmdir($tempDir);
         }
-    }
-
-    private function resetComposerJsonReaderSingleton(): void
-    {
-        $closure = \Closure::bind(static function (): void {
-            static $instance = null;
-            $instance = null; // Reset singleton
-        }, null, ComposerJsonReader::class);
-        $closure();
     }
 
     private function createToolInfoDouble(bool $isInstalledByComposer, string $packageName): ToolInfoInterface
