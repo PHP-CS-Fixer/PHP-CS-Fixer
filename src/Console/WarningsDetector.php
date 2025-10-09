@@ -96,7 +96,7 @@ final class WarningsDetector
             }
         } catch (\Throwable $e) {
             $this->warnings[] = \sprintf(
-                'Unable to read composer.json: %s',
+                'Unable to determine minimum supported PHP version from composer.json: %s',
                 $e->getMessage()
             );
         }
