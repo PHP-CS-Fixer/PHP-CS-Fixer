@@ -62,6 +62,48 @@ final class WarningsDetectorTest extends TestCase
         ], $warningsDetector->getWarnings());
     }
 
+    /**
+     * @requires PHP >= 8.0
+     */
+    public function testDetectHigherPhpVersionWithHigherVersion(): void
+    {
+        // This test assumes the composer.json requires PHP ^7.4 || ^8.0
+        // and that we're running on PHP >= 8.0
+        $currentMajorMinor = \sprintf('%d.%d', \PHP_MAJOR_VERSION, \PHP_MINOR_VERSION);
+
+        // Only run this test if we're actually running on a version higher than 7.4
+        if (version_compare($currentMajorMinor, '7.4', '<=')) {
+            self::markTestSkipped('This test requires running on PHP > 7.4');
+        }
+
+        $toolInfo = $this->createToolInfoDouble(false, 'not-installed-by-composer');
+
+        $warningsDetector = new WarningsDetector($toolInfo);
+        $warningsDetector->detectHigherPhpVersion();
+
+        $warnings = $warningsDetector->getWarnings();
+
+        self::assertNotEmpty($warnings);
+        self::assertStringContainsString('You are running PHP CS Fixer on PHP', $warnings[0]);
+        self::assertStringContainsString('but the minimum required version in composer.json is PHP', $warnings[0]);
+        self::assertStringContainsString('This may introduce syntax or features not available in PHP', $warnings[0]);
+    }
+
+    public function testDetectHigherPhpVersionDoesNotThrowWhenNoWarnings(): void
+    {
+        // This test verifies that the method handles errors gracefully
+        // Even if there are issues reading composer.json, it should not throw
+        $toolInfo = $this->createToolInfoDouble(false, 'not-installed-by-composer');
+
+        $warningsDetector = new WarningsDetector($toolInfo);
+
+        // This should not throw an exception
+        $warningsDetector->detectHigherPhpVersion();
+
+        // The method either adds a warning or doesn't, but shouldn't crash
+        self::assertIsArray($warningsDetector->getWarnings());
+    }
+
     private function createToolInfoDouble(bool $isInstalledByComposer, string $packageName): ToolInfoInterface
     {
         $composerInstallationDetails = [
@@ -120,47 +162,5 @@ final class WarningsDetectorTest extends TestCase
                 throw new \LogicException('Not implemented.');
             }
         };
-    }
-
-    /**
-     * @requires PHP >= 8.0
-     */
-    public function testDetectHigherPhpVersionWithHigherVersion(): void
-    {
-        // This test assumes the composer.json requires PHP ^7.4 || ^8.0
-        // and that we're running on PHP >= 8.0
-        $currentMajorMinor = \sprintf('%d.%d', \PHP_MAJOR_VERSION, \PHP_MINOR_VERSION);
-        
-        // Only run this test if we're actually running on a version higher than 7.4
-        if (version_compare($currentMajorMinor, '7.4', '<=')) {
-            self::markTestSkipped('This test requires running on PHP > 7.4');
-        }
-
-        $toolInfo = $this->createToolInfoDouble(false, 'not-installed-by-composer');
-
-        $warningsDetector = new WarningsDetector($toolInfo);
-        $warningsDetector->detectHigherPhpVersion();
-
-        $warnings = $warningsDetector->getWarnings();
-        
-        self::assertNotEmpty($warnings);
-        self::assertStringContainsString('You are running PHP CS Fixer on PHP', $warnings[0]);
-        self::assertStringContainsString('but the minimum required version in composer.json is PHP', $warnings[0]);
-        self::assertStringContainsString('This may introduce syntax or features not available in PHP', $warnings[0]);
-    }
-
-    public function testDetectHigherPhpVersionDoesNotThrowWhenNoWarnings(): void
-    {
-        // This test verifies that the method handles errors gracefully
-        // Even if there are issues reading composer.json, it should not throw
-        $toolInfo = $this->createToolInfoDouble(false, 'not-installed-by-composer');
-
-        $warningsDetector = new WarningsDetector($toolInfo);
-        
-        // This should not throw an exception
-        $warningsDetector->detectHigherPhpVersion();
-        
-        // The method either adds a warning or doesn't, but shouldn't crash
-        self::assertIsArray($warningsDetector->getWarnings());
     }
 }
