@@ -63,9 +63,6 @@ final class WarningsDetectorTest extends TestCase
         ], $warningsDetector->getWarnings());
     }
 
-    /**
-     * @requires PHP >= 8.0
-     */
     public function testDetectHigherPhpVersionWithHigherVersion(): void
     {
         // Extract the minimum PHP version from composer.json
