@@ -63,6 +63,9 @@ final class WarningsDetectorTest extends TestCase
         ], $warningsDetector->getWarnings());
     }
 
+    /**
+     * This test verifies that a warning is shown when running on a PHP version higher than the minimum required in composer.json.
+     */
     public function testDetectHigherPhpVersionWithHigherVersion(): void
     {
         // Extract the minimum PHP version from composer.json
@@ -94,11 +97,12 @@ final class WarningsDetectorTest extends TestCase
     }
 
     /**
+     * This test verifies that a warning is shown when composer.json cannot be read.
+     *
      * @runInSeparateProcess
      */
     public function testDetectHigherPhpVersionWithMissingComposerJson(): void
     {
-        // This test verifies that a warning is shown when composer.json cannot be read
         $originalDir = getcwd();
         if (false === $originalDir) {
             throw new \RuntimeException('Unable to determine current working directory');
@@ -110,8 +114,8 @@ final class WarningsDetectorTest extends TestCase
         try {
             chdir($tempDir);
 
-            // Reset the singleton
-            ComposerJsonReader::resetSingleton();
+            // Reset the singleton using reflection
+            $this->resetComposerJsonReaderSingleton();
 
             $toolInfo = $this->createToolInfoDouble(false, 'not-installed-by-composer');
             $warningsDetector = new WarningsDetector($toolInfo);
@@ -128,11 +132,12 @@ final class WarningsDetectorTest extends TestCase
     }
 
     /**
+     * This test verifies that a warning is shown when composer.json has no PHP requirement.
+     *
      * @runInSeparateProcess
      */
     public function testDetectHigherPhpVersionWithNoPhpRequirement(): void
     {
-        // This test verifies that a warning is shown when composer.json has no PHP requirement
         $originalDir = getcwd();
         if (false === $originalDir) {
             throw new \RuntimeException('Unable to determine current working directory');
@@ -150,8 +155,8 @@ final class WarningsDetectorTest extends TestCase
                 'require' => [],
             ]));
 
-            // Reset the singleton
-            ComposerJsonReader::resetSingleton();
+            // Reset the singleton using reflection
+            $this->resetComposerJsonReaderSingleton();
 
             $toolInfo = $this->createToolInfoDouble(false, 'not-installed-by-composer');
             $warningsDetector = new WarningsDetector($toolInfo);
@@ -171,6 +176,14 @@ final class WarningsDetectorTest extends TestCase
             }
             rmdir($tempDir);
         }
+    }
+
+    private function resetComposerJsonReaderSingleton(): void
+    {
+        $reflection = new \ReflectionClass(ComposerJsonReader::class);
+        $instanceProperty = $reflection->getProperty('instance');
+        $instanceProperty->setAccessible(true);
+        $instanceProperty->setValue(null, null);
     }
 
     private function createToolInfoDouble(bool $isInstalledByComposer, string $packageName): ToolInfoInterface
