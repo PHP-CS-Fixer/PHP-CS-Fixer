@@ -114,9 +114,6 @@ final class WarningsDetectorTest extends TestCase
         try {
             chdir($tempDir);
 
-            // Reset the singleton using reflection
-            $this->resetComposerJsonReaderSingleton();
-
             $toolInfo = $this->createToolInfoDouble(false, 'not-installed-by-composer');
             $warningsDetector = new WarningsDetector($toolInfo);
             $warningsDetector->detectHigherPhpVersion();
@@ -155,9 +152,6 @@ final class WarningsDetectorTest extends TestCase
                 'require' => [],
             ]));
 
-            // Reset the singleton using reflection
-            $this->resetComposerJsonReaderSingleton();
-
             $toolInfo = $this->createToolInfoDouble(false, 'not-installed-by-composer');
             $warningsDetector = new WarningsDetector($toolInfo);
             $warningsDetector->detectHigherPhpVersion();
@@ -176,14 +170,6 @@ final class WarningsDetectorTest extends TestCase
             }
             rmdir($tempDir);
         }
-    }
-
-    private function resetComposerJsonReaderSingleton(): void
-    {
-        $reflection = new \ReflectionClass(ComposerJsonReader::class);
-        $instanceProperty = $reflection->getProperty('instance');
-        $instanceProperty->setAccessible(true);
-        $instanceProperty->setValue(null, null);
     }
 
     private function createToolInfoDouble(bool $isInstalledByComposer, string $packageName): ToolInfoInterface
