@@ -1,8 +1,10 @@
 name: Static Code Analysis
 
 on:
-  - pull_request
-  - push
+  pull_request:
+  push:
+    branches:
+      - master
 
 permissions:
   contents: read # to fetch code (actions/checkout)
@@ -12,7 +14,21 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  everything:
+  spelling:
+    name: Check spelling
+
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Check spelling
+        uses: crate-ci/typos@v1.36.3
+        with:
+          config: ./dev-tools/typos.toml
+
+  everything_else:
     name: Static Code Analysis
 
     runs-on: ubuntu-24.04
@@ -21,7 +37,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # We need to fetch base branch because `actions/checkout` only initializes empty repo and fetches PR's meta-branch
       # which leads to `fatal: ambiguous argument 'origin/...': unknown revision or path not in the working tree.`,
@@ -50,8 +66,8 @@ jobs:
           retry_wait_seconds: 30
           command: ./dev-tools/install.sh
 
-      - name: Show PHPUnit version
-        run: vendor/bin/phpunit --version
+      - name: Check configuration for PHPUnit
+        run: vendor/bin/phpunit --check-php-configuration
 
       - name: Run AutoReview
         run: vendor/bin/phpunit --testsuite auto-review
@@ -71,11 +87,8 @@ jobs:
       - name: Check - PHP compatibility
         run: composer php-compatibility
 
-      - name: Check - composer-unused
-        run: ./dev-tools/vendor/bin/composer-unused --no-progress --excludePackage=composer/xdebug-handler
-
-      - name: Check - composer-require-checker
-        run: ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file .composer-require-checker.json
+      - name: Analyse Composer dependencies
+        run: ./dev-tools/vendor/bin/composer-dependency-analyser
 
       - name: Check - composer normalize
         run: |

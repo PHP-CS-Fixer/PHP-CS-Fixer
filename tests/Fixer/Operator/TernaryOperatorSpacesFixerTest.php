@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\TernaryOperatorSpacesFixer>
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TernaryOperatorSpacesFixerTest extends AbstractFixerTestCase
 {
@@ -80,6 +82,11 @@ echo $guard ? 1 : 2;}',
 {
 beginning:
 echo $guard?1:2;}',
+        ];
+
+        yield 'handle instanceof static' => [
+            '<?php $a instanceof static ? $b : $c;',
+            '<?php $a instanceof static?$b:$c;',
         ];
 
         yield [

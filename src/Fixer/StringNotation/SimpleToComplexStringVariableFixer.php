@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dave van der Brugge <dmvdbrugge@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SimpleToComplexStringVariableFixer extends AbstractFixer
 {
@@ -67,18 +69,18 @@ final class SimpleToComplexStringVariableFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOLLAR_OPEN_CURLY_BRACES);
+        return $tokens->isTokenKindFound(\T_DOLLAR_OPEN_CURLY_BRACES);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = \count($tokens) - 3; $index > 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_DOLLAR_OPEN_CURLY_BRACES)) {
+            if (!$tokens[$index]->isGivenKind(\T_DOLLAR_OPEN_CURLY_BRACES)) {
                 continue;
             }
             $varnameToken = $tokens[$index + 1];
 
-            if (!$varnameToken->isGivenKind(T_STRING_VARNAME)) {
+            if (!$varnameToken->isGivenKind(\T_STRING_VARNAME)) {
                 continue;
             }
 
@@ -86,10 +88,10 @@ final class SimpleToComplexStringVariableFixer extends AbstractFixer
 
             $prevTokenContent = $tokens[$index - 1]->getContent();
             if (str_ends_with($prevTokenContent, '$') && !str_ends_with($prevTokenContent, '\$')) {
-                $tokens[$index - 1] = new Token([T_ENCAPSED_AND_WHITESPACE, substr($prevTokenContent, 0, -1).'\$']);
+                $tokens[$index - 1] = new Token([\T_ENCAPSED_AND_WHITESPACE, substr($prevTokenContent, 0, -1).'\$']);
             }
-            $tokens[$index] = new Token([T_CURLY_OPEN, '{']);
-            $tokens[$index + 1] = new Token([T_VARIABLE, '$'.$varnameToken->getContent()]);
+            $tokens[$index] = new Token([\T_CURLY_OPEN, '{']);
+            $tokens[$index + 1] = new Token([\T_VARIABLE, '$'.$varnameToken->getContent()]);
             $tokens[$dollarCloseToken] = new Token([CT::T_CURLY_CLOSE, '}']);
         }
     }

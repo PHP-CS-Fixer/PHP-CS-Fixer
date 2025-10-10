@@ -25,12 +25,14 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocNoEmptyReturnFixer extends AbstractFixer
 {
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     public function getDefinition(): FixerDefinitionInterface
@@ -39,20 +41,24 @@ final class PhpdocNoEmptyReturnFixer extends AbstractFixer
             '`@return void` and `@return null` annotations must be removed from PHPDoc.',
             [
                 new CodeSample(
-                    '<?php
-/**
- * @return null
-*/
-function foo() {}
-'
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @return null
+                        */
+                        function foo() {}
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-/**
- * @return void
-*/
-function foo() {}
-'
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @return void
+                        */
+                        function foo() {}
+
+                        PHP
                 ),
             ]
         );
@@ -72,7 +78,7 @@ function foo() {}
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -99,7 +105,7 @@ function foo() {}
                 continue;
             }
 
-            $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
+            $tokens[$index] = new Token([\T_DOC_COMMENT, $doc->getContent()]);
         }
     }
 

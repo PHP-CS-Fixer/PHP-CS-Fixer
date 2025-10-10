@@ -30,6 +30,8 @@ use Symfony\Component\Yaml\Yaml;
  *
  * @group auto-review
  * @group covers-nothing
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class CiConfigurationTest extends TestCase
 {
@@ -95,6 +97,44 @@ final class CiConfigurationTest extends TestCase
         sort($ciServices);
 
         self::assertSame($composeServices, $ciServices);
+    }
+
+    public static function testThatAlpineVersionsAreInSync(): void
+    {
+        $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/release.yml');
+        $releaseMap = [];
+        foreach ($yaml['jobs']['docker-images']['strategy']['matrix']['include'] as $item) {
+            $releaseMap[$item['php-version']] = $item['alpine-version'];
+        }
+
+        $yaml = Yaml::parseFile(__DIR__.'/../../compose.yaml');
+        $dockerMap = [];
+        foreach ($yaml['services'] as $item) {
+            if (isset($item['build']['args']['PHP_VERSION'], $item['build']['args']['ALPINE_VERSION'])) {
+                // PHP 8.5 at this point is only allowed for local development and is not a part of Docker releases
+                if (str_starts_with($item['build']['args']['PHP_VERSION'], '8.5')) {
+                    continue;
+                }
+
+                $dockerMap[$item['build']['args']['PHP_VERSION']] = $item['build']['args']['ALPINE_VERSION'];
+            }
+        }
+
+        self::assertSame($dockerMap, $releaseMap, 'Expects release.yml and compose.yaml to use same Alpine versions for same PHP versions.');
+
+        Preg::matchAll(
+            '/(?:ALPINE_VERSION=|alpine:)(\d+\.\d+)/',
+            (string) file_get_contents(__DIR__.'/../../Dockerfile'),
+            $dockerVersions
+        );
+
+        $dockerVersions = $dockerVersions[1];
+        self::assertCount(2, $dockerVersions);
+        self::assertSame($dockerVersions[0], $dockerVersions[1], 'Expects both Alpine versions in Dockerfile to be the same.');
+        natsort($dockerMap);
+        $alpineHighestVersion = end($dockerMap);
+
+        self::assertSame($alpineHighestVersion, $dockerVersions[0], 'Expects Alpine version used in Dockerfile to be highest Alpine version used in compose.yaml.');
     }
 
     /**
@@ -218,10 +258,10 @@ final class CiConfigurationTest extends TestCase
     {
         $tokens = Tokens::fromCode((string) file_get_contents(__DIR__.'/../../php-cs-fixer'));
         $sequence = $tokens->findSequence([
-            [T_STRING, 'PHP_VERSION_ID'],
+            [\T_STRING, 'PHP_VERSION_ID'],
             '<',
-            [T_INT_CAST],
-            [T_CONSTANT_ENCAPSED_STRING],
+            [\T_INT_CAST],
+            [\T_CONSTANT_ENCAPSED_STRING],
         ]);
 
         if (null === $sequence) {

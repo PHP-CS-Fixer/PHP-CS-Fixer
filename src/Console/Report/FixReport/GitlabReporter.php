@@ -30,6 +30,8 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
  * @readonly
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class GitlabReporter implements ReporterInterface
 {
@@ -69,7 +71,7 @@ final class GitlabReporter implements ReporterInterface
             }
         }
 
-        $jsonString = json_encode($report, JSON_THROW_ON_ERROR);
+        $jsonString = json_encode($report, \JSON_THROW_ON_ERROR);
 
         return $reportSummary->isDecoratedOutput() ? OutputFormatter::escape($jsonString) : $jsonString;
     }

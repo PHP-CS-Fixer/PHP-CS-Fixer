@@ -31,6 +31,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * }
  *
  * @author Gert de Pagter <BackEndTea@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoUnsetOnPropertyFixer extends AbstractFixer
 {
@@ -43,7 +45,7 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
             'Risky when relying on attributes to be removed using `unset` rather than be set to `null`.'
             .' Changing variables to `null` instead of unsetting means these still show up when looping over class variables'
             .' and reference properties remain unbroken.'
-            .' With PHP 7.4, this rule might introduce `null` assignments to properties whose type declaration does not allow it.'
+            .' Since PHP 7.4, this rule might introduce `null` assignments to properties whose type declaration does not allow it.'
         );
     }
 
@@ -54,8 +56,8 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_UNSET)
-            && $tokens->isAnyTokenKindsFound([T_OBJECT_OPERATOR, T_PAAMAYIM_NEKUDOTAYIM]);
+        return $tokens->isTokenKindFound(\T_UNSET)
+            && $tokens->isAnyTokenKindsFound([\T_OBJECT_OPERATOR, \T_PAAMAYIM_NEKUDOTAYIM]);
     }
 
     /**
@@ -71,7 +73,7 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if (!$tokens[$index]->isGivenKind(T_UNSET)) {
+            if (!$tokens[$index]->isGivenKind(\T_UNSET)) {
                 continue;
             }
 
@@ -119,10 +121,10 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
 
     private function isProperty(Tokens $tokens, int $index, int $endIndex): bool
     {
-        if ($tokens[$index]->isGivenKind(T_VARIABLE)) {
+        if ($tokens[$index]->isGivenKind(\T_VARIABLE)) {
             $nextIndex = $tokens->getNextMeaningfulToken($index);
 
-            if (null === $nextIndex || !$tokens[$nextIndex]->isGivenKind(T_OBJECT_OPERATOR)) {
+            if (null === $nextIndex || !$tokens[$nextIndex]->isGivenKind(\T_OBJECT_OPERATOR)) {
                 return false;
             }
 
@@ -133,18 +135,18 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
                 return false;
             }
 
-            return null !== $nextIndex && $tokens[$nextIndex]->isGivenKind(T_STRING);
+            return null !== $nextIndex && $tokens[$nextIndex]->isGivenKind(\T_STRING);
         }
 
-        if ($tokens[$index]->isGivenKind([T_NS_SEPARATOR, T_STRING])) {
-            $nextIndex = $tokens->getTokenNotOfKindsSibling($index, 1, [T_DOUBLE_COLON, T_NS_SEPARATOR, T_STRING]);
+        if ($tokens[$index]->isGivenKind([\T_NS_SEPARATOR, \T_STRING])) {
+            $nextIndex = $tokens->getTokenNotOfKindsSibling($index, 1, [\T_DOUBLE_COLON, \T_NS_SEPARATOR, \T_STRING]);
             $nextNextIndex = $tokens->getNextMeaningfulToken($nextIndex);
 
             if (null !== $nextNextIndex && $nextNextIndex < $endIndex) {
                 return false;
             }
 
-            return null !== $nextIndex && $tokens[$nextIndex]->isGivenKind(T_VARIABLE);
+            return null !== $nextIndex && $tokens[$nextIndex]->isGivenKind(\T_VARIABLE);
         }
 
         return false;
@@ -172,7 +174,7 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
         // if entry is first and to be transformed we remove leading "unset("
         if ($unsetInfo['isFirst'] && $unsetInfo['isToTransform']) {
             $braceIndex = $tokens->getPrevTokenOfKind($unsetInfo['startIndex'], ['(']);
-            $unsetIndex = $tokens->getPrevTokenOfKind($braceIndex, [[T_UNSET]]);
+            $unsetIndex = $tokens->getPrevTokenOfKind($braceIndex, [[\T_UNSET]]);
             $tokens->clearTokenAndMergeSurroundingWhitespace($braceIndex);
             $tokens->clearTokenAndMergeSurroundingWhitespace($unsetIndex);
         }
@@ -204,7 +206,7 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
             $tokens->insertAt(
                 $unsetInfo['startIndex'],
                 [
-                    new Token([T_UNSET, 'unset']),
+                    new Token([\T_UNSET, 'unset']),
                     new Token('('),
                 ]
             );
@@ -216,10 +218,10 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
             $tokens->insertAt(
                 $unsetInfo['endIndex'] + 1,
                 [
-                    new Token([T_WHITESPACE, ' ']),
+                    new Token([\T_WHITESPACE, ' ']),
                     new Token('='),
-                    new Token([T_WHITESPACE, ' ']),
-                    new Token([T_STRING, 'null']),
+                    new Token([\T_WHITESPACE, ' ']),
+                    new Token([\T_STRING, 'null']),
                 ]
             );
         }

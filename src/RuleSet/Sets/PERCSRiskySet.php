@@ -14,12 +14,14 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
+use PhpCsFixer\RuleSet\AbstractRuleSetDefinition;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PERCSRiskySet extends AbstractRuleSetDescription
+final class PERCSRiskySet extends AbstractRuleSetDefinition
 {
     public function getName(): string
     {
@@ -29,7 +31,7 @@ final class PERCSRiskySet extends AbstractRuleSetDescription
     public function getRules(): array
     {
         return [
-            '@PER-CS2.0:risky' => true,
+            '@PER-CS3x0:risky' => true,
         ];
     }
 

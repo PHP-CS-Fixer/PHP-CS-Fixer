@@ -23,6 +23,9 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class SingleTraitInsertPerStatementFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
@@ -31,12 +34,14 @@ final class SingleTraitInsertPerStatementFixer extends AbstractFixer
             'Each trait `use` must be done as single statement.',
             [
                 new CodeSample(
-                    '<?php
-final class Example
-{
-    use Foo, Bar;
-}
-'
+                    <<<'PHP'
+                        <?php
+                        final class Example
+                        {
+                            use Foo, Bar;
+                        }
+
+                        PHP
                 ),
             ]
         );
@@ -77,7 +82,7 @@ final class Example
         foreach ($candidates as $commaIndex) {
             $inserts = [
                 new Token([CT::T_USE_TRAIT, 'use']),
-                new Token([T_WHITESPACE, ' ']),
+                new Token([\T_WHITESPACE, ' ']),
             ];
 
             $nextImportStartIndex = $tokens->getNextMeaningfulToken($commaIndex);

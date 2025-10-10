@@ -22,12 +22,17 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TransformerInterface;
 
 /**
+ * @phpstan-import-type _PhpTokenKind from Token
+ * @phpstan-import-type _PhpTokenPrototypePartial from Token
+ *
  * @internal
  *
- * @phpstan-type _TransformerTestExpectedTokens array<int, int|string>
- * @phpstan-type _TransformerTestObservedKindsOrPrototypes list<int|string>
+ * @phpstan-type _TransformerTestExpectedKindsUnderIndex array<int, _PhpTokenKind>
+ * @phpstan-type _TransformerTestObservedKinds list<_PhpTokenKind>
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractTransformerTestCase extends TestCase
 {
@@ -109,8 +114,8 @@ abstract class AbstractTransformerTestCase extends TestCase
     }
 
     /**
-     * @param _TransformerTestExpectedTokens            $expectedTokens
-     * @param _TransformerTestObservedKindsOrPrototypes $observedKindsOrPrototypes
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
+     * @param _TransformerTestObservedKinds           $observedKindsOrPrototypes
      */
     protected function doTest(string $source, array $expectedTokens, array $observedKindsOrPrototypes = []): void
     {
@@ -177,7 +182,10 @@ abstract class AbstractTransformerTestCase extends TestCase
 
         foreach ($expectedTokens as $index => $tokenIdOrContent) {
             if (\is_string($tokenIdOrContent)) {
-                self::assertTrue($tokens[$index]->equals($tokenIdOrContent), \sprintf('The token at index %d should be %s, got %s', $index, json_encode($tokenIdOrContent, JSON_THROW_ON_ERROR), $tokens[$index]->toJson()));
+                self::assertTrue(
+                    $tokens[$index]->equals($tokenIdOrContent),
+                    \sprintf('The token at index %d should be %s, got %s', $index, json_encode($tokenIdOrContent, \JSON_THROW_ON_ERROR), $tokens[$index]->toJson())
+                );
 
                 continue;
             }
@@ -197,7 +205,7 @@ abstract class AbstractTransformerTestCase extends TestCase
     }
 
     /**
-     * @param list<array{0: int, 1?: string}|string> $prototypes
+     * @param list<_PhpTokenPrototypePartial> $prototypes
      */
     private function countTokenPrototypes(Tokens $tokens, array $prototypes): int
     {

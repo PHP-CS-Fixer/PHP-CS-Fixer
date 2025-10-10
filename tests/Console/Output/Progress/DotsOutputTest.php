@@ -24,6 +24,8 @@ use Symfony\Component\Console\Output\BufferedOutput;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Output\Progress\DotsOutput
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DotsOutputTest extends TestCase
 {
@@ -85,7 +87,7 @@ final class DotsOutputTest extends TestCase
             [
                 [FileProcessed::STATUS_NO_CHANGES, 66],
             ],
-            '................................................................. 65 / 66 ( 98%)'.PHP_EOL
+            '................................................................. 65 / 66 ( 98%)'.\PHP_EOL
             .'.                                                                 66 / 66 (100%)',
             80,
         ];
@@ -94,8 +96,8 @@ final class DotsOutputTest extends TestCase
             [
                 [FileProcessed::STATUS_NO_CHANGES, 66],
             ],
-            '......................... 25 / 66 ( 38%)'.PHP_EOL
-            .'......................... 50 / 66 ( 76%)'.PHP_EOL
+            '......................... 25 / 66 ( 38%)'.\PHP_EOL
+            .'......................... 50 / 66 ( 76%)'.\PHP_EOL
             .'................          66 / 66 (100%)',
             40,
         ];
@@ -123,11 +125,12 @@ final class DotsOutputTest extends TestCase
                 [FileProcessed::STATUS_INVALID],
                 [FileProcessed::STATUS_NO_CHANGES, 40],
                 [FileProcessed::STATUS_INVALID],
-                [FileProcessed::STATUS_NO_CHANGES, 15],
+                [FileProcessed::STATUS_NO_CHANGES, 14],
+                [FileProcessed::STATUS_NON_MONOLITHIC],
             ],
-            '...................E......EFFF.................................  63 / 189 ( 33%)'.PHP_EOL
-            .'.................S............................................. 126 / 189 ( 67%)'.PHP_EOL
-            .'....I.I........................................I............... 189 / 189 (100%)',
+            '...................E......EFFF.................................  63 / 189 ( 33%)'.\PHP_EOL
+            .'.................S............................................. 126 / 189 ( 67%)'.\PHP_EOL
+            .'....I.I........................................I..............M 189 / 189 (100%)',
             80,
         ];
 
@@ -148,28 +151,28 @@ final class DotsOutputTest extends TestCase
                 [FileProcessed::STATUS_INVALID],
                 [FileProcessed::STATUS_NO_CHANGES, 15],
             ],
-            '...................E......EFFF..................................................S...................... 103 / 189 ( 54%)'.PHP_EOL
+            '...................E......EFFF..................................................S...................... 103 / 189 ( 54%)'.\PHP_EOL
             .'...........................I.I........................................I...............                  189 / 189 (100%)',
             120,
         ];
     }
 
-    public function testSleep(): void
+    public function testSerialize(): void
     {
+        $processOutput = new DotsOutput(new OutputContext(new BufferedOutput(), 1, 1));
+
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage('Cannot serialize '.DotsOutput::class);
 
-        $processOutput = new DotsOutput(new OutputContext(new BufferedOutput(), 1, 1));
-        $processOutput->__sleep();
+        serialize($processOutput);
     }
 
-    public function testWakeup(): void
+    public function testUnserialize(): void
     {
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage('Cannot unserialize '.DotsOutput::class);
 
-        $processOutput = new DotsOutput(new OutputContext(new BufferedOutput(), 1, 1));
-        $processOutput->__wakeup();
+        unserialize(self::createSerializedStringOfClassName(DotsOutput::class));
     }
 
     /**

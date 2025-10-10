@@ -16,6 +16,9 @@ namespace PhpCsFixer;
 
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 abstract class AbstractNoUselessElseFixer extends AbstractFixer
 {
     public function getPriority(): int
@@ -50,22 +53,22 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
                 $previous,
                 [
                     ';',
-                    [T_BREAK],
-                    [T_CLOSE_TAG],
-                    [T_CONTINUE],
-                    [T_EXIT],
-                    [T_GOTO],
-                    [T_IF],
-                    [T_RETURN],
-                    [T_THROW],
+                    [\T_BREAK],
+                    [\T_CLOSE_TAG],
+                    [\T_CONTINUE],
+                    [\T_EXIT],
+                    [\T_GOTO],
+                    [\T_IF],
+                    [\T_RETURN],
+                    [\T_THROW],
                 ]
             );
 
-            if (null === $candidateIndex || $tokens[$candidateIndex]->equalsAny([';', [T_CLOSE_TAG], [T_IF]])) {
+            if (null === $candidateIndex || $tokens[$candidateIndex]->equalsAny([';', [\T_CLOSE_TAG], [\T_IF]])) {
                 return false;
             }
 
-            if ($tokens[$candidateIndex]->isGivenKind(T_THROW)) {
+            if ($tokens[$candidateIndex]->isGivenKind(\T_THROW)) {
                 $previousIndex = $tokens->getPrevMeaningfulToken($candidateIndex);
 
                 if (!$tokens[$previousIndex]->equalsAny([';', '{'])) {
@@ -80,7 +83,7 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
             }
 
             // implicit continue, i.e. delete candidate
-        } while (!$tokens[$previousBlockStart]->isGivenKind(T_IF));
+        } while (!$tokens[$previousBlockStart]->isGivenKind(\T_IF));
 
         return true;
     }
@@ -103,10 +106,10 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
             $previous = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $close);
         }
 
-        $open = $tokens->getPrevTokenOfKind($previous, [[T_IF], [T_ELSE], [T_ELSEIF]]);
-        if ($tokens[$open]->isGivenKind(T_IF)) {
+        $open = $tokens->getPrevTokenOfKind($previous, [[\T_IF], [\T_ELSE], [\T_ELSEIF]]);
+        if ($tokens[$open]->isGivenKind(\T_IF)) {
             $elseCandidate = $tokens->getPrevMeaningfulToken($open);
-            if ($tokens[$elseCandidate]->isGivenKind(T_ELSE)) {
+            if ($tokens[$elseCandidate]->isGivenKind(\T_ELSE)) {
                 $open = $elseCandidate;
             }
         }
@@ -154,7 +157,7 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
             }
 
             $token = $tokens[$index];
-            if ($token->isGivenKind([T_IF, T_ELSEIF, T_ELSE])) {
+            if ($token->isGivenKind([\T_IF, \T_ELSEIF, \T_ELSE])) {
                 return true;
             }
 
@@ -167,7 +170,7 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
 
                 // OK if belongs to: for, do, while, foreach
                 // Not OK if belongs to: if, else, elseif
-                if ($tokens[$index]->isGivenKind(T_DO)) {
+                if ($tokens[$index]->isGivenKind(\T_DO)) {
                     --$index;
 
                     continue;
@@ -183,7 +186,7 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
                 );
 
                 $index = $tokens->getPrevMeaningfulToken($index);
-                if ($tokens[$index]->isGivenKind([T_IF, T_ELSEIF])) {
+                if ($tokens[$index]->isGivenKind([\T_IF, \T_ELSEIF])) {
                     return false;
                 }
             } elseif ($token->equals(')')) {

@@ -47,6 +47,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Marvin Heilemann <marvin.heilemann+github@googlemail.com>
  * @author Greg Korba <greg@codito.dev>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NumericLiteralSeparatorFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -66,8 +68,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
                         <?php
                         $integer = 1234567890;
 
-                        PHP
-                    ,
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -77,8 +78,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
                         $binary = 0b00_10_01_00;
                         $hexadecimal = 0x3D45_8F4F;
 
-                        PHP
-                    ,
+                        PHP,
                     ['strategy' => self::STRATEGY_NO_SEPARATOR],
                 ),
                 new CodeSample(
@@ -89,8 +89,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
                         $binary = 0b0010010011011010;
                         $hexadecimal = 0x3D458F4F;
 
-                        PHP
-                    ,
+                        PHP,
                     ['strategy' => self::STRATEGY_USE_SEPARATOR],
                 ),
                 new CodeSample(
@@ -103,7 +102,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_DNUMBER, T_LNUMBER]);
+        return $tokens->isAnyTokenKindsFound([\T_DNUMBER, \T_LNUMBER]);
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
@@ -129,7 +128,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind([T_DNUMBER, T_LNUMBER])) {
+            if (!$token->isGivenKind([\T_DNUMBER, \T_LNUMBER])) {
                 continue;
             }
 
@@ -184,7 +183,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
         // All other types
 
         /** If its a negative value we need an offset */
-        $negativeOffset = static fn ($v) => str_contains($v, '-') ? 1 : 0;
+        $negativeOffset = static fn (string $v): int => str_contains($v, '-') ? 1 : 0;
 
         Preg::matchAll('/([0-9-_]+)?((\.)([0-9_]*))?((e)([0-9-_]+))?/i', $value, $result);
 

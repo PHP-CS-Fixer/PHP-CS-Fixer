@@ -46,6 +46,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Andreas Möller <am@localheinz.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SingleSpaceAroundConstructFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -57,16 +59,16 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
      */
     private const TOKEN_MAP_CONTAIN_A_SINGLE_SPACE = [
         // for now, only one case - but we are ready to extend it, when we learn about new cases to cover
-        'yield_from' => T_YIELD_FROM,
+        'yield_from' => \T_YIELD_FROM,
     ];
 
     /**
      * @var array<string, int>
      */
     private const TOKEN_MAP_PRECEDED_BY_A_SINGLE_SPACE = [
-        'as' => T_AS,
-        'else' => T_ELSE,
-        'elseif' => T_ELSEIF,
+        'as' => \T_AS,
+        'else' => \T_ELSE,
+        'elseif' => \T_ELSEIF,
         'use_lambda' => CT::T_USE_LAMBDA,
     ];
 
@@ -74,70 +76,70 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
      * @var array<string, int>
      */
     private const TOKEN_MAP_FOLLOWED_BY_A_SINGLE_SPACE = [
-        'abstract' => T_ABSTRACT,
-        'as' => T_AS,
+        'abstract' => \T_ABSTRACT,
+        'as' => \T_AS,
         'attribute' => CT::T_ATTRIBUTE_CLOSE,
-        'break' => T_BREAK,
-        'case' => T_CASE,
-        'catch' => T_CATCH,
-        'class' => T_CLASS,
-        'clone' => T_CLONE,
-        'comment' => T_COMMENT,
-        'const' => T_CONST,
+        'break' => \T_BREAK,
+        'case' => \T_CASE,
+        'catch' => \T_CATCH,
+        'class' => \T_CLASS,
+        'clone' => \T_CLONE,
+        'comment' => \T_COMMENT,
+        'const' => \T_CONST,
         'const_import' => CT::T_CONST_IMPORT,
-        'continue' => T_CONTINUE,
-        'do' => T_DO,
-        'echo' => T_ECHO,
-        'else' => T_ELSE,
-        'elseif' => T_ELSEIF,
+        'continue' => \T_CONTINUE,
+        'do' => \T_DO,
+        'echo' => \T_ECHO,
+        'else' => \T_ELSE,
+        'elseif' => \T_ELSEIF,
         'enum' => FCT::T_ENUM,
-        'extends' => T_EXTENDS,
-        'final' => T_FINAL,
-        'finally' => T_FINALLY,
-        'for' => T_FOR,
-        'foreach' => T_FOREACH,
-        'function' => T_FUNCTION,
+        'extends' => \T_EXTENDS,
+        'final' => \T_FINAL,
+        'finally' => \T_FINALLY,
+        'for' => \T_FOR,
+        'foreach' => \T_FOREACH,
+        'function' => \T_FUNCTION,
         'function_import' => CT::T_FUNCTION_IMPORT,
-        'global' => T_GLOBAL,
-        'goto' => T_GOTO,
-        'if' => T_IF,
-        'implements' => T_IMPLEMENTS,
-        'include' => T_INCLUDE,
-        'include_once' => T_INCLUDE_ONCE,
-        'instanceof' => T_INSTANCEOF,
-        'insteadof' => T_INSTEADOF,
-        'interface' => T_INTERFACE,
+        'global' => \T_GLOBAL,
+        'goto' => \T_GOTO,
+        'if' => \T_IF,
+        'implements' => \T_IMPLEMENTS,
+        'include' => \T_INCLUDE,
+        'include_once' => \T_INCLUDE_ONCE,
+        'instanceof' => \T_INSTANCEOF,
+        'insteadof' => \T_INSTEADOF,
+        'interface' => \T_INTERFACE,
         'match' => FCT::T_MATCH,
         'named_argument' => CT::T_NAMED_ARGUMENT_COLON,
-        'namespace' => T_NAMESPACE,
-        'new' => T_NEW,
-        'open_tag_with_echo' => T_OPEN_TAG_WITH_ECHO,
-        'php_doc' => T_DOC_COMMENT,
-        'php_open' => T_OPEN_TAG,
-        'print' => T_PRINT,
-        'private' => T_PRIVATE,
+        'namespace' => \T_NAMESPACE,
+        'new' => \T_NEW,
+        'open_tag_with_echo' => \T_OPEN_TAG_WITH_ECHO,
+        'php_doc' => \T_DOC_COMMENT,
+        'php_open' => \T_OPEN_TAG,
+        'print' => \T_PRINT,
+        'private' => \T_PRIVATE,
         'private_set' => FCT::T_PRIVATE_SET,
-        'protected' => T_PROTECTED,
+        'protected' => \T_PROTECTED,
         'protected_set' => FCT::T_PROTECTED_SET,
-        'public' => T_PUBLIC,
+        'public' => \T_PUBLIC,
         'public_set' => FCT::T_PUBLIC_SET,
         'readonly' => FCT::T_READONLY,
-        'require' => T_REQUIRE,
-        'require_once' => T_REQUIRE_ONCE,
-        'return' => T_RETURN,
-        'static' => T_STATIC,
-        'switch' => T_SWITCH,
-        'throw' => T_THROW,
-        'trait' => T_TRAIT,
-        'try' => T_TRY,
+        'require' => \T_REQUIRE,
+        'require_once' => \T_REQUIRE_ONCE,
+        'return' => \T_RETURN,
+        'static' => \T_STATIC,
+        'switch' => \T_SWITCH,
+        'throw' => \T_THROW,
+        'trait' => \T_TRAIT,
+        'try' => \T_TRY,
         'type_colon' => CT::T_TYPE_COLON,
-        'use' => T_USE,
+        'use' => \T_USE,
         'use_lambda' => CT::T_USE_LAMBDA,
         'use_trait' => CT::T_USE_TRAIT,
-        'var' => T_VAR,
-        'while' => T_WHILE,
-        'yield' => T_YIELD,
-        'yield_from' => T_YIELD_FROM,
+        'var' => \T_VAR,
+        'while' => \T_WHILE,
+        'yield' => \T_YIELD,
+        'yield_from' => \T_YIELD_FROM,
     ];
 
     /**
@@ -161,16 +163,20 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
             'Ensures a single space after language constructs.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-throw  new  \Exception();
-'
+                        throw  new  \Exception();
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-function foo() { yield  from  baz(); }
-',
+                        function foo() { yield  from  baz(); }
+
+                        PHP,
                     [
                         'constructs_contain_a_single_space' => [
                             'yield_from',
@@ -181,11 +187,13 @@ function foo() { yield  from  baz(); }
                     ]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-$foo = function& ()use($bar) {
-};
-',
+                        $foo = function& ()use($bar) {
+                        };
+
+                        PHP,
                     [
                         'constructs_preceded_by_a_single_space' => [
                             'use_lambda',
@@ -196,10 +204,12 @@ $foo = function& ()use($bar) {
                     ]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-echo  "Hello!";
-',
+                        echo  "Hello!";
+
+                        PHP,
                     [
                         'constructs_followed_by_a_single_space' => [
                             'echo',
@@ -207,10 +217,12 @@ echo  "Hello!";
                     ]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-yield  from  baz();
-',
+                        yield  from  baz();
+
+                        PHP,
                     [
                         'constructs_followed_by_a_single_space' => [
                             'yield_from',
@@ -285,10 +297,10 @@ yield  from  baz();
                 $token = $tokens[$index];
 
                 if (
-                    $token->isGivenKind(T_YIELD_FROM)
+                    $token->isGivenKind(\T_YIELD_FROM)
                     && 'yield from' !== strtolower($token->getContent())
                 ) {
-                    $tokens[$index] = new Token([T_YIELD_FROM, Preg::replace(
+                    $tokens[$index] = new Token([\T_YIELD_FROM, Preg::replace(
                         '/\s+/',
                         ' ',
                         $token->getContent()
@@ -323,38 +335,38 @@ yield  from  baz();
             }
 
             if (
-                $token->isGivenKind(T_STATIC)
-                && !$tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind([T_FN, T_FUNCTION, T_NS_SEPARATOR, T_STRING, T_VARIABLE, CT::T_ARRAY_TYPEHINT, CT::T_NULLABLE_TYPE])
+                $token->isGivenKind(\T_STATIC)
+                && !$tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind([\T_FN, \T_FUNCTION, \T_NS_SEPARATOR, \T_STRING, \T_VARIABLE, CT::T_ARRAY_TYPEHINT, CT::T_NULLABLE_TYPE])
             ) {
                 continue;
             }
 
-            if ($token->isGivenKind(T_OPEN_TAG)) {
-                if ($tokens[$whitespaceTokenIndex]->equals([T_WHITESPACE]) && !str_contains($tokens[$whitespaceTokenIndex]->getContent(), "\n") && !str_contains($token->getContent(), "\n")) {
+            if ($token->isGivenKind(\T_OPEN_TAG)) {
+                if ($tokens[$whitespaceTokenIndex]->isGivenKind(\T_WHITESPACE) && !str_contains($tokens[$whitespaceTokenIndex]->getContent(), "\n") && !str_contains($token->getContent(), "\n")) {
                     $tokens->clearAt($whitespaceTokenIndex);
                 }
 
                 continue;
             }
 
-            if ($token->isGivenKind(T_CLASS) && $tokens[$tokens->getNextMeaningfulToken($index)]->equals('(')) {
+            if ($token->isGivenKind(\T_CLASS) && $tokens[$tokens->getNextMeaningfulToken($index)]->equals('(')) {
                 continue;
             }
 
-            if ($token->isGivenKind([T_EXTENDS, T_IMPLEMENTS]) && $this->isMultilineExtendsOrImplementsWithMoreThanOneAncestor($tokens, $index)) {
+            if ($token->isGivenKind([\T_EXTENDS, \T_IMPLEMENTS]) && $this->isMultilineExtendsOrImplementsWithMoreThanOneAncestor($tokens, $index)) {
                 continue;
             }
 
-            if ($token->isGivenKind(T_RETURN) && $this->isMultiLineReturn($tokens, $index)) {
+            if ($token->isGivenKind(\T_RETURN) && $this->isMultiLineReturn($tokens, $index)) {
                 continue;
             }
 
-            if ($token->isGivenKind(T_CONST) && $this->isMultilineCommaSeparatedConstant($tokens, $index)) {
+            if ($token->isGivenKind(\T_CONST) && $this->isMultilineCommaSeparatedConstant($tokens, $index)) {
                 continue;
             }
 
             if ($token->isComment() || $token->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
-                if ($tokens[$whitespaceTokenIndex]->equals([T_WHITESPACE]) && str_contains($tokens[$whitespaceTokenIndex]->getContent(), "\n")) {
+                if ($tokens[$whitespaceTokenIndex]->isGivenKind(\T_WHITESPACE) && str_contains($tokens[$whitespaceTokenIndex]->getContent(), "\n")) {
                     continue;
                 }
             }
@@ -368,7 +380,7 @@ yield  from  baz();
                     continue;
                 }
 
-                if ($nextNextToken->isGivenKind(T_DOC_COMMENT)) {
+                if ($nextNextToken->isGivenKind(\T_DOC_COMMENT)) {
                     continue;
                 }
             }
@@ -408,7 +420,7 @@ yield  from  baz();
         $tokenFollowingReturn = $tokens[$index];
 
         if (
-            !$tokenFollowingReturn->isGivenKind(T_WHITESPACE)
+            !$tokenFollowingReturn->isGivenKind(\T_WHITESPACE)
             || !str_contains($tokenFollowingReturn->getContent(), "\n")
         ) {
             return false;
@@ -425,7 +437,7 @@ yield  from  baz();
                 ++$nestedCount;
             } elseif ($tokens[$index]->equals('}')) {
                 --$nestedCount;
-            } elseif (0 === $nestedCount && $tokens[$index]->equalsAny([';', [T_CLOSE_TAG]])) {
+            } elseif (0 === $nestedCount && $tokens[$index]->equalsAny([';', [\T_CLOSE_TAG]])) {
                 break;
             }
         }
@@ -464,7 +476,7 @@ yield  from  baz();
         $isMultilineConstant = false;
         $hasMoreThanOneConstant = false;
         $index = $constantIndex;
-        while (!$tokens[$index]->equalsAny([';', [T_CLOSE_TAG]])) {
+        while (!$tokens[$index]->equalsAny([';', [\T_CLOSE_TAG]])) {
             ++$index;
 
             $isMultilineConstant = $isMultilineConstant || str_contains($tokens[$index]->getContent(), "\n");
@@ -487,7 +499,7 @@ yield  from  baz();
     {
         $beforeIndex = $tokens->getPrevNonWhitespace($index);
 
-        if (!$tokens[$beforeIndex]->isGivenKind([T_COMMENT])) {
+        if (!$tokens[$beforeIndex]->isGivenKind(\T_COMMENT)) {
             return false;
         }
 

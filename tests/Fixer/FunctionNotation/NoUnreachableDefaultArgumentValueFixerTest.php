@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\FunctionNotation\NoUnreachableDefaultArgumentValueFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\NoUnreachableDefaultArgumentValueFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoUnreachableDefaultArgumentValueFixerTest extends AbstractFixerTestCase
 {
@@ -299,6 +301,19 @@ $bar) {}',
                             $this->myVar = $value;
                         }
                     },
+                ) {}
+            }
+            PHP
+        ];
+
+        yield 'do not crash 2' => [<<<'PHP'
+            <?php class Foo
+            {
+                public function __construct(
+                    public string $key {
+                        set(string $key) => $this->key = mb_strtolower($key);
+                    },
+                    public int $value,
                 ) {}
             }
             PHP

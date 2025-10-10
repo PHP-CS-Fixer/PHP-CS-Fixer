@@ -27,6 +27,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Nobu Funaki <nobu.funaki@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocTrimConsecutiveBlankLineSeparationFixer extends AbstractFixer
 {
@@ -36,24 +38,26 @@ final class PhpdocTrimConsecutiveBlankLineSeparationFixer extends AbstractFixer
             'Removes extra blank lines after summary and after description in PHPDoc.',
             [
                 new CodeSample(
-                    '<?php
-/**
- * Summary.
- *
- *
- * Description that contain 4 lines,
- *
- *
- * while 2 of them are blank!
- *
- *
- * @param string $foo
- *
- *
- * @dataProvider provideFixCases
- */
-function fnc($foo) {}
-'
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * Summary.
+                         *
+                         *
+                         * Description that contain 4 lines,
+                         *
+                         *
+                         * while 2 of them are blank!
+                         *
+                         *
+                         * @param string $foo
+                         *
+                         *
+                         * @dataProvider provideFixCases
+                         */
+                        function fnc($foo) {}
+
+                        PHP
                 ),
             ]
         );
@@ -72,13 +76,13 @@ function fnc($foo) {}
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -92,7 +96,7 @@ function fnc($foo) {}
 
             $this->fixAllTheRest($doc);
 
-            $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
+            $tokens[$index] = new Token([\T_DOC_COMMENT, $doc->getContent()]);
         }
     }
 

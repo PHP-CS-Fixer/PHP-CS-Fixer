@@ -23,6 +23,8 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @group covers-nothing
  * @group auto-review
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ComposerFileTest extends TestCase
 {
@@ -81,6 +83,6 @@ final class ComposerFileTest extends TestCase
     {
         $composerJsonContent = (string) file_get_contents(__DIR__.'/../../composer.json');
 
-        return json_decode($composerJsonContent, true, 512, JSON_THROW_ON_ERROR);
+        return json_decode($composerJsonContent, true, 512, \JSON_THROW_ON_ERROR);
     }
 }

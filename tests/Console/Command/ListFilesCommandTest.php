@@ -26,6 +26,8 @@ use Symfony\Component\Filesystem\Path;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Command\ListFilesCommand
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ListFilesCommandTest extends TestCase
 {
@@ -52,7 +54,7 @@ final class ListFilesCommandTest extends TestCase
         $expectedPath = str_replace('/', \DIRECTORY_SEPARATOR, $expectedPath);
 
         self::assertSame(0, $commandTester->getStatusCode());
-        self::assertSame(escapeshellarg($expectedPath).PHP_EOL, $commandTester->getDisplay());
+        self::assertSame(escapeshellarg($expectedPath).\PHP_EOL, $commandTester->getDisplay());
     }
 
     /**
@@ -76,7 +78,7 @@ final class ListFilesCommandTest extends TestCase
             ]);
             $expectedPath = str_replace('/', \DIRECTORY_SEPARATOR, './'.Path::makeRelative($tmpFile, (string) getcwd()));
             self::assertSame(0, $commandTester->getStatusCode());
-            self::assertSame(escapeshellarg($expectedPath).PHP_EOL, $commandTester->getDisplay());
+            self::assertSame(escapeshellarg($expectedPath).\PHP_EOL, $commandTester->getDisplay());
         } finally {
             self::$filesystem->remove($tmpDir);
         }

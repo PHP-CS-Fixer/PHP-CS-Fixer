@@ -22,6 +22,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
 
 /**
+ * @phpstan-import-type _PhpTokenPrototype from Token
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Odín del Río <odin.drp@gmail.com>
@@ -29,26 +31,11 @@ use PhpCsFixer\Utils;
  * @internal
  *
  * @covers \PhpCsFixer\Utils
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class UtilsTest extends TestCase
 {
-    /**
-     * @var null|false|string
-     */
-    private $originalValueOfFutureMode;
-
-    protected function setUp(): void
-    {
-        $this->originalValueOfFutureMode = getenv('PHP_CS_FIXER_FUTURE_MODE');
-    }
-
-    protected function tearDown(): void
-    {
-        putenv("PHP_CS_FIXER_FUTURE_MODE={$this->originalValueOfFutureMode}");
-
-        parent::tearDown();
-    }
-
     /**
      * @param string $expected Camel case string
      *
@@ -134,7 +121,7 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @param array{int, string}|string $input token prototype
+     * @param _PhpTokenPrototype $input token prototype
      *
      * @dataProvider provideCalculateTrailingWhitespaceIndentCases
      */
@@ -146,19 +133,19 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{string, array{int, string}|string}>
+     * @return iterable<int, array{string, _PhpTokenPrototype}>
      */
     public static function provideCalculateTrailingWhitespaceIndentCases(): iterable
     {
-        yield ['    ', [T_WHITESPACE, "\n\n    "]];
+        yield ['    ', [\T_WHITESPACE, "\n\n    "]];
 
-        yield [' ', [T_WHITESPACE, "\r\n\r\r\r "]];
+        yield [' ', [\T_WHITESPACE, "\r\n\r\r\r "]];
 
-        yield ["\t", [T_WHITESPACE, "\r\n\t"]];
+        yield ["\t", [\T_WHITESPACE, "\r\n\t"]];
 
-        yield ['', [T_WHITESPACE, "\t\n\r"]];
+        yield ['', [\T_WHITESPACE, "\t\n\r"]];
 
-        yield ['', [T_WHITESPACE, "\n"]];
+        yield ['', [\T_WHITESPACE, "\n"]];
 
         yield ['', ''];
     }
@@ -168,7 +155,7 @@ final class UtilsTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The given token must be whitespace, got "T_STRING".');
 
-        $token = new Token([T_STRING, 'foo']);
+        $token = new Token([\T_STRING, 'foo']);
 
         Utils::calculateTrailingWhitespaceIndent($token);
     }
@@ -266,13 +253,13 @@ final class UtilsTest extends TestCase
      *
      * @param list<string> $names
      */
-    public function testNaturalLanguageJoin(string $joined, array $names, string $wrapper = '"'): void
+    public function testNaturalLanguageJoin(string $joined, array $names, string $wrapper = '"', ?string $lastJoin = null): void
     {
-        self::assertSame($joined, Utils::naturalLanguageJoin($names, $wrapper));
+        self::assertSame($joined, Utils::naturalLanguageJoin($names, $wrapper, ...null === $lastJoin ? [] : [$lastJoin]));
     }
 
     /**
-     * @return iterable<int, array{0: string, 1: list<string>, 2?: string}>
+     * @return iterable<int, array{0: string, 1: list<string>, 2?: string, 3?: string}>
      */
     public static function provideNaturalLanguageJoinCases(): iterable
     {
@@ -344,6 +331,27 @@ final class UtilsTest extends TestCase
             ['a', 'b', 'c'],
             '',
         ];
+
+        yield [
+            '"a"',
+            ['a'],
+            '"',
+            'or',
+        ];
+
+        yield [
+            '"a" or "b"',
+            ['a', 'b'],
+            '"',
+            'or',
+        ];
+
+        yield [
+            '"a", "b" or "c"',
+            ['a', 'b', 'c'],
+            '"',
+            'or',
+        ];
     }
 
     public function testNaturalLanguageJoinWithBackticksThrowsInvalidArgumentExceptionForEmptyArray(): void
@@ -358,13 +366,13 @@ final class UtilsTest extends TestCase
      *
      * @dataProvider provideNaturalLanguageJoinWithBackticksCases
      */
-    public function testNaturalLanguageJoinWithBackticks(string $joined, array $names): void
+    public function testNaturalLanguageJoinWithBackticks(string $joined, array $names, ?string $lastJoin = null): void
     {
-        self::assertSame($joined, Utils::naturalLanguageJoinWithBackticks($names));
+        self::assertSame($joined, Utils::naturalLanguageJoinWithBackticks($names, ...null === $lastJoin ? [] : [$lastJoin]));
     }
 
     /**
-     * @return iterable<int, array{string, list<string>}>
+     * @return iterable<int, array{0: string, 1: list<string>, 2?: string}>
      */
     public static function provideNaturalLanguageJoinWithBackticksCases(): iterable
     {
@@ -382,42 +390,24 @@ final class UtilsTest extends TestCase
             '`a`, `b` and `c`',
             ['a', 'b', 'c'],
         ];
-    }
 
-    /**
-     * @group legacy
-     */
-    public function testTriggerDeprecationWhenFutureModeIsOff(): void
-    {
-        putenv('PHP_CS_FIXER_FUTURE_MODE=0');
+        yield [
+            '`a`',
+            ['a'],
+            'or',
+        ];
 
-        $message = __METHOD__.'::The message';
-        $this->expectDeprecation($message);
+        yield [
+            '`a` or `b`',
+            ['a', 'b'],
+            'or',
+        ];
 
-        Utils::triggerDeprecation(new \DomainException($message));
-
-        $triggered = Utils::getTriggeredDeprecations();
-        self::assertContains($message, $triggered);
-    }
-
-    public function testTriggerDeprecationWhenFutureModeIsOn(): void
-    {
-        putenv('PHP_CS_FIXER_FUTURE_MODE=1');
-
-        $message = __METHOD__.'::The message';
-        $exception = new \DomainException($message);
-        $futureModeException = null;
-
-        try {
-            Utils::triggerDeprecation($exception);
-        } catch (\Exception $futureModeException) {
-        }
-
-        self::assertInstanceOf(\RuntimeException::class, $futureModeException);
-        self::assertSame($exception, $futureModeException->getPrevious());
-
-        $triggered = Utils::getTriggeredDeprecations();
-        self::assertNotContains($message, $triggered);
+        yield [
+            '`a`, `b` or `c`',
+            ['a', 'b', 'c'],
+            'or',
+        ];
     }
 
     /**

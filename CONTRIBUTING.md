@@ -63,26 +63,26 @@ Next, copy [`compose.override.dist.yaml`](./compose.override.dist.yaml) to `comp
 
 You can then build the images:
 
-```console
+```sh
 docker compose build --parallel
 ```
 
 Now you can run commands needed to work on the project. For example, say you want to run PHPUnit tests on PHP 8.2:
 
-```console
+```sh
 docker compose run php-8.2 vendor/bin/phpunit
 ```
 
 Sometimes it can be more convenient to have a shell inside the container:
 
-```console
+```sh
 docker compose run php-7.4 sh
 /fixer vendor/bin/phpunit
 ```
 
 The images come with an [`xdebug` script](github.com/julienfalque/xdebug/) that allows running any PHP command with Xdebug enabled to help debug problems.
 
-```console
+```sh
 docker compose run php-8.2 xdebug vendor/bin/phpunit
 ```
 
@@ -96,8 +96,10 @@ There is a [cookbook](doc/cookbook_fixers.rst) with basic instructions on how to
 
 ## Project's Standards
 
-* [PSR-1: Basic Coding Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md)
-* [PSR-2: Coding Style Guide](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
-* [PSR-4: Autoloading Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md)
-* [PSR-5: PHPDoc (draft)](https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md)
+We follow our own recommended standard [@PhpCsFixer](doc/ruleSets/PhpCsFixer.rst), which includes:
+
 * [Symfony Coding Standards](https://symfony.com/doc/current/contributing/code/standards.html)
+* [PER Coding Style](https://www.php-fig.org/per/coding-style/)
+* [PSR-5: PHPDoc Standard (draft)](https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc.md) + [PSR-19: PHPDoc tags (draft)](https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc-tags.md)
+* [PSR-4: Autoloading Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md)
+* and many additional rules to make things even more strict and unified

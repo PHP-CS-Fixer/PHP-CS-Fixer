@@ -41,6 +41,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Marc Aubé
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SpacesInsideParenthesesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -52,23 +54,43 @@ final class SpacesInsideParenthesesFixer extends AbstractFixer implements Config
         return new FixerDefinition(
             'Parentheses must be declared using the configured whitespace.',
             [
-                new CodeSample("<?php\nif ( \$a ) {\n    foo( );\n}\n"),
                 new CodeSample(
-                    "<?php
-function foo( \$bar, \$baz )
-{
-}\n",
+                    <<<'PHP'
+                        <?php
+                        if ( $a ) {
+                            foo( );
+                        }
+
+                        PHP
+                ),
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        function foo( $bar, $baz )
+                        {
+                        }
+
+                        PHP,
                     ['space' => 'none']
                 ),
                 new CodeSample(
-                    "<?php\nif (\$a) {\n    foo( );\n}\n",
+                    <<<'PHP'
+                        <?php
+                        if ($a) {
+                            foo( );
+                        }
+
+                        PHP,
                     ['space' => 'single']
                 ),
                 new CodeSample(
-                    "<?php
-function foo(\$bar, \$baz)
-{
-}\n",
+                    <<<'PHP'
+                        <?php
+                        function foo($bar, $baz)
+                        {
+                        }
+
+                        PHP,
                     ['space' => 'single']
                 ),
             ],
@@ -103,7 +125,7 @@ function foo(\$bar, \$baz)
                 $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
                 // ignore parenthesis for T_ARRAY
-                if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(T_ARRAY)) {
+                if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(\T_ARRAY)) {
                     continue;
                 }
 
@@ -190,20 +212,20 @@ function foo(\$bar, \$baz)
         if ($tokens[$end - 1]->isWhitespace()) {
             $content = $tokens[$end - 1]->getContent();
             if (' ' !== $content && !str_contains($content, "\n") && !$tokens[$tokens->getPrevNonWhitespace($end - 1)]->isComment()) {
-                $tokens[$end - 1] = new Token([T_WHITESPACE, ' ']);
+                $tokens[$end - 1] = new Token([\T_WHITESPACE, ' ']);
             }
         } else {
-            $tokens->insertAt($end, new Token([T_WHITESPACE, ' ']));
+            $tokens->insertAt($end, new Token([\T_WHITESPACE, ' ']));
         }
 
         // fix white space after '('
         if ($tokens[$start + 1]->isWhitespace()) {
             $content = $tokens[$start + 1]->getContent();
             if (' ' !== $content && !str_contains($content, "\n") && !$tokens[$tokens->getNextNonWhitespace($start + 1)]->isComment()) {
-                $tokens[$start + 1] = new Token([T_WHITESPACE, ' ']);
+                $tokens[$start + 1] = new Token([\T_WHITESPACE, ' ']);
             }
         } else {
-            $tokens->insertAt($start + 1, new Token([T_WHITESPACE, ' ']));
+            $tokens->insertAt($start + 1, new Token([\T_WHITESPACE, ' ']));
         }
     }
 

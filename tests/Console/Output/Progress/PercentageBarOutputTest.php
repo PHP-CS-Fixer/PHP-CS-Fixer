@@ -24,6 +24,8 @@ use Symfony\Component\Console\Output\BufferedOutput;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Output\Progress\PercentageBarOutput
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PercentageBarOutputTest extends TestCase
 {
@@ -59,7 +61,7 @@ final class PercentageBarOutputTest extends TestCase
             [
                 [FileProcessed::STATUS_NO_CHANGES, 100],
             ],
-            '   0/100 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%'.PHP_EOL
+            '   0/100 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%'.\PHP_EOL
             .' 100/100 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%',
             80,
         ];

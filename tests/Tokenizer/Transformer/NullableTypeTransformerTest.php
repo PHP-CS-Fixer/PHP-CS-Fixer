@@ -24,12 +24,14 @@ use PhpCsFixer\Tokenizer\CT;
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\NullableTypeTransformer
  *
- * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NullableTypeTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
@@ -45,7 +47,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<int, array{0: string, 1?: _TransformerTestExpectedTokens}>
+     * @return iterable<int, array{0: string, 1?: _TransformerTestExpectedKindsUnderIndex}>
      */
     public static function provideProcessCases(): iterable
     {
@@ -70,6 +72,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
                     $a = 1 ? "aaa" : "bbb";
                     $b = 1 ? fnc() : [];
                     $c = 1 ?: [];
+                    $a instanceof static ? "aaa" : "bbb";
                 ',
         ];
 
@@ -127,7 +130,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcess80Cases
      *
@@ -139,7 +142,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<int, array{_TransformerTestExpectedTokens, string}>
+     * @return iterable<int, array{_TransformerTestExpectedKindsUnderIndex, string}>
      */
     public static function provideProcess80Cases(): iterable
     {
@@ -173,7 +176,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcess81Cases
      *
@@ -185,7 +188,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<int, array{_TransformerTestExpectedTokens, string}>
+     * @return iterable<int, array{_TransformerTestExpectedKindsUnderIndex, string}>
      */
     public static function provideProcess81Cases(): iterable
     {
@@ -210,7 +213,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcess83Cases
      *
@@ -222,7 +225,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<string, array{_TransformerTestExpectedTokens, string}>
+     * @return iterable<string, array{_TransformerTestExpectedKindsUnderIndex, string}>
      */
     public static function provideProcess83Cases(): iterable
     {
@@ -240,7 +243,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcess84Cases
      *
@@ -252,7 +255,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<string, array{_TransformerTestExpectedTokens, string}>
+     * @return iterable<string, array{_TransformerTestExpectedKindsUnderIndex, string}>
      */
     public static function provideProcess84Cases(): iterable
     {
@@ -270,6 +273,50 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
                         public protected(set) ?Bar $y,
                         public private(set) ?Bar $z,
                     ) {}
+                }
+                PHP,
+        ];
+
+        yield 'abstract properties' => [
+            [
+                13 => CT::T_NULLABLE_TYPE,
+                29 => CT::T_NULLABLE_TYPE,
+                45 => CT::T_NULLABLE_TYPE,
+                61 => CT::T_NULLABLE_TYPE,
+                77 => CT::T_NULLABLE_TYPE,
+                93 => CT::T_NULLABLE_TYPE,
+            ],
+            <<<'PHP'
+                <?php
+                abstract class Foo {
+                    abstract public ?bool $b1 { set; }
+                    public abstract ?bool $b2 { set; }
+                    abstract protected ?int $i1 { set; }
+                    protected abstract ?int $i2 { set; }
+                    abstract private ?string $s1 { set; }
+                    private abstract ?string $s2 { set; }
+                }
+                PHP,
+        ];
+
+        yield 'final properties' => [
+            [
+                11 => CT::T_NULLABLE_TYPE,
+                31 => CT::T_NULLABLE_TYPE,
+                51 => CT::T_NULLABLE_TYPE,
+                71 => CT::T_NULLABLE_TYPE,
+                91 => CT::T_NULLABLE_TYPE,
+                111 => CT::T_NULLABLE_TYPE,
+            ],
+            <<<'PHP'
+                <?php
+                class Foo {
+                    final public ?bool $b1 { get => 0; }
+                    public final ?bool $b2 { get => 0; }
+                    final protected ?int $i1 { get => 0; }
+                    protected final ?int $i2 { get => 0; }
+                    final private ?string $s1 { get => 0; }
+                    private final ?string $s2 { get => 0; }
                 }
                 PHP,
         ];

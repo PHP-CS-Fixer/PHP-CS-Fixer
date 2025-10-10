@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
-use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\AbstractRuleSetDefinition;
+use PhpCsFixer\RuleSet\DeprecatedRuleSetDefinitionInterface;
 
 /**
  * @internal
@@ -25,8 +25,10 @@ use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
  * @TODO 4.0 remove me
  *
  * Last updated to PER Coding Style v2.0.
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PERSet extends AbstractRuleSetDescription implements DeprecatedRuleSetDescriptionInterface
+final class PERSet extends AbstractRuleSetDefinition implements DeprecatedRuleSetDefinitionInterface
 {
     public function getRules(): array
     {

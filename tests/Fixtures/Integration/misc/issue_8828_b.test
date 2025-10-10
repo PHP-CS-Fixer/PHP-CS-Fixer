@@ -1,0 +1,6 @@
+--TEST--
+Ensuring Performance is not an issue - string with a lot of variables in braces (CT::T_CURLY_CLOSE).
+--RULESET--
+{
+    "braces_position": true
+}

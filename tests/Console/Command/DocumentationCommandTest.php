@@ -25,15 +25,20 @@ use Symfony\Component\Filesystem\Filesystem;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Command\DocumentationCommand
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DocumentationCommandTest extends TestCase
 {
+    /**
+     * @large
+     *
+     * @todo Find out the root cause of it being slower and hitting small test time limit
+     */
     public function testGeneratingDocumentation(): void
     {
-        $filesystem = $this->createFilesystemDouble();
-
         $application = new Application();
-        $application->add(new DocumentationCommand($filesystem));
+        $application->add(new DocumentationCommand($this->createFilesystemDouble()));
 
         $command = $application->find('documentation');
         $commandTester = new CommandTester($command);

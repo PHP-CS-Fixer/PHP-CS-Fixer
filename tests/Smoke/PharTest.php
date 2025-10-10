@@ -31,6 +31,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @group legacy
  *
  * @large
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PharTest extends AbstractSmokeTestCase
 {
@@ -63,9 +65,7 @@ final class PharTest extends AbstractSmokeTestCase
 
     public function testDescribe(): void
     {
-        // @TODO 4.0 Remove this expectations
-        $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
-        $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
+        $this->expectDeprecationOfDeprecatedRuleSets();
 
         $command = new DescribeCommand();
 
@@ -123,13 +123,13 @@ final class PharTest extends AbstractSmokeTestCase
             $json = self::executePharCommand(\sprintf(
                 'fix %s --dry-run --sequential --format=json --rules=\'%s\' --using-cache=%s',
                 __FILE__,
-                json_encode(['concat_space' => ['spacing' => 'one']], JSON_THROW_ON_ERROR),
+                json_encode(['concat_space' => ['spacing' => 'one']], \JSON_THROW_ON_ERROR),
                 $usingCache,
             ))->getOutput();
 
             self::assertJson($json);
 
-            $report = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+            $report = json_decode($json, true, 512, \JSON_THROW_ON_ERROR);
             self::assertIsArray($report);
             self::assertArrayHasKey('files', $report);
             self::assertCount(1, $report['files']);

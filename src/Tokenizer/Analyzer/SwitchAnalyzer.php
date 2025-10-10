@@ -19,6 +19,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SwitchAnalyzer
 {
@@ -50,7 +52,7 @@ final class SwitchAnalyzer
         $colonIndices = [];
 
         /** @var SwitchAnalysis $analysis */
-        foreach (ControlCaseStructuresAnalyzer::findControlStructures($tokens, [T_SWITCH]) as $analysis) {
+        foreach (ControlCaseStructuresAnalyzer::findControlStructures($tokens, [\T_SWITCH]) as $analysis) {
             if ($tokens[$analysis->getOpenIndex()]->equals(':')) {
                 $colonIndices[] = $analysis->getOpenIndex();
             }

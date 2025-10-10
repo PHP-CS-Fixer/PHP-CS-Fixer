@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
  * @covers \PhpCsFixer\DocBlock\TypeExpression
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TypeExpressionTest extends TestCase
 {
@@ -232,6 +234,10 @@ final class TypeExpressionTest extends TestCase
         yield ['array{a: bool,... }'];
 
         yield ['array{a: bool,...<string> }'];
+
+        yield ["array{\n    a: Foo,\n    b: Bar\n}"];
+
+        yield ["array{\n    Foo,\n    Bar,\n}"];
 
         yield ['list{int, ...<string>}'];
 

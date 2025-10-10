@@ -32,7 +32,12 @@ use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Future;
 use PhpCsFixer\Preg;
+use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
+use PhpCsFixer\RuleSet\DeprecatedRuleSetDefinitionInterface;
+use PhpCsFixer\RuleSet\RuleSet;
+use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -41,22 +46,30 @@ use PhpCsFixer\Utils;
 use PhpCsFixer\WordMatcher;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-#[AsCommand(name: 'describe')]
+#[AsCommand(name: 'describe', description: 'Describe rule / ruleset.')]
 final class DescribeCommand extends Command
 {
+    /** @TODO PHP 8.0 - remove the property */
     protected static $defaultName = 'describe';
+
+    /** @TODO PHP 8.0 - remove the property */
+    protected static $defaultDescription = 'Describe rule / ruleset.';
 
     /**
      * @var ?list<string>
@@ -84,15 +97,13 @@ final class DescribeCommand extends Command
 
     protected function configure(): void
     {
-        $this
-            ->setDefinition(
-                [
-                    new InputArgument('name', InputArgument::REQUIRED, 'Name of rule / set.'),
-                    new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
-                ]
-            )
-            ->setDescription('Describe rule / ruleset.')
-        ;
+        $this->setDefinition(
+            [
+                new InputArgument('name', InputArgument::OPTIONAL, 'Name of rule / set.', null, fn () => array_merge($this->getSetNames(), array_keys($this->getFixers()))),
+                new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
+                new InputOption('expand', '', InputOption::VALUE_NONE, 'Shall nested sets be expanded into nested rules.'),
+            ]
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -105,17 +116,48 @@ final class DescribeCommand extends Command
         $resolver = new ConfigurationResolver(
             new Config(),
             ['config' => $input->getOption('config')],
-            getcwd(),
+            getcwd(), // @phpstan-ignore argument.type
             new ToolInfo()
         );
 
         $this->fixerFactory->registerCustomFixers($resolver->getConfig()->getCustomFixers());
 
+        /** @var ?string $name */
         $name = $input->getArgument('name');
+        $expand = $input->getOption('expand');
+
+        if (null === $name) {
+            if (false === $input->isInteractive()) {
+                throw new RuntimeException('Not enough arguments (missing: "name") when not running interactively.');
+            }
+
+            $io = new SymfonyStyle($input, $output);
+            $shallDescribeConfigInUse = 'yes' === $io->choice(
+                'Do you want to describe used configuration? (alias:`@`',
+                ['yes', 'no'],
+                'yes',
+            );
+            if ($shallDescribeConfigInUse) {
+                $name = '@'; // '@' means "describe config file"
+            } else {
+                $name = $io->choice(
+                    'Please select rule / set to describe',
+                    array_merge($this->getSetNames(), array_keys($this->getFixers()))
+                );
+            }
+        }
+
+        if (!str_starts_with($name, '@')) {
+            if (true === $expand) {
+                throw new \InvalidArgumentException(
+                    'The "--expand" option is available only when describing a set (name starting with "@").',
+                );
+            }
+        }
 
         try {
             if (str_starts_with($name, '@')) {
-                $this->describeSet($output, $name);
+                $this->describeSet($input, $output, $name, $resolver);
 
                 return 0;
             }
@@ -149,7 +191,6 @@ final class DescribeCommand extends Command
             throw new DescribeNameNotFoundException($name, 'rule');
         }
 
-        /** @var FixerInterface $fixer */
         $fixer = $fixers[$name];
 
         $definition = $fixer->getDefinition();
@@ -169,7 +210,7 @@ final class DescribeCommand extends Command
                 : \sprintf('use %s instead', Utils::naturalLanguageJoinWithBackticks($successors));
 
             $endMessage = '. '.ucfirst($message);
-            Utils::triggerDeprecation(new \RuntimeException(str_replace('`', '"', "Rule \"{$name}\" is deprecated{$endMessage}.")));
+            Future::triggerDeprecation(new \RuntimeException(str_replace('`', '"', "Rule \"{$name}\" is deprecated{$endMessage}.")));
             $message = Preg::replace('/(`[^`]+`)/', '<info>$1</info>', $message);
             $output->writeln(\sprintf('<error>DEPRECATED</error>: %s.', $message));
             $output->writeln('');
@@ -222,17 +263,22 @@ final class DescribeCommand extends Command
                 $allowed = HelpCommand::getDisplayableAllowedValues($option);
 
                 if (null === $allowed) {
-                    $allowed = array_map(
-                        static fn (string $type): string => '<comment>'.$type.'</comment>',
-                        $option->getAllowedTypes(),
-                    );
+                    $allowedTypes = $option->getAllowedTypes();
+                    if (null !== $allowedTypes) {
+                        $allowed = array_map(
+                            static fn (string $type): string => '<comment>'.$type.'</comment>',
+                            $allowedTypes,
+                        );
+                    }
                 } else {
                     $allowed = array_map(static fn ($value): string => $value instanceof AllowedValueSubset
                         ? 'a subset of <comment>'.Utils::toString($value->getAllowedValues()).'</comment>'
                         : '<comment>'.Utils::toString($value).'</comment>', $allowed);
                 }
 
-                $line .= ' ('.Utils::naturalLanguageJoin($allowed, '').')';
+                if (null !== $allowed) {
+                    $line .= ' ('.Utils::naturalLanguageJoin($allowed, '').')';
+                }
 
                 $description = Preg::replace('/(`.+?`)/', '<info>$1</info>', OutputFormatter::escape($option->getDescription()));
                 $line .= ': '.lcfirst(Preg::replace('/\.$/', '', $description)).'; ';
@@ -264,7 +310,6 @@ final class DescribeCommand extends Command
             $output->writeln('');
         }
 
-        /** @var list<CodeSampleInterface> $codeSamples */
         $codeSamples = array_filter($definition->getCodeSamples(), static function (CodeSampleInterface $codeSample): bool {
             if ($codeSample instanceof VersionSpecificCodeSampleInterface) {
                 return $codeSample->isSuitableFor(\PHP_VERSION_ID);
@@ -291,8 +336,8 @@ final class DescribeCommand extends Command
                 $output->isDecorated(),
                 \sprintf(
                     '<comment>   ---------- begin diff ----------</comment>%s%%s%s<comment>   ----------- end diff -----------</comment>',
-                    PHP_EOL,
-                    PHP_EOL
+                    \PHP_EOL,
+                    \PHP_EOL
                 )
             );
 
@@ -333,13 +378,23 @@ final class DescribeCommand extends Command
         if ([] !== $ruleSetConfigs) {
             ksort($ruleSetConfigs);
             $plural = 1 !== \count($ruleSetConfigs) ? 's' : '';
-            $output->writeln("Fixer is part of the following rule set{$plural}:");
+            $output->writeln("The fixer is part of the following rule set{$plural}:");
+
+            $ruleSetDefinitions = RuleSets::getSetDefinitions();
 
             foreach ($ruleSetConfigs as $set => $config) {
+                \assert(isset($ruleSetDefinitions[$set]));
+                $ruleSetDefinition = $ruleSetDefinitions[$set];
+
+                if ($ruleSetDefinition instanceof AutomaticRuleSetDefinitionInterface) {
+                    continue;
+                }
+
+                $deprecatedDesc = ($ruleSetDefinition instanceof DeprecatedRuleSetDefinitionInterface) ? ' *(deprecated)*' : '';
                 if (null !== $config) {
-                    $output->writeln(\sprintf('* <info>%s</info> with config: <comment>%s</comment>', $set, Utils::toString($config)));
+                    $output->writeln(\sprintf('* <info>%s</info> with config: <comment>%s</comment>', $set.$deprecatedDesc, Utils::toString($config)));
                 } else {
-                    $output->writeln(\sprintf('* <info>%s</info> with <comment>default</comment> config', $set));
+                    $output->writeln(\sprintf('* <info>%s</info> with <comment>default</comment> config', $set.$deprecatedDesc));
                 }
             }
 
@@ -347,29 +402,66 @@ final class DescribeCommand extends Command
         }
     }
 
-    private function describeSet(OutputInterface $output, string $name): void
+    private function describeSet(InputInterface $input, OutputInterface $output, string $name, ConfigurationResolver $resolver): void
     {
-        if (!\in_array($name, $this->getSetNames(), true)) {
+        if ('@' !== $name && !\in_array($name, $this->getSetNames(), true)) {
             throw new DescribeNameNotFoundException($name, 'set');
         }
 
+        if ('@' === $name) {
+            $defaultRuleSetDefinition = $this->createRuleSetDefinition(
+                null,
+                [],
+                [
+                    'getDescription' => null === $resolver->getConfigFile() ? 'Default rules, no config file.' : 'Rules defined in used config.',
+                    'getName' => \sprintf('@ - %s', $resolver->getConfig()->getName()),
+                    'getRules' => $resolver->getConfig()->getRules(),
+                    'isRisky' => $resolver->getRiskyAllowed(),
+                ]
+            );
+        }
+
         $ruleSetDefinitions = RuleSets::getSetDefinitions();
+        $ruleSetDefinition = $defaultRuleSetDefinition ?? $ruleSetDefinitions[$name];
         $fixers = $this->getFixers();
 
-        $output->writeln(\sprintf('<fg=blue>Description of the <info>`%s`</info> set.</>', $ruleSetDefinitions[$name]->getName()));
+        if (true === $input->getOption('expand')) {
+            $ruleSetDefinition = $this->createRuleSetDefinition($ruleSetDefinition, ['expand'], []);
+        } else {
+            $output->writeln("You may the '--expand' option to see nested sets expanded into nested rules.");
+        }
+
+        $output->writeln(\sprintf('<fg=blue>Description of the <info>`%s`</info> set.</>', $ruleSetDefinition->getName()));
         $output->writeln('');
 
-        $output->writeln($this->replaceRstLinks($ruleSetDefinitions[$name]->getDescription()));
+        $output->writeln($this->replaceRstLinks($ruleSetDefinition->getDescription()));
         $output->writeln('');
 
-        if ($ruleSetDefinitions[$name]->isRisky()) {
+        if ($ruleSetDefinition instanceof DeprecatedRuleSetDefinitionInterface) {
+            $successors = $ruleSetDefinition->getSuccessorsNames();
+            $message = [] === $successors
+                ? \sprintf('it will be removed in version %d.0', Application::getMajorVersion() + 1)
+                : \sprintf('use %s instead', Utils::naturalLanguageJoinWithBackticks($successors));
+
+            Future::triggerDeprecation(new \RuntimeException(str_replace('`', '"', "Set \"{$name}\" is deprecated, {$message}.")));
+            $message = Preg::replace('/(`[^`]+`)/', '<info>$1</info>', $message);
+            $output->writeln(\sprintf('<error>DEPRECATED</error>: %s.', $message));
+            $output->writeln('');
+        }
+
+        if ($ruleSetDefinition->isRisky()) {
             $output->writeln('<error>This set contains risky rules.</error>');
+            $output->writeln('');
+        }
+
+        if ($ruleSetDefinition instanceof AutomaticRuleSetDefinitionInterface) {
+            $output->writeln(AutomaticRuleSetDefinitionInterface::WARNING_MESSAGE_DECORATED);
             $output->writeln('');
         }
 
         $help = '';
 
-        foreach ($ruleSetDefinitions[$name]->getRules() as $rule => $config) {
+        foreach ($ruleSetDefinition->getRules() as $rule => $config) {
             if (str_starts_with($rule, '@')) {
                 $set = $ruleSetDefinitions[$rule];
                 $help .= \sprintf(
@@ -382,7 +474,6 @@ final class DescribeCommand extends Command
                 continue;
             }
 
-            /** @var FixerInterface $fixer */
             $fixer = $fixers[$rule];
 
             $definition = $fixer->getDefinition();
@@ -472,5 +563,82 @@ final class DescribeCommand extends Command
             ),
             $content
         );
+    }
+
+    /**
+     * @param list<'expand'>                                                                                                        $adjustments
+     * @param array{getDescription?: string, getName?: string, getRules?: array<string, array<string, mixed>|bool>, isRisky?: bool} $overrides
+     */
+    private function createRuleSetDefinition(?RuleSetDefinitionInterface $ruleSetDefinition, array $adjustments, array $overrides): RuleSetDefinitionInterface
+    {
+        return new class($ruleSetDefinition, $adjustments, $overrides) implements RuleSetDefinitionInterface {
+            private ?RuleSetDefinitionInterface $original;
+
+            /** @var list<'expand'> */
+            private array $adjustments;
+
+            /** @var array{getDescription?: string, getName?: string, getRules?: array<string, array<string, mixed>|bool>, isRisky?: bool} */
+            private array $overrides;
+
+            /**
+             * @param list<'expand'>                                                                                                        $adjustments
+             * @param array{getDescription?: string, getName?: string, getRules?: array<string, array<string, mixed>|bool>, isRisky?: bool} $overrides
+             */
+            public function __construct(
+                ?RuleSetDefinitionInterface $original,
+                array $adjustments,
+                array $overrides
+            ) {
+                $this->original = $original;
+                $this->adjustments = $adjustments;
+                $this->overrides = $overrides;
+            }
+
+            public function getDescription(): string
+            {
+                return $this->overrides[__FUNCTION__]
+                    ?? (null !== $this->original ? $this->original->{__FUNCTION__}() : 'unknown description'); // @phpstan-ignore method.dynamicName
+            }
+
+            public function getName(): string
+            {
+                $value = $this->overrides[__FUNCTION__]
+                    ?? (null !== $this->original ? $this->original->{__FUNCTION__}() : 'unknown name'); // @phpstan-ignore method.dynamicName
+
+                if (\in_array('expand', $this->adjustments, true)) {
+                    $value .= ' (expanded)';
+                }
+
+                return $value;
+            }
+
+            public function getRules(): array
+            {
+                $value = $this->overrides[__FUNCTION__]
+                    ?? (null !== $this->original ? $this->original->{__FUNCTION__}() : null); // @phpstan-ignore method.dynamicName
+
+                if (null === $value) {
+                    throw new \LogicException('Cannot get rules from unknown original rule set and missing overrides.');
+                }
+
+                if (\in_array('expand', $this->adjustments, true)) {
+                    $value = (new RuleSet($value))->getRules();
+                }
+
+                return $value;
+            }
+
+            public function isRisky(): bool
+            {
+                $value = $this->overrides[__FUNCTION__]
+                    ?? (null !== $this->original ? $this->original->{__FUNCTION__}() : null); // @phpstan-ignore method.dynamicName
+
+                if (null === $value) {
+                    throw new \LogicException('Cannot get isRisky from unknown original rule set and missing overrides.');
+                }
+
+                return $value;
+            }
+        };
     }
 }

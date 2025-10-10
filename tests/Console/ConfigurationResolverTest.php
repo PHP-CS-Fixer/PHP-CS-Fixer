@@ -36,8 +36,10 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
+use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleset;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\ToolInfoInterface;
@@ -51,6 +53,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @internal
  *
  * @covers \PhpCsFixer\Console\ConfigurationResolver
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ConfigurationResolverTest extends TestCase
 {
@@ -1346,6 +1350,19 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         yield [false];
     }
 
+    public function testItCanRegisterCustomRuleSets(): void
+    {
+        $ruleSet = new ExampleRuleset();
+        $config = new Config();
+        $config->registerCustomRuleSets([$ruleSet]);
+        $this
+            ->createConfigurationResolver([], $config)
+            ->getConfig() // IMPORTANT! Triggers custom rule sets registration
+        ;
+
+        self::assertContains($ruleSet->getName(), RuleSets::getSetDefinitionNames());
+    }
+
     /**
      * @dataProvider provideDeprecatedRuleSetConfiguredCases
      *
@@ -1432,6 +1449,8 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
      * @dataProvider provideGetReporterCases
      *
      * @runInSeparateProcess
+     *
+     * @group sf-8-problematic
      */
     public function testGetReporter(string $expectedFormat, string $formatConfig, array $envs = []): void
     {

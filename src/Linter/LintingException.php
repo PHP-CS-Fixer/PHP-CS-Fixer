@@ -20,5 +20,7 @@ namespace PhpCsFixer\Linter;
  * @final
  *
  * @TODO 4.0 make class "final"
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 class LintingException extends \RuntimeException {}

@@ -42,6 +42,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -54,37 +56,43 @@ final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer implements 
             'Removes configured annotations from PHPDoc.',
             [
                 new CodeSample(
-                    '<?php
-/**
- * @internal
- * @author John Doe
- * @AuThOr Jane Doe
- */
-function foo() {}
-',
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @internal
+                         * @author John Doe
+                         * @AuThOr Jane Doe
+                         */
+                        function foo() {}
+
+                        PHP,
                     ['annotations' => ['author']]
                 ),
                 new CodeSample(
-                    '<?php
-/**
- * @internal
- * @author John Doe
- * @AuThOr Jane Doe
- */
-function foo() {}
-',
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @internal
+                         * @author John Doe
+                         * @AuThOr Jane Doe
+                         */
+                        function foo() {}
+
+                        PHP,
                     ['annotations' => ['author'], 'case_sensitive' => false]
                 ),
                 new CodeSample(
-                    '<?php
-/**
- * @author John Doe
- * @package ACME API
- * @subpackage Authorization
- * @version 1.0
- */
-function foo() {}
-',
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @author John Doe
+                         * @package ACME API
+                         * @subpackage Authorization
+                         * @version 1.0
+                         */
+                        function foo() {}
+
+                        PHP,
                     ['annotations' => ['package', 'subpackage']]
                 ),
             ]
@@ -104,7 +112,7 @@ function foo() {}
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -114,7 +122,7 @@ function foo() {}
         }
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -133,7 +141,7 @@ function foo() {}
             if ('' === $doc->getContent()) {
                 $tokens->clearTokenAndMergeSurroundingWhitespace($index);
             } else {
-                $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
+                $tokens[$index] = new Token([\T_DOC_COMMENT, $doc->getContent()]);
             }
         }
     }

@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author ntzm
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoBinaryStringFixer extends AbstractFixer
 {
@@ -30,8 +32,8 @@ final class NoBinaryStringFixer extends AbstractFixer
     {
         return $tokens->isAnyTokenKindsFound(
             [
-                T_CONSTANT_ENCAPSED_STRING,
-                T_START_HEREDOC,
+                \T_CONSTANT_ENCAPSED_STRING,
+                \T_START_HEREDOC,
                 'b"',
             ]
         );
@@ -61,7 +63,7 @@ final class NoBinaryStringFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind([T_CONSTANT_ENCAPSED_STRING, T_START_HEREDOC])) {
+            if ($token->isGivenKind([\T_CONSTANT_ENCAPSED_STRING, \T_START_HEREDOC])) {
                 $content = $token->getContent();
 
                 if ('b' === strtolower($content[0])) {

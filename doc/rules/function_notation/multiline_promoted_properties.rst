@@ -68,6 +68,7 @@ With configuration: ``['minimum_number_of_parameters' => 3]``.
     class Bar {
         public function __construct(private array $x) {}
     }
+
 References
 ----------
 

@@ -2,7 +2,7 @@ includes:
     - dev-tools/vendor/phpstan/phpstan/conf/bleedingEdge.neon
 
     # Baseline, should only shrink! To regenerate it, just execute `composer phpstan:baseline`.
-    - dev-tools/phpstan/baseline.php
+    - dev-tools/phpstan/baseline/_loader.php
 
 parameters:
     level: 7
@@ -19,11 +19,11 @@ parameters:
     reportPossiblyNonexistentConstantArrayOffset: true
     treatPhpDocTypesAsCertain: false
     ignoreErrors:
-        - identifier: method.internal
-        - identifier: method.internalClass
-        - identifier: new.internalClass
         - '/^Class [a-zA-Z\\]+ extends @final class PhpCsFixer\\(ConfigurationException\\InvalidConfigurationException|ConfigurationException\\InvalidFixerConfigurationException|Tokenizer\\Tokens|Console\\Command\\FixCommand)\.$/'
-        - '/^\$this\(PhpCsFixer\\Tokenizer\\Tokens\) does not accept PhpCsFixer\\Tokenizer\\Token\|null\.$/'
+
+        -
+            rawMessage: 'Call to internal method PHPUnit\Framework\TestCase::addToAssertionCount() from outside its root namespace PHPUnit.'
+            identifier: method.internal
 
         # We often need to iterate multiple times within single method and we re-use variable name
         -
@@ -51,8 +51,19 @@ parameters:
         - '/^Parameter .* of method PhpCsFixer\\Tokenizer\\Tokens::offsetSet\(\) should be contravariant with parameter .* of method .*::offsetSet\(\)$/'
         - '/^Parameter .* of method PhpCsFixer\\Tests\\Test\\TokensWithObservedTransformers::offsetSet\(\) should be contravariant with parameter .* of method .*::offsetSet\(\)$/'
 
-        # We retrieve these FQNs in various ways, we process them along the way, let's assume it's always class-string
-        - '/^Parameter #2 \$fullName of class PhpCsFixer\\Tokenizer\\Analyzer\\Analysis\\NamespaceUseAnalysis constructor expects class-string, string given\.$/'
+        # We often access tokens collection with `int|null` because our token traversing methods (`getNextMeaningfulToken` etc.) have nullable return type at the moment
+        -
+            message: '/^Offset int(<0, max>)?\|null might not exist on (\$this\()?PhpCsFixer\\Tokenizer\\Tokens\)?\.$/'
+            identifier: offsetAccess.notFound
+
+        # Type for Command::$defaultName and ::$defaultDescription can not be specified because parent property also does not have a type
+        -
+            message: '/^Property PhpCsFixer\\Console\\Command\\\w+Command::\$default(?:Name|Description) has no type specified\.$/'
+            identifier: missingType.property
+        -
+            message: '/^Unused PhpCsFixer\\[a-zA-Z\\]+Interface::[a-zA-Z]+$/'
+            path: src
+            count: 18
     tipsOfTheDay: false
     symfony:
         consoleApplicationLoader: dev-tools/phpstan/console-application.php

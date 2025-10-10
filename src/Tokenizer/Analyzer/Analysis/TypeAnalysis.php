@@ -18,15 +18,17 @@ namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
  * @readonly
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class TypeAnalysis implements StartEndTokenAwareAnalysis
+final class TypeAnalysis
 {
     /**
      * This list contains soft and hard reserved types that can be used or will be used by PHP at some point.
      *
      * More info:
      *
-     * @var list<string>
+     * @var non-empty-list<string>
      *
      * @see https://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration.types
      * @see https://php.net/manual/en/reserved.other-reserved-words.php

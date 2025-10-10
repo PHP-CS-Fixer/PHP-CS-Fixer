@@ -27,6 +27,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * Fixer for rules defined in PSR2 ¶2.4.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
@@ -55,7 +57,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_COMMENT, T_DOC_COMMENT, T_WHITESPACE]);
+        return $tokens->isAnyTokenKindsFound([\T_COMMENT, \T_DOC_COMMENT, \T_WHITESPACE]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -122,7 +124,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
             $newContent = substr($newContent, 1);
         }
 
-        return new Token([T_WHITESPACE, $newContent]);
+        return new Token([\T_WHITESPACE, $newContent]);
     }
 
     /**

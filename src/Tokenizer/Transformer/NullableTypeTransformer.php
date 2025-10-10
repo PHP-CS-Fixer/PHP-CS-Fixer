@@ -26,6 +26,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NullableTypeTransformer extends AbstractTransformer
 {
@@ -37,12 +39,14 @@ final class NullableTypeTransformer extends AbstractTransformer
         [CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED],
         [CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE],
         [CT::T_ATTRIBUTE_CLOSE],
-        [T_PRIVATE],
-        [T_PROTECTED],
-        [T_PUBLIC],
-        [T_VAR],
-        [T_STATIC],
-        [T_CONST],
+        [\T_PRIVATE],
+        [\T_PROTECTED],
+        [\T_PUBLIC],
+        [\T_VAR],
+        [\T_STATIC],
+        [\T_CONST],
+        [\T_ABSTRACT],
+        [\T_FINAL],
         [FCT::T_READONLY],
         [FCT::T_PRIVATE_SET],
         [FCT::T_PROTECTED_SET],
@@ -68,9 +72,18 @@ final class NullableTypeTransformer extends AbstractTransformer
 
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-        if ($tokens[$prevIndex]->equalsAny(self::TYPES)) {
-            $tokens[$index] = new Token([CT::T_NULLABLE_TYPE, '?']);
+        if (!$tokens[$prevIndex]->equalsAny(self::TYPES)) {
+            return;
         }
+
+        if (
+            $tokens[$prevIndex]->isGivenKind(\T_STATIC)
+            && $tokens[$tokens->getPrevMeaningfulToken($prevIndex)]->isGivenKind(\T_INSTANCEOF)
+        ) {
+            return;
+        }
+
+        $tokens[$index] = new Token([CT::T_NULLABLE_TYPE, '?']);
     }
 
     public function getCustomTokens(): array

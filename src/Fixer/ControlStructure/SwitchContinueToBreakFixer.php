@@ -22,6 +22,9 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class SwitchContinueToBreakFixer extends AbstractFixer
 {
     /**
@@ -35,30 +38,34 @@ final class SwitchContinueToBreakFixer extends AbstractFixer
             'Switch case must not be ended with `continue` but with `break`.',
             [
                 new CodeSample(
-                    '<?php
-switch ($foo) {
-    case 1:
-        continue;
-}
-'
+                    <<<'PHP'
+                        <?php
+                        switch ($foo) {
+                            case 1:
+                                continue;
+                        }
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-switch ($foo) {
-    case 1:
-        while($bar) {
-            do {
-                continue 3;
-            } while(false);
+                    <<<'PHP'
+                        <?php
+                        switch ($foo) {
+                            case 1:
+                                while($bar) {
+                                    do {
+                                        continue 3;
+                                    } while(false);
 
-            if ($foo + 1 > 3) {
-                continue;
-            }
+                                    if ($foo + 1 > 3) {
+                                        continue;
+                                    }
 
-            continue 2;
-        }
-}
-'
+                                    continue 2;
+                                }
+                        }
+
+                        PHP
                 ),
             ]
         );
@@ -76,7 +83,7 @@ switch ($foo) {
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAllTokenKindsFound([T_SWITCH, T_CONTINUE]) && !$tokens->hasAlternativeSyntax();
+        return $tokens->isAllTokenKindsFound([\T_SWITCH, \T_CONTINUE]) && !$tokens->hasAlternativeSyntax();
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -95,11 +102,11 @@ switch ($foo) {
     {
         $token = $tokens[$index];
 
-        if ($token->isGivenKind([T_FOREACH, T_FOR, T_WHILE])) {
+        if ($token->isGivenKind([\T_FOREACH, \T_FOR, \T_WHILE])) {
             // go to first `(`, go to its close ')', go to first of '{', ';', '? >'
             $index = $tokens->getNextTokenOfKind($index, ['(']);
             $index = $tokens->getNextTokenOfKind($index, [')']);
-            $index = $tokens->getNextTokenOfKind($index, ['{', ';', [T_CLOSE_TAG]]);
+            $index = $tokens->getNextTokenOfKind($index, ['{', ';', [\T_CLOSE_TAG]]);
 
             if (!$tokens[$index]->equals('{')) {
                 return $index;
@@ -108,15 +115,15 @@ switch ($foo) {
             return $this->fixInLoop($tokens, $index, $depth + 1);
         }
 
-        if ($token->isGivenKind(T_DO)) {
+        if ($token->isGivenKind(\T_DO)) {
             return $this->fixInLoop($tokens, $tokens->getNextTokenOfKind($index, ['{']), $depth + 1);
         }
 
-        if ($token->isGivenKind(T_SWITCH)) {
+        if ($token->isGivenKind(\T_SWITCH)) {
             return $this->fixInSwitch($tokens, $index, $depth + 1);
         }
 
-        if ($token->isGivenKind(T_CONTINUE)) {
+        if ($token->isGivenKind(\T_CONTINUE)) {
             return $this->fixContinueWhenActsAsBreak($tokens, $index, $isInSwitch, $depth);
         }
 
@@ -183,7 +190,7 @@ switch ($foo) {
             return $followingContinueIndex;
         }
 
-        if (!$followingContinueToken->isGivenKind(T_LNUMBER)) {
+        if (!$followingContinueToken->isGivenKind(\T_LNUMBER)) {
             return $followingContinueIndex;
         }
 
@@ -210,7 +217,7 @@ switch ($foo) {
             return $afterFollowingContinueIndex; // cannot process value, ignore
         }
 
-        if ($jump > PHP_INT_MAX) {
+        if ($jump > \PHP_INT_MAX) {
             return $afterFollowingContinueIndex; // cannot process value, ignore
         }
 
@@ -235,6 +242,6 @@ switch ($foo) {
 
     private function replaceContinueWithBreakToken(Tokens $tokens, int $index): void
     {
-        $tokens[$index] = new Token([T_BREAK, 'break']);
+        $tokens[$index] = new Token([\T_BREAK, 'break']);
     }
 }

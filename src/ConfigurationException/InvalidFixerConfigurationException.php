@@ -22,6 +22,8 @@ use PhpCsFixer\Console\Command\FixCommandExitStatusCalculator;
  * @internal
  *
  * @final Only internal extending this class is supported
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 class InvalidFixerConfigurationException extends InvalidConfigurationException
 {

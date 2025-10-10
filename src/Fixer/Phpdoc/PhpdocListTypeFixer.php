@@ -21,11 +21,14 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class PhpdocListTypeFixer extends AbstractPhpdocTypesFixer
 {
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     public function isRisky(): bool
@@ -38,14 +41,16 @@ final class PhpdocListTypeFixer extends AbstractPhpdocTypesFixer
         return new FixerDefinition(
             'PHPDoc `list` type must be used instead of `array` without a key.',
             [
-                new CodeSample(<<<'PHP'
-                    <?php
-                    /**
-                     * @param array<int> $x
-                     * @param array<array<string>> $y
-                     */
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @param array<int> $x
+                         * @param array<array<string>> $y
+                         */
 
-                    PHP),
+                        PHP
+                ),
             ],
             null,
             'Risky when `array` key should be present, but is missing.'

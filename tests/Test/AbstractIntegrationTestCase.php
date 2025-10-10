@@ -33,7 +33,6 @@ use PhpCsFixer\WhitespacesFixerConfig;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * Integration test base class.
@@ -75,6 +74,8 @@ use Symfony\Component\Finder\SplFileInfo;
  *     By default test is run on all supported operating systems.
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractIntegrationTestCase extends TestCase
 {
@@ -173,7 +174,6 @@ abstract class AbstractIntegrationTestCase extends TestCase
 
         $factory = static::createIntegrationCaseFactory();
 
-        /** @var SplFileInfo $file */
         foreach (Finder::create()->files()->in($fixturesDir) as $file) {
             if ('test' !== $file->getExtension()) {
                 continue;
@@ -225,11 +225,11 @@ abstract class AbstractIntegrationTestCase extends TestCase
             self::markTestSkipped(\sprintf('PHP lower than %d is required for "%s", current "%d".', $phpUpperLimit, $case->getFileName(), \PHP_VERSION_ID));
         }
 
-        if (!\in_array(PHP_OS_FAMILY, $case->getRequirement('os'), true)) {
+        if (!\in_array(\PHP_OS_FAMILY, $case->getRequirement('os'), true)) {
             self::markTestSkipped(
                 \sprintf(
                     'Unsupported OS (%s) for "%s", allowed are: %s.',
-                    PHP_OS,
+                    \PHP_OS,
                     $case->getFileName(),
                     implode(', ', $case->getRequirement('os'))
                 )
@@ -396,7 +396,9 @@ abstract class AbstractIntegrationTestCase extends TestCase
 
         if (null === $linter) {
             $linter = new CachingLinter(
-                '1' === getenv('FAST_LINT_TEST_CASES') ? new Linter() : new ProcessLinter()
+                filter_var(getenv('PHP_CS_FIXER_FAST_LINT_TEST_CASES'), \FILTER_VALIDATE_BOOLEAN)
+                    ? new Linter()
+                    : new ProcessLinter()
             );
         }
 

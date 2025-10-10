@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class MultilineCommentOpeningClosingFixer extends AbstractFixer
 {
@@ -56,7 +58,7 @@ final class MultilineCommentOpeningClosingFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_COMMENT, T_DOC_COMMENT]);
+        return $tokens->isAnyTokenKindsFound([\T_COMMENT, \T_DOC_COMMENT]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -65,8 +67,8 @@ final class MultilineCommentOpeningClosingFixer extends AbstractFixer
             $originalContent = $token->getContent();
 
             if (
-                !$token->isGivenKind(T_DOC_COMMENT)
-                && !($token->isGivenKind(T_COMMENT) && str_starts_with($originalContent, '/*'))
+                !$token->isGivenKind(\T_DOC_COMMENT)
+                && !($token->isGivenKind(\T_COMMENT) && str_starts_with($originalContent, '/*'))
             ) {
                 continue;
             }
@@ -74,7 +76,7 @@ final class MultilineCommentOpeningClosingFixer extends AbstractFixer
             $newContent = $originalContent;
 
             // Fix opening
-            if ($token->isGivenKind(T_COMMENT)) {
+            if ($token->isGivenKind(\T_COMMENT)) {
                 $newContent = Preg::replace('/^\/\*{2,}(?!\/)/', '/*', $newContent);
             }
 

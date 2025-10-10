@@ -25,17 +25,14 @@ use PhpCsFixer\Tokenizer\Token;
  * @internal
  *
  * @deprecated This is a God Class anti-pattern. Don't expand it. It is fine to use logic that is already here (that's why we don't trigger deprecation warnings), but over time logic should be moved to dedicated, single-responsibility classes.
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class Utils
 {
-    /**
-     * @var array<string, true>
-     */
-    private static array $deprecations = [];
-
     private function __construct()
     {
-        // cannot create instance of util. class
+        // cannot create instance
     }
 
     /**
@@ -75,21 +72,23 @@ final class Utils
      * Stability is ensured by using Schwartzian transform.
      *
      * @template T
+     * @template L of list<T>
      * @template R
      *
-     * @param list<T>             $elements
+     * @param L                   $elements
      * @param callable(T): R      $getComparedValue a callable that takes a single element and returns the value to compare
      * @param callable(R, R): int $compareValues    a callable that compares two values
      *
-     * @return list<T>
+     * @return L
      */
     public static function stableSort(array $elements, callable $getComparedValue, callable $compareValues): array
     {
-        array_walk($elements, static function (&$element, int $index) use ($getComparedValue): void {
-            $element = [$element, $index, $getComparedValue($element)];
-        });
+        $sortItems = [];
+        foreach ($elements as $index => $element) {
+            $sortItems[] = [$element, $index, $getComparedValue($element)];
+        }
 
-        usort($elements, static function ($a, $b) use ($compareValues): int {
+        usort($sortItems, static function ($a, $b) use ($compareValues): int {
             $comparison = $compareValues($a[2], $b[2]);
 
             if (0 !== $comparison) {
@@ -99,15 +98,17 @@ final class Utils
             return $a[1] <=> $b[1];
         });
 
-        return array_map(static fn (array $item) => $item[0], $elements);
+        return array_map(static fn (array $item) => $item[0], $sortItems); // @phpstan-ignore return.type (PHPStan cannot understand that the result will still be L template)
     }
 
     /**
      * Sort fixers by their priorities.
      *
-     * @param list<FixerInterface> $fixers
+     * @template T of list<FixerInterface>
      *
-     * @return list<FixerInterface>
+     * @param T $fixers
+     *
+     * @return T
      */
     public static function sortFixers(array $fixers): array
     {
@@ -127,7 +128,7 @@ final class Utils
      *
      * @throws \InvalidArgumentException
      */
-    public static function naturalLanguageJoin(array $names, string $wrapper = '"'): string
+    public static function naturalLanguageJoin(array $names, string $wrapper = '"', string $lastJoin = 'and'): string
     {
         if (0 === \count($names)) {
             throw new \InvalidArgumentException('Array of names cannot be empty.');
@@ -142,7 +143,7 @@ final class Utils
         $last = array_pop($names);
 
         if (\count($names) > 0) {
-            return implode(', ', $names).' and '.$last;
+            return implode(', ', $names).' '.$lastJoin.' '.$last;
         }
 
         return $last;
@@ -155,44 +156,9 @@ final class Utils
      *
      * @throws \InvalidArgumentException
      */
-    public static function naturalLanguageJoinWithBackticks(array $names): string
+    public static function naturalLanguageJoinWithBackticks(array $names, string $lastJoin = 'and'): string
     {
-        return self::naturalLanguageJoin($names, '`');
-    }
-
-    public static function isFutureModeEnabled(): bool
-    {
-        return filter_var(
-            getenv('PHP_CS_FIXER_FUTURE_MODE'),
-            FILTER_VALIDATE_BOOL
-        );
-    }
-
-    public static function triggerDeprecation(\Exception $futureException): void
-    {
-        if (self::isFutureModeEnabled()) {
-            throw new \RuntimeException(
-                'Your are using something deprecated, see previous exception. Aborting execution because `PHP_CS_FIXER_FUTURE_MODE` environment variable is set.',
-                0,
-                $futureException
-            );
-        }
-
-        $message = $futureException->getMessage();
-
-        self::$deprecations[$message] = true;
-        @trigger_error($message, E_USER_DEPRECATED);
-    }
-
-    /**
-     * @return list<string>
-     */
-    public static function getTriggeredDeprecations(): array
-    {
-        $triggeredDeprecations = array_keys(self::$deprecations);
-        sort($triggeredDeprecations);
-
-        return $triggeredDeprecations;
+        return self::naturalLanguageJoin($names, '`', $lastJoin);
     }
 
     public static function convertArrayTypeToList(string $type): string

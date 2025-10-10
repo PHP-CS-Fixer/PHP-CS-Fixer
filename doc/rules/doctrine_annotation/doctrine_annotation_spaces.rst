@@ -151,7 +151,6 @@ The rule is part of the following rule set:
 
   ``['before_array_assignments_colon' => false]``
 
-
 References
 ----------
 

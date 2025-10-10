@@ -22,6 +22,9 @@ use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
 {
     public function getDefinition(): FixerDefinitionInterface
@@ -62,7 +65,7 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
             $nextIndex = $tokens->getNextMeaningfulToken($closeParenthesisIndex);
             $previousIndex = $tokens->getPrevMeaningfulToken($functionNameIndex);
 
-            if ($tokens[$previousIndex]->isGivenKind(T_NS_SEPARATOR)) {
+            if ($tokens[$previousIndex]->isGivenKind(\T_NS_SEPARATOR)) {
                 $namespaceSeparatorIndex = $previousIndex;
                 $previousIndex = $tokens->getPrevMeaningfulToken($previousIndex);
             } else {
@@ -121,7 +124,7 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
 
             $keepParentheses = $this->keepParentheses($tokens, $openParenthesisIndex, $closeParenthesisIndex);
 
-            if (T_IS_IDENTICAL === $replacement) {
+            if (\T_IS_IDENTICAL === $replacement) {
                 $operandContent = '===';
             } else { // T_IS_NOT_IDENTICAL === $replacement
                 $operandContent = '!==';
@@ -129,7 +132,7 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
 
             // apply fixing
 
-            $tokens[$operandIndex] = new Token([T_CONSTANT_ENCAPSED_STRING, "''"]);
+            $tokens[$operandIndex] = new Token([\T_CONSTANT_ENCAPSED_STRING, "''"]);
             $tokens[$operatorIndex] = new Token([$replacement, $operandContent]);
 
             if (!$keepParentheses) {
@@ -158,12 +161,12 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
         */
 
         if ('0' === $operand->getContent()) {
-            if ($operator->isGivenKind([T_IS_IDENTICAL, T_IS_GREATER_OR_EQUAL])) {
-                return T_IS_IDENTICAL;
+            if ($operator->isGivenKind([\T_IS_IDENTICAL, \T_IS_GREATER_OR_EQUAL])) {
+                return \T_IS_IDENTICAL;
             }
 
-            if ($operator->isGivenKind(T_IS_NOT_IDENTICAL) || $operator->equals('<')) {
-                return T_IS_NOT_IDENTICAL;
+            if ($operator->isGivenKind(\T_IS_NOT_IDENTICAL) || $operator->equals('<')) {
+                return \T_IS_NOT_IDENTICAL;
             }
 
             return null;
@@ -179,12 +182,12 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
         1 > strlen($b)   | '' === $b
         */
 
-        if ($operator->isGivenKind(T_IS_SMALLER_OR_EQUAL)) {
-            return T_IS_NOT_IDENTICAL;
+        if ($operator->isGivenKind(\T_IS_SMALLER_OR_EQUAL)) {
+            return \T_IS_NOT_IDENTICAL;
         }
 
         if ($operator->equals('>')) {
-            return T_IS_IDENTICAL;
+            return \T_IS_IDENTICAL;
         }
 
         return null;
@@ -203,12 +206,12 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
         */
 
         if ('0' === $operand->getContent()) {
-            if ($operator->isGivenKind([T_IS_IDENTICAL, T_IS_SMALLER_OR_EQUAL])) {
-                return T_IS_IDENTICAL;
+            if ($operator->isGivenKind([\T_IS_IDENTICAL, \T_IS_SMALLER_OR_EQUAL])) {
+                return \T_IS_IDENTICAL;
             }
 
-            if ($operator->isGivenKind(T_IS_NOT_IDENTICAL) || $operator->equals('>')) {
-                return T_IS_NOT_IDENTICAL;
+            if ($operator->isGivenKind(\T_IS_NOT_IDENTICAL) || $operator->equals('>')) {
+                return \T_IS_NOT_IDENTICAL;
             }
 
             return null;
@@ -224,12 +227,12 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
         strlen($b) > 1   | X         cannot simplify
         */
 
-        if ($operator->isGivenKind(T_IS_GREATER_OR_EQUAL)) {
-            return T_IS_NOT_IDENTICAL;
+        if ($operator->isGivenKind(\T_IS_GREATER_OR_EQUAL)) {
+            return \T_IS_NOT_IDENTICAL;
         }
 
         if ($operator->equals('<')) {
-            return T_IS_IDENTICAL;
+            return \T_IS_IDENTICAL;
         }
 
         return null;
@@ -237,7 +240,7 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
 
     private function isOperandOfInterest(Token $token): bool
     {
-        if (!$token->isGivenKind(T_LNUMBER)) {
+        if (!$token->isGivenKind(\T_LNUMBER)) {
             return false;
         }
 
@@ -249,13 +252,13 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
     private function isOperatorOfInterest(Token $token): bool
     {
         return
-            $token->isGivenKind([T_IS_IDENTICAL, T_IS_NOT_IDENTICAL, T_IS_SMALLER_OR_EQUAL, T_IS_GREATER_OR_EQUAL])
+            $token->isGivenKind([\T_IS_IDENTICAL, \T_IS_NOT_IDENTICAL, \T_IS_SMALLER_OR_EQUAL, \T_IS_GREATER_OR_EQUAL])
             || $token->equals('<') || $token->equals('>');
     }
 
     private function isOfHigherPrecedence(Token $token): bool
     {
-        static $operatorsPerContent = [
+        return $token->isGivenKind([\T_INSTANCEOF, \T_POW, \T_SL, \T_SR]) || $token->equalsAny([
             '!',
             '%',
             '*',
@@ -265,9 +268,7 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
             '/',
             '~',
             '?',
-        ];
-
-        return $token->isGivenKind([T_INSTANCEOF, T_POW, T_SL, T_SR]) || $token->equalsAny($operatorsPerContent);
+        ]);
     }
 
     private function keepParentheses(Tokens $tokens, int $openParenthesisIndex, int $closeParenthesisIndex): bool
@@ -281,7 +282,7 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
         for (; $i < $closeParenthesisIndex; ++$i) {
             $token = $tokens[$i];
 
-            if ($token->isGivenKind([T_VARIABLE, T_STRING]) || $token->isObjectOperator() || $token->isWhitespace() || $token->isComment()) {
+            if ($token->isGivenKind([\T_VARIABLE, \T_STRING]) || $token->isObjectOperator() || $token->isWhitespace() || $token->isComment()) {
                 continue;
             }
 

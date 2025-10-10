@@ -26,6 +26,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @coversNothing
  *
  * @group covers-nothing
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TextDiffTest extends TestCase
 {
@@ -81,7 +83,7 @@ final class TextDiffTest extends TestCase
             yield [$expected, $format, false];
         }
 
-        $expected = substr(json_encode($expected, JSON_THROW_ON_ERROR), 1, -1);
+        $expected = substr(json_encode($expected, \JSON_THROW_ON_ERROR), 1, -1);
 
         yield [$expected, 'json', true];
 

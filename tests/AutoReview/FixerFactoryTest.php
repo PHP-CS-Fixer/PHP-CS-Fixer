@@ -30,6 +30,8 @@ use Symfony\Component\Finder\SplFileInfo;
  *
  * @group auto-review
  * @group covers-nothing
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FixerFactoryTest extends TestCase
 {
@@ -81,7 +83,7 @@ final class FixerFactoryTest extends TestCase
      */
     public function testFixersPriorityCasesHaveIntegrationTest(string $fixerName, array $edges): void
     {
-        static $forPerformanceEdgesOnly = [
+        $forPerformanceEdgesOnly = [
             'function_to_constant' => [
                 'native_function_casing' => true,
             ],
@@ -295,6 +297,7 @@ final class FixerFactoryTest extends TestCase
         $knownIssues = [ // should only shrink
             'no_trailing_comma_in_singleline_function_call' => true, // had prio case but no longer, left prio the same for BC reasons, rule has been deprecated
             'simple_to_complex_string_variable' => true, // had prio case but no longer, left prio the same for BC reasons
+            'visibility_required' => true, // deprecated, legacy name of `ModifierKeywordsFixer`
         ];
 
         $factory = new FixerFactory();
@@ -553,6 +556,9 @@ final class FixerFactoryTest extends TestCase
             'modernize_types_casting' => [
                 'no_unneeded_control_parentheses',
             ],
+            'modifier_keywords' => [
+                'class_attributes_separation',
+            ],
             'multiline_promoted_properties' => [
                 'braces_position',
                 'trailing_comma_in_multiline',
@@ -713,6 +719,11 @@ final class FixerFactoryTest extends TestCase
                 'no_whitespace_in_blank_line',
                 'simplified_if_return',
                 'statement_indentation',
+            ],
+            'no_useless_printf' => [
+                'echo_tag_syntax',
+                'no_extra_blank_lines',
+                'no_mixed_echo_print',
             ],
             'no_useless_return' => [
                 'blank_line_before_statement',
@@ -989,9 +1000,6 @@ final class FixerFactoryTest extends TestCase
             ],
             'use_arrow_functions' => [
                 'function_declaration',
-            ],
-            'visibility_required' => [
-                'class_attributes_separation',
             ],
             'void_return' => [
                 'phpdoc_no_empty_return',

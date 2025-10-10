@@ -25,15 +25,20 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-#[AsCommand(name: 'documentation')]
+#[AsCommand(name: 'documentation', description: 'Dumps the documentation of the project into its "/doc" directory.')]
 final class DocumentationCommand extends Command
 {
+    /** @TODO PHP 8.0 - remove the property */
     protected static $defaultName = 'documentation';
+
+    /** @TODO PHP 8.0 - remove the property */
+    protected static $defaultDescription = 'Dumps the documentation of the project into its "/doc" directory.';
 
     private Filesystem $filesystem;
 
@@ -45,10 +50,7 @@ final class DocumentationCommand extends Command
 
     protected function configure(): void
     {
-        $this
-            ->setAliases(['doc'])
-            ->setDescription('Dumps the documentation of the project into its "/doc" directory.')
-        ;
+        $this->setAliases(['doc']);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -59,7 +61,7 @@ final class DocumentationCommand extends Command
         $fixerFactory->registerBuiltInFixers();
         $fixers = $fixerFactory->getFixers();
 
-        $setDefinitions = RuleSets::getSetDefinitions();
+        $setDefinitions = RuleSets::getBuiltInSetDefinitions();
 
         $fixerDocumentGenerator = new FixerDocumentGenerator($locator);
         $ruleSetDocumentationGenerator = new RuleSetDocumentationGenerator($locator);
@@ -78,7 +80,6 @@ final class DocumentationCommand extends Command
             );
         }
 
-        /** @var SplFileInfo $file */
         foreach (
             (new Finder())->files()
                 ->in($locator->getFixersDocumentationDirectoryPath())
@@ -96,7 +97,6 @@ final class DocumentationCommand extends Command
 
         // RuleSet docs.
 
-        /** @var SplFileInfo $file */
         foreach ((new Finder())->files()->in($locator->getRuleSetsDocumentationDirectoryPath()) as $file) {
             $this->filesystem->remove($file->getPathname());
         }

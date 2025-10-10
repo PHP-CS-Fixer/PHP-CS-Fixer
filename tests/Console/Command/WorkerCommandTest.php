@@ -43,6 +43,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Command\WorkerCommand
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class WorkerCommandTest extends TestCase
 {
@@ -86,14 +88,13 @@ final class WorkerCommandTest extends TestCase
     {
         $streamSelectLoop = new StreamSelectLoop();
         $server = new TcpServer('127.0.0.1:0', $streamSelectLoop);
-        $serverPort = parse_url($server->getAddress() ?? '', PHP_URL_PORT);
+        $serverPort = parse_url($server->getAddress() ?? '', \PHP_URL_PORT);
         $processIdentifier = ProcessIdentifier::create();
-        $processFactory = new ProcessFactory(
-            new ArrayInput([], (new FixCommand(new ToolInfo()))->getDefinition())
-        );
+        $processFactory = new ProcessFactory();
         $process = new Process(implode(' ', $processFactory->getCommandArgs(
             $serverPort, // @phpstan-ignore-line
             $processIdentifier,
+            new ArrayInput([], (new FixCommand(new ToolInfo()))->getDefinition()),
             new RunnerConfig(true, false, ParallelConfigFactory::sequential())
         )));
 
@@ -117,8 +118,8 @@ final class WorkerCommandTest extends TestCase
         $server->on(
             'connection',
             static function (ConnectionInterface $connection) use (&$workerScope): void {
-                $decoder = new Decoder($connection, true, 512, JSON_INVALID_UTF8_IGNORE);
-                $encoder = new Encoder($connection, JSON_INVALID_UTF8_IGNORE);
+                $decoder = new Decoder($connection, true, 512, \JSON_INVALID_UTF8_IGNORE);
+                $encoder = new Encoder($connection, \JSON_INVALID_UTF8_IGNORE);
 
                 $decoder->on(
                     'data',

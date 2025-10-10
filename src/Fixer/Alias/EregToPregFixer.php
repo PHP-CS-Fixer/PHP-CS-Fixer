@@ -26,12 +26,14 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Matteo Beccati <matteo@beccati.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class EregToPregFixer extends AbstractFixer
 {
     /**
-     * @var list<array<int, string>> the list of the ext/ereg function names, their preg equivalent and the preg modifier(s), if any
-     *                               all condensed in an array of arrays
+     * @var non-empty-list<non-empty-array<int, string>> the list of the ext/ereg function names, their preg equivalent and the preg modifier(s), if any
+     *                                                   all condensed in an array of arrays
      */
     private const FUNCTIONS = [
         ['ereg', 'preg_match', ''],
@@ -43,9 +45,9 @@ final class EregToPregFixer extends AbstractFixer
     ];
 
     /**
-     * @var list<string> the list of preg delimiters, in order of preference
+     * @var non-empty-list<string> the list of preg delimiters, in order of preference
      */
-    private static array $delimiters = ['/', '#', '!'];
+    private const DELIMITERS = ['/', '#', '!'];
 
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -69,7 +71,7 @@ final class EregToPregFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     public function isRisky(): bool
@@ -84,7 +86,7 @@ final class EregToPregFixer extends AbstractFixer
 
         foreach (self::FUNCTIONS as $map) {
             // the sequence is the function name, followed by "(" and a quoted string
-            $seq = [[T_STRING, $map[0]], '(', [T_CONSTANT_ENCAPSED_STRING]];
+            $seq = [[\T_STRING, $map[0]], '(', [\T_CONSTANT_ENCAPSED_STRING]];
             $currIndex = 0;
 
             while (true) {
@@ -137,8 +139,8 @@ final class EregToPregFixer extends AbstractFixer
                 }
 
                 // modify function and argument
-                $tokens[$match[0]] = new Token([T_STRING, $map[1]]);
-                $tokens[$match[2]] = new Token([T_CONSTANT_ENCAPSED_STRING, $prefix.$quote.$preg.$quote]);
+                $tokens[$match[0]] = new Token([\T_STRING, $map[1]]);
+                $tokens[$match[2]] = new Token([\T_CONSTANT_ENCAPSED_STRING, $prefix.$quote.$preg.$quote]);
             }
         }
     }
@@ -171,7 +173,7 @@ final class EregToPregFixer extends AbstractFixer
         // try to find something that's not used
         $delimiters = [];
 
-        foreach (self::$delimiters as $k => $d) {
+        foreach (self::DELIMITERS as $k => $d) {
             if (!str_contains($pattern, $d)) {
                 return $d;
             }

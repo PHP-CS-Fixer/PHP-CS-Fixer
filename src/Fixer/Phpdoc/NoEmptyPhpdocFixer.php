@@ -22,6 +22,9 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class NoEmptyPhpdocFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
@@ -45,13 +48,13 @@ final class NoEmptyPhpdocFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -60,9 +63,9 @@ final class NoEmptyPhpdocFixer extends AbstractFixer
             }
 
             if (
-                $tokens[$index - 1]->isGivenKind([T_OPEN_TAG, T_WHITESPACE])
+                $tokens[$index - 1]->isGivenKind([\T_OPEN_TAG, \T_WHITESPACE])
                 && substr_count($tokens[$index - 1]->getContent(), "\n") > 0
-                && $tokens[$index + 1]->isGivenKind(T_WHITESPACE)
+                && $tokens[$index + 1]->isGivenKind(\T_WHITESPACE)
                 && Preg::match('/^\R/', $tokens[$index + 1]->getContent())
             ) {
                 $tokens[$index - 1] = new Token([
@@ -74,7 +77,7 @@ final class NoEmptyPhpdocFixer extends AbstractFixer
                 if ('' === $newContent) {
                     $tokens->clearAt($index + 1);
                 } else {
-                    $tokens[$index + 1] = new Token([T_WHITESPACE, $newContent]);
+                    $tokens[$index + 1] = new Token([\T_WHITESPACE, $newContent]);
                 }
             }
 

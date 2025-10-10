@@ -23,10 +23,13 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
 use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class ControlCaseStructuresAnalyzer
 {
     private const SUPPORTED_TYPES_WITH_CASE_OR_DEFAULT = [
-        T_SWITCH,
+        \T_SWITCH,
         FCT::T_MATCH,
         FCT::T_ENUM,
     ];
@@ -56,11 +59,11 @@ final class ControlCaseStructuresAnalyzer
 
         /**
          * @var list<array{
-         *     kind: int|null,
+         *     kind: null|int,
          *     index: int,
          *     brace_count: int,
          *     cases: list<array{index: int, open: int}>,
-         *     default: array{index: int, open: int}|null,
+         *     default: null|array{index: int, open: int},
          *     alternative_syntax: bool,
          * }> $stack
          */
@@ -82,7 +85,7 @@ final class ControlCaseStructuresAnalyzer
 
                 $isTypeOfInterest = \in_array($stack[$depth]['kind'], $types, true);
 
-                if ($token->isGivenKind(T_SWITCH)) {
+                if ($token->isGivenKind(\T_SWITCH)) {
                     $index = $tokens->getNextMeaningfulToken($index);
                     $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
@@ -139,12 +142,12 @@ final class ControlCaseStructuresAnalyzer
                 continue;
             }
 
-            if ($tokens[$index]->isGivenKind(T_ENDSWITCH)) {
+            if ($tokens[$index]->isGivenKind(\T_ENDSWITCH)) {
                 if (!$stack[$depth]['alternative_syntax']) {
                     throw new \RuntimeException('Analysis syntax failure, unexpected "T_ENDSWITCH".');
                 }
 
-                if (T_SWITCH !== $stack[$depth]['kind']) {
+                if (\T_SWITCH !== $stack[$depth]['kind']) {
                     throw new \RuntimeException('Analysis type failure, unexpected "T_ENDSWITCH".');
                 }
 
@@ -152,7 +155,7 @@ final class ControlCaseStructuresAnalyzer
                     throw new \RuntimeException('Analysis count failure, unexpected "T_ENDSWITCH".');
                 }
 
-                $index = $tokens->getNextTokenOfKind($index, [';', [T_CLOSE_TAG]]);
+                $index = $tokens->getNextTokenOfKind($index, [';', [\T_CLOSE_TAG]]);
 
                 if ($isTypeOfInterest) {
                     $stack[$depth]['end'] = $index;
@@ -176,9 +179,9 @@ final class ControlCaseStructuresAnalyzer
                 continue; // don't bother to analyze stuff that caller is not interested in
             }
 
-            if ($token->isGivenKind(T_CASE)) {
+            if ($token->isGivenKind(\T_CASE)) {
                 $stack[$depth]['cases'][] = ['index' => $index, 'open' => self::findCaseOpen($tokens, $stack[$depth]['kind'], $index)];
-            } elseif ($token->isGivenKind(T_DEFAULT)) {
+            } elseif ($token->isGivenKind(\T_DEFAULT)) {
                 if (null !== $stack[$depth]['default']) {
                     throw new \RuntimeException('Analysis multiple "default" found.');
                 }
@@ -212,7 +215,7 @@ final class ControlCaseStructuresAnalyzer
 
         sort($cases);
 
-        if (T_SWITCH === $analysis['kind']) {
+        if (\T_SWITCH === $analysis['kind']) {
             return new SwitchAnalysis(
                 $analysis['index'],
                 $analysis['open'],
@@ -245,7 +248,7 @@ final class ControlCaseStructuresAnalyzer
 
     private static function findCaseOpen(Tokens $tokens, int $kind, int $index): int
     {
-        if (T_SWITCH === $kind) {
+        if (\T_SWITCH === $kind) {
             $ternariesCount = 0;
 
             --$index;
@@ -286,12 +289,12 @@ final class ControlCaseStructuresAnalyzer
 
     private static function findDefaultOpen(Tokens $tokens, int $kind, int $index): int
     {
-        if (T_SWITCH === $kind) {
+        if (\T_SWITCH === $kind) {
             return $tokens->getNextTokenOfKind($index, [':', ';']);
         }
 
         if (FCT::T_MATCH === $kind) {
-            return $tokens->getNextTokenOfKind($index, [[T_DOUBLE_ARROW]]);
+            return $tokens->getNextTokenOfKind($index, [[\T_DOUBLE_ARROW]]);
         }
 
         throw new \InvalidArgumentException(\sprintf('Unexpected default for type "%d".', $kind));

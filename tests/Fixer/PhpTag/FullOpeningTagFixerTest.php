@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\PhpTag\FullOpeningTagFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpTag\FullOpeningTagFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FullOpeningTagFixerTest extends AbstractFixerTestCase
 {

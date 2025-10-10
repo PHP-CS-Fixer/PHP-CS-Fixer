@@ -25,6 +25,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Future;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -44,6 +45,8 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Jakub Kwaśniewski <jakub@zero-85.pl>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -53,7 +56,7 @@ final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableF
     /**
      * @internal
      *
-     * @var list<list<string>>
+     * @var non-empty-list<non-empty-list<string>>
      */
     public const OPTION_GROUPS_DEFAULT = [
         ['author', 'copyright', 'license'],
@@ -134,7 +137,7 @@ final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableF
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     protected function configurePostNormalisation(): void
@@ -145,7 +148,7 @@ final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableF
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -153,7 +156,7 @@ final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableF
             $this->fixDescription($doc);
             $this->fixAnnotations($doc);
 
-            $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
+            $tokens[$index] = new Token([\T_DOC_COMMENT, $doc->getContent()]);
         }
     }
 
@@ -191,7 +194,7 @@ final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableF
                 ->getOption(),
             (new FixerOptionBuilder('skip_unlisted_annotations', 'Whether to skip annotations that are not listed in any group.'))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(false) // @TODO 4.0: set to `true`.
+                ->setDefault(Future::getV4OrV3(true, false))
                 ->getOption(),
         ]);
     }

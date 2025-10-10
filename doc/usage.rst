@@ -84,39 +84,23 @@ NOTE: if there is an error like "errors reported during linting after fixing", y
 * ``-vv``: very verbose
 * ``-vvv``: debug
 
-The ``--rules`` option limits the rules to apply to the
-project:
+The ``--rules`` option allows to explicitly select rules to use, overriding the default PSR-12 or your own project config:
 
 .. code-block:: console
 
-    php php-cs-fixer.phar fix /path/to/project --rules=@PSR12
+    php php-cs-fixer.phar fix . --rules=line_ending,full_opening_tag,indentation_type
 
-By default the ``PSR12`` rules are used. If the ``--rules`` option is used rules from config files are ignored.
-
-The ``--rules`` option lets you choose the exact rules to apply (the rule names must be separated by a comma):
+You can also exclude the rules you don't want by placing a dash in front of the rule name, like ``-name_of_fixer``.
 
 .. code-block:: console
 
-    php php-cs-fixer.phar fix /path/to/dir --rules=line_ending,full_opening_tag,indentation_type
+    php php-cs-fixer.phar fix . --rules=@Symfony,-@PSR1,-blank_line_before_statement,strict_comparison
 
-You can also exclude the rules you don't want by placing a dash in front of the rule name, if this is more convenient,
-using ``-name_of_fixer``:
-
-.. code-block:: console
-
-    php php-cs-fixer.phar fix /path/to/dir --rules=-full_opening_tag,-indentation_type
-
-When using combinations of exact and exclude rules, applying exact rules along with above excluded results:
+Complete configuration for rules can be supplied using a ``json`` formatted string as well.
 
 .. code-block:: console
 
-    php php-cs-fixer.phar fix /path/to/project --rules=@Symfony,-@PSR1,-blank_line_before_statement,strict_comparison
-
-Complete configuration for rules can be supplied using a ``json`` formatted string.
-
-.. code-block:: console
-
-    php php-cs-fixer.phar fix /path/to/project --rules='{"concat_space": {"spacing": "none"}}'
+    php php-cs-fixer.phar fix . --rules='{"concat_space": {"spacing": "none"}}'
 
 The ``--dry-run`` flag will run the fixer without making changes to your files (implicitly set when you use ``check`` command).
 
@@ -194,7 +178,7 @@ Note: You need to pass the config to the ``fix`` command, in order to make it wo
 
 .. code-block:: console
 
-    php php-cs-fixer.phar list-files --config=.php-cs-fixer.dist.php | xargs -n 50 -P 8 php php-cs-fixer.phar fix --config=.php-cs-fixer.dist.php --path-mode intersection -v
+    php php-cs-fixer.phar list-files --config=.php-cs-fixer.dist.php | xargs -n 50 -P 8 php php-cs-fixer.phar fix --config=.php-cs-fixer.dist.php --path-mode=intersection -v
 
 * ``-n`` defines how many files a single subprocess process
 * ``-P`` defines how many subprocesses the shell is allowed to spawn for parallel processing (usually similar to the number of CPUs your system has)
@@ -214,6 +198,15 @@ To visualize all the rules that belong to a ruleset:
 .. code-block:: console
 
     php php-cs-fixer.phar describe @PSR2
+
+Command-line completion
+-----------------------
+
+Command-line completion can be enabled by running this command and following the instructions:
+
+.. code-block:: console
+
+    php php-cs-fixer.phar completion --help
 
 Caching
 -------
@@ -259,7 +252,7 @@ Then, add the following command to your CI:
     '
     CHANGED_FILES=$(git diff --name-only --diff-filter=ACMRTUXB "${COMMIT_RANGE}")
     if ! echo "${CHANGED_FILES}" | grep -qE "^(\\.php-cs-fixer(\\.dist)?\\.php|composer\\.lock)$"; then EXTRA_ARGS=$(printf -- '--path-mode=intersection\n--\n%s' "${CHANGED_FILES}"); else EXTRA_ARGS=''; fi
-    vendor/bin/php-cs-fixer check --config=.php-cs-fixer.dist.php -v --stop-on-violation --using-cache=no ${EXTRA_ARGS}
+    vendor/bin/php-cs-fixer check --config=.php-cs-fixer.dist.php -v --show-progress=dots --stop-on-violation --using-cache=no ${EXTRA_ARGS}
 
 Where ``$COMMIT_RANGE`` is your range of commits, e.g. ``${{github.event.before}}...${{github.event.after}}`` or ``HEAD~..HEAD``.
 
@@ -269,11 +262,13 @@ GitLab Code Quality Integration
 If you want to integrate with GitLab's Code Quality feature, in order for report to contain correct line numbers, you
 will need to use both ``--format=gitlab`` and ``--diff`` arguments.
 
-Environment options
--------------------
+Environment
+-----------
 
-The ``PHP_CS_FIXER_IGNORE_ENV`` environment variable can be used to ignore any environment requirements.
-This includes requirements like missing PHP extensions, unsupported PHP versions or by using HHVM.
+The ``--allow-unsupported-php-version=yes`` can be used to ignore any environment requirements.
+
+Also possible via ``PHP_CS_FIXER_IGNORE_ENV`` environment variable (deprecated),
+which also allows the Fixer to run with required PHP extensions missing.
 
 NOTE: Execution may be unstable when used.
 

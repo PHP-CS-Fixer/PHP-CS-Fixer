@@ -22,6 +22,9 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class IntegerLiteralCaseFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
@@ -38,25 +41,30 @@ final class IntegerLiteralCaseFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_LNUMBER);
+        return $tokens->isTokenKindFound(\T_LNUMBER);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_LNUMBER)) {
+            if (!$token->isGivenKind(\T_LNUMBER)) {
                 continue;
             }
 
             $content = $token->getContent();
 
-            $newContent = Preg::replaceCallback('#^0([boxBOX])([0-9a-fA-F_]+)$#', static fn ($matches) => '0'.strtolower($matches[1]).strtoupper($matches[2]), $content);
+            $newContent = Preg::replaceCallback(
+                '#^0([boxBOX])([0-9a-fA-F_]+)$#',
+                // @phpstan-ignore-next-line offsetAccess.notFound
+                static fn (array $matches): string => '0'.strtolower($matches[1]).strtoupper($matches[2]),
+                $content
+            );
 
             if ($content === $newContent) {
                 continue;
             }
 
-            $tokens[$index] = new Token([T_LNUMBER, $newContent]);
+            $tokens[$index] = new Token([\T_LNUMBER, $newContent]);
         }
     }
 }

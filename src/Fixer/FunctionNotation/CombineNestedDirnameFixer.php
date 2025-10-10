@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Gregor Harlan
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class CombineNestedDirnameFixer extends AbstractFixer
 {
@@ -43,7 +45,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     public function isRisky(): bool
@@ -105,11 +107,11 @@ final class CombineNestedDirnameFixer extends AbstractFixer
      * @param int      $index                 Index of `dirname`
      * @param null|int $firstArgumentEndIndex Index of last token of first argument of `dirname` call
      *
-     * @return array{indices: list<int>, secondArgument?: int, levels: int, end: int}|false `false` when it is not a (supported) `dirname` call, an array with info about the dirname call otherwise
+     * @return array{indices: non-empty-list<int>, secondArgument?: int, levels: int, end: int}|false `false` when it is not a (supported) `dirname` call, an array with info about the dirname call otherwise
      */
     private function getDirnameInfo(Tokens $tokens, int $index, ?int $firstArgumentEndIndex = null)
     {
-        if (!$tokens[$index]->equals([T_STRING, 'dirname'], false)) {
+        if (!$tokens[$index]->equals([\T_STRING, 'dirname'], false)) {
             return false;
         }
 
@@ -120,7 +122,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
         $info = ['indices' => []];
         $prev = $tokens->getPrevMeaningfulToken($index);
 
-        if ($tokens[$prev]->isGivenKind(T_NS_SEPARATOR)) {
+        if ($tokens[$prev]->isGivenKind(\T_NS_SEPARATOR)) {
             $info['indices'][] = $prev;
         }
 
@@ -164,7 +166,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
             return $info;
         }
 
-        if (!$tokens[$next]->isGivenKind(T_LNUMBER)) {
+        if (!$tokens[$next]->isGivenKind(\T_LNUMBER)) {
             return false;
         }
 
@@ -189,7 +191,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
     }
 
     /**
-     * @param non-empty-list<array{indices: list<int>, secondArgument?: int, levels: int, end: int}> $dirnameInfoArray
+     * @param non-empty-list<array{indices: non-empty-list<int>, secondArgument?: int, levels: int, end: int}> $dirnameInfoArray
      */
     private function combineDirnames(Tokens $tokens, array $dirnameInfoArray): void
     {
@@ -205,7 +207,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
             }
         }
 
-        $levelsToken = new Token([T_LNUMBER, (string) $levels]);
+        $levelsToken = new Token([\T_LNUMBER, (string) $levels]);
 
         if (isset($outerDirnameInfo['secondArgument'])) {
             $tokens[$outerDirnameInfo['secondArgument']] = $levelsToken;
@@ -214,7 +216,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
             $items = [];
 
             if (!$tokens[$prev]->equals(',')) {
-                $items = [new Token(','), new Token([T_WHITESPACE, ' '])];
+                $items = [new Token(','), new Token([\T_WHITESPACE, ' '])];
             }
 
             $items[] = $levelsToken;

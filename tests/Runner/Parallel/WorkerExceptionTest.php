@@ -21,6 +21,8 @@ use PhpCsFixer\Tests\TestCase;
  * @covers \PhpCsFixer\Runner\Parallel\WorkerException
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class WorkerExceptionTest extends TestCase
 {
@@ -39,6 +41,6 @@ final class WorkerExceptionTest extends TestCase
         self::assertSame('foo.php', $exception->getFile());
         self::assertSame(1, $exception->getLine());
         self::assertSame(1, $exception->getCode());
-        self::assertSame('## foo.php(1)'.PHP_EOL.'#0 bar', $exception->getOriginalTraceAsString());
+        self::assertSame('## foo.php(1)'.\PHP_EOL.'#0 bar', $exception->getOriginalTraceAsString());
     }
 }

@@ -43,6 +43,8 @@ use Symfony\Component\OptionsResolver\Options;
  *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Greg Korba <greg@codito.dev>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements WhitespacesAwareFixerInterface, ConfigurableFixerInterface
 {
@@ -65,7 +67,7 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_NAMESPACE);
+        return $tokens->isTokenKindFound(\T_NAMESPACE);
     }
 
     /**
@@ -124,7 +126,7 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(T_NAMESPACE)) {
+            if ($token->isGivenKind(\T_NAMESPACE)) {
                 $this->fixLinesBeforeNamespace(
                     $tokens,
                     $index,
@@ -154,7 +156,7 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
             if (isset($tokens[$index - $i])) {
                 $token = $tokens[$index - $i];
 
-                if ($token->isGivenKind(T_OPEN_TAG)) {
+                if ($token->isGivenKind(\T_OPEN_TAG)) {
                     $openingToken = $token;
                     $openingTokenIndex = $index - $i;
                     $newlineInOpening = str_contains($token->getContent(), "\n");
@@ -166,7 +168,7 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
                     break;
                 }
 
-                if (false === $token->isGivenKind(T_WHITESPACE)) {
+                if (false === $token->isGivenKind(\T_WHITESPACE)) {
                     break;
                 }
 
@@ -189,7 +191,7 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
 
             // Remove new lines in opening token
             if ($newlineInOpening) {
-                $tokens[$openingTokenIndex] = new Token([T_OPEN_TAG, rtrim($openingToken->getContent()).' ']);
+                $tokens[$openingTokenIndex] = new Token([\T_OPEN_TAG, rtrim($openingToken->getContent()).' ']);
             }
 
             return;
@@ -209,7 +211,7 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
             // Use the configured line ending for the PHP opening tag
             $content = rtrim($openingToken->getContent());
             $newContent = $content.$lineEnding;
-            $tokens[$openingTokenIndex] = new Token([T_OPEN_TAG, $newContent]);
+            $tokens[$openingTokenIndex] = new Token([\T_OPEN_TAG, $newContent]);
             --$newlinesForWhitespaceToken;
         }
 
@@ -225,18 +227,13 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
 
         if ($previous->isWhitespace()) {
             // Fix the previous whitespace token
-            $tokens[$previousIndex] = new Token(
-                [
-                    T_WHITESPACE,
-                    str_repeat($lineEnding, $newlinesForWhitespaceToken).substr(
-                        $previous->getContent(),
-                        strrpos($previous->getContent(), "\n") + 1
-                    ),
-                ]
-            );
+            $content = $previous->getContent();
+            $pos = strrpos($content, "\n");
+            $content = false === $pos ? '' : substr($content, $pos + 1);
+            $tokens[$previousIndex] = new Token([\T_WHITESPACE, str_repeat($lineEnding, $newlinesForWhitespaceToken).$content]);
         } else {
             // Add a new whitespace token
-            $tokens->insertAt($index, new Token([T_WHITESPACE, str_repeat($lineEnding, $newlinesForWhitespaceToken)]));
+            $tokens->insertAt($index, new Token([\T_WHITESPACE, str_repeat($lineEnding, $newlinesForWhitespaceToken)]));
         }
     }
 }

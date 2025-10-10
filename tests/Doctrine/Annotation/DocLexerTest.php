@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Doctrine\Annotation\DocLexer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DocLexerTest extends TestCase
 {
@@ -30,7 +32,6 @@ final class DocLexerTest extends TestCase
         $lexer = new DocLexer();
         $lexer->setInput('/** @Foo("bar": 42) */');
 
-        /** @var list<array{DocLexer::T_*, string, int}> */
         $expectedContents = [
             [DocLexer::T_NONE, '/', 0],
             [DocLexer::T_AT, '@', 4],

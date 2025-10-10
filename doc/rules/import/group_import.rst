@@ -49,6 +49,7 @@ With configuration: ``['group_types' => ['classy']]``.
    -use A\Bar;
    +use A\{Bar, Foo};
     use function B\bar;
+
 References
 ----------
 

@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ClassKeywordFixer extends AbstractFixer implements ExperimentalFixerInterface
 {
@@ -32,11 +34,13 @@ final class ClassKeywordFixer extends AbstractFixer implements ExperimentalFixer
             'Converts FQCN strings to `*::class` keywords.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-$foo = \'PhpCsFixer\Tokenizer\Tokens\';
-$bar = "\PhpCsFixer\Tokenizer\Tokens";
-'
+                        $foo = 'PhpCsFixer\Tokenizer\Tokens';
+                        $bar = "\PhpCsFixer\Tokenizer\Tokens";
+
+                        PHP
                 ),
             ],
             'This rule does not have an understanding of whether a class exists in the scope of the codebase or not, relying on run-time and autoloaded classes to determine it, which makes the rule useless when running on a single file out of codebase context.',
@@ -69,7 +73,7 @@ $bar = "\PhpCsFixer\Tokenizer\Tokens";
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
+            if ($token->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
                 $name = substr($token->getContent(), 1, -1);
                 $name = ltrim($name, '\\');
                 $name = str_replace('\\\\', '\\', $name);

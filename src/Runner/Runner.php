@@ -27,6 +27,7 @@ use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Error\SourceExceptionFactory;
 use PhpCsFixer\FileReader;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Future;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\LintingResultInterface;
@@ -55,6 +56,8 @@ use Symfony\Contracts\EventDispatcher\Event;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Greg Korba <greg@codito.dev>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class Runner
 {
@@ -188,7 +191,7 @@ final class Runner
         $changed = [];
         $streamSelectLoop = new StreamSelectLoop();
         $server = new TcpServer('127.0.0.1:0', $streamSelectLoop);
-        $serverPort = parse_url($server->getAddress() ?? '', PHP_URL_PORT);
+        $serverPort = parse_url($server->getAddress() ?? '', \PHP_URL_PORT);
 
         if (!is_numeric($serverPort)) {
             throw new ParallelisationException(\sprintf(
@@ -226,10 +229,10 @@ final class Runner
                 $connection,
                 true,
                 512,
-                JSON_INVALID_UTF8_IGNORE,
+                \JSON_INVALID_UTF8_IGNORE,
                 self::PARALLEL_BUFFER_SIZE
             );
-            $encoder = new Encoder($connection, JSON_INVALID_UTF8_IGNORE);
+            $encoder = new Encoder($connection, \JSON_INVALID_UTF8_IGNORE);
 
             // [REACT] Bind connection when worker's process requests "hello" action (enables 2-way communication)
             $decoder->on('data', static function (array $data) use ($processPool, $getFileChunk, $decoder, $encoder): void {
@@ -260,12 +263,13 @@ final class Runner
                 (int) ceil($this->fileCount / $this->parallelConfig->getFilesPerProcess()),
             )
         );
-        $processFactory = new ProcessFactory($this->input);
+        $processFactory = new ProcessFactory();
 
         for ($i = 0; $i < $processesToSpawn; ++$i) {
             $identifier = ProcessIdentifier::create();
             $process = $processFactory->create(
                 $streamSelectLoop,
+                $this->input,
                 new RunnerConfig(
                     $this->isDryRun,
                     $this->stopOnViolation,
@@ -360,7 +364,9 @@ final class Runner
                     );
 
                     if ($errorsReported > 0) {
-                        throw WorkerException::fromRaw(json_decode($matches[1][0], true));
+                        throw WorkerException::fromRaw(
+                            json_decode($matches[1][0], true, 512, \JSON_THROW_ON_ERROR)
+                        );
                     }
                 }
             );
@@ -423,6 +429,20 @@ final class Runner
         $old = FileReader::createSingleton()->read($file->getRealPath());
 
         $tokens = Tokens::fromCode($old);
+
+        if (
+            Future::isFutureModeEnabled() // @TODO 4.0 drop this line
+            && !filter_var(getenv('PHP_CS_FIXER_NON_MONOLITHIC'), \FILTER_VALIDATE_BOOL)
+            && !$tokens->isMonolithicPhp()
+        ) {
+            $this->dispatchEvent(
+                FileProcessed::NAME,
+                new FileProcessed(FileProcessed::STATUS_NON_MONOLITHIC)
+            );
+
+            return null;
+        }
+
         $oldHash = $tokens->getCodeHash();
 
         $new = $old;
@@ -535,7 +555,7 @@ final class Runner
 
         $this->dispatchEvent(
             FileProcessed::NAME,
-            new FileProcessed(null !== $fixInfo ? FileProcessed::STATUS_FIXED : FileProcessed::STATUS_NO_CHANGES, $filePathname, $newHash)
+            new FileProcessed(null !== $fixInfo ? FileProcessed::STATUS_FIXED : FileProcessed::STATUS_NO_CHANGES, $newHash)
         );
 
         return $fixInfo;

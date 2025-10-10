@@ -48,6 +48,7 @@ Example #1
    +$a = mb_stristr($a, $b);
    +$a = mb_strrchr($a, $b);
    +$a = mb_substr_count($a, $b);
+
 References
 ----------
 

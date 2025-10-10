@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SimplifiedNullReturnFixer extends AbstractFixer
 {
@@ -58,13 +60,13 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_RETURN);
+        return $tokens->isTokenKindFound(\T_RETURN);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_RETURN)) {
+            if (!$token->isGivenKind(\T_RETURN)) {
                 continue;
             }
 
@@ -79,7 +81,7 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
      */
     private function clear(Tokens $tokens, int $index): void
     {
-        while (!$tokens[++$index]->equalsAny([';', [T_CLOSE_TAG]])) {
+        while (!$tokens[++$index]->equalsAny([';', [\T_CLOSE_TAG]])) {
             if ($this->shouldClearToken($tokens, $index)) {
                 $tokens->clearAt($index);
             }
@@ -96,7 +98,7 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
         }
 
         $content = '';
-        while (!$tokens[$index]->equalsAny([';', [T_CLOSE_TAG]])) {
+        while (!$tokens[$index]->equalsAny([';', [\T_CLOSE_TAG]])) {
             $index = $tokens->getNextMeaningfulToken($index);
             $content .= $tokens[$index]->getContent();
         }
@@ -119,7 +121,7 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
     {
         $functionIndex = $returnIndex;
         do {
-            $functionIndex = $tokens->getPrevTokenOfKind($functionIndex, [[T_FUNCTION]]);
+            $functionIndex = $tokens->getPrevTokenOfKind($functionIndex, [[\T_FUNCTION]]);
             if (null === $functionIndex) {
                 return false;
             }
@@ -128,7 +130,7 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
         } while ($closingCurlyBraceIndex < $returnIndex);
 
         $possibleVoidIndex = $tokens->getPrevMeaningfulToken($openingCurlyBraceIndex);
-        $isStrictReturnType = $tokens[$possibleVoidIndex]->isGivenKind([T_STRING, CT::T_ARRAY_TYPEHINT])
+        $isStrictReturnType = $tokens[$possibleVoidIndex]->isGivenKind([\T_STRING, CT::T_ARRAY_TYPEHINT])
             && 'void' !== $tokens[$possibleVoidIndex]->getContent();
 
         $nullableTypeIndex = $tokens->getNextTokenOfKind($functionIndex, [[CT::T_NULLABLE_TYPE]]);
@@ -160,7 +162,7 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
 
         if (
             $tokens[$index + 1]->isComment()
-            || $tokens[$index + 1]->equals([T_CLOSE_TAG])
+            || $tokens[$index + 1]->isGivenKind(\T_CLOSE_TAG)
             || ($tokens[$index - 1]->isComment() && $tokens[$index + 1]->equals(';'))
         ) {
             return false;

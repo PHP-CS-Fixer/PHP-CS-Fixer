@@ -14,17 +14,22 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Test;
 
-use PhpCsFixer\AccessibleObject\AccessibleObject;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\Transformers;
 
+/**
+ * @phpstan-import-type _PhpTokenKind from Token
+ * @phpstan-import-type _PhpTokenPrototypePartial from Token
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 class TokensWithObservedTransformers extends Tokens
 {
     public ?string $currentTransformer = null;
 
     /**
-     * @var array<string, list<int|string>>
+     * @var array<string, list<_PhpTokenKind>>
      */
     public array $observedModificationsPerTransformer = [];
 
@@ -45,7 +50,14 @@ class TokensWithObservedTransformers extends Tokens
         $this->observedModificationsPerTransformer = [];
 
         $transformers = Transformers::createSingleton();
-        foreach (AccessibleObject::create($transformers)->items as $transformer) {
+
+        $items = \Closure::bind(
+            static fn (Transformers $transformers): array => $transformers->items,
+            null,
+            Transformers::class
+        )($transformers);
+
+        foreach ($items as $transformer) {
             $this->currentTransformer = $transformer->getName();
             $this->observedModificationsPerTransformer[$this->currentTransformer] = [];
 
@@ -58,9 +70,9 @@ class TokensWithObservedTransformers extends Tokens
     }
 
     /**
-     * @param array{int}|string|Token $token token prototype
+     * @param _PhpTokenPrototypePartial|Token $token token prototype
      *
-     * @return int|string
+     * @return _PhpTokenKind
      */
     private function extractTokenKind($token)
     {

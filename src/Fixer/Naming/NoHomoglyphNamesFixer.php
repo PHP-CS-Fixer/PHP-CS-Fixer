@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Fred Cox <mcfedr@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoHomoglyphNamesFixer extends AbstractFixer
 {
@@ -210,13 +212,13 @@ final class NoHomoglyphNamesFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_VARIABLE, T_STRING]);
+        return $tokens->isAnyTokenKindsFound([\T_VARIABLE, \T_STRING]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind([T_VARIABLE, T_STRING])) {
+            if (!$token->isGivenKind([\T_VARIABLE, \T_STRING])) {
                 continue;
             }
 

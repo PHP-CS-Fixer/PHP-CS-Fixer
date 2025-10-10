@@ -24,6 +24,7 @@ use PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer;
 use PhpCsFixer\Fixer\ControlStructure\IncludeFixer;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
+use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleset;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -33,6 +34,8 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  * @internal
  *
  * @covers \PhpCsFixer\Config
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ConfigTest extends TestCase
 {
@@ -234,6 +237,16 @@ final class ConfigTest extends TestCase
         yield [$fixers, new \ArrayIterator($fixers)];
     }
 
+    public function testRegisterCustomRuleSets(): void
+    {
+        $ruleset = new ExampleRuleset();
+
+        $config = new Config();
+        $config->registerCustomRuleSets([$ruleset]);
+
+        self::assertSame([$ruleset], $config->getCustomRuleSets());
+    }
+
     public function testConfigDefault(): void
     {
         $config = new Config();
@@ -249,6 +262,7 @@ final class ConfigTest extends TestCase
         self::assertFalse($config->getRiskyAllowed());
         self::assertSame(['@PSR12' => true], $config->getRules());
         self::assertTrue($config->getUsingCache());
+        self::assertSame(filter_var(getenv('PHP_CS_FIXER_IGNORE_ENV'), \FILTER_VALIDATE_BOOL), $config->getUnsupportedPhpVersionAllowed());
 
         $finder = $config->getFinder();
         self::assertInstanceOf(Finder::class, $finder);
@@ -274,6 +288,9 @@ final class ConfigTest extends TestCase
 
         $config->setUsingCache(false);
         self::assertFalse($config->getUsingCache());
+
+        $config->setUnsupportedPhpVersionAllowed(true);
+        self::assertTrue($config->getUnsupportedPhpVersionAllowed());
     }
 
     public function testConfigConstructorWithName(): void

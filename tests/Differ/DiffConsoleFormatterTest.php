@@ -22,6 +22,8 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
  * @internal
  *
  * @covers \PhpCsFixer\Differ\DiffConsoleFormatter
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DiffConsoleFormatterTest extends TestCase
 {
@@ -33,8 +35,8 @@ final class DiffConsoleFormatterTest extends TestCase
         $diffFormatter = new DiffConsoleFormatter($isDecoratedOutput, $template);
 
         self::assertSame(
-            str_replace(PHP_EOL, "\n", $expected),
-            str_replace(PHP_EOL, "\n", $diffFormatter->format($diff, $lineTemplate))
+            str_replace(\PHP_EOL, "\n", $expected),
+            str_replace(\PHP_EOL, "\n", $diffFormatter->format($diff, $lineTemplate))
         );
     }
 
@@ -62,8 +64,8 @@ final class DiffConsoleFormatterTest extends TestCase
             true,
             \sprintf(
                 '<comment>   ---------- begin diff ----------</comment>%s%%s%s<comment>   ----------- end diff -----------</comment>',
-                PHP_EOL,
-                PHP_EOL
+                \PHP_EOL,
+                \PHP_EOL
             ),
             '
 @@ -12,51 +12,151 @@
@@ -87,7 +89,7 @@ final class DiffConsoleFormatterTest extends TestCase
 | '.'
 [end]',
             false,
-            \sprintf('[start]%s%%s%s[end]', PHP_EOL, PHP_EOL),
+            \sprintf('[start]%s%%s%s[end]', \PHP_EOL, \PHP_EOL),
             '
 @@ -12,51 +12,151 @@
  no change

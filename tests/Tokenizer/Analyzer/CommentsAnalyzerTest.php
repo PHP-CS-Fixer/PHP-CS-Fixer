@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\CommentsAnalyzer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class CommentsAnalyzerTest extends TestCase
 {
@@ -237,7 +239,7 @@ $bar;',
     public function testPhpdocCandidate(string $code): void
     {
         $tokens = Tokens::fromCode($code);
-        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
+        $index = $tokens->getNextTokenOfKind(0, [[\T_COMMENT], [\T_DOC_COMMENT]]);
         $analyzer = new CommentsAnalyzer();
 
         self::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
@@ -379,7 +381,7 @@ $bar;',
     public function testNotPhpdocCandidate(string $code): void
     {
         $tokens = Tokens::fromCode($code);
-        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
+        $index = $tokens->getNextTokenOfKind(0, [[\T_COMMENT], [\T_DOC_COMMENT]]);
         $analyzer = new CommentsAnalyzer();
 
         self::assertFalse($analyzer->isBeforeStructuralElement($tokens, $index));
@@ -532,7 +534,7 @@ enum Foo: int {
     public function testReturnStatement(string $code, bool $expected): void
     {
         $tokens = Tokens::fromCode($code);
-        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
+        $index = $tokens->getNextTokenOfKind(0, [[\T_COMMENT], [\T_DOC_COMMENT]]);
         $analyzer = new CommentsAnalyzer();
 
         self::assertSame($expected, $analyzer->isBeforeReturn($tokens, $index));

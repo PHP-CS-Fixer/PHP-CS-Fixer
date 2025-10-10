@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderReturnTypeFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderReturnTypeFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpUnitDataProviderReturnTypeFixerTest extends AbstractFixerTestCase
 {
@@ -320,24 +322,27 @@ class FooTest extends TestCase {
      */
     private static function mapToTemplate(string ...$types): array
     {
-        static $template = '<?php
-class FooTest extends TestCase {
-    /**
-     * @dataProvider provideFooCases
-     */
-    public function testFoo() {}
-    /**
-     * @dataProvider provider
-     */
-    public function testBar() {}
-    public function provideFooCases()%1$s {}
-    public function provider()%1$s {}
-    public function notProvider(): array {}
-}';
-
         // @phpstan-ignore-next-line return.type
         return array_map(
-            static fn (string $type): string => \sprintf($template, $type),
+            static fn (string $type): string => \sprintf(
+                <<<'PHP'
+                    <?php
+                    class FooTest extends TestCase {
+                        /**
+                         * @dataProvider provideFooCases
+                         */
+                        public function testFoo() {}
+                        /**
+                         * @dataProvider provider
+                         */
+                        public function testBar() {}
+                        public function provideFooCases()%1$s {}
+                        public function provider()%1$s {}
+                        public function notProvider(): array {}
+                    }
+                    PHP,
+                $type
+            ),
             $types
         );
     }

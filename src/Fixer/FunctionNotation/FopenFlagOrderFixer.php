@@ -22,6 +22,9 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class FopenFlagOrderFixer extends AbstractFopenFlagFixer
 {
     public function getDefinition(): FixerDefinitionInterface
@@ -39,7 +42,7 @@ final class FopenFlagOrderFixer extends AbstractFopenFlagFixer
         $argumentFlagIndex = null;
 
         for ($i = $argumentStartIndex; $i <= $argumentEndIndex; ++$i) {
-            if ($tokens[$i]->isGivenKind([T_WHITESPACE, T_COMMENT, T_DOC_COMMENT])) {
+            if ($tokens[$i]->isGivenKind([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT])) {
                 continue;
             }
 
@@ -51,7 +54,7 @@ final class FopenFlagOrderFixer extends AbstractFopenFlagFixer
         }
 
         // check if second argument is candidate
-        if (null === $argumentFlagIndex || !$tokens[$argumentFlagIndex]->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
+        if (null === $argumentFlagIndex || !$tokens[$argumentFlagIndex]->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
             return;
         }
 
@@ -76,11 +79,11 @@ final class FopenFlagOrderFixer extends AbstractFopenFlagFixer
             return;
         }
 
-        $split = $this->sortFlags(Preg::split('#([^\+]\+?)#', $mode, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE));
+        $split = $this->sortFlags(Preg::split('#([^\+]\+?)#', $mode, -1, \PREG_SPLIT_NO_EMPTY | \PREG_SPLIT_DELIM_CAPTURE));
         $newContent = $binPrefix.$contentQuote.implode('', $split).$contentQuote;
 
         if ($content !== $newContent) {
-            $tokens[$argumentFlagIndex] = new Token([T_CONSTANT_ENCAPSED_STRING, $newContent]);
+            $tokens[$argumentFlagIndex] = new Token([\T_CONSTANT_ENCAPSED_STRING, $newContent]);
         }
     }
 

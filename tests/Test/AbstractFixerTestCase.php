@@ -46,9 +46,13 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @template TFixer of FixerInterface
  *
+ * @phpstan-import-type _PhpTokenArrayPartial from Token
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractFixerTestCase extends TestCase
 {
@@ -301,7 +305,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
         $tokens = Tokens::fromCode((string) file_get_contents($filePath));
 
-        $sequences = $this->findAllTokenSequences($tokens, [[T_VARIABLE, '$tokens'], [T_OBJECT_OPERATOR], [T_STRING]]);
+        $sequences = $this->findAllTokenSequences($tokens, [[\T_VARIABLE, '$tokens'], [\T_OBJECT_OPERATOR], [\T_STRING]]);
 
         $usedMethods = array_unique(array_map(static function (array $sequence): string {
             $last = end($sequence);
@@ -401,7 +405,7 @@ abstract class AbstractFixerTestCase extends TestCase
             PhpUnitTestCaseStaticMethodCallsFixerTest::class => ['testFixerContainsAllPhpunitStaticMethodsInItsList'],
         ];
 
-        $names = ['Fix', 'FixDeprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'WithShortOpenTag', 'WithWhitespacesConfig', 'InvalidConfiguration'];
+        $names = ['Fix', 'FixDeprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'FixPre85', 'Fix85', 'WithShortOpenTag', 'WithWhitespacesConfig', 'InvalidConfiguration'];
         $methodNames = ['testConfigure'];
         foreach ($names as $name) {
             $methodNames[] = 'test'.$name;
@@ -457,9 +461,9 @@ abstract class AbstractFixerTestCase extends TestCase
 
         self::assertSame(
             null !== $tokens->findSequence([
-                [T_VARIABLE, '$this'],
-                [T_OBJECT_OPERATOR],
-                [T_STRING, 'whitespacesConfig'],
+                [\T_VARIABLE, '$this'],
+                [\T_OBJECT_OPERATOR],
+                [\T_STRING, 'whitespacesConfig'],
             ]),
             $this->fixer instanceof WhitespacesAwareFixerInterface,
         );
@@ -522,7 +526,6 @@ abstract class AbstractFixerTestCase extends TestCase
 
             self::assertSameSize(
                 $tokens,
-                // @phpstan-ignore-next-line argument.type as all elements in `$tokens->toArray()` always objects of `Token`
                 array_unique(array_map(static fn (Token $token): string => spl_object_hash($token), $tokens->toArray())),
                 'Token items inside Tokens collection must be unique.'
             );
@@ -587,7 +590,9 @@ abstract class AbstractFixerTestCase extends TestCase
 
         if (null === $linter) {
             $linter = new CachingLinter(
-                '1' === getenv('FAST_LINT_TEST_CASES') ? new Linter() : new ProcessLinter()
+                filter_var(getenv('PHP_CS_FIXER_FAST_LINT_TEST_CASES'), \FILTER_VALIDATE_BOOLEAN)
+                    ? new Linter()
+                    : new ProcessLinter()
             );
         }
 
@@ -660,7 +665,7 @@ abstract class AbstractFixerTestCase extends TestCase
     }
 
     /**
-     * @param non-empty-list<array{0: int, 1?: string}> $sequence
+     * @param non-empty-list<_PhpTokenArrayPartial> $sequence
      *
      * @return list<non-empty-array<int, Token>>
      */

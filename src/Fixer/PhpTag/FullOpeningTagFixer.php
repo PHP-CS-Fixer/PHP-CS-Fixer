@@ -26,6 +26,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * Fixer for rules defined in PSR1 ¶2.1.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FullOpeningTagFixer extends AbstractFixer
 {
@@ -35,10 +37,20 @@ final class FullOpeningTagFixer extends AbstractFixer
             'PHP code must use the long `<?php` tags or short-echo `<?=` tags and not other tag variations.',
             [
                 new CodeSample(
-                    '<?
+                    <<<'PHP'
+                        <?
 
-echo "Hello!";
-'
+                        echo "Hello!";
+
+                        PHP
+                ),
+                new CodeSample(
+                    <<<'PHP'
+                        <?PHP
+
+                        echo "Hello!";
+
+                        PHP
                 ),
             ]
         );
@@ -76,7 +88,7 @@ echo "Hello!";
         $tokensOldContentLength = 0;
 
         foreach ($newTokens as $index => $token) {
-            if ($token->isGivenKind(T_OPEN_TAG)) {
+            if ($token->isGivenKind(\T_OPEN_TAG)) {
                 $tokenContent = $token->getContent();
                 $possibleOpenContent = substr($content, $tokensOldContentLength, 5);
 
@@ -89,7 +101,7 @@ echo "Hello!";
                 continue;
             }
 
-            if ($token->isGivenKind([T_COMMENT, T_DOC_COMMENT, T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE, T_STRING])) {
+            if ($token->isGivenKind([\T_COMMENT, \T_DOC_COMMENT, \T_CONSTANT_ENCAPSED_STRING, \T_ENCAPSED_AND_WHITESPACE, \T_STRING])) {
                 $tokenContent = '';
                 $tokenContentLength = 0;
                 $parts = explode('<?php', $token->getContent());

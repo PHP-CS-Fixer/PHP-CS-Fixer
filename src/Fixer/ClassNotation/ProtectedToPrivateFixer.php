@@ -26,10 +26,12 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ProtectedToPrivateFixer extends AbstractFixer
 {
-    private const MODIFIER_KINDS = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_NS_SEPARATOR, T_STRING, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, T_STATIC, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET];
+    private const MODIFIER_KINDS = [\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_FINAL, \T_ABSTRACT, \T_NS_SEPARATOR, \T_STRING, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, \T_STATIC, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET];
     private TokensAnalyzer $tokensAnalyzer;
 
     public function getDefinition(): FixerDefinitionInterface
@@ -38,16 +40,18 @@ final class ProtectedToPrivateFixer extends AbstractFixer
             'Converts `protected` variables and methods to `private` where possible.',
             [
                 new CodeSample(
-                    '<?php
-final class Sample
-{
-    protected $a;
+                    <<<'PHP'
+                        <?php
+                        final class Sample
+                        {
+                            protected $a;
 
-    protected function test()
-    {
-    }
-}
-'
+                            protected function test()
+                            {
+                            }
+                        }
+
+                        PHP
                 ),
             ]
         );
@@ -66,9 +70,9 @@ final class Sample
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, FCT::T_PROTECTED_SET])
+        return $tokens->isAnyTokenKindsFound([\T_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, FCT::T_PROTECTED_SET])
             && (
-                $tokens->isAllTokenKindsFound([T_CLASS, T_FINAL])
+                $tokens->isAllTokenKindsFound([\T_CLASS, \T_FINAL])
                 || $tokens->isTokenKindFound(FCT::T_ENUM)
             );
     }
@@ -102,13 +106,13 @@ final class Sample
             do {
                 $previousIndex = $tokens->getPrevMeaningfulToken($previousIndex);
 
-                if ($tokens[$previousIndex]->isGivenKind(T_PROTECTED)) {
+                if ($tokens[$previousIndex]->isGivenKind(\T_PROTECTED)) {
                     $protectedIndex = $previousIndex;
                 } elseif ($tokens[$previousIndex]->isGivenKind(CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED)) {
                     $protectedPromotedIndex = $previousIndex;
                 } elseif ($tokens[$previousIndex]->isGivenKind(FCT::T_PROTECTED_SET)) {
                     $protectedSetIndex = $previousIndex;
-                } elseif ($tokens[$previousIndex]->isGivenKind(T_FINAL)) {
+                } elseif ($tokens[$previousIndex]->isGivenKind(\T_FINAL)) {
                     $isFinal = true;
                 }
             } while ($tokens[$previousIndex]->isGivenKind(self::MODIFIER_KINDS));
@@ -118,13 +122,13 @@ final class Sample
             }
 
             if (null !== $protectedIndex) {
-                $tokens[$protectedIndex] = new Token([T_PRIVATE, 'private']);
+                $tokens[$protectedIndex] = new Token([\T_PRIVATE, 'private']);
             }
             if (null !== $protectedPromotedIndex) {
                 $tokens[$protectedPromotedIndex] = new Token([CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE, 'private']);
             }
             if (null !== $protectedSetIndex) {
-                $tokens[$protectedSetIndex] = new Token([T_PRIVATE_SET, 'private(set)']);
+                $tokens[$protectedSetIndex] = new Token([\T_PRIVATE_SET, 'private(set)']);
             }
         }
     }
@@ -144,7 +148,7 @@ final class Sample
             return true;
         }
 
-        if (!$tokens[$classIndex]->isGivenKind(T_CLASS) || $this->tokensAnalyzer->isAnonymousClass($classIndex)) {
+        if (!$tokens[$classIndex]->isGivenKind(\T_CLASS) || $this->tokensAnalyzer->isAnonymousClass($classIndex)) {
             return false;
         }
 
@@ -157,7 +161,7 @@ final class Sample
         $classNameIndex = $tokens->getNextMeaningfulToken($classIndex); // move to class name as anonymous class is never "final"
         $classExtendsIndex = $tokens->getNextMeaningfulToken($classNameIndex); // move to possible "extends"
 
-        if ($tokens[$classExtendsIndex]->isGivenKind(T_EXTENDS)) {
+        if ($tokens[$classExtendsIndex]->isGivenKind(\T_EXTENDS)) {
             return false;
         }
 

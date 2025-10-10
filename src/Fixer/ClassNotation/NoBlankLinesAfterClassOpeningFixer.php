@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
@@ -38,15 +40,17 @@ final class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer implements 
             'There should be no empty lines after class opening brace.',
             [
                 new CodeSample(
-                    '<?php
-final class Sample
-{
+                    <<<'PHP'
+                        <?php
+                        final class Sample
+                        {
 
-    protected function foo()
-    {
-    }
-}
-'
+                            protected function foo()
+                            {
+                            }
+                        }
+
+                        PHP
                 ),
             ]
         );
@@ -87,7 +91,7 @@ final class Sample
         // if there is more than one new line in the whitespace, then we need to fix it
         if (substr_count($content, "\n") > 1) {
             // the final bit of the whitespace must be the next statement's indentation
-            $tokens[$index] = new Token([T_WHITESPACE, $this->whitespacesConfig->getLineEnding().substr($content, strrpos($content, "\n") + 1)]);
+            $tokens[$index] = new Token([\T_WHITESPACE, $this->whitespacesConfig->getLineEnding().substr($content, strrpos($content, "\n") + 1)]);
         }
     }
 }

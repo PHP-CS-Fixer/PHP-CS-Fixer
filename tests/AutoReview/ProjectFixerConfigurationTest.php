@@ -27,6 +27,8 @@ use PhpCsFixer\ToolInfo;
  *
  * @group auto-review
  * @group covers-nothing
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ProjectFixerConfigurationTest extends TestCase
 {
@@ -51,7 +53,7 @@ final class ProjectFixerConfigurationTest extends TestCase
     public function testRuleDefinedAlpha(): void
     {
         $rules = $rulesSorted = array_keys($this->loadConfig()->getRules());
-        sort($rulesSorted);
+        natcasesort($rulesSorted);
         self::assertSame($rulesSorted, $rules, 'Please sort the "rules" in `.php-cs-fixer.dist.php` of this project.');
     }
 

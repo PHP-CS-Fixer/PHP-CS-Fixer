@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TernaryToNullCoalescingFixer extends AbstractFixer
 {
@@ -50,12 +52,12 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_ISSET);
+        return $tokens->isTokenKindFound(\T_ISSET);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $issetIndices = array_keys($tokens->findGivenKind(T_ISSET));
+        $issetIndices = array_keys($tokens->findGivenKind(\T_ISSET));
 
         foreach (array_reverse($issetIndices) as $issetIndex) {
             $this->fixIsset($tokens, $issetIndex);
@@ -122,7 +124,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
             }
         }
 
-        $tokens[$ternaryColonIndex] = new Token([T_COALESCE, '??']);
+        $tokens[$ternaryColonIndex] = new Token([\T_COALESCE, '??']);
         $tokens->overrideRange($index, $ternaryFirstOperandIndex - 1, $comments);
     }
 
@@ -156,47 +158,45 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
      */
     private function isHigherPrecedenceAssociativityOperator(Token $token): bool
     {
-        static $operatorsPerId = [
-            T_ARRAY_CAST => true,
-            T_BOOLEAN_AND => true,
-            T_BOOLEAN_OR => true,
-            T_BOOL_CAST => true,
-            T_COALESCE => true,
-            T_DEC => true,
-            T_DOUBLE_CAST => true,
-            T_INC => true,
-            T_INT_CAST => true,
-            T_IS_EQUAL => true,
-            T_IS_GREATER_OR_EQUAL => true,
-            T_IS_IDENTICAL => true,
-            T_IS_NOT_EQUAL => true,
-            T_IS_NOT_IDENTICAL => true,
-            T_IS_SMALLER_OR_EQUAL => true,
-            T_OBJECT_CAST => true,
-            T_POW => true,
-            T_SL => true,
-            T_SPACESHIP => true,
-            T_SR => true,
-            T_STRING_CAST => true,
-            T_UNSET_CAST => true,
-        ];
-
-        static $operatorsPerContent = [
-            '!',
-            '%',
-            '&',
-            '*',
-            '+',
-            '-',
-            '/',
-            ':',
-            '^',
-            '|',
-            '~',
-            '.',
-        ];
-
-        return isset($operatorsPerId[$token->getId()]) || $token->equalsAny($operatorsPerContent);
+        return
+            $token->isGivenKind([
+                \T_ARRAY_CAST,
+                \T_BOOLEAN_AND,
+                \T_BOOLEAN_OR,
+                \T_BOOL_CAST,
+                \T_COALESCE,
+                \T_DEC,
+                \T_DOUBLE_CAST,
+                \T_INC,
+                \T_INT_CAST,
+                \T_IS_EQUAL,
+                \T_IS_GREATER_OR_EQUAL,
+                \T_IS_IDENTICAL,
+                \T_IS_NOT_EQUAL,
+                \T_IS_NOT_IDENTICAL,
+                \T_IS_SMALLER_OR_EQUAL,
+                \T_OBJECT_CAST,
+                \T_POW,
+                \T_SL,
+                \T_SPACESHIP,
+                \T_SR,
+                \T_STRING_CAST,
+                \T_UNSET_CAST,
+            ])
+            || $token->equalsAny([
+                '!',
+                '%',
+                '&',
+                '*',
+                '+',
+                '-',
+                '/',
+                ':',
+                '^',
+                '|',
+                '~',
+                '.',
+            ]);
     }
 
     /**
@@ -206,15 +206,13 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
      */
     private function hasChangingContent(Tokens $tokens): bool
     {
-        static $operatorsPerId = [
-            T_DEC,
-            T_INC,
-            T_YIELD,
-            T_YIELD_FROM,
-        ];
-
         foreach ($tokens as $token) {
-            if ($token->isGivenKind($operatorsPerId) || $token->equals('(')) {
+            if ($token->isGivenKind([
+                \T_DEC,
+                \T_INC,
+                \T_YIELD,
+                \T_YIELD_FROM,
+            ]) || $token->equals('(')) {
                 return true;
             }
         }

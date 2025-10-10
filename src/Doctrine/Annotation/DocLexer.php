@@ -30,6 +30,8 @@ use PhpCsFixer\Preg;
  * copies or substantial portions of the Software.
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DocLexer
 {
@@ -45,14 +47,19 @@ final class DocLexer
     public const T_CLOSE_PARENTHESIS = 103;
     public const T_COMMA = 104;
     public const T_EQUALS = 105;
-    public const T_FALSE = 106;
     public const T_NAMESPACE_SEPARATOR = 107;
     public const T_OPEN_CURLY_BRACES = 108;
     public const T_OPEN_PARENTHESIS = 109;
-    public const T_TRUE = 110;
-    public const T_NULL = 111;
     public const T_COLON = 112;
     public const T_MINUS = 113;
+
+    private const CATCHABLE_PATTERNS = [
+        '[a-z_\\\][a-z0-9_\:\\\]*[a-z_][a-z0-9_]*',
+        '(?:[+-]?[0-9]+(?:[\.][0-9]+)*)(?:[eE][+-]?[0-9]+)?',
+        '"(?:""|[^"])*+"',
+    ];
+
+    private const NON_CATCHABLE_PATTERNS = ['\s+', '\*+', '(.)'];
 
     /** @var array<string, self::T_*> */
     private array $noCase = [
@@ -100,26 +107,6 @@ final class DocLexer
     }
 
     /**
-     * @return list<string>
-     */
-    private function getCatchablePatterns(): array
-    {
-        return [
-            '[a-z_\\\][a-z0-9_\:\\\]*[a-z_][a-z0-9_]*',
-            '(?:[+-]?[0-9]+(?:[\.][0-9]+)*)(?:[eE][+-]?[0-9]+)?',
-            '"(?:""|[^"])*+"',
-        ];
-    }
-
-    /**
-     * @return list<string>
-     */
-    private function getNonCatchablePatterns(): array
-    {
-        return ['\s+', '\*+', '(.)'];
-    }
-
-    /**
      * @return self::T_*
      */
     private function getType(string &$value): int
@@ -141,7 +128,7 @@ final class DocLexer
         }
 
         if (is_numeric($value)) {
-            return str_contains($value, '.') || false !== stripos($value, 'e')
+            return str_contains($value, '.') || str_contains(strtolower($value), 'e')
                 ? self::T_FLOAT : self::T_INTEGER;
         }
 
@@ -152,12 +139,12 @@ final class DocLexer
     {
         $this->regex ??= \sprintf(
             '/(%s)|%s/%s',
-            implode(')|(', $this->getCatchablePatterns()),
-            implode('|', $this->getNonCatchablePatterns()),
+            implode(')|(', self::CATCHABLE_PATTERNS),
+            implode('|', self::NON_CATCHABLE_PATTERNS),
             'iu'
         );
 
-        $flags = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE;
+        $flags = \PREG_SPLIT_NO_EMPTY | \PREG_SPLIT_DELIM_CAPTURE | \PREG_SPLIT_OFFSET_CAPTURE;
         $matches = Preg::split($this->regex, $input, -1, $flags);
 
         foreach ($matches as $match) {

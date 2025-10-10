@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class WhitespacyCommentTransformer extends AbstractTransformer
 {
@@ -51,9 +53,9 @@ final class WhitespacyCommentTransformer extends AbstractTransformer
         $tokens[$index] = new Token([$token->getId(), $trimmedContent]);
 
         if (isset($tokens[$index + 1]) && $tokens[$index + 1]->isWhitespace()) {
-            $tokens[$index + 1] = new Token([T_WHITESPACE, $whitespaces.$tokens[$index + 1]->getContent()]);
+            $tokens[$index + 1] = new Token([\T_WHITESPACE, $whitespaces.$tokens[$index + 1]->getContent()]);
         } else {
-            $tokens->insertAt($index + 1, new Token([T_WHITESPACE, $whitespaces]));
+            $tokens->insertAt($index + 1, new Token([\T_WHITESPACE, $whitespaces]));
         }
     }
 

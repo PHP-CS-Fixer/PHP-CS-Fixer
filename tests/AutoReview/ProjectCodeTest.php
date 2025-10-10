@@ -27,6 +27,10 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitNamespacedFixer;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
+use PhpCsFixer\RuleSet\DeprecatedRuleSetDefinitionInterface;
+use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
+use PhpCsFixer\Runner\Parallel\ProcessUtils;
+use PhpCsFixer\Tests\Fixer\ClassNotation\ModifierKeywordsFixerTest;
 use PhpCsFixer\Tests\PregTest;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tests\Test\AbstractIntegrationTestCase;
@@ -49,6 +53,8 @@ use Symfony\Component\Finder\SplFileInfo;
  *
  * @group auto-review
  * @group covers-nothing
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ProjectCodeTest extends TestCase
 {
@@ -84,6 +90,15 @@ final class ProjectCodeTest extends TestCase
      */
     public function testThatSrcClassHaveTestClass(string $className): void
     {
+        \assert(class_exists($className));
+
+        // It is OK for deprecated ruleset to have no tests, as it would be only proxy to renamed ruleset.
+        if (\in_array(DeprecatedRuleSetDefinitionInterface::class, class_implements($className), true)) {
+            $this->expectNotToPerformAssertions();
+
+            return;
+        }
+
         $testClassName = 'PhpCsFixer\Tests'.substr($className, 10).'Test';
 
         self::assertTrue(class_exists($testClassName), \sprintf('Expected test class "%s" for "%s" not found.', $testClassName, $className));
@@ -127,11 +142,19 @@ final class ProjectCodeTest extends TestCase
             return; // public properties present, no need for class to be readonly
         }
 
-        $parentClass = $rc->getParentClass();
-        if (\PHP_VERSION_ID >= 8_02_00 && false !== $parentClass && !$parentClass->isReadOnly()) {
-            $this->addToAssertionCount(1);
+        if (\PHP_VERSION_ID >= 8_02_00) {
+            if ($rc->isReadOnly()) {
+                $this->addToAssertionCount(1);
 
-            return; // Parent class is _not_ readonly, child class cannot be readonly in such case
+                return; // Class is readonly, no need for further checks
+            }
+
+            $parentClass = $rc->getParentClass();
+            if (false !== $parentClass && !$parentClass->isReadOnly()) {
+                $this->addToAssertionCount(1);
+
+                return; // Parent class is _not_ readonly, child class cannot be readonly in such case
+            }
         }
 
         $rc = new \ReflectionClass($className);
@@ -160,8 +183,8 @@ final class ProjectCodeTest extends TestCase
         $tokens = $this->createTokensForClass($className);
 
         $constructorSequence = $tokens->findSequence([
-            [T_FUNCTION],
-            [T_STRING, '__construct'],
+            [\T_FUNCTION],
+            [\T_STRING, '__construct'],
             '(',
         ]);
         if (null !== $constructorSequence) {
@@ -360,8 +383,13 @@ final class ProjectCodeTest extends TestCase
     {
         $rc = new \ReflectionClass($testClassName);
 
+        $exceptionClasses = [
+            // @TODO 4.0 remove while removing legacy `VisibilityRequiredFixer`
+            ModifierKeywordsFixerTest::class,
+        ];
+
         self::assertTrue(
-            $rc->isTrait() || $rc->isAbstract() || $rc->isFinal(),
+            $rc->isTrait() || $rc->isAbstract() || $rc->isFinal() || \in_array($testClassName, $exceptionClasses, true),
             \sprintf('Test class %s should be trait, abstract or final.', $testClassName)
         );
     }
@@ -520,12 +548,35 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
+     * @dataProvider provideSrcClassCases
+     * @dataProvider provideTestClassCases
+     *
+     * @param class-string $className
+     */
+    public function testThereIsNoUsageOfJsonLastError(string $className): void
+    {
+        $calledFunctions = $this->extractFunctionNamesCalledInClass($className);
+
+        $message = \sprintf('Class %s must not use "json_last_error()" nor "json_last_error_msg()", explicitly replace it to handle errors with "JSON_ERROR_NONE".', $className);
+        self::assertNotContains('json_last_error', $calledFunctions, $message);
+        self::assertNotContains('json_last_error_msg', $calledFunctions, $message);
+    }
+
+    /**
      * @dataProvider provideThereIsNoPregFunctionUsedDirectlyCases
      *
      * @param class-string $className
      */
     public function testThereIsNoPregFunctionUsedDirectly(string $className): void
     {
+        if (\in_array($className, [
+            ProcessUtils::class, // code copied from Symfony, we do not want to make custom adjustments there
+        ], true)) {
+            $this->expectNotToPerformAssertions();
+
+            return;
+        }
+
         $calledFunctions = $this->extractFunctionNamesCalledInClass($className);
 
         $message = \sprintf('Class %s must not use preg_*, it shall use Preg::* instead.', $className);
@@ -616,7 +667,6 @@ final class ProjectCodeTest extends TestCase
             return;
         }
 
-        /** @var \ReflectionMethod $method */
         foreach ($publicMethods as $method) {
             $parameters = $method->getParameters();
 
@@ -670,8 +720,8 @@ final class ProjectCodeTest extends TestCase
             $nextToken = $tokens[$tokens->getNextMeaningfulToken($k)];
 
             // element is data provider method
-            return 'method' === $v['type'] && $nextToken->equals([T_STRING, $dataProviderName]);
-        }, ARRAY_FILTER_USE_BOTH);
+            return 'method' === $v['type'] && $nextToken->equals([\T_STRING, $dataProviderName]);
+        }, \ARRAY_FILTER_USE_BOTH);
 
         if (1 !== \count($dataProviderElements)) {
             throw new \UnexpectedValueException(\sprintf('Data provider "%s::%s" should be found exactly once, got %d times.', $testClassName, $dataProviderName, \count($dataProviderElements)));
@@ -681,12 +731,12 @@ final class ProjectCodeTest extends TestCase
         $startIndex = $tokens->getNextTokenOfKind($methodIndex, ['{']);
         $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $startIndex);
 
-        $versionTokens = array_filter($tokens->findGivenKind(T_STRING, $startIndex, $endIndex), static fn (Token $v): bool => $v->equalsAny([
-            [T_STRING, 'PHP_VERSION_ID'],
-            [T_STRING, 'PHP_MAJOR_VERSION'],
-            [T_STRING, 'PHP_MINOR_VERSION'],
-            [T_STRING, 'PHP_RELEASE_VERSION'],
-            [T_STRING, 'phpversion'],
+        $versionTokens = array_filter($tokens->findGivenKind(\T_STRING, $startIndex, $endIndex), static fn (Token $v): bool => $v->equalsAny([
+            [\T_STRING, 'PHP_VERSION_ID'],
+            [\T_STRING, 'PHP_MAJOR_VERSION'],
+            [\T_STRING, 'PHP_MINOR_VERSION'],
+            [\T_STRING, 'PHP_RELEASE_VERSION'],
+            [\T_STRING, 'phpversion'],
         ], false));
 
         self::assertCount(
@@ -727,7 +777,7 @@ final class ProjectCodeTest extends TestCase
         $content = $returnDoc->getContent();
 
         self::assertMatchesRegularExpression('/iterable\</', $content, \sprintf('Data provider "%s::%s@return" must return iterable.', $testClassName, $dataProviderName));
-        self::assertMatchesRegularExpression('/iterable\<(?:(int|string|int\|string), )?array\{/', $content, \sprintf('Data provider "%s::%s@return" must return iterable of tuples (eg `iterable<string, array{string, string}>`).', $testClassName, $dataProviderName));
+        self::assertMatchesRegularExpression('/iterable\<(?:(int|string|int\|string), )?(?:array\{|_PhpTokenArray)/', $content, \sprintf('Data provider "%s::%s@return" must return iterable of tuples (eg `iterable<string, array{string, string}>`).', $testClassName, $dataProviderName));
     }
 
     /**
@@ -738,20 +788,31 @@ final class ProjectCodeTest extends TestCase
      */
     public function testAllCodeContainSingleClassy(string $className): void
     {
+        // @TODO v4 remove me @MARKER_deprecated_DeprecatedRuleSetDescriptionInterface
+        if (\in_array(
+            $className,
+            [
+                DeprecatedRuleSetDescriptionInterface::class, // @phpstan-ignore class.notFound
+            ],
+            true
+        )) {
+            self::markTestSkipped(\sprintf("Classy '%s' is deprecated alias and thus exception.", $className));
+        }
+
         $headerTypes = [
-            T_ABSTRACT,
-            T_AS,
-            T_COMMENT,
-            T_DECLARE,
-            T_DOC_COMMENT,
-            T_FINAL,
-            T_LNUMBER,
-            T_NAMESPACE,
-            T_NS_SEPARATOR,
-            T_OPEN_TAG,
-            T_STRING,
-            T_USE,
-            T_WHITESPACE,
+            \T_ABSTRACT,
+            \T_AS,
+            \T_COMMENT,
+            \T_DECLARE,
+            \T_DOC_COMMENT,
+            \T_FINAL,
+            \T_LNUMBER,
+            \T_NAMESPACE,
+            \T_NS_SEPARATOR,
+            \T_OPEN_TAG,
+            \T_STRING,
+            \T_USE,
+            \T_WHITESPACE,
             FCT::T_READONLY,
         ];
 
@@ -822,7 +883,7 @@ final class ProjectCodeTest extends TestCase
 
         $methodsWithInheritdoc = array_filter(
             $rc->getMethods(),
-            static fn (\ReflectionMethod $rm): bool => false !== $rm->getDocComment() && false !== stripos($rm->getDocComment(), '@inheritdoc')
+            static fn (\ReflectionMethod $rm): bool => false !== $rm->getDocComment() && str_contains(strtolower($rm->getDocComment()), '@inheritdoc')
         );
 
         $methodsWithInheritdoc = array_map(
@@ -918,7 +979,7 @@ final class ProjectCodeTest extends TestCase
             foreach ($alreadyFoundCases as $caseKey => $caseData) {
                 if ($serializedCandidateData === $caseData) {
                     $duplicates[] = \sprintf(
-                        'Duplicate in %s::%s: %s and %s.'.PHP_EOL,
+                        'Duplicate in %s::%s: %s and %s.'.\PHP_EOL,
                         $testClassName,
                         $dataProviderName,
                         \is_int($caseKey) ? '#'.$caseKey : '"'.$caseKey.'"',
@@ -937,8 +998,8 @@ final class ProjectCodeTest extends TestCase
         if (1 === \count($keyTypes)) {
             // all data provider's keys are of single type - type must be present
             $type = array_keys($keyTypes)[0];
-            self::assertStringContainsString(
-                \sprintf('@return iterable<%s, array{', $type),
+            self::assertMatchesRegularExpression(
+                \sprintf('/@return iterable\<%s, (?:array\{|_PhpTokenArray)/', $type),
                 $docComment,
                 \sprintf('Data provider %s::%s iterable key "%s" must be present.', $testClassName, $dataProviderName, $type)
             );
@@ -947,8 +1008,8 @@ final class ProjectCodeTest extends TestCase
             $types = array_keys($keyTypes);
             sort($types);
             self::assertSame(['int', 'string'], $types);
-            self::assertStringContainsString(
-                '@return iterable<array{',
+            self::assertMatchesRegularExpression(
+                '/@return iterable\<(?:array\{|_PhpTokenArray)/',
                 $docComment,
                 \sprintf('Data provider %s::%s iterable must not have key type.', $testClassName, $dataProviderName)
             );
@@ -1024,6 +1085,26 @@ final class ProjectCodeTest extends TestCase
      * @dataProvider provideSrcClassCases
      * @dataProvider provideTestClassCases
      *
+     * @param class-string $name
+     */
+    public function testConsistentClassyNaming(string $name): void
+    {
+        $reflection = new \ReflectionClass($name);
+
+        if ($reflection->isInterface()) {
+            self::assertStringEndsWith('Interface', $name);
+        } elseif ($reflection->isTrait()) {
+            self::assertStringEndsWith('Trait', $name);
+        } else {
+            self::assertStringEndsNotWith('Interface', $name);
+            self::assertStringEndsNotWith('Trait', $name);
+        }
+    }
+
+    /**
+     * @dataProvider provideSrcClassCases
+     * @dataProvider provideTestClassCases
+     *
      * @param class-string $className
      */
     public function testConstantsAreInUpperCase(string $className): void
@@ -1091,7 +1172,7 @@ final class ProjectCodeTest extends TestCase
         /** @var list<Token> $stringTokens */
         $stringTokens = array_filter(
             $tokens,
-            static fn (Token $token): bool => $token->isGivenKind(T_STRING)
+            static fn (Token $token): bool => $token->isGivenKind(\T_STRING)
         );
 
         $strings = array_map(
@@ -1158,11 +1239,11 @@ final class ProjectCodeTest extends TestCase
         $tokens = $this->createTokensForClass($testClassName);
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
-            $methodName = $tokens[$tokens->getNextTokenOfKind($index, [[T_STRING]])]->getContent();
+            $methodName = $tokens[$tokens->getNextTokenOfKind($index, [[\T_STRING]])]->getContent();
 
             $docBlock = new DocBlock($token->getContent());
             $dataProviderAnnotations = $docBlock->getAnnotationsOfType($annotation);

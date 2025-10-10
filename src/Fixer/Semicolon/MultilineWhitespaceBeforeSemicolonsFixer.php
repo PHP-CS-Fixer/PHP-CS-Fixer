@@ -40,6 +40,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Egidijus Girčys <e.gircys@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
@@ -62,19 +64,23 @@ final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imple
             'Forbid multi-line whitespace before the closing semicolon or move the semicolon to the new line for chained calls.',
             [
                 new CodeSample(
-                    '<?php
-function foo() {
-    return 1 + 2
-        ;
-}
-'
+                    <<<'PHP'
+                        <?php
+                        function foo() {
+                            return 1 + 2
+                                ;
+                        }
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-$object->method1()
-    ->method2()
-    ->method(3);
-',
+                    <<<'PHP'
+                        <?php
+                        $object->method1()
+                            ->method2()
+                            ->method(3);
+
+                        PHP,
                     ['strategy' => self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS]
                 ),
             ]
@@ -115,7 +121,7 @@ $object->method1()
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
         for ($index = 0, $count = \count($tokens); $index < $count; ++$index) {
-            if ($tokens[$index]->isGivenKind(T_CONST)) {
+            if ($tokens[$index]->isGivenKind(\T_CONST)) {
                 $index = $tokens->getNextTokenOfKind($index, [';']);
 
                 continue;
@@ -144,7 +150,7 @@ $object->method1()
                 $index = $this->getNewLineIndex($index, $tokens);
 
                 // appended new line to the last method call
-                $newline = new Token([T_WHITESPACE, $lineEnding.$indent]);
+                $newline = new Token([\T_WHITESPACE, $lineEnding.$indent]);
 
                 // insert the new line with indented semicolon
                 $tokens->insertAt($index++, [$newline, new Token(';')]);
@@ -199,11 +205,11 @@ $object->method1()
     private function getPreviousSignificantTokenIndex(int $index, Tokens $tokens): int
     {
         $stopTokens = [
-            T_LNUMBER,
-            T_DNUMBER,
-            T_STRING,
-            T_VARIABLE,
-            T_CONSTANT_ENCAPSED_STRING,
+            \T_LNUMBER,
+            \T_DNUMBER,
+            \T_STRING,
+            \T_VARIABLE,
+            \T_CONSTANT_ENCAPSED_STRING,
         ];
         for ($index; $index > 0; --$index) {
             if ($tokens[$index]->isGivenKind($stopTokens) || $tokens[$index]->equals(')')) {
@@ -228,7 +234,7 @@ $object->method1()
         $isMultilineCall = false;
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-        while (!$tokens[$prevIndex]->equalsAny([';', ':', '{', '}', [T_OPEN_TAG], [T_OPEN_TAG_WITH_ECHO], [T_ELSE]])) {
+        while (!$tokens[$prevIndex]->equalsAny([';', ':', '{', '}', [\T_OPEN_TAG], [\T_OPEN_TAG_WITH_ECHO], [\T_ELSE]])) {
             $index = $prevIndex;
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
@@ -239,7 +245,7 @@ $object->method1()
                 continue;
             }
 
-            if ($tokens[$index]->isObjectOperator() || $tokens[$index]->isGivenKind(T_DOUBLE_COLON)) {
+            if ($tokens[$index]->isObjectOperator() || $tokens[$index]->isGivenKind(\T_DOUBLE_COLON)) {
                 $prevIndex = $tokens->getPrevMeaningfulToken($index);
                 $isMultilineCall = $isMultilineCall || $tokens->isPartialCodeMultiline($prevIndex, $index);
             }

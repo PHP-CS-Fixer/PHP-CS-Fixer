@@ -26,6 +26,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Future;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -60,6 +61,8 @@ use Symfony\Component\OptionsResolver\Options;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Darius Matulionis <darius@matulionis.lt>
  * @author Adriano Pilger <adriano.pilger@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
@@ -101,14 +104,14 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
     /**
      * Array of supported sort types in configuration.
      *
-     * @var list<string>
+     * @var non-empty-list<string>
      */
     private const SUPPORTED_SORT_TYPES = [self::IMPORT_TYPE_CLASS, self::IMPORT_TYPE_CONST, self::IMPORT_TYPE_FUNCTION];
 
     /**
      * Array of supported sort algorithms in configuration.
      *
-     * @var list<string>
+     * @var non-empty-list<string>
      */
     private const SUPPORTED_SORT_ALGORITHMS = [self::SORT_ALPHA, self::SORT_LENGTH, self::SORT_NONE];
 
@@ -118,33 +121,48 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
             'Ordering `use` statements.',
             [
                 new CodeSample(
-                    "<?php\nuse function AAC;\nuse const AAB;\nuse AAA;\n"
+                    <<<'PHP'
+                        <?php
+                        use function AAC;
+                        use const AAB;
+                        use AAA;
+
+                        PHP
                 ),
                 new CodeSample(
-                    "<?php\nuse function Aaa;\nuse const AA;\n",
+                    <<<'PHP'
+                        <?php
+                        use function Aaa;
+                        use const AA;
+
+                        PHP,
                     ['case_sensitive' => true]
                 ),
                 new CodeSample(
-                    '<?php
-use Acme\Bar;
-use Bar1;
-use Acme;
-use Bar;
-',
+                    <<<'PHP'
+                        <?php
+                        use Acme\Bar;
+                        use Bar1;
+                        use Acme;
+                        use Bar;
+
+                        PHP,
                     ['sort_algorithm' => self::SORT_LENGTH]
                 ),
                 new CodeSample(
-                    '<?php
-use const AAAA;
-use const BBB;
+                    <<<'PHP'
+                        <?php
+                        use const AAAA;
+                        use const BBB;
 
-use Bar;
-use AAC;
-use Acme;
+                        use Bar;
+                        use AAC;
+                        use Acme;
 
-use function CCC\AA;
-use function DDD;
-',
+                        use function CCC\AA;
+                        use function DDD;
+
+                        PHP,
                     [
                         'sort_algorithm' => self::SORT_LENGTH,
                         'imports_order' => [
@@ -155,17 +173,19 @@ use function DDD;
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-use const BBB;
-use const AAAA;
+                    <<<'PHP'
+                        <?php
+                        use const BBB;
+                        use const AAAA;
 
-use Acme;
-use AAC;
-use Bar;
+                        use Acme;
+                        use AAC;
+                        use Bar;
 
-use function DDD;
-use function CCC\AA;
-',
+                        use function DDD;
+                        use function CCC\AA;
+
+                        PHP,
                     [
                         'sort_algorithm' => self::SORT_ALPHA,
                         'imports_order' => [
@@ -176,17 +196,19 @@ use function CCC\AA;
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-use const BBB;
-use const AAAA;
+                    <<<'PHP'
+                        <?php
+                        use const BBB;
+                        use const AAAA;
 
-use function DDD;
-use function CCC\AA;
+                        use function DDD;
+                        use function CCC\AA;
 
-use Acme;
-use AAC;
-use Bar;
-',
+                        use Acme;
+                        use AAC;
+                        use Bar;
+
+                        PHP,
                     [
                         'sort_algorithm' => self::SORT_NONE,
                         'imports_order' => [
@@ -213,7 +235,7 @@ use Bar;
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_USE);
+        return $tokens->isTokenKindFound(\T_USE);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -239,10 +261,10 @@ use Bar;
 
             // if there's some logic between two `use` statements, sort only imports grouped before that logic
             for ($index = 0; $index < $count - 1; ++$index) {
-                $nextGroupUse = $tokens->getNextTokenOfKind($usesPerNamespaceIndices[$index], [';', [T_CLOSE_TAG]]);
+                $nextGroupUse = $tokens->getNextTokenOfKind($usesPerNamespaceIndices[$index], [';', [\T_CLOSE_TAG]]);
 
-                if ($tokens[$nextGroupUse]->isGivenKind(T_CLOSE_TAG)) {
-                    $nextGroupUse = $tokens->getNextTokenOfKind($usesPerNamespaceIndices[$index], [[T_OPEN_TAG]]);
+                if ($tokens[$nextGroupUse]->isGivenKind(\T_CLOSE_TAG)) {
+                    $nextGroupUse = $tokens->getNextTokenOfKind($usesPerNamespaceIndices[$index], [[\T_OPEN_TAG]]);
                 }
 
                 $nextGroupUse = $tokens->getNextMeaningfulToken($nextGroupUse);
@@ -271,7 +293,7 @@ use Bar;
                 ->setDefault(self::SORT_ALPHA)
                 ->setNormalizer(static function (Options $options, ?string $value) use ($fixerName): ?string {
                     if (self::SORT_LENGTH === $value) {
-                        Utils::triggerDeprecation(new InvalidFixerConfigurationException($fixerName, \sprintf(
+                        Future::triggerDeprecation(new InvalidFixerConfigurationException($fixerName, \sprintf(
                             'Option "sort_algorithm:%s" is deprecated and will be removed in version %d.0.',
                             self::SORT_LENGTH,
                             Application::getMajorVersion() + 1,
@@ -290,7 +312,7 @@ use Bar;
                             throw new InvalidOptionsException(\sprintf(
                                 'Missing sort %s %s.',
                                 1 === \count($missing) ? 'type' : 'types',
-                                Utils::naturalLanguageJoin($missing)
+                                Utils::naturalLanguageJoin(array_values($missing))
                             ));
                         }
 
@@ -299,14 +321,16 @@ use Bar;
                             throw new InvalidOptionsException(\sprintf(
                                 'Unknown sort %s %s.',
                                 1 === \count($unknown) ? 'type' : 'types',
-                                Utils::naturalLanguageJoin($unknown)
+                                Utils::naturalLanguageJoin(array_values($unknown))
                             ));
                         }
                     }
 
                     return true;
                 }])
-                ->setDefault(null) // @TODO 4.0 set to ['class', 'function', 'const']
+                ->setDefault(
+                    Future::getV4OrV3(['class', 'function', 'const'], null)
+                )
                 ->getOption(),
             (new FixerOptionBuilder('case_sensitive', 'Whether the sorting should be case sensitive.'))
                 ->setAllowedTypes(['bool'])
@@ -377,8 +401,8 @@ use Bar;
         for ($i = 0; $i < $usesCount; ++$i) {
             $index = $uses[$i];
 
-            $startIndex = $tokens->getTokenNotOfKindsSibling($index + 1, 1, [T_WHITESPACE]);
-            $endIndex = $tokens->getNextTokenOfKind($startIndex, [';', [T_CLOSE_TAG]]);
+            $startIndex = $tokens->getTokenNotOfKindsSibling($index + 1, 1, [\T_WHITESPACE]);
+            $endIndex = $tokens->getNextTokenOfKind($startIndex, [';', [\T_CLOSE_TAG]]);
             $previous = $tokens->getPrevMeaningfulToken($endIndex);
 
             $group = $tokens[$previous]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE);
@@ -495,7 +519,7 @@ use Bar;
                     }
 
                     $namespaceTokens = [];
-                    $nextPartIndex = $tokens->getTokenNotOfKindSibling($index, 1, [',', [T_WHITESPACE]]);
+                    $nextPartIndex = $tokens->getTokenNotOfKindSibling($index, 1, [',', [\T_WHITESPACE]]);
                     $startIndex = $nextPartIndex;
                     $index = $nextPartIndex;
 
@@ -616,10 +640,10 @@ use Bar;
         }
 
         $tokens[$index] = new Token(';');
-        $tokens->insertAt($index + 1, new Token([T_USE, 'use']));
+        $tokens->insertAt($index + 1, new Token([\T_USE, 'use']));
 
         if (!$tokens[$index + 2]->isWhitespace()) {
-            $tokens->insertAt($index + 2, new Token([T_WHITESPACE, ' ']));
+            $tokens->insertAt($index + 2, new Token([\T_WHITESPACE, ' ']));
         }
     }
 }

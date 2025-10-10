@@ -53,7 +53,6 @@ The rule is part of the following rule sets:
 
   ``['style' => 'braces']``
 
-
 References
 ----------
 

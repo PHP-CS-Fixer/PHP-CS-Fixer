@@ -19,6 +19,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpUnitTestCaseAnalyzer
 {
@@ -48,13 +50,13 @@ final class PhpUnitTestCaseAnalyzer
 
     private function isPhpUnitClass(Tokens $tokens, int $index): bool
     {
-        if (!$tokens[$index]->isGivenKind(T_CLASS)) {
+        if (!$tokens[$index]->isGivenKind(\T_CLASS)) {
             return false;
         }
 
-        $extendsIndex = $tokens->getNextTokenOfKind($index, ['{', [T_EXTENDS]]);
+        $extendsIndex = $tokens->getNextTokenOfKind($index, ['{', [\T_EXTENDS]]);
 
-        if (!$tokens[$extendsIndex]->isGivenKind(T_EXTENDS)) {
+        if (!$tokens[$extendsIndex]->isGivenKind(\T_EXTENDS)) {
             return false;
         }
 
@@ -67,7 +69,7 @@ final class PhpUnitTestCaseAnalyzer
                 break; // end of class signature
             }
 
-            if (!$tokens[$index]->isGivenKind(T_STRING)) {
+            if (!$tokens[$index]->isGivenKind(\T_STRING)) {
                 continue; // not part of extends nor part of implements; so continue
             }
 

@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class LowercaseStaticReferenceFixer extends AbstractFixer
 {
@@ -32,35 +34,41 @@ final class LowercaseStaticReferenceFixer extends AbstractFixer
         return new FixerDefinition(
             'Class static references `self`, `static` and `parent` MUST be in lower case.',
             [
-                new CodeSample('<?php
-class Foo extends Bar
-{
-    public function baz1()
-    {
-        return STATIC::baz2();
-    }
-
-    public function baz2($x)
-    {
-        return $x instanceof Self;
-    }
-
-    public function baz3(PaRent $x)
-    {
-        return true;
-    }
-}
-'),
                 new CodeSample(
-                    '<?php
-class Foo extends Bar
-{
-    public function baz(?self $x) : SELF
-    {
-        return false;
-    }
-}
-'
+                    <<<'PHP'
+                        <?php
+                        class Foo extends Bar
+                        {
+                            public function baz1()
+                            {
+                                return STATIC::baz2();
+                            }
+
+                            public function baz2($x)
+                            {
+                                return $x instanceof Self;
+                            }
+
+                            public function baz3(PaRent $x)
+                            {
+                                return true;
+                            }
+                        }
+
+                        PHP
+                ),
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        class Foo extends Bar
+                        {
+                            public function baz(?self $x) : SELF
+                            {
+                                return false;
+                            }
+                        }
+
+                        PHP
                 ),
             ]
         );
@@ -68,13 +76,13 @@ class Foo extends Bar
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_STATIC, T_STRING]);
+        return $tokens->isAnyTokenKindsFound([\T_STATIC, \T_STRING]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->equalsAny([[T_STRING, 'self'], [T_STATIC, 'static'], [T_STRING, 'parent']], false)) {
+            if (!$token->equalsAny([[\T_STRING, 'self'], [\T_STATIC, 'static'], [\T_STRING, 'parent']], false)) {
                 continue;
             }
 
@@ -93,18 +101,21 @@ class Foo extends Bar
         }
 
         $nextIndex = $tokens->getNextMeaningfulToken($index);
-        if ($tokens[$nextIndex]->isGivenKind(T_DOUBLE_COLON)) {
+        if ($tokens[$nextIndex]->isGivenKind(\T_DOUBLE_COLON)) {
             return true;
         }
-        if (!$tokens[$nextIndex]->isGivenKind([T_VARIABLE, CT::T_TYPE_ALTERNATION]) && !$tokens[$nextIndex]->equalsAny(['(', ')', '{', ';'])) {
+        if (!$tokens[$nextIndex]->isGivenKind([\T_VARIABLE, CT::T_TYPE_ALTERNATION]) && !$tokens[$nextIndex]->equalsAny(['(', ')', '{', ';'])) {
             return false;
         }
 
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
-        if ($tokens[$prevIndex]->isGivenKind(T_INSTANCEOF)) {
+        if ($tokens[$prevIndex]->isGivenKind(\T_INSTANCEOF)) {
             return true;
         }
-        if (!$tokens[$prevIndex]->isGivenKind([T_CASE, T_NEW, T_PRIVATE, T_PROTECTED, T_PUBLIC, CT::T_NULLABLE_TYPE, CT::T_TYPE_COLON, CT::T_TYPE_ALTERNATION]) && !$tokens[$prevIndex]->equalsAny(['(', '{'])) {
+        if ($tokens[$prevIndex]->isGivenKind(\T_CASE)) {
+            return !$tokens[$nextIndex]->equals(';');
+        }
+        if (!$tokens[$prevIndex]->isGivenKind([\T_NEW, \T_PRIVATE, \T_PROTECTED, \T_PUBLIC, CT::T_NULLABLE_TYPE, CT::T_TYPE_COLON, CT::T_TYPE_ALTERNATION]) && !$tokens[$prevIndex]->equalsAny(['(', '{'])) {
             return false;
         }
 
@@ -112,7 +123,7 @@ class Foo extends Bar
             return false;
         }
 
-        if ('static' === strtolower($tokens[$index]->getContent()) && $tokens[$nextIndex]->isGivenKind(T_VARIABLE)) {
+        if ('static' === strtolower($tokens[$index]->getContent()) && $tokens[$nextIndex]->isGivenKind(\T_VARIABLE)) {
             return false;
         }
 

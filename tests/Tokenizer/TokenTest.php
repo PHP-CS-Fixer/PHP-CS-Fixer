@@ -20,11 +20,15 @@ use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 
 /**
+ * @phpstan-import-type _PhpTokenPrototypePartial from Token
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Token
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TokenTest extends TestCase
 {
@@ -57,19 +61,19 @@ final class TokenTest extends TestCase
 
         yield [[new \stdClass(), 'asd']];
 
-        yield [[T_WHITESPACE, null]];
+        yield [[\T_WHITESPACE, null]];
 
-        yield [[T_WHITESPACE, 123]];
+        yield [[\T_WHITESPACE, 123]];
 
-        yield [[T_WHITESPACE, '']];
+        yield [[\T_WHITESPACE, '']];
 
-        yield [[T_WHITESPACE, new \stdClass()]];
+        yield [[\T_WHITESPACE, new \stdClass()]];
     }
 
     public function testGetPrototype(): void
     {
-        self::assertSame(self::getBraceTokenPrototype(), self::getBraceToken()->getPrototype());
-        self::assertSame(self::getForeachTokenPrototype(), self::getForeachToken()->getPrototype());
+        self::assertSame('(', self::getBraceToken()->getPrototype());
+        self::assertSame([\T_FOREACH, 'foreach'], self::getForeachToken()->getPrototype());
     }
 
     public function testIsArray(): void
@@ -95,19 +99,19 @@ final class TokenTest extends TestCase
 
         yield [self::getForeachToken(), false];
 
-        yield [new Token([T_ARRAY_CAST, '(array)', 1]), true];
+        yield [new Token([\T_ARRAY_CAST, '(array)', 1]), true];
 
-        yield [new Token([T_BOOL_CAST, '(bool)', 1]), true];
+        yield [new Token([\T_BOOL_CAST, '(bool)', 1]), true];
 
-        yield [new Token([T_DOUBLE_CAST, '(double)', 1]), true];
+        yield [new Token([\T_DOUBLE_CAST, '(double)', 1]), true];
 
-        yield [new Token([T_INT_CAST, '(int)', 1]), true];
+        yield [new Token([\T_INT_CAST, '(int)', 1]), true];
 
-        yield [new Token([T_OBJECT_CAST, '(object)', 1]), true];
+        yield [new Token([\T_OBJECT_CAST, '(object)', 1]), true];
 
-        yield [new Token([T_STRING_CAST, '(string)', 1]), true];
+        yield [new Token([\T_STRING_CAST, '(string)', 1]), true];
 
-        yield [new Token([T_UNSET_CAST, '(unset)', 1]), true];
+        yield [new Token([\T_UNSET_CAST, '(unset)', 1]), true];
     }
 
     /**
@@ -127,11 +131,11 @@ final class TokenTest extends TestCase
 
         yield [self::getForeachToken(), false];
 
-        yield [new Token([T_CLASS, 'class', 1]), true];
+        yield [new Token([\T_CLASS, 'class', 1]), true];
 
-        yield [new Token([T_INTERFACE, 'interface', 1]), true];
+        yield [new Token([\T_INTERFACE, 'interface', 1]), true];
 
-        yield [new Token([T_TRAIT, 'trait', 1]), true];
+        yield [new Token([\T_TRAIT, 'trait', 1]), true];
     }
 
     /**
@@ -139,7 +143,7 @@ final class TokenTest extends TestCase
      */
     public function testEnumIsClassy(): void
     {
-        $enumToken = new Token([T_ENUM, 'enum', 1]);
+        $enumToken = new Token([\T_ENUM, 'enum', 1]);
 
         self::assertTrue($enumToken->isClassy());
     }
@@ -161,9 +165,9 @@ final class TokenTest extends TestCase
 
         yield [self::getForeachToken(), false];
 
-        yield [new Token([T_COMMENT, '/* comment */', 1]), true];
+        yield [new Token([\T_COMMENT, '/* comment */', 1]), true];
 
-        yield [new Token([T_DOC_COMMENT, '/** docs */', 1]), true];
+        yield [new Token([\T_DOC_COMMENT, '/** docs */', 1]), true];
     }
 
     /**
@@ -201,11 +205,11 @@ final class TokenTest extends TestCase
 
         yield [self::getForeachToken(), false];
 
-        yield [new Token([T_COMMENT, '/* comment */']), false];
+        yield [new Token([\T_COMMENT, '/* comment */']), false];
 
-        yield [new Token([T_DOUBLE_COLON, '::']), false];
+        yield [new Token([\T_DOUBLE_COLON, '::']), false];
 
-        yield [new Token([T_OBJECT_OPERATOR, '->']), true];
+        yield [new Token([\T_OBJECT_OPERATOR, '->']), true];
     }
 
     /**
@@ -231,17 +235,17 @@ final class TokenTest extends TestCase
         $braceToken = self::getBraceToken();
         $foreachToken = self::getForeachToken();
 
-        self::assertFalse($braceToken->isGivenKind(T_FOR));
-        self::assertFalse($braceToken->isGivenKind(T_FOREACH));
-        self::assertFalse($braceToken->isGivenKind([T_FOR]));
-        self::assertFalse($braceToken->isGivenKind([T_FOREACH]));
-        self::assertFalse($braceToken->isGivenKind([T_FOR, T_FOREACH]));
+        self::assertFalse($braceToken->isGivenKind(\T_FOR));
+        self::assertFalse($braceToken->isGivenKind(\T_FOREACH));
+        self::assertFalse($braceToken->isGivenKind([\T_FOR]));
+        self::assertFalse($braceToken->isGivenKind([\T_FOREACH]));
+        self::assertFalse($braceToken->isGivenKind([\T_FOR, \T_FOREACH]));
 
-        self::assertFalse($foreachToken->isGivenKind(T_FOR));
-        self::assertTrue($foreachToken->isGivenKind(T_FOREACH));
-        self::assertFalse($foreachToken->isGivenKind([T_FOR]));
-        self::assertTrue($foreachToken->isGivenKind([T_FOREACH]));
-        self::assertTrue($foreachToken->isGivenKind([T_FOR, T_FOREACH]));
+        self::assertFalse($foreachToken->isGivenKind(\T_FOR));
+        self::assertTrue($foreachToken->isGivenKind(\T_FOREACH));
+        self::assertFalse($foreachToken->isGivenKind([\T_FOR]));
+        self::assertTrue($foreachToken->isGivenKind([\T_FOREACH]));
+        self::assertTrue($foreachToken->isGivenKind([\T_FOR, \T_FOREACH]));
     }
 
     public function testIsKeywords(): void
@@ -268,14 +272,14 @@ final class TokenTest extends TestCase
     public static function provideIsMagicConstantCases(): iterable
     {
         $cases = [
-            [T_CLASS_C, '__CLASS__'],
-            [T_DIR, '__DIR__'],
-            [T_FILE, '__FILE__'],
-            [T_FUNC_C, '__FUNCTION__'],
-            [T_LINE, '__LINE__'],
-            [T_METHOD_C, '__METHOD__'],
-            [T_NS_C, '__NAMESPACE__'],
-            [T_TRAIT_C, '__TRAIT__'],
+            [\T_CLASS_C, '__CLASS__'],
+            [\T_DIR, '__DIR__'],
+            [\T_FILE, '__FILE__'],
+            [\T_FUNC_C, '__FUNCTION__'],
+            [\T_LINE, '__LINE__'],
+            [\T_METHOD_C, '__METHOD__'],
+            [\T_NS_C, '__NAMESPACE__'],
+            [\T_TRAIT_C, '__TRAIT__'],
         ];
 
         foreach ($cases as $case) {
@@ -310,15 +314,15 @@ final class TokenTest extends TestCase
 
         yield [self::getForeachToken(), false];
 
-        yield [new Token([T_STRING, 'null', 1]), true];
+        yield [new Token([\T_STRING, 'null', 1]), true];
 
-        yield [new Token([T_STRING, 'false', 1]), true];
+        yield [new Token([\T_STRING, 'false', 1]), true];
 
-        yield [new Token([T_STRING, 'true', 1]), true];
+        yield [new Token([\T_STRING, 'true', 1]), true];
 
-        yield [new Token([T_STRING, 'tRuE', 1]), true];
+        yield [new Token([\T_STRING, 'tRuE', 1]), true];
 
-        yield [new Token([T_STRING, 'TRUE', 1]), true];
+        yield [new Token([\T_STRING, 'TRUE', 1]), true];
     }
 
     /**
@@ -349,15 +353,15 @@ final class TokenTest extends TestCase
 
         yield [new Token("\t "), false, ' '];
 
-        yield [new Token([T_WHITESPACE, "\r", 1]), true];
+        yield [new Token([\T_WHITESPACE, "\r", 1]), true];
 
-        yield [new Token([T_WHITESPACE, "\0", 1]), true];
+        yield [new Token([\T_WHITESPACE, "\0", 1]), true];
 
-        yield [new Token([T_WHITESPACE, "\x0B", 1]), true];
+        yield [new Token([\T_WHITESPACE, "\x0B", 1]), true];
 
-        yield [new Token([T_WHITESPACE, "\n", 1]), true];
+        yield [new Token([\T_WHITESPACE, "\n", 1]), true];
 
-        yield [new Token([T_WHITESPACE, "\n", 1]), false, " \t"];
+        yield [new Token([\T_WHITESPACE, "\n", 1]), false, " \t"];
     }
 
     /**
@@ -383,7 +387,7 @@ final class TokenTest extends TestCase
      */
     public static function provideCreatingTokenCases(): iterable
     {
-        yield [[T_FOREACH, 'foreach'], T_FOREACH, 'foreach', true];
+        yield [[\T_FOREACH, 'foreach'], \T_FOREACH, 'foreach', true];
 
         yield ['(', null, '(', false];
 
@@ -396,14 +400,14 @@ final class TokenTest extends TestCase
 
     public function testEqualsDefaultIsCaseSensitive(): void
     {
-        $token = new Token([T_FUNCTION, 'function', 1]);
+        $token = new Token([\T_FUNCTION, 'function', 1]);
 
-        self::assertTrue($token->equals([T_FUNCTION, 'function']));
-        self::assertFalse($token->equals([T_FUNCTION, 'Function']));
+        self::assertTrue($token->equals([\T_FUNCTION, 'function']));
+        self::assertFalse($token->equals([\T_FUNCTION, 'Function']));
     }
 
     /**
-     * @param array{0: int, 1?: string}|string|Token $other
+     * @param _PhpTokenPrototypePartial|Token $other
      *
      * @dataProvider provideEqualsCases
      */
@@ -413,12 +417,12 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{0: Token, 1: bool, 2: array{0: int, 1?: string}|string|Token, 3?: bool}>
+     * @return iterable<int, array{0: Token, 1: bool, 2: _PhpTokenPrototypePartial|Token, 3?: bool}>
      */
     public static function provideEqualsCases(): iterable
     {
         $brace = self::getBraceToken();
-        $function = new Token([T_FUNCTION, 'function', 1]);
+        $function = new Token([\T_FUNCTION, 'function', 1]);
 
         yield [$brace, false, '!'];
 
@@ -432,46 +436,46 @@ final class TokenTest extends TestCase
 
         yield [$function, false, '(', false];
 
-        yield [$function, false, [T_NAMESPACE]];
+        yield [$function, false, [\T_NAMESPACE]];
 
-        yield [$function, false, [T_NAMESPACE], false];
+        yield [$function, false, [\T_NAMESPACE], false];
 
-        yield [$function, false, [T_VARIABLE, 'function']];
+        yield [$function, false, [\T_VARIABLE, 'function']];
 
-        yield [$function, false, [T_VARIABLE, 'function'], false];
+        yield [$function, false, [\T_VARIABLE, 'function'], false];
 
-        yield [$function, false, [T_VARIABLE, 'Function']];
+        yield [$function, false, [\T_VARIABLE, 'Function']];
 
-        yield [$function, false, [T_VARIABLE, 'Function'], false];
+        yield [$function, false, [\T_VARIABLE, 'Function'], false];
 
-        yield [$function, true, [T_FUNCTION]];
+        yield [$function, true, [\T_FUNCTION]];
 
-        yield [$function, true, [T_FUNCTION], false];
+        yield [$function, true, [\T_FUNCTION], false];
 
-        yield [$function, true, [T_FUNCTION, 'function']];
+        yield [$function, true, [\T_FUNCTION, 'function']];
 
-        yield [$function, true, [T_FUNCTION, 'function'], false];
+        yield [$function, true, [\T_FUNCTION, 'function'], false];
 
-        yield [$function, false, [T_FUNCTION, 'Function']];
+        yield [$function, false, [\T_FUNCTION, 'Function']];
 
-        yield [$function, true, [T_FUNCTION, 'Function'], false];
+        yield [$function, true, [\T_FUNCTION, 'Function'], false];
 
-        yield [$function, false, [T_FUNCTION, 'junction'], false];
+        yield [$function, false, [\T_FUNCTION, 'junction'], false];
 
-        yield [$function, true, new Token([T_FUNCTION, 'function'])];
+        yield [$function, true, new Token([\T_FUNCTION, 'function'])];
 
-        yield [$function, false, new Token([T_FUNCTION, 'Function'])];
+        yield [$function, false, new Token([\T_FUNCTION, 'Function'])];
 
-        yield [$function, true, new Token([T_FUNCTION, 'Function']), false];
+        yield [$function, true, new Token([\T_FUNCTION, 'Function']), false];
 
         // if it is an array any additional field is checked too
-        yield [$function, false, [T_FUNCTION, 'function', 'unexpected']];
+        yield [$function, false, [\T_FUNCTION, 'function', 'unexpected']];
 
         yield [new Token('&'), true, '&'];
     }
 
     /**
-     * @param array{0: int, 1?: string}|string|Token $other
+     * @param _PhpTokenPrototypePartial|Token $other
      *
      * @dataProvider provideEquals81Cases
      *
@@ -483,7 +487,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{0: Token, 1: bool, 2: array{0: int, 1?: string}|string|Token}>
+     * @return iterable<int, array{0: Token, 1: bool, 2: _PhpTokenPrototypePartial|Token}>
      */
     public static function provideEquals81Cases(): iterable
     {
@@ -502,26 +506,26 @@ final class TokenTest extends TestCase
 
     public function testEqualsAnyDefaultIsCaseSensitive(): void
     {
-        $token = new Token([T_FUNCTION, 'function', 1]);
+        $token = new Token([\T_FUNCTION, 'function', 1]);
 
-        self::assertTrue($token->equalsAny([[T_FUNCTION, 'function']]));
-        self::assertFalse($token->equalsAny([[T_FUNCTION, 'Function']]));
+        self::assertTrue($token->equalsAny([[\T_FUNCTION, 'function']]));
+        self::assertFalse($token->equalsAny([[\T_FUNCTION, 'Function']]));
     }
 
     /**
-     * @param list<array{0: int, 1?: string}|string|Token> $other
+     * @param list<_PhpTokenPrototypePartial|Token> $other
      *
      * @dataProvider provideEqualsAnyCases
      */
     public function testEqualsAny(bool $equalsAny, array $other, bool $caseSensitive = true): void
     {
-        $token = new Token([T_FUNCTION, 'function', 1]);
+        $token = new Token([\T_FUNCTION, 'function', 1]);
 
         self::assertSame($equalsAny, $token->equalsAny($other, $caseSensitive));
     }
 
     /**
-     * @return iterable<int, array{0: bool, 1: list<array{0: int, 1?: string}|string|Token>, 2?: bool}>
+     * @return iterable<int, array{0: bool, 1: list<_PhpTokenPrototypePartial|Token>, 2?: bool}>
      */
     public static function provideEqualsAnyCases(): iterable
     {
@@ -534,15 +538,15 @@ final class TokenTest extends TestCase
 
         yield [false, [$brace, $foreach]];
 
-        yield [true, [$brace, $foreach, [T_FUNCTION]]];
+        yield [true, [$brace, $foreach, [\T_FUNCTION]]];
 
-        yield [true, [$brace, $foreach, [T_FUNCTION, 'function']]];
+        yield [true, [$brace, $foreach, [\T_FUNCTION, 'function']]];
 
-        yield [false, [$brace, $foreach, [T_FUNCTION, 'Function']]];
+        yield [false, [$brace, $foreach, [\T_FUNCTION, 'Function']]];
 
-        yield [true, [$brace, $foreach, [T_FUNCTION, 'Function']], false];
+        yield [true, [$brace, $foreach, [\T_FUNCTION, 'Function']], false];
 
-        yield [false, [[T_VARIABLE, 'junction'], [T_FUNCTION, 'junction']], false];
+        yield [false, [[\T_VARIABLE, 'junction'], [\T_FUNCTION, 'junction']], false];
     }
 
     /**
@@ -608,7 +612,7 @@ final class TokenTest extends TestCase
 
         yield [
             'T_CLASS',
-            T_CLASS,
+            \T_CLASS,
         ];
 
         yield [
@@ -631,7 +635,7 @@ final class TokenTest extends TestCase
     public static function provideGetNameCases(): iterable
     {
         yield [
-            new Token([T_FUNCTION, 'function', 1]),
+            new Token([\T_FUNCTION, 'function', 1]),
             'T_FUNCTION',
         ];
 
@@ -662,9 +666,9 @@ final class TokenTest extends TestCase
     public static function provideToArrayCases(): iterable
     {
         yield [
-            new Token([T_FUNCTION, 'function', 1]),
+            new Token([\T_FUNCTION, 'function', 1]),
             [
-                'id' => T_FUNCTION,
+                'id' => \T_FUNCTION,
                 'name' => 'T_FUNCTION',
                 'content' => 'function',
                 'isArray' => true,
@@ -697,26 +701,11 @@ final class TokenTest extends TestCase
 
     private static function getBraceToken(): Token
     {
-        return new Token(self::getBraceTokenPrototype());
-    }
-
-    private static function getBraceTokenPrototype(): string
-    {
-        return '(';
+        return new Token('(');
     }
 
     private static function getForeachToken(): Token
     {
-        return new Token(self::getForeachTokenPrototype());
-    }
-
-    /**
-     * @return array{int, string}
-     */
-    private static function getForeachTokenPrototype(): array
-    {
-        static $prototype = [T_FOREACH, 'foreach'];
-
-        return $prototype;
+        return new Token([\T_FOREACH, 'foreach']);
     }
 }

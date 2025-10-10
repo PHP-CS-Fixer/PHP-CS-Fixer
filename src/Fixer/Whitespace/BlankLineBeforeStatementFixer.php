@@ -41,6 +41,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Andreas Möller <am@localheinz.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class BlankLineBeforeStatementFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
@@ -51,29 +53,29 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
      * @var array<string, int>
      */
     private const TOKEN_MAP = [
-        'break' => T_BREAK,
-        'case' => T_CASE,
-        'continue' => T_CONTINUE,
-        'declare' => T_DECLARE,
-        'default' => T_DEFAULT,
-        'do' => T_DO,
-        'exit' => T_EXIT,
-        'for' => T_FOR,
-        'foreach' => T_FOREACH,
-        'goto' => T_GOTO,
-        'if' => T_IF,
-        'include' => T_INCLUDE,
-        'include_once' => T_INCLUDE_ONCE,
-        'phpdoc' => T_DOC_COMMENT,
-        'require' => T_REQUIRE,
-        'require_once' => T_REQUIRE_ONCE,
-        'return' => T_RETURN,
-        'switch' => T_SWITCH,
-        'throw' => T_THROW,
-        'try' => T_TRY,
-        'while' => T_WHILE,
-        'yield' => T_YIELD,
-        'yield_from' => T_YIELD_FROM,
+        'break' => \T_BREAK,
+        'case' => \T_CASE,
+        'continue' => \T_CONTINUE,
+        'declare' => \T_DECLARE,
+        'default' => \T_DEFAULT,
+        'do' => \T_DO,
+        'exit' => \T_EXIT,
+        'for' => \T_FOR,
+        'foreach' => \T_FOREACH,
+        'goto' => \T_GOTO,
+        'if' => \T_IF,
+        'include' => \T_INCLUDE,
+        'include_once' => \T_INCLUDE_ONCE,
+        'phpdoc' => \T_DOC_COMMENT,
+        'require' => \T_REQUIRE,
+        'require_once' => \T_REQUIRE_ONCE,
+        'return' => \T_RETURN,
+        'switch' => \T_SWITCH,
+        'throw' => \T_THROW,
+        'try' => \T_TRY,
+        'while' => \T_WHILE,
+        'yield' => \T_YIELD,
+        'yield_from' => \T_YIELD_FROM,
     ];
 
     /**
@@ -87,147 +89,171 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
             'An empty line feed must precede any configured statement.',
             [
                 new CodeSample(
-                    '<?php
-function A() {
-    echo 1;
-    return 1;
-}
-'
+                    <<<'PHP'
+                        <?php
+                        function A() {
+                            echo 1;
+                            return 1;
+                        }
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-switch ($foo) {
-    case 42:
-        $bar->process();
-        break;
-    case 44:
-        break;
-}
-',
+                    <<<'PHP'
+                        <?php
+                        switch ($foo) {
+                            case 42:
+                                $bar->process();
+                                break;
+                            case 44:
+                                break;
+                        }
+
+                        PHP,
                     [
                         'statements' => ['break'],
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-foreach ($foo as $bar) {
-    if ($bar->isTired()) {
-        $bar->sleep();
-        continue;
-    }
-}
-',
+                    <<<'PHP'
+                        <?php
+                        foreach ($foo as $bar) {
+                            if ($bar->isTired()) {
+                                $bar->sleep();
+                                continue;
+                            }
+                        }
+
+                        PHP,
                     [
                         'statements' => ['continue'],
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-$i = 0;
-do {
-    echo $i;
-} while ($i > 0);
-',
+                    <<<'PHP'
+                        <?php
+                        $i = 0;
+                        do {
+                            echo $i;
+                        } while ($i > 0);
+
+                        PHP,
                     [
                         'statements' => ['do'],
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-if ($foo === false) {
-    exit(0);
-} else {
-    $bar = 9000;
-    exit(1);
-}
-',
+                    <<<'PHP'
+                        <?php
+                        if ($foo === false) {
+                            exit(0);
+                        } else {
+                            $bar = 9000;
+                            exit(1);
+                        }
+
+                        PHP,
                     [
                         'statements' => ['exit'],
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-a:
+                    <<<'PHP'
+                        <?php
+                        a:
 
-if ($foo === false) {
-    goto a;
-} else {
-    $bar = 9000;
-    goto b;
-}
-',
+                        if ($foo === false) {
+                            goto a;
+                        } else {
+                            $bar = 9000;
+                            goto b;
+                        }
+
+                        PHP,
                     [
                         'statements' => ['goto'],
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-$a = 9000;
-if (true) {
-    $foo = $bar;
-}
-',
+                    <<<'PHP'
+                        <?php
+                        $a = 9000;
+                        if (true) {
+                            $foo = $bar;
+                        }
+
+                        PHP,
                     [
                         'statements' => ['if'],
                     ]
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-if (true) {
-    $foo = $bar;
-    return;
-}
-',
+                        if (true) {
+                            $foo = $bar;
+                            return;
+                        }
+
+                        PHP,
                     [
                         'statements' => ['return'],
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-$a = 9000;
-switch ($a) {
-    case 42:
-        break;
-}
-',
+                    <<<'PHP'
+                        <?php
+                        $a = 9000;
+                        switch ($a) {
+                            case 42:
+                                break;
+                        }
+
+                        PHP,
                     [
                         'statements' => ['switch'],
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-if (null === $a) {
-    $foo->bar();
-    throw new \UnexpectedValueException("A cannot be null.");
-}
-',
+                    <<<'PHP'
+                        <?php
+                        if (null === $a) {
+                            $foo->bar();
+                            throw new \UnexpectedValueException("A cannot be null.");
+                        }
+
+                        PHP,
                     [
                         'statements' => ['throw'],
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-$a = 9000;
-try {
-    $foo->bar();
-} catch (\Exception $exception) {
-    $a = -1;
-}
-',
+                    <<<'PHP'
+                        <?php
+                        $a = 9000;
+                        try {
+                            $foo->bar();
+                        } catch (\Exception $exception) {
+                            $a = -1;
+                        }
+
+                        PHP,
                     [
                         'statements' => ['try'],
                     ]
                 ),
                 new CodeSample(
-                    '<?php
-function getValues() {
-    yield 1;
-    yield 2;
-    // comment
-    yield 3;
-}
-',
+                    <<<'PHP'
+                        <?php
+                        function getValues() {
+                            yield 1;
+                            yield 2;
+                            // comment
+                            yield 3;
+                        }
+
+                        PHP,
                     [
                         'statements' => ['yield'],
                     ]
@@ -273,11 +299,11 @@ function getValues() {
                 continue;
             }
 
-            if ($token->isGivenKind(T_WHILE) && $analyzer->isWhilePartOfDoWhile($index)) {
+            if ($token->isGivenKind(\T_WHILE) && $analyzer->isWhilePartOfDoWhile($index)) {
                 continue;
             }
 
-            if ($token->isGivenKind(T_CASE) && $analyzer->isEnumCase($index)) {
+            if ($token->isGivenKind(\T_CASE) && $analyzer->isEnumCase($index)) {
                 continue;
             }
 
@@ -368,12 +394,12 @@ function getValues() {
             $newlinesCount = substr_count($prevToken->getContent(), "\n");
 
             if (0 === $newlinesCount) {
-                $tokens[$prevIndex] = new Token([T_WHITESPACE, rtrim($prevToken->getContent(), " \t").$lineEnding.$lineEnding]);
+                $tokens[$prevIndex] = new Token([\T_WHITESPACE, rtrim($prevToken->getContent(), " \t").$lineEnding.$lineEnding]);
             } elseif (1 === $newlinesCount) {
-                $tokens[$prevIndex] = new Token([T_WHITESPACE, $lineEnding.$prevToken->getContent()]);
+                $tokens[$prevIndex] = new Token([\T_WHITESPACE, $lineEnding.$prevToken->getContent()]);
             }
         } else {
-            $tokens->insertAt($index, new Token([T_WHITESPACE, $lineEnding.$lineEnding]));
+            $tokens->insertAt($index, new Token([\T_WHITESPACE, $lineEnding.$lineEnding]));
         }
     }
 }

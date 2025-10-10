@@ -23,25 +23,30 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
+/**
+ * @phpstan-import-type _PhpTokenArray from Token
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer
 {
     /**
-     * @var array<string, array{int, string}>
+     * @var non-empty-array<string, _PhpTokenArray>
      */
     private const OPERATORS = [
-        '+' => [T_PLUS_EQUAL, '+='],
-        '-' => [T_MINUS_EQUAL, '-='],
-        '*' => [T_MUL_EQUAL, '*='],
-        '/' => [T_DIV_EQUAL, '/='],
-        '&' => [T_AND_EQUAL, '&='],
-        '.' => [T_CONCAT_EQUAL, '.='],
-        '%' => [T_MOD_EQUAL, '%='],
-        '|' => [T_OR_EQUAL, '|='],
-        '^' => [T_XOR_EQUAL, '^='],
+        '+' => [\T_PLUS_EQUAL, '+='],
+        '-' => [\T_MINUS_EQUAL, '-='],
+        '*' => [\T_MUL_EQUAL, '*='],
+        '/' => [\T_DIV_EQUAL, '/='],
+        '&' => [\T_AND_EQUAL, '&='],
+        '.' => [\T_CONCAT_EQUAL, '.='],
+        '%' => [\T_MOD_EQUAL, '%='],
+        '|' => [\T_OR_EQUAL, '|='],
+        '^' => [\T_XOR_EQUAL, '^='],
     ];
 
     /**
-     * @var list<string>
+     * @var non-empty-list<string>
      */
     private array $operatorTypes;
 
@@ -97,12 +102,12 @@ final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer
             $index = $tokens->getNextMeaningfulToken($index);
             $otherToken = $tokens[$index];
 
-            if ($otherToken->equalsAny([';', [T_CLOSE_TAG]])) {
+            if ($otherToken->equalsAny([';', [\T_CLOSE_TAG]])) {
                 return true;
             }
 
             // fast precedence check
-            if ($otherToken->equals('?') || $otherToken->isGivenKind(T_INSTANCEOF)) {
+            if ($otherToken->equals('?') || $otherToken->isGivenKind(\T_INSTANCEOF)) {
                 return false;
             }
 

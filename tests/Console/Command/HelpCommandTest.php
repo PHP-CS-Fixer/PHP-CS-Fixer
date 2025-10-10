@@ -23,9 +23,39 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Command\HelpCommand
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class HelpCommandTest extends TestCase
 {
+    /**
+     * @param non-empty-list<string> $allowedValues
+     *
+     * @dataProvider provideGetDescriptionWithAllowedValuesCases
+     */
+    public function testGetDescriptionWithAllowedValues(string $expected, string $description, array $allowedValues): void
+    {
+        self::assertSame($expected, HelpCommand::getDescriptionWithAllowedValues($description, $allowedValues));
+    }
+
+    /**
+     * @return iterable<int, array{string, string, non-empty-list<string>}>
+     */
+    public static function provideGetDescriptionWithAllowedValuesCases(): iterable
+    {
+        yield [
+            'Option description (can be `yes` or `no`).',
+            'Option description (%s).',
+            ['yes', 'no'],
+        ];
+
+        yield [
+            'Option description (can be `txt`, `json` or `markdown`).',
+            'Option description (%s).',
+            ['txt', 'json', 'markdown'],
+        ];
+    }
+
     /**
      * @param null|mixed $expected
      *

@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tests\Test\Assert\AssertTokensTrait;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -26,6 +27,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @requires PHP 8.0
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\NameQualifiedTransformer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
 {
@@ -69,87 +72,87 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
     {
         yield 'string' => [
             [
-                new Token([T_OPEN_TAG, "<?php\n"]),
-                new Token([T_STRING, 'Foo']),
+                new Token([\T_OPEN_TAG, "<?php\n"]),
+                new Token([\T_STRING, 'Foo']),
                 new Token(';'),
             ],
         ];
 
         yield 'relative 1' => [
             [
-                new Token([T_OPEN_TAG, "<?php\n"]),
-                new Token([T_NAMESPACE, 'namespace']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Transformer']),
+                new Token([\T_OPEN_TAG, "<?php\n"]),
+                new Token([\T_NAMESPACE, 'namespace']),
+                new Token([\T_NS_SEPARATOR, '\\']),
+                new Token([\T_STRING, 'Transformer']),
                 new Token(';'),
             ],
             [
-                new Token([T_OPEN_TAG, "<?php\n"]),
-                new Token([T_NAME_RELATIVE, 'namespace\Transformer']),
+                new Token([\T_OPEN_TAG, "<?php\n"]),
+                new Token([FCT::T_NAME_RELATIVE, 'namespace\Transformer']),
                 new Token(';'),
             ],
         ];
 
         yield 'relative 2' => [
             [
-                new Token([T_OPEN_TAG, "<?php\n"]),
-                new Token([T_NAMESPACE, 'namespace']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Transformer']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Foo']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Bar']),
+                new Token([\T_OPEN_TAG, "<?php\n"]),
+                new Token([\T_NAMESPACE, 'namespace']),
+                new Token([\T_NS_SEPARATOR, '\\']),
+                new Token([\T_STRING, 'Transformer']),
+                new Token([\T_NS_SEPARATOR, '\\']),
+                new Token([\T_STRING, 'Foo']),
+                new Token([\T_NS_SEPARATOR, '\\']),
+                new Token([\T_STRING, 'Bar']),
                 new Token(';'),
             ],
             [
-                new Token([T_OPEN_TAG, "<?php\n"]),
-                new Token([T_NAME_RELATIVE, 'namespace\Transformer\Foo\Bar']),
+                new Token([\T_OPEN_TAG, "<?php\n"]),
+                new Token([FCT::T_NAME_RELATIVE, 'namespace\Transformer\Foo\Bar']),
                 new Token(';'),
             ],
         ];
 
         yield 'name fully qualified 1' => [
             [
-                new Token([T_OPEN_TAG, "<?php\n"]),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Foo']),
+                new Token([\T_OPEN_TAG, "<?php\n"]),
+                new Token([\T_NS_SEPARATOR, '\\']),
+                new Token([\T_STRING, 'Foo']),
                 new Token(';'),
             ],
             [
-                new Token([T_OPEN_TAG, "<?php\n"]),
-                new Token([T_NAME_FULLY_QUALIFIED, '\Foo']),
+                new Token([\T_OPEN_TAG, "<?php\n"]),
+                new Token([FCT::T_NAME_FULLY_QUALIFIED, '\Foo']),
                 new Token(';'),
             ],
         ];
 
         yield 'name qualified 1' => [
             [
-                new Token([T_OPEN_TAG, "<?php\n"]),
-                new Token([T_STRING, 'Foo']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Bar']),
+                new Token([\T_OPEN_TAG, "<?php\n"]),
+                new Token([\T_STRING, 'Foo']),
+                new Token([\T_NS_SEPARATOR, '\\']),
+                new Token([\T_STRING, 'Bar']),
                 new Token(';'),
             ],
             [
-                new Token([T_OPEN_TAG, "<?php\n"]),
-                new Token([T_NAME_QUALIFIED, 'Foo\Bar']),
+                new Token([\T_OPEN_TAG, "<?php\n"]),
+                new Token([FCT::T_NAME_QUALIFIED, 'Foo\Bar']),
                 new Token(';'),
             ],
         ];
 
         yield 'name qualified 2' => [
             [
-                new Token([T_OPEN_TAG, "<?php\n"]),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Foo']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Bar']),
+                new Token([\T_OPEN_TAG, "<?php\n"]),
+                new Token([\T_NS_SEPARATOR, '\\']),
+                new Token([\T_STRING, 'Foo']),
+                new Token([\T_NS_SEPARATOR, '\\']),
+                new Token([\T_STRING, 'Bar']),
                 new Token(';'),
             ],
             [
-                new Token([T_OPEN_TAG, "<?php\n"]),
-                new Token([T_NAME_QUALIFIED, '\Foo\Bar']),
+                new Token([\T_OPEN_TAG, "<?php\n"]),
+                new Token([FCT::T_NAME_QUALIFIED, '\Foo\Bar']),
                 new Token(';'),
             ],
         ];
@@ -175,10 +178,10 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
     {
         yield [
             [
-                new Token([T_OPEN_TAG, '<?php ']),
-                new Token([T_STRING, 'Foo']),
+                new Token([\T_OPEN_TAG, '<?php ']),
+                new Token([\T_STRING, 'Foo']),
                 new Token(';'),
-                new Token([T_STRING, 'Bar']),
+                new Token([\T_STRING, 'Bar']),
                 new Token(';'),
             ],
             '<?php Foo;Bar;',
@@ -186,19 +189,19 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
 
         yield [
             [
-                new Token([T_OPEN_TAG, '<?php ']),
-                new Token([T_STRING, 'Foo']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Bar1']),
+                new Token([\T_OPEN_TAG, '<?php ']),
+                new Token([\T_STRING, 'Foo']),
+                new Token([\T_NS_SEPARATOR, '\\']),
+                new Token([\T_STRING, 'Bar1']),
                 new Token(';'),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Foo']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Bar2']),
+                new Token([\T_NS_SEPARATOR, '\\']),
+                new Token([\T_STRING, 'Foo']),
+                new Token([\T_NS_SEPARATOR, '\\']),
+                new Token([\T_STRING, 'Bar2']),
                 new Token(';'),
-                new Token([T_STRING, 'Foo']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Bar3']),
+                new Token([\T_STRING, 'Foo']),
+                new Token([\T_NS_SEPARATOR, '\\']),
+                new Token([\T_STRING, 'Bar3']),
                 new Token(';'),
             ],
             '<?php Foo\Bar1;\Foo\Bar2;Foo\Bar3;',
@@ -206,18 +209,18 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
 
         yield [
             [
-                new Token([T_OPEN_TAG, '<?php ']),
-                new Token([T_STRING, 'Foo']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Bar1']),
+                new Token([\T_OPEN_TAG, '<?php ']),
+                new Token([\T_STRING, 'Foo']),
+                new Token([\T_NS_SEPARATOR, '\\']),
+                new Token([\T_STRING, 'Bar1']),
                 new Token(';'),
-                new Token([T_STRING, 'Foo']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Bar2']),
+                new Token([\T_STRING, 'Foo']),
+                new Token([\T_NS_SEPARATOR, '\\']),
+                new Token([\T_STRING, 'Bar2']),
                 new Token(';'),
-                new Token([T_STRING, 'Foo']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Bar3']),
+                new Token([\T_STRING, 'Foo']),
+                new Token([\T_NS_SEPARATOR, '\\']),
+                new Token([\T_STRING, 'Bar3']),
                 new Token(';'),
             ],
             '<?php Foo\Bar1;Foo\Bar2;Foo\Bar3;',
@@ -225,21 +228,21 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
 
         yield [
             [
-                new Token([T_OPEN_TAG, '<?php ']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Foo']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Bar1']),
+                new Token([\T_OPEN_TAG, '<?php ']),
+                new Token([\T_NS_SEPARATOR, '\\']),
+                new Token([\T_STRING, 'Foo']),
+                new Token([\T_NS_SEPARATOR, '\\']),
+                new Token([\T_STRING, 'Bar1']),
                 new Token(';'),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Foo']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Bar2']),
+                new Token([\T_NS_SEPARATOR, '\\']),
+                new Token([\T_STRING, 'Foo']),
+                new Token([\T_NS_SEPARATOR, '\\']),
+                new Token([\T_STRING, 'Bar2']),
                 new Token(';'),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Foo']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Bar3']),
+                new Token([\T_NS_SEPARATOR, '\\']),
+                new Token([\T_STRING, 'Foo']),
+                new Token([\T_NS_SEPARATOR, '\\']),
+                new Token([\T_STRING, 'Bar3']),
                 new Token(';'),
             ],
             '<?php \Foo\Bar1;\Foo\Bar2;\Foo\Bar3;',
@@ -247,10 +250,10 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
 
         yield [
             [
-                new Token([T_OPEN_TAG, '<?php ']),
+                new Token([\T_OPEN_TAG, '<?php ']),
                 new Token([CT::T_NAMESPACE_OPERATOR, 'namespace']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Transformer']),
+                new Token([\T_NS_SEPARATOR, '\\']),
+                new Token([\T_STRING, 'Transformer']),
                 new Token(';'),
             ],
             '<?php namespace\Transformer;',
@@ -258,14 +261,14 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
 
         yield [
             [
-                new Token([T_OPEN_TAG, '<?php ']),
+                new Token([\T_OPEN_TAG, '<?php ']),
                 new Token([CT::T_NAMESPACE_OPERATOR, 'namespace']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Foo']),
+                new Token([\T_NS_SEPARATOR, '\\']),
+                new Token([\T_STRING, 'Foo']),
                 new Token(';'),
                 new Token([CT::T_NAMESPACE_OPERATOR, 'namespace']),
-                new Token([T_NS_SEPARATOR, '\\']),
-                new Token([T_STRING, 'Bar']),
+                new Token([\T_NS_SEPARATOR, '\\']),
+                new Token([\T_STRING, 'Bar']),
                 new Token(';'),
             ],
             '<?php namespace\Foo;namespace\Bar;',

@@ -19,31 +19,11 @@ use PhpCsFixer\FixerFactory;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TestCaseUtils
 {
-    /**
-     * @param iterable<array{0: string, 1?: string}> $cases
-     *
-     * @return iterable<array{0: string, 1?: string}>
-     */
-    public static function swapExpectedInputTestCases(iterable $cases): iterable
-    {
-        foreach ($cases as $case) {
-            if (1 === \count($case)) {
-                yield $case;
-
-                continue;
-            }
-
-            \assert(2 === \count($case));
-
-            [$case[0], $case[1]] = [$case[1], $case[0]];
-
-            yield $case;
-        }
-    }
-
     public static function getFixerByName(string $name): FixerInterface
     {
         static $fixers = null;

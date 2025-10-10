@@ -45,6 +45,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * @author Bram Gotink <bram@gotink.me>
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PsrAutoloadingFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -57,17 +59,21 @@ final class PsrAutoloadingFixer extends AbstractFixer implements ConfigurableFix
             'Classes must be in a path that matches their namespace, be at least one namespace deep and the class name should match the file name.',
             [
                 new FileSpecificCodeSample(
-                    '<?php
-namespace PhpCsFixer\FIXER\Basic;
-class InvalidName {}
-',
+                    <<<'PHP'
+                        <?php
+                        namespace PhpCsFixer\FIXER\Basic;
+                        class InvalidName {}
+
+                        PHP,
                     new \SplFileInfo(__FILE__)
                 ),
                 new FileSpecificCodeSample(
-                    '<?php
-namespace PhpCsFixer\FIXER\Basic;
-class InvalidName {}
-',
+                    <<<'PHP'
+                        <?php
+                        namespace PhpCsFixer\FIXER\Basic;
+                        class InvalidName {}
+
+                        PHP,
                     new \SplFileInfo(__FILE__),
                     ['dir' => './src']
                 ),
@@ -167,7 +173,7 @@ class InvalidName {}
         $classyIndex = null;
 
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(T_NAMESPACE)) {
+            if ($token->isGivenKind(\T_NAMESPACE)) {
                 if (null !== $namespace) {
                     return;
                 }
@@ -196,7 +202,7 @@ class InvalidName {}
         $expectedClassyName = $this->calculateClassyName($file, $namespace, $classyName);
 
         if ($classyName !== $expectedClassyName) {
-            $tokens[$classyIndex] = new Token([T_STRING, $expectedClassyName]);
+            $tokens[$classyIndex] = new Token([\T_STRING, $expectedClassyName]);
         }
 
         if (null === $this->configuration['dir'] || null === $namespace) {

@@ -21,6 +21,9 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class MagicMethodCasingFixer extends AbstractFixer
 {
     /**
@@ -52,19 +55,23 @@ final class MagicMethodCasingFixer extends AbstractFixer
             'Magic method definitions and calls must be using the correct casing.',
             [
                 new CodeSample(
-                    '<?php
-class Foo
-{
-    public function __Sleep()
-    {
-    }
-}
-'
+                    <<<'PHP'
+                        <?php
+                        class Foo
+                        {
+                            public function __Sleep()
+                            {
+                            }
+                        }
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-$foo->__INVOKE(1);
-'
+                    <<<'PHP'
+                        <?php
+                        $foo->__INVOKE(1);
+
+                        PHP
                 ),
             ]
         );
@@ -72,7 +79,7 @@ $foo->__INVOKE(1);
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_STRING) && $tokens->isAnyTokenKindsFound([T_FUNCTION, T_DOUBLE_COLON, ...Token::getObjectOperatorKinds()]);
+        return $tokens->isTokenKindFound(\T_STRING) && $tokens->isAnyTokenKindsFound([\T_FUNCTION, \T_DOUBLE_COLON, ...Token::getObjectOperatorKinds()]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -102,7 +109,7 @@ $foo->__INVOKE(1);
                 }
             }
 
-            if (!$tokens[$index]->isGivenKind(T_STRING)) {
+            if (!$tokens[$index]->isGivenKind(\T_STRING)) {
                 continue; // wrong type
             }
 
@@ -150,7 +157,7 @@ $foo->__INVOKE(1);
     private function isFunctionSignature(Tokens $tokens, int $index): bool
     {
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
-        if (!$tokens[$prevIndex]->isGivenKind(T_FUNCTION)) {
+        if (!$tokens[$prevIndex]->isGivenKind(\T_FUNCTION)) {
             return false; // not a method signature
         }
 
@@ -170,7 +177,7 @@ $foo->__INVOKE(1);
     private function isStaticMethodCall(Tokens $tokens, int $index): bool
     {
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
-        if (!$tokens[$prevIndex]->isGivenKind(T_DOUBLE_COLON)) {
+        if (!$tokens[$prevIndex]->isGivenKind(\T_DOUBLE_COLON)) {
             return false; // not a "simple" static method call
         }
 
@@ -197,6 +204,6 @@ $foo->__INVOKE(1);
 
     private function setTokenToCorrectCasing(Tokens $tokens, int $index, string $nameInCorrectCasing): void
     {
-        $tokens[$index] = new Token([T_STRING, $nameInCorrectCasing]);
+        $tokens[$index] = new Token([\T_STRING, $nameInCorrectCasing]);
     }
 }

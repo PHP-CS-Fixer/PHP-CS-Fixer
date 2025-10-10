@@ -7,7 +7,7 @@ Rules that follow the official `Symfony Coding Standards <https://symfony.com/do
 Rules
 -----
 
-- `@PER-CS2.0 <./PER-CS2.0.rst>`_
+- `@PER-CS3x0 <./PER-CS3x0.rst>`_
 - `align_multiline_comment <./../rules/phpdoc/align_multiline_comment.rst>`_
 - `backtick_to_shell_exec <./../rules/alias/backtick_to_shell_exec.rst>`_
 - `binary_operator_spaces <./../rules/operator/binary_operator_spaces.rst>`_
@@ -38,7 +38,10 @@ Rules
 
 - `empty_loop_condition <./../rules/control_structure/empty_loop_condition.rst>`_
 - `fully_qualified_strict_types <./../rules/import/fully_qualified_strict_types.rst>`_
-- `function_declaration <./../rules/function_notation/function_declaration.rst>`_
+- `function_declaration <./../rules/function_notation/function_declaration.rst>`_ with config:
+
+  ``['closure_fn_spacing' => 'one']``
+
 - `general_phpdoc_tag_rename <./../rules/phpdoc/general_phpdoc_tag_rename.rst>`_ with config:
 
   ``['replacements' => ['inheritDocs' => 'inheritDoc']]``
@@ -56,7 +59,7 @@ Rules
 - `magic_method_casing <./../rules/casing/magic_method_casing.rst>`_
 - `method_argument_space <./../rules/function_notation/method_argument_space.rst>`_ with config:
 
-  ``['on_multiline' => 'ignore']``
+  ``['after_heredoc' => true, 'on_multiline' => 'ignore']``
 
 - `native_function_casing <./../rules/casing/native_function_casing.rst>`_
 - `native_type_declaration_casing <./../rules/casing/native_type_declaration_casing.rst>`_
@@ -96,9 +99,11 @@ Rules
 - `no_unused_imports <./../rules/import/no_unused_imports.rst>`_
 - `no_useless_concat_operator <./../rules/operator/no_useless_concat_operator.rst>`_
 - `no_useless_nullsafe_operator <./../rules/operator/no_useless_nullsafe_operator.rst>`_
-- `no_whitespace_before_comma_in_array <./../rules/array_notation/no_whitespace_before_comma_in_array.rst>`_
+- `no_whitespace_before_comma_in_array <./../rules/array_notation/no_whitespace_before_comma_in_array.rst>`_ with config:
+
+  ``['after_heredoc' => true]``
+
 - `normalize_index_brace <./../rules/array_notation/normalize_index_brace.rst>`_
-- `nullable_type_declaration <./../rules/language_construct/nullable_type_declaration.rst>`_
 - `nullable_type_declaration_for_default_null_value <./../rules/function_notation/nullable_type_declaration_for_default_null_value.rst>`_
 - `object_operator_without_whitespace <./../rules/operator/object_operator_without_whitespace.rst>`_
 - `operator_linebreak <./../rules/operator/operator_linebreak.rst>`_ with config:
@@ -109,10 +114,6 @@ Rules
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'alpha']``
 
-- `ordered_types <./../rules/class_notation/ordered_types.rst>`_ with config:
-
-  ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``
-
 - `php_unit_fqcn_annotation <./../rules/php_unit/php_unit_fqcn_annotation.rst>`_
 - `php_unit_method_casing <./../rules/php_unit/php_unit_method_casing.rst>`_
 - `phpdoc_align <./../rules/phpdoc/phpdoc_align.rst>`_
@@ -120,7 +121,10 @@ Rules
 - `phpdoc_indent <./../rules/phpdoc/phpdoc_indent.rst>`_
 - `phpdoc_inline_tag_normalizer <./../rules/phpdoc/phpdoc_inline_tag_normalizer.rst>`_
 - `phpdoc_no_access <./../rules/phpdoc/phpdoc_no_access.rst>`_
-- `phpdoc_no_alias_tag <./../rules/phpdoc/phpdoc_no_alias_tag.rst>`_
+- `phpdoc_no_alias_tag <./../rules/phpdoc/phpdoc_no_alias_tag.rst>`_ with config:
+
+  ``['replacements' => ['const' => 'var', 'link' => 'see', 'property-read' => 'property', 'property-write' => 'property', 'type' => 'var']]``
+
 - `phpdoc_no_package <./../rules/phpdoc/phpdoc_no_package.rst>`_
 - `phpdoc_no_useless_inheritdoc <./../rules/phpdoc/phpdoc_no_useless_inheritdoc.rst>`_
 - `phpdoc_order <./../rules/phpdoc/phpdoc_order.rst>`_ with config:
@@ -128,10 +132,13 @@ Rules
   ``['order' => ['param', 'return', 'throws']]``
 
 - `phpdoc_return_self_reference <./../rules/phpdoc/phpdoc_return_self_reference.rst>`_
-- `phpdoc_scalar <./../rules/phpdoc/phpdoc_scalar.rst>`_
+- `phpdoc_scalar <./../rules/phpdoc/phpdoc_scalar.rst>`_ with config:
+
+  ``['types' => ['boolean', 'callback', 'double', 'integer', 'never-return', 'never-returns', 'no-return', 'real', 'str']]``
+
 - `phpdoc_separation <./../rules/phpdoc/phpdoc_separation.rst>`_ with config:
 
-  ``['groups' => [['Annotation', 'NamedArgumentConstructor', 'Target'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write'], ['deprecated', 'link', 'see', 'since']]]``
+  ``['groups' => [['Annotation', 'NamedArgumentConstructor', 'Target'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write'], ['deprecated', 'link', 'see', 'since']], 'skip_unlisted_annotations' => false]``
 
 - `phpdoc_single_line_var_spacing <./../rules/phpdoc/phpdoc_single_line_var_spacing.rst>`_
 - `phpdoc_summary <./../rules/phpdoc/phpdoc_summary.rst>`_
@@ -139,7 +146,10 @@ Rules
 
   ``['tags' => ['inheritDoc' => 'inline']]``
 
-- `phpdoc_to_comment <./../rules/phpdoc/phpdoc_to_comment.rst>`_
+- `phpdoc_to_comment <./../rules/phpdoc/phpdoc_to_comment.rst>`_ with config:
+
+  ``['allow_before_return_statement' => false]``
+
 - `phpdoc_trim <./../rules/phpdoc/phpdoc_trim.rst>`_
 - `phpdoc_trim_consecutive_blank_line_separation <./../rules/phpdoc/phpdoc_trim_consecutive_blank_line_separation.rst>`_
 - `phpdoc_types <./../rules/phpdoc/phpdoc_types.rst>`_
@@ -147,10 +157,10 @@ Rules
 
   ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``
 
+- `phpdoc_var_annotation_correct_order <./../rules/phpdoc/phpdoc_var_annotation_correct_order.rst>`_
 - `phpdoc_var_without_name <./../rules/phpdoc/phpdoc_var_without_name.rst>`_
 - `semicolon_after_instruction <./../rules/semicolon/semicolon_after_instruction.rst>`_
 - `simple_to_complex_string_variable <./../rules/string_notation/simple_to_complex_string_variable.rst>`_
-- `single_class_element_per_statement <./../rules/class_notation/single_class_element_per_statement.rst>`_
 - `single_import_per_statement <./../rules/import/single_import_per_statement.rst>`_
 - `single_line_comment_spacing <./../rules/comment/single_line_comment_spacing.rst>`_
 - `single_line_comment_style <./../rules/comment/single_line_comment_style.rst>`_ with config:
@@ -176,8 +186,10 @@ Rules
   ``['after_heredoc' => true, 'elements' => ['array_destructuring', 'arrays', 'match', 'parameters']]``
 
 - `trim_array_spaces <./../rules/array_notation/trim_array_spaces.rst>`_
-- `type_declaration_spaces <./../rules/whitespace/type_declaration_spaces.rst>`_
-- `types_spaces <./../rules/whitespace/types_spaces.rst>`_
+- `type_declaration_spaces <./../rules/whitespace/type_declaration_spaces.rst>`_ with config:
+
+  ``['elements' => ['function', 'property']]``
+
 - `unary_operator_spaces <./../rules/operator/unary_operator_spaces.rst>`_
 - `whitespace_after_comma_in_array <./../rules/array_notation/whitespace_after_comma_in_array.rst>`_
 - `yoda_style <./../rules/control_structure/yoda_style.rst>`_

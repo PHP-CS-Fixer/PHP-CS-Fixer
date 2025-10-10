@@ -28,6 +28,8 @@ use Symfony\Component\Filesystem\Exception\IOException;
  * @internal
  *
  * @covers \PhpCsFixer\Cache\FileHandler
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FileHandlerTest extends TestCase
 {
@@ -207,10 +209,10 @@ final class FileHandlerTest extends TestCase
     private function createSignature(): SignatureInterface
     {
         return new Signature(
-            PHP_VERSION,
+            \PHP_VERSION,
             '2.0',
             '    ',
-            PHP_EOL,
+            \PHP_EOL,
             ['foo' => true, 'bar' => false],
         );
     }

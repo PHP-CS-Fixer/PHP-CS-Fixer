@@ -40,6 +40,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  * @author Julien Falque <julien.falque@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class AlignMultilineCommentFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
@@ -47,7 +49,7 @@ final class AlignMultilineCommentFixer extends AbstractFixer implements Configur
     use ConfigurableFixerTrait;
 
     /**
-     * @var null|list<int>
+     * @var null|non-empty-list<int>
      */
     private ?array $tokenKinds = null;
 
@@ -57,30 +59,36 @@ final class AlignMultilineCommentFixer extends AbstractFixer implements Configur
             'Each line of multi-line DocComments must have an asterisk [PSR-5] and must be aligned with the first one.',
             [
                 new CodeSample(
-                    '<?php
-    /**
-            * This is a DOC Comment
-with a line not prefixed with asterisk
+                    <<<'PHP'
+                        <?php
+                            /**
+                                    * This is a DOC Comment
+                        with a line not prefixed with asterisk
 
-   */
-'
+                           */
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-    /*
-            * This is a doc-like multiline comment
-*/
-',
+                    <<<'PHP'
+                        <?php
+                            /*
+                                    * This is a doc-like multiline comment
+                        */
+
+                        PHP,
                     ['comment_type' => 'phpdocs_like']
                 ),
                 new CodeSample(
-                    '<?php
-    /*
-            * This is a doc-like multiline comment
-with a line not prefixed with asterisk
+                    <<<'PHP'
+                        <?php
+                            /*
+                                    * This is a doc-like multiline comment
+                        with a line not prefixed with asterisk
 
-   */
-',
+                           */
+
+                        PHP,
                     ['comment_type' => 'all_multiline']
                 ),
             ]
@@ -90,7 +98,7 @@ with a line not prefixed with asterisk
     /**
      * {@inheritdoc}
      *
-     * Must run before CommentToPhpdocFixer, GeneralPhpdocAnnotationRemoveFixer, GeneralPhpdocTagRenameFixer, NoBlankLinesAfterPhpdocFixer, NoEmptyPhpdocFixer, NoSuperfluousPhpdocTagsFixer, PhpdocAddMissingParamAnnotationFixer, PhpdocAlignFixer, PhpdocAnnotationWithoutDotFixer, PhpdocArrayTypeFixer, PhpdocInlineTagNormalizerFixer, PhpdocLineSpanFixer, PhpdocListTypeFixer, PhpdocNoAccessFixer, PhpdocNoAliasTagFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer, PhpdocNoUselessInheritdocFixer, PhpdocOrderByValueFixer, PhpdocOrderFixer, PhpdocParamOrderFixer, PhpdocReadonlyClassCommentToKeywordFixer, PhpdocReturnSelfReferenceFixer, PhpdocSeparationFixer, PhpdocSingleLineVarSpacingFixer, PhpdocSummaryFixer, PhpdocTagCasingFixer, PhpdocTagTypeFixer, PhpdocToParamTypeFixer, PhpdocToPropertyTypeFixer, PhpdocToReturnTypeFixer, PhpdocTrimConsecutiveBlankLineSeparationFixer, PhpdocTrimFixer, PhpdocTypesOrderFixer, PhpdocVarAnnotationCorrectOrderFixer, PhpdocVarWithoutNameFixer.
+     * Must run before CommentToPhpdocFixer, GeneralPhpdocAnnotationRemoveFixer, GeneralPhpdocTagRenameFixer, NoBlankLinesAfterPhpdocFixer, NoEmptyPhpdocFixer, NoSuperfluousPhpdocTagsFixer, PhpdocAddMissingParamAnnotationFixer, PhpdocAlignFixer, PhpdocAnnotationWithoutDotFixer, PhpdocArrayTypeFixer, PhpdocInlineTagNormalizerFixer, PhpdocLineSpanFixer, PhpdocListTypeFixer, PhpdocNoAccessFixer, PhpdocNoAliasTagFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer, PhpdocNoUselessInheritdocFixer, PhpdocOrderByValueFixer, PhpdocOrderFixer, PhpdocParamOrderFixer, PhpdocReadonlyClassCommentToKeywordFixer, PhpdocReturnSelfReferenceFixer, PhpdocSeparationFixer, PhpdocSingleLineVarSpacingFixer, PhpdocSummaryFixer, PhpdocTagCasingFixer, PhpdocTagNoNamedArgumentsFixer, PhpdocTagTypeFixer, PhpdocToParamTypeFixer, PhpdocToPropertyTypeFixer, PhpdocToReturnTypeFixer, PhpdocTrimConsecutiveBlankLineSeparationFixer, PhpdocTrimFixer, PhpdocTypesOrderFixer, PhpdocVarAnnotationCorrectOrderFixer, PhpdocVarWithoutNameFixer.
      * Must run after ArrayIndentationFixer.
      */
     public function getPriority(): int
@@ -105,9 +113,9 @@ with a line not prefixed with asterisk
 
     protected function configurePostNormalisation(): void
     {
-        $this->tokenKinds = [T_DOC_COMMENT];
+        $this->tokenKinds = [\T_DOC_COMMENT];
         if ('phpdocs_only' !== $this->configuration['comment_type']) {
-            $this->tokenKinds[] = T_COMMENT;
+            $this->tokenKinds[] = \T_COMMENT;
         }
     }
 
@@ -127,7 +135,7 @@ with a line not prefixed with asterisk
                 --$previousIndex;
             }
 
-            if ($tokens[$previousIndex]->isGivenKind(T_OPEN_TAG)) {
+            if ($tokens[$previousIndex]->isGivenKind(\T_OPEN_TAG)) {
                 $whitespace = Preg::replace('/\S/', '', $tokens[$previousIndex]->getContent()).$whitespace;
             }
 
@@ -135,7 +143,7 @@ with a line not prefixed with asterisk
                 continue;
             }
 
-            if ($token->isGivenKind(T_COMMENT) && 'all_multiline' !== $this->configuration['comment_type'] && Preg::match('/\R(?:\R|\s*[^\s\*])/', $token->getContent())) {
+            if ($token->isGivenKind(\T_COMMENT) && 'all_multiline' !== $this->configuration['comment_type'] && Preg::match('/\R(?:\R|\s*[^\s\*])/', $token->getContent())) {
                 continue;
             }
 
@@ -149,7 +157,7 @@ with a line not prefixed with asterisk
 
                 $line = ltrim($line);
 
-                if ($token->isGivenKind(T_COMMENT) && (!isset($line[0]) || '*' !== $line[0])) {
+                if ($token->isGivenKind(\T_COMMENT) && (!isset($line[0]) || '*' !== $line[0])) {
                     continue;
                 }
 

@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DateTimeImmutableFixer extends AbstractFixer
 {
@@ -39,7 +41,7 @@ final class DateTimeImmutableFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     public function isRisky(): bool
@@ -61,13 +63,13 @@ final class DateTimeImmutableFixer extends AbstractFixer
         for ($index = 0, $limit = $tokens->count(); $index < $limit; ++$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(T_NAMESPACE)) {
+            if ($token->isGivenKind(\T_NAMESPACE)) {
                 $isInNamespace = true;
 
                 continue;
             }
 
-            if ($isInNamespace && $token->isGivenKind(T_USE)) {
+            if ($isInNamespace && $token->isGivenKind(\T_USE)) {
                 $nextIndex = $tokens->getNextMeaningfulToken($index);
 
                 if ('datetime' !== strtolower($tokens[$nextIndex]->getContent())) {
@@ -85,13 +87,13 @@ final class DateTimeImmutableFixer extends AbstractFixer
                 continue;
             }
 
-            if (!$token->isGivenKind(T_STRING)) {
+            if (!$token->isGivenKind(\T_STRING)) {
                 continue;
             }
 
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-            if ($tokens[$prevIndex]->isGivenKind(T_FUNCTION)) {
+            if ($tokens[$prevIndex]->isGivenKind(\T_FUNCTION)) {
                 continue;
             }
 
@@ -105,7 +107,7 @@ final class DateTimeImmutableFixer extends AbstractFixer
             }
 
             if (isset($functionMap[$lowercaseContent]) && $functionsAnalyzer->isGlobalFunctionCall($tokens, $index)) {
-                $tokens[$index] = new Token([T_STRING, $functionMap[$lowercaseContent]]);
+                $tokens[$index] = new Token([\T_STRING, $functionMap[$lowercaseContent]]);
             }
         }
     }
@@ -113,9 +115,9 @@ final class DateTimeImmutableFixer extends AbstractFixer
     private function fixClassUsage(Tokens $tokens, int $index, bool $isInNamespace, bool $isImported): void
     {
         $nextIndex = $tokens->getNextMeaningfulToken($index);
-        if ($tokens[$nextIndex]->isGivenKind(T_DOUBLE_COLON)) {
+        if ($tokens[$nextIndex]->isGivenKind(\T_DOUBLE_COLON)) {
             $nextNextIndex = $tokens->getNextMeaningfulToken($nextIndex);
-            if ($tokens[$nextNextIndex]->isGivenKind(T_STRING)) {
+            if ($tokens[$nextNextIndex]->isGivenKind(\T_STRING)) {
                 $nextNextNextIndex = $tokens->getNextMeaningfulToken($nextNextIndex);
                 if (!$tokens[$nextNextNextIndex]->equals('(')) {
                     return;
@@ -127,19 +129,19 @@ final class DateTimeImmutableFixer extends AbstractFixer
         $isUsedWithLeadingBackslash = false; // e.g. new \DateTime();
 
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
-        if ($tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
+        if ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
             $prevPrevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
-            if (!$tokens[$prevPrevIndex]->isGivenKind(T_STRING)) {
+            if (!$tokens[$prevPrevIndex]->isGivenKind(\T_STRING)) {
                 $isUsedWithLeadingBackslash = true;
             }
-        } elseif (!$tokens[$prevIndex]->isGivenKind(T_DOUBLE_COLON) && !$tokens[$prevIndex]->isObjectOperator()) {
+        } elseif (!$tokens[$prevIndex]->isGivenKind(\T_DOUBLE_COLON) && !$tokens[$prevIndex]->isObjectOperator()) {
             $isUsedAlone = true;
         }
 
         if ($isUsedWithLeadingBackslash || $isUsedAlone && ($isInNamespace && $isImported || !$isInNamespace)) {
-            $tokens[$index] = new Token([T_STRING, \DateTimeImmutable::class]);
+            $tokens[$index] = new Token([\T_STRING, \DateTimeImmutable::class]);
             if ($isInNamespace && $isUsedAlone) {
-                $tokens->insertAt($index, new Token([T_NS_SEPARATOR, '\\']));
+                $tokens->insertAt($index, new Token([\T_NS_SEPARATOR, '\\']));
             }
         }
     }

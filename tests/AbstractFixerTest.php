@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\AccessibleObject\AccessibleObject;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -25,6 +24,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @internal
  *
  * @covers \PhpCsFixer\AbstractFixer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class AbstractFixerTest extends TestCase
 {
@@ -50,7 +51,7 @@ final class AbstractFixerTest extends TestCase
     {
         $fixer = $this->createWhitespacesAwareFixerDouble();
 
-        $config = AccessibleObject::create($fixer)->whitespacesConfig;
+        $config = \Closure::bind(static fn ($fixer): WhitespacesFixerConfig => $fixer->whitespacesConfig, null, AbstractFixer::class)($fixer);
 
         self::assertSame('    ', $config->getIndent());
         self::assertSame("\n", $config->getLineEnding());
@@ -59,7 +60,7 @@ final class AbstractFixerTest extends TestCase
 
         $fixer->setWhitespacesConfig($newConfig);
 
-        $config = AccessibleObject::create($fixer)->whitespacesConfig;
+        $config = \Closure::bind(static fn ($fixer): WhitespacesFixerConfig => $fixer->whitespacesConfig, null, AbstractFixer::class)($fixer);
 
         self::assertSame("\t", $config->getIndent());
         self::assertSame("\r\n", $config->getLineEnding());

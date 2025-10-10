@@ -25,6 +25,8 @@ use Symfony\Component\Console\Output\StreamOutput;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Output\ErrorOutput
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ErrorOutputTest extends TestCase
 {
@@ -167,7 +169,7 @@ Files that were not fixed due to errors reported during %s:
         // normalize line breaks,
         // as we output using SF `writeln` we are not sure what line ending has been used as it is
         // based on the platform/console/terminal used
-        return str_replace(PHP_EOL, "\n", $displayed);
+        return str_replace(\PHP_EOL, "\n", $displayed);
     }
 
     /**

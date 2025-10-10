@@ -26,6 +26,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Sander Verkuil <s.verkuil@pm.me>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class BlankLineBetweenImportGroupsFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
@@ -41,45 +43,53 @@ final class BlankLineBetweenImportGroupsFixer extends AbstractFixer implements W
             'Putting blank lines between `use` statement groups.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-use function AAC;
-use const AAB;
-use AAA;
-'
+                        use function AAC;
+                        use const AAB;
+                        use AAA;
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-use const AAAA;
-use const BBB;
-use Bar;
-use AAC;
-use Acme;
-use function CCC\AA;
-use function DDD;
-'
+                    <<<'PHP'
+                        <?php
+                        use const AAAA;
+                        use const BBB;
+                        use Bar;
+                        use AAC;
+                        use Acme;
+                        use function CCC\AA;
+                        use function DDD;
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-use const BBB;
-use const AAAA;
-use Acme;
-use AAC;
-use Bar;
-use function DDD;
-use function CCC\AA;
-'
+                    <<<'PHP'
+                        <?php
+                        use const BBB;
+                        use const AAAA;
+                        use Acme;
+                        use AAC;
+                        use Bar;
+                        use function DDD;
+                        use function CCC\AA;
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-use const AAAA;
-use const BBB;
-use Acme;
-use function DDD;
-use AAC;
-use function CCC\AA;
-use Bar;
-'
+                    <<<'PHP'
+                        <?php
+                        use const AAAA;
+                        use const BBB;
+                        use Acme;
+                        use function DDD;
+                        use AAC;
+                        use function CCC\AA;
+                        use Bar;
+
+                        PHP
                 ),
             ]
         );
@@ -97,7 +107,7 @@ use Bar;
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_USE);
+        return $tokens->isTokenKindFound(\T_USE);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -126,7 +136,7 @@ use Bar;
         for ($i = $usesCount - 1; $i >= 0; --$i) {
             $index = $uses[$i];
             $startIndex = $tokens->getNextMeaningfulToken($index + 1);
-            $endIndex = $tokens->getNextTokenOfKind($startIndex, [';', [T_CLOSE_TAG]]);
+            $endIndex = $tokens->getNextTokenOfKind($startIndex, [';', [\T_CLOSE_TAG]]);
 
             if ($tokens[$startIndex]->isGivenKind(CT::T_CONST_IMPORT)) {
                 $type = self::IMPORT_TYPE_CONST;

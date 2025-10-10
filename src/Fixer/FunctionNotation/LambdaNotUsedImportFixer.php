@@ -24,6 +24,9 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class LambdaNotUsedImportFixer extends AbstractFixer
 {
     private ArgumentsAnalyzer $argumentsAnalyzer;
@@ -52,7 +55,7 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAllTokenKindsFound([T_FUNCTION, CT::T_USE_LAMBDA]);
+        return $tokens->isAllTokenKindsFound([\T_FUNCTION, CT::T_USE_LAMBDA]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -105,15 +108,6 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
      */
     private function findNotUsedLambdaImports(Tokens $tokens, array $imports, int $lambdaUseCloseBraceIndex): array
     {
-        static $riskyKinds = [
-            CT::T_DYNAMIC_VAR_BRACE_OPEN,
-            T_EVAL,
-            T_INCLUDE,
-            T_INCLUDE_ONCE,
-            T_REQUIRE,
-            T_REQUIRE_ONCE,
-        ];
-
         // figure out where the lambda starts ...
         $lambdaOpenIndex = $tokens->getNextTokenOfKind($lambdaUseCloseBraceIndex, ['{']);
         $curlyBracesLevel = 0;
@@ -137,23 +131,30 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
                 continue;
             }
 
-            if ($token->isGivenKind(T_STRING) && 'compact' === strtolower($token->getContent()) && $this->functionAnalyzer->isGlobalFunctionCall($tokens, $index)) {
+            if ($token->isGivenKind(\T_STRING) && 'compact' === strtolower($token->getContent()) && $this->functionAnalyzer->isGlobalFunctionCall($tokens, $index)) {
                 return []; // wouldn't touch it with a ten-foot pole
             }
 
-            if ($token->isGivenKind($riskyKinds)) {
+            if ($token->isGivenKind([
+                CT::T_DYNAMIC_VAR_BRACE_OPEN,
+                \T_EVAL,
+                \T_INCLUDE,
+                \T_INCLUDE_ONCE,
+                \T_REQUIRE,
+                \T_REQUIRE_ONCE,
+            ])) {
                 return [];
             }
 
             if ($token->equals('$')) {
                 $nextIndex = $tokens->getNextMeaningfulToken($index);
 
-                if ($tokens[$nextIndex]->isGivenKind(T_VARIABLE)) {
+                if ($tokens[$nextIndex]->isGivenKind(\T_VARIABLE)) {
                     return []; // "$$a" case
                 }
             }
 
-            if ($token->isGivenKind(T_VARIABLE)) {
+            if ($token->isGivenKind(\T_VARIABLE)) {
                 $content = $token->getContent();
 
                 if (isset($imports[$content])) {
@@ -165,7 +166,7 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
                 }
             }
 
-            if ($token->isGivenKind(T_STRING_VARNAME)) {
+            if ($token->isGivenKind(\T_STRING_VARNAME)) {
                 $content = '$'.$token->getContent();
 
                 if (isset($imports[$content])) {
@@ -196,7 +197,7 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
                 continue;
             }
 
-            if ($token->isGivenKind(T_FUNCTION)) {
+            if ($token->isGivenKind(\T_FUNCTION)) {
                 // check if used as argument
                 $lambdaUseOpenBraceIndex = $tokens->getNextTokenOfKind($index, ['(']);
                 $lambdaUseCloseBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $lambdaUseOpenBraceIndex);
@@ -256,7 +257,7 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
      */
     private function getLambdaUseIndex(Tokens $tokens, int $index)
     {
-        if (!$tokens[$index]->isGivenKind(T_FUNCTION) || !$this->tokensAnalyzer->isLambda($index)) {
+        if (!$tokens[$index]->isGivenKind(\T_FUNCTION) || !$this->tokensAnalyzer->isLambda($index)) {
             return false;
         }
 

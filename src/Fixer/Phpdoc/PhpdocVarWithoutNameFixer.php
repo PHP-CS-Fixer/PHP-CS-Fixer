@@ -29,29 +29,37 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dave van der Brugge <dmvdbrugge@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocVarWithoutNameFixer extends AbstractFixer
 {
-    private const PROPERTY_MODIFIER_KINDS = [T_PRIVATE, T_PROTECTED, T_PUBLIC, T_VAR, FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET];
+    private const PROPERTY_MODIFIER_KINDS = [\T_PRIVATE, \T_PROTECTED, \T_PUBLIC, \T_VAR, FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET];
 
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             '`@var` and `@type` annotations of classy properties should not contain the name.',
-            [new CodeSample('<?php
-final class Foo
-{
-    /**
-     * @var int $bar
-     */
-    public $bar;
+            [
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        final class Foo
+                        {
+                            /**
+                             * @var int $bar
+                             */
+                            public $bar;
 
-    /**
-     * @type $baz float
-     */
-    public $baz;
-}
-')]
+                            /**
+                             * @type $baz float
+                             */
+                            public $baz;
+                        }
+
+                        PHP
+                ),
+            ]
         );
     }
 
@@ -68,13 +76,13 @@ final class Foo
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT) && $tokens->isAnyTokenKindsFound([T_CLASS, T_TRAIT]);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT) && $tokens->isAnyTokenKindsFound([\T_CLASS, \T_TRAIT]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 
@@ -85,7 +93,7 @@ final class Foo
             }
 
             // For people writing "static public $foo" instead of "public static $foo"
-            if ($tokens[$nextIndex]->isGivenKind(T_STATIC)) {
+            if ($tokens[$nextIndex]->isGivenKind(\T_STATIC)) {
                 $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
             }
 
@@ -105,7 +113,7 @@ final class Foo
                 }
             }
 
-            $tokens[$index] = new Token([T_DOC_COMMENT, $doc->getContent()]);
+            $tokens[$index] = new Token([\T_DOC_COMMENT, $doc->getContent()]);
         }
     }
 

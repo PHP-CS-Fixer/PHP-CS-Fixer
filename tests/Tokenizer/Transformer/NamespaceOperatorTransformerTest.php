@@ -24,12 +24,14 @@ use PhpCsFixer\Tokenizer\CT;
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\NamespaceOperatorTransformer
  *
- * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NamespaceOperatorTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
@@ -39,14 +41,14 @@ final class NamespaceOperatorTransformerTest extends AbstractTransformerTestCase
             $source,
             $expectedTokens,
             [
-                T_NAMESPACE,
+                \T_NAMESPACE,
                 CT::T_NAMESPACE_OPERATOR,
             ]
         );
     }
 
     /**
-     * @return iterable<int, array{string, _TransformerTestExpectedTokens}>
+     * @return iterable<int, array{string, _TransformerTestExpectedKindsUnderIndex}>
      */
     public static function provideProcessCases(): iterable
     {
@@ -56,7 +58,7 @@ namespace Foo;
 namespace\Bar\baz();
 ',
             [
-                1 => T_NAMESPACE,
+                1 => \T_NAMESPACE,
                 6 => CT::T_NAMESPACE_OPERATOR,
             ],
         ];

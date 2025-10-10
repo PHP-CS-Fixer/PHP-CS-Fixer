@@ -15,4 +15,4 @@ Using this rule set may lead to changes in your code's logic and behaviour. Use 
 Rules
 -----
 
-- `@PER-CS2.0:risky <./PER-CS2.0Risky.rst>`_
+- `@PER-CS3x0:risky <./PER-CS3x0Risky.rst>`_

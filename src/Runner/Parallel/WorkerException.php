@@ -14,12 +14,12 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Runner\Parallel;
 
-use Throwable;
-
 /**
  * @author Greg Korba <gre@codito.dev>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class WorkerException extends \RuntimeException
 {
@@ -32,7 +32,7 @@ final class WorkerException extends \RuntimeException
 
     /**
      * @param array{
-     *     class: class-string<Throwable>,
+     *     class: class-string<\Throwable>,
      *     message: string,
      *     file: string,
      *     line: int,
@@ -52,7 +52,7 @@ final class WorkerException extends \RuntimeException
             '## %s(%d)%s%s',
             $data['file'],
             $data['line'],
-            PHP_EOL,
+            \PHP_EOL,
             $data['trace']
         );
 

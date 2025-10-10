@@ -23,12 +23,14 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\AttributeTransformer
  *
- * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class AttributeTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcessCases
      *
@@ -40,7 +42,7 @@ final class AttributeTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<int, array{string, _TransformerTestExpectedTokens}>
+     * @return iterable<int, array{string, _TransformerTestExpectedKindsUnderIndex}>
      */
     public static function provideProcessCases(): iterable
     {
@@ -176,6 +178,39 @@ class User
                 124 => CT::T_ATTRIBUTE_CLOSE,
                 130 => CT::T_ATTRIBUTE_CLOSE,
                 148 => CT::T_ATTRIBUTE_CLOSE,
+            ],
+        ];
+    }
+
+    /**
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
+     *
+     * @dataProvider provideProcess85Cases
+     *
+     * @requires PHP 8.5
+     */
+    public function testProcess85(string $source, array $expectedTokens): void
+    {
+        $this->doTest($source, $expectedTokens);
+    }
+
+    /**
+     * @return iterable<int, array{string, _TransformerTestExpectedKindsUnderIndex}>
+     */
+    public static function provideProcess85Cases(): iterable
+    {
+        yield [
+            <<<'PHP'
+                <?php
+                #[Foo([static function (#[SensitiveParameter] $a) {
+                    return [fn (#[Bar([1, 2])] $b) => [$b[1]]];
+                }])]
+                class Baz {}
+                PHP,
+            [
+                12 => CT::T_ATTRIBUTE_CLOSE,
+                35 => CT::T_ATTRIBUTE_CLOSE,
+                54 => CT::T_ATTRIBUTE_CLOSE,
             ],
         ];
     }

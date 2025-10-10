@@ -26,6 +26,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ArgumentsAnalyzerTest extends TestCase
 {
@@ -441,6 +443,40 @@ class Foo
                     ) {}
                 }
                 PHP,
+            13,
+            20,
+            new ArgumentAnalysis(
+                '$x',
+                20,
+                null,
+                new TypeAnalysis(
+                    'Bar',
+                    18,
+                    18,
+                ),
+            ),
+        ];
+    }
+
+    /**
+     * @requires PHP 8.5
+     *
+     * @dataProvider provideArgumentInfo85Cases
+     */
+    public function testArgumentInfo85(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void
+    {
+        $this->testArgumentInfo($code, $openIndex, $closeIndex, $expected);
+    }
+
+    /**
+     * @return iterable<string, array{string, int, int, ArgumentAnalysis}>
+     */
+    public static function provideArgumentInfo85Cases(): iterable
+    {
+        yield 'final promoted properties' => [
+            '<?php class Foo { public function __construct(
+                    public final Bar $x,
+                ) {} }',
             13,
             20,
             new ArgumentAnalysis(

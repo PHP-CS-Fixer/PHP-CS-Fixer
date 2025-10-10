@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocVarAnnotationCorrectOrderFixer extends AbstractFixer
 {
@@ -31,10 +33,16 @@ final class PhpdocVarAnnotationCorrectOrderFixer extends AbstractFixer
     {
         return new FixerDefinition(
             '`@var` and `@type` annotations must have type and name in the correct order.',
-            [new CodeSample('<?php
-/** @var $foo int */
-$foo = 2 + 2;
-')]
+            [
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        /** @var $foo int */
+                        $foo = 2 + 2;
+
+                        PHP
+                ),
+            ]
         );
     }
 
@@ -51,13 +59,13 @@ $foo = 2 + 2;
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DOC_COMMENT);
+        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_DOC_COMMENT)) {
+            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
                 continue;
             }
 

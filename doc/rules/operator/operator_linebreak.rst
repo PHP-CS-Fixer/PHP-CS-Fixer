@@ -39,14 +39,33 @@ Example #1
    --- Original
    +++ New
     <?php
-    function foo() {
-   -    return $bar ||
-   -        $baz;
-   +    return $bar
-   +        || $baz;
-    }
+   -$a = $b ||
+   -    $c;
+   -$d = $e +
+   -    $f;
+   +$a = $b
+   +    || $c;
+   +$d = $e
+   +    + $f;
 
 Example #2
+~~~~~~~~~~
+
+With configuration: ``['only_booleans' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -$a = $b ||
+   -    $c;
+   +$a = $b
+   +    || $c;
+    $d = $e +
+        $f;
+
+Example #3
 ~~~~~~~~~~
 
 With configuration: ``['position' => 'end']``.
@@ -56,23 +75,28 @@ With configuration: ``['position' => 'end']``.
    --- Original
    +++ New
     <?php
-    function foo() {
-   -    return $bar
-   -        || $baz;
-   +    return $bar ||
-   +        $baz;
-    }
+   -$a = $b
+   -    || $c;
+   -$d = $e
+   -    + $f;
+   +$a = $b ||
+   +    $c;
+   +$d = $e +
+   +    $f;
 
 Rule sets
 ---------
 
 The rule is part of the following rule sets:
 
+- `@PER <./../../ruleSets/PER.rst>`_ *(deprecated)*
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ *(deprecated)*
+- `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
   ``['only_booleans' => true]``
-
 
 References
 ----------

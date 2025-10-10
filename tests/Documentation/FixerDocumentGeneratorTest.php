@@ -17,7 +17,7 @@ namespace PhpCsFixer\Tests\Documentation;
 use PhpCsFixer\Documentation\DocumentationLocator;
 use PhpCsFixer\Documentation\FixerDocumentGenerator;
 use PhpCsFixer\Fixer\Basic\BracesFixer;
-use PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer;
+use PhpCsFixer\Fixer\ClassNotation\ModifierKeywordsFixer;
 use PhpCsFixer\Fixer\Comment\HeaderCommentFixer;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\LanguageConstruct\ClassKeywordFixer;
@@ -29,6 +29,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Documentation\FixerDocumentGenerator
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FixerDocumentGeneratorTest extends TestCase
 {
@@ -59,7 +61,7 @@ final class FixerDocumentGeneratorTest extends TestCase
 
         yield [new StrictParamFixer()];
 
-        yield [new VisibilityRequiredFixer()];
+        yield [new ModifierKeywordsFixer()];
     }
 
     public function testGenerateFixersDocumentationIndex(): void
