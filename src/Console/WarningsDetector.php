@@ -87,10 +87,8 @@ final class WarningsDetector
             // Compare major.minor versions
             if (version_compare($currentPhpMajorMinor, $minPhpVersion, '>')) {
                 $this->warnings[] = \sprintf(
-                    'You are running PHP CS Fixer on PHP %s, but the minimum supported version in composer.json is PHP %s. This may introduce syntax or features not yet available in PHP %s, which could cause issues under that version. It is recommended to run PHP CS Fixer on PHP %s, to fit your project specifics.',
+                    'You are running PHP CS Fixer on PHP %1$s, but the minimum supported version in composer.json is PHP %2$s. This may introduce syntax or features not yet available in PHP %2$s, which could cause issues under that version. It is recommended to run PHP CS Fixer on PHP %2$s, to fit your project specifics.',
                     $currentPhpVersion,
-                    $minPhpVersion,
-                    $minPhpVersion,
                     $minPhpVersion
                 );
             }
