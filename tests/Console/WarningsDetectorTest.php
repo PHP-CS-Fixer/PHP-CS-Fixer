@@ -89,11 +89,58 @@ final class WarningsDetectorTest extends TestCase
         self::assertNotEmpty($warnings);
         self::assertStringStartsWith(
             \sprintf(
-                'You are running PHP CS Fixer on PHP %s, but the minimum supported version in composer.json is PHP',
-                \PHP_VERSION
+                'You are running PHP CS Fixer on PHP %s, but the minimum supported version in composer.json is PHP %s',
+                \PHP_VERSION,
+                $minPhpVersion
             ),
             $warnings[0]
         );
+    }
+
+    /**
+     * This test verifies that no warning is shown when running on a PHP version equal to or lower than the minimum required.
+     *
+     * @runInSeparateProcess
+     */
+    public function testDetectHigherPhpVersionWithEqualOrLowerVersion(): void
+    {
+        $originalDir = getcwd();
+        if (false === $originalDir) {
+            throw new \RuntimeException('Unable to determine current working directory');
+        }
+
+        $tempDir = sys_get_temp_dir().\DIRECTORY_SEPARATOR.'phpcsfixer_test_'.uniqid('', true);
+        mkdir($tempDir);
+
+        try {
+            // Change to temp directory so ComposerJsonReader looks for composer.json there.
+            // ComposerJsonReader reads from the current working directory, not a configurable path.
+            chdir($tempDir);
+
+            // Create a composer.json with PHP requirement equal to or higher than current version
+            $currentMajorMinor = \sprintf('%d.%d', \PHP_MAJOR_VERSION, \PHP_MINOR_VERSION);
+            file_put_contents('composer.json', json_encode([
+                'name' => 'test/test',
+                'require' => [
+                    'php' => '^'.$currentMajorMinor,
+                ],
+            ]));
+
+            $toolInfo = $this->createToolInfoDouble(false, 'not-installed-by-composer');
+            $warningsDetector = new WarningsDetector($toolInfo);
+            $warningsDetector->detectHigherPhpVersion();
+
+            $warnings = $warningsDetector->getWarnings();
+
+            // No warning should be shown when running on the minimum required version or lower
+            self::assertSame([], $warnings);
+        } finally {
+            chdir($originalDir);
+            if (file_exists($tempDir.'/composer.json')) {
+                unlink($tempDir.'/composer.json');
+            }
+            rmdir($tempDir);
+        }
     }
 
     /**
@@ -112,6 +159,8 @@ final class WarningsDetectorTest extends TestCase
         mkdir($tempDir);
 
         try {
+            // Change to temp directory so ComposerJsonReader looks for composer.json there.
+            // ComposerJsonReader reads from the current working directory, not a configurable path.
             chdir($tempDir);
 
             $toolInfo = $this->createToolInfoDouble(false, 'not-installed-by-composer');
@@ -144,6 +193,8 @@ final class WarningsDetectorTest extends TestCase
         mkdir($tempDir);
 
         try {
+            // Change to temp directory so ComposerJsonReader looks for composer.json there.
+            // ComposerJsonReader reads from the current working directory, not a configurable path.
             chdir($tempDir);
 
             // Create a composer.json without PHP requirement
