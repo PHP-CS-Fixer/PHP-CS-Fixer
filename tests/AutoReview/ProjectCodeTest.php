@@ -1051,6 +1051,8 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
+     * @param class-string $className
+     *
      * @dataProvider providePhpUnitInheritedMethodsCallsParentCases
      */
     public function testPhpUnitInheritedMethodsCallsParent(string $className, string $methodName): void
@@ -1089,7 +1091,7 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{string, string}>
+     * @return iterable<string, array{class-string, string}>
      */
     public static function providePhpUnitInheritedMethodsCallsParentCases(): iterable
     {
