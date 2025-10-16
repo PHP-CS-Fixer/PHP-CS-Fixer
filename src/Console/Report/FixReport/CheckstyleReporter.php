@@ -42,13 +42,13 @@ final class CheckstyleReporter implements ReporterInterface
         $dom = new \DOMDocument('1.0', 'UTF-8');
 
         $checkstyles = $dom->appendChild($dom->createElement('checkstyle'));
-        assert($checkstyles instanceof \DOMElement);
+        \assert($checkstyles instanceof \DOMElement);
 
         $checkstyles->setAttribute('version', Application::getAbout());
 
         foreach ($reportSummary->getChanged() as $filePath => $fixResult) {
             $file = $checkstyles->appendChild($dom->createElement('file'));
-            assert($file instanceof \DOMElement);
+            \assert($file instanceof \DOMElement);
 
             $file->setAttribute('name', $filePath);
 
