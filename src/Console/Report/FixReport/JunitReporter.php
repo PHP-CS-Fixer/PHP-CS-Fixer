@@ -43,8 +43,9 @@ final class JunitReporter implements ReporterInterface
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $testsuites = $dom->appendChild($dom->createElement('testsuites'));
 
-        /** @var \DOMElement $testsuite */
         $testsuite = $testsuites->appendChild($dom->createElement('testsuite'));
+        \assert($testsuite instanceof \DOMElement);
+        
         $testsuite->setAttribute('name', 'PHP CS Fixer');
 
         $properties = $dom->createElement('properties');
