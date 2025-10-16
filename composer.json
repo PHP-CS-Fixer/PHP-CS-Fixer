@@ -108,7 +108,7 @@
         ],
         "docs": "@php dev-tools/doc.php",
         "infection": "@test:mutation",
-        "install-tools": "@composer --working-dir=dev-tools install",
+        "install-tools": "./dev-tools/install.sh",
         "mess-detector": "@php dev-tools/vendor/bin/phpmd . ansi dev-tools/mess-detector/phpmd.xml --exclude vendor/*,dev-tools/vendor/*,dev-tools/phpstan/*,tests/Fixtures/*",
         "normalize": [
             "@composer normalize --working-dir=dev-tools --dry-run ../composer.json",
