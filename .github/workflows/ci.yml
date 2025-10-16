@@ -228,11 +228,11 @@ jobs:
         if: matrix.operating-system == 'windows-latest'
         run: (Get-Content phpunit.xml.dist) -replace 'enforceTimeLimit="true"', 'enforceTimeLimit="false"' | Out-File phpunit.xml
 
-      - name: Fix PHP 8.4 deprecations for tests
-        if: matrix.run-tests == 'yes' && matrix.php-version == '8.4'
+      - name: Fix PHP 8.5 deprecations for tests
+        if: matrix.run-tests == 'yes' && matrix.php-version == '8.5'
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
-        run: php php-cs-fixer fix --rules=no_unreachable_default_argument_value,nullable_type_declaration_for_default_null_value --diff vendor
+        run: php php-cs-fixer fix --rules=modern_serialization_methods --diff vendor
 
       - name: Install PHPUnit 12
         if: matrix.run-tests == 'yes' && matrix.install-phpunit-12 == 'yes'
