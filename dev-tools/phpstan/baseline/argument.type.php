@@ -7,7 +7,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Console/Command/WorkerCommand.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #5 of function sprintf is expected to be __stringandstringable by placeholder #4 ("%%s"), bool|string given.',
+    'rawMessage' => 'Parameter #5 of function sprintf is expected to be string by placeholder #4 ("%%s"), bool|string given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Console/ConfigurationResolver.php',
 ];
@@ -147,11 +147,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/ToolInfo.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 of function sprintf is expected to be float by placeholder #1 ("%%.1f"), string given.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../tests/AutoReview/CiConfigurationTest.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #2 of function sprintf is expected to be int by placeholder #1 ("%%d"), string given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../tests/AutoReview/CiConfigurationTest.php',
@@ -162,12 +157,12 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../tests/AutoReview/CiConfigurationTest.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 of function sprintf is expected to be __stringandstringable by placeholder #1 ("%%s"), string|false given.',
+    'rawMessage' => 'Parameter #2 of function sprintf is expected to be string by placeholder #1 ("%%s"), string|false given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../tests/Cache/FileHandlerTest.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 of function sprintf is expected to be __stringandstringable by placeholder #1 ("%%s"), class-string<Throwable>|false given.',
+    'rawMessage' => 'Parameter #2 of function sprintf is expected to be string by placeholder #1 ("%%s"), class-string<Throwable>|false given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../tests/Console/Output/ErrorOutputTest.php',
 ];
@@ -187,7 +182,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../tests/Test/AbstractFixerTestCase.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 of function sprintf is expected to be __stringandstringable by placeholder #1 ("%%s"), false given.',
+    'rawMessage' => 'Parameter #2 of function sprintf is expected to be string by placeholder #1 ("%%s"), false given.',
     'count' => 5,
     'path' => __DIR__ . '/../../../tests/Test/AbstractIntegrationCaseFactory.php',
 ];
