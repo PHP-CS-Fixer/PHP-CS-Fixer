@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets\Internal;
 
+use PhpCsFixer\RuleSet\InternalRuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 
 /**
@@ -21,7 +22,7 @@ use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class InternalRiskySet implements RuleSetDefinitionInterface
+final class InternalRiskySet implements RuleSetDefinitionInterface, InternalRuleSetDefinitionInterface
 {
     public function getDescription(): string
     {
