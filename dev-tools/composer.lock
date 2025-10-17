@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e28126af08c5cdef54af938a29fa6a05",
+    "content-hash": "0de0d0dc4f1d4d470f1aff4bf2eb3ed8",
     "packages": [
         {
             "name": "composer/pcre",
@@ -782,16 +782,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.29",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpstan/phpstan-phar-composer-source.git",
-                "reference": "git"
-            },
+            "version": "2.1.31",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/d618573eed4a1b6b75e37b2e0b65ac65c885d88e",
-                "reference": "d618573eed4a1b6b75e37b2e0b65ac65c885d88e"
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/ead89849d879fe203ce9292c6ef5e7e76f867b96",
+                "reference": "ead89849d879fe203ce9292c6ef5e7e76f867b96"
             },
             "require": {
                 "php": "^7.4|^8.0"
@@ -1017,16 +1012,16 @@
         },
         {
             "name": "shipmonk/dead-code-detector",
-            "version": "0.13.3",
+            "version": "0.13.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shipmonk-rnd/dead-code-detector.git",
-                "reference": "40ab4426238c26aa0ddb963b41ffd438450153a1"
+                "reference": "a12cdd093624362743c8814a96a54fcc0a57d96d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shipmonk-rnd/dead-code-detector/zipball/40ab4426238c26aa0ddb963b41ffd438450153a1",
-                "reference": "40ab4426238c26aa0ddb963b41ffd438450153a1"
+                "url": "https://api.github.com/repos/shipmonk-rnd/dead-code-detector/zipball/a12cdd093624362743c8814a96a54fcc0a57d96d",
+                "reference": "a12cdd093624362743c8814a96a54fcc0a57d96d"
             },
             "require": {
                 "php": "^7.4 || ^8.0",

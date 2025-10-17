@@ -270,7 +270,7 @@ Comment
   There should not be any empty comments.
 - `no_trailing_whitespace_in_comment <./comment/no_trailing_whitespace_in_comment.rst>`_
 
-  There MUST be no trailing spaces inside comment or PHPDoc.
+  There must be no trailing whitespace at the end of lines in comments and PHPDocs.
 - `single_line_comment_spacing <./comment/single_line_comment_spacing.rst>`_
 
   Single-line comments must have proper spacing.
@@ -911,7 +911,7 @@ String Notation
   There should not be a binary flag before strings.
 - `no_trailing_whitespace_in_string <./string_notation/no_trailing_whitespace_in_string.rst>`_ *(risky)*
 
-  There must be no trailing whitespace in strings.
+  There must be no trailing whitespace at the end of lines in strings.
 - `simple_to_complex_string_variable <./string_notation/simple_to_complex_string_variable.rst>`_
 
   Converts explicit variables in double-quoted strings and heredoc syntax from simple to complex format (``${`` to ``{$``).
@@ -969,7 +969,7 @@ Whitespace
   There MUST NOT be a space after the opening parenthesis. There MUST NOT be a space before the closing parenthesis.
 - `no_trailing_whitespace <./whitespace/no_trailing_whitespace.rst>`_
 
-  Remove trailing whitespace at the end of non-blank lines.
+  There must be no trailing whitespace at the end of non-blank lines.
 - `no_whitespace_in_blank_line <./whitespace/no_whitespace_in_blank_line.rst>`_
 
   Remove trailing whitespace at the end of blank lines.
