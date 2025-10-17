@@ -46,7 +46,7 @@ final class AutoPHPUnitMigrationRiskySet extends AbstractRuleSetDefinition imple
 
     public function getRulesCandidates(): array
     {
-        $sets = array_values(self::calculateCandidateSets('PHP', $this->isRisky()));
+        $sets = array_values(self::calculateCandidateSets('PHPUnit', $this->isRisky()));
 
         ksort($sets);
 
