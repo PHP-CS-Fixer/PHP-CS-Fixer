@@ -97,6 +97,9 @@ final class GitlabReporter implements ReporterInterface
         return ['begin' => 0, 'end' => 0];
     }
 
+    /**
+     * @return array{begin: int, end: int}
+     */
     private static function getBeginEndForDiffChunk(Chunk $chunk): array
     {
         $start = \Closure::bind(static fn (Chunk $chunk): int => $chunk->start, null, $chunk)($chunk);
@@ -105,13 +108,16 @@ final class GitlabReporter implements ReporterInterface
 
         \assert(\count($lines) > 0);
 
+        $firstModifiedLineOffset = array_find_key($lines, static function (Line $line): bool {
+            $type = \Closure::bind(static fn (Line $line): int => $line->type, null, $line)($line);
+
+            return Line::UNCHANGED !== $type;
+        });
+        \assert(\is_int($firstModifiedLineOffset));
+
         return [
             // offset the start by where the first line is actually modified
-            'begin' => $start + array_find_key($lines, static function (Line $line): bool {
-                $type = \Closure::bind(static fn (Line $line): int => $line->type, null, $line)($line);
-
-                return Line::UNCHANGED !== $type;
-            }),
+            'begin' => $start + $firstModifiedLineOffset,
             // it's not where last modification takes place, only where diff (with --context) ends
             'end' => $start + $startRange,
         ];
