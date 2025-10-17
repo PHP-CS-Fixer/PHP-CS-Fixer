@@ -17,6 +17,7 @@ namespace PhpCsFixer\Console\Report\FixReport;
 use PhpCsFixer\Console\Application;
 use SebastianBergmann\Diff\Chunk;
 use SebastianBergmann\Diff\Diff;
+use SebastianBergmann\Diff\Line;
 use SebastianBergmann\Diff\Parser;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
@@ -89,10 +90,30 @@ final class GitlabReporter implements ReporterInterface
             $firstChunk = \Closure::bind(static fn (Diff $diff) => array_shift($diff->chunks), null, $firstDiff)($firstDiff);
 
             if ($firstChunk instanceof Chunk) {
-                return \Closure::bind(static fn (Chunk $chunk): array => ['begin' => $chunk->start, 'end' => $chunk->startRange], null, $firstChunk)($firstChunk);
+                return self::getBeginEndForDiffChunk($firstChunk);
             }
         }
 
         return ['begin' => 0, 'end' => 0];
+    }
+
+    private static function getBeginEndForDiffChunk(Chunk $chunk): array
+    {
+        $start = \Closure::bind(static fn (Chunk $chunk): int => $chunk->start, null, $chunk)($chunk);
+        $startRange = \Closure::bind(static fn (Chunk $chunk): int => $chunk->startRange, null, $chunk)($chunk);
+        $lines = \Closure::bind(static fn (Chunk $chunk): array => $chunk->lines, null, $chunk)($chunk);
+
+        \assert(\count($lines) > 0);
+
+        return [
+            // offset the start by where the first line is actually modified
+            'begin' => $start + array_find_key($lines, static function (Line $line): bool {
+                $type = \Closure::bind(static fn (Line $line): int => $line->type, null, $line)($line);
+
+                return Line::UNCHANGED !== $type;
+            }),
+            // it's not where last modification takes place, only where diff (with --context) ends
+            'end' => $start + $startRange,
+        ];
     }
 }
