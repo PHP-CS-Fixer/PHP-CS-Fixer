@@ -26,3 +26,5 @@ dev-tools/bin/box compile
 # revert changes to composer
 git checkout composer.json
 composer update --optimize-autoloader --no-interaction --no-progress --no-scripts -q
+
+printf '\033[0;32mBuild completed\033[0m\n'
