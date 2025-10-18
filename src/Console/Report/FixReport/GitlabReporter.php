@@ -79,7 +79,9 @@ final class GitlabReporter implements ReporterInterface
 
                 $report[] = [
                     'check_name' => 'PHP-CS-Fixer.'.$fixerName,
-                    'description' => 'PHP-CS-Fixer.'.$fixerName.' by '.$about,
+                    'description' => null !== $fixer
+                        ? $fixer->getDefinition()->getSummary()
+                        : 'PHP-CS-Fixer.'.$fixerName.' (custom rule)',
                     'content' => [
                         'body' => \sprintf(
                             "%s\n%s",
