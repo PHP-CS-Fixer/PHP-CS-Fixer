@@ -3,6 +3,40 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.89.0
+---------------------
+
+* feat: autofix "no-return" phpdoc type to "never" (#9073)
+* feat: support keeping strict_types=0 in DeclareStrictTypesFixer (#9121)
+* feat: `NoUnneededBracesFixer` - remove unneeded braces from imports (#9118)
+* fix: `FullyQualifiedStrictTypesFixer` - replacing the real FQCN with a non-existent one (#8962)
+* fix: `PhpdocToCommentFixer` on property hooks (#9123)
+* fix: `PhpUnitMethodCasingFixer` to not cause a duplicate method declaration (#9124)
+* fix: `StaticLambdaFixer` - do not make function static when it contains anonymous class having `$this` in the constructor (#9088)
+* fix: `UseArrowFunctionsFixer` - do not produce two consecutive whitespace tokens (#9151)
+* UX: better gitlab reporting - add content field (#9152)
+* UX: better gitlab reporting - more user-friendly description field (#9141)
+* UX: better gitlab reporting for location.lines (#9149)
+* UX: Warn if executed php version is higher than the minimum php version defined in composer.json (#9134)
+* chore: add UX title pattern (#9132)
+* chore: explicitly use php interpreter for paraunit (#9126)
+* chore: extend composer scripts (#9127)
+* chore: fix shellcheck installation for Darwin (#9125)
+* chore: replace PHPDocs with `assert` calls (#9144)
+* deps: bump crate-ci/typos from 1.36.3 to 1.38.1 (#9136)
+* deps: bump phpstan/phpstan from 2.1.29 to 2.1.31 in /dev-tools in the phpstan group (#9129)
+* deps: bump shipmonk/dead-code-detector from 0.13.3 to 0.13.4 in /dev-tools (#9135)
+* deps: bump shipmonk/dead-code-detector from 0.13.4 to 0.13.5 in /dev-tools (#9146)
+* deps: bump the phpstan group across 1 directory with 2 updates (#9101)
+* deps: use `shipmonk/composer-dependency-analyser` instead of `icanhazstring/composer-unused` and `maglnet/composer-require-checker` (#9106)
+* docs: fix docs for `@autoPHPUnitMigration:risky`set (#9147)
+* docs: improve descriptions for `NoTrailingWhitespace*` fixers (#9117)
+* docs: more explicit docs on --rules (#9114)
+* docs: update usage documentation for describe `--expand` and `@` (#9119)
+* DX: Fix `composer qa` script (#9138)
+* refactor: `--option value` => `--option=value` (#9131)
+* test: Fix result randomness in `RunnerTest` for MacOS (#9139)
+
 Changelog for v3.88.2
 ---------------------
 
