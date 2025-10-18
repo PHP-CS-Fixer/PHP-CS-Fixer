@@ -57,7 +57,7 @@ final class GitlabReporter implements ReporterInterface
         $report = [];
         foreach ($reportSummary->getChanged() as $fileName => $change) {
             foreach ($change['appliedFixers'] as $fixerName) {
-                $description = $fixerName;
+                $fixer = $this->getFixers()[$fixerName] ?? null;
 
                 if (isset($this->fixers[$fixerName])) {
                     $description = $this->fixers[$fixerName]?->getDefinition()?->getSummary() ?? $fixerName;
@@ -65,7 +65,9 @@ final class GitlabReporter implements ReporterInterface
 
                 $report[] = [
                     'check_name' => 'PHP-CS-Fixer.'.$fixerName,
-                    'description' => $description,
+                    'description' => null !== $fixer
+                        ? $fixer->getDefinition()->getSummary()
+                        : 'PHP-CS-Fixer.'.$fixerName.' (custom rule)',
                     'categories' => ['Style'],
                     'fingerprint' => md5($fileName.$fixerName),
                     'severity' => 'minor',
