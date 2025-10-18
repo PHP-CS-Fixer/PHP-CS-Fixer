@@ -55,7 +55,7 @@ final class GitlabReporterTest extends AbstractReporterTestCase
                         [{
                             "categories": ["Style"],
                             "check_name": "PHP-CS-Fixer.some_fixer_name_here",
-                            "description": "PHP-CS-Fixer.some_fixer_name_here by {$about}",
+                            "description": "PHP-CS-Fixer.some_fixer_name_here (custom rule)",
                             "content": {
                                 "body": "{$about}\\nCheck performed with a custom rule."
                             },
@@ -85,7 +85,7 @@ final class GitlabReporterTest extends AbstractReporterTestCase
                         [{
                             "categories": ["Style"],
                             "check_name": "PHP-CS-Fixer.some_fixer_name_here_1",
-                            "description": "PHP-CS-Fixer.some_fixer_name_here_1 by {$about}",
+                            "description": "PHP-CS-Fixer.some_fixer_name_here_1 (custom rule)",
                             "content": {
                                 "body": "{$about}\\nCheck performed with a custom rule."
                             },
@@ -101,7 +101,7 @@ final class GitlabReporterTest extends AbstractReporterTestCase
                         },{
                             "categories": ["Style"],
                             "check_name": "PHP-CS-Fixer.some_fixer_name_here_2",
-                            "description": "PHP-CS-Fixer.some_fixer_name_here_2 by {$about}",
+                            "description": "PHP-CS-Fixer.some_fixer_name_here_2 (custom rule)",
                             "content": {
                                 "body": "{$about}\\nCheck performed with a custom rule."
                             },
@@ -131,7 +131,7 @@ final class GitlabReporterTest extends AbstractReporterTestCase
                         [{
                             "categories": ["Style"],
                             "check_name": "PHP-CS-Fixer.some_fixer_name_here_1",
-                            "description": "PHP-CS-Fixer.some_fixer_name_here_1 by {$about}",
+                            "description": "PHP-CS-Fixer.some_fixer_name_here_1 (custom rule)",
                             "content": {
                                 "body": "{$about}\\nCheck performed with a custom rule."
                             },
@@ -147,7 +147,7 @@ final class GitlabReporterTest extends AbstractReporterTestCase
                         },{
                             "categories": ["Style"],
                             "check_name": "PHP-CS-Fixer.some_fixer_name_here_2",
-                            "description": "PHP-CS-Fixer.some_fixer_name_here_2 by {$about}",
+                            "description": "PHP-CS-Fixer.some_fixer_name_here_2 (custom rule)",
                             "content": {
                                 "body": "{$about}\\nCheck performed with a custom rule."
                             },
@@ -163,7 +163,7 @@ final class GitlabReporterTest extends AbstractReporterTestCase
                         },{
                             "categories": ["Style"],
                             "check_name": "PHP-CS-Fixer.another_fixer_name_here",
-                            "description": "PHP-CS-Fixer.another_fixer_name_here by {$about}",
+                            "description": "PHP-CS-Fixer.another_fixer_name_here (custom rule)",
                             "content": {
                                 "body": "{$about}\\nCheck performed with a custom rule."
                             },
