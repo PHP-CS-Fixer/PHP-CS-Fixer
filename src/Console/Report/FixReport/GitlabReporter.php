@@ -16,6 +16,7 @@ namespace PhpCsFixer\Console\Report\FixReport;
 
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Documentation\DocumentationLocator;
+use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use SebastianBergmann\Diff\Chunk;
 use SebastianBergmann\Diff\Diff;
@@ -44,9 +45,9 @@ final class GitlabReporter implements ReporterInterface
     private FixerFactory $fixerFactory;
 
     /**
-     * @var null|array<string, FixerInterface>
+     * @var array<string, FixerInterface>
      */
-    private ?array $fixers;
+    private array $fixers;
 
     public function __construct()
     {
@@ -55,7 +56,8 @@ final class GitlabReporter implements ReporterInterface
 
         $this->fixerFactory = new FixerFactory();
         $this->fixerFactory->registerBuiltInFixers();
-        $this->getFixers();
+
+        $this->fixers = $this->createFixers();
     }
 
     public function getFormat(): string
@@ -73,7 +75,7 @@ final class GitlabReporter implements ReporterInterface
         $report = [];
         foreach ($reportSummary->getChanged() as $fileName => $change) {
             foreach ($change['appliedFixers'] as $fixerName) {
-                $fixer = $this->getFixers()[$fixerName] ?? null;
+                $fixer = $this->fixers[$fixerName] ?? null;
 
                 $report[] = [
                     'check_name' => 'PHP-CS-Fixer.'.$fixerName,
@@ -82,7 +84,7 @@ final class GitlabReporter implements ReporterInterface
                         'body' => \sprintf(
                             "%s\n%s",
                             $about,
-                            $fixer
+                            null !== $fixer
                                 ? \sprintf(
                                     'Check [docs](https://cs.symfony.com/doc/rules/%s.html) for more information.',
                                     substr($this->documentationLocator->getFixerDocumentationFileRelativePath($fixer), 0, -4) // -4 to drop `.rst`
@@ -155,21 +157,16 @@ final class GitlabReporter implements ReporterInterface
     /**
      * @return array<string, FixerInterface>
      */
-    private function getFixers(): array
+    private function createFixers(): array
     {
-        if (isset($this->fixers)) {
-            return $this->fixers;
-        }
-
         $fixers = [];
 
         foreach ($this->fixerFactory->getFixers() as $fixer) {
             $fixers[$fixer->getName()] = $fixer;
         }
 
-        $this->fixers = $fixers;
-        ksort($this->fixers);
+        ksort($fixers);
 
-        return $this->fixers;
+        return $fixers;
     }
 }
