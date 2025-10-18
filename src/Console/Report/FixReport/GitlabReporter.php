@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Console\Report\FixReport;
 
-use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Console\Application;
 use SebastianBergmann\Diff\Chunk;
 use SebastianBergmann\Diff\Diff;
 use SebastianBergmann\Diff\Parser;
@@ -37,18 +37,9 @@ final class GitlabReporter implements ReporterInterface
 {
     private Parser $diffParser;
 
-    /**
-     * A map of fixer names to their instances to access rule definitions.
-     *
-     * @var array<string, FixerInterface>
-     */
-    private array $fixers = [];
-
     public function __construct()
     {
         $this->diffParser = new Parser();
-
-        $this->registerFixers();
     }
 
     public function getFormat(): string
@@ -61,6 +52,8 @@ final class GitlabReporter implements ReporterInterface
      */
     public function generate(ReportSummary $reportSummary): string
     {
+        $about = Application::getAbout();
+
         $report = [];
         foreach ($reportSummary->getChanged() as $fileName => $change) {
             foreach ($change['appliedFixers'] as $fixerName) {
@@ -107,18 +100,5 @@ final class GitlabReporter implements ReporterInterface
         }
 
         return ['begin' => 0, 'end' => 0];
-    }
-
-    /**
-     * Register fixers to access rule definitions.
-     */
-    private function registerFixers()
-    {
-        $fixerFactory = new FixerFactory();
-        $fixerFactory->registerBuiltInFixers();
-
-        foreach ($fixerFactory->getFixers() as $fixer) {
-            $this->fixers[$fixer->getName()] = $fixer;
-        }
     }
 }
