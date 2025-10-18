@@ -46,7 +46,7 @@ final class GitlabReporter implements ReporterInterface
     /**
      * @var null|array<string, FixerInterface>
      */
-    private ?array $fixers = null;
+    private ?array $fixers;
 
     public function __construct()
     {
@@ -55,6 +55,7 @@ final class GitlabReporter implements ReporterInterface
 
         $this->fixerFactory = new FixerFactory();
         $this->fixerFactory->registerBuiltInFixers();
+        $this->getFixers();
     }
 
     public function getFormat(): string
@@ -156,7 +157,7 @@ final class GitlabReporter implements ReporterInterface
      */
     private function getFixers(): array
     {
-        if (null !== $this->fixers) {
+        if (isset($this->fixers)) {
             return $this->fixers;
         }
 
