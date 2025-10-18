@@ -61,8 +61,8 @@ final class GitlabReporterTest extends AbstractReporterTestCase
                             "location": {
                                 "path": "someFile.php",
                                 "lines": {
-                                    "begin": 2,
-                                    "end": 7
+                                    "begin": 5,
+                                    "end": 9
                                 }
                             }
                         }]
