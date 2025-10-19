@@ -107,10 +107,15 @@ final class RuleSet implements RuleSetInterface
                     throw new \UnexpectedValueException(\sprintf('Nested rule set "%s" configuration must be a boolean.', $name));
                 }
 
-                $set = $this->resolveSubset($name, $value);
-                $resolvedRules = array_merge($resolvedRules, $set);
+                $resolvedRules = array_merge(
+                    $resolvedRules,
+                    $this->resolveSubset($name, $value),
+                );
             } else {
-                $resolvedRules[$name] = $value;
+                $resolvedRules = array_merge(
+                    $resolvedRules,
+                    $this->resolveRule($name, $value)
+                );
             }
         }
 
@@ -147,16 +152,32 @@ final class RuleSet implements RuleSetInterface
 
         foreach ($rules as $name => $value) {
             if (str_starts_with($name, '@')) {
-                $set = $this->resolveSubset($name, $setValue);
                 unset($rules[$name]);
-                $rules = array_merge($rules, $set);
-            } elseif (!$setValue) {
-                $rules[$name] = false;
+
+                $rules = array_merge(
+                    $rules,
+                    $this->resolveSubset($name, $setValue),
+                );
             } else {
-                $rules[$name] = $value;
+                $rules = array_merge(
+                    $rules,
+                    $this->resolveRule($name, false === $setValue ? false : $value)
+                );
             }
         }
 
         return $rules;
+    }
+
+    /**
+     * Allow to resolve single rule, eg handle renames, aliases or proxies.
+     *
+     * @param array<string, mixed>|bool $value
+     *
+     * @return array<string, array<string, mixed>|bool>
+     */
+    private function resolveRule(string $rule, $value): array
+    {
+        return [$rule => $value];
     }
 }
