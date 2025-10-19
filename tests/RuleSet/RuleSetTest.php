@@ -231,6 +231,24 @@ final class RuleSetTest extends TestCase
         );
     }
 
+    public function testResolveRulesWithRuleInSetDisabledViaLegacyName(): void
+    {
+        $ruleSet = new RuleSet([
+            '@PHP7x1Migration' => true,
+            'visibility_required' => false, // this is old name of `modifier_keywords`
+        ]);
+
+        self::assertSameRules(
+            [
+                'array_syntax' => true,
+                'list_syntax' => true,
+                // 'modifier_keywords' => false, // rule disabled via `visibility_required: false`
+                'ternary_to_null_coalescing' => true,
+            ],
+            $ruleSet->getRules()
+        );
+    }
+
     /**
      * @param array<string, array<string, mixed>|bool> $set
      *
