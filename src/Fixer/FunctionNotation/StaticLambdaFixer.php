@@ -115,7 +115,7 @@ final class StaticLambdaFixer extends AbstractFixer
             }
 
             if ($tokens[$i]->isGivenKind([
-                \T_INCLUDE,                    // loading additional symbols we cannot analyze here
+                \T_INCLUDE,                    // loading additional symbols we cannot analyse here
                 \T_INCLUDE_ONCE,               // "
                 \T_REQUIRE,                    // "
                 \T_REQUIRE_ONCE,               // "

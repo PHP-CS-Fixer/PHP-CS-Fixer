@@ -145,7 +145,7 @@ final class PhpUnitDataProviderMethodOrderFixer extends AbstractPhpUnitFixer imp
                         true
                     );
 
-                    // honor multiple providers order for one test
+                    // honour multiple providers order for one test
                     $sameUsageName = $usageName;
                     $sameProviderName = $providerName;
 

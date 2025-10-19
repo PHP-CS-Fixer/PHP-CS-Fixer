@@ -93,7 +93,7 @@ Put this content inside:
 Note how the class and file name match. Also keep in mind that all
 fixers must implement ``Fixer\FixerInterface``. In this case, the fixer is
 inheriting from ``AbstractFixer``, which fulfills the interface with some
-default behavior.
+default behaviour.
 
 Now let us create the test file at
 ``tests/Fixer/Comment/RemoveCommentsFixerTest.php``. Put this content inside:
@@ -139,11 +139,11 @@ Now let us create the test file at
        }
    }
 
-Step 2 - Using tests to define fixers behavior
-______________________________________________
+Step 2 - Using tests to define fixers behaviour
+_______________________________________________
 
 Now that the files are created, you can start writing tests to define the
-behavior of the fixer. You have to do it in two ways: first, ensuring
+behaviour of the fixer. You have to do it in two ways: first, ensuring
 the fixer changes what it should be changing; second, ensuring that
 fixer does not change what is not supposed to change. Thus:
 
@@ -235,7 +235,7 @@ like:
 Step 3 - Implement your solution
 ________________________________
 
-You have defined the behavior of your fixer in tests. Now it is time to
+You have defined the behaviour of your fixer in tests. Now it is time to
 implement it.
 
 First, we need to create one method to describe what this fixer does:
@@ -478,7 +478,7 @@ The review usually flows like this:
 
 1. People will check your code for common mistakes and logical
    caveats. Usually, the person building a fixer is blind about some
-   behavior mistakes of fixers. Expect to write few more tests to cater for
+   behaviour mistakes of fixers. Expect to write few more tests to cater for
    the reviews.
 2. People will discuss the relevance of your fixer. If it is
    something that goes along with Symfony style standards, or PSR-1/PSR-2

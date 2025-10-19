@@ -35,7 +35,7 @@ final class ControlCaseStructuresAnalyzer
     ];
 
     /**
-     * @param list<int> $types Token types of interest of which analyzes must be returned
+     * @param list<int> $types Token types of interest of which analyses must be returned
      *
      * @return \Generator<int, AbstractControlCaseStructuresAnalysis>
      */
@@ -176,7 +176,7 @@ final class ControlCaseStructuresAnalyzer
             }
 
             if (!$isTypeOfInterest) {
-                continue; // don't bother to analyze stuff that caller is not interested in
+                continue; // don't bother to analyse stuff that caller is not interested in
             }
 
             if ($token->isGivenKind(\T_CASE)) {

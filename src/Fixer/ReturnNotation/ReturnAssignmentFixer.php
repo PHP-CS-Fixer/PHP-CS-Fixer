@@ -175,7 +175,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
                 CT::T_DYNAMIC_VAR_BRACE_OPEN, // "$h = ${$g};" case
                 \T_EVAL,                       // "$c = eval('return $this;');" case
                 \T_GLOBAL,
-                \T_INCLUDE,                    // loading additional symbols we cannot analyze here
+                \T_INCLUDE,                    // loading additional symbols we cannot analyse here
                 \T_INCLUDE_ONCE,               // "
                 \T_REQUIRE,                    // "
                 \T_REQUIRE_ONCE,               // "

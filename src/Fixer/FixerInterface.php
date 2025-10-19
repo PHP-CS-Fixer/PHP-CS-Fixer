@@ -39,7 +39,7 @@ interface FixerInterface
     /**
      * Check if fixer is risky or not.
      *
-     * Risky fixer could change code behavior!
+     * Risky fixer could change code behaviour!
      */
     public function isRisky(): bool;
 
