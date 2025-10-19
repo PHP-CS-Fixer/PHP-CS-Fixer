@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\RuleSet;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Future;
 use PhpCsFixer\Utils;
 
@@ -31,6 +32,8 @@ use PhpCsFixer\Utils;
  */
 final class RuleSet implements RuleSetInterface
 {
+    private FixerFactory $fixerFactory;
+
     /**
      * Group of rules generated from input set.
      *
@@ -41,8 +44,10 @@ final class RuleSet implements RuleSetInterface
      */
     private array $rules;
 
-    public function __construct(array $set = [])
-    {
+    public function __construct(
+        array $set = [],
+        ?FixerFactory $fixerFactory = null,
+    ) {
         foreach ($set as $name => $value) {
             if ('' === $name) {
                 throw new \InvalidArgumentException('Rule/set name must not be empty.');
@@ -62,6 +67,13 @@ final class RuleSet implements RuleSetInterface
                 throw new InvalidFixerConfigurationException($name, $message);
             }
         }
+
+        $this->fixerFactory = $fixerFactory ?? (static function () {
+            $factory = new FixerFactory();
+            $factory->registerBuiltInFixers();
+
+            return $factory;
+        })();
 
         $this->rules = $this->resolveInputSet($set);
     }
