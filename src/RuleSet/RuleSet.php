@@ -47,7 +47,7 @@ final class RuleSet implements RuleSetInterface
 
     public function __construct(
         array $set = [],
-        ?FixerFactory $fixerFactory = null,
+        ?FixerFactory $fixerFactory = null
     ) {
         foreach ($set as $name => $value) {
             if ('' === $name) {
