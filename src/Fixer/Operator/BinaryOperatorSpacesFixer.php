@@ -599,7 +599,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
             // The placeholder will be resolved by `replacePlaceholders` method by removing placeholder or changing it into spaces.
             // That way of fixing the code causes disturbances in marking Token as changed - if code is perfectly valid then placeholder
             // still be injected and removed, which will cause the `changed` flag to be set.
-            // To handle that unwanted behavior we work on clone of Tokens collection and then override original collection with fixed collection.
+            // To handle that unwanted behaviour we work on clone of Tokens collection and then override original collection with fixed collection.
             $tokensClone = clone $tokens;
 
             if ('=>' === $tokenContent) {

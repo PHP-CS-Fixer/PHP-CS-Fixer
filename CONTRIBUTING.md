@@ -103,3 +103,7 @@ We follow our own recommended standard [@PhpCsFixer](doc/ruleSets/PhpCsFixer.rst
 * [PSR-5: PHPDoc Standard (draft)](https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc.md) + [PSR-19: PHPDoc tags (draft)](https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc-tags.md)
 * [PSR-4: Autoloading Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md)
 * and many additional rules to make things even more strict and unified
+
+### Language
+
+* Use British English spelling throughout the codebase, documentation, and comments (e.g., "behaviour" not "behavior", "colour" not "color", "initialise" not "initialize").

@@ -1417,7 +1417,7 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
-        yield 'the root namespace of the imported class is equal to the imported global class name in lowercase (default behavior)' => [
+        yield 'the root namespace of the imported class is equal to the imported global class name in lowercase (default behaviour)' => [
             <<<'EOD'
                 <?php
 
@@ -1470,7 +1470,7 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
-        yield 'the namespace of the imported class contains multiple occurrences of the imported global class name in lowercase (default behavior)' => [
+        yield 'the namespace of the imported class contains multiple occurrences of the imported global class name in lowercase (default behaviour)' => [
             <<<'EOD'
                 <?php
 
