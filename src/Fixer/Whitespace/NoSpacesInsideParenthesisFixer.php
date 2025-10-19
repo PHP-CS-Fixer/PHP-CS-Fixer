@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Marc Aubé
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
- * @deprecated in favor of SpacesInsideParenthesisFixer
+ * @deprecated in favour of SpacesInsideParenthesisFixer
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */

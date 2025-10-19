@@ -143,11 +143,11 @@ This is guide for upgrade from version 2.x to 3.0 for using the CLI tool.
 ### Interface changes
 
 - `ConfigurableFixerInterface` has been updated
-- `ConfigurationDefinitionFixerInterface` has been removed in favor of the updated `ConfigurableFixerInterface`
+- `ConfigurationDefinitionFixerInterface` has been removed in favour of the updated `ConfigurableFixerInterface`
 - `DefinedFixerInterface` has been removed, related methods are now part of the updated `FixerInterface` interface
 - `DifferInterface` has been updated
 - `FixerInterface` interface has been updated
-- `PhpCsFixer\RuleSetInterface` has been removed in favor of `\PhpCsFixer\RuleSet\RuleSetInterface`
+- `PhpCsFixer\RuleSetInterface` has been removed in favour of `\PhpCsFixer\RuleSet\RuleSetInterface`
 
 ### BC breaks; various
 

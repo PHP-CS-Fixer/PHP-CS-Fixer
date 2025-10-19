@@ -784,7 +784,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                 continue;
             }
 
-            // no need to analyze for `isBinaryOperator` (always true), nor if part of declare statement (not valid PHP)
+            // no need to analyse for `isBinaryOperator` (always true), nor if part of declare statement (not valid PHP)
             // there is also no need to analyse the second arrow of a line
             if ($token->isGivenKind(\T_DOUBLE_ARROW) && $newLineFoundSinceLastPlaceholder) {
                 if ($yieldFoundSinceLastPlaceholder) {
