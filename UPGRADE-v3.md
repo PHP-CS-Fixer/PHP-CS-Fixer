@@ -112,7 +112,7 @@ This is guide for upgrade from version 2.x to 3.0 for using the CLI tool.
 |-------------------|------------|
 | `@PHP56Migration` | was empty  |
 
-### Rule behavior changes
+### Rule behaviour changes
 
 - `no_unused_imports` now runs all files defined in the configuration (used to exclude some hardcoded directories)
 
