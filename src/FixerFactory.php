@@ -77,6 +77,15 @@ final class FixerFactory
         return $this->fixers;
     }
 
+    public function getFixerByName(string $name): FixerInterface
+    {
+        if (!isset($this->fixersByName[$name])) {
+            throw new \UnexpectedValueException(\sprintf('Fixer named "%s" is not registered.', $name));
+        }
+
+        return $this->fixersByName[$name];
+    }
+
     /**
      * @return $this
      */

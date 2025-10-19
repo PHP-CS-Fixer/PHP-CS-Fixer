@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\RuleSet;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\DeprecatedFixerV4Interface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Future;
 use PhpCsFixer\Utils;
@@ -190,6 +191,29 @@ final class RuleSet implements RuleSetInterface
      */
     private function resolveRule(string $rule, $value): array
     {
+        try {
+            $fixer = $this->fixerFactory->getFixerByName($rule);
+
+            if ($fixer instanceof DeprecatedFixerV4Interface) {
+                if ($fixer->getSuccessorsMatchingPredecessor()) {
+                    $rules = $this->resolveInputSet(
+                        $fixer->getSuccessors(),
+                    );
+
+                    if (false === $value) {
+                        // disable all successor rules
+                        foreach ($rules as $name => $ruleValue) {
+                            $rules[$name] = false;
+                        }
+                    }
+
+                    return $rules;
+                }
+            }
+        } catch (\UnexpectedValueException $e) {
+            // noop - let the fixer `FixerFactory::useRuleSet()` handle unknown fixers
+        }
+
         return [$rule => $value];
     }
 }
