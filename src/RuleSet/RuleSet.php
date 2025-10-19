@@ -45,6 +45,9 @@ final class RuleSet implements RuleSetInterface
      */
     private array $rules;
 
+    /**
+     * @param array<string, array<string, mixed>|bool> $set
+     */
     public function __construct(
         array $set = [],
         ?FixerFactory $fixerFactory = null
