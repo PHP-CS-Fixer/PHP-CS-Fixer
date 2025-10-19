@@ -63,7 +63,7 @@ final class RuleSet implements RuleSetInterface
             }
         }
 
-        $this->rules = $this->resolveSet($set);
+        $this->rules = $this->resolveInputSet($set);
     }
 
     public function hasRule(string $rule): bool
@@ -96,7 +96,7 @@ final class RuleSet implements RuleSetInterface
      *
      * @return array<string, array<string, mixed>|true>
      */
-    private function resolveSet(array $rules): array
+    private function resolveInputSet(array $rules): array
     {
         $resolvedRules = [];
 
@@ -109,7 +109,7 @@ final class RuleSet implements RuleSetInterface
 
                 $resolvedRules = array_merge(
                     $resolvedRules,
-                    $this->resolveSubset($name, $value),
+                    $this->resolveSet($name, $value),
                 );
             } else {
                 $resolvedRules = array_merge(
@@ -136,7 +136,7 @@ final class RuleSet implements RuleSetInterface
      *
      * @return array<string, array<string, mixed>|bool>
      */
-    private function resolveSubset(string $setName, bool $setValue): array
+    private function resolveSet(string $setName, bool $setValue): array
     {
         $ruleSet = RuleSets::getSetDefinition($setName);
 
@@ -156,7 +156,7 @@ final class RuleSet implements RuleSetInterface
 
                 $rules = array_merge(
                     $rules,
-                    $this->resolveSubset($name, $setValue),
+                    $this->resolveSet($name, $setValue),
                 );
             } else {
                 $rules = array_merge(
