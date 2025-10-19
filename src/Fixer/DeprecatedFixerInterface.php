@@ -25,6 +25,8 @@ interface DeprecatedFixerInterface extends FixerInterface
      * Returns names of fixers to use instead, if any.
      *
      * @return list<string>
+     *
+     * @TODO v4: remove me
      */
     public function getSuccessorsNames(): array;
 }
