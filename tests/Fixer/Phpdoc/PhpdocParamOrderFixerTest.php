@@ -32,13 +32,17 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    public function testFix(string $expected, ?string $input = null, ?array $configuration = null): void
     {
+        if (null !== $configuration) {
+            $this->fixer->configure($configuration);
+        }
+
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<string, array{0: string, 1?: string}>
+     * @return iterable<string, array{0: string, 1?: string, 2?: array<string, mixed>}>
      */
     public static function provideFixCases(): iterable
     {
@@ -967,6 +971,129 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                     public function m(array $a, $b, bool $c) {}
                 }
                 EOT,
+        ];
+
+        // Alias support tests
+        yield 'mixed param and psalm-param - reorder and group' => [
+            <<<'EOT'
+                <?php
+                /**
+                 * @param int $a
+                 * @psalm-param positive-int $a
+                 * @param string $b
+                 */
+                function m($a, $b) {}
+                EOT,
+            <<<'EOT'
+                <?php
+                /**
+                 * @psalm-param positive-int $a
+                 * @param string $b
+                 * @param int $a
+                 */
+                function m($a, $b) {}
+                EOT,
+            ['param_aliases' => ['psalm-param']],
+        ];
+
+        yield 'param and psalm-param for same parameter' => [
+            <<<'EOT'
+                <?php
+                /**
+                 * @param int $a
+                 * @psalm-param positive-int $a
+                 * @param string $b
+                 * @psalm-param non-empty-string $b
+                 */
+                function m($a, $b) {}
+                EOT,
+            <<<'EOT'
+                <?php
+                /**
+                 * @psalm-param non-empty-string $b
+                 * @param string $b
+                 * @psalm-param positive-int $a
+                 * @param int $a
+                 */
+                function m($a, $b) {}
+                EOT,
+            ['param_aliases' => ['psalm-param']],
+        ];
+
+        yield 'no aliases in code - normal behavior' => [
+            <<<'EOT'
+                <?php
+                /**
+                 * @param int $a
+                 * @param string $b
+                 */
+                function m($a, $b) {}
+                EOT,
+            <<<'EOT'
+                <?php
+                /**
+                 * @param string $b
+                 * @param int $a
+                 */
+                function m($a, $b) {}
+                EOT,
+            ['param_aliases' => ['psalm-param']],
+        ];
+
+        yield 'unknown aliases in code - not moved' => [
+            <<<'EOT'
+                <?php
+                /**
+                 * @custom-param something $a
+                 * @param int $a
+                 * @param string $b
+                 */
+                function m($a, $b) {}
+                EOT,
+            <<<'EOT'
+                <?php
+                /**
+                 * @custom-param something $a
+                 * @param string $b
+                 * @param int $a
+                 */
+                function m($a, $b) {}
+                EOT,
+            ['param_aliases' => ['psalm-param']], // custom-param not in config
+        ];
+
+        yield 'annotations between params preserved' => [
+            <<<'EOT'
+                <?php
+                /**
+                 * Description
+                 *
+                 * @param int $a
+                 *
+                 * @psalm-param positive-int $b
+                 *
+                 * @deprecated
+                 * @throws \Exception
+                 * @return void
+                 */
+                function m($a, $b) {}
+                EOT,
+            <<<'EOT'
+                <?php
+                /**
+                 * Description
+                 *
+                 * @psalm-param positive-int $b
+                 *
+                 * @deprecated
+                 *
+                 * @param int $a
+                 * @throws \Exception
+                 * @return void
+                 */
+                function m($a, $b) {}
+                EOT,
+            ['param_aliases' => ['psalm-param']],
         ];
     }
 

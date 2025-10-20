@@ -272,28 +272,73 @@ final class PhpdocParamOrderFixer extends AbstractFixer implements ConfigurableF
     private function sortParamAnnotations(array $funcParamNames, array $paramAnnotations): array
     {
         $validParams = [];
+        $usedIndices = [];
 
         // Use the existing findParamAnnotationByIdentifier which handles nested blocks correctly
         foreach ($funcParamNames as $paramName) {
-            foreach ($this->findParamAnnotationByIdentifier($paramAnnotations, $paramName->getContent()) as $index => $annotation) {
-                // Found matching annotation(s) for this parameter
-                $validParams[$index] = $annotation->getContent();
+            $matchingAnnotations = $this->findParamAnnotationByIdentifier($paramAnnotations, $paramName->getContent());
+
+            // Sort annotations for this parameter: @param first, then aliases in configured order
+            $sorted = $this->sortAnnotationsByTag($matchingAnnotations);
+
+            foreach ($sorted as $index => $annotation) {
+                $validParams[] = $annotation->getContent();
+                $usedIndices[] = $index;
             }
         }
 
-        // Detect superfluous annotations
-        $invalidParams = array_values(
-            array_diff_key($paramAnnotations, $validParams)
-        );
+        // Detect superfluous annotations (ones not matched to any parameter)
+        $invalidParams = [];
+        foreach ($paramAnnotations as $i => $annotation) {
+            if (!\in_array($i, $usedIndices, true)) {
+                $invalidParams[] = $annotation->getContent();
+            }
+        }
 
         // Append invalid parameters to the (ordered) valid ones
-        $orderedParams = array_values($validParams);
-        foreach ($invalidParams as $params) {
-            $orderedParams[] = $params->getContent();
-        }
+        $orderedParams = array_merge($validParams, $invalidParams);
         \assert(\count($orderedParams) > 0);
 
         return $orderedParams;
+    }
+
+    /**
+     * Sort annotations by tag type: @param first, then aliases in configured order.
+     *
+     * @param array<int, Annotation> $annotations Annotations with their original indices
+     *
+     * @return array<int, Annotation> Sorted annotations with their original indices preserved
+     */
+    private function sortAnnotationsByTag(array $annotations): array
+    {
+        if (\count($annotations) <= 1) {
+            return $annotations;
+        }
+
+        // Create tag priority map: @param = 0, aliases by config order
+        $tagPriority = [self::PARAM_TAG => 0];
+        foreach ($this->paramAliases as $i => $alias) {
+            $tagPriority[$alias] = $i + 1;
+        }
+
+        // Sort by tag priority
+        uksort($annotations, static function (int $indexA, int $indexB) use ($annotations, $tagPriority): int {
+            $tagA = $annotations[$indexA]->getTag()->getName();
+            $tagB = $annotations[$indexB]->getTag()->getName();
+
+            $priorityA = $tagPriority[$tagA] ?? PHP_INT_MAX;
+            $priorityB = $tagPriority[$tagB] ?? PHP_INT_MAX;
+
+            // Primary sort by tag priority
+            if ($priorityA !== $priorityB) {
+                return $priorityA <=> $priorityB;
+            }
+
+            // Secondary sort by original document order (index)
+            return $indexA <=> $indexB;
+        });
+
+        return $annotations;
     }
 
     /**
@@ -342,6 +387,7 @@ final class PhpdocParamOrderFixer extends AbstractFixer implements ConfigurableF
         $blockLevel = 0;
         $blockMatch = false;
         $blockIndices = [];
+        $topLevelMatches = []; // Collect all top-level matches
 
         // Build regex pattern for all param-like tags
         $tags = array_merge([self::PARAM_TAG], $this->paramAliases);
@@ -357,7 +403,7 @@ final class PhpdocParamOrderFixer extends AbstractFixer implements ConfigurableF
                 if ($blockStart) {
                     $blockMatch = true; // Start of a nested block
                 } else {
-                    return [$i => $param]; // Top level match
+                    $topLevelMatches[$i] = $param; // Collect top level match instead of returning immediately
                 }
             }
 
@@ -372,11 +418,11 @@ final class PhpdocParamOrderFixer extends AbstractFixer implements ConfigurableF
             if ($blockMatch) {
                 $blockIndices[$i] = $param;
                 if (0 === $blockLevel) {
-                    return $blockIndices;
+                    return $blockIndices; // Still return immediately for nested blocks
                 }
             }
         }
 
-        return [];
+        return $topLevelMatches; // Return all top-level matches
     }
 }
