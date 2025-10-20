@@ -154,7 +154,7 @@ final class PhpdocParamOrderFixer extends AbstractFixer implements ConfigurableF
             }
 
             $doc = new DocBlock($token->getContent());
-            $paramAnnotations = $doc->getAnnotationsOfType(self::PARAM_TAG);
+            $paramAnnotations = $this->getParamLikeAnnotations($doc);
 
             if ([] === $paramAnnotations) {
                 continue;
@@ -165,6 +165,27 @@ final class PhpdocParamOrderFixer extends AbstractFixer implements ConfigurableF
 
             $tokens[$index] = new Token([\T_DOC_COMMENT, $doc->getContent()]);
         }
+    }
+
+    /**
+     * Get all param-like annotations including @param and configured aliases.
+     *
+     * @return list<Annotation>
+     */
+    private function getParamLikeAnnotations(DocBlock $doc): array
+    {
+        $annotations = $doc->getAnnotationsOfType(self::PARAM_TAG);
+
+        // Collect alias annotations if configured
+        foreach ($this->paramAliases as $alias) {
+            $aliasAnnotations = $doc->getAnnotationsOfType($alias);
+            $annotations = array_merge($annotations, $aliasAnnotations);
+        }
+
+        // Sort by start line to maintain document order
+        usort($annotations, static fn (Annotation $a, Annotation $b): int => $a->getStart() <=> $b->getStart());
+
+        return $annotations;
     }
 
     /**
@@ -184,6 +205,22 @@ final class PhpdocParamOrderFixer extends AbstractFixer implements ConfigurableF
         }
 
         return $paramNames;
+    }
+
+    /**
+     * Extract variable name from annotation content.
+     *
+     * @return null|string Variable name including $ prefix, or null if not found
+     */
+    private function extractVariableName(Annotation $annotation): ?string
+    {
+        // Match the first variable name after the tag, handling variadic (...$var) and reference (&$var)
+        // Use word boundary to ensure we get the first complete variable name
+        if (Preg::match('/@(?:'.preg_quote(self::PARAM_TAG, '/').'|'.implode('|', array_map(static fn (string $tag): string => preg_quote($tag, '/'), $this->paramAliases)).')\h+(?:[^\s]+\h+)*?(?:\.{3}|&)?\$(\w+)\b/', $annotation->getContent(), $matches)) {
+            return '$'.$matches[1];
+        }
+
+        return null;
     }
 
     /**
@@ -225,6 +262,7 @@ final class PhpdocParamOrderFixer extends AbstractFixer implements ConfigurableF
 
     /**
      * Sort the param annotations according to the function parameters.
+     * Groups annotations by variable name, with @param first followed by aliases.
      *
      * @param list<Token>                $funcParamNames
      * @param non-empty-list<Annotation> $paramAnnotations
@@ -234,9 +272,11 @@ final class PhpdocParamOrderFixer extends AbstractFixer implements ConfigurableF
     private function sortParamAnnotations(array $funcParamNames, array $paramAnnotations): array
     {
         $validParams = [];
+
+        // Use the existing findParamAnnotationByIdentifier which handles nested blocks correctly
         foreach ($funcParamNames as $paramName) {
             foreach ($this->findParamAnnotationByIdentifier($paramAnnotations, $paramName->getContent()) as $index => $annotation) {
-                // Found an exactly matching @param annotation
+                // Found matching annotation(s) for this parameter
                 $validParams[$index] = $annotation->getContent();
             }
         }
@@ -257,7 +297,7 @@ final class PhpdocParamOrderFixer extends AbstractFixer implements ConfigurableF
     }
 
     /**
-     * Fetch all annotations except the param ones.
+     * Fetch all annotations except the param-like ones.
      *
      * @param list<Annotation> $paramAnnotations
      *
@@ -272,13 +312,17 @@ final class PhpdocParamOrderFixer extends AbstractFixer implements ConfigurableF
         $paramsStart = reset($paramAnnotations)->getStart();
         $paramsEnd = end($paramAnnotations)->getEnd();
 
+        // Build list of all param-like tags to exclude
+        $paramLikeTags = array_merge([self::PARAM_TAG], $this->paramAliases);
+
         $otherAnnotations = [];
         foreach ($doc->getAnnotations() as $annotation) {
             if ($annotation->getStart() < $paramsStart || $annotation->getEnd() > $paramsEnd) {
                 continue;
             }
 
-            if (self::PARAM_TAG !== $annotation->getTag()->getName()) {
+            // Exclude all param-like tags, not just @param
+            if (!\in_array($annotation->getTag()->getName(), $paramLikeTags, true)) {
                 $otherAnnotations[] = $annotation->getContent();
             }
         }
@@ -299,7 +343,11 @@ final class PhpdocParamOrderFixer extends AbstractFixer implements ConfigurableF
         $blockMatch = false;
         $blockIndices = [];
 
-        $paramRegex = '/\*\h*@param\h*(?:|'.TypeExpression::REGEX_TYPES.'\h*)&?(?=\$\b)'.preg_quote($identifier).'\b/';
+        // Build regex pattern for all param-like tags
+        $tags = array_merge([self::PARAM_TAG], $this->paramAliases);
+        $tagPattern = implode('|', array_map(static fn (string $tag): string => preg_quote($tag, '/'), $tags));
+
+        $paramRegex = '/\*\h*@(?:'.$tagPattern.')\h*(?:|'.TypeExpression::REGEX_TYPES.'\h*)&?(?=\$\b)'.preg_quote($identifier).'\b/';
 
         foreach ($paramAnnotations as $i => $param) {
             $blockStart = Preg::match('/\s*{\s*/', $param->getContent());
