@@ -969,4 +969,46 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                 EOT,
         ];
     }
+
+    /**
+     * @dataProvider provideInvalidConfigurationCases
+     */
+    public function testInvalidConfiguration(array $configuration, string $expectedMessage): void
+    {
+        $this->expectException(\PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessageMatches($expectedMessage);
+
+        $this->fixer->configure($configuration);
+    }
+
+    /**
+     * @return iterable<string, array{configuration: array<string, mixed>, expectedMessage: string}>
+     */
+    public static function provideInvalidConfigurationCases(): iterable
+    {
+        yield 'invalid alias format with @' => [
+            'configuration' => ['param_aliases' => ['invalid@tag']],
+            'expectedMessage' => '/invalid tag/',
+        ];
+
+        yield 'non-param alias (return tag)' => [
+            'configuration' => ['param_aliases' => ['return']],
+            'expectedMessage' => '/invalid tag/',
+        ];
+
+        yield 'alias starting with number' => [
+            'configuration' => ['param_aliases' => ['123-param']],
+            'expectedMessage' => '/invalid tag/',
+        ];
+
+        yield 'non-array value' => [
+            'configuration' => ['param_aliases' => 'psalm-param'],
+            'expectedMessage' => '/expected to be of type "string\[\]"/',
+        ];
+
+        yield 'non-string value in array' => [
+            'configuration' => ['param_aliases' => ['psalm-param', 123]],
+            'expectedMessage' => '/expected to be of type "string\[\]"/',
+        ];
+    }
 }
