@@ -1095,6 +1095,387 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                 EOT,
             ['param_aliases' => ['psalm-param']],
         ];
+
+        // Phase 4: Edge Case Tests
+        // Type variations
+        yield 'variadic with aliases' => [
+            <<<'EOT'
+                <?php
+                /**
+                 * @param int $a
+                 * @psalm-param positive-int ...$b
+                 */
+                function m($a, ...$b) {}
+                EOT,
+            <<<'EOT'
+                <?php
+                /**
+                 * @psalm-param positive-int ...$b
+                 * @param int $a
+                 */
+                function m($a, ...$b) {}
+                EOT,
+            ['param_aliases' => ['psalm-param']],
+        ];
+
+        yield 'reference parameters with aliases' => [
+            <<<'EOT'
+                <?php
+                /**
+                 * @param int $a
+                 * @psalm-param positive-int &$b
+                 */
+                function m($a, &$b) {}
+                EOT,
+            <<<'EOT'
+                <?php
+                /**
+                 * @psalm-param positive-int &$b
+                 * @param int $a
+                 */
+                function m($a, &$b) {}
+                EOT,
+            ['param_aliases' => ['psalm-param']],
+        ];
+
+        yield 'nullable types with aliases' => [
+            <<<'EOT'
+                <?php
+                /**
+                 * @param int|null $a
+                 * @psalm-param positive-int|null $a
+                 * @param string|null $b
+                 */
+                function m($a, $b) {}
+                EOT,
+            <<<'EOT'
+                <?php
+                /**
+                 * @psalm-param positive-int|null $a
+                 * @param string|null $b
+                 * @param int|null $a
+                 */
+                function m($a, $b) {}
+                EOT,
+            ['param_aliases' => ['psalm-param']],
+        ];
+
+        yield 'union types with aliases' => [
+            <<<'EOT'
+                <?php
+                /**
+                 * @param int|string $a
+                 * @phpstan-param positive-int|non-empty-string $a
+                 * @param array|null $b
+                 */
+                function m($a, $b) {}
+                EOT,
+            <<<'EOT'
+                <?php
+                /**
+                 * @phpstan-param positive-int|non-empty-string $a
+                 * @param array|null $b
+                 * @param int|string $a
+                 */
+                function m($a, $b) {}
+                EOT,
+            ['param_aliases' => ['phpstan-param']],
+        ];
+
+        // Formatting tests
+        yield 'multiline descriptions with aliases' => [
+            <<<'EOT'
+                <?php
+                /**
+                 * @param int $a First parameter
+                 * @psalm-param positive-int $b This is a very long description
+                 *                                that spans multiple lines
+                 *                                and has proper indentation
+                 */
+                function m($a, $b) {}
+                EOT,
+            <<<'EOT'
+                <?php
+                /**
+                 * @psalm-param positive-int $b This is a very long description
+                 *                                that spans multiple lines
+                 *                                and has proper indentation
+                 * @param int $a First parameter
+                 */
+                function m($a, $b) {}
+                EOT,
+            ['param_aliases' => ['psalm-param']],
+        ];
+
+        yield 'multiline type expressions with aliases' => [
+            <<<'EOT'
+                <?php
+                /**
+                 * @param array<int, string> $a
+                 * @psalm-param array{
+                 *     id: int,
+                 *     name: string
+                 * } $b
+                 */
+                function m($a, $b) {}
+                EOT,
+            <<<'EOT'
+                <?php
+                /**
+                 * @psalm-param array{
+                 *     id: int,
+                 *     name: string
+                 * } $b
+                 * @param array<int, string> $a
+                 */
+                function m($a, $b) {}
+                EOT,
+            ['param_aliases' => ['psalm-param']],
+        ];
+
+        // Completeness tests
+        yield 'missing param but has psalm-param' => [
+            <<<'EOT'
+                <?php
+                /**
+                 * @psalm-param positive-int $a
+                 * @param string $b
+                 */
+                function m($a, $b) {}
+                EOT,
+            <<<'EOT'
+                <?php
+                /**
+                 * @param string $b
+                 * @psalm-param positive-int $a
+                 */
+                function m($a, $b) {}
+                EOT,
+            ['param_aliases' => ['psalm-param']],
+        ];
+
+        yield 'superfluous alias annotations' => [
+            <<<'EOT'
+                <?php
+                /**
+                 * @param int $a
+                 * @psalm-param string $b
+                 * @psalm-param int $superfluous
+                 */
+                function m($a, $b) {}
+                EOT,
+            <<<'EOT'
+                <?php
+                /**
+                 * @psalm-param int $superfluous
+                 * @psalm-param string $b
+                 * @param int $a
+                 */
+                function m($a, $b) {}
+                EOT,
+            ['param_aliases' => ['psalm-param']],
+        ];
+
+        yield 'partial alias coverage' => [
+            <<<'EOT'
+                <?php
+                /**
+                 * @param int $a
+                 * @psalm-param positive-int $a
+                 * @param string $b
+                 * @param array $c
+                 * @psalm-param non-empty-array $c
+                 */
+                function m($a, $b, $c) {}
+                EOT,
+            <<<'EOT'
+                <?php
+                /**
+                 * @psalm-param non-empty-array $c
+                 * @param string $b
+                 * @psalm-param positive-int $a
+                 * @param array $c
+                 * @param int $a
+                 */
+                function m($a, $b, $c) {}
+                EOT,
+            ['param_aliases' => ['psalm-param']],
+        ];
+
+        // Special tags
+        yield 'psalm-param-out support' => [
+            <<<'EOT'
+                <?php
+                /**
+                 * @param int $a
+                 * @psalm-param-out string $b
+                 */
+                function m($a, &$b) {}
+                EOT,
+            <<<'EOT'
+                <?php
+                /**
+                 * @psalm-param-out string $b
+                 * @param int $a
+                 */
+                function m($a, &$b) {}
+                EOT,
+            ['param_aliases' => ['psalm-param-out']],
+        ];
+
+        yield 'phpstan-param-out support' => [
+            <<<'EOT'
+                <?php
+                /**
+                 * @param int $a
+                 * @phpstan-param-out string $b
+                 */
+                function m($a, &$b) {}
+                EOT,
+            <<<'EOT'
+                <?php
+                /**
+                 * @phpstan-param-out string $b
+                 * @param int $a
+                 */
+                function m($a, &$b) {}
+                EOT,
+            ['param_aliases' => ['phpstan-param-out']],
+        ];
+
+        yield 'generic types with templates' => [
+            <<<'EOT'
+                <?php
+                /**
+                 * @template T
+                 * @param array<T> $a
+                 * @psalm-param array<array-key, T> $b
+                 */
+                function m($a, $b) {}
+                EOT,
+            <<<'EOT'
+                <?php
+                /**
+                 * @template T
+                 * @psalm-param array<array-key, T> $b
+                 * @param array<T> $a
+                 */
+                function m($a, $b) {}
+                EOT,
+            ['param_aliases' => ['psalm-param']],
+        ];
+
+        yield 'callable types with aliases' => [
+            <<<'EOT'
+                <?php
+                /**
+                 * @param callable $a
+                 * @psalm-param callable(int, string): bool $b
+                 */
+                function m($a, callable $b) {}
+                EOT,
+            <<<'EOT'
+                <?php
+                /**
+                 * @psalm-param callable(int, string): bool $b
+                 * @param callable $a
+                 */
+                function m($a, callable $b) {}
+                EOT,
+            ['param_aliases' => ['psalm-param']],
+        ];
+
+        yield 'array shapes with aliases' => [
+            <<<'EOT'
+                <?php
+                /**
+                 * @param array $a
+                 * @psalm-param array{id: int, name: string, age?: int} $b
+                 */
+                function m($a, $b) {}
+                EOT,
+            <<<'EOT'
+                <?php
+                /**
+                 * @psalm-param array{id: int, name: string, age?: int} $b
+                 * @param array $a
+                 */
+                function m($a, $b) {}
+                EOT,
+            ['param_aliases' => ['psalm-param']],
+        ];
+
+        yield 'multiple aliases for same parameter - phpstan and psalm' => [
+            <<<'EOT'
+                <?php
+                /**
+                 * @param int $a
+                 * @psalm-param positive-int $a
+                 * @phpstan-param int<1, max> $a
+                 */
+                function m($a) {}
+                EOT,
+            <<<'EOT'
+                <?php
+                /**
+                 * @phpstan-param int<1, max> $a
+                 * @psalm-param positive-int $a
+                 * @param int $a
+                 */
+                function m($a) {}
+                EOT,
+            ['param_aliases' => ['psalm-param', 'phpstan-param']],
+        ];
+
+        yield 'all alias types together - complex' => [
+            <<<'EOT'
+                <?php
+                /**
+                 * @param int $a
+                 * @psalm-param positive-int $a
+                 * @phpstan-param int<1, max> $a
+                 * @param string $b
+                 * @psalm-param non-empty-string $b
+                 * @param array $c
+                 * @phpstan-param non-empty-array $c
+                 */
+                function m($a, $b, $c) {}
+                EOT,
+            <<<'EOT'
+                <?php
+                /**
+                 * @phpstan-param non-empty-array $c
+                 * @psalm-param non-empty-string $b
+                 * @param array $c
+                 * @param string $b
+                 * @phpstan-param int<1, max> $a
+                 * @psalm-param positive-int $a
+                 * @param int $a
+                 */
+                function m($a, $b, $c) {}
+                EOT,
+            ['param_aliases' => ['psalm-param', 'phpstan-param']],
+        ];
+
+        yield 'phpstan-param only - reorder' => [
+            <<<'EOT'
+                <?php
+                /**
+                 * @phpstan-param int $a
+                 * @phpstan-param string $b
+                 */
+                function m($a, $b) {}
+                EOT,
+            <<<'EOT'
+                <?php
+                /**
+                 * @phpstan-param string $b
+                 * @phpstan-param int $a
+                 */
+                function m($a, $b) {}
+                EOT,
+            ['param_aliases' => ['phpstan-param']],
+        ];
     }
 
     /**
