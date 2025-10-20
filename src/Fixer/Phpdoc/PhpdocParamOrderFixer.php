@@ -71,28 +71,6 @@ final class PhpdocParamOrderFixer extends AbstractFixer implements ConfigurableF
         return parent::getPriority();
     }
 
-    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
-    {
-        return new FixerConfigurationResolver([
-            (new FixerOptionBuilder('param_aliases', 'List of param-like tags to treat as aliases of `@param` and reorder together with them.'))
-                ->setAllowedTypes(['string[]'])
-                ->setAllowedValues([static function (array $aliases): bool {
-                    foreach ($aliases as $alias) {
-                        if (!preg_match('/^[a-z][a-z0-9-]*-param(-[a-z0-9-]+)?$/i', $alias)) {
-                            throw new InvalidOptionsException(sprintf(
-                                'The option "param_aliases" contains invalid tag "%s". Tag must match pattern: [a-z][a-z0-9-]*-param(-[a-z0-9-]+)?',
-                                $alias
-                            ));
-                        }
-                    }
-
-                    return true;
-                }])
-                ->setDefault([])
-                ->getOption(),
-        ]);
-    }
-
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -129,6 +107,28 @@ final class PhpdocParamOrderFixer extends AbstractFixer implements ConfigurableF
                 ),
             ]
         );
+    }
+
+    protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
+    {
+        return new FixerConfigurationResolver([
+            (new FixerOptionBuilder('param_aliases', 'List of param-like tags to treat as aliases of `@param` and reorder together with them.'))
+                ->setAllowedTypes(['string[]'])
+                ->setAllowedValues([static function (array $aliases): bool {
+                    foreach ($aliases as $alias) {
+                        if (1 !== preg_match('/^[a-z][a-z0-9-]*-param(-[a-z0-9-]+)?$/i', $alias)) {
+                            throw new InvalidOptionsException(\sprintf(
+                                'The option "param_aliases" contains invalid tag "%s". Tag must match pattern: [a-z][a-z0-9-]*-param(-[a-z0-9-]+)?',
+                                $alias
+                            ));
+                        }
+                    }
+
+                    return true;
+                }])
+                ->setDefault([])
+                ->getOption(),
+        ]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -205,22 +205,6 @@ final class PhpdocParamOrderFixer extends AbstractFixer implements ConfigurableF
         }
 
         return $paramNames;
-    }
-
-    /**
-     * Extract variable name from annotation content.
-     *
-     * @return null|string Variable name including $ prefix, or null if not found
-     */
-    private function extractVariableName(Annotation $annotation): ?string
-    {
-        // Match the first variable name after the tag, handling variadic (...$var) and reference (&$var)
-        // Use word boundary to ensure we get the first complete variable name
-        if (Preg::match('/@(?:'.preg_quote(self::PARAM_TAG, '/').'|'.implode('|', array_map(static fn (string $tag): string => preg_quote($tag, '/'), $this->paramAliases)).')\h+(?:[^\s]+\h+)*?(?:\.{3}|&)?\$(\w+)\b/', $annotation->getContent(), $matches)) {
-            return '$'.$matches[1];
-        }
-
-        return null;
     }
 
     /**
@@ -323,11 +307,13 @@ final class PhpdocParamOrderFixer extends AbstractFixer implements ConfigurableF
 
         // Sort by tag priority
         uksort($annotations, static function (int $indexA, int $indexB) use ($annotations, $tagPriority): int {
+            \assert(isset($annotations[$indexA], $annotations[$indexB]));
+
             $tagA = $annotations[$indexA]->getTag()->getName();
             $tagB = $annotations[$indexB]->getTag()->getName();
 
-            $priorityA = $tagPriority[$tagA] ?? PHP_INT_MAX;
-            $priorityB = $tagPriority[$tagB] ?? PHP_INT_MAX;
+            $priorityA = $tagPriority[$tagA] ?? \PHP_INT_MAX;
+            $priorityB = $tagPriority[$tagB] ?? \PHP_INT_MAX;
 
             // Primary sort by tag priority
             if ($priorityA !== $priorityB) {
