@@ -110,9 +110,9 @@ final class NoUnneededBracesFixer extends AbstractFixer implements ConfigurableF
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('namespaces', 'Remove unneeded braces from bracketed namespaces.'))
-              ->setAllowedTypes(['bool'])
-              ->setDefault(false)
-              ->getOption(),
+                ->setAllowedTypes(['bool'])
+                ->setDefault(false)
+                ->getOption(),
         ]);
     }
 
