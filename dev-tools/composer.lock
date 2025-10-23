@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a050dbf01c517b5b34cada16f93e379d",
+    "content-hash": "ab7088c6defd5aaee801da1a9b9b20ae",
     "packages": [
         {
             "name": "composer/pcre",
@@ -581,16 +581,16 @@
         },
         {
             "name": "phpcompatibility/php-compatibility",
-            "version": "dev-develop",
+            "version": "10.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCompatibility/PHPCompatibility.git",
-                "reference": "c55d775037d854842a6f98daeb7e88ed40f80b4f"
+                "reference": "de29923c98ce1d7d35df862c51d5dc0062c95401"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibility/zipball/c55d775037d854842a6f98daeb7e88ed40f80b4f",
-                "reference": "c55d775037d854842a6f98daeb7e88ed40f80b4f"
+                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibility/zipball/de29923c98ce1d7d35df862c51d5dc0062c95401",
+                "reference": "de29923c98ce1d7d35df862c51d5dc0062c95401"
             },
             "require": {
                 "php": ">=5.4",
@@ -614,19 +614,19 @@
         },
         {
             "name": "phpcompatibility/phpcompatibility-paragonie",
-            "version": "1.3.4",
+            "version": "2.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCompatibility/PHPCompatibilityParagonie.git",
-                "reference": "244d7b04fc4bc2117c15f5abe23eb933b5f02bbf"
+                "reference": "e9b1de33aca14704843b86705d0c00f9b30e9401"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilityParagonie/zipball/244d7b04fc4bc2117c15f5abe23eb933b5f02bbf",
-                "reference": "244d7b04fc4bc2117c15f5abe23eb933b5f02bbf"
+                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilityParagonie/zipball/e9b1de33aca14704843b86705d0c00f9b30e9401",
+                "reference": "e9b1de33aca14704843b86705d0c00f9b30e9401"
             },
             "require": {
-                "phpcompatibility/php-compatibility": "^9.0"
+                "phpcompatibility/php-compatibility": "^10.0@dev"
             },
             "type": "phpcodesniffer-standard",
             "license": [
@@ -636,19 +636,19 @@
         },
         {
             "name": "phpcompatibility/phpcompatibility-passwordcompat",
-            "version": "1.0.6",
+            "version": "2.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCompatibility/PHPCompatibilityPasswordCompat.git",
-                "reference": "6f2d6585b51383ab0b74af4952f3c7f1216ce994"
+                "reference": "8e67bd0a47a987d4b507e5cf019042d95758db13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilityPasswordCompat/zipball/6f2d6585b51383ab0b74af4952f3c7f1216ce994",
-                "reference": "6f2d6585b51383ab0b74af4952f3c7f1216ce994"
+                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilityPasswordCompat/zipball/8e67bd0a47a987d4b507e5cf019042d95758db13",
+                "reference": "8e67bd0a47a987d4b507e5cf019042d95758db13"
             },
             "require": {
-                "phpcompatibility/php-compatibility": "^9.0"
+                "phpcompatibility/php-compatibility": "^10.0@dev"
             },
             "type": "phpcodesniffer-standard",
             "license": [
@@ -658,21 +658,21 @@
         },
         {
             "name": "phpcompatibility/phpcompatibility-symfony",
-            "version": "1.2.3",
+            "version": "2.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCompatibility/PHPCompatibilitySymfony.git",
-                "reference": "6230708f40fa797003e1d5dcfc0df6d9c16ee9e5"
+                "reference": "97a30ace598749dd316f4e328bf6db0da7202746"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilitySymfony/zipball/6230708f40fa797003e1d5dcfc0df6d9c16ee9e5",
-                "reference": "6230708f40fa797003e1d5dcfc0df6d9c16ee9e5"
+                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilitySymfony/zipball/97a30ace598749dd316f4e328bf6db0da7202746",
+                "reference": "97a30ace598749dd316f4e328bf6db0da7202746"
             },
             "require": {
-                "phpcompatibility/php-compatibility": "^9.0",
-                "phpcompatibility/phpcompatibility-paragonie": "^1.0",
-                "phpcompatibility/phpcompatibility-passwordcompat": "^1.0"
+                "phpcompatibility/php-compatibility": "^10.0@dev",
+                "phpcompatibility/phpcompatibility-paragonie": "^2.0@dev",
+                "phpcompatibility/phpcompatibility-passwordcompat": "^2.0@dev"
             },
             "type": "phpcodesniffer-standard",
             "license": [
@@ -1407,21 +1407,16 @@
     "packages-dev": [],
     "aliases": [
         {
-            "package": "phpcompatibility/php-compatibility",
-            "version": "10.9999999.9999999.9999999-dev",
-            "alias": "9.99.0",
-            "alias_normalized": "9.99.0.0"
-        },
-        {
             "package": "phpmd/phpmd",
             "version": "9999999-dev",
             "alias": "2.16.0",
             "alias_normalized": "2.16.0.0"
         }
     ],
-    "minimum-stability": "stable",
+    "minimum-stability": "alpha",
     "stability-flags": {
-        "phpcompatibility/php-compatibility": 20,
+        "phpcompatibility/php-compatibility": 15,
+        "phpcompatibility/phpcompatibility-symfony": 15,
         "phpmd/phpmd": 20
     },
     "prefer-stable": false,
