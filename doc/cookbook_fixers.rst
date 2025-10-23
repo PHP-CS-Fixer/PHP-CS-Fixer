@@ -27,11 +27,18 @@ If possible, try to get acquainted with the public interface for the
 Assumptions
 -----------
 
+* You want to create a new fixer for PHP CS Fixer main repository.
 * You are familiar with Test Driven Development.
 * Forked PHP-CS-Fixer/PHP-CS-Fixer into your own GitHub Account.
 * Cloned your forked repository locally.
 * Installed the dependencies of PHP CS Fixer using Composer_.
 * You have read `CONTRIBUTING.md <./../CONTRIBUTING.md>`_.
+
+In case you want to create a custom fixer for your own use, you can
+follow this guide as well, but you will need to apply some changes on the go,
+for example use `PhpCsFixer\\Fixer\\FixerInterface <./../src/Fixer/FixerInterface.php>`_
+instead of `PhpCsFixer\\AbstractFixer <./../src/AbstractFixer.php>`_ (which is internal
+and not covered with BC promise).
 
 Step by step
 ------------
