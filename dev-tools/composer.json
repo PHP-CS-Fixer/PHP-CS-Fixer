@@ -6,7 +6,7 @@
         "kubawerlos/composer-smaller-lock": "^1.1.0",
         "mi-schi/phpmd-extension": "^4.3.0",
         "phpcompatibility/php-compatibility": "10.x-dev as 9.99.0",
-        "phpcompatibility/phpcompatibility-symfony": "^1.2.2",
+        "phpcompatibility/phpcompatibility-symfony": "^1.2.3",
         "phpmd/phpmd": "dev-master as 2.16.0",
         "phpstan/extension-installer": "^1.4.3",
         "phpstan/phpstan": "^2.1.31",

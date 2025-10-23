@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0de0d0dc4f1d4d470f1aff4bf2eb3ed8",
+    "content-hash": "a050dbf01c517b5b34cada16f93e379d",
     "packages": [
         {
             "name": "composer/pcre",
@@ -658,16 +658,16 @@
         },
         {
             "name": "phpcompatibility/phpcompatibility-symfony",
-            "version": "1.2.2",
+            "version": "1.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCompatibility/PHPCompatibilitySymfony.git",
-                "reference": "fd7aa90db93663a6eeab5f32c23ab85f58c16a08"
+                "reference": "6230708f40fa797003e1d5dcfc0df6d9c16ee9e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilitySymfony/zipball/fd7aa90db93663a6eeab5f32c23ab85f58c16a08",
-                "reference": "fd7aa90db93663a6eeab5f32c23ab85f58c16a08"
+                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilitySymfony/zipball/6230708f40fa797003e1d5dcfc0df6d9c16ee9e5",
+                "reference": "6230708f40fa797003e1d5dcfc0df6d9c16ee9e5"
             },
             "require": {
                 "phpcompatibility/php-compatibility": "^9.0",
