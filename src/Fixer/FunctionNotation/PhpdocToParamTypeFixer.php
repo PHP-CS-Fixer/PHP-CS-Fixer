@@ -202,8 +202,7 @@ final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer 
                     continue;
                 }
 
-                $byRefIndex = $tokens->getPrevMeaningfulToken($variableIndex);
-                \assert(\is_int($byRefIndex));
+                $byRefIndex = $tokens->requirePrevMeaningfulToken($variableIndex);
 
                 if ($tokens[$byRefIndex]->equals('&')) {
                     $variableIndex = $byRefIndex;
