@@ -165,7 +165,7 @@ final class ComposerJsonReaderTest extends TestCase
             '8.1',
             '{
     "require": {},
-    "require-dev": { "phpunit/phpunit": ""8.1.* || 8.2.* || 8.3.* || 8.4.* "" }
+    "require-dev": { "phpunit/phpunit": "  8.1.*  ||  8.2.*  ||  8.3.*  ||  8.4.*  " }
 }',
         ];
 
@@ -300,7 +300,7 @@ final class ComposerJsonReaderTest extends TestCase
         yield 'version with asterisk' => [
             '8.1',
             '{
-    "require": { "php": ""8.1.* || 8.2.* || 8.3.* || 8.4.* "" }
+    "require": { "php": "  8.1.*  ||  8.2.*  ||  8.3.*  ||  8.4.*  " }
 }',
         ];
     }
