@@ -98,8 +98,8 @@ Put this content inside:
    }
 
 Note how the class and file name match. Also keep in mind that all
-fixers must implement ``Fixer\FixerInterface``. In this case, the fixer is
-inheriting from ``AbstractFixer``, which fulfills the interface with some
+fixers must implement `PhpCsFixer\\Fixer\\FixerInterface <./../src/Fixer/FixerInterface.php>`_. In this case, the fixer is
+inheriting from `PhpCsFixer\\AbstractFixer <./../src/AbstractFixer.php>`_, which fulfills the interface with some
 default behavior.
 
 Now let us create the test file at
