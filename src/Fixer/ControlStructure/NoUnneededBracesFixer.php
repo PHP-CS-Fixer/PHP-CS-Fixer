@@ -151,7 +151,6 @@ final class NoUnneededBracesFixer extends AbstractFixer implements ConfigurableF
 
             $analyzer = new TokensAnalyzer($tokens);
             if ($analyzer->isBlockMultiline($tokens, $index)) {
-                // Multiline group use: do not remove braces
                 return false;
             }
 
