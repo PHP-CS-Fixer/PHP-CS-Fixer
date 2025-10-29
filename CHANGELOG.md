@@ -3,6 +3,14 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.89.1
+---------------------
+
+* fix: ComposerJsonReader - fix handling asterisk (#9166)
+* docs: cookbook - update to mention custom fixer option (#9164)
+* DX: add links in `cookbook_fixers.rst` (#9162)
+* deps: upgrade `phpcompatibility/*` to alpha of next MAJOR instead of using dev branch, plus other minor upgrades (#9163)
+
 Changelog for v3.89.0
 ---------------------
 

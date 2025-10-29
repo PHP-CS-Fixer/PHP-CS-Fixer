@@ -220,6 +220,9 @@ namespace Foo {
                 use Foo2\Bar2\Baz2;
                 use NotFoo3\{Bar3, Baz3};
                 use NotFoo4\{Bar4\Baz4, Qux4};
+                use NotFoo5\{
+                    Baz5
+                };
                 PHP,
             <<<'PHP'
                 <?php
@@ -227,6 +230,9 @@ namespace Foo {
                 use Foo2\{Bar2\Baz2};
                 use NotFoo3\{Bar3, Baz3};
                 use NotFoo4\{Bar4\Baz4, Qux4};
+                use NotFoo5\{
+                    Baz5
+                };
                 PHP,
         ];
     }
