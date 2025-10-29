@@ -138,7 +138,7 @@
             "./dev-tools/check_file_permissions.sh",
             "./dev-tools/check_trailing_spaces.sh",
             "./dev-tools/check_shell_scripts.sh",
-            "./dev-tools/check_american_english.sh",
+            "./dev-tools/check_no_american_english.sh",
             "@composer dump-autoload --dry-run --optimize --strict-psr",
             "@normalize",
             "@analyse-deps",
