@@ -13,11 +13,8 @@ american_spellings=$(
         -e '\banalyzes\b' \
         -e '\binitialize\b' \
         -e '\binitializes\b' \
-        ':!doc/rules/*' \
-        ':!doc/ruleSets/*' \
         ':!vendor/*' \
         ':!*.lock' \
-        ':!tests/Fixtures/*' \
     | grep -v 'behaviour' \
     | grep -v 'favour' \
     | grep -v 'honour' \
