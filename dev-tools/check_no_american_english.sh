@@ -6,13 +6,13 @@ set -eu
 
 american_spellings=$(
     git grep -In \
-        -e '\bbehavior\b' \
-        -e '\bfavor\b' \
-        -e '\bhonor\b' \
-        -e '\banalyze\b' \
-        -e '\banalyzes\b' \
-        -e '\binitialize\b' \
-        -e '\binitializes\b' \
+        -e '\bbehavior\b[^(]' \
+        -e '\bfavor\b[^(]' \
+        -e '\bhonor\b[^(]' \
+        -e '\banalyze\b[^(]' \
+        -e '\banalyzes\b[^(]' \
+        -e '\binitialize\b[^(]' \
+        -e '\binitializes\b[^(]' \
         ':!vendor/*' \
         ':!*.lock' \
     | grep -v 'behaviour' \
