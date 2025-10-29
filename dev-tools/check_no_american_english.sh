@@ -13,8 +13,10 @@ american_spellings=$(
         -e '\bhonor\b[^(]' \
         -e '\banalyze\b[^(]' \
         -e '\banalyzes\b[^(]' \
+        -e '\banalyzed\b[^(]' \
         -e '\binitialize\b[^(]' \
         -e '\binitializes\b[^(]' \
+        -e '\binitialized\b[^(]' \
         ':!vendor/*' \
         ':!*.lock' \
     | grep -v 'behaviour' \
@@ -22,8 +24,10 @@ american_spellings=$(
     | grep -v 'honour' \
     | grep -v 'analyse' \
     | grep -v 'analyses' \
+    | grep -v 'analysed' \
     | grep -v 'initialise' \
     | grep -v 'initialises' \
+    | grep -v 'initialised' \
     | grep -v 'TokensAnalyzer' \
     | grep -v 'ControlCaseStructuresAnalyzer' \
     | grep -v 'AttributeAnalyzer' \
