@@ -11,6 +11,8 @@ american_spellings=$(
         -e '\bhonor\b' \
         -e '\banalyze\b' \
         -e '\banalyzes\b' \
+        -e '\binitialize\b' \
+        -e '\binitializes\b' \
         ':!CHANGELOG.md' \
         ':!CHANGELOG-v*.md' \
         ':!doc/rules/*' \
@@ -23,6 +25,8 @@ american_spellings=$(
     | grep -v 'honour' \
     | grep -v 'analyse' \
     | grep -v 'analyses' \
+    | grep -v 'initialise' \
+    | grep -v 'initialises' \
     | grep -v 'TokensAnalyzer' \
     | grep -v 'ControlCaseStructuresAnalyzer' \
     | grep -v 'AttributeAnalyzer' \
