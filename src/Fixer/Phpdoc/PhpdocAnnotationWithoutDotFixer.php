@@ -114,7 +114,7 @@ final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
 
                 $startLine = $doc->getLine($annotation->getStart());
                 $optionalTypeRegEx = $annotation->supportTypes()
-                    ? \sprintf('(?:%s\s+(?:\$\w+\s+)?)?', preg_quote(implode('|', $annotation->getTypes()), '/'))
+                    ? \sprintf('(?:%s\s+(?:\$\w+\s*)?)?', preg_quote(implode('|', $annotation->getTypes()), '/'))
                     : '';
                 $content = Preg::replaceCallback(
                     '/^(\s*\*\s*@\w+\s+'.$optionalTypeRegEx.')(\p{Lu}?(?=\p{Ll}|\p{Zs}))(.*)$/',
