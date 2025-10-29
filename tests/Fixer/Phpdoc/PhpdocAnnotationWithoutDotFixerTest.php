@@ -237,5 +237,16 @@ function foo ($bar) {}
 function foo ($bar) {}
 ',
         ];
+
+        yield [
+            '<?php
+    /**
+     * @param Url $url URL is not lowercased
+     */',
+            '<?php
+    /**
+     * @param Url $url URL is not lowercased.
+     */',
+        ];
     }
 }
