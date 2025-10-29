@@ -99,6 +99,9 @@ jobs:
       - name: Check - shell scripts
         run: ./dev-tools/check_shell_scripts.sh
 
+      - name: Check - no American English
+        run: ./dev-tools/check_no_american_english.sh
+
       - name: Find changed files (for pull request)
         if: ${{ github.event_name == 'pull_request' }}
         run: |
