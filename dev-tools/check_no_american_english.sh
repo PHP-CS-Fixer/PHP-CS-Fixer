@@ -4,6 +4,8 @@ set -eu
 # Check for American English spellings that should be British English
 # Excludes: CHANGELOG.md (historical), vendor/, generated docs, class/method names, and test fixtures
 
+# @TODO v4: conclude on removing exceptions for "Analyzer" (shall be Analyser)
+
 american_spellings=$(
     git grep -In \
         -e '\bbehavior\b[^(]' \
