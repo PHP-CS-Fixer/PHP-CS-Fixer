@@ -10,7 +10,7 @@ Warning
 Using this rule is risky
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Changing comparisons to strict might change code behavior.
+Changing comparisons to strict might change code behaviour.
 
 Examples
 --------
