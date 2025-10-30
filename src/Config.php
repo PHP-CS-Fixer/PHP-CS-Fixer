@@ -26,7 +26,7 @@ use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-class Config implements ConfigInterface, ParallelAwareConfigInterface, UnsupportedPhpVersionAllowedConfigInterface, CustomRulesetsAwareConfigInterface
+class Config implements ConfigInterface, ParallelAwareConfigInterface, UnsupportedPhpVersionAllowedConfigInterface, CustomRulesetsAwareConfigInterface, RuleCustomizationPolicyAwareConfigInterface
 {
     /**
      * @var non-empty-string
@@ -80,6 +80,8 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     private bool $usingCache = true;
 
     private bool $isUnsupportedPhpVersionAllowed = false;
+
+    private ?RuleCustomizationPolicyInterface $ruleCustomizationPolicy = null;
 
     public function __construct(string $name = 'default')
     {
@@ -181,6 +183,11 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     public function getUnsupportedPhpVersionAllowed(): bool
     {
         return $this->isUnsupportedPhpVersionAllowed;
+    }
+
+    public function getRuleCustomizationPolicy(): ?RuleCustomizationPolicyInterface
+    {
+        return $this->ruleCustomizationPolicy;
     }
 
     public function registerCustomFixers(iterable $fixers): ConfigInterface
@@ -293,6 +300,13 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     public function setUnsupportedPhpVersionAllowed(bool $isUnsupportedPhpVersionAllowed): ConfigInterface
     {
         $this->isUnsupportedPhpVersionAllowed = $isUnsupportedPhpVersionAllowed;
+
+        return $this;
+    }
+
+    public function setRuleCustomizationPolicy(?RuleCustomizationPolicyInterface $ruleCustomizationPolicy): ConfigInterface
+    {
+        $this->ruleCustomizationPolicy = $ruleCustomizationPolicy;
 
         return $this;
     }

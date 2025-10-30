@@ -22,15 +22,19 @@ use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Fixer;
+use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\LintingResultInterface;
+use PhpCsFixer\RuleCustomizationPolicyInterface;
 use PhpCsFixer\Runner\Event\AnalysisStarted;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\ToolInfo;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
@@ -331,6 +335,184 @@ final class RunnerTest extends TestCase
                 \get_class($differ)
             )($differ),
         );
+    }
+
+    /**
+     * @covers \PhpCsFixer\Runner\Runner::fix
+     * @covers \PhpCsFixer\Runner\Runner::fixFile
+     */
+    public function testRuleCustomizationPolicy(): void
+    {
+        $differ = $this->createDifferDouble();
+        $path = __DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'fix';
+        $ruleCustomizationPolicy = new class implements RuleCustomizationPolicyInterface {
+            public Fixer\FixerInterface $fixer1;
+            public Fixer\FixerInterface $fixer2;
+            public Fixer\FixerInterface $fixer3;
+
+            public function customize(Fixer\FixerInterface $fixer, \SplFileInfo $file): ?Fixer\FixerInterface
+            {
+                if ($fixer === $this->fixer1) {
+                    return null;
+                }
+                if ($fixer === $this->fixer2) {
+                    return $this->fixer3;
+                }
+                Assert::fail('Unexpected fixer passed to filter.');
+            }
+        };
+        $ruleCustomizationPolicy->fixer1 = new class implements Fixer\FixerInterface {
+            public function isCandidate(Tokens $tokens): bool
+            {
+                Assert::fail(__FUNCTION__." shoudn't be called on this fixer");
+            }
+
+            public function isRisky(): bool
+            {
+                Assert::fail(__FUNCTION__." shoudn't be called on this fixer");
+            }
+
+            public function fix(\SplFileInfo $file, Tokens $tokens): void
+            {
+                Assert::fail(__FUNCTION__." shoudn't be called on this fixer");
+            }
+
+            public function getDefinition(): FixerDefinitionInterface
+            {
+                Assert::fail(__FUNCTION__." shoudn't be called on this fixer");
+            }
+
+            public function getName(): string
+            {
+                return 'fixer1';
+            }
+
+            public function getPriority(): int
+            {
+                return 0;
+            }
+
+            public function supports(\SplFileInfo $file): bool
+            {
+                Assert::fail(__FUNCTION__." shoudn't be called on this fixer");
+            }
+        };
+        $ruleCustomizationPolicy->fixer2 = new class implements Fixer\FixerInterface {
+            public function isCandidate(Tokens $tokens): bool
+            {
+                Assert::fail(__FUNCTION__." shoudn't be called on this fixer");
+            }
+
+            public function isRisky(): bool
+            {
+                Assert::fail(__FUNCTION__." shoudn't be called on this fixer");
+            }
+
+            public function fix(\SplFileInfo $file, Tokens $tokens): void
+            {
+                Assert::fail(__FUNCTION__." shoudn't be called on this fixer");
+            }
+
+            public function getDefinition(): FixerDefinitionInterface
+            {
+                Assert::fail(__FUNCTION__." shoudn't be called on this fixer");
+            }
+
+            public function getName(): string
+            {
+                return 'fixer2';
+            }
+
+            public function getPriority(): int
+            {
+                return 0;
+            }
+
+            public function supports(\SplFileInfo $file): bool
+            {
+                Assert::fail(__FUNCTION__." shoudn't be called on this fixer");
+            }
+        };
+        $ruleCustomizationPolicy->fixer3 = new class implements Fixer\FixerInterface {
+            public bool $fixInvoked = false;
+
+            public function isCandidate(Tokens $tokens): bool
+            {
+                return true;
+            }
+
+            public function isRisky(): bool
+            {
+                return false;
+            }
+
+            public function fix(\SplFileInfo $file, Tokens $tokens): void
+            {
+                $this->fixInvoked = true;
+            }
+
+            public function getDefinition(): FixerDefinitionInterface
+            {
+                Assert::fail(__FUNCTION__." shoudn't be called on this fixer");
+            }
+
+            public function getName(): string
+            {
+                return 'fixer3';
+            }
+
+            public function getPriority(): int
+            {
+                return 0;
+            }
+
+            public function supports(\SplFileInfo $file): bool
+            {
+                return true;
+            }
+        };
+
+        $errorsManager = new ErrorsManager();
+
+        $runner = new Runner(
+            // $fileIterator
+            Finder::create()->in($path),
+            // $fixers
+            [
+                $ruleCustomizationPolicy->fixer1,
+                $ruleCustomizationPolicy->fixer2,
+            ],
+            // $differ
+            $differ,
+            // $eventDispatcher
+            null,
+            // $errorsManager
+            $errorsManager,
+            // $linter
+            new Linter(),
+            // $isDryRun
+            true,
+            // $cacheManager
+            new NullCacheManager(),
+            // $directory
+            new Directory($path),
+            // $stopOnViolation
+            true,
+            // $parallelConfig
+            null,
+            // $input
+            null,
+            // $configFile
+            null,
+            // $ruleCustomizationPolicy
+            $ruleCustomizationPolicy
+        );
+
+        $fixInfo = $runner->fix();
+
+        self::assertTrue($errorsManager->isEmpty(), 'No errors should occur in the fix() method');
+        self::assertSame([], $fixInfo);
+        self::assertTrue($ruleCustomizationPolicy->fixer3->fixInvoked, 'The fix method on fixer3 should be invoked');
     }
 
     private function createDifferDouble(): DifferInterface
