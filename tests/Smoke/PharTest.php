@@ -65,8 +65,6 @@ final class PharTest extends AbstractSmokeTestCase
 
     public function testDescribe(): void
     {
-        $this->expectDeprecationOfDeprecatedRuleSets();
-
         $command = new DescribeCommand();
 
         $application = new Application();

@@ -55,8 +55,6 @@ final class DescribeCommandTest extends TestCase
      */
     public function testExecuteOutput(string $expected, bool $expectedIsRegEx, bool $decorated, FixerInterface $fixer): void
     {
-        $this->expectDeprecationOfDeprecatedRuleSets();
-
         if ($fixer instanceof DeprecatedFixerInterface) {
             $this->expectDeprecation(\sprintf('Rule "%s" is deprecated. Use "%s" instead.', $fixer->getName(), implode('", "', $fixer->getSuccessorsNames())));
         }
@@ -293,8 +291,6 @@ $/s',
 
     public function testExecuteStatusCode(): void
     {
-        $this->expectDeprecationOfDeprecatedRuleSets();
-
         $this->expectDeprecation('Rule "Foo/bar" is deprecated. Use "Foo/baz" instead.');
 
         self::assertSame(0, $this->execute('Foo/bar', false)->getStatusCode());
@@ -359,8 +355,6 @@ $/s',
 
     public function testFixerClassNameIsExposedWhenVerbose(): void
     {
-        $this->expectDeprecationOfDeprecatedRuleSets();
-
         $fixer = new class implements FixerInterface {
             public function isCandidate(Tokens $tokens): bool
             {
@@ -422,8 +416,6 @@ $/s',
 
     public function testCommandDescribesCustomFixer(): void
     {
-        $this->expectDeprecationOfDeprecatedRuleSets();
-
         $application = new Application();
         $application->add(new DescribeCommand());
 

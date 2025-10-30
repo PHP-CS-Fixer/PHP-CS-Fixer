@@ -42,8 +42,6 @@ final class DocumentationTest extends TestCase
      */
     public function testFixerDocumentationFileIsUpToDate(FixerInterface $fixer): void
     {
-        $this->expectDeprecationOfDeprecatedRuleSets();
-
         if ('ordered_imports' === $fixer->getName()) {
             $this->expectDeprecation('[ordered_imports] Option "sort_algorithm:length" is deprecated and will be removed in version 4.0.');
         }

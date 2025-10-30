@@ -51,8 +51,6 @@ final class DescribeCommandTest extends TestCase
             $this->expectDeprecation($message);
         }
 
-        $this->expectDeprecationOfDeprecatedRuleSets();
-
         if ('ordered_imports' === $fixerName) {
             $this->expectDeprecation('[ordered_imports] Option "sort_algorithm:length" is deprecated and will be removed in version 4.0.');
         }
