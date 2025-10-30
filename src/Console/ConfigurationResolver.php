@@ -670,7 +670,7 @@ final class ConfigurationResolver
             $rules = $this->parseRules();
             $this->validateRules($rules);
 
-            $this->ruleSet = new RuleSet($rules);
+            $this->ruleSet = new RuleSet($rules, $this->createFixerFactory());
         }
 
         return $this->ruleSet;
@@ -760,11 +760,12 @@ final class ConfigurationResolver
             $ruleSet[$key] = true;
         }
 
-        $ruleSet = new RuleSet($ruleSet);
+        $fixerFactory = $this->createFixerFactory();
+        $ruleSet = new RuleSet($ruleSet, $fixerFactory);
 
         $configuredFixers = array_keys($ruleSet->getRules());
 
-        $fixers = $this->createFixerFactory()->getFixers();
+        $fixers = $fixerFactory->getFixers();
 
         $availableFixers = array_map(static fn (FixerInterface $fixer): string => $fixer->getName(), $fixers);
 
