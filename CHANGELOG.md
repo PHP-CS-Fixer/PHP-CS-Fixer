@@ -3,6 +3,14 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.89.1
+---------------------
+
+* fix: ComposerJsonReader - fix handling asterisk (#9166)
+* docs: cookbook - update to mention custom fixer option (#9164)
+* DX: add links in `cookbook_fixers.rst` (#9162)
+* deps: upgrade `phpcompatibility/*` to alpha of next MAJOR instead of using dev branch, plus other minor upgrades (#9163)
+
 Changelog for v3.89.0
 ---------------------
 
@@ -139,7 +147,7 @@ Changelog for v3.87.0
 * chore: apply phpdoc_tag_no_named_arguments (#8969)
 * chore: configure phpdoc_tag_no_named_arguments (#8970)
 * chore: convert private methods to constants (#8976)
-* chore: deprecate `Annotation::getTagsWithTypes` in favor of `TAGS_WITH_TYPES` constant (#8977)
+* chore: deprecate `Annotation::getTagsWithTypes` in favour of `TAGS_WITH_TYPES` constant (#8977)
 * chore: exclude files in .gitattributes (#8960)
 * chore: extract token types for PHPStan (#8925)
 * chore: handle fixer options without allowed types defined (#8973)
@@ -500,7 +508,7 @@ Changelog for v3.76.0
 * feat: Introduce `StaticPrivateMethodFixer` (#4557)
 * feat: `BracesPositionFixer` - support property hooks in promoted properties (#8613)
 * feat: `ClassAttributesSeparationFixer` - add support for property hooks (#8610)
-* feat: `GlobalNamespaceImportFixer` - analyze and fix more annotations with types (#8593)
+* feat: `GlobalNamespaceImportFixer` - analyse and fix more annotations with types (#8593)
 * feat: `LowercaseKeywordsFixer` - support asymmetric visibility (#8607)
 * feat: `NoExtraBlankLinesFixer` - add comma to supported tokens (#8655)
 * feat: `NoSuperfluousPhpdocTagsFixer` - support asymmetric visibility (#8700)
@@ -1176,7 +1184,7 @@ Changelog for v3.50.0
 * fix: Proper build target for local Docker Compose (#7834)
 * fix: union PHPDoc support in `fully_qualified_strict_types` fixer (#7719)
 * fix: `ExecutorWithoutErrorHandler` - remove invalid PHP 7.4 type (#7845)
-* fix: `fully_qualified_strict_types` must honor template/local type identifiers (#7724)
+* fix: `fully_qualified_strict_types` must honour template/local type identifiers (#7724)
 * fix: `MethodArgumentSpaceFixer` - do not break heredoc/nowdoc (#7828)
 * fix: `NumericLiteralSeparatorFixer` - do not change `float` to `int` when there is nothing after the dot (#7805)
 * fix: `PhpUnitStrictFixer` - do not crash on property having the name of method to fix (#7804)
@@ -1269,7 +1277,7 @@ Changelog for v3.47.0
 * fix: `ClassReferenceNameCasingFixer` capitalizes the property name after the nullsafe operator (#7696)
 * fix: `fully_qualified_strict_types` with `leading_backslash_in_global_namespace` enabled - handle reserved types in phpDoc (#7648)
 * fix: `NoSpaceAroundDoubleColonFixer` must run before `MethodChainingIndentationFixer` (#7723)
-* fix: `no_superfluous_phpdoc_tags` must honor multiline docs (#7697)
+* fix: `no_superfluous_phpdoc_tags` must honour multiline docs (#7697)
 * fix: `numeric_literal_separator` - Handle zero-leading floats properly (#7737)
 * refactor: increase performance by ~7% thanks to `Tokens::block*Cache` hit increased by ~12% (#6176)
 * refactor: Tokens - fast check for non-block in 'detectBlockType', evaluate definitions only once in 'getBlockEdgeDefinitions' (#7655)
@@ -2140,7 +2148,7 @@ Changelog for v3.9.6
 --------------------
 
 * bug: BinaryOperatorSpacesFixer: Solve issues with scoped arrow and equal alignments (#6515)
-* bug: Fix 3 weird behavior about BinaryOperatorSpacesFixer (#6450)
+* bug: Fix 3 weird behaviour about BinaryOperatorSpacesFixer (#6450)
 * docs: Add intersection type to types_spaces rule description (#6479)
 * DX: no need to use forked diff anymore (#6526)
 * DX: remove unused FixerFileProcessedEvent::STATUS_UNKNOWN (#6516)
