@@ -310,6 +310,18 @@ final class FixerDocumentGenerator
      */
     public static function getSetsOfRule(string $ruleName): array
     {
+        static $ruleSetCache = null;
+
+        if (null === $ruleSetCache) {
+            $ruleSetCache = array_combine(
+                RuleSets::getSetDefinitionNames(),
+                array_map(
+                    static fn (string $name): RuleSet => new RuleSet([$name => true]),
+                    RuleSets::getSetDefinitionNames()
+                )
+            );
+        }
+
         $ruleSetConfigs = [];
 
         foreach (RuleSets::getSetDefinitionNames() as $set) {
