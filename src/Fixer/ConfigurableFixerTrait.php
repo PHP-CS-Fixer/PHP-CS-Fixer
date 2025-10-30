@@ -31,6 +31,8 @@ use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
  * @template TFixerInputConfig of array<string, mixed>
  * @template TFixerComputedConfig of array<string, mixed>
  *
+ * @phpstan-require-implements ConfigurableFixerInterface<TFixerInputConfig, TFixerComputedConfig>
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
