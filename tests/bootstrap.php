@@ -12,6 +12,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use PhpCsFixer\ComposerJsonReader;
 use PhpCsFixer\Documentation\FixerDocumentGenerator;
 
 require_once dirname(__DIR__).'/vendor/autoload.php';
@@ -23,3 +24,6 @@ require_once dirname(__DIR__).'/vendor/autoload.php';
 //
 // The used argument is a random rule - it doesn't matter which one we call.
 FixerDocumentGenerator::getSetsOfRule('ordered_imports'); // @phpstan-ignore-line
+
+// drop the `ComposerJsonReader` instance created while populating `FixerDocumentGenerator` cache
+Closure::bind(static function (): void { ComposerJsonReader::$singleton = null; }, null, ComposerJsonReader::class)();
