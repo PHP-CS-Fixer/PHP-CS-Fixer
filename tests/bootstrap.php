@@ -22,4 +22,4 @@ require_once dirname(__DIR__).'/vendor/autoload.php';
 // so it will happen on a random test.
 //
 // The used argument is a random rule - it doesn't matter which one we call.
-FixerDocumentGenerator::getSetsOfRule('ordered_imports');
+FixerDocumentGenerator::getSetsOfRule('ordered_imports'); // @phpstan-ignore-line
