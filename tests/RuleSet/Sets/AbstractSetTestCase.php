@@ -44,7 +44,6 @@ abstract class AbstractSetTestCase extends TestCase
         self::assertSanityString($setName);
         self::assertSanityString($setDescription);
         self::assertStringEndsWith('.', $setDescription, \sprintf('Ruleset description of "%s" must end with ".", got "%s".', $setName, $setDescription));
-        self::assertRules($setRules, $factory, $setName);
 
         if (Preg::match('/(\d+)(\d)Migration/', \get_class($set), $matches)) {
             self::assertStringEndsWith(
@@ -53,6 +52,8 @@ abstract class AbstractSetTestCase extends TestCase
                 \sprintf('Set %s has incorrect description: "%s".', $setName, $setDescription)
             );
         }
+
+        self::assertRules($setRules, $factory, $setName);
 
         try {
             $factory->useRuleSet(new RuleSet($set->getRules()));
