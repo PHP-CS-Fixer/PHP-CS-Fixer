@@ -32,6 +32,7 @@ use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\LintingResultInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\RuleCustomizationPolicyInterface;
 use PhpCsFixer\Runner\Event\AnalysisStarted;
 use PhpCsFixer\Runner\Event\FileProcessed;
 use PhpCsFixer\Runner\Parallel\ParallelAction;
@@ -102,6 +103,8 @@ final class Runner
 
     private ?string $configFile;
 
+    private ?RuleCustomizationPolicyInterface $ruleCustomizationPolicy;
+
     /**
      * @param null|\Traversable<array-key, \SplFileInfo> $fileIterator
      * @param list<FixerInterface>                       $fixers
@@ -120,7 +123,8 @@ final class Runner
         // @TODO Make these arguments required in 4.0
         ?ParallelConfig $parallelConfig = null,
         ?InputInterface $input = null,
-        ?string $configFile = null
+        ?string $configFile = null,
+        ?RuleCustomizationPolicyInterface $ruleCustomizationPolicy = null
     ) {
         // Required only for main process (calculating workers count)
         $this->fileCount = null !== $fileIterator ? \count(iterator_to_array($fileIterator)) : 0;
@@ -138,6 +142,7 @@ final class Runner
         $this->parallelConfig = $parallelConfig ?? ParallelConfigFactory::sequential();
         $this->input = $input;
         $this->configFile = $configFile;
+        $this->ruleCustomizationPolicy = $ruleCustomizationPolicy;
     }
 
     /**
@@ -460,6 +465,12 @@ final class Runner
 
         try {
             foreach ($this->fixers as $fixer) {
+                if (null !== $this->ruleCustomizationPolicy) {
+                    $fixer = $this->ruleCustomizationPolicy->customize($fixer, $file);
+                    if (null === $fixer) {
+                        continue;
+                    }
+                }
                 // for custom fixers we don't know is it safe to run `->fix()` without checking `->supports()` and `->isCandidate()`,
                 // thus we need to check it and conditionally skip fixing
                 if (
