@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Runner\Parallel;
 
-use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Runner\RunnerConfig;
 use React\EventLoop\LoopInterface;
 use Symfony\Component\Console\Input\InputInterface;
