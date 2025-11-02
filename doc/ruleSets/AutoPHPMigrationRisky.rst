@@ -2,7 +2,7 @@
 Rule set ``@autoPHPMigration:risky``
 ====================================
 
-Migration rules to improve code towards the minimum PHP supported by your project (taken from "composer.json" file).
+Migration rules to improve code towards the minimum ``PHP`` supported by your project (taken from ``composer.json`` file).
 
 Warnings
 --------

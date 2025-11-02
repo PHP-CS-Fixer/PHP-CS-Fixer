@@ -2,7 +2,7 @@
 Rule set ``@PhpCsFixer``
 ========================
 
-Rules recommended by PHP CS Fixer team, highly opinionated. Extends `@PER-CS` and `@Symfony`.
+Rules recommended by ``PHP CS Fixer`` team, highly opinionated. Extends ``@PER-CS`` and ``@Symfony``.
 
 Rules
 -----

@@ -2,7 +2,7 @@
 Rule set ``@auto``
 ==================
 
-Default rule set. Applies newest PER-CS and optimizations for PHP, based on project's "composer.json" file.
+Default rule set. Applies newest ``PER-CS`` and optimizations for ``PHP``, based on project's ``composer.json`` file.
 
 Warning
 -------

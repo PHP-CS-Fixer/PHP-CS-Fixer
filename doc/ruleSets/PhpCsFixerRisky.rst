@@ -2,7 +2,7 @@
 Rule set ``@PhpCsFixer:risky``
 ==============================
 
-Rules recommended by PHP CS Fixer team, highly opinionated. Extends `@PER-CS:risky` and `@Symfony:risky`.
+Rules recommended by ``PHP CS Fixer`` team, highly opinionated. Extends ``@PER-CS:risky`` and ``@Symfony:risky``.
 
 Warning
 -------

@@ -2,7 +2,7 @@
 Rule set ``@autoPHPUnitMigration:risky``
 ========================================
 
-Migration rules to improve test code towards the minimum PHPUnit supported by your project (taken from "composer.json" file).
+Migration rules to improve test code towards the minimum ``PHPUnit`` supported by your project (taken from ``composer.json`` file).
 
 Warnings
 --------

@@ -2,7 +2,7 @@
 Rule set ``@auto:risky``
 ========================
 
-Default (risky) rule set. Applies newest PER-CS and optimizations for PHP and PHPUnit, based on project's "composer.json" file.
+Default (risky) rule set. Applies newest ``PER-CS`` and optimizations for ``PHP`` and ``PHPUnit``, based on project's ``composer.json`` file.
 
 Warnings
 --------

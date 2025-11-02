@@ -65,6 +65,6 @@ final class PhpCsFixerRiskySet extends AbstractRuleSetDefinition
 
     public function getDescription(): string
     {
-        return 'Rules recommended by PHP CS Fixer team, highly opinionated. Extends `@PER-CS:risky` and `@Symfony:risky`.';
+        return 'Rules recommended by ``PHP CS Fixer`` team, highly opinionated. Extends ``@PER-CS:risky`` and ``@Symfony:risky``.';
     }
 }

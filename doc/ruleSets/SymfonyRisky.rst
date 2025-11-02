@@ -2,7 +2,7 @@
 Rule set ``@Symfony:risky``
 ===========================
 
-Rules that follow the official `Symfony Coding Standards <https://symfony.com/doc/current/contributing/code/standards.html>`_. Extends `@PER-CS:risky`.
+Rules that follow the official `Symfony Coding Standards <https://symfony.com/doc/current/contributing/code/standards.html>`_. Extends ``@PER-CS:risky``.
 
 Warning
 -------

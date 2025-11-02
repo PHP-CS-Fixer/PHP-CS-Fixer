@@ -41,7 +41,7 @@ final class AutoPHPMigrationRiskySet extends AbstractRuleSetDefinition implement
 
     public function getDescription(): string
     {
-        return 'Migration rules to improve code towards the minimum PHP supported by your project (taken from "composer.json" file).';
+        return 'Migration rules to improve code towards the minimum ``PHP`` supported by your project (taken from ``composer.json`` file).';
     }
 
     public function getRulesCandidates(): array
