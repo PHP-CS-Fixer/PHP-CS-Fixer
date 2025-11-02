@@ -26,4 +26,10 @@ require_once dirname(__DIR__).'/vendor/autoload.php';
 FixerDocumentGenerator::getSetsOfRule('ordered_imports'); // @phpstan-ignore-line
 
 // drop the `ComposerJsonReader` instance created while populating `FixerDocumentGenerator` cache
-Closure::bind(static function (): void { ComposerJsonReader::$singleton = null; }, null, ComposerJsonReader::class)();
+Closure::bind(
+    static function (): void {
+        ComposerJsonReader::$singleton = null; // @phpstan-ignore staticProperty.internalClass
+    },
+    null,
+    ComposerJsonReader::class, // @phpstan-ignore classConstant.internalClass
+)();
