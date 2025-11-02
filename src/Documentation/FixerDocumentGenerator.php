@@ -324,9 +324,7 @@ final class FixerDocumentGenerator
 
         $ruleSetConfigs = [];
 
-        foreach (RuleSets::getSetDefinitionNames() as $set) {
-            $ruleSet = new RuleSet([$set => true]);
-
+        foreach ($ruleSetCache as $set => $ruleSet) {
             if ($ruleSet->hasRule($ruleName)) {
                 $ruleSetConfigs[$set] = $ruleSet->getRuleConfiguration($ruleName);
             }
