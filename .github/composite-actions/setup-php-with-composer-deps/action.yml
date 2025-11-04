@@ -54,9 +54,9 @@ runs:
       run: composer config extra.symfony.require ${{ inputs.composer-flex-with-symfony-version }}
 
     - name: Configure Symfony ^8
-      if: inputs.composer-flex-with-symfony-version == '^8@dev'
+      if: inputs.composer-flex-with-symfony-version == '^8@beta'
       shell: bash
-      run: composer config minimum-stability dev
+      run: composer config minimum-stability beta
     - name: Install Composer deps
       uses: ./.github/composite-actions/install-composer-deps
       with:
