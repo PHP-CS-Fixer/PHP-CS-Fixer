@@ -3,6 +3,16 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.89.2
+---------------------
+
+* fix: `NoUnneededBracesFixer` - do not crash on multiline group import (#9160)
+* chore: Standardize repository to use British English spelling (#9154)
+* CI: ensure enforced Symfony version is installed (#9174)
+* deps: bump php-coveralls to v2.9 (#9173)
+* refactor: FixerDocumentGenerator::getSetsOfRule - cache resolved sets (#9170)
+* refactor: FixerDocumentGenerator::getSetsOfRule - use cache (#9171)
+
 Changelog for v3.89.1
 ---------------------
 
