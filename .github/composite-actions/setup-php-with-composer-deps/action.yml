@@ -18,6 +18,9 @@ inputs:
   composer-flags:
     description: Composer flags
     required: false
+  composer-minimum-stability:
+    description: Composer minimum-stability
+    required: false
   composer-flex-with-symfony-version:
     description: Sf version to determine with Flex
     required: false
@@ -53,10 +56,10 @@ runs:
       shell: bash
       run: composer config extra.symfony.require ${{ inputs.composer-flex-with-symfony-version }}
 
-    - name: Configure Symfony ^8
-      if: inputs.composer-flex-with-symfony-version == '^8@beta'
+    - name: Configure Composer minimum-stability
+      if: inputs.composer-minimum-stability
       shell: bash
-      run: composer config minimum-stability beta
+      run: composer config minimum-stability ${{ inputs.composer-minimum-stability }}
 
     - name: Install Composer deps
       uses: ./.github/composite-actions/install-composer-deps
