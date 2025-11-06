@@ -57,7 +57,13 @@ runs:
       if: inputs.composer-flex-with-symfony-version == '^8@beta'
       shell: bash
       run: composer config minimum-stability beta
+
     - name: Install Composer deps
       uses: ./.github/composite-actions/install-composer-deps
       with:
         flags: ${{ inputs.composer-flags }}
+
+    - name: Validate enforced Symfony version is installed # using symfony/console as a representative package
+      if: inputs.composer-flex-with-symfony-version
+      shell: bash
+      run: composer show symfony/console ${{ inputs.composer-flex-with-symfony-version }}
