@@ -40,7 +40,13 @@ final class Utils
      */
     public static function camelCaseToUnderscore(string $string): string
     {
-        return mb_strtolower(Preg::replace('/(?<!^)(?<!_)((?=[\p{Lu}][^\p{Lu}])|(?<![\p{Lu}])(?=[\p{Lu}]))/', '_', $string));
+        return mb_strtolower(
+            Preg::replace(
+                '/(?<!^)(?<!_)((?=[\p{Lu}][^\p{Lu}])|(?<![\p{Lu}])(?=[\p{Lu}]))/',
+                '_',
+                $string
+            )
+        );
     }
 
     /**

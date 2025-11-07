@@ -20,7 +20,7 @@ use PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer;
 /**
  * Analyzer of Tokens collection.
  *
- * Its role is to provide the ability to analyze collection.
+ * Its role is to provide the ability to analyse collection.
  *
  * @internal
  *

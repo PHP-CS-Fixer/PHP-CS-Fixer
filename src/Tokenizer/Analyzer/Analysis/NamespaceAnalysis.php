@@ -34,22 +34,22 @@ final class NamespaceAnalysis
     private string $shortName;
 
     /**
-     * The start index of the namespace declaration in the analyzed Tokens.
+     * The start index of the namespace declaration in the analysed Tokens.
      */
     private int $startIndex;
 
     /**
-     * The end index of the namespace declaration in the analyzed Tokens.
+     * The end index of the namespace declaration in the analysed Tokens.
      */
     private int $endIndex;
 
     /**
-     * The start index of the scope of the namespace in the analyzed Tokens.
+     * The start index of the scope of the namespace in the analysed Tokens.
      */
     private int $scopeStartIndex;
 
     /**
-     * The end index of the scope of the namespace in the analyzed Tokens.
+     * The end index of the scope of the namespace in the analysed Tokens.
      */
     private int $scopeEndIndex;
 

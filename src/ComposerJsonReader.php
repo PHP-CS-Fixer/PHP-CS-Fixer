@@ -34,15 +34,15 @@ final class ComposerJsonReader
 
     private ?string $phpUnit = null;
 
+    private static ?self $singleton = null;
+
     public static function createSingleton(): self
     {
-        static $instance = null;
-
-        if (!$instance) {
-            $instance = new self();
+        if (null === self::$singleton) {
+            self::$singleton = new self();
         }
 
-        return $instance;
+        return self::$singleton;
     }
 
     public function getPhp(): ?string

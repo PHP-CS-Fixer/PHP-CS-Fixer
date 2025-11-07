@@ -202,7 +202,7 @@ Class Notation
   There should be no empty lines after class opening brace.
 - `no_null_property_initialization <./class_notation/no_null_property_initialization.rst>`_
 
-  Properties MUST not be explicitly initialized with ``null`` except when they have a type declaration (PHP 7.4).
+  Properties MUST not be explicitly initialised with ``null`` except when they have a type declaration (PHP 7.4).
 - `no_php4_constructor <./class_notation/no_php4_constructor.rst>`_ *(risky)*
 
   Convert PHP4-style constructors to ``__construct``.
