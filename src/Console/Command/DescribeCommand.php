@@ -68,6 +68,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 #[AsCommand(name: 'describe', description: 'Describe rule / ruleset.')]
 final class DescribeCommand extends Command
 {
+    private const SET_ALIAS_TO_DESCRIBE_CONFIG = '@';
+    private const SET_ALIAS_TO_DESCRIBE_RULES_WITHOUT_SET = '@-';
+
     /** @TODO PHP 8.0 - remove the property */
     protected static $defaultName = 'describe';
 
@@ -143,7 +146,7 @@ final class DescribeCommand extends Command
                 'yes',
             );
             if ($shallDescribeConfigInUse) {
-                $name = '@'; // '@' means "describe config file"
+                $name = self::SET_ALIAS_TO_DESCRIBE_CONFIG;
             } else {
                 $name = $io->choice(
                     'Please select rule / set to describe',
@@ -420,12 +423,14 @@ final class DescribeCommand extends Command
 
     private function describeSet(InputInterface $input, OutputInterface $output, string $name, ConfigurationResolver $resolver): void
     {
-        if ('@' !== $name && !\in_array($name, $this->getSetNames(), true)) {
+        if (
+            !\in_array($name, [self::SET_ALIAS_TO_DESCRIBE_CONFIG, self::SET_ALIAS_TO_DESCRIBE_RULES_WITHOUT_SET], true)
+            && !\in_array($name, $this->getSetNames(), true)) {
             throw new DescribeNameNotFoundException($name, 'set');
         }
 
-        if ('@' === $name) {
-            $defaultRuleSetDefinition = $this->createRuleSetDefinition(
+        if (self::SET_ALIAS_TO_DESCRIBE_CONFIG === $name) {
+            $aliasedRuleSetDefinition = $this->createRuleSetDefinition(
                 null,
                 [],
                 [
@@ -435,10 +440,36 @@ final class DescribeCommand extends Command
                     'isRisky' => $resolver->getRiskyAllowed(),
                 ]
             );
+        } elseif (self::SET_ALIAS_TO_DESCRIBE_RULES_WITHOUT_SET === $name) {
+            $rulesWithoutSet = array_filter(
+                $this->getFixers(),
+                static fn (string $name): bool => [] === FixerDocumentGenerator::getSetsOfRule($name),
+                \ARRAY_FILTER_USE_KEY
+            );
+
+            $aliasedRuleSetDefinition = $this->createRuleSetDefinition(
+                null,
+                [],
+                [
+                    'getDescription' => 'Rules that are not part of any set.',
+                    'getName' => '@- - rules without set',
+                    'getRules' => array_combine(
+                        array_map(
+                            static fn (FixerInterface $fixer): string => $fixer->getName(),
+                            $rulesWithoutSet,
+                        ),
+                        array_fill(0, \count($rulesWithoutSet), true),
+                    ),
+                    'isRisky' => array_any(
+                        $rulesWithoutSet,
+                        static fn (FixerInterface $fixer): bool => $fixer->isRisky(),
+                    ),
+                ]
+            );
         }
 
         $ruleSetDefinitions = RuleSets::getSetDefinitions();
-        $ruleSetDefinition = $defaultRuleSetDefinition ?? $ruleSetDefinitions[$name];
+        $ruleSetDefinition = $aliasedRuleSetDefinition ?? $ruleSetDefinitions[$name];
         $fixers = $this->getFixers();
 
         if (true === $input->getOption('expand')) {
