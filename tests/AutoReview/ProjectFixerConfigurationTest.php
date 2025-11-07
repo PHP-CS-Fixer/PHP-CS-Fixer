@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\AutoReview;
 use PhpCsFixer\Config;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Fixer\InternalFixerInterface;
+use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
 
@@ -32,6 +33,21 @@ use PhpCsFixer\ToolInfo;
  */
 final class ProjectFixerConfigurationTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        // Reset the global state of RuleSets::$customRuleSetDefinitions that was modified
+        // when using `.php-cs-fixer.dist.php`, which registers custom rules/sets.
+        //
+        // @TODO: ideally, we don't have the global state but inject the state instead
+        \Closure::bind(
+            static fn () => RuleSets::$customRuleSetDefinitions = [],
+            null,
+            RuleSets::class
+        )();
+    }
+
     public function testCreate(): void
     {
         $config = $this->loadConfig();
@@ -59,6 +75,6 @@ final class ProjectFixerConfigurationTest extends TestCase
 
     private function loadConfig(): Config
     {
-        return require __DIR__.'/../../.php-cs-fixer.dist.php';
+        return require __DIR__.'/../Fixtures/.php-cs-fixer.one-time-proxy.php';
     }
 }

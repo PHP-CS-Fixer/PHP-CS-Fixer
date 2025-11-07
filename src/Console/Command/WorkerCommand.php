@@ -200,7 +200,7 @@ final class WorkerCommand extends Command
         $passedConfig = $input->getOption('config');
         $passedRules = $input->getOption('rules');
 
-        if (null !== $passedConfig && null !== $passedRules) {
+        if (null !== $passedConfig && ConfigurationResolver::IGNORE_CONFIG_FILE !== $passedConfig && null !== $passedRules) {
             throw new \RuntimeException('Passing both `--config` and `--rules` options is not allowed');
         }
 
