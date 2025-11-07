@@ -18,6 +18,7 @@ use Keradus\CliExecutor\CliResult;
 use Keradus\CliExecutor\CommandExecutor;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\DescribeCommand;
+use PhpCsFixer\Console\ConfigurationResolver;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -74,17 +75,19 @@ final class PharTest extends AbstractSmokeTestCase
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => 'header_comment',
+            '--config' => ConfigurationResolver::IGNORE_CONFIG_FILE,
         ]);
 
         self::assertSame(
             $commandTester->getDisplay(),
-            self::executePharCommand('describe header_comment')->getOutput()
+            self::executePharCommand('describe header_comment --config=-')->getOutput()
         );
     }
 
     public function testFixSequential(): void
     {
-        $command = self::executePharCommand('fix src/Config.php -vvv --dry-run --sequential --diff --using-cache=no 2>&1');
+        // `--congig=-`, as sequential is default in current MAJOR
+        $command = self::executePharCommand('fix src/Config.php -vvv --dry-run --diff --using-cache=no --config=- --sequential 2>&1');
 
         self::assertSame(0, $command->getCode());
         self::assertMatchesRegularExpression(
@@ -95,7 +98,7 @@ final class PharTest extends AbstractSmokeTestCase
 
     public function testFixParallel(): void
     {
-        $command = self::executePharCommand('fix src/Config.php -vvv --dry-run --diff --using-cache=no --config=.php-cs-fixer.dist.php 2>&1');
+        $command = self::executePharCommand('fix src/Config.php -vvv --dry-run --diff --using-cache=no --config='.__DIR__.'/../Fixtures/.php-cs-fixer.parallel.php'.' 2>&1');
 
         self::assertSame(0, $command->getCode());
         self::assertMatchesRegularExpression(
@@ -119,7 +122,7 @@ final class PharTest extends AbstractSmokeTestCase
     {
         try {
             $json = self::executePharCommand(\sprintf(
-                'fix %s --dry-run --sequential --format=json --rules=\'%s\' --using-cache=%s',
+                'fix %s --dry-run --sequential --format=json --rules=\'%s\' --using-cache=%s --config=-',
                 __FILE__,
                 json_encode(['concat_space' => ['spacing' => 'one']], \JSON_THROW_ON_ERROR),
                 $usingCache,
