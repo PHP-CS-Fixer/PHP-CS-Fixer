@@ -310,6 +310,8 @@ $/s',
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => 'Foo/bar',
+
+            '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php',
         ]);
     }
 
@@ -327,6 +329,7 @@ $/s',
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => '@NoSuchSet',
+            '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php',
         ]);
     }
 
@@ -343,6 +346,7 @@ $/s',
         $this->expectExceptionMessage('Not enough arguments (missing: "name") when not running interactively.');
         $commandTester->execute([
             'command' => $command->getName(),
+            '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php',
         ], ['interactive' => false]);
     }
 
@@ -405,6 +409,7 @@ $/s',
             [
                 'command' => $command->getName(),
                 'name' => 'Foo/bar_baz',
+                '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php',
             ],
             [
                 'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
@@ -607,6 +612,7 @@ Fixing examples:
             [
                 'command' => $command->getName(),
                 'name' => $name,
+                '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php',
             ],
             [
                 'decorated' => $decorated,

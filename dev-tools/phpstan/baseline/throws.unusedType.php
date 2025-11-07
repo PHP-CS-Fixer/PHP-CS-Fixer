@@ -47,7 +47,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/StdinFileInfo.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Method PhpCsFixer\\Fixer\\ConfigurableFixerInterface@anonymous/tests/Console/Command/DescribeCommandTest.php:505::configure() has PhpCsFixer\\ConfigurationException\\InvalidFixerConfigurationException in PHPDoc @throws tag but it\'s not thrown.',
+    'rawMessage' => 'Method PhpCsFixer\\Fixer\\ConfigurableFixerInterface@anonymous/tests/Console/Command/DescribeCommandTest.php:510::configure() has PhpCsFixer\\ConfigurationException\\InvalidFixerConfigurationException in PHPDoc @throws tag but it\'s not thrown.',
     'count' => 1,
     'path' => __DIR__ . '/../../../tests/Console/Command/DescribeCommandTest.php',
 ];

@@ -753,26 +753,29 @@ final class ConfigurationResolverTest extends TestCase
 
         yield [
             [
-                'config' => $root.'/.php-cs-fixer.dist.php',
+                'config' => __DIR__.'/../Fixtures/.php-cs-fixer.vanilla.php',
             ],
             false,
         ];
 
         yield [
             [
-                'config' => $root.'/.php-cs-fixer.dist.php',
+                'config' => __DIR__.'/../Fixtures/.php-cs-fixer.vanilla.php',
                 'path' => [$root.'/src'],
             ],
             true,
         ];
 
         yield [
-            [],
+            [
+                'config' => ConfigurationResolver::IGNORE_CONFIG_FILE,
+            ],
             false,
         ];
 
         yield [
             [
+                'config' => ConfigurationResolver::IGNORE_CONFIG_FILE,
                 'path' => [$root.'/src'],
             ],
             false,
@@ -780,7 +783,8 @@ final class ConfigurationResolverTest extends TestCase
 
         yield [
             [
-                'config' => $root.'/.php-cs-fixer.dist.php',
+                'config' => __DIR__.'/../Fixtures/.php-cs-fixer.vanilla.php',
+
                 'path' => [$root.'/src'],
                 'path-mode' => ConfigurationResolver::PATH_MODE_INTERSECTION,
             ],
