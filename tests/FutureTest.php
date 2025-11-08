@@ -34,6 +34,8 @@ final class FutureTest extends TestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->originalValueOfFutureMode = getenv('PHP_CS_FIXER_FUTURE_MODE');
     }
 

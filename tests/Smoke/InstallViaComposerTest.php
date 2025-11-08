@@ -96,6 +96,8 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->fs = new Filesystem();
     }
 

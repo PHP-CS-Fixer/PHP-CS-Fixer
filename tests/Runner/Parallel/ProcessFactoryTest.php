@@ -45,6 +45,8 @@ final class ProcessFactoryTest extends TestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         $fixCommand = new FixCommand(new ToolInfo());
         $application = new Application();
         $application->addCommands([$fixCommand]);

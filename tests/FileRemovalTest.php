@@ -44,6 +44,8 @@ final class FileRemovalTest extends TestCase
             @unlink(sys_get_temp_dir().'/cs_fixer_foo.php');
             @unlink(sys_get_temp_dir().'/cs_fixer_bar.php');
         }
+
+        parent::tearDownAfterClass();
     }
 
     public function testCleanRemovesObservedFiles(): void
