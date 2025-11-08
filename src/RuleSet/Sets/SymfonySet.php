@@ -260,6 +260,6 @@ final class SymfonySet extends AbstractRuleSetDefinition
 
     public function getDescription(): string
     {
-        return 'Rules that follow the official `Symfony Coding Standards <https://symfony.com/doc/current/contributing/code/standards.html>`_.';
+        return 'Rules that follow the official `Symfony Coding Standards <https://symfony.com/doc/current/contributing/code/standards.html>`_. Extends ``@PER-CS``.';
     }
 }

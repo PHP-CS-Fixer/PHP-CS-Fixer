@@ -49,7 +49,7 @@ final class AutoSet extends AbstractRuleSetDefinition implements AutomaticRuleSe
 
     public function getDescription(): string
     {
-        return 'Default rule set. Applies newest PER-CS and optimizations for PHP, based on project\'s "composer.json" file.';
+        return 'Default rule set. Applies newest ``PER-CS`` and optimizations for ``PHP``, based on project\'s ``composer.json`` file.';
     }
 
     public function getRulesCandidates(): array
