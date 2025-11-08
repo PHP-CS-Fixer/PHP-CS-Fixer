@@ -34,15 +34,23 @@ abstract class TestCase extends BaseTestCase
     /** @var array<int, string> */
     private array $actualDeprecations = [];
 
-    protected function tearDown(): void
+    protected function assertPostConditions(): void
     {
         if (null !== $this->previouslyDefinedErrorHandler) {
             $this->actualDeprecations = array_unique($this->actualDeprecations);
             sort($this->actualDeprecations);
             $this->expectedDeprecations = array_unique($this->expectedDeprecations);
             sort($this->expectedDeprecations);
-            self::assertSame($this->expectedDeprecations, $this->actualDeprecations);
 
+            self::assertSame($this->expectedDeprecations, $this->actualDeprecations);
+        }
+
+        parent::assertPostConditions();
+    }
+
+    protected function tearDown(): void
+    {
+        if (null !== $this->previouslyDefinedErrorHandler) {
             restore_error_handler();
         }
 
