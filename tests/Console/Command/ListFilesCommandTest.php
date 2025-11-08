@@ -35,12 +35,16 @@ final class ListFilesCommandTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
+        parent::setUpBeforeClass();
+
         self::$filesystem = new Filesystem();
     }
 
     public static function tearDownAfterClass(): void
     {
         self::$filesystem = null;
+
+        parent::tearDownAfterClass();
     }
 
     public function testListWithConfig(): void
