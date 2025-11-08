@@ -57,11 +57,10 @@ final class PERCSRiskySet extends AbstractRuleSetDefinition
                     && $set->getName() !== $currentSet->getName()
                     && str_starts_with($set->getName(), str_replace(':risky', '', $currentSet->getName()))
             );
-            $setNames = array_keys($sets);
-            sort($setNames);
 
-            $newestSet = array_pop($setNames);
-            $set = $sets[$newestSet];
+            ksort($sets, \SORT_NATURAL);
+
+            $set = array_pop($sets);
         }
 
         return $set;
