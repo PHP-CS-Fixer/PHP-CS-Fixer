@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Check spelling
-        uses: crate-ci/typos@v1.36.2
+        uses: crate-ci/typos@v1.39.0
         with:
           config: ./dev-tools/typos.toml
 
@@ -39,7 +39,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
-      # We need to fetch base branch because `actions/checkout` only initializes empty repo and fetches PR's meta-branch
+      # We need to fetch base branch because `actions/checkout` only initialises empty repo and fetches PR's meta-branch
       # which leads to `fatal: ambiguous argument 'origin/...': unknown revision or path not in the working tree.`,
       # because of that `CHANGED_PHP_FILES` is not set, and tools based on diff between branches (like Mess Detector) don't work.
       - name: Fetch base branch
@@ -87,11 +87,8 @@ jobs:
       - name: Check - PHP compatibility
         run: composer php-compatibility
 
-      - name: Check - composer-unused
-        run: ./dev-tools/vendor/bin/composer-unused --no-progress --excludePackage=composer/xdebug-handler
-
-      - name: Check - composer-require-checker
-        run: ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file .composer-require-checker.json
+      - name: Analyse Composer dependencies
+        run: ./dev-tools/vendor/bin/composer-dependency-analyser
 
       - name: Check - composer normalize
         run: |
@@ -101,6 +98,9 @@ jobs:
 
       - name: Check - shell scripts
         run: ./dev-tools/check_shell_scripts.sh
+
+      - name: Check - no American English
+        run: ./dev-tools/check_no_american_english.sh
 
       - name: Find changed files (for pull request)
         if: ${{ github.event_name == 'pull_request' }}

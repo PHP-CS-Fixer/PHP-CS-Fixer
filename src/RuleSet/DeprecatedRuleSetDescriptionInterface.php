@@ -14,17 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet;
 
-/**
- * @author Greg Korba <greg@codito.dev>
- *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+/*
+ * @deprecated
+ * @TODO v4 remove me @MARKER_deprecated_DeprecatedRuleSetDescriptionInterface
  */
-interface DeprecatedRuleSetDescriptionInterface extends RuleSetDescriptionInterface
-{
-    /**
-     * Returns names of rule sets to use instead, if any.
-     *
-     * @return list<string>
-     */
-    public function getSuccessorsNames(): array;
-}
+class_alias(
+    DeprecatedRuleSetDefinitionInterface::class,
+    DeprecatedRuleSetDescriptionInterface::class // @phpstan-ignore class.notFound
+);

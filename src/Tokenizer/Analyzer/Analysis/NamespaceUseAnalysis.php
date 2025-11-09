@@ -57,12 +57,12 @@ final class NamespaceUseAnalysis
     private bool $isAliased;
 
     /**
-     * The start index of the namespace declaration in the analyzed Tokens.
+     * The start index of the namespace declaration in the analysed Tokens.
      */
     private int $startIndex;
 
     /**
-     * The end index of the namespace declaration in the analyzed Tokens.
+     * The end index of the namespace declaration in the analysed Tokens.
      */
     private int $endIndex;
 

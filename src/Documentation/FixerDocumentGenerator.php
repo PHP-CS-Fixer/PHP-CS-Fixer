@@ -27,10 +27,10 @@ use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\Preg;
-use PhpCsFixer\RuleSet\AutomaticRuleSetDescriptionInterface;
-use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
+use PhpCsFixer\RuleSet\DeprecatedRuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSet;
-use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -49,7 +49,7 @@ final class FixerDocumentGenerator
 
     private FullDiffer $differ;
 
-    /** @var array<string, RuleSetDescriptionInterface> */
+    /** @var array<string, RuleSetDefinitionInterface> */
     private array $ruleSetDefinitions;
 
     public function __construct(DocumentationLocator $locator)
@@ -255,13 +255,13 @@ final class FixerDocumentGenerator
                 $ruleSetPath = substr($ruleSetPath, strrpos($ruleSetPath, '/'));
 
                 \assert(isset($this->ruleSetDefinitions[$set]));
-                $ruleSetDescription = $this->ruleSetDefinitions[$set];
+                $ruleSetDefinition = $this->ruleSetDefinitions[$set];
 
-                if ($ruleSetDescription instanceof AutomaticRuleSetDescriptionInterface) {
+                if ($ruleSetDefinition instanceof AutomaticRuleSetDefinitionInterface) {
                     continue;
                 }
 
-                $deprecatedDesc = ($ruleSetDescription instanceof DeprecatedRuleSetDescriptionInterface) ? ' *(deprecated)*' : '';
+                $deprecatedDesc = ($ruleSetDefinition instanceof DeprecatedRuleSetDefinitionInterface) ? ' *(deprecated)*' : '';
 
                 $configInfo = (null !== $config)
                     ? " with config:\n\n  ``".Utils::toString($config)."``\n"
@@ -310,11 +310,21 @@ final class FixerDocumentGenerator
      */
     public static function getSetsOfRule(string $ruleName): array
     {
+        static $ruleSetCache = null;
+
+        if (null === $ruleSetCache) {
+            $ruleSetCache = array_combine(
+                RuleSets::getSetDefinitionNames(),
+                array_map(
+                    static fn (string $name): RuleSet => new RuleSet([$name => true]),
+                    RuleSets::getSetDefinitionNames()
+                )
+            );
+        }
+
         $ruleSetConfigs = [];
 
-        foreach (RuleSets::getSetDefinitionNames() as $set) {
-            $ruleSet = new RuleSet([$set => true]);
-
+        foreach ($ruleSetCache as $set => $ruleSet) {
             if ($ruleSet->hasRule($ruleName)) {
                 $ruleSetConfigs[$set] = $ruleSet->getRuleConfiguration($ruleName);
             }

@@ -26,6 +26,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Future;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
@@ -277,7 +278,7 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
                 ->getOption(),
             (new FixerOptionBuilder('allow_hidden_params', 'Whether `param` annotation for hidden params in method signature are allowed.'))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(false) // @TODO set to `true` on 4.0
+                ->setDefault(Future::getV4OrV3(true, false))
                 ->getOption(),
             (new FixerOptionBuilder('allow_unused_params', 'Whether `param` annotation without actual signature is allowed (`true`) or considered superfluous (`false`).'))
                 ->setAllowedTypes(['bool'])

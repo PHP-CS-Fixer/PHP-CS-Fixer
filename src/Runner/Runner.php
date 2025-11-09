@@ -241,7 +241,15 @@ final class Runner
                 }
 
                 $identifier = ProcessIdentifier::fromRaw($data['identifier']);
-                $process = $processPool->getProcess($identifier);
+
+                // Avoid race condition where worker tries to establish connection,
+                // but runner already ended all processes because `stop-on-violation` mode was enabled.
+                try {
+                    $process = $processPool->getProcess($identifier);
+                } catch (ParallelisationException $e) {
+                    return;
+                }
+
                 $process->bindConnection($decoder, $encoder);
                 $fileChunk = $getFileChunk();
 

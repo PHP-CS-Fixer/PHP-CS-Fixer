@@ -262,7 +262,7 @@ echo Foo::A, Foo::B;
                 {
 
                     public $bar = null;
-                    public $initialized = false;
+                    public $initialised = false;
                     public $configured = false;
                     public $called = false;
                     public $arguments = array();
@@ -282,7 +282,7 @@ echo Foo::A, Foo::B;
                 class Foo
                 {
 
-                    public $bar = null, $initialized = false, $configured = false, $called = false, $arguments = array();
+                    public $bar = null, $initialised = false, $configured = false, $called = false, $arguments = array();
 
 
                     public $baz = null, $drop = false;
@@ -304,7 +304,7 @@ echo Foo::A, Foo::B;
 
 
                     public $bar = null;
-                    public $initialized = false;
+                    public $initialised = false;
 
                     function doSomething()
                     {
@@ -319,7 +319,7 @@ echo Foo::A, Foo::B;
                     const TWO = '2';
 
 
-                    public $bar = null, $initialized = false;
+                    public $bar = null, $initialised = false;
 
                     function doSomething()
                     {
@@ -337,7 +337,7 @@ echo Foo::A, Foo::B;
                     const TWO = '2';
 
                     public $bar = null;
-                    public $initialized = false;
+                    public $initialised = false;
 
 
                     function doSomething()
@@ -352,7 +352,7 @@ echo Foo::A, Foo::B;
                 {
                     const TWO = '2';
 
-                    public $bar = null, $initialized = false;
+                    public $bar = null, $initialised = false;
 
 
                     function doSomething()
@@ -370,7 +370,7 @@ echo Foo::A, Foo::B;
                 {
                     public $one = 1;
                     public $bar = null;
-                    public $initialized = false;
+                    public $initialised = false;
                     public $configured = false;
                     public $called = false;
                     public $arguments = array();
@@ -386,7 +386,7 @@ echo Foo::A, Foo::B;
                 class Foo
                 {
                     public $one = 1;
-                    public $bar = null, $initialized = false, $configured = false, $called = false, $arguments = array();
+                    public $bar = null, $initialised = false, $configured = false, $called = false, $arguments = array();
 
                     function doSomething()
                     {
@@ -401,7 +401,7 @@ echo Foo::A, Foo::B;
 
                 class Foo
                 {
-                    public $one = 1; public $bar = null; public $initialized = false; public $configured = false; public $called = false; public $arguments = array();
+                    public $one = 1; public $bar = null; public $initialised = false; public $configured = false; public $called = false; public $arguments = array();
 
                     function doSomething()
                     {
@@ -413,7 +413,7 @@ echo Foo::A, Foo::B;
 
                 class Foo
                 {
-                    public $one = 1; public $bar = null, $initialized = false, $configured = false, $called = false, $arguments = array();
+                    public $one = 1; public $bar = null, $initialised = false, $configured = false, $called = false, $arguments = array();
 
                     function doSomething()
                     {
@@ -428,7 +428,7 @@ echo Foo::A, Foo::B;
 
                 class Foo
                 {
-                    public $one = 1;public $bar = null;public $initialized = false;public $configured = false;public $called = false;public $arguments = array();
+                    public $one = 1;public $bar = null;public $initialised = false;public $configured = false;public $called = false;public $arguments = array();
 
                     function doSomething()
                     {
@@ -440,7 +440,7 @@ echo Foo::A, Foo::B;
 
                 class Foo
                 {
-                    public $one = 1;public $bar = null, $initialized = false, $configured = false, $called = false, $arguments = array();
+                    public $one = 1;public $bar = null, $initialised = false, $configured = false, $called = false, $arguments = array();
 
                     function doSomething()
                     {
@@ -453,7 +453,7 @@ echo Foo::A, Foo::B;
             <<<'EOT'
                 <?php
 
-                class Foo {    public $one = 1; public $bar = null; public $initialized = false; public $configured = false; public $called = false; public $arguments = array();
+                class Foo {    public $one = 1; public $bar = null; public $initialised = false; public $configured = false; public $called = false; public $arguments = array();
 
                     function doSomething()
                     {
@@ -463,7 +463,7 @@ echo Foo::A, Foo::B;
             <<<'EOT'
                 <?php
 
-                class Foo {    public $one = 1; public $bar = null,$initialized = false,$configured = false,$called = false,$arguments = array();
+                class Foo {    public $one = 1; public $bar = null,$initialised = false,$configured = false,$called = false,$arguments = array();
 
                     function doSomething()
                     {
@@ -476,7 +476,7 @@ echo Foo::A, Foo::B;
             <<<'EOT'
                 <?php
 
-                class Foo {    public $one = 1;  public $bar = null;  public $initialized = false;  public $configured = false;  public $called=false;  public $arguments = array();
+                class Foo {    public $one = 1;  public $bar = null;  public $initialised = false;  public $configured = false;  public $called=false;  public $arguments = array();
 
                     function doSomething()
                     {
@@ -486,7 +486,7 @@ echo Foo::A, Foo::B;
             <<<'EOT'
                 <?php
 
-                class Foo {    public $one = 1;  public $bar = null,$initialized = false,$configured = false,$called=false,$arguments = array();
+                class Foo {    public $one = 1;  public $bar = null,$initialised = false,$configured = false,$called=false,$arguments = array();
 
                     function doSomething()
                     {

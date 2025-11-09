@@ -14,14 +14,14 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
+use PhpCsFixer\RuleSet\AbstractRuleSetDefinition;
 
 /**
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PSR12RiskySet extends AbstractRuleSetDescription
+final class PSR12RiskySet extends AbstractRuleSetDefinition
 {
     public function getRules(): array
     {

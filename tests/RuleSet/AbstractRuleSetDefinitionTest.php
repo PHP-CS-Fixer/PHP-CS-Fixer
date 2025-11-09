@@ -12,26 +12,25 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\RuleSet;
+namespace PhpCsFixer\Tests\RuleSet;
+
+use PhpCsFixer\Tests\Fixtures\TestRuleSet;
+use PhpCsFixer\Tests\TestCase;
 
 /**
  * @internal
  *
+ * @covers \PhpCsFixer\RuleSet\AbstractRuleSetDefinition
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-abstract class AbstractRuleSetDescription implements RuleSetDescriptionInterface
+final class AbstractRuleSetDefinitionTest extends TestCase
 {
-    public function __construct() {}
-
-    public function getName(): string
+    public function testAbstractRuleSet(): void
     {
-        $name = substr(static::class, 1 + strrpos(static::class, '\\'), -3);
+        $set = new TestRuleSet();
 
-        return '@'.str_replace('Risky', ':risky', $name);
-    }
-
-    public function isRisky(): bool
-    {
-        return str_contains(static::class, 'Risky');
+        self::assertSame('@TestRule', $set->getName());
+        self::assertFalse($set->isRisky());
     }
 }

@@ -111,17 +111,15 @@ jobs:
             php-version: '8.4'
             job-description: Fixer with Symfony ^8
             run-fixer: 'yes'
-            allow-to-fail: 'yes' # because Symfony v8 is not yet stable
-            execute-flex-with-symfony-version: ^8@dev # explicit check for Symfony 8.x compatibility
+            execute-flex-with-symfony-version: ^8@beta # explicit check for Symfony 8.x compatibility
+            composer-minimum-stability: beta
 
           - operating-system: ubuntu-24.04
             php-version: '8.4'
             job-description: tests with Symfony ^8
             run-tests: 'yes'
-            allow-to-fail: 'yes' # because Symfony v8 is not yet stable
-            AVOID_PARAUNIT: 'yes' # as it doesn't support Symfony 8 yet
-            phpunit-flags: --exclude-group=sf-8-problematic # @todo: solve before claiming Symfony 8.x support
-            execute-flex-with-symfony-version: ^8@dev # explicit check for Symfony 8.x compatibility
+            execute-flex-with-symfony-version: ^8@beta # explicit check for Symfony 8.x compatibility
+            composer-minimum-stability: beta
 
           - operating-system: ubuntu-24.04
             php-version: '8.4'
@@ -173,6 +171,7 @@ jobs:
             job-description: code coverage
             run-tests: 'yes'
             collect-code-coverage: 'yes'
+            allow-to-fail: 'yes' # don't prevent the build when remote coverage reporting service is down
 
           - operating-system: ubuntu-24.04
             php-version: '8.4'
@@ -212,6 +211,7 @@ jobs:
           php: ${{ matrix.php-version }}
           php-coverage: ${{ matrix.collect-code-coverage || matrix.run-mutation-tests }}
           composer-flags: ${{ matrix.composer-flags }}
+          composer-minimum-stability: ${{ matrix.composer-minimum-stability }}
           composer-flex-with-symfony-version: ${{ matrix.execute-flex-with-symfony-version }}
 
       # Execute migration rules before running tests and self-fixing,
@@ -239,7 +239,7 @@ jobs:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           PHP_CS_FIXER_FAST_LINT_TEST_CASES: ${{ matrix.PHP_CS_FIXER_FAST_LINT_TEST_CASES }}
         run: |
-          composer require --dev --with-all-dependencies phpunit/phpunit:^12.1.5
+          composer require --dev --with-all-dependencies phpunit/phpunit:"^9.6 || ^12.1.5" # mention ^9.6 to keep trace of minimum supported version, needed for utests
           php php-cs-fixer fix --quiet --rules=php_unit_attributes
 
       - name: Check configuration for PHPUnit

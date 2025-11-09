@@ -32,7 +32,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Console/Command/DescribeCommand.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset non-falsy-string might not exist on array<string, PhpCsFixer\\RuleSet\\RuleSetDescriptionInterface>.',
+    'rawMessage' => 'Offset non-falsy-string might not exist on array<string, PhpCsFixer\\RuleSet\\RuleSetDefinitionInterface>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Console/Command/DescribeCommand.php',
 ];
@@ -42,7 +42,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Console/Command/DescribeCommand.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset string might not exist on array<string, PhpCsFixer\\RuleSet\\RuleSetDescriptionInterface>.',
+    'rawMessage' => 'Offset string might not exist on array<string, PhpCsFixer\\RuleSet\\RuleSetDefinitionInterface>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Console/Command/DescribeCommand.php',
 ];
@@ -347,11 +347,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/NoNullPropertyInitializationFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset int<1, max> might not exist on non-empty-array<int<1, max>, int>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/NoNullPropertyInitializationFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset 1 might not exist on non-empty-list<int<0, max>>.',
     'count' => 3,
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/NoPhp4ConstructorFixer.php',
@@ -382,11 +377,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/NoUnneededFinalMethodFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset int might not exist on array<int, bool>.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/NoUnneededFinalMethodFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset \'end\' might not exist on array{start: int, visibility: non-empty-string, abstract: bool, static: bool, readonly: bool, type?: string, name?: string, end?: int}.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
@@ -410,11 +400,6 @@ $ignoreErrors[] = [
     'rawMessage' => 'Offset string might not exist on array{\'|\': array{10024, \'|\'}, \'&\': array{10035, \'&\'}}.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedTypesFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset int might not exist on non-empty-array<int, bool>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/ProtectedToPrivateFixer.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Offset int might not exist on array{1: \'|^#\\\\s*$|\', 3: \'|^/\\\\*[\\\\s\\\\*]*\\\\*+/$|\', 2: \'|^//\\\\s*$|\'}.',
@@ -537,11 +522,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Operator/BinaryOperatorSpacesFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset string might not exist on non-empty-array<string, bool>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitAttributesFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset 0 might not exist on non-empty-array<int<0, max>, int|null>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitConstructFixer.php',
@@ -608,11 +588,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Offset 3 might not exist on array.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitMethodCasingFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset int<0, max> might not exist on non-empty-list<PhpCsFixer\\DocBlock\\Line>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitMethodCasingFixer.php',
 ];
@@ -787,6 +762,11 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/StringNotation/EscapeImplicitBackslashesFixer.php',
 ];
 $ignoreErrors[] = [
+    'rawMessage' => 'Offset \'firstVariableTokenIndex\' might not exist on array{tokens: non-empty-array<int, PhpCsFixer\\Tokenizer\\Token>, firstVariableTokenIndex?: int, lastVariableTokenIndex: int}.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../src/Fixer/StringNotation/ExplicitStringVariableFixer.php',
+];
+$ignoreErrors[] = [
     'rawMessage' => 'Offset \'end_index\' might not exist on non-empty-array<literal-string&non-falsy-string, int|string>.',
     'count' => 4,
     'path' => __DIR__ . '/../../../src/Fixer/Whitespace/ArrayIndentationFixer.php',
@@ -892,11 +872,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Whitespace/StatementIndentationFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset string might not exist on non-empty-array<string, list<string>>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/FixerFactory.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset string might not exist on array<string, array<string, mixed>|true>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/RuleSet/RuleSet.php',
@@ -927,17 +902,27 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Runner/Runner.php',
 ];
 $ignoreErrors[] = [
+    'rawMessage' => 'Offset \'alternative_syntax\' might not exist on array<literal-string&non-falsy-string, mixed>.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
+];
+$ignoreErrors[] = [
     'rawMessage' => 'Offset \'alternative_syntax\' might not exist on non-empty-array<literal-string&non-falsy-string, mixed>.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Offset \'brace_count\' might not exist on array<literal-string&non-falsy-string, mixed>.',
     'count' => 2,
     'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Offset \'brace_count\' might not exist on non-empty-array<literal-string&non-falsy-string, mixed>.',
-    'count' => 3,
+    'count' => 1,
     'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset \'default\' might not exist on non-empty-array<literal-string&non-falsy-string, mixed>.',
+    'rawMessage' => 'Offset \'default\' might not exist on array<literal-string&non-falsy-string, mixed>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
 ];
@@ -947,17 +932,22 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset \'kind\' might not exist on non-empty-array<literal-string&non-falsy-string, mixed>.',
-    'count' => 3,
+    'rawMessage' => 'Offset \'kind\' might not exist on array<literal-string&non-falsy-string, mixed>.',
+    'count' => 1,
     'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset int<-1, max> might not exist on list<non-empty-array<literal-string&non-falsy-string, mixed>>.',
+    'rawMessage' => 'Offset \'kind\' might not exist on non-empty-array<literal-string&non-falsy-string, mixed>.',
     'count' => 2,
     'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset int<0, max> might not exist on list<non-empty-array<literal-string&non-falsy-string, mixed>>.',
+    'rawMessage' => 'Offset int<-1, max> might not exist on list<array<literal-string&non-falsy-string, mixed>>.',
+    'count' => 2,
+    'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Offset int<0, max> might not exist on list<array<literal-string&non-falsy-string, mixed>>.',
     'count' => 3,
     'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
 ];

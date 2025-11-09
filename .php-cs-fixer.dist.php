@@ -17,6 +17,13 @@ use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\Internal\ConfigurableFixerTemplateFixer;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
+if (
+    filter_var(getenv('PHP_CS_FIXER_TESTS_SYSTEM_UNDER_TEST'), \FILTER_VALIDATE_BOOL)
+    && !filter_var(getenv('PHP_CS_FIXER_TESTS_ALLOW_ONE_TIME_SELF_CONFIG_USAGE'), \FILTER_VALIDATE_BOOL)
+) {
+    throw new Error(sprintf('This configuration file ("%s") is not meant to be used in tests.', __FILE__));
+}
+
 $fileHeaderParts = [
     <<<'EOF'
         This file is part of PHP CS Fixer.
@@ -34,17 +41,16 @@ $fileHeaderParts = [
 
 return (new Config())
     ->setParallelConfig(ParallelConfigFactory::detect()) // @TODO 4.0 no need to call this manually
+    ->setUnsupportedPhpVersionAllowed(true)
     ->setRiskyAllowed(true)
     ->registerCustomFixers([
         new ConfigurableFixerTemplateFixer(),
     ])
     ->setRules([
-        '@PHP7x4Migration' => true,
-        '@PHP7x4Migration:risky' => true,
-        '@PHPUnit10x0Migration:risky' => true,
+        '@auto' => true,
+        '@auto:risky' => true,
         '@PhpCsFixer' => true,
         '@PhpCsFixer:risky' => true,
-        'PhpCsFixerInternal/configurable_fixer_template' => true, // internal rules, shall not be used outside of main repo
         'general_phpdoc_annotation_remove' => ['annotations' => ['expectedDeprecation']], // one should use PHPUnit built-in method instead
         'header_comment' => [
             'header' => implode('', $fileHeaderParts),
@@ -60,6 +66,7 @@ return (new Config())
         'native_constant_invocation' => ['strict' => false], // strict:false to not remove `\` on low-end PHP versions for not-yet-known consts
         'no_useless_concat_operator' => false, // TODO switch back on when the `src/Console/Application.php` no longer needs the concat
         'numeric_literal_separator' => true,
+        'PhpCsFixerInternal/configurable_fixer_template' => true, // internal rules, shall not be used outside of main repo
         'phpdoc_order' => [
             'order' => [
                 'type',

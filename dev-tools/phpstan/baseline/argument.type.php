@@ -2,6 +2,16 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
+    'rawMessage' => 'Parameter #2 of function sprintf is expected to be int by placeholder #1 ("%%d"), string given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../src/Console/Command/WorkerCommand.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Parameter #5 of function sprintf is expected to be string by placeholder #4 ("%%s"), bool|string given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../src/Console/ConfigurationResolver.php',
+];
+$ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $diffs of static method PhpCsFixer\\Console\\Report\\FixReport\\GitlabReporter::getLines() expects list<SebastianBergmann\\Diff\\Diff>, array<SebastianBergmann\\Diff\\Diff> given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Console/Report/FixReport/GitlabReporter.php',
@@ -135,6 +145,51 @@ $ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $json of function json_decode expects string, string|false given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/ToolInfo.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Parameter #2 of function sprintf is expected to be int by placeholder #1 ("%%d"), string given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../tests/AutoReview/CiConfigurationTest.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Parameter #3 of function sprintf is expected to be int by placeholder #2 ("%%d"), string given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../tests/AutoReview/CiConfigurationTest.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Parameter #2 of function sprintf is expected to be string by placeholder #1 ("%%s"), string|false given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../tests/Cache/FileHandlerTest.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Parameter #2 of function sprintf is expected to be string by placeholder #1 ("%%s"), class-string<Throwable>|false given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../tests/Console/Output/ErrorOutputTest.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Parameter #2 of function sprintf is expected to be int by placeholder #1 ("%%d"), string given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../tests/RuleSet/Sets/AbstractSetTestCase.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Parameter #3 of function sprintf is expected to be int by placeholder #2 ("%%d"), string given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../tests/RuleSet/Sets/AbstractSetTestCase.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Parameter #4 of function sprintf is expected to be int by placeholder #3 ("%%d"), int<0, max>|false given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../tests/Test/AbstractFixerTestCase.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Parameter #2 of function sprintf is expected to be string by placeholder #1 ("%%s"), false given.',
+    'count' => 5,
+    'path' => __DIR__ . '/../../../tests/Test/AbstractIntegrationCaseFactory.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Parameter #2 of function sprintf is expected to be int by placeholder #1 ("%%d"), string given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../tests/Test/AbstractTransformerTestCase.php',
 ];
 
 return ['parameters' => ['ignoreErrors' => $ignoreErrors]];

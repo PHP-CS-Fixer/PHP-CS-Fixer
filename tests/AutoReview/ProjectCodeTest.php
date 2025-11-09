@@ -27,6 +27,7 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitNamespacedFixer;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOptionBuilder;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
+use PhpCsFixer\RuleSet\DeprecatedRuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
 use PhpCsFixer\Runner\Parallel\ProcessUtils;
 use PhpCsFixer\Tests\Fixer\ClassNotation\ModifierKeywordsFixerTest;
@@ -73,6 +74,11 @@ final class ProjectCodeTest extends TestCase
     private static ?array $dataProviderMethodCases = null;
 
     /**
+     * @var null|array<string, array{class-string, string}>
+     */
+    private static ?array $phpUnitInheritedMethodsCases = null;
+
+    /**
      * @var array<class-string, Tokens>
      */
     private static array $tokensCache = [];
@@ -82,6 +88,8 @@ final class ProjectCodeTest extends TestCase
         self::$srcClassCases = null;
         self::$testClassCases = null;
         self::$tokensCache = [];
+
+        parent::tearDownAfterClass();
     }
 
     /**
@@ -92,7 +100,7 @@ final class ProjectCodeTest extends TestCase
         \assert(class_exists($className));
 
         // It is OK for deprecated ruleset to have no tests, as it would be only proxy to renamed ruleset.
-        if (\in_array(DeprecatedRuleSetDescriptionInterface::class, class_implements($className), true)) {
+        if (\in_array(DeprecatedRuleSetDefinitionInterface::class, class_implements($className), true)) {
             $this->expectNotToPerformAssertions();
 
             return;
@@ -787,6 +795,17 @@ final class ProjectCodeTest extends TestCase
      */
     public function testAllCodeContainSingleClassy(string $className): void
     {
+        // @TODO v4 remove me @MARKER_deprecated_DeprecatedRuleSetDescriptionInterface
+        if (\in_array(
+            $className,
+            [
+                DeprecatedRuleSetDescriptionInterface::class, // @phpstan-ignore class.notFound
+            ],
+            true
+        )) {
+            self::markTestSkipped(\sprintf("Classy '%s' is deprecated alias and thus exception.", $className));
+        }
+
         $headerTypes = [
             \T_ABSTRACT,
             \T_AS,
@@ -1029,6 +1048,80 @@ final class ProjectCodeTest extends TestCase
         }
 
         yield from self::$dataProviderMethodCases;
+    }
+
+    /**
+     * @param class-string $className
+     *
+     * @dataProvider providePhpUnitInheritedMethodsCallsParentCases
+     */
+    public function testPhpUnitInheritedMethodsCallsParent(string $className, string $methodName): void
+    {
+        $tokens = $this->createTokensForClass($className);
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $methodElements = array_filter($tokensAnalyzer->getClassyElements(), static function (array $v, int $k) use ($tokens, $methodName) {
+            $nextToken = $tokens[$tokens->getNextMeaningfulToken($k)];
+
+            // element is data provider method
+            return 'method' === $v['type'] && $nextToken->equals([\T_STRING, $methodName]);
+        }, \ARRAY_FILTER_USE_BOTH);
+
+        if (1 !== \count($methodElements)) {
+            throw new \UnexpectedValueException(\sprintf('Method "%s::%s" should be found exactly once, got %d times.', $className, $methodName, \count($methodElements)));
+        }
+
+        $methodIndex = array_key_first($methodElements);
+        $startIndex = $tokens->getNextTokenOfKind($methodIndex, ['{']);
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $startIndex);
+
+        $callTheParent = $tokens->findSequence([
+            [\T_STRING, 'parent'],
+            [\T_DOUBLE_COLON],
+            [\T_STRING, $methodName],
+        ], $startIndex, $endIndex, false);
+
+        self::assertTrue(
+            null !== $callTheParent,
+            \sprintf(
+                'Method "%s::%s" should call it\'s parent.',
+                $className,
+                $methodName,
+            ),
+        );
+    }
+
+    /**
+     * @return iterable<string, array{class-string, string}>
+     */
+    public static function providePhpUnitInheritedMethodsCallsParentCases(): iterable
+    {
+        if (null === self::$phpUnitInheritedMethodsCases) {
+            self::$phpUnitInheritedMethodsCases = [];
+            foreach (self::provideTestClassCases() as $testClassName) {
+                $testClassName = reset($testClassName);
+                $reflectionClass = new \ReflectionClass($testClassName);
+
+                $methodNames = array_filter(
+                    $reflectionClass->getMethods(),
+                    static fn (\ReflectionMethod $reflectionMethod): bool => $reflectionMethod->getDeclaringClass()->getName() === $reflectionClass->getName()
+                        && \in_array($reflectionMethod->getName(), [
+                            // extracted from https://github.com/sebastianbergmann/phpunit/blob/12.4.0/src/Runner/HookMethod/HookMethodCollection.php#L29-L57
+                            'setUpBeforeClass',
+                            'setUp',
+                            'assertPreConditions',
+                            'assertPostConditions',
+                            'tearDown',
+                            'tearDownAfterClass',
+                        ], true),
+                );
+
+                foreach ($methodNames as $methodName) {
+                    self::$phpUnitInheritedMethodsCases[$testClassName.'::'.$methodName->getName()] = [$testClassName, $methodName->getName()];
+                }
+            }
+        }
+
+        yield from self::$phpUnitInheritedMethodsCases;
     }
 
     /**
