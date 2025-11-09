@@ -25,10 +25,8 @@ use Symfony\Component\Finder\Finder;
  * This script checks that:
  * - Public methods in non-internal classes don't return @internal types
  * - Public methods in non-internal classes don't accept @internal types as parameters
- *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class check_public_api_surface
+final class PublicApiSurfaceChecker
 {
     /**
      * Known violations that should be fixed in the future.
