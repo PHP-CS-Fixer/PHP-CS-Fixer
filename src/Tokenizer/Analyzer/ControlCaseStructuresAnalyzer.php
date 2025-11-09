@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @TODO 4.0: mark @internal
  */
 final class ControlCaseStructuresAnalyzer
 {
