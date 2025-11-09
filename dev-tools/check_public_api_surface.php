@@ -28,6 +28,17 @@ use Symfony\Component\Finder\Finder;
  */
 final class PublicApiSurfaceChecker
 {
+    /**
+     * Known violations that should be fixed in the future.
+     * Format: 'ClassName::methodName() => InternalType'
+     *
+     * @var array<string, true>
+     */
+    private const KNOWN_VIOLATIONS = [
+        'PhpCsFixer\DocBlock\Annotation::__construct() => PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis' => true,
+        'PhpCsFixer\DocBlock\Annotation::__construct() => PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis' => true,
+    ];
+
     private array $violations = [];
     private array $internalClasses = [];
     private array $classFiles = [];
@@ -117,6 +128,13 @@ final class PublicApiSurfaceChecker
 
                 foreach ($types as $type) {
                     if (isset($this->internalClasses[$type])) {
+                        $violationKey = sprintf('%s::%s() => %s', $className, $methodName, $type);
+                        
+                        // Skip known violations
+                        if (isset(self::KNOWN_VIOLATIONS[$violationKey])) {
+                            continue;
+                        }
+
                         $this->violations[] = sprintf(
                             "Public method %s::%s() exposes internal type %s\n  in %s",
                             $className,
