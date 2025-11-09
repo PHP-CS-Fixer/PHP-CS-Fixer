@@ -41,7 +41,7 @@ final class AutoPHPMigrationSet extends AbstractRuleSetDefinition implements Aut
 
     public function getDescription(): string
     {
-        return 'Rules to improve code for PHP. Target version is automatically detected from project\'s "composer.json" file.';
+        return 'Migration rules to improve code towards the minimum ``PHP`` supported by your project (taken from ``composer.json`` file).';
     }
 
     public function getRulesCandidates(): array

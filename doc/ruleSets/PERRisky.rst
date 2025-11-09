@@ -2,7 +2,7 @@
 Rule set ``@PER:risky``
 =======================
 
-Alias for the newest PER-CS risky rules. It is recommended you use ``@PER-CS2.0:risky`` instead if you want to stick with stable ruleset.
+Alias for the newest ``PER-CS`` risky rules. It is recommended you use ``@PER-CS2.0:risky`` instead if you want to stick with stable ruleset.
 
 Warnings
 --------

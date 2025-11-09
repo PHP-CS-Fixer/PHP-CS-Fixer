@@ -47,7 +47,7 @@ final class AutoRiskySet extends AbstractRuleSetDefinition implements AutomaticR
 
     public function getDescription(): string
     {
-        return 'Default (risky) rule set. Applies newest PER-CS and optimizations for PHP and PHPUnit, based on project\'s "composer.json" file.';
+        return 'Default (risky) rule set. Applies newest ``PER-CS`` and optimizations for ``PHP`` and ``PHPUnit``, based on project\'s ``composer.json`` file.';
     }
 
     public function getRulesCandidates(): array
