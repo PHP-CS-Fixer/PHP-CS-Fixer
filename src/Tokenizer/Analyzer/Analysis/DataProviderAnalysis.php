@@ -14,9 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
 
-use PhpCsFixer\Console\Application;
-use PhpCsFixer\Future;
-
 /**
  * @internal
  *
