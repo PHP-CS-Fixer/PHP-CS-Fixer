@@ -25,12 +25,14 @@ use Symfony\Component\Finder\Finder;
  * This script checks that:
  * - Public methods in non-internal classes don't return @internal types
  * - Public methods in non-internal classes don't accept @internal types as parameters
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PublicApiSurfaceChecker
+final class check_public_api_surface
 {
     /**
      * Known violations that should be fixed in the future.
-     * Format: 'ClassName::methodName() => InternalType'
+     * Format: 'ClassName::methodName() => InternalType'.
      *
      * @var array<string, true>
      */
@@ -61,8 +63,8 @@ final class PublicApiSurfaceChecker
             $content = $file->getContents();
 
             // Extract namespace and class name
-            if (preg_match('/namespace\s+([^;]+);/', $content, $nsMatch) &&
-                preg_match('/(class|interface|trait)\s+(\w+)/', $content, $classMatch)) {
+            if (preg_match('/namespace\s+([^;]+);/', $content, $nsMatch)
+                && preg_match('/(class|interface|trait)\s+(\w+)/', $content, $classMatch)) {
                 $fqcn = $nsMatch[1].'\\'.$classMatch[2];
                 $this->classFiles[$fqcn] = $file->getPathname();
             }
@@ -129,7 +131,7 @@ final class PublicApiSurfaceChecker
                 foreach ($types as $type) {
                     if (isset($this->internalClasses[$type])) {
                         $violationKey = sprintf('%s::%s() => %s', $className, $methodName, $type);
-                        
+
                         // Skip known violations
                         if (isset(self::KNOWN_VIOLATIONS[$violationKey])) {
                             continue;
@@ -170,11 +172,12 @@ final class PublicApiSurfaceChecker
             if (preg_match('/^(array|list|iterable)<(.+)>$/', $part, $match)) {
                 // Recursively extract types from generic
                 $types = array_merge($types, $this->extractTypes($match[2]));
+
                 continue;
             }
 
             // Skip built-in types
-            if (\in_array($part, [
+            if (in_array($part, [
                 'void', 'null', 'mixed', 'never',
                 'string', 'int', 'float', 'bool', 'array', 'object', 'callable', 'iterable', 'resource',
                 'self', 'static', 'parent', '$this',
@@ -199,6 +202,7 @@ final class PublicApiSurfaceChecker
                 foreach ($this->classFiles as $fqcn => $file) {
                     if (str_ends_with($fqcn, '\\'.$part)) {
                         $types[] = $fqcn;
+
                         break;
                     }
                 }
@@ -226,4 +230,5 @@ final class PublicApiSurfaceChecker
 }
 
 $checker = new PublicApiSurfaceChecker();
+
 exit($checker->run());
