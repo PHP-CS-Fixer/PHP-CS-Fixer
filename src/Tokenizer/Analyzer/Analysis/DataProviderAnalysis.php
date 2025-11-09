@@ -39,10 +39,9 @@ final class DataProviderAnalysis
     public function __construct(string $name, int $nameIndex, array $usageIndices)
     {
         if ([] === $usageIndices || !array_is_list($usageIndices)) {
-            Future::triggerDeprecation(new \InvalidArgumentException(\sprintf(
-                'Parameter "usageIndices" should be a non-empty-list. This will be enforced in version %d.0.',
-                Application::getMajorVersion() + 1
-            )));
+            throw new \InvalidArgumentException(
+                'Parameter "usageIndices" should be a non-empty-list.',
+            );
         }
 
         $this->name = $name;
