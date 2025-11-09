@@ -5,8 +5,8 @@ Config file
 No config
 ---------
 
-It is possible to *not* have the config file. In that case, the default rule set (@PSR12 for v3, @auto for v4) will be applied,
-and under v3, the path will need to be provided via CLI (defaults to `.` under v4).
+It is possible to *not* have the config file. In that case, the default rule set (``@PSR12`` for v3, ``@auto`` for v4) will be applied,
+and under v3, the path will need to be provided via CLI (defaults to ``.`` under v4).
 
 .. code-block:: console
 
