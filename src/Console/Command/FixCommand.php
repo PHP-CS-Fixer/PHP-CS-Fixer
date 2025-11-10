@@ -52,6 +52,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
  *
  * @final
  *
+ * @TODO 4.0: mark as final
+ *
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
