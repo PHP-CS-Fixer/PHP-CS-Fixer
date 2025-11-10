@@ -719,9 +719,9 @@ final class ConfigurationResolver
      */
     private function parseRules(): array
     {
-        if (null === $this->options['rules']) {
-            $this->configRulesAreOverridden = false;
+        $this->configRulesAreOverridden = null !== $this->options['rules'];
 
+        if (null === $this->options['rules']) {
             return $this->getConfig()->getRules();
         }
 
@@ -753,8 +753,6 @@ final class ConfigurationResolver
                 $rules[$rule] = true;
             }
         }
-
-        $this->configRulesAreOverridden = true;
 
         return $rules;
     }
