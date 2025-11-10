@@ -605,7 +605,11 @@ final class FixerFactoryTest extends TestCase
             'no_blank_lines_after_phpdoc' => [
                 'header_comment',
             ],
+            'no_empty_block' => [
+                'no_trailing_whitespace',
+            ],
             'no_empty_comment' => [
+                'no_empty_block',
                 'no_extra_blank_lines',
                 'no_trailing_whitespace',
                 'no_whitespace_in_blank_line',
