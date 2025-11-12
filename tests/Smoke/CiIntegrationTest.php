@@ -185,10 +185,8 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
             ? 'PHP CS Fixer '.preg_quote(Application::VERSION, '/').' '.preg_quote(Application::VERSION_CODENAME, '/')." by Fabien Potencier, Dariusz Ruminski and contributors.\nPHP runtime: ".\PHP_VERSION
             : 'PHP CS Fixer '.preg_quote(Application::VERSION, '/')." by Fabien Potencier, Dariusz Ruminski and contributors.\nPHP runtime: ".\PHP_VERSION;
 
-        $availableMaxProcesses = ParallelConfigFactory::detect()->getMaxProcesses();
-
         $pattern = \sprintf(
-            '/^(?:%s)?(?:%s)?(?:%s)?(?:%s)?(?:%s)?%s\n%s\n%s\n%s\n([\.S]{%d})%s\n%s$/',
+            '/^(?:%s)?(?:%s)?(?:%s)?(?:%s)?(?:%s)?%s\n%s\n%s\n([\.S]{%d})%s\n%s$/',
             preg_quote($optionalDeprecatedVersionWarning, '/'),
             preg_quote($optionalIncompatibilityWarning, '/'),
             preg_quote($optionalXdebugWarning, '/'),
@@ -196,7 +194,6 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
             preg_quote($optionalWarningsHelp, '/'),
             $aboutSubpattern,
             'Running analysis on \d+ core(?: sequentially|s with \d+ files? per process)+\.',
-            $availableMaxProcesses > 1 ? preg_quote('You can enable parallel runner and speed up the analysis! Please see https://cs.symfony.com/doc/usage.html for more information.', '/') : '',
             preg_quote('Loaded config default from ".php-cs-fixer.dist.php".', '/'),
             \strlen($expectedResult3FilesDots),
             preg_quote($expectedResult3FilesPercentage, '/'),
