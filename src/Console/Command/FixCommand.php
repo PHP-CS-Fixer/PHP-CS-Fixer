@@ -347,10 +347,18 @@ use Symfony\Component\Stopwatch\Stopwatch;
             static fn (\SplFileInfo $fileInfo) => false !== $fileInfo->getRealPath(),
         ));
 
-        if (null !== $stdErr && $resolver->configFinderIsOverridden()) {
-            $stdErr->writeln(
-                \sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'Paths from configuration file have been overridden by paths provided as command arguments.')
-            );
+        if (null !== $stdErr) {
+            if ($resolver->configFinderIsOverridden()) {
+                $stdErr->writeln(
+                    \sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'Paths from configuration have been overridden by paths provided as command arguments.')
+                );
+            }
+
+            if ($resolver->configRulesAreOverridden()) {
+                $stdErr->writeln(
+                    \sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'Rules from configuration have been overridden by rules provided as command argument.')
+                );
+            }
         }
 
         $progressType = $resolver->getProgressType();
@@ -416,7 +424,6 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
             if (\count($exceptionErrors) > 0) {
                 $errorOutput->listErrors('fixing', $exceptionErrors);
-                \assert(isset($isParallel));
                 if ($isParallel) {
                     $stdErr->writeln('To see details of the error(s), re-run the command with `--sequential -vvv [file]`');
                 }
