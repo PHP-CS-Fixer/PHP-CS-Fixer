@@ -303,5 +303,12 @@ final class ComposerJsonReaderTest extends TestCase
     "require": { "php": "  8.1.*  ||  8.2.*  ||  8.3.*  ||  8.4.*  " }
 }',
         ];
+
+        yield 'version with >= and a space' => [
+            '8.2',
+            '{
+    "require": { "php": ">= 8.2" }
+}',
+        ];
     }
 }
