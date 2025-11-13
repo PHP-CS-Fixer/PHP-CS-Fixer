@@ -22,7 +22,6 @@ use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Fixer;
-use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
@@ -32,9 +31,7 @@ use PhpCsFixer\Runner\Event\AnalysisStarted;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\Tests\TestCase;
-use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\ToolInfo;
-use PHPUnit\Framework\Assert;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
@@ -343,176 +340,114 @@ final class RunnerTest extends TestCase
      */
     public function testRuleCustomizationPolicy(): void
     {
-        $differ = $this->createDifferDouble();
-        $path = __DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'fix';
-        $ruleCustomizationPolicy = new class implements RuleCustomizationPolicyInterface {
-            public Fixer\FixerInterface $fixer1;
-            public Fixer\FixerInterface $fixer2;
-            public Fixer\FixerInterface $fixer3;
+        $path = \dirname(__DIR__).\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'rule-customization';
 
-            public function customize(Fixer\FixerInterface $fixer, \SplFileInfo $file): ?Fixer\FixerInterface
-            {
-                if ($fixer === $this->fixer1) {
-                    return null;
-                }
-                if ($fixer === $this->fixer2) {
-                    return $this->fixer3;
-                }
-                Assert::fail('Unexpected fixer passed to filter.');
-            }
-        };
-        $ruleCustomizationPolicy->fixer1 = new class implements Fixer\FixerInterface {
-            public function isCandidate(Tokens $tokens): bool
-            {
-                Assert::fail(__FUNCTION__." shoudn't be called on this fixer");
-            }
+        $arraySyntaxFixer = new Fixer\ArrayNotation\ArraySyntaxFixer();
+        $arraySyntaxFixer->configure(['syntax' => 'short']);
 
-            public function isRisky(): bool
-            {
-                Assert::fail(__FUNCTION__." shoudn't be called on this fixer");
-            }
+        $fixWith = static function (ErrorsManager $errorsManager, RuleCustomizationPolicyInterface $policy) use ($path, $arraySyntaxFixer): array {
+            $runner = new Runner(
+                // $fileIterator
+                Finder::create()->in($path),
+                // $fixers
+                [$arraySyntaxFixer],
+                // $differ
+                new NullDiffer(),
+                // $eventDispatcher
+                null,
+                // $errorsManager
+                $errorsManager,
+                // $linter
+                new Linter(),
+                // $isDryRun
+                true,
+                // $cacheManager
+                new NullCacheManager(),
+                // $directory
+                new Directory($path),
+                // $stopOnViolation
+                false,
+                // $parallelConfig
+                null,
+                // $input
+                null,
+                // $configFile
+                null,
+                // $ruleCustomizationPolicy
+                $policy
+            );
+            $fixInfo = $runner->fix();
+            $fixedFiles = array_keys($fixInfo);
+            sort($fixedFiles, \SORT_STRING);
 
-            public function fix(\SplFileInfo $file, Tokens $tokens): void
-            {
-                Assert::fail(__FUNCTION__." shoudn't be called on this fixer");
-            }
-
-            public function getDefinition(): FixerDefinitionInterface
-            {
-                Assert::fail(__FUNCTION__." shoudn't be called on this fixer");
-            }
-
-            public function getName(): string
-            {
-                return 'fixer1';
-            }
-
-            public function getPriority(): int
-            {
-                return 0;
-            }
-
-            public function supports(\SplFileInfo $file): bool
-            {
-                Assert::fail(__FUNCTION__." shoudn't be called on this fixer");
-            }
-        };
-        $ruleCustomizationPolicy->fixer2 = new class implements Fixer\FixerInterface {
-            public function isCandidate(Tokens $tokens): bool
-            {
-                Assert::fail(__FUNCTION__." shoudn't be called on this fixer");
-            }
-
-            public function isRisky(): bool
-            {
-                Assert::fail(__FUNCTION__." shoudn't be called on this fixer");
-            }
-
-            public function fix(\SplFileInfo $file, Tokens $tokens): void
-            {
-                Assert::fail(__FUNCTION__." shoudn't be called on this fixer");
-            }
-
-            public function getDefinition(): FixerDefinitionInterface
-            {
-                Assert::fail(__FUNCTION__." shoudn't be called on this fixer");
-            }
-
-            public function getName(): string
-            {
-                return 'fixer2';
-            }
-
-            public function getPriority(): int
-            {
-                return 0;
-            }
-
-            public function supports(\SplFileInfo $file): bool
-            {
-                Assert::fail(__FUNCTION__." shoudn't be called on this fixer");
-            }
-        };
-        $ruleCustomizationPolicy->fixer3 = new class implements Fixer\FixerInterface {
-            public bool $fixInvoked = false;
-
-            public function isCandidate(Tokens $tokens): bool
-            {
-                return true;
-            }
-
-            public function isRisky(): bool
-            {
-                return false;
-            }
-
-            public function fix(\SplFileInfo $file, Tokens $tokens): void
-            {
-                $this->fixInvoked = true;
-            }
-
-            public function getDefinition(): FixerDefinitionInterface
-            {
-                Assert::fail(__FUNCTION__." shoudn't be called on this fixer");
-            }
-
-            public function getName(): string
-            {
-                return 'fixer3';
-            }
-
-            public function getPriority(): int
-            {
-                return 0;
-            }
-
-            public function supports(\SplFileInfo $file): bool
-            {
-                return true;
-            }
+            return $fixedFiles;
         };
 
+        // Test when the policy doesn't change a fixer
         $errorsManager = new ErrorsManager();
-
-        $runner = new Runner(
-            // $fileIterator
-            Finder::create()->in($path),
-            // $fixers
-            [
-                $ruleCustomizationPolicy->fixer1,
-                $ruleCustomizationPolicy->fixer2,
-            ],
-            // $differ
-            $differ,
-            // $eventDispatcher
-            null,
-            // $errorsManager
+        $fixedFiles = $fixWith(
             $errorsManager,
-            // $linter
-            new Linter(),
-            // $isDryRun
-            true,
-            // $cacheManager
-            new NullCacheManager(),
-            // $directory
-            new Directory($path),
-            // $stopOnViolation
-            true,
-            // $parallelConfig
-            null,
-            // $input
-            null,
-            // $configFile
-            null,
-            // $ruleCustomizationPolicy
-            $ruleCustomizationPolicy
+            new class implements RuleCustomizationPolicyInterface {
+                public function customize(Fixer\FixerInterface $fixer, \SplFileInfo $file): Fixer\FixerInterface
+                {
+                    return $fixer;
+                }
+            }
         );
-
-        $fixInfo = $runner->fix();
-
         self::assertTrue($errorsManager->isEmpty(), 'No errors should occur in the fix() method');
-        self::assertSame([], $fixInfo);
-        self::assertTrue($ruleCustomizationPolicy->fixer3->fixInvoked, 'The fix method on fixer3 should be invoked');
+        self::assertSame(['A.php', 'B.php', 'C.php'], $fixedFiles, 'A: fixed, B: fixed, C: fixed, D: already ok');
+
+        // Test when the policy disables a fixer for a specific file
+        $errorsManager = new ErrorsManager();
+        $fixedFiles = $fixWith(
+            $errorsManager,
+            new class implements RuleCustomizationPolicyInterface {
+                public function customize(Fixer\FixerInterface $fixer, \SplFileInfo $file): ?Fixer\FixerInterface
+                {
+                    return 'B.php' === $file->getBasename() ? null : $fixer;
+                }
+            }
+        );
+        self::assertTrue($errorsManager->isEmpty(), 'No errors should occur in the fix() method');
+        self::assertSame(['A.php', 'C.php'], $fixedFiles, 'A: fixed, B: skipped, C: fixed, D: already ok');
+
+        // Test when the policy changes a fixer for specific files
+        $errorsManager = new ErrorsManager();
+        $fixedFiles = $fixWith(
+            $errorsManager,
+            new class implements RuleCustomizationPolicyInterface {
+                public function customize(Fixer\FixerInterface $fixer, \SplFileInfo $file): Fixer\FixerInterface
+                {
+                    if ($fixer instanceof Fixer\ArrayNotation\ArraySyntaxFixer && \in_array($file->getBasename(), ['B.php', 'D.php'], true)) {
+                        $fixer = clone $fixer;
+                        $fixer->configure(['syntax' => 'long']);
+                    }
+
+                    return $fixer;
+                }
+            }
+        );
+        self::assertTrue($errorsManager->isEmpty(), 'No errors should occur in the fix() method');
+        self::assertSame(['A.php', 'C.php', 'D.php'], $fixedFiles, 'A: fixed, B: ok for new configuration, C: fixed, D: fixed with new configuration');
+
+        // Test when the policy changes the fixer class - that's not allowed
+        $errorsManager = new ErrorsManager();
+        $fixedFiles = $fixWith(
+            $errorsManager,
+            new class implements RuleCustomizationPolicyInterface {
+                public function customize(Fixer\FixerInterface $fixer, \SplFileInfo $file): Fixer\FixerInterface
+                {
+                    return 'B.php' === $file->getBasename() ? new Fixer\Whitespace\LineEndingFixer() : $fixer;
+                }
+            }
+        );
+        self::assertFalse($errorsManager->isEmpty(), 'An error should occur when the policy changes the fixer class for file B');
+        $errorsForB = $errorsManager->forPath($path.\DIRECTORY_SEPARATOR.'B.php');
+        self::assertCount(1, $errorsForB, 'An error should occur when the policy changes the fixer class for file B');
+        self::assertInstanceOf(\RuntimeException::class, $errorsForB[0]->getSource());
+        self::assertStringContainsString('expected '.\get_class($arraySyntaxFixer), $errorsForB[0]->getSource()->getMessage());
+        self::assertStringContainsString('got '.Fixer\Whitespace\LineEndingFixer::class, $errorsForB[0]->getSource()->getMessage());
+        self::assertSame(['A.php', 'C.php'], $fixedFiles, 'A: fixed, B: exception thrown, C: fixed, D: already ok');
     }
 
     private function createDifferDouble(): DifferInterface

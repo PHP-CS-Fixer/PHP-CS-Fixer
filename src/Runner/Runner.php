@@ -458,9 +458,15 @@ final class Runner
         try {
             foreach ($this->fixers as $fixer) {
                 if (null !== $this->ruleCustomizationPolicy) {
-                    $fixer = $this->ruleCustomizationPolicy->customize($fixer, $file);
-                    if (null === $fixer) {
+                    $actualFixer = $this->ruleCustomizationPolicy->customize($fixer, $file);
+                    if (null === $actualFixer) {
                         continue;
+                    }
+                    if ($fixer !== $actualFixer) {
+                        if (\get_class($fixer) !== \get_class($actualFixer)) {
+                            throw new \RuntimeException('The fixer returned by the Rule Customization Policy must be of the same class as the original fixer (expected '.\get_class($fixer).', got '.\get_class($actualFixer).')');
+                        }
+                        $fixer = $actualFixer;
                     }
                 }
                 // for custom fixers we don't know is it safe to run `->fix()` without checking `->supports()` and `->isCandidate()`,
