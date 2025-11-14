@@ -121,6 +121,13 @@ final class ComposerJsonReaderTest extends TestCase
 }',
         ];
 
+        yield 'version with >= and a space' => [
+            '9.6',
+            '{
+    "require-dev": { "phpunit/phpunit": ">= 9.6.25" }
+}',
+        ];
+
         yield 'version with <' => [
             null, // not supported !
             '{
