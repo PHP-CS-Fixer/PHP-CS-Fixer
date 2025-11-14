@@ -102,9 +102,6 @@ jobs:
       - name: Check - no American English
         run: ./dev-tools/check_no_american_english.sh
 
-      - name: Check - public API surface
-        run: php dev-tools/check_public_api_surface.php
-
       - name: Find changed files (for pull request)
         if: ${{ github.event_name == 'pull_request' }}
         run: |
