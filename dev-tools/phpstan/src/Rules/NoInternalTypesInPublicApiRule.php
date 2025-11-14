@@ -34,16 +34,6 @@ use PHPStan\Rules\RuleErrorBuilder;
  */
 final class NoInternalTypesInPublicApiRule implements Rule
 {
-    /**
-     * Known violations that should be fixed in the future.
-     *
-     * @var array<string, true>
-     */
-    private const KNOWN_VIOLATIONS = [
-        'PhpCsFixer\DocBlock\Annotation::__construct():PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis' => true,
-        'PhpCsFixer\DocBlock\Annotation::__construct():PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis' => true,
-    ];
-
     private ReflectionProvider $reflectionProvider;
 
     public function __construct(ReflectionProvider $reflectionProvider)
@@ -236,11 +226,6 @@ final class NoInternalTypesInPublicApiRule implements Rule
         // Check if the type class is internal (check PHPDoc)
         if ($this->isInternal($typeClassReflection)) {
             $violationKey = \sprintf('%s::%s():%s', $className, $methodName, $typeName);
-
-            // Skip known violations
-            if (isset(self::KNOWN_VIOLATIONS[$violationKey])) {
-                return [];
-            }
 
             return [
                 RuleErrorBuilder::message(\sprintf(
