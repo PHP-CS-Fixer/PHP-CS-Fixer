@@ -71,6 +71,11 @@ parameters:
 
 services:
     -
+        class: PhpCsFixer\PHPStan\Rules\NoInternalTypesInPublicApiRule
+        tags:
+            - phpstan.rules.rule
+
+    -
         class: PhpCsFixer\PHPStan\Extension\PregMatchParameterOutExtension
         tags:
             - phpstan.staticMethodParameterOutTypeExtension
