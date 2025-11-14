@@ -70,8 +70,7 @@ parameters:
     tmpDir: dev-tools/phpstan/cache
 
 rules:
-    -
-        class: PhpCsFixer\PHPStan\Rules\NoInternalTypesInPublicApiRule
+    - PhpCsFixer\PHPStan\Rules\NoInternalTypesInPublicApiRule
 
 services:
     -

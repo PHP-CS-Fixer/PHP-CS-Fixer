@@ -22,6 +22,7 @@ use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleError;
+use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\RuleErrorBuilder;
 
 /**
@@ -139,8 +140,8 @@ final class NoInternalTypesInPublicApiRule implements Rule
 
         foreach ($lines as $line) {
             // Match @return or @param annotations
-            if (preg_match('/'.$tag.'\s+([^\s]+)/', $line, $matches)) {
-                $typeString = $matches[1];
+            if (1 === preg_match('/'.$tag.'\s+([^\s]+)/', $line, $matches)) {
+                $typeString = $matches[1]; // @phpstan-ignore offsetAccess.notFound
                 // Parse type string and extract class names
                 $types = array_merge($types, $this->parseTypeString($typeString));
             }
@@ -164,11 +165,15 @@ final class NoInternalTypesInPublicApiRule implements Rule
         // Handle union types (Type1|Type2)
         $parts = preg_split('/[|&]/', $typeString);
 
+        if (false === $parts) {
+            return [];
+        }
+
         foreach ($parts as $part) {
             $part = trim($part);
 
             // Handle generic types like array<Type>, list<Type>
-            if (preg_match('/^(?:array|list|iterable)<(.+)>$/', $part, $match)) {
+            if (1 === preg_match('/^(?:array|list|iterable)<(.+)>$/', $part, $match)) {
                 $classNames = array_merge($classNames, $this->parseTypeString($match[1]));
 
                 continue;
@@ -199,13 +204,13 @@ final class NoInternalTypesInPublicApiRule implements Rule
             $classNames[] = ltrim($part, '\\');
         }
 
-        return array_unique($classNames);
+        return array_values(array_unique($classNames));
     }
 
     /**
      * Check if a type name refers to an internal class.
      *
-     * @return list<RuleError>
+     * @return list<\PHPStan\Rules\IdentifierRuleError>
      */
     private function checkTypeNameForInternal(
         string $typeName,
@@ -244,7 +249,9 @@ final class NoInternalTypesInPublicApiRule implements Rule
                     $methodName,
                     $typeName,
                     $context
-                ))->identifier('phpCsFixer.internalTypeInPublicApi')->build(),
+                ))
+                ->identifier('phpCsFixer.internalTypeInPublicApi')
+                ->build(),
             ];
         }
 
