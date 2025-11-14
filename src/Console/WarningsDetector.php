@@ -76,7 +76,7 @@ final class WarningsDetector
             $minPhpVersion = $composerJsonReader->getPhp();
 
             if (null === $minPhpVersion) {
-                $this->warnings[] = 'No PHP version requirement found in composer.json. It is recommended to specify a minimum PHP version.';
+                $this->warnings[] = 'No PHP version requirement found in composer.json. It is recommended to specify a minimum PHP version supported by your project.';
 
                 return;
             }
@@ -87,14 +87,14 @@ final class WarningsDetector
             // Compare major.minor versions
             if (version_compare($currentPhpMajorMinor, $minPhpVersion, '>')) {
                 $this->warnings[] = \sprintf(
-                    'You are running PHP CS Fixer on PHP %1$s, but the minimum supported version in composer.json is PHP %2$s. This may introduce syntax or features not yet available in PHP %2$s, which could cause issues under that version. It is recommended to run PHP CS Fixer on PHP %2$s, to fit your project specifics.',
+                    'You are running PHP CS Fixer on PHP %1$s, but the minimum PHP version supported by your project in composer.json is PHP %2$s. Executing PHP CS Fixer on newer PHP versions may introduce syntax or features not yet available in PHP %2$s, which could cause issues under that version. It is recommended to run PHP CS Fixer on PHP %2$s, to fit your project specifics.',
                     $currentPhpVersion,
                     $minPhpVersion
                 );
             }
         } catch (\Throwable $e) {
             $this->warnings[] = \sprintf(
-                'Unable to determine minimum supported PHP version from composer.json: %s',
+                'Unable to determine minimum PHP version supported by your project from composer.json: %s',
                 $e->getMessage()
             );
         }
