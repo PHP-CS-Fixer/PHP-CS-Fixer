@@ -69,10 +69,12 @@ parameters:
         consoleApplicationLoader: dev-tools/phpstan/console-application.php
     tmpDir: dev-tools/phpstan/cache
 
-rules:
-    - PhpCsFixer\PHPStan\Rules\NoInternalTypesInPublicApiRule
-
 services:
+    -
+        class: PhpCsFixer\PHPStan\Rules\NoInternalTypesInPublicApiRule
+        tags:
+            - phpstan.rules.rule
+
     -
         class: PhpCsFixer\PHPStan\Extension\PregMatchParameterOutExtension
         tags:
