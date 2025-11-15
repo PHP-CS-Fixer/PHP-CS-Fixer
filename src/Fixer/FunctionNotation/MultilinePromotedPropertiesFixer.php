@@ -178,12 +178,10 @@ final class MultilinePromotedPropertiesFixer extends AbstractFixer implements Co
             $this->whitespacesConfig->getLineEnding().$indent,
         );
 
-        $index = $tokens->getPrevMeaningfulToken($closeParenthesis);
-        \assert(\is_int($index));
+        $index = $tokens->requirePrevMeaningfulToken($closeParenthesis);
 
         while ($index > $openParenthesis) {
-            $index = $tokens->getPrevMeaningfulToken($index);
-            \assert(\is_int($index));
+            $index = $tokens->requirePrevMeaningfulToken($index);
 
             $blockType = Tokens::detectBlockType($tokens[$index]);
             if (null !== $blockType && !$blockType['isStart']) {

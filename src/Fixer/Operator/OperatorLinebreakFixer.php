@@ -166,8 +166,7 @@ final class OperatorLinebreakFixer extends AbstractFixer implements Configurable
 
             $operatorIndices = [$index];
             if ($tokens[$index]->equals(':')) {
-                /** @var int $prevIndex */
-                $prevIndex = $tokens->getPrevMeaningfulToken($index);
+                $prevIndex = $tokens->requirePrevMeaningfulToken($index);
                 if ($tokens[$prevIndex]->equals('?')) {
                     $operatorIndices = [$prevIndex, $index];
                     $index = $prevIndex;
@@ -183,12 +182,10 @@ final class OperatorLinebreakFixer extends AbstractFixer implements Configurable
      */
     private function fixOperatorLinebreak(Tokens $tokens, array $operatorIndices): void
     {
-        /** @var int $prevIndex */
-        $prevIndex = $tokens->getPrevMeaningfulToken(min($operatorIndices));
+        $prevIndex = $tokens->requirePrevMeaningfulToken(min($operatorIndices));
         $indexStart = $prevIndex + 1;
 
-        /** @var int $nextIndex */
-        $nextIndex = $tokens->getNextMeaningfulToken(max($operatorIndices));
+        $nextIndex = $tokens->requireNextMeaningfulToken(max($operatorIndices));
         $indexEnd = $nextIndex - 1;
 
         if (!$this->isMultiline($tokens, $indexStart, $indexEnd)) {
@@ -218,8 +215,7 @@ final class OperatorLinebreakFixer extends AbstractFixer implements Configurable
         /** @var int $prevIndex */
         $prevIndex = $tokens->getNonEmptySibling(min($operatorIndices), -1);
 
-        /** @var int $nextIndex */
-        $nextIndex = $tokens->getNextMeaningfulToken(max($operatorIndices));
+        $nextIndex = $tokens->requireNextMeaningfulToken(max($operatorIndices));
 
         for ($i = $nextIndex - 1; $i > max($operatorIndices); --$i) {
             if ($tokens[$i]->isWhitespace() && Preg::match('/\R/u', $tokens[$i]->getContent())) {
@@ -240,8 +236,7 @@ final class OperatorLinebreakFixer extends AbstractFixer implements Configurable
      */
     private function fixMoveToTheEnd(Tokens $tokens, array $operatorIndices): void
     {
-        /** @var int $prevIndex */
-        $prevIndex = $tokens->getPrevMeaningfulToken(min($operatorIndices));
+        $prevIndex = $tokens->requirePrevMeaningfulToken(min($operatorIndices));
 
         /** @var int $nextIndex */
         $nextIndex = $tokens->getNonEmptySibling(max($operatorIndices), 1);
