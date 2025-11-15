@@ -17,8 +17,6 @@ namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
 /**
  * @readonly
  *
- * @internal
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NamespaceAnalysis
@@ -53,6 +51,9 @@ final class NamespaceAnalysis
      */
     private int $scopeEndIndex;
 
+    /**
+     * @internal
+     */
     public function __construct(string $fullName, string $shortName, int $startIndex, int $endIndex, int $scopeStartIndex, int $scopeEndIndex)
     {
         $this->fullName = $fullName;
