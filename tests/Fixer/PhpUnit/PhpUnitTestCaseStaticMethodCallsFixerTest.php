@@ -59,7 +59,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
     }
 
     /**
-     * @param array<array-key, mixed> $configuration
+     * @param array<string, mixed> $configuration
      *
      * @dataProvider provideInvalidConfigurationCases
      */
@@ -72,7 +72,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
     }
 
     /**
-     * @return iterable<string, array{mixed, string}>
+     * @return iterable<string, array{array<string, mixed>, string}>
      */
     public static function provideInvalidConfigurationCases(): iterable
     {
