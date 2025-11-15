@@ -35,7 +35,6 @@ use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\ToolInfoInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -313,21 +312,12 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 ) : ' sequentially'
             ));
 
-            /** @TODO v4 remove warnings related to parallel runner */
+            /** @TODO v4 remove notice related to parallel runner */
             $availableMaxProcesses = ParallelConfigFactory::detect()->getMaxProcesses();
-            if ($isParallel || $availableMaxProcesses > 1) {
-                $usageDocs = 'https://cs.symfony.com/doc/usage.html';
-                $stdErr->writeln(\sprintf(
-                    $stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s',
-                    $isParallel
-                        ? 'Parallel runner is an experimental feature and may be unstable, use it at your own risk. Feedback highly appreciated!'
-                        : \sprintf(
-                            'You can enable parallel runner and speed up the analysis! Please see %s for more information.',
-                            $stdErr->isDecorated()
-                                ? \sprintf('<href=%s;bg=yellow;fg=red;bold>usage docs</>', OutputFormatter::escape($usageDocs))
-                                : $usageDocs
-                        )
-                ));
+            if ($isParallel && $availableMaxProcesses > 1) {
+                $stdErr->writeln(
+                    'Parallel runner is an experimental feature and may be unstable, use it at your own risk. Feedback highly appreciated!'
+                );
             }
 
             $configFile = $resolver->getConfigFile();
