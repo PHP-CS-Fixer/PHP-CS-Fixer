@@ -246,6 +246,15 @@ final class ComposerJsonReaderTest extends TestCase
             '{}',
         ];
 
+        yield 'standard usage' => [
+            '8.4',
+            '{
+    "require": {
+        "php": "^8.4"
+    }
+}',
+        ];
+
         yield 'all mixed with prio for require' => [
             '7.0',
             '{
