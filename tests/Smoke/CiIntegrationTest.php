@@ -167,7 +167,7 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
         $optionalXdebugWarning = 'You are running PHP CS Fixer with xdebug enabled. This has a major impact on runtime performance.
 ';
 
-        $optionalComposerWarning = 'Unable to determine minimum supported PHP version from composer.json: Failed to read file "composer.json".
+        $optionalComposerWarning = 'Unable to determine minimum PHP version supported by your project from composer.json: Failed to read file "composer.json".
 ';
 
         $optionalWarningsHelp = 'If you need help while solving warnings, ask at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/discussions/, we will help you!
