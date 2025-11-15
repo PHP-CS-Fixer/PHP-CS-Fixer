@@ -343,7 +343,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @param array<string, mixed> $wrongConfig
+     * @param array<array-key, mixed> $wrongConfig
      *
      * @dataProvider provideInvalidConfigurationCases
      */

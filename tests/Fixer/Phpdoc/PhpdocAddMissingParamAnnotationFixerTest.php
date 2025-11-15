@@ -34,7 +34,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param array<array-key, mixed> $configuration
+     * @param array<string, mixed> $configuration
      *
      * @dataProvider provideInvalidConfigurationCases
      */
@@ -47,7 +47,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     }
 
     /**
-     * @return iterable<string, array{mixed, string}>
+     * @return iterable<string, array{array<string, mixed>, string}>
      */
     public static function provideInvalidConfigurationCases(): iterable
     {
