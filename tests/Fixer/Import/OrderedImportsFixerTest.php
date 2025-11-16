@@ -2059,7 +2059,7 @@ B#
     }
 
     /**
-     * @return iterable<string, array{string, mixed}>
+     * @return iterable<string, array{string, array<string, mixed>}>
      */
     public static function provideInvalidConfigurationCases(): iterable
     {
