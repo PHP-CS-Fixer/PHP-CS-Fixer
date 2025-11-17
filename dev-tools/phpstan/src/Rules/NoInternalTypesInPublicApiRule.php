@@ -70,7 +70,7 @@ final class NoInternalTypesInPublicApiRule implements Rule
             }
 
             // Skip if method is internal (check PHPDoc @internal annotation)
-            if ($this->isInternalMethod($methodReflection)) {
+            if ($this->isInternalMethod($classReflection, $methodReflection)) {
                 continue;
             }
 
@@ -139,19 +139,34 @@ final class NoInternalTypesInPublicApiRule implements Rule
      */
     private function isInternal(ClassReflection $classReflection): bool
     {
-        $docComment = $classReflection->getNativeReflection()->getDocComment();
+        static $cache = [];
 
-        return false !== $docComment && str_contains($docComment, '@internal');
+        $name = $classReflection->getName();
+
+        if (!isset($cache[$name])) {
+            $docComment = $classReflection->getNativeReflection()->getDocComment();
+            $cache[$name] = false !== $docComment && str_contains($docComment, '@internal');
+        }
+
+        return $cache[$name];
     }
 
     /**
      * Check if a method is marked as @internal in PHPDoc.
      */
-    private function isInternalMethod(MethodReflection $methodReflection): bool
+    private function isInternalMethod(ClassReflection $classReflection, MethodReflection $methodReflection): bool
     {
-        $docComment = $methodReflection->getDocComment();
+        static $cache = [];
 
-        return null !== $docComment && str_contains($docComment, '@internal');
+        $name = \sprintf('%s::%s', $classReflection->getName(), $methodReflection->getName());
+
+        if (!isset($cache[$name])) {
+            $docComment = $methodReflection->getDocComment();
+
+            $cache[$name] = null !== $docComment && str_contains($docComment, '@internal');
+        }
+
+        return $cache[$name];
     }
 
     /**
