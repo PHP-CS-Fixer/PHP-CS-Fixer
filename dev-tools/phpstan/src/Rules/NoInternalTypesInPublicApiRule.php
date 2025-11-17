@@ -23,10 +23,7 @@ use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
-use PHPStan\Type\IntersectionType;
 use PHPStan\Type\Type;
-use PHPStan\Type\TypeWithClassName;
-use PHPStan\Type\UnionType;
 
 /**
  * Validates that public and protected methods and properties in non-internal classes do not expose internal types.
@@ -183,84 +180,21 @@ final class NoInternalTypesInPublicApiRule implements Rule
     ): array {
         $errors = [];
 
-        // Handle union types (Type1|Type2)
-        if ($type instanceof UnionType) {
-            foreach ($type->getTypes() as $innerType) {
-                $errors = array_merge(
-                    $errors,
-                    $this->checkTypeForInternal($innerType, $className, $memberName, $context)
-                );
-            }
-
-            return $errors;
-        }
-
-        // Handle intersection types (Type1&Type2)
-        if ($type instanceof IntersectionType) {
-            foreach ($type->getTypes() as $innerType) {
-                $errors = array_merge(
-                    $errors,
-                    $this->checkTypeForInternal($innerType, $className, $memberName, $context)
-                );
-            }
-
-            return $errors;
-        }
-
-        // Check if type is a class type
-        if ($type instanceof TypeWithClassName) {
-            $typeClassName = $type->getClassName();
-
-            // Skip if we can't reflect the class
-            if (!$this->reflectionProvider->hasClass($typeClassName)) {
-                return [
-                    RuleErrorBuilder::message(\sprintf(
-                        '%s %s exposes _unknown_ type %s in %s type.',
-                        $className,
-                        $memberName,
-                        $typeClassName,
-                        $context
-                    ))
-                        ->identifier('phpCsFixer.internalTypeInPublicApi')
-                        ->build(),
-                ];
-            }
-
-            $typeClassReflection = $this->reflectionProvider->getClass($typeClassName);
-
+        // Recursively check all class references in the type
+        // This handles union types, intersection types, and generic types automatically
+        foreach ($type->getObjectClassReflections() as $typeClassReflection) {
             // Check if the type class is internal (check PHPDoc)
             if ($this->isInternal($typeClassReflection)) {
-                return [
-                    RuleErrorBuilder::message(\sprintf(
-                        '%s %s exposes internal type %s in %s type.',
-                        $className,
-                        $memberName,
-                        $typeClassName,
-                        $context
-                    ))
-                        ->identifier('phpCsFixer.internalTypeInPublicApi')
-                        ->build(),
-                ];
-            }
-        }
-
-        // Recursively check generic types (e.g., array<InternalType>)
-        foreach ($type->getReferencedClasses() as $referencedClass) {
-            if ($this->reflectionProvider->hasClass($referencedClass)) {
-                $referencedClassReflection = $this->reflectionProvider->getClass($referencedClass);
-
-                if ($this->isInternal($referencedClassReflection)) {
-                    $errors[] = RuleErrorBuilder::message(\sprintf(
-                        '%s %s exposes internal type %s in %s type.',
-                        $className,
-                        $memberName,
-                        $referencedClass,
-                        $context
-                    ))
-                        ->identifier('phpCsFixer.internalTypeInPublicApi')
-                        ->build()
-                    ;
-                }
+                $errors[] = RuleErrorBuilder::message(\sprintf(
+                    '%s %s exposes internal type %s in %s type.',
+                    $className,
+                    $memberName,
+                    $typeClassReflection->getName(),
+                    $context
+                ))
+                    ->identifier('phpCsFixer.internalTypeInPublicApi')
+                    ->build()
+                ;
             }
         }
 
