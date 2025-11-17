@@ -213,7 +213,17 @@ final class NoInternalTypesInPublicApiRule implements Rule
 
             // Skip if we can't reflect the class
             if (!$this->reflectionProvider->hasClass($typeClassName)) {
-                return [];
+                return [
+                    RuleErrorBuilder::message(\sprintf(
+                        '%s %s exposes _unknown_ type %s in %s type.',
+                        $className,
+                        $memberName,
+                        $typeClassName,
+                        $context
+                    ))
+                        ->identifier('phpCsFixer.internalTypeInPublicApi')
+                        ->build(),
+                ];
             }
 
             $typeClassReflection = $this->reflectionProvider->getClass($typeClassName);
