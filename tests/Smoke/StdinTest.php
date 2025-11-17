@@ -47,7 +47,7 @@ final class StdinTest extends AbstractSmokeTestCase
         self::assertSame($fileResult->getCode(), $stdinResult->getCode());
 
         $expectedError = str_replace(
-            'Paths from configuration file have been overridden by paths provided as command arguments.'."\n",
+            'Paths from configuration have been overridden by paths provided as command arguments.'."\n",
             '',
             $fileResult->getError()
         );
