@@ -49,12 +49,19 @@ final class NoInternalTypesInPublicApiRule implements Rule
 
         $errors = [];
 
-        // Check methods (public and protected)
+        $classIsFinal = $classReflection->isFinal();
+
+        // Check methods
         foreach ($classReflection->getNativeReflection()->getMethods() as $method) {
             $methodReflection = $classReflection->getNativeMethod($method->getName());
 
             // Skip if method is private
             if ($methodReflection->isPrivate()) {
+                continue;
+            }
+
+            // Skip if method is protected inside final class
+            if ($classIsFinal && !$methodReflection->isPublic()) {
                 continue;
             }
 
@@ -92,10 +99,15 @@ final class NoInternalTypesInPublicApiRule implements Rule
             }
         }
 
-        // Check properties (public and protected)
+        // Check properties
         foreach ($classReflection->getNativeReflection()->getProperties() as $property) {
             // Skip private properties
             if ($property->isPrivate()) {
+                continue;
+            }
+
+            // Skip if property is protected inside final class
+            if ($classIsFinal && !$property->isPublic()) {
                 continue;
             }
 
