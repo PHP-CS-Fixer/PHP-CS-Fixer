@@ -1,8 +1,8 @@
 ===================================
-Rule set ``@PHP8x2Migration:risky``
+Rule set ``@PHP8x3Migration:risky``
 ===================================
 
-Rules to improve code for PHP 8.2 compatibility.
+Rules to improve code for PHP 8.3 compatibility.
 
 Warning
 -------
@@ -15,5 +15,4 @@ Using this rule set may lead to changes in your code's logic and behaviour. Use 
 Rules
 -----
 
-- `@PHP8x1Migration:risky <./PHP8x1MigrationRisky.rst>`_
-- `phpdoc_readonly_class_comment_to_keyword <./../rules/class_notation/phpdoc_readonly_class_comment_to_keyword.rst>`_
+- `@PHP8x2Migration:risky <./PHP8x2MigrationRisky.rst>`_
