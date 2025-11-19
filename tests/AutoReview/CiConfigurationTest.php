@@ -42,7 +42,7 @@ final class CiConfigurationTest extends TestCase
                 'PHP_MAX' => $this->getMaxPhpVersionFromEntryFile(),
                 'PHP_MIN' => $this->getMinPhpVersionFromEntryFile(),
             ],
-            $this->getGitHubCiEnvs(),
+            self::getGitHubCiEnvs(),
         );
     }
 
@@ -55,7 +55,7 @@ final class CiConfigurationTest extends TestCase
 
         self::assertTrue(\count($supportedVersions) > 0);
 
-        $ciVersions = $this->getAllPhpVersionsUsedByCiForTests();
+        $ciVersions = self::getAllPhpVersionsUsedByCiForTests();
 
         self::assertNotEmpty($ciVersions);
 
@@ -68,8 +68,8 @@ final class CiConfigurationTest extends TestCase
 
     public function testDeploymentJobRunOnLatestStablePhpThatIsSupportedByTool(): void
     {
-        $ciVersionsForDeployment = $this->getPhpVersionUsedByCiForDeployments();
-        $ciVersions = $this->getAllPhpVersionsUsedByCiForTests();
+        $ciVersionsForDeployment = self::getPhpVersionUsedByCiForDeployments();
+        $ciVersions = self::getAllPhpVersionsUsedByCiForTests();
         $expectedPhp = $this->getMaxPhpVersionFromEntryFile();
 
         if (\in_array($expectedPhp.'snapshot', $ciVersions, true)) {
@@ -256,7 +256,7 @@ final class CiConfigurationTest extends TestCase
         return $this->convertPhpVerIdToNiceVer($phpVerId);
     }
 
-    private function getPhpVersionUsedByCiForDeployments(): string
+    private static function getPhpVersionUsedByCiForDeployments(): string
     {
         $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/ci.yml');
 
@@ -268,7 +268,7 @@ final class CiConfigurationTest extends TestCase
     /**
      * @return array<string, string>
      */
-    private function getGitHubCiEnvs(): array
+    private static function getGitHubCiEnvs(): array
     {
         $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/ci.yml');
 
@@ -278,7 +278,7 @@ final class CiConfigurationTest extends TestCase
     /**
      * @return list<numeric-string>
      */
-    private function getAllPhpVersionsUsedByCiForTests(): array
+    private static function getAllPhpVersionsUsedByCiForTests(): array
     {
         $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/ci.yml');
 
