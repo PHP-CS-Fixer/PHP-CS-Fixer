@@ -140,6 +140,22 @@ final class CiConfigurationTest extends TestCase
     /**
      * @return list<numeric-string>
      */
+    public static function getAllPhpVersionsUsedByCiForTests(): array
+    {
+        $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/ci.yml');
+
+        $phpVersions = $yaml['jobs']['tests']['strategy']['matrix']['php-version'] ?? [];
+
+        foreach ($yaml['jobs']['tests']['strategy']['matrix']['include'] as $job) {
+            $phpVersions[] = $job['php-version'];
+        }
+
+        return array_unique($phpVersions); // @phpstan-ignore return.type (we know it's a list of parsed strings)
+    }
+
+    /**
+     * @return list<numeric-string>
+     */
     private static function generateMinorVersionsRange(float $from, float $to): array
     {
         $range = [];
@@ -273,22 +289,6 @@ final class CiConfigurationTest extends TestCase
         $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/ci.yml');
 
         return $yaml['env'];
-    }
-
-    /**
-     * @return list<numeric-string>
-     */
-    private static function getAllPhpVersionsUsedByCiForTests(): array
-    {
-        $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/ci.yml');
-
-        $phpVersions = $yaml['jobs']['tests']['strategy']['matrix']['php-version'] ?? [];
-
-        foreach ($yaml['jobs']['tests']['strategy']['matrix']['include'] as $job) {
-            $phpVersions[] = $job['php-version'];
-        }
-
-        return array_unique($phpVersions); // @phpstan-ignore return.type (we know it's a list of parsed strings)
     }
 
     /**
