@@ -222,23 +222,6 @@ final class CiConfigurationTest extends TestCase
         self::assertSame($supportedMaxPhp, (float) $capture['max']);
     }
 
-    private function getPhpVersionUsedByCiForDeployments(): string
-    {
-        $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/ci.yml');
-
-        $version = $yaml['jobs']['deployment']['env']['php-version'];
-
-        return \is_string($version) ? $version : \sprintf('%.1f', $version);
-    }
-
-    /**
-     * @return list<numeric-string>
-     */
-    private function getAllPhpVersionsUsedByCiForTests(): array
-    {
-        return $this->getPhpVersionsUsedByGitHub();
-    }
-
     private function convertPhpVerIdToNiceVer(string $verId): string
     {
         $matchResult = Preg::match('/^(?<major>\d{1,2})_?(?<minor>\d{2})_?(?<patch>\d{2})$/', $verId, $capture);
@@ -273,6 +256,15 @@ final class CiConfigurationTest extends TestCase
         return $this->convertPhpVerIdToNiceVer($phpVerId);
     }
 
+    private function getPhpVersionUsedByCiForDeployments(): string
+    {
+        $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/ci.yml');
+
+        $version = $yaml['jobs']['deployment']['env']['php-version'];
+
+        return \is_string($version) ? $version : \sprintf('%.1f', $version);
+    }
+
     /**
      * @return array<string, string>
      */
@@ -286,7 +278,7 @@ final class CiConfigurationTest extends TestCase
     /**
      * @return list<numeric-string>
      */
-    private function getPhpVersionsUsedByGitHub(): array
+    private function getAllPhpVersionsUsedByCiForTests(): array
     {
         $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/ci.yml');
 
