@@ -19,6 +19,7 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Node\InClassNode;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
+use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Rules\IdentifierRuleError;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
@@ -33,6 +34,10 @@ use PHPStan\Type\Type;
  */
 final class NoInternalTypesInPublicApiRule implements Rule
 {
+    public function __construct(
+        private ReflectionProvider $reflectionProvider,
+    ) {}
+
     public function getNodeType(): string
     {
         return InClassNode::class;
@@ -184,8 +189,9 @@ final class NoInternalTypesInPublicApiRule implements Rule
 
         // Recursively check all class references in the type
         // This handles union types, intersection types, and generic types automatically
-        foreach ($type->getObjectClassReflections() as $typeClassReflection) {
+        foreach ($type->getReferencedClasses() as $referencedClass) {
             // Check if the type class is internal (check PHPDoc)
+            $typeClassReflection = $this->reflectionProvider->getClass($referencedClass);
             if ($this->isInternal($typeClassReflection)) {
                 $errors[] = RuleErrorBuilder::message(\sprintf(
                     '%s %s exposes internal type %s in %s type.',
