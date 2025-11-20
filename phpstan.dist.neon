@@ -64,6 +64,11 @@ parameters:
             message: '/^Unused PhpCsFixer\\[a-zA-Z\\]+Interface::[a-zA-Z]+$/'
             path: src
             count: 17
+
+        -
+            message: '/^AnonymousClass/'
+            path: tests/
+            identifier: phpCsFixer.internalTypeInPublicApi
     tipsOfTheDay: false
     symfony:
         consoleApplicationLoader: dev-tools/phpstan/console-application.php
