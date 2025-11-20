@@ -23,6 +23,7 @@ use PhpCsFixer\Tests\AutoReview\CiConfigurationTest;
 use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleset;
 use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tests\Test\CiReader;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -79,7 +80,7 @@ final class RuleSetsTest extends TestCase
 
     public function testThatPhpMigrationSetsAreDefinedForEachSupportedPhpVersion(): void
     {
-        $supportedPhpVersions = CiConfigurationTest::getAllPhpVersionsUsedByCiForTests();
+        $supportedPhpVersions = CiReader::getAllPhpVersionsUsedByCiForTests();
 
         $sets = RuleSets::getSetDefinitions();
         self::assertNotEmpty($supportedPhpVersions);
