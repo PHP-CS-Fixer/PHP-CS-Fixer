@@ -25,4 +25,8 @@ Rules candidates
 - `@PHP7x1Migration:risky <./PHP7x1MigrationRisky.rst>`_
 - `@PHP7x4Migration:risky <./PHP7x4MigrationRisky.rst>`_
 - `@PHP8x0Migration:risky <./PHP8x0MigrationRisky.rst>`_
+- `@PHP8x1Migration:risky <./PHP8x1MigrationRisky.rst>`_
 - `@PHP8x2Migration:risky <./PHP8x2MigrationRisky.rst>`_
+- `@PHP8x3Migration:risky <./PHP8x3MigrationRisky.rst>`_
+- `@PHP8x4Migration:risky <./PHP8x4MigrationRisky.rst>`_
+- `@PHP8x5Migration:risky <./PHP8x5MigrationRisky.rst>`_
