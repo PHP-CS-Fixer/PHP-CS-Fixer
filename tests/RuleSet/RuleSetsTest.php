@@ -20,6 +20,7 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleset;
+use PhpCsFixer\Tests\Test\CiReader;
 use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
 
@@ -76,6 +77,21 @@ final class RuleSetsTest extends TestCase
         RuleSets::getSetDefinition($name);
     }
 
+    public function testThatPhpMigrationSetsAreDefinedForEachSupportedPhpVersion(): void
+    {
+        $supportedPhpVersions = CiReader::getAllPhpVersionsUsedByCiForTests();
+
+        $sets = RuleSets::getSetDefinitions();
+        self::assertNotEmpty($supportedPhpVersions);
+        foreach ($supportedPhpVersions as $version) {
+            foreach (['', ':risky'] as $suffix) {
+                $setName = \sprintf('@PHP%sMigration%s', str_replace('.', 'x', $version), $suffix);
+                // var_dump($setName);
+                self::assertArrayHasKey($setName, $sets, \sprintf('Set "%s" is not defined.', $setName));
+            }
+        }
+    }
+
     /**
      * @dataProvider provideSetDefinitionNameCases
      */
@@ -123,6 +139,16 @@ final class RuleSetsTest extends TestCase
 
         if (str_starts_with($setDefinitionName, '@auto')) {
             self::markTestSkipped(\sprintf('Set "%s" is automatic and it\'s definition depends on individual project.', $setDefinitionName));
+        }
+
+        \assert(\array_key_exists($setDefinitionName, RuleSets::getSetDefinitions()));
+        $setDefinition = RuleSets::getSetDefinitions()[$setDefinitionName]->getRules();
+
+        if (1 === \count($setDefinition)
+            && str_starts_with($setDefinitionName, '@PHP')
+            && str_starts_with(array_key_first($setDefinition), '@PHP')
+        ) {
+            self::markTestSkipped(\sprintf('Set "%s" only includes previous, no own rules to test.', $setDefinitionName));
         }
 
         $setDefinitionFileNamePrefix = str_replace(':', '-', $setDefinitionName);

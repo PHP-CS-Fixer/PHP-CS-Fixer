@@ -12,22 +12,13 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\RuleSet\Sets;
-
-use PhpCsFixer\RuleSet\AbstractMigrationSetDefinition;
+namespace PhpCsFixer\Tests\RuleSet\Sets;
 
 /**
  * @internal
  *
+ * @covers \PhpCsFixer\RuleSet\Sets\PHP8x4MigrationRiskySet
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PHP8x2MigrationRiskySet extends AbstractMigrationSetDefinition
-{
-    public function getRules(): array
-    {
-        return [
-            '@PHP8x1Migration:risky' => true,
-            'phpdoc_readonly_class_comment_to_keyword' => true,
-        ];
-    }
-}
+final class PHP8x4MigrationRiskySetTest extends AbstractSetTestCase {}

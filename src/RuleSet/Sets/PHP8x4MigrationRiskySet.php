@@ -21,13 +21,12 @@ use PhpCsFixer\RuleSet\AbstractMigrationSetDefinition;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PHP8x2MigrationRiskySet extends AbstractMigrationSetDefinition
+final class PHP8x4MigrationRiskySet extends AbstractMigrationSetDefinition
 {
     public function getRules(): array
     {
         return [
-            '@PHP8x1Migration:risky' => true,
-            'phpdoc_readonly_class_comment_to_keyword' => true,
+            '@PHP8x3Migration:risky' => true,
         ];
     }
 }

@@ -3,6 +3,34 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.90.0
+---------------------
+
+* feat: always have `@PHPXxYMigration(:risky)` sets for supported PHP versions (#9207)
+* feat: Finder to find dot-files by default in v4/future-mode (#9187)
+* fix: manage the space between operator and version on Composer JSON reader (#9203)
+* fix: PhpdocAnnotationWithoutDotFixer lowercases `@param` type when description starts with all-uppercase word (#9169)
+* UX: groom warning of PHP mismatch for runtime vs target project minimum supported version (#9202)
+* UX: Rules override warning (#9188)
+* UX: `describe` command - allow to visualize Set as tree (#9179)
+* docs: rework `.php-cs-fixer.php` local config file docs (#9185)
+* docs: update Set descriptions (#9183)
+* chore: Declare support for Symfony 8 (#9172)
+* chore: add missing v4 TODOs (#9197)
+* chore: mark one remaining Analyzer to become internal (#9194)
+* chore: mark v2 leftovers with v4 TODO (#9181)
+* chore: no need for deprecation trigger in internal DataProviderAnalysis (#9192)
+* deps: bump crate-ci/typos from 1.38.1 to 1.39.0 (#9175)
+* deps: bump crate-ci/typos from 1.39.0 to 1.39.2 (#9205)
+* deps: bump the phpstan group in /dev-tools with 2 updates (#9204)
+* DX: different name for special configs (#9180)
+* DX: improve types for `testInvalidConfiguration` methods (#9206)
+* DX: `describe` command - allow to expose rules without sets via `@-` alias (#9178)
+* refactor: move assertions from `tearDown` into `assertPostConditions` to fix `Test code or tested code did not remove its own error handlers` warning (#9182)
+* refactor: prevent tests to use actual repository `.php-cs-fixer.dist.php` file (#9177)
+* test: add more test(s) for ComposerJsonReader (#9200)
+* test: ensure calling parent method from hook-alike methods (#9184)
+
 Changelog for v3.89.2
 ---------------------
 

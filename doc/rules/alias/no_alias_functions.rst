@@ -121,7 +121,23 @@ The rule is part of the following rule sets:
 
   ``['sets' => ['@all']]``
 
+- `@PHP8x1Migration:risky <./../../ruleSets/PHP8x1MigrationRisky.rst>`_ with config:
+
+  ``['sets' => ['@all']]``
+
 - `@PHP8x2Migration:risky <./../../ruleSets/PHP8x2MigrationRisky.rst>`_ with config:
+
+  ``['sets' => ['@all']]``
+
+- `@PHP8x3Migration:risky <./../../ruleSets/PHP8x3MigrationRisky.rst>`_ with config:
+
+  ``['sets' => ['@all']]``
+
+- `@PHP8x4Migration:risky <./../../ruleSets/PHP8x4MigrationRisky.rst>`_ with config:
+
+  ``['sets' => ['@all']]``
+
+- `@PHP8x5Migration:risky <./../../ruleSets/PHP8x5MigrationRisky.rst>`_ with config:
 
   ``['sets' => ['@all']]``
 
