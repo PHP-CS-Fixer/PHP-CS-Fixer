@@ -17,7 +17,7 @@ namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
 /**
  * @readonly
  *
- * @internal
+ * @TODO v4: previously was mareked as internal - yet it leaked to public interface of `DocBlock`, consider making it so again.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
@@ -53,6 +53,9 @@ final class NamespaceAnalysis
      */
     private int $scopeEndIndex;
 
+    /**
+     * @internal
+     */
     public function __construct(string $fullName, string $shortName, int $startIndex, int $endIndex, int $scopeStartIndex, int $scopeEndIndex)
     {
         $this->fullName = $fullName;
