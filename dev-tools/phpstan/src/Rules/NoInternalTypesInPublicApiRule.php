@@ -72,11 +72,10 @@ final class NoInternalTypesInPublicApiRule implements Rule
 
             // Check return type using PHPStan's type system
             foreach ($methodReflection->getVariants() as $variant) {
-                $returnType = $variant->getReturnType();
                 $errors = array_merge(
                     $errors,
                     $this->checkTypeForInternal(
-                        $returnType,
+                        $variant->getReturnType(),
                         $classReflection->getName(),
                         'method '.$methodReflection->getName().'()',
                         'return'
@@ -85,11 +84,10 @@ final class NoInternalTypesInPublicApiRule implements Rule
 
                 // Check parameter types using PHPStan's type system
                 foreach ($variant->getParameters() as $parameter) {
-                    $paramType = $parameter->getType();
                     $errors = array_merge(
                         $errors,
                         $this->checkTypeForInternal(
-                            $paramType,
+                            $parameter->getType(),
                             $classReflection->getName(),
                             'method '.$methodReflection->getName().'()',
                             'parameter $'.$parameter->getName()
