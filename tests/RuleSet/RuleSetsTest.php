@@ -19,11 +19,10 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSets;
-use PhpCsFixer\Tests\AutoReview\CiConfigurationTest;
 use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleset;
+use PhpCsFixer\Tests\Test\CiReader;
 use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
-use PhpCsFixer\Tests\Test\CiReader;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
