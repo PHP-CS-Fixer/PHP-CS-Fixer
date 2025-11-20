@@ -38,6 +38,16 @@ final class NoInternalTypesInPublicApiRule implements Rule
         private ReflectionProvider $reflectionProvider,
     ) {}
 
+    /**
+     * For quick debug.
+     *
+     * @phpstan-ignore-next-line shipmonk.deadMethodsss
+     */
+    public static function debug(string $msg): void
+    {
+        file_put_contents('phpstan.log', $msg."\n", \FILE_APPEND);
+    }
+
     public function getNodeType(): string
     {
         return InClassNode::class;
