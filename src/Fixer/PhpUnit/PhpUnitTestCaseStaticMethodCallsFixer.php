@@ -526,7 +526,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
                     \sprintf('Configuration cannot contain method "%s" and target "%s", it is dynamic in that PHPUnit version.', $method, $this->configuration['target'])
                 );
             }
-            // @phpstan-ignore-next-line assign.propertyType
+
             $this->configuration['methods'][$method] = self::CALL_TYPE_THIS;
         }
     }
