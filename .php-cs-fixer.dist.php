@@ -17,6 +17,13 @@ use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\Internal\ConfigurableFixerTemplateFixer;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
+if (
+    filter_var(getenv('PHP_CS_FIXER_TESTS_SYSTEM_UNDER_TEST'), \FILTER_VALIDATE_BOOL)
+    && !filter_var(getenv('PHP_CS_FIXER_TESTS_ALLOW_ONE_TIME_SELF_CONFIG_USAGE'), \FILTER_VALIDATE_BOOL)
+) {
+    throw new Error(sprintf('This configuration file ("%s") is not meant to be used in tests.', __FILE__));
+}
+
 $fileHeaderParts = [
     <<<'EOF'
         This file is part of PHP CS Fixer.

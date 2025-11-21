@@ -5,7 +5,7 @@
     xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
     beStrictAboutChangesToGlobalState="true"
     beStrictAboutOutputDuringTests="true"
-    bootstrap="./vendor/autoload.php"
+    bootstrap="./tests/bootstrap.php"
     cacheDirectory="./dev-tools/phpunit/cache"
     colors="true"
     columns="max"
@@ -59,5 +59,8 @@
         <env name="PHP_CS_FIXER_FAST_LINT_TEST_CASES" value="0"/>
         <env name="PHP_CS_FIXER_FUTURE_MODE" value="0"/>
         <env name="PHP_CS_FIXER_NON_MONOLITHIC" value="0"/>
+        <env name="PHP_CS_FIXER_TESTS_SYSTEM_UNDER_TEST" value="1" force="true"/>
+        <env name="PHP_CS_FIXER_TESTS_ALLOW_ONE_TIME_SELF_CONFIG_USAGE" value="0" force="true"/>
+        <env name="PHP_CS_FIXER_ENFORCE_CACHE" value="0" force="true"/>
     </php>
 </phpunit>

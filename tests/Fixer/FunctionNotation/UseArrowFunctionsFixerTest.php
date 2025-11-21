@@ -229,5 +229,20 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
                 };
                 PHP,
         ];
+
+        yield [
+            '<?php
+            foo(
+                fn () => 42
+                        '.'
+            );',
+            '<?php
+            foo(
+                function () {
+                    return 42
+                        ;
+                }
+            );',
+        ];
     }
 }

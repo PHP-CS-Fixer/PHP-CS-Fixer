@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e28126af08c5cdef54af938a29fa6a05",
+    "content-hash": "bffb53d23e224f59a68b66a73812d3c7",
     "packages": [
         {
             "name": "composer/pcre",
@@ -344,16 +344,16 @@
         },
         {
             "name": "justinrainbow/json-schema",
-            "version": "6.5.2",
+            "version": "6.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jsonrainbow/json-schema.git",
-                "reference": "ac0d369c09653cf7af561f6d91a705bc617a87b8"
+                "reference": "68ba7677532803cc0c5900dd5a4d730537f2b2f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jsonrainbow/json-schema/zipball/ac0d369c09653cf7af561f6d91a705bc617a87b8",
-                "reference": "ac0d369c09653cf7af561f6d91a705bc617a87b8"
+                "url": "https://api.github.com/repos/jsonrainbow/json-schema/zipball/68ba7677532803cc0c5900dd5a4d730537f2b2f3",
+                "reference": "68ba7677532803cc0c5900dd5a4d730537f2b2f3"
             },
             "require": {
                 "ext-json": "*",
@@ -581,16 +581,16 @@
         },
         {
             "name": "phpcompatibility/php-compatibility",
-            "version": "dev-develop",
+            "version": "10.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCompatibility/PHPCompatibility.git",
-                "reference": "771535284869cd4f3ff178c292c032b804738771"
+                "reference": "de29923c98ce1d7d35df862c51d5dc0062c95401"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibility/zipball/771535284869cd4f3ff178c292c032b804738771",
-                "reference": "771535284869cd4f3ff178c292c032b804738771"
+                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibility/zipball/de29923c98ce1d7d35df862c51d5dc0062c95401",
+                "reference": "de29923c98ce1d7d35df862c51d5dc0062c95401"
             },
             "require": {
                 "php": ">=5.4",
@@ -614,19 +614,19 @@
         },
         {
             "name": "phpcompatibility/phpcompatibility-paragonie",
-            "version": "1.3.3",
+            "version": "2.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCompatibility/PHPCompatibilityParagonie.git",
-                "reference": "293975b465e0e709b571cbf0c957c6c0a7b9a2ac"
+                "reference": "e9b1de33aca14704843b86705d0c00f9b30e9401"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilityParagonie/zipball/293975b465e0e709b571cbf0c957c6c0a7b9a2ac",
-                "reference": "293975b465e0e709b571cbf0c957c6c0a7b9a2ac"
+                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilityParagonie/zipball/e9b1de33aca14704843b86705d0c00f9b30e9401",
+                "reference": "e9b1de33aca14704843b86705d0c00f9b30e9401"
             },
             "require": {
-                "phpcompatibility/php-compatibility": "^9.0"
+                "phpcompatibility/php-compatibility": "^10.0@dev"
             },
             "type": "phpcodesniffer-standard",
             "license": [
@@ -636,19 +636,19 @@
         },
         {
             "name": "phpcompatibility/phpcompatibility-passwordcompat",
-            "version": "1.0.5",
+            "version": "2.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCompatibility/PHPCompatibilityPasswordCompat.git",
-                "reference": "68610ffc60484b422bc4d124a0f50f1ea41c8cff"
+                "reference": "8e67bd0a47a987d4b507e5cf019042d95758db13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilityPasswordCompat/zipball/68610ffc60484b422bc4d124a0f50f1ea41c8cff",
-                "reference": "68610ffc60484b422bc4d124a0f50f1ea41c8cff"
+                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilityPasswordCompat/zipball/8e67bd0a47a987d4b507e5cf019042d95758db13",
+                "reference": "8e67bd0a47a987d4b507e5cf019042d95758db13"
             },
             "require": {
-                "phpcompatibility/php-compatibility": "^9.0"
+                "phpcompatibility/php-compatibility": "^10.0@dev"
             },
             "type": "phpcodesniffer-standard",
             "license": [
@@ -658,21 +658,21 @@
         },
         {
             "name": "phpcompatibility/phpcompatibility-symfony",
-            "version": "1.2.2",
+            "version": "2.0.0-alpha1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCompatibility/PHPCompatibilitySymfony.git",
-                "reference": "fd7aa90db93663a6eeab5f32c23ab85f58c16a08"
+                "reference": "97a30ace598749dd316f4e328bf6db0da7202746"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilitySymfony/zipball/fd7aa90db93663a6eeab5f32c23ab85f58c16a08",
-                "reference": "fd7aa90db93663a6eeab5f32c23ab85f58c16a08"
+                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilitySymfony/zipball/97a30ace598749dd316f4e328bf6db0da7202746",
+                "reference": "97a30ace598749dd316f4e328bf6db0da7202746"
             },
             "require": {
-                "phpcompatibility/php-compatibility": "^9.0",
-                "phpcompatibility/phpcompatibility-paragonie": "^1.0",
-                "phpcompatibility/phpcompatibility-passwordcompat": "^1.0"
+                "phpcompatibility/php-compatibility": "^10.0@dev",
+                "phpcompatibility/phpcompatibility-paragonie": "^2.0@dev",
+                "phpcompatibility/phpcompatibility-passwordcompat": "^2.0@dev"
             },
             "type": "phpcodesniffer-standard",
             "license": [
@@ -682,16 +682,16 @@
         },
         {
             "name": "phpcsstandards/phpcsutils",
-            "version": "1.1.2",
+            "version": "1.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCSStandards/PHPCSUtils.git",
-                "reference": "b22b59e3d9ec8fe4953e42c7d59117c6eae70eae"
+                "reference": "8b8e17615d04f2fc2cd46fc1d2fd888fa21b3cf9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCSStandards/PHPCSUtils/zipball/b22b59e3d9ec8fe4953e42c7d59117c6eae70eae",
-                "reference": "b22b59e3d9ec8fe4953e42c7d59117c6eae70eae"
+                "url": "https://api.github.com/repos/PHPCSStandards/PHPCSUtils/zipball/8b8e17615d04f2fc2cd46fc1d2fd888fa21b3cf9",
+                "reference": "8b8e17615d04f2fc2cd46fc1d2fd888fa21b3cf9"
             },
             "require": {
                 "dealerdirect/phpcodesniffer-composer-installer": "^0.4.1 || ^0.5 || ^0.6.2 || ^0.7 || ^1.0",
@@ -721,12 +721,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpmd/phpmd.git",
-                "reference": "060224255325b81d1c7ff297f2d64d84b26b91b1"
+                "reference": "0a3060eb69f5782d111cefd02672bc2094678300"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpmd/phpmd/zipball/060224255325b81d1c7ff297f2d64d84b26b91b1",
-                "reference": "060224255325b81d1c7ff297f2d64d84b26b91b1"
+                "url": "https://api.github.com/repos/phpmd/phpmd/zipball/0a3060eb69f5782d111cefd02672bc2094678300",
+                "reference": "0a3060eb69f5782d111cefd02672bc2094678300"
             },
             "require": {
                 "composer/xdebug-handler": "^1.0 || ^2.0 || ^3.0",
@@ -782,16 +782,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.29",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpstan/phpstan-phar-composer-source.git",
-                "reference": "git"
-            },
+            "version": "2.1.32",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/d618573eed4a1b6b75e37b2e0b65ac65c885d88e",
-                "reference": "d618573eed4a1b6b75e37b2e0b65ac65c885d88e"
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/e126cad1e30a99b137b8ed75a85a676450ebb227",
+                "reference": "e126cad1e30a99b137b8ed75a85a676450ebb227"
             },
             "require": {
                 "php": "^7.4|^8.0"
@@ -813,20 +808,20 @@
         },
         {
             "name": "phpstan/phpstan-phpunit",
-            "version": "2.0.7",
+            "version": "2.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-phpunit.git",
-                "reference": "9a9b161baee88a5f5c58d816943cff354ff233dc"
+                "reference": "2fe9fbeceaf76dd1ebaa7bbbb25e2fb5e59db2fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-phpunit/zipball/9a9b161baee88a5f5c58d816943cff354ff233dc",
-                "reference": "9a9b161baee88a5f5c58d816943cff354ff233dc"
+                "url": "https://api.github.com/repos/phpstan/phpstan-phpunit/zipball/2fe9fbeceaf76dd1ebaa7bbbb25e2fb5e59db2fe",
+                "reference": "2fe9fbeceaf76dd1ebaa7bbbb25e2fb5e59db2fe"
             },
             "require": {
                 "php": "^7.4 || ^8.0",
-                "phpstan/phpstan": "^2.1.18"
+                "phpstan/phpstan": "^2.1.32"
             },
             "type": "phpstan-extension",
             "extra": {
@@ -1017,16 +1012,16 @@
         },
         {
             "name": "shipmonk/dead-code-detector",
-            "version": "0.13.3",
+            "version": "0.13.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shipmonk-rnd/dead-code-detector.git",
-                "reference": "40ab4426238c26aa0ddb963b41ffd438450153a1"
+                "reference": "a12cdd093624362743c8814a96a54fcc0a57d96d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shipmonk-rnd/dead-code-detector/zipball/40ab4426238c26aa0ddb963b41ffd438450153a1",
-                "reference": "40ab4426238c26aa0ddb963b41ffd438450153a1"
+                "url": "https://api.github.com/repos/shipmonk-rnd/dead-code-detector/zipball/a12cdd093624362743c8814a96a54fcc0a57d96d",
+                "reference": "a12cdd093624362743c8814a96a54fcc0a57d96d"
             },
             "require": {
                 "php": "^7.4 || ^8.0",
@@ -1120,16 +1115,16 @@
         },
         {
             "name": "symfony/config",
-            "version": "v7.3.2",
+            "version": "v7.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "faef36e271bbeb74a9d733be4b56419b157762e2"
+                "reference": "8a09223170046d2cfda3d2e11af01df2c641e961"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/faef36e271bbeb74a9d733be4b56419b157762e2",
-                "reference": "faef36e271bbeb74a9d733be4b56419b157762e2"
+                "url": "https://api.github.com/repos/symfony/config/zipball/8a09223170046d2cfda3d2e11af01df2c641e961",
+                "reference": "8a09223170046d2cfda3d2e11af01df2c641e961"
             },
             "require": {
                 "php": ">=8.2",
@@ -1153,16 +1148,16 @@
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v7.3.3",
+            "version": "v7.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "ab6c38dad5da9b15b1f7afb2f5c5814112e70261"
+                "reference": "82119812ab0bf3425c1234d413efd1b19bb92ae4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/ab6c38dad5da9b15b1f7afb2f5c5814112e70261",
-                "reference": "ab6c38dad5da9b15b1f7afb2f5c5814112e70261"
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/82119812ab0bf3425c1234d413efd1b19bb92ae4",
+                "reference": "82119812ab0bf3425c1234d413efd1b19bb92ae4"
             },
             "require": {
                 "php": ">=8.2",
@@ -1379,16 +1374,16 @@
         },
         {
             "name": "symfony/var-exporter",
-            "version": "v7.3.3",
+            "version": "v7.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-exporter.git",
-                "reference": "d4dfcd2a822cbedd7612eb6fbd260e46f87b7137"
+                "reference": "0f020b544a30a7fe8ba972e53ee48a74c0bc87f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/d4dfcd2a822cbedd7612eb6fbd260e46f87b7137",
-                "reference": "d4dfcd2a822cbedd7612eb6fbd260e46f87b7137"
+                "url": "https://api.github.com/repos/symfony/var-exporter/zipball/0f020b544a30a7fe8ba972e53ee48a74c0bc87f4",
+                "reference": "0f020b544a30a7fe8ba972e53ee48a74c0bc87f4"
             },
             "require": {
                 "php": ">=8.2",
@@ -1412,21 +1407,16 @@
     "packages-dev": [],
     "aliases": [
         {
-            "package": "phpcompatibility/php-compatibility",
-            "version": "10.9999999.9999999.9999999-dev",
-            "alias": "9.99.0",
-            "alias_normalized": "9.99.0.0"
-        },
-        {
             "package": "phpmd/phpmd",
             "version": "9999999-dev",
             "alias": "2.16.0",
             "alias_normalized": "2.16.0.0"
         }
     ],
-    "minimum-stability": "stable",
+    "minimum-stability": "alpha",
     "stability-flags": {
-        "phpcompatibility/php-compatibility": 20,
+        "phpcompatibility/php-compatibility": 15,
+        "phpcompatibility/phpcompatibility-symfony": 15,
         "phpmd/phpmd": 20
     },
     "prefer-stable": false,

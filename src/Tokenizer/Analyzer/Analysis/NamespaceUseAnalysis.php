@@ -17,7 +17,7 @@ namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
 /**
  * @readonly
  *
- * @internal
+ * @TODO v4: previously was mareked as internal - yet it leaked to public interface of `DocBlock`, consider making it so again.
  *
  * @phpstan-type _ImportType 'class'|'constant'|'function'
  *
@@ -57,12 +57,12 @@ final class NamespaceUseAnalysis
     private bool $isAliased;
 
     /**
-     * The start index of the namespace declaration in the analyzed Tokens.
+     * The start index of the namespace declaration in the analysed Tokens.
      */
     private int $startIndex;
 
     /**
-     * The end index of the namespace declaration in the analyzed Tokens.
+     * The end index of the namespace declaration in the analysed Tokens.
      */
     private int $endIndex;
 
@@ -87,6 +87,8 @@ final class NamespaceUseAnalysis
      * @param self::TYPE_*     $type
      * @param non-empty-string $fullName
      * @param non-empty-string $shortName
+     *
+     * @internal
      */
     public function __construct(
         int $type,

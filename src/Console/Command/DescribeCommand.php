@@ -48,6 +48,9 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Formatter\OutputFormatter;
+use Symfony\Component\Console\Helper\TreeHelper;
+use Symfony\Component\Console\Helper\TreeNode;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -65,6 +68,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 #[AsCommand(name: 'describe', description: 'Describe rule / ruleset.')]
 final class DescribeCommand extends Command
 {
+    private const SET_ALIAS_TO_DESCRIBE_CONFIG = '@';
+    private const SET_ALIAS_TO_DESCRIBE_RULES_WITHOUT_SET = '@-';
+
     /** @TODO PHP 8.0 - remove the property */
     protected static $defaultName = 'describe';
 
@@ -102,6 +108,7 @@ final class DescribeCommand extends Command
                 new InputArgument('name', InputArgument::OPTIONAL, 'Name of rule / set.', null, fn () => array_merge($this->getSetNames(), array_keys($this->getFixers()))),
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
                 new InputOption('expand', '', InputOption::VALUE_NONE, 'Shall nested sets be expanded into nested rules.'),
+                new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats (txt, tree).', 'txt', ['txt', 'tree']),
             ]
         );
     }
@@ -125,6 +132,7 @@ final class DescribeCommand extends Command
         /** @var ?string $name */
         $name = $input->getArgument('name');
         $expand = $input->getOption('expand');
+        $format = $input->getOption('format');
 
         if (null === $name) {
             if (false === $input->isInteractive()) {
@@ -138,12 +146,23 @@ final class DescribeCommand extends Command
                 'yes',
             );
             if ($shallDescribeConfigInUse) {
-                $name = '@'; // '@' means "describe config file"
+                $name = self::SET_ALIAS_TO_DESCRIBE_CONFIG;
             } else {
                 $name = $io->choice(
                     'Please select rule / set to describe',
                     array_merge($this->getSetNames(), array_keys($this->getFixers()))
                 );
+            }
+        }
+
+        if ('tree' === $format) {
+            if (!str_starts_with($name, '@')) {
+                throw new \InvalidArgumentException(
+                    'The "--format=tree" option is available only when describing a set (name starting with "@").',
+                );
+            }
+            if (!class_exists(TreeHelper::class)) {
+                throw new \RuntimeException('The "--format=tree" option requires symfony/console 7.3+.');
             }
         }
 
@@ -404,12 +423,14 @@ final class DescribeCommand extends Command
 
     private function describeSet(InputInterface $input, OutputInterface $output, string $name, ConfigurationResolver $resolver): void
     {
-        if ('@' !== $name && !\in_array($name, $this->getSetNames(), true)) {
+        if (
+            !\in_array($name, [self::SET_ALIAS_TO_DESCRIBE_CONFIG, self::SET_ALIAS_TO_DESCRIBE_RULES_WITHOUT_SET], true)
+            && !\in_array($name, $this->getSetNames(), true)) {
             throw new DescribeNameNotFoundException($name, 'set');
         }
 
-        if ('@' === $name) {
-            $defaultRuleSetDefinition = $this->createRuleSetDefinition(
+        if (self::SET_ALIAS_TO_DESCRIBE_CONFIG === $name) {
+            $aliasedRuleSetDefinition = $this->createRuleSetDefinition(
                 null,
                 [],
                 [
@@ -419,10 +440,36 @@ final class DescribeCommand extends Command
                     'isRisky' => $resolver->getRiskyAllowed(),
                 ]
             );
+        } elseif (self::SET_ALIAS_TO_DESCRIBE_RULES_WITHOUT_SET === $name) {
+            $rulesWithoutSet = array_filter(
+                $this->getFixers(),
+                static fn (string $name): bool => [] === FixerDocumentGenerator::getSetsOfRule($name),
+                \ARRAY_FILTER_USE_KEY
+            );
+
+            $aliasedRuleSetDefinition = $this->createRuleSetDefinition(
+                null,
+                [],
+                [
+                    'getDescription' => 'Rules that are not part of any set.',
+                    'getName' => '@- - rules without set',
+                    'getRules' => array_combine(
+                        array_map(
+                            static fn (FixerInterface $fixer): string => $fixer->getName(),
+                            $rulesWithoutSet,
+                        ),
+                        array_fill(0, \count($rulesWithoutSet), true),
+                    ),
+                    'isRisky' => array_any(
+                        $rulesWithoutSet,
+                        static fn (FixerInterface $fixer): bool => $fixer->isRisky(),
+                    ),
+                ]
+            );
         }
 
         $ruleSetDefinitions = RuleSets::getSetDefinitions();
-        $ruleSetDefinition = $defaultRuleSetDefinition ?? $ruleSetDefinitions[$name];
+        $ruleSetDefinition = $aliasedRuleSetDefinition ?? $ruleSetDefinitions[$name];
         $fixers = $this->getFixers();
 
         if (true === $input->getOption('expand')) {
@@ -459,10 +506,72 @@ final class DescribeCommand extends Command
             $output->writeln('');
         }
 
+        if ('tree' === $input->getOption('format')) {
+            $this->describeSetContentAsTree($output, $ruleSetDefinition, $ruleSetDefinitions, $fixers);
+        } else {
+            $this->describeSetContentAsTxt($output, $ruleSetDefinition, $ruleSetDefinitions, $fixers);
+        }
+    }
+
+    /**
+     * @param array<string, RuleSetDefinitionInterface> $ruleSetDefinitions
+     * @param array<string, FixerInterface>             $fixers
+     */
+    private function createTreeNode(RuleSetDefinitionInterface $ruleSetDefinition, array $ruleSetDefinitions, array $fixers): TreeNode
+    {
+        $node = new TreeNode($ruleSetDefinition->getName());
+
+        $rules = $ruleSetDefinition->getRules();
+        $rulesKeys = array_keys($rules);
+        natcasesort($rulesKeys);
+
+        foreach ($rulesKeys as $rule) {
+            \assert(isset($rules[$rule]));
+            $config = $rules[$rule];
+            if (str_starts_with($rule, '@')) {
+                $child = $this->createTreeNode($ruleSetDefinitions[$rule], $ruleSetDefinitions, $fixers);
+            } else {
+                $extra = '';
+                if (false === $config) {
+                    $extra = \sprintf('    | <error>Configuration: %s</>', Utils::toString($config));
+                } elseif (true !== $config) {
+                    $extra = \sprintf('    | <comment>Configuration: %s</>', Utils::toString($config));
+                }
+                $child = new TreeNode($rule.$extra);
+            }
+            $node->addChild($child);
+        }
+
+        return $node;
+    }
+
+    /**
+     * @param array<string, RuleSetDefinitionInterface> $ruleSetDefinitions
+     * @param array<string, FixerInterface>             $fixers
+     */
+    private function describeSetContentAsTree(OutputInterface $output, RuleSetDefinitionInterface $ruleSetDefinition, array $ruleSetDefinitions, array $fixers): void
+    {
+        $io = new SymfonyStyle(
+            new ArrayInput([]),
+            $output
+        );
+
+        $root = $this->createTreeNode($ruleSetDefinition, $ruleSetDefinitions, $fixers);
+        $tree = TreeHelper::createTree($io, $root);
+        $tree->render();
+    }
+
+    /**
+     * @param array<string, RuleSetDefinitionInterface> $ruleSetDefinitions
+     * @param array<string, FixerInterface>             $fixers
+     */
+    private function describeSetContentAsTxt(OutputInterface $output, RuleSetDefinitionInterface $ruleSetDefinition, array $ruleSetDefinitions, array $fixers): void
+    {
         $help = '';
 
         foreach ($ruleSetDefinition->getRules() as $rule => $config) {
             if (str_starts_with($rule, '@')) {
+                \assert(isset($ruleSetDefinitions[$rule]));
                 $set = $ruleSetDefinitions[$rule];
                 $help .= \sprintf(
                     " * <info>%s</info>%s\n   | %s\n\n",

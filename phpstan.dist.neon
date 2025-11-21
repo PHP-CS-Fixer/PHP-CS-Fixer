@@ -63,13 +63,23 @@ parameters:
         -
             message: '/^Unused PhpCsFixer\\[a-zA-Z\\]+Interface::[a-zA-Z]+$/'
             path: src
-            count: 19
+            count: 18
+
+        -
+            message: '/^AnonymousClass/'
+            path: tests/
+            identifier: phpCsFixer.internalTypeInPublicApi
     tipsOfTheDay: false
     symfony:
         consoleApplicationLoader: dev-tools/phpstan/console-application.php
     tmpDir: dev-tools/phpstan/cache
 
 services:
+    -
+        class: PhpCsFixer\PHPStan\Rules\NoInternalTypesInPublicApiRule
+        tags:
+            - phpstan.rules.rule
+
     -
         class: PhpCsFixer\PHPStan\Extension\PregMatchParameterOutExtension
         tags:

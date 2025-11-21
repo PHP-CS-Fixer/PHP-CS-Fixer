@@ -85,6 +85,8 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  */
 final class ConfigurationResolver
 {
+    public const IGNORE_CONFIG_FILE = '-';
+
     public const PATH_MODE_OVERRIDE = 'override';
     public const PATH_MODE_INTERSECTION = 'intersection';
     public const PATH_MODE_VALUES = [
@@ -126,6 +128,8 @@ final class ConfigurationResolver
     private ?array $fixers = null;
 
     private ?bool $configFinderIsOverridden = null;
+
+    private ?bool $configRulesAreOverridden = null;
 
     private ToolInfoInterface $toolInfo;
 
@@ -590,6 +594,15 @@ final class ConfigurationResolver
         return $this->configFinderIsOverridden;
     }
 
+    public function configRulesAreOverridden(): bool
+    {
+        if (null === $this->configRulesAreOverridden) {
+            $this->parseRules();
+        }
+
+        return $this->configRulesAreOverridden;
+    }
+
     /**
      * Compute file candidates for config file.
      *
@@ -600,6 +613,10 @@ final class ConfigurationResolver
     private function computeConfigFiles(): array
     {
         $configFile = $this->options['config'];
+
+        if (self::IGNORE_CONFIG_FILE === $configFile) {
+            return [];
+        }
 
         if (null !== $configFile) {
             if (false === file_exists($configFile) || false === is_readable($configFile)) {
@@ -721,6 +738,8 @@ final class ConfigurationResolver
      */
     private function parseRules(): array
     {
+        $this->configRulesAreOverridden = null !== $this->options['rules'];
+
         if (null === $this->options['rules']) {
             return $this->getConfig()->getRules();
         }
@@ -790,7 +809,11 @@ final class ConfigurationResolver
         $unknownFixers = array_diff($configuredFixers, $availableFixers);
 
         if (\count($unknownFixers) > 0) {
-            $renamedRules = [
+            /**
+             * @TODO v4: `renamedRulesFromV2ToV3` no longer needed
+             * @TODO v3.99: decide how to handle v3 to v4 (where legacy rules are already removed)
+             */
+            $renamedRulesFromV2ToV3 = [
                 'blank_line_before_return' => [
                     'new_name' => 'blank_line_before_statement',
                     'config' => ['statements' => ['return']],
@@ -847,13 +870,13 @@ final class ConfigurationResolver
             $hasOldRule = false;
 
             foreach ($unknownFixers as $unknownFixer) {
-                if (isset($renamedRules[$unknownFixer])) { // Check if present as old renamed rule
+                if (isset($renamedRulesFromV2ToV3[$unknownFixer])) { // Check if present as old renamed rule
                     $hasOldRule = true;
                     $message .= \sprintf(
                         '"%s" is renamed (did you mean "%s"?%s), ',
                         $unknownFixer,
-                        $renamedRules[$unknownFixer]['new_name'],
-                        isset($renamedRules[$unknownFixer]['config']) ? ' (note: use configuration "'.Utils::toString($renamedRules[$unknownFixer]['config']).'")' : ''
+                        $renamedRulesFromV2ToV3[$unknownFixer]['new_name'],
+                        isset($renamedRulesFromV2ToV3[$unknownFixer]['config']) ? ' (note: use configuration "'.Utils::toString($renamedRulesFromV2ToV3[$unknownFixer]['config']).'")' : ''
                     );
                 } else { // Go to normal matcher if it is not a renamed rule
                     $matcher = new WordMatcher($availableFixers);

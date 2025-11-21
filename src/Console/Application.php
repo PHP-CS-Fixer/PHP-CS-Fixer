@@ -48,7 +48,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class Application extends BaseApplication
 {
     public const NAME = 'PHP CS Fixer';
-    public const VERSION = '3.88.3-DEV';
+    public const VERSION = '3.90.1-DEV';
     public const VERSION_CODENAME = 'Folding Bike';
 
     /**
@@ -102,6 +102,7 @@ final class Application extends BaseApplication
             $warningsDetector = new WarningsDetector($this->toolInfo);
             $warningsDetector->detectOldVendor();
             $warningsDetector->detectOldMajor();
+            $warningsDetector->detectHigherPhpVersion();
             $warningsDetector->detectNonMonolithic();
             $warnings = $warningsDetector->getWarnings();
 

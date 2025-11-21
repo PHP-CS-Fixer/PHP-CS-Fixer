@@ -1417,6 +1417,112 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
+        yield 'the root namespace of the imported class is equal to the imported global class name in lowercase (default behaviour)' => [
+            <<<'EOD'
+                <?php
+
+                use App;
+
+                class Some extends \app\components\Some
+                {
+                    public function getDef()
+                    {
+                        $a = App::getA();
+
+                        return new \app\components\Def($a);
+                    }
+                }
+                EOD,
+        ];
+
+        yield 'the root namespace of the imported class is equal to the imported global class name in lowercase (with import_symbols option)' => [
+            <<<'EOD'
+                <?php
+
+                use App;
+                use app\components\Def;
+
+                class Some extends \app\components\Some
+                {
+                    public function getDef()
+                    {
+                        $a = App::getA();
+
+                        return new Def($a);
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+
+                use App;
+
+                class Some extends \app\components\Some
+                {
+                    public function getDef()
+                    {
+                        $a = App::getA();
+
+                        return new \app\components\Def($a);
+                    }
+                }
+                EOD,
+            ['import_symbols' => true],
+        ];
+
+        yield 'the namespace of the imported class contains multiple occurrences of the imported global class name in lowercase (default behaviour)' => [
+            <<<'EOD'
+                <?php
+
+                use App;
+
+                class Some extends \app\app\Some
+                {
+                    public function getDef()
+                    {
+                        $a = App::getA();
+
+                        return new \app\components\Def($a);
+                    }
+                }
+                EOD,
+        ];
+
+        yield 'the namespace of the imported class contains multiple occurrences of the imported global class name in lowercase (with import_symbols option)' => [
+            <<<'EOD'
+                <?php
+
+                use App;
+                use app\components\Def;
+
+                class Some extends \app\app\Some
+                {
+                    public function getDef()
+                    {
+                        $a = App::getA();
+
+                        return new Def($a);
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+
+                use App;
+
+                class Some extends \app\app\Some
+                {
+                    public function getDef()
+                    {
+                        $a = App::getA();
+
+                        return new \app\components\Def($a);
+                    }
+                }
+                EOD,
+            ['import_symbols' => true],
+        ];
+
         // TODO: Ensure shortening for imported functions and constants
         yield 'Shorten symbol from comma-separated multi-use statement' => [
             <<<'EOD'

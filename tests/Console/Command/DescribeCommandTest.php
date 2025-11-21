@@ -55,8 +55,6 @@ final class DescribeCommandTest extends TestCase
      */
     public function testExecuteOutput(string $expected, bool $expectedIsRegEx, bool $decorated, FixerInterface $fixer): void
     {
-        $this->expectDeprecationOfDeprecatedRuleSets();
-
         if ($fixer instanceof DeprecatedFixerInterface) {
             $this->expectDeprecation(\sprintf('Rule "%s" is deprecated. Use "%s" instead.', $fixer->getName(), implode('", "', $fixer->getSuccessorsNames())));
         }
@@ -293,8 +291,6 @@ $/s',
 
     public function testExecuteStatusCode(): void
     {
-        $this->expectDeprecationOfDeprecatedRuleSets();
-
         $this->expectDeprecation('Rule "Foo/bar" is deprecated. Use "Foo/baz" instead.');
 
         self::assertSame(0, $this->execute('Foo/bar', false)->getStatusCode());
@@ -314,6 +310,8 @@ $/s',
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => 'Foo/bar',
+
+            '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php',
         ]);
     }
 
@@ -331,6 +329,7 @@ $/s',
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => '@NoSuchSet',
+            '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php',
         ]);
     }
 
@@ -347,6 +346,7 @@ $/s',
         $this->expectExceptionMessage('Not enough arguments (missing: "name") when not running interactively.');
         $commandTester->execute([
             'command' => $command->getName(),
+            '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php',
         ], ['interactive' => false]);
     }
 
@@ -359,8 +359,6 @@ $/s',
 
     public function testFixerClassNameIsExposedWhenVerbose(): void
     {
-        $this->expectDeprecationOfDeprecatedRuleSets();
-
         $fixer = new class implements FixerInterface {
             public function isCandidate(Tokens $tokens): bool
             {
@@ -411,6 +409,7 @@ $/s',
             [
                 'command' => $command->getName(),
                 'name' => 'Foo/bar_baz',
+                '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php',
             ],
             [
                 'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
@@ -422,8 +421,6 @@ $/s',
 
     public function testCommandDescribesCustomFixer(): void
     {
-        $this->expectDeprecationOfDeprecatedRuleSets();
-
         $application = new Application();
         $application->add(new DescribeCommand());
 
@@ -615,6 +612,7 @@ Fixing examples:
             [
                 'command' => $command->getName(),
                 'name' => $name,
+                '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php',
             ],
             [
                 'decorated' => $decorated,

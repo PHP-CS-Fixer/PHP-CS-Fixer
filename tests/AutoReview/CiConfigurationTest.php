@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tests\Test\CiReader;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
@@ -42,7 +43,7 @@ final class CiConfigurationTest extends TestCase
                 'PHP_MAX' => $this->getMaxPhpVersionFromEntryFile(),
                 'PHP_MIN' => $this->getMinPhpVersionFromEntryFile(),
             ],
-            $this->getGitHubCiEnvs(),
+            CiReader::getGitHubCiEnvs(),
         );
     }
 
@@ -55,7 +56,7 @@ final class CiConfigurationTest extends TestCase
 
         self::assertTrue(\count($supportedVersions) > 0);
 
-        $ciVersions = $this->getAllPhpVersionsUsedByCiForTests();
+        $ciVersions = CiReader::getAllPhpVersionsUsedByCiForTests();
 
         self::assertNotEmpty($ciVersions);
 
@@ -68,8 +69,8 @@ final class CiConfigurationTest extends TestCase
 
     public function testDeploymentJobRunOnLatestStablePhpThatIsSupportedByTool(): void
     {
-        $ciVersionsForDeployment = $this->getPhpVersionUsedByCiForDeployments();
-        $ciVersions = $this->getAllPhpVersionsUsedByCiForTests();
+        $ciVersionsForDeployment = CiReader::getPhpVersionUsedByCiForDeployments();
+        $ciVersions = CiReader::getAllPhpVersionsUsedByCiForTests();
         $expectedPhp = $this->getMaxPhpVersionFromEntryFile();
 
         if (\in_array($expectedPhp.'snapshot', $ciVersions, true)) {
@@ -222,23 +223,6 @@ final class CiConfigurationTest extends TestCase
         self::assertSame($supportedMaxPhp, (float) $capture['max']);
     }
 
-    private function getPhpVersionUsedByCiForDeployments(): string
-    {
-        $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/ci.yml');
-
-        $version = $yaml['jobs']['deployment']['env']['php-version'];
-
-        return \is_string($version) ? $version : \sprintf('%.1f', $version);
-    }
-
-    /**
-     * @return list<numeric-string>
-     */
-    private function getAllPhpVersionsUsedByCiForTests(): array
-    {
-        return $this->getPhpVersionsUsedByGitHub();
-    }
-
     private function convertPhpVerIdToNiceVer(string $verId): string
     {
         $matchResult = Preg::match('/^(?<major>\d{1,2})_?(?<minor>\d{2})_?(?<patch>\d{2})$/', $verId, $capture);
@@ -271,32 +255,6 @@ final class CiConfigurationTest extends TestCase
         $phpVerId = trim(end($sequence)->getContent(), '\'');
 
         return $this->convertPhpVerIdToNiceVer($phpVerId);
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    private function getGitHubCiEnvs(): array
-    {
-        $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/ci.yml');
-
-        return $yaml['env'];
-    }
-
-    /**
-     * @return list<numeric-string>
-     */
-    private function getPhpVersionsUsedByGitHub(): array
-    {
-        $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/ci.yml');
-
-        $phpVersions = $yaml['jobs']['tests']['strategy']['matrix']['php-version'] ?? [];
-
-        foreach ($yaml['jobs']['tests']['strategy']['matrix']['include'] as $job) {
-            $phpVersions[] = $job['php-version'];
-        }
-
-        return array_unique($phpVersions); // @phpstan-ignore return.type (we know it's a list of parsed strings)
     }
 
     /**

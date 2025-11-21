@@ -15,5 +15,5 @@ Using this rule set may lead to changes in your code's logic and behaviour. Use 
 Rules
 -----
 
-- `@PHP8x0Migration:risky <./PHP8x0MigrationRisky.rst>`_
+- `@PHP8x1Migration:risky <./PHP8x1MigrationRisky.rst>`_
 - `phpdoc_readonly_class_comment_to_keyword <./../rules/class_notation/phpdoc_readonly_class_comment_to_keyword.rst>`_
