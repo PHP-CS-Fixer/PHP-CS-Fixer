@@ -22,7 +22,7 @@ jobs:
       MARKER: self-approval
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.after }}
       - name: Determine whether PR should be automatically approved
