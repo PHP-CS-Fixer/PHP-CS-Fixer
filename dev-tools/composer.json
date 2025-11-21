@@ -2,22 +2,22 @@
     "type": "project",
     "require": {
         "php": "^8.4",
-        "ergebnis/composer-normalize": "^2.47.0",
-        "icanhazstring/composer-unused": "^0.9.4",
+        "ergebnis/composer-normalize": "^2.48.2",
         "kubawerlos/composer-smaller-lock": "^1.1.0",
-        "maglnet/composer-require-checker": "^4.16.1",
         "mi-schi/phpmd-extension": "^4.3.0",
-        "phpcompatibility/php-compatibility": "10.x-dev as 9.99.0",
-        "phpcompatibility/phpcompatibility-symfony": "^1.2.2",
+        "phpcompatibility/php-compatibility": "^10@alpha",
+        "phpcompatibility/phpcompatibility-symfony": "^2@alpha",
         "phpmd/phpmd": "dev-master as 2.16.0",
         "phpstan/extension-installer": "^1.4.3",
-        "phpstan/phpstan": "^2.1.22",
-        "phpstan/phpstan-phpunit": "^2.0.7",
-        "phpstan/phpstan-strict-rules": "^2.0.6",
-        "phpstan/phpstan-symfony": "^2.0.7",
-        "shipmonk/dead-code-detector": "^0.13.2",
-        "shipmonk/phpstan-baseline-per-identifier": "^2.1.6"
+        "phpstan/phpstan": "^2.1.32",
+        "phpstan/phpstan-phpunit": "^2.0.8",
+        "phpstan/phpstan-strict-rules": "^2.0.7",
+        "phpstan/phpstan-symfony": "^2.0.8",
+        "shipmonk/composer-dependency-analyser": "^1.8.3",
+        "shipmonk/dead-code-detector": "^0.13.5",
+        "shipmonk/phpstan-baseline-per-identifier": "^2.2.0"
     },
+    "minimum-stability": "alpha",
     "config": {
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,

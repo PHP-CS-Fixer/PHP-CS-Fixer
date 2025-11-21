@@ -29,6 +29,8 @@ use PhpCsFixer\Preg;
  * @group covers-nothing
  *
  * @large
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class StdinTest extends AbstractSmokeTestCase
 {
@@ -45,7 +47,7 @@ final class StdinTest extends AbstractSmokeTestCase
         self::assertSame($fileResult->getCode(), $stdinResult->getCode());
 
         $expectedError = str_replace(
-            'Paths from configuration file have been overridden by paths provided as command arguments.'."\n",
+            'Paths from configuration have been overridden by paths provided as command arguments.'."\n",
             '',
             $fileResult->getError()
         );

@@ -45,6 +45,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @group legacy
  *
  * @covers \PhpCsFixer\Console\Command\DescribeCommand
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DescribeCommandTest extends TestCase
 {
@@ -56,10 +58,6 @@ final class DescribeCommandTest extends TestCase
         if ($fixer instanceof DeprecatedFixerInterface) {
             $this->expectDeprecation(\sprintf('Rule "%s" is deprecated. Use "%s" instead.', $fixer->getName(), implode('", "', $fixer->getSuccessorsNames())));
         }
-
-        // @TODO 4.0 Remove these expectations:
-        $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
-        $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
 
         $actual = $this->execute($fixer->getName(), $decorated, $fixer)->getDisplay(true);
 
@@ -272,12 +270,15 @@ Fixing examples cannot be demonstrated on the current PHP version.
 .*
    ----------- end diff -----------
 
-'.preg_quote("Fixer is part of the following rule sets:
+'.preg_quote("The fixer is part of the following rule sets:
 * @PER *(deprecated)* with config: ['default' => 'at_least_single_space']
 * @PER-CS with config: ['default' => 'at_least_single_space']
-* @PER-CS1.0 with config: ['default' => 'at_least_single_space']
-* @PER-CS2.0 with config: ['default' => 'at_least_single_space']
-* @PER-CS3.0 with config: ['default' => 'at_least_single_space']
+* @PER-CS1.0 *(deprecated)* with config: ['default' => 'at_least_single_space']
+* @PER-CS1x0 with config: ['default' => 'at_least_single_space']
+* @PER-CS2.0 *(deprecated)* with config: ['default' => 'at_least_single_space']
+* @PER-CS2x0 with config: ['default' => 'at_least_single_space']
+* @PER-CS3.0 *(deprecated)* with config: ['default' => 'at_least_single_space']
+* @PER-CS3x0 with config: ['default' => 'at_least_single_space']
 * @PSR12 with config: ['default' => 'at_least_single_space']
 * @PhpCsFixer with default config
 * @Symfony with default config").'
@@ -291,9 +292,6 @@ $/s',
     public function testExecuteStatusCode(): void
     {
         $this->expectDeprecation('Rule "Foo/bar" is deprecated. Use "Foo/baz" instead.');
-        // @TODO 4.0 Remove these expectations:
-        $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
-        $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
 
         self::assertSame(0, $this->execute('Foo/bar', false)->getStatusCode());
     }
@@ -312,6 +310,8 @@ $/s',
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => 'Foo/bar',
+
+            '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php',
         ]);
     }
 
@@ -329,6 +329,7 @@ $/s',
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => '@NoSuchSet',
+            '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php',
         ]);
     }
 
@@ -342,10 +343,11 @@ $/s',
         $commandTester = new CommandTester($command);
 
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessageMatches('/^Not enough arguments( \(missing: "name"\))?\.$/');
+        $this->expectExceptionMessage('Not enough arguments (missing: "name") when not running interactively.');
         $commandTester->execute([
             'command' => $command->getName(),
-        ]);
+            '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php',
+        ], ['interactive' => false]);
     }
 
     public function testGetAlternativeSuggestion(): void
@@ -357,10 +359,6 @@ $/s',
 
     public function testFixerClassNameIsExposedWhenVerbose(): void
     {
-        // @TODO 4.0 Remove these expectations:
-        $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
-        $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
-
         $fixer = new class implements FixerInterface {
             public function isCandidate(Tokens $tokens): bool
             {
@@ -411,6 +409,7 @@ $/s',
             [
                 'command' => $command->getName(),
                 'name' => 'Foo/bar_baz',
+                '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php',
             ],
             [
                 'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
@@ -422,10 +421,6 @@ $/s',
 
     public function testCommandDescribesCustomFixer(): void
     {
-        // @TODO 4.0 Remove these expectations:
-        $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
-        $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
-
         $application = new Application();
         $application->add(new DescribeCommand());
 
@@ -617,6 +612,7 @@ Fixing examples:
             [
                 'command' => $command->getName(),
                 'name' => $name,
+                '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php',
             ],
             [
                 'decorated' => $decorated,

@@ -4,8 +4,15 @@ Rule set ``@PHP82Migration``
 
 Rules to improve code for PHP 8.2 compatibility.
 
+Warning
+-------
+
+This rule set is deprecated and will be removed in the next major version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You should use ``@PHP8x2Migration`` instead.
+
 Rules
 -----
 
-- `@PHP81Migration <./PHP81Migration.rst>`_
-- `simple_to_complex_string_variable <./../rules/string_notation/simple_to_complex_string_variable.rst>`_
+- `@PHP8x2Migration <./PHP8x2Migration.rst>`_

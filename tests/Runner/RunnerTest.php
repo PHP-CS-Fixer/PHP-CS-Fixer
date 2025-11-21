@@ -14,10 +14,10 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Runner;
 
-use PhpCsFixer\AccessibleObject\AccessibleObject;
 use PhpCsFixer\Cache\Directory;
 use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Console\Command\FixCommand;
+use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Error\Error;
@@ -40,6 +40,8 @@ use Symfony\Component\Finder\Finder;
  * @internal
  *
  * @covers \PhpCsFixer\Runner\Runner
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class RunnerTest extends TestCase
 {
@@ -52,12 +54,12 @@ final class RunnerTest extends TestCase
         $linter = $this->createLinterDouble();
 
         $fixers = [
-            new Fixer\ClassNotation\VisibilityRequiredFixer(),
+            new Fixer\ClassNotation\ModifierKeywordsFixer(),
             new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
         ];
 
         $expectedChangedInfo = [
-            'appliedFixers' => ['visibility_required'],
+            'appliedFixers' => ['modifier_keywords'],
             'diff' => '',
         ];
 
@@ -114,7 +116,7 @@ final class RunnerTest extends TestCase
         $runner = new Runner(
             Finder::create()->in($path),
             [
-                new Fixer\ClassNotation\VisibilityRequiredFixer(),
+                new Fixer\ClassNotation\ModifierKeywordsFixer(),
                 new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
             ],
             new NullDiffer(),
@@ -152,7 +154,7 @@ final class RunnerTest extends TestCase
         $runner = new Runner(
             Finder::create()->in($path),
             [
-                new Fixer\ClassNotation\VisibilityRequiredFixer(),
+                new Fixer\ClassNotation\ModifierKeywordsFixer(),
                 new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
             ],
             new NullDiffer(),
@@ -164,7 +166,7 @@ final class RunnerTest extends TestCase
             null,
             false,
             new ParallelConfig(2, 1, 50),
-            new ArrayInput([], (new FixCommand(new ToolInfo()))->getDefinition())
+            new ArrayInput(['--config' => ConfigurationResolver::IGNORE_CONFIG_FILE], (new FixCommand(new ToolInfo()))->getDefinition())
         );
         $changed = $runner->fix();
         $pathToInvalidFile = $path.\DIRECTORY_SEPARATOR.'somefile.php';
@@ -200,7 +202,7 @@ final class RunnerTest extends TestCase
         $runner = new Runner(
             Finder::create()->in($paths),
             [
-                new Fixer\ClassNotation\VisibilityRequiredFixer(),
+                new Fixer\ClassNotation\ModifierKeywordsFixer(),
                 new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
             ],
             new NullDiffer(),
@@ -212,7 +214,7 @@ final class RunnerTest extends TestCase
             null,
             false,
             $parallelConfig,
-            new ArrayInput([], (new FixCommand(new ToolInfo()))->getDefinition())
+            new ArrayInput(['--config' => ConfigurationResolver::IGNORE_CONFIG_FILE], (new FixCommand(new ToolInfo()))->getDefinition())
         );
 
         $eventDispatcher->addListener(AnalysisStarted::NAME, static function (AnalysisStarted $event) use ($expectedMode): void {
@@ -267,7 +269,7 @@ final class RunnerTest extends TestCase
         $runner = new Runner(
             Finder::create()->in($path),
             [
-                new Fixer\ClassNotation\VisibilityRequiredFixer(),
+                new Fixer\ClassNotation\ModifierKeywordsFixer(),
                 new Fixer\Import\NoUnusedImportsFixer(), // will be ignored cause of test keyword in namespace
             ],
             new NullDiffer(),
@@ -279,7 +281,7 @@ final class RunnerTest extends TestCase
             null,
             $stopOnViolation,
             new ParallelConfig(2, 1, 3),
-            new ArrayInput([], (new FixCommand(new ToolInfo()))->getDefinition())
+            new ArrayInput(['--config' => ConfigurationResolver::IGNORE_CONFIG_FILE], (new FixCommand(new ToolInfo()))->getDefinition())
         );
 
         self::assertCount($expectedChanges, $runner->fix());
@@ -304,7 +306,7 @@ final class RunnerTest extends TestCase
         $differ = $this->createDifferDouble();
         $path = __DIR__.\DIRECTORY_SEPARATOR.'..'.\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'fix';
         $fixers = [
-            new Fixer\ClassNotation\VisibilityRequiredFixer(),
+            new Fixer\ClassNotation\ModifierKeywordsFixer(),
         ];
 
         $runner = new Runner(
@@ -322,7 +324,14 @@ final class RunnerTest extends TestCase
 
         $runner->fix();
 
-        self::assertSame($path, AccessibleObject::create($differ)->passedFile->getPath());
+        self::assertSame(
+            $path,
+            \Closure::bind(
+                static fn ($differ): string => $differ->passedFile->getPath(),
+                null,
+                \get_class($differ)
+            )($differ),
+        );
     }
 
     private function createDifferDouble(): DifferInterface

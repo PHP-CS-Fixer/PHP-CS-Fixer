@@ -24,6 +24,7 @@ use PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer;
 use PhpCsFixer\Fixer\ControlStructure\IncludeFixer;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
+use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleset;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -33,6 +34,8 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  * @internal
  *
  * @covers \PhpCsFixer\Config
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ConfigTest extends TestCase
 {
@@ -55,6 +58,7 @@ final class ConfigTest extends TestCase
             $config,
             [
                 'rules' => 'cast_spaces,statement_indentation',
+                'config' => ConfigurationResolver::IGNORE_CONFIG_FILE,
             ],
             (string) getcwd(),
             new ToolInfo()
@@ -76,6 +80,7 @@ final class ConfigTest extends TestCase
             $config,
             [
                 'rules' => '{"array_syntax": {"syntax": "short"}, "cast_spaces": true}',
+                'config' => ConfigurationResolver::IGNORE_CONFIG_FILE,
             ],
             (string) getcwd(),
             new ToolInfo()
@@ -101,6 +106,7 @@ final class ConfigTest extends TestCase
             $config,
             [
                 'rules' => '{blah',
+                'config' => ConfigurationResolver::IGNORE_CONFIG_FILE,
             ],
             (string) getcwd(),
             new ToolInfo()
@@ -232,6 +238,16 @@ final class ConfigTest extends TestCase
         yield [$fixers, $fixers];
 
         yield [$fixers, new \ArrayIterator($fixers)];
+    }
+
+    public function testRegisterCustomRuleSets(): void
+    {
+        $ruleset = new ExampleRuleset();
+
+        $config = new Config();
+        $config->registerCustomRuleSets([$ruleset]);
+
+        self::assertSame([$ruleset], $config->getCustomRuleSets());
     }
 
     public function testConfigDefault(): void

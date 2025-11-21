@@ -20,7 +20,7 @@ use PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer;
 /**
  * Analyzer of Tokens collection.
  *
- * Its role is to provide the ability to analyze collection.
+ * Its role is to provide the ability to analyse collection.
  *
  * @internal
  *
@@ -28,6 +28,8 @@ use PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TokensAnalyzer
 {
@@ -107,7 +109,7 @@ final class TokensAnalyzer
      *
      * @param bool $perNamespace Return namespace uses per namespace
      *
-     * @return ($perNamespace is true ? array<int, list<int>> : list<int>)
+     * @return ($perNamespace is true ? array<int, non-empty-list<int>> : list<int>)
      */
     public function getImportUseIndexes(bool $perNamespace = false): array
     {

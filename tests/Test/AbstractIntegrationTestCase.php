@@ -74,6 +74,8 @@ use Symfony\Component\Finder\Finder;
  *     By default test is run on all supported operating systems.
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractIntegrationTestCase extends TestCase
 {
@@ -394,7 +396,9 @@ abstract class AbstractIntegrationTestCase extends TestCase
 
         if (null === $linter) {
             $linter = new CachingLinter(
-                '1' === getenv('FAST_LINT_TEST_CASES') ? new Linter() : new ProcessLinter()
+                filter_var(getenv('PHP_CS_FIXER_FAST_LINT_TEST_CASES'), \FILTER_VALIDATE_BOOLEAN)
+                    ? new Linter()
+                    : new ProcessLinter()
             );
         }
 

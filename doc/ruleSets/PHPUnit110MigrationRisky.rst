@@ -4,8 +4,14 @@ Rule set ``@PHPUnit110Migration:risky``
 
 Rules to improve tests code for PHPUnit 11.0 compatibility.
 
-Warning
--------
+Warnings
+--------
+
+This rule set is deprecated and will be removed in the next major version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You should use ``@PHPUnit100Migration:risky`` and
+``php_unit_test_case_static_method_calls`` instead.
 
 This set contains rules that are risky
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

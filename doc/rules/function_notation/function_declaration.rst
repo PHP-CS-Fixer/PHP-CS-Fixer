@@ -94,7 +94,7 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PER <./../../ruleSets/PER.rst>`_ with config:
+- `@PER <./../../ruleSets/PER.rst>`_ *(deprecated)* with config:
 
   ``['closure_fn_spacing' => 'none']``
 
@@ -102,19 +102,45 @@ The rule is part of the following rule sets:
 
   ``['closure_fn_spacing' => 'none']``
 
-- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_
-- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ *(deprecated)* with config:
+
+  ``['closure_fn_spacing' => 'one']``
+
+- `@PER-CS1x0 <./../../ruleSets/PER-CS1x0.rst>`_ with config:
+
+  ``['closure_fn_spacing' => 'one']``
+
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ *(deprecated)* with config:
 
   ``['closure_fn_spacing' => 'none']``
 
-- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
+- `@PER-CS2x0 <./../../ruleSets/PER-CS2x0.rst>`_ with config:
 
   ``['closure_fn_spacing' => 'none']``
 
-- `@PSR2 <./../../ruleSets/PSR2.rst>`_
-- `@PSR12 <./../../ruleSets/PSR12.rst>`_
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
-- `@Symfony <./../../ruleSets/Symfony.rst>`_
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ *(deprecated)* with config:
+
+  ``['closure_fn_spacing' => 'none']``
+
+- `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_ with config:
+
+  ``['closure_fn_spacing' => 'none']``
+
+- `@PSR2 <./../../ruleSets/PSR2.rst>`_ with config:
+
+  ``['closure_fn_spacing' => 'one']``
+
+- `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
+
+  ``['closure_fn_spacing' => 'one']``
+
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
+  ``['closure_fn_spacing' => 'one']``
+
+- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
+  ``['closure_fn_spacing' => 'one']``
 
 References
 ----------

@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Gregor Harlan
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class CombineNestedDirnameFixer extends AbstractFixer
 {
@@ -105,7 +107,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
      * @param int      $index                 Index of `dirname`
      * @param null|int $firstArgumentEndIndex Index of last token of first argument of `dirname` call
      *
-     * @return array{indices: list<int>, secondArgument?: int, levels: int, end: int}|false `false` when it is not a (supported) `dirname` call, an array with info about the dirname call otherwise
+     * @return array{indices: non-empty-list<int>, secondArgument?: int, levels: int, end: int}|false `false` when it is not a (supported) `dirname` call, an array with info about the dirname call otherwise
      */
     private function getDirnameInfo(Tokens $tokens, int $index, ?int $firstArgumentEndIndex = null)
     {
@@ -189,7 +191,7 @@ final class CombineNestedDirnameFixer extends AbstractFixer
     }
 
     /**
-     * @param non-empty-list<array{indices: list<int>, secondArgument?: int, levels: int, end: int}> $dirnameInfoArray
+     * @param non-empty-list<array{indices: non-empty-list<int>, secondArgument?: int, levels: int, end: int}> $dirnameInfoArray
      */
     private function combineDirnames(Tokens $tokens, array $dirnameInfoArray): void
     {

@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FinalPublicMethodForAbstractClassFixer extends AbstractFixer
 {
@@ -53,14 +55,16 @@ final class FinalPublicMethodForAbstractClassFixer extends AbstractFixer
             'All `public` methods of `abstract` classes should be `final`.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-abstract class AbstractMachine
-{
-    public function start()
-    {}
-}
-'
+                        abstract class AbstractMachine
+                        {
+                            public function start()
+                            {}
+                        }
+
+                        PHP
                 ),
             ],
             'Enforce API encapsulation in an inheritance architecture. '

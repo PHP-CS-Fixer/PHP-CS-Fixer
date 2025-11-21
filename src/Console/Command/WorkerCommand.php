@@ -42,6 +42,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @author Greg Korba <greg@codito.dev>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 #[AsCommand(name: 'worker', description: 'Internal command for running fixers in parallel', hidden: true)]
 final class WorkerCommand extends Command
@@ -198,7 +200,7 @@ final class WorkerCommand extends Command
         $passedConfig = $input->getOption('config');
         $passedRules = $input->getOption('rules');
 
-        if (null !== $passedConfig && null !== $passedRules) {
+        if (null !== $passedConfig && ConfigurationResolver::IGNORE_CONFIG_FILE !== $passedConfig && null !== $passedRules) {
             throw new \RuntimeException('Passing both `--config` and `--rules` options is not allowed');
         }
 
@@ -221,7 +223,7 @@ final class WorkerCommand extends Command
                 'diff' => $input->getOption('diff'),
                 'stop-on-violation' => $input->getOption('stop-on-violation'),
             ],
-            getcwd(), // @phpstan-ignore-line
+            getcwd(), // @phpstan-ignore argument.type
             $this->toolInfo
         );
 

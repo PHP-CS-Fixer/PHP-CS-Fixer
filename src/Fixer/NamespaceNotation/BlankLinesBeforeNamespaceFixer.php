@@ -43,6 +43,8 @@ use Symfony\Component\OptionsResolver\Options;
  *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Greg Korba <greg@codito.dev>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements WhitespacesAwareFixerInterface, ConfigurableFixerInterface
 {
@@ -225,15 +227,10 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
 
         if ($previous->isWhitespace()) {
             // Fix the previous whitespace token
-            $tokens[$previousIndex] = new Token(
-                [
-                    \T_WHITESPACE,
-                    str_repeat($lineEnding, $newlinesForWhitespaceToken).substr(
-                        $previous->getContent(),
-                        strrpos($previous->getContent(), "\n") + 1
-                    ),
-                ]
-            );
+            $content = $previous->getContent();
+            $pos = strrpos($content, "\n");
+            $content = false === $pos ? '' : substr($content, $pos + 1);
+            $tokens[$previousIndex] = new Token([\T_WHITESPACE, str_repeat($lineEnding, $newlinesForWhitespaceToken).$content]);
         } else {
             // Add a new whitespace token
             $tokens->insertAt($index, new Token([\T_WHITESPACE, str_repeat($lineEnding, $newlinesForWhitespaceToken)]));

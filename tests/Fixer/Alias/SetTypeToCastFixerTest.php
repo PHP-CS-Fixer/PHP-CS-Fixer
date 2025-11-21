@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\Alias\SetTypeToCastFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\SetTypeToCastFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SetTypeToCastFixerTest extends AbstractFixerTestCase
 {

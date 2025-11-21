@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoBlankLinesAfterPhpdocFixer extends AbstractFixer
 {
@@ -37,15 +39,17 @@ final class NoBlankLinesAfterPhpdocFixer extends AbstractFixer
             'There should not be blank lines between docblock and the documented element.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-/**
- * This is the bar class.
- */
+                        /**
+                         * This is the bar class.
+                         */
 
 
-class Bar {}
-'
+                        class Bar {}
+
+                        PHP
                 ),
             ]
         );

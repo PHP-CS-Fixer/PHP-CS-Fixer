@@ -26,6 +26,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\Future;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\FCT;
@@ -45,6 +46,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author John Paul E. Balandan, CPA <paulbalandan@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TypeDeclarationSpacesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -59,48 +62,56 @@ final class TypeDeclarationSpacesFixer extends AbstractFixer implements Configur
             'Ensure single space between a variable and its type declaration in function arguments and properties.',
             [
                 new CodeSample(
-                    '<?php
-class Bar
-{
-    private string    $a;
-    private bool   $b;
+                    <<<'PHP'
+                        <?php
+                        class Bar
+                        {
+                            private string    $a;
+                            private bool   $b;
 
-    public function __invoke(array   $c) {}
-}
-'
+                            public function __invoke(array   $c) {}
+                        }
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-class Foo
-{
-    public int   $bar;
+                    <<<'PHP'
+                        <?php
+                        class Foo
+                        {
+                            public int   $bar;
 
-    public function baz(string     $a)
-    {
-        return fn(bool    $c): string => (string) $c;
-    }
-}
-',
+                            public function baz(string     $a)
+                            {
+                                return fn(bool    $c): string => (string) $c;
+                            }
+                        }
+
+                        PHP,
                     ['elements' => ['function']]
                 ),
                 new CodeSample(
-                    '<?php
-class Foo
-{
-    public int   $bar;
+                    <<<'PHP'
+                        <?php
+                        class Foo
+                        {
+                            public int   $bar;
 
-    public function baz(string     $a) {}
-}
-',
+                            public function baz(string     $a) {}
+                        }
+
+                        PHP,
                     ['elements' => ['property']]
                 ),
                 new VersionSpecificCodeSample(
-                    '<?php
-class Foo
-{
-    public  const string   BAR = "";
-}
-',
+                    <<<'PHP'
+                        <?php
+                        class Foo
+                        {
+                            public  const string   BAR = "";
+                        }
+
+                        PHP,
                     new VersionSpecification(8_03_00),
                     ['elements' => ['constant']]
                 ),
@@ -119,7 +130,9 @@ class Foo
             (new FixerOptionBuilder('elements', 'Structural elements where the spacing after the type declaration should be fixed.'))
                 ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([new AllowedValueSubset(['function', 'property', 'constant'])])
-                ->setDefault(['function', 'property']) // @TODO add 'constant' on next major 4.0
+                ->setDefault(
+                    Future::getV4OrV3(['function', 'property', 'constant'], ['function', 'property'])
+                )
                 ->getOption(),
         ]);
     }

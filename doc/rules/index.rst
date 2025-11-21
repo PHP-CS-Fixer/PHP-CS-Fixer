@@ -194,12 +194,15 @@ Class Notation
 - `final_public_method_for_abstract_class <./class_notation/final_public_method_for_abstract_class.rst>`_ *(risky)*
 
   All ``public`` methods of ``abstract`` classes should be ``final``.
+- `modifier_keywords <./class_notation/modifier_keywords.rst>`_
+
+  Classes, constants, properties, and methods MUST have visibility declared, and keyword modifiers MUST be in the following order: inheritance modifier (``abstract`` or ``final``), visibility modifier (``public``, ``protected``, or ``private``), set-visibility modifier (``public(set)``, ``protected(set)``, or ``private(set)``), scope modifier (``static``), mutation modifier (``readonly``), type declaration, name.
 - `no_blank_lines_after_class_opening <./class_notation/no_blank_lines_after_class_opening.rst>`_
 
   There should be no empty lines after class opening brace.
 - `no_null_property_initialization <./class_notation/no_null_property_initialization.rst>`_
 
-  Properties MUST not be explicitly initialized with ``null`` except when they have a type declaration (PHP 7.4).
+  Properties MUST not be explicitly initialised with ``null`` except when they have a type declaration (PHP 7.4).
 - `no_php4_constructor <./class_notation/no_php4_constructor.rst>`_ *(risky)*
 
   Convert PHP4-style constructors to ``__construct``.
@@ -239,7 +242,7 @@ Class Notation
 - `static_private_method <./class_notation/static_private_method.rst>`_ *(risky)*
 
   Converts private methods to ``static`` where possible.
-- `visibility_required <./class_notation/visibility_required.rst>`_
+- `visibility_required <./class_notation/visibility_required.rst>`_ *(deprecated)*
 
   Classes, constants, properties, and methods MUST have visibility declared, and keyword modifiers MUST be in the following order: inheritance modifier (``abstract`` or ``final``), visibility modifier (``public``, ``protected``, or ``private``), set-visibility modifier (``public(set)``, ``protected(set)``, or ``private(set)``), scope modifier (``static``), mutation modifier (``readonly``), type declaration, name.
 
@@ -267,7 +270,7 @@ Comment
   There should not be any empty comments.
 - `no_trailing_whitespace_in_comment <./comment/no_trailing_whitespace_in_comment.rst>`_
 
-  There MUST be no trailing spaces inside comment or PHPDoc.
+  There must be no trailing whitespace at the end of lines in comments and PHPDocs.
 - `single_line_comment_spacing <./comment/single_line_comment_spacing.rst>`_
 
   Single-line comments must have proper spacing.
@@ -812,6 +815,9 @@ PHPDoc
 - `phpdoc_tag_casing <./phpdoc/phpdoc_tag_casing.rst>`_
 
   Fixes casing of PHPDoc tags.
+- `phpdoc_tag_no_named_arguments <./phpdoc/phpdoc_tag_no_named_arguments.rst>`_
+
+  There must be ``@no-named-arguments`` tag in PHPDoc of a class/enum/interface/trait.
 - `phpdoc_tag_type <./phpdoc/phpdoc_tag_type.rst>`_
 
   Forces PHPDoc tags to be either regular annotations or inline.
@@ -905,7 +911,7 @@ String Notation
   There should not be a binary flag before strings.
 - `no_trailing_whitespace_in_string <./string_notation/no_trailing_whitespace_in_string.rst>`_ *(risky)*
 
-  There must be no trailing whitespace in strings.
+  There must be no trailing whitespace at the end of lines in strings.
 - `simple_to_complex_string_variable <./string_notation/simple_to_complex_string_variable.rst>`_
 
   Converts explicit variables in double-quoted strings and heredoc syntax from simple to complex format (``${`` to ``{$``).
@@ -963,7 +969,7 @@ Whitespace
   There MUST NOT be a space after the opening parenthesis. There MUST NOT be a space before the closing parenthesis.
 - `no_trailing_whitespace <./whitespace/no_trailing_whitespace.rst>`_
 
-  Remove trailing whitespace at the end of non-blank lines.
+  There must be no trailing whitespace at the end of non-blank lines.
 - `no_whitespace_in_blank_line <./whitespace/no_whitespace_in_blank_line.rst>`_
 
   Remove trailing whitespace at the end of blank lines.

@@ -28,6 +28,8 @@ use Symfony\Component\Finder\Finder;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 #[AsCommand(name: 'documentation', description: 'Dumps the documentation of the project into its "/doc" directory.')]
 final class DocumentationCommand extends Command
@@ -59,7 +61,7 @@ final class DocumentationCommand extends Command
         $fixerFactory->registerBuiltInFixers();
         $fixers = $fixerFactory->getFixers();
 
-        $setDefinitions = RuleSets::getSetDefinitions();
+        $setDefinitions = RuleSets::getBuiltInSetDefinitions();
 
         $fixerDocumentGenerator = new FixerDocumentGenerator($locator);
         $ruleSetDocumentationGenerator = new RuleSetDocumentationGenerator($locator);

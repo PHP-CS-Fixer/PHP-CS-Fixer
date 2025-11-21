@@ -52,7 +52,11 @@ use Symfony\Component\Stopwatch\Stopwatch;
  *
  * @final
  *
+ * @TODO 4.0: mark as final
+ *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 #[AsCommand(name: 'fix', description: 'Fixes a directory or a file.')]
 /* final */ class FixCommand extends Command
@@ -131,32 +135,20 @@ use Symfony\Component\Stopwatch\Stopwatch;
             * `-vv`: very verbose
             * `-vvv`: debug
 
-            The <comment>--rules</comment> option limits the rules to apply to the
-            project:
-
             EOF. /* @TODO: 4.0 - change to @PER */ <<<'EOF'
 
-                <info>$ php %command.full_name% /path/to/project --rules=@PSR12</info>
+            The <comment>--rules</comment> option allows to explicitly select rules to use,
+            overriding the default PSR-12 or your own project config:
 
-            By default the PSR-12 rules are used.
+                <info>$ php %command.full_name% . --rules=line_ending,full_opening_tag,indentation_type</info>
 
-            The <comment>--rules</comment> option lets you choose the exact rules to
-            apply (the rule names must be separated by a comma):
+            You can also exclude the rules you don't want by placing a dash in front of the rule name, like <comment>-name_of_fixer</comment>.
 
-                <info>$ php %command.full_name% /path/to/dir --rules=line_ending,full_opening_tag,indentation_type</info>
+                <info>$ php %command.full_name% . --rules=@Symfony,-@PSR1,-blank_line_before_statement,strict_comparison</info>
 
-            You can also exclude the rules you don't want by placing a dash in front of the rule name, if this is more convenient,
-            using <comment>-name_of_fixer</comment>:
+            Complete configuration for rules can be supplied using a `json` formatted string as well.
 
-                <info>$ php %command.full_name% /path/to/dir --rules=-full_opening_tag,-indentation_type</info>
-
-            When using combinations of exact and exclude rules, applying exact rules along with above excluded results:
-
-                <info>$ php %command.full_name% /path/to/project --rules=@Symfony,-@PSR1,-blank_line_before_statement,strict_comparison</info>
-
-            Complete configuration for rules can be supplied using a `json` formatted string.
-
-                <info>$ php %command.full_name% /path/to/project --rules='{"concat_space": {"spacing": "none"}}'</info>
+                <info>$ php %command.full_name% . --rules='{"concat_space": {"spacing": "none"}}'</info>
 
             The <comment>--dry-run</comment> flag will run the fixer without making changes to your files.
 
@@ -215,7 +207,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
         $formats = $reporterFactory->getFormats();
         array_unshift($formats, '@auto', '@auto,txt');
 
-        $progessOutputTypes = ProgressOutputType::all();
+        $progressOutputTypes = ProgressOutputType::all();
 
         $this->setDefinition(
             [
@@ -237,7 +229,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 new InputOption('diff', '', InputOption::VALUE_NONE, 'Prints diff for each file.'),
                 new InputOption('format', '', InputOption::VALUE_REQUIRED, HelpCommand::getDescriptionWithAllowedValues('To output results in other formats (%s).', $formats), null, $formats),
                 new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
-                new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, HelpCommand::getDescriptionWithAllowedValues('Type of progress indicator (%s).', $progessOutputTypes), null, $progessOutputTypes),
+                new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, HelpCommand::getDescriptionWithAllowedValues('Type of progress indicator (%s).', $progressOutputTypes), null, $progressOutputTypes),
                 new InputOption('sequential', '', InputOption::VALUE_NONE, 'Enforce sequential analysis.'),
             ]
         );
@@ -250,7 +242,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
         $passedConfig = $input->getOption('config');
         $passedRules = $input->getOption('rules');
 
-        if (null !== $passedConfig && null !== $passedRules) {
+        if (null !== $passedConfig && ConfigurationResolver::IGNORE_CONFIG_FILE !== $passedConfig && null !== $passedRules) {
             throw new InvalidConfigurationException('Passing both `--config` and `--rules` options is not allowed.');
         }
 
@@ -273,7 +265,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 'show-progress' => $input->getOption('show-progress'),
                 'sequential' => $input->getOption('sequential'),
             ],
-            getcwd(),
+            getcwd(), // @phpstan-ignore argument.type
             $this->toolInfo
         );
 
@@ -355,10 +347,18 @@ use Symfony\Component\Stopwatch\Stopwatch;
             static fn (\SplFileInfo $fileInfo) => false !== $fileInfo->getRealPath(),
         ));
 
-        if (null !== $stdErr && $resolver->configFinderIsOverridden()) {
-            $stdErr->writeln(
-                \sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'Paths from configuration file have been overridden by paths provided as command arguments.')
-            );
+        if (null !== $stdErr) {
+            if ($resolver->configFinderIsOverridden()) {
+                $stdErr->writeln(
+                    \sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'Paths from configuration have been overridden by paths provided as command arguments.')
+                );
+            }
+
+            if ($resolver->configRulesAreOverridden()) {
+                $stdErr->writeln(
+                    \sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'Rules from configuration have been overridden by rules provided as command argument.')
+                );
+            }
         }
 
         $progressType = $resolver->getProgressType();
@@ -400,7 +400,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
         $reportSummary = new ReportSummary(
             $changed,
             \count($finder),
-            $fixEvent->getDuration(),
+            (int) $fixEvent->getDuration(), // ignore microseconds fraction
             $fixEvent->getMemory(),
             OutputInterface::VERBOSITY_VERBOSE <= $verbosity,
             $resolver->isDryRun(),
@@ -424,6 +424,9 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
             if (\count($exceptionErrors) > 0) {
                 $errorOutput->listErrors('fixing', $exceptionErrors);
+                if ($isParallel) {
+                    $stdErr->writeln('To see details of the error(s), re-run the command with `--sequential -vvv [file]`');
+                }
             }
 
             if (\count($lintErrors) > 0) {

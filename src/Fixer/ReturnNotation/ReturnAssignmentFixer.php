@@ -24,6 +24,9 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class ReturnAssignmentFixer extends AbstractFixer
 {
     private TokensAnalyzer $tokensAnalyzer;
@@ -172,7 +175,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
                 CT::T_DYNAMIC_VAR_BRACE_OPEN, // "$h = ${$g};" case
                 \T_EVAL,                       // "$c = eval('return $this;');" case
                 \T_GLOBAL,
-                \T_INCLUDE,                    // loading additional symbols we cannot analyze here
+                \T_INCLUDE,                    // loading additional symbols we cannot analyse here
                 \T_INCLUDE_ONCE,               // "
                 \T_REQUIRE,                    // "
                 \T_REQUIRE_ONCE,               // "
@@ -235,13 +238,13 @@ final class ReturnAssignmentFixer extends AbstractFixer
 
             // Note: here we are @ "; return $a;" (or "; return $a ? >")
             while (true) {
-                $prevMeaningFul = $tokens->getPrevMeaningfulToken($assignVarEndIndex);
+                $prevMeaningful = $tokens->getPrevMeaningfulToken($assignVarEndIndex);
 
-                if (!$tokens[$prevMeaningFul]->equals(')')) {
+                if (!$tokens[$prevMeaningful]->equals(')')) {
                     break;
                 }
 
-                $assignVarEndIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $prevMeaningFul);
+                $assignVarEndIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $prevMeaningful);
             }
 
             $assignVarOperatorIndex = $tokens->getPrevTokenOfKind(

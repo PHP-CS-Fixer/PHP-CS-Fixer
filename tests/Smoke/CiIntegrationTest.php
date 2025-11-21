@@ -33,6 +33,8 @@ use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
  * @group covers-nothing
  *
  * @large
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class CiIntegrationTest extends AbstractSmokeTestCase
 {
@@ -110,7 +112,7 @@ final class CiIntegrationTest extends AbstractSmokeTestCase
             $caseCommands
         ));
 
-        $integrationScript = explode("\n", str_replace('vendor/bin/', './../../../', (string) file_get_contents(__DIR__.'/../../ci-integration.sh')));
+        $integrationScript = explode("\n", str_replace('vendor/bin/', './../../../', (string) file_get_contents(__DIR__.'/../../doc/examples/ci-integration.sh')));
 
         self::assertArrayHasKey(3, $integrationScript);
         self::assertArrayHasKey(4, $integrationScript);
@@ -165,6 +167,9 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
         $optionalXdebugWarning = 'You are running PHP CS Fixer with xdebug enabled. This has a major impact on runtime performance.
 ';
 
+        $optionalComposerWarning = 'Unable to determine minimum PHP version supported by your project from composer.json: Failed to read file "composer.json".
+';
+
         $optionalWarningsHelp = 'If you need help while solving warnings, ask at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/discussions/, we will help you!
 
 ';
@@ -183,10 +188,11 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
         $availableMaxProcesses = ParallelConfigFactory::detect()->getMaxProcesses();
 
         $pattern = \sprintf(
-            '/^(?:%s)?(?:%s)?(?:%s)?(?:%s)?%s\n%s\n%s\n%s\n([\.S]{%d})%s\n%s$/',
+            '/^(?:%s)?(?:%s)?(?:%s)?(?:%s)?(?:%s)?%s\n%s\n%s\n%s\n([\.S]{%d})%s\n%s$/',
             preg_quote($optionalDeprecatedVersionWarning, '/'),
             preg_quote($optionalIncompatibilityWarning, '/'),
             preg_quote($optionalXdebugWarning, '/'),
+            preg_quote($optionalComposerWarning, '/'),
             preg_quote($optionalWarningsHelp, '/'),
             $aboutSubpattern,
             'Running analysis on \d+ core(?: sequentially|s with \d+ files? per process)+\.',

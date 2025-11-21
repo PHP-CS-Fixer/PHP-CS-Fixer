@@ -25,6 +25,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @readonly
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ErrorOutput
 {
@@ -124,7 +126,7 @@ final class ErrorOutput
      *     file?: string,
      *     class?: class-string,
      *     type?: '->'|'::',
-     *     args?: mixed[],
+     *     args?: list<mixed>,
      *     object?: object,
      * } $trace
      */
@@ -142,7 +144,10 @@ final class ErrorOutput
         }
 
         if (isset($trace['file'])) {
-            $this->output->writeln(\sprintf('        in <info>%s</info> at line <info>%d</info>', $this->prepareOutput($trace['file']), $trace['line']));
+            $this->output->writeln(
+                \sprintf('        in <info>%s</info>', $this->prepareOutput($trace['file']))
+                .(isset($trace['line']) ? \sprintf(' at line <info>%d</info>', $trace['line']) : ' at unknown line')
+            );
         }
     }
 

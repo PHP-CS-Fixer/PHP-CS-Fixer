@@ -16,9 +16,11 @@ namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\DescribeCommand;
+use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\Internal\ConfigurableFixerTemplateFixer;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Utils;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -31,15 +33,32 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @group legacy
  * @group auto-review
  * @group covers-nothing
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DescribeCommandTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        // Reset the global state of RuleSets::$customRuleSetDefinitions that was modified
+        // when using `.php-cs-fixer.dist.php`, which registers custom rules/sets.
+        //
+        // @TODO: ideally, we don't have the global state but inject the state instead
+        \Closure::bind(
+            static fn () => RuleSets::$customRuleSetDefinitions = [],
+            null,
+            RuleSets::class
+        )();
+    }
+
     /**
      * @dataProvider provideDescribeCommandCases
      *
      * @param list<string> $successorsNames
      */
-    public function testDescribeCommand(string $fixerName, ?array $successorsNames): void
+    public function testDescribeCommand(string $fixerName, ?array $successorsNames, ?string $configFile = null): void
     {
         if (null !== $successorsNames) {
             $message = "Rule \"{$fixerName}\" is deprecated. "
@@ -49,9 +68,6 @@ final class DescribeCommandTest extends TestCase
             $this->expectDeprecation($message);
         }
 
-        // @TODO 4.0 Remove this expectations
-        $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
-        $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
         if ('ordered_imports' === $fixerName) {
             $this->expectDeprecation('[ordered_imports] Option "sort_algorithm:length" is deprecated and will be removed in version 4.0.');
         }
@@ -68,6 +84,7 @@ final class DescribeCommandTest extends TestCase
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => $fixerName,
+            '--config' => $configFile ?? ConfigurationResolver::IGNORE_CONFIG_FILE,
         ]);
 
         self::assertSame(0, $commandTester->getStatusCode());
@@ -81,6 +98,7 @@ final class DescribeCommandTest extends TestCase
         yield [
             (new ConfigurableFixerTemplateFixer())->getName(),
             null,
+            __DIR__.'/../Fixtures/.php-cs-fixer.one-time-proxy.php',
         ];
 
         $factory = new FixerFactory();

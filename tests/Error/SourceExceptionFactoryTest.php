@@ -23,6 +23,8 @@ use PhpCsFixer\Tests\TestCase;
  * @covers \PhpCsFixer\Error\SourceExceptionFactory
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SourceExceptionFactoryTest extends TestCase
 {

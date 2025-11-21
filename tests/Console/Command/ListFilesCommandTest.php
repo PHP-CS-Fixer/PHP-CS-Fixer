@@ -26,6 +26,8 @@ use Symfony\Component\Filesystem\Path;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Command\ListFilesCommand
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ListFilesCommandTest extends TestCase
 {
@@ -33,12 +35,16 @@ final class ListFilesCommandTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
+        parent::setUpBeforeClass();
+
         self::$filesystem = new Filesystem();
     }
 
     public static function tearDownAfterClass(): void
     {
         self::$filesystem = null;
+
+        parent::tearDownAfterClass();
     }
 
     public function testListWithConfig(): void

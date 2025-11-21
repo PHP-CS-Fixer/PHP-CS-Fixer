@@ -45,6 +45,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Gregor Harlan <gharlan@web.de>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoUnneededControlParenthesesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -52,7 +54,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     use ConfigurableFixerTrait;
 
     /**
-     * @var list<int>
+     * @var non-empty-list<int>
      */
     private const BLOCK_TYPES = [
         Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE,
@@ -194,25 +196,29 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
             'Removes unneeded parentheses around control statements.',
             [
                 new CodeSample(
-                    '<?php
-while ($x) { while ($y) { break (2); } }
-clone($a);
-while ($y) { continue (2); }
-echo("foo");
-print("foo");
-return (1 + 2);
-switch ($a) { case($x); }
-yield(2);
-'
+                    <<<'PHP'
+                        <?php
+                        while ($x) { while ($y) { break (2); } }
+                        clone($a);
+                        while ($y) { continue (2); }
+                        echo("foo");
+                        print("foo");
+                        return (1 + 2);
+                        switch ($a) { case($x); }
+                        yield(2);
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-while ($x) { while ($y) { break (2); } }
+                    <<<'PHP'
+                        <?php
+                        while ($x) { while ($y) { break (2); } }
 
-clone($a);
+                        clone($a);
 
-while ($y) { continue (2); }
-',
+                        while ($y) { continue (2); }
+
+                        PHP,
                     ['statements' => ['break', 'continue']]
                 ),
             ]
@@ -254,7 +260,7 @@ while ($y) { continue (2); }
             // do a cheap check for negative case: `X()`
 
             if ($tokens->getNextMeaningfulToken($openIndex) === $closeIndex) {
-                if ($this->isExitStatement($tokens, $beforeOpenIndex)) {
+                if ($tokens[$beforeOpenIndex]->isGivenKind(\T_EXIT)) {
                     $this->removeUselessParenthesisPair($tokens, $beforeOpenIndex, $afterCloseIndex, $openIndex, $closeIndex, 'others');
                 }
 
@@ -277,7 +283,7 @@ while ($y) { continue (2); }
 
             // handle `clone` statements
 
-            if ($this->isCloneStatement($tokens, $beforeOpenIndex)) {
+            if ($tokens[$beforeOpenIndex]->isGivenKind(\T_CLONE)) {
                 if ($this->isWrappedCloneArgument($tokens, $beforeOpenIndex, $openIndex, $closeIndex, $afterCloseIndex)) {
                     $this->removeUselessParenthesisPair($tokens, $beforeOpenIndex, $afterCloseIndex, $openIndex, $closeIndex, 'clone');
                 }
@@ -336,16 +342,6 @@ while ($y) { continue (2); }
             || $this->isWrappedForElement($tokens, $beforeOpenIndex, $afterCloseIndex)
             || $this->isWrappedLanguageConstructArgument($tokens, $beforeOpenIndex, $afterCloseIndex)
             || $this->isWrappedSequenceElement($tokens, $beforeOpenIndex, $afterCloseIndex);
-    }
-
-    private function isExitStatement(Tokens $tokens, int $beforeOpenIndex): bool
-    {
-        return $tokens[$beforeOpenIndex]->isGivenKind(\T_EXIT);
-    }
-
-    private function isCloneStatement(Tokens $tokens, int $beforeOpenIndex): bool
-    {
-        return $tokens[$beforeOpenIndex]->isGivenKind(\T_CLONE);
     }
 
     private function isWrappedCloneArgument(Tokens $tokens, int $beforeOpenIndex, int $openIndex, int $closeIndex, int $afterCloseIndex): bool

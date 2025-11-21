@@ -21,7 +21,7 @@ use PhpCsFixer\Console\Application;
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException;
-use PhpCsFixer\Utils;
+use PhpCsFixer\Future;
 use Symfony\Component\OptionsResolver\Exception\ExceptionInterface;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
@@ -32,6 +32,8 @@ use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
  * @template TFixerComputedConfig of array<string, mixed>
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 trait ConfigurableFixerTrait
 {
@@ -56,7 +58,7 @@ trait ConfigurableFixerTrait
 
             $name = $option->getName();
             if (\array_key_exists($name, $configuration)) {
-                Utils::triggerDeprecation(new \InvalidArgumentException(\sprintf(
+                Future::triggerDeprecation(new \InvalidArgumentException(\sprintf(
                     'Option "%s" for rule "%s" is deprecated and will be removed in version %d.0. %s',
                     $name,
                     $this->getName(),

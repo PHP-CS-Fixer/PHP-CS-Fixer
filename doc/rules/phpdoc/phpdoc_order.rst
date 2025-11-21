@@ -44,28 +44,6 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
-With configuration: ``['order' => ['param', 'throws', 'return']]``.
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-    <?php
-    /**
-     * Hello there!
-     *
-   - * @throws Exception|RuntimeException foo
-     * @custom Test!
-   - * @return int  Return the number of changes.
-     * @param string $foo
-     * @param bool   $bar Bar
-   + * @throws Exception|RuntimeException foo
-   + * @return int  Return the number of changes.
-     */
-
-Example #3
-~~~~~~~~~~
-
 With configuration: ``['order' => ['param', 'return', 'throws']]``.
 
 .. code-block:: diff
@@ -83,6 +61,28 @@ With configuration: ``['order' => ['param', 'return', 'throws']]``.
      * @param bool   $bar Bar
    + * @return int  Return the number of changes.
    + * @throws Exception|RuntimeException foo
+     */
+
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['order' => ['param', 'throws', 'return']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    /**
+     * Hello there!
+     *
+   - * @throws Exception|RuntimeException foo
+     * @custom Test!
+   - * @return int  Return the number of changes.
+     * @param string $foo
+     * @param bool   $bar Bar
+   + * @throws Exception|RuntimeException foo
+   + * @return int  Return the number of changes.
      */
 
 Example #4

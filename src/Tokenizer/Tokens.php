@@ -15,11 +15,11 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer;
 
 use PhpCsFixer\Console\Application;
+use PhpCsFixer\Future;
 use PhpCsFixer\Hasher;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
-use PhpCsFixer\Utils;
 
 /**
  * Collection of code tokens.
@@ -30,7 +30,12 @@ use PhpCsFixer\Utils;
  *
  * @extends \SplFixedArray<Token>
  *
- * @method Token offsetGet($offset)
+ * `SplFixedArray` uses `T|null` in return types because value can be null if an offset is unset or if the size does not match the number of elements.
+ * But our class takes care of it and always ensures correct size and indexes, so that these methods never return `null` instead of `Token`.
+ *
+ * @method Token                    offsetGet($offset)
+ * @method \Traversable<int, Token> getIterator()
+ * @method array<int, Token>        toArray()
  *
  * @phpstan-import-type _PhpTokenKind from Token
  * @phpstan-import-type _PhpTokenArray from Token
@@ -41,6 +46,10 @@ use PhpCsFixer\Utils;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @final
+ *
+ * @TODO 4.0: mark as final
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 class Tokens extends \SplFixedArray
 {
@@ -182,7 +191,7 @@ class Tokens extends \SplFixedArray
         $tokens = new self(\count($array));
 
         if (false !== $saveIndices && !array_is_list($array)) {
-            Utils::triggerDeprecation(new \InvalidArgumentException(\sprintf(
+            Future::triggerDeprecation(new \InvalidArgumentException(\sprintf(
                 'Parameter "array" should be a list. This will be enforced in version %d.0.',
                 Application::getMajorVersion() + 1
             )));
@@ -318,7 +327,7 @@ class Tokens extends \SplFixedArray
     public function offsetUnset($index): void
     {
         if (\count($this) - 1 !== $index) {
-            Utils::triggerDeprecation(new \InvalidArgumentException(\sprintf(
+            Future::triggerDeprecation(new \InvalidArgumentException(\sprintf(
                 'Tokens should be a list - only the last index can be unset. This will be enforced in version %d.0.',
                 Application::getMajorVersion() + 1
             )));
@@ -355,8 +364,15 @@ class Tokens extends \SplFixedArray
     public function offsetSet($index, $newval): void
     {
         if (0 > $index || \count($this) <= $index) {
-            Utils::triggerDeprecation(new \InvalidArgumentException(\sprintf(
+            Future::triggerDeprecation(new \InvalidArgumentException(\sprintf(
                 'Tokens should be a list - index must be within the existing range. This will be enforced in version %d.0.',
+                Application::getMajorVersion() + 1
+            )));
+        }
+
+        if (!$newval instanceof Token) {
+            Future::triggerDeprecation(new \InvalidArgumentException(\sprintf(
+                'Tokens should be a list of Token instances - newval must be a Token. This will be enforced in version %d.0.',
                 Application::getMajorVersion() + 1
             )));
         }
@@ -553,7 +569,7 @@ class Tokens extends \SplFixedArray
             $elements[$kind] = [];
         }
 
-        $possibleKinds = array_filter($possibleKinds, fn ($kind): bool => $this->isTokenKindFound($kind));
+        $possibleKinds = array_values(array_filter($possibleKinds, fn ($kind): bool => $this->isTokenKindFound($kind)));
 
         if (\count($possibleKinds) > 0) {
             for ($i = $start; $i < $end; ++$i) {
@@ -1110,7 +1126,23 @@ class Tokens extends \SplFixedArray
         }
 
         $this->updateSizeToZero(); // clear memory
-        $tokens = token_get_all($code, \TOKEN_PARSE);
+
+        $prevErrorHandler = set_error_handler(static function ($type, $msg, $file, $line, $context = []) use (&$prevErrorHandler) {
+            // Ignore deprecations triggered by token_get_all for tokenized code.
+            // It is not the responsibility of PHP CS Fixer to care about deprecations within the code being tokenized.
+            if (\E_DEPRECATED === $type) {
+                return true;
+            }
+
+            return null !== $prevErrorHandler ? $prevErrorHandler($type, $msg, $file, $line, $context) : false;
+        });
+
+        try {
+            $tokens = token_get_all($code, \TOKEN_PARSE);
+        } finally {
+            restore_error_handler();
+        }
+
         $this->updateSizeByIncreasingToNewSize(\count($tokens)); // pre-allocate collection size
 
         foreach ($tokens as $index => $token) {

@@ -25,6 +25,8 @@ use PhpCsFixer\Tests\Test\Assert\AssertJsonSchemaTrait;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Report\FixReport\GitlabReporter
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class GitlabReporterTest extends AbstractReporterTestCase
 {
@@ -53,14 +55,17 @@ final class GitlabReporterTest extends AbstractReporterTestCase
                         [{
                             "categories": ["Style"],
                             "check_name": "PHP-CS-Fixer.some_fixer_name_here",
-                            "description": "PHP-CS-Fixer.some_fixer_name_here by {$about}",
+                            "description": "PHP-CS-Fixer.some_fixer_name_here (custom rule)",
+                            "content": {
+                                "body": "{$about}\\nCheck performed with a custom rule."
+                            },
                             "fingerprint": "ad098ea6ea7a28dd85dfcdfc9e2bded0",
                             "severity": "minor",
                             "location": {
                                 "path": "someFile.php",
                                 "lines": {
-                                    "begin": 2,
-                                    "end": 7
+                                    "begin": 5,
+                                    "end": 9
                                 }
                             }
                         }]
@@ -80,7 +85,10 @@ final class GitlabReporterTest extends AbstractReporterTestCase
                         [{
                             "categories": ["Style"],
                             "check_name": "PHP-CS-Fixer.some_fixer_name_here_1",
-                            "description": "PHP-CS-Fixer.some_fixer_name_here_1 by {$about}",
+                            "description": "PHP-CS-Fixer.some_fixer_name_here_1 (custom rule)",
+                            "content": {
+                                "body": "{$about}\\nCheck performed with a custom rule."
+                            },
                             "fingerprint": "b74e9385c8ae5b1f575c9c8226c7deff",
                             "severity": "minor",
                             "location": {
@@ -93,7 +101,10 @@ final class GitlabReporterTest extends AbstractReporterTestCase
                         },{
                             "categories": ["Style"],
                             "check_name": "PHP-CS-Fixer.some_fixer_name_here_2",
-                            "description": "PHP-CS-Fixer.some_fixer_name_here_2 by {$about}",
+                            "description": "PHP-CS-Fixer.some_fixer_name_here_2 (custom rule)",
+                            "content": {
+                                "body": "{$about}\\nCheck performed with a custom rule."
+                            },
                             "fingerprint": "acad4672140c737a83c18d1474d84074",
                             "severity": "minor",
                             "location": {
@@ -120,7 +131,10 @@ final class GitlabReporterTest extends AbstractReporterTestCase
                         [{
                             "categories": ["Style"],
                             "check_name": "PHP-CS-Fixer.some_fixer_name_here_1",
-                            "description": "PHP-CS-Fixer.some_fixer_name_here_1 by {$about}",
+                            "description": "PHP-CS-Fixer.some_fixer_name_here_1 (custom rule)",
+                            "content": {
+                                "body": "{$about}\\nCheck performed with a custom rule."
+                            },
                             "fingerprint": "b74e9385c8ae5b1f575c9c8226c7deff",
                             "severity": "minor",
                             "location": {
@@ -133,7 +147,10 @@ final class GitlabReporterTest extends AbstractReporterTestCase
                         },{
                             "categories": ["Style"],
                             "check_name": "PHP-CS-Fixer.some_fixer_name_here_2",
-                            "description": "PHP-CS-Fixer.some_fixer_name_here_2 by {$about}",
+                            "description": "PHP-CS-Fixer.some_fixer_name_here_2 (custom rule)",
+                            "content": {
+                                "body": "{$about}\\nCheck performed with a custom rule."
+                            },
                             "fingerprint": "acad4672140c737a83c18d1474d84074",
                             "severity": "minor",
                             "location": {
@@ -146,7 +163,10 @@ final class GitlabReporterTest extends AbstractReporterTestCase
                         },{
                             "categories": ["Style"],
                             "check_name": "PHP-CS-Fixer.another_fixer_name_here",
-                            "description": "PHP-CS-Fixer.another_fixer_name_here by {$about}",
+                            "description": "PHP-CS-Fixer.another_fixer_name_here (custom rule)",
+                            "content": {
+                                "body": "{$about}\\nCheck performed with a custom rule."
+                            },
                             "fingerprint": "30e86e533dac0f1b93bbc3a55c6908f8",
                             "severity": "minor",
                             "location": {

@@ -25,6 +25,9 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class SelfStaticAccessorFixer extends AbstractFixer
 {
     private const CLASSY_TYPES = [\T_CLASS, FCT::T_ENUM];
@@ -37,67 +40,77 @@ final class SelfStaticAccessorFixer extends AbstractFixer
             'Inside an enum or `final`/anonymous class, `self` should be preferred over `static`.',
             [
                 new CodeSample(
-                    '<?php
-final class Sample
-{
-    private static $A = 1;
+                    <<<'PHP'
+                        <?php
+                        final class Sample
+                        {
+                            private static $A = 1;
 
-    public function getBar()
-    {
-        return static::class.static::test().static::$A;
-    }
+                            public function getBar()
+                            {
+                                return static::class.static::test().static::$A;
+                            }
 
-    private static function test()
-    {
-        return \'test\';
-    }
-}
-'
+                            private static function test()
+                            {
+                                return 'test';
+                            }
+                        }
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-final class Foo
-{
-    public function bar()
-    {
-        return new static();
-    }
-}
-'
+                    <<<'PHP'
+                        <?php
+                        final class Foo
+                        {
+                            public function bar()
+                            {
+                                return new static();
+                            }
+                        }
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-final class Foo
-{
-    public function isBar()
-    {
-        return $foo instanceof static;
-    }
-}
-'
+                    <<<'PHP'
+                        <?php
+                        final class Foo
+                        {
+                            public function isBar()
+                            {
+                                return $foo instanceof static;
+                            }
+                        }
+
+                        PHP
                 ),
                 new CodeSample(
-                    '<?php
-$a = new class() {
-    public function getBar()
-    {
-        return static::class;
-    }
-};
-'
+                    <<<'PHP'
+                        <?php
+                        $a = new class() {
+                            public function getBar()
+                            {
+                                return static::class;
+                            }
+                        };
+
+                        PHP
                 ),
                 new VersionSpecificCodeSample(
-                    '<?php
-enum Foo
-{
-    public const A = 123;
+                    <<<'PHP'
+                        <?php
+                        enum Foo
+                        {
+                            public const A = 123;
 
-    public static function bar(): void
-    {
-        echo static::A;
-    }
-}
-',
+                            public static function bar(): void
+                            {
+                                echo static::A;
+                            }
+                        }
+
+                        PHP,
                     new VersionSpecification(8_01_00)
                 ),
             ]

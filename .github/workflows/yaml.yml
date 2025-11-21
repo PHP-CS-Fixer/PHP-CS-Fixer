@@ -6,6 +6,8 @@ on:
       - '**.yml'
       - '**.yaml'
   push:
+    branches:
+      - master
     paths:
       - '**.yml'
       - '**.yaml'
@@ -20,7 +22,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Run yamllint
         run: git ls-files --cached -z -- '*.y*ml' | xargs --null -- yamllint

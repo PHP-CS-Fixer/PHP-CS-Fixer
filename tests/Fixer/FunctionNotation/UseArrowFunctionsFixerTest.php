@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\UseArrowFunctionsFixer>
  *
  * @author Gregor Harlan
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
 {
@@ -226,6 +228,21 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
                     ];
                 };
                 PHP,
+        ];
+
+        yield [
+            '<?php
+            foo(
+                fn () => 42
+                        '.'
+            );',
+            '<?php
+            foo(
+                function () {
+                    return 42
+                        ;
+                }
+            );',
         ];
     }
 }

@@ -2,7 +2,7 @@
 Rule set ``@Symfony:risky``
 ===========================
 
-Rules that follow the official `Symfony Coding Standards <https://symfony.com/doc/current/contributing/code/standards.html>`_.
+Rules that follow the official `Symfony Coding Standards <https://symfony.com/doc/current/contributing/code/standards.html>`_. Extends ``@PER-CS:risky``.
 
 Warning
 -------
@@ -15,7 +15,7 @@ Using this rule set may lead to changes in your code's logic and behaviour. Use 
 Rules
 -----
 
-- `@PHP56Migration:risky <./PHP56MigrationRisky.rst>`_
+- `@PHP5x6Migration:risky <./PHP5x6MigrationRisky.rst>`_
 - `@PSR12:risky <./PSR12Risky.rst>`_
 - `array_push <./../rules/alias/array_push.rst>`_
 - `combine_nested_dirname <./../rules/function_notation/combine_nested_dirname.rst>`_

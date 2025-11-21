@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\AbstractFunctionReferenceFixer;
-use PhpCsFixer\AccessibleObject\AccessibleObject;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -23,6 +22,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class AbstractFunctionReferenceFixerTest extends TestCase
 {
@@ -46,12 +47,12 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
 
         self::assertSame(
             $expected,
-            AccessibleObject::create($fixer)->find(
+            \Closure::bind(static fn (AbstractFunctionReferenceFixer $fixer): ?array => $fixer->find(
                 $functionNameToSearch,
                 $tokens,
                 $start,
                 $end
-            )
+            ), null, AbstractFunctionReferenceFixer::class)($fixer)
         );
 
         self::assertFalse($tokens->isChanged());
