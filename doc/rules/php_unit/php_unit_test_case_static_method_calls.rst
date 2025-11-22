@@ -128,6 +128,10 @@ The rule is part of the following rule sets:
 
   ``['target' => '11.0']``
 
+- `@PHPUnit110Migration:risky <./../../ruleSets/PHPUnit110MigrationRisky.rst>`_ *(deprecated)* with config:
+
+  ``['target' => '11.0']``
+
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ with config:
 
   ``['call_type' => 'self']``

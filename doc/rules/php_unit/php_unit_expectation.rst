@@ -237,6 +237,10 @@ The rule is part of the following rule sets:
 
   ``['target' => '8.4']``
 
+- `@PHPUnit110Migration:risky <./../../ruleSets/PHPUnit110MigrationRisky.rst>`_ *(deprecated)* with config:
+
+  ``['target' => '8.4']``
+
 References
 ----------
 
