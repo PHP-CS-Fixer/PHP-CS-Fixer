@@ -124,7 +124,7 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PHPUnit11x0Migration:risky <./../../ruleSets/PHPUnit11x0MigrationRisky.rst>`_ *(deprecated)* with config:
+- `@PHPUnit11x0Migration:risky <./../../ruleSets/PHPUnit11x0MigrationRisky.rst>`_ with config:
 
   ``['target' => '11.0']``
 

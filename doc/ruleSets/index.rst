@@ -72,7 +72,7 @@ List of Available Rule sets
 - `@PHPUnit8x4Migration:risky <./PHPUnit8x4MigrationRisky.rst>`_
 - `@PHPUnit9x1Migration:risky <./PHPUnit9x1MigrationRisky.rst>`_
 - `@PHPUnit10x0Migration:risky <./PHPUnit10x0MigrationRisky.rst>`_
-- `@PHPUnit11x0Migration:risky <./PHPUnit11x0MigrationRisky.rst>`_ *(deprecated)*
+- `@PHPUnit11x0Migration:risky <./PHPUnit11x0MigrationRisky.rst>`_
 - `@PHPUnit30Migration:risky <./PHPUnit30MigrationRisky.rst>`_ *(deprecated)*
 - `@PHPUnit32Migration:risky <./PHPUnit32MigrationRisky.rst>`_ *(deprecated)*
 - `@PHPUnit35Migration:risky <./PHPUnit35MigrationRisky.rst>`_ *(deprecated)*

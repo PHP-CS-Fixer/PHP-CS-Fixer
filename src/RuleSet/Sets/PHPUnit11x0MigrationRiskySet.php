@@ -15,19 +15,19 @@ declare(strict_types=1);
 namespace PhpCsFixer\RuleSet\Sets;
 
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
-use PhpCsFixer\RuleSet\AbstractMajorMinorDeprecationSetDefinition;
+use PhpCsFixer\RuleSet\AbstractMigrationSetDefinition;
 
 /**
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PHPUnit11x0MigrationRiskySet extends AbstractMajorMinorDeprecationSetDefinition
+final class PHPUnit11x0MigrationRiskySet extends AbstractMigrationSetDefinition
 {
     public function getRules(): array
     {
         return [
-            '@PHPUnit100Migration:risky' => true,
+            '@PHPUnit10x0Migration:risky' => true,
             'php_unit_test_case_static_method_calls' => [
                 'target' => PhpUnitTargetVersion::VERSION_11_0,
             ],
