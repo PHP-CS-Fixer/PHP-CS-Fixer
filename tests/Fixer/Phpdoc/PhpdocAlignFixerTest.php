@@ -1543,6 +1543,30 @@ function foo($typeless): void {}',
                  */
                 PHP,
         ];
+
+        yield 'call-site generic variance' => [
+            ['tags' => ['param'], 'align' => PhpdocAlignFixer::ALIGN_VERTICAL],
+            <<<'PHP'
+                <?php
+                /**
+                 * @param Foo                                   $a
+                 * @param Bar<covariant A, covariant B>         $b
+                 * @param Foo                                   $c
+                 * @param Bar<contravariant C, contravariant D> $d
+                 * @param Foo                                   $e
+                 */
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
+                 * @param Foo $a
+                 * @param Bar<covariant A, covariant B> $b
+                 * @param Foo $c
+                 * @param Bar<contravariant C, contravariant D> $d
+                 * @param Foo $e
+                 */
+                PHP,
+        ];
     }
 
     /**

@@ -214,6 +214,7 @@ final class TypeExpression
             )
             (?:(?=1)0
                 (?<types_inner>(?>
+                    (?:co(ntra)?variant\h+)?
                     (?&type)
                     (?:
                         \h*[|&]\h*
