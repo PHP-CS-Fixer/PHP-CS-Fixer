@@ -1549,6 +1549,16 @@ function foo($typeless): void {}',
             <<<'PHP'
                 <?php
                 /**
+                 * @param Foo                                   $a
+                 * @param Bar<covariant A, covariant B>         $b
+                 * @param Foo                                   $c
+                 * @param Bar<contravariant C, contravariant D> $d
+                 * @param Foo                                   $e
+                 */
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
                  * @param Foo $a
                  * @param Bar<covariant A, covariant B> $b
                  * @param Foo $c

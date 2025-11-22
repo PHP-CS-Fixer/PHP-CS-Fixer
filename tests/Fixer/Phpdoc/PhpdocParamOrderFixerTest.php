@@ -974,10 +974,10 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                 <?php
                 /**
                  * @param Foo $a
-                 * @param Foo $c
-                 * @param Foo $e
-                 * @param Bar<contravariant C, contravariant D> $d
                  * @param Bar<covariant A, covariant B> $b
+                 * @param Foo $c
+                 * @param Bar<contravariant C, contravariant D> $d
+                 * @param Foo $e
                  */
                 function f($a, $b, $c, $d, $e) {}
                 PHP,
