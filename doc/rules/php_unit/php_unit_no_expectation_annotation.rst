@@ -161,6 +161,10 @@ The rule is part of the following rule sets:
 
   ``['target' => '4.3']``
 
+- `@PHPUnit11x0Migration:risky <./../../ruleSets/PHPUnit11x0MigrationRisky.rst>`_ *(deprecated)* with config:
+
+  ``['target' => '4.3']``
+
 - `@PHPUnit32Migration:risky <./../../ruleSets/PHPUnit32MigrationRisky.rst>`_ *(deprecated)* with config:
 
   ``['target' => '3.2']``
@@ -218,10 +222,6 @@ The rule is part of the following rule sets:
   ``['target' => '4.3']``
 
 - `@PHPUnit100Migration:risky <./../../ruleSets/PHPUnit100MigrationRisky.rst>`_ *(deprecated)* with config:
-
-  ``['target' => '4.3']``
-
-- `@PHPUnit110Migration:risky <./../../ruleSets/PHPUnit110MigrationRisky.rst>`_ *(deprecated)* with config:
 
   ``['target' => '4.3']``
 

@@ -22,7 +22,7 @@ use PhpCsFixer\RuleSet\AbstractMajorMinorDeprecationSetDefinition;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PHPUnit110MigrationRiskySet extends AbstractMajorMinorDeprecationSetDefinition
+final class PHPUnit11x0MigrationRiskySet extends AbstractMajorMinorDeprecationSetDefinition
 {
     public function getRules(): array
     {

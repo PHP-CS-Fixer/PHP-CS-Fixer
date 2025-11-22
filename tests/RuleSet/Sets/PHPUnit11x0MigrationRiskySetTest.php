@@ -17,8 +17,8 @@ namespace PhpCsFixer\Tests\RuleSet\Sets;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\RuleSet\Sets\PHPUnit110MigrationRiskySet
+ * @covers \PhpCsFixer\RuleSet\Sets\PHPUnit11x0MigrationRiskySet
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PHPUnit110MigrationRiskySetTest extends AbstractSetTestCase {}
+final class PHPUnit11x0MigrationRiskySetTest extends AbstractSetTestCase {}

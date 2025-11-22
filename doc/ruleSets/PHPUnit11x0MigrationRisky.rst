@@ -1,6 +1,6 @@
-=======================================
-Rule set ``@PHPUnit110Migration:risky``
-=======================================
+========================================
+Rule set ``@PHPUnit11x0Migration:risky``
+========================================
 
 Rules to improve tests code for PHPUnit 11.0 compatibility.
 
