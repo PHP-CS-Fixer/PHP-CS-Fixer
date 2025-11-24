@@ -21,10 +21,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Check spelling
-        uses: crate-ci/typos@v1.39.0
+        uses: crate-ci/typos@v1.39.2
         with:
           config: ./dev-tools/typos.toml
 
@@ -37,7 +37,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       # We need to fetch base branch because `actions/checkout` only initialises empty repo and fetches PR's meta-branch
       # which leads to `fatal: ambiguous argument 'origin/...': unknown revision or path not in the working tree.`,

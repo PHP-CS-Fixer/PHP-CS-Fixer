@@ -121,6 +121,13 @@ final class ComposerJsonReaderTest extends TestCase
 }',
         ];
 
+        yield 'version with >= and a space' => [
+            '9.6',
+            '{
+    "require-dev": { "phpunit/phpunit": ">= 9.6.25" }
+}',
+        ];
+
         yield 'version with <' => [
             null, // not supported !
             '{
@@ -246,6 +253,15 @@ final class ComposerJsonReaderTest extends TestCase
             '{}',
         ];
 
+        yield 'standard usage' => [
+            '8.4',
+            '{
+    "require": {
+        "php": "^8.4"
+    }
+}',
+        ];
+
         yield 'all mixed with prio for require' => [
             '7.0',
             '{
@@ -301,6 +317,13 @@ final class ComposerJsonReaderTest extends TestCase
             '8.1',
             '{
     "require": { "php": "  8.1.*  ||  8.2.*  ||  8.3.*  ||  8.4.*  " }
+}',
+        ];
+
+        yield 'version with >= and a space' => [
+            '8.2',
+            '{
+    "require": { "php": ">= 8.2" }
 }',
         ];
     }

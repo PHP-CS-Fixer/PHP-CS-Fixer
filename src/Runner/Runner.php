@@ -58,6 +58,10 @@ use Symfony\Contracts\EventDispatcher\Event;
  * @author Greg Korba <greg@codito.dev>
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @TODO v4: decide if marking Runner as internal or making it dependencies public
+ *
+ * @phpstan-ignore-next-line phpCsFixer.internalTypeInPublicApi
  */
 final class Runner
 {
