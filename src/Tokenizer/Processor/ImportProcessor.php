@@ -47,7 +47,7 @@ final class ImportProcessor
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
         $prevIndex = $tokens->getPrevMeaningfulToken($atIndex);
-        if ($prevIndex !== null && $tokens[$prevIndex]->isGivenKind(T_OPEN_TAG_WITH_ECHO)) {
+        if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(\T_OPEN_TAG_WITH_ECHO)) {
             $tokens->insertAt($prevIndex, Tokens::fromCode("<?php\n?>"));
             $atIndex = $prevIndex + 1;
         }
