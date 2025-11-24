@@ -166,6 +166,11 @@ final class InitCommand extends Command
             true
         );
 
+        // older Symfony version can return single string instead of array with single string, let's unify
+        if (!\is_array($sets)) {
+            $sets = [$sets];
+        }
+
         $rules = array_merge(
             $rules,
             array_unique(array_filter($sets, static fn ($item) => 'none' !== $item)),
