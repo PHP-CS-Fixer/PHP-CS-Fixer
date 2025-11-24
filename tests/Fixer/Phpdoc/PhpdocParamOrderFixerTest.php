@@ -968,5 +968,30 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                 }
                 EOT,
         ];
+
+        yield 'call-site generic variance' => [
+            <<<'PHP'
+                <?php
+                /**
+                 * @param Foo $a
+                 * @param Bar<covariant A, covariant B> $b
+                 * @param Foo $c
+                 * @param Bar<contravariant C, contravariant D> $d
+                 * @param Foo $e
+                 */
+                function f($a, $b, $c, $d, $e) {}
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
+                 * @param Bar<contravariant C, contravariant D> $d
+                 * @param Bar<covariant A, covariant B> $b
+                 * @param Foo $e
+                 * @param Foo $a
+                 * @param Foo $c
+                 */
+                function f($a, $b, $c, $d, $e) {}
+                PHP,
+        ];
     }
 }
