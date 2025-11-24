@@ -21,7 +21,7 @@ use PhpCsFixer\ConfigurationException\UnresolvableAutoRuleSetConfigurationExcept
 /**
  * @internal
  *
- * @phpstan-require-implements AutomaticRuleSetDescriptionInterface
+ * @phpstan-require-implements AutomaticRuleSetDefinitionInterface
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
