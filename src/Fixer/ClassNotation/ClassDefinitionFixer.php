@@ -149,7 +149,7 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
      * {@inheritdoc}
      *
      * Must run before BracesFixer, SingleLineEmptyBodyFixer.
-     * Must run after NewWithBracesFixer, NewWithParenthesesFixer.
+     * Must run after NewWithBracesFixer, NewWithParenthesesFixer, StringableForToStringFixer.
      */
     public function getPriority(): int
     {
