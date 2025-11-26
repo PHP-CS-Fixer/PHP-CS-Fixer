@@ -65,7 +65,7 @@ final class StringableForToStringFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 80_000 && $tokens->isAllTokenKindsFound([\T_CLASS, \T_STRING]);
+        return \PHP_VERSION_ID >= 8_00_00 && $tokens->isAllTokenKindsFound([\T_CLASS, \T_STRING]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
