@@ -251,8 +251,6 @@ final class RunnerTest extends TestCase
     }
 
     /**
-     * @requires OS Darwin|Windows
-     *
      * @TODO v4 do not switch on parallel execution by default while this test is not passing on Linux.
      *
      * @covers \PhpCsFixer\Runner\Runner::fix
