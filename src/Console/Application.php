@@ -18,6 +18,7 @@ use PhpCsFixer\Console\Command\CheckCommand;
 use PhpCsFixer\Console\Command\DescribeCommand;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\Command\HelpCommand;
+use PhpCsFixer\Console\Command\InitCommand;
 use PhpCsFixer\Console\Command\ListFilesCommand;
 use PhpCsFixer\Console\Command\ListSetsCommand;
 use PhpCsFixer\Console\Command\SelfUpdateCommand;
@@ -64,9 +65,10 @@ final class Application extends BaseApplication
         $this->toolInfo = new ToolInfo();
 
         // in alphabetical order
-        $this->add(new DescribeCommand());
         $this->add(new CheckCommand($this->toolInfo));
+        $this->add(new DescribeCommand());
         $this->add(new FixCommand($this->toolInfo));
+        $this->add(new InitCommand());
         $this->add(new ListFilesCommand($this->toolInfo));
         $this->add(new ListSetsCommand());
         $this->add(new SelfUpdateCommand(
