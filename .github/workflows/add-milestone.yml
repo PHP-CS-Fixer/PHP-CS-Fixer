@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   add-to-milestone:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     if: ${{ github.event.label.name == 'topic/PHP8.5' }}
     env:
       PR_URL: ${{github.event.pull_request.html_url}}

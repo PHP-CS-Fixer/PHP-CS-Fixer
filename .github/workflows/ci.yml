@@ -20,7 +20,7 @@ env:
 jobs:
   entrypoint-low-php-compat:
     name: Entrypoint low-PHP compat
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-slim
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
