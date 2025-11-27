@@ -82,7 +82,7 @@ final class Application extends BaseApplication
     // polyfill for `add` method, as it is not available in Symfony 8.0
     public function add(Command $command): ?Command
     {
-        if (method_exists($this, 'addCommand')) { // @phpstan-ignore function.impossibleType
+        if (method_exists($this, 'addCommand')) { // @phpstan-ignore function.alreadyNarrowedType
             return $this->addCommand($command);
         }
 
