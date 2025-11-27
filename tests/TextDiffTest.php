@@ -51,6 +51,7 @@ final class TextDiffTest extends TestCase
             ],
             [
                 'decorated' => $isDecorated,
+                'interactive' => false,
                 'verbosity' => OutputInterface::VERBOSITY_NORMAL,
             ]
         );
