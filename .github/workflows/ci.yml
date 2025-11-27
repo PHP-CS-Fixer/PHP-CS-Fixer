@@ -99,16 +99,6 @@ jobs:
 
           - operating-system: ubuntu-24.04
             php-version: '8.4'
-            job-description: Fixer
-            run-fixer: 'yes'
-
-          - operating-system: ubuntu-24.04
-            php-version: '8.4'
-            job-description: tests
-            run-tests: 'yes'
-
-          - operating-system: ubuntu-24.04
-            php-version: '8.4'
             job-description: Fixer with Symfony ^8
             run-fixer: 'yes'
             execute-flex-with-symfony-version: ^8 # explicit check for Symfony 8.x compatibility
