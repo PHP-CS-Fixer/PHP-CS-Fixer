@@ -63,12 +63,10 @@ class A {
         ];
 
         yield [
-            "<?php declare(strict_types=1);\ndeclare(strict_types=1, ticks=1);",
             '<?php declare(strict_types=1, ticks=1);',
         ];
 
         yield [
-            "<?php declare(strict_types=1);\ndeclare(ticks=1, strict_types=1);",
             '<?php declare(ticks=1, strict_types=1);',
         ];
 
