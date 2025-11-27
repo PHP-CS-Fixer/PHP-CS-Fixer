@@ -188,7 +188,6 @@ jobs:
             php-version: '8.5'
             job-description: tests
             run-tests: 'yes'
-            allow-to-fail: 'yes' # with newest 8.5 development, we are not longer (and not yet) compatible with 8.5
             PHP_CS_FIXER_IGNORE_ENV: 1
 
     name: PHP ${{ matrix.php-version }} ${{ matrix.job-description }}
