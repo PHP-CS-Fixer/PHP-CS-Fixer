@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  PHP_MAX: '8.4'
+  PHP_MAX: '8.5'
   PHP_MIN: '7.4'
 
 jobs:
