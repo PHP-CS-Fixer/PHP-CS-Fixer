@@ -69,7 +69,7 @@ final class InitCommand extends Command
         }
 
         $io->note([
-            'While we start, we must tell you that we put our dilligence to NOT change the meaning of your codebase.',
+            'While we start, we must tell you that we put our diligence to NOT change the meaning of your codebase.',
             'Yet, some of the rules are explicitly _risky_ to apply. A rule is _risky_ if it could change code behaviour, e.g. transforming `==` into `===` or removal of trailing whitespaces within multiline strings.',
             'Such rules are improving your codebase even further, yet you shall always review changes proposed by _risky_ rules carefully.',
         ]);
