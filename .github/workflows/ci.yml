@@ -111,15 +111,15 @@ jobs:
             php-version: '8.4'
             job-description: Fixer with Symfony ^8
             run-fixer: 'yes'
-            execute-flex-with-symfony-version: ^8@beta # explicit check for Symfony 8.x compatibility
-            composer-minimum-stability: beta
+            execute-flex-with-symfony-version: ^8@RC # explicit check for Symfony 8.x compatibility
+            composer-minimum-stability: RC
 
           - operating-system: ubuntu-24.04
             php-version: '8.4'
             job-description: tests with Symfony ^8
             run-tests: 'yes'
-            execute-flex-with-symfony-version: ^8@beta # explicit check for Symfony 8.x compatibility
-            composer-minimum-stability: beta
+            execute-flex-with-symfony-version: ^8@RC # explicit check for Symfony 8.x compatibility
+            composer-minimum-stability: RC
 
           - operating-system: ubuntu-24.04
             php-version: '8.4'
