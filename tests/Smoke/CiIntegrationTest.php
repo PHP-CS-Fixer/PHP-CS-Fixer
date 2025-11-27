@@ -312,7 +312,7 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
     public function testWithUsingNonExistingFile(): void
     {
         $output = ScriptExecutor::create(
-            ['php php-cs-fixer check --config=tests/Fixtures/.php-cs-fixer.append-non-existing-file.php --show-progress=dots'],
+            ['php php-cs-fixer check --config=tests/Fixtures/.php-cs-fixer.append-non-existing-file.php --show-progress=dots --no-interaction'],
             __DIR__.'/../..'
         )->getResult();
 
