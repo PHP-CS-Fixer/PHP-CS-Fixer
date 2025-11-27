@@ -18,6 +18,18 @@ env:
   PHP_MIN: '7.4'
 
 jobs:
+  # jobs can't use env.* as part of job definitions, so we need a `setup` job to pass such values via outputs
+  setup:
+    runs-on: ubuntu-slim
+    outputs:
+      PHP_MAX: ${{ steps.set-version.outputs.PHP_MAX }}
+      PHP_MIN: ${{ steps.set-version.outputs.PHP_MIN }}
+    steps:
+      - id: set-version
+        run: |
+          echo "PHP_MAX=${{ env.PHP_MAX }}" >> $GITHUB_OUTPUT
+          echo "PHP_MIN=${{ env.PHP_MIN }}" >> $GITHUB_OUTPUT
+
   entrypoint-low-php-compat:
     name: Entrypoint low-PHP compat
     runs-on: ubuntu-24.04
@@ -34,6 +46,7 @@ jobs:
         run: php -l $(cat composer.json | jq -r '.bin[]')
 
   tests:
+    needs: setup
     continue-on-error: ${{ matrix.allow-to-fail == 'yes' }}
     strategy:
       fail-fast: false
@@ -110,63 +123,6 @@ jobs:
             execute-flex-with-symfony-version: ^8 # explicit check for Symfony 8.x compatibility
 
           - operating-system: ubuntu-24.04
-            php-version: '8.4'
-            job-description: Fixer with migration rules
-            run-fixer: 'yes'
-            run-migration-rules: 'yes' # should be checked on the highest supported PHP version
-
-          - operating-system: ubuntu-24.04
-            php-version: '8.4'
-            job-description: tests with migration rules
-            run-tests: 'yes'
-            run-migration-rules: 'yes' # should be checked on the highest supported PHP version
-
-          - operating-system: windows-latest
-            php-version: '8.4'
-            job-description: Fixer on Windows
-            run-fixer: 'yes'
-            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
-
-          - operating-system: windows-latest
-            php-version: '8.4'
-            job-description: tests on Windows
-            run-tests: 'yes'
-            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
-
-          - operating-system: macos-latest
-            php-version: '8.4'
-            job-description: Fixer on macOS
-            run-fixer: 'yes'
-            allow-to-fail: 'yes' # we experience random failures on macOS
-            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
-
-          - operating-system: macos-latest
-            php-version: '8.4'
-            job-description: tests on macOS
-            run-tests: 'yes'
-            allow-to-fail: 'yes' # we experience random failures on macOS
-            AVOID_PARAUNIT: 'yes' # macOS job is having weird issue on CI under ParaUnit
-            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
-
-          - operating-system: ubuntu-24.04
-            php-version: '8.4'
-            job-description: tests using PHPUnit 12
-            install-phpunit-12: 'yes'
-            run-tests: 'yes'
-
-          - operating-system: ubuntu-24.04
-            php-version: '8.4'
-            job-description: code coverage
-            run-tests: 'yes'
-            collect-code-coverage: 'yes'
-            allow-to-fail: 'yes' # don't prevent the build when remote coverage reporting service is down
-
-          - operating-system: ubuntu-24.04
-            php-version: '8.4'
-            job-description: mutation tests
-            run-mutation-tests: 'yes'
-
-          - operating-system: ubuntu-24.04
             php-version: '8.5'
             job-description: Fixer
             run-fixer: 'yes'
@@ -177,6 +133,63 @@ jobs:
             job-description: tests
             run-tests: 'yes'
             PHP_CS_FIXER_IGNORE_ENV: 1
+
+          - operating-system: ubuntu-24.04
+            php-version: ${{ needs.setup.outputs.PHP_MAX }}
+            job-description: Fixer with migration rules
+            run-fixer: 'yes'
+            run-migration-rules: 'yes' # should be checked on the highest supported PHP version
+
+          - operating-system: ubuntu-24.04
+            php-version: ${{ needs.setup.outputs.PHP_MAX }}
+            job-description: tests with migration rules
+            run-tests: 'yes'
+            run-migration-rules: 'yes' # should be checked on the highest supported PHP version
+
+          - operating-system: windows-latest
+            php-version: ${{ needs.setup.outputs.PHP_MAX }}
+            job-description: Fixer on Windows
+            run-fixer: 'yes'
+            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
+
+          - operating-system: windows-latest
+            php-version: ${{ needs.setup.outputs.PHP_MAX }}
+            job-description: tests on Windows
+            run-tests: 'yes'
+            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
+
+          - operating-system: macos-latest
+            php-version: ${{ needs.setup.outputs.PHP_MAX }}
+            job-description: Fixer on macOS
+            run-fixer: 'yes'
+            allow-to-fail: 'yes' # we experience random failures on macOS
+            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
+
+          - operating-system: macos-latest
+            php-version: ${{ needs.setup.outputs.PHP_MAX }}
+            job-description: tests on macOS
+            run-tests: 'yes'
+            allow-to-fail: 'yes' # we experience random failures on macOS
+            AVOID_PARAUNIT: 'yes' # macOS job is having weird issue on CI under ParaUnit
+            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
+
+          - operating-system: ubuntu-24.04
+            php-version: ${{ needs.setup.outputs.PHP_MAX }}
+            job-description: tests using PHPUnit 12
+            install-phpunit-12: 'yes'
+            run-tests: 'yes'
+
+          - operating-system: ubuntu-24.04
+            php-version: ${{ needs.setup.outputs.PHP_MAX }}
+            job-description: code coverage
+            run-tests: 'yes'
+            collect-code-coverage: 'yes'
+            allow-to-fail: 'yes' # don't prevent the build when remote coverage reporting service is down
+
+          - operating-system: ubuntu-24.04
+            php-version: ${{ needs.setup.outputs.PHP_MAX }}
+            job-description: mutation tests
+            run-mutation-tests: 'yes'
 
     name: PHP ${{ matrix.php-version }} ${{ matrix.job-description }}
 
@@ -287,13 +300,13 @@ jobs:
         run: php php-cs-fixer check --diff -vvv --config .php-cs-fixer.php-lowest.php
 
   deployment:
-    needs: tests
+    needs: [setup, tests]
     if: always()
     name: Deployment checks
 
     runs-on: ubuntu-24.04
     env:
-      php-version: '8.4'
+      php-version: ${{ needs.setup.outputs.PHP_MAX }}
 
     steps:
       - name: Check if the tests passed
