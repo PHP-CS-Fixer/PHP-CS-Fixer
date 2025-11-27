@@ -78,10 +78,14 @@ final class CiConfigurationTest extends TestCase
             $expectedPhp = (string) ((float) $expectedPhp - 0.1);
         }
 
-        self::assertTrue(
-            version_compare($expectedPhp, $ciVersionsForDeployment, 'eq'),
-            \sprintf('Expects %s to be %s', $ciVersionsForDeployment, $expectedPhp)
-        );
+        if (str_starts_with($ciVersionsForDeployment, '$')) {
+            self::assertSame('${{ needs.setup.outputs.PHP_MAX }}', $ciVersionsForDeployment);
+        } else {
+            self::assertTrue(
+                version_compare($expectedPhp, $ciVersionsForDeployment, 'eq'),
+                \sprintf('Expects %s to be %s', $ciVersionsForDeployment, $expectedPhp)
+            );
+        }
     }
 
     public function testDockerCIBuildsComposeServices(): void
