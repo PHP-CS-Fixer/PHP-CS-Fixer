@@ -19,7 +19,7 @@ services:
       args:
         ALPINE_VERSION: '3.16'
         PHP_VERSION: '8.0'
-        PHP_XDEBUG_VERSION: 3.4.2
+        PHP_XDEBUG_VERSION: 3.4.7
 
   php-8.1:
     <<: *php
@@ -27,7 +27,7 @@ services:
       args:
         ALPINE_VERSION: '3.22'
         PHP_VERSION: '8.1'
-        PHP_XDEBUG_VERSION: 3.4.2
+        PHP_XDEBUG_VERSION: 3.4.7
 
   php-8.2:
     <<: *php
@@ -35,7 +35,7 @@ services:
       args:
         ALPINE_VERSION: '3.22'
         PHP_VERSION: '8.2'
-        PHP_XDEBUG_VERSION: 3.4.2
+        PHP_XDEBUG_VERSION: 3.4.7
 
   php-8.3:
     <<: *php
@@ -43,7 +43,7 @@ services:
       args:
         ALPINE_VERSION: '3.22'
         PHP_VERSION: '8.3'
-        PHP_XDEBUG_VERSION: 3.4.2
+        PHP_XDEBUG_VERSION: 3.4.7
 
   php-8.4:
     <<: *php
@@ -51,7 +51,7 @@ services:
       args:
         ALPINE_VERSION: '3.22'
         PHP_VERSION: '8.4'
-        PHP_XDEBUG_VERSION: 3.4.2
+        PHP_XDEBUG_VERSION: 3.4.7
     environment:
       <<: *default_environment
       XDEBUG_MODE: coverage
