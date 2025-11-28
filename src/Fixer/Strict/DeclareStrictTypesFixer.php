@@ -102,7 +102,8 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Configurabl
     {
         $openTagIndex = $tokens[0]->isGivenKind(\T_INLINE_HTML) ? 1 : 0;
 
-        $sequenceLocation = $tokens->findSequence([[\T_DECLARE, 'declare'], '(', [\T_STRING, 'strict_types'], '=', [\T_LNUMBER], ')'], $openTagIndex, null, false);
+        $sequenceLocation = $this->getStrictTypesParentheses($tokens);
+
         if (null === $sequenceLocation) {
             $this->insertSequence($openTagIndex, $tokens); // declaration not found, insert one
 
@@ -110,6 +111,26 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Configurabl
         }
 
         $this->fixStrictTypesCasingAndValue($tokens, $sequenceLocation);
+    }
+
+    /**
+     * @return null|array<int, Token>
+     */
+    private function getStrictTypesParentheses(Tokens $tokens): ?array
+    {
+        foreach ($tokens->findGivenKind(\T_DECLARE) as $index => $token) {
+            $openParenthesis = $tokens->getNextMeaningfulToken($index);
+            $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis);
+
+            $strictTypesSequence = $tokens->findSequence([[\T_STRING, 'strict_types'], '=', [\T_LNUMBER]], $openParenthesis, $closeParenthesis, false);
+            if (null === $strictTypesSequence) {
+                continue;
+            }
+
+            return $strictTypesSequence;
+        }
+
+        return null;
     }
 
     /**
