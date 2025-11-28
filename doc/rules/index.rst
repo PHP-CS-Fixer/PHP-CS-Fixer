@@ -76,6 +76,9 @@ Attribute Notation
 - `attribute_empty_parentheses <./attribute_notation/attribute_empty_parentheses.rst>`_
 
   PHP attributes declared without arguments must (not) be followed by empty parentheses.
+- `attributes_new_line <./attribute_notation/attributes_new_line.rst>`_
+
+  Attributes should be on their own line.
 - `general_attribute_remove <./attribute_notation/general_attribute_remove.rst>`_
 
   Removes configured attributes by their respective FQN.
