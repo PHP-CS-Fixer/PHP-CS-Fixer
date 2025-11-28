@@ -26,7 +26,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class Annotation
+final class Annotation implements \Stringable
 {
     /**
      * All the annotation tag names with types.
