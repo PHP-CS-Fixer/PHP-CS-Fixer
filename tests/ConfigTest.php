@@ -23,6 +23,7 @@ use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer;
 use PhpCsFixer\Fixer\ControlStructure\IncludeFixer;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\RuleCustomizationPolicyInterface;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleSet;
 use PhpCsFixer\ToolInfo;
@@ -294,6 +295,21 @@ final class ConfigTest extends TestCase
 
         $config->setUnsupportedPhpVersionAllowed(true);
         self::assertTrue($config->getUnsupportedPhpVersionAllowed());
+
+        self::assertNull($config->getRuleCustomizationPolicy());
+
+        $ruleCustomizationPolicy = new class implements RuleCustomizationPolicyInterface {
+            /** @phpstan-ignore return.unusedType */
+            public function customize(FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface
+            {
+                return $fixer;
+            }
+        };
+        $config->setRuleCustomizationPolicy($ruleCustomizationPolicy);
+        self::assertSame($ruleCustomizationPolicy, $config->getRuleCustomizationPolicy());
+
+        $config->setRuleCustomizationPolicy(null);
+        self::assertNull($config->getRuleCustomizationPolicy());
     }
 
     public function testConfigConstructorWithName(): void
