@@ -7,6 +7,7 @@
 /CONTRIBUTING.md export-ignore
 /dev-tools/ export-ignore
 /doc/ export-ignore
+/doc/.php-cs-fixer.dist.php.template -export-ignore
 /docker/ export-ignore
 /Dockerfile export-ignore
 /feature-or-bug.rst export-ignore
