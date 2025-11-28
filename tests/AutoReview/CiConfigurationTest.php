@@ -56,7 +56,7 @@ final class CiConfigurationTest extends TestCase
 
         self::assertTrue(\count($supportedVersions) > 0);
 
-        $ciVersions = CiReader::getAllPhpVersionsUsedByCiForTests();
+        $ciVersions = CiReader::getAllPhpBuildsUsedByCiForTests();
 
         self::assertNotEmpty($ciVersions);
 
