@@ -33,7 +33,7 @@
     </rule>
     <rule ref="PHPCompatibilitySymfonyPolyfillPHP80"/>
 
-    <config name="testVersion" value="7.4-8.4"/>
+    <config name="testVersion" value="7.4-8.5"/>
 
     <file>../../src/</file>
     <file>../../tests/</file>

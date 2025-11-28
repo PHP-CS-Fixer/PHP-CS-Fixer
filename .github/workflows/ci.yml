@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  PHP_MAX: '8.4'
+  PHP_MAX: '8.5'
   PHP_MIN: '7.4'
 
 jobs:
@@ -126,13 +126,23 @@ jobs:
             php-version: '8.5'
             job-description: Fixer
             run-fixer: 'yes'
-            PHP_CS_FIXER_IGNORE_ENV: 1
 
           - operating-system: ubuntu-24.04
             php-version: '8.5'
             job-description: tests
             run-tests: 'yes'
-            PHP_CS_FIXER_IGNORE_ENV: 1
+
+          - operating-system: ubuntu-24.04
+            php-version: 8.6snapshot # replace with PHP 8.6 when dev version is released
+            job-description: Fixer
+            run-fixer: 'yes'
+            allow-to-fail: 'yes' # currently not compatible
+
+          - operating-system: ubuntu-24.04
+            php-version: 8.6snapshot # replace with PHP 8.6 when dev version is released
+            job-description: tests
+            run-tests: 'yes'
+            allow-to-fail: 'yes' # currently not compatible
 
           - operating-system: ubuntu-24.04
             php-version: ${{ needs.setup.outputs.PHP_MAX }}
