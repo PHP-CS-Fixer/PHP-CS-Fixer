@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bffb53d23e224f59a68b66a73812d3c7",
+    "content-hash": "4aae5ee4afdfbb8788e0fd4db0d6bd75",
     "packages": [
         {
             "name": "composer/pcre",
@@ -980,21 +980,35 @@
         },
         {
             "name": "shipmonk/composer-dependency-analyser",
-            "version": "1.8.3",
+            "version": "1.8.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shipmonk-rnd/composer-dependency-analyser.git",
-                "reference": "ca6b2725cd4854d97c1ce08e6954a74fbdd25372"
+                "reference": "975e5873b519d5180b1017a5dfb43d80781abd45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shipmonk-rnd/composer-dependency-analyser/zipball/ca6b2725cd4854d97c1ce08e6954a74fbdd25372",
-                "reference": "ca6b2725cd4854d97c1ce08e6954a74fbdd25372"
+                "url": "https://api.github.com/repos/shipmonk-rnd/composer-dependency-analyser/zipball/975e5873b519d5180b1017a5dfb43d80781abd45",
+                "reference": "975e5873b519d5180b1017a5dfb43d80781abd45",
+                "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-tokenizer": "*",
                 "php": "^7.2 || ^8.0"
+            },
+            "require-dev": {
+                "editorconfig-checker/editorconfig-checker": "^10.7.0",
+                "ergebnis/composer-normalize": "^2.19.0",
+                "ext-dom": "*",
+                "ext-libxml": "*",
+                "phpcompatibility/php-compatibility": "^9.3.5",
+                "phpstan/phpstan": "^1.12.26",
+                "phpstan/phpstan-phpunit": "^1.4.2",
+                "phpstan/phpstan-strict-rules": "^1.6.2",
+                "phpunit/phpunit": "^8.5.42 || ^9.6.23",
+                "shipmonk/name-collision-detector": "^2.1.1",
+                "slevomat/coding-standard": "^8.15.0"
             },
             "bin": [
                 "bin/composer-dependency-analyser"
@@ -1005,10 +1019,30 @@
                     "ShipMonk\\ComposerDependencyAnalyser\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "description": "Fast detection of composer dependency issues (dead dependencies, shadow dependencies, misplaced dependencies)"
+            "description": "Fast detection of composer dependency issues (dead dependencies, shadow dependencies, misplaced dependencies)",
+            "keywords": [
+                "analyser",
+                "composer",
+                "composer dependency",
+                "dead code",
+                "dead dependency",
+                "detector",
+                "dev",
+                "misplaced dependency",
+                "shadow dependency",
+                "static analysis",
+                "unused code",
+                "unused dependency"
+            ],
+            "support": {
+                "issues": "https://github.com/shipmonk-rnd/composer-dependency-analyser/issues",
+                "source": "https://github.com/shipmonk-rnd/composer-dependency-analyser/tree/1.8.4"
+            },
+            "time": "2025-11-25T14:38:16+00:00"
         },
         {
             "name": "shipmonk/dead-code-detector",
