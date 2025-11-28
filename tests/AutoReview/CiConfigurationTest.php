@@ -56,7 +56,7 @@ final class CiConfigurationTest extends TestCase
 
         self::assertTrue(\count($supportedVersions) > 0);
 
-        $ciVersions = CiReader::getAllPhpVersionsUsedByCiForTests();
+        $ciVersions = CiReader::getAllPhpBuildsUsedByCiForTests();
 
         self::assertNotEmpty($ciVersions);
 
@@ -78,10 +78,14 @@ final class CiConfigurationTest extends TestCase
             $expectedPhp = (string) ((float) $expectedPhp - 0.1);
         }
 
-        self::assertTrue(
-            version_compare($expectedPhp, $ciVersionsForDeployment, 'eq'),
-            \sprintf('Expects %s to be %s', $ciVersionsForDeployment, $expectedPhp)
-        );
+        if (str_starts_with($ciVersionsForDeployment, '$')) {
+            self::assertSame('${{ needs.setup.outputs.PHP_MAX }}', $ciVersionsForDeployment);
+        } else {
+            self::assertTrue(
+                version_compare($expectedPhp, $ciVersionsForDeployment, 'eq'),
+                \sprintf('Expects %s to be %s', $ciVersionsForDeployment, $expectedPhp)
+            );
+        }
     }
 
     public function testDockerCIBuildsComposeServices(): void
@@ -112,10 +116,11 @@ final class CiConfigurationTest extends TestCase
         $dockerMap = [];
         foreach ($yaml['services'] as $item) {
             if (isset($item['build']['args']['PHP_VERSION'], $item['build']['args']['ALPINE_VERSION'])) {
-                // PHP 8.5 at this point is only allowed for local development and is not a part of Docker releases
-                if (str_starts_with($item['build']['args']['PHP_VERSION'], '8.5')) {
-                    continue;
-                }
+                // @TODO uncomment and adjust me when new development PHP version is added
+                // // PHP 8.x at this point is only allowed for local development and is not a part of Docker releases
+                // if (str_starts_with($item['build']['args']['PHP_VERSION'], '8.x')) {
+                //     continue;
+                // }
 
                 $dockerMap[$item['build']['args']['PHP_VERSION']] = $item['build']['args']['ALPINE_VERSION'];
             }
@@ -168,8 +173,8 @@ final class CiConfigurationTest extends TestCase
     }
 
     /**
-     * @param numeric-string       $lastSupportedVersion
-     * @param list<numeric-string> $ciVersions
+     * @param numeric-string $lastSupportedVersion
+     * @param list<string>   $ciVersions
      */
     private static function assertUpcomingPhpVersionIsCoveredByCiJob(string $lastSupportedVersion, array $ciVersions): void
     {

@@ -25,7 +25,7 @@ use PhpCsFixer\Fixer\FixerInterface;
 interface ConfigInterface
 {
     /** @internal */
-    public const PHP_VERSION_SYNTAX_SUPPORTED = '8.4';
+    public const PHP_VERSION_SYNTAX_SUPPORTED = '8.5';
 
     /**
      * Returns the path to the cache file.

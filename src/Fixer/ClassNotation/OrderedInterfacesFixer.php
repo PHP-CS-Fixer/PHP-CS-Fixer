@@ -130,7 +130,7 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
     /**
      * {@inheritdoc}
      *
-     * Must run after FullyQualifiedStrictTypesFixer.
+     * Must run after FullyQualifiedStrictTypesFixer, StringableForToStringFixer.
      */
     public function getPriority(): int
     {

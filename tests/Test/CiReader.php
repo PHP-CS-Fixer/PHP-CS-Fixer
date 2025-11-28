@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Test;
 
+use PhpCsFixer\Preg;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -28,15 +29,34 @@ final class CiReader
      */
     public static function getAllPhpVersionsUsedByCiForTests(): array
     {
+        $phpVersions = array_filter(
+            self::getAllPhpBuildsUsedByCiForTests(),
+            static fn ($version) => is_numeric($version)
+        );
+
+        return $phpVersions; // @phpstan-ignore return.type (we know it's a list of parsed strings)
+    }
+
+    /**
+     * @return list<string>
+     */
+    public static function getAllPhpBuildsUsedByCiForTests(): array
+    {
         $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/ci.yml');
 
-        $phpVersions = $yaml['jobs']['tests']['strategy']['matrix']['php-version'] ?? [];
+        $phpVersions = []
+            + ($yaml['jobs']['tests']['strategy']['matrix']['php-version'] ?? [])
+            + array_map(
+                static fn (array $job) => $job['php-version'] ?? null,
+                $yaml['jobs']['tests']['strategy']['matrix']['include']
+            );
 
-        foreach ($yaml['jobs']['tests']['strategy']['matrix']['include'] as $job) {
-            $phpVersions[] = $job['php-version'];
-        }
+        $phpVersions = array_filter(
+            array_unique($phpVersions),
+            static fn ($version) => 'nightly' === $version || Preg::match('/^\d+(\.\d+)?(snapshot)?$/', $version)
+        );
 
-        return array_unique($phpVersions); // @phpstan-ignore return.type (we know it's a list of parsed strings)
+        return $phpVersions; // @phpstan-ignore return.type (we know it's a list of parsed strings)
     }
 
     public static function getPhpVersionUsedByCiForDeployments(): string

@@ -29,6 +29,8 @@ jobs:
             alpine-version: '3.22'
           - php-version: '8.4'
             alpine-version: '3.22'
+          - php-version: '8.5'
+            alpine-version: '3.22'
 
     permissions:
       contents: read
