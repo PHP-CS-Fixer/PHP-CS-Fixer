@@ -14,7 +14,7 @@ permissions:
 jobs:
   automate:
     name: Automate
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     if: ${{ contains(fromJson('["gharlan", "julienfalque", "keradus", "keradus-ci", "kubawerlos", "localheinz", "Wirone"]'), github.actor) }}
     env:
       PR_URL: ${{github.event.pull_request.html_url}}
