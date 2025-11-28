@@ -176,7 +176,7 @@ final class InitCommand extends Command
             array_unique(array_filter($sets, static fn ($item) => 'none' !== $item)),
         );
 
-        $readResult = @file_get_contents(__DIR__.'/../../../doc/.php-cs-fixer.dist.php.template');
+        $readResult = @file_get_contents(__DIR__.'/../../../resources/.php-cs-fixer.dist.php.template');
         if (false === $readResult) {
             throw new IOException('Failed to read template file.');
         }
