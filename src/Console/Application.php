@@ -34,6 +34,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\CompleteCommand;
 use Symfony\Component\Console\Command\DumpCompletionCommand;
 use Symfony\Component\Console\Command\ListCommand;
+use Symfony\Component\Console\Exception\CommandNotFoundException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -56,6 +57,7 @@ final class Application extends BaseApplication
      * @readonly
      */
     private ToolInfo $toolInfo;
+
     private ?Command $executedCommand = null;
 
     public function __construct()
@@ -104,8 +106,22 @@ final class Application extends BaseApplication
             $warningsDetector = new WarningsDetector($this->toolInfo);
             $warningsDetector->detectOldVendor();
             $warningsDetector->detectOldMajor();
-            $warningsDetector->detectHigherPhpVersion();
-            $warningsDetector->detectNonMonolithic();
+
+            try {
+                $commandName = $this->getCommandName($input);
+                if (null === $commandName) {
+                    throw new CommandNotFoundException('No command name found.');
+                }
+                $command = $this->find($commandName);
+
+                if ($command instanceof FixCommand || $command instanceof CheckCommand) {
+                    $warningsDetector->detectHigherPhpVersion();
+                    $warningsDetector->detectNonMonolithic();
+                }
+            } catch (CommandNotFoundException $e) {
+                // no-op
+            }
+
             $warnings = $warningsDetector->getWarnings();
 
             if (\count($warnings) > 0) {
