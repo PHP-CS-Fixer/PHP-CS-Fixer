@@ -121,6 +121,10 @@ final class StringableForToStringFixer extends AbstractFixer
             static fn (NamespaceUseAnalysis $namespaceUseAnalysis): bool => $namespaceUseAnalysis->getStartIndex() === $index,
         );
 
+        if (0 === \count($uses)) {
+            return null;
+        }
+
         \assert(1 === \count($uses));
 
         $useDeclaration = reset($uses);
