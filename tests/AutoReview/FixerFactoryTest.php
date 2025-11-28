@@ -987,6 +987,11 @@ final class FixerFactoryTest extends TestCase
                 'no_extra_blank_lines',
                 'no_trailing_whitespace',
             ],
+            'stringable_for_to_string' => [
+                'class_definition',
+                'global_namespace_import',
+                'ordered_interfaces',
+            ],
             'ternary_to_elvis_operator' => [
                 'no_trailing_whitespace',
                 'ternary_operator_spaces',

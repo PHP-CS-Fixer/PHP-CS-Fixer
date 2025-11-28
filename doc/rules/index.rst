@@ -242,6 +242,9 @@ Class Notation
 - `static_private_method <./class_notation/static_private_method.rst>`_ *(risky)*
 
   Converts private methods to ``static`` where possible.
+- `stringable_for_to_string <./class_notation/stringable_for_to_string.rst>`_
+
+  A class that implements the ``__toString()`` method must explicitly implement the ``Stringable`` interface.
 - `visibility_required <./class_notation/visibility_required.rst>`_ *(deprecated)*
 
   Classes, constants, properties, and methods MUST have visibility declared, and keyword modifiers MUST be in the following order: inheritance modifier (``abstract`` or ``final``), visibility modifier (``public``, ``protected``, or ``private``), set-visibility modifier (``public(set)``, ``protected(set)``, or ``private(set)``), scope modifier (``static``), mutation modifier (``readonly``), type declaration, name.
