@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\RuleSet;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\DeprecatedFixerV4Interface;
+use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Future;
 use PhpCsFixer\Utils;
 
@@ -31,6 +33,8 @@ use PhpCsFixer\Utils;
  */
 final class RuleSet implements RuleSetInterface
 {
+    private FixerFactory $fixerFactory;
+
     /**
      * Group of rules generated from input set.
      *
@@ -41,8 +45,13 @@ final class RuleSet implements RuleSetInterface
      */
     private array $rules;
 
-    public function __construct(array $set = [])
-    {
+    /**
+     * @param array<string, array<string, mixed>|bool> $set
+     */
+    public function __construct(
+        array $set = [],
+        ?FixerFactory $fixerFactory = null
+    ) {
         foreach ($set as $name => $value) {
             if ('' === $name) {
                 throw new \InvalidArgumentException('Rule/set name must not be empty.');
@@ -63,7 +72,14 @@ final class RuleSet implements RuleSetInterface
             }
         }
 
-        $this->rules = $this->resolveSet($set);
+        $this->fixerFactory = $fixerFactory ?? (static function () {
+            $factory = new FixerFactory();
+            $factory->registerBuiltInFixers();
+
+            return $factory;
+        })();
+
+        $this->rules = $this->resolveInputSet($set);
     }
 
     public function hasRule(string $rule): bool
@@ -96,7 +112,7 @@ final class RuleSet implements RuleSetInterface
      *
      * @return array<string, array<string, mixed>|true>
      */
-    private function resolveSet(array $rules): array
+    private function resolveInputSet(array $rules): array
     {
         $resolvedRules = [];
 
@@ -107,10 +123,15 @@ final class RuleSet implements RuleSetInterface
                     throw new \UnexpectedValueException(\sprintf('Nested rule set "%s" configuration must be a boolean.', $name));
                 }
 
-                $set = $this->resolveSubset($name, $value);
-                $resolvedRules = array_merge($resolvedRules, $set);
+                $resolvedRules = array_merge(
+                    $resolvedRules,
+                    $this->resolveSet($name, $value),
+                );
             } else {
-                $resolvedRules[$name] = $value;
+                $resolvedRules = array_merge(
+                    $resolvedRules,
+                    $this->resolveRule($name, $value)
+                );
             }
         }
 
@@ -131,7 +152,7 @@ final class RuleSet implements RuleSetInterface
      *
      * @return array<string, array<string, mixed>|bool>
      */
-    private function resolveSubset(string $setName, bool $setValue): array
+    private function resolveSet(string $setName, bool $setValue): array
     {
         $ruleSet = RuleSets::getSetDefinition($setName);
 
@@ -147,16 +168,55 @@ final class RuleSet implements RuleSetInterface
 
         foreach ($rules as $name => $value) {
             if (str_starts_with($name, '@')) {
-                $set = $this->resolveSubset($name, $setValue);
                 unset($rules[$name]);
-                $rules = array_merge($rules, $set);
-            } elseif (!$setValue) {
-                $rules[$name] = false;
+
+                $rules = array_merge(
+                    $rules,
+                    $this->resolveSet($name, $setValue),
+                );
             } else {
-                $rules[$name] = $value;
+                $rules = array_merge(
+                    $rules,
+                    $this->resolveRule($name, false === $setValue ? false : $value)
+                );
             }
         }
 
         return $rules;
+    }
+
+    /**
+     * Allow to resolve single rule, eg handle renames, aliases or proxies.
+     *
+     * @param array<string, mixed>|bool $value
+     *
+     * @return array<string, array<string, mixed>|bool>
+     */
+    private function resolveRule(string $rule, $value): array
+    {
+        try {
+            $fixer = $this->fixerFactory->getFixerByName($rule);
+
+            if ($fixer instanceof DeprecatedFixerV4Interface) {
+                if ($fixer->getSuccessorsMatchingPredecessor()) {
+                    $rules = $this->resolveInputSet(
+                        $fixer->getSuccessors(),
+                    );
+
+                    if (false === $value) {
+                        // disable all successor rules
+                        foreach ($rules as $name => $ruleValue) {
+                            $rules[$name] = false;
+                        }
+                    }
+
+                    return $rules;
+                }
+            }
+        } catch (\UnexpectedValueException $e) {
+            // noop - let the fixer `FixerFactory::useRuleSet()` handle unknown fixers
+        }
+
+        return [$rule => $value];
     }
 }
