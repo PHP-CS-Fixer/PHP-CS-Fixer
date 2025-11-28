@@ -7,7 +7,7 @@
         "KevinGH\\Box\\Compactor\\Php"
     ],
     "files": [
-        "doc/.php-cs-fixer.dist.php.template",
+        "resources/.php-cs-fixer.dist.php.template",
         "LICENSE"
     ],
     "finder": [
@@ -25,6 +25,7 @@
             ],
             "in": [
                 "src",
+                "resources",
                 "vendor"
             ]
         }
