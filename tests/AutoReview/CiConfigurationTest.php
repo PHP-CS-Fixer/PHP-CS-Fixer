@@ -172,8 +172,8 @@ final class CiConfigurationTest extends TestCase
     }
 
     /**
-     * @param numeric-string       $lastSupportedVersion
-     * @param list<numeric-string> $ciVersions
+     * @param numeric-string $lastSupportedVersion
+     * @param list<string>   $ciVersions
      */
     private static function assertUpcomingPhpVersionIsCoveredByCiJob(string $lastSupportedVersion, array $ciVersions): void
     {
