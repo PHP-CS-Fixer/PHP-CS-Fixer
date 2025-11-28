@@ -33,7 +33,7 @@ jobs:
 
     runs-on: ubuntu-24.04
     env:
-      php-version: '8.4'
+      php-version: '8.5'
 
     steps:
       - name: Checkout code

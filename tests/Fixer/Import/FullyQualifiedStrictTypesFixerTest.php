@@ -2820,6 +2820,28 @@ function foo($a) {}',
                 PHP,
             ['import_symbols' => true],
         ];
+
+        yield 'usage of <?=' => [
+            <<<'PHP'
+                <?php
+
+                use Bar1\Baz1;
+                use Bar2\Baz2;
+                ?><?= $foo ?>
+                <div>some random HTML :(</div>
+                <?php
+                echo Baz1::$quux1;
+                echo Baz2::$quux2;
+                PHP,
+            <<<'PHP'
+                <?= $foo ?>
+                <div>some random HTML :(</div>
+                <?php
+                echo Bar1\Baz1::$quux1;
+                echo Bar2\Baz2::$quux2;
+                PHP,
+            ['import_symbols' => true],
+        ];
     }
 
     /**

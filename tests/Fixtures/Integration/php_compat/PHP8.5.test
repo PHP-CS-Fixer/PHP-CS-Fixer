@@ -3,7 +3,7 @@ PHP 8.5 test.
 --RULESET--
 {
     "@PhpCsFixer": true,
-    "@PHP8x4Migration": true
+    "@PHP8x5Migration": true
 }
 --REQUIREMENTS--
 {"php": 80500}
@@ -38,6 +38,15 @@ function thatNoDiscard()
     (void) get42();
 }
 
+// https://wiki.php.net/rfc/deprecations_php_8_5
+switch ($a) {
+    case 1:
+        break;
+
+    default:
+        break;
+}
+
 --INPUT--
 <?php
 
@@ -67,4 +76,13 @@ function get42(): int
 function thatNoDiscard()
 {
     (VOID)get42();
+}
+
+// https://wiki.php.net/rfc/deprecations_php_8_5
+switch ($a) {
+    case 1;
+        break;
+
+    default;
+        break;
 }

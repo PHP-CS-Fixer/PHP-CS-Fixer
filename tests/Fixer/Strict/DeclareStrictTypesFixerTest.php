@@ -62,6 +62,19 @@ class A {
             '<?php declare/* A b C*/(strict_types=1);',
         ];
 
+        yield [
+            '<?php declare(strict_types=1, ticks=1);',
+        ];
+
+        yield [
+            '<?php declare(ticks=1, strict_types=1);',
+        ];
+
+        yield [
+            '<?php declare(ticks=1, strict_types=1);',
+            '<?php declare(ticks=1, strict_types=0);',
+        ];
+
         yield 'monolithic file with closing tag' => [
             '<?php /**/ /**/ deClarE  (strict_types=1)    ?>',
             '<?php /**/ /**/ deClarE  (STRICT_TYPES=1)    ?>',

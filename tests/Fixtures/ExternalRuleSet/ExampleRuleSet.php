@@ -21,11 +21,11 @@ use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
  *
  * The name is intentionally NOT ending with "Set" to better test real-life usage.
  */
-class ExampleRuleset implements RuleSetDefinitionInterface
+class ExampleRuleSet implements RuleSetDefinitionInterface
 {
     public function getName(): string
     {
-        return '@Vendor/Ruleset';
+        return '@Vendor/RuleSet';
     }
 
     public function isRisky(): bool
@@ -35,7 +35,7 @@ class ExampleRuleset implements RuleSetDefinitionInterface
 
     public function getDescription(): string
     {
-        return 'Description';
+        return 'Purpose of example rule set description.';
     }
 
     public function getRules(): array

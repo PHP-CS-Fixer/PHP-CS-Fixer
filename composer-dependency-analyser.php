@@ -25,8 +25,8 @@ return (new Configuration())
     ->ignoreErrorsOnPackage('symfony/event-dispatcher-contracts', [ErrorType::SHADOW_DEPENDENCY])
     ->ignoreErrorsOnPath('dev-tools', [ErrorType::UNKNOWN_CLASS, ErrorType::SHADOW_DEPENDENCY])
     ->ignoreErrorsOnPath('tests', [ErrorType::UNKNOWN_CLASS])
-    ->ignoreUnknownClasses([
+    ->ignoreUnknownClasses(\PHP_VERSION_ID < 8_05_00 ? [
         'T_PIPE',
         'T_VOID_CAST',
-    ])
+    ] : [])
 ;
