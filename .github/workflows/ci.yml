@@ -133,6 +133,18 @@ jobs:
             run-tests: 'yes'
 
           - operating-system: ubuntu-24.04
+            php-version: 8.6snapshot # replace with PHP 8.6 when dev version is released
+            job-description: Fixer
+            run-fixer: 'yes'
+            allow-to-fail: 'yes' # currently not compatible
+
+          - operating-system: ubuntu-24.04
+            php-version: 8.6snapshot # replace with PHP 8.6 when dev version is released
+            job-description: tests
+            run-tests: 'yes'
+            allow-to-fail: 'yes' # currently not compatible
+
+          - operating-system: ubuntu-24.04
             php-version: ${{ needs.setup.outputs.PHP_MAX }}
             job-description: Fixer with migration rules
             run-fixer: 'yes'
