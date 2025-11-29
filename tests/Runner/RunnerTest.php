@@ -389,9 +389,11 @@ final class RunnerTest extends TestCase
         $fixedFiles = $fixWith(
             $errorsManager,
             new class implements RuleCustomizationPolicyInterface {
-                public function customize(Fixer\FixerInterface $fixer, \SplFileInfo $file): Fixer\FixerInterface
+                public function getRuleCustomizers(): array
                 {
-                    return $fixer;
+                    return [
+                        'array_syntax' => static fn (Fixer\FixerInterface $fixer, \SplFileInfo $file): Fixer\FixerInterface => $fixer,
+                    ];
                 }
             }
         );
@@ -403,9 +405,11 @@ final class RunnerTest extends TestCase
         $fixedFiles = $fixWith(
             $errorsManager,
             new class implements RuleCustomizationPolicyInterface {
-                public function customize(Fixer\FixerInterface $fixer, \SplFileInfo $file): ?Fixer\FixerInterface
+                public function getRuleCustomizers(): array
                 {
-                    return 'B.php' === $file->getBasename() ? null : $fixer;
+                    return [
+                        'array_syntax' => static fn (Fixer\FixerInterface $fixer, \SplFileInfo $file): ?Fixer\FixerInterface => 'B.php' === $file->getBasename() ? null : $fixer,
+                    ];
                 }
             }
         );
@@ -417,14 +421,21 @@ final class RunnerTest extends TestCase
         $fixedFiles = $fixWith(
             $errorsManager,
             new class implements RuleCustomizationPolicyInterface {
-                public function customize(Fixer\FixerInterface $fixer, \SplFileInfo $file): Fixer\FixerInterface
+                public function getRuleCustomizers(): array
                 {
-                    if ($fixer instanceof Fixer\ArrayNotation\ArraySyntaxFixer && \in_array($file->getBasename(), ['B.php', 'D.php'], true)) {
-                        $fixer = clone $fixer;
-                        $fixer->configure(['syntax' => 'long']);
-                    }
+                    return [
+                        'array_syntax' => static function (Fixer\FixerInterface $fixer, \SplFileInfo $file): Fixer\FixerInterface {
+                            if (\in_array($file->getBasename(), ['B.php', 'D.php'], true)) {
+                                /**
+                                 * @var Fixer\ArrayNotation\ArraySyntaxFixer $fixer
+                                 */
+                                $fixer = clone $fixer;
+                                $fixer->configure(['syntax' => 'long']);
+                            }
 
-                    return $fixer;
+                            return $fixer;
+                        },
+                    ];
                 }
             }
         );
@@ -436,9 +447,11 @@ final class RunnerTest extends TestCase
         $fixedFiles = $fixWith(
             $errorsManager,
             new class implements RuleCustomizationPolicyInterface {
-                public function customize(Fixer\FixerInterface $fixer, \SplFileInfo $file): Fixer\FixerInterface
+                public function getRuleCustomizers(): array
                 {
-                    return 'B.php' === $file->getBasename() ? new Fixer\Whitespace\LineEndingFixer() : $fixer;
+                    return [
+                        'array_syntax' => static fn (Fixer\FixerInterface $fixer, \SplFileInfo $file): Fixer\FixerInterface => 'B.php' === $file->getBasename() ? new Fixer\Whitespace\LineEndingFixer() : $fixer,
+                    ];
                 }
             }
         );
@@ -449,6 +462,24 @@ final class RunnerTest extends TestCase
         self::assertStringContainsString('expected '.\get_class($arraySyntaxFixer), $errorsForB[0]->getSource()->getMessage());
         self::assertStringContainsString('got '.Fixer\Whitespace\LineEndingFixer::class, $errorsForB[0]->getSource()->getMessage());
         self::assertSame(['A.php', 'C.php'], $fixedFiles, 'A: fixed, B: exception thrown, C: fixed, D: already ok');
+
+        // Test when the policy contains customisers for non-existing fixers
+        $errorsManager = new ErrorsManager();
+        self::expectException(\RuntimeException::class);
+        // The exception message should mention line_ending
+        self::expectExceptionMessageMatches('/\bline_ending\b/');
+        $fixedFiles = $fixWith(
+            $errorsManager,
+            new class implements RuleCustomizationPolicyInterface {
+                public function getRuleCustomizers(): array
+                {
+                    return [
+                        'array_syntax' => static fn (Fixer\FixerInterface $fixer, \SplFileInfo $file): Fixer\FixerInterface => $fixer,
+                        'line_ending' => static fn (Fixer\FixerInterface $fixer, \SplFileInfo $file): Fixer\FixerInterface => $fixer,
+                    ];
+                }
+            }
+        );
     }
 
     private function createDifferDouble(): DifferInterface

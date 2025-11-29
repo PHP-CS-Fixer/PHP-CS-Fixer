@@ -22,10 +22,42 @@ use PhpCsFixer\Fixer\FixerInterface;
 interface RuleCustomizationPolicyInterface
 {
     /**
-     * Customize the given fixer for the given file.
+     * Customize fixers for given files.
      *
-     * Return null if the fixer should not be applied to the file.
-     * If you reconfigure the fixer, you should return a modified clone of it.
+     * Array keys are fixer names, values are closures that will be invoked before applying the fixer.
+     * The closure receives the fixer and the file as arguments and must return one of:
+     * - the same fixer instance to apply it as is
+     * - a new fixer instance of the same class as the received one (use clone!) to apply a customized version of the fixer
+     * - null to skip applying the fixer to the file
+     *
+     * When PHP-CS-Fixer is about to start fixing files, it will check that the currently applied fixers include at least
+     * all the fixers for which customizers are defined. If a customizer is defined for a fixer that is not currently applied,
+     * an exception will be thrown.
+     * This ensures that customizers are actually used for expected fixers, which may be replaced by newer fixers in newer versions of PHP-CS-Fixer.
+     *
+     * @example
+     * ```
+     * [
+     *     'foo_fixer_name' => static function (FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface {
+     *         if (str_contains($file->getFilename(), 'bar')) {
+     *             // skip applying the fixer to files with "bar" in the name
+     *             return null;
+     *         }
+     *         if (str_contains($file->getFilename(), 'baz')) {
+     *             // apply a customized version of the fixer to files with "baz" in the name
+     *             $customizedFixer = clone $fixer;
+     *             $customizedFixer->configure([
+     *                 'some_option' => false,
+     *             ]);
+     *            return $customizedFixer;
+     *        }
+     *        // apply the fixer as is to other files
+     *        return $fixer;
+     *     },
+     * ]
+     * ```
+     *
+     * @return array<string, \Closure(FixerInterface, \SplFileInfo): ?FixerInterface>
      */
-    public function customize(FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface;
+    public function getRuleCustomizers(): array;
 }

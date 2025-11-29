@@ -138,16 +138,23 @@ If you need to disable or reconfigure a rule for specific files, you can use the
 
     class MyPolicy implements RuleCustomizationPolicyInterface
     {
-        public function customize(FixerInterface $fixer, SplFileInfo $file): ?FixerInterface
+        public function getRuleCustomizers(): array
         {
-            if ('array_syntax' === $fixer->getName()
-                && str_contains($file->getPathname(), '/bin/')
-            ) {
-                $fixer = clone $fixer; // IMPORTANT!
-                $fixer->configure(['syntax' => 'long']);
-            }
-
-            return $fixer;
+            return [
+                'array_syntax' => static function (FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface {
+                    if (str_contains($file->getPathname(), '/tests/')) {
+                        // Disable the fixer for files in /tests/ directory
+                        return null;
+                    }
+                    if (str_contains($file->getPathname(), '/bin/')) {
+                        // Reconfigure the fixer for files in /bin/ directory
+                        $fixer = clone $fixer; // IMPORTANT!
+                        $fixer->configure(['syntax' => 'long']);
+                    }
+                    // Keep the default configuration for other files
+                    return $fixer;
+                },
+            ];
         }
     }
 
@@ -167,10 +174,21 @@ If you need to disable or reconfigure a rule for specific files, you can use the
 
     **⚠️ WARNING ⚠️**
 
-    If you need to reconfigure a fixer instance in the ``customize()`` method:
+    If you need to reconfigure a fixer instance:
 
     - make sure to clone it first (as in the example above), as the same instance is used for all files.
-    - if you update the configuration of a fixer, the PHP-CS-Fixer cache won't consider that: you'll need to clear the cache manually (e.g. by deleting the cache file).
+    - if the configuration of a fixer changes between runs, the PHP-CS-Fixer cache won't reflect those changes; you'll need to clear the cache manually (e.g. by deleting the cache file).
+
+.. warning::
+
+    **⚠️ WARNING ⚠️**
+
+    When you write an implementation of ``RuleCustomizationPolicyInterface``, PHP-CS-Fixer may provide some fixers that, in future versions, may be deprecated and replaced by other fixers.
+    In such cases, your implementation may seems to not work as expected, because the fixers you'd like to customise may no longer be available.
+    To avoid such issues, PHP-CS-Fixer will check that all the fixer names returned by your ``getRuleCustomizers()`` method are being actually used.
+    If some of them are not used, PHP-CS-Fixer will throw an exception with the list of unused fixer names.
+    In such case, you'll have update your implementation accordingly.
+
 
 Configuring whitespaces
 -----------------------

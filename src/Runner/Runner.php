@@ -465,12 +465,36 @@ final class Runner
         $new = $old;
         $newHash = $oldHash;
 
+        $ruleCustomisers = null === $this->ruleCustomizationPolicy ? [] : $this->ruleCustomizationPolicy->getRuleCustomizers();
+        if ([] !== $ruleCustomisers) {
+            $usedFixerNames = array_map(
+                static fn (FixerInterface $fixer): string => $fixer->getName(),
+                $this->fixers
+            );
+            $missingFixerNames = array_diff(array_keys($ruleCustomisers), $usedFixerNames);
+            if ([] !== $missingFixerNames) {
+                $missingFixerNames = implode("\n- ", $missingFixerNames);
+
+                throw new \RuntimeException(
+                    <<<EOT
+                        Rule Customization Policy contains customisers for fixers that are not currently applied.
+
+                        Missing fixers:
+                        - {$missingFixerNames}
+
+                        Please check your configuration to ensure that these fixers are included, and that they have not been replaced by other fixers in the version of PHP-CS-Fixer you are using.
+                        EOT
+                );
+            }
+        }
+
         $appliedFixers = [];
 
         try {
             foreach ($this->fixers as $fixer) {
-                if (null !== $this->ruleCustomizationPolicy) {
-                    $actualFixer = $this->ruleCustomizationPolicy->customize($fixer, $file);
+                $customiser = $ruleCustomisers[$fixer->getName()] ?? null;
+                if (null !== $customiser) {
+                    $actualFixer = $customiser($fixer, $file);
                     if (null === $actualFixer) {
                         continue;
                     }

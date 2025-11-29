@@ -299,10 +299,9 @@ final class ConfigTest extends TestCase
         self::assertNull($config->getRuleCustomizationPolicy());
 
         $ruleCustomizationPolicy = new class implements RuleCustomizationPolicyInterface {
-            /** @phpstan-ignore return.unusedType */
-            public function customize(FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface
+            public function getRuleCustomizers(): array
             {
-                return $fixer;
+                return [];
             }
         };
         $config->setRuleCustomizationPolicy($ruleCustomizationPolicy);
