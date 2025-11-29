@@ -31,10 +31,16 @@ abstract class AbstractFixer implements FixerInterface
 {
     protected WhitespacesFixerConfig $whitespacesConfig;
 
-    private ?string $name = null;
+    /**
+     * @readonly
+     */
+    private string $name;
 
     public function __construct()
     {
+        $nameParts = explode('\\', static::class);
+        $name = substr(end($nameParts), 0, -\strlen('Fixer'));
+        $this->name = Utils::camelCaseToUnderscore($name);
         if ($this instanceof ConfigurableFixerInterface) {
             try {
                 $this->configure([]);
@@ -66,12 +72,6 @@ abstract class AbstractFixer implements FixerInterface
 
     public function getName(): string
     {
-        if (null === $this->name) {
-            $nameParts = explode('\\', static::class);
-            $name = substr(end($nameParts), 0, -\strlen('Fixer'));
-            $this->name = Utils::camelCaseToUnderscore($name);
-        }
-
         return $this->name;
     }
 
