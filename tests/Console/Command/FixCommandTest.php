@@ -208,7 +208,7 @@ final class FixCommandTest extends TestCase
         );
 
         self::assertStringContainsString('PHP CS Fixer currently supports PHP syntax only up to PHP '.ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED, $cmdTester->getDisplay());
-        self::assertStringContainsString('Add Config::setUnsupportedPhpVersionAllowed(true) to allow executions on unsupported PHP versions.', $cmdTester->getDisplay());
+        self::assertStringContainsString('Add `Config::setUnsupportedPhpVersionAllowed(true)` to allow executions on unsupported PHP versions.', $cmdTester->getDisplay());
         self::assertSame(1, $cmdTester->getStatusCode());
     }
 

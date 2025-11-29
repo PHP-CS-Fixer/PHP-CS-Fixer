@@ -180,6 +180,7 @@ Rules
 
   ``['stick_comment_to_next_continuous_control_statement' => true]``
 
+- `stringable_for_to_string <./../rules/class_notation/stringable_for_to_string.rst>`_
 - `switch_continue_to_break <./../rules/control_structure/switch_continue_to_break.rst>`_
 - `trailing_comma_in_multiline <./../rules/control_structure/trailing_comma_in_multiline.rst>`_ with config:
 

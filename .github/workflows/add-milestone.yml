@@ -11,8 +11,8 @@ permissions:
   contents: write
 
 jobs:
-  add-to-milestone:
-    runs-on: ubuntu-latest
+  add-to-milestone-8x5:
+    runs-on: ubuntu-slim
     if: ${{ github.event.label.name == 'topic/PHP8.5' }}
     env:
       PR_URL: ${{github.event.pull_request.html_url}}
@@ -20,3 +20,13 @@ jobs:
 
     steps:
       - run: gh pr edit "$PR_URL" --milestone 'PHP 8.5 initial compatibility'
+
+  add-to-milestone-8x6:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.label.name == 'topic/PHP8.6' }}
+    env:
+      PR_URL: ${{github.event.pull_request.html_url}}
+      GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+    steps:
+      - run: gh pr edit "$PR_URL" --milestone 'PHP 8.6 initial compatibility'

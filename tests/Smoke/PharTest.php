@@ -162,6 +162,6 @@ final class PharTest extends AbstractSmokeTestCase
 
     private static function executePharCommand(string $params): CliResult
     {
-        return CommandExecutor::create('php '.self::$pharName.' '.$params, self::$pharCwd)->getResult(false);
+        return CommandExecutor::create('php '.self::$pharName.' '.$params.' --no-interaction', self::$pharCwd)->getResult(false);
     }
 }

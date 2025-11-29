@@ -238,6 +238,7 @@ final class SymfonySet extends AbstractRuleSetDefinition
             'statement_indentation' => [
                 'stick_comment_to_next_continuous_control_statement' => true,
             ],
+            'stringable_for_to_string' => true,
             'switch_continue_to_break' => true,
             'trailing_comma_in_multiline' => [
                 'after_heredoc' => true,
