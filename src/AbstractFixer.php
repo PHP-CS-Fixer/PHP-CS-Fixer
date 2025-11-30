@@ -41,6 +41,7 @@ abstract class AbstractFixer implements FixerInterface
         $nameParts = explode('\\', static::class);
         $name = substr(end($nameParts), 0, -\strlen('Fixer'));
         $this->name = Utils::camelCaseToUnderscore($name);
+
         if ($this instanceof ConfigurableFixerInterface) {
             try {
                 $this->configure([]);
