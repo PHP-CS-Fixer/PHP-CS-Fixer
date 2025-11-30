@@ -14,7 +14,7 @@
         {
             "in": [
                 "src",
-                "resources",
+                "resources"
             ],
             "name": [
                 "*.php",
