@@ -33,6 +33,7 @@ use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Tests\Fixtures\DescribeCommand\DescribeFixtureFixer;
+use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleSet;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -430,7 +431,7 @@ $/s',
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => (new DescribeFixtureFixer())->getName(),
-            '--config' => __DIR__.'/../../Fixtures/DescribeCommand/.php-cs-fixer.fixture.php',
+            '--config' => __DIR__.'/../../Fixtures/DescribeCommand/.php-cs-fixer.custom-rule.php',
         ]);
 
         $expected = "Description of the `Vendor/describe_fixture` rule.
@@ -450,6 +451,34 @@ Fixing examples:
    ----------- end diff -----------
 
 ';
+        self::assertSame($expected, $commandTester->getDisplay(true));
+        self::assertSame(0, $commandTester->getStatusCode());
+    }
+
+    public function testCommandDescribesCustomSet(): void
+    {
+        $application = new Application();
+        $application->add(new DescribeCommand());
+
+        $command = $application->find('describe');
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            'name' => (new ExampleRuleSet())->getName(),
+            '--config' => __DIR__.'/../../Fixtures/DescribeCommand/.php-cs-fixer.custom-set.php',
+        ]);
+
+        $expected = "You may the '--expand' option to see nested sets expanded into nested rules.
+Description of the `@Vendor/RuleSet` set.
+
+Purpose of example rule set description.
+
+ * align_multiline_comment
+   | Each line of multi-line DocComments must have an asterisk [PSR-5] and must be aligned with the first one.
+   | Configuration: false
+
+";
         self::assertSame($expected, $commandTester->getDisplay(true));
         self::assertSame(0, $commandTester->getStatusCode());
     }
