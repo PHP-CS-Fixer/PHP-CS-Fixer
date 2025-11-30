@@ -114,7 +114,7 @@ final class Application extends BaseApplication
                 }
                 $command = $this->find($commandName);
 
-                if ($command instanceof FixCommand || $command instanceof CheckCommand) {
+                if (($command instanceof CheckCommand) || ($command instanceof FixCommand)) {
                     $warningsDetector->detectHigherPhpVersion();
                     $warningsDetector->detectNonMonolithic();
                 }
