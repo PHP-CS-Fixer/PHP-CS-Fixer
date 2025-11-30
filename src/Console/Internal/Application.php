@@ -34,7 +34,7 @@ use Symfony\Component\Filesystem\Filesystem;
 final class Application extends BaseApplication
 {
     public function __construct(
-        ?Filesystem $filesystem = null,
+        ?Filesystem $filesystem = null
     ) {
         $filesystem ??= new Filesystem();
 
