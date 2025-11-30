@@ -20,12 +20,29 @@ use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
  * Sample external RuleSet.
  *
  * The name is intentionally NOT ending with "Set" to better test real-life usage.
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 class ExampleRuleSet implements RuleSetDefinitionInterface
 {
+    /**
+     * @var string
+     *
+     * @readonly
+     */
+    private $nameSuffix;
+
+    public function __construct(string $nameSuffix = '')
+    {
+        if ('' !== $nameSuffix) {
+            $nameSuffix = '___'.str_replace([':', '\\'], '_', $nameSuffix);
+        }
+        $this->nameSuffix = $nameSuffix;
+    }
+
     public function getName(): string
     {
-        return '@Vendor/RuleSet';
+        return '@Vendor/RuleSet'.$this->nameSuffix;
     }
 
     public function isRisky(): bool

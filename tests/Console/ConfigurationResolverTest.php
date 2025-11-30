@@ -1356,7 +1356,8 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
     public function testItCanRegisterCustomRuleSets(): void
     {
-        $ruleSet = new ExampleRuleSet();
+        $ruleSet = new ExampleRuleSet(__METHOD__);
+
         $config = new Config();
         $config->registerCustomRuleSets([$ruleSet]);
         $this

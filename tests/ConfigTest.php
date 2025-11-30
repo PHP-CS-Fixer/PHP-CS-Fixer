@@ -242,7 +242,7 @@ final class ConfigTest extends TestCase
 
     public function testRegisterCustomRuleSets(): void
     {
-        $ruleset = new ExampleRuleSet();
+        $ruleset = new ExampleRuleSet(__METHOD__);
 
         $config = new Config();
         $config->registerCustomRuleSets([$ruleset]);
