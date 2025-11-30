@@ -43,9 +43,9 @@ return (new Config())
     ->setParallelConfig(ParallelConfigFactory::detect()) // @TODO 4.0 no need to call this manually
     ->setUnsupportedPhpVersionAllowed(true)
     ->setRiskyAllowed(true)
-    ->registerCustomFixers([
-        new ConfigurableFixerTemplateFixer(),
-    ])
+    ->registerCustomFixers(class_exists(ConfigurableFixerTemplateFixer::class) ? [
+        new ConfigurableFixerTemplateFixer(), // available only on repo level, not exposed to external installations or phar build
+    ] : [])
     ->setRules([
         '@auto' => true,
         '@auto:risky' => true,
@@ -66,7 +66,9 @@ return (new Config())
         'native_constant_invocation' => ['strict' => false], // strict:false to not remove `\` on low-end PHP versions for not-yet-known consts
         'no_useless_concat_operator' => false, // TODO switch back on when the `src/Console/Application.php` no longer needs the concat
         'numeric_literal_separator' => true,
+    ] + (class_exists(ConfigurableFixerTemplateFixer::class) ? [
         'PhpCsFixerInternal/configurable_fixer_template' => true, // internal rules, shall not be used outside of main repo
+    ] : []) + [
         'phpdoc_order' => [
             'order' => [
                 'type',

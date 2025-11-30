@@ -12,6 +12,10 @@
     ],
     "finder": [
         {
+            "in": [
+                "src",
+                "resources"
+            ],
             "name": [
                 "*.php",
                 "*.php8",
@@ -23,10 +27,24 @@
                 "Tests",
                 "tests"
             ],
+            "notPath": [
+                "|.*/Internal/.*|"
+            ]
+        },
+        {
             "in": [
-                "src",
-                "resources",
                 "vendor"
+            ],
+            "name": [
+                "*.php",
+                "*.php8",
+                "completion.*"
+            ],
+            "exclude": [
+                "Test",
+                "test",
+                "Tests",
+                "tests"
             ]
         }
     ],

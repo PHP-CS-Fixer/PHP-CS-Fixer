@@ -12,7 +12,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Console\Command;
+namespace PhpCsFixer\Console\Internal\Command;
 
 use PhpCsFixer\Documentation\DocumentationLocator;
 use PhpCsFixer\Documentation\FixerDocumentGenerator;
@@ -50,7 +50,7 @@ final class DocumentationCommand extends Command
 
     protected function configure(): void
     {
-        $this->setAliases(['doc']);
+        $this->setAliases(['docs']);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
