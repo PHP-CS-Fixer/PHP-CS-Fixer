@@ -60,8 +60,6 @@ final class DescribeCommandTest extends TestCase
      */
     public function testDescribeCommand(string $fixerName, ?array $successorsNames, ?string $configFile = null): void
     {
-        $this->expectDeprecationOfDeprecatedRuleSets();
-
         if (null !== $successorsNames) {
             $message = "Rule \"{$fixerName}\" is deprecated. "
                 .([] === $successorsNames
