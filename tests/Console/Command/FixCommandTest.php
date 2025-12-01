@@ -49,9 +49,6 @@ final class FixCommandTest extends TestCase
         );
     }
 
-    /**
-     * @requires
-     */
     public function testEmptyRulesValue(): void
     {
         $this->expectException(
