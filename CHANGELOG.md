@@ -3,6 +3,16 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.91.1
+---------------------
+
+* UX: show warning on PHP-mismatch only for 'fix' and 'check' commands (#9243)
+* docs: unify rule/ruleset doc tags (#9250)
+* refactor: don't expose internal commands/rules (#9245)
+* refactor: memoize fixer names (#9219)
+* refactor: use custom set for internal rules (#9247)
+* test: show that `describe` command works well for custom sets (#9246)
+
 Changelog for v3.91.0
 ---------------------
 
