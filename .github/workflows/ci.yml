@@ -143,6 +143,7 @@ jobs:
             job-description: tests
             run-tests: 'yes'
             allow-to-fail: 'yes' # currently not compatible
+            PHP_CS_FIXER_IGNORE_ENV: 1
 
           - operating-system: ubuntu-24.04
             php-version: ${{ needs.setup.outputs.PHP_MAX }}
