@@ -61,10 +61,10 @@ final class DescribeCommandTest extends TestCase
     public function testDescribeCommand(string $fixerName, ?array $successorsNames, ?string $configFile = null): void
     {
         if (null !== $successorsNames) {
-            $message = "Rule \"{$fixerName}\" is deprecated. "
+            $message = "Rule \"{$fixerName}\" is DEPRECATED and will be removed in the next major version 4.0. "
                 .([] === $successorsNames
-                    ? 'It will be removed in version 4.0.'
-                    : \sprintf('Use %s instead.', Utils::naturalLanguageJoin($successorsNames)));
+                    ? 'No replacement available.'
+                    : \sprintf('You should use %s instead.', Utils::naturalLanguageJoin($successorsNames)));
             $this->expectDeprecation($message);
         }
 
