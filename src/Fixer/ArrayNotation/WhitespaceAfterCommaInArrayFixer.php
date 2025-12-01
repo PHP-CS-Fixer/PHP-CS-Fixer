@@ -63,6 +63,16 @@ final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer implements Co
         return $tokens->isAnyTokenKindsFound([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run after ArraySinglelineMultilineFixer.
+     */
+    public function getPriority(): int
+    {
+        return 0;
+    }
+
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

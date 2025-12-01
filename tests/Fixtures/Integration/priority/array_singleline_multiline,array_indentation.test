@@ -1,0 +1,24 @@
+--TEST--
+Integration of fixers: array_singleline_multiline,array_indentation.
+--RULESET--
+{"array_singleline_multiline": {"threshold": 0}, "array_indentation": true}
+--EXPECT--
+<?php
+
+$foo = [
+    'foo',
+    'bar' => 'baz'
+];
+
+[
+    $foo,
+    $bar,
+    $baz
+] = $arr;
+
+--INPUT--
+<?php
+
+$foo = ['foo','bar' => 'baz'];
+
+[$foo, $bar, $baz] = $arr;
