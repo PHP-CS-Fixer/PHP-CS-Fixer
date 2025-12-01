@@ -13,8 +13,8 @@ The functions "array_keys", "array_search", "base64_decode", "in_array" and
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when the fixed function is overridden or if the code relies on non-strict
 usage.

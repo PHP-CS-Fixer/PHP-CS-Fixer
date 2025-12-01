@@ -4,6 +4,15 @@ Rule ``no_useless_concat_operator``
 
 There should not be useless concat operations.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option:
+``juggle_simple_strings``.
+
 Configuration
 -------------
 

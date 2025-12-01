@@ -30,6 +30,15 @@ Custom values:
 - ``method:*``: specify a single method name (e.g. ``method:__invoke``) to set
 the order of that specific method.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``case_sensitive``,
+``order``, ``sort_algorithm``.
+
 Configuration
 -------------
 

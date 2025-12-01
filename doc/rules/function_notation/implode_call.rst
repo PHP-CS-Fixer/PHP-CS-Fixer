@@ -7,8 +7,8 @@ Function ``implode`` must be called with 2 arguments in the documented order.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when the function ``implode`` is overridden.
 

@@ -4,6 +4,14 @@ Rule ``no_extra_blank_lines``
 
 Removes extra blank lines and/or blank lines following configuration.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``tokens``.
+
 Configuration
 -------------
 

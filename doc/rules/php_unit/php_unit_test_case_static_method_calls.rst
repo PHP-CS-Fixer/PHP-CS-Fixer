@@ -5,14 +5,20 @@ Rule ``php_unit_test_case_static_method_calls``
 Calls to ``PHPUnit\Framework\TestCase`` static methods must all be of the same
 type, either ``$this->``, ``self::`` or ``static::``.
 
-Warning
--------
+Warnings
+--------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when PHPUnit methods are overridden or not accessible, or when project has
 PHPUnit incompatibilities.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``call_type``,
+``methods``.
 
 Configuration
 -------------

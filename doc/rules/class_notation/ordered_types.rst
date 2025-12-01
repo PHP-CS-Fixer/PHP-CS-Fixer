@@ -4,6 +4,15 @@ Rule ``ordered_types``
 
 Sort union types and intersection types using configured order.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``case_sensitive``,
+``null_adjustment``, ``sort_algorithm``.
+
 Configuration
 -------------
 

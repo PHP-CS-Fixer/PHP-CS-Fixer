@@ -7,8 +7,8 @@ Converts ``pow`` to the ``**`` operator.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when the function ``pow`` is overridden.
 

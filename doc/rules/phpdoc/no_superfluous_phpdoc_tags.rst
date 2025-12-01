@@ -5,6 +5,16 @@ Rule ``no_superfluous_phpdoc_tags``
 Removes ``@param``, ``@return`` and ``@var`` tags that don't provide any useful
 information.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options:
+``allow_hidden_params``, ``allow_mixed``, ``allow_unused_params``,
+``remove_inheritdoc``.
+
 Configuration
 -------------
 

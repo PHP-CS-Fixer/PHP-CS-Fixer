@@ -7,8 +7,8 @@ Convert PHP4-style constructors to ``__construct``.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when old style constructor being fixed is overridden or overrides parent
 one.

@@ -8,8 +8,8 @@ non-default ones.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Modifies the signature of functions; therefore risky when using systems (such as
 some Symfony components) that rely on those (for example through reflection).

@@ -4,6 +4,14 @@ Rule ``unary_operator_spaces``
 
 Unary operators should be placed adjacent to their operands.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``only_dec_inc``.
+
 Configuration
 -------------
 

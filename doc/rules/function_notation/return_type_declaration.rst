@@ -4,6 +4,14 @@ Rule ``return_type_declaration``
 
 Adjust spacing around colon in return type declarations and backed enum types.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``space_before``.
+
 Configuration
 -------------
 

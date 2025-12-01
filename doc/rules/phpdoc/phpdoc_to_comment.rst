@@ -4,6 +4,15 @@ Rule ``phpdoc_to_comment``
 
 Docblocks should only be used on structural elements.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options:
+``allow_before_return_statement``, ``ignored_tags``.
+
 Configuration
 -------------
 

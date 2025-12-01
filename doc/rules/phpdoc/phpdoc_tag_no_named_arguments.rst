@@ -5,6 +5,15 @@ Rule ``phpdoc_tag_no_named_arguments``
 There must be ``@no-named-arguments`` tag in PHPDoc of a
 class/enum/interface/trait.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``description``,
+``fix_attribute``, ``fix_internal``.
+
 Configuration
 -------------
 

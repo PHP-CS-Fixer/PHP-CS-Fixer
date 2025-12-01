@@ -8,8 +8,8 @@ Replace multiple nested calls of ``dirname`` by only one call with second
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when the function ``dirname`` is overridden.
 

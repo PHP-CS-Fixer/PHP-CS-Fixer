@@ -5,6 +5,14 @@ Rule ``constant_case``
 The PHP constants ``true``, ``false``, and ``null`` MUST be written using the
 correct casing.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``case``.
+
 Configuration
 -------------
 

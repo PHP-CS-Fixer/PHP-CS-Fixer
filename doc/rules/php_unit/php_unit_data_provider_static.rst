@@ -4,13 +4,18 @@ Rule ``php_unit_data_provider_static``
 
 Data providers must be static.
 
-Warning
--------
+Warnings
+--------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Fixer could be risky if one is calling data provider function dynamically.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``force``.
 
 Configuration
 -------------

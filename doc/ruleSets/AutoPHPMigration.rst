@@ -7,10 +7,11 @@ Migration rules to improve code towards the minimum ``PHP`` supported by your pr
 Warning
 -------
 
-Automatic rule set
-~~~~~~~~~~~~~~~~~~
+This rule set is AUTOMATIC
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-⚡ This rule is automatic: it's definition depends on your project, eg "composer.json" file.
+⚡ This rule is automatic: it's definition depends on your project, eg
+"composer.json" file.
 
 Rules candidates
 ----------------

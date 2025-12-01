@@ -5,6 +5,15 @@ Rule ``nullable_type_declaration_for_default_null_value``
 Adds or removes ``?`` before single type declarations or ``|null`` at the end of
 union types when parameters have a default ``null`` value.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option:
+``use_nullable_type_declaration``.
+
 Configuration
 -------------
 

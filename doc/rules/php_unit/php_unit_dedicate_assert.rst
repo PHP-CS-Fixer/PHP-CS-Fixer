@@ -5,13 +5,18 @@ Rule ``php_unit_dedicate_assert``
 PHPUnit assertions like ``assertInternalType``, ``assertFileExists``, should be
 used over ``assertTrue``.
 
-Warning
--------
+Warnings
+--------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Fixer could be risky if one is overriding PHPUnit's native methods.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``target``.
 
 Configuration
 -------------

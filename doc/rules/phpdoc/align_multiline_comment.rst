@@ -5,6 +5,14 @@ Rule ``align_multiline_comment``
 Each line of multi-line DocComments must have an asterisk [PSR-5] and must be
 aligned with the first one.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``comment_type``.
+
 Configuration
 -------------
 

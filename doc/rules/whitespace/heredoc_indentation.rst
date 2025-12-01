@@ -4,6 +4,14 @@ Rule ``heredoc_indentation``
 
 Heredoc/nowdoc content must be properly indented.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``indentation``.
+
 Configuration
 -------------
 
