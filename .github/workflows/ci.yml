@@ -238,7 +238,7 @@ jobs:
         run: (Get-Content phpunit.xml.dist) -replace 'enforceTimeLimit="true"', 'enforceTimeLimit="false"' | Out-File phpunit.xml
 
       - name: Fix PHP 8.6 deprecations for tests
-        if: matrix.run-tests == 'yes' && matrix.php-version == '8.6'
+        if: matrix.run-tests == 'yes' && matrix.php-version == '8.6snapshot'
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
         run: php php-cs-fixer fix --config=dev-tools/.php-cs-fixer.vendor.php --diff
