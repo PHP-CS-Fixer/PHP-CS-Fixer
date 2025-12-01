@@ -95,6 +95,7 @@ final class DescribeCommandTest extends TestCase
      */
     public static function provideDescribeCommandCases(): iterable
     {
+        // internal rules
         yield [
             (new ConfigurableFixerTemplateFixer())->getName(),
             null,
