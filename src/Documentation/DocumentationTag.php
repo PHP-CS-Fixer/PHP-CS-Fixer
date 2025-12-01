@@ -46,7 +46,7 @@ final class DocumentationTag
     public function __construct(
         string $type,
         string $title,
-        ?string $description = null,
+        ?string $description = null
     ) {
         $this->type = $type;
         $this->title = $title;
