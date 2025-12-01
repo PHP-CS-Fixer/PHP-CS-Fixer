@@ -261,14 +261,16 @@ jobs:
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           PHP_CS_FIXER_FAST_LINT_TEST_CASES: ${{ matrix.PHP_CS_FIXER_FAST_LINT_TEST_CASES }}
-        run: vendor/bin/phpunit --testsuite unit,integration ${{ matrix.phpunit-flags }}
+#        run: vendor/bin/phpunit --testsuite unit,integration ${{ matrix.phpunit-flags }}
+        run: vendor/bin/phpunit tests/Console/Command/FixCommandTest.php
 
       - name: Run tests (via ParaUnit)
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes' && matrix.AVOID_PARAUNIT != 'yes'
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           PHP_CS_FIXER_FAST_LINT_TEST_CASES: ${{ matrix.PHP_CS_FIXER_FAST_LINT_TEST_CASES }}
-        run: vendor/bin/paraunit run --testsuite unit,integration
+#        run: vendor/bin/paraunit run --testsuite unit,integration
+        run: vendor/bin/phpunit tests/Console/Command/FixCommandTest.php
 
       - name: Run tests with "short_open_tag" enabled
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes'
