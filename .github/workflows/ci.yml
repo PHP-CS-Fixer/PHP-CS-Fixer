@@ -143,6 +143,7 @@ jobs:
             job-description: tests
             run-tests: 'yes'
             allow-to-fail: 'yes' # currently not compatible
+            PHP_CS_FIXER_IGNORE_ENV: 1
 
           - operating-system: ubuntu-24.04
             php-version: ${{ needs.setup.outputs.PHP_MAX }}
@@ -237,11 +238,11 @@ jobs:
         if: matrix.operating-system == 'windows-latest'
         run: (Get-Content phpunit.xml.dist) -replace 'enforceTimeLimit="true"', 'enforceTimeLimit="false"' | Out-File phpunit.xml
 
-      - name: Fix PHP 8.6 deprecations for tests
-        if: matrix.run-tests == 'yes' && matrix.php-version == '8.6snapshot'
-        env:
-          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
-        run: php php-cs-fixer fix --config=dev-tools/.php-cs-fixer.vendor.php --diff
+#      - name: Fix PHP 8.6 deprecations for tests
+#        if: matrix.run-tests == 'yes' && matrix.php-version == '8.6snapshot'
+#        env:
+#          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
+#        run: php php-cs-fixer fix --config=dev-tools/.php-cs-fixer.vendor.php --diff
 
       - name: Install PHPUnit 12
         if: matrix.run-tests == 'yes' && matrix.install-phpunit-12 == 'yes'
@@ -261,16 +262,14 @@ jobs:
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           PHP_CS_FIXER_FAST_LINT_TEST_CASES: ${{ matrix.PHP_CS_FIXER_FAST_LINT_TEST_CASES }}
-#        run: vendor/bin/phpunit --testsuite unit,integration ${{ matrix.phpunit-flags }}
-        run: vendor/bin/phpunit tests/Console/Command/FixCommandTest.php --display-all-issues
+        run: vendor/bin/phpunit --testsuite unit,integration ${{ matrix.phpunit-flags }}
 
       - name: Run tests (via ParaUnit)
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes' && matrix.AVOID_PARAUNIT != 'yes'
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           PHP_CS_FIXER_FAST_LINT_TEST_CASES: ${{ matrix.PHP_CS_FIXER_FAST_LINT_TEST_CASES }}
-#        run: vendor/bin/paraunit run --testsuite unit,integration
-        run: vendor/bin/phpunit tests/Console/Command/FixCommandTest.php --display-all-issues
+        run: vendor/bin/paraunit run --testsuite unit,integration
 
       - name: Run tests with "short_open_tag" enabled
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes'
