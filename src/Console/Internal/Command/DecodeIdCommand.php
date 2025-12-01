@@ -54,7 +54,7 @@ final class DecodeIdCommand extends Command
 
         $id = $input->getArgument('id');
 
-        if (1 !== preg_match('/^\d+$/', $id)) {
+        if (!filter_var($id, \FILTER_VALIDATE_INT)) {
             $stdErr->writeln('<error>Non-numeric "id" value.</error>');
 
             return 1;
