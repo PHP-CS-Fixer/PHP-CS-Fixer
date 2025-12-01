@@ -22,6 +22,8 @@ use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\Command\InitCommand;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\Documentation\DocumentationTag;
+use PhpCsFixer\Documentation\DocumentationTagGenerator;
 use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerTrait;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitNamespacedFixer;
@@ -111,6 +113,8 @@ final class ProjectCodeTest extends TestCase
 
         $exceptions = [
             InitCommand::class,
+            DocumentationTag::class,
+            DocumentationTagGenerator::class,
         ];
 
         // we allow exceptions to _not_ follow the rule,
