@@ -26,7 +26,7 @@ use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-class Config implements ConfigInterface, ParallelAwareConfigInterface, UnsupportedPhpVersionAllowedConfigInterface, CustomRulesetsAwareConfigInterface, RuleCustomizationPolicyAwareConfigInterface
+class Config implements ConfigInterface, ParallelAwareConfigInterface, UnsupportedPhpVersionAllowedConfigInterface, CustomRulesetsAwareConfigInterface, RuleCustomisationPolicyAwareConfigInterface
 {
     /**
      * @var non-empty-string
@@ -81,7 +81,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
 
     private bool $isUnsupportedPhpVersionAllowed = false;
 
-    private ?RuleCustomizationPolicyInterface $ruleCustomizationPolicy = null;
+    private ?RuleCustomisationPolicyInterface $ruleCustomisationPolicy = null;
 
     public function __construct(string $name = 'default')
     {
@@ -185,9 +185,9 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
         return $this->isUnsupportedPhpVersionAllowed;
     }
 
-    public function getRuleCustomizationPolicy(): ?RuleCustomizationPolicyInterface
+    public function getRuleCustomisationPolicy(): ?RuleCustomisationPolicyInterface
     {
-        return $this->ruleCustomizationPolicy;
+        return $this->ruleCustomisationPolicy;
     }
 
     public function registerCustomFixers(iterable $fixers): ConfigInterface
@@ -304,9 +304,9 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
         return $this;
     }
 
-    public function setRuleCustomizationPolicy(?RuleCustomizationPolicyInterface $ruleCustomizationPolicy): ConfigInterface
+    public function setRuleCustomisationPolicy(?RuleCustomisationPolicyInterface $ruleCustomisationPolicy): ConfigInterface
     {
-        $this->ruleCustomizationPolicy = $ruleCustomizationPolicy;
+        $this->ruleCustomisationPolicy = $ruleCustomisationPolicy;
 
         return $this;
     }

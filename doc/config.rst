@@ -125,7 +125,7 @@ The following example shows how to use all ``PhpCsFixer`` rules but without the 
         ->setFinder($finder)
     ;
 
-If you need to disable or reconfigure a rule for specific files, you can use the ``setRuleCustomizationPolicy`` method:
+If you need to disable or reconfigure a rule for specific files, you can use the ``setRuleCustomisationPolicy`` method:
 
 .. code-block:: php
 
@@ -133,26 +133,28 @@ If you need to disable or reconfigure a rule for specific files, you can use the
 
     use PhpCsFixer\Config;
     use PhpCsFixer\Finder;
+    use PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer;
     use PhpCsFixer\Fixer\FixerInterface;
-    use PhpCsFixer\RuleCustomizationPolicyInterface;
+    use PhpCsFixer\RuleCustomisationPolicyInterface;
 
-    class MyPolicy implements RuleCustomizationPolicyInterface
+    class MyPolicy implements RuleCustomisationPolicyInterface
     {
-        public function getRuleCustomizers(): array
+        public function getRuleCustomisers(): array
         {
             return [
-                'array_syntax' => static function (FixerInterface $fixer, \SplFileInfo $file): ?FixerInterface {
+                'array_syntax' => static function (\SplFileInfo $file) {
                     if (str_contains($file->getPathname(), '/tests/')) {
                         // Disable the fixer for files in /tests/ directory
-                        return null;
+                        return false;
                     }
                     if (str_contains($file->getPathname(), '/bin/')) {
-                        // Reconfigure the fixer for files in /bin/ directory
-                        $fixer = clone $fixer; // IMPORTANT!
+                        // For files in /bin/ directory create a new fixer instance with a different configuration
+                        $fixer = new ArraySyntaxFixer();
                         $fixer->configure(['syntax' => 'long']);
+                        return $fixer;
                     }
                     // Keep the default configuration for other files
-                    return $fixer;
+                    return true;
                 },
             ];
         }
@@ -162,7 +164,7 @@ If you need to disable or reconfigure a rule for specific files, you can use the
         ->setRules([
             'array_syntax' => ['syntax' => 'short'],
         ])
-        ->setRuleCustomizationPolicy(new MyPolicy())
+        ->setRuleCustomisationPolicy(new MyPolicy())
         ->setFinder(
             (new Finder())
                 ->in(__DIR__)
@@ -174,18 +176,9 @@ If you need to disable or reconfigure a rule for specific files, you can use the
 
     **⚠️ WARNING ⚠️**
 
-    If you need to reconfigure a fixer instance:
-
-    - make sure to clone it first (as in the example above), as the same instance is used for all files.
-    - if the configuration of a fixer changes between runs, the PHP-CS-Fixer cache won't reflect those changes; you'll need to clear the cache manually (e.g. by deleting the cache file).
-
-.. warning::
-
-    **⚠️ WARNING ⚠️**
-
-    When you write an implementation of ``RuleCustomizationPolicyInterface``, PHP-CS-Fixer may provide some fixers that, in future versions, may be deprecated and replaced by other fixers.
+    When you write an implementation of ``RuleCustomisationPolicyInterface``, PHP-CS-Fixer may provide some fixers that, in future versions, may be deprecated and replaced by other fixers.
     In such cases, your implementation may seems to not work as expected, because the fixers you'd like to customise may no longer be available.
-    To avoid such issues, PHP-CS-Fixer will check that all the fixer names returned by your ``getRuleCustomizers()`` method are being actually used.
+    To avoid such issues, PHP-CS-Fixer will check that all the fixer names returned by your ``getRuleCustomisers()`` method are being actually used.
     If some of them are not used, PHP-CS-Fixer will throw an exception with the list of unused fixer names.
     In such case, you'll have update your implementation accordingly.
 

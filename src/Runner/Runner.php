@@ -32,7 +32,7 @@ use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\LintingResultInterface;
 use PhpCsFixer\Preg;
-use PhpCsFixer\RuleCustomizationPolicyInterface;
+use PhpCsFixer\RuleCustomisationPolicyInterface;
 use PhpCsFixer\Runner\Event\AnalysisStarted;
 use PhpCsFixer\Runner\Event\FileProcessed;
 use PhpCsFixer\Runner\Parallel\ParallelAction;
@@ -107,7 +107,7 @@ final class Runner
 
     private ?string $configFile;
 
-    private ?RuleCustomizationPolicyInterface $ruleCustomizationPolicy;
+    private ?RuleCustomisationPolicyInterface $ruleCustomisationPolicy;
 
     /**
      * @param null|\Traversable<array-key, \SplFileInfo> $fileIterator
@@ -128,7 +128,7 @@ final class Runner
         ?ParallelConfig $parallelConfig = null,
         ?InputInterface $input = null,
         ?string $configFile = null,
-        ?RuleCustomizationPolicyInterface $ruleCustomizationPolicy = null
+        ?RuleCustomisationPolicyInterface $ruleCustomisationPolicy = null
     ) {
         // Required only for main process (calculating workers count)
         $this->fileCount = null !== $fileIterator ? \count(iterator_to_array($fileIterator)) : 0;
@@ -146,7 +146,7 @@ final class Runner
         $this->parallelConfig = $parallelConfig ?? ParallelConfigFactory::sequential();
         $this->input = $input;
         $this->configFile = $configFile;
-        $this->ruleCustomizationPolicy = $ruleCustomizationPolicy;
+        $this->ruleCustomisationPolicy = $ruleCustomisationPolicy;
     }
 
     /**
@@ -465,7 +465,7 @@ final class Runner
         $new = $old;
         $newHash = $oldHash;
 
-        $ruleCustomisers = null === $this->ruleCustomizationPolicy ? [] : $this->ruleCustomizationPolicy->getRuleCustomizers();
+        $ruleCustomisers = null === $this->ruleCustomisationPolicy ? [] : $this->ruleCustomisationPolicy->getRuleCustomisers();
         if ([] !== $ruleCustomisers) {
             $usedFixerNames = array_map(
                 static fn (FixerInterface $fixer): string => $fixer->getName(),
@@ -477,7 +477,7 @@ final class Runner
 
                 throw new \RuntimeException(
                     <<<EOT
-                        Rule Customization Policy contains customisers for fixers that are not currently applied.
+                        Rule Customisation Policy contains customisers for fixers that are not currently applied.
 
                         Missing fixers:
                         - {$missingFixerNames}
@@ -494,13 +494,13 @@ final class Runner
             foreach ($this->fixers as $fixer) {
                 $customiser = $ruleCustomisers[$fixer->getName()] ?? null;
                 if (null !== $customiser) {
-                    $actualFixer = $customiser($fixer, $file);
-                    if (null === $actualFixer) {
+                    $actualFixer = $customiser($file);
+                    if (false === $actualFixer) {
                         continue;
                     }
-                    if ($fixer !== $actualFixer) {
+                    if (true !== $actualFixer) {
                         if (\get_class($fixer) !== \get_class($actualFixer)) {
-                            throw new \RuntimeException('The fixer returned by the Rule Customization Policy must be of the same class as the original fixer (expected '.\get_class($fixer).', got '.\get_class($actualFixer).')');
+                            throw new \RuntimeException('The fixer returned by the Rule Customisation Policy must be of the same class as the original fixer (expected '.\get_class($fixer).', got '.\get_class($actualFixer).')');
                         }
                         $fixer = $actualFixer;
                     }

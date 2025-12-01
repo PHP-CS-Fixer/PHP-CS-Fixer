@@ -19,19 +19,19 @@ namespace PhpCsFixer;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-interface RuleCustomizationPolicyAwareConfigInterface extends ConfigInterface
+interface RuleCustomisationPolicyAwareConfigInterface extends ConfigInterface
 {
     /**
      * Registers a filter to be applied to fixers right before running them.
      *
      * @todo v4 Introduce it in main ConfigInterface
      */
-    public function setRuleCustomizationPolicy(?RuleCustomizationPolicyInterface $ruleCustomizationPolicy): ConfigInterface;
+    public function setRuleCustomisationPolicy(?RuleCustomisationPolicyInterface $ruleCustomisationPolicy): ConfigInterface;
 
     /**
      * Gets the filter to be applied to fixers right before running them.
      *
      * @todo v4 Introduce it in main ConfigInterface
      */
-    public function getRuleCustomizationPolicy(): ?RuleCustomizationPolicyInterface;
+    public function getRuleCustomisationPolicy(): ?RuleCustomisationPolicyInterface;
 }

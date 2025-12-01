@@ -23,7 +23,7 @@ use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer;
 use PhpCsFixer\Fixer\ControlStructure\IncludeFixer;
 use PhpCsFixer\Fixer\FixerInterface;
-use PhpCsFixer\RuleCustomizationPolicyInterface;
+use PhpCsFixer\RuleCustomisationPolicyInterface;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleset;
 use PhpCsFixer\ToolInfo;
@@ -296,19 +296,19 @@ final class ConfigTest extends TestCase
         $config->setUnsupportedPhpVersionAllowed(true);
         self::assertTrue($config->getUnsupportedPhpVersionAllowed());
 
-        self::assertNull($config->getRuleCustomizationPolicy());
+        self::assertNull($config->getRuleCustomisationPolicy());
 
-        $ruleCustomizationPolicy = new class implements RuleCustomizationPolicyInterface {
-            public function getRuleCustomizers(): array
+        $ruleCustomisationPolicy = new class implements RuleCustomisationPolicyInterface {
+            public function getRuleCustomisers(): array
             {
                 return [];
             }
         };
-        $config->setRuleCustomizationPolicy($ruleCustomizationPolicy);
-        self::assertSame($ruleCustomizationPolicy, $config->getRuleCustomizationPolicy());
+        $config->setRuleCustomisationPolicy($ruleCustomisationPolicy);
+        self::assertSame($ruleCustomisationPolicy, $config->getRuleCustomisationPolicy());
 
-        $config->setRuleCustomizationPolicy(null);
-        self::assertNull($config->getRuleCustomizationPolicy());
+        $config->setRuleCustomisationPolicy(null);
+        self::assertNull($config->getRuleCustomisationPolicy());
     }
 
     public function testConfigConstructorWithName(): void
