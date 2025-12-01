@@ -59,7 +59,10 @@ final class FixCommandTest extends TestCase
         );
 
         $this->doTestExecute(
-            ['--rules' => '']
+            [
+                '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php',
+                '--rules' => '',
+            ]
         );
     }
 
@@ -89,7 +92,6 @@ final class FixCommandTest extends TestCase
             <?php
 
             \$config = require '{$pathToDistConfig}';
-            \$config->setUnsupportedPhpVersionAllowed(true);
             \$config->setRules(['header_comment' => ['header' => 'SEQUENTIAL!']]);
             \$config->setParallelConfig(\\PhpCsFixer\\Runner\\Parallel\\ParallelConfigFactory::sequential());
 
@@ -131,7 +133,6 @@ final class FixCommandTest extends TestCase
 
             \$config = require '{$pathToDistConfig}';
             \$config->setRules(['header_comment' => ['header' => 'PARALLEL!']]);
-            \$config->setUnsupportedPhpVersionAllowed(true);
             \$config->setParallelConfig(new \\PhpCsFixer\\Runner\\Parallel\\ParallelConfig(2, 1, 300));
 
             return \$config;
