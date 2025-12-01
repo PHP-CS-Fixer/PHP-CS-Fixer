@@ -160,5 +160,10 @@ final class PhpdocArrayTypeFixerTest extends AbstractFixerTestCase
             \sprintf('<?php /** @var %s */', $expected),
             \sprintf('<?php /** @var %s */', $input),
         ];
+
+        yield [
+            '<?php /** @return array<Foo<covariant TEntity>> */',
+            '<?php /** @return Foo<covariant TEntity>[] */',
+        ];
     }
 }
