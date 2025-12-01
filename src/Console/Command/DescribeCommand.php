@@ -19,12 +19,12 @@ use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Differ\DiffConsoleFormatter;
 use PhpCsFixer\Differ\FullDiffer;
+use PhpCsFixer\Documentation\DocumentationTag;
+use PhpCsFixer\Documentation\DocumentationTagGenerator;
+use PhpCsFixer\Documentation\DocumentationTagType;
 use PhpCsFixer\Documentation\FixerDocumentGenerator;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
-use PhpCsFixer\Fixer\DeprecatedFixerInterface;
-use PhpCsFixer\Fixer\ExperimentalFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
-use PhpCsFixer\Fixer\InternalFixerInterface;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
@@ -222,19 +222,6 @@ final class DescribeCommand extends Command
             $output->writeln('');
         }
 
-        if ($fixer instanceof DeprecatedFixerInterface) {
-            $successors = $fixer->getSuccessorsNames();
-            $message = [] === $successors
-                ? \sprintf('it will be removed in version %d.0', Application::getMajorVersion() + 1)
-                : \sprintf('use %s instead', Utils::naturalLanguageJoinWithBackticks($successors));
-
-            $endMessage = '. '.ucfirst($message);
-            Future::triggerDeprecation(new \RuntimeException(str_replace('`', '"', "Rule \"{$name}\" is deprecated{$endMessage}.")));
-            $message = Preg::replace('/(`[^`]+`)/', '<info>$1</info>', $message);
-            $output->writeln(\sprintf('<error>DEPRECATED</error>: %s.', $message));
-            $output->writeln('');
-        }
-
         $output->writeln($definition->getSummary());
 
         $description = $definition->getDescription();
@@ -245,27 +232,29 @@ final class DescribeCommand extends Command
 
         $output->writeln('');
 
-        if ($fixer instanceof ExperimentalFixerInterface) {
-            $output->writeln('<error>Fixer applying this rule is EXPERIMENTAL.</error>.');
-            $output->writeln('It is not covered with backward compatibility promise and may produce unstable or unexpected results.');
+        $tags = DocumentationTagGenerator::analyseRule($fixer);
 
-            $output->writeln('');
-        }
+        foreach ($tags as $tag) {
+            if (DocumentationTagType::DEPRECATED === $tag->type) {
+                Future::triggerDeprecation(new \RuntimeException(str_replace(
+                    '`',
+                    '"',
+                    \sprintf(
+                        '%s%s',
+                        str_replace('This rule', \sprintf('Rule "%s"', $name), $tag->title),
+                        null !== $tag->description ? '. '.$tag->description : '',
+                    ),
+                )));
+            } elseif (DocumentationTagType::CONFIGURABLE === $tag->type) {
+                continue; // skip, handled later
+            }
 
-        if ($fixer instanceof InternalFixerInterface) {
-            $output->writeln('<error>Fixer applying this rule is INTERNAL.</error>.');
-            $output->writeln('It is expected to be used only on PHP CS Fixer project itself.');
+            $output->writeln(\sprintf('<error>%s</error>', $tag->title));
+            $tagDescription = $tag->description;
 
-            $output->writeln('');
-        }
-
-        if ($fixer->isRisky()) {
-            $output->writeln('<error>Fixer applying this rule is RISKY.</error>');
-
-            $riskyDescription = $definition->getRiskyDescription();
-
-            if (null !== $riskyDescription) {
-                $output->writeln($riskyDescription);
+            if (null !== $tagDescription) {
+                $tagDescription = Preg::replace('/(`[^`]+`)/', '<info>$1</info>', $tagDescription);
+                $output->writeln($tagDescription);
             }
 
             $output->writeln('');
@@ -484,25 +473,29 @@ final class DescribeCommand extends Command
         $output->writeln($this->replaceRstLinks($ruleSetDefinition->getDescription()));
         $output->writeln('');
 
-        if ($ruleSetDefinition instanceof DeprecatedRuleSetDefinitionInterface) {
-            $successors = $ruleSetDefinition->getSuccessorsNames();
-            $message = [] === $successors
-                ? \sprintf('it will be removed in version %d.0', Application::getMajorVersion() + 1)
-                : \sprintf('use %s instead', Utils::naturalLanguageJoinWithBackticks($successors));
+        $tags = DocumentationTagGenerator::analyseRuleSet($ruleSetDefinition);
 
-            Future::triggerDeprecation(new \RuntimeException(str_replace('`', '"', "Set \"{$name}\" is deprecated, {$message}.")));
-            $message = Preg::replace('/(`[^`]+`)/', '<info>$1</info>', $message);
-            $output->writeln(\sprintf('<error>DEPRECATED</error>: %s.', $message));
-            $output->writeln('');
-        }
+        foreach ($tags as $tag) {
+            if (DocumentationTagType::DEPRECATED === $tag->type) {
+                Future::triggerDeprecation(new \RuntimeException(str_replace(
+                    '`',
+                    '"',
+                    \sprintf(
+                        '%s%s',
+                        str_replace('This rule set', \sprintf('Rule set "%s"', $name), $tag->title),
+                        null !== $tag->description ? '. '.$tag->description : '',
+                    ),
+                )));
+            }
 
-        if ($ruleSetDefinition->isRisky()) {
-            $output->writeln('<error>This set contains risky rules.</error>');
-            $output->writeln('');
-        }
+            $output->writeln(\sprintf('<error>%s</error>', $tag->title));
+            $tagDescription = $tag->description;
 
-        if ($ruleSetDefinition instanceof AutomaticRuleSetDefinitionInterface) {
-            $output->writeln(AutomaticRuleSetDefinitionInterface::WARNING_MESSAGE_DECORATED);
+            if (null !== $tagDescription) {
+                $tagDescription = Preg::replace('/(`[^`]+`)/', '<info>$1</info>', $tagDescription);
+                $output->writeln($tagDescription);
+            }
+
             $output->writeln('');
         }
 
@@ -519,7 +512,15 @@ final class DescribeCommand extends Command
      */
     private function createTreeNode(RuleSetDefinitionInterface $ruleSetDefinition, array $ruleSetDefinitions, array $fixers): TreeNode
     {
-        $node = new TreeNode($ruleSetDefinition->getName());
+        $tags = DocumentationTagGenerator::analyseRuleSet($ruleSetDefinition);
+        $extra = [] !== $tags
+            ? ' '.implode(' ', array_map(
+                static fn (DocumentationTag $tag): string => "<error>{$tag->type}</error>",
+                $tags,
+            ))
+            : '';
+
+        $node = new TreeNode($ruleSetDefinition->getName().$extra);
 
         $rules = $ruleSetDefinition->getRules();
         $rulesKeys = array_keys($rules);
@@ -531,7 +532,14 @@ final class DescribeCommand extends Command
             if (str_starts_with($rule, '@')) {
                 $child = $this->createTreeNode($ruleSetDefinitions[$rule], $ruleSetDefinitions, $fixers);
             } else {
-                $extra = '';
+                $fixer = $fixers[$rule];
+                $tags = DocumentationTagGenerator::analyseRule($fixer);
+                $extra = [] !== $tags
+                    ? ' '.implode(' ', array_map(
+                        static fn (DocumentationTag $tag): string => "<error>{$tag->type}</error>",
+                        $tags,
+                    ))
+                    : '';
                 if (false === $config) {
                     $extra = \sprintf('    | <error>Configuration: %s</>', Utils::toString($config));
                 } elseif (true !== $config) {
@@ -573,23 +581,34 @@ final class DescribeCommand extends Command
             if (str_starts_with($rule, '@')) {
                 \assert(isset($ruleSetDefinitions[$rule]));
                 $set = $ruleSetDefinitions[$rule];
+                $tags = DocumentationTagGenerator::analyseRuleSet($set);
                 $help .= \sprintf(
-                    " * <info>%s</info>%s\n   | %s\n\n",
+                    " * <info>%s</info>%s%s\n   | %s\n\n",
                     $rule,
-                    $set->isRisky() ? ' <error>risky</error>' : '',
+                    [] !== $tags ? ' ' : '',
+                    implode(' ', array_map(
+                        static fn (DocumentationTag $tag): string => "<error>{$tag->type}</error>",
+                        $tags,
+                    )),
                     $this->replaceRstLinks($set->getDescription())
                 );
 
                 continue;
             }
 
+            \assert(isset($fixers[$rule]));
             $fixer = $fixers[$rule];
+            $tags = DocumentationTagGenerator::analyseRule($fixer);
 
             $definition = $fixer->getDefinition();
             $help .= \sprintf(
-                " * <info>%s</info>%s\n   | %s\n%s\n",
+                " * <info>%s</info>%s%s\n   | %s\n%s\n",
                 $rule,
-                $fixer->isRisky() ? ' <error>risky</error>' : '',
+                [] !== $tags ? ' ' : '',
+                implode(' ', array_map(
+                    static fn (DocumentationTag $tag): string => "<error>{$tag->type}</error>",
+                    $tags,
+                )),
                 $definition->getSummary(),
                 true !== $config ? \sprintf("   <comment>| Configuration: %s</comment>\n", Utils::toString($config)) : ''
             );
