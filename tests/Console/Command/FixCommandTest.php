@@ -49,6 +49,9 @@ final class FixCommandTest extends TestCase
         );
     }
 
+    /**
+     * @requires
+     */
     public function testEmptyRulesValue(): void
     {
         $this->expectException(
@@ -59,10 +62,7 @@ final class FixCommandTest extends TestCase
         );
 
         $this->doTestExecute(
-            [
-                '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php',
-                '--rules' => '',
-            ]
+            ['--rules' => '']
         );
     }
 
