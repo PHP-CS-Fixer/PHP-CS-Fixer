@@ -5,14 +5,21 @@ Rule ``error_suppression``
 Error control operator should be added to deprecation notices and/or removed
 from other cases.
 
-Warning
--------
+Warnings
+--------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky because adding/removing ``@`` might cause changes to code behaviour or if
 ``trigger_error`` function is overridden.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options:
+``mute_deprecation_error``, ``noise_remaining_usages``,
+``noise_remaining_usages_exclude``.
 
 Configuration
 -------------

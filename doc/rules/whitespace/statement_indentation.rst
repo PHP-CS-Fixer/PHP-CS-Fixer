@@ -4,6 +4,15 @@ Rule ``statement_indentation``
 
 Each statement must be indented.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option:
+``stick_comment_to_next_continuous_control_statement``.
+
 Configuration
 -------------
 

@@ -4,6 +4,14 @@ Rule ``phpdoc_order``
 
 Annotations in PHPDoc should be ordered in defined sequence.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``order``.
+
 Configuration
 -------------
 

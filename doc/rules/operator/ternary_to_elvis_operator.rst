@@ -7,8 +7,8 @@ Use the Elvis operator ``?:`` where possible.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when relying on functions called on both sides of the ``?`` operator.
 

@@ -4,6 +4,14 @@ Rule ``whitespace_after_comma_in_array``
 
 In array declaration, there MUST be a whitespace after each comma.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``ensure_single_space``.
+
 Configuration
 -------------
 

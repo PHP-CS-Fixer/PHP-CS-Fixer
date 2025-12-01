@@ -5,6 +5,14 @@ Rule ``new_expression_parentheses``
 All ``new`` expressions with a further call must (not) be wrapped in
 parentheses.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``use_parentheses``.
+
 Configuration
 -------------
 

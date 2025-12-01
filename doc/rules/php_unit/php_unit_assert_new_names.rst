@@ -8,8 +8,8 @@ like ``assertFileDoesNotExist``.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Fixer could be risky if one is overriding PHPUnit's native methods.
 

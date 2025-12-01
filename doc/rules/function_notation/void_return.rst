@@ -8,8 +8,8 @@ but priority is given to ``@return`` annotations.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Modifies the signature of functions.
 

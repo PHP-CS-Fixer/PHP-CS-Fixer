@@ -4,6 +4,15 @@ Rule ``ordered_imports``
 
 Ordering ``use`` statements.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``case_sensitive``,
+``imports_order``, ``sort_algorithm``.
+
 Configuration
 -------------
 

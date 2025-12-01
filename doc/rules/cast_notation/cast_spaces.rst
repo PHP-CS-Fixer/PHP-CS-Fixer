@@ -4,6 +4,14 @@ Rule ``cast_spaces``
 
 A single space or none should be between cast and variable.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``space``.
+
 Configuration
 -------------
 

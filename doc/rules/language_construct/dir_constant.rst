@@ -7,8 +7,8 @@ Replaces ``dirname(__FILE__)`` expression with equivalent ``__DIR__`` constant.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when the function ``dirname`` is overridden.
 

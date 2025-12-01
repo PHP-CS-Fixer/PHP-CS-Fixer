@@ -4,6 +4,15 @@ Rule ``binary_operator_spaces``
 
 Binary operators should be surrounded by space as configured.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``default``,
+``operators``.
+
 Configuration
 -------------
 

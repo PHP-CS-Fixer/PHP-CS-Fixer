@@ -4,6 +4,15 @@ Rule ``space_after_semicolon``
 
 Fix whitespace after a semicolon.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option:
+``remove_in_empty_for_expressions``.
+
 Configuration
 -------------
 

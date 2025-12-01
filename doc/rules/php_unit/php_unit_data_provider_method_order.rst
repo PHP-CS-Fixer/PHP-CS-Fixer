@@ -4,6 +4,14 @@ Rule ``php_unit_data_provider_method_order``
 
 Data provider method must be placed after/before the last/first test where used.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``placement``.
+
 Configuration
 -------------
 

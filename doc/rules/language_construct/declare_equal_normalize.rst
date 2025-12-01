@@ -5,6 +5,14 @@ Rule ``declare_equal_normalize``
 Equal sign in declare statement should be surrounded by spaces or not following
 configuration.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``space``.
+
 Configuration
 -------------
 

@@ -5,14 +5,19 @@ Rule ``modernize_strpos``
 Replace ``strpos()`` and ``stripos()`` calls with ``str_starts_with()`` or
 ``str_contains()`` if possible.
 
-Warning
--------
+Warnings
+--------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky if ``strpos``, ``stripos``, ``str_starts_with``, ``str_contains`` or
 ``strtolower`` functions are overridden.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``modernize_stripos``.
 
 Configuration
 -------------
