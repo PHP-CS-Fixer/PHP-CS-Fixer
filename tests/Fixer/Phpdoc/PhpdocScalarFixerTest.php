@@ -316,5 +316,10 @@ final class PhpdocScalarFixerTest extends AbstractFixerTestCase
             '<?php /** @return never-returns */',
             ['types' => ['never-returns']],
         ];
+
+        yield [
+            '<?php /** @return Collection<int, covariant Foo> */',
+            '<?php /** @return Collection<integer, covariant Foo> */',
+        ];
     }
 }
