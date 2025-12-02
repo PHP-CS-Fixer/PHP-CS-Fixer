@@ -296,7 +296,7 @@ final class GroupImportFixer extends AbstractFixer implements ConfigurableFixerI
     private function insertToGroupUseWithAlias(Tokens $tokens, int $insertIndex, NamespaceUseAnalysis $useDeclaration): int
     {
         $newTokens = [
-            new Token([\T_STRING, substr($useDeclaration->getFullName(), strripos($useDeclaration->getFullName(), '\\') + 1)]),
+            new Token([\T_STRING, substr($useDeclaration->getFullName(), (int) strripos($useDeclaration->getFullName(), '\\') + 1)]),
             new Token([\T_WHITESPACE, ' ']),
             new Token([\T_AS, 'as']),
             new Token([\T_WHITESPACE, ' ']),
