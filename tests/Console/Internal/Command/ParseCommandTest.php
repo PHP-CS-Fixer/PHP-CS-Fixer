@@ -23,7 +23,8 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class ParseCommandTest extends TestCase {
+final class ParseCommandTest extends TestCase
+{
     public function testNotice(): void
     {
         self::markTestIncomplete('Tests is not implemented for this internal command, consider to support and implement it.');
