@@ -30,10 +30,10 @@ interface RuleCustomisationPolicyInterface
      * - false to skip applying the fixer to the file
      * - a new fixer instance to apply a customised version of the fixer
      *
-     * When PHP-CS-Fixer is about to start fixing files, it will check that the currently applied fixers include at least
+     * When PHP-CS-Fixer is about to start fixing files, it will check that the currently used fixers include at least
      * all the fixers for which customisation rules are defined. If a customiser is defined for a fixer that is not currently applied,
      * an exception will be thrown.
-     * This ensures that customisers are actually used for expected fixers, which may be replaced by newer fixers in newer versions of PHP-CS-Fixer.
+     * This ensures that customisers are actually used for expected fixers, which may be replaced by newer fixers in newer versions of PHP CS Fixer.
      *
      * @example
      * ```
