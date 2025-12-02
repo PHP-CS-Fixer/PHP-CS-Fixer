@@ -68,7 +68,7 @@
             "PhpCsFixer\\": "src/"
         },
         "exclude-from-classmap": [
-            "src/Fixer/Internal/*"
+            "src/**/Internal/"
         ]
     },
     "autoload-dev": {

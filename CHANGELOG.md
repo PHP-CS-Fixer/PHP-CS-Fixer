@@ -3,6 +3,13 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.91.2
+---------------------
+
+* fix: fix support call-site generic variance (#9253)
+* chore: adjust autoloader to exclude all Internal classes in classmap (#9252)
+* CI: set `PHP_CS_FIXER_IGNORE_ENV` for PHP 8.6 (#9254)
+
 Changelog for v3.91.1
 ---------------------
 
