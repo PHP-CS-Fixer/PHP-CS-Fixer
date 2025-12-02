@@ -178,6 +178,15 @@ If you need to disable or reconfigure a rule for specific files, you can use the
 
     **⚠️ WARNING ⚠️**
 
+    If your ``RuleCustomizationPolicyInterface`` (or the customizers it returns) causes a different fixer configuration to be applied to a given file between runs (for example because you changed the policy code), the PHP CS Fixer cache won't reflect those changes.
+    The cache remains valid as long as, for the same file, the same fixer configuration is produced on every run.
+    In case of changes, you'll need to clear the cache manually (e.g. by deleting the cache file).
+
+
+.. warning::
+
+    **⚠️ WARNING ⚠️**
+
     When you write an implementation of ``RuleCustomisationPolicyInterface``, PHP CS Fixer may provide some fixers that, in future versions, may be deprecated and replaced by other fixers.
     In such cases, your implementation may seems to not work as expected, because the fixers you'd like to customise may no longer be available.
     To avoid such issues, PHP CS Fixer will check that all the fixer names returned by your ``getRuleCustomisers()`` method are being actually used.
