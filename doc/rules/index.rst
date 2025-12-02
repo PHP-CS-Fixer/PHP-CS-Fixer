@@ -688,6 +688,9 @@ PHPUnit
 - `php_unit_dedicate_assert_internal_type <./php_unit/php_unit_dedicate_assert_internal_type.rst>`_ *(risky, configurable)*
 
   PHPUnit assertions like ``assertIsArray`` should be used over ``assertInternalType``.
+- `php_unit_expect_deprecation <./php_unit/php_unit_expect_deprecation.rst>`_ *(risky)*
+
+  Usages of ``@expectedDeprecation`` annotations MUST be replaced by ``expectDeprecation()`` method calls.
 - `php_unit_expectation <./php_unit/php_unit_expectation.rst>`_ *(risky, configurable)*
 
   Usages of ``->setExpectedException*`` methods MUST be replaced by ``->expectException*`` methods.

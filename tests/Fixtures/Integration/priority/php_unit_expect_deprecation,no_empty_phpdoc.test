@@ -1,0 +1,28 @@
+--TEST--
+Integration of fixers: php_unit_expect_deprecation,no_empty_phpdoc.
+--RULESET--
+{"php_unit_expect_deprecation": true, "no_empty_phpdoc": true}
+--EXPECT--
+<?php
+class Test extends \PHPUnit_Framework_TestCase
+{
+    public function testFoo()
+    {
+        $this->expectDeprecation('Test deprecated message');
+
+        foo();
+    }
+}
+
+--INPUT--
+<?php
+class Test extends \PHPUnit_Framework_TestCase
+{
+    /**
+     * @expectedDeprecation Test deprecated message
+     */
+    public function testFoo()
+    {
+        foo();
+    }
+}
