@@ -477,9 +477,7 @@ final class Runner
 
                 throw new \RuntimeException(
                     <<<EOT
-                        Rule Customisation Policy contains customisers for fixers that are not currently applied.
-
-                        Missing fixers:
+                        Rule Customisation Policy contains customisers for fixers that are not currently applied:
                         - {$missingFixerNames}
 
                         Please check your configuration to ensure that these fixers are included, and that they have not been replaced by other fixers in the version of PHP-CS-Fixer you are using.
