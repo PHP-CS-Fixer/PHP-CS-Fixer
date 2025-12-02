@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\Console\Internal\Command;
 
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\Utils;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -94,12 +93,11 @@ final class ParseCommand extends Command
                 ? token_get_all($code, \TOKEN_PARSE)
                 : token_get_all($code);
 
-            $options = Utils::calculateBitmask(['JSON_PRETTY_PRINT', 'JSON_NUMERIC_CHECK']);
-            $tokensJson = json_encode(\SplFixedArray::fromArray($tokens), $options);
+            $tokensJson = json_encode(\SplFixedArray::fromArray($tokens), \JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT | \JSON_NUMERIC_CHECK);
         }
 
         if (self::FORMAT_DUMP === $format) {
-            $output->writeln(var_dump($tokens));
+            $output->writeln(var_export($tokens, true));
         } else {
             $output->writeln($tokensJson);
         }
