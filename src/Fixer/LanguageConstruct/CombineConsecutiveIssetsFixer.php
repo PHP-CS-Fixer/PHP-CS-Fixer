@@ -61,7 +61,7 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
 
             $issetInfo = $this->getIssetInfo($tokens, $index);
             $issetCloseBraceIndex = end($issetInfo); // ')' token
-            $insertLocation = prev($issetInfo) + 1; // one index after the previous meaningful of ')'
+            $insertLocation = (int) prev($issetInfo) + 1; // one index after the previous meaningful of ')'
 
             $booleanAndTokenIndex = $tokens->getNextMeaningfulToken($issetCloseBraceIndex);
 
