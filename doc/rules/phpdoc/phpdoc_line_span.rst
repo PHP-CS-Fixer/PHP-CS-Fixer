@@ -10,8 +10,8 @@ Warning
 This rule is CONFIGURABLE
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can configure this rule using the following options: ``const``, ``method``,
-``property``.
+You can configure this rule using the following options: ``class``, ``const``,
+``method``, ``other``, ``property``, ``trait_import``.
 
 Configuration
 -------------
