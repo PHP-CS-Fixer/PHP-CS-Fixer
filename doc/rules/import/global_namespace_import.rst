@@ -4,6 +4,15 @@ Rule ``global_namespace_import``
 
 Imports or fully qualifies global classes/functions/constants.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``import_classes``,
+``import_constants``, ``import_functions``.
+
 Configuration
 -------------
 

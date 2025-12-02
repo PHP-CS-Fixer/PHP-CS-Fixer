@@ -15,19 +15,24 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
+ * @phpstan-import-type _PhpTokenArray from Token
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\WhitespacyCommentTransformer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class WhitespacyCommentTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param array<int, array{int, string}> $expectedTokens
+     * @param array<int, _PhpTokenArray> $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
@@ -44,7 +49,7 @@ final class WhitespacyCommentTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @return iterable<int, array{string, array<int, array{int, string}>}>
+     * @return iterable<int, array{string, array<int, _PhpTokenArray>}>
      */
     public static function provideProcessCases(): iterable
     {

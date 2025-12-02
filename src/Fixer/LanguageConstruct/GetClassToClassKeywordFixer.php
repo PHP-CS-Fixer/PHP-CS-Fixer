@@ -26,6 +26,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author John Paul E. Balandan, CPA <paulbalandan@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class GetClassToClassKeywordFixer extends AbstractFixer
 {
@@ -126,7 +128,7 @@ final class GetClassToClassKeywordFixer extends AbstractFixer
     }
 
     /**
-     * @return list<Token>
+     * @return non-empty-list<Token>
      */
     private function getReplacementTokenSlices(Tokens $tokens, int $variableIndex): array
     {

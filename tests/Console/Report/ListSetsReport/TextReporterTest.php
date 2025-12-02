@@ -23,6 +23,8 @@ use PhpCsFixer\Console\Report\ListSetsReport\TextReporter;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Report\ListSetsReport\TextReporter
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TextReporterTest extends AbstractReporterTestCase
 {
@@ -44,9 +46,9 @@ final class TextReporterTest extends AbstractReporterTestCase
     protected static function createSimpleReport(): string
     {
         return str_replace("\n", \PHP_EOL, ' 1) @PhpCsFixer
-      Rule set as used by the PHP CS Fixer development team, highly opinionated.
+      Rules recommended by ``PHP CS Fixer`` team, highly opinionated. Extends ``@PER-CS`` and ``@Symfony``.
  2) @Symfony:risky
-      Rules that follow the official `Symfony Coding Standards <https://symfony.com/doc/current/contributing/code/standards.html>`_.
+      Rules that follow the official `Symfony Coding Standards <https://symfony.com/doc/current/contributing/code/standards.html>`_. Extends ``@PER-CS:risky``.
       Set contains risky rules.
 ');
     }

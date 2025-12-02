@@ -5,6 +5,15 @@ Rule ``nullable_type_declaration_for_default_null_value``
 Adds or removes ``?`` before single type declarations or ``|null`` at the end of
 union types when parameters have a default ``null`` value.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option:
+``use_nullable_type_declaration``.
+
 Configuration
 -------------
 
@@ -112,7 +121,10 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PHP84Migration <./../../ruleSets/PHP84Migration.rst>`_
+- `@PHP8x4Migration <./../../ruleSets/PHP8x4Migration.rst>`_
+- `@PHP8x5Migration <./../../ruleSets/PHP8x5Migration.rst>`_
+- `@PHP84Migration <./../../ruleSets/PHP84Migration.rst>`_ *(deprecated)*
+- `@PHP85Migration <./../../ruleSets/PHP85Migration.rst>`_ *(deprecated)*
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 

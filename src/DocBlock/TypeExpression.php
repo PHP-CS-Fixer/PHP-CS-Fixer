@@ -23,6 +23,8 @@ use PhpCsFixer\Utils;
  * @author Michael Vorisek <https://github.com/mvorisek>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TypeExpression
 {
@@ -52,6 +54,7 @@ final class TypeExpression
      * - and https://github.com/phpstan/phpdoc-parser/blob/1.26.0/src/Parser/PhpDocParser.php parser impl.
      */
     private const REGEX_TYPE = '(?<type>(?x) # single type
+            (?:co(ntra)?variant\h+)?
             (?<nullable>\??\h*)
             (?:
                 (?<array_shape>
@@ -221,6 +224,17 @@ final class TypeExpression
             |)
         )';
 
+    private const ALIASES = [
+        'boolean' => 'bool',
+        'callback' => 'callable',
+        'double' => 'float',
+        'false' => 'bool',
+        'integer' => 'int',
+        'list' => 'array',
+        'real' => 'float',
+        'true' => 'bool',
+    ];
+
     private string $value;
 
     private bool $isCompositeType;
@@ -372,8 +386,6 @@ final class TypeExpression
 
     public function getCommonType(): ?string
     {
-        $aliases = $this->getAliases();
-
         $mainType = null;
 
         foreach ($this->getTypes() as $type) {
@@ -391,8 +403,8 @@ final class TypeExpression
                 $type = $matches[1];
             }
 
-            if (isset($aliases[$type])) {
-                $type = $aliases[$type];
+            if (isset(self::ALIASES[$type])) {
+                $type = self::ALIASES[$type];
             }
 
             if (null === $mainType || $type === $mainType) {
@@ -787,10 +799,8 @@ final class TypeExpression
 
     private function normalize(string $type): string
     {
-        $aliases = $this->getAliases();
-
-        if (isset($aliases[$type])) {
-            return $aliases[$type];
+        if (isset(self::ALIASES[$type])) {
+            return self::ALIASES[$type];
         }
 
         if (\in_array($type, [
@@ -836,22 +846,5 @@ final class TypeExpression
         }
 
         return "{$this->namespace->getFullName()}\\{$type}";
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    private function getAliases(): array
-    {
-        return [
-            'boolean' => 'bool',
-            'callback' => 'callable',
-            'double' => 'float',
-            'false' => 'bool',
-            'integer' => 'int',
-            'list' => 'array',
-            'real' => 'float',
-            'true' => 'bool',
-        ];
     }
 }

@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
  * @covers \PhpCsFixer\DocBlock\TypeExpression
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TypeExpressionTest extends TestCase
 {
@@ -325,9 +327,17 @@ final class TypeExpressionTest extends TestCase
 
         yield ['string'.str_repeat('[]', 128)];
 
-        yield [str_repeat('array<', 116).'string'.str_repeat('>', 116)];
+        yield [str_repeat('array<', 32).'string'.str_repeat('>', 32)];
 
         yield [self::makeLongArrayShapeType()];
+
+        yield ['Foo<int, covariant Bar>'];
+
+        yield ['Foo<contravariant int, Bar>'];
+
+        yield ['Foo<Bar<contravariant Baz>>'];
+
+        yield ['Foo<int>|covariant Bar', ['Foo<int>', 'covariant Bar']];
     }
 
     /**

@@ -2,7 +2,7 @@
 Rule set ``@PhpCsFixer``
 ========================
 
-Rule set as used by the PHP CS Fixer development team, highly opinionated.
+Rules recommended by ``PHP CS Fixer`` team, highly opinionated. Extends ``@PER-CS`` and ``@Symfony``.
 
 Rules
 -----
@@ -25,7 +25,7 @@ Rules
 - `heredoc_to_nowdoc <./../rules/string_notation/heredoc_to_nowdoc.rst>`_
 - `method_argument_space <./../rules/function_notation/method_argument_space.rst>`_ with config:
 
-  ``['on_multiline' => 'ensure_fully_multiline']``
+  ``['after_heredoc' => true, 'on_multiline' => 'ensure_fully_multiline']``
 
 - `method_chaining_indentation <./../rules/whitespace/method_chaining_indentation.rst>`_
 - `multiline_comment_opening_closing <./../rules/comment/multiline_comment_opening_closing.rst>`_
@@ -40,7 +40,7 @@ Rules
 - `no_superfluous_elseif <./../rules/control_structure/no_superfluous_elseif.rst>`_
 - `no_superfluous_phpdoc_tags <./../rules/phpdoc/no_superfluous_phpdoc_tags.rst>`_ with config:
 
-  ``['allow_mixed' => true, 'remove_inheritdoc' => true]``
+  ``['allow_hidden_params' => true, 'allow_mixed' => true, 'remove_inheritdoc' => true]``
 
 - `no_unneeded_control_parentheses <./../rules/control_structure/no_unneeded_control_parentheses.rst>`_ with config:
 
@@ -48,13 +48,12 @@ Rules
 
 - `no_useless_else <./../rules/control_structure/no_useless_else.rst>`_
 - `no_useless_return <./../rules/return_notation/no_useless_return.rst>`_
-- `no_whitespace_before_comma_in_array <./../rules/array_notation/no_whitespace_before_comma_in_array.rst>`_ with config:
-
-  ``['after_heredoc' => true]``
-
 - `operator_linebreak <./../rules/operator/operator_linebreak.rst>`_
 - `ordered_class_elements <./../rules/class_notation/ordered_class_elements.rst>`_
-- `ordered_types <./../rules/class_notation/ordered_types.rst>`_
+- `ordered_types <./../rules/class_notation/ordered_types.rst>`_ with config:
+
+  ``['null_adjustment' => 'always_last']``
+
 - `php_unit_data_provider_method_order <./../rules/php_unit/php_unit_data_provider_method_order.rst>`_
 - `php_unit_internal_class <./../rules/php_unit/php_unit_internal_class.rst>`_
 - `php_unit_test_class_requires_covers <./../rules/php_unit/php_unit_test_class_requires_covers.rst>`_
@@ -62,7 +61,6 @@ Rules
 - `phpdoc_no_empty_return <./../rules/phpdoc/phpdoc_no_empty_return.rst>`_
 - `phpdoc_order_by_value <./../rules/phpdoc/phpdoc_order_by_value.rst>`_
 - `phpdoc_types_order <./../rules/phpdoc/phpdoc_types_order.rst>`_
-- `phpdoc_var_annotation_correct_order <./../rules/phpdoc/phpdoc_var_annotation_correct_order.rst>`_
 - `protected_to_private <./../rules/class_notation/protected_to_private.rst>`_
 - `return_assignment <./../rules/return_notation/return_assignment.rst>`_
 - `self_static_accessor <./../rules/class_notation/self_static_accessor.rst>`_

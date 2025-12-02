@@ -2,9 +2,9 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
-    'message' => '#^Only numeric types are allowed in \\+, int\\|false given on the right side\\.$#',
+    'rawMessage' => 'Only numeric types are allowed in +, int|false given on the right side.',
     'count' => 1,
-    'path' => __DIR__ . '/../../../src/RuleSet/AbstractRuleSetDescription.php',
+    'path' => __DIR__ . '/../../../src/RuleSet/AbstractRuleSetDefinition.php',
 ];
 
 return ['parameters' => ['ignoreErrors' => $ignoreErrors]];

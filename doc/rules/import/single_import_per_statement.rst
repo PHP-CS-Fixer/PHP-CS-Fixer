@@ -4,6 +4,15 @@ Rule ``single_import_per_statement``
 
 There MUST be one use keyword per declaration.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option:
+``group_to_single_imports``.
+
 Configuration
 -------------
 
@@ -58,7 +67,7 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PER <./../../ruleSets/PER.rst>`_ with config:
+- `@PER <./../../ruleSets/PER.rst>`_ *(deprecated)* with config:
 
   ``['group_to_single_imports' => false]``
 
@@ -66,11 +75,27 @@ The rule is part of the following rule sets:
 
   ``['group_to_single_imports' => false]``
 
-- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ *(deprecated)* with config:
 
   ``['group_to_single_imports' => false]``
 
-- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+- `@PER-CS1x0 <./../../ruleSets/PER-CS1x0.rst>`_ with config:
+
+  ``['group_to_single_imports' => false]``
+
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ *(deprecated)* with config:
+
+  ``['group_to_single_imports' => false]``
+
+- `@PER-CS2x0 <./../../ruleSets/PER-CS2x0.rst>`_ with config:
+
+  ``['group_to_single_imports' => false]``
+
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ *(deprecated)* with config:
+
+  ``['group_to_single_imports' => false]``
+
+- `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_ with config:
 
   ``['group_to_single_imports' => false]``
 

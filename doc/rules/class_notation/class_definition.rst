@@ -5,6 +5,16 @@ Rule ``class_definition``
 Whitespace around the keywords of a class, trait, enum or interfaces definition
 should be one space.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options:
+``inline_constructor_arguments``, ``multi_line_extends_each_single_line``,
+``single_item_single_line``, ``single_line``, ``space_before_parenthesis``.
+
 Configuration
 -------------
 
@@ -172,7 +182,7 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PER <./../../ruleSets/PER.rst>`_ with config:
+- `@PER <./../../ruleSets/PER.rst>`_ *(deprecated)* with config:
 
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
 
@@ -180,11 +190,27 @@ The rule is part of the following rule sets:
 
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
 
-- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ *(deprecated)* with config:
 
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
 
-- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+- `@PER-CS1x0 <./../../ruleSets/PER-CS1x0.rst>`_ with config:
+
+  ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
+
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ *(deprecated)* with config:
+
+  ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
+
+- `@PER-CS2x0 <./../../ruleSets/PER-CS2x0.rst>`_ with config:
+
+  ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
+
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ *(deprecated)* with config:
+
+  ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
+
+- `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_ with config:
 
   ``['inline_constructor_arguments' => false, 'space_before_parenthesis' => true]``
 

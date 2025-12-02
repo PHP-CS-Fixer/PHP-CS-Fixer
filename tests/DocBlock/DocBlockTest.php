@@ -23,6 +23,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\DocBlock\DocBlock
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DocBlockTest extends TestCase
 {
@@ -144,7 +146,7 @@ final class DocBlockTest extends TestCase
         self::assertCount(0, $annotations);
     }
 
-    public function testIsMultiLIne(): void
+    public function testIsMultiLine(): void
     {
         $doc = new DocBlock(self::$sample);
 
@@ -152,9 +154,9 @@ final class DocBlockTest extends TestCase
     }
 
     /**
-     * @dataProvider provideMakeMultiLIneCases
+     * @dataProvider provideMakeMultiLineCases
      */
-    public function testMakeMultiLIne(string $inputDocBlock, ?string $outputDocBlock = null, string $indent = '', string $newLine = "\n"): void
+    public function testMakeMultiLine(string $inputDocBlock, ?string $outputDocBlock = null, string $indent = '', string $newLine = "\n"): void
     {
         $doc = new DocBlock($inputDocBlock);
         $doc->makeMultiLine($indent, $newLine);
@@ -169,7 +171,7 @@ final class DocBlockTest extends TestCase
     /**
      * @return iterable<string, array{0: string, 1?: string, 2?: string, 3?: string}>
      */
-    public static function provideMakeMultiLIneCases(): iterable
+    public static function provideMakeMultiLineCases(): iterable
     {
         yield 'It keeps a multi line doc block as is' => [
             "/**\n * Hello\n */",

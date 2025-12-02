@@ -22,6 +22,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
 
 /**
+ * @phpstan-import-type _PhpTokenPrototype from Token
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Odín del Río <odin.drp@gmail.com>
@@ -29,26 +31,11 @@ use PhpCsFixer\Utils;
  * @internal
  *
  * @covers \PhpCsFixer\Utils
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class UtilsTest extends TestCase
 {
-    /**
-     * @var null|false|string
-     */
-    private $originalValueOfFutureMode;
-
-    protected function setUp(): void
-    {
-        $this->originalValueOfFutureMode = getenv('PHP_CS_FIXER_FUTURE_MODE');
-    }
-
-    protected function tearDown(): void
-    {
-        putenv("PHP_CS_FIXER_FUTURE_MODE={$this->originalValueOfFutureMode}");
-
-        parent::tearDown();
-    }
-
     /**
      * @param string $expected Camel case string
      *
@@ -134,7 +121,7 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @param array{int, string}|string $input token prototype
+     * @param _PhpTokenPrototype $input token prototype
      *
      * @dataProvider provideCalculateTrailingWhitespaceIndentCases
      */
@@ -146,7 +133,7 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{string, array{int, string}|string}>
+     * @return iterable<int, array{string, _PhpTokenPrototype}>
      */
     public static function provideCalculateTrailingWhitespaceIndentCases(): iterable
     {
@@ -421,42 +408,6 @@ final class UtilsTest extends TestCase
             ['a', 'b', 'c'],
             'or',
         ];
-    }
-
-    /**
-     * @group legacy
-     */
-    public function testTriggerDeprecationWhenFutureModeIsOff(): void
-    {
-        putenv('PHP_CS_FIXER_FUTURE_MODE=0');
-
-        $message = __METHOD__.'::The message';
-        $this->expectDeprecation($message);
-
-        Utils::triggerDeprecation(new \DomainException($message));
-
-        $triggered = Utils::getTriggeredDeprecations();
-        self::assertContains($message, $triggered);
-    }
-
-    public function testTriggerDeprecationWhenFutureModeIsOn(): void
-    {
-        putenv('PHP_CS_FIXER_FUTURE_MODE=1');
-
-        $message = __METHOD__.'::The message';
-        $exception = new \DomainException($message);
-        $futureModeException = null;
-
-        try {
-            Utils::triggerDeprecation($exception);
-        } catch (\Exception $futureModeException) {
-        }
-
-        self::assertInstanceOf(\RuntimeException::class, $futureModeException);
-        self::assertSame($exception, $futureModeException->getPrevious());
-
-        $triggered = Utils::getTriggeredDeprecations();
-        self::assertNotContains($message, $triggered);
     }
 
     /**

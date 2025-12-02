@@ -20,11 +20,15 @@ use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 
 /**
+ * @phpstan-import-type _PhpTokenPrototypePartial from Token
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Token
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TokenTest extends TestCase
 {
@@ -403,7 +407,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param array{0: int, 1?: string}|string|Token $other
+     * @param _PhpTokenPrototypePartial|Token $other
      *
      * @dataProvider provideEqualsCases
      */
@@ -413,7 +417,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{0: Token, 1: bool, 2: array{0: int, 1?: string}|string|Token, 3?: bool}>
+     * @return iterable<int, array{0: Token, 1: bool, 2: _PhpTokenPrototypePartial|Token, 3?: bool}>
      */
     public static function provideEqualsCases(): iterable
     {
@@ -471,7 +475,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param array{0: int, 1?: string}|string|Token $other
+     * @param _PhpTokenPrototypePartial|Token $other
      *
      * @dataProvider provideEquals81Cases
      *
@@ -483,7 +487,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{0: Token, 1: bool, 2: array{0: int, 1?: string}|string|Token}>
+     * @return iterable<int, array{0: Token, 1: bool, 2: _PhpTokenPrototypePartial|Token}>
      */
     public static function provideEquals81Cases(): iterable
     {
@@ -509,7 +513,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param list<array{0: int, 1?: string}|string|Token> $other
+     * @param list<_PhpTokenPrototypePartial|Token> $other
      *
      * @dataProvider provideEqualsAnyCases
      */
@@ -521,7 +525,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{0: bool, 1: list<array{0: int, 1?: string}|string|Token>, 2?: bool}>
+     * @return iterable<int, array{0: bool, 1: list<_PhpTokenPrototypePartial|Token>, 2?: bool}>
      */
     public static function provideEqualsAnyCases(): iterable
     {

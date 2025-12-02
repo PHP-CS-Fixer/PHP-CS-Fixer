@@ -6,6 +6,8 @@ on:
       - '**.yml'
       - '**.yaml'
   push:
+    branches:
+      - master
     paths:
       - '**.yml'
       - '**.yaml'
@@ -16,11 +18,11 @@ permissions:
 jobs:
   validate-yaml:
     name: Validate YAML
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Run yamllint
         run: git ls-files --cached -z -- '*.y*ml' | xargs --null -- yamllint

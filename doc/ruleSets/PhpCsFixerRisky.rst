@@ -2,15 +2,17 @@
 Rule set ``@PhpCsFixer:risky``
 ==============================
 
-Rule set as used by the PHP CS Fixer development team, highly opinionated.
+Rules recommended by ``PHP CS Fixer`` team, highly opinionated. Extends ``@PER-CS:risky`` and ``@Symfony:risky``.
 
 Warning
 -------
 
-This set contains rules that are risky
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This rule set is RISKY
+~~~~~~~~~~~~~~~~~~~~~~
 
-Using this rule set may lead to changes in your code's logic and behaviour. Use it with caution and review changes before incorporating them into your code base.
+This set contains rules that are risky. Using it may lead to changes in your
+code's logic and behaviour. Use it with caution and review changes before
+incorporating them into your code base.
 
 Rules
 -----
@@ -27,6 +29,7 @@ Rules
 
   ``['sets' => ['@all']]``
 
+- `no_trailing_whitespace_in_string <./../rules/string_notation/no_trailing_whitespace_in_string.rst>`_
 - `no_unset_on_property <./../rules/language_construct/no_unset_on_property.rst>`_
 - `php_unit_data_provider_name <./../rules/php_unit/php_unit_data_provider_name.rst>`_
 - `php_unit_data_provider_return_type <./../rules/php_unit/php_unit_data_provider_return_type.rst>`_

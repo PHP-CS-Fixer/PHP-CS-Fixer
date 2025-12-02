@@ -24,6 +24,8 @@ use PhpCsFixer\Linter\ProcessLinter;
  *
  * @covers \PhpCsFixer\Linter\ProcessLinter
  * @covers \PhpCsFixer\Linter\ProcessLintingResult
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ProcessLinterTest extends AbstractLinterTestCase
 {
@@ -32,22 +34,22 @@ final class ProcessLinterTest extends AbstractLinterTestCase
         self::assertTrue($this->createLinter()->isAsync());
     }
 
-    public function testSleep(): void
+    public function testSerialize(): void
     {
-        $this->expectException(\BadMethodCallException::class);
-        $this->expectExceptionMessage('Cannot serialize PhpCsFixer\Linter');
-
         $linter = new ProcessLinter();
-        $linter->__sleep();
+
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('Cannot serialize '.ProcessLinter::class);
+
+        serialize($linter);
     }
 
-    public function testWakeup(): void
+    public function testUnserialize(): void
     {
         $this->expectException(\BadMethodCallException::class);
-        $this->expectExceptionMessage('Cannot unserialize PhpCsFixer\Linter');
+        $this->expectExceptionMessage('Cannot unserialize '.ProcessLinter::class);
 
-        $linter = new ProcessLinter();
-        $linter->__wakeup();
+        unserialize(self::createSerializedStringOfClassName(ProcessLinter::class));
     }
 
     protected function createLinter(): LinterInterface

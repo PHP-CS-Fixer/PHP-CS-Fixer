@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\AbstractProxyFixer;
-use PhpCsFixer\AccessibleObject\AccessibleObject;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -26,6 +25,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @internal
  *
  * @covers \PhpCsFixer\AbstractProxyFixer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class AbstractProxyFixerTest extends TestCase
 {
@@ -116,7 +117,10 @@ final class AbstractProxyFixerTest extends TestCase
 
         $proxyFixer->setWhitespacesConfig($config);
 
-        self::assertSame($config, AccessibleObject::create($whitespacesAwareFixer)->whitespacesConfig);
+        self::assertSame(
+            $config,
+            \Closure::bind(static fn ($fixer): WhitespacesFixerConfig => $fixer->whitespacesConfig, null, \get_class($whitespacesAwareFixer))($whitespacesAwareFixer),
+        );
     }
 
     public function testApplyFixInPriorityOrder(): void
@@ -127,8 +131,8 @@ final class AbstractProxyFixerTest extends TestCase
         $proxyFixer = $this->createProxyFixerDouble([$fixer1, $fixer2]);
         $proxyFixer->fix(new \SplFileInfo(__FILE__), Tokens::fromCode('<?php echo 1;'));
 
-        self::assertSame(2, AccessibleObject::create($fixer1)->fixCalled);
-        self::assertSame(1, AccessibleObject::create($fixer2)->fixCalled);
+        self::assertSame(2, \Closure::bind(static fn ($fixer): int => $fixer->fixCalled, null, \get_class($fixer1))($fixer1));
+        self::assertSame(1, \Closure::bind(static fn ($fixer): int => $fixer->fixCalled, null, \get_class($fixer2))($fixer2));
     }
 
     private function createFixerDouble(
@@ -244,18 +248,18 @@ final class AbstractProxyFixerTest extends TestCase
     }
 
     /**
-     * @param list<FixerInterface> $fixers
+     * @param non-empty-list<FixerInterface> $fixers
      */
     private function createProxyFixerDouble(array $fixers): AbstractProxyFixer
     {
         return new class($fixers) extends AbstractProxyFixer implements WhitespacesAwareFixerInterface {
             /**
-             * @var list<FixerInterface>
+             * @var non-empty-list<FixerInterface>
              */
             private array $fixers;
 
             /**
-             * @param list<FixerInterface> $fixers
+             * @param non-empty-list<FixerInterface> $fixers
              */
             public function __construct(array $fixers)
             {

@@ -23,6 +23,9 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class StaticLambdaFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
@@ -112,7 +115,7 @@ final class StaticLambdaFixer extends AbstractFixer
             }
 
             if ($tokens[$i]->isGivenKind([
-                \T_INCLUDE,                    // loading additional symbols we cannot analyze here
+                \T_INCLUDE,                    // loading additional symbols we cannot analyse here
                 \T_INCLUDE_ONCE,               // "
                 \T_REQUIRE,                    // "
                 \T_REQUIRE_ONCE,               // "
@@ -124,6 +127,14 @@ final class StaticLambdaFixer extends AbstractFixer
 
             if ($tokens[$i]->isClassy()) {
                 $openBraceIndex = $tokens->getNextTokenOfKind($i, ['{']);
+                $i = $tokens->getNextMeaningfulToken($i);
+                if ($i <= $openBraceIndex && $this->hasPossibleReferenceToThis(
+                    $tokens,
+                    $i,
+                    $openBraceIndex
+                )) {
+                    return true;
+                }
                 $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openBraceIndex);
 
                 continue;

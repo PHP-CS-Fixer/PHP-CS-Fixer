@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Ceeram <ceeram@cakephp.org>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
@@ -38,15 +40,17 @@ final class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer implements 
             'There should be no empty lines after class opening brace.',
             [
                 new CodeSample(
-                    '<?php
-final class Sample
-{
+                    <<<'PHP'
+                        <?php
+                        final class Sample
+                        {
 
-    protected function foo()
-    {
-    }
-}
-'
+                            protected function foo()
+                            {
+                            }
+                        }
+
+                        PHP
                 ),
             ]
         );

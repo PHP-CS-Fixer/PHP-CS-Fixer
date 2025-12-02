@@ -21,7 +21,7 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOptionInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSet;
-use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
@@ -34,6 +34,8 @@ use PhpCsFixer\Tests\TestCase;
  * @group legacy
  *
  * @covers \PhpCsFixer\RuleSet\RuleSet
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class RuleSetTest extends TestCase
 {
@@ -90,6 +92,14 @@ final class RuleSetTest extends TestCase
         $fixer = TestCaseUtils::getFixerByName($ruleName);
 
         if (!$fixer instanceof ConfigurableFixerInterface || \is_bool($ruleConfig)) {
+            $this->expectNotToPerformAssertions();
+
+            return;
+        }
+
+        if (\in_array($ruleName, [
+            'type_declaration_spaces', // @TODO v4: default value for this rule will changed, remove it when they are changed
+        ], true)) {
             $this->expectNotToPerformAssertions();
 
             return;
@@ -309,7 +319,7 @@ final class RuleSetTest extends TestCase
     /**
      * @dataProvider provideDuplicateRuleConfigurationInSetDefinitionsCases
      */
-    public function testDuplicateRuleConfigurationInSetDefinitions(RuleSetDescriptionInterface $set): void
+    public function testDuplicateRuleConfigurationInSetDefinitions(RuleSetDefinitionInterface $set): void
     {
         $rules = [];
         $setRules = [];
@@ -353,11 +363,11 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{RuleSetDescriptionInterface}>
+     * @return iterable<string, array{RuleSetDefinitionInterface}>
      */
     public static function provideDuplicateRuleConfigurationInSetDefinitionsCases(): iterable
     {
-        foreach (RuleSets::getSetDefinitions() as $name => $set) {
+        foreach (RuleSets::getBuiltInSetDefinitions() as $name => $set) {
             yield $name => [$set];
         }
     }

@@ -4,6 +4,14 @@ Rule ``no_unneeded_control_parentheses``
 
 Removes unneeded parentheses around control statements.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``statements``.
+
 Configuration
 -------------
 

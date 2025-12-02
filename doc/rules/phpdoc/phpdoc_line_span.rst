@@ -4,6 +4,15 @@ Rule ``phpdoc_line_span``
 
 Changes doc blocks from single to multi line, or reversed.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``const``, ``method``,
+``property``.
+
 Configuration
 -------------
 

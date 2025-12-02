@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Gregor Harlan
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class UseArrowFunctionsFixer extends AbstractFixer
 {
@@ -40,8 +42,7 @@ final class UseArrowFunctionsFixer extends AbstractFixer
                             return $a + $b;
                         });
 
-                        SAMPLE
-                    ,
+                        SAMPLE,
                 ),
             ],
             null,
@@ -168,7 +169,9 @@ final class UseArrowFunctionsFixer extends AbstractFixer
             $tokensToInsert[] = new Token([\T_STRING, 'null']);
         }
 
-        $tokens->clearRange($semicolon, $braceClose);
+        $tokens->clearRange($semicolon, $braceClose - 1);
+        $tokens->clearTokenAndMergeSurroundingWhitespace($braceClose);
+
         $tokens->clearRange($braceOpen + 1, $return);
         $tokens->overrideRange($braceOpen, $braceOpen, $tokensToInsert);
 

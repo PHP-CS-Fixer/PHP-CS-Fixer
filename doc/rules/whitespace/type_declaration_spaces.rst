@@ -5,6 +5,14 @@ Rule ``type_declaration_spaces``
 Ensure single space between a variable and its type declaration in function
 arguments and properties.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``elements``.
+
 Configuration
 -------------
 
@@ -103,8 +111,13 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
-- `@Symfony <./../../ruleSets/Symfony.rst>`_
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
+  ``['elements' => ['function', 'property']]``
+
+- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
+  ``['elements' => ['function', 'property']]``
 
 References
 ----------

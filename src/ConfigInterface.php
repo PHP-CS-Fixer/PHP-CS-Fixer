@@ -19,11 +19,13 @@ use PhpCsFixer\Fixer\FixerInterface;
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 interface ConfigInterface
 {
     /** @internal */
-    public const PHP_VERSION_SYNTAX_SUPPORTED = '8.4';
+    public const PHP_VERSION_SYNTAX_SUPPORTED = '8.5';
 
     /**
      * Returns the path to the cache file.

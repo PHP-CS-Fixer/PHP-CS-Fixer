@@ -18,8 +18,10 @@ namespace PhpCsFixer;
  * @author Davi Koscianski Vidal <davividal@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class StdinFileInfo extends \SplFileInfo
+final class StdinFileInfo extends \SplFileInfo implements \Stringable
 {
     public function __construct()
     {

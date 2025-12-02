@@ -4,6 +4,15 @@ Rule ``ordered_types``
 
 Sort union types and intersection types using configured order.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``case_sensitive``,
+``null_adjustment``, ``sort_algorithm``.
+
 Configuration
 -------------
 
@@ -112,7 +121,26 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+- `@PER <./../../ruleSets/PER.rst>`_ *(deprecated)* with config:
+
+  ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``
+
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
+
+  ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``
+
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ *(deprecated)* with config:
+
+  ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``
+
+- `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_ with config:
+
+  ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``
+
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
+  ``['null_adjustment' => 'always_last']``
+
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
   ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``

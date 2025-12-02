@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\FunctionNotation\StaticLambdaFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\StaticLambdaFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class StaticLambdaFixerTest extends AbstractFixerTestCase
 {
@@ -261,6 +263,20 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                             $a = function () {
                                 $a = [0 => \'this\'];
                                 var_dump(${$a[0]});
+                            };
+                        }
+                    }
+                ',
+        ];
+
+        yield [
+            '<?php
+                    class N
+                    {
+                        public function O()
+                        {
+                            $a = function () {
+                                return new class($this) {};
                             };
                         }
                     }

@@ -28,6 +28,8 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
  * @internal
  *
  * @covers \PhpCsFixer\DocBlock\Annotation
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class AnnotationTest extends TestCase
 {
@@ -724,5 +726,25 @@ final class AnnotationTest extends TestCase
         yield ['* @param ?int $foo=null invalid description', '$foo'];
 
         yield ['* @param int $počet Special chars in variable name', '$počet'];
+
+        yield [" * @param array{\n * a: Foo,\n * b: Bar\n * } \$x", '$x'];
+    }
+
+    public function testGetVariableNameForMultiline(): void
+    {
+        $docBlock = new DocBlock(
+            <<<'PHP'
+                <?php
+                /**
+                 * @param array{
+                 *        a: Foo,
+                 *        b: Bar
+                 * } $x
+                 */
+                PHP
+        );
+        $annotation = $docBlock->getAnnotation(0);
+
+        self::assertSame('$x', $annotation->getVariableName());
     }
 }

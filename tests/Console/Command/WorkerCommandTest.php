@@ -43,6 +43,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Command\WorkerCommand
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class WorkerCommandTest extends TestCase
 {
@@ -88,12 +90,16 @@ final class WorkerCommandTest extends TestCase
         $server = new TcpServer('127.0.0.1:0', $streamSelectLoop);
         $serverPort = parse_url($server->getAddress() ?? '', \PHP_URL_PORT);
         $processIdentifier = ProcessIdentifier::create();
-        $processFactory = new ProcessFactory(
-            new ArrayInput([], (new FixCommand(new ToolInfo()))->getDefinition())
-        );
+        $processFactory = new ProcessFactory();
         $process = new Process(implode(' ', $processFactory->getCommandArgs(
             $serverPort, // @phpstan-ignore-line
             $processIdentifier,
+            new ArrayInput(
+                [
+                    '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.parallel.php',
+                ],
+                (new FixCommand(new ToolInfo()))->getDefinition(),
+            ),
             new RunnerConfig(true, false, ParallelConfigFactory::sequential())
         )));
 
@@ -177,7 +183,10 @@ final class WorkerCommandTest extends TestCase
 
         $commandTester->execute(
             array_merge(
-                ['command' => $command->getName()],
+                [
+                    'command' => $command->getName(),
+                    '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.parallel.php',
+                ],
                 $arguments
             ),
             [

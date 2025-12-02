@@ -22,6 +22,9 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class IntegerLiteralCaseFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
@@ -50,7 +53,12 @@ final class IntegerLiteralCaseFixer extends AbstractFixer
 
             $content = $token->getContent();
 
-            $newContent = Preg::replaceCallback('#^0([boxBOX])([0-9a-fA-F_]+)$#', static fn ($matches) => '0'.strtolower($matches[1]).strtoupper($matches[2]), $content);
+            $newContent = Preg::replaceCallback(
+                '#^0([boxBOX])([0-9a-fA-F_]+)$#',
+                // @phpstan-ignore-next-line offsetAccess.notFound
+                static fn (array $matches): string => '0'.strtolower($matches[1]).strtoupper($matches[2]),
+                $content
+            );
 
             if ($content === $newContent) {
                 continue;

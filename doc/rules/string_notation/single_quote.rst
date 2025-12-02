@@ -4,6 +4,15 @@ Rule ``single_quote``
 
 Convert double quotes to single quotes for simple strings.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option:
+``strings_containing_single_quote_chars``.
+
 Configuration
 -------------
 

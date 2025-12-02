@@ -34,6 +34,8 @@ use Symfony\Component\Finder\SplFileInfo;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FixerFactory
 {
@@ -179,7 +181,7 @@ final class FixerFactory
 
             $fixers[] = $fixer;
             $fixersByName[$name] = $fixer;
-            $conflicts = array_intersect($this->getFixersConflicts($fixer), $fixerNames);
+            $conflicts = array_values(array_intersect($this->getFixersConflicts($fixer), $fixerNames));
 
             if (\count($conflicts) > 0) {
                 $fixerConflicts[$name] = $conflicts;
@@ -229,10 +231,10 @@ final class FixerFactory
 
         foreach ($fixerConflicts as $fixer => $fixers) {
             // filter mutual conflicts
-            $report[$fixer] = array_filter(
+            $report[$fixer] = array_values(array_filter(
                 $fixers,
                 static fn (string $candidate): bool => !\array_key_exists($candidate, $report) || !\in_array($fixer, $report[$candidate], true)
-            );
+            ));
 
             if (\count($report[$fixer]) > 0) {
                 $message .= \sprintf("\n- \"%s\" with %s", $fixer, Utils::naturalLanguageJoin($report[$fixer]));

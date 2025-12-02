@@ -7,8 +7,8 @@ Lambdas not (indirectly) referencing ``$this`` must be declared ``static``.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when using ``->bindTo`` on lambdas without referencing to ``$this``.
 

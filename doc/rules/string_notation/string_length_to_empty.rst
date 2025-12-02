@@ -7,8 +7,8 @@ String tests for empty must be done against ``''``, not with ``strlen``.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when ``strlen`` is overridden, when called using a ``stringable`` object,
 also no longer triggers warning when called using non-string(able).

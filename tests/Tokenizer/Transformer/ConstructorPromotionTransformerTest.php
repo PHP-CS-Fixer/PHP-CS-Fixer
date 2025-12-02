@@ -23,12 +23,14 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\ConstructorPromotionTransformer
  *
- * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ConstructorPromotionTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcessCases
      *
@@ -48,7 +50,7 @@ final class ConstructorPromotionTransformerTest extends AbstractTransformerTestC
     }
 
     /**
-     * @return iterable<int, array{_TransformerTestExpectedTokens, string}>
+     * @return iterable<int, array{_TransformerTestExpectedKindsUnderIndex, string}>
      */
     public static function provideProcessCases(): iterable
     {
@@ -132,7 +134,7 @@ class Point {
     }
 
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideFix81Cases
      *
@@ -150,7 +152,7 @@ class Point {
     }
 
     /**
-     * @return iterable<string, array{_TransformerTestExpectedTokens, string}>
+     * @return iterable<string, array{_TransformerTestExpectedKindsUnderIndex, string}>
      */
     public static function provideFix81Cases(): iterable
     {

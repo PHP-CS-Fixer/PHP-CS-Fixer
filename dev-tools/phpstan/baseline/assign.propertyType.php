@@ -2,9 +2,9 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
-    'message' => '#^Property PhpCsFixer\\\\Fixer\\\\Import\\\\FullyQualifiedStrictTypesFixer\\:\\:\\$reservedIdentifiersByLevel \\(array\\<int\\<0, max\\>, array\\<string, true\\>\\>\\) does not accept non\\-empty\\-array\\<int, array\\<string, true\\>\\>\\.$#',
+    'rawMessage' => 'Property PhpCsFixer\\FixerConfiguration\\FixerOption::$allowedValues (non-empty-list<bool|(callable(mixed): bool)|float|int|string|null>|null) does not accept non-empty-array<int<0, max>, bool|(callable(mixed): bool)|Closure|float|int|string|null>|null.',
     'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Import/FullyQualifiedStrictTypesFixer.php',
+    'path' => __DIR__ . '/../../../src/FixerConfiguration/FixerOption.php',
 ];
 
 return ['parameters' => ['ignoreErrors' => $ignoreErrors]];

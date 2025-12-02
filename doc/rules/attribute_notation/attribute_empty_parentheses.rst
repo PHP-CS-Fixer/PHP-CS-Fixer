@@ -5,6 +5,14 @@ Rule ``attribute_empty_parentheses``
 PHP attributes declared without arguments must (not) be followed by empty
 parentheses.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``use_parentheses``.
+
 Configuration
 -------------
 

@@ -18,6 +18,7 @@ use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\FixCommand;
+use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
@@ -29,6 +30,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Command\FixCommand
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FixCommandTest extends TestCase
 {
@@ -37,6 +40,7 @@ final class FixCommandTest extends TestCase
         $cmdTester = $this->doTestExecute([
             '--path-mode' => 'intersection',
             '--show-progress' => 'none',
+            '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php',
         ]);
 
         self::assertSame(
@@ -80,7 +84,7 @@ final class FixCommandTest extends TestCase
      */
     public function testSequentialRun(): void
     {
-        $pathToDistConfig = __DIR__.'/../../../.php-cs-fixer.dist.php';
+        $pathToDistConfig = __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php';
         $configWithFixedParallelConfig = <<<PHP
             <?php
 
@@ -120,7 +124,7 @@ final class FixCommandTest extends TestCase
      */
     public function testParallelRun(): void
     {
-        $pathToDistConfig = __DIR__.'/../../../.php-cs-fixer.dist.php';
+        $pathToDistConfig = __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php';
         $configWithFixedParallelConfig = <<<PHP
             <?php
 
@@ -155,7 +159,7 @@ final class FixCommandTest extends TestCase
             self::markTestSkipped('This test requires version of PHP higher than '.ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED);
         }
 
-        $pathToDistConfig = __DIR__.'/../../../.php-cs-fixer.dist.php';
+        $pathToDistConfig = __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php';
         $configWithFixedParallelConfig = <<<PHP
             <?php
 
@@ -184,7 +188,7 @@ final class FixCommandTest extends TestCase
             self::markTestSkipped('This test requires version of PHP higher than '.ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED);
         }
 
-        $pathToDistConfig = __DIR__.'/../../../.php-cs-fixer.dist.php';
+        $pathToDistConfig = __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php';
         $configWithFixedParallelConfig = <<<PHP
             <?php
 
@@ -204,7 +208,7 @@ final class FixCommandTest extends TestCase
         );
 
         self::assertStringContainsString('PHP CS Fixer currently supports PHP syntax only up to PHP '.ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED, $cmdTester->getDisplay());
-        self::assertStringContainsString('Add Config::setUnsupportedPhpVersionAllowed(true) to allow executions on unsupported PHP versions.', $cmdTester->getDisplay());
+        self::assertStringContainsString('Add `Config::setUnsupportedPhpVersionAllowed(true)` to allow executions on unsupported PHP versions.', $cmdTester->getDisplay());
         self::assertSame(1, $cmdTester->getStatusCode());
     }
 
@@ -247,6 +251,7 @@ final class FixCommandTest extends TestCase
             '--dry-run' => true,
             '--using-cache' => 'no',
             '--show-progress' => 'none',
+            '--config' => ConfigurationResolver::IGNORE_CONFIG_FILE,
         ];
     }
 }

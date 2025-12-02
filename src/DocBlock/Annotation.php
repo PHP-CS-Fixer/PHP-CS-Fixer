@@ -23,15 +23,17 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
  *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class Annotation
+final class Annotation implements \Stringable
 {
     /**
      * All the annotation tag names with types.
      *
-     * @var list<string>
+     * @var non-empty-list<string>
      */
-    private const TAGS = [
+    public const TAGS_WITH_TYPES = [
         'extends',
         'implements',
         'method',
@@ -119,11 +121,15 @@ final class Annotation
     /**
      * Get all the annotation tag names with types.
      *
-     * @return list<string>
+     * @return non-empty-list<string>
+     *
+     * @deprecated Use `Annotation::TAGS_WITH_TYPES` constant instead
+     *
+     * @TODO 4.0 remove me
      */
     public static function getTagsWithTypes(): array
     {
-        return self::TAGS;
+        return self::TAGS_WITH_TYPES;
     }
 
     /**
@@ -179,7 +185,7 @@ final class Annotation
             TypeExpression::REGEX_IDENTIFIER
         );
 
-        if (Preg::match($regex, $this->lines[0]->getContent(), $matches)) {
+        if (Preg::match($regex, $this->getContent(), $matches)) {
             \assert(isset($matches['variable']));
 
             return $matches['variable'];
@@ -298,7 +304,7 @@ final class Annotation
 
     public function supportTypes(): bool
     {
-        return \in_array($this->getTag()->getName(), self::TAGS, true);
+        return \in_array($this->getTag()->getName(), self::TAGS_WITH_TYPES, true);
     }
 
     /**

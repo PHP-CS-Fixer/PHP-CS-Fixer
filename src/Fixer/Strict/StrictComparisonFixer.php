@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class StrictComparisonFixer extends AbstractFixer
 {
@@ -32,7 +34,7 @@ final class StrictComparisonFixer extends AbstractFixer
             'Comparisons should be strict.',
             [new CodeSample("<?php\n\$a = 1== \$b;\n")],
             null,
-            'Changing comparisons to strict might change code behavior.'
+            'Changing comparisons to strict might change code behaviour.'
         );
     }
 

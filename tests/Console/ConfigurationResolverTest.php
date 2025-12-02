@@ -36,8 +36,10 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
+use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleSet;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\ToolInfoInterface;
@@ -51,6 +53,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @internal
  *
  * @covers \PhpCsFixer\Console\ConfigurationResolver
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ConfigurationResolverTest extends TestCase
 {
@@ -749,26 +753,29 @@ final class ConfigurationResolverTest extends TestCase
 
         yield [
             [
-                'config' => $root.'/.php-cs-fixer.dist.php',
+                'config' => __DIR__.'/../Fixtures/.php-cs-fixer.vanilla.php',
             ],
             false,
         ];
 
         yield [
             [
-                'config' => $root.'/.php-cs-fixer.dist.php',
+                'config' => __DIR__.'/../Fixtures/.php-cs-fixer.vanilla.php',
                 'path' => [$root.'/src'],
             ],
             true,
         ];
 
         yield [
-            [],
+            [
+                'config' => ConfigurationResolver::IGNORE_CONFIG_FILE,
+            ],
             false,
         ];
 
         yield [
             [
+                'config' => ConfigurationResolver::IGNORE_CONFIG_FILE,
                 'path' => [$root.'/src'],
             ],
             false,
@@ -776,7 +783,8 @@ final class ConfigurationResolverTest extends TestCase
 
         yield [
             [
-                'config' => $root.'/.php-cs-fixer.dist.php',
+                'config' => __DIR__.'/../Fixtures/.php-cs-fixer.vanilla.php',
+
                 'path' => [$root.'/src'],
                 'path-mode' => ConfigurationResolver::PATH_MODE_INTERSECTION,
             ],
@@ -1344,6 +1352,20 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         yield [['foo' => true]];
 
         yield [false];
+    }
+
+    public function testItCanRegisterCustomRuleSets(): void
+    {
+        $ruleSet = new ExampleRuleSet(__METHOD__);
+
+        $config = new Config();
+        $config->registerCustomRuleSets([$ruleSet]);
+        $this
+            ->createConfigurationResolver([], $config)
+            ->getConfig() // IMPORTANT! Triggers custom rule sets registration
+        ;
+
+        self::assertContains($ruleSet->getName(), RuleSets::getSetDefinitionNames());
     }
 
     /**

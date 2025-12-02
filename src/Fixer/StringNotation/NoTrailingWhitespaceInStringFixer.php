@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Gregor Harlan
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoTrailingWhitespaceInStringFixer extends AbstractFixer
 {
@@ -40,7 +42,7 @@ final class NoTrailingWhitespaceInStringFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'There must be no trailing whitespace in strings.',
+            'There must be no trailing whitespace at the end of lines in strings.',
             [
                 new CodeSample(
                     "<?php \$a = '  \n    foo \n';\n"

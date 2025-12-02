@@ -4,13 +4,19 @@ Rule ``new_with_braces``
 
 All instances created with ``new`` keyword must (not) be followed by braces.
 
-Warning
--------
+Warnings
+--------
 
-This rule is deprecated and will be removed in the next major version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is DEPRECATED and will be removed in the next major version 4.0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You should use ``new_with_parentheses`` instead.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``anonymous_class``,
+``named_class``.
 
 Configuration
 -------------

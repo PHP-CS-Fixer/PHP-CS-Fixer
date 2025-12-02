@@ -14,15 +14,15 @@ permissions:
 jobs:
   automate:
     name: Automate
-    runs-on: ubuntu-latest
-    if: ${{ contains(fromJson('["julienfalque", "keradus", "keradus-ci", "kubawerlos", "localheinz", "Wirone"]'), github.actor) }}
+    runs-on: ubuntu-slim
+    if: ${{ contains(fromJson('["gharlan", "julienfalque", "keradus", "keradus-ci", "kubawerlos", "localheinz", "Wirone"]'), github.actor) }}
     env:
       PR_URL: ${{github.event.pull_request.html_url}}
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       MARKER: self-approval
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.after }}
       - name: Determine whether PR should be automatically approved

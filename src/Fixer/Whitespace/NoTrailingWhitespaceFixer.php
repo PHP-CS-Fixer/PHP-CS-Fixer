@@ -29,13 +29,15 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoTrailingWhitespaceFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Remove trailing whitespace at the end of non-blank lines.',
+            'There must be no trailing whitespace at the end of non-blank lines.',
             [new CodeSample("<?php\n\$a = 1;     \n")]
         );
     }

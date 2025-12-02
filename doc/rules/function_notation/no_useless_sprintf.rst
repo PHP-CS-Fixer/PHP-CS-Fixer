@@ -7,8 +7,8 @@ There must be no ``sprintf`` calls with only the first argument.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when if the ``sprintf`` function is overridden.
 
