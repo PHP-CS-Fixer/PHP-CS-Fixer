@@ -42,7 +42,7 @@ final class NoTrailingWhitespaceInStringFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'There must be no trailing whitespace in strings.',
+            'There must be no trailing whitespace at the end of lines in strings.',
             [
                 new CodeSample(
                     "<?php \$a = '  \n    foo \n';\n"

@@ -269,7 +269,7 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{mixed, string}>
+     * @return iterable<array{array<string, mixed>, string}>
      */
     public static function provideInvalidConfigurationCases(): iterable
     {

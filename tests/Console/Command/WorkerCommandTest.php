@@ -94,7 +94,12 @@ final class WorkerCommandTest extends TestCase
         $process = new Process(implode(' ', $processFactory->getCommandArgs(
             $serverPort, // @phpstan-ignore-line
             $processIdentifier,
-            new ArrayInput([], (new FixCommand(new ToolInfo()))->getDefinition()),
+            new ArrayInput(
+                [
+                    '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.parallel.php',
+                ],
+                (new FixCommand(new ToolInfo()))->getDefinition(),
+            ),
             new RunnerConfig(true, false, ParallelConfigFactory::sequential())
         )));
 
@@ -178,7 +183,10 @@ final class WorkerCommandTest extends TestCase
 
         $commandTester->execute(
             array_merge(
-                ['command' => $command->getName()],
+                [
+                    'command' => $command->getName(),
+                    '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.parallel.php',
+                ],
                 $arguments
             ),
             [

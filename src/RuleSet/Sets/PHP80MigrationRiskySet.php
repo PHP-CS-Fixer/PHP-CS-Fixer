@@ -14,29 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractMigrationSetDescription;
+use PhpCsFixer\RuleSet\AbstractMajorMinorDeprecationSetDefinition;
 
 /**
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PHP80MigrationRiskySet extends AbstractMigrationSetDescription
-{
-    public function getRules(): array
-    {
-        return [
-            '@PHP74Migration:risky' => true,
-            'get_class_to_class_keyword' => true,
-            'modernize_strpos' => true,
-            'no_alias_functions' => [
-                'sets' => [
-                    '@all',
-                ],
-            ],
-            'no_php4_constructor' => true,
-            'no_unneeded_final_method' => true, // final private method (not constructor) are no longer allowed >= PHP8.0
-            'no_unreachable_default_argument_value' => true,
-        ];
-    }
-}
+final class PHP80MigrationRiskySet extends AbstractMajorMinorDeprecationSetDefinition {}

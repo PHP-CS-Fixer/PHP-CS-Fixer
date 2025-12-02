@@ -44,6 +44,8 @@ final class FileRemovalTest extends TestCase
             @unlink(sys_get_temp_dir().'/cs_fixer_foo.php');
             @unlink(sys_get_temp_dir().'/cs_fixer_bar.php');
         }
+
+        parent::tearDownAfterClass();
     }
 
     public function testCleanRemovesObservedFiles(): void
@@ -104,30 +106,28 @@ final class FileRemovalTest extends TestCase
         self::assertFileDoesNotExist($fs->url().'/foo.php');
     }
 
-    public function testSleep(): void
+    public function testSerialize(): void
     {
-        $this->expectException(\BadMethodCallException::class);
-        $this->expectExceptionMessage('Cannot serialize PhpCsFixer\FileRemoval');
-
         $fileRemoval = new FileRemoval();
-        $fileRemoval->__sleep();
+
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('Cannot serialize '.FileRemoval::class);
+
+        serialize($fileRemoval);
     }
 
-    public function testWakeup(): void
+    public function testUnserialize(): void
     {
         $this->expectException(\BadMethodCallException::class);
-        $this->expectExceptionMessage('Cannot unserialize PhpCsFixer\FileRemoval');
+        $this->expectExceptionMessage('Cannot unserialize '.FileRemoval::class);
 
-        $fileRemoval = new FileRemoval();
-        $fileRemoval->__wakeup();
+        unserialize(self::createSerializedStringOfClassName(FileRemoval::class));
     }
 
     /**
      * Must NOT be run as first test, see https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/7104.
      *
      * @runInSeparateProcess
-     *
-     * @group sf-8-problematic
      *
      * @preserveGlobalState disabled
      *

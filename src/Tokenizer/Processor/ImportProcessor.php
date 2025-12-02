@@ -37,14 +37,20 @@ final class ImportProcessor
 
     /**
      * @param array{
-     *     const?: array<int|string, class-string>,
-     *     class?: array<int|string, class-string>,
-     *     function?: array<int|string, class-string>
+     *     const?: array<int|string, non-empty-string>,
+     *     class?: array<int|string, non-empty-string>,
+     *     function?: array<int|string, non-empty-string>
      * } $imports
      */
     public function insertImports(Tokens $tokens, array $imports, int $atIndex): void
     {
         $lineEnding = $this->whitespacesConfig->getLineEnding();
+
+        $prevIndex = $tokens->getPrevMeaningfulToken($atIndex);
+        if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(\T_OPEN_TAG_WITH_ECHO)) {
+            $tokens->insertAt($prevIndex, Tokens::fromCode("<?php\n?>"));
+            $atIndex = $prevIndex + 1;
+        }
 
         if (!$tokens[$atIndex]->isWhitespace() || !str_contains($tokens[$atIndex]->getContent(), "\n")) {
             $tokens->insertAt($atIndex, new Token([\T_WHITESPACE, $lineEnding]));
@@ -79,7 +85,7 @@ final class ImportProcessor
     }
 
     /**
-     * @param class-string $name
+     * @param non-empty-string $name
      *
      * @return list<Token>
      */

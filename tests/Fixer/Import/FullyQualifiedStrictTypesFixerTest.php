@@ -1417,6 +1417,112 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
+        yield 'the root namespace of the imported class is equal to the imported global class name in lowercase (default behaviour)' => [
+            <<<'EOD'
+                <?php
+
+                use App;
+
+                class Some extends \app\components\Some
+                {
+                    public function getDef()
+                    {
+                        $a = App::getA();
+
+                        return new \app\components\Def($a);
+                    }
+                }
+                EOD,
+        ];
+
+        yield 'the root namespace of the imported class is equal to the imported global class name in lowercase (with import_symbols option)' => [
+            <<<'EOD'
+                <?php
+
+                use App;
+                use app\components\Def;
+
+                class Some extends \app\components\Some
+                {
+                    public function getDef()
+                    {
+                        $a = App::getA();
+
+                        return new Def($a);
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+
+                use App;
+
+                class Some extends \app\components\Some
+                {
+                    public function getDef()
+                    {
+                        $a = App::getA();
+
+                        return new \app\components\Def($a);
+                    }
+                }
+                EOD,
+            ['import_symbols' => true],
+        ];
+
+        yield 'the namespace of the imported class contains multiple occurrences of the imported global class name in lowercase (default behaviour)' => [
+            <<<'EOD'
+                <?php
+
+                use App;
+
+                class Some extends \app\app\Some
+                {
+                    public function getDef()
+                    {
+                        $a = App::getA();
+
+                        return new \app\components\Def($a);
+                    }
+                }
+                EOD,
+        ];
+
+        yield 'the namespace of the imported class contains multiple occurrences of the imported global class name in lowercase (with import_symbols option)' => [
+            <<<'EOD'
+                <?php
+
+                use App;
+                use app\components\Def;
+
+                class Some extends \app\app\Some
+                {
+                    public function getDef()
+                    {
+                        $a = App::getA();
+
+                        return new Def($a);
+                    }
+                }
+                EOD,
+            <<<'EOD'
+                <?php
+
+                use App;
+
+                class Some extends \app\app\Some
+                {
+                    public function getDef()
+                    {
+                        $a = App::getA();
+
+                        return new \app\components\Def($a);
+                    }
+                }
+                EOD,
+            ['import_symbols' => true],
+        ];
+
         // TODO: Ensure shortening for imported functions and constants
         yield 'Shorten symbol from comma-separated multi-use statement' => [
             <<<'EOD'
@@ -2711,6 +2817,28 @@ function foo($a) {}',
                 <?php
                 namespace Foo;
                 $function = fn (): \Lib\Package\Bar => new \Lib\Package\Bar();
+                PHP,
+            ['import_symbols' => true],
+        ];
+
+        yield 'usage of <?=' => [
+            <<<'PHP'
+                <?php
+
+                use Bar1\Baz1;
+                use Bar2\Baz2;
+                ?><?= $foo ?>
+                <div>some random HTML :(</div>
+                <?php
+                echo Baz1::$quux1;
+                echo Baz2::$quux2;
+                PHP,
+            <<<'PHP'
+                <?= $foo ?>
+                <div>some random HTML :(</div>
+                <?php
+                echo Bar1\Baz1::$quux1;
+                echo Bar2\Baz2::$quux2;
                 PHP,
             ['import_symbols' => true],
         ];

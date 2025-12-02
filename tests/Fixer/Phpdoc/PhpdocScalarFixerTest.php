@@ -298,5 +298,28 @@ final class PhpdocScalarFixerTest extends AbstractFixerTestCase
             '<?php /** @var array{index: int, isRequired: bool} */',
             '<?php /** @var array{index: integer, isRequired: boolean} */',
         ];
+
+        yield [
+            '<?php /** @return never */',
+            '<?php /** @return no-return */',
+            ['types' => ['no-return']],
+        ];
+
+        yield [
+            '<?php /** @return never */',
+            '<?php /** @return never-return */',
+            ['types' => ['never-return']],
+        ];
+
+        yield [
+            '<?php /** @return never */',
+            '<?php /** @return never-returns */',
+            ['types' => ['never-returns']],
+        ];
+
+        yield [
+            '<?php /** @return Collection<int, covariant Foo> */',
+            '<?php /** @return Collection<integer, covariant Foo> */',
+        ];
     }
 }

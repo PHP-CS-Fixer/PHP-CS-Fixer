@@ -17,8 +17,6 @@ namespace PhpCsFixer\Documentation;
 use PhpCsFixer\Console\Command\HelpCommand;
 use PhpCsFixer\Differ\FullDiffer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
-use PhpCsFixer\Fixer\DeprecatedFixerInterface;
-use PhpCsFixer\Fixer\ExperimentalFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
@@ -27,9 +25,10 @@ use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
 use PhpCsFixer\Preg;
-use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
+use PhpCsFixer\RuleSet\DeprecatedRuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSet;
-use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\StdinFileInfo;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -48,7 +47,7 @@ final class FixerDocumentGenerator
 
     private FullDiffer $differ;
 
-    /** @var array<string, RuleSetDescriptionInterface> */
+    /** @var array<string, RuleSetDefinitionInterface> */
     private array $ruleSetDefinitions;
 
     public function __construct(DocumentationLocator $locator)
@@ -82,69 +81,31 @@ final class FixerDocumentGenerator
                 RST;
         }
 
-        $deprecationDescription = '';
+        $header = static function (string $message, string $underline = '-'): string {
+            $line = str_repeat($underline, \strlen($message));
 
-        if ($fixer instanceof DeprecatedFixerInterface) {
-            $deprecationDescription = <<<'RST'
+            return "{$message}\n{$line}\n";
+        };
 
-                This rule is deprecated and will be removed in the next major version
-                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                RST;
-            $alternatives = $fixer->getSuccessorsNames();
+        $tags = DocumentationTagGenerator::analyseRule($fixer);
+        $warnings = array_map(
+            static function (DocumentationTag $tag): string {
+                $titleLine = str_repeat('~', \strlen($tag->title));
 
-            if (0 !== \count($alternatives)) {
-                $deprecationDescription .= RstUtils::toRst(\sprintf(
-                    "\n\nYou should use %s instead.",
-                    Utils::naturalLanguageJoinWithBackticks($alternatives)
-                ), 0);
-            }
-        }
+                return \sprintf(
+                    "\n%s\n%s\n\n%s",
+                    $tag->title,
+                    $titleLine,
+                    null === $tag->description ? '' : RstUtils::toRst($tag->description, 0)
+                );
+            },
+            $tags
+        );
 
-        $experimentalDescription = '';
+        if ([] !== $warnings) {
+            $warningsHeader = 1 === \count($warnings) ? 'Warning' : 'Warnings';
 
-        if ($fixer instanceof ExperimentalFixerInterface) {
-            $experimentalDescriptionRaw = RstUtils::toRst('Rule is not covered with backward compatibility promise, use it at your own risk. Rule\'s behaviour may be changed at any point, including rule\'s name; its options\' names, availability and allowed values; its default configuration. Rule may be even removed without prior notice. Feel free to provide feedback and help with determining final state of the rule.', 0);
-            $experimentalDescription = <<<RST
-
-                This rule is experimental
-                ~~~~~~~~~~~~~~~~~~~~~~~~~
-
-                {$experimentalDescriptionRaw}
-                RST;
-        }
-
-        $riskyDescription = '';
-        $riskyDescriptionRaw = $definition->getRiskyDescription();
-
-        if (null !== $riskyDescriptionRaw) {
-            $riskyDescriptionRaw = RstUtils::toRst($riskyDescriptionRaw, 0);
-            $riskyDescription = <<<RST
-
-                Using this rule is risky
-                ~~~~~~~~~~~~~~~~~~~~~~~~
-
-                {$riskyDescriptionRaw}
-                RST;
-        }
-
-        if ('' !== $deprecationDescription || '' !== $riskyDescription) {
-            $warningsHeader = 'Warning';
-
-            if ('' !== $deprecationDescription && '' !== $riskyDescription) {
-                $warningsHeader = 'Warnings';
-            }
-
-            $warningsHeaderLine = str_repeat('-', \strlen($warningsHeader));
-            $doc .= "\n\n".implode("\n", array_filter(
-                [
-                    $warningsHeader,
-                    $warningsHeaderLine,
-                    $deprecationDescription,
-                    $experimentalDescription,
-                    $riskyDescription,
-                ],
-                static fn (string $text): bool => '' !== $text
-            ));
+            $doc .= "\n\n".$header($warningsHeader).implode("\n", $warnings);
         }
 
         if ($fixer instanceof ConfigurableFixerInterface) {
@@ -254,8 +215,13 @@ final class FixerDocumentGenerator
                 $ruleSetPath = substr($ruleSetPath, strrpos($ruleSetPath, '/'));
 
                 \assert(isset($this->ruleSetDefinitions[$set]));
-                $ruleSetDescription = $this->ruleSetDefinitions[$set];
-                $deprecatedDesc = ($ruleSetDescription instanceof DeprecatedRuleSetDescriptionInterface) ? ' *(deprecated)*' : '';
+                $ruleSetDefinition = $this->ruleSetDefinitions[$set];
+
+                if ($ruleSetDefinition instanceof AutomaticRuleSetDefinitionInterface) {
+                    continue;
+                }
+
+                $deprecatedDesc = ($ruleSetDefinition instanceof DeprecatedRuleSetDefinitionInterface) ? ' *(deprecated)*' : '';
 
                 $configInfo = (null !== $config)
                     ? " with config:\n\n  ``".Utils::toString($config)."``\n"
@@ -304,11 +270,21 @@ final class FixerDocumentGenerator
      */
     public static function getSetsOfRule(string $ruleName): array
     {
+        static $ruleSetCache = null;
+
+        if (null === $ruleSetCache) {
+            $ruleSetCache = array_combine(
+                RuleSets::getSetDefinitionNames(),
+                array_map(
+                    static fn (string $name): RuleSet => new RuleSet([$name => true]),
+                    RuleSets::getSetDefinitionNames()
+                )
+            );
+        }
+
         $ruleSetConfigs = [];
 
-        foreach (RuleSets::getSetDefinitionNames() as $set) {
-            $ruleSet = new RuleSet([$set => true]);
-
+        foreach ($ruleSetCache as $set => $ruleSet) {
             if ($ruleSet->hasRule($ruleName)) {
                 $ruleSetConfigs[$set] = $ruleSet->getRuleConfiguration($ruleName);
             }
@@ -351,23 +327,14 @@ final class FixerDocumentGenerator
 
             $path = './'.$this->locator->getFixerDocumentationFileRelativePath($fixer);
 
-            $attributes = [];
+            $tags = array_map(
+                static fn (DocumentationTag $tag): string => $tag->type,
+                DocumentationTagGenerator::analyseRule($fixer)
+            );
 
-            if ($fixer instanceof DeprecatedFixerInterface) {
-                $attributes[] = 'deprecated';
-            }
-
-            if ($fixer instanceof ExperimentalFixerInterface) {
-                $attributes[] = 'experimental';
-            }
-
-            if ($fixer->isRisky()) {
-                $attributes[] = 'risky';
-            }
-
-            $attributes = 0 === \count($attributes)
+            $attributes = 0 === \count($tags)
                 ? ''
-                : ' *('.implode(', ', $attributes).')*';
+                : ' *('.implode(', ', $tags).')*';
 
             $summary = str_replace('`', '``', $fixer->getDefinition()->getSummary());
 

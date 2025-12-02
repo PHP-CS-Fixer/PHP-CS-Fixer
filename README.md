@@ -18,11 +18,11 @@ or [our opinionated one](./doc/ruleSets/PhpCsFixer.rst).
 You can also define your (team's) style through the [configuration file](./doc/config.rst).
 
 PHP CS Fixer can not only unify the style of your code, but also help to modernize your codebase towards
-newer PHP (e.g. [`@PHP85Migration`](./doc/ruleSets/PHP85Migration.rst)) and newer PHPUnit (e.g. [`@PHPUnit91Migration:risky`](./doc/ruleSets/PHPUnit91MigrationRisky.rst)).
+newer PHP (e.g. [`@autoPHPMigration`](./doc/ruleSets/AutoPHPMigration.rst)) and newer PHPUnit (e.g. [`@autoPHPUnitMigration:risky`](./doc/ruleSets/AutoPHPUnitMigrationRisky.rst)).
 
 ## Supported PHP Versions
 
-* PHP 7.4 - PHP 8.4
+* PHP 7.4 - PHP 8.5
 
 > [!NOTE]
 > Each new PHP version requires a huge effort to support the new syntax.

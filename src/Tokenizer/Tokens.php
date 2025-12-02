@@ -47,6 +47,8 @@ use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
  *
  * @final
  *
+ * @TODO 4.0: mark as final
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 class Tokens extends \SplFixedArray

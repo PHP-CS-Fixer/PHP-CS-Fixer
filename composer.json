@@ -31,34 +31,33 @@
         "fidry/cpu-core-counter": "^1.3",
         "react/child-process": "^0.6.6",
         "react/event-loop": "^1.5",
-        "react/promise": "^3.3",
         "react/socket": "^1.16",
         "react/stream": "^1.4",
         "sebastian/diff": "^4.0.6 || ^5.1.1 || ^6.0.2 || ^7.0",
-        "symfony/console": "^5.4.47 || ^6.4.24 || ^7.0",
-        "symfony/event-dispatcher": "^5.4.45 || ^6.4.24 || ^7.0",
-        "symfony/filesystem": "^5.4.45 || ^6.4.24 || ^7.0",
-        "symfony/finder": "^5.4.45 || ^6.4.24 || ^7.0",
-        "symfony/options-resolver": "^5.4.45 || ^6.4.24 || ^7.0",
+        "symfony/console": "^5.4.47 || ^6.4.24 || ^7.0 || ^8.0",
+        "symfony/event-dispatcher": "^5.4.45 || ^6.4.24 || ^7.0 || ^8.0",
+        "symfony/filesystem": "^5.4.45 || ^6.4.24 || ^7.0 || ^8.0",
+        "symfony/finder": "^5.4.45 || ^6.4.24 || ^7.0 || ^8.0",
+        "symfony/options-resolver": "^5.4.45 || ^6.4.24 || ^7.0 || ^8.0",
         "symfony/polyfill-mbstring": "^1.33",
         "symfony/polyfill-php80": "^1.33",
         "symfony/polyfill-php81": "^1.33",
-        "symfony/process": "^5.4.47 || ^6.4.24 || ^7.2",
-        "symfony/stopwatch": "^5.4.45 || ^6.4.24 || ^7.0"
+        "symfony/polyfill-php84": "^1.33",
+        "symfony/process": "^5.4.47 || ^6.4.24 || ^7.2 || ^8.0",
+        "symfony/stopwatch": "^5.4.45 || ^6.4.24 || ^7.0 || ^8.0"
     },
     "require-dev": {
         "facile-it/paraunit": "^1.3.1 || ^2.7",
-        "infection/infection": "^0.29.14",
+        "infection/infection": "^0.31.0",
         "justinrainbow/json-schema": "^6.5",
         "keradus/cli-executor": "^2.2",
         "mikey179/vfsstream": "^1.6.12",
-        "php-coveralls/php-coveralls": "^2.8",
+        "php-coveralls/php-coveralls": "^2.9",
         "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.6",
         "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.6",
         "phpunit/phpunit": "^9.6.25 || ^10.5.53 || ^11.5.34",
-        "symfony/polyfill-php84": "^1.33",
-        "symfony/var-dumper": "^5.4.48 || ^6.4.24 || ^7.3.2",
-        "symfony/yaml": "^5.4.45 || ^6.4.24 || ^7.3.2"
+        "symfony/var-dumper": "^5.4.48 || ^6.4.24 || ^7.3.2 || ^8.0",
+        "symfony/yaml": "^5.4.45 || ^6.4.24 || ^7.3.2 || ^8.0"
     },
     "suggest": {
         "ext-dom": "For handling output formats in XML",
@@ -69,7 +68,7 @@
             "PhpCsFixer\\": "src/"
         },
         "exclude-from-classmap": [
-            "src/Fixer/Internal/*"
+            "src/**/Internal/"
         ]
     },
     "autoload-dev": {
@@ -96,9 +95,10 @@
         "post-autoload-dump": [
             "@install-tools"
         ],
+        "analyse-deps": "@php dev-tools/vendor/bin/composer-dependency-analyser",
         "auto-review": [
             "Composer\\Config::disableProcessTimeout",
-            "paraunit run --testsuite auto-review"
+            "@php ./vendor/bin/paraunit run --testsuite auto-review"
         ],
         "cs:check": "@php php-cs-fixer check --verbose --diff",
         "cs:fix": "@php php-cs-fixer fix",
@@ -106,9 +106,9 @@
             "echo '⚠️ This script is deprecated! Utilise built-in parallelisation instead.';",
             "@cs:fix"
         ],
-        "docs": "@php dev-tools/doc.php",
+        "docs": "@php dev-tools/php-cs-fixer-internal docs",
         "infection": "@test:mutation",
-        "install-tools": "@composer --working-dir=dev-tools install",
+        "install-tools": "./dev-tools/install.sh",
         "mess-detector": "@php dev-tools/vendor/bin/phpmd . ansi dev-tools/mess-detector/phpmd.xml --exclude vendor/*,dev-tools/vendor/*,dev-tools/phpstan/*,tests/Fixtures/*",
         "normalize": [
             "@composer normalize --working-dir=dev-tools --dry-run ../composer.json",
@@ -133,25 +133,27 @@
             "@static-analysis",
             "@test"
         ],
-        "require-checker": "@php dev-tools/vendor/bin/composer-require-checker check composer.json --config-file .composer-require-checker.json",
         "sa": "@static-analysis",
         "self-check": [
             "./dev-tools/check_file_permissions.sh",
             "./dev-tools/check_trailing_spaces.sh",
+            "./dev-tools/check_shell_scripts.sh",
+            "./dev-tools/check_no_american_english.sh",
             "@composer dump-autoload --dry-run --optimize --strict-psr",
             "@normalize",
-            "@unused-deps",
-            "@require-checker",
+            "@analyse-deps",
             "@auto-review"
         ],
         "static-analysis": [
             "@cs:check",
             "@phpstan",
+            "@php-compatibility",
             "@mess-detector"
         ],
         "test": "@test:all",
         "test:all": [
             "@test:unit",
+            "@test:short-open-tag",
             "@test:integration"
         ],
         "test:coverage": [
@@ -160,11 +162,11 @@
         ],
         "test:integration": [
             "Composer\\Config::disableProcessTimeout",
-            "paraunit run --testsuite integration"
+            "@php ./vendor/bin/paraunit run --testsuite integration"
         ],
         "test:mutation": [
             "Composer\\Config::disableProcessTimeout",
-            "infection --threads=max --only-covered --min-covered-msi=80"
+            "infection --threads=max --only-covering-test-cases --min-covered-msi=80"
         ],
         "test:short-open-tag": [
             "Composer\\Config::disableProcessTimeout",
@@ -172,15 +174,15 @@
         ],
         "test:smoke": [
             "Composer\\Config::disableProcessTimeout",
-            "paraunit run --testsuite smoke"
+            "@php ./vendor/bin/paraunit run --testsuite smoke"
         ],
         "test:unit": [
             "Composer\\Config::disableProcessTimeout",
-            "paraunit run --testsuite unit"
-        ],
-        "unused-deps": "@php dev-tools/vendor/bin/composer-unused --excludePackage=composer/xdebug-handler"
+            "@php ./vendor/bin/paraunit run --testsuite unit"
+        ]
     },
     "scripts-descriptions": {
+        "analyse-deps": "Analyse Composer dependencies",
         "auto-review": "Execute Auto-review",
         "cs:check": "Check coding standards",
         "cs:fix": "Fix coding standards",
@@ -197,7 +199,6 @@
         "post-autoload-dump": "Run additional tasks after installing/updating main dependencies",
         "qa": "Alias for 'quality-assurance'",
         "quality-assurance": "Run QA suite",
-        "require-checker": "Verifies if codebase does not contain soft dependencies",
         "sa": "Alias for 'static-analysis'",
         "self-check": "Run set of self-checks ensuring repository's validity",
         "static-analysis": "Run static analysis",
@@ -208,7 +209,6 @@
         "test:mutation": "Run mutation tests",
         "test:short-open-tag": "Run tests with \"short_open_tag\" enabled",
         "test:smoke": "Run Smoke tests",
-        "test:unit": "Run Unit tests",
-        "unused-deps": "Verifies if app has dependencies that are not used"
+        "test:unit": "Run Unit tests"
     }
 }

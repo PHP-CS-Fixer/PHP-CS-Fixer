@@ -36,9 +36,9 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideInvalidConfigurationCases
      *
-     * @param mixed $configuration
+     * @param array<string, mixed> $configuration
      */
-    public function testInvalidConfiguration($configuration, string $expectedExceptionMessage): void
+    public function testInvalidConfiguration(array $configuration, string $expectedExceptionMessage): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
@@ -47,7 +47,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<string, array{mixed, string}>
+     * @return iterable<string, array{array<string, mixed>, string}>
      */
     public static function provideInvalidConfigurationCases(): iterable
     {

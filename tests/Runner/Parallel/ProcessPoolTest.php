@@ -45,12 +45,14 @@ final class ProcessPoolTest extends TestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         $fixCommand = new FixCommand(new ToolInfo());
         $application = new Application();
         $application->addCommands([$fixCommand]);
 
         // In order to have full list of options supported by the command (e.g. `--verbose`)
-        $fixCommand->mergeApplicationDefinition(false);
+        $fixCommand->mergeApplicationDefinition(false); // @phpstan-ignore method.internal
 
         $this->arrayInput = new ArrayInput([], $fixCommand->getDefinition());
 

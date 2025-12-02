@@ -166,7 +166,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
         /*
          * Should be run after all other docblock fixers. This because they
          * modify other annotations to change their type and or separation
-         * which totally change the behavior of this fixer. It's important that
+         * which totally change the behaviour of this fixer. It's important that
          * annotations are of the correct type, and are grouped correctly
          * before running this fixer.
          */

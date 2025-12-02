@@ -58,6 +58,10 @@ use Symfony\Contracts\EventDispatcher\Event;
  * @author Greg Korba <greg@codito.dev>
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @TODO v4: decide if marking Runner as internal or making it dependencies public
+ *
+ * @phpstan-ignore-next-line phpCsFixer.internalTypeInPublicApi
  */
 final class Runner
 {
@@ -241,7 +245,15 @@ final class Runner
                 }
 
                 $identifier = ProcessIdentifier::fromRaw($data['identifier']);
-                $process = $processPool->getProcess($identifier);
+
+                // Avoid race condition where worker tries to establish connection,
+                // but runner already ended all processes because `stop-on-violation` mode was enabled.
+                try {
+                    $process = $processPool->getProcess($identifier);
+                } catch (ParallelisationException $e) {
+                    return;
+                }
+
                 $process->bindConnection($decoder, $encoder);
                 $fileChunk = $getFileChunk();
 

@@ -14,14 +14,14 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
+use PhpCsFixer\RuleSet\AbstractRuleSetDefinition;
 
 /**
  * @internal
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PhpCsFixerSet extends AbstractRuleSetDescription
+final class PhpCsFixerSet extends AbstractRuleSetDefinition
 {
     public function getRules(): array
     {
@@ -88,7 +88,7 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
             'no_superfluous_elseif' => true,
             'no_superfluous_phpdoc_tags' => [
                 'allow_hidden_params' => true,
-                'allow_mixed' => true,
+                'allow_mixed' => true, // @TODO revalidate to keep `true` or unify into `false`
                 'remove_inheritdoc' => true,
             ],
             'no_unneeded_control_parentheses' => [
@@ -133,6 +133,6 @@ final class PhpCsFixerSet extends AbstractRuleSetDescription
 
     public function getDescription(): string
     {
-        return 'Rule set as used by the PHP CS Fixer development team, highly opinionated.';
+        return 'Rules recommended by ``PHP CS Fixer`` team, highly opinionated. Extends ``@PER-CS`` and ``@Symfony``.';
     }
 }

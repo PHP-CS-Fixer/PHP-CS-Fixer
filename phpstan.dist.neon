@@ -19,10 +19,11 @@ parameters:
     reportPossiblyNonexistentConstantArrayOffset: true
     treatPhpDocTypesAsCertain: false
     ignoreErrors:
-        - identifier: method.internal
-        - identifier: method.internalClass
-        - identifier: new.internalClass
         - '/^Class [a-zA-Z\\]+ extends @final class PhpCsFixer\\(ConfigurationException\\InvalidConfigurationException|ConfigurationException\\InvalidFixerConfigurationException|Tokenizer\\Tokens|Console\\Command\\FixCommand)\.$/'
+
+        -
+            rawMessage: 'Call to internal method PHPUnit\Framework\TestCase::addToAssertionCount() from outside its root namespace PHPUnit.'
+            identifier: method.internal
 
         # We often need to iterate multiple times within single method and we re-use variable name
         -
@@ -55,23 +56,30 @@ parameters:
             message: '/^Offset int(<0, max>)?\|null might not exist on (\$this\()?PhpCsFixer\\Tokenizer\\Tokens\)?\.$/'
             identifier: offsetAccess.notFound
 
-        # We retrieve these FQNs in various ways, we process them along the way, let's assume it's always class-string
-        - '/^Parameter #2 \$fullName of class PhpCsFixer\\Tokenizer\\Analyzer\\Analysis\\NamespaceUseAnalysis constructor expects class-string, string given\.$/'
-
         # Type for Command::$defaultName and ::$defaultDescription can not be specified because parent property also does not have a type
         -
-            message: '/^Property PhpCsFixer\\Console\\Command\\\w+Command::\$default(?:Name|Description) has no type specified\.$/'
+            message: '/^Property PhpCsFixer\\Console\\(Internal\\)?Command\\\w+Command::\$default(?:Name|Description) has no type specified\.$/'
             identifier: missingType.property
         -
             message: '/^Unused PhpCsFixer\\[a-zA-Z\\]+Interface::[a-zA-Z]+$/'
             path: src
             count: 17
+
+        -
+            message: '/^AnonymousClass/'
+            path: tests/
+            identifier: phpCsFixer.internalTypeInPublicApi
     tipsOfTheDay: false
     symfony:
         consoleApplicationLoader: dev-tools/phpstan/console-application.php
     tmpDir: dev-tools/phpstan/cache
 
 services:
+    -
+        class: PhpCsFixer\PHPStan\Rules\NoInternalTypesInPublicApiRule
+        tags:
+            - phpstan.rules.rule
+
     -
         class: PhpCsFixer\PHPStan\Extension\PregMatchParameterOutExtension
         tags:

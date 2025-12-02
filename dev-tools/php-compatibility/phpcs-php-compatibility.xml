@@ -23,6 +23,8 @@
         <exclude name="PHPCompatibility.FunctionUse.NewFunctions.array_is_listFound"/>
         <!-- We use Sf 8.4 polyfill (but no polyfill ruleset available yet)-->
         <exclude name="PHPCompatibility.FunctionUse.NewFunctions.array_anyFound"/>
+        <exclude name="PHPCompatibility.FunctionUse.NewFunctions.array_findFound"/>
+        <exclude name="PHPCompatibility.FunctionUse.NewFunctions.array_find_keyFound"/>
         <!-- we use it to test code using high PHP version -->
         <exclude name="PHPCompatibility.Numbers.RemovedHexadecimalNumericStrings.Found"/>
         <!-- we have explicit handling of different hash algo depends on PHP version -->
@@ -31,7 +33,7 @@
     </rule>
     <rule ref="PHPCompatibilitySymfonyPolyfillPHP80"/>
 
-    <config name="testVersion" value="7.4-8.4"/>
+    <config name="testVersion" value="7.4-8.5"/>
 
     <file>../../src/</file>
     <file>../../tests/</file>

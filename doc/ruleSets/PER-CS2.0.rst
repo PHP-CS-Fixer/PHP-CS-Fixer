@@ -4,10 +4,18 @@ Rule set ``@PER-CS2.0``
 
 Rules that follow `PER Coding Style 2.0 <https://www.php-fig.org/per/coding-style/>`_.
 
+Warning
+-------
+
+This rule set is DEPRECATED and will be removed in the next major version 4.0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You should use ``@PER-CS2x0`` instead.
+
 Rules
 -----
 
-- `@PER-CS1.0 <./PER-CS1.0.rst>`_
+- `@PER-CS1x0 <./PER-CS1x0.rst>`_
 - `array_indentation <./../rules/whitespace/array_indentation.rst>`_
 - `array_syntax <./../rules/array_notation/array_syntax.rst>`_
 - `cast_spaces <./../rules/cast_notation/cast_spaces.rst>`_
@@ -19,7 +27,10 @@ Rules
 
   ``['closure_fn_spacing' => 'none']``
 
-- `method_argument_space <./../rules/function_notation/method_argument_space.rst>`_
+- `method_argument_space <./../rules/function_notation/method_argument_space.rst>`_ with config:
+
+  ``['after_heredoc' => false]``
+
 - `new_with_parentheses <./../rules/operator/new_with_parentheses.rst>`_ with config:
 
   ``['anonymous_class' => false]``

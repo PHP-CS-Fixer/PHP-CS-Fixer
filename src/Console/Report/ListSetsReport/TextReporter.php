@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Console\Report\ListSetsReport;
 
-use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -36,7 +36,7 @@ final class TextReporter implements ReporterInterface
     {
         $sets = $reportSummary->getSets();
 
-        usort($sets, static fn (RuleSetDescriptionInterface $a, RuleSetDescriptionInterface $b): int => $a->getName() <=> $b->getName());
+        usort($sets, static fn (RuleSetDefinitionInterface $a, RuleSetDefinitionInterface $b): int => $a->getName() <=> $b->getName());
 
         $output = '';
 

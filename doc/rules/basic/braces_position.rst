@@ -4,6 +4,19 @@ Rule ``braces_position``
 
 Braces must be placed as configured.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options:
+``allow_single_line_anonymous_functions``,
+``allow_single_line_empty_anonymous_classes``,
+``anonymous_classes_opening_brace``, ``anonymous_functions_opening_brace``,
+``classes_opening_brace``, ``control_structures_opening_brace``,
+``functions_opening_brace``.
+
 Configuration
 -------------
 
@@ -232,15 +245,27 @@ The rule is part of the following rule sets:
 
   ``['allow_single_line_empty_anonymous_classes' => true]``
 
-- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ *(deprecated)* with config:
 
   ``['allow_single_line_empty_anonymous_classes' => true]``
 
-- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+- `@PER-CS1x0 <./../../ruleSets/PER-CS1x0.rst>`_ with config:
 
   ``['allow_single_line_empty_anonymous_classes' => true]``
 
-- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ *(deprecated)* with config:
+
+  ``['allow_single_line_empty_anonymous_classes' => true]``
+
+- `@PER-CS2x0 <./../../ruleSets/PER-CS2x0.rst>`_ with config:
+
+  ``['allow_single_line_empty_anonymous_classes' => true]``
+
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ *(deprecated)* with config:
+
+  ``['allow_single_line_empty_anonymous_classes' => true]``
+
+- `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_ with config:
 
   ``['allow_single_line_empty_anonymous_classes' => true]``
 

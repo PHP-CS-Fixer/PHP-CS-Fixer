@@ -46,7 +46,7 @@ final class SpacesInsideParenthesesFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<string, array{array<array-key, mixed>, string}>
+     * @return iterable<string, array{array<string, mixed>, string}>
      */
     public static function provideInvalidConfigurationCases(): iterable
     {

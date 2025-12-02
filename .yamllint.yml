@@ -1,5 +1,9 @@
 extends: relaxed
 
+ignore: |
+  vendor/
+  dev-tools/vendor/
+
 rules:
   indentation:
     spaces: 2

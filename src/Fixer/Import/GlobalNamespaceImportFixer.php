@@ -126,7 +126,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
      * {@inheritdoc}
      *
      * Must run before NoUnusedImportsFixer, OrderedImportsFixer, StatementIndentationFixer.
-     * Must run after NativeConstantInvocationFixer, NativeFunctionInvocationFixer.
+     * Must run after NativeConstantInvocationFixer, NativeFunctionInvocationFixer, StringableForToStringFixer.
      */
     public function getPriority(): int
     {
@@ -205,7 +205,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
     /**
      * @param list<NamespaceUseAnalysis> $useDeclarations
      *
-     * @return array<string, class-string>
+     * @return array<non-empty-string, non-empty-string>
      */
     private function importConstants(Tokens $tokens, array $useDeclarations): array
     {
@@ -276,7 +276,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
     /**
      * @param list<NamespaceUseAnalysis> $useDeclarations
      *
-     * @return array<string, class-string>
+     * @return array<non-empty-string, non-empty-string>
      */
     private function importFunctions(Tokens $tokens, array $useDeclarations): array
     {
@@ -326,7 +326,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
     /**
      * @param list<NamespaceUseAnalysis> $useDeclarations
      *
-     * @return array<string, class-string>
+     * @return array<non-empty-string, non-empty-string>
      */
     private function importClasses(Tokens $tokens, array $useDeclarations): array
     {
@@ -411,7 +411,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
                     return $type;
                 }
 
-                /** @var class-string $name */
+                /** @var non-empty-string $name */
                 $name = substr($type, 1);
 
                 $checkName = strtolower($name);
@@ -444,14 +444,14 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
      * @param array<string, string|true> $global
      * @param array<string, true>        $other
      *
-     * @return array<string, class-string> array keys contain the names that must be imported
+     * @return array<non-empty-string, non-empty-string> array keys contain the names that must be imported
      */
     private function prepareImports(Tokens $tokens, array $indices, array $global, array $other, bool $caseSensitive): array
     {
         $imports = [];
 
         foreach ($indices as $index) {
-            /** @var class-string $name */
+            /** @var non-empty-string $name */
             $name = $tokens[$index]->getContent();
             $checkName = $caseSensitive ? $name : strtolower($name);
 
@@ -705,23 +705,21 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
         $changed = false;
 
         foreach ($annotations as $annotation) {
-            $types = $new = $annotation->getTypes();
+            $types = $annotation->getTypes();
 
-            foreach ($types as $i => $fullType) {
-                $newFullType = $fullType;
-
+            $new = array_map(static function (string $fullType) use ($callback): string {
                 Preg::matchAll('/[\\\\\w]+(?![\\\\\w:])/', $fullType, $matches, \PREG_OFFSET_CAPTURE);
 
                 foreach (array_reverse($matches[0]) as [$type, $offset]) {
                     $newType = $callback($type);
 
                     if (null !== $newType && $type !== $newType) {
-                        $newFullType = substr_replace($newFullType, $newType, $offset, \strlen($type));
+                        $fullType = substr_replace($fullType, $newType, $offset, \strlen($type));
                     }
                 }
 
-                $new[$i] = $newFullType;
-            }
+                return $fullType;
+            }, $types);
 
             if ($types !== $new) {
                 $annotation->setTypes($new);

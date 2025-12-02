@@ -13,6 +13,15 @@ Description
 
 This fixer covers rules defined in PSR2 ¶4.4, ¶4.6.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``after_heredoc``,
+``attribute_placement``, ``keep_multiple_spaces_after_comma``, ``on_multiline``.
+
 Configuration
 -------------
 
@@ -287,53 +296,109 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PER <./../../ruleSets/PER.rst>`_ *(deprecated)*
-- `@PER-CS <./../../ruleSets/PER-CS.rst>`_
-- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
+- `@PER <./../../ruleSets/PER.rst>`_ *(deprecated)* with config:
 
-  ``['attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline']``
+  ``['after_heredoc' => false]``
 
-- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_
-- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_
-- `@PHP73Migration <./../../ruleSets/PHP73Migration.rst>`_ with config:
+- `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
+
+  ``['after_heredoc' => false]``
+
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ *(deprecated)* with config:
+
+  ``['after_heredoc' => false, 'attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline']``
+
+- `@PER-CS1x0 <./../../ruleSets/PER-CS1x0.rst>`_ with config:
+
+  ``['after_heredoc' => false, 'attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline']``
+
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ *(deprecated)* with config:
+
+  ``['after_heredoc' => false]``
+
+- `@PER-CS2x0 <./../../ruleSets/PER-CS2x0.rst>`_ with config:
+
+  ``['after_heredoc' => false]``
+
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ *(deprecated)* with config:
+
+  ``['after_heredoc' => false]``
+
+- `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_ with config:
+
+  ``['after_heredoc' => false]``
+
+- `@PHP7x3Migration <./../../ruleSets/PHP7x3Migration.rst>`_ with config:
 
   ``['after_heredoc' => true]``
 
-- `@PHP74Migration <./../../ruleSets/PHP74Migration.rst>`_ with config:
+- `@PHP7x4Migration <./../../ruleSets/PHP7x4Migration.rst>`_ with config:
 
   ``['after_heredoc' => true]``
 
-- `@PHP80Migration <./../../ruleSets/PHP80Migration.rst>`_ with config:
+- `@PHP8x0Migration <./../../ruleSets/PHP8x0Migration.rst>`_ with config:
 
   ``['after_heredoc' => true]``
 
-- `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_ with config:
+- `@PHP8x1Migration <./../../ruleSets/PHP8x1Migration.rst>`_ with config:
 
   ``['after_heredoc' => true]``
 
-- `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_ with config:
+- `@PHP8x2Migration <./../../ruleSets/PHP8x2Migration.rst>`_ with config:
 
   ``['after_heredoc' => true]``
 
-- `@PHP83Migration <./../../ruleSets/PHP83Migration.rst>`_ with config:
+- `@PHP8x3Migration <./../../ruleSets/PHP8x3Migration.rst>`_ with config:
 
   ``['after_heredoc' => true]``
 
-- `@PHP84Migration <./../../ruleSets/PHP84Migration.rst>`_ with config:
+- `@PHP8x4Migration <./../../ruleSets/PHP8x4Migration.rst>`_ with config:
 
   ``['after_heredoc' => true]``
 
-- `@PHP85Migration <./../../ruleSets/PHP85Migration.rst>`_ with config:
+- `@PHP8x5Migration <./../../ruleSets/PHP8x5Migration.rst>`_ with config:
+
+  ``['after_heredoc' => true]``
+
+- `@PHP73Migration <./../../ruleSets/PHP73Migration.rst>`_ *(deprecated)* with config:
+
+  ``['after_heredoc' => true]``
+
+- `@PHP74Migration <./../../ruleSets/PHP74Migration.rst>`_ *(deprecated)* with config:
+
+  ``['after_heredoc' => true]``
+
+- `@PHP80Migration <./../../ruleSets/PHP80Migration.rst>`_ *(deprecated)* with config:
+
+  ``['after_heredoc' => true]``
+
+- `@PHP81Migration <./../../ruleSets/PHP81Migration.rst>`_ *(deprecated)* with config:
+
+  ``['after_heredoc' => true]``
+
+- `@PHP82Migration <./../../ruleSets/PHP82Migration.rst>`_ *(deprecated)* with config:
+
+  ``['after_heredoc' => true]``
+
+- `@PHP83Migration <./../../ruleSets/PHP83Migration.rst>`_ *(deprecated)* with config:
+
+  ``['after_heredoc' => true]``
+
+- `@PHP84Migration <./../../ruleSets/PHP84Migration.rst>`_ *(deprecated)* with config:
+
+  ``['after_heredoc' => true]``
+
+- `@PHP85Migration <./../../ruleSets/PHP85Migration.rst>`_ *(deprecated)* with config:
 
   ``['after_heredoc' => true]``
 
 - `@PSR2 <./../../ruleSets/PSR2.rst>`_ with config:
 
-  ``['attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline']``
+  ``['after_heredoc' => false, 'attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline']``
 
 - `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
 
-  ``['attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline']``
+  ``['after_heredoc' => false, 'attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline']``
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 

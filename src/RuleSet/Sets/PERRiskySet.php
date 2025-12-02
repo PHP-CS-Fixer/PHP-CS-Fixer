@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
-use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\AbstractRuleSetDefinition;
+use PhpCsFixer\RuleSet\DeprecatedRuleSetDefinitionInterface;
 
 /**
  * @internal
@@ -28,7 +28,7 @@ use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PERRiskySet extends AbstractRuleSetDescription implements DeprecatedRuleSetDescriptionInterface
+final class PERRiskySet extends AbstractRuleSetDefinition implements DeprecatedRuleSetDefinitionInterface
 {
     public function getName(): string
     {
@@ -44,7 +44,7 @@ final class PERRiskySet extends AbstractRuleSetDescription implements Deprecated
 
     public function getDescription(): string
     {
-        return 'Alias for the newest PER-CS risky rules. It is recommended you use ``@PER-CS2.0:risky`` instead if you want to stick with stable ruleset.';
+        return 'Alias for the newest ``PER-CS`` risky rules. It is recommended you use ``@PER-CS2.0:risky`` instead if you want to stick with stable ruleset.';
     }
 
     public function getSuccessorsNames(): array
