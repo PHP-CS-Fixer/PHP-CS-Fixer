@@ -180,8 +180,8 @@ If you need to disable or reconfigure a rule for specific files, you can use the
 
     When you write an implementation of ``RuleCustomisationPolicyInterface``, PHP CS Fixer may provide some fixers that, in future versions, may be deprecated and replaced by other fixers.
     In such cases, your implementation may seems to not work as expected, because the fixers you'd like to customise may no longer be available.
-    To avoid such issues, PHP-CS-Fixer will check that all the fixer names returned by your ``getRuleCustomisers()`` method are being actually used.
-    If some of them are not used, PHP-CS-Fixer will throw an exception with the list of unused fixer names.
+    To avoid such issues, PHP CS Fixer will check that all the fixer names returned by your ``getRuleCustomisers()`` method are being actually used.
+    If some of them are not used, PHP CS Fixer will throw an exception with the list of unused fixer names.
     In such case, you'll have update your implementation accordingly.
 
 
