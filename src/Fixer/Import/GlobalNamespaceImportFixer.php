@@ -126,7 +126,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
      * {@inheritdoc}
      *
      * Must run before NoUnusedImportsFixer, OrderedImportsFixer, StatementIndentationFixer.
-     * Must run after NativeConstantInvocationFixer, NativeFunctionInvocationFixer.
+     * Must run after NativeConstantInvocationFixer, NativeFunctionInvocationFixer, StringableForToStringFixer.
      */
     public function getPriority(): int
     {

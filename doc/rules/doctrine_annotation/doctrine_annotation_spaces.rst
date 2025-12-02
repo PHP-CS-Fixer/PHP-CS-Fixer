@@ -11,6 +11,18 @@ There must not be any space around parentheses; commas must be preceded by no
 space and followed by one space; there must be no space around named arguments
 assignment operator; there must be one space around array assignment operator.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options:
+``after_argument_assignments``, ``after_array_assignments_colon``,
+``after_array_assignments_equals``, ``around_commas``, ``around_parentheses``,
+``before_argument_assignments``, ``before_array_assignments_colon``,
+``before_array_assignments_equals``, ``ignored_tags``.
+
 Configuration
 -------------
 

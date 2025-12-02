@@ -4,6 +4,15 @@ Rule ``general_phpdoc_tag_rename``
 
 Renames PHPDoc tags.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``case_sensitive``,
+``fix_annotation``, ``fix_inline``, ``replacements``.
+
 Configuration
 -------------
 

@@ -4,6 +4,14 @@ Rule ``nullable_type_declaration``
 
 Nullable single type declaration should be standardised using configured syntax.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``syntax``.
+
 Configuration
 -------------
 

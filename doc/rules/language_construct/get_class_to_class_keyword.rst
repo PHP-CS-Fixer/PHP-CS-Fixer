@@ -7,8 +7,8 @@ Replace ``get_class`` calls on object variables with class keyword syntax.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky if the ``get_class`` function is overridden.
 

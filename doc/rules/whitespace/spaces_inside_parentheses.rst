@@ -11,6 +11,14 @@ By default there are not any additional spaces inside parentheses, however with
 ``space=single`` configuration option whitespace inside parentheses will be
 unified to single space.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``space``.
+
 Configuration
 -------------
 

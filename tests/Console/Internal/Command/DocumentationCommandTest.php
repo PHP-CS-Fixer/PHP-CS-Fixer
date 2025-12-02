@@ -12,10 +12,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests\Console\Command;
+namespace PhpCsFixer\Tests\Console\Internal\Command;
 
-use PhpCsFixer\Console\Application;
-use PhpCsFixer\Console\Command\DocumentationCommand;
+use PhpCsFixer\Console\Internal\Application;
 use PhpCsFixer\Tests\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -24,7 +23,7 @@ use Symfony\Component\Filesystem\Filesystem;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Console\Command\DocumentationCommand
+ * @covers \PhpCsFixer\Console\Internal\Command\DocumentationCommand
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
@@ -37,8 +36,9 @@ final class DocumentationCommandTest extends TestCase
      */
     public function testGeneratingDocumentation(): void
     {
-        $application = new Application();
-        $application->add(new DocumentationCommand($this->createFilesystemDouble()));
+        $application = new Application(
+            $this->createFilesystemDouble()
+        );
 
         $command = $application->find('documentation');
         $commandTester = new CommandTester($command);

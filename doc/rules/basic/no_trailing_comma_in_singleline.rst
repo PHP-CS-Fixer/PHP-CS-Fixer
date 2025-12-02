@@ -5,6 +5,14 @@ Rule ``no_trailing_comma_in_singleline``
 If a list of values separated by a comma is contained on a single line, then the
 last item MUST NOT have a trailing comma.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``elements``.
+
 Configuration
 -------------
 

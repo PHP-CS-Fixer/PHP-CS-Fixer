@@ -5,14 +5,19 @@ Rule ``random_api_migration``
 Replaces ``rand``, ``srand``, ``getrandmax`` functions calls with their ``mt_*``
 analogs or ``random_int``.
 
-Warning
--------
+Warnings
+--------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when the configured functions are overridden. Or when relying on the seed
 based generating of the numbers.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``replacements``.
 
 Configuration
 -------------

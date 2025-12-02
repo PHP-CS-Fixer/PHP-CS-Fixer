@@ -58,7 +58,7 @@ parameters:
 
         # Type for Command::$defaultName and ::$defaultDescription can not be specified because parent property also does not have a type
         -
-            message: '/^Property PhpCsFixer\\Console\\Command\\\w+Command::\$default(?:Name|Description) has no type specified\.$/'
+            message: '/^Property PhpCsFixer\\Console\\(Internal\\)?Command\\\w+Command::\$default(?:Name|Description) has no type specified\.$/'
             identifier: missingType.property
         -
             message: '/^Unused PhpCsFixer\\[a-zA-Z\\]+Interface::[a-zA-Z]+$/'

@@ -5,6 +5,15 @@ Rule ``trailing_comma_in_multiline``
 Arguments lists, array destructuring lists, arrays that are multi-line,
 ``match``-lines and parameters lists must have a trailing comma.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``after_heredoc``,
+``elements``.
+
 Configuration
 -------------
 

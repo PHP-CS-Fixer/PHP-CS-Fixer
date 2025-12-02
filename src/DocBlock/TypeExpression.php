@@ -54,6 +54,7 @@ final class TypeExpression
      * - and https://github.com/phpstan/phpdoc-parser/blob/1.26.0/src/Parser/PhpDocParser.php parser impl.
      */
     private const REGEX_TYPE = '(?<type>(?x) # single type
+            (?:co(ntra)?variant\h+)?
             (?<nullable>\??\h*)
             (?:
                 (?<array_shape>

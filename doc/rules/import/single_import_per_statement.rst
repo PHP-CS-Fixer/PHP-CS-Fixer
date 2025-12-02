@@ -4,6 +4,15 @@ Rule ``single_import_per_statement``
 
 There MUST be one use keyword per declaration.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option:
+``group_to_single_imports``.
+
 Configuration
 -------------
 

@@ -4,6 +4,14 @@ Rule ``no_spaces_around_offset``
 
 There MUST NOT be spaces around offset braces.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``positions``.
+
 Configuration
 -------------
 

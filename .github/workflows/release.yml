@@ -29,6 +29,8 @@ jobs:
             alpine-version: '3.22'
           - php-version: '8.4'
             alpine-version: '3.22'
+          - php-version: '8.5'
+            alpine-version: '3.22'
 
     permissions:
       contents: read
@@ -36,7 +38,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3

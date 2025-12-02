@@ -4,6 +4,14 @@ Rule ``php_unit_method_casing``
 
 Enforce camel (or snake) case for PHPUnit test methods, following configuration.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``case``.
+
 Configuration
 -------------
 

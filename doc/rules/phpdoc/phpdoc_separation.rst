@@ -6,6 +6,15 @@ Annotations in PHPDoc should be grouped together so that annotations of the same
 type immediately follow each other. Annotations of a different type are
 separated by a single blank line.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``groups``,
+``skip_unlisted_annotations``.
+
 Configuration
 -------------
 

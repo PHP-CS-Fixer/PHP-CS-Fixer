@@ -18,14 +18,19 @@ Extended forward compatibility layer (``PHPUnit\Framework\Assert``,
 classes) was introduced in v5.7.0.
 
 
-Warning
--------
+Warnings
+--------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when PHPUnit classes are overridden or not accessible, or when project has
 PHPUnit incompatibilities.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``target``.
 
 Configuration
 -------------

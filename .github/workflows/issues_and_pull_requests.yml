@@ -31,7 +31,7 @@ jobs:
   handle_stale:
     name: Handle stale state
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
 
     # See: https://github.com/actions/stale#recommended-permissions
     permissions:

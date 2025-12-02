@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bffb53d23e224f59a68b66a73812d3c7",
+    "content-hash": "490555880671657adb0600e03ba9c27f",
     "packages": [
         {
             "name": "composer/pcre",
@@ -980,16 +980,16 @@
         },
         {
             "name": "shipmonk/composer-dependency-analyser",
-            "version": "1.8.3",
+            "version": "1.8.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shipmonk-rnd/composer-dependency-analyser.git",
-                "reference": "ca6b2725cd4854d97c1ce08e6954a74fbdd25372"
+                "reference": "975e5873b519d5180b1017a5dfb43d80781abd45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shipmonk-rnd/composer-dependency-analyser/zipball/ca6b2725cd4854d97c1ce08e6954a74fbdd25372",
-                "reference": "ca6b2725cd4854d97c1ce08e6954a74fbdd25372"
+                "url": "https://api.github.com/repos/shipmonk-rnd/composer-dependency-analyser/zipball/975e5873b519d5180b1017a5dfb43d80781abd45",
+                "reference": "975e5873b519d5180b1017a5dfb43d80781abd45"
             },
             "require": {
                 "ext-json": "*",
@@ -1012,20 +1012,20 @@
         },
         {
             "name": "shipmonk/dead-code-detector",
-            "version": "0.13.5",
+            "version": "0.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shipmonk-rnd/dead-code-detector.git",
-                "reference": "a12cdd093624362743c8814a96a54fcc0a57d96d"
+                "reference": "56f9f3f1aaa5f6569719a6137be18da16d5e9678"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shipmonk-rnd/dead-code-detector/zipball/a12cdd093624362743c8814a96a54fcc0a57d96d",
-                "reference": "a12cdd093624362743c8814a96a54fcc0a57d96d"
+                "url": "https://api.github.com/repos/shipmonk-rnd/dead-code-detector/zipball/56f9f3f1aaa5f6569719a6137be18da16d5e9678",
+                "reference": "56f9f3f1aaa5f6569719a6137be18da16d5e9678"
             },
             "require": {
                 "php": "^7.4 || ^8.0",
-                "phpstan/phpstan": "^2.1.12"
+                "phpstan/phpstan": "^2.1.23"
             },
             "type": "phpstan-extension",
             "extra": {

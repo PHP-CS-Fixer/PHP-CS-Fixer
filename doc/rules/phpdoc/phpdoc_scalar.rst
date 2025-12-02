@@ -5,6 +5,14 @@ Rule ``phpdoc_scalar``
 Scalar types should always be written in the same form. ``int`` not ``integer``,
 ``bool`` not ``boolean``, ``float`` not ``real`` or ``double``.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``types``.
+
 Configuration
 -------------
 

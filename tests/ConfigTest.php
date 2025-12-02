@@ -25,7 +25,7 @@ use PhpCsFixer\Fixer\ControlStructure\IncludeFixer;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\RuleCustomisationPolicyInterface;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
-use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleset;
+use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleSet;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -243,7 +243,7 @@ final class ConfigTest extends TestCase
 
     public function testRegisterCustomRuleSets(): void
     {
-        $ruleset = new ExampleRuleset();
+        $ruleset = new ExampleRuleSet(__METHOD__);
 
         $config = new Config();
         $config->registerCustomRuleSets([$ruleset]);

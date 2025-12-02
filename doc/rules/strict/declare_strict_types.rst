@@ -4,13 +4,19 @@ Rule ``declare_strict_types``
 
 Force strict types declaration in all files.
 
-Warning
--------
+Warnings
+--------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Forcing strict types will stop non strict code from working.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option:
+``preserve_existing_declaration``.
 
 Configuration
 -------------

@@ -36,11 +36,13 @@ use PhpCsFixer\ToolInfoInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Formatter\OutputFormatter;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Terminal;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -286,7 +288,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 );
 
                 if (!$resolver->getUnsupportedPhpVersionAllowed()) {
-                    $message .= ' Add Config::setUnsupportedPhpVersionAllowed(true) to allow executions on unsupported PHP versions. Such execution may be unstable and you may experience code modified in a wrong way.';
+                    $message .= ' Add `Config::setUnsupportedPhpVersionAllowed(true)` to allow executions on unsupported PHP versions. Such execution may be unstable and you may experience code modified in a wrong way.';
                     $stdErr->writeln(\sprintf(
                         $stdErr->isDecorated() ? '<bg=red;fg=white;>%s</>' : '%s',
                         $message
@@ -299,6 +301,38 @@ use Symfony\Component\Stopwatch\Stopwatch;
                     $stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s',
                     $message
                 ));
+            }
+
+            $configFile = $resolver->getConfigFile();
+            $stdErr->writeln(\sprintf('Loaded config <comment>%s</comment>%s.', $resolver->getConfig()->getName(), null === $configFile ? '' : ' from "'.$configFile.'"'));
+
+            if (null === $configFile) {
+                if (false === $input->isInteractive()) {
+                    $stdErr->writeln(
+                        \sprintf(
+                            $stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s',
+                            'No config file found. Please create one using `php-cs-fixer init`.'
+                        )
+                    );
+                } else {
+                    $io = new SymfonyStyle($input, $stdErr);
+                    $shallCreateConfigFile = 'yes' === $io->choice(
+                        'Do you want to create the config file?',
+                        ['yes', 'no'],
+                        'yes',
+                    );
+                    if ($shallCreateConfigFile) {
+                        $returnCode = $this->getApplication()->doRun(
+                            new ArrayInput([
+                                'command' => 'init',
+                            ]),
+                            $output,
+                        );
+                        $stdErr->writeln('Config file created, re-run the command to put it in action.');
+
+                        return $returnCode;
+                    }
+                }
             }
 
             $isParallel = $resolver->getParallelConfig()->getMaxProcesses() > 1;
@@ -329,9 +363,6 @@ use Symfony\Component\Stopwatch\Stopwatch;
                         )
                 ));
             }
-
-            $configFile = $resolver->getConfigFile();
-            $stdErr->writeln(\sprintf('Loaded config <comment>%s</comment>%s.', $resolver->getConfig()->getName(), null === $configFile ? '' : ' from "'.$configFile.'"'));
 
             if ($resolver->getUsingCache()) {
                 $cacheFile = $resolver->getCacheFile();

@@ -5,6 +5,14 @@ Rule ``list_syntax``
 List (``array`` destructuring) assignment should be declared using the
 configured syntax.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``syntax``.
+
 Configuration
 -------------
 
