@@ -58,6 +58,11 @@ return (new Config())
     ] + (class_exists(InternalRiskySet::class) ? [
         '@self/internal' => true, // internal rule set, shall not be used outside of main repo
     ] : []) + [
+        'final_internal_class' => [
+            'include' => [],
+            'exclude' => ['final', 'api-extendable'],
+            'consider_absent_docblock_as_internal_class' => true,
+        ],
         'general_phpdoc_annotation_remove' => ['annotations' => ['expectedDeprecation']], // one should use PHPUnit built-in method instead
         'header_comment' => [
             'header' => implode('', $fileHeaderParts),
@@ -96,11 +101,6 @@ return (new Config())
         ],
         'phpdoc_tag_no_named_arguments' => [
             'description' => 'Parameter names are not covered by the backward compatibility promise.',
-        ],
-        'final_internal_class' => [
-            'include' => [],
-            'exclude' => ['final', 'api-extendable'],
-            'consider_absent_docblock_as_internal_class' => true,
         ],
     ])
     ->setFinder(
