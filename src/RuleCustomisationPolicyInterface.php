@@ -17,6 +17,8 @@ namespace PhpCsFixer;
 use PhpCsFixer\Fixer\FixerInterface;
 
 /**
+ * @phpstan-type _RuleCustomizationPolicyCallback \Closure(\SplFileInfo): (bool|FixerInterface)
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 interface RuleCustomisationPolicyInterface
@@ -55,7 +57,7 @@ interface RuleCustomisationPolicyInterface
      * ]
      * ```
      *
-     * @return array<string, \Closure(\SplFileInfo): (bool|FixerInterface)>
+     * @return array<non-empty-string, _RuleCustomizationPolicyCallback>
      */
     public function getRuleCustomisers(): array;
 }
