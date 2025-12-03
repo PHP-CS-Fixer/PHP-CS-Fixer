@@ -474,6 +474,7 @@ final class Runner
             );
             $missingFixerNames = array_diff(array_keys($ruleCustomisers), $usedFixerNames);
             if ([] !== $missingFixerNames) {
+                // @TODO v3.999 check if rule is deprecated and show the replacement rules as well
                 $missingFixerNames = implode("\n- ", $missingFixerNames);
 
                 throw new \RuntimeException(
