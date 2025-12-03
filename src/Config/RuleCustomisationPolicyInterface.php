@@ -44,7 +44,9 @@ interface RuleCustomisationPolicyInterface
      * When PHP-CS-Fixer is about to start fixing files, it will check that the currently used fixers include at least
      * all the fixers for which customisation rules are defined. If a customiser is defined for a fixer that is not currently applied,
      * an exception will be thrown.
-     * This ensures that customisers are actually used for expected fixers, which may be replaced by newer fixers in newer versions of PHP CS Fixer.
+     * This ensures that customisers are actually used for expected fixerswhich may be replaced by newer fixers in newer versions of PHP CS Fixer.
+     * Since fixer sets may change even in patch releases, this also means that your implementation of this interface may need to be updated accordingly, even in patch releases.
+     * So, we can't guarantee semver compatibility for Rule Customisation Policies.
      *
      * @example
      * ```

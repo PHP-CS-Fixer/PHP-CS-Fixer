@@ -20,7 +20,7 @@ need to be analysed), select output format and even configure path to ``PHP``.
 
 You may also create ``.php-cs-fixer.php`` file, which is
 the local configuration that will be used instead of the project configuration.
-You can use it to customize for your environment (like path to ``PHP``) or preference (like output format or progress indicator),
+You can use it to customise for your environment (like path to ``PHP``) or preference (like output format or progress indicator),
 while ruleset / finder shall be re-imported from project configuration.
 It is a good practice to add that file into your ``.gitignore`` file.
 
@@ -184,11 +184,21 @@ If you need to disable or reconfigure a rule for specific files, you can use the
 
     **⚠️ WARNING ⚠️**
 
-    When you write an implementation of ``RuleCustomisationPolicyInterface``, PHP CS Fixer may provide some fixers that, in future versions, may be deprecated and replaced by other fixers.
-    In such cases, your implementation may seems to not work as expected, because the fixers you'd like to customise may no longer be available.
-    To avoid such issues, PHP CS Fixer will check that all the fixer names returned by your ``getRuleCustomisers()`` method are being actually used.
-    If some of them are not used, PHP CS Fixer will throw an exception with the list of unused fixer names.
-    In such case, you'll have update your implementation accordingly.
+    When you write an implementation of ``RuleCustomisationPolicyInterface``, PHP CS Fixer may provide some fixers that, in future versions, may be either removed from the fixer sets you use, or deprecated and replaced by other fixers.
+
+    In such cases, your implementation will stop receiving the fixers it expects to receive.
+
+    To detect this case, PHP CS Fixer will check that all the fixer names returned by your ``getRuleCustomisers()`` method are actually used.
+
+    If some of them are not used, PHP CS Fixer will throw an exception with the list of unused fixer names, and you will need to update your implementation.
+
+.. warning::
+
+    **⚠️ WARNING ⚠️**
+
+    Since PHP CS Fixer may remove rules from rulesets, and replace rules with other ones (even in patch releases), your implementation of ``RuleCustomisationPolicyInterface`` may cause the exception described above even in patch releases.
+
+    So, we can't guarantee semver compatibility for Rule Customisation Policies.
 
 
 Configuring whitespaces
