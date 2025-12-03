@@ -478,10 +478,10 @@ final class Runner
 
                 throw new \RuntimeException(
                     <<<EOT
-                        Rule Customisation Policy contains customisers for fixers that are not currently applied:
+                        Rule Customisation Policy contains customisers for fixers that are not in the current set of enabled fixers:
                         - {$missingFixerNames}
 
-                        Please check your configuration to ensure that these fixers are included, and that they have not been replaced by other fixers in the version of PHP-CS-Fixer you are using.
+                        Please check your configuration to ensure that these fixers are included, or update your Rule Customisation Policy if they have been replaced by other fixers in the version of PHP CS Fixer you are using.
                         EOT
                 );
             }

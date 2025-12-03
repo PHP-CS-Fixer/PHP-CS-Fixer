@@ -17,7 +17,7 @@ namespace PhpCsFixer\Config;
 use PhpCsFixer\Fixer\FixerInterface;
 
 /**
- * EXPERIMENTAL: This class is experimental and does not fall under the backward compatibility promise.
+ * EXPERIMENTAL: This feature is experimental and does not fall under the backward compatibility promise.
  *
  * @todo v3.999 replace \SplFileInfo with \Symfony\Component\Finder\SplFileInfo
  *
@@ -45,7 +45,7 @@ interface RuleCustomisationPolicyInterface
      * - false to skip applying the fixer to the file
      * - a new fixer instance to apply a customised version of the fixer
      *
-     * When PHP-CS-Fixer is about to start fixing files, it will check that the currently used fixers include at least
+     * When PHP CS Fixer is about to start fixing files, it will check that the currently used fixers include at least
      * all the fixers for which customisation rules are defined. If a customiser is defined for a fixer that is not currently applied,
      * an exception will be thrown.
      * This ensures that customisers are actually used for expected fixerswhich may be replaced by newer fixers in newer versions of PHP CS Fixer.

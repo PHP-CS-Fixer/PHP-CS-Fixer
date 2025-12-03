@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Config;
 
 /**
- * EXPERIMENTAL: This class is experimental and does not fall under the backward compatibility promise.
+ * EXPERIMENTAL: This feature is experimental and does not fall under the backward compatibility promise.
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */

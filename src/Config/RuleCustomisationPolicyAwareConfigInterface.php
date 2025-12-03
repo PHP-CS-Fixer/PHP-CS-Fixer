@@ -17,7 +17,7 @@ namespace PhpCsFixer\Config;
 use PhpCsFixer\ConfigInterface;
 
 /**
- * EXPERIMENTAL: This class is experimental and does not fall under the backward compatibility promise.
+ * EXPERIMENTAL: This feature is experimental and does not fall under the backward compatibility promise.
  *
  * @TODO 4.0 Include support for this in main ConfigInterface
  *
@@ -26,6 +26,7 @@ use PhpCsFixer\ConfigInterface;
 interface RuleCustomisationPolicyAwareConfigInterface extends ConfigInterface
 {
     /**
+     * EXPERIMENTAL: This feature is experimental and does not fall under the backward compatibility promise.
      * Registers a filter to be applied to fixers right before running them.
      *
      * @todo v4 Introduce it in main ConfigInterface
@@ -33,6 +34,7 @@ interface RuleCustomisationPolicyAwareConfigInterface extends ConfigInterface
     public function setRuleCustomisationPolicy(?RuleCustomisationPolicyInterface $ruleCustomisationPolicy): ConfigInterface;
 
     /**
+     * EXPERIMENTAL: This feature is experimental and does not fall under the backward compatibility promise.
      * Gets the filter to be applied to fixers right before running them.
      *
      * @todo v4 Introduce it in main ConfigInterface

@@ -141,7 +141,7 @@ If you need to disable or reconfigure a rule for specific files, you can use the
     {
         public function policyVersionForCache(): string
         {
-            // provide version of the policy, you may use following snippet if your policy does not depend on any code outside of the file
+            // to provide version of the policy, you may use the following snippet if your policy does not depend on any code outside of the file
             return hash_file(\PHP_VERSION_ID >= 8_01_00 ? 'xxh128' : 'md5', __FILE__);
         }
 
