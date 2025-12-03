@@ -17,6 +17,8 @@ namespace PhpCsFixer\Config;
 use PhpCsFixer\ConfigInterface;
 
 /**
+ * EXPERIMENTAL: This class is experimental and does not fall under the backward compatibility promise.
+ *
  * @TODO 4.0 Include support for this in main ConfigInterface
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.

@@ -17,6 +17,8 @@ namespace PhpCsFixer\Config;
 use PhpCsFixer\Fixer\FixerInterface;
 
 /**
+ * EXPERIMENTAL: This class is experimental and does not fall under the backward compatibility promise.
+ *
  * @phpstan-type _RuleCustomizationPolicyCallback \Closure(\SplFileInfo): (bool|FixerInterface)
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
