@@ -194,7 +194,7 @@ If you need to disable or reconfigure a rule for specific files, you can use the
 
 .. warning::
 
-    **⚠️ WARNING ⚠️**
+    **⚠️ EXPERIMENTAL ⚠️**
 
     Since PHP CS Fixer may remove rules from rulesets, and replace rules with other ones (even in patch releases), your implementation of ``RuleCustomisationPolicyInterface`` may cause the exception described above even in patch releases.
 
