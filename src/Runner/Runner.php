@@ -169,6 +169,28 @@ final class Runner
      */
     public function fix(): array
     {
+        $ruleCustomisers = $this->ruleCustomisationPolicy->getRuleCustomisers();
+        if ([] !== $ruleCustomisers) {
+            $usedFixerNames = array_map(
+                static fn (FixerInterface $fixer): string => $fixer->getName(),
+                $this->fixers
+            );
+            $missingFixerNames = array_diff(array_keys($ruleCustomisers), $usedFixerNames);
+            if ([] !== $missingFixerNames) {
+                /** @TODO v3.999 check if rule is deprecated and show the replacement rules as well */
+                $missingFixerNames = implode("\n- ", $missingFixerNames);
+
+                throw new \RuntimeException(
+                    <<<EOT
+                        Rule Customisation Policy contains customisers for fixers that are not in the current set of enabled fixers:
+                        - {$missingFixerNames}
+
+                        Please check your configuration to ensure that these fixers are included, or update your Rule Customisation Policy if they have been replaced by other fixers in the version of PHP CS Fixer you are using.
+                        EOT
+                );
+            }
+        }
+
         if (0 === $this->fileCount) {
             return [];
         }
@@ -462,33 +484,12 @@ final class Runner
         }
 
         $oldHash = $tokens->getCodeHash();
-
-        $new = $old;
         $newHash = $oldHash;
-
-        $ruleCustomisers = $this->ruleCustomisationPolicy->getRuleCustomisers();
-        if ([] !== $ruleCustomisers) {
-            $usedFixerNames = array_map(
-                static fn (FixerInterface $fixer): string => $fixer->getName(),
-                $this->fixers
-            );
-            $missingFixerNames = array_diff(array_keys($ruleCustomisers), $usedFixerNames);
-            if ([] !== $missingFixerNames) {
-                // @TODO v3.999 check if rule is deprecated and show the replacement rules as well
-                $missingFixerNames = implode("\n- ", $missingFixerNames);
-
-                throw new \RuntimeException(
-                    <<<EOT
-                        Rule Customisation Policy contains customisers for fixers that are not in the current set of enabled fixers:
-                        - {$missingFixerNames}
-
-                        Please check your configuration to ensure that these fixers are included, or update your Rule Customisation Policy if they have been replaced by other fixers in the version of PHP CS Fixer you are using.
-                        EOT
-                );
-            }
-        }
+        $new = $old;
 
         $appliedFixers = [];
+
+        $ruleCustomisers = $this->ruleCustomisationPolicy->getRuleCustomisers();
 
         try {
             foreach ($this->fixers as $fixer) {
