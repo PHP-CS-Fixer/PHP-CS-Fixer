@@ -239,7 +239,7 @@ final class FixerDocumentGenerator
         $className = str_replace('\\', '\\\\', $reflectionObject->getName());
         $fileName = $reflectionObject->getFileName();
         $fileName = str_replace('\\', '/', $fileName);
-        $fileName = substr($fileName, strrpos($fileName, '/src/Fixer/') + 1);
+        $fileName = substr($fileName, (int) strrpos($fileName, '/src/Fixer/') + 1);
         $fileName = "`{$className} <./../../../{$fileName}>`_";
 
         $testFileName = Preg::replace('~.*\K/src/(?=Fixer/)~', '/tests/', $fileName);

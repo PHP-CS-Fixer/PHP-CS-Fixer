@@ -113,6 +113,8 @@ final class OrderedTraitsFixer extends AbstractFixer implements ConfigurableFixe
             }
 
             $startIndex = $tokens->getNextNonWhitespace($tokens->getPrevMeaningfulToken($index));
+            \assert(\is_int($startIndex));
+
             $endIndex = $tokens->getNextTokenOfKind($index, [';', '{']);
 
             if ($tokens[$endIndex]->equals('{')) {

@@ -588,7 +588,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
             });
             foreach ($discoveredSymbols as $symbol) {
                 while (true) {
-                    $shortEndNameLower = strtolower(str_contains($symbol, '\\') ? substr($symbol, strrpos($symbol, '\\') + 1) : $symbol);
+                    $shortEndNameLower = strtolower(str_contains($symbol, '\\') ? substr($symbol, (int) strrpos($symbol, '\\') + 1) : $symbol);
                     if (!isset($discoveredFqcnByShortNameLower[$kind][$shortEndNameLower])) {
                         $shortStartNameLower = strtolower(explode('\\', ltrim($symbol, '\\'), 2)[0]);
                         if (str_starts_with($symbol, '\\') || ('' === $namespaceName && !isset($useByShortNameLower[$shortStartNameLower]))
@@ -619,7 +619,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
             foreach ($discoveredFqcnByShortNameLower[$kind] ?? [] as $fqcn) {
                 $shortenedName = ltrim($this->shortenSymbol($fqcn, $kind, [], $namespaceName), '\\');
                 if (str_contains($shortenedName, '\\')) { // prevent importing non-namespaced names in global namespace
-                    $shortEndName = str_contains($fqcn, '\\') ? substr($fqcn, strrpos($fqcn, '\\') + 1) : $fqcn;
+                    $shortEndName = str_contains($fqcn, '\\') ? substr($fqcn, (int) strrpos($fqcn, '\\') + 1) : $fqcn;
                     \assert('' !== $shortEndName);
                     $uses[$kind][$fqcn] = $shortEndName;
                     $this->symbolsForImport[$kind][$shortEndName] = $fqcn;
