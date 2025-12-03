@@ -97,6 +97,11 @@ return (new Config())
         'phpdoc_tag_no_named_arguments' => [
             'description' => 'Parameter names are not covered by the backward compatibility promise.',
         ],
+        'final_internal_class' => [
+            'include' => [],
+            'exclude' => ['final', 'api-extendable'],
+            'consider_absent_docblock_as_internal_class' => true,
+        ],
     ])
     ->setFinder(
         (new Finder())
