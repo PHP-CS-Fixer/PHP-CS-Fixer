@@ -31,6 +31,7 @@ use PhpCsFixer\Future;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\LintingResultInterface;
+use PhpCsFixer\NullRuleCustomisationPolicy;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleCustomisationPolicyInterface;
 use PhpCsFixer\Runner\Event\AnalysisStarted;
@@ -107,7 +108,7 @@ final class Runner
 
     private ?string $configFile;
 
-    private ?RuleCustomisationPolicyInterface $ruleCustomisationPolicy;
+    private RuleCustomisationPolicyInterface $ruleCustomisationPolicy;
 
     /**
      * @param null|\Traversable<array-key, \SplFileInfo> $fileIterator
@@ -146,7 +147,7 @@ final class Runner
         $this->parallelConfig = $parallelConfig ?? ParallelConfigFactory::sequential();
         $this->input = $input;
         $this->configFile = $configFile;
-        $this->ruleCustomisationPolicy = $ruleCustomisationPolicy;
+        $this->ruleCustomisationPolicy = $ruleCustomisationPolicy ?? new NullRuleCustomisationPolicy();
     }
 
     /**
@@ -465,7 +466,7 @@ final class Runner
         $new = $old;
         $newHash = $oldHash;
 
-        $ruleCustomisers = null === $this->ruleCustomisationPolicy ? [] : $this->ruleCustomisationPolicy->getRuleCustomisers();
+        $ruleCustomisers = $this->ruleCustomisationPolicy->getRuleCustomisers();
         if ([] !== $ruleCustomisers) {
             $usedFixerNames = array_map(
                 static fn (FixerInterface $fixer): string => $fixer->getName(),

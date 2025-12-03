@@ -37,6 +37,7 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Future;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
+use PhpCsFixer\NullRuleCustomisationPolicy;
 use PhpCsFixer\ParallelAwareConfigInterface;
 use PhpCsFixer\RuleCustomisationPolicyAwareConfigInterface;
 use PhpCsFixer\RuleCustomisationPolicyInterface;
@@ -187,9 +188,7 @@ final class ConfigurationResolver
 
     private ?bool $isUnsupportedPhpVersionAllowed = null;
 
-    private bool $isRuleCustomisationPolicyResolved = false;
-
-    private ?RuleCustomisationPolicyInterface $ruleCustomisationPolicy;
+    private ?RuleCustomisationPolicyInterface $ruleCustomisationPolicy = null;
 
     private ?FixerFactory $fixerFactory = null;
 
@@ -538,14 +537,14 @@ final class ConfigurationResolver
         return $this->isUnsupportedPhpVersionAllowed;
     }
 
-    public function getRuleCustomisationPolicy(): ?RuleCustomisationPolicyInterface
+    public function getRuleCustomisationPolicy(): RuleCustomisationPolicyInterface
     {
-        if (false === $this->isRuleCustomisationPolicyResolved) {
+        if (null === $this->ruleCustomisationPolicy) {
             $config = $this->getConfig();
-            $this->ruleCustomisationPolicy = $config instanceof RuleCustomisationPolicyAwareConfigInterface
-                ? $config->getRuleCustomisationPolicy()
-                : null;
-            $this->isRuleCustomisationPolicyResolved = true;
+            if ($config instanceof RuleCustomisationPolicyAwareConfigInterface) {
+                $this->ruleCustomisationPolicy = $config->getRuleCustomisationPolicy();
+            }
+            $this->ruleCustomisationPolicy ??= new NullRuleCustomisationPolicy();
         }
 
         return $this->ruleCustomisationPolicy;
