@@ -23,7 +23,7 @@ use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer;
 use PhpCsFixer\Fixer\ControlStructure\IncludeFixer;
 use PhpCsFixer\Fixer\FixerInterface;
-use PhpCsFixer\RuleCustomisationPolicyInterface;
+use PhpCsFixer\NullRuleCustomisationPolicy;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleSet;
 use PhpCsFixer\ToolInfo;
@@ -298,12 +298,7 @@ final class ConfigTest extends TestCase
 
         self::assertNull($config->getRuleCustomisationPolicy());
 
-        $ruleCustomisationPolicy = new class implements RuleCustomisationPolicyInterface {
-            public function getRuleCustomisers(): array
-            {
-                return [];
-            }
-        };
+        $ruleCustomisationPolicy = new NullRuleCustomisationPolicy();
         $config->setRuleCustomisationPolicy($ruleCustomisationPolicy);
         self::assertSame($ruleCustomisationPolicy, $config->getRuleCustomisationPolicy());
 

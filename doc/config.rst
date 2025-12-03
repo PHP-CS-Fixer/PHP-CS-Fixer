@@ -139,6 +139,11 @@ If you need to disable or reconfigure a rule for specific files, you can use the
 
     class MyPolicy implements RuleCustomisationPolicyInterface
     {
+        public function policyVersionForCache(): string
+        {
+            return hash_file(\PHP_VERSION_ID >= 8_01_00 ? 'xxh128' : 'md5', __FILE__);
+        }
+
         public function getRuleCustomisers(): array
         {
             return [
@@ -172,15 +177,6 @@ If you need to disable or reconfigure a rule for specific files, you can use the
                 ->in(__DIR__)
         )
     ;
-
-
-.. warning::
-
-    **⚠️ WARNING ⚠️**
-
-    If your ``RuleCustomizationPolicyInterface`` (or the customizers it returns) causes a different fixer configuration to be applied to a given file between runs (for example because you changed the policy code), the PHP CS Fixer cache won't reflect those changes.
-    The cache remains valid as long as, for the same file, the same fixer configuration is produced on every run.
-    In case of changes, you'll need to clear the cache manually (e.g. by deleting the cache file).
 
 
 .. warning::

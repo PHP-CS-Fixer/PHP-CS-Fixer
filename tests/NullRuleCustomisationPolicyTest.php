@@ -43,6 +43,7 @@ final class NullRuleCustomisationPolicyTest extends TestCase
     public function testValues(): void
     {
         $policy = new NullRuleCustomisationPolicy();
+        self::assertSame('', $policy->policyVersionForCache());
         self::assertSame([], $policy->getRuleCustomisers());
     }
 }

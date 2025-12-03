@@ -389,6 +389,11 @@ final class RunnerTest extends TestCase
         $fixedFiles = $fixWith(
             $errorsManager,
             new class implements RuleCustomisationPolicyInterface {
+                public function policyVersionForCache(): string
+                {
+                    return 'test#no changes';
+                }
+
                 public function getRuleCustomisers(): array
                 {
                     return [
@@ -405,6 +410,11 @@ final class RunnerTest extends TestCase
         $fixedFiles = $fixWith(
             $errorsManager,
             new class implements RuleCustomisationPolicyInterface {
+                public function policyVersionForCache(): string
+                {
+                    return 'test#disable one';
+                }
+
                 public function getRuleCustomisers(): array
                 {
                     return [
@@ -421,6 +431,11 @@ final class RunnerTest extends TestCase
         $fixedFiles = $fixWith(
             $errorsManager,
             new class implements RuleCustomisationPolicyInterface {
+                public function policyVersionForCache(): string
+                {
+                    return 'test#reconfigure';
+                }
+
                 public function getRuleCustomisers(): array
                 {
                     return [
@@ -446,6 +461,11 @@ final class RunnerTest extends TestCase
         $fixedFiles = $fixWith(
             $errorsManager,
             new class implements RuleCustomisationPolicyInterface {
+                public function policyVersionForCache(): string
+                {
+                    return 'test#wrong fixer class';
+                }
+
                 public function getRuleCustomisers(): array
                 {
                     return [
@@ -470,6 +490,11 @@ final class RunnerTest extends TestCase
         $fixedFiles = $fixWith(
             $errorsManager,
             new class implements RuleCustomisationPolicyInterface {
+                public function policyVersionForCache(): string
+                {
+                    return 'test#missing fixer';
+                }
+
                 public function getRuleCustomisers(): array
                 {
                     return [
