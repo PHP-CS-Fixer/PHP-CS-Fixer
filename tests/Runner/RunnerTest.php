@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Runner;
 
 use PhpCsFixer\Cache\Directory;
 use PhpCsFixer\Cache\NullCacheManager;
+use PhpCsFixer\Config\RuleCustomisationPolicyInterface;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Differ\DifferInterface;
@@ -27,7 +28,6 @@ use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\LintingResultInterface;
-use PhpCsFixer\RuleCustomisationPolicyInterface;
 use PhpCsFixer\Runner\Event\AnalysisStarted;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Runner;

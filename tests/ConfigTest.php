@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Config;
+use PhpCsFixer\Config\NullRuleCustomisationPolicy;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\FixCommand;
@@ -23,7 +24,6 @@ use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer;
 use PhpCsFixer\Fixer\ControlStructure\IncludeFixer;
 use PhpCsFixer\Fixer\FixerInterface;
-use PhpCsFixer\NullRuleCustomisationPolicy;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleSet;
 use PhpCsFixer\ToolInfo;

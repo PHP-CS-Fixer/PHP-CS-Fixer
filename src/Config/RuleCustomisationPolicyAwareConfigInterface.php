@@ -12,7 +12,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer;
+namespace PhpCsFixer\Config;
+
+use PhpCsFixer\ConfigInterface;
 
 /**
  * @TODO 4.0 Include support for this in main ConfigInterface

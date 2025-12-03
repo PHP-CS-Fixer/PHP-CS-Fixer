@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer;
 
+use PhpCsFixer\Config\RuleCustomisationPolicyAwareConfigInterface;
+use PhpCsFixer\Config\RuleCustomisationPolicyInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;

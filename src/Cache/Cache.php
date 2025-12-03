@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Cache;
 
+use PhpCsFixer\Config\NullRuleCustomisationPolicy;
 use PhpCsFixer\Utils;
 
 /**
@@ -129,7 +130,7 @@ final class Cache implements CacheInterface
             $data['indent'],
             $data['lineEnding'],
             $data['rules'],
-            $data['ruleCustomisationPolicyVersion'] ?? new NullRuleCustomisationPolicy()->policyVersionForCache()
+            $data['ruleCustomisationPolicyVersion'] ?? (new NullRuleCustomisationPolicy())->policyVersionForCache()
         );
 
         $cache = new self($signature);

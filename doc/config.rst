@@ -132,10 +132,10 @@ If you need to disable or reconfigure a rule for specific files, you can use the
     <?php
 
     use PhpCsFixer\Config;
+    use PhpCsFixer\Config\RuleCustomisationPolicyInterface;
     use PhpCsFixer\Finder;
     use PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer;
     use PhpCsFixer\Fixer\FixerInterface;
-    use PhpCsFixer\RuleCustomisationPolicyInterface;
 
     class MyPolicy implements RuleCustomisationPolicyInterface
     {

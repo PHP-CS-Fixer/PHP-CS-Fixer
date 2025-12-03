@@ -12,15 +12,16 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace PhpCsFixer\Tests;
+namespace PhpCsFixer\Tests\Config;
 
-use PhpCsFixer\NullRuleCustomisationPolicy;
-use PhpCsFixer\RuleCustomisationPolicyInterface;
+use PhpCsFixer\Config\NullRuleCustomisationPolicy;
+use PhpCsFixer\Config\RuleCustomisationPolicyInterface;
+use PhpCsFixer\Tests\TestCase;
 
 /**
  * @internal
  *
- * @covers \PhpCsFixer\NullRuleCustomisationPolicy
+ * @covers \PhpCsFixer\Config\NullRuleCustomisationPolicy
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
