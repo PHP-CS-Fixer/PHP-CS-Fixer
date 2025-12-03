@@ -27,7 +27,8 @@ interface RuleCustomisationPolicyInterface
      * Returns a string that changes when the policy implementation changes in a way that
      * would affect the cache validity.
      *
-     * @example `return hash_file(\PHP_VERSION_ID >= 8_01_00 ? 'xxh128' : 'md5', __FILE__);`
+     * @example you may use the following snippet if your policy does not depend on any code outside of the file
+     *          `return hash_file(\PHP_VERSION_ID >= 8_01_00 ? 'xxh128' : 'md5', __FILE__);`
      */
     public function policyVersionForCache(): string;
 

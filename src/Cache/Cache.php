@@ -110,7 +110,7 @@ final class Cache implements CacheInterface
             'indent',
             'lineEnding',
             'rules',
-            'ruleCustomisationPolicyVersion',
+            // 'ruleCustomisationPolicyVersion', // @TODO v4: require me
             'hashes',
         ];
 
@@ -129,7 +129,7 @@ final class Cache implements CacheInterface
             $data['indent'],
             $data['lineEnding'],
             $data['rules'],
-            $data['ruleCustomisationPolicyVersion']
+            $data['ruleCustomisationPolicyVersion'] ?? new NullRuleCustomisationPolicy()->policyVersionForCache()
         );
 
         $cache = new self($signature);

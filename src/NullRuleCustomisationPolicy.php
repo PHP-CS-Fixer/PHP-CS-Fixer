@@ -21,7 +21,7 @@ final class NullRuleCustomisationPolicy implements RuleCustomisationPolicyInterf
 {
     public function policyVersionForCache(): string
     {
-        return '';
+        return 'null-policy';
     }
 
     public function getRuleCustomisers(): array
