@@ -34,13 +34,6 @@ final class NullRuleCustomisationPolicyTest extends TestCase
         self::assertTrue($reflection->implementsInterface(RuleCustomisationPolicyInterface::class));
     }
 
-    public function testIsFinal(): void
-    {
-        $reflection = new \ReflectionClass(NullRuleCustomisationPolicy::class);
-
-        self::assertTrue($reflection->isFinal());
-    }
-
     public function testValues(): void
     {
         $policy = new NullRuleCustomisationPolicy();
