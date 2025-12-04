@@ -89,7 +89,6 @@ List of Available Rule sets
 - `@PHPUnit84Migration:risky <./PHPUnit84MigrationRisky.rst>`_ *(deprecated)*
 - `@PHPUnit91Migration:risky <./PHPUnit91MigrationRisky.rst>`_ *(deprecated)*
 - `@PHPUnit100Migration:risky <./PHPUnit100MigrationRisky.rst>`_ *(deprecated)*
-- `@PHPUnit110Migration:risky <./PHPUnit110MigrationRisky.rst>`_ *(deprecated)*
 - `@PSR1 <./PSR1.rst>`_
 - `@PSR2 <./PSR2.rst>`_
 - `@PSR12 <./PSR12.rst>`_
