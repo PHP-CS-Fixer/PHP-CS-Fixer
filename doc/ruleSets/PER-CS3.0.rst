@@ -24,3 +24,4 @@ Rules
 
 - `single_class_element_per_statement <./../rules/class_notation/single_class_element_per_statement.rst>`_
 - `types_spaces <./../rules/whitespace/types_spaces.rst>`_
+- `attribute_block_no_spaces <./../rules/attribute_notation/attribute_block_no_spaces.rst>`_

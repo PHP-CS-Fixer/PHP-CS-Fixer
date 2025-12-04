@@ -28,7 +28,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Albin Kester <albin.kester@gmail.com>
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class BlockIndicatorNoSpacesFixer extends AbstractFixer
+final class AttributeBlockNoSpacesFixer extends AbstractFixer
 {
     use IndentationTrait;
 
