@@ -1,0 +1,87 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of PHP CS Fixer.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace PhpCsFixer\Fixer\AttributeNotation;
+
+use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\Fixer\IndentationTrait;
+use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FixerDefinition;
+use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
+use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Tokens;
+
+/**
+ * @author Albin Kester <albin.kester@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
+final class BlockIndicatorNoSpaceFixer extends AbstractFixer
+{
+    use IndentationTrait;
+
+    public function getDefinition(): FixerDefinition
+    {
+        return new FixerDefinition(
+            'Remove spaces before and after the attributes block.',
+            [
+                new CodeSample(
+                    '<?php
+class User
+{
+    #[
+        ApiProperty(identifier: true)
+    ]
+    private string $name;
+}'
+                ),
+            ]
+        );
+    }
+
+    public function isCandidate(Tokens $tokens): bool
+    {
+        return \defined('T_ATTRIBUTE');
+    }
+
+    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
+    {
+        $index = 0;
+
+        while (null !== $index = $tokens->getNextTokenOfKind($index, [[\T_ATTRIBUTE]])) {
+            $attributeAnalysis = AttributeAnalyzer::collectOne($tokens, $index);
+
+            $endIndex = $attributeAnalysis->getEndIndex();
+            while ($index <= $endIndex) {
+                $token = $tokens[$index];
+
+                if ($token->isGivenKind([\T_ATTRIBUTE])) {
+                    $nextTokenIndex = $tokens->getNextMeaningfulToken($index);
+                    for ($i = $index + 1; $i < $nextTokenIndex; ++$i) {
+                        $tokens->clearAt($i);
+                    }
+                }
+
+                if ($token->isGivenKind([CT::T_ATTRIBUTE_CLOSE])) {
+                    $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
+                    for ($i = $prevTokenIndex + 1; $i < $index; ++$i) {
+                        $tokens->clearAt($i);
+                    }
+                }
+
+                ++$index;
+            }
+        }
+    }
+}
