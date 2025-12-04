@@ -56,18 +56,18 @@ interface RuleCustomisationPolicyInterface
      * ```
      * [
      *     'array_syntax' => static function (\SplFileInfo $file) {
-     *         if (str_contains($file->getPathname(), '/tests/')) {
-     *             // Disable the fixer for files in /tests/ directory
+     *         if (str_ends_with($file->getPathname(), '/tests/foo.php')) {
+     *             // Disable the fixer for the file tests/foo.php
      *             return false;
      *         }
-     *         if (str_contains($file->getPathname(), '/bin/')) {
-     *             // For files in /bin/ directory create a new fixer instance with a different configuration
+     *         if (str_ends_with($file->getPathname(), '/bin/entrypoint')) {
+     *             // For the file bin/entrypoint let's create a new fixer instance with a different configuration
      *             $fixer = new ArraySyntaxFixer();
      *             $fixer->configure(['syntax' => 'long']);
      *             return $fixer;
-     *        }
-     *        // Keep the default configuration for other files
-     *        return true;
+     *         }
+     *         // Keep the default configuration for other files
+     *         return true;
      *     },
      * ]
      * ```
