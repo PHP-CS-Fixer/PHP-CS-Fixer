@@ -4,6 +4,14 @@ Rule ``control_structure_continuation_position``
 
 Control structure continuation keyword must be on the configured line.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``position``.
+
 Configuration
 -------------
 

@@ -4,6 +4,15 @@ Rule ``heredoc_closing_marker``
 
 Unify ``heredoc`` or ``nowdoc`` closing marker.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``closing_marker``,
+``explicit_heredoc_style``, ``reserved_closing_markers``.
+
 Configuration
 -------------
 

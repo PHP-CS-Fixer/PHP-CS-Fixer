@@ -18,6 +18,7 @@ use PhpCsFixer\Console\Command\CheckCommand;
 use PhpCsFixer\Console\Command\DescribeCommand;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\Command\HelpCommand;
+use PhpCsFixer\Console\Command\InitCommand;
 use PhpCsFixer\Console\Command\ListFilesCommand;
 use PhpCsFixer\Console\Command\ListSetsCommand;
 use PhpCsFixer\Console\Command\SelfUpdateCommand;
@@ -33,6 +34,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\CompleteCommand;
 use Symfony\Component\Console\Command\DumpCompletionCommand;
 use Symfony\Component\Console\Command\ListCommand;
+use Symfony\Component\Console\Exception\CommandNotFoundException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -48,13 +50,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class Application extends BaseApplication
 {
     public const NAME = 'PHP CS Fixer';
-    public const VERSION = '3.90.1-DEV';
+    public const VERSION = '3.91.3-DEV';
     public const VERSION_CODENAME = 'Folding Bike';
 
     /**
      * @readonly
      */
     private ToolInfo $toolInfo;
+
     private ?Command $executedCommand = null;
 
     public function __construct()
@@ -64,9 +67,10 @@ final class Application extends BaseApplication
         $this->toolInfo = new ToolInfo();
 
         // in alphabetical order
-        $this->add(new DescribeCommand());
         $this->add(new CheckCommand($this->toolInfo));
+        $this->add(new DescribeCommand());
         $this->add(new FixCommand($this->toolInfo));
+        $this->add(new InitCommand());
         $this->add(new ListFilesCommand($this->toolInfo));
         $this->add(new ListSetsCommand());
         $this->add(new SelfUpdateCommand(
@@ -80,7 +84,7 @@ final class Application extends BaseApplication
     // polyfill for `add` method, as it is not available in Symfony 8.0
     public function add(Command $command): ?Command
     {
-        if (method_exists($this, 'addCommand')) { // @phpstan-ignore function.impossibleType
+        if (method_exists($this, 'addCommand')) { // @phpstan-ignore-line
             return $this->addCommand($command);
         }
 
@@ -102,8 +106,22 @@ final class Application extends BaseApplication
             $warningsDetector = new WarningsDetector($this->toolInfo);
             $warningsDetector->detectOldVendor();
             $warningsDetector->detectOldMajor();
-            $warningsDetector->detectHigherPhpVersion();
-            $warningsDetector->detectNonMonolithic();
+
+            try {
+                $commandName = $this->getCommandName($input);
+                if (null === $commandName) {
+                    throw new CommandNotFoundException('No command name found.');
+                }
+                $command = $this->find($commandName);
+
+                if (($command instanceof CheckCommand) || ($command instanceof FixCommand)) {
+                    $warningsDetector->detectHigherPhpVersion();
+                    $warningsDetector->detectNonMonolithic();
+                }
+            } catch (CommandNotFoundException $e) {
+                // no-op
+            }
+
             $warnings = $warningsDetector->getWarnings();
 
             if (\count($warnings) > 0) {

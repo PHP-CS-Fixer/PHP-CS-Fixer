@@ -4,13 +4,18 @@ Rule ``no_unneeded_final_method``
 
 Removes ``final`` from methods where possible.
 
-Warning
--------
+Warnings
+--------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when child class overrides a ``private`` method.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``private_methods``.
 
 Configuration
 -------------

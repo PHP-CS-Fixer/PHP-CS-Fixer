@@ -7,8 +7,8 @@ Converts readonly comment on classes to the readonly keyword.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 If classes marked with ``@readonly`` annotation were extended anyway, applying
 this fixer may break the inheritance for their child classes.

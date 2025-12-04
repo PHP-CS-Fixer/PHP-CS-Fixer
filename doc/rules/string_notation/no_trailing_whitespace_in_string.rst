@@ -7,8 +7,8 @@ There must be no trailing whitespace at the end of lines in strings.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Changing the whitespaces in strings might affect string comparisons and outputs.
 

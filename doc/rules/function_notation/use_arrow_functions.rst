@@ -7,8 +7,8 @@ Anonymous functions with return as the only statement must use arrow functions.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when using ``isset()`` on outside variables that are not imported with
 ``use ()``.

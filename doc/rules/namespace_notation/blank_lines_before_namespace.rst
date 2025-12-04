@@ -4,6 +4,15 @@ Rule ``blank_lines_before_namespace``
 
 Controls blank lines before a namespace declaration.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``max_line_breaks``,
+``min_line_breaks``.
+
 Configuration
 -------------
 

@@ -195,9 +195,9 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
             preg_quote($optionalComposerWarning, '/'),
             preg_quote($optionalWarningsHelp, '/'),
             $aboutSubpattern,
+            preg_quote('Loaded config default from ".php-cs-fixer.dist.php".', '/'),
             'Running analysis on \d+ core(?: sequentially|s with \d+ files? per process)+\.',
             $availableMaxProcesses > 1 ? preg_quote('You can enable parallel runner and speed up the analysis! Please see https://cs.symfony.com/doc/usage.html for more information.', '/') : '',
-            preg_quote('Loaded config default from ".php-cs-fixer.dist.php".', '/'),
             \strlen($expectedResult3FilesDots),
             preg_quote($expectedResult3FilesPercentage, '/'),
             preg_quote('Legend: .-no changes, F-fixed, S-skipped (cached or empty file), M-skipped (non-monolithic), I-invalid file syntax (file ignored), E-error', '/')
@@ -312,7 +312,7 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
     public function testWithUsingNonExistingFile(): void
     {
         $output = ScriptExecutor::create(
-            ['php php-cs-fixer check --config=tests/Fixtures/.php-cs-fixer.append-non-existing-file.php --show-progress=dots'],
+            ['php php-cs-fixer check --config=tests/Fixtures/.php-cs-fixer.append-non-existing-file.php --show-progress=dots --no-interaction'],
             __DIR__.'/../..'
         )->getResult();
 

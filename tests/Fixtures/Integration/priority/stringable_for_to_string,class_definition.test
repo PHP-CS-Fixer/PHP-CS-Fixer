@@ -1,0 +1,22 @@
+--TEST--
+Integration of fixers: stringable_for_to_string,class_definition.
+--RULESET--
+{ "stringable_for_to_string": true, "class_definition": true }
+--REQUIREMENTS--
+{ "php": 80000 }
+--EXPECT--
+<?php class Foo implements
+    \Stringable,
+    Bar,
+    Baz
+{
+    public function __toString() { return "Foo"; }
+}
+
+--INPUT--
+<?php class Foo implements
+    Bar,
+    Baz
+{
+    public function __toString() { return "Foo"; }
+}

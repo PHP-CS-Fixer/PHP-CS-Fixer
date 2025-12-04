@@ -4,6 +4,14 @@ Rule ``single_class_element_per_statement``
 
 There MUST NOT be more than one property or constant declared per statement.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``elements``.
+
 Configuration
 -------------
 

@@ -379,7 +379,7 @@ final class PhpUnitTestAnnotationFixer extends AbstractPhpUnitFixer implements C
      */
     private function findWhereDependsFunctionNameStarts(array $line): int
     {
-        $index = stripos(implode('', $line), '@depends') + 8;
+        $index = (int) stripos(implode('', $line), '@depends') + 8;
 
         while (' ' === $line[$index]) {
             ++$index;

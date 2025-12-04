@@ -5,14 +5,19 @@ Rule ``php_unit_expectation``
 Usages of ``->setExpectedException*`` methods MUST be replaced by
 ``->expectException*`` methods.
 
-Warning
--------
+Warnings
+--------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when PHPUnit classes are overridden or not accessible, or when project has
 PHPUnit incompatibilities.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``target``.
 
 Configuration
 -------------

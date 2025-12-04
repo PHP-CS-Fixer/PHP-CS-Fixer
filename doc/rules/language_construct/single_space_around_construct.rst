@@ -4,6 +4,17 @@ Rule ``single_space_around_construct``
 
 Ensures a single space after language constructs.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options:
+``constructs_contain_a_single_space``,
+``constructs_followed_by_a_single_space``,
+``constructs_preceded_by_a_single_space``.
+
 Configuration
 -------------
 

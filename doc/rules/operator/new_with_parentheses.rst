@@ -5,6 +5,15 @@ Rule ``new_with_parentheses``
 All instances created with ``new`` keyword must (not) be followed by
 parentheses.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``anonymous_class``,
+``named_class``.
+
 Configuration
 -------------
 

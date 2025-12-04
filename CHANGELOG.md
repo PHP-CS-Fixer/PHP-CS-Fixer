@@ -3,6 +3,57 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.91.2
+---------------------
+
+* fix: fix support call-site generic variance (#9253)
+* chore: adjust autoloader to exclude all Internal classes in classmap (#9252)
+* CI: set `PHP_CS_FIXER_IGNORE_ENV` for PHP 8.6 (#9254)
+
+Changelog for v3.91.1
+---------------------
+
+* UX: show warning on PHP-mismatch only for 'fix' and 'check' commands (#9243)
+* docs: unify rule/ruleset doc tags (#9250)
+* refactor: don't expose internal commands/rules (#9245)
+* refactor: memoize fixer names (#9219)
+* refactor: use custom set for internal rules (#9247)
+* test: show that `describe` command works well for custom sets (#9246)
+
+Changelog for v3.91.0
+---------------------
+
+* UX: init command (#9215)
+* feat: PHP 8.5 compatibility support (#9234)
+* feat: Add `StringableForToStringFixer` (#9218)
+* feat: support call-site generic variance (#9212)
+* feat: Symfony - add stringable_for_to_string to set (#9235)
+* chore: do not mark NamespaceAnalysis as internal, because it's part of public API interface (#9193)
+* chore: ExampleRuleset - improve test fixture name (#9214)
+* chore: traits - require interfaces or base classes (#9086)
+* CI: Add PHPStan rule to validate public API surface completeness (#9196)
+* CI: auto-select PHP_MAX for special jobs (#9231)
+* CI: drop duplicated PHP 8.4 jobs (#9229)
+* CI: fix SCA after Symfony 7.4.0 release (#9226)
+* CI: no more need for solving PHP 8.4 deprecations in `/vendor/` anymore (#9230)
+* CI: switch trivial jobs to ubuntu-slim (#9232)
+* CI: upgrade `.php-cs-fixer.php-highest.php` to fully reflect PHP 8.4 (#9233)
+* deps: bump actions/checkout from 5 to 6 (#9210)
+* deps: bump crate-ci/typos from 1.39.2 to 1.40.0 (#9237)
+* deps: bump shipmonk/composer-dependency-analyser from 1.8.3 to 1.8.4 in /dev-tools (#9238)
+* deps: bump shipmonk/dead-code-detector from 0.13.5 to 0.14.0 in /dev-tools (#9239)
+* deps: bump Symfony v8 to RC (#9221)
+* deps: bump Symfony v8 to stable (#9222)
+* deps: update xdebug (#9228)
+* fix: move config template to non-excluded folder (#9241)
+* fix: `DeclareStrictTypesFixer` - do not duplicate `strict_types` if it is already present, with other directive (#9225)
+* fix: `FullyQualifiedStrictTypesFixer` - fix crash on `T_OPEN_TAG_WITH_ECHO` (#9217)
+* test: allow CI to define both, numeric and non-numeric PHP versions/builds (#9236)
+* test: do not allow to fail PHP 8.5 job (#9224)
+* test: let's not dance on the edge of the JIT stack limit (#9211)
+* test: run smoke tests on any OS (#9242)
+* tests: update PHP 8.5 compatibility test (#9223)
+
 Changelog for v3.90.0
 ---------------------
 

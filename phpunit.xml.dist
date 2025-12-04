@@ -21,7 +21,7 @@
     <testsuites>
         <testsuite name="unit">
             <directory>./tests/</directory>
-            <exclude>./tests/Console/Command/DocumentationCommandTest.php</exclude>
+            <exclude>./tests/Console/Internal/Command/DocumentationCommandTest.php</exclude>
             <exclude>./tests/IntegrationTest.php</exclude>
             <exclude>./tests/AutoReview/</exclude>
             <exclude>./tests/Smoke/</exclude>
@@ -34,7 +34,7 @@
         </testsuite>
         <testsuite name="auto-review">
             <directory>./tests/AutoReview/</directory>
-            <file>./tests/Console/Command/DocumentationCommandTest.php</file>
+            <file>./tests/Console/Internal/Command/DocumentationCommandTest.php</file>
         </testsuite>
         <testsuite name="short-open-tag">
             <file>./tests/Fixer/PhpTag/NoClosingTagFixerTest.php</file>

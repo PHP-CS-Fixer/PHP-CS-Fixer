@@ -4,6 +4,14 @@ Rule ``phpdoc_no_alias_tag``
 
 No alias PHPDoc tags should be used.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``replacements``.
+
 Configuration
 -------------
 

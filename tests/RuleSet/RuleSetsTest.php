@@ -19,7 +19,7 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSets;
-use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleset;
+use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleSet;
 use PhpCsFixer\Tests\Test\CiReader;
 use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
@@ -249,16 +249,16 @@ Integration of %s.
 
     public function testRegisteringRulesetMultipleTimesCausesAnException(): void
     {
-        RuleSets::registerCustomRuleSet(new ExampleRuleset());
+        RuleSets::registerCustomRuleSet(new ExampleRuleSet());
         self::expectException(\InvalidArgumentException::class);
-        RuleSets::registerCustomRuleSet(new ExampleRuleset());
+        RuleSets::registerCustomRuleSet(new ExampleRuleSet());
     }
 
     public function testCanReadCustomRegisteredRuleSet(): void
     {
-        RuleSets::registerCustomRuleSet(new ExampleRuleset());
-        $set = RuleSets::getSetDefinition('@Vendor/Ruleset');
-        self::assertSame('@Vendor/Ruleset', $set->getName());
+        RuleSets::registerCustomRuleSet(new ExampleRuleSet());
+        $set = RuleSets::getSetDefinition('@Vendor/RuleSet');
+        self::assertSame('@Vendor/RuleSet', $set->getName());
     }
 
     private static function assertPHPUnitVersionIsLargestAllowed(string $setName, string $ruleName, string $actualTargetVersion): void

@@ -4,13 +4,18 @@ Rule ``single_space_after_construct``
 
 Ensures a single space after language constructs.
 
-Warning
--------
+Warnings
+--------
 
-This rule is deprecated and will be removed in the next major version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is DEPRECATED and will be removed in the next major version 4.0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You should use ``single_space_around_construct`` instead.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``constructs``.
 
 Configuration
 -------------

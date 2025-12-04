@@ -68,7 +68,7 @@
             "PhpCsFixer\\": "src/"
         },
         "exclude-from-classmap": [
-            "src/Fixer/Internal/*"
+            "src/**/Internal/"
         ]
     },
     "autoload-dev": {
@@ -106,7 +106,7 @@
             "echo '⚠️ This script is deprecated! Utilise built-in parallelisation instead.';",
             "@cs:fix"
         ],
-        "docs": "@php dev-tools/doc.php",
+        "docs": "@php dev-tools/php-cs-fixer-internal docs",
         "infection": "@test:mutation",
         "install-tools": "./dev-tools/install.sh",
         "mess-detector": "@php dev-tools/vendor/bin/phpmd . ansi dev-tools/mess-detector/phpmd.xml --exclude vendor/*,dev-tools/vendor/*,dev-tools/phpstan/*,tests/Fixtures/*",
