@@ -23,7 +23,6 @@ Example #1
    +    #[ApiProperty(identifier: true)]
         private string $name;
     }
-   \ No newline at end of file
 
 References
 ----------
