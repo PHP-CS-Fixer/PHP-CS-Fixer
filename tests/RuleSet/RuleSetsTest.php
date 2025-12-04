@@ -120,6 +120,7 @@ final class RuleSetsTest extends TestCase
             '@PhpCsFixer:risky',
             '@PhpCsFixer',
             '@PHPUnit10x0Migration:risky',
+            '@PHPUnit11x0Migration:risky',
             '@PHPUnit4x8Migration',
             '@PHPUnit5x5Migration:risky',
             '@PHPUnit7x5Migration:risky',
