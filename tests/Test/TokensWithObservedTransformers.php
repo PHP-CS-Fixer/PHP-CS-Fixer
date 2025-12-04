@@ -24,7 +24,7 @@ use PhpCsFixer\Tokenizer\Transformers;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-class TokensWithObservedTransformers extends Tokens
+final class TokensWithObservedTransformers extends Tokens
 {
     public ?string $currentTransformer = null;
 

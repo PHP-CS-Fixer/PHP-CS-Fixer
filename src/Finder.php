@@ -21,6 +21,8 @@ use Symfony\Component\Finder\Finder as BaseFinder;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @api-extendable
  */
 class Finder extends BaseFinder
 {

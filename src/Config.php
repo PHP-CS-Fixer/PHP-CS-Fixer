@@ -25,6 +25,8 @@ use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @api-extendable
  */
 class Config implements ConfigInterface, ParallelAwareConfigInterface, UnsupportedPhpVersionAllowedConfigInterface, CustomRulesetsAwareConfigInterface
 {
