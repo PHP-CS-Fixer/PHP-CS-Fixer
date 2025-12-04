@@ -339,17 +339,17 @@ final class RunnerTest extends TestCase
     }
 
     /**
-     * @param non-empty-string                   $path
-     * @param _RuleCustomizationPolicyCallback   $arraySyntaxCustomiser
-     * @param list<string>                       $expectedFixedFiles
-     * @param null|\Closure(ErrorsManager): void $errorsChecker
+     * @param non-empty-string                                                  $path
+     * @param _RuleCustomizationPolicyCallback                                  $arraySyntaxCustomiser
+     * @param ?list<array{type: int, filePath: string, sourceMessage: ?string}> $expectedErrors
+     * @param list<string>                                                      $expectedFixedFiles
      *
      * @covers \PhpCsFixer\Runner\Runner::fix
      * @covers \PhpCsFixer\Runner\Runner::fixFile
      *
      * @dataProvider provideRuleCustomisationPolicyCases
      */
-    public function testRuleCustomisationPolicy(string $path, \Closure $arraySyntaxCustomiser, ?\Closure $errorsChecker, array $expectedFixedFiles): void
+    public function testRuleCustomisationPolicy(string $path, \Closure $arraySyntaxCustomiser, ?array $expectedErrors, array $expectedFixedFiles): void
     {
         $arraySyntaxFixer = new Fixer\ArrayNotation\ArraySyntaxFixer();
         $arraySyntaxFixer->configure(['syntax' => 'short']);
@@ -373,17 +373,26 @@ final class RunnerTest extends TestCase
         $errorsManager = new ErrorsManager();
 
         $fixedFiles = self::runRunnerWithPolicy($path, [$arraySyntaxFixer], $policy, $errorsManager);
-        if (null === $errorsChecker) {
-            self::assertTrue($errorsManager->isEmpty(), 'No errors should occur in the fix() method');
-        } else {
-            self::assertFalse($errorsManager->isEmpty(), 'An error should occur in the fix() method');
-            $errorsChecker($errorsManager);
-        }
         self::assertSame($expectedFixedFiles, $fixedFiles);
+
+        $actualErrors = array_map(
+            static fn (Error $error): array => [
+                'type' => $error->getType(),
+                'filePath' => $error->getFilePath(),
+                'sourceMessage' => $error->getSource()?->getMessage(),
+            ],
+            $errorsManager->getAllErrors()
+        );
+
+        self::assertEqualsCanonicalizing(
+            $expectedErrors ?? [],
+            $actualErrors,
+            'Errors do not match expected.'
+        );
     }
 
     /**
-     * @return iterable<string, array{non-empty-string, _RuleCustomizationPolicyCallback, null|\Closure(ErrorsManager): void, list<string>}>
+     * @return iterable<string, array{non-empty-string, _RuleCustomizationPolicyCallback, ?list<array{type: int, filePath: string, sourceMessage: ?string}>, list<string>}>
      */
     public static function provideRuleCustomisationPolicyCases(): iterable
     {
@@ -425,13 +434,18 @@ final class RunnerTest extends TestCase
         yield 'Test when the policy changes the fixer class (not allowed)' => [
             $path,
             static fn (\SplFileInfo $file) => 'B.php' === $file->getBasename() ? new Fixer\Whitespace\LineEndingFixer() : true,
-            static function (ErrorsManager $errorsManager) use ($path): void {
-                $errorsForB = $errorsManager->forPath($path.\DIRECTORY_SEPARATOR.'B.php');
-                self::assertCount(1, $errorsForB, 'An error should occur when the policy changes the fixer class for file B');
-                self::assertInstanceOf(\RuntimeException::class, $errorsForB[0]->getSource());
-                self::assertStringContainsString('expected '.Fixer\ArrayNotation\ArraySyntaxFixer::class, $errorsForB[0]->getSource()->getMessage());
-                self::assertStringContainsString('got '.Fixer\Whitespace\LineEndingFixer::class, $errorsForB[0]->getSource()->getMessage());
-            },
+
+            [
+                [
+                    'type' => Error::TYPE_EXCEPTION,
+                    'filePath' => $path.\DIRECTORY_SEPARATOR.'B.php',
+                    'sourceMessage' => \sprintf(
+                        'The fixer returned by the Rule Customisation Policy must be of the same class as the original fixer (expected `%s`, got `%s`).',
+                        Fixer\ArrayNotation\ArraySyntaxFixer::class,
+                        Fixer\Whitespace\LineEndingFixer::class,
+                    ),
+                ],
+            ],
             // A: fixed, B: exception thrown, C: fixed, D: already ok
             ['A.php', 'C.php'],
         ];

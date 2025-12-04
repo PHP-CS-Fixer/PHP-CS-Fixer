@@ -501,7 +501,11 @@ final class Runner
                     }
                     if (true !== $actualFixer) {
                         if (\get_class($fixer) !== \get_class($actualFixer)) {
-                            throw new \RuntimeException('The fixer returned by the Rule Customisation Policy must be of the same class as the original fixer (expected '.\get_class($fixer).', got '.\get_class($actualFixer).')');
+                            throw new \RuntimeException(\sprintf(
+                                'The fixer returned by the Rule Customisation Policy must be of the same class as the original fixer (expected `%s`, got `%s`).',
+                                \get_class($fixer),
+                                \get_class($actualFixer),
+                            ));
                         }
                         $fixer = $actualFixer;
                     }
