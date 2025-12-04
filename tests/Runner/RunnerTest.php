@@ -434,7 +434,6 @@ final class RunnerTest extends TestCase
         yield 'Test when the policy changes the fixer class (not allowed)' => [
             $path,
             static fn (\SplFileInfo $file) => 'B.php' === $file->getBasename() ? new Fixer\Whitespace\LineEndingFixer() : true,
-
             [
                 [
                     'type' => Error::TYPE_EXCEPTION,
