@@ -20,6 +20,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
@@ -54,7 +55,7 @@ class User
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return \defined('T_ATTRIBUTE');
+        return $tokens->isTokenKindFound(FCT::T_ATTRIBUTE);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void

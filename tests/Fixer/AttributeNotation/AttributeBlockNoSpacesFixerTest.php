@@ -37,9 +37,12 @@ final class AttributeBlockNoSpacesFixerTest extends AbstractFixerTestCase
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: null|string}>
+     */
     public static function provideFixCases(): iterable
     {
-        yield [
+        yield 'With parentheses' => [
             '<?php
 class User
 {
@@ -56,7 +59,7 @@ class User
 }',
         ];
 
-        yield [
+        yield 'Without parentheses' => [
             '<?php
 class User
 {
@@ -71,7 +74,7 @@ class User
 }',
         ];
 
-        yield [
+        yield 'With multiple attributes in a block' =>  [
             '<?php
 class User
 {
