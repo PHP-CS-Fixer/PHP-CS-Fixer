@@ -1,6 +1,6 @@
-=================================
-Rule ``block_indicator_no_space``
-=================================
+==================================
+Rule ``block_indicator_no_spaces``
+==================================
 
 Remove spaces before and after the attributes block.
 
@@ -27,7 +27,7 @@ Example #1
 References
 ----------
 
-- Fixer class: `PhpCsFixer\\Fixer\\AttributeNotation\\BlockIndicatorNoSpaceFixer <./../../../src/Fixer/AttributeNotation/BlockIndicatorNoSpaceFixer.php>`_
-- Test class: `PhpCsFixer\\Tests\\Fixer\\AttributeNotation\\BlockIndicatorNoSpaceFixerTest <./../../../tests/Fixer/AttributeNotation/BlockIndicatorNoSpaceFixerTest.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\AttributeNotation\\BlockIndicatorNoSpacesFixer <./../../../src/Fixer/AttributeNotation/BlockIndicatorNoSpacesFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\AttributeNotation\\BlockIndicatorNoSpacesFixerTest <./../../../tests/Fixer/AttributeNotation/BlockIndicatorNoSpacesFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

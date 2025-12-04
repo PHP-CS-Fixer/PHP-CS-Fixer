@@ -23,11 +23,12 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
- * @author Albin Kester <albin.kester@gmail.com>
+ * @see https://www.php-fig.org/per/coding-style/#121-basics
  *
+ * @author Albin Kester <albin.kester@gmail.com>
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class BlockIndicatorNoSpaceFixer extends AbstractFixer
+final class BlockIndicatorNoSpacesFixer extends AbstractFixer
 {
     use IndentationTrait;
 

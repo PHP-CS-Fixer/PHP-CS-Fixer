@@ -19,15 +19,15 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\AttributeNotation\BlockIndicatorNoSpaceFixer
+ * @covers \PhpCsFixer\Fixer\AttributeNotation\BlockIndicatorNoSpacesFixer
  *
- * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\AttributeNotation\BlockIndicatorNoSpaceFixer>
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\AttributeNotation\BlockIndicatorNoSpacesFixer>
  *
  * @author Albin Kester <albin.kester@gmail.com>
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class BlockIndicatorNoSpaceFixerTest extends AbstractFixerTestCase
+final class BlockIndicatorNoSpacesFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
