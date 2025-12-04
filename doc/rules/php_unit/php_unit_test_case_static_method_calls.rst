@@ -18,7 +18,7 @@ This rule is CONFIGURABLE
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can configure this rule using the following options: ``call_type``,
-``methods``.
+``methods``, ``target``.
 
 Configuration
 -------------
