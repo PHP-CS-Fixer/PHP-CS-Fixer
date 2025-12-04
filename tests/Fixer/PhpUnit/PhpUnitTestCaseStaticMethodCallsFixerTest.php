@@ -648,7 +648,7 @@ class MyTest extends \PHPUnit_Framework_TestCase
      */
     public function testPHPUnit13(): void
     {
-        self::fail('Hello, please implement me, and add new case for PHPUnit 14.');
+        self::fail('Hello, please implement me, and add new case for PHPUnit 13.');
     }
 
     /**
