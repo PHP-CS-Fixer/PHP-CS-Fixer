@@ -44,7 +44,8 @@ class User
         ApiProperty(identifier: true)
     ]
     private string $name;
-}'
+}
+'
                 ),
             ]
         );
