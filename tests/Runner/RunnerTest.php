@@ -24,6 +24,7 @@ use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Fixer;
+use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
@@ -41,6 +42,8 @@ use Symfony\Component\Finder\Finder;
  * @internal
  *
  * @covers \PhpCsFixer\Runner\Runner
+ *
+ * @phpstan-import-type _RuleCustomizationPolicyCallback from RuleCustomisationPolicyInterface
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
@@ -336,174 +339,132 @@ final class RunnerTest extends TestCase
     }
 
     /**
+     * @param non-empty-string                   $path
+     * @param _RuleCustomizationPolicyCallback   $arraySyntaxCustomiser
+     * @param list<string>                       $expectedFixedFiles
+     * @param null|\Closure(ErrorsManager): void $errorsChecker
+     *
      * @covers \PhpCsFixer\Runner\Runner::fix
      * @covers \PhpCsFixer\Runner\Runner::fixFile
+     *
+     * @dataProvider provideRuleCustomisationPolicyCases
      */
-    public function testRuleCustomisationPolicy(): void
+    public function testRuleCustomisationPolicy(string $path, \Closure $arraySyntaxCustomiser, ?\Closure $errorsChecker, array $expectedFixedFiles): void
     {
-        $path = \dirname(__DIR__).\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'rule-customisation';
-
         $arraySyntaxFixer = new Fixer\ArrayNotation\ArraySyntaxFixer();
         $arraySyntaxFixer->configure(['syntax' => 'short']);
 
-        $fixWith = static function (ErrorsManager $errorsManager, RuleCustomisationPolicyInterface $policy) use ($path, $arraySyntaxFixer): array {
-            $runner = new Runner(
-                // $fileIterator
-                Finder::create()->in($path),
-                // $fixers
-                [$arraySyntaxFixer],
-                // $differ
-                new NullDiffer(),
-                // $eventDispatcher
-                null,
-                // $errorsManager
-                $errorsManager,
-                // $linter
-                new Linter(),
-                // $isDryRun
-                true,
-                // $cacheManager
-                new NullCacheManager(),
-                // $directory
-                new Directory($path),
-                // $stopOnViolation
-                false,
-                // $parallelConfig
-                null,
-                // $input
-                null,
-                // $configFile
-                null,
-                // $ruleCustomisationPolicy
-                $policy
-            );
-            $fixInfo = $runner->fix();
-            $fixedFiles = array_keys($fixInfo);
-            sort($fixedFiles, \SORT_STRING);
+        $policy = new class implements RuleCustomisationPolicyInterface {
+            public \Closure $arraySyntaxCustomiser;
 
-            return $fixedFiles;
+            public function policyVersionForCache(): string
+            {
+                return '';
+            }
+
+            public function getRuleCustomisers(): array
+            {
+                return [
+                    'array_syntax' => fn (\SplFileInfo $file) => ($this->arraySyntaxCustomiser)($file),
+                ];
+            }
         };
-
-        // Test when the policy doesn't change a fixer
+        $policy->arraySyntaxCustomiser = $arraySyntaxCustomiser;
         $errorsManager = new ErrorsManager();
-        $fixedFiles = $fixWith(
-            $errorsManager,
-            new class implements RuleCustomisationPolicyInterface {
-                public function policyVersionForCache(): string
-                {
-                    return 'test#no changes';
+
+        $fixedFiles = self::runRunnerWithPolicy($path, [$arraySyntaxFixer], $policy, $errorsManager);
+        if (null === $errorsChecker) {
+            self::assertTrue($errorsManager->isEmpty(), 'No errors should occur in the fix() method');
+        } else {
+            self::assertFalse($errorsManager->isEmpty(), 'An error should occur in the fix() method');
+            $errorsChecker($errorsManager);
+        }
+        self::assertSame($expectedFixedFiles, $fixedFiles);
+    }
+
+    /**
+     * @return iterable<
+     *     non-empty-string,
+     *     array{
+     *         non-empty-string,
+     *         _RuleCustomizationPolicyCallback,
+     *         null|\Closure(ErrorsManager): void,
+     *         list<string>
+     *     }
+     * >
+     */
+    public static function provideRuleCustomisationPolicyCases(): iterable
+    {
+        $path = \dirname(__DIR__).\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'rule-customisation';
+
+        yield "Test when the policy doesn't change a fixer" => [
+            $path,
+            static fn (\SplFileInfo $file) => true,
+            null,
+            // A: fixed, B: fixed, C: fixed, D: already ok
+            ['A.php', 'B.php', 'C.php'],
+        ];
+
+        yield 'Test when the policy disables a fixer for a specific file' => [
+            $path,
+            static fn (\SplFileInfo $file) => 'B.php' === $file->getBasename() ? false : true,
+            null,
+            // A: fixed, B: skipped, C: fixed, D: already ok
+            ['A.php', 'C.php'],
+        ];
+
+        yield 'Test when the policy changes a fixer for specific files' => [
+            $path,
+            static function (\SplFileInfo $file) {
+                if (\in_array($file->getBasename(), ['B.php', 'D.php'], true)) {
+                    $fixer = new Fixer\ArrayNotation\ArraySyntaxFixer();
+                    $fixer->configure(['syntax' => 'long']);
+
+                    return $fixer;
                 }
 
-                public function getRuleCustomisers(): array
-                {
-                    return [
-                        'array_syntax' => static fn (\SplFileInfo $file) => true,
-                    ];
-                }
+                return true;
+            },
+            null,
+            // A: fixed, B: ok for new configuration, C: fixed, D: fixed with new configuration
+            ['A.php', 'C.php', 'D.php'],
+        ];
+
+        yield 'Test when the policy changes the fixer class (not allowed)' => [
+            $path,
+            static fn (\SplFileInfo $file) => 'B.php' === $file->getBasename() ? new Fixer\Whitespace\LineEndingFixer() : true,
+            static function (ErrorsManager $errorsManager) use ($path): void {
+                $errorsForB = $errorsManager->forPath($path.\DIRECTORY_SEPARATOR.'B.php');
+                self::assertCount(1, $errorsForB, 'An error should occur when the policy changes the fixer class for file B');
+                self::assertInstanceOf(\RuntimeException::class, $errorsForB[0]->getSource());
+                self::assertStringContainsString('expected '.Fixer\ArrayNotation\ArraySyntaxFixer::class, $errorsForB[0]->getSource()->getMessage());
+                self::assertStringContainsString('got '.Fixer\Whitespace\LineEndingFixer::class, $errorsForB[0]->getSource()->getMessage());
+            },
+            // A: fixed, B: exception thrown, C: fixed, D: already ok
+            ['A.php', 'C.php'],
+        ];
+    }
+
+    public function testRuleCustomisationPolicyWithMissingFixers(): void
+    {
+        $policy = new class implements RuleCustomisationPolicyInterface {
+            public function policyVersionForCache(): string
+            {
+                return '';
             }
-        );
-        self::assertTrue($errorsManager->isEmpty(), 'No errors should occur in the fix() method');
-        self::assertSame(['A.php', 'B.php', 'C.php'], $fixedFiles, 'A: fixed, B: fixed, C: fixed, D: already ok');
 
-        // Test when the policy disables a fixer for a specific file
-        $errorsManager = new ErrorsManager();
-        $fixedFiles = $fixWith(
-            $errorsManager,
-            new class implements RuleCustomisationPolicyInterface {
-                public function policyVersionForCache(): string
-                {
-                    return 'test#disable one';
-                }
-
-                public function getRuleCustomisers(): array
-                {
-                    return [
-                        'array_syntax' => static fn (\SplFileInfo $file) => 'B.php' === $file->getBasename() ? false : true,
-                    ];
-                }
+            public function getRuleCustomisers(): array
+            {
+                return [
+                    'array_syntax' => static fn (\SplFileInfo $file) => true,
+                    'line_ending' => static fn (\SplFileInfo $file) => true,
+                ];
             }
-        );
-        self::assertTrue($errorsManager->isEmpty(), 'No errors should occur in the fix() method');
-        self::assertSame(['A.php', 'C.php'], $fixedFiles, 'A: fixed, B: skipped, C: fixed, D: already ok');
-
-        // Test when the policy changes a fixer for specific files
-        $errorsManager = new ErrorsManager();
-        $fixedFiles = $fixWith(
-            $errorsManager,
-            new class implements RuleCustomisationPolicyInterface {
-                public function policyVersionForCache(): string
-                {
-                    return 'test#reconfigure';
-                }
-
-                public function getRuleCustomisers(): array
-                {
-                    return [
-                        'array_syntax' => static function (\SplFileInfo $file) {
-                            if (\in_array($file->getBasename(), ['B.php', 'D.php'], true)) {
-                                $fixer = new Fixer\ArrayNotation\ArraySyntaxFixer();
-                                $fixer->configure(['syntax' => 'long']);
-
-                                return $fixer;
-                            }
-
-                            return true;
-                        },
-                    ];
-                }
-            }
-        );
-        self::assertTrue($errorsManager->isEmpty(), 'No errors should occur in the fix() method');
-        self::assertSame(['A.php', 'C.php', 'D.php'], $fixedFiles, 'A: fixed, B: ok for new configuration, C: fixed, D: fixed with new configuration');
-
-        // Test when the policy changes the fixer class - that's not allowed
-        $errorsManager = new ErrorsManager();
-        $fixedFiles = $fixWith(
-            $errorsManager,
-            new class implements RuleCustomisationPolicyInterface {
-                public function policyVersionForCache(): string
-                {
-                    return 'test#wrong fixer class';
-                }
-
-                public function getRuleCustomisers(): array
-                {
-                    return [
-                        'array_syntax' => static fn (\SplFileInfo $file) => 'B.php' === $file->getBasename() ? new Fixer\Whitespace\LineEndingFixer() : true,
-                    ];
-                }
-            }
-        );
-        self::assertFalse($errorsManager->isEmpty(), 'An error should occur when the policy changes the fixer class for file B');
-        $errorsForB = $errorsManager->forPath($path.\DIRECTORY_SEPARATOR.'B.php');
-        self::assertCount(1, $errorsForB, 'An error should occur when the policy changes the fixer class for file B');
-        self::assertInstanceOf(\RuntimeException::class, $errorsForB[0]->getSource());
-        self::assertStringContainsString('expected '.\get_class($arraySyntaxFixer), $errorsForB[0]->getSource()->getMessage());
-        self::assertStringContainsString('got '.Fixer\Whitespace\LineEndingFixer::class, $errorsForB[0]->getSource()->getMessage());
-        self::assertSame(['A.php', 'C.php'], $fixedFiles, 'A: fixed, B: exception thrown, C: fixed, D: already ok');
-
-        // Test when the policy contains customisers for non-existing fixers
-        $errorsManager = new ErrorsManager();
+        };
         self::expectException(\RuntimeException::class);
         // The exception message should mention line_ending
         self::expectExceptionMessageMatches('/\bline_ending\b/');
-        $fixedFiles = $fixWith(
-            $errorsManager,
-            new class implements RuleCustomisationPolicyInterface {
-                public function policyVersionForCache(): string
-                {
-                    return 'test#missing fixer';
-                }
-
-                public function getRuleCustomisers(): array
-                {
-                    return [
-                        'array_syntax' => static fn (\SplFileInfo $file) => true,
-                        'line_ending' => static fn (\SplFileInfo $file) => true,
-                    ];
-                }
-            }
-        );
+        self::runRunnerWithPolicy(__DIR__, [new Fixer\ArrayNotation\ArraySyntaxFixer()], $policy, new ErrorsManager());
     }
 
     private function createDifferDouble(): DifferInterface
@@ -542,5 +503,50 @@ final class RunnerTest extends TestCase
                 };
             }
         };
+    }
+
+    /**
+     * @param non-empty-string     $path
+     * @param list<FixerInterface> $fixers
+     *
+     * @return list<string> the names of the fixed files
+     */
+    private static function runRunnerWithPolicy(string $path, array $fixers, RuleCustomisationPolicyInterface $policy, ErrorsManager $errorsManager)
+    {
+        $runner = new Runner(
+            // $fileIterator
+            Finder::create()->in($path),
+            // $fixers
+            $fixers,
+            // $differ
+            new NullDiffer(),
+            // $eventDispatcher
+            null,
+            // $errorsManager
+            $errorsManager,
+            // $linter
+            new Linter(),
+            // $isDryRun
+            true,
+            // $cacheManager
+            new NullCacheManager(),
+            // $directory
+            new Directory($path),
+            // $stopOnViolation
+            false,
+            // $parallelConfig
+            null,
+            // $input
+            null,
+            // $configFile
+            null,
+            // $ruleCustomisationPolicy
+            $policy
+        );
+        $fixInfo = $runner->fix();
+        $fixedFiles = array_keys($fixInfo);
+        sort($fixedFiles, \SORT_STRING);
+
+        return $fixedFiles;
     }
 }
