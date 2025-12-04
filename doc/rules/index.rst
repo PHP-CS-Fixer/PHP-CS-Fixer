@@ -76,6 +76,9 @@ Attribute Notation
 - `attribute_empty_parentheses <./attribute_notation/attribute_empty_parentheses.rst>`_ *(configurable)*
 
   PHP attributes declared without arguments must (not) be followed by empty parentheses.
+- `block_indicator_no_space <./attribute_notation/block_indicator_no_space.rst>`_
+
+  Remove spaces before and after the attributes block.
 - `general_attribute_remove <./attribute_notation/general_attribute_remove.rst>`_ *(configurable)*
 
   Removes configured attributes by their respective FQN.
