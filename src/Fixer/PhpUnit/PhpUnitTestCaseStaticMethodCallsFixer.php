@@ -24,6 +24,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Future;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
@@ -490,7 +491,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
                     PhpUnitTargetVersion::VERSION_11_0,
                     PhpUnitTargetVersion::VERSION_NEWEST,
                 ])
-                ->setDefault(PhpUnitTargetVersion::VERSION_10_0) // @TODO change to "VERSION_NEWEST" on next major 4.0
+                ->setDefault(Future::getV4OrV3(PhpUnitTargetVersion::VERSION_NEWEST, PhpUnitTargetVersion::VERSION_10_0))
                 ->getOption(),
         ]);
     }
