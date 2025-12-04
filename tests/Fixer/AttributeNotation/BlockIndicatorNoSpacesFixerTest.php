@@ -70,5 +70,26 @@ class User
     private string $name;
 }',
         ];
+
+        yield [
+            '<?php
+class User
+{
+    #[ApiProperty1(),
+        ApiProperty2(),
+        ApiProperty3(),]
+    private string $name;
+}',
+            '<?php
+class User
+{
+    #[
+        ApiProperty1(),
+        ApiProperty2(),
+        ApiProperty3(),
+    ]
+    private string $name;
+}',
+        ];
     }
 }
