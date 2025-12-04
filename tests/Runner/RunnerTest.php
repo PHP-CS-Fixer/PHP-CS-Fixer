@@ -383,15 +383,7 @@ final class RunnerTest extends TestCase
     }
 
     /**
-     * @return iterable<
-     *     non-empty-string,
-     *     array{
-     *         non-empty-string,
-     *         _RuleCustomizationPolicyCallback,
-     *         null|\Closure(ErrorsManager): void,
-     *         list<string>
-     *     }
-     * >
+     * @return iterable<string, array{non-empty-string, _RuleCustomizationPolicyCallback, null|\Closure(ErrorsManager): void, list<string>}>
      */
     public static function provideRuleCustomisationPolicyCases(): iterable
     {
@@ -511,7 +503,7 @@ final class RunnerTest extends TestCase
      *
      * @return list<string> the names of the fixed files
      */
-    private static function runRunnerWithPolicy(string $path, array $fixers, RuleCustomisationPolicyInterface $policy, ErrorsManager $errorsManager)
+    private static function runRunnerWithPolicy(string $path, array $fixers, RuleCustomisationPolicyInterface $policy, ErrorsManager $errorsManager): array
     {
         $runner = new Runner(
             // $fileIterator
