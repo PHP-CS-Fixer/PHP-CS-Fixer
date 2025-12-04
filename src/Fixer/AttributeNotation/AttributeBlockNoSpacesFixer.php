@@ -24,9 +24,10 @@ use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
+ * @author Albin Kester <albin.kester@gmail.com>
+ *
  * @see https://www.php-fig.org/per/coding-style/#121-basics
  *
- * @author Albin Kester <albin.kester@gmail.com>
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class AttributeBlockNoSpacesFixer extends AbstractFixer
