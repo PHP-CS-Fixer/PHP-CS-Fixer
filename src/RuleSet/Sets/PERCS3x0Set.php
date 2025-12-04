@@ -44,6 +44,7 @@ final class PERCS3x0Set extends AbstractRuleSetDefinition
             ],
             'single_class_element_per_statement' => true,
             'types_spaces' => true,
+            'attribute_block_no_spaces' => true
         ];
     }
 
