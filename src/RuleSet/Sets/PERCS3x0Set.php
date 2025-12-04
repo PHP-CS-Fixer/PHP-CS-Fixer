@@ -36,6 +36,7 @@ final class PERCS3x0Set extends AbstractRuleSetDefinition
     {
         return [
             '@PER-CS2x0' => true,
+            'attribute_block_no_spaces' => true,
             'nullable_type_declaration' => true,
             'operator_linebreak' => true,
             'ordered_types' => [
@@ -44,7 +45,6 @@ final class PERCS3x0Set extends AbstractRuleSetDefinition
             ],
             'single_class_element_per_statement' => true,
             'types_spaces' => true,
-            'attribute_block_no_spaces' => true
         ];
     }
 

@@ -76,7 +76,7 @@ class User
 }',
         ];
 
-        yield 'With multiple attributes in a block' =>  [
+        yield 'With multiple attributes in a block' => [
             '<?php
 class User
 {
