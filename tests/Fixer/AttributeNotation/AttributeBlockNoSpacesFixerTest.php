@@ -21,6 +21,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @covers \PhpCsFixer\Fixer\AttributeNotation\AttributeBlockNoSpacesFixer
  *
+ * @requires PHP 8.0
+ *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\AttributeNotation\AttributeBlockNoSpacesFixer>
  *
  * @author Albin Kester <albin.kester@gmail.com>
