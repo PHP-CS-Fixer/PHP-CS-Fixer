@@ -614,16 +614,16 @@
         },
         {
             "name": "phpcompatibility/phpcompatibility-paragonie",
-            "version": "2.0.0-alpha1",
+            "version": "2.0.0-alpha2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCompatibility/PHPCompatibilityParagonie.git",
-                "reference": "e9b1de33aca14704843b86705d0c00f9b30e9401"
+                "reference": "7a979711c87d8202b52f56c56bd719d09d8ed7f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilityParagonie/zipball/e9b1de33aca14704843b86705d0c00f9b30e9401",
-                "reference": "e9b1de33aca14704843b86705d0c00f9b30e9401"
+                "url": "https://api.github.com/repos/PHPCompatibility/PHPCompatibilityParagonie/zipball/7a979711c87d8202b52f56c56bd719d09d8ed7f5",
+                "reference": "7a979711c87d8202b52f56c56bd719d09d8ed7f5"
             },
             "require": {
                 "phpcompatibility/php-compatibility": "^10.0@dev"
