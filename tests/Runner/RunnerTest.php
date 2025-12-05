@@ -379,7 +379,7 @@ final class RunnerTest extends TestCase
             static fn (Error $error): array => [
                 'type' => $error->getType(),
                 'filePath' => $error->getFilePath(),
-                'sourceMessage' => $error->getSource() ? $error->getSource()->getMessage() : null,
+                'sourceMessage' => $error->getSource() === null ? null : $error->getSource()->getMessage(),
             ],
             $errorsManager->getAllErrors()
         );
