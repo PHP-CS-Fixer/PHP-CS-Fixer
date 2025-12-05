@@ -58,7 +58,6 @@ return (new Config())
     ] + (class_exists(InternalRiskySet::class) ? [
         '@self/internal' => true, // internal rule set, shall not be used outside of main repo
     ] : []) + [
-        'general_phpdoc_annotation_remove' => ['annotations' => ['expectedDeprecation']], // one should use PHPUnit built-in method instead
         'header_comment' => [
             'header' => implode('', $fileHeaderParts),
             'validator' => implode('', [
