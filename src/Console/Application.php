@@ -161,7 +161,7 @@ final class Application extends BaseApplication
 
         // value of `$commitPlaceholderPossiblyEvaluated` will be changed during phar building, other value will not
         $commitPlaceholderPossiblyEvaluated = '@git-commit@';
-        $commitPlaceholder = implode('', ['@', 'git-commit@']);
+        $commitPlaceholder = implode('', ['@', 'git-commit@']); // do not replace with imploded value, as here we need to prevent phar builder to replace the placeholder
 
         $versionCommit = $commitPlaceholder !== $commitPlaceholderPossiblyEvaluated
             ? substr($commitPlaceholderPossiblyEvaluated, 0, 7) // for phar builds
