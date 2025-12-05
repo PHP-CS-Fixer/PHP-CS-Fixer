@@ -9,10 +9,10 @@
         "phpcompatibility/phpcompatibility-symfony": "^2@alpha",
         "phpmd/phpmd": "dev-master as 2.16.0",
         "phpstan/extension-installer": "^1.4.3",
-        "phpstan/phpstan": "^2.1.32",
-        "phpstan/phpstan-phpunit": "^2.0.8",
+        "phpstan/phpstan": "^2.1.33",
+        "phpstan/phpstan-phpunit": "^2.0.9",
         "phpstan/phpstan-strict-rules": "^2.0.7",
-        "phpstan/phpstan-symfony": "^2.0.8",
+        "phpstan/phpstan-symfony": "^2.0.9",
         "shipmonk/composer-dependency-analyser": "^1.8.4",
         "shipmonk/dead-code-detector": "^0.14.0",
         "shipmonk/phpstan-baseline-per-identifier": "^2.2.0"
