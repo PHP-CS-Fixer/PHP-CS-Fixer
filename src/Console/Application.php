@@ -159,12 +159,13 @@ final class Application extends BaseApplication
     {
         $longVersion = \sprintf('%s <info>%s</info>', self::NAME, self::VERSION);
 
-        $commit = '@git-commit@';
-        $versionCommit = '';
+        // value of `$commitPlaceholderPossiblyEvaluated` will be changed during phar building, other value will not
+        $commitPlaceholderPossiblyEvaluated = '@git-commit@';
+        $commitPlaceholder = implode('', ['@', 'git-commit@']); // do not replace with imploded value, as here we need to prevent phar builder to replace the placeholder
 
-        if ('@'.'git-commit@' !== $commit) { /** @phpstan-ignore-line as `$commit` is replaced during phar building */
-            $versionCommit = substr($commit, 0, 7);
-        }
+        $versionCommit = $commitPlaceholder !== $commitPlaceholderPossiblyEvaluated
+            ? substr($commitPlaceholderPossiblyEvaluated, 0, 7) // for phar builds
+            : '';
 
         $about = implode('', [
             $longVersion,

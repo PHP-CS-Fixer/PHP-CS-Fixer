@@ -98,7 +98,7 @@ final class PharTest extends AbstractSmokeTestCase
 
     public function testFixParallel(): void
     {
-        $command = self::executePharCommand('fix src/Config.php -vvv --dry-run --diff --using-cache=no --config='.__DIR__.'/../Fixtures/.php-cs-fixer.parallel.php'.' 2>&1');
+        $command = self::executePharCommand('fix src/Config.php -vvv --dry-run --diff --using-cache=no --config='.__DIR__.'/../Fixtures/.php-cs-fixer.parallel.php 2>&1');
 
         self::assertSame(0, $command->getCode());
         self::assertMatchesRegularExpression(
