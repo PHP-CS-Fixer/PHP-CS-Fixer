@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.91.3
+---------------------
+
+* Revert "feat: Symfony - add stringable_for_to_string to set" (#9268)
+
 Changelog for v3.91.2
 ---------------------
 
