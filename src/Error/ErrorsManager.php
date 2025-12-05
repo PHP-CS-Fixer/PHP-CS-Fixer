@@ -61,6 +61,14 @@ final class ErrorsManager
     }
 
     /**
+     * @return list<Error>
+     */
+    public function getAllErrors(): array
+    {
+        return $this->errors;
+    }
+
+    /**
      * Returns errors reported for specified path.
      *
      * @return list<Error>

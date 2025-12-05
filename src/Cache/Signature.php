@@ -38,16 +38,19 @@ final class Signature implements SignatureInterface
      */
     private array $rules;
 
+    private string $ruleCustomisationPolicyVersion;
+
     /**
      * @param array<string, array<string, mixed>|bool> $rules
      */
-    public function __construct(string $phpVersion, string $fixerVersion, string $indent, string $lineEnding, array $rules)
+    public function __construct(string $phpVersion, string $fixerVersion, string $indent, string $lineEnding, array $rules, string $ruleCustomisationPolicyVersion)
     {
         $this->phpVersion = $phpVersion;
         $this->fixerVersion = $fixerVersion;
         $this->indent = $indent;
         $this->lineEnding = $lineEnding;
         $this->rules = self::makeJsonEncodable($rules);
+        $this->ruleCustomisationPolicyVersion = $ruleCustomisationPolicyVersion;
     }
 
     public function getPhpVersion(): string
@@ -75,13 +78,19 @@ final class Signature implements SignatureInterface
         return $this->rules;
     }
 
+    public function getRuleCustomisationPolicyVersion(): string
+    {
+        return $this->ruleCustomisationPolicyVersion;
+    }
+
     public function equals(SignatureInterface $signature): bool
     {
         return $this->phpVersion === $signature->getPhpVersion()
             && $this->fixerVersion === $signature->getFixerVersion()
             && $this->indent === $signature->getIndent()
             && $this->lineEnding === $signature->getLineEnding()
-            && $this->rules === $signature->getRules();
+            && $this->rules === $signature->getRules()
+            && $this->ruleCustomisationPolicyVersion === $signature->getRuleCustomisationPolicyVersion();
     }
 
     /**

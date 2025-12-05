@@ -971,12 +971,9 @@ final class ProjectCodeTest extends TestCase
         $exceptionsForDuplicatesCheck = [ // should only shrink
             'PhpCsFixer\Tests\AutoReview\CommandTest::provideCommandHasNameConstCases',
             'PhpCsFixer\Tests\AutoReview\DocumentationTest::provideFixerDocumentationFileIsUpToDateCases',
-            'PhpCsFixer\Tests\AutoReview\FixerFactoryTest::providePriorityIntegrationTestFilesAreListedInPriorityGraphCases',
             'PhpCsFixer\Tests\Console\Command\DescribeCommandTest::provideExecuteOutputCases',
             'PhpCsFixer\Tests\Console\Command\HelpCommandTest::provideGetDisplayableAllowedValuesCases',
             'PhpCsFixer\Tests\Documentation\FixerDocumentGeneratorTest::provideGenerateRuleSetsDocumentationCases',
-            'PhpCsFixer\Tests\Fixer\Basic\EncodingFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\UtilsTest::provideStableSortCases',
         ];
 
         $dataProvider = new \ReflectionMethod($testClassName, $dataProviderName);
@@ -1004,7 +1001,18 @@ final class ProjectCodeTest extends TestCase
                 continue;
             }
 
-            $serializedCandidateData = serialize($candidateData);
+            $serializableCandidateData = [];
+            foreach ($candidateData as $key => $value) {
+                if ($value instanceof \Closure) {
+                    $serializableCandidateData[$key] = spl_object_id($value);
+                } elseif ($value instanceof \SplFileInfo) {
+                    $serializableCandidateData[$key] = $value->getPathname();
+                } else {
+                    $serializableCandidateData[$key] = $value;
+                }
+            }
+            $serializedCandidateData = serialize($serializableCandidateData);
+
             $foundInDuplicates = false;
             foreach ($alreadyFoundCases as $caseKey => $caseData) {
                 if ($serializedCandidateData === $caseData) {

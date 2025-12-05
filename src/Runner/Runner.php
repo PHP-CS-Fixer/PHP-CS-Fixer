@@ -20,6 +20,8 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Cache\CacheManagerInterface;
 use PhpCsFixer\Cache\Directory;
 use PhpCsFixer\Cache\DirectoryInterface;
+use PhpCsFixer\Config\NullRuleCustomisationPolicy;
+use PhpCsFixer\Config\RuleCustomisationPolicyInterface;
 use PhpCsFixer\Console\Command\WorkerCommand;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Error\Error;
@@ -106,6 +108,8 @@ final class Runner
 
     private ?string $configFile;
 
+    private RuleCustomisationPolicyInterface $ruleCustomisationPolicy;
+
     /**
      * @param null|\Traversable<array-key, \SplFileInfo> $fileIterator
      * @param list<FixerInterface>                       $fixers
@@ -124,7 +128,8 @@ final class Runner
         // @TODO Make these arguments required in 4.0
         ?ParallelConfig $parallelConfig = null,
         ?InputInterface $input = null,
-        ?string $configFile = null
+        ?string $configFile = null,
+        ?RuleCustomisationPolicyInterface $ruleCustomisationPolicy = null
     ) {
         // Required only for main process (calculating workers count)
         $this->fileCount = null !== $fileIterator ? \count(iterator_to_array($fileIterator)) : 0;
@@ -142,6 +147,7 @@ final class Runner
         $this->parallelConfig = $parallelConfig ?? ParallelConfigFactory::sequential();
         $this->input = $input;
         $this->configFile = $configFile;
+        $this->ruleCustomisationPolicy = $ruleCustomisationPolicy ?? new NullRuleCustomisationPolicy();
     }
 
     /**
@@ -163,6 +169,28 @@ final class Runner
      */
     public function fix(): array
     {
+        $ruleCustomisers = $this->ruleCustomisationPolicy->getRuleCustomisers();
+        if ([] !== $ruleCustomisers) {
+            $usedFixerNames = array_map(
+                static fn (FixerInterface $fixer): string => $fixer->getName(),
+                $this->fixers
+            );
+            $missingFixerNames = array_diff(array_keys($ruleCustomisers), $usedFixerNames);
+            if ([] !== $missingFixerNames) {
+                /** @TODO v3.999 check if rule is deprecated and show the replacement rules as well */
+                $missingFixerNames = implode("\n- ", $missingFixerNames);
+
+                throw new \RuntimeException(
+                    <<<EOT
+                        Rule Customisation Policy contains customisers for fixers that are not in the current set of enabled fixers:
+                        - {$missingFixerNames}
+
+                        Please check your configuration to ensure that these fixers are included, or update your Rule Customisation Policy if they have been replaced by other fixers in the version of PHP CS Fixer you are using.
+                        EOT
+                );
+            }
+        }
+
         if (0 === $this->fileCount) {
             return [];
         }
@@ -456,14 +484,32 @@ final class Runner
         }
 
         $oldHash = $tokens->getCodeHash();
-
-        $new = $old;
         $newHash = $oldHash;
+        $new = $old;
 
         $appliedFixers = [];
 
+        $ruleCustomisers = $this->ruleCustomisationPolicy->getRuleCustomisers();
+
         try {
             foreach ($this->fixers as $fixer) {
+                $customiser = $ruleCustomisers[$fixer->getName()] ?? null;
+                if (null !== $customiser) {
+                    $actualFixer = $customiser($file);
+                    if (false === $actualFixer) {
+                        continue;
+                    }
+                    if (true !== $actualFixer) {
+                        if (\get_class($fixer) !== \get_class($actualFixer)) {
+                            throw new \RuntimeException(\sprintf(
+                                'The fixer returned by the Rule Customisation Policy must be of the same class as the original fixer (expected `%s`, got `%s`).',
+                                \get_class($fixer),
+                                \get_class($actualFixer),
+                            ));
+                        }
+                        $fixer = $actualFixer;
+                    }
+                }
                 // for custom fixers we don't know is it safe to run `->fix()` without checking `->supports()` and `->isCandidate()`,
                 // thus we need to check it and conditionally skip fixing
                 if (

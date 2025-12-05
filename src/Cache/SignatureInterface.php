@@ -36,5 +36,7 @@ interface SignatureInterface
      */
     public function getRules(): array;
 
+    public function getRuleCustomisationPolicyVersion(): string;
+
     public function equals(self $signature): bool;
 }

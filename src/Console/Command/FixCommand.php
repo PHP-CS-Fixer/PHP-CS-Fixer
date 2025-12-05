@@ -415,7 +415,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
             $resolver->shouldStopOnViolation(),
             $resolver->getParallelConfig(),
             $input,
-            $resolver->getConfigFile()
+            $resolver->getConfigFile(),
+            $resolver->getRuleCustomisationPolicy()
         );
 
         $this->eventDispatcher->addListener(FileProcessed::NAME, [$progressOutput, 'onFixerFileProcessed']);

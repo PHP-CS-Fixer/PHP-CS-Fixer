@@ -214,6 +214,7 @@ final class FileHandlerTest extends TestCase
             '    ',
             \PHP_EOL,
             ['foo' => true, 'bar' => false],
+            'baz'
         );
     }
 }
