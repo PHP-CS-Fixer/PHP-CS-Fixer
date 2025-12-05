@@ -23,7 +23,7 @@ use PhpCsFixer\Preg;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class Line implements \Stringable
+final class Line
 {
     /**
      * The content of this line.

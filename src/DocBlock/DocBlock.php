@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class DocBlock implements \Stringable
+final class DocBlock
 {
     /**
      * @var list<Line>
