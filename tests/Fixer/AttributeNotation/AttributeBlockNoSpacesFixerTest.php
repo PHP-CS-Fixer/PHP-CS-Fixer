@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\AttributeNotation;
 
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -95,6 +96,20 @@ class User
     ]
     private string $name;
 }',
+        ];
+
+        yield 'With comments in a block' => [
+            '<?php
+class User
+{
+    #[
+        /** @see docs.example.com */
+        ApiPropertyExternal(),
+        ApiProperty(),
+        // @todo: add 3rd one in PHP 9
+    ]
+    private string $name;
+}', null,
         ];
     }
 }

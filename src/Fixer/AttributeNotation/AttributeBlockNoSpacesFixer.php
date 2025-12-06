@@ -70,18 +70,34 @@ class User
             while ($index <= $endIndex) {
                 $token = $tokens[$index];
 
-                if ($token->isGivenKind([\T_ATTRIBUTE])) {
-                    $nextTokenIndex = $tokens->getNextMeaningfulToken($index);
-                    for ($i = $index + 1; $i < $nextTokenIndex; ++$i) {
-                        $tokens->clearAt($i);
+                try {
+                    $toDelete = [];
+
+                    if ($token->isGivenKind([\T_ATTRIBUTE])) {
+                        $nextTokenIndex = $tokens->getNextMeaningfulToken($index);
+                        for ($i = $index + 1; $i < $nextTokenIndex; ++$i) {
+                            if (!$tokens[$i]->isWhitespace()) {
+                                throw new \Exception('Not only whitespace found');
+                            }
+                            $toDelete[] = $i;
+                        }
                     }
+
+                    if ($token->isGivenKind([CT::T_ATTRIBUTE_CLOSE])) {
+                        $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
+                        for ($i = $prevTokenIndex + 1; $i < $index; ++$i) {
+                            if (!$tokens[$i]->isWhitespace()) {
+                                throw new \Exception('Not only whitespace found');
+                            }
+                            $toDelete[] = $i;
+                        }
+                    }
+                } catch (\Exception $exception) {
+                    $toDelete = [];
                 }
 
-                if ($token->isGivenKind([CT::T_ATTRIBUTE_CLOSE])) {
-                    $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
-                    for ($i = $prevTokenIndex + 1; $i < $index; ++$i) {
-                        $tokens->clearAt($i);
-                    }
+                foreach ($toDelete as $i) {
+                    $tokens->clearAt($i);
                 }
 
                 ++$index;
