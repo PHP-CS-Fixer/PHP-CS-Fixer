@@ -311,7 +311,7 @@ final class ModifierKeywordsFixer extends AbstractFixer implements ConfigurableF
                 ) {
                     $tokens->clearAt($visibilityIndex);
 
-                    if ($tokens[$visibilityIndex + 1]->isWhitespace()) {
+                    if (isset($tokens[$visibilityIndex + 1]) && $tokens[$visibilityIndex + 1]->isWhitespace()) {
                         $tokens->clearAt($visibilityIndex + 1);
                     }
                 } elseif ($this->isKeywordPlacedProperly($tokens, $visibilityIndex, $index)) {
