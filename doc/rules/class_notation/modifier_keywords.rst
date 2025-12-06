@@ -15,7 +15,8 @@ Warning
 This rule is CONFIGURABLE
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can configure this rule using the following option: ``elements``.
+You can configure this rule using the following options: ``elements``,
+``omit_public_visibility_set_visibility_present``.
 
 Configuration
 -------------
@@ -28,6 +29,16 @@ The structural elements to fix.
 Allowed values: a subset of ``['const', 'method', 'property']``
 
 Default value: ``['const', 'method', 'property']``
+
+``omit_public_visibility_set_visibility_present``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether the general public visibility modifier should be omitted, if a
+set-visibility is specified.
+
+Allowed types: ``bool``
+
+Default value: ``false``
 
 Examples
 --------
@@ -147,6 +158,22 @@ Example #3
     }
 
 Example #4
+~~~~~~~~~~
+
+With configuration: ``['omit_public_visibility_set_visibility_present' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    class Sample
+    {
+   -    public private(set) $baz;
+   +    private(set) $baz;
+    }
+
+Example #5
 ~~~~~~~~~~
 
 With configuration: ``['elements' => ['const']]``.
