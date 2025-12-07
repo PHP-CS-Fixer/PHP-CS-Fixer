@@ -40,3 +40,4 @@ Rules candidates
 - `@PHPUnit9x1Migration:risky <./PHPUnit9x1MigrationRisky.rst>`_
 - `@PHPUnit10x0Migration:risky <./PHPUnit10x0MigrationRisky.rst>`_
 - `@PHPUnit11x0Migration:risky <./PHPUnit11x0MigrationRisky.rst>`_
+- `@PHPUnit12x5Migration:risky <./PHPUnit12x5MigrationRisky.rst>`_
