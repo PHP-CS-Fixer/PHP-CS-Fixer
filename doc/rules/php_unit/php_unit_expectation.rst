@@ -202,6 +202,10 @@ The rule is part of the following rule sets:
 
   ``['target' => '8.4']``
 
+- `@PHPUnit12x5Migration:risky <./../../ruleSets/PHPUnit12x5MigrationRisky.rst>`_ with config:
+
+  ``['target' => '8.4']``
+
 - `@PHPUnit52Migration:risky <./../../ruleSets/PHPUnit52MigrationRisky.rst>`_ *(deprecated)* with config:
 
   ``['target' => '5.2']``

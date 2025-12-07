@@ -47,7 +47,7 @@ Default value: ``[]``
 
 Target version of PHPUnit.
 
-Allowed values: ``'10.0'``, ``'11.0'`` and ``'newest'``
+Allowed values: ``'10.0'``, ``'11.0'``, ``'12.5'`` and ``'newest'``
 
 Default value: ``'10.0'``
 
@@ -133,6 +133,10 @@ The rule is part of the following rule sets:
 - `@PHPUnit11x0Migration:risky <./../../ruleSets/PHPUnit11x0MigrationRisky.rst>`_ with config:
 
   ``['target' => '11.0']``
+
+- `@PHPUnit12x5Migration:risky <./../../ruleSets/PHPUnit12x5MigrationRisky.rst>`_ with config:
+
+  ``['target' => '12.5']``
 
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ with config:
 

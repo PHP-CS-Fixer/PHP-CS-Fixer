@@ -123,6 +123,10 @@ The rule is part of the following rule sets:
 
   ``['target' => '5.5']``
 
+- `@PHPUnit12x5Migration:risky <./../../ruleSets/PHPUnit12x5MigrationRisky.rst>`_ with config:
+
+  ``['target' => '5.5']``
+
 - `@PHPUnit54Migration:risky <./../../ruleSets/PHPUnit54MigrationRisky.rst>`_ *(deprecated)* with config:
 
   ``['target' => '5.4']``

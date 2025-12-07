@@ -101,6 +101,10 @@ The rule is part of the following rule sets:
 
   ``['target' => '7.5']``
 
+- `@PHPUnit12x5Migration:risky <./../../ruleSets/PHPUnit12x5MigrationRisky.rst>`_ with config:
+
+  ``['target' => '7.5']``
+
 - `@PHPUnit75Migration:risky <./../../ruleSets/PHPUnit75MigrationRisky.rst>`_ *(deprecated)* with config:
 
   ``['target' => '7.5']``
