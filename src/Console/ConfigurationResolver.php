@@ -243,7 +243,7 @@ final class ConfigurationResolver
                         $this->getConfig()->getIndent(),
                         $this->getConfig()->getLineEnding(),
                         $this->getRules(),
-                        $this->getRuleCustomisationPolicy()->policyVersionForCache()
+                        $this->getRuleCustomisationPolicy()->getPolicyVersionForCache()
                     ),
                     $this->isDryRun(),
                     $this->getDirectory()

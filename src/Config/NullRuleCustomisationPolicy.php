@@ -26,7 +26,7 @@ final class NullRuleCustomisationPolicy implements RuleCustomisationPolicyInterf
      */
     public const VERSION_FOR_CACHE = 'null-policy';
 
-    public function policyVersionForCache(): string
+    public function getPolicyVersionForCache(): string
     {
         return self::VERSION_FOR_CACHE;
     }

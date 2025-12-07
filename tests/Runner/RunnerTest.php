@@ -357,7 +357,7 @@ final class RunnerTest extends TestCase
         $policy = new class implements RuleCustomisationPolicyInterface {
             public \Closure $arraySyntaxCustomiser;
 
-            public function policyVersionForCache(): string
+            public function getPolicyVersionForCache(): string
             {
                 return '';
             }
@@ -453,7 +453,7 @@ final class RunnerTest extends TestCase
     public function testRuleCustomisationPolicyWithMissingFixers(): void
     {
         $policy = new class implements RuleCustomisationPolicyInterface {
-            public function policyVersionForCache(): string
+            public function getPolicyVersionForCache(): string
             {
                 return '';
             }
