@@ -611,13 +611,13 @@ else?><?php echo 5;',
      *
      * @requires PHP 8.0
      */
-    public function testFix80(string $expected): void
+    public function testFix80(string $expected, ?string $input = null): void
     {
-        $this->doTest($expected);
+        $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFix80Cases(): iterable
     {

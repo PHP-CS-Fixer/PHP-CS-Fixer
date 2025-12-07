@@ -97,6 +97,10 @@ The rule is part of the following rule sets:
 
   ``['target' => '7.5']``
 
+- `@PHPUnit11x0Migration:risky <./../../ruleSets/PHPUnit11x0MigrationRisky.rst>`_ with config:
+
+  ``['target' => '7.5']``
+
 - `@PHPUnit75Migration:risky <./../../ruleSets/PHPUnit75MigrationRisky.rst>`_ *(deprecated)* with config:
 
   ``['target' => '7.5']``
