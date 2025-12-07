@@ -21,7 +21,7 @@ use PhpCsFixer\Fixer\FixerInterface;
  *
  * @todo v3.999 replace \SplFileInfo with \Symfony\Component\Finder\SplFileInfo
  *
- * @phpstan-type _RuleCustomizationPolicyCallback \Closure(\SplFileInfo): (bool|FixerInterface)
+ * @phpstan-type _RuleCustomisationPolicyCallback \Closure(\SplFileInfo): (bool|FixerInterface)
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
@@ -72,7 +72,7 @@ interface RuleCustomisationPolicyInterface
      * ]
      * ```
      *
-     * @return array<non-empty-string, _RuleCustomizationPolicyCallback>
+     * @return array<non-empty-string, _RuleCustomisationPolicyCallback>
      */
     public function getRuleCustomisers(): array;
 }

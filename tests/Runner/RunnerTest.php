@@ -43,7 +43,7 @@ use Symfony\Component\Finder\Finder;
  *
  * @covers \PhpCsFixer\Runner\Runner
  *
- * @phpstan-import-type _RuleCustomizationPolicyCallback from RuleCustomisationPolicyInterface
+ * @phpstan-import-type _RuleCustomisationPolicyCallback from RuleCustomisationPolicyInterface
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
@@ -340,7 +340,7 @@ final class RunnerTest extends TestCase
 
     /**
      * @param non-empty-string                                                  $path
-     * @param _RuleCustomizationPolicyCallback                                  $arraySyntaxCustomiser
+     * @param _RuleCustomisationPolicyCallback                                  $arraySyntaxCustomiser
      * @param ?list<array{type: int, filePath: string, sourceMessage: ?string}> $expectedErrors
      * @param list<string>                                                      $expectedFixedFiles
      *
@@ -392,7 +392,7 @@ final class RunnerTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{non-empty-string, _RuleCustomizationPolicyCallback, ?list<array{type: int, filePath: string, sourceMessage: ?string}>, list<string>}>
+     * @return iterable<string, array{non-empty-string, _RuleCustomisationPolicyCallback, ?list<array{type: int, filePath: string, sourceMessage: ?string}>, list<string>}>
      */
     public static function provideRuleCustomisationPolicyCases(): iterable
     {
