@@ -25,7 +25,7 @@ abstract class AbstractRuleSetDefinition implements RuleSetDefinitionInterface
 
     public function getName(): string
     {
-        $name = substr(static::class, 1 + strrpos(static::class, '\\'), -3);
+        $name = substr(static::class, 1 + (int) strrpos(static::class, '\\'), -3);
 
         return '@'.str_replace('Risky', ':risky', $name);
     }

@@ -378,7 +378,7 @@ final class RuleSetTest extends TestCase
     public function testPhpUnitTargetVersionHasSet(string $version): void
     {
         self::assertContains(
-            \sprintf('@PHPUnit%sMigration:risky', str_replace('.', '', $version)),
+            \sprintf('@PHPUnit%sMigration:risky', str_replace('.', 'x', $version)),
             RuleSets::getSetDefinitionNames(),
             \sprintf('PHPUnit target version %s is missing its set in %s.', $version, RuleSet::class)
         );
