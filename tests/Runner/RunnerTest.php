@@ -466,10 +466,59 @@ final class RunnerTest extends TestCase
                 ];
             }
         };
+
         self::expectException(\RuntimeException::class);
-        // The exception message should mention line_ending
         self::expectExceptionMessageMatches('/\bline_ending\b/');
         self::runRunnerWithPolicy(__DIR__, [new Fixer\ArrayNotation\ArraySyntaxFixer()], $policy, new ErrorsManager());
+    }
+
+    /**
+     * @dataProvider provideRuleCustomisationPolicyWithWrongCustomisersCases
+     */
+    public function testRuleCustomisationPolicyWithWrongCustomisers(array $customisers, string $error): void
+    {
+        $policy = new class($customisers) implements RuleCustomisationPolicyInterface {
+            private $customisers;
+
+            public function __construct($customisers)
+            {
+                $this->customisers = $customisers;
+            }
+
+            public function getRuleCustomisationPolicy(): string
+            {
+                return '';
+            }
+
+            public function getRuleCustomisers(): array
+            {
+                return $this->customisers;
+            }
+        };
+
+        self::expectException(\RuntimeException::class);
+        self::expectExceptionMessageMatches($error);
+        self::runRunnerWithPolicy(__DIR__, [new Fixer\ArrayNotation\ArraySyntaxFixer()], $policy, new ErrorsManager());
+    }
+
+    /**
+     * @return iterable<string, array{non-empty-string, _RuleCustomizationPolicyCallback, ?list<array{type: int, filePath: string, sourceMessage: ?string}>, list<string>}>
+     */
+    public static function provideRuleCustomisationPolicyWithWrongCustomisersCases(): iterable
+    {
+        yield 'empty rule-key' => [
+            [
+                '' => static fn (\SplFileInfo $file) => true,
+            ],
+            '/\(no name provided\)/',
+        ];
+
+        yield 'set as rule-key' => [
+            [
+                '@auto' => static fn (\SplFileInfo $file) => true,
+            ],
+            '/@auto \(can exclude only rules, not sets\)/',
+        ];
     }
 
     private function createDifferDouble(): DifferInterface
