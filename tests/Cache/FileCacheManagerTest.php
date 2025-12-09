@@ -302,6 +302,11 @@ final class FileCacheManagerTest extends TestCase
                 throw new \LogicException('Not implemented.');
             }
 
+            public function getRuleCustomisationPolicyVersion(): string
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
             public function equals(SignatureInterface $signature): bool
             {
                 return $this->isEqual;

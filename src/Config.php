@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer;
 
+use PhpCsFixer\Config\RuleCustomisationPolicyAwareConfigInterface;
+use PhpCsFixer\Config\RuleCustomisationPolicyInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
@@ -26,7 +28,7 @@ use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-class Config implements ConfigInterface, ParallelAwareConfigInterface, UnsupportedPhpVersionAllowedConfigInterface, CustomRulesetsAwareConfigInterface
+class Config implements ConfigInterface, ParallelAwareConfigInterface, UnsupportedPhpVersionAllowedConfigInterface, CustomRulesetsAwareConfigInterface, RuleCustomisationPolicyAwareConfigInterface
 {
     /**
      * @var non-empty-string
@@ -80,6 +82,8 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     private bool $usingCache = true;
 
     private bool $isUnsupportedPhpVersionAllowed = false;
+
+    private ?RuleCustomisationPolicyInterface $ruleCustomisationPolicy = null;
 
     public function __construct(string $name = 'default')
     {
@@ -181,6 +185,11 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     public function getUnsupportedPhpVersionAllowed(): bool
     {
         return $this->isUnsupportedPhpVersionAllowed;
+    }
+
+    public function getRuleCustomisationPolicy(): ?RuleCustomisationPolicyInterface
+    {
+        return $this->ruleCustomisationPolicy;
     }
 
     public function registerCustomFixers(iterable $fixers): ConfigInterface
@@ -293,6 +302,13 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     public function setUnsupportedPhpVersionAllowed(bool $isUnsupportedPhpVersionAllowed): ConfigInterface
     {
         $this->isUnsupportedPhpVersionAllowed = $isUnsupportedPhpVersionAllowed;
+
+        return $this;
+    }
+
+    public function setRuleCustomisationPolicy(?RuleCustomisationPolicyInterface $ruleCustomisationPolicy): ConfigInterface
+    {
+        $this->ruleCustomisationPolicy = $ruleCustomisationPolicy;
 
         return $this;
     }
