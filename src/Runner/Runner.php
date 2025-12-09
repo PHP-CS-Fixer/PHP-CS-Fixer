@@ -186,6 +186,7 @@ final class Runner
                         } elseif ('@' === $name[0]) {
                             $extra = ' (can exclude only rules, not sets)';
                         }
+                        // @TODO v3.999 handle "unknown rules"
 
                         return $name.$extra;
                     },
