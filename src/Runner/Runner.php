@@ -175,7 +175,14 @@ final class Runner
                 static fn (FixerInterface $fixer): string => $fixer->getName(),
                 $this->fixers
             );
-            $missingFixerNames = array_diff(array_keys($ruleCustomisers), $usedFixerNames);
+            $missingFixerNames = array_diff(
+                array_map(
+                    // key may be `int` if custom implementation of Policy doesn't fulfill the contract properly
+                    static fn (/* int|string */ $name): string => (string) $name, // @phpstan-ignore cast.useless
+                    array_keys($ruleCustomisers)
+                ),
+                $usedFixerNames,
+            );
             if ([] !== $missingFixerNames) {
                 /** @TODO v3.999 check if rule is deprecated and show the replacement rules as well */
                 $missingFixerNames = implode("\n- ", array_map(
