@@ -33,6 +33,8 @@ interface RuleCustomisationPolicyInterface
      *
      * @example you may use the following snippet if your policy does not depend on any code outside of the file
      *          `return hash_file(\PHP_VERSION_ID >= 8_01_00 ? 'xxh128' : 'md5', __FILE__);`
+     *
+     * @return non-empty-string
      */
     public function getPolicyVersionForCache(): string;
 
