@@ -32,6 +32,7 @@ class Finder extends BaseFinder
             ->files()
             ->name('/\.php$/')
             ->exclude('vendor')
+            ->ignoreVCS(true) // explicitly configure to not rely on Symfony default
             ->ignoreDotFiles(Future::getV4OrV3(false, true))
         ;
     }
