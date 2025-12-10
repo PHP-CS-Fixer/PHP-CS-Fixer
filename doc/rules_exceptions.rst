@@ -29,8 +29,46 @@ Sometimes you may want to ignore/modify certain rule for specific files or direc
     For such cases, PHP CS Fixer will check that all the rules configured as exceptions are actually configured in set and raise error if some of them are not used.
     This will prevent accidental breaking of rules exceptions due to upgrade of PHP CS Fixer.
 
+Configuring exceptions via ``@php-cs-fixer-ignore`` annotation
+--------------------------------------------------------------
+
+This is the simplest way to **ignore** specific rule for specific file.
+
+Just put this annotation in comment anywhere on top or bottom of the file, and the rule will be ignored for the whole file:
+
+.. code-block:: php
+
+    <?php
+
+    declare(strict_types=1);
+
+    /*
+     * File header..
+     * LICENSE...
+     */
+
+    // @php-cs-fixer-ignore no_binary_string       Ignore because of ...
+    // @php-cs-fixer-ignore no_trailing_whitespace Ignore because of ...
+
+    /*
+     * @php-cs-fixer-ignore no_unneeded_braces Ignore me also ...
+     */
+
+    /*
+     * @php-cs-fixer-ignore no_unset_on_property,no_useless_else Multiple rules ignored at once
+     */
+
+    class MyClass {
+        /* ... */
+    }
+
+    // @php-cs-fixer-ignore no_empty_statement    Works Also
+    // @php-cs-fixer-ignore no_extra_blank_lines  on bottom of file
+
 Configuring exceptions via ``Rule Customisation Policy``
 --------------------------------------------------------
+
+Sometimes, simple annotation usage for ignoring the rule in-file is not enough.
 
 If you need to **ignore** or **reconfigure** a rule for specific files, you can inject ``RuleCustomisationPolicyInterface`` via ``Config::setRuleCustomisationPolicy()`` method:
 
