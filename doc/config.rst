@@ -43,7 +43,7 @@ The simplest config declares paths under control and rules to apply/check:
     return (new PhpCsFixer\Config())
         ->setRules([
             '@PER-CS' => true,
-            '@PHP82Migration' => true,
+            '@PHP8x2Migration' => true,
         ])
         ->setFinder($finder)
     ;
