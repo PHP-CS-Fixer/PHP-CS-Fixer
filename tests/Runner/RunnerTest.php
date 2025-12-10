@@ -487,7 +487,7 @@ final class RunnerTest extends TestCase
              /**
                * @var array<non-empty-string,_RuleCustomisationPolicyCallback>
               */
-             private $customisers;
+             private array $customisers;
 
              /**
                * @param array<non-empty-string,_RuleCustomisationPolicyCallback> $customisers
