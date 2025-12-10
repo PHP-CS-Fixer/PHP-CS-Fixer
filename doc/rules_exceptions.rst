@@ -9,7 +9,9 @@ Sometimes you may want to ignore/modify certain rule for specific files or direc
     **⚠️ EXPERIMENTAL ⚠️**
 
     This feature is experimental.
+
     That means the API may change in minor releases of PHP CS Fixer.
+
     We are open to feedback about this feature to make it better.
 
 .. warning::
@@ -27,8 +29,9 @@ Sometimes you may want to ignore/modify certain rule for specific files or direc
     For such cases, PHP CS Fixer will check that all the rules configured as exceptions are actually configured in set and raise error if some of them are not used.
     This will prevent accidental breaking of rules exceptions due to upgrade of PHP CS Fixer.
 
-Configuring exceptions via `Rule Customisation Policy`
-------------------------------------------------------
+
+Configuring exceptions via ``Rule Customisation Policy``
+--------------------------------------------------------
 
 If you need to ignore or reconfigure a rule for specific files, you can inject ``RuleCustomisationPolicyInterface`` via ``Config::setRuleCustomisationPolicy()`` method:
 
