@@ -225,7 +225,8 @@ final class Runner
             return;
         }
 
-        $usedRules = array_keys($this->fixersByName);
+        $fixersByName = $this->fixersByName;
+        $usedRules = array_keys($fixersByName);
         $missingRuleNames = array_diff($ruleExceptions, $usedRules);
 
         if ([] === $missingRuleNames) {
@@ -234,14 +235,15 @@ final class Runner
 
         /** @TODO v3.999 check if rule is deprecated and show the replacement rules as well */
         $missingRulesDesc = implode("\n", array_map(
-            static function (string $name): string {
+            static function (string $name) use ($fixersByName): string {
                 $extra = '';
                 if ('' === $name) {
                     $extra = '(no name provided)';
                 } elseif ('@' === $name[0]) {
                     $extra = ' (can exclude only rules, not sets)';
+                } elseif (!isset($fixersByName[$name])) {
+                    $extra = ' (unknown rule)';
                 }
-                // @TODO v3.999 handle "unknown rules"
 
                 return '- '.$name.$extra;
             },
