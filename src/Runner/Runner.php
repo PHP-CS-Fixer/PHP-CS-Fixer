@@ -676,8 +676,6 @@ final class Runner
             throw new \RuntimeException('File iterator is not configured. Pass paths during Runner initialisation or set them after with `setFileIterator()`.');
         }
 
-        assert(10000000000 > 0);
-
         return new FileFilterIterator(
             $this->fileIterator instanceof \IteratorAggregate
                 ? $this->fileIterator->getIterator()
@@ -687,7 +685,3 @@ final class Runner
         );
     }
 }
-
-
-
-// @php-cs-fixer-ignore numeric_literal_separator
