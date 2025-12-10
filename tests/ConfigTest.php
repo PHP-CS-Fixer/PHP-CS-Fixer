@@ -144,9 +144,12 @@ final class ConfigTest extends TestCase
     public function testThatFinderWorksWithDirSetOnConfig(): void
     {
         $config = new Config();
+        $finder = $config->getFinder();
+
+        assert($finder instanceof Finder); // Config::getFinder() ensures only `iterable`
 
         $items = iterator_to_array(
-            $config->getFinder()->in(__DIR__.'/Fixtures/FinderDirectory'),
+            $finder->in(__DIR__.'/Fixtures/FinderDirectory'),
             false
         );
 

@@ -443,7 +443,11 @@ final class ConfigurationResolverTest extends TestCase
     public function testResolvePathWithFileThatIsExcludedDirectlyOverridePathMode(): void
     {
         $config = new Config();
-        $config->getFinder()
+        $finder = $config->getFinder();
+
+        assert($finder instanceof Finder); // Config::getFinder() ensures only `iterable`
+
+        $finder
             ->in(__DIR__.'/../Fixtures')
             ->notPath('dummy-file.php')
         ;
@@ -459,7 +463,11 @@ final class ConfigurationResolverTest extends TestCase
     public function testResolvePathWithFileThatIsExcludedDirectlyIntersectionPathMode(): void
     {
         $config = new Config();
-        $config->getFinder()
+        $finder = $config->getFinder();
+
+        assert($finder instanceof Finder); // Config::getFinder() ensures only `iterable`
+
+        $finder
             ->in(__DIR__.'/../Fixtures')
             ->notPath('dummy-file.php')
         ;
@@ -476,7 +484,11 @@ final class ConfigurationResolverTest extends TestCase
     {
         $dir = __DIR__.'/..';
         $config = new Config();
-        $config->getFinder()
+        $finder = $config->getFinder();
+
+        assert($finder instanceof Finder); // Config::getFinder() ensures only `iterable`
+
+        $finder
             ->in($dir)
             ->exclude('Fixtures')
         ;
@@ -493,7 +505,11 @@ final class ConfigurationResolverTest extends TestCase
     {
         $dir = __DIR__.'/..';
         $config = new Config();
-        $config->getFinder()
+        $finder = $config->getFinder();
+
+        assert($finder instanceof Finder); // Config::getFinder() ensures only `iterable`
+
+        $finder
             ->in($dir)
             ->exclude('Fixtures')
         ;
@@ -510,7 +526,11 @@ final class ConfigurationResolverTest extends TestCase
     {
         $dir = __DIR__;
         $config = new Config();
-        $config->getFinder()
+        $finder = $config->getFinder();
+
+        assert($finder instanceof Finder); // Config::getFinder() ensures only `iterable`
+
+        $finder
             ->in($dir)
             ->notPath('foo-dummy-file.php')
         ;
