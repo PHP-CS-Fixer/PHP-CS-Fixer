@@ -192,10 +192,10 @@ final class Runner
         $this->validateRulesNamesForExceptions(
             array_keys($ruleCustomisers),
             <<<'EOT'
-                Rule Customisation Policy contains customisers for rules that are not in the current set of enabled fixers:
+                Rule Customisation Policy contains customisers for rules that are not in the current set of enabled rules:
                 %s
 
-                Please check your configuration to ensure that these rules are included, or update your Rule Customisation Policy if they have been replaced by other fixers in the version of PHP CS Fixer you are using.
+                Please check your configuration to ensure that these rules are included, or update your Rule Customisation Policy if they have been replaced by other rules in the version of PHP CS Fixer you are using.
                 EOT
         );
 
@@ -531,13 +531,11 @@ final class Runner
 
         $appliedFixers = [];
 
-        $ruleCustomisers = $this->ruleCustomisationPolicy->getRuleCustomisers();
+        $ruleCustomisers = $this->ruleCustomisationPolicy->getRuleCustomisers(); // were already validated
 
         try {
             $fixerTagAnalysis = (new FixerTagAnalyzer())->find($tokens);
             $rulesIgnoredByTags = $fixerTagAnalysis['php-cs-fixer-ignore'] ?? [];
-
-            // @TODO v3.999 validate $rulesIgnoredByTags
         } catch (\RuntimeException $e) {
             throw new \RuntimeException(
                 \sprintf(
@@ -549,6 +547,16 @@ final class Runner
                 $e
             );
         }
+
+        $this->validateRulesNamesForExceptions(
+            $rulesIgnoredByTags,
+            <<<EOT
+                @php-cs-fixer-ignore annotation(s) used for rules that are not in the current set of enabled rules:
+                %s
+
+                Please check your annotation(s) usage in {$filePathname} to ensure that these rules are included, or update your annotation(s) usage if they have been replaced by other rules in the version of PHP CS Fixer you are using.
+                EOT
+        );
 
         try {
             foreach ($this->fixers as $fixer) {
