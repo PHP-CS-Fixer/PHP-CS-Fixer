@@ -359,7 +359,7 @@ final class RunnerTest extends TestCase
 
             public function getPolicyVersionForCache(): string
             {
-                return '';
+                return __METHOD__.__LINE__;
             }
 
             public function getRuleCustomisers(): array
@@ -455,7 +455,7 @@ final class RunnerTest extends TestCase
         $policy = new class implements RuleCustomisationPolicyInterface {
             public function getPolicyVersionForCache(): string
             {
-                return '';
+                return __METHOD__.__LINE__;
             }
 
             public function getRuleCustomisers(): array
