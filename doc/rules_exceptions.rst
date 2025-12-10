@@ -51,10 +51,6 @@ Just put this annotation in comment anywhere on top or bottom of the file, and t
     // @php-cs-fixer-ignore no_trailing_whitespace Ignore because of ...
 
     /*
-     * @php-cs-fixer-ignore no_unneeded_braces Ignore me also ...
-     */
-
-    /*
      * @php-cs-fixer-ignore no_unset_on_property,no_useless_else Multiple rules ignored at once
      */
 
