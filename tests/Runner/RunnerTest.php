@@ -480,33 +480,33 @@ final class RunnerTest extends TestCase
     public function testRuleCustomisationPolicyWithWrongCustomisers(array $customisers, string $error): void
     {
         $policy = new
-         /**
-          * @phpstan-import-type _RuleCustomisationPolicyCallback from RuleCustomisationPolicyInterface
-          */
-         class($customisers) implements RuleCustomisationPolicyInterface {
-             /**
-               * @var array<non-empty-string,_RuleCustomisationPolicyCallback>
-              */
-             private array $customisers;
+        /**
+         * @phpstan-import-type _RuleCustomisationPolicyCallback from RuleCustomisationPolicyInterface
+         */
+        class($customisers) implements RuleCustomisationPolicyInterface {
+            /**
+             * @var array<non-empty-string,_RuleCustomisationPolicyCallback>
+             */
+            private array $customisers;
 
-             /**
-               * @param array<non-empty-string,_RuleCustomisationPolicyCallback> $customisers
-              */
-             public function __construct(array $customisers)
-             {
-                 $this->customisers = $customisers;
-             }
+            /**
+             * @param array<non-empty-string,_RuleCustomisationPolicyCallback> $customisers
+             */
+            public function __construct(array $customisers)
+            {
+                $this->customisers = $customisers;
+            }
 
-             public function getPolicyVersionForCache(): string
-             {
-                 return '';
-             }
+            public function getPolicyVersionForCache(): string
+            {
+                return __METHOD__.__LINE__;
+            }
 
-             public function getRuleCustomisers(): array
-             {
-                 return $this->customisers;
-             }
-         };
+            public function getRuleCustomisers(): array
+            {
+                return $this->customisers;
+            }
+        };
 
         self::expectException(\RuntimeException::class);
         self::expectExceptionMessageMatches($error);
