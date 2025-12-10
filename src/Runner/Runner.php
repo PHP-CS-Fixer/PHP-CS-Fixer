@@ -181,7 +181,7 @@ final class Runner
                 $missingFixerNames = implode("\n- ", array_map(
                     static function (string $name): string {
                         $extra = '';
-                        if ('' === $name) {
+                        if ('' === $name) { // @phpstan-ignore-line identical.alwaysFalse future-ready
                             $extra = '(no name provided)';
                         } elseif ('@' === $name[0]) {
                             $extra = ' (can exclude only rules, not sets)';

@@ -474,27 +474,39 @@ final class RunnerTest extends TestCase
 
     /**
      * @dataProvider provideRuleCustomisationPolicyWithWrongCustomisersCases
+     *
+     * @param array<non-empty-string,_RuleCustomisationPolicyCallback> $customisers
      */
     public function testRuleCustomisationPolicyWithWrongCustomisers(array $customisers, string $error): void
     {
-        $policy = new class($customisers) implements RuleCustomisationPolicyInterface {
-            private $customisers;
+        $policy = new
+         /**
+          * @phpstan-import-type _RuleCustomisationPolicyCallback from RuleCustomisationPolicyInterface
+          */
+         class($customisers) implements RuleCustomisationPolicyInterface {
+             /**
+               * @var array<non-empty-string,_RuleCustomisationPolicyCallback>
+              */
+             private $customisers;
 
-            public function __construct($customisers)
-            {
-                $this->customisers = $customisers;
-            }
+             /**
+               * @param array<non-empty-string,_RuleCustomisationPolicyCallback> $customisers
+              */
+             public function __construct(array $customisers)
+             {
+                 $this->customisers = $customisers;
+             }
 
-            public function getRuleCustomisationPolicy(): string
-            {
-                return '';
-            }
+             public function getPolicyVersionForCache(): string
+             {
+                 return '';
+             }
 
-            public function getRuleCustomisers(): array
-            {
-                return $this->customisers;
-            }
-        };
+             public function getRuleCustomisers(): array
+             {
+                 return $this->customisers;
+             }
+         };
 
         self::expectException(\RuntimeException::class);
         self::expectExceptionMessageMatches($error);
@@ -502,10 +514,11 @@ final class RunnerTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{non-empty-string, _RuleCustomizationPolicyCallback, ?list<array{type: int, filePath: string, sourceMessage: ?string}>, list<string>}>
+     * @return iterable<string, array{array<non-empty-string, _RuleCustomisationPolicyCallback>, non-empty-string}>
      */
     public static function provideRuleCustomisationPolicyWithWrongCustomisersCases(): iterable
     {
+        // @phpstan-ignore-next-line generator.valueType
         yield 'empty rule-key' => [
             [
                 '' => static fn (\SplFileInfo $file) => true,
