@@ -189,7 +189,15 @@ final class Runner
         }
 
         $ruleCustomisers = $this->ruleCustomisationPolicy->getRuleCustomisers();
-        $this->validateRulesNamesForExceptions(array_keys($ruleCustomisers));
+        $this->validateRulesNamesForExceptions(
+            array_keys($ruleCustomisers),
+            <<<'EOT'
+                Rule Customisation Policy contains customisers for rules that are not in the current set of enabled fixers:
+                %s
+
+                Please check your configuration to ensure that these rules are included, or update your Rule Customisation Policy if they have been replaced by other fixers in the version of PHP CS Fixer you are using.
+                EOT
+        );
 
         // @TODO 4.0: Remove condition and its body, as no longer needed when param will be required in the constructor.
         // This is a fallback only in case someone calls `new Runner()` in a custom repo and does not provide v4-ready params in v3-codebase.
@@ -207,8 +215,16 @@ final class Runner
         return $this->fixParallel();
     }
 
-    private function validateRulesNamesForExceptions(array $ruleExceptions): void
+    /**
+     * @param list<string>     $ruleExceptions
+     * @param non-empty-string $errorTemplate
+     */
+    private function validateRulesNamesForExceptions(array $ruleExceptions, string $errorTemplate): void
     {
+        if ([] === $ruleExceptions) {
+            return;
+        }
+
         $usedRules = array_keys($this->fixersByName);
         $missingRuleNames = array_diff($ruleExceptions, $usedRules);
 
@@ -217,7 +233,7 @@ final class Runner
         }
 
         /** @TODO v3.999 check if rule is deprecated and show the replacement rules as well */
-        $missingRulesDesc = implode("\n- ", array_map(
+        $missingRulesDesc = implode("\n", array_map(
             static function (string $name): string {
                 $extra = '';
                 if ('' === $name) { // @phpstan-ignore-line identical.alwaysFalse future-ready
@@ -227,18 +243,13 @@ final class Runner
                 }
                 // @TODO v3.999 handle "unknown rules"
 
-                return $name.$extra;
+                return '- '.$name.$extra;
             },
             $missingRuleNames
         ));
 
         throw new \RuntimeException(
-            <<<EOT
-                Rule Customisation Policy contains customisers for fixers that are not in the current set of enabled fixers:
-                - {$missingRulesDesc}
-
-                Please check your configuration to ensure that these fixers are included, or update your Rule Customisation Policy if they have been replaced by other fixers in the version of PHP CS Fixer you are using.
-                EOT
+            \sprintf($errorTemplate, $missingRulesDesc),
         );
     }
 
