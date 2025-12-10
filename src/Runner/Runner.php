@@ -179,7 +179,20 @@ final class Runner
             $missingFixerNames = array_diff(array_keys($ruleCustomisers), $usedFixerNames);
             if ([] !== $missingFixerNames) {
                 /** @TODO v3.999 check if rule is deprecated and show the replacement rules as well */
-                $missingFixerNames = implode("\n- ", $missingFixerNames);
+                $missingFixerNames = implode("\n- ", array_map(
+                    static function (string $name): string {
+                        $extra = '';
+                        if ('' === $name) { // @phpstan-ignore-line identical.alwaysFalse future-ready
+                            $extra = '(no name provided)';
+                        } elseif ('@' === $name[0]) {
+                            $extra = ' (can exclude only rules, not sets)';
+                        }
+                        // @TODO v3.999 handle "unknown rules"
+
+                        return $name.$extra;
+                    },
+                    $missingFixerNames
+                ));
 
                 throw new \RuntimeException(
                     <<<EOT
