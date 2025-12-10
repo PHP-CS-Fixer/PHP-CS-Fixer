@@ -131,5 +131,20 @@ final class FixerTagAnalyzerTest extends TestCase
             [],
             'Duplicated values found for tag "@php-cs-fixer-ignore": "no_extra_blank_lines".',
         ];
+
+        // verify that exception is not considered duplicated when no code and iterating a) from top, b) from bottom
+        yield 'exception without actual code' => [
+            <<<'PHP'
+                <?php
+
+                // @php-cs-fixer-ignore header_comment No need for header in empty file
+
+                PHP,
+            [
+                'php-cs-fixer-ignore' => [
+                    'header_comment',
+                ],
+            ],
+        ];
     }
 }
