@@ -4,7 +4,33 @@ Rules exceptions
 
 Sometimes you may want to ignore/modify certain rule for specific files or directories.
 
-If you need to ignore or reconfigure a rule for specific files, you can use the ``setRuleCustomisationPolicy`` method:
+.. warning::
+
+    **⚠️ EXPERIMENTAL ⚠️**
+
+    This feature is experimental.
+    That means the API may change in minor releases of PHP CS Fixer.
+    We are open to feedback about this feature to make it better.
+
+.. warning::
+
+    **⚠️ WARNING ⚠️**
+
+    Sets provided by PHP CS Fixer are a living standards, and as such their definition is NOT covered with Backward Compatibility promise.
+    That means any upgrade of PHP CS Fixer may add or remove fixers from the sets (or change their configuration).
+    This already means that after upgrade of PHP CS Fixer, your project will start applying different rules, simply due to fact of upgrade.
+    This may come from adding a new rules to the set, but also removed the rule or replace the deprecated rule by it's successor.
+
+    Now, when you use exceptions for the rules, this may lead to situation where, after PHP CS Fixer upgrade,
+    your exception refers to a rule that is no longer part of the set you use.
+
+    For such cases, PHP CS Fixer will check that all the rules configured as exceptions are actually configured in set and raise error if some of them are not used.
+    This will prevent accidental breaking of rules exceptions due to upgrade of PHP CS Fixer.
+
+Configuring exceptions via `Rule Customisation Policy`
+------------------------------------------------------
+
+If you need to ignore or reconfigure a rule for specific files, you can inject ``RuleCustomisationPolicyInterface`` via ``Config::setRuleCustomisationPolicy()`` method:
 
 .. code-block:: php
 
@@ -57,24 +83,3 @@ If you need to ignore or reconfigure a rule for specific files, you can use the 
                 ->in(__DIR__)
         )
     ;
-
-
-.. warning::
-
-    **⚠️ WARNING ⚠️**
-
-    When you write an implementation of ``RuleCustomisationPolicyInterface``, PHP CS Fixer may provide some fixers that, in future versions, may be either removed from the fixer sets you use, or deprecated and replaced by other fixers.
-
-    In such cases, your implementation will stop receiving the fixers it expects to receive.
-
-    To detect this case, PHP CS Fixer will check that all the fixer names returned by your ``getRuleCustomisers()`` method are actually used.
-
-    If some of them are not used, PHP CS Fixer will throw an exception with the list of unused fixer names, and you will need to update your implementation.
-
-.. warning::
-
-    **⚠️ EXPERIMENTAL ⚠️**
-
-    Since PHP CS Fixer may remove rules from rulesets, and replace rules with other ones (even in patch releases), your implementation of ``RuleCustomisationPolicyInterface`` may cause the exception described above even in patch releases.
-
-    So, we can't guarantee semver compatibility for Rule Customisation Policies.
