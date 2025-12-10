@@ -29,7 +29,7 @@ final class FixerTagAnalyzer
     /**
      * @return array<string, list<string>>
      */
-    public static function find(Tokens $tokens): array
+    public function find(Tokens $tokens): array
     {
         $comments = [];
         $tags = [];

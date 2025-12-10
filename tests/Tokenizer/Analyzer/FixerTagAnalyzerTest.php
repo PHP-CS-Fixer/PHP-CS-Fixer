@@ -29,6 +29,8 @@ final class FixerTagAnalyzerTest extends TestCase
 {
     /**
      * @dataProvider provideFindCases
+     *
+     * @param array<string, list<string>> $expectedTags
      */
     public function testFind(string $source, array $expectedTags, ?string $error = null): void
     {
@@ -45,7 +47,7 @@ final class FixerTagAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<int, array{int}>
+     * @return iterable<string, array{string, array<string, list<string>>, 3?: string}>
      */
     public static function provideFindCases(): iterable
     {
