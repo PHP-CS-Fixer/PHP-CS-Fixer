@@ -236,7 +236,7 @@ final class Runner
         $missingRulesDesc = implode("\n", array_map(
             static function (string $name): string {
                 $extra = '';
-                if ('' === $name) { // @phpstan-ignore-line identical.alwaysFalse future-ready
+                if ('' === $name) {
                     $extra = '(no name provided)';
                 } elseif ('@' === $name[0]) {
                     $extra = ' (can exclude only rules, not sets)';
