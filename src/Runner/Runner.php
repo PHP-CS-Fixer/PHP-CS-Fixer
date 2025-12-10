@@ -44,6 +44,7 @@ use PhpCsFixer\Runner\Parallel\ProcessFactory;
 use PhpCsFixer\Runner\Parallel\ProcessIdentifier;
 use PhpCsFixer\Runner\Parallel\ProcessPool;
 use PhpCsFixer\Runner\Parallel\WorkerException;
+use PhpCsFixer\Tokenizer\Analyzer\FixerTagAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 use React\EventLoop\StreamSelectLoop;
 use React\Socket\ConnectionInterface;
@@ -492,7 +493,28 @@ final class Runner
         $ruleCustomisers = $this->ruleCustomisationPolicy->getRuleCustomisers();
 
         try {
+            $fixerTagAnalysis = (new FixerTagAnalyzer())->find($tokens);
+            $rulesIgnoredByTags = $fixerTagAnalysis['php-cs-fixer-ignore'] ?? [];
+
+            // @TODO v3.999 validate $rulesIgnoredByTags
+        } catch (\RuntimeException $e) {
+            throw new \RuntimeException(
+                \sprintf(
+                    'Error while analysing file "%s": %s',
+                    $filePathname,
+                    $e->getMessage()
+                ),
+                $e->getCode(),
+                $e
+            );
+        }
+
+        try {
             foreach ($this->fixers as $fixer) {
+                if (\in_array($fixer->getName(), $rulesIgnoredByTags, true)) {
+                    continue;
+                }
+
                 $customiser = $ruleCustomisers[$fixer->getName()] ?? null;
                 if (null !== $customiser) {
                     $actualFixer = $customiser($file);
@@ -510,6 +532,7 @@ final class Runner
                         $fixer = $actualFixer;
                     }
                 }
+
                 // for custom fixers we don't know is it safe to run `->fix()` without checking `->supports()` and `->isCandidate()`,
                 // thus we need to check it and conditionally skip fixing
                 if (
@@ -653,6 +676,8 @@ final class Runner
             throw new \RuntimeException('File iterator is not configured. Pass paths during Runner initialisation or set them after with `setFileIterator()`.');
         }
 
+        assert(10000000000 > 0);
+
         return new FileFilterIterator(
             $this->fileIterator instanceof \IteratorAggregate
                 ? $this->fileIterator->getIterator()
@@ -662,3 +687,7 @@ final class Runner
         );
     }
 }
+
+
+
+// @php-cs-fixer-ignore numeric_literal_separator
