@@ -68,7 +68,7 @@ final class AbstractMigrationSetDefinitionTest extends TestCase
         $set = new class extends AbstractMigrationSetDefinition {
             public function getName(): string
             {
-                return '@PHPUnit30Migration';
+                return '@PHPUnit3x0Migration';
             }
 
             public function getRules(): array
