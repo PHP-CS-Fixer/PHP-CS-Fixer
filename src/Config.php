@@ -309,7 +309,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     public function setRuleCustomisationPolicy(?RuleCustomisationPolicyInterface $ruleCustomisationPolicy): ConfigInterface
     {
         // explicitly prevent policy with no proper version defined
-        if (null !== $ruleCustomisationPolicy &&'' === $ruleCustomisationPolicy->getPolicyVersionForCache()) {
+        if (null !== $ruleCustomisationPolicy && '' === $ruleCustomisationPolicy->getPolicyVersionForCache()) {
             throw new \InvalidArgumentException('The Rule Customisation Policy version cannot be an empty string.');
         }
 
