@@ -340,8 +340,6 @@ final class RunnerTest extends TestCase
 
     public function testRuleIgnoredByTag(): void
     {
-        // FRS
-
         $fixers = [
             new Fixer\Basic\NumericLiteralSeparatorFixer(),
             new Fixer\FunctionNotation\NativeFunctionInvocationFixer(),
