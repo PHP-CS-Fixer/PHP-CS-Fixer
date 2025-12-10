@@ -1001,17 +1001,7 @@ final class ProjectCodeTest extends TestCase
                 continue;
             }
 
-            $serializableCandidateData = [];
-            foreach ($candidateData as $key => $value) {
-                if ($value instanceof \Closure) {
-                    $serializableCandidateData[$key] = spl_object_id($value);
-                } elseif ($value instanceof \SplFileInfo) {
-                    $serializableCandidateData[$key] = $value->getPathname();
-                } else {
-                    $serializableCandidateData[$key] = $value;
-                }
-            }
-            $serializedCandidateData = serialize($serializableCandidateData);
+            $serializedCandidateData = self::naiveSerialize($candidateData);
 
             $foundInDuplicates = false;
             foreach ($alreadyFoundCases as $caseKey => $caseData) {
@@ -1269,6 +1259,27 @@ final class ProjectCodeTest extends TestCase
         }
 
         yield from self::$testClassCases;
+    }
+
+    /**
+     * @param array<array-key, mixed> $data
+     */
+    private static function naiveSerialize(array $data): string
+    {
+        $serialized = [];
+        foreach ($data as $key => $value) {
+            if (\is_array($value)) {
+                $serialized[$key] = self::naiveSerialize($value);
+            } elseif ($value instanceof \Closure) {
+                $serialized[$key] = 'Closure#'.spl_object_id($value);
+            } elseif ($value instanceof \SplFileInfo) {
+                $serialized[$key] = 'SplFileInfo('.$value->getPathname().')';
+            } else {
+                $serialized[$key] = $value;
+            }
+        }
+
+        return serialize($serialized);
     }
 
     /**
