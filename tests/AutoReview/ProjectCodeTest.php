@@ -720,6 +720,8 @@ final class ProjectCodeTest extends TestCase
                     $parameterNamesToPosition['expected'],
                     \sprintf('Public method "%s::%s" shall have parameter \'input\' after \'expected\'.', $reflectionClass->getName(), $method->getName())
                 );
+            } else {
+                $this->addToAssertionCount(1); // not enough parameters to test, all good!
             }
 
             if (
