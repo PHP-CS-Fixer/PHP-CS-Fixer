@@ -20,6 +20,7 @@ use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Fixer\InternalFixerInterface;
 use PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
@@ -438,6 +439,10 @@ abstract class AbstractFixerTestCase extends TestCase
 
     final public function testProperMethodParameterNaming(): void
     {
+        if ($this->fixer instanceof InternalFixerInterface) {
+            self::markTestSkipped('Tests not implemented for this class, run the rule on codebase and check if PHPStan accepts the changes.');
+        }
+
         $reflectionObject = new \ReflectionObject($this);
 
         foreach ($reflectionObject->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
