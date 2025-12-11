@@ -44,7 +44,7 @@ use PhpCsFixer\Runner\Parallel\ProcessFactory;
 use PhpCsFixer\Runner\Parallel\ProcessIdentifier;
 use PhpCsFixer\Runner\Parallel\ProcessPool;
 use PhpCsFixer\Runner\Parallel\WorkerException;
-use PhpCsFixer\Tokenizer\Analyzer\FixerTagAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\FixerAnnotationAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 use React\EventLoop\StreamSelectLoop;
 use React\Socket\ConnectionInterface;
@@ -536,8 +536,8 @@ final class Runner
         $ruleCustomisers = $this->ruleCustomisationPolicy->getRuleCustomisers(); // were already validated
 
         try {
-            $fixerTagAnalysis = (new FixerTagAnalyzer())->find($tokens);
-            $rulesIgnoredByTags = $fixerTagAnalysis['php-cs-fixer-ignore'] ?? [];
+            $fixerAnnotationAnalysis = (new FixerAnnotationAnalyzer())->find($tokens);
+            $rulesIgnoredByAnnotations = $fixerAnnotationAnalysis['php-cs-fixer-ignore'] ?? [];
         } catch (\RuntimeException $e) {
             throw new \RuntimeException(
                 \sprintf(
@@ -551,7 +551,7 @@ final class Runner
         }
 
         $this->validateRulesNamesForExceptions(
-            $rulesIgnoredByTags,
+            $rulesIgnoredByAnnotations,
             <<<EOT
                 @php-cs-fixer-ignore annotation(s) used for rules that are not in the current set of enabled rules:
                 %s
@@ -562,7 +562,7 @@ final class Runner
 
         try {
             foreach ($this->fixers as $fixer) {
-                if (\in_array($fixer->getName(), $rulesIgnoredByTags, true)) {
+                if (\in_array($fixer->getName(), $rulesIgnoredByAnnotations, true)) {
                     continue;
                 }
 

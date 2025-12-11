@@ -15,35 +15,35 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 
 use PhpCsFixer\Tests\TestCase;
-use PhpCsFixer\Tokenizer\Analyzer\FixerTagAnalyzer;
+use PhpCsFixer\Tokenizer\Analyzer\FixerAnnotationAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Tokenizer\Analyzer\FixerTagAnalyzer
+ * @covers \PhpCsFixer\Tokenizer\Analyzer\FixerAnnotationAnalyzer
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class FixerTagAnalyzerTest extends TestCase
+final class FixerAnnotationAnalyzerTest extends TestCase
 {
     /**
      * @dataProvider provideFindCases
      *
-     * @param array<string, list<string>> $expectedTags
+     * @param array<string, list<string>> $expectedAnnotations
      */
-    public function testFind(string $source, array $expectedTags, ?string $error = null): void
+    public function testFind(string $source, array $expectedAnnotations, ?string $error = null): void
     {
-        $analyzer = new FixerTagAnalyzer();
+        $analyzer = new FixerAnnotationAnalyzer();
 
         if (null !== $error) {
             $this->expectException(\RuntimeException::class);
             $this->expectExceptionMessage($error);
         }
 
-        $actualTags = $analyzer->find(Tokens::fromCode($source));
+        $actualAnnotations = $analyzer->find(Tokens::fromCode($source));
 
-        self::assertSame($expectedTags, $actualTags);
+        self::assertSame($expectedAnnotations, $actualAnnotations);
     }
 
     /**
@@ -51,7 +51,7 @@ final class FixerTagAnalyzerTest extends TestCase
      */
     public static function provideFindCases(): iterable
     {
-        yield 'no tags' => [
+        yield 'no annotations' => [
             <<<'PHP'
                 <?php
 
@@ -63,7 +63,7 @@ final class FixerTagAnalyzerTest extends TestCase
             [],
         ];
 
-        yield 'tags somewhere on head and on bottom' => [
+        yield 'annotations somewhere on head and on bottom' => [
             <<<'PHP'
                 <?php
 
@@ -129,7 +129,7 @@ final class FixerTagAnalyzerTest extends TestCase
 
                 PHP,
             [],
-            'Duplicated values found for tag "@php-cs-fixer-ignore": "no_extra_blank_lines".',
+            'Duplicated values found for annotation "@php-cs-fixer-ignore": "no_extra_blank_lines".',
         ];
 
         // verify that exception is not considered duplicated when no code and iterating a) from top, b) from bottom

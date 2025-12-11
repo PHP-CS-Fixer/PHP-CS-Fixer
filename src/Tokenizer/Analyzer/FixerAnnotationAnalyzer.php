@@ -24,7 +24,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class FixerTagAnalyzer
+final class FixerAnnotationAnalyzer
 {
     /**
      * @return array<string, list<string>>
@@ -32,7 +32,7 @@ final class FixerTagAnalyzer
     public function find(Tokens $tokens): array
     {
         $comments = [];
-        $tags = [];
+        $annotations = [];
 
         $count = $tokens->count();
         $index = 0;
@@ -93,11 +93,11 @@ final class FixerTagAnalyzer
             $matchParts = explode(' ', $match, 2);
             \assert(2 === \count($matchParts));
 
-            $tags[$matchParts[0]] ??= [];
-            array_push($tags[$matchParts[0]], ...explode(',', $matchParts[1]));
+            $annotations[$matchParts[0]] ??= [];
+            array_push($annotations[$matchParts[0]], ...explode(',', $matchParts[1]));
         }
 
-        foreach ($tags as $tag => $vals) {
+        foreach ($annotations as $annotation => $vals) {
             $duplicates = array_keys(
                 array_filter(
                     array_count_values($vals),
@@ -106,13 +106,13 @@ final class FixerTagAnalyzer
             );
 
             if (0 !== \count($duplicates)) {
-                throw new \RuntimeException(\sprintf('Duplicated values found for tag "@%s": "%s".', $tag, implode('", "', $duplicates)));
+                throw new \RuntimeException(\sprintf('Duplicated values found for annotation "@%s": "%s".', $annotation, implode('", "', $duplicates)));
             }
 
             sort($vals);
-            $tags[$tag] = $vals;
+            $annotations[$annotation] = $vals;
         }
 
-        return $tags;
+        return $annotations;
     }
 }
