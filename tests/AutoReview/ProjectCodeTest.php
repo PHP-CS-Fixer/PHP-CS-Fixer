@@ -700,7 +700,7 @@ final class ProjectCodeTest extends TestCase
         foreach ($publicMethods as $method) {
             $parameters = $method->getParameters();
 
-            if (\count($parameters) < 2) {
+            if (0 === \count($parameters)) {
                 $this->addToAssertionCount(1); // not enough parameters to test, all good!
 
                 continue;
@@ -720,6 +720,27 @@ final class ProjectCodeTest extends TestCase
                     $parameterNamesToPosition['expected'],
                     \sprintf('Public method "%s::%s" shall have parameter \'input\' after \'expected\'.', $reflectionClass->getName(), $method->getName())
                 );
+            }
+
+            if (
+                $reflectionClass->isSubclassOf(AbstractFixerTestCase::class)
+                && str_starts_with($method->getName(), 'testFix')
+            ) {
+                if (isset($parameterNamesToPosition['expected'])) {
+                    self::assertSame(
+                        0,
+                        $parameterNamesToPosition['expected'],
+                        \sprintf('Public method "%s::%s" shall have parameter \'expected\' placed as parameter#0.', $reflectionClass->getName(), $method->getName())
+                    );
+                }
+
+                if (isset($parameterNames[0])) {
+                    self::assertSame(
+                        'expected',
+                        $parameterNames[0],
+                        \sprintf('Public method "%s::%s" shall have parameter \'expected\' as parameter#0.', $reflectionClass->getName(), $method->getName())
+                    );
+                }
             }
         }
     }
