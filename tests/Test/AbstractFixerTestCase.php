@@ -20,6 +20,7 @@ use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Fixer\InternalFixerInterface;
 use PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
@@ -402,7 +403,7 @@ abstract class AbstractFixerTestCase extends TestCase
             ClassDefinitionFixerTest::class => ['testClassyDefinitionInfo', 'provideClassyDefinitionInfoCases', 'testClassyInheritanceInfo', 'provideClassyInheritanceInfoCases', 'testClassyInheritanceInfoPre80', 'provideClassyInheritanceInfoPre80Cases'],
             NoEmptyCommentFixerTest::class => ['testGetCommentBlock', 'provideGetCommentBlockCases'],
             NoUselessElseFixerTest::class => ['testBlockDetection', 'provideBlockDetectionCases', 'testIsInConditionWithoutBraces', 'provideIsInConditionWithoutBracesCases'],
-            PhpUnitTestCaseStaticMethodCallsFixerTest::class => ['testFixerContainsAllPhpunitStaticMethodsInItsList'],
+            PhpUnitTestCaseStaticMethodCallsFixerTest::class => ['testFixerContainsAllPhpunitStaticMethodsInItsList', 'testWrongConfigTypeForMethodsAndTargetVersion', 'testPHPUnit10', 'testPHPUnit11', 'testPHPUnit12', 'testPHPUnit13'],
         ];
 
         $names = ['Fix', 'FixDeprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'FixPre85', 'Fix85', 'WithShortOpenTag', 'WithWhitespacesConfig', 'InvalidConfiguration'];
@@ -433,6 +434,28 @@ abstract class AbstractFixerTestCase extends TestCase
                 $extraMethods,
                 \sprintf('Methods "%s" should not be present in %s.', implode('". "', $extraMethods), static::class),
             );
+        }
+    }
+
+    final public function testProperMethodParameterNaming(): void
+    {
+        if ($this->fixer instanceof InternalFixerInterface) {
+            self::markTestSkipped('Tests not implemented for this class, run the rule on codebase and check if PHPStan accepts the changes.');
+        }
+
+        $reflectionObject = new \ReflectionObject($this);
+
+        foreach ($reflectionObject->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+            if (!str_starts_with($method->getName(), 'testFix')) {
+                continue;
+            }
+
+            $parameters = $method->getParameters();
+            if (0 === \count($parameters)) {
+                continue;
+            }
+
+            self::assertSame('expected', $parameters[0]->getName(), "First parameter name in {$reflectionObject->getName()}::{$method->getName()} is incorrectly named.");
         }
     }
 

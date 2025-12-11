@@ -63,7 +63,6 @@ return (new Config())
             'exclude' => ['final', 'api-extendable'],
             'consider_absent_docblock_as_internal_class' => true,
         ],
-        'general_phpdoc_annotation_remove' => ['annotations' => ['expectedDeprecation']], // one should use PHPUnit built-in method instead
         'header_comment' => [
             'header' => implode('', $fileHeaderParts),
             'validator' => implode('', [
@@ -76,7 +75,6 @@ return (new Config())
         ],
         'modernize_strpos' => true, // needs PHP 8+ or polyfill
         'native_constant_invocation' => ['strict' => false], // strict:false to not remove `\` on low-end PHP versions for not-yet-known consts
-        'no_useless_concat_operator' => false, // TODO switch back on when the `src/Console/Application.php` no longer needs the concat
         'numeric_literal_separator' => true,
         'phpdoc_order' => [
             'order' => [
