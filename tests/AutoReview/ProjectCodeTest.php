@@ -728,14 +728,6 @@ final class ProjectCodeTest extends TestCase
                 $reflectionClass->isSubclassOf(AbstractFixerTestCase::class)
                 && str_starts_with($method->getName(), 'testFix')
             ) {
-                if (isset($parameterNamesToPosition['expected'])) {
-                    self::assertSame(
-                        0,
-                        $parameterNamesToPosition['expected'],
-                        \sprintf('Public method "%s::%s" shall have parameter \'expected\' placed as parameter#0.', $reflectionClass->getName(), $method->getName())
-                    );
-                }
-
                 if (isset($parameterNames[0])) {
                     self::assertSame(
                         'expected',
