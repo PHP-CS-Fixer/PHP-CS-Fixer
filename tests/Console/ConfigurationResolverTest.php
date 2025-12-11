@@ -445,7 +445,7 @@ final class ConfigurationResolverTest extends TestCase
         $config = new Config();
         $finder = $config->getFinder();
 
-        assert($finder instanceof Finder); // Config::getFinder() ensures only `iterable`
+        \assert($finder instanceof Finder); // Config::getFinder() ensures only `iterable`
 
         $finder
             ->in(__DIR__.'/../Fixtures')
@@ -465,7 +465,7 @@ final class ConfigurationResolverTest extends TestCase
         $config = new Config();
         $finder = $config->getFinder();
 
-        assert($finder instanceof Finder); // Config::getFinder() ensures only `iterable`
+        \assert($finder instanceof Finder); // Config::getFinder() ensures only `iterable`
 
         $finder
             ->in(__DIR__.'/../Fixtures')
@@ -486,7 +486,7 @@ final class ConfigurationResolverTest extends TestCase
         $config = new Config();
         $finder = $config->getFinder();
 
-        assert($finder instanceof Finder); // Config::getFinder() ensures only `iterable`
+        \assert($finder instanceof Finder); // Config::getFinder() ensures only `iterable`
 
         $finder
             ->in($dir)
@@ -507,7 +507,7 @@ final class ConfigurationResolverTest extends TestCase
         $config = new Config();
         $finder = $config->getFinder();
 
-        assert($finder instanceof Finder); // Config::getFinder() ensures only `iterable`
+        \assert($finder instanceof Finder); // Config::getFinder() ensures only `iterable`
 
         $finder
             ->in($dir)
@@ -528,7 +528,7 @@ final class ConfigurationResolverTest extends TestCase
         $config = new Config();
         $finder = $config->getFinder();
 
-        assert($finder instanceof Finder); // Config::getFinder() ensures only `iterable`
+        \assert($finder instanceof Finder); // Config::getFinder() ensures only `iterable`
 
         $finder
             ->in($dir)

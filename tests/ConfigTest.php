@@ -146,7 +146,7 @@ final class ConfigTest extends TestCase
         $config = new Config();
         $finder = $config->getFinder();
 
-        assert($finder instanceof Finder); // Config::getFinder() ensures only `iterable`
+        \assert($finder instanceof Finder); // Config::getFinder() ensures only `iterable`
 
         $items = iterator_to_array(
             $finder->in(__DIR__.'/Fixtures/FinderDirectory'),
