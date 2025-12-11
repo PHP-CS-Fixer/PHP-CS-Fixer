@@ -1,0 +1,8 @@
+--TEST--
+Integration of fixers: no_empty_block,no_trailing_whitespace.
+--RULESET--
+{"no_empty_block": true, "no_trailing_whitespace": true}
+--EXPECT--
+<?php 
+--INPUT--
+<?php    if ($foo) {}
