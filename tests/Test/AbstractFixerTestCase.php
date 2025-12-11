@@ -436,6 +436,24 @@ abstract class AbstractFixerTestCase extends TestCase
         }
     }
 
+    final public function testProperMethodParameterNaming(): void
+    {
+        $reflectionObject = new \ReflectionObject($this);
+
+        foreach ($reflectionObject->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+            if (!str_starts_with($method->getName(), 'testFix')) {
+                continue;
+            }
+
+            $parameters = $method->getParameters();
+            if (0 === \count($parameters)) {
+                continue;
+            }
+
+            self::assertSame('expected', $parameters[0]->getName(), "First parameter name in {$reflectionObject->getName()}::{$method->getName()} is incorrectly named.");
+        }
+    }
+
     public function testImplementingWhitespacesAwareFixerInterface(): void
     {
         $tokens = Tokens::fromCode((string) file_get_contents((string) $this->getFixerReflection()->getFileName()));
