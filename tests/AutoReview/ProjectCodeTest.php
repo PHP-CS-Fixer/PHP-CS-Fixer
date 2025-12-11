@@ -735,6 +735,14 @@ final class ProjectCodeTest extends TestCase
                         \sprintf('Public method "%s::%s" shall have parameter \'expected\' as parameter#0.', $reflectionClass->getName(), $method->getName())
                     );
                 }
+
+                if (isset($parameterNames[1], $parameterNamesToPosition['input'])) {
+                    self::assertSame(
+                        'input',
+                        $parameterNames[1],
+                        \sprintf('Public method "%s::%s" shall have parameter \'input\' as parameter#1.', $reflectionClass->getName(), $method->getName())
+                    );
+                }
             }
         }
     }
