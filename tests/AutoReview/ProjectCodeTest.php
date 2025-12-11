@@ -706,33 +706,21 @@ final class ProjectCodeTest extends TestCase
                 continue;
             }
 
-            $expected = [
-                'expected' => false,
-                'input' => false,
-            ];
-
-            for ($i = \count($parameters) - 1; $i >= 0; --$i) {
-                \assert(\array_key_exists($i, $parameters));
-                $name = $parameters[$i]->getName();
-
-                if (isset($expected[$name])) {
-                    $expected[$name] = $i;
-                }
-            }
-
-            $expectedFound = array_filter($expected, static fn ($item): bool => false !== $item);
-
-            if (\count($expectedFound) < 2) {
-                $this->addToAssertionCount(1); // not enough parameters to test, all good!
-
-                continue;
-            }
-
-            self::assertLessThan(
-                $expected['input'],
-                $expected['expected'],
-                \sprintf('Public method "%s::%s" has parameter \'input\' before \'expected\'.', $reflectionClass->getName(), $method->getName())
+            $parameterNames = array_map(
+                static fn (\ReflectionParameter $item): string => $item->getName(),
+                $parameters,
             );
+            $parameterNamesToPosition = 0 === \count($parameterNames) ? [] : array_combine($parameterNames, range(0, \count($parameterNames) - 1));
+
+            if (
+                isset($parameterNamesToPosition['expected'], $parameterNamesToPosition['input'])
+            ) {
+                self::assertLessThan(
+                    $parameterNamesToPosition['input'],
+                    $parameterNamesToPosition['expected'],
+                    \sprintf('Public method "%s::%s" shall have parameter \'input\' after \'expected\'.', $reflectionClass->getName(), $method->getName())
+                );
+            }
         }
     }
 
