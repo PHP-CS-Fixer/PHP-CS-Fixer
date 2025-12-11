@@ -18,6 +18,12 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Tokens;
 
 /**
+ * Extracts @php-cs-fixer-* annotations from the given Tokens collection.
+ *
+ * Those annotations are controlling low-level PHP CS Fixer internal
+ * are looked for only at the top and at the bottom of the file.
+ * Any syntax of comment is allowed.
+ *
  * @internal
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
