@@ -21,7 +21,7 @@ Sometimes you may want to ignore/modify certain rule for specific files or direc
     Sets provided by PHP CS Fixer are a living standards, and as such their definition is NOT covered with Backward Compatibility promise.
     That means any upgrade of PHP CS Fixer may add or remove fixers from the sets (or change their configuration).
     This already means that after upgrade of PHP CS Fixer, your project will start applying different rules, simply due to fact of upgrade.
-    This may come from adding a new rules to the set, but also removed the rule or replace the deprecated rule by it's successor.
+    This may come from adding a new rules to the set, but also removed the rule or replace the deprecated rule by its successor.
 
     Now, when you use exceptions for the rules, this may lead to situation where, after PHP CS Fixer upgrade,
     your exception refers to a rule that is no longer part of the set you use.
