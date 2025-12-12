@@ -3,6 +3,34 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.92.0
+---------------------
+
+* feat: exception for rules via `@php-cs-fixer-ignore` annotation (#9280)
+* feat: exception for rules via `Rule Customisation Policy` (#9107)
+* feat: `PhpUnitTestCaseStaticMethodCallsFixer` - add handling of `getStubBuilder` (#9276)
+* feat: `PhpUnitTestCaseStaticMethodCallsFixer` - add `target` option (#8498)
+* chore: '.php-cs-fixer.dist.php' - remove no longer needed rule, 'expectedDeprecation' annotation does not exist for long time (#9266)
+* chore: fix `arguments.count` error from PHPStan (#9258)
+* chore: fix `generator.valueType` error from PHPStan (#9259)
+* chore: fix `plus.*NonNumeric` errors from PHPStan (#9260)
+* chore: Runner - better input types handling (#9286)
+* chore: watch out for non-final classes (#9262)
+* chore: `Config::getFinder()` - fix typehinting (#9288)
+* deps: bump alpine from 3.22 to 3.23 (#9269)
+* deps: bump phpcompatibility/php-compatibility from 10.0.0-alpha1 to 10.0.0-alpha2 in /dev-tools (#9271)
+* deps: bump the phpstan group in /dev-tools with 3 updates (#9270)
+* deps: dev-tools - upgrade deep deps (#9272)
+* docs: exception for rules in dedicated doc files, for easier discoverability (#9281)
+* docs: upgrade docs to not use legacy set (#9282)
+* DX: make all `testFix*` methods have first parameter `$expected` (#9289)
+* refactor: fix violation of 'no_useless_concat_operator' (#9267)
+* refactor: `ProjectCodeTest` - refactor `testExpectedInputOrder` test (#9290)
+* Revert (partially) "feat: Finder to find dot-files by default in v4/future-mode (#9187)" (#9287)
+* test: RuleSetTest - check against non-deprecated variant of PHPUnit sets (#9265)
+* UX: exception for rules via `Rule Customisation Policy` - better error message for wrong customisers (#9279)
+* UX: exception for rules via `Rule Customisation Policy` - prevent policy without version (#9278)
+
 Changelog for v3.91.3
 ---------------------
 

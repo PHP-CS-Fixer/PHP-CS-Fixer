@@ -338,6 +338,43 @@ final class RunnerTest extends TestCase
         );
     }
 
+    public function testRuleIgnoredByTag(): void
+    {
+        $fixers = [
+            new Fixer\Basic\NumericLiteralSeparatorFixer(),
+            new Fixer\FunctionNotation\NativeFunctionInvocationFixer(),
+        ];
+
+        $path = \dirname(__DIR__).\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'rule-ignored-by-tag';
+
+        $runner = new Runner(
+            Finder::create()->in($path),
+            $fixers,
+            new NullDiffer(),
+            null,
+            new ErrorsManager(),
+            new Linter(),
+            true,
+            new NullCacheManager(),
+            new Directory($path),
+            false
+        );
+
+        $changed = $runner->fix();
+
+        self::assertCount(2, $changed);
+        self::assertArrayHasKey('A-without-ignore-tag.php', $changed);
+        self::assertSame(
+            ['numeric_literal_separator', 'native_function_invocation'],
+            $changed['A-without-ignore-tag.php']['appliedFixers'],
+        );
+        self::assertArrayHasKey('B-with-ignore-tag.php', $changed);
+        self::assertSame(
+            ['native_function_invocation'],
+            $changed['B-with-ignore-tag.php']['appliedFixers'],
+        );
+    }
+
     /**
      * @param non-empty-string                                                  $path
      * @param _RuleCustomisationPolicyCallback                                  $arraySyntaxCustomiser
