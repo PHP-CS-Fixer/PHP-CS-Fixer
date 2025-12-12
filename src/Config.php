@@ -125,7 +125,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     }
 
     /**
-     * @return Finder
+     * @return iterable<\SplFileInfo>
      */
     public function getFinder(): iterable
     {
