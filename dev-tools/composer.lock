@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b5bb53a0dfa4842b58c850d5a3209f6a",
+    "content-hash": "d543b50b9f7a568b9d6f3c9a0aff035a",
     "packages": [
         {
             "name": "composer/pcre",
@@ -1050,16 +1050,16 @@
         },
         {
             "name": "shipmonk/phpstan-baseline-per-identifier",
-            "version": "2.2.0",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shipmonk-rnd/phpstan-baseline-per-identifier.git",
-                "reference": "a096ae650296ffaabc13b6362eaed48faae812c0"
+                "reference": "b997803a60f1f604b9fe0aed5d6d1edead010190"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shipmonk-rnd/phpstan-baseline-per-identifier/zipball/a096ae650296ffaabc13b6362eaed48faae812c0",
-                "reference": "a096ae650296ffaabc13b6362eaed48faae812c0"
+                "url": "https://api.github.com/repos/shipmonk-rnd/phpstan-baseline-per-identifier/zipball/b997803a60f1f604b9fe0aed5d6d1edead010190",
+                "reference": "b997803a60f1f604b9fe0aed5d6d1edead010190"
             },
             "require": {
                 "nette/neon": "^3.3.3 || ^4.0",
