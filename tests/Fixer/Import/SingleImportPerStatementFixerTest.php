@@ -37,12 +37,10 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null, array $configuration = [], bool $useTabsAndWindowsNewlines = false): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = [], ?WhitespacesFixerConfig $whitespacesConfig = null): void
     {
         $this->fixer->configure($configuration);
-        if ($useTabsAndWindowsNewlines) {
-            $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
-        }
+        $this->fixer->setWhitespacesConfig($whitespacesConfig ?? new WhitespacesFixerConfig());
         $this->doTest($expected, $input);
     }
 
@@ -333,7 +331,7 @@ use Space\Models\ {
             "<?php\r\n    use FooA;\r\n    use FooB;",
             "<?php\r\n    use FooA, FooB;",
             [],
-            true,
+            new WhitespacesFixerConfig("\t", "\r\n"),
         ];
     }
 
