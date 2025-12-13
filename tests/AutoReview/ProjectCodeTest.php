@@ -700,7 +700,7 @@ final class ProjectCodeTest extends TestCase
         foreach ($publicMethods as $method) {
             $parameters = $method->getParameters();
 
-            if (\count($parameters) < 2) {
+            if (0 === \count($parameters)) {
                 $this->addToAssertionCount(1); // not enough parameters to test, all good!
 
                 continue;
@@ -719,6 +719,50 @@ final class ProjectCodeTest extends TestCase
                     $parameterNamesToPosition['input'],
                     $parameterNamesToPosition['expected'],
                     \sprintf('Public method "%s::%s" shall have parameter \'input\' after \'expected\'.', $reflectionClass->getName(), $method->getName())
+                );
+            } else {
+                $this->addToAssertionCount(1); // not enough parameters to test, all good!
+            }
+
+            if (
+                $reflectionClass->isSubclassOf(AbstractFixerTestCase::class)
+                && str_starts_with($method->getName(), 'testFix')
+            ) {
+                if (isset($parameterNames[0])) {
+                    self::assertSame(
+                        'expected',
+                        $parameterNames[0],
+                        \sprintf('Test method "%s::%s" shall have parameter \'expected\' as parameter#0.', $reflectionClass->getName(), $method->getName())
+                    );
+                }
+
+                if (isset($parameterNames[1])) {
+                    self::assertSame(
+                        'input',
+                        $parameterNames[1],
+                        \sprintf('Test method "%s::%s" shall have parameter \'input\' as parameter#1.', $reflectionClass->getName(), $method->getName())
+                    );
+                }
+
+                if (isset($parameterNames[2])) {
+                    // @TODO: restrict the values below:
+                    self::assertTrue(
+                        \in_array($parameterNames[2], ['configuration', 'file', 'filepath', 'whitespacesConfig'], true),
+                        \sprintf('Test method "%s::%s" parameter#2 is incorrectly named.', $reflectionClass->getName(), $method->getName())
+                    );
+                }
+
+                if (isset($parameterNames[3])) {
+                    // @TODO: restrict the values below:
+                    self::assertTrue(
+                        \in_array($parameterNames[3], ['dir', 'whitespacesConfig'], true),
+                        \sprintf('Test method "%s::%s" parameter#3 is incorrectly named.', $reflectionClass->getName(), $method->getName())
+                    );
+                }
+
+                self::assertTrue(
+                    !isset($parameterNames[4]),
+                    \sprintf('Test method "%s::%s" has more than 4 parameters.', $reflectionClass->getName(), $method->getName())
                 );
             }
         }
