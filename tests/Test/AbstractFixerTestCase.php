@@ -456,6 +456,11 @@ abstract class AbstractFixerTestCase extends TestCase
             }
 
             self::assertSame('expected', $parameters[0]->getName(), "First parameter name in {$reflectionObject->getName()}::{$method->getName()} is incorrectly named.");
+
+            if (1 < \count($parameters)) {
+                self::assertArrayHasKey(1, $parameters);
+                self::assertSame('input', $parameters[1]->getName(), "Second parameter name in {$reflectionObject->getName()}::{$method->getName()} is incorrectly named.");
+            }
         }
     }
 
