@@ -465,14 +465,16 @@ abstract class AbstractFixerTestCase extends TestCase
 
             if (3 <= \count($parameters)) {
                 self::assertArrayHasKey(2, $parameters);
-                // @TODO: restrict the values below:
-                self::assertTrue(\in_array($parameters[2]->getName(), ['configuration', 'file', 'filepath', 'whitespacesConfig'], true), "Third parameter ({$parameters[2]->getName()}) in {$reflectionObject->getName()}::{$method->getName()} is incorrectly named.");
+                if (3 === \count($parameters)) {
+                    self::assertTrue(\in_array($parameters[2]->getName(), ['configuration', 'file', 'whitespacesConfig'], true), "Third parameter ({$parameters[2]->getName()}) in {$reflectionObject->getName()}::{$method->getName()} is incorrectly named.");
+                } else {
+                    self::assertSame('configuration', $parameters[2]->getName(), "Third parameter in {$reflectionObject->getName()}::{$method->getName()} is incorrectly named.");
+                }
             }
 
             if (4 <= \count($parameters)) {
                 self::assertArrayHasKey(3, $parameters);
-                // @TODO: restrict the values below:
-                self::assertTrue(\in_array($parameters[3]->getName(), ['dir', 'whitespacesConfig'], true), "Fourth parameter ({$parameters[3]->getName()}) in {$reflectionObject->getName()}::{$method->getName()} is incorrectly named.");
+                self::assertTrue(\in_array($parameters[3]->getName(), ['file', 'whitespacesConfig'], true), "Fourth parameter ({$parameters[3]->getName()}) in {$reflectionObject->getName()}::{$method->getName()} is incorrectly named.");
             }
 
             if (4 < \count($parameters)) {
