@@ -42,11 +42,9 @@ final class HeaderCommentFixerTest extends AbstractFixerTestCase
         string $expected,
         ?string $input,
         array $configuration,
-        ?WhitespacesFixerConfig $whitespaceConfig = null
+        ?WhitespacesFixerConfig $whitespacesConfig = null
     ): void {
-        if (null !== $whitespaceConfig) {
-            $this->fixer->setWhitespacesConfig($whitespaceConfig);
-        }
+        $this->fixer->setWhitespacesConfig($whitespacesConfig ?? new WhitespacesFixerConfig());
         $this->fixer->configure($configuration);
         $this->doTest($expected, $input);
     }
