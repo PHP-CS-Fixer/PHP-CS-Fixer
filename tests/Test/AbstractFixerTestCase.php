@@ -465,7 +465,7 @@ abstract class AbstractFixerTestCase extends TestCase
             if (2 < \count($parameters)) {
                 self::assertArrayHasKey(2, $parameters);
                 // @TODO: restrict the values below:
-                self::assertTrue(\in_array($parameters[2]->getName(), ['config', 'configuration', 'file', 'filepath', 'indent', 'useTabsAndWindowsNewlines', 'whitespaces'], true), "Third parameter ({$parameters[2]->getName()}) name in {$reflectionObject->getName()}::{$method->getName()} is incorrectly named.");
+                self::assertTrue(\in_array($parameters[2]->getName(), ['configuration', 'file', 'filepath', 'indent', 'useTabsAndWindowsNewlines', 'whitespaces'], true), "Third parameter ({$parameters[2]->getName()}) name in {$reflectionObject->getName()}::{$method->getName()} is incorrectly named.");
             }
 
             if (3 < \count($parameters)) {
