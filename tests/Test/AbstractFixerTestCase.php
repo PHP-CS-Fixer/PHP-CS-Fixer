@@ -461,6 +461,22 @@ abstract class AbstractFixerTestCase extends TestCase
                 self::assertArrayHasKey(1, $parameters);
                 self::assertSame('input', $parameters[1]->getName(), "Second parameter name in {$reflectionObject->getName()}::{$method->getName()} is incorrectly named.");
             }
+
+            if (2 < \count($parameters)) {
+                self::assertArrayHasKey(2, $parameters);
+                // @TODO: restrict the values below:
+                self::assertTrue(\in_array($parameters[2]->getName(), ['config', 'configuration', 'file', 'filepath', 'indent', 'useTabsAndWindowsNewlines', 'whitespaces'], true), "Third parameter ({$parameters[2]->getName()}) name in {$reflectionObject->getName()}::{$method->getName()} is incorrectly named.");
+            }
+
+            if (3 < \count($parameters)) {
+                self::assertArrayHasKey(3, $parameters);
+                // @TODO: restrict the values below:
+                self::assertTrue(\in_array($parameters[3]->getName(), ['dir', 'indent', 'lineEnding', 'updateWhitespacesConfig', 'useTabs', 'useTabsAndWindowsNewlines', 'useWindowsNewlines', 'whitespaces', 'whitespaceConfig', 'whitespacesFixerConfig'], true), "Fourth parameter ({$parameters[3]->getName()}) name in {$reflectionObject->getName()}::{$method->getName()} is incorrectly named.");
+            }
+
+            if (4 < \count($parameters)) {
+                self::fail("Method {$reflectionObject->getName()}::{$method->getName()} has more than 4 parameters.");
+            }
         }
     }
 
