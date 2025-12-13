@@ -58,6 +58,11 @@ return (new Config())
     ] + (class_exists(InternalRiskySet::class) ? [
         '@self/internal' => true, // internal rule set, shall not be used outside of main repo
     ] : []) + [
+        'final_internal_class' => [
+            'include' => [],
+            'exclude' => ['final', 'api-extendable'],
+            'consider_absent_docblock_as_internal_class' => true,
+        ],
         'header_comment' => [
             'header' => implode('', $fileHeaderParts),
             'validator' => implode('', [

@@ -732,7 +732,7 @@ final class ProjectCodeTest extends TestCase
                     self::assertSame(
                         'expected',
                         $parameterNames[0],
-                        \sprintf('Public method "%s::%s" shall have parameter \'expected\' as parameter#0.', $reflectionClass->getName(), $method->getName())
+                        \sprintf('Test method "%s::%s" shall have parameter \'expected\' as parameter#0.', $reflectionClass->getName(), $method->getName())
                     );
                 }
 
@@ -740,9 +740,30 @@ final class ProjectCodeTest extends TestCase
                     self::assertSame(
                         'input',
                         $parameterNames[1],
-                        \sprintf('Public method "%s::%s" shall have parameter \'input\' as parameter#1.', $reflectionClass->getName(), $method->getName())
+                        \sprintf('Test method "%s::%s" shall have parameter \'input\' as parameter#1.', $reflectionClass->getName(), $method->getName())
                     );
                 }
+
+                if (isset($parameterNames[2])) {
+                    // @TODO: restrict the values below:
+                    self::assertTrue(
+                        \in_array($parameterNames[2], ['configuration', 'file', 'filepath', 'whitespacesConfig'], true),
+                        \sprintf('Test method "%s::%s" parameter#2 is incorrectly named.', $reflectionClass->getName(), $method->getName())
+                    );
+                }
+
+                if (isset($parameterNames[3])) {
+                    // @TODO: restrict the values below:
+                    self::assertTrue(
+                        \in_array($parameterNames[3], ['dir', 'whitespacesConfig'], true),
+                        \sprintf('Test method "%s::%s" parameter#3 is incorrectly named.', $reflectionClass->getName(), $method->getName())
+                    );
+                }
+
+                self::assertTrue(
+                    !isset($parameterNames[4]),
+                    \sprintf('Test method "%s::%s" has more than 4 parameters.', $reflectionClass->getName(), $method->getName())
+                );
             }
         }
     }

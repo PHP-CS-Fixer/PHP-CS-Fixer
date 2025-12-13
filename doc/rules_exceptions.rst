@@ -21,7 +21,7 @@ Sometimes you may want to ignore/modify certain rule for specific files or direc
     Sets provided by PHP CS Fixer are a living standards, and as such their definition is NOT covered with Backward Compatibility promise.
     That means any upgrade of PHP CS Fixer may add or remove fixers from the sets (or change their configuration).
     This already means that after upgrade of PHP CS Fixer, your project will start applying different rules, simply due to fact of upgrade.
-    This may come from adding a new rules to the set, but also removed the rule or replace the deprecated rule by it's successor.
+    This may come from adding a new rules to the set, but also removed the rule or replace the deprecated rule by its successor.
 
     Now, when you use exceptions for the rules, this may lead to situation where, after PHP CS Fixer upgrade,
     your exception refers to a rule that is no longer part of the set you use.
@@ -29,8 +29,42 @@ Sometimes you may want to ignore/modify certain rule for specific files or direc
     For such cases, PHP CS Fixer will check that all the rules configured as exceptions are actually configured in set and raise error if some of them are not used.
     This will prevent accidental breaking of rules exceptions due to upgrade of PHP CS Fixer.
 
+Configuring exceptions via ``@php-cs-fixer-ignore`` annotation
+--------------------------------------------------------------
+
+This is the simplest way to **ignore** specific rule for specific file.
+
+Just put this annotation in comment anywhere on top or bottom of the file, and the rule will be ignored for the whole file:
+
+.. code-block:: php
+
+    <?php
+
+    declare(strict_types=1);
+
+    /*
+     * File header..
+     * LICENSE...
+     */
+
+    // @php-cs-fixer-ignore no_binary_string
+    // @php-cs-fixer-ignore no_trailing_whitespace Optional comment - Rule ignored because of ...
+
+    /*
+     * @php-cs-fixer-ignore no_unset_on_property,no_useless_else Multiple rules ignored at once
+     */
+
+    class MyClass {
+        /* ... */
+    }
+
+    // @php-cs-fixer-ignore no_empty_statement    Works Also
+    // @php-cs-fixer-ignore no_extra_blank_lines  on bottom of file
+
 Configuring exceptions via ``Rule Customisation Policy``
 --------------------------------------------------------
+
+Sometimes, simple annotation usage for ignoring the rule in-file is not enough.
 
 If you need to **ignore** or **reconfigure** a rule for specific files, you can inject ``RuleCustomisationPolicyInterface`` via ``Config::setRuleCustomisationPolicy()`` method:
 
