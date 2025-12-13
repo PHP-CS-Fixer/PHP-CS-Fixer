@@ -1,0 +1,115 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of PHP CS Fixer.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *     Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace PhpCsFixer\Tests\Fixer\AttributeNotation;
+
+use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+
+/**
+ * @internal
+ *
+ * @covers \PhpCsFixer\Fixer\AttributeNotation\AttributeBlockNoSpacesFixer
+ *
+ * @requires PHP 8.0
+ *
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\AttributeNotation\AttributeBlockNoSpacesFixer>
+ *
+ * @author Albin Kester <albin.kester@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
+final class AttributeBlockNoSpacesFixerTest extends AbstractFixerTestCase
+{
+    /**
+     * @dataProvider provideFixCases
+     */
+    public function testFix(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: null|string}>
+     */
+    public static function provideFixCases(): iterable
+    {
+        yield 'With parentheses' => [
+            '<?php
+class User
+{
+    #[ApiProperty(identifier: true)]
+    private string $name;
+}',
+            '<?php
+class User
+{
+    #[
+        ApiProperty(identifier: true)
+    ]
+    private string $name;
+}',
+        ];
+
+        yield 'Without parentheses' => [
+            '<?php
+class User
+{
+    #[ApiProperty]
+    private string $name;
+}',
+            '<?php
+class User
+{
+    #[     ApiProperty    ]
+    private string $name;
+}',
+        ];
+
+        yield 'With multiple attributes in a block' => [
+            '<?php
+class User
+{
+    #[ApiProperty1(),
+        ApiProperty2(),
+        ApiProperty3(),]
+    private string $name;
+}',
+            '<?php
+class User
+{
+    #[
+        ApiProperty1(),
+        ApiProperty2(),
+        ApiProperty3(),
+    ]
+    private string $name;
+}',
+        ];
+
+        yield 'With comments in a block' => [
+            '<?php
+class User
+{
+    #[
+        /** @see docs.example.com */
+        ApiPropertyExternal(),
+        ApiProperty(),
+        // @todo: add 3rd one in PHP 9
+    ]
+    private string $name;
+}', null,
+        ];
+    }
+}
