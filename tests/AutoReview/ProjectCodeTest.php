@@ -747,7 +747,7 @@ final class ProjectCodeTest extends TestCase
                 if (isset($parameterNames[2])) {
                     // @TODO: restrict the values below:
                     self::assertTrue(
-                        \in_array($parameterNames[2], ['configuration', 'file', 'filepath', 'whitespacesConfig'], true),
+                        \in_array($parameterNames[2], ['configuration', 'file', 'whitespacesConfig'], true),
                         \sprintf('Test method "%s::%s" parameter#2 is incorrectly named.', $reflectionClass->getName(), $method->getName())
                     );
                 }
@@ -755,7 +755,7 @@ final class ProjectCodeTest extends TestCase
                 if (isset($parameterNames[3])) {
                     // @TODO: restrict the values below:
                     self::assertTrue(
-                        \in_array($parameterNames[3], ['dir', 'whitespacesConfig'], true),
+                        \in_array($parameterNames[3], ['file', 'whitespacesConfig'], true),
                         \sprintf('Test method "%s::%s" parameter#3 is incorrectly named.', $reflectionClass->getName(), $method->getName())
                     );
                 }
