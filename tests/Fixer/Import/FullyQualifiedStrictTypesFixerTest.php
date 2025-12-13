@@ -41,15 +41,15 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
         string $expected,
         ?string $input = null,
         array $configuration = [],
-        ?WhitespacesFixerConfig $whitespaceConfig = null
+        ?WhitespacesFixerConfig $whitespacesConfig = null
     ): void {
         $this->fixer->configure($configuration);
 
-        if (null !== $whitespaceConfig) {
-            $this->fixer->setWhitespacesConfig($whitespaceConfig);
-            $expected = str_replace("\n", $whitespaceConfig->getLineEnding(), $expected);
+        if (null !== $whitespacesConfig) {
+            $this->fixer->setWhitespacesConfig($whitespacesConfig);
+            $expected = str_replace("\n", $whitespacesConfig->getLineEnding(), $expected);
             if (null !== $input) {
-                $input = str_replace("\n", $whitespaceConfig->getLineEnding(), $input);
+                $input = str_replace("\n", $whitespacesConfig->getLineEnding(), $input);
             }
         }
 
