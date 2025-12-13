@@ -744,25 +744,25 @@ final class ProjectCodeTest extends TestCase
                     );
                 }
 
-                if (isset($parameterNames[2])) {
-                    // @TODO: restrict the values below:
-                    self::assertTrue(
-                        \in_array($parameterNames[2], ['configuration', 'file', 'whitespacesConfig'], true),
-                        \sprintf('Test method "%s::%s" parameter#2 is incorrectly named.', $reflectionClass->getName(), $method->getName())
+                $restParametersIndex = 2;
+
+                if (isset($parameterNames[2], $parameterNamesToPosition['configuration'])) {
+                    self::assertSame(
+                        'configuration',
+                        $parameterNames[2],
+                        \sprintf('Test method "%s::%s" shall have parameter \'configuration\' as parameter#2.', $reflectionClass->getName(), $method->getName())
                     );
+                    ++$restParametersIndex;
                 }
 
-                if (isset($parameterNames[3])) {
-                    // @TODO: restrict the values below:
-                    self::assertTrue(
-                        \in_array($parameterNames[3], ['file', 'whitespacesConfig'], true),
-                        \sprintf('Test method "%s::%s" parameter#3 is incorrectly named.', $reflectionClass->getName(), $method->getName())
-                    );
-                }
-
-                self::assertTrue(
-                    !isset($parameterNames[4]),
-                    \sprintf('Test method "%s::%s" has more than 4 parameters.', $reflectionClass->getName(), $method->getName())
+                self::assertThat(
+                    \array_slice($parameterNames, $restParametersIndex),
+                    self::logicalOr(
+                        self::identicalTo([]),
+                        self::identicalTo(['file']),
+                        self::identicalTo(['whitespacesConfig']),
+                        self::identicalTo(['file', 'whitespacesConfig']),
+                    ),
                 );
             }
         }
