@@ -42,7 +42,7 @@ final class HeaderCommentFixerTest extends AbstractFixerTestCase
         string $expected,
         ?string $input,
         array $configuration,
-        ?WhitespacesFixerConfig $whitespaceConfig = null,
+        ?WhitespacesFixerConfig $whitespaceConfig = null
     ): void {
         if (null !== $whitespaceConfig) {
             $this->fixer->setWhitespacesConfig($whitespaceConfig);
@@ -884,7 +884,7 @@ echo 1;',
             "<?php\n\n/*\n * Bar\n */\n\necho 1;",
             "<?php\necho 1;",
             ['header' => 'Bar'],
-            new WhitespacesFixerConfig('    ', "\r\n"),
+            new WhitespacesFixerConfig('    ', "\n"),
         ];
     }
 
