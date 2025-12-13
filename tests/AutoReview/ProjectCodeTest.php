@@ -736,7 +736,7 @@ final class ProjectCodeTest extends TestCase
                     );
                 }
 
-                if (isset($parameterNames[1], $parameterNamesToPosition['input'])) {
+                if (isset($parameterNames[1])) {
                     self::assertSame(
                         'input',
                         $parameterNames[1],
