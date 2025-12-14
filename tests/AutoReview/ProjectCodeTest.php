@@ -728,41 +728,18 @@ final class ProjectCodeTest extends TestCase
                 $reflectionClass->isSubclassOf(AbstractFixerTestCase::class)
                 && str_starts_with($method->getName(), 'testFix')
             ) {
-                if (isset($parameterNames[0])) {
-                    self::assertSame(
-                        'expected',
-                        $parameterNames[0],
-                        \sprintf('Test method "%s::%s" shall have parameter \'expected\' as parameter#0.', $reflectionClass->getName(), $method->getName())
-                    );
-                }
+                $expectedTestFixPotentialParamsOrder = ['expected', 'input', 'configuration', 'file', 'whitespacesConfig'];
 
-                if (isset($parameterNames[1])) {
-                    self::assertSame(
-                        'input',
-                        $parameterNames[1],
-                        \sprintf('Test method "%s::%s" shall have parameter \'input\' as parameter#1.', $reflectionClass->getName(), $method->getName())
-                    );
-                }
+                self::assertSame(
+                    [],
+                    array_diff($parameterNames, $expectedTestFixPotentialParamsOrder),
+                    \sprintf('Public method "%s::%s" has unexpected parameters.', $reflectionClass->getName(), $method->getName())
+                );
 
-                $restParametersIndex = 2;
-
-                if (isset($parameterNames[2], $parameterNamesToPosition['configuration'])) {
-                    self::assertSame(
-                        'configuration',
-                        $parameterNames[2],
-                        \sprintf('Test method "%s::%s" shall have parameter \'configuration\' as parameter#2.', $reflectionClass->getName(), $method->getName())
-                    );
-                    ++$restParametersIndex;
-                }
-
-                self::assertThat(
-                    \array_slice($parameterNames, $restParametersIndex),
-                    self::logicalOr(
-                        self::identicalTo([]),
-                        self::identicalTo(['file']),
-                        self::identicalTo(['whitespacesConfig']),
-                        self::identicalTo(['file', 'whitespacesConfig']),
-                    ),
+                self::assertSame(
+                    array_values(array_intersect($expectedTestFixPotentialParamsOrder, $parameterNames)),
+                    $parameterNames,
+                    \sprintf('Public method "%s::%s" has invalid parameters order.', $reflectionClass->getName(), $method->getName())
                 );
             }
         }
