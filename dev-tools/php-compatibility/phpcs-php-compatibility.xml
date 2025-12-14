@@ -32,6 +32,7 @@
         <exclude-pattern>tests/Fixtures/**/*</exclude-pattern>
     </rule>
     <rule ref="PHPCompatibilitySymfonyPolyfillPHP80"/>
+    <rule ref="PHPCompatibilitySymfonyPolyfillPHP85"/>
 
     <config name="testVersion" value="7.4-8.5"/>
 
