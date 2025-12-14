@@ -28,6 +28,7 @@
     <rule ref="PHPCompatibilitySymfonyPolyfillPHP80"/>
     <rule ref="PHPCompatibilitySymfonyPolyfillPHP81"/>
     <rule ref="PHPCompatibilitySymfonyPolyfillPHP84"/>
+    <rule ref="PHPCompatibilitySymfonyPolyfillPHP85"/>
 
     <config name="testVersion" value="7.4-8.5"/>
 
