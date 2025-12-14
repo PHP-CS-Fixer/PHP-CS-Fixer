@@ -20,7 +20,6 @@ use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
-use PhpCsFixer\Fixer\InternalFixerInterface;
 use PhpCsFixer\Fixer\Whitespace\SingleBlankLineAtEofFixer;
 use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
@@ -434,52 +433,6 @@ abstract class AbstractFixerTestCase extends TestCase
                 $extraMethods,
                 \sprintf('Methods "%s" should not be present in %s.', implode('". "', $extraMethods), static::class),
             );
-        }
-    }
-
-    final public function testProperMethodParameterNaming(): void
-    {
-        if ($this->fixer instanceof InternalFixerInterface) {
-            self::markTestSkipped('Tests not implemented for this class, run the rule on codebase and check if PHPStan accepts the changes.');
-        }
-
-        $reflectionObject = new \ReflectionObject($this);
-
-        foreach ($reflectionObject->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-            if (!str_starts_with($method->getName(), 'testFix')) {
-                continue;
-            }
-
-            $parameters = $method->getParameters();
-            if (0 === \count($parameters)) {
-                continue;
-            }
-
-            self::assertArrayHasKey(0, $parameters);
-            self::assertSame('expected', $parameters[0]->getName(), "First parameter in {$reflectionObject->getName()}::{$method->getName()} is incorrectly named.");
-
-            if (2 <= \count($parameters)) {
-                self::assertArrayHasKey(1, $parameters);
-                self::assertSame('input', $parameters[1]->getName(), "Second parameter in {$reflectionObject->getName()}::{$method->getName()} is incorrectly named.");
-            }
-
-            if (3 <= \count($parameters)) {
-                self::assertArrayHasKey(2, $parameters);
-                if (3 === \count($parameters)) {
-                    self::assertTrue(\in_array($parameters[2]->getName(), ['configuration', 'file', 'whitespacesConfig'], true), "Third parameter ({$parameters[2]->getName()}) in {$reflectionObject->getName()}::{$method->getName()} is incorrectly named.");
-                } else {
-                    self::assertSame('configuration', $parameters[2]->getName(), "Third parameter in {$reflectionObject->getName()}::{$method->getName()} is incorrectly named.");
-                }
-            }
-
-            if (4 <= \count($parameters)) {
-                self::assertArrayHasKey(3, $parameters);
-                self::assertTrue(\in_array($parameters[3]->getName(), ['file', 'whitespacesConfig'], true), "Fourth parameter ({$parameters[3]->getName()}) in {$reflectionObject->getName()}::{$method->getName()} is incorrectly named.");
-            }
-
-            if (4 < \count($parameters)) {
-                self::fail("Method {$reflectionObject->getName()}::{$method->getName()} has more than 4 parameters.");
-            }
         }
     }
 
