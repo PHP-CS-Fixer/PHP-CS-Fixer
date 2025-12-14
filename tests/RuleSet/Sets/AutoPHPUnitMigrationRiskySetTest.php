@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\RuleSet\Sets;
 
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
+use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
@@ -49,7 +50,7 @@ final class AutoPHPUnitMigrationRiskySetTest extends AbstractSetTestCase
      */
     public function testThatSetDoNotUseNewestTarget(string $setName): void
     {
-        $versionInRuleName = preg_replace('/^@PHPUnit(\d+)x(\d+)Migration:risky$/', '$1.$2', $setName);
+        $versionInRuleName = Preg::replace('/^@PHPUnit(\d+)x(\d+)Migration:risky$/', '$1.$2', $setName);
 
         $setClassName = 'PhpCsFixer\RuleSet\Sets\\'.str_replace(['@', ':risky'], ['', 'Risky'], $setName).'Set';
         $set = new $setClassName();
@@ -76,6 +77,9 @@ final class AutoPHPUnitMigrationRiskySetTest extends AbstractSetTestCase
         }
     }
 
+    /**
+     * @return iterable<string, array{0: string}>
+     */
     public static function provideThatSetDoNotUseNewestTargetCases(): iterable
     {
         $setDefinition = self::getSet();
