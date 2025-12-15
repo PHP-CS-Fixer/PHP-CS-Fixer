@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Runner;
 
 use PhpCsFixer\Cache\Directory;
 use PhpCsFixer\Cache\NullCacheManager;
+use PhpCsFixer\Config\RuleCustomisationPolicyInterface;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Differ\DifferInterface;
@@ -23,6 +24,7 @@ use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Fixer;
+use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
@@ -40,6 +42,8 @@ use Symfony\Component\Finder\Finder;
  * @internal
  *
  * @covers \PhpCsFixer\Runner\Runner
+ *
+ * @phpstan-import-type _RuleCustomisationPolicyCallback from RuleCustomisationPolicyInterface
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
@@ -334,6 +338,239 @@ final class RunnerTest extends TestCase
         );
     }
 
+    public function testRuleIgnoredByTag(): void
+    {
+        $fixers = [
+            new Fixer\Basic\NumericLiteralSeparatorFixer(),
+            new Fixer\FunctionNotation\NativeFunctionInvocationFixer(),
+        ];
+
+        $path = \dirname(__DIR__).\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'rule-ignored-by-tag';
+
+        $runner = new Runner(
+            Finder::create()->in($path),
+            $fixers,
+            new NullDiffer(),
+            null,
+            new ErrorsManager(),
+            new Linter(),
+            true,
+            new NullCacheManager(),
+            new Directory($path),
+            false
+        );
+
+        $changed = $runner->fix();
+
+        self::assertCount(2, $changed);
+        self::assertArrayHasKey('A-without-ignore-tag.php', $changed);
+        self::assertSame(
+            ['numeric_literal_separator', 'native_function_invocation'],
+            $changed['A-without-ignore-tag.php']['appliedFixers'],
+        );
+        self::assertArrayHasKey('B-with-ignore-tag.php', $changed);
+        self::assertSame(
+            ['native_function_invocation'],
+            $changed['B-with-ignore-tag.php']['appliedFixers'],
+        );
+    }
+
+    /**
+     * @param non-empty-string                                                  $path
+     * @param _RuleCustomisationPolicyCallback                                  $arraySyntaxCustomiser
+     * @param ?list<array{type: int, filePath: string, sourceMessage: ?string}> $expectedErrors
+     * @param list<string>                                                      $expectedFixedFiles
+     *
+     * @covers \PhpCsFixer\Runner\Runner::fix
+     * @covers \PhpCsFixer\Runner\Runner::fixFile
+     *
+     * @dataProvider provideRuleCustomisationPolicyCases
+     */
+    public function testRuleCustomisationPolicy(string $path, \Closure $arraySyntaxCustomiser, ?array $expectedErrors, array $expectedFixedFiles): void
+    {
+        $arraySyntaxFixer = new Fixer\ArrayNotation\ArraySyntaxFixer();
+        $arraySyntaxFixer->configure(['syntax' => 'short']);
+
+        $policy = new class implements RuleCustomisationPolicyInterface {
+            public \Closure $arraySyntaxCustomiser;
+
+            public function getPolicyVersionForCache(): string
+            {
+                return __METHOD__.__LINE__;
+            }
+
+            public function getRuleCustomisers(): array
+            {
+                return [
+                    'array_syntax' => fn (\SplFileInfo $file) => ($this->arraySyntaxCustomiser)($file),
+                ];
+            }
+        };
+        $policy->arraySyntaxCustomiser = $arraySyntaxCustomiser;
+        $errorsManager = new ErrorsManager();
+
+        $fixedFiles = self::runRunnerWithPolicy($path, [$arraySyntaxFixer], $policy, $errorsManager);
+        self::assertSame($expectedFixedFiles, $fixedFiles);
+
+        $actualErrors = array_map(
+            static fn (Error $error): array => [
+                'type' => $error->getType(),
+                'filePath' => $error->getFilePath(),
+                'sourceMessage' => null === $error->getSource() ? null : $error->getSource()->getMessage(),
+            ],
+            $errorsManager->getAllErrors()
+        );
+
+        self::assertEqualsCanonicalizing(
+            $expectedErrors ?? [],
+            $actualErrors,
+            'Errors do not match expected.'
+        );
+    }
+
+    /**
+     * @return iterable<string, array{non-empty-string, _RuleCustomisationPolicyCallback, ?list<array{type: int, filePath: string, sourceMessage: ?string}>, list<string>}>
+     */
+    public static function provideRuleCustomisationPolicyCases(): iterable
+    {
+        $path = \dirname(__DIR__).\DIRECTORY_SEPARATOR.'Fixtures'.\DIRECTORY_SEPARATOR.'FixerTest'.\DIRECTORY_SEPARATOR.'rule-customisation';
+
+        yield "Test when the policy doesn't change a fixer" => [
+            $path,
+            static fn (\SplFileInfo $file) => true,
+            null,
+            // A: fixed, B: fixed, C: fixed, D: already ok
+            ['A.php', 'B.php', 'C.php'],
+        ];
+
+        yield 'Test when the policy disables a fixer for a specific file' => [
+            $path,
+            static fn (\SplFileInfo $file) => 'B.php' === $file->getBasename() ? false : true,
+            null,
+            // A: fixed, B: skipped, C: fixed, D: already ok
+            ['A.php', 'C.php'],
+        ];
+
+        yield 'Test when the policy changes a fixer for specific files' => [
+            $path,
+            static function (\SplFileInfo $file) {
+                if (\in_array($file->getBasename(), ['B.php', 'D.php'], true)) {
+                    $fixer = new Fixer\ArrayNotation\ArraySyntaxFixer();
+                    $fixer->configure(['syntax' => 'long']);
+
+                    return $fixer;
+                }
+
+                return true;
+            },
+            null,
+            // A: fixed, B: ok for new configuration, C: fixed, D: fixed with new configuration
+            ['A.php', 'C.php', 'D.php'],
+        ];
+
+        yield 'Test when the policy changes the fixer class (not allowed)' => [
+            $path,
+            static fn (\SplFileInfo $file) => 'B.php' === $file->getBasename() ? new Fixer\Whitespace\LineEndingFixer() : true,
+            [
+                [
+                    'type' => Error::TYPE_EXCEPTION,
+                    'filePath' => $path.\DIRECTORY_SEPARATOR.'B.php',
+                    'sourceMessage' => \sprintf(
+                        'The fixer returned by the Rule Customisation Policy must be of the same class as the original fixer (expected `%s`, got `%s`).',
+                        Fixer\ArrayNotation\ArraySyntaxFixer::class,
+                        Fixer\Whitespace\LineEndingFixer::class,
+                    ),
+                ],
+            ],
+            // A: fixed, B: exception thrown, C: fixed, D: already ok
+            ['A.php', 'C.php'],
+        ];
+    }
+
+    public function testRuleCustomisationPolicyWithMissingFixers(): void
+    {
+        $policy = new class implements RuleCustomisationPolicyInterface {
+            public function getPolicyVersionForCache(): string
+            {
+                return __METHOD__.__LINE__;
+            }
+
+            public function getRuleCustomisers(): array
+            {
+                return [
+                    'array_syntax' => static fn (\SplFileInfo $file) => true,
+                    'line_ending' => static fn (\SplFileInfo $file) => true,
+                ];
+            }
+        };
+
+        self::expectException(\RuntimeException::class);
+        self::expectExceptionMessageMatches('/\bline_ending\b/');
+        self::runRunnerWithPolicy(__DIR__, [new Fixer\ArrayNotation\ArraySyntaxFixer()], $policy, new ErrorsManager());
+    }
+
+    /**
+     * @dataProvider provideRuleCustomisationPolicyWithWrongCustomisersCases
+     *
+     * @param array<non-empty-string,_RuleCustomisationPolicyCallback> $customisers
+     */
+    public function testRuleCustomisationPolicyWithWrongCustomisers(array $customisers, string $error): void
+    {
+        $policy = new
+        /**
+         * @phpstan-import-type _RuleCustomisationPolicyCallback from RuleCustomisationPolicyInterface
+         */
+        class($customisers) implements RuleCustomisationPolicyInterface {
+            /**
+             * @var array<non-empty-string,_RuleCustomisationPolicyCallback>
+             */
+            private array $customisers;
+
+            /**
+             * @param array<non-empty-string,_RuleCustomisationPolicyCallback> $customisers
+             */
+            public function __construct(array $customisers)
+            {
+                $this->customisers = $customisers;
+            }
+
+            public function getPolicyVersionForCache(): string
+            {
+                return __METHOD__.__LINE__;
+            }
+
+            public function getRuleCustomisers(): array
+            {
+                return $this->customisers;
+            }
+        };
+
+        self::expectException(\RuntimeException::class);
+        self::expectExceptionMessageMatches($error);
+        self::runRunnerWithPolicy(__DIR__, [new Fixer\ArrayNotation\ArraySyntaxFixer()], $policy, new ErrorsManager());
+    }
+
+    /**
+     * @return iterable<string, array{array<non-empty-string, _RuleCustomisationPolicyCallback>, non-empty-string}>
+     */
+    public static function provideRuleCustomisationPolicyWithWrongCustomisersCases(): iterable
+    {
+        // @phpstan-ignore-next-line generator.valueType
+        yield 'empty rule-key' => [
+            [
+                '' => static fn (\SplFileInfo $file) => true,
+            ],
+            '/\(no name provided\)/',
+        ];
+
+        yield 'set as rule-key' => [
+            [
+                '@auto' => static fn (\SplFileInfo $file) => true,
+            ],
+            '/@auto \(can exclude only rules, not sets\)/',
+        ];
+    }
+
     private function createDifferDouble(): DifferInterface
     {
         return new class implements DifferInterface {
@@ -370,5 +607,50 @@ final class RunnerTest extends TestCase
                 };
             }
         };
+    }
+
+    /**
+     * @param non-empty-string     $path
+     * @param list<FixerInterface> $fixers
+     *
+     * @return list<string> the names of the fixed files
+     */
+    private static function runRunnerWithPolicy(string $path, array $fixers, RuleCustomisationPolicyInterface $policy, ErrorsManager $errorsManager): array
+    {
+        $runner = new Runner(
+            // $fileIterator
+            Finder::create()->in($path),
+            // $fixers
+            $fixers,
+            // $differ
+            new NullDiffer(),
+            // $eventDispatcher
+            null,
+            // $errorsManager
+            $errorsManager,
+            // $linter
+            new Linter(),
+            // $isDryRun
+            true,
+            // $cacheManager
+            new NullCacheManager(),
+            // $directory
+            new Directory($path),
+            // $stopOnViolation
+            false,
+            // $parallelConfig
+            null,
+            // $input
+            null,
+            // $configFile
+            null,
+            // $ruleCustomisationPolicy
+            $policy
+        );
+        $fixInfo = $runner->fix();
+        $fixedFiles = array_keys($fixInfo);
+        sort($fixedFiles, \SORT_STRING);
+
+        return $fixedFiles;
     }
 }

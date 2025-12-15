@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Config;
+use PhpCsFixer\Config\NullRuleCustomisationPolicy;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\FixCommand;
@@ -143,9 +144,12 @@ final class ConfigTest extends TestCase
     public function testThatFinderWorksWithDirSetOnConfig(): void
     {
         $config = new Config();
+        $finder = $config->getFinder();
+
+        \assert($finder instanceof Finder); // Config::getFinder() ensures only `iterable`
 
         $items = iterator_to_array(
-            $config->getFinder()->in(__DIR__.'/Fixtures/FinderDirectory'),
+            $finder->in(__DIR__.'/Fixtures/FinderDirectory'),
             false
         );
 
@@ -294,6 +298,15 @@ final class ConfigTest extends TestCase
 
         $config->setUnsupportedPhpVersionAllowed(true);
         self::assertTrue($config->getUnsupportedPhpVersionAllowed());
+
+        self::assertNull($config->getRuleCustomisationPolicy());
+
+        $ruleCustomisationPolicy = new NullRuleCustomisationPolicy();
+        $config->setRuleCustomisationPolicy($ruleCustomisationPolicy);
+        self::assertSame($ruleCustomisationPolicy, $config->getRuleCustomisationPolicy());
+
+        $config->setRuleCustomisationPolicy(null);
+        self::assertNull($config->getRuleCustomisationPolicy());
     }
 
     public function testConfigConstructorWithName(): void

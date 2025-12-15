@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Cache;
 
+use PhpCsFixer\Config\NullRuleCustomisationPolicy;
 use PhpCsFixer\Utils;
 
 /**
@@ -76,6 +77,7 @@ final class Cache implements CacheInterface
                     'indent' => $this->getSignature()->getIndent(),
                     'lineEnding' => $this->getSignature()->getLineEnding(),
                     'rules' => $this->getSignature()->getRules(),
+                    'ruleCustomisationPolicyVersion' => $this->getSignature()->getRuleCustomisationPolicyVersion(),
                     'hashes' => $this->hashes,
                 ],
                 \JSON_THROW_ON_ERROR
@@ -109,6 +111,7 @@ final class Cache implements CacheInterface
             'indent',
             'lineEnding',
             'rules',
+            // 'ruleCustomisationPolicyVersion', // @TODO v4: require me
             'hashes',
         ];
 
@@ -126,7 +129,8 @@ final class Cache implements CacheInterface
             $data['version'],
             $data['indent'],
             $data['lineEnding'],
-            $data['rules']
+            $data['rules'],
+            $data['ruleCustomisationPolicyVersion'] ?? NullRuleCustomisationPolicy::VERSION_FOR_CACHE
         );
 
         $cache = new self($signature);

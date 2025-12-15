@@ -700,39 +700,48 @@ final class ProjectCodeTest extends TestCase
         foreach ($publicMethods as $method) {
             $parameters = $method->getParameters();
 
-            if (\count($parameters) < 2) {
+            if (0 === \count($parameters)) {
                 $this->addToAssertionCount(1); // not enough parameters to test, all good!
 
                 continue;
             }
 
-            $expected = [
-                'expected' => false,
-                'input' => false,
-            ];
-
-            for ($i = \count($parameters) - 1; $i >= 0; --$i) {
-                \assert(\array_key_exists($i, $parameters));
-                $name = $parameters[$i]->getName();
-
-                if (isset($expected[$name])) {
-                    $expected[$name] = $i;
-                }
-            }
-
-            $expectedFound = array_filter($expected, static fn ($item): bool => false !== $item);
-
-            if (\count($expectedFound) < 2) {
-                $this->addToAssertionCount(1); // not enough parameters to test, all good!
-
-                continue;
-            }
-
-            self::assertLessThan(
-                $expected['input'],
-                $expected['expected'],
-                \sprintf('Public method "%s::%s" has parameter \'input\' before \'expected\'.', $reflectionClass->getName(), $method->getName())
+            $parameterNames = array_map(
+                static fn (\ReflectionParameter $item): string => $item->getName(),
+                $parameters,
             );
+            $parameterNamesToPosition = 0 === \count($parameterNames) ? [] : array_combine($parameterNames, range(0, \count($parameterNames) - 1));
+
+            if (
+                isset($parameterNamesToPosition['expected'], $parameterNamesToPosition['input'])
+            ) {
+                self::assertLessThan(
+                    $parameterNamesToPosition['input'],
+                    $parameterNamesToPosition['expected'],
+                    \sprintf('Public method "%s::%s" shall have parameter \'input\' after \'expected\'.', $reflectionClass->getName(), $method->getName())
+                );
+            } else {
+                $this->addToAssertionCount(1); // not enough parameters to test, all good!
+            }
+
+            if (
+                $reflectionClass->isSubclassOf(AbstractFixerTestCase::class)
+                && str_starts_with($method->getName(), 'testFix')
+            ) {
+                $expectedTestFixPotentialParamsOrder = ['expected', 'input', 'configuration', 'file', 'whitespacesConfig'];
+
+                self::assertSame(
+                    [],
+                    array_diff($parameterNames, $expectedTestFixPotentialParamsOrder),
+                    \sprintf('Public method "%s::%s" has unexpected parameters.', $reflectionClass->getName(), $method->getName())
+                );
+
+                self::assertSame(
+                    array_values(array_intersect($expectedTestFixPotentialParamsOrder, $parameterNames)),
+                    $parameterNames,
+                    \sprintf('Public method "%s::%s" has invalid parameters order.', $reflectionClass->getName(), $method->getName())
+                );
+            }
         }
     }
 
@@ -971,12 +980,9 @@ final class ProjectCodeTest extends TestCase
         $exceptionsForDuplicatesCheck = [ // should only shrink
             'PhpCsFixer\Tests\AutoReview\CommandTest::provideCommandHasNameConstCases',
             'PhpCsFixer\Tests\AutoReview\DocumentationTest::provideFixerDocumentationFileIsUpToDateCases',
-            'PhpCsFixer\Tests\AutoReview\FixerFactoryTest::providePriorityIntegrationTestFilesAreListedInPriorityGraphCases',
             'PhpCsFixer\Tests\Console\Command\DescribeCommandTest::provideExecuteOutputCases',
             'PhpCsFixer\Tests\Console\Command\HelpCommandTest::provideGetDisplayableAllowedValuesCases',
             'PhpCsFixer\Tests\Documentation\FixerDocumentGeneratorTest::provideGenerateRuleSetsDocumentationCases',
-            'PhpCsFixer\Tests\Fixer\Basic\EncodingFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\UtilsTest::provideStableSortCases',
         ];
 
         $dataProvider = new \ReflectionMethod($testClassName, $dataProviderName);
@@ -1004,7 +1010,8 @@ final class ProjectCodeTest extends TestCase
                 continue;
             }
 
-            $serializedCandidateData = serialize($candidateData);
+            $serializedCandidateData = self::naiveSerialize($candidateData);
+
             $foundInDuplicates = false;
             foreach ($alreadyFoundCases as $caseKey => $caseData) {
                 if ($serializedCandidateData === $caseData) {
@@ -1261,6 +1268,27 @@ final class ProjectCodeTest extends TestCase
         }
 
         yield from self::$testClassCases;
+    }
+
+    /**
+     * @param array<array-key, mixed> $data
+     */
+    private static function naiveSerialize(array $data): string
+    {
+        $serialized = [];
+        foreach ($data as $key => $value) {
+            if (\is_array($value)) {
+                $serialized[$key] = self::naiveSerialize($value);
+            } elseif ($value instanceof \Closure) {
+                $serialized[$key] = 'Closure#'.spl_object_id($value);
+            } elseif ($value instanceof \SplFileInfo) {
+                $serialized[$key] = 'SplFileInfo('.$value->getPathname().')';
+            } else {
+                $serialized[$key] = $value;
+            }
+        }
+
+        return serialize($serialized);
     }
 
     /**

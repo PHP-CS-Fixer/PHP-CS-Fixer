@@ -21,6 +21,9 @@ use PhpCsFixer\Cache\FileCacheManager;
 use PhpCsFixer\Cache\FileHandler;
 use PhpCsFixer\Cache\NullCacheManager;
 use PhpCsFixer\Cache\Signature;
+use PhpCsFixer\Config\NullRuleCustomisationPolicy;
+use PhpCsFixer\Config\RuleCustomisationPolicyAwareConfigInterface;
+use PhpCsFixer\Config\RuleCustomisationPolicyInterface;
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Output\Progress\ProgressOutputType;
@@ -185,6 +188,8 @@ final class ConfigurationResolver
 
     private ?bool $isUnsupportedPhpVersionAllowed = null;
 
+    private ?RuleCustomisationPolicyInterface $ruleCustomisationPolicy = null;
+
     private ?FixerFactory $fixerFactory = null;
 
     /**
@@ -237,7 +242,8 @@ final class ConfigurationResolver
                         $this->toolInfo->getVersion(),
                         $this->getConfig()->getIndent(),
                         $this->getConfig()->getLineEnding(),
-                        $this->getRules()
+                        $this->getRules(),
+                        $this->getRuleCustomisationPolicy()->getPolicyVersionForCache()
                     ),
                     $this->isDryRun(),
                     $this->getDirectory()
@@ -530,6 +536,19 @@ final class ConfigurationResolver
         }
 
         return $this->isUnsupportedPhpVersionAllowed;
+    }
+
+    public function getRuleCustomisationPolicy(): RuleCustomisationPolicyInterface
+    {
+        if (null === $this->ruleCustomisationPolicy) {
+            $config = $this->getConfig();
+            if ($config instanceof RuleCustomisationPolicyAwareConfigInterface) {
+                $this->ruleCustomisationPolicy = $config->getRuleCustomisationPolicy();
+            }
+            $this->ruleCustomisationPolicy ??= new NullRuleCustomisationPolicy();
+        }
+
+        return $this->ruleCustomisationPolicy;
     }
 
     /**

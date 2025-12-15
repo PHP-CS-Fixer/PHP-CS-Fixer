@@ -20,6 +20,8 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Cache\CacheManagerInterface;
 use PhpCsFixer\Cache\Directory;
 use PhpCsFixer\Cache\DirectoryInterface;
+use PhpCsFixer\Config\NullRuleCustomisationPolicy;
+use PhpCsFixer\Config\RuleCustomisationPolicyInterface;
 use PhpCsFixer\Console\Command\WorkerCommand;
 use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Error\Error;
@@ -42,6 +44,7 @@ use PhpCsFixer\Runner\Parallel\ProcessFactory;
 use PhpCsFixer\Runner\Parallel\ProcessIdentifier;
 use PhpCsFixer\Runner\Parallel\ProcessPool;
 use PhpCsFixer\Runner\Parallel\WorkerException;
+use PhpCsFixer\Tokenizer\Analyzer\FixerAnnotationAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
 use React\EventLoop\StreamSelectLoop;
 use React\Socket\ConnectionInterface;
@@ -98,6 +101,11 @@ final class Runner
      */
     private array $fixers;
 
+    /**
+     * @var array<non-empty-string, FixerInterface>
+     */
+    private array $fixersByName;
+
     private bool $stopOnViolation;
 
     private ParallelConfig $parallelConfig;
@@ -105,6 +113,8 @@ final class Runner
     private ?InputInterface $input;
 
     private ?string $configFile;
+
+    private RuleCustomisationPolicyInterface $ruleCustomisationPolicy;
 
     /**
      * @param null|\Traversable<array-key, \SplFileInfo> $fileIterator
@@ -124,13 +134,23 @@ final class Runner
         // @TODO Make these arguments required in 4.0
         ?ParallelConfig $parallelConfig = null,
         ?InputInterface $input = null,
-        ?string $configFile = null
+        ?string $configFile = null,
+        ?RuleCustomisationPolicyInterface $ruleCustomisationPolicy = null
     ) {
         // Required only for main process (calculating workers count)
         $this->fileCount = null !== $fileIterator ? \count(iterator_to_array($fileIterator)) : 0;
 
         $this->fileIterator = $fileIterator;
         $this->fixers = $fixers;
+        $this->fixersByName = array_reduce(
+            $fixers,
+            static function (array $carry, FixerInterface $fixer): array {
+                $carry[$fixer->getName()] = $fixer;
+
+                return $carry;
+            },
+            []
+        );
         $this->differ = $differ;
         $this->eventDispatcher = $eventDispatcher;
         $this->errorsManager = $errorsManager;
@@ -142,6 +162,7 @@ final class Runner
         $this->parallelConfig = $parallelConfig ?? ParallelConfigFactory::sequential();
         $this->input = $input;
         $this->configFile = $configFile;
+        $this->ruleCustomisationPolicy = $ruleCustomisationPolicy ?? new NullRuleCustomisationPolicy();
     }
 
     /**
@@ -167,6 +188,17 @@ final class Runner
             return [];
         }
 
+        $ruleCustomisers = $this->ruleCustomisationPolicy->getRuleCustomisers();
+        $this->validateRulesNamesForExceptions(
+            array_keys($ruleCustomisers),
+            <<<'EOT'
+                Rule Customisation Policy contains customisers for rules that are not in the current set of enabled rules:
+                %s
+
+                Please check your configuration to ensure that these rules are included, or update your Rule Customisation Policy if they have been replaced by other rules in the version of PHP CS Fixer you are using.
+                EOT
+        );
+
         // @TODO 4.0: Remove condition and its body, as no longer needed when param will be required in the constructor.
         // This is a fallback only in case someone calls `new Runner()` in a custom repo and does not provide v4-ready params in v3-codebase.
         if (null === $this->input) {
@@ -181,6 +213,46 @@ final class Runner
         }
 
         return $this->fixParallel();
+    }
+
+    /**
+     * @param list<string>     $ruleExceptions
+     * @param non-empty-string $errorTemplate
+     */
+    private function validateRulesNamesForExceptions(array $ruleExceptions, string $errorTemplate): void
+    {
+        if ([] === $ruleExceptions) {
+            return;
+        }
+
+        $fixersByName = $this->fixersByName;
+        $usedRules = array_keys($fixersByName);
+        $missingRuleNames = array_diff($ruleExceptions, $usedRules);
+
+        if ([] === $missingRuleNames) {
+            return;
+        }
+
+        /** @TODO v3.999 check if rule is deprecated and show the replacement rules as well */
+        $missingRulesDesc = implode("\n", array_map(
+            static function (string $name) use ($fixersByName): string {
+                $extra = '';
+                if ('' === $name) {
+                    $extra = '(no name provided)';
+                } elseif ('@' === $name[0]) {
+                    $extra = ' (can exclude only rules, not sets)';
+                } elseif (!isset($fixersByName[$name])) {
+                    $extra = ' (unknown rule)';
+                }
+
+                return '- '.$name.$extra;
+            },
+            $missingRuleNames
+        ));
+
+        throw new \RuntimeException(
+            \sprintf($errorTemplate, $missingRulesDesc),
+        );
     }
 
     /**
@@ -456,14 +528,62 @@ final class Runner
         }
 
         $oldHash = $tokens->getCodeHash();
-
-        $new = $old;
         $newHash = $oldHash;
+        $new = $old;
 
         $appliedFixers = [];
 
+        $ruleCustomisers = $this->ruleCustomisationPolicy->getRuleCustomisers(); // were already validated
+
+        try {
+            $fixerAnnotationAnalysis = (new FixerAnnotationAnalyzer())->find($tokens);
+            $rulesIgnoredByAnnotations = $fixerAnnotationAnalysis['php-cs-fixer-ignore'] ?? [];
+        } catch (\RuntimeException $e) {
+            throw new \RuntimeException(
+                \sprintf(
+                    'Error while analysing file "%s": %s',
+                    $filePathname,
+                    $e->getMessage()
+                ),
+                $e->getCode(),
+                $e
+            );
+        }
+
+        $this->validateRulesNamesForExceptions(
+            $rulesIgnoredByAnnotations,
+            <<<EOT
+                @php-cs-fixer-ignore annotation(s) used for rules that are not in the current set of enabled rules:
+                %s
+
+                Please check your annotation(s) usage in {$filePathname} to ensure that these rules are included, or update your annotation(s) usage if they have been replaced by other rules in the version of PHP CS Fixer you are using.
+                EOT
+        );
+
         try {
             foreach ($this->fixers as $fixer) {
+                if (\in_array($fixer->getName(), $rulesIgnoredByAnnotations, true)) {
+                    continue;
+                }
+
+                $customiser = $ruleCustomisers[$fixer->getName()] ?? null;
+                if (null !== $customiser) {
+                    $actualFixer = $customiser($file);
+                    if (false === $actualFixer) {
+                        continue;
+                    }
+                    if (true !== $actualFixer) {
+                        if (\get_class($fixer) !== \get_class($actualFixer)) {
+                            throw new \RuntimeException(\sprintf(
+                                'The fixer returned by the Rule Customisation Policy must be of the same class as the original fixer (expected `%s`, got `%s`).',
+                                \get_class($fixer),
+                                \get_class($actualFixer),
+                            ));
+                        }
+                        $fixer = $actualFixer;
+                    }
+                }
+
                 // for custom fixers we don't know is it safe to run `->fix()` without checking `->supports()` and `->isCandidate()`,
                 // thus we need to check it and conditionally skip fixing
                 if (

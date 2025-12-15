@@ -20,7 +20,7 @@ need to be analysed), select output format and even configure path to ``PHP``.
 
 You may also create ``.php-cs-fixer.php`` file, which is
 the local configuration that will be used instead of the project configuration.
-You can use it to customize for your environment (like path to ``PHP``) or preference (like output format or progress indicator),
+You can use it to customise for your environment (like path to ``PHP``) or preference (like output format or progress indicator),
 while ruleset / finder shall be re-imported from project configuration.
 It is a good practice to add that file into your ``.gitignore`` file.
 
@@ -43,7 +43,7 @@ The simplest config declares paths under control and rules to apply/check:
     return (new PhpCsFixer\Config())
         ->setRules([
             '@PER-CS' => true,
-            '@PHP82Migration' => true,
+            '@PHP8x2Migration' => true,
         ])
         ->setFinder($finder)
     ;
@@ -124,6 +124,9 @@ The following example shows how to use all ``PhpCsFixer`` rules but without the 
         ])
         ->setFinder($finder)
     ;
+
+If you need to set up exception for rules, eg ignore or reconfigure a rule for specific files, check the `Rules exceptions <./rules_exceptions.rst>`_.
+
 
 Configuring whitespaces
 -----------------------
