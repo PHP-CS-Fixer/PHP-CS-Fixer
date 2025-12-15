@@ -50,23 +50,24 @@ For more details and other installation methods (also with Docker or behind CI),
 
 ### Usage
 
-Assuming you installed PHP CS Fixer as instructed above, you can run the
-following command to fix the PHP files in the `src` directory:
-
-```sh
-./vendor/bin/php-cs-fixer fix src
-```
-
-See [usage](./doc/usage.rst), list of [built-in rules](./doc/rules/index.rst), list of [rule sets](./doc/ruleSets/index.rst)
-and [configuration file](./doc/config.rst) documentation for more details.
-
-To initialise base config for your project, you may use following command:
+Assuming you installed PHP CS Fixer as instructed above, you can
+initialise base config for your project by using following command:
 
 ```sh
 ./vendor/bin/php-cs-fixer init
 ```
 
-If you need to apply code styles that are not supported by the tool, you can
+To run automatically fix your project, or only check against need of changes, run:
+
+```sh
+./vendor/bin/php-cs-fixer fix
+./vendor/bin/php-cs-fixer check
+```
+
+See [usage](./doc/usage.rst), list of [built-in rules](./doc/rules/index.rst), list of [rule sets](./doc/ruleSets/index.rst)
+and [configuration file](./doc/config.rst) documentation for more details.
+
+If you need to apply code styles that are not built-in to the tool, you can
 [create custom rules](./doc/custom_rules.rst).
 
 ## Editor Integration
