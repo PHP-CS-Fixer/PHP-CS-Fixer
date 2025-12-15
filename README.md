@@ -57,7 +57,7 @@ initialise base config for your project by using following command:
 ./vendor/bin/php-cs-fixer init
 ```
 
-To run automatically fix your project, or only check against need of changes, run:
+To automatically fix your project, or only check against the need of changes, run:
 
 ```sh
 ./vendor/bin/php-cs-fixer fix
@@ -67,7 +67,7 @@ To run automatically fix your project, or only check against need of changes, ru
 See [usage](./doc/usage.rst), list of [built-in rules](./doc/rules/index.rst), list of [rule sets](./doc/ruleSets/index.rst)
 and [configuration file](./doc/config.rst) documentation for more details.
 
-If you need to apply code styles that are not built-in to the tool, you can
+If you need to apply code styles that are not built-in into the tool, you can
 [create custom rules](./doc/custom_rules.rst).
 
 ## Editor Integration
