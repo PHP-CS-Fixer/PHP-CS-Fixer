@@ -90,7 +90,7 @@ final class FixerAnnotationAnalyzer
         }
 
         Preg::matchAll(
-            '/^\h*[*\/]+\h+@(php-cs-fixer-\w+\h+(?:@?[\w,])+)/m',
+            '/^\h*[*\/]+\h+@(php-cs-fixer-\w+\h+(?:@?[\w\/,])+)/m',
             implode("\n", $comments),
             $matches
         );
