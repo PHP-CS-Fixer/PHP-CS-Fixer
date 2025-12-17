@@ -3,6 +3,12 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.92.2
+---------------------
+
+* fix: let `@php-cs-fixer-ignore` accept custom fixer names (#9306)
+* chore: introduce `PHP_CS_FIXER_IGNORE_MISMATCHED_RULES_EXCEPTIONS` (#9307)
+
 Changelog for v3.92.1
 ---------------------
 
