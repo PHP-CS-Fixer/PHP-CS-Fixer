@@ -53,7 +53,7 @@ jobs:
           php: ${{ env.php-version }}
 
       - name: Cache dev-tools
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: dev-tools/bin/
           key: DevTools-${{ hashFiles('dev-tools/install.sh') }}

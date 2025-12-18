@@ -35,12 +35,10 @@ final class PhpdocTagNoNamedArgumentsFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null, array $configuration = [], ?WhitespacesFixerConfig $whitespacesFixerConfig = null): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = [], ?WhitespacesFixerConfig $whitespacesConfig = null): void
     {
         $this->fixer->configure($configuration);
-        if (null !== $whitespacesFixerConfig) {
-            $this->fixer->setWhitespacesConfig($whitespacesFixerConfig);
-        }
+        $this->fixer->setWhitespacesConfig($whitespacesConfig ?? new WhitespacesFixerConfig());
         $this->doTest($expected, $input);
     }
 

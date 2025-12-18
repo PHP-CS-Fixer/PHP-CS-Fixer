@@ -146,5 +146,19 @@ final class FixerAnnotationAnalyzerTest extends TestCase
                 ],
             ],
         ];
+
+        yield 'custom fixer' => [
+            <<<'PHP'
+                <?php
+
+                // @php-cs-fixer-ignore Vendor/custom_fixer_name A custom reason for a custom fixer
+
+                PHP,
+            [
+                'php-cs-fixer-ignore' => [
+                    'Vendor/custom_fixer_name',
+                ],
+            ],
+        ];
     }
 }

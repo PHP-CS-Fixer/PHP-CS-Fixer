@@ -35,12 +35,10 @@ final class StatementIndentationFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null, array $configuration = [], bool $useTabs = false): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = [], ?WhitespacesFixerConfig $whitespacesConfig = null): void
     {
         $this->fixer->configure($configuration);
-        if ($useTabs) {
-            $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t"));
-        }
+        $this->fixer->setWhitespacesConfig($whitespacesConfig ?? new WhitespacesFixerConfig());
         $this->doTest($expected, $input);
     }
 
@@ -1544,7 +1542,7 @@ if ($foo) {
        bar();
  }',
             [],
-            true,
+            new WhitespacesFixerConfig("\t"),
         ];
     }
 

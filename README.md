@@ -12,13 +12,15 @@ If you are already using a linter to identify coding standards problems in your
 code, you know that fixing them by hand is tedious, especially on large
 projects. This tool not only detects them, but also fixes them for you.
 
-PHP CS Fixer has built-in rule sets, whether you want to follow PHP coding standards as defined by [PHP-FIG's PER Coding Style](https://www.php-fig.org/per/coding-style/),
-a wide community like the [Symfony](https://symfony.com/doc/current/contributing/code/standards.html),
-or [our opinionated one](./doc/ruleSets/PhpCsFixer.rst).
+PHP CS Fixer has built-in rule sets, whether you want to follow PHP coding standards as defined by [PHP-FIG's PER Coding Style](https://www.php-fig.org/per/coding-style/) - [`@PER-CS`](./doc/ruleSets/PER-CS.rst),
+a wide community like the [Symfony](https://symfony.com/doc/current/contributing/code/standards.html) - [`@Symfony`](./doc/ruleSets/Symfony.rst),
+or our opinionated one - [@PhpCsFixer](./doc/ruleSets/PhpCsFixer.rst).
 You can also define your (team's) style through the [configuration file](./doc/config.rst).
 
-PHP CS Fixer can not only unify the style of your code, but also help to modernize your codebase towards
-newer PHP (e.g. [`@autoPHPMigration`](./doc/ruleSets/AutoPHPMigration.rst)) and newer PHPUnit (e.g. [`@autoPHPUnitMigration:risky`](./doc/ruleSets/AutoPHPUnitMigrationRisky.rst)).
+PHP CS Fixer can not only unify the style of your code, but also help to modernise your codebase towards
+newer PHP (e.g. [`@autoPHPMigration`](./doc/ruleSets/AutoPHPMigration.rst) and [`@autoPHPMigration:risky`](./doc/ruleSets/AutoPHPMigrationRisky.rst)) and newer PHPUnit (e.g. [`@autoPHPUnitMigration:risky`](./doc/ruleSets/AutoPHPUnitMigrationRisky.rst)).
+
+There are also [`@auto`](./doc/ruleSets/Auto.rst) and [`@auto:risky`](./doc/ruleSets/AutoRisky.rst) that aim to provide good base rules.
 
 ## Supported PHP Versions
 
@@ -48,17 +50,24 @@ For more details and other installation methods (also with Docker or behind CI),
 
 ### Usage
 
-Assuming you installed PHP CS Fixer as instructed above, you can run the
-following command to fix the PHP files in the `src` directory:
+Assuming you installed PHP CS Fixer as instructed above, you can
+initialise base config for your project by using following command:
 
 ```sh
-./vendor/bin/php-cs-fixer fix src
+./vendor/bin/php-cs-fixer init
+```
+
+To automatically fix your project, or only check against the need of changes, run:
+
+```sh
+./vendor/bin/php-cs-fixer fix
+./vendor/bin/php-cs-fixer check
 ```
 
 See [usage](./doc/usage.rst), list of [built-in rules](./doc/rules/index.rst), list of [rule sets](./doc/ruleSets/index.rst)
 and [configuration file](./doc/config.rst) documentation for more details.
 
-If you need to apply code styles that are not supported by the tool, you can
+If you need to apply code styles that are not built-in into the tool, you can
 [create custom rules](./doc/custom_rules.rst).
 
 ## Editor Integration

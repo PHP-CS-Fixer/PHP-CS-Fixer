@@ -31,19 +31,16 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class IndentationTypeFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param non-empty-string $indent
-     * @param non-empty-string $lineEnding
-     *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null, string $indent = '    ', string $lineEnding = "\n"): void
+    public function testFix(string $expected, ?string $input = null, ?WhitespacesFixerConfig $whitespacesConfig = null): void
     {
-        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig($indent, $lineEnding));
+        $this->fixer->setWhitespacesConfig($whitespacesConfig ?? new WhitespacesFixerConfig());
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<array{0: string, 1?: null|string, 2?: string, 3?: string}>
+     * @return iterable<array{0: string, 1?: null|string, 2?: WhitespacesFixerConfig}>
      */
     public static function provideFixCases(): iterable
     {
@@ -230,13 +227,13 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
         ];
 
         foreach (self::getFixCases() as $name => $case) {
-            yield 'tabs - '.$name => [...$case, "\t", "\r\n"];
+            yield 'tabs - '.$name => [...$case, new WhitespacesFixerConfig("\t", "\r\n")];
 
             if ('mix indentation' === $name) {
                 continue;
             }
 
-            yield 'spaces - '.$name => [$case[1], $case[0], '    ', "\r\n"];
+            yield 'spaces - '.$name => [$case[1], $case[0], new WhitespacesFixerConfig('    ', "\r\n")];
         }
 
         yield [
@@ -250,7 +247,7 @@ if (true) {
   }
 }',
             null,
-            '  ',
+            new WhitespacesFixerConfig('  '),
         ];
 
         yield [
@@ -272,7 +269,7 @@ if (true) {
 \t);
   }
 }",
-            '  ',
+            new WhitespacesFixerConfig('  '),
         ];
 
         yield [
@@ -286,7 +283,7 @@ if (true) {
 \t * Foo
 \t */
 ",
-            '  ',
+            new WhitespacesFixerConfig('  '),
         ];
     }
 

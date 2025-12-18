@@ -273,11 +273,17 @@ final class FixerDocumentGenerator
         static $ruleSetCache = null;
 
         if (null === $ruleSetCache) {
+            $definitionNames = array_keys(
+                array_filter(
+                    RuleSets::getSetDefinitions(),
+                    static fn (RuleSetDefinitionInterface $definition): bool => !$definition instanceof AutomaticRuleSetDefinitionInterface
+                )
+            );
             $ruleSetCache = array_combine(
-                RuleSets::getSetDefinitionNames(),
+                $definitionNames,
                 array_map(
                     static fn (string $name): RuleSet => new RuleSet([$name => true]),
-                    RuleSets::getSetDefinitionNames()
+                    $definitionNames
                 )
             );
         }

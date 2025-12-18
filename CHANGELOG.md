@@ -3,6 +3,36 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.92.3
+---------------------
+
+* fix: using Rule Customisation Policy with parallel runner (#9309)
+* chore: phpstan - cover `.php-cs-fixer.dist.php` (#9311)
+* chore: `.php-cs-fixer.dist.php` - drop wrongly called `ignoreVCSIgnored` (#9310)
+
+Changelog for v3.92.2
+---------------------
+
+* fix: let `@php-cs-fixer-ignore` accept custom fixer names (#9306)
+* chore: introduce `PHP_CS_FIXER_IGNORE_MISMATCHED_RULES_EXCEPTIONS` (#9307)
+
+Changelog for v3.92.1
+---------------------
+
+* chore: update php-compatibility config (#9302)
+* deps: bump actions/cache from 4 to 5 (#9295)
+* deps: bump phpstan/phpstan-phpunit from 2.0.9 to 2.0.10 in /dev-tools in the phpstan group (#9293)
+* deps: bump shipmonk/phpstan-baseline-per-identifier from 2.2.0 to 2.3.0 in /dev-tools (#9294)
+* docs: update README.md (#9277)
+* DX: make all `testFix*` methods have no more than 4 parameters (#9298)
+* DX: make all `testFix*` methods have second parameter `$input` (#9297)
+* DX: rename parameter `$config` to `$configuration` (#9299)
+* DX: restrict `testFix*` parameter names (#9301)
+* DX: use `WhitespacesFixerConfig` in tests (#9300)
+* fix: describe - skip listing automated rules, as cannot determine them in projects (#9304)
+* test: PHPUnit sets - check that set is providing proper target for rules (#9296)
+* test: `ProjectCodeTest::testExpectedInputOrder` - move checks for `testFix...` methods (#9291)
+
 Changelog for v3.92.0
 ---------------------
 

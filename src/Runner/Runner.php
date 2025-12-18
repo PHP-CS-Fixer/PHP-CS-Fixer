@@ -221,6 +221,10 @@ final class Runner
      */
     private function validateRulesNamesForExceptions(array $ruleExceptions, string $errorTemplate): void
     {
+        if (true === filter_var(getenv('PHP_CS_FIXER_IGNORE_MISMATCHED_RULES_EXCEPTIONS'), \FILTER_VALIDATE_BOOLEAN)) {
+            return;
+        }
+
         if ([] === $ruleExceptions) {
             return;
         }
