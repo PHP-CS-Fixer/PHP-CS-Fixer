@@ -103,10 +103,9 @@ return (new Config())
     ])
     ->setFinder(
         (new Finder())
-            ->ignoreDotFiles(false)
-            ->ignoreVCSIgnored(true)
-            ->exclude(['dev-tools/phpstan', 'tests/Fixtures'])
             ->in(__DIR__)
             ->append([__DIR__.'/php-cs-fixer'])
+            ->exclude(['dev-tools/phpstan', 'tests/Fixtures'])
+            ->ignoreDotFiles(false) // @TODO v4 line no longer needed
     )
 ;
