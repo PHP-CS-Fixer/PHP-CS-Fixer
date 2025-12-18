@@ -129,7 +129,6 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php /** @var null */',
             '<?php /** @var null|null */',
         ];
 
@@ -142,7 +141,6 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php /** @var \null */',
             '<?php /** @var \null|\null */',
         ];
 
@@ -266,8 +264,8 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php /** @var null */',
             '<?php /** @var null|null */',
+            null,
             ['sort_algorithm' => 'none', 'null_adjustment' => 'always_first'],
         ];
 
@@ -284,8 +282,8 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php /** @var \null */',
             '<?php /** @var \null|\null */',
+            null,
             ['sort_algorithm' => 'none', 'null_adjustment' => 'always_first'],
         ];
 
@@ -506,8 +504,8 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php /** @var null */',
             '<?php /** @var null|null */',
+            null,
             ['sort_algorithm' => 'none', 'null_adjustment' => 'always_last'],
         ];
 
@@ -524,8 +522,8 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php /** @var \null */',
             '<?php /** @var \null|\null */',
+            null,
             ['sort_algorithm' => 'none', 'null_adjustment' => 'always_last'],
         ];
 
@@ -656,8 +654,8 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php /** @var null */',
             '<?php /** @var null|null */',
+            null,
             ['sort_algorithm' => 'alpha', 'null_adjustment' => 'none'],
         ];
 
@@ -674,8 +672,8 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php /** @var \null */',
             '<?php /** @var \null|\null */',
+            null,
             ['sort_algorithm' => 'alpha', 'null_adjustment' => 'none'],
         ];
 
@@ -890,8 +888,8 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php /** @var null */',
             '<?php /** @var null|null */',
+            null,
             ['sort_algorithm' => 'alpha', 'null_adjustment' => 'always_last'],
         ];
 
@@ -908,8 +906,8 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php /** @var \null */',
             '<?php /** @var \null|\null */',
+            null,
             ['sort_algorithm' => 'alpha', 'null_adjustment' => 'always_last'],
         ];
 
