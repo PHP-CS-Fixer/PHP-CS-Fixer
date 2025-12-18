@@ -76,7 +76,7 @@ parameters:
         -
             message: '/^Unused PhpCsFixer\\[a-zA-Z\\]+Interface::[a-zA-Z]+$/'
             path: src
-            count: 18
+            count: 12
 
         -
             message: '/^AnonymousClass/'
