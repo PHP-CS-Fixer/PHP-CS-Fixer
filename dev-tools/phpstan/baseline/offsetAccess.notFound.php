@@ -744,6 +744,11 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
     'rawMessage' => 'Offset 0 might not exist on array.',
     'count' => 1,
+    'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/PhpdocTypesNoDuplicatesFixer.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Offset 0 might not exist on array.',
+    'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/PhpdocTypesOrderFixer.php',
 ];
 $ignoreErrors[] = [
