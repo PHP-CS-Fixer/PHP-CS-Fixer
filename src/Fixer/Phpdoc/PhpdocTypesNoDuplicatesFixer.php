@@ -82,32 +82,22 @@ final class PhpdocTypesNoDuplicatesFixer extends AbstractFixer
                 // fix main types
                 if (null !== $annotation->getTypeExpression()) {
                     $annotation->setTypes(
-                        $this->removeDuplicatedTypes(
-                            $annotation->getTypeExpression()
-                        )
+                        $annotation->getTypeExpression()
+                            ->removeDuplicateTypes()
+                            ->getTypes()
                     );
                 }
 
                 // fix @method parameters types
                 $line = $doc->getLine($annotation->getStart());
-                $line->setContent(Preg::replaceCallback('/\*\h*@method\h+'.TypeExpression::REGEX_TYPES.'\h+\K(?&callable)/', function (array $matches) {
+                $line->setContent(Preg::replaceCallback('/\*\h*@method\h+'.TypeExpression::REGEX_TYPES.'\h+\K(?&callable)/', static function (array $matches) {
                     $typeExpression = new TypeExpression($matches[0], null, []);
 
-                    return implode('|', $this->removeDuplicatedTypes($typeExpression));
+                    return implode('|', $typeExpression->removeDuplicateTypes()->getTypes());
                 }, $line->getContent()));
             }
 
             $tokens[$index] = new Token([\T_DOC_COMMENT, $doc->getContent()]);
         }
-    }
-
-    /**
-     * @return list<string>
-     */
-    private function removeDuplicatedTypes(TypeExpression $typeExpression): array
-    {
-        $sortedTypeExpression = $typeExpression->removeDuplicateTypes();
-
-        return $sortedTypeExpression->getTypes();
     }
 }
