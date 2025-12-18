@@ -118,6 +118,7 @@ final class PhpCsFixerSet extends AbstractRuleSetDefinition
             'phpdoc_add_missing_param_annotation' => true,
             'phpdoc_no_empty_return' => true,
             'phpdoc_order_by_value' => true,
+            'phpdoc_types_no_duplicates' => true,
             'phpdoc_types_order' => true,
             'protected_to_private' => true,
             'return_assignment' => true,

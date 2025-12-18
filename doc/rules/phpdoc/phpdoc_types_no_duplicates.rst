@@ -20,6 +20,13 @@ Example #1
    + * @param string|int $bar
      */
 
+Rule sets
+---------
+
+The rule is part of the following rule set:
+
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+
 References
 ----------
 

@@ -60,6 +60,7 @@ Rules
 - `phpdoc_add_missing_param_annotation <./../rules/phpdoc/phpdoc_add_missing_param_annotation.rst>`_
 - `phpdoc_no_empty_return <./../rules/phpdoc/phpdoc_no_empty_return.rst>`_
 - `phpdoc_order_by_value <./../rules/phpdoc/phpdoc_order_by_value.rst>`_
+- `phpdoc_types_no_duplicates <./../rules/phpdoc/phpdoc_types_no_duplicates.rst>`_
 - `phpdoc_types_order <./../rules/phpdoc/phpdoc_types_order.rst>`_
 - `protected_to_private <./../rules/class_notation/protected_to_private.rst>`_
 - `return_assignment <./../rules/return_notation/return_assignment.rst>`_
