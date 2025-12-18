@@ -61,7 +61,6 @@ Rules
 - `phpdoc_no_empty_return <./../rules/phpdoc/phpdoc_no_empty_return.rst>`_
 - `phpdoc_order_by_value <./../rules/phpdoc/phpdoc_order_by_value.rst>`_
 - `phpdoc_types_order <./../rules/phpdoc/phpdoc_types_order.rst>`_
-- `protected_to_private <./../rules/class_notation/protected_to_private.rst>`_
 - `return_assignment <./../rules/return_notation/return_assignment.rst>`_
 - `self_static_accessor <./../rules/class_notation/self_static_accessor.rst>`_
 - `single_line_comment_style <./../rules/comment/single_line_comment_style.rst>`_
