@@ -20,6 +20,7 @@ use PhpCsFixer\AbstractPhpdocTypesFixer;
 use PhpCsFixer\AbstractProxyFixer;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\Command\InitCommand;
+use PhpCsFixer\Console\Internal\Command\ParseCommand;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Documentation\DocumentationTag;
@@ -550,7 +551,11 @@ final class ProjectCodeTest extends TestCase
      */
     public function testThereIsNoUsageOfDefined(string $className): void
     {
-        if (CTTest::class === $className || FCTTest::class === $className) {
+        if (\in_array($className, [
+            CTTest::class,
+            FCTTest::class,
+            ParseCommand::class,
+        ], true)) {
             $this->expectNotToPerformAssertions();
 
             return;
