@@ -836,6 +836,9 @@ PHPDoc
 - `phpdoc_types <./phpdoc/phpdoc_types.rst>`_ *(configurable)*
 
   The correct case must be used for standard PHP types in PHPDoc.
+- `phpdoc_types_no_duplicates <./phpdoc/phpdoc_types_no_duplicates.rst>`_
+
+  Removes duplicate PHPDoc types.
 - `phpdoc_types_order <./phpdoc/phpdoc_types_order.rst>`_ *(configurable)*
 
   Sorts PHPDoc types.
