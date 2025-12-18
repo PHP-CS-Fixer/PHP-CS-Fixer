@@ -360,15 +360,24 @@ final class TypeExpression
     /**
      * @param \Closure(self, self): (-1|0|1) $compareCallback
      */
-    public function sortTypes(\Closure $compareCallback): self
+    public function sortTypes(\Closure $compareCallback, bool $removeInnerDuplicates = false): self
     {
-        return $this->mapTypes(function (self $type) use ($compareCallback): self {
+        return $this->mapTypes(function (self $type) use ($compareCallback, $removeInnerDuplicates): self {
             if ($type->isCompositeType) {
                 $innerTypeExpressions = Utils::stableSort(
                     $type->innerTypeExpressions,
                     static fn (array $v): self => $v['expression'],
                     $compareCallback,
                 );
+
+                if ($removeInnerDuplicates) {
+                    $value = implode(
+                        $type->getTypesGlue(),
+                        array_values(array_unique(array_map(static fn (array $v): string => $v['expression']->toString(), $innerTypeExpressions)))
+                    );
+
+                    return $this->inner($value);
+                }
 
                 if ($innerTypeExpressions !== $type->innerTypeExpressions) {
                     $value = implode(
