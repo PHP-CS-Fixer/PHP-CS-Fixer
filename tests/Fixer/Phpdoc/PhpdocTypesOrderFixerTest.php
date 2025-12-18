@@ -948,5 +948,47 @@ final class PhpdocTypesOrderFixerTest extends AbstractFixerTestCase
             '<?php /** @var Aaa|AA */',
             ['case_sensitive' => true],
         ];
+
+        yield [
+            '<?php /** @var string|null|int */',
+            '<?php /** @var string|string|null|int */',
+            ['sort_algorithm' => 'none', 'null_adjustment' => 'none'],
+        ];
+
+        yield [
+            '<?php /** @var string|array<string, string>|array<int, int> */',
+            '<?php /** @var string|string|array<string, string|string>|array<int, int|int> */',
+            ['sort_algorithm' => 'none', 'null_adjustment' => 'always_last'],
+        ];
+
+        yield [
+            '<?php /** @var array<float|int, float|int|string|null>|string */',
+            '<?php /** @var array<int|float, int|int|string|float|null>|array<float|int, string|null|int|int|float>|string|string */',
+            ['sort_algorithm' => 'alpha', 'null_adjustment' => 'always_last'],
+        ];
+
+        yield [
+            '<?php /** @var array{foo: string} */',
+            '<?php /** @var array{foo: string|string} */',
+            ['sort_algorithm' => 'alpha', 'null_adjustment' => 'always_last'],
+        ];
+
+        yield [
+            '<?php /** @var Bar|Baz */',
+            '<?php /** @var Bar|Bar|Baz */',
+            ['sort_algorithm' => 'alpha', 'null_adjustment' => 'always_last'],
+        ];
+
+        yield [
+            '<?php /** @var Bar|\Bar */',
+            null,
+            ['sort_algorithm' => 'alpha', 'null_adjustment' => 'always_last'],
+        ];
+
+        yield [
+            '<?php /** @var \Foo\Bar|\Foo\Baz|Foo\Baz|string */',
+            '<?php /** @var string|\Foo\Baz|\Foo\Bar|\Foo\Baz|Foo\Baz */',
+            ['sort_algorithm' => 'alpha', 'null_adjustment' => 'always_last'],
+        ];
     }
 }
