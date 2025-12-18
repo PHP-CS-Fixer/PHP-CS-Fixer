@@ -5,7 +5,7 @@ Integration of fixers: phpdoc_array_type,phpdoc_types_no_duplicates.
 --EXPECT--
 <?php
 /**
- * @return string[]
+ * @return array<string>
  */
 function foo() {}
 
