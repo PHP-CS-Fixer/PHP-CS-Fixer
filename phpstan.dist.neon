@@ -10,6 +10,7 @@ parameters:
         - src
         - tests
         - php-cs-fixer
+        - .php-cs-fixer.dist.php
         - dev-tools/phpstan/src
     excludePaths:
         - tests/Fixtures
@@ -45,6 +46,18 @@ parameters:
                 - src/Fixer/DoctrineAnnotation/DoctrineAnnotationIndentationFixer.php
                 - src/Fixer/Import/GlobalNamespaceImportFixer.php
                 - src/Fixer/LanguageConstruct/GetClassToClassKeywordFixer.php
+
+        # We allow own config to call v4 interfaces
+        -
+            message: '/Call to an undefined method PhpCsFixer\\ConfigInterface::setUnsupportedPhpVersionAllowed\(\)/'
+            paths:
+                - .php-cs-fixer.dist.php
+
+        # We allow own config to eat internal rules/sets
+        -
+            message: '/(on|of) internal class.*(Set|Fixer)/'
+            paths:
+                - .php-cs-fixer.dist.php
 
         # Types related to tokens collections are purposefully narrowed, because we expect only tokens there
         - '/^Parameter #1 \$array \(array<int, PhpCsFixer\\(Tokenizer|Doctrine\\Annotation)+\\Token>\) of method PhpCsFixer\\(Tokenizer|Doctrine\\Annotation)+\\Tokens::fromArray\(\) should be contravariant with parameter \$array \(array<int, mixed>\) of method SplFixedArray<PhpCsFixer\\(Tokenizer|Doctrine\\Annotation)+\\Token>::fromArray\(\)$/'
