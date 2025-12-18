@@ -306,26 +306,28 @@ final class FixerFactoryTest extends TestCase
     }
 
     /**
+     * @param array<string, array<string, mixed>|bool> $ruleSet
+     *
      * @dataProvider provideConflictingFixersCases
      */
-    public function testConflictingFixers(RuleSet $ruleSet): void
+    public function testConflictingFixers(array $ruleSet): void
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessageMatches('#^Rule contains conflicting fixers:\n#');
 
         (new FixerFactory())
-            ->registerBuiltInFixers()->useRuleSet($ruleSet)
+            ->registerBuiltInFixers()->useRuleSet(new RuleSet($ruleSet))
         ;
     }
 
     /**
-     * @return iterable<int, array{RuleSet}>
+     * @return iterable<int, array{array<string, array<string, mixed>|true>}>
      */
     public static function provideConflictingFixersCases(): iterable
     {
-        yield [new RuleSet(['no_blank_lines_before_namespace' => true, 'single_blank_line_before_namespace' => true])];
+        yield [['no_blank_lines_before_namespace' => true, 'single_blank_line_before_namespace' => true]];
 
-        yield [new RuleSet(['single_blank_line_before_namespace' => true, 'no_blank_lines_before_namespace' => true])];
+        yield [['single_blank_line_before_namespace' => true, 'no_blank_lines_before_namespace' => true]];
     }
 
     public function testNoDoubleConflictReporting(): void
