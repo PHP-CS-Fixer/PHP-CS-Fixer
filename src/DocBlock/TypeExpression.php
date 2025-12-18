@@ -384,6 +384,37 @@ final class TypeExpression
         });
     }
 
+    public function removeDuplicateTypes(): self
+    {
+        return $this->mapTypes(function (self $type): self {
+            if ($type->isCompositeType) {
+                $seenNormalized = [];
+                $uniqueTypeExpressions = [];
+
+                foreach ($type->innerTypeExpressions as $innerType) {
+                    $normalized = $innerType['expression']
+                        ->sortTypes(static fn (self $a, self $b): int => $a->toString() <=> $b->toString())
+                        ->toString()
+                    ;
+
+                    if (!\in_array($normalized, $seenNormalized, true)) {
+                        $seenNormalized[] = $normalized;
+                        $uniqueTypeExpressions[] = $innerType['expression'];
+                    }
+                }
+
+                $value = implode(
+                    $type->getTypesGlue(),
+                    array_map(static fn (self $expr): string => $expr->toString(), $uniqueTypeExpressions)
+                );
+
+                return $this->inner($value);
+            }
+
+            return $type;
+        });
+    }
+
     public function getCommonType(): ?string
     {
         $mainType = null;
