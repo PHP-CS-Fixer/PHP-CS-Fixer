@@ -224,10 +224,9 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
                 }
 
                 return 0;
-            },
-            true
+            }
         );
 
-        return array_values(array_unique($sortedTypeExpression->getTypes()));
+        return $sortedTypeExpression->getTypes();
     }
 }
