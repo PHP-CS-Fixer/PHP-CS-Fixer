@@ -3,6 +3,13 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.92.3
+---------------------
+
+* fix: using Rule Customisation Policy with parallel runner (#9309)
+* chore: phpstan - cover `.php-cs-fixer.dist.php` (#9311)
+* chore: `.php-cs-fixer.dist.php` - drop wrongly called `ignoreVCSIgnored` (#9310)
+
 Changelog for v3.92.2
 ---------------------
 
