@@ -183,7 +183,7 @@ Rules
 - `switch_continue_to_break <./../rules/control_structure/switch_continue_to_break.rst>`_
 - `trailing_comma_in_multiline <./../rules/control_structure/trailing_comma_in_multiline.rst>`_ with config:
 
-  ``['after_heredoc' => true, 'elements' => ['array_destructuring', 'arrays', 'match', 'parameters']]``
+  ``['after_heredoc' => true, 'elements' => ['arrays', 'array_destructuring', 'match', 'parameters']]``
 
 - `trim_array_spaces <./../rules/array_notation/trim_array_spaces.rst>`_
 - `type_declaration_spaces <./../rules/whitespace/type_declaration_spaces.rst>`_ with config:

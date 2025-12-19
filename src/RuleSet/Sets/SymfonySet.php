@@ -242,8 +242,8 @@ final class SymfonySet extends AbstractRuleSetDefinition
             'trailing_comma_in_multiline' => [
                 'after_heredoc' => true,
                 'elements' => [ // explicitly omit 'arguments'
-                    'array_destructuring',
                     'arrays',
+                    'array_destructuring',
                     'match',
                     'parameters',
                 ],

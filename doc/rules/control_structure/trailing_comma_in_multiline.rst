@@ -202,11 +202,11 @@ The rule is part of the following rule sets:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 
-  ``['after_heredoc' => true, 'elements' => ['array_destructuring', 'arrays']]``
+  ``['after_heredoc' => true, 'elements' => ['arrays', 'array_destructuring']]``
 
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
-  ``['after_heredoc' => true, 'elements' => ['array_destructuring', 'arrays', 'match', 'parameters']]``
+  ``['after_heredoc' => true, 'elements' => ['arrays', 'array_destructuring', 'match', 'parameters']]``
 
 References
 ----------
