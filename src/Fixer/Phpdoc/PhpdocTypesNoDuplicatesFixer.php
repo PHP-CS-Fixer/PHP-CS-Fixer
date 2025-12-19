@@ -90,7 +90,9 @@ final class PhpdocTypesNoDuplicatesFixer extends AbstractFixer
 
                 // fix @method parameters types
                 $line = $doc->getLine($annotation->getStart());
-                $line->setContent(Preg::replaceCallback('/\*\h*@method\h+'.TypeExpression::REGEX_TYPES.'\h+\K(?&callable)/', static function (array $matches) {
+                $line->setContent(Preg::replaceCallback('/\*\h*@method\h+'.TypeExpression::REGEX_TYPES.'\h+\K(?&callable)/', static function (array $matches): string {
+                    \assert(isset($matches[0]));
+
                     $typeExpression = new TypeExpression($matches[0], null, []);
 
                     return implode('|', $typeExpression->removeDuplicateTypes()->getTypes());
