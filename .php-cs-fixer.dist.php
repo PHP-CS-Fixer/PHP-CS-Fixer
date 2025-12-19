@@ -100,6 +100,16 @@ return (new Config())
         'phpdoc_tag_no_named_arguments' => [
             'description' => 'Parameter names are not covered by the backward compatibility promise.',
         ],
+        'trailing_comma_in_multiline' => [
+            'after_heredoc' => true,
+            'elements' => [
+                'arguments',
+                'array_destructuring',
+                'arrays',
+                // 'match', // @TODO PHP 8.0: enable me
+                // 'parameters', // @TODO PHP 8.0: enable me
+            ],
+        ],
     ])
     ->setFinder(
         (new Finder())
