@@ -125,5 +125,46 @@ namespace Somewhere\Over\The\Rainbow {
 /* ; echo A :: B; */
 ',
         ];
+
+        yield [
+            '<?php echo Foo::{$bar};',
+            '<?php echo Foo    ::    {$bar};',
+        ];
+
+        yield [
+            '<?php echo Foo::{bar()};',
+            '<?php echo Foo   ::   {bar()};',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFixPhp83Cases
+     *
+     * @requires PHP 8.3
+     */
+    public function testFixPhp83(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<int, array{string, string}>
+     */
+    public static function provideFixPhp83Cases(): iterable
+    {
+        yield [
+            '<?php echo Foo::{$bar};',
+            '<?php echo Foo    ::    {$bar};',
+        ];
+
+        yield [
+            '<?php echo Foo::{bar()};',
+            '<?php echo Foo   ::   {bar()};',
+        ];
+
+        yield [
+            '<?php echo Foo::{$baz[\'bar\'][\'baz\']};',
+            '<?php echo Foo  ::  {$baz[\'bar\'][\'baz\']};',
+        ];
     }
 }
