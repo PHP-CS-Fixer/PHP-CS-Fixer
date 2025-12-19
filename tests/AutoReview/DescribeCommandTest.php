@@ -49,7 +49,7 @@ final class DescribeCommandTest extends TestCase
         \Closure::bind(
             static fn () => RuleSets::$customRuleSetDefinitions = [],
             null,
-            RuleSets::class
+            RuleSets::class,
         )();
     }
 

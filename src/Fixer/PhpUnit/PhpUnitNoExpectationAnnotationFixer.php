@@ -76,7 +76,7 @@ final class PhpUnitNoExpectationAnnotationFixer extends AbstractPhpUnitFixer imp
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -103,11 +103,11 @@ final class PhpUnitNoExpectationAnnotationFixer extends AbstractPhpUnitFixer imp
                         }
 
                         PHP,
-                    ['target' => PhpUnitTargetVersion::VERSION_3_2]
+                    ['target' => PhpUnitTargetVersion::VERSION_3_2],
                 ),
             ],
             null,
-            'Risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.'
+            'Risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.',
         );
     }
 

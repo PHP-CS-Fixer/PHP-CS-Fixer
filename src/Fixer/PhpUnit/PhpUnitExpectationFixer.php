@@ -76,7 +76,7 @@ final class PhpUnitExpectationFixer extends AbstractPhpUnitFixer implements Conf
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -97,7 +97,7 @@ final class PhpUnitExpectationFixer extends AbstractPhpUnitFixer implements Conf
                         }
 
                         PHP,
-                    ['target' => PhpUnitTargetVersion::VERSION_8_4]
+                    ['target' => PhpUnitTargetVersion::VERSION_8_4],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -118,7 +118,7 @@ final class PhpUnitExpectationFixer extends AbstractPhpUnitFixer implements Conf
                         }
 
                         PHP,
-                    ['target' => PhpUnitTargetVersion::VERSION_5_6]
+                    ['target' => PhpUnitTargetVersion::VERSION_5_6],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -139,11 +139,11 @@ final class PhpUnitExpectationFixer extends AbstractPhpUnitFixer implements Conf
                         }
 
                         PHP,
-                    ['target' => PhpUnitTargetVersion::VERSION_5_2]
+                    ['target' => PhpUnitTargetVersion::VERSION_5_2],
                 ),
             ],
             null,
-            'Risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.'
+            'Risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.',
         );
     }
 

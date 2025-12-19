@@ -41,7 +41,7 @@ final class NoNullPropertyInitializationFixer extends AbstractFixer
                             public ?string $baux;
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -50,9 +50,9 @@ final class NoNullPropertyInitializationFixer extends AbstractFixer
                             public static $foo = null;
                         }
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

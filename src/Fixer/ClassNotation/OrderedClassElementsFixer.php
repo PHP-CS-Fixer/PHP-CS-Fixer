@@ -174,7 +174,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
                             public function __destruct() {}
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -186,7 +186,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
                         }
 
                         PHP,
-                    ['order' => ['method_private', 'method_public']]
+                    ['order' => ['method_private', 'method_public']],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -200,7 +200,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
                         }
 
                         PHP,
-                    ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA]
+                    ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -214,7 +214,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
                         }
 
                         PHP,
-                    ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA, 'case_sensitive' => true]
+                    ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA, 'case_sensitive' => true],
                 ),
             ],
             'Accepts a subset of pre-defined element types, special element groups, and custom patterns.
@@ -225,7 +225,7 @@ Special element types: `[\''.implode('\', \'', array_keys(self::SPECIAL_TYPES)).
 
 Custom values:
 
-- `method:*`: specify a single method name (e.g. `method:__invoke`) to set the order of that specific method.'
+- `method:*`: specify a single method name (e.g. `method:__invoke`) to set the order of that specific method.',
         );
     }
 

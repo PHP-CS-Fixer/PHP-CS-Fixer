@@ -88,7 +88,7 @@ final class OperatorLinebreakFixer extends AbstractFixer implements Configurable
                             $f;
 
                         PHP,
-                    ['only_booleans' => true]
+                    ['only_booleans' => true],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -99,7 +99,7 @@ final class OperatorLinebreakFixer extends AbstractFixer implements Configurable
                             + $f;
 
                         PHP,
-                    ['position' => 'end']
+                    ['position' => 'end'],
                 ),
             ],
         );
@@ -279,7 +279,7 @@ final class OperatorLinebreakFixer extends AbstractFixer implements Configurable
 
                 return $clone;
             },
-            $indices
+            $indices,
         );
     }
 

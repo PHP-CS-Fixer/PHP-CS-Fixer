@@ -65,11 +65,11 @@ final class NewVersionCheckerTest extends TestCase
 
         self::assertSame(
             $expectedResult,
-            $checker->compareVersions($versionA, $versionB)
+            $checker->compareVersions($versionA, $versionB),
         );
         self::assertSame(
             -$expectedResult,
-            $checker->compareVersions($versionB, $versionA)
+            $checker->compareVersions($versionB, $versionA),
         );
     }
 

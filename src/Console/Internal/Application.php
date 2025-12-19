@@ -61,7 +61,7 @@ final class Application extends BaseApplication
         return str_replace(
             PublicApplication::NAME,
             $this->getName(),
-            PublicApplication::getAboutWithRuntime(true)
+            PublicApplication::getAboutWithRuntime(true),
         );
     }
 

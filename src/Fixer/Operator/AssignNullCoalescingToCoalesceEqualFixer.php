@@ -34,7 +34,7 @@ final class AssignNullCoalescingToCoalesceEqualFixer extends AbstractShortOperat
                 new CodeSample(
                     "<?php\n\$foo = \$foo ?? 1;\n",
                 ),
-            ]
+            ],
         );
     }
 

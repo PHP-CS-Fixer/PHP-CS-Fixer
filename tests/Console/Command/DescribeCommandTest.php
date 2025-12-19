@@ -240,7 +240,7 @@ Fixing examples:
                 ),
                 new VersionSpecificCodeSample(
                     "<?php echo 'BEFORE'.'-B';".\PHP_EOL,
-                    new VersionSpecification(20_00_00)
+                    new VersionSpecification(20_00_00),
                 ),
             ]),
         ];
@@ -259,11 +259,11 @@ Fixing examples cannot be demonstrated on the current PHP version.
             self::createFixerWithSamplesDouble([
                 new VersionSpecificCodeSample(
                     "<?php echo 'BEFORE';".\PHP_EOL,
-                    new VersionSpecification(20_00_00)
+                    new VersionSpecification(20_00_00),
                 ),
                 new VersionSpecificCodeSample(
                     "<?php echo 'BEFORE'.'-B';".\PHP_EOL,
-                    new VersionSpecification(20_00_00)
+                    new VersionSpecification(20_00_00),
                 ),
             ]),
         ];
@@ -416,7 +416,7 @@ $/s',
             ],
             [
                 'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
-            ]
+            ],
         );
 
         self::assertStringContainsString(str_replace("\0", '\\', \get_class($fixer)), $commandTester->getDisplay(true));
@@ -594,15 +594,15 @@ Purpose of example rule set description.
                     'Fixes stuff.',
                     [
                         new CodeSample(
-                            "<?php echo 'bad stuff and bad thing';\n"
+                            "<?php echo 'bad stuff and bad thing';\n",
                         ),
                         new CodeSample(
                             "<?php echo 'bad stuff and bad thing';\n",
-                            ['functions' => ['foo', 'bar']]
+                            ['functions' => ['foo', 'bar']],
                         ),
                     ],
                     'Replaces bad stuff with good stuff.',
-                    'Can break stuff.'
+                    'Can break stuff.',
                 );
             }
 
@@ -647,7 +647,7 @@ Purpose of example rule set description.
             ],
             [
                 'decorated' => $decorated,
-            ]
+            ],
         );
 
         return $commandTester;

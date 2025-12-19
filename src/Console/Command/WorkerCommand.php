@@ -89,7 +89,7 @@ final class WorkerCommand extends Command
                 new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file.'),
                 new InputOption('diff', '', InputOption::VALUE_NONE, 'Prints diff for each file.'),
                 new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
-            ]
+            ],
         );
     }
 
@@ -186,7 +186,7 @@ final class WorkerCommand extends Command
                 static function (\Throwable $error) use ($errorOutput): void {
                     // @TODO Verify onRejected behaviour → https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/7777#discussion_r1590399285
                     $errorOutput->writeln($error->getMessage());
-                }
+                },
             )
         ;
 
@@ -224,7 +224,7 @@ final class WorkerCommand extends Command
                 'stop-on-violation' => $input->getOption('stop-on-violation'),
             ],
             getcwd(), // @phpstan-ignore argument.type
-            $this->toolInfo
+            $this->toolInfo,
         );
 
         return new Runner(
@@ -241,7 +241,7 @@ final class WorkerCommand extends Command
             ParallelConfigFactory::sequential(), // IMPORTANT! Worker must run in sequential mode.
             null,
             $this->configurationResolver->getConfigFile(),
-            $this->configurationResolver->getRuleCustomisationPolicy()
+            $this->configurationResolver->getRuleCustomisationPolicy(),
         );
     }
 }

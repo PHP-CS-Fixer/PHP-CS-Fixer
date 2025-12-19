@@ -67,7 +67,7 @@ final class PhpUnitMockFixer extends AbstractPhpUnitFixer implements Configurabl
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -82,11 +82,11 @@ final class PhpUnitMockFixer extends AbstractPhpUnitFixer implements Configurabl
                         }
 
                         PHP,
-                    ['target' => PhpUnitTargetVersion::VERSION_5_4]
+                    ['target' => PhpUnitTargetVersion::VERSION_5_4],
                 ),
             ],
             null,
-            'Risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.'
+            'Risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.',
         );
     }
 

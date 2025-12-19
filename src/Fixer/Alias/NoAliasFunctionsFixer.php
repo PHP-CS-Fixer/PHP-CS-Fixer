@@ -205,7 +205,7 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableF
                         user_error($message);
                         mbereg_search_getregs();
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -214,11 +214,11 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableF
                         mbereg_search_getregs();
 
                         PHP,
-                    ['sets' => ['@mbreg']]
+                    ['sets' => ['@mbreg']],
                 ),
             ],
             null,
-            'Risky when any of the alias functions are overridden.'
+            'Risky when any of the alias functions are overridden.',
         );
     }
 

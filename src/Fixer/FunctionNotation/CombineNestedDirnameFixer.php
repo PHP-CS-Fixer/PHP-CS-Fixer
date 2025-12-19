@@ -35,11 +35,11 @@ final class CombineNestedDirnameFixer extends AbstractFixer
             'Replace multiple nested calls of `dirname` by only one call with second `$level` parameter.',
             [
                 new CodeSample(
-                    "<?php\ndirname(dirname(dirname(\$path)));\n"
+                    "<?php\ndirname(dirname(dirname(\$path)));\n",
                 ),
             ],
             null,
-            'Risky when the function `dirname` is overridden.'
+            'Risky when the function `dirname` is overridden.',
         );
     }
 

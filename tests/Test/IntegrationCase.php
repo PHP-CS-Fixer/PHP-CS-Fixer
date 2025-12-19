@@ -114,7 +114,7 @@ final class IntegrationCase
             throw new \InvalidArgumentException(\sprintf(
                 'Unknown requirement key "%s", expected any of "%s".',
                 $name,
-                implode('","', array_keys($this->requirements))
+                implode('","', array_keys($this->requirements)),
             ));
         }
 

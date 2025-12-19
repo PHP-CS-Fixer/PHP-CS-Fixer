@@ -3443,7 +3443,7 @@ function test()
                     bool|int | string &$reference
                 ) {}
                 public function quux(): static| TypeA {}
-            }'
+            }',
         );
     }
 
@@ -3464,7 +3464,7 @@ function test()
                     Countable&Traversable $a,
                     Traversable&Countable $b,
                 ) {}
-            }'
+            }',
         );
     }
 }

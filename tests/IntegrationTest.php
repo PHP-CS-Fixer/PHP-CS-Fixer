@@ -65,7 +65,7 @@ final class IntegrationTest extends AbstractIntegrationTestCase
                     'Test "%s" in "%s" is expected to be priority check, but fixers applied in reversed order made the same changes.',
                     $case->getTitle(),
                     $case->getFileName(),
-                )
+                ),
             );
         }
     }

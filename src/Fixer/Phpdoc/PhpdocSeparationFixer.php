@@ -170,13 +170,13 @@ final class PhpdocSeparationFixer extends AbstractFixer implements ConfigurableF
                         if ($groupIndex === $tags[$member]) {
                             throw new InvalidOptionsException(
                                 'The option "groups" value is invalid. '
-                                .'The "'.$member.'" tag is specified more than once.'
+                                .'The "'.$member.'" tag is specified more than once.',
                             );
                         }
 
                         throw new InvalidOptionsException(
                             'The option "groups" value is invalid. '
-                            .'The "'.$member.'" tag belongs to more than one group.'
+                            .'The "'.$member.'" tag belongs to more than one group.',
                         );
                     }
                     $tags[$member] = $groupIndex;

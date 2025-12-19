@@ -42,7 +42,7 @@ final class NamespacesAnalyzerTest extends TestCase
 
         self::assertSame(
             serialize($expected),
-            serialize($analyzer->getDeclarations($tokens))
+            serialize($analyzer->getDeclarations($tokens)),
         );
     }
 
@@ -58,7 +58,7 @@ final class NamespacesAnalyzerTest extends TestCase
                 0,
                 0,
                 0,
-                1
+                1,
             ),
         ]];
 
@@ -69,7 +69,7 @@ final class NamespacesAnalyzerTest extends TestCase
                 1,
                 6,
                 1,
-                6
+                6,
             ),
         ]];
 
@@ -80,7 +80,7 @@ final class NamespacesAnalyzerTest extends TestCase
                 1,
                 6,
                 1,
-                7
+                7,
             ),
             new NamespaceAnalysis(
                 'Foo\Baz',
@@ -88,7 +88,7 @@ final class NamespacesAnalyzerTest extends TestCase
                 10,
                 16,
                 10,
-                17
+                17,
             ),
         ]];
 
@@ -105,7 +105,7 @@ final class NamespacesAnalyzerTest extends TestCase
                     1,
                     1,
                     1,
-                    5
+                    5,
                 ),
             ],
         ];
@@ -126,7 +126,7 @@ final class NamespacesAnalyzerTest extends TestCase
 
         self::assertSame(
             serialize($expected),
-            serialize($analyzer->getNamespaceAt($tokens, $index))
+            serialize($analyzer->getNamespaceAt($tokens, $index)),
         );
     }
 
@@ -144,7 +144,7 @@ final class NamespacesAnalyzerTest extends TestCase
                 0,
                 0,
                 0,
-                1
+                1,
             ),
         ];
 
@@ -157,7 +157,7 @@ final class NamespacesAnalyzerTest extends TestCase
                 1,
                 6,
                 1,
-                6
+                6,
             ),
         ];
 
@@ -170,7 +170,7 @@ final class NamespacesAnalyzerTest extends TestCase
                 1,
                 6,
                 1,
-                7
+                7,
             ),
         ];
 
@@ -183,7 +183,7 @@ final class NamespacesAnalyzerTest extends TestCase
                 10,
                 16,
                 10,
-                17
+                17,
             ),
         ];
     }

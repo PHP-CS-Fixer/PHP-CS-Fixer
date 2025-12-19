@@ -48,7 +48,7 @@ final class ReportSummaryTest extends TestCase
             $memory,
             $addAppliedFixers,
             $isDryRun,
-            $isDecoratedOutput
+            $isDecoratedOutput,
         );
 
         self::assertSame($changed, $reportSummary->getChanged());

@@ -121,7 +121,7 @@ final class ModifierKeywordsFixer extends AbstractFixer implements ConfigurableF
                         }
 
                         PHP,
-                    new VersionSpecification(8_02_00)
+                    new VersionSpecification(8_02_00),
                 ),
                 new VersionSpecificCodeSample(
                     <<<'PHP'
@@ -151,7 +151,7 @@ final class ModifierKeywordsFixer extends AbstractFixer implements ConfigurableF
                         }
 
                         PHP,
-                    new VersionSpecification(8_04_00)
+                    new VersionSpecification(8_04_00),
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -162,9 +162,9 @@ final class ModifierKeywordsFixer extends AbstractFixer implements ConfigurableF
                         }
 
                         PHP,
-                    ['elements' => ['const']]
+                    ['elements' => ['const']],
                 ),
-            ]
+            ],
         );
     }
 

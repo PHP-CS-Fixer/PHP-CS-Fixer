@@ -95,7 +95,7 @@ final class DotsOutput implements ProgressOutputInterface
                 $isLast && 0 !== $symbolsOnCurrentLine ? str_repeat(' ', $this->symbolsPerLine - $symbolsOnCurrentLine) : '',
                 $this->processedFiles,
                 $this->context->getFilesCount(),
-                round($this->processedFiles / $this->context->getFilesCount() * 100)
+                round($this->processedFiles / $this->context->getFilesCount() * 100),
             ));
 
             if (!$isLast) {

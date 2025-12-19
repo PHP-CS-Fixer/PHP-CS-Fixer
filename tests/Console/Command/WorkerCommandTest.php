@@ -73,7 +73,7 @@ final class WorkerCommandTest extends TestCase
 
         self::assertStringContainsString(
             'Connection refused',
-            $commandTester->getErrorOutput()
+            $commandTester->getErrorOutput(),
         );
     }
 
@@ -100,7 +100,7 @@ final class WorkerCommandTest extends TestCase
                 ],
                 (new FixCommand(new ToolInfo()))->getDefinition(),
             ),
-            new RunnerConfig(true, false, ParallelConfigFactory::sequential())
+            new RunnerConfig(true, false, ParallelConfigFactory::sequential()),
         )));
 
         /**
@@ -144,9 +144,9 @@ final class WorkerCommandTest extends TestCase
                         if (3 === \count($workerScope['messages'])) {
                             $encoder->write(['action' => ParallelAction::RUNNER_THANK_YOU]);
                         }
-                    }
+                    },
                 );
-            }
+            },
         );
         $process->on('exit', static function () use ($streamSelectLoop): void {
             $streamSelectLoop->stop();
@@ -187,14 +187,14 @@ final class WorkerCommandTest extends TestCase
                     'command' => $command->getName(),
                     '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.parallel.php',
                 ],
-                $arguments
+                $arguments,
             ),
             [
                 'capture_stderr_separately' => true,
                 'interactive' => false,
                 'decorated' => false,
                 'verbosity' => OutputInterface::VERBOSITY_DEBUG,
-            ]
+            ],
         );
 
         return $commandTester;

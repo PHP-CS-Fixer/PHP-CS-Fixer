@@ -52,7 +52,7 @@ final class ClassReferenceNameCasingFixer extends AbstractFixer
             'When referencing an internal class it must be written using the correct casing.',
             [
                 new CodeSample("<?php\nthrow new \\exception();\n"),
-            ]
+            ],
         );
     }
 

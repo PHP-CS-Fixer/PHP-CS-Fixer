@@ -37,7 +37,7 @@ final class NoEmptyStatementFixer extends AbstractFixer
                 new CodeSample("<?php \$a = 1;;\n"),
                 new CodeSample("<?php echo 1;2;\n"),
                 new CodeSample("<?php while(foo()){\n    continue 1;\n}\n"),
-            ]
+            ],
         );
     }
 

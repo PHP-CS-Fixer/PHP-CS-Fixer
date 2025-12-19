@@ -62,7 +62,7 @@ final class GeneralAttributeRemoveFixer extends AbstractFixer implements Configu
                         function foo() {}
 
                         PHP,
-                    ['attributes' => ['\A\B\Foo']]
+                    ['attributes' => ['\A\B\Foo']],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -74,9 +74,9 @@ final class GeneralAttributeRemoveFixer extends AbstractFixer implements Configu
                         function foo() {}
 
                         PHP,
-                    ['attributes' => ['\A\B\Foo', 'A\B\Bar']]
+                    ['attributes' => ['\A\B\Foo', 'A\B\Bar']],
                 ),
-            ]
+            ],
         );
     }
 

@@ -53,7 +53,7 @@ final class PhpUnitAssertNewNamesFixerTest extends AbstractFixerTestCase
                     $this->assertFileIsNotWriteable($a);
                     $this->assertMatchesRegularExpression($a);
                     $this->assertDoesNotMatchRegularExpression($a);
-                '
+                ',
             ),
             self::generateTest(
                 '
@@ -67,7 +67,7 @@ final class PhpUnitAssertNewNamesFixerTest extends AbstractFixerTestCase
                     $this->assertFileNotIsWritable($a);
                     $this->assertRegExp($a);
                     $this->assertNotRegExp($a);
-                '
+                ',
             ),
         ];
     }

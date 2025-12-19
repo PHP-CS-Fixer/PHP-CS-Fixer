@@ -58,7 +58,7 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
             [
                 new CodeSample("<?php print 'example';\n"),
                 new CodeSample("<?php echo('example');\n", ['use' => 'print']),
-            ]
+            ],
         );
     }
 

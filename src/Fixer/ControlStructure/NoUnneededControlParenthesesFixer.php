@@ -207,7 +207,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
                         switch ($a) { case($x); }
                         yield(2);
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -219,9 +219,9 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
                         while ($y) { continue (2); }
 
                         PHP,
-                    ['statements' => ['break', 'continue']]
+                    ['statements' => ['break', 'continue']],
                 ),
-            ]
+            ],
         );
     }
 
@@ -303,7 +303,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
                         $afterCloseIndex,
                         $openIndex,
                         $closeIndex,
-                        $tokens[$beforeOpenIndex]->equals('!') ? 'negative_instanceof' : 'others'
+                        $tokens[$beforeOpenIndex]->equals('!') ? 'negative_instanceof' : 'others',
                     );
                 }
 
@@ -322,7 +322,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     {
         $defaults = array_filter(
             self::CONFIG_OPTIONS,
-            static fn (string $option): bool => 'negative_instanceof' !== $option && 'others' !== $option && 'yield_from' !== $option
+            static fn (string $option): bool => 'negative_instanceof' !== $option && 'others' !== $option && 'yield_from' !== $option,
         );
 
         return new FixerConfigurationResolver([

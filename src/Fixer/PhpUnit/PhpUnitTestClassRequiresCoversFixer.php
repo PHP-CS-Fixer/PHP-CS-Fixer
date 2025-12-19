@@ -45,9 +45,9 @@ final class PhpUnitTestClassRequiresCoversFixer extends AbstractPhpUnitFixer imp
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

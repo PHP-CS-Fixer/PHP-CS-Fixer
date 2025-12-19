@@ -42,7 +42,7 @@ final class ClassConstantTransformerTest extends AbstractTransformerTestCase
             $expectedTokens,
             [
                 CT::T_CLASS_CONSTANT,
-            ]
+            ],
         );
     }
 

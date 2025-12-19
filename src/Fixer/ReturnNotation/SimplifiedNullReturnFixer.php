@@ -42,9 +42,9 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
                         function baz(): ?int { return null; }
                         function xyz(): void { return null; }
 
-                        EOT
+                        EOT,
                 ),
-            ]
+            ],
         );
     }
 

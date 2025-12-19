@@ -80,7 +80,7 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer implements Config
                             return sample2($a, $b, $c);
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -96,9 +96,9 @@ final class PhpdocScalarFixer extends AbstractPhpdocTypesFixer implements Config
                         }
 
                         PHP,
-                    ['types' => ['boolean']]
+                    ['types' => ['boolean']],
                 ),
-            ]
+            ],
         );
     }
 

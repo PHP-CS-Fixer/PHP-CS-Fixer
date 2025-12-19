@@ -55,7 +55,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
             TestCase::class,
             PhpUnitTestCaseStaticMethodCallsFixer::class,
             // `Utils::naturalLanguageJoin` does not accept empty array, so let's use it only if there's an actual difference.
-            [] === $missingMethods ? '' : Utils::naturalLanguageJoin($missingMethods)
+            [] === $missingMethods ? '' : Utils::naturalLanguageJoin($missingMethods),
         ));
     }
 

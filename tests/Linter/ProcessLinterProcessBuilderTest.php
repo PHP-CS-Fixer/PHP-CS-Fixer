@@ -74,7 +74,7 @@ final class ProcessLinterProcessBuilderTest extends TestCase
 
         self::assertSame(
             $expected,
-            $builder->build($file)->getCommandLine()
+            $builder->build($file)->getCommandLine(),
         );
     }
 }

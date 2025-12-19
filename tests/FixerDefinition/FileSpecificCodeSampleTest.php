@@ -37,7 +37,7 @@ final class FileSpecificCodeSampleTest extends TestCase
 
         $sample = new FileSpecificCodeSample(
             $code,
-            $splFileInfo
+            $splFileInfo,
         );
 
         self::assertSame($code, $sample->getCode());
@@ -59,7 +59,7 @@ final class FileSpecificCodeSampleTest extends TestCase
         $sample = new FileSpecificCodeSample(
             $code,
             $splFileInfo,
-            $configuration
+            $configuration,
         );
 
         self::assertSame($code, $sample->getCode());

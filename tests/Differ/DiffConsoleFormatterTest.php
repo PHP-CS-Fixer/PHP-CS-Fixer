@@ -36,7 +36,7 @@ final class DiffConsoleFormatterTest extends TestCase
 
         self::assertSame(
             str_replace(\PHP_EOL, "\n", $expected),
-            str_replace(\PHP_EOL, "\n", $diffFormatter->format($diff, $lineTemplate))
+            str_replace(\PHP_EOL, "\n", $diffFormatter->format($diff, $lineTemplate)),
         );
     }
 
@@ -59,13 +59,13 @@ final class DiffConsoleFormatterTest extends TestCase
                 OutputFormatter::escape('@@ -12,51 +12,151 @@'),
                 OutputFormatter::escape('-/**\\'),
                 OutputFormatter::escape('+/*\\'),
-                OutputFormatter::escape('+A')
+                OutputFormatter::escape('+A'),
             ),
             true,
             \sprintf(
                 '<comment>   ---------- begin diff ----------</comment>%s%%s%s<comment>   ----------- end diff -----------</comment>',
                 \PHP_EOL,
-                \PHP_EOL
+                \PHP_EOL,
             ),
             '
 @@ -12,51 +12,151 @@

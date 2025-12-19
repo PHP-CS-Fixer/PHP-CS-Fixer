@@ -53,7 +53,7 @@ final class PhpdocTagCasingFixer extends AbstractProxyFixer implements Configura
                 new CodeSample("<?php\n/**\n * @inheritdoc\n * @Foo\n */\n", [
                     'tags' => ['foo'],
                 ]),
-            ]
+            ],
         );
     }
 
@@ -89,7 +89,7 @@ final class PhpdocTagCasingFixer extends AbstractProxyFixer implements Configura
             throw new InvalidFixerConfigurationException(
                 $this->getName(),
                 Preg::replace('/^\[.+?\] /', '', $exception->getMessage()),
-                $exception
+                $exception,
             );
         }
     }

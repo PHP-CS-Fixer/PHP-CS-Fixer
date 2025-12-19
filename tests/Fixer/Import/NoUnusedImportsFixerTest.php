@@ -1514,7 +1514,7 @@ Exception# 3
 use /**/A\B/**/;
   echo 1;
   new B();
-'
+',
         );
     }
 

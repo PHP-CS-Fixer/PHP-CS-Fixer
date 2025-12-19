@@ -385,7 +385,7 @@ $a#
             foreach (['count', 'sizeof'] as $function) {
                 yield $function.' - '.$index => array_map(
                     static fn (string $code): string => \sprintf($code, $function),
-                    $case
+                    $case,
                 );
             }
         }

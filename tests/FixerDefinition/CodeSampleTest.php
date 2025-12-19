@@ -37,7 +37,7 @@ final class CodeSampleTest extends TestCase
 
         $codeSample = new CodeSample(
             $code,
-            $configuration
+            $configuration,
         );
 
         self::assertSame($code, $codeSample->getCode());

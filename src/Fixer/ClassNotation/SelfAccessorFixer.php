@@ -50,11 +50,11 @@ final class SelfAccessorFixer extends AbstractFixer
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
             ],
             null,
-            'Risky when using dynamic calls like get_called_class() or late static binding.'
+            'Risky when using dynamic calls like get_called_class() or late static binding.',
         );
     }
 

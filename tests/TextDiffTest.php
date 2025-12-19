@@ -53,7 +53,7 @@ final class TextDiffTest extends TestCase
                 'decorated' => $isDecorated,
                 'interactive' => false,
                 'verbosity' => OutputInterface::VERBOSITY_NORMAL,
-            ]
+            ],
         );
 
         if ($isDecorated !== $commandTester->getOutput()->isDecorated()) {
@@ -104,7 +104,7 @@ final class TextDiffTest extends TestCase
 
         self::assertSame(
             ['checkstyle', 'gitlab', 'json', 'junit', 'txt', 'xml'],
-            $formats
+            $formats,
         );
     }
 }

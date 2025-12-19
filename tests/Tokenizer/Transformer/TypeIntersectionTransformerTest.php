@@ -43,7 +43,7 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
             $expectedTokens,
             [
                 CT::T_TYPE_INTERSECTION,
-            ]
+            ],
         );
     }
 

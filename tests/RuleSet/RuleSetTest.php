@@ -118,7 +118,7 @@ final class RuleSetTest extends TestCase
         self::assertNotSame(
             $this->sortNestedArray($defaultConfig, $ruleName),
             $this->sortNestedArray($ruleConfig, $ruleName),
-            \sprintf('Rule "%s" (in RuleSet "%s") has default config passed.', $ruleName, $setName)
+            \sprintf('Rule "%s" (in RuleSet "%s") has default config passed.', $ruleName, $setName),
         );
     }
 
@@ -193,7 +193,7 @@ final class RuleSetTest extends TestCase
                 'line_ending' => true,
                 'strict_comparison' => true,
             ],
-            $ruleSet->getRules()
+            $ruleSet->getRules(),
         );
     }
 
@@ -210,7 +210,7 @@ final class RuleSetTest extends TestCase
                 'strict_comparison' => true,
                 'ternary_to_null_coalescing' => true,
             ],
-            $ruleSet->getRules()
+            $ruleSet->getRules(),
         );
     }
 
@@ -227,7 +227,7 @@ final class RuleSetTest extends TestCase
                 'strict_comparison' => true,
                 'ternary_to_null_coalescing' => true,
             ],
-            $ruleSet->getRules()
+            $ruleSet->getRules(),
         );
     }
 
@@ -270,8 +270,8 @@ final class RuleSetTest extends TestCase
             \sprintf(
                 'Set should only contain %s fixers, got: \'%s\'.',
                 $safe ? 'safe' : 'risky',
-                implode('\', \'', $fixerNames)
-            )
+                implode('\', \'', $fixerNames),
+            ),
         );
     }
 
@@ -302,7 +302,7 @@ final class RuleSetTest extends TestCase
         $this->expectExceptionMessageMatches('#^Nested rule set "@PSR1" configuration must be a boolean\.$#');
 
         new RuleSet(
-            ['@PSR1' => ['@PSR2' => 'no']]
+            ['@PSR1' => ['@PSR2' => 'no']],
         );
     }
 
@@ -380,7 +380,7 @@ final class RuleSetTest extends TestCase
         self::assertContains(
             \sprintf('@PHPUnit%sMigration:risky', str_replace('.', 'x', $version)),
             RuleSets::getSetDefinitionNames(),
-            \sprintf('PHPUnit target version %s is missing its set in %s.', $version, RuleSet::class)
+            \sprintf('PHPUnit target version %s is missing its set in %s.', $version, RuleSet::class),
         );
     }
 
@@ -453,7 +453,7 @@ final class RuleSetTest extends TestCase
             if (\is_array($value)) {
                 $this->doSort(
                     $data[$key],
-                    $path.('' !== $path ? '.' : '').$key
+                    $path.('' !== $path ? '.' : '').$key,
                 );
             }
         }

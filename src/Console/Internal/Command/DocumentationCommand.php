@@ -76,7 +76,7 @@ final class DocumentationCommand extends Command
             $docForFixerRelativePaths[] = $locator->getFixerDocumentationFileRelativePath($fixer);
             $this->filesystem->dumpFile(
                 $locator->getFixerDocumentationFilePath($fixer),
-                $fixerDocumentGenerator->generateFixerDocumentation($fixer)
+                $fixerDocumentGenerator->generateFixerDocumentation($fixer),
             );
         }
 
@@ -92,7 +92,7 @@ final class DocumentationCommand extends Command
 
         $this->filesystem->dumpFile(
             $locator->getFixersDocumentationIndexFilePath(),
-            $fixerDocumentGenerator->generateFixersDocumentationIndex($fixers)
+            $fixerDocumentGenerator->generateFixersDocumentationIndex($fixers),
         );
 
         // RuleSet docs.
@@ -113,7 +113,7 @@ final class DocumentationCommand extends Command
 
         $this->filesystem->dumpFile(
             $locator->getRuleSetsDocumentationIndexFilePath(),
-            $ruleSetDocumentationGenerator->generateRuleSetsDocumentationIndex($paths)
+            $ruleSetDocumentationGenerator->generateRuleSetsDocumentationIndex($paths),
         );
 
         $output->writeln('Docs updated.');

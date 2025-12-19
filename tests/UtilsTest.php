@@ -174,7 +174,7 @@ final class UtilsTest extends TestCase
     ): void {
         self::assertSame(
             $expected,
-            Utils::stableSort($elements, $getComparableValueCallback, $compareValuesCallback)
+            Utils::stableSort($elements, $getComparableValueCallback, $compareValuesCallback),
         );
     }
 
@@ -228,7 +228,7 @@ final class UtilsTest extends TestCase
                 $fixers[1],
                 $fixers[3],
             ],
-            Utils::sortFixers($fixers)
+            Utils::sortFixers($fixers),
         );
     }
 

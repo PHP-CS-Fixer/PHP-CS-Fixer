@@ -329,7 +329,7 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
             '<?php echo \
 DateTime:: # a
  /* b */ class?>
-'
+',
         );
     }
 
@@ -346,7 +346,7 @@ DateTime:: # a
             '<?php
             echo Thing::class;
             echo $thing::class;
-            '
+            ',
         );
     }
 }
