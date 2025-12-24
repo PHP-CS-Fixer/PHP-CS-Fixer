@@ -100,12 +100,22 @@ return (new Config())
         'phpdoc_tag_no_named_arguments' => [
             'description' => 'Parameter names are not covered by the backward compatibility promise.',
         ],
+        'trailing_comma_in_multiline' => [
+            'after_heredoc' => true,
+            'elements' => [
+                'arguments',
+                'array_destructuring',
+                'arrays',
+                // 'match', // @TODO PHP 8.0: enable me
+                // 'parameters', // @TODO PHP 8.0: enable me
+            ],
+        ],
     ])
     ->setFinder(
         (new Finder())
             ->in(__DIR__)
             ->append([__DIR__.'/php-cs-fixer'])
             ->exclude(['dev-tools/phpstan', 'tests/Fixtures'])
-            ->ignoreDotFiles(false) // @TODO v4 line no longer needed
+            ->ignoreDotFiles(false), // @TODO v4 line no longer needed
     )
 ;

@@ -125,7 +125,7 @@ final class Process
 
         if (null === $this->in) {
             throw new ParallelisationException(
-                'Process not connected with parallelisation operator, ensure `bindConnection()` was called'
+                'Process not connected with parallelisation operator, ensure `bindConnection()` was called',
             );
         }
 
@@ -135,8 +135,8 @@ final class Process
                 new \Exception(
                     \sprintf(
                         'Child process timed out after %d seconds. Try making it longer using `ParallelConfig`.',
-                        $this->timeoutSeconds
-                    )
+                        $this->timeoutSeconds,
+                    ),
                 )
             );
         });

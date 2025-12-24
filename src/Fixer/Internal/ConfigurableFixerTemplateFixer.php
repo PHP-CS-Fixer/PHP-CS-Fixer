@@ -96,11 +96,11 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
             'Configurable Fixers must declare Template type.',
             [
                 new CodeSample(
-                    $tokens->generateCode()
+                    $tokens->generateCode(),
                 ),
             ],
             null,
-            'This rule auto-adjust @implements and @phpstan-type, which heavily change information for SCA.'
+            'This rule auto-adjust @implements and @phpstan-type, which heavily change information for SCA.',
         );
     }
 
@@ -148,11 +148,11 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
 
                 return trim(array_pop($parts));
             },
-            $doc->getAnnotationsOfType(['covers'])
+            $doc->getAnnotationsOfType(['covers']),
         );
         $covers = array_filter(
             $covers,
-            static fn (string $className): bool => !str_contains($className, '\Abstract') && str_ends_with($className, 'Fixer')
+            static fn (string $className): bool => !str_contains($className, '\Abstract') && str_ends_with($className, 'Fixer'),
         );
 
         if (1 !== \count($covers)) {
@@ -230,7 +230,7 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                 ''
                 .(!$expectedAnnotationPresent ? ' * @'.$expectedAnnotation."\n" : '')
                 .(!$expectedTypeImportPresent ? ' * @'.$expectedTypeImport."\n" : '')
-                .$lastLine->getContent()
+                .$lastLine->getContent(),
             );
         }
 
@@ -266,8 +266,8 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                             ', ',
                             array_map(
                                 static fn ($value): string => \sprintf("'%s'?: '%s'", $value, strtolower($value)),
-                                $allowed[0]->getAllowedValues()
-                            )
+                                $allowed[0]->getAllowedValues(),
+                            ),
                         )
                         .'}';
                 } elseif ($fixer instanceof HeaderCommentFixer && \in_array($optionName, ['header', 'validator'], true)) {
@@ -303,13 +303,13 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                     static fn ($value): string => $value instanceof AllowedValueSubset
                         ? \sprintf('list<%s>', implode('|', array_map(static fn ($val) => "'".$val."'", $value->getAllowedValues())))
                         : Utils::toString($value),
-                    $allowed
+                    $allowed,
                 );
             } else {
                 // $allowed will be allowed types
                 $allowed = array_map(
                     static fn ($value): string => Utils::convertArrayTypeToList($value),
-                    $option->getAllowedTypes()
+                    $option->getAllowedTypes(),
                 );
             }
 
@@ -320,14 +320,14 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                 $default = $option->getDefault();
                 $getTypes = static fn ($values): array => array_unique(array_map(
                     static fn ($val) => \gettype($val),
-                    $values
+                    $values,
                 ));
                 $defaultKeyTypes = $getTypes(array_keys($default));
                 $defaultValueTypes = $getTypes(array_values($default));
                 $allowed = \sprintf(
                     'array<%s, %s>',
                     [] !== $defaultKeyTypes ? implode('|', $defaultKeyTypes) : 'array-key',
-                    [] !== $defaultValueTypes ? implode('|', $defaultValueTypes) : 'mixed'
+                    [] !== $defaultValueTypes ? implode('|', $defaultValueTypes) : 'mixed',
                 );
             }
 
@@ -421,7 +421,7 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                 .(!$templateTypeInputPresent ? ' * @'.$expectedTemplateTypeInputAnnotation."\n" : '')
                 .(!$templateTypeComputedPresent ? ' * @'.$expectedTemplateTypeComputedAnnotation."\n" : '')
                 .(!$implementsWithTypesPresent ? ' * @'.$expectedImplementsWithTypesAnnotation."\n" : '')
-                .$lastLine->getContent()
+                .$lastLine->getContent(),
             );
         }
 

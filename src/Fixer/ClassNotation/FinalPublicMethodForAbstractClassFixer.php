@@ -64,12 +64,12 @@ final class FinalPublicMethodForAbstractClassFixer extends AbstractFixer
                             {}
                         }
 
-                        PHP
+                        PHP,
                 ),
             ],
             'Enforce API encapsulation in an inheritance architecture. '
             .'If you want to override a method, use the Template method pattern.',
-            'Risky when overriding `public` methods of `abstract` classes.'
+            'Risky when overriding `public` methods of `abstract` classes.',
         );
     }
 
@@ -157,7 +157,7 @@ final class FinalPublicMethodForAbstractClassFixer extends AbstractFixer
                 [
                     new Token([\T_FINAL, 'final']),
                     new Token([\T_WHITESPACE, ' ']),
-                ]
+                ],
             );
         }
     }

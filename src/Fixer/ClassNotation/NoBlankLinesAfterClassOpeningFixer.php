@@ -50,9 +50,9 @@ final class NoBlankLinesAfterClassOpeningFixer extends AbstractFixer implements 
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

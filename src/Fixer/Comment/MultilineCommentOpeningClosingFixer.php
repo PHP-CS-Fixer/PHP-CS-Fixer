@@ -50,9 +50,9 @@ final class MultilineCommentOpeningClosingFixer extends AbstractFixer
                          * DocBlock with arbitrary asterisk count at the end
                          **/
 
-                        EOT
+                        EOT,
                 ),
-            ]
+            ],
         );
     }
 

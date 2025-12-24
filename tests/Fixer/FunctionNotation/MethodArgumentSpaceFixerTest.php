@@ -68,7 +68,7 @@ final class MethodArgumentSpaceFixerTest extends AbstractFixerTestCase
                 $case[2] ?? [],
                 new WhitespacesFixerConfig(
                     str_contains($case[0], "\t") ? "\t" : (Preg::match('/\n  \S/', $case[0]) ? '  ' : '    '),
-                    "\r\n"
+                    "\r\n",
                 ),
             ];
         }

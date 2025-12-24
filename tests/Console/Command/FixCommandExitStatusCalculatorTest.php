@@ -49,8 +49,8 @@ final class FixCommandExitStatusCalculatorTest extends TestCase
                 $hasChangedFiles,
                 $hasInvalidErrors,
                 $hasExceptionErrors,
-                $hasLintErrorsAfterFixing
-            )
+                $hasLintErrorsAfterFixing,
+            ),
         );
     }
 

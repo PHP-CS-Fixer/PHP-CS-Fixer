@@ -257,7 +257,7 @@ final class SelfUpdateCommandTest extends TestCase
 
         self::assertDisplay(
             "\033[37;41mUnable to determine newest version: Foo.\033[39;49m\n",
-            $commandTester
+            $commandTester,
         );
         self::assertSame(1, $commandTester->getStatusCode());
     }
@@ -321,7 +321,7 @@ final class SelfUpdateCommandTest extends TestCase
 
         self::assertDisplay(
             "\033[37;41mSelf-update is available only for PHAR version.\033[39;49m\n",
-            $commandTester
+            $commandTester,
         );
         self::assertSame(1, $commandTester->getStatusCode());
     }
@@ -375,7 +375,7 @@ final class SelfUpdateCommandTest extends TestCase
 
         self::assertSame(
             $expectedDisplay,
-            $commandTester->getDisplay(true)
+            $commandTester->getDisplay(true),
         );
     }
 
@@ -505,7 +505,7 @@ final class SelfUpdateCommandTest extends TestCase
                         {
                             throw new \LogicException('Not implemented.');
                         }
-                    }
+                    },
                 ))->compareVersions($versionA, $versionB);
             }
         };

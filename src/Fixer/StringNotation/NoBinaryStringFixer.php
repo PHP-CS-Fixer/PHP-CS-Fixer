@@ -35,7 +35,7 @@ final class NoBinaryStringFixer extends AbstractFixer
                 \T_CONSTANT_ENCAPSED_STRING,
                 \T_START_HEREDOC,
                 'b"',
-            ]
+            ],
         );
     }
 
@@ -46,7 +46,7 @@ final class NoBinaryStringFixer extends AbstractFixer
             [
                 new CodeSample("<?php \$a = b'foo';\n"),
                 new CodeSample("<?php \$a = b<<<EOT\nfoo\nEOT;\n"),
-            ]
+            ],
         );
     }
 

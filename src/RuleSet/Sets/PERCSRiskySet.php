@@ -55,7 +55,7 @@ final class PERCSRiskySet extends AbstractRuleSetDefinition
                 static fn (RuleSetDefinitionInterface $set): bool => !($set instanceof DeprecatedRuleSetDefinitionInterface)
                     && $set->isRisky() === $currentSet->isRisky()
                     && $set->getName() !== $currentSet->getName()
-                    && str_starts_with($set->getName(), str_replace(':risky', '', $currentSet->getName()))
+                    && str_starts_with($set->getName(), str_replace(':risky', '', $currentSet->getName())),
             );
 
             ksort($sets, \SORT_NATURAL);

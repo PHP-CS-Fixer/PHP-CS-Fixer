@@ -46,7 +46,7 @@ final class ComposerJsonReaderTest extends TestCase
         \Closure::bind(
             static fn ($instance) => $instance->processJson($inputJson),
             null,
-            \get_class($instance)
+            \get_class($instance),
         )($instance);
 
         self::assertSame($expected, $instance->getPhpUnit());
@@ -237,7 +237,7 @@ final class ComposerJsonReaderTest extends TestCase
         \Closure::bind(
             static fn ($instance) => $instance->processJson($inputJson),
             null,
-            \get_class($instance)
+            \get_class($instance),
         )($instance);
 
         self::assertSame($expected, $instance->getPhp());

@@ -149,7 +149,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -165,11 +165,11 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
                         }
 
                         PHP,
-                    ['target' => PhpUnitTargetVersion::VERSION_5_6]
+                    ['target' => PhpUnitTargetVersion::VERSION_5_6],
                 ),
             ],
             null,
-            'Fixer could be risky if one is overriding PHPUnit\'s native methods.'
+            'Fixer could be risky if one is overriding PHPUnit\'s native methods.',
         );
     }
 
@@ -255,7 +255,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
             if (\in_array(
                 $assertCall['loweredName'],
                 ['assertsame', 'assertnotsame', 'assertequals', 'assertnotequals'],
-                true
+                true,
             )) {
                 $this->fixAssertSameEquals($tokens, $assertCall);
             }
@@ -526,7 +526,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
             $defaultNamespaceTokenIndex,
             $countCallIndex,
             $countCallOpenBraceIndex,
-            $countCallCloseBraceIndex
+            $countCallCloseBraceIndex,
         );
 
         $tokens[$assertCall['index']] = new Token([

@@ -34,7 +34,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
     {
         return new FixerDefinition(
             'Method chaining MUST be properly indented. Method chaining with different levels of indentation is not supported.',
-            [new CodeSample("<?php\n\$user->setEmail('voff.web@gmail.com')\n         ->setPassword('233434');\n")]
+            [new CodeSample("<?php\n\$user->setEmail('voff.web@gmail.com')\n         ->setPassword('233434');\n")],
         );
     }
 
@@ -118,7 +118,7 @@ final class MethodChainingIndentationFixer extends AbstractFixer implements Whit
                 $content = Preg::replace(
                     '/(\R)'.$currentIndent.'(\h*)$/D',
                     '$1'.$expectedIndent.'$2',
-                    $content
+                    $content,
                 );
 
                 $tokens[$searchIndex] = new Token([$searchToken->getId(), $content]);

@@ -30,7 +30,7 @@ final class NoUnneededImportAliasFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Imports should not be aliased as the same name.',
-            [new CodeSample("<?php\nuse A\\B\\Foo as Foo;\n")]
+            [new CodeSample("<?php\nuse A\\B\\Foo as Foo;\n")],
         );
     }
 

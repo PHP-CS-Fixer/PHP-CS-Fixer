@@ -34,7 +34,7 @@ final class FileCachingLintingFileIteratorTest extends TestCase
 
         $fileCachingLintingIterator = new FileCachingLintingFileIterator(
             $iterator,
-            $this->createLinterDouble()
+            $this->createLinterDouble(),
         );
 
         self::assertNull($fileCachingLintingIterator->current());
@@ -61,7 +61,7 @@ final class FileCachingLintingFileIteratorTest extends TestCase
 
         $fileCachingLintingIterator = new FileCachingLintingFileIterator(
             $iterator,
-            $this->createLinterDouble($lintingResult)
+            $this->createLinterDouble($lintingResult),
         );
 
         self::assertLintingIteratorIteration($fileCachingLintingIterator, $lintingResult, ...$files);

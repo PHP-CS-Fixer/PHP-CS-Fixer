@@ -46,7 +46,7 @@ final class UseArrowFunctionsFixer extends AbstractFixer
                 ),
             ],
             null,
-            'Risky when using `isset()` on outside variables that are not imported with `use ()`.'
+            'Risky when using `isset()` on outside variables that are not imported with `use ()`.',
         );
     }
 

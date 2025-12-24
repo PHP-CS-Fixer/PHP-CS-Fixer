@@ -51,7 +51,7 @@ final class CommandTest extends TestCase
         $names = array_filter(
             array_keys($commands),
             // @phpstan-ignore-next-line offsetAccess.notFound is not an alias and is our command
-            static fn (string $name): bool => !\in_array($name, $commands[$name]->getAliases(), true) && str_starts_with(\get_class($commands[$name]), 'PhpCsFixer\\')
+            static fn (string $name): bool => !\in_array($name, $commands[$name]->getAliases(), true) && str_starts_with(\get_class($commands[$name]), 'PhpCsFixer\\'),
         );
 
         // @phpstan-ignore-next-line offsetAccess.notFound

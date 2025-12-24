@@ -118,7 +118,7 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
         yield 'anonymous-class' => [
             \sprintf(
                 '<?php abstract class MyClass { private function test() { $a = new class { %s }; } }',
-                self::getClassElementStubs()
+                self::getClassElementStubs(),
             ),
         ];
 

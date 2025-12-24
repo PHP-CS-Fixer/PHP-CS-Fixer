@@ -68,7 +68,7 @@ final class PhpdocNoAliasTagFixer extends AbstractProxyFixer implements Configur
                         {
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -84,9 +84,9 @@ final class PhpdocNoAliasTagFixer extends AbstractProxyFixer implements Configur
                         }
 
                         PHP,
-                    ['replacements' => ['link' => 'website']]
+                    ['replacements' => ['link' => 'website']],
                 ),
-            ]
+            ],
         );
     }
 
@@ -117,7 +117,7 @@ final class PhpdocNoAliasTagFixer extends AbstractProxyFixer implements Configur
             throw new InvalidFixerConfigurationException(
                 $this->getName(),
                 Preg::replace('/^\[.+?\] /', '', $exception->getMessage()),
-                $exception
+                $exception,
             );
         }
     }
@@ -134,7 +134,7 @@ final class PhpdocNoAliasTagFixer extends AbstractProxyFixer implements Configur
                         'property-write' => 'property',
                         'type' => 'var',
                         'link' => 'see',
-                    ]
+                    ],
                 )
                 ->getOption(),
         ]);

@@ -52,7 +52,7 @@ final class DeclareEqualNormalizeFixer extends AbstractFixer implements Configur
             [
                 new CodeSample("<?php\ndeclare(ticks =  1);\n"),
                 new CodeSample("<?php\ndeclare(ticks=1);\n", ['space' => 'single']),
-            ]
+            ],
         );
     }
 

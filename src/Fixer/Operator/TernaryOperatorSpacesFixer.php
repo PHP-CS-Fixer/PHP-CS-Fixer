@@ -35,7 +35,7 @@ final class TernaryOperatorSpacesFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Standardize spaces around ternary operator.',
-            [new CodeSample("<?php \$a = \$a   ?1 :0;\n")]
+            [new CodeSample("<?php \$a = \$a   ?1 :0;\n")],
         );
     }
 

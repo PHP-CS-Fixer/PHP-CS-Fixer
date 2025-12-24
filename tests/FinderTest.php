@@ -47,8 +47,8 @@ final class FinderTest extends TestCase
             realpath(__DIR__.'/../.php-cs-fixer.dist.php'),
             array_map(
                 static fn (SplFileInfo $file): string => $file->getRealPath(),
-                iterator_to_array($finder->getIterator())
-            )
+                iterator_to_array($finder->getIterator()),
+            ),
         );
     }
 }

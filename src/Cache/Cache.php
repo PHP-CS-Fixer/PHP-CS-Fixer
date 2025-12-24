@@ -80,12 +80,12 @@ final class Cache implements CacheInterface
                     'ruleCustomisationPolicyVersion' => $this->getSignature()->getRuleCustomisationPolicyVersion(),
                     'hashes' => $this->hashes,
                 ],
-                \JSON_THROW_ON_ERROR
+                \JSON_THROW_ON_ERROR,
             );
         } catch (\JsonException $e) {
             throw new \UnexpectedValueException(\sprintf(
                 'Cannot encode cache signature to JSON, error: "%s". If you have non-UTF8 chars in your signature, like in license for `header_comment`, consider enabling `ext-mbstring` or install `symfony/polyfill-mbstring`.',
-                $e->getMessage()
+                $e->getMessage(),
             ));
         }
     }
@@ -101,7 +101,7 @@ final class Cache implements CacheInterface
             throw new \InvalidArgumentException(\sprintf(
                 'Value needs to be a valid JSON string, got "%s", error: "%s".',
                 $json,
-                $e->getMessage()
+                $e->getMessage(),
             ));
         }
 
@@ -120,7 +120,7 @@ final class Cache implements CacheInterface
         if (\count($missingKeys) > 0) {
             throw new \InvalidArgumentException(\sprintf(
                 'JSON data is missing keys %s',
-                Utils::naturalLanguageJoin(array_keys($missingKeys))
+                Utils::naturalLanguageJoin(array_keys($missingKeys)),
             ));
         }
 
@@ -130,7 +130,7 @@ final class Cache implements CacheInterface
             $data['indent'],
             $data['lineEnding'],
             $data['rules'],
-            $data['ruleCustomisationPolicyVersion'] ?? NullRuleCustomisationPolicy::VERSION_FOR_CACHE
+            $data['ruleCustomisationPolicyVersion'] ?? NullRuleCustomisationPolicy::VERSION_FOR_CACHE,
         );
 
         $cache = new self($signature);

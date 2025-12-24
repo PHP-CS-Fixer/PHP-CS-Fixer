@@ -88,7 +88,7 @@ final class ProcessFactoryTest extends TestCase
                     : '\''.$identifier->toString().'\'',
                 '' !== $expectedAdditionalArgs ? ' '.$expectedAdditionalArgs : '',
             ),
-            $command
+            $command,
         );
 
         $timeoutSeconds = \Closure::bind(static fn (Process $process): int => $process->timeoutSeconds, null, Process::class)($process);
@@ -139,7 +139,7 @@ final class ProcessFactoryTest extends TestCase
                     : '\''.$identifier->toString().'\'',
                 '' !== $expectedAdditionalArgs ? ' '.$expectedAdditionalArgs : '',
             ),
-            $command
+            $command,
         );
     }
 

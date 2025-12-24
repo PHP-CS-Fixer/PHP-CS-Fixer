@@ -140,7 +140,7 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
                     if (self::ORDER_CUSTOM === $value && [] === $options['order']) {
                         throw new InvalidFixerConfigurationException(
                             $fixerName,
-                            'The custom order strategy requires providing `order` option with a list of attributes\'s FQNs.'
+                            'The custom order strategy requires providing `order` option with a list of attributes\'s FQNs.',
                         );
                     }
 

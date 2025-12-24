@@ -81,7 +81,7 @@ final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer 
                         function f($foo, $bar)
                         {}
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -93,7 +93,7 @@ final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer 
                         function bar($foo) {}
 
                         PHP,
-                    ['scalar_types' => false]
+                    ['scalar_types' => false],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -105,11 +105,11 @@ final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer 
                         function bar($foo) {}
 
                         PHP,
-                    ['union_types' => false]
+                    ['union_types' => false],
                 ),
             ],
             null,
-            'The `@param` annotation is mandatory for the fixer to make changes, signatures of methods without it (no docblock, inheritdocs) will not be fixed. Manual actions are required if inherited signatures are not properly documented.'
+            'The `@param` annotation is mandatory for the fixer to make changes, signatures of methods without it (no docblock, inheritdocs) will not be fixed. Manual actions are required if inherited signatures are not properly documented.',
         );
     }
 
@@ -219,7 +219,7 @@ final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer 
 
                 $tokensToInsert[$variableIndex] = array_merge(
                     $this->createTypeDeclarationTokens($paramType, $isNullable),
-                    [new Token([\T_WHITESPACE, ' '])]
+                    [new Token([\T_WHITESPACE, ' '])],
                 );
             }
         }

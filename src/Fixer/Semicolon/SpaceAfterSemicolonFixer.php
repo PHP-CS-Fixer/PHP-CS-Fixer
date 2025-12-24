@@ -57,7 +57,7 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer implements Configurab
                         for ( ;;++$sample) {
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -70,7 +70,7 @@ final class SpaceAfterSemicolonFixer extends AbstractFixer implements Configurab
                         'remove_in_empty_for_expressions' => true,
                     ],
                 ),
-            ]
+            ],
         );
     }
 

@@ -85,7 +85,7 @@ final class PhpUnitDedicateAssertInternalTypeFixer extends AbstractPhpUnitFixer 
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -100,11 +100,11 @@ final class PhpUnitDedicateAssertInternalTypeFixer extends AbstractPhpUnitFixer 
                         }
 
                         PHP,
-                    ['target' => PhpUnitTargetVersion::VERSION_7_5]
+                    ['target' => PhpUnitTargetVersion::VERSION_7_5],
                 ),
             ],
             null,
-            'Risky when PHPUnit methods are overridden or when project has PHPUnit incompatibilities.'
+            'Risky when PHPUnit methods are overridden or when project has PHPUnit incompatibilities.',
         );
     }
 

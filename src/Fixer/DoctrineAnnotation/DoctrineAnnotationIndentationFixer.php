@@ -54,9 +54,9 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
                 new CodeSample("<?php\n/**\n *  @Foo(\n *   foo=\"foo\"\n *  )\n */\nclass Bar {}\n"),
                 new CodeSample(
                     "<?php\n/**\n *  @Foo({@Bar,\n *   @Baz})\n */\nclass Bar {}\n",
-                    ['indent_mixed_lines' => true]
+                    ['indent_mixed_lines' => true],
                 ),
-            ]
+            ],
         );
     }
 
@@ -114,7 +114,7 @@ final class DoctrineAnnotationIndentationFixer extends AbstractDoctrineAnnotatio
             $token->setContent(Preg::replace(
                 '/(\n( +\*)?) *$/',
                 '$1'.str_repeat(' ', 4 * ($indentLevel + $extraIndentLevel) + 1),
-                $token->getContent()
+                $token->getContent(),
             ));
 
             if ($delta > 0 || $mixedBraces) {

@@ -45,7 +45,7 @@ final class ConstructorPromotionTransformerTest extends AbstractTransformerTestC
                 CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
                 CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
                 CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE,
-            ]
+            ],
         );
     }
 
@@ -147,7 +147,7 @@ class Point {
             $expectedTokens,
             [
                 CT::T_TYPE_ALTERNATION,
-            ]
+            ],
         );
     }
 

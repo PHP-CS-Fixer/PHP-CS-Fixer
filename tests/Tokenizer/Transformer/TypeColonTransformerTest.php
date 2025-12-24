@@ -42,7 +42,7 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
             $expectedTokens,
             [
                 CT::T_TYPE_COLON,
-            ]
+            ],
         );
     }
 

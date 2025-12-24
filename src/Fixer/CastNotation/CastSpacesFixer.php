@@ -60,17 +60,17 @@ final class CastSpacesFixer extends AbstractFixer implements ConfigurableFixerIn
             'A single space or none should be between cast and variable.',
             [
                 new CodeSample(
-                    "<?php\n\$bar = ( string )  \$a;\n\$foo = (int)\$b;\n"
+                    "<?php\n\$bar = ( string )  \$a;\n\$foo = (int)\$b;\n",
                 ),
                 new CodeSample(
                     "<?php\n\$bar = ( string )  \$a;\n\$foo = (int)\$b;\n",
-                    ['space' => 'single']
+                    ['space' => 'single'],
                 ),
                 new CodeSample(
                     "<?php\n\$bar = ( string )  \$a;\n\$foo = (int) \$b;\n",
-                    ['space' => 'none']
+                    ['space' => 'none'],
                 ),
-            ]
+            ],
         );
     }
 

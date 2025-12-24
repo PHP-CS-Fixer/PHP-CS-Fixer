@@ -37,7 +37,7 @@ final class UnavailableLinterExceptionTest extends TestCase
         $exception = new UnavailableLinterException(
             $message,
             $code,
-            $previous
+            $previous,
         );
 
         self::assertSame($message, $exception->getMessage());

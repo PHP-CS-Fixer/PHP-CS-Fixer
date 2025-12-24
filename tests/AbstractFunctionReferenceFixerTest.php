@@ -51,8 +51,8 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
                 $functionNameToSearch,
                 $tokens,
                 $start,
-                $end
-            ), null, AbstractFunctionReferenceFixer::class)($fixer)
+                $end,
+            ), null, AbstractFunctionReferenceFixer::class)($fixer),
         );
 
         self::assertFalse($tokens->isChanged());

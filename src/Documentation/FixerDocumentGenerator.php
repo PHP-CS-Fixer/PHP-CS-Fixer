@@ -96,10 +96,10 @@ final class FixerDocumentGenerator
                     "\n%s\n%s\n\n%s",
                     $tag->title,
                     $titleLine,
-                    null === $tag->description ? '' : RstUtils::toRst($tag->description, 0)
+                    null === $tag->description ? '' : RstUtils::toRst($tag->description, 0),
                 );
             },
-            $tags
+            $tags,
         );
 
         if ([] !== $warnings) {
@@ -188,7 +188,7 @@ final class FixerDocumentGenerator
                     } else {
                         $doc .= \sprintf(
                             "\n\nWith configuration: ``%s``.",
-                            Utils::toString($sample->getConfiguration())
+                            Utils::toString($sample->getConfiguration()),
                         );
                     }
                 }
@@ -276,15 +276,15 @@ final class FixerDocumentGenerator
             $definitionNames = array_keys(
                 array_filter(
                     RuleSets::getSetDefinitions(),
-                    static fn (RuleSetDefinitionInterface $definition): bool => !$definition instanceof AutomaticRuleSetDefinitionInterface
-                )
+                    static fn (RuleSetDefinitionInterface $definition): bool => !$definition instanceof AutomaticRuleSetDefinitionInterface,
+                ),
             );
             $ruleSetCache = array_combine(
                 $definitionNames,
                 array_map(
                     static fn (string $name): RuleSet => new RuleSet([$name => true]),
-                    $definitionNames
-                )
+                    $definitionNames,
+                ),
             );
         }
 
@@ -335,7 +335,7 @@ final class FixerDocumentGenerator
 
             $tags = array_map(
                 static fn (DocumentationTag $tag): string => $tag->type,
-                DocumentationTagGenerator::analyseRule($fixer)
+                DocumentationTagGenerator::analyseRule($fixer),
             );
 
             $attributes = 0 === \count($tags)

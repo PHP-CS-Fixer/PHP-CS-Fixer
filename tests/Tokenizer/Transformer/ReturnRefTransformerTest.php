@@ -42,7 +42,7 @@ final class ReturnRefTransformerTest extends AbstractTransformerTestCase
             $expectedTokens,
             [
                 CT::T_RETURN_REF,
-            ]
+            ],
         );
     }
 

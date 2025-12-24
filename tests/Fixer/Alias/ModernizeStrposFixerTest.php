@@ -39,7 +39,7 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
 
         self::assertSame(
             ['modernize_stripos' => true],
-            \Closure::bind(static fn (ModernizeStrposFixer $fixer): array => $fixer->configuration, null, ModernizeStrposFixer::class)($this->fixer)
+            \Closure::bind(static fn (ModernizeStrposFixer $fixer): array => $fixer->configuration, null, ModernizeStrposFixer::class)($this->fixer),
         );
     }
 

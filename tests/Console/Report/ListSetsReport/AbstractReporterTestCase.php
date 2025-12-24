@@ -49,7 +49,7 @@ abstract class AbstractReporterTestCase extends TestCase
     {
         self::assertSame(
             $this->getFormat(),
-            $this->reporter->getFormat()
+            $this->reporter->getFormat(),
         );
     }
 
