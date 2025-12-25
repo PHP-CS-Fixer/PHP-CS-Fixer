@@ -71,6 +71,14 @@ final class Process
      */
     public function start(callable $onData, callable $onError, callable $onExit): void
     {
+        $sysTempDir = sys_get_temp_dir();
+        if (!is_writable($sysTempDir)) {
+            throw new ParallelisationException(\sprintf(
+                'Failed creating temp file as sys_get_temp_dir="%s" is not writable.',
+                $sysTempDir,
+            ));
+        }
+
         $stdOut = tmpfile();
         if (false === $stdOut) {
             throw new ParallelisationException('Failed creating temp file for stdOut.');
