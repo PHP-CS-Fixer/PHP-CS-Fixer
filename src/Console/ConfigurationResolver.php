@@ -243,10 +243,10 @@ final class ConfigurationResolver
                         $this->getConfig()->getIndent(),
                         $this->getConfig()->getLineEnding(),
                         $this->getRules(),
-                        $this->getRuleCustomisationPolicy()->getPolicyVersionForCache()
+                        $this->getRuleCustomisationPolicy()->getPolicyVersionForCache(),
                     ),
                     $this->isDryRun(),
-                    $this->getDirectory()
+                    $this->getDirectory(),
                 );
             }
         }
@@ -366,8 +366,8 @@ final class ConfigurationResolver
                     static fn (FixerInterface $fixer): string => $fixer->getName(),
                     array_values(array_filter(
                         $this->fixers,
-                        static fn (FixerInterface $fixer): bool => $fixer->isRisky()
-                    ))
+                        static fn (FixerInterface $fixer): bool => $fixer->isRisky(),
+                    )),
                 );
 
                 if (\count($riskyFixers) > 0) {
@@ -417,13 +417,13 @@ final class ConfigurationResolver
                         if (!file_exists($absolutePath)) {
                             throw new InvalidConfigurationException(\sprintf(
                                 'The path "%s" is not readable.',
-                                $path
+                                $path,
                             ));
                         }
 
                         return $absolutePath;
                     },
-                    $this->options['path']
+                    $this->options['path'],
                 );
             }
         }
@@ -450,7 +450,7 @@ final class ConfigurationResolver
                     throw new InvalidConfigurationException(\sprintf(
                         'The progress type "%s" is not defined, supported are %s.',
                         $progressType,
-                        Utils::naturalLanguageJoin(ProgressOutputType::all())
+                        Utils::naturalLanguageJoin(ProgressOutputType::all()),
                     ));
                 }
 
@@ -880,7 +880,7 @@ final class ConfigurationResolver
                         '"%s" is renamed (did you mean "%s"?%s), ',
                         $unknownFixer,
                         $renamedRulesFromV2ToV3[$unknownFixer]['new_name'],
-                        isset($renamedRulesFromV2ToV3[$unknownFixer]['config']) ? ' (note: use configuration "'.Utils::toString($renamedRulesFromV2ToV3[$unknownFixer]['config']).'")' : ''
+                        isset($renamedRulesFromV2ToV3[$unknownFixer]['config']) ? ' (note: use configuration "'.Utils::toString($renamedRulesFromV2ToV3[$unknownFixer]['config']).'")' : '',
                     );
                 } else { // Go to normal matcher if it is not a renamed rule
                     $matcher = new WordMatcher($availableFixers);
@@ -888,7 +888,7 @@ final class ConfigurationResolver
                     $message .= \sprintf(
                         '"%s"%s, ',
                         $unknownFixer,
-                        null === $alternative ? '' : ' (did you mean "'.$alternative.'"?)'
+                        null === $alternative ? '' : ' (did you mean "'.$alternative.'"?)',
                     );
                 }
             }
@@ -931,12 +931,12 @@ final class ConfigurationResolver
         if (!\in_array(
             $this->options['path-mode'],
             self::PATH_MODE_VALUES,
-            true
+            true,
         )) {
             throw new InvalidConfigurationException(\sprintf(
                 'The path-mode "%s" is not defined, supported are %s.',
                 $this->options['path-mode'],
-                Utils::naturalLanguageJoin(self::PATH_MODE_VALUES)
+                Utils::naturalLanguageJoin(self::PATH_MODE_VALUES),
             ));
         }
 
@@ -944,7 +944,7 @@ final class ConfigurationResolver
 
         $paths = array_map(
             static fn (string $path): string => realpath($path), // @phpstan-ignore return.type
-            $this->getPath()
+            $this->getPath(),
         );
 
         if (0 === \count($paths)) {
@@ -979,7 +979,7 @@ final class ConfigurationResolver
         if ($isIntersectionPathMode) {
             if (null === $nestedFinder) {
                 throw new InvalidConfigurationException(
-                    'Cannot create intersection with not-fully defined Finder in configuration file.'
+                    'Cannot create intersection with not-fully defined Finder in configuration file.',
                 );
             }
 
@@ -999,7 +999,7 @@ final class ConfigurationResolver
                     }
 
                     return false;
-                }
+                },
             );
         }
 

@@ -152,8 +152,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
                 $case->getConfig(),
                 $case->getRuleset(),
                 $case->getExpectedCode(),
-                null
-            )
+                null,
+            ),
         );
     }
 
@@ -231,8 +231,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
                     'Unsupported OS (%s) for "%s", allowed are: %s.',
                     \PHP_OS,
                     $case->getFileName(),
-                    implode(', ', $case->getRequirement('os'))
-                )
+                    implode(', ', $case->getRequirement('os')),
+                ),
             );
         }
 
@@ -257,7 +257,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
             $errorsManager,
             $this->linter,
             false,
-            new NullCacheManager()
+            new NullCacheManager(),
         );
 
         Tokens::clearCache();
@@ -283,8 +283,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
                     $case->getTitle(),
                     $case->getFileName(),
                     null === $changed ? '[None]' : implode(',', $changed['appliedFixers']),
-                    null === $changed ? '[None]' : $changed['diff']
-                )
+                    null === $changed ? '[None]' : $changed['diff'],
+                ),
             );
 
             return;
@@ -302,8 +302,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
                 "Expected changes do not match result for \"%s\" in \"%s\".\nFixers applied:\n%s.",
                 $case->getTitle(),
                 $case->getFileName(),
-                implode(',', $changed['appliedFixers'])
-            )
+                implode(',', $changed['appliedFixers']),
+            ),
         );
 
         if (1 < \count($fixers)) {
@@ -320,7 +320,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
                 $errorsManager,
                 $this->linter,
                 false,
-                new NullCacheManager()
+                new NullCacheManager(),
             );
 
             Tokens::clearCache();
@@ -342,12 +342,12 @@ abstract class AbstractIntegrationTestCase extends TestCase
                 1,
                 \count(array_unique(array_map(
                     static fn (FixerInterface $fixer): int => $fixer->getPriority(),
-                    self::createFixers($case)
+                    self::createFixers($case),
                 ))),
                 \sprintf(
                     'Rules priorities are not differential enough. If rules would be used in reverse order then final output would be different than the expected one. For that, different priorities must be set up for used rules to ensure stable order of them. In "%s".',
-                    $case->getFileName()
-                )
+                    $case->getFileName(),
+                ),
             );
         }
     }
@@ -363,7 +363,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
             ->registerBuiltInFixers()
             ->useRuleSet($case->getRuleset())
             ->setWhitespacesConfig(
-                new WhitespacesFixerConfig($config['indent'], $config['lineEnding'])
+                new WhitespacesFixerConfig($config['indent'], $config['lineEnding']),
             )
             ->getFixers()
         ;
@@ -383,7 +383,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
                 null === $source ? '' : $source->getMessage(),
                 $error->getDiff(),
                 implode(', ', $error->getAppliedFixers()),
-                $source->getTraceAsString()
+                $source->getTraceAsString(),
             );
         }
 
@@ -398,7 +398,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
             $linter = new CachingLinter(
                 filter_var(getenv('PHP_CS_FIXER_FAST_LINT_TEST_CASES'), \FILTER_VALIDATE_BOOLEAN)
                     ? new Linter()
-                    : new ProcessLinter()
+                    : new ProcessLinter(),
             );
         }
 

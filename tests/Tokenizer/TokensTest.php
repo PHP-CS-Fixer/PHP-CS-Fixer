@@ -75,8 +75,8 @@ final class TokensTest extends TestCase
                 $sequence,
                 $start,
                 $end,
-                $caseSensitive
-            )
+                $caseSensitive,
+            ),
         );
     }
 
@@ -1195,7 +1195,7 @@ echo $a;',
                 new Token([\T_WHITESPACE, ' ']),
                 new Token([\T_VARIABLE, '$name']),
                 new Token(';'),
-            ]
+            ],
         );
 
         self::assertTrue($tokens->isChanged());
@@ -1348,7 +1348,7 @@ echo $a;',
             '<?php
                                     // Foo
 $bar;',
-            $tokens->generateCode()
+            $tokens->generateCode(),
         );
     }
 
@@ -1369,7 +1369,7 @@ $bar;',
             '<?php
                                     // Foo
 $bar;',
-            $tokens->generateCode()
+            $tokens->generateCode(),
         );
     }
 
@@ -1553,7 +1553,7 @@ $bar;',
                 new Token([\T_OPEN_TAG, "<?php\n"]),
                 new Token([\T_STRING, 'Foo']),
                 new Token(';'),
-            ]
+            ],
         );
         self::assertFalse($tokens->isChanged());
     }
@@ -1758,8 +1758,8 @@ $bar;',
                 $template,
                 'echo "new";',
                 ' /* new comment */',
-                "\$new = 8899;\n"
-            )
+                "\$new = 8899;\n",
+            ),
         );
         $from = Tokens::fromCode(\sprintf($template, '', '', ''));
 
@@ -1880,10 +1880,10 @@ $bar;',
                     0,
                     0,
                     0,
-                    1
+                    1,
                 ),
             ]),
-            serialize($tokens->getNamespaceDeclarations())
+            serialize($tokens->getNamespaceDeclarations()),
         );
 
         $newNS = '<?php namespace Foo\Bar;';
@@ -1897,10 +1897,10 @@ $bar;',
                     3,
                     8,
                     3,
-                    8
+                    8,
                 ),
             ]),
-            serialize($tokens->getNamespaceDeclarations())
+            serialize($tokens->getNamespaceDeclarations()),
         );
     }
 
@@ -2065,7 +2065,7 @@ $bar;',
             \assert(\array_key_exists($index, $input));
             self::assertTrue(
                 $expectedToken->equals($input[$index]),
-                \sprintf('The token at index %d should be %s, got %s', $index, $expectedToken->toJson(), $input[$index]->toJson())
+                \sprintf('The token at index %d should be %s, got %s', $index, $expectedToken->toJson(), $input[$index]->toJson()),
             );
         }
     }

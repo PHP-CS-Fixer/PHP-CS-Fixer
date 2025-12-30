@@ -94,9 +94,9 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
                 ),
                 new CodeSample(
                     "<?php \$var = 24_40_21;\n",
-                    ['override_existing' => true]
+                    ['override_existing' => true],
                 ),
-            ]
+            ],
         );
     }
 
@@ -110,14 +110,14 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder(
                 'override_existing',
-                'Whether literals already containing underscores should be reformatted.'
+                'Whether literals already containing underscores should be reformatted.',
             ))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
             (new FixerOptionBuilder(
                 'strategy',
-                'Whether numeric literal should be separated by underscores or not.'
+                'Whether numeric literal should be separated by underscores or not.',
             ))
                 ->setAllowedValues([self::STRATEGY_USE_SEPARATOR, self::STRATEGY_NO_SEPARATOR])
                 ->setDefault(self::STRATEGY_USE_SEPARATOR)

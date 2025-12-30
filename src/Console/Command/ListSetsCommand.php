@@ -54,7 +54,7 @@ final class ListSetsCommand extends Command
         $this->setDefinition(
             [
                 new InputOption('format', '', InputOption::VALUE_REQUIRED, HelpCommand::getDescriptionWithAllowedValues('To output results in other formats (%s).', $formats), (new TextReporter())->getFormat(), $formats),
-            ]
+            ],
         );
     }
 
@@ -62,11 +62,11 @@ final class ListSetsCommand extends Command
     {
         $reporter = $this->resolveReporterWithFactory(
             $input->getOption('format'),
-            new ReporterFactory()
+            new ReporterFactory(),
         );
 
         $reportSummary = new ReportSummary(
-            array_values(RuleSets::getSetDefinitions())
+            array_values(RuleSets::getSetDefinitions()),
         );
 
         $report = $reporter->generate($reportSummary);

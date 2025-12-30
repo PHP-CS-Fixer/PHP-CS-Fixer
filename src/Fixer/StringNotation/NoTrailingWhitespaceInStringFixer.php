@@ -45,11 +45,11 @@ final class NoTrailingWhitespaceInStringFixer extends AbstractFixer
             'There must be no trailing whitespace at the end of lines in strings.',
             [
                 new CodeSample(
-                    "<?php \$a = '  \n    foo \n';\n"
+                    "<?php \$a = '  \n    foo \n';\n",
                 ),
             ],
             null,
-            'Changing the whitespaces in strings might affect string comparisons and outputs.'
+            'Changing the whitespaces in strings might affect string comparisons and outputs.',
         );
     }
 

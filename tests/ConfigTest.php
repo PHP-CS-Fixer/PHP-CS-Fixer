@@ -62,7 +62,7 @@ final class ConfigTest extends TestCase
                 'config' => ConfigurationResolver::IGNORE_CONFIG_FILE,
             ],
             (string) getcwd(),
-            new ToolInfo()
+            new ToolInfo(),
         );
 
         self::assertSame(
@@ -70,7 +70,7 @@ final class ConfigTest extends TestCase
                 'cast_spaces' => true,
                 'statement_indentation' => true,
             ],
-            $configResolver->getRules()
+            $configResolver->getRules(),
         );
     }
 
@@ -84,7 +84,7 @@ final class ConfigTest extends TestCase
                 'config' => ConfigurationResolver::IGNORE_CONFIG_FILE,
             ],
             (string) getcwd(),
-            new ToolInfo()
+            new ToolInfo(),
         );
 
         self::assertSame(
@@ -94,7 +94,7 @@ final class ConfigTest extends TestCase
                 ],
                 'cast_spaces' => true,
             ],
-            $configResolver->getRules()
+            $configResolver->getRules(),
         );
     }
 
@@ -110,7 +110,7 @@ final class ConfigTest extends TestCase
                 'config' => ConfigurationResolver::IGNORE_CONFIG_FILE,
             ],
             (string) getcwd(),
-            new ToolInfo()
+            new ToolInfo(),
         );
         $configResolver->getRules();
     }
@@ -133,11 +133,11 @@ final class ConfigTest extends TestCase
             [
                 'decorated' => false,
                 'verbosity' => OutputInterface::VERBOSITY_VERY_VERBOSE,
-            ]
+            ],
         );
         self::assertStringMatchesFormat(
             \sprintf('%%ALoaded config custom_config_test from "%s".%%A', $customConfigFile),
-            $commandTester->getDisplay(true)
+            $commandTester->getDisplay(true),
         );
     }
 
@@ -150,7 +150,7 @@ final class ConfigTest extends TestCase
 
         $items = iterator_to_array(
             $finder->in(__DIR__.'/Fixtures/FinderDirectory'),
-            false
+            false,
         );
 
         self::assertCount(1, $items);
@@ -168,7 +168,7 @@ final class ConfigTest extends TestCase
 
         $items = iterator_to_array(
             $config->getFinder(),
-            false
+            false,
         );
 
         self::assertCount(1, $items);
@@ -184,7 +184,7 @@ final class ConfigTest extends TestCase
 
         $items = iterator_to_array(
             $config->getFinder(),
-            false
+            false,
         );
 
         self::assertCount(1, $items);

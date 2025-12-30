@@ -45,9 +45,9 @@ final class SwitchCaseSemicolonToColonFixer extends AbstractFixer
                                     break;
                             }
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

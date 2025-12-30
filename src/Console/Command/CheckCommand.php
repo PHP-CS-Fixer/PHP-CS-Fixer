@@ -54,7 +54,7 @@ final class CheckCommand extends FixCommand
             ...array_values($this->getDefinition()->getArguments()),
             ...array_values(array_filter(
                 $this->getDefinition()->getOptions(),
-                static fn (InputOption $option): bool => 'dry-run' !== $option->getName()
+                static fn (InputOption $option): bool => 'dry-run' !== $option->getName(),
             )),
         ]);
     }

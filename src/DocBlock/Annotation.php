@@ -182,7 +182,7 @@ final class Annotation implements \Stringable
             '/@%s\s+(%s\s*)?(&\s*)?(\.{3}\s*)?(?<variable>\$%s)(?:.*|$)/',
             $this->tag->getName(),
             $type,
-            TypeExpression::REGEX_IDENTIFIER
+            TypeExpression::REGEX_IDENTIFIER,
         );
 
         if (Preg::match($regex, $this->getContent(), $matches)) {
@@ -223,7 +223,7 @@ final class Annotation implements \Stringable
             // Fallback to union type is provided for backward compatibility (previously glue was set to `|` by default even when type was not composite)
             // @TODO Better handling for cases where type is fixed (original type is not composite, but was made composite during fix)
             $this->getTypeExpression()->getTypesGlue() ?? '|',
-            $types
+            $types,
         );
 
         if ($origTypesContent === $newTypesContent) {
@@ -324,7 +324,7 @@ final class Annotation implements \Stringable
             if (Preg::match(
                 '{^(?:\h*\*|/\*\*)[\h*]*@'.$name.'\h+'.TypeExpression::REGEX_TYPES.'(?:(?:[*\h\v]|\&?[\.\$\s]).*)?\r?$}is',
                 $this->getContent(),
-                $matches
+                $matches,
             )) {
                 \assert(isset($matches['types']));
                 $this->typesContent = $matches['types'];

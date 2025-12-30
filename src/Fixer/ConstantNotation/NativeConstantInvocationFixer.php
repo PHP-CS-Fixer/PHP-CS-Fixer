@@ -83,7 +83,7 @@ final class NativeConstantInvocationFixer extends AbstractFixer implements Confi
                         }
 
                         PHP,
-                    ['scope' => 'namespaced']
+                    ['scope' => 'namespaced'],
                 ),
                 new CodeSample(
                     "<?php var_dump(PHP_VERSION, M_PI, MY_CUSTOM_PI);\n",
@@ -91,7 +91,7 @@ final class NativeConstantInvocationFixer extends AbstractFixer implements Confi
                         'include' => [
                             'MY_CUSTOM_PI',
                         ],
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     "<?php var_dump(PHP_VERSION, M_PI, MY_CUSTOM_PI);\n",
@@ -100,7 +100,7 @@ final class NativeConstantInvocationFixer extends AbstractFixer implements Confi
                         'include' => [
                             'MY_CUSTOM_PI',
                         ],
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     "<?php var_dump(PHP_VERSION, M_PI, MY_CUSTOM_PI);\n",
@@ -108,11 +108,11 @@ final class NativeConstantInvocationFixer extends AbstractFixer implements Confi
                         'exclude' => [
                             'M_PI',
                         ],
-                    ]
+                    ],
                 ),
             ],
             null,
-            'Risky when any of the constants are namespaced or overridden.'
+            'Risky when any of the constants are namespaced or overridden.',
         );
     }
 
@@ -154,7 +154,7 @@ final class NativeConstantInvocationFixer extends AbstractFixer implements Confi
 
         $constantsToEscape = array_diff(
             array_unique($constantsToEscape),
-            $uniqueConfiguredExclude
+            $uniqueConfiguredExclude,
         );
 
         // Case-insensitive constants handling
@@ -211,7 +211,7 @@ final class NativeConstantInvocationFixer extends AbstractFixer implements Confi
                 if (trim($constantName) !== $constantName) {
                     throw new InvalidOptionsException(\sprintf(
                         'Each element must be a non-empty, trimmed string, got "%s" instead.',
-                        get_debug_type($constantName)
+                        get_debug_type($constantName),
                     ));
                 }
             }

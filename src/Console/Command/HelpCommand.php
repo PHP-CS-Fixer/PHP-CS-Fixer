@@ -73,7 +73,7 @@ final class HelpCommand extends BaseHelpCommand
 
                 return strcasecmp(
                     Utils::toString($valueA),
-                    Utils::toString($valueB)
+                    Utils::toString($valueB),
                 );
             });
 

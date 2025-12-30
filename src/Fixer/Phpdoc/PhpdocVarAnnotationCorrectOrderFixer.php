@@ -40,9 +40,9 @@ final class PhpdocVarAnnotationCorrectOrderFixer extends AbstractFixer
                         /** @var $foo int */
                         $foo = 2 + 2;
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 
@@ -76,7 +76,7 @@ final class PhpdocVarAnnotationCorrectOrderFixer extends AbstractFixer
             $newContent = Preg::replace(
                 '/(@(?:type|var)\s*)(\$\S+)(\h+)([^\$](?:[^<\s]|<[^>]*>)*)(\s|\*)/i',
                 '$1$4$3$2$5',
-                $token->getContent()
+                $token->getContent(),
             );
 
             if ($newContent === $token->getContent()) {

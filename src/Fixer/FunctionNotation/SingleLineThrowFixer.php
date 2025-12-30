@@ -39,7 +39,7 @@ final class SingleLineThrowFixer extends AbstractFixer
             'Throwing exception must be done in single line.',
             [
                 new CodeSample("<?php\nthrow new Exception(\n    'Error.',\n    500\n);\n"),
-            ]
+            ],
         );
     }
 

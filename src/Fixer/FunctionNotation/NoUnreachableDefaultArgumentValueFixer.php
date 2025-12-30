@@ -40,11 +40,11 @@ final class NoUnreachableDefaultArgumentValueFixer extends AbstractFixer
                         <?php
                         function example($foo = "two words", $bar) {}
 
-                        PHP
+                        PHP,
                 ),
             ],
             null,
-            'Modifies the signature of functions; therefore risky when using systems (such as some Symfony components) that rely on those (for example through reflection).'
+            'Modifies the signature of functions; therefore risky when using systems (such as some Symfony components) that rely on those (for example through reflection).',
         );
     }
 

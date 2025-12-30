@@ -55,7 +55,7 @@ final class SingleLineAfterImportsFixer extends AbstractFixer implements Whitesp
                         {
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -70,9 +70,9 @@ final class SingleLineAfterImportsFixer extends AbstractFixer implements Whitesp
                         {
                         }
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

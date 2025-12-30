@@ -67,15 +67,15 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
                 new CodeSample("<?php\n\$a = getrandmax();\n\$a = rand(\$b, \$c);\n\$a = srand();\n"),
                 new CodeSample(
                     "<?php\n\$a = getrandmax();\n\$a = rand(\$b, \$c);\n\$a = srand();\n",
-                    ['replacements' => ['getrandmax' => 'mt_getrandmax']]
+                    ['replacements' => ['getrandmax' => 'mt_getrandmax']],
                 ),
                 new CodeSample(
                     "<?php \$a = rand(\$b, \$c);\n",
-                    ['replacements' => ['rand' => 'random_int']]
+                    ['replacements' => ['rand' => 'random_int']],
                 ),
             ],
             null,
-            'Risky when the configured functions are overridden. Or when relying on the seed based generating of the numbers.'
+            'Risky when the configured functions are overridden. Or when relying on the seed based generating of the numbers.',
         );
     }
 
@@ -138,7 +138,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
                         if (!\array_key_exists($functionName, self::ARGUMENT_COUNTS)) {
                             throw new InvalidOptionsException(\sprintf(
                                 'Function "%s" is not handled by the fixer.',
-                                $functionName
+                                $functionName,
                             ));
                         }
                     }

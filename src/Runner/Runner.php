@@ -149,7 +149,7 @@ final class Runner
 
                 return $carry;
             },
-            []
+            [],
         );
         $this->differ = $differ;
         $this->eventDispatcher = $eventDispatcher;
@@ -196,7 +196,7 @@ final class Runner
                 %s
 
                 Please check your configuration to ensure that these rules are included, or update your Rule Customisation Policy if they have been replaced by other rules in the version of PHP CS Fixer you are using.
-                EOT
+                EOT,
         );
 
         // @TODO 4.0: Remove condition and its body, as no longer needed when param will be required in the constructor.
@@ -251,7 +251,7 @@ final class Runner
 
                 return '- '.$name.$extra;
             },
-            $missingRuleNames
+            $missingRuleNames,
         ));
 
         throw new \RuntimeException(
@@ -276,7 +276,7 @@ final class Runner
         if (!is_numeric($serverPort)) {
             throw new ParallelisationException(\sprintf(
                 'Unable to parse server port from "%s"',
-                $server->getAddress() ?? ''
+                $server->getAddress() ?? '',
             ));
         }
 
@@ -310,7 +310,7 @@ final class Runner
                 true,
                 512,
                 \JSON_INVALID_UTF8_IGNORE,
-                self::PARALLEL_BUFFER_SIZE
+                self::PARALLEL_BUFFER_SIZE,
             );
             $encoder = new Encoder($connection, \JSON_INVALID_UTF8_IGNORE);
 
@@ -349,7 +349,7 @@ final class Runner
             max(
                 1,
                 (int) ceil($this->fileCount / $this->parallelConfig->getFilesPerProcess()),
-            )
+            ),
         );
         $processFactory = new ProcessFactory();
 
@@ -362,7 +362,7 @@ final class Runner
                     $this->isDryRun,
                     $this->stopOnViolation,
                     $this->parallelConfig,
-                    $this->configFile
+                    $this->configFile,
                 ),
                 $identifier,
                 $serverPort,
@@ -388,7 +388,7 @@ final class Runner
                                     ? SourceExceptionFactory::fromArray($error['source'])
                                     : null,
                                 $error['appliedFixers'],
-                                $error['diff']
+                                $error['diff'],
                             ));
                         }
 
@@ -448,15 +448,15 @@ final class Runner
                     $errorsReported = Preg::matchAll(
                         \sprintf('/^(?:%s)([^\n]+)+/m', WorkerCommand::ERROR_PREFIX),
                         $output,
-                        $matches
+                        $matches,
                     );
 
                     if ($errorsReported > 0) {
                         throw WorkerException::fromRaw(
-                            json_decode($matches[1][0], true, 512, \JSON_THROW_ON_ERROR)
+                            json_decode($matches[1][0], true, 512, \JSON_THROW_ON_ERROR),
                         );
                     }
-                }
+                },
             );
         }
 
@@ -506,7 +506,7 @@ final class Runner
         } catch (LintingException $e) {
             $this->dispatchEvent(
                 FileProcessed::NAME,
-                new FileProcessed(FileProcessed::STATUS_INVALID)
+                new FileProcessed(FileProcessed::STATUS_INVALID),
             );
 
             $this->errorsManager->report(new Error(Error::TYPE_INVALID, $filePathname, $e));
@@ -525,7 +525,7 @@ final class Runner
         ) {
             $this->dispatchEvent(
                 FileProcessed::NAME,
-                new FileProcessed(FileProcessed::STATUS_NON_MONOLITHIC)
+                new FileProcessed(FileProcessed::STATUS_NON_MONOLITHIC),
             );
 
             return null;
@@ -547,10 +547,10 @@ final class Runner
                 \sprintf(
                     'Error while analysing file "%s": %s',
                     $filePathname,
-                    $e->getMessage()
+                    $e->getMessage(),
                 ),
                 $e->getCode(),
-                $e
+                $e,
             );
         }
 
@@ -561,7 +561,7 @@ final class Runner
                 %s
 
                 Please check your annotation(s) usage in {$filePathname} to ensure that these rules are included, or update your annotation(s) usage if they have been replaced by other rules in the version of PHP CS Fixer you are using.
-                EOT
+                EOT,
         );
 
         try {
@@ -652,7 +652,7 @@ final class Runner
                         \sprintf('Failed to write file "%s" (no longer) exists.', $file->getPathname()),
                         0,
                         null,
-                        $file->getPathname()
+                        $file->getPathname(),
                     );
                 }
 
@@ -661,7 +661,7 @@ final class Runner
                         \sprintf('Cannot write file "%s" as the location exists as directory.', $fileRealPath),
                         0,
                         null,
-                        $fileRealPath
+                        $fileRealPath,
                     );
                 }
 
@@ -670,7 +670,7 @@ final class Runner
                         \sprintf('Cannot write to file "%s" as it is not writable.', $fileRealPath),
                         0,
                         null,
-                        $fileRealPath
+                        $fileRealPath,
                     );
                 }
 
@@ -681,7 +681,7 @@ final class Runner
                         \sprintf('Failed to write file "%s", "%s".', $fileRealPath, null !== $error ? $error['message'] : 'no reason available'),
                         0,
                         null,
-                        $fileRealPath
+                        $fileRealPath,
                     );
                 }
             }
@@ -691,7 +691,7 @@ final class Runner
 
         $this->dispatchEvent(
             FileProcessed::NAME,
-            new FileProcessed(null !== $fixInfo ? FileProcessed::STATUS_FIXED : FileProcessed::STATUS_NO_CHANGES, $newHash)
+            new FileProcessed(null !== $fixInfo ? FileProcessed::STATUS_FIXED : FileProcessed::STATUS_NO_CHANGES, $newHash),
         );
 
         return $fixInfo;
@@ -736,7 +736,7 @@ final class Runner
                 ? $this->fileIterator->getIterator()
                 : $this->fileIterator,
             $this->eventDispatcher,
-            $this->cacheManager
+            $this->cacheManager,
         );
     }
 }

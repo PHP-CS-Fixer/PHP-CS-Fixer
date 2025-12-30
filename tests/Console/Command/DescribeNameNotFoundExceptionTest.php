@@ -35,7 +35,7 @@ final class DescribeNameNotFoundExceptionTest extends TestCase
 
         $exception = new DescribeNameNotFoundException(
             $name,
-            $type
+            $type,
         );
 
         self::assertSame($name, $exception->getName());

@@ -85,9 +85,9 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
                 new CodeSample("<?php\n\nclass Foo{\n    /** @var bool */\n    public \$var;\n}\n"),
                 new CodeSample(
                     "<?php\n\nclass Foo{\n    /**\n    * @var bool\n    */\n    public \$var;\n}\n",
-                    ['property' => 'single']
+                    ['property' => 'single'],
                 ),
-            ]
+            ],
         );
     }
 

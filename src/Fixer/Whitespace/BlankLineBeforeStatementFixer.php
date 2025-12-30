@@ -96,7 +96,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
                             return 1;
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -112,7 +112,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
                         PHP,
                     [
                         'statements' => ['break'],
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -127,7 +127,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
                         PHP,
                     [
                         'statements' => ['continue'],
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -140,7 +140,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
                         PHP,
                     [
                         'statements' => ['do'],
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -155,7 +155,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
                         PHP,
                     [
                         'statements' => ['exit'],
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -172,7 +172,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
                         PHP,
                     [
                         'statements' => ['goto'],
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -185,7 +185,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
                         PHP,
                     [
                         'statements' => ['if'],
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -199,7 +199,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
                         PHP,
                     [
                         'statements' => ['return'],
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -213,7 +213,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
                         PHP,
                     [
                         'statements' => ['switch'],
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -226,7 +226,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
                         PHP,
                     [
                         'statements' => ['throw'],
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -241,7 +241,7 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
                         PHP,
                     [
                         'statements' => ['try'],
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -256,9 +256,9 @@ final class BlankLineBeforeStatementFixer extends AbstractFixer implements Confi
                         PHP,
                     [
                         'statements' => ['yield'],
-                    ]
+                    ],
                 ),
-            ]
+            ],
         );
     }
 

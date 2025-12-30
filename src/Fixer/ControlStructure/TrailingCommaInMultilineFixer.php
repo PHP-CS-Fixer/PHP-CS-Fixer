@@ -91,11 +91,11 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
                             ];
 
                         SAMPLE,
-                    ['after_heredoc' => true]
+                    ['after_heredoc' => true],
                 ),
                 new CodeSample("<?php\nfoo(\n    1,\n    2\n);\n", ['elements' => [self::ELEMENTS_ARGUMENTS]]),
                 new VersionSpecificCodeSample("<?php\nfunction foo(\n    \$x,\n    \$y\n)\n{\n}\n", new VersionSpecification(8_00_00), ['elements' => [self::ELEMENTS_PARAMETERS]]),
-            ]
+            ],
         );
     }
 

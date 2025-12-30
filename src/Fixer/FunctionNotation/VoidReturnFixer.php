@@ -49,11 +49,11 @@ final class VoidReturnFixer extends AbstractFixer
             'Add `void` return type to functions with missing or empty return statements, but priority is given to `@return` annotations.',
             [
                 new CodeSample(
-                    "<?php\nfunction foo(\$a) {};\n"
+                    "<?php\nfunction foo(\$a) {};\n",
                 ),
             ],
             null,
-            'Modifies the signature of functions.'
+            'Modifies the signature of functions.',
         );
     }
 

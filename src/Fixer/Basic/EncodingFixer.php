@@ -50,9 +50,9 @@ final class EncodingFixer extends AbstractFixer
 
                         echo "Hello!";
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

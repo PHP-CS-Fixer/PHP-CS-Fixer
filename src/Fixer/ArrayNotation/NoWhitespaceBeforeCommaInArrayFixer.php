@@ -62,9 +62,9 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer implements
                             ];
 
                         PHP,
-                    ['after_heredoc' => true]
+                    ['after_heredoc' => true],
                 ),
-            ]
+            ],
         );
     }
 

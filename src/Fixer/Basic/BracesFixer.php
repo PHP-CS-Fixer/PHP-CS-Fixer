@@ -110,7 +110,7 @@ final class BracesFixer extends AbstractProxyFixer implements ConfigurableFixerI
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -120,7 +120,7 @@ final class BracesFixer extends AbstractProxyFixer implements ConfigurableFixerI
                                         return $item < 0; };
 
                         PHP,
-                    ['allow_single_line_closure' => true]
+                    ['allow_single_line_closure' => true],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -153,9 +153,9 @@ final class BracesFixer extends AbstractProxyFixer implements ConfigurableFixerI
                         }
 
                         PHP,
-                    ['position_after_functions_and_oop_constructs' => self::LINE_SAME]
+                    ['position_after_functions_and_oop_constructs' => self::LINE_SAME],
                 ),
-            ]
+            ],
         );
     }
 

@@ -40,7 +40,7 @@ final class TransformerTest extends TestCase
         self::assertLessThan(
             $first->getPriority(),
             $second->getPriority(),
-            \sprintf('"%s" should have less priority than "%s"', \get_class($second), \get_class($first))
+            \sprintf('"%s" should have less priority than "%s"', \get_class($second), \get_class($first)),
         );
     }
 

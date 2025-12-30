@@ -669,7 +669,7 @@ final class TokensAnalyzer
             throw new \LogicException(\sprintf(
                 'No T_CASE given at index %d, got %s instead.',
                 $caseIndex,
-                $token->getName() ?? $token->getContent()
+                $token->getName() ?? $token->getContent(),
             ));
         }
 

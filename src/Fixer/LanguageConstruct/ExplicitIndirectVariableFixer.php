@@ -42,9 +42,9 @@ final class ExplicitIndirectVariableFixer extends AbstractFixer
                         echo $foo->$bar['baz'];
                         echo $foo->$callback($baz);
 
-                        EOT
+                        EOT,
                 ),
-            ]
+            ],
         );
     }
 

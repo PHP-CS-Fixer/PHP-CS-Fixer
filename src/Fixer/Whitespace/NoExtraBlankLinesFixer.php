@@ -102,7 +102,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
 
                         $bar = "bar";
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -118,7 +118,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
                         }
 
                         PHP,
-                    ['tokens' => ['break']]
+                    ['tokens' => ['break']],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -132,7 +132,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
                         }
 
                         PHP,
-                    ['tokens' => ['continue']]
+                    ['tokens' => ['continue']],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -145,7 +145,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
                         }
 
                         PHP,
-                    ['tokens' => ['curly_brace_block']]
+                    ['tokens' => ['curly_brace_block']],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -157,7 +157,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
                         $bar = "bar";
 
                         PHP,
-                    ['tokens' => ['extra']]
+                    ['tokens' => ['extra']],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -170,7 +170,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
                         );
 
                         PHP,
-                    ['tokens' => ['parenthesis_brace_block']]
+                    ['tokens' => ['parenthesis_brace_block']],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -183,7 +183,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
                         }
 
                         PHP,
-                    ['tokens' => ['return']]
+                    ['tokens' => ['return']],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -196,7 +196,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
                         ];
 
                         PHP,
-                    ['tokens' => ['square_brace_block']]
+                    ['tokens' => ['square_brace_block']],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -209,7 +209,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
                         }
 
                         PHP,
-                    ['tokens' => ['throw']]
+                    ['tokens' => ['throw']],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -226,7 +226,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
                         }
 
                         PHP,
-                    ['tokens' => ['use']]
+                    ['tokens' => ['use']],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -241,9 +241,9 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
                         }
 
                         PHP,
-                    ['tokens' => ['switch', 'case', 'default']]
+                    ['tokens' => ['switch', 'case', 'default']],
                 ),
-            ]
+            ],
         );
     }
 

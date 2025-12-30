@@ -44,7 +44,7 @@ final class ProjectFixerConfigurationTest extends TestCase
         \Closure::bind(
             static fn () => RuleSets::$customRuleSetDefinitions = [],
             null,
-            RuleSets::class
+            RuleSets::class,
         )();
     }
 
@@ -60,7 +60,7 @@ final class ProjectFixerConfigurationTest extends TestCase
             $config,
             [],
             __DIR__,
-            new ToolInfo()
+            new ToolInfo(),
         );
 
         $resolver->getFixers();

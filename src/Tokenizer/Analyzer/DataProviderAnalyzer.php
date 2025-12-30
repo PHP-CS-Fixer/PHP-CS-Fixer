@@ -65,7 +65,7 @@ final class DataProviderAnalyzer
                     '/@dataProvider\h+(('.self::REGEX_CLASS.'::)?'.TypeExpression::REGEX_IDENTIFIER.')/',
                     $tokens[$docCommentIndex]->getContent(),
                     $matches,
-                    \PREG_OFFSET_CAPTURE
+                    \PREG_OFFSET_CAPTURE,
                 );
 
                 foreach ($matches[1] as $k => [$matchName]) {

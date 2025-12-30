@@ -42,7 +42,7 @@ final class SourceExceptionFactory
         } catch (\Throwable $e) {
             $exception = new \RuntimeException(
                 \sprintf('[%s] %s', $exceptionClass, $error['message']),
-                $error['code']
+                $error['code'],
             );
         }
 

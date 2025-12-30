@@ -62,58 +62,58 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
             [
                 new CodeSample(
                     "<?php\nfunction sample(\$a=10,\$b=20,\$c=30) {}\nsample(1,  2);\n",
-                    null
+                    null,
                 ),
                 new CodeSample(
                     "<?php\nfunction sample(\$a=10,\$b=20,\$c=30) {}\nsample(1,  2);\n",
-                    ['keep_multiple_spaces_after_comma' => false]
+                    ['keep_multiple_spaces_after_comma' => false],
                 ),
                 new CodeSample(
                     "<?php\nfunction sample(\$a=10,\$b=20,\$c=30) {}\nsample(1,  2);\n",
-                    ['keep_multiple_spaces_after_comma' => true]
+                    ['keep_multiple_spaces_after_comma' => true],
                 ),
                 new CodeSample(
                     "<?php\nfunction sample(\$a=10,\n    \$b=20,\$c=30) {}\nsample(1,\n    2);\n",
-                    ['on_multiline' => 'ensure_fully_multiline']
+                    ['on_multiline' => 'ensure_fully_multiline'],
                 ),
                 new CodeSample(
                     "<?php\nfunction sample(\n    \$a=10,\n    \$b=20,\n    \$c=30\n) {}\nsample(\n    1,\n    2\n);\n",
-                    ['on_multiline' => 'ensure_single_line']
+                    ['on_multiline' => 'ensure_single_line'],
                 ),
                 new CodeSample(
                     "<?php\nfunction sample(\$a=10,\n    \$b=20,\$c=30) {}\nsample(1,  \n    2);\nsample('foo',    'foobarbaz', 'baz');\nsample('foobar', 'bar',       'baz');\n",
                     [
                         'on_multiline' => 'ensure_fully_multiline',
                         'keep_multiple_spaces_after_comma' => true,
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     "<?php\nfunction sample(\$a=10,\n    \$b=20,\$c=30) {}\nsample(1,  \n    2);\nsample('foo',    'foobarbaz', 'baz');\nsample('foobar', 'bar',       'baz');\n",
                     [
                         'on_multiline' => 'ensure_fully_multiline',
                         'keep_multiple_spaces_after_comma' => false,
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     "<?php\nfunction sample(#[Foo] #[Bar] \$a=10,\n    \$b=20,\$c=30) {}\nsample(1,  2);\n",
                     [
                         'on_multiline' => 'ensure_fully_multiline',
                         'attribute_placement' => 'ignore',
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     "<?php\nfunction sample(#[Foo]\n    #[Bar]\n    \$a=10,\n    \$b=20,\$c=30) {}\nsample(1,  2);\n",
                     [
                         'on_multiline' => 'ensure_fully_multiline',
                         'attribute_placement' => 'same_line',
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     "<?php\nfunction sample(#[Foo] #[Bar] \$a=10,\n    \$b=20,\$c=30) {}\nsample(1,  2);\n",
                     [
                         'on_multiline' => 'ensure_fully_multiline',
                         'attribute_placement' => 'standalone',
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'SAMPLE'
@@ -127,10 +127,10 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                         );
 
                         SAMPLE,
-                    ['after_heredoc' => true]
+                    ['after_heredoc' => true],
                 ),
             ],
-            'This fixer covers rules defined in PSR2 ¶4.4, ¶4.6.'
+            'This fixer covers rules defined in PSR2 ¶4.4, ¶4.6.',
         );
     }
 
@@ -192,7 +192,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                 ->getOption(),
             (new FixerOptionBuilder(
                 'on_multiline',
-                'Defines how to handle function arguments lists that contain newlines.'
+                'Defines how to handle function arguments lists that contain newlines.',
             ))
                 ->setAllowedValues(['ignore', 'ensure_single_line', 'ensure_fully_multiline'])
                 ->setDefault('ensure_fully_multiline')
@@ -203,7 +203,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                 ->getOption(),
             (new FixerOptionBuilder(
                 'attribute_placement',
-                'Defines how to handle argument attributes when function definition is multiline.'
+                'Defines how to handle argument attributes when function definition is multiline.',
             ))
                 ->setAllowedValues(['ignore', 'same_line', 'standalone'])
                 ->setDefault('standalone')
@@ -349,7 +349,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
         $wasWhitespaceBeforeEndFunctionAddedAsNewToken = $tokens->ensureWhitespaceAtIndex(
             $tokens[$endFunctionIndex - 1]->isWhitespace() ? $endFunctionIndex - 1 : $endFunctionIndex,
             0,
-            $this->whitespacesConfig->getLineEnding().$existingIndentation
+            $this->whitespacesConfig->getLineEnding().$existingIndentation,
         );
 
         if ($wasWhitespaceBeforeEndFunctionAddedAsNewToken) {

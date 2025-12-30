@@ -98,7 +98,7 @@ final class FileHandlerTest extends TestCase
         $this->expectException(IOException::class);
         $this->expectExceptionMessageMatches(\sprintf(
             '#^Directory of cache file "%s" does not exists and couldn\'t be created\.#',
-            preg_quote($file, '#')
+            preg_quote($file, '#'),
         ));
 
         $cache = new Cache($this->createSignature());
@@ -134,7 +134,7 @@ final class FileHandlerTest extends TestCase
         $this->expectException(IOException::class);
         $this->expectExceptionMessageMatches(\sprintf(
             '#^%s$#',
-            preg_quote('Cannot write cache file "'.realpath($dir).'" as the location exists as directory.', '#')
+            preg_quote('Cannot write cache file "'.realpath($dir).'" as the location exists as directory.', '#'),
         ));
 
         $handler->write(new Cache($this->createSignature()));
@@ -152,7 +152,7 @@ final class FileHandlerTest extends TestCase
         $this->expectException(IOException::class);
         $this->expectExceptionMessageMatches(\sprintf(
             '#^%s$#',
-            preg_quote('Cannot write to file "'.realpath($file).'" as it is not writable.', '#')
+            preg_quote('Cannot write to file "'.realpath($file).'" as it is not writable.', '#'),
         ));
 
         $handler->write(new Cache($this->createSignature()));
@@ -214,7 +214,7 @@ final class FileHandlerTest extends TestCase
             '    ',
             \PHP_EOL,
             ['foo' => true, 'bar' => false],
-            'baz'
+            'baz',
         );
     }
 }

@@ -47,9 +47,9 @@ final class StringableForToStringFixer extends AbstractFixer
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

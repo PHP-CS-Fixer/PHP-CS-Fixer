@@ -35,7 +35,7 @@ final class ReportSummaryTest extends TestCase
             new PhpCsFixerSet(),
         ];
         $reportSummary = new ReportSummary(
-            $sets
+            $sets,
         );
 
         self::assertSame($sets, $reportSummary->getSets());

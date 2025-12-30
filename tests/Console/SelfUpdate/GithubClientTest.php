@@ -36,7 +36,7 @@ final class GithubClientTest extends TestCase
                 'v3.47.1',
                 'v3.47.0',
             ],
-            $githubClient->getTags()
+            $githubClient->getTags(),
         );
     }
 }

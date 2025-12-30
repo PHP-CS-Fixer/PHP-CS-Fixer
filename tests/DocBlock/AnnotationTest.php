@@ -741,7 +741,7 @@ final class AnnotationTest extends TestCase
                  *        b: Bar
                  * } $x
                  */
-                PHP
+                PHP,
         );
         $annotation = $docBlock->getAnnotation(0);
 

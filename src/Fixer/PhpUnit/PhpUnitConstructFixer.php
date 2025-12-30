@@ -69,7 +69,7 @@ final class PhpUnitConstructFixer extends AbstractPhpUnitFixer implements Config
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -84,11 +84,11 @@ final class PhpUnitConstructFixer extends AbstractPhpUnitFixer implements Config
                         }
 
                         PHP,
-                    ['assertions' => ['assertSame', 'assertNotSame']]
+                    ['assertions' => ['assertSame', 'assertNotSame']],
                 ),
             ],
             null,
-            'Fixer could be risky if one is overriding PHPUnit\'s native methods.'
+            'Fixer could be risky if one is overriding PHPUnit\'s native methods.',
         );
     }
 
@@ -119,7 +119,7 @@ final class PhpUnitConstructFixer extends AbstractPhpUnitFixer implements Config
                     \in_array($assertionMethod, ['assertSame', 'assertEquals'], true)
                         ? [$this, 'fixAssertPositive']
                         : [$this, 'fixAssertNegative'],
-                    [$tokens, $index, $assertionMethod]
+                    [$tokens, $index, $assertionMethod],
                 );
 
                 if (null === $index) {
@@ -177,7 +177,7 @@ final class PhpUnitConstructFixer extends AbstractPhpUnitFixer implements Config
                 [\T_STRING, $method],
                 '(',
             ],
-            $index
+            $index,
         );
 
         if (null === $sequence) {

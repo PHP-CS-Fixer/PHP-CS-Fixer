@@ -114,7 +114,7 @@ final class AlternativeSyntaxAnalyzer
 
         if ($tokens[$index]->equals('(')) {
             $index = $tokens->getNextMeaningfulToken(
-                $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index)
+                $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index),
             );
         }
 

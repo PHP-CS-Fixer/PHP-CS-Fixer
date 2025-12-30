@@ -47,7 +47,7 @@ final class UnresolvableAutoRuleSetConfigurationExceptionTest extends TestCase
         $exception = new UnresolvableAutoRuleSetConfigurationException(
             $message,
             $code,
-            $previous
+            $previous,
         );
 
         self::assertSame($message, $exception->getMessage());

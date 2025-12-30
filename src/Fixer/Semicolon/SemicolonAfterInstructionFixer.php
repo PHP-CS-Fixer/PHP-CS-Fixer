@@ -30,7 +30,7 @@ final class SemicolonAfterInstructionFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Instructions must be terminated with a semicolon.',
-            [new CodeSample("<?php echo 1 ?>\n")]
+            [new CodeSample("<?php echo 1 ?>\n")],
         );
     }
 
