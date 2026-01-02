@@ -51,7 +51,7 @@ final class ParseCommand extends Command
                     new InputArgument('path', InputArgument::REQUIRED),
                     new InputOption('mode', null, InputOption::VALUE_REQUIRED, 'Parsing mode: `fixer` or `native`.', self::MODE_FIXER, [self::MODE_NATIVE, self::MODE_FIXER]),
                     new InputOption('format', null, InputOption::VALUE_REQUIRED, 'Output format: `json` or `dump`.', self::FORMAT_JSON, [self::FORMAT_DUMP, self::FORMAT_JSON]),
-                ]
+                ],
             )
         ;
     }

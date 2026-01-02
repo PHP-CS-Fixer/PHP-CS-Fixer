@@ -42,7 +42,7 @@ final class DecodeIdCommand extends Command
             ->setDefinition(
                 [
                     new InputArgument('id', InputArgument::REQUIRED),
-                ]
+                ],
             )
         ;
     }
