@@ -1,6 +1,6 @@
-============================================
-Rule ``negated_instanceof_with_parentheses``
-============================================
+=======================================
+Rule ``negated_instanceof_parentheses``
+=======================================
 
 Negated ``instanceof`` expressions must (not) be wrapped in parentheses.
 
@@ -57,7 +57,7 @@ With configuration: ``['use_parentheses' => false]``.
 References
 ----------
 
-- Fixer class: `PhpCsFixer\\Fixer\\Operator\\NegatedInstanceofWithParenthesesFixer <./../../../src/Fixer/Operator/NegatedInstanceofWithParenthesesFixer.php>`_
-- Test class: `PhpCsFixer\\Tests\\Fixer\\Operator\\NegatedInstanceofWithParenthesesFixerTest <./../../../tests/Fixer/Operator/NegatedInstanceofWithParenthesesFixerTest.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\Operator\\NegatedInstanceofParenthesesFixer <./../../../src/Fixer/Operator/NegatedInstanceofParenthesesFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\Operator\\NegatedInstanceofParenthesesFixerTest <./../../../tests/Fixer/Operator/NegatedInstanceofParenthesesFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.
