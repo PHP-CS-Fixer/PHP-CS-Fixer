@@ -590,6 +590,9 @@ Operator
 - `long_to_shorthand_operator <./operator/long_to_shorthand_operator.rst>`_ *(risky)*
 
   Shorthand notation for operators should be used if possible.
+- `negated_instanceof_with_parentheses <./operator/negated_instanceof_with_parentheses.rst>`_ *(configurable)*
+
+  Negated ``instanceof`` expressions must (not) be wrapped in parentheses.
 - `new_expression_parentheses <./operator/new_expression_parentheses.rst>`_ *(configurable)*
 
   All ``new`` expressions with a further call must (not) be wrapped in parentheses.
