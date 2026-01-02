@@ -80,8 +80,8 @@ final class NegatedInstanceofWithParenthesesFixer extends AbstractFixer implemen
     {
         $useParentheses = $this->configuration['use_parentheses'];
 
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(\T_INSTANCEOF)) {
+        for ($index = $tokens->count() - 1; $index >= 0; --$index) {
+            if (!$tokens[$index]->isGivenKind(\T_INSTANCEOF)) {
                 continue;
             }
 
