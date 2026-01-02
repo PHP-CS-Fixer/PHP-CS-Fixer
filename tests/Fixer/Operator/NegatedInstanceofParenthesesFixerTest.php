@@ -58,135 +58,166 @@ final class NegatedInstanceofParenthesesFixerTest extends AbstractFixerTestCase
             ['use_parentheses' => true],
         ];
 
-        yield 'wrap_with_fqn' => [
-            '<?php !($x instanceof \A\B\C);',
-            '<?php !$x instanceof \A\B\C;',
-            ['use_parentheses' => true],
-        ];
-
-        yield 'wrap_with_namespace_relative' => [
-            '<?php !($x instanceof namespace\Foo);',
-            '<?php !$x instanceof namespace\Foo;',
-            ['use_parentheses' => true],
-        ];
-
-        yield 'wrap_with_self' => [
-            '<?php !($x instanceof self);',
-            '<?php !$x instanceof self;',
-            ['use_parentheses' => true],
-        ];
-
-        yield 'wrap_with_static' => [
-            '<?php !($x instanceof static);',
-            '<?php !$x instanceof static;',
-            ['use_parentheses' => true],
-        ];
-
-        yield 'wrap_with_parent' => [
-            '<?php !($x instanceof parent);',
-            '<?php !$x instanceof parent;',
-            ['use_parentheses' => true],
-        ];
-
-        yield 'wrap_already_wrapped' => [
-            '<?php !($x instanceof Foo);',
-            null,
-            ['use_parentheses' => true],
-        ];
-
-        yield 'wrap_not_negated' => [
-            '<?php $x instanceof Foo;',
-            null,
-            ['use_parentheses' => false],
-        ];
-
-        yield 'wrap_multiple_negated_expressions' => [
-            '<?php !($x instanceof Foo) && !($y instanceof Bar);',
-            '<?php !$x instanceof Foo && !$y instanceof Bar;',
-            ['use_parentheses' => true],
-        ];
-
-        yield 'wrap_mixed_negated_and_non_negated' => [
-            '<?php !($x instanceof Foo) && $y instanceof Bar;',
-            '<?php !$x instanceof Foo && $y instanceof Bar;',
-            ['use_parentheses' => true],
-        ];
-
-        yield 'wrap_mixed_wrapped_and_unwrapped' => [
-            '<?php !(!($x instanceof Foo) && !($y instanceof Bar));',
-            '<?php !(!$x instanceof Foo && !($y instanceof Bar));',
-            ['use_parentheses' => true],
-        ];
-
         yield 'unwrap_simple' => [
             '<?php !$x instanceof Foo;',
             '<?php !($x instanceof Foo);',
             ['use_parentheses' => false],
         ];
 
-        yield 'unwrap_with_fqn' => [
+        yield 'wrap_fqn' => [
+            '<?php !($x instanceof \A\B\C);',
+            '<?php !$x instanceof \A\B\C;',
+            ['use_parentheses' => true],
+        ];
+
+        yield 'unwrap_fqn' => [
             '<?php !$x instanceof \A\B\C;',
             '<?php !($x instanceof \A\B\C);',
             ['use_parentheses' => false],
         ];
 
-        yield 'unwrap_with_self' => [
-            '<?php !$x instanceof self;',
-            '<?php !($x instanceof self);',
-            ['use_parentheses' => false],
+        yield 'wrap_namespace_relative' => [
+            '<?php !($x instanceof namespace\Foo);',
+            '<?php !$x instanceof namespace\Foo;',
+            ['use_parentheses' => true],
         ];
 
-        yield 'unwrap_with_static' => [
-            '<?php !$x instanceof static;',
-            '<?php !($x instanceof static);',
-            ['use_parentheses' => false],
-        ];
-
-        yield 'unwrap_with_parent' => [
-            '<?php !$x instanceof parent;',
-            '<?php !($x instanceof parent);',
-            ['use_parentheses' => false],
-        ];
-
-        yield 'unwrap_with_namespace_relative' => [
+        yield 'unwrap_namespace_relative' => [
             '<?php !$x instanceof namespace\Foo;',
             '<?php !($x instanceof namespace\Foo);',
             ['use_parentheses' => false],
         ];
 
-        yield 'unwrap_multiple_expressions' => [
-            '<?php !$x instanceof Foo && !$y instanceof Bar;',
-            '<?php !($x instanceof Foo) && !($y instanceof Bar);',
+        yield 'wrap_self' => [
+            '<?php !($x instanceof self);',
+            '<?php !$x instanceof self;',
+            ['use_parentheses' => true],
+        ];
+
+        yield 'unwrap_self' => [
+            '<?php !$x instanceof self;',
+            '<?php !($x instanceof self);',
             ['use_parentheses' => false],
         ];
 
-        yield 'unwrap_mixed_negated_and_non_negated' => [
-            '<?php !$x instanceof Foo && $y instanceof Bar;',
-            '<?php !($x instanceof Foo) && $y instanceof Bar;',
+        yield 'wrap_static' => [
+            '<?php !($x instanceof static);',
+            '<?php !$x instanceof static;',
+            ['use_parentheses' => true],
+        ];
+
+        yield 'unwrap_static' => [
+            '<?php !$x instanceof static;',
+            '<?php !($x instanceof static);',
             ['use_parentheses' => false],
         ];
 
-        yield 'unwrap_already_unwrapped' => [
+        yield 'wrap_parent' => [
+            '<?php !($x instanceof parent);',
+            '<?php !$x instanceof parent;',
+            ['use_parentheses' => true],
+        ];
+
+        yield 'unwrap_parent' => [
+            '<?php !$x instanceof parent;',
+            '<?php !($x instanceof parent);',
+            ['use_parentheses' => false],
+        ];
+
+        yield 'wrap_already_parenthesized' => [
+            '<?php !($x instanceof Foo);',
+            null,
+            ['use_parentheses' => true],
+        ];
+
+        yield 'unwrap_already_unparenthesized' => [
             '<?php !$x instanceof Foo;',
             null,
             ['use_parentheses' => false],
         ];
 
-        // Intentionally not handled
-        yield 'do_not_fix_array_access' => [
+        yield 'ignore_non_negated' => [
+            '<?php $x instanceof Foo;',
+            null,
+            ['use_parentheses' => false],
+        ];
+
+        yield 'wrap_multiple_negated' => [
+            '<?php !($x instanceof Foo) && !($y instanceof Bar);',
+            '<?php !$x instanceof Foo && !$y instanceof Bar;',
+            ['use_parentheses' => true],
+        ];
+
+        yield 'unwrap_multiple_negated' => [
+            '<?php !$x instanceof Foo && !$y instanceof Bar;',
+            '<?php !($x instanceof Foo) && !($y instanceof Bar);',
+            ['use_parentheses' => false],
+        ];
+
+        yield 'wrap_mixed_negated' => [
+            '<?php !($x instanceof Foo) && $y instanceof Bar;',
+            '<?php !$x instanceof Foo && $y instanceof Bar;',
+            ['use_parentheses' => true],
+        ];
+
+        yield 'unwrap_mixed_negated' => [
+            '<?php !$x instanceof Foo && $y instanceof Bar;',
+            '<?php !($x instanceof Foo) && $y instanceof Bar;',
+            ['use_parentheses' => false],
+        ];
+
+        yield 'wrap_nested_negated' => [
+            '<?php !(!($x instanceof Foo) && !($y instanceof Bar));',
+            '<?php !(!$x instanceof Foo && !($y instanceof Bar));',
+            ['use_parentheses' => true],
+        ];
+
+        yield 'wrap_array_access' => [
+            '<?php !($array[$key] instanceof Foo);',
             '<?php !$array[$key] instanceof Foo;',
+            ['use_parentheses' => true],
         ];
 
-        yield 'do_not_fix_property_access' => [
+        yield 'unwrap_array_access' => [
+            '<?php !$array[$key] instanceof Foo;',
+            '<?php !($array[$key] instanceof Foo);',
+            ['use_parentheses' => false],
+        ];
+
+        yield 'wrap_property_access' => [
+            '<?php !($obj->prop instanceof Foo);',
             '<?php !$obj->prop instanceof Foo;',
+            ['use_parentheses' => true],
         ];
 
-        yield 'do_not_fix_method_call' => [
+        yield 'unwrap_property_access' => [
+            '<?php !$obj->prop instanceof Foo;',
+            '<?php !($obj->prop instanceof Foo);',
+            ['use_parentheses' => false],
+        ];
+
+        yield 'wrap_method_call' => [
+            '<?php !($obj->method()->prop instanceof Foo);',
             '<?php !$obj->method()->prop instanceof Foo;',
+            ['use_parentheses' => true],
         ];
 
-        yield 'do_not_fix_function_call' => [
+        yield 'unwrap_method_call' => [
+            '<?php !$obj->method()->prop instanceof Foo;',
+            '<?php !($obj->method()->prop instanceof Foo);',
+            ['use_parentheses' => false],
+        ];
+
+        yield 'wrap_function_call' => [
+            '<?php !(foo() instanceof Foo);',
             '<?php !foo() instanceof Foo;',
+            ['use_parentheses' => true],
+        ];
+
+        yield 'unwrap_function_call' => [
+            '<?php !foo() instanceof Foo;',
+            '<?php !(foo() instanceof Foo);',
+            ['use_parentheses' => false],
         ];
     }
 }
