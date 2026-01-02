@@ -153,9 +153,10 @@ final class NegatedInstanceofWithParenthesesFixer extends AbstractFixer implemen
 
     private function addParentheses(Tokens $tokens, int $startIndex, int $endIndex): void
     {
-        $tokens->insertAt($startIndex, new Token('('));
-        // +2 accounts for: +1 for the inserted opening parenthesis, +1 to insert after $endIndex
-        $tokens->insertAt($endIndex + 2, new Token(')'));
+        $tokens->insertSlices([
+            $startIndex => new Token('('),
+            $endIndex + 1 => new Token(')'), // +1 to insert after $endIndex
+        ]);
     }
 
     private function removeParentheses(Tokens $tokens, int $startIndex, int $endIndex): void
