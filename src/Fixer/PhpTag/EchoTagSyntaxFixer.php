@@ -99,7 +99,7 @@ final class EchoTagSyntaxFixer extends AbstractFixer implements ConfigurableFixe
                 new CodeSample($sample, [self::OPTION_FORMAT => self::FORMAT_SHORT]),
                 new CodeSample($sample, [self::OPTION_FORMAT => self::FORMAT_SHORT, self::OPTION_SHORTEN_SIMPLE_STATEMENTS_ONLY => false]),
             ],
-            null
+            null,
         );
     }
 

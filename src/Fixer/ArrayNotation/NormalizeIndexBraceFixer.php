@@ -36,8 +36,8 @@ final class NormalizeIndexBraceFixer extends AbstractFixer
             'Array index should always be written by using square braces.',
             [new VersionSpecificCodeSample(
                 "<?php\necho \$sample{\$index};\n",
-                new VersionSpecification(null, 8_04_00 - 1)
-            )]
+                new VersionSpecification(null, 8_04_00 - 1),
+            )],
         );
     }
 

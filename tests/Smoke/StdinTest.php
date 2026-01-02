@@ -49,7 +49,7 @@ final class StdinTest extends AbstractSmokeTestCase
         $expectedError = str_replace(
             'Paths from configuration have been overridden by paths provided as command arguments.'."\n",
             '',
-            $fileResult->getError()
+            $fileResult->getError(),
         );
 
         self::assertSame($expectedError, $stdinResult->getError());
@@ -64,12 +64,12 @@ final class StdinTest extends AbstractSmokeTestCase
         $fileResult = Preg::replace(
             '#/?'.preg_quote($inputFile, '#').'#',
             'php://stdin',
-            $fileResult
+            $fileResult,
         );
 
         self::assertSame(
             $fileResult,
-            $this->unifyFooter($stdinResult->getOutput())
+            $this->unifyFooter($stdinResult->getOutput()),
         );
     }
 
@@ -78,7 +78,7 @@ final class StdinTest extends AbstractSmokeTestCase
         return Preg::replace(
             '/Found \d+ of \d+ files that can be fixed in \d+\.\d+ seconds, \d+\.\d+ MB memory used/',
             'Footer',
-            $output
+            $output,
         );
     }
 }

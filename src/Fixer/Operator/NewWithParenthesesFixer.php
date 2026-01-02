@@ -104,13 +104,13 @@ final class NewWithParenthesesFixer extends AbstractFixer implements Configurabl
                 new CodeSample("<?php\n\n\$x = new X;\n\$y = new class {};\n"),
                 new CodeSample(
                     "<?php\n\n\$y = new class() {};\n",
-                    ['anonymous_class' => false]
+                    ['anonymous_class' => false],
                 ),
                 new CodeSample(
                     "<?php\n\n\$x = new X();\n",
-                    ['named_class' => false]
+                    ['named_class' => false],
                 ),
-            ]
+            ],
         );
     }
 
@@ -192,7 +192,7 @@ final class NewWithParenthesesFixer extends AbstractFixer implements Configurabl
         if (!$token->equals('(') && !$token->isObjectOperator()) {
             $tokens->insertAt(
                 $tokens->getPrevMeaningfulToken($index) + 1,
-                [new Token('('), new Token(')')]
+                [new Token('('), new Token(')')],
             );
         }
     }

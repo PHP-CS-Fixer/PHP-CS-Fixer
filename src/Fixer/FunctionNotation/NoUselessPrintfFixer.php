@@ -37,11 +37,11 @@ final class NoUselessPrintfFixer extends AbstractFixer
             'There must be no `printf` calls with only the first argument.',
             [
                 new CodeSample(
-                    "<?php\n\nprintf('bar');\n"
+                    "<?php\n\nprintf('bar');\n",
                 ),
             ],
             null,
-            'Risky when the `printf` function is overridden.'
+            'Risky when the `printf` function is overridden.',
         );
     }
 
@@ -123,7 +123,7 @@ final class NoUselessPrintfFixer extends AbstractFixer
 
         $tokens->insertSlices(array_combine(
             $printfIndices,
-            array_fill(0, \count($printfIndices), [new Token([\T_PRINT, 'print']), new Token([\T_WHITESPACE, ' '])])
+            array_fill(0, \count($printfIndices), [new Token([\T_PRINT, 'print']), new Token([\T_WHITESPACE, ' '])]),
         ));
     }
 }

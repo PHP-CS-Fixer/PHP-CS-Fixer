@@ -38,7 +38,7 @@ final class NoTrailingWhitespaceFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'There must be no trailing whitespace at the end of non-blank lines.',
-            [new CodeSample("<?php\n\$a = 1;     \n")]
+            [new CodeSample("<?php\n\$a = 1;     \n")],
         );
     }
 

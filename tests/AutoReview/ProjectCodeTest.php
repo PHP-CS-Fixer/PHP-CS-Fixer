@@ -142,8 +142,8 @@ final class ProjectCodeTest extends TestCase
                     $rc = new \ReflectionClass($className);
 
                     return !$rc->isTrait() && !$rc->isAbstract() && !$rc->isInterface() && \count($rc->getMethods(\ReflectionMethod::IS_PUBLIC)) > 0;
-                }
-            )
+                },
+            ),
         );
     }
 
@@ -224,7 +224,7 @@ final class ProjectCodeTest extends TestCase
 
         $overrideFound = Preg::match(
             '/(?:self::\$|static::\$|\$this->)(?:'.implode('|', $propertyNames).')(?:\[[^=]*\])?\s*(?:=|(?:\?\?=))/',
-            $tokensContent
+            $tokensContent,
         );
 
         if ($overrideFound) {
@@ -234,7 +234,7 @@ final class ProjectCodeTest extends TestCase
         }
 
         self::fail(
-            \sprintf('The class "%s" should have readonly annotation.', $className)
+            \sprintf('The class "%s" should have readonly annotation.', $className),
         );
     }
 
@@ -249,7 +249,7 @@ final class ProjectCodeTest extends TestCase
 
         $allowedMethods = array_map(
             fn (\ReflectionClass $interface): array => $this->getPublicMethodNames($interface),
-            $rc->getInterfaces()
+            $rc->getInterfaces(),
         );
 
         if (\count($allowedMethods) > 0) {
@@ -273,7 +273,7 @@ final class ProjectCodeTest extends TestCase
         $extraMethods = array_diff(
             $definedMethods,
             $allowedMethods,
-            $exceptionMethods
+            $exceptionMethods,
         );
 
         sort($extraMethods);
@@ -283,8 +283,8 @@ final class ProjectCodeTest extends TestCase
             \sprintf(
                 "Class '%s' should not have public methods that are not part of implemented interfaces.\nViolations:\n%s",
                 $className,
-                implode("\n", array_map(static fn (string $item): string => " * {$item}", $extraMethods))
-            )
+                implode("\n", array_map(static fn (string $item): string => " * {$item}", $extraMethods)),
+            ),
         );
     }
 
@@ -331,7 +331,7 @@ final class ProjectCodeTest extends TestCase
                 }
 
                 return true;
-            })
+            }),
         );
     }
 
@@ -352,7 +352,7 @@ final class ProjectCodeTest extends TestCase
 
         self::assertEmpty(
             $rc->getProperties(\ReflectionProperty::IS_PUBLIC),
-            \sprintf('Class \'%s\' should not have public properties.', $className)
+            \sprintf('Class \'%s\' should not have public properties.', $className),
         );
 
         if ($rc->isFinal()) {
@@ -382,7 +382,7 @@ final class ProjectCodeTest extends TestCase
         $extraProps = array_diff(
             $definedProps,
             $allowedProps,
-            $exceptionPropsPerClass[$className] ?? []
+            $exceptionPropsPerClass[$className] ?? [],
         );
 
         sort($extraProps);
@@ -392,8 +392,8 @@ final class ProjectCodeTest extends TestCase
             \sprintf(
                 "Class '%s' should not have protected properties.\nViolations:\n%s",
                 $className,
-                implode("\n", array_map(static fn (string $item): string => " * {$item}", $extraProps))
-            )
+                implode("\n", array_map(static fn (string $item): string => " * {$item}", $extraProps)),
+            ),
         );
     }
 
@@ -421,7 +421,7 @@ final class ProjectCodeTest extends TestCase
 
         self::assertTrue(
             $rc->isTrait() || $rc->isAbstract() || $rc->isFinal() || \in_array($testClassName, $exceptionClasses, true),
-            \sprintf('Test class %s should be trait, abstract or final.', $testClassName)
+            \sprintf('Test class %s should be trait, abstract or final.', $testClassName),
         );
     }
 
@@ -437,7 +437,7 @@ final class ProjectCodeTest extends TestCase
 
         self::assertNotEmpty(
             $doc->getAnnotationsOfType('internal'),
-            \sprintf('Test class %s should have internal annotation.', $testClassName)
+            \sprintf('Test class %s should have internal annotation.', $testClassName),
         );
     }
 
@@ -452,7 +452,7 @@ final class ProjectCodeTest extends TestCase
 
         $publicMethods = array_filter(
             $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC),
-            static fn (\ReflectionMethod $reflectionMethod): bool => $reflectionMethod->getDeclaringClass()->getName() === $reflectionClass->getName()
+            static fn (\ReflectionMethod $reflectionMethod): bool => $reflectionMethod->getDeclaringClass()->getName() === $reflectionClass->getName(),
         );
 
         if ([] === $publicMethods) {
@@ -465,7 +465,7 @@ final class ProjectCodeTest extends TestCase
             self::assertMatchesRegularExpression(
                 '/^(test|expect|provide|setUpBeforeClass$|tearDownAfterClass$|__construct$)/',
                 $method->getName(),
-                \sprintf('Public method "%s::%s" is not properly named.', $reflectionClass->getName(), $method->getName())
+                \sprintf('Public method "%s::%s" is not properly named.', $reflectionClass->getName(), $method->getName()),
             );
         }
     }
@@ -538,7 +538,7 @@ final class ProjectCodeTest extends TestCase
             $classMatch = array_shift($match);
             self::assertTrue(
                 $classMatch === $class || $parentClassName === $classMatch,
-                \sprintf('Unexpected @covers "%s" for "%s".', $classMatch, $testClassName)
+                \sprintf('Unexpected @covers "%s" for "%s".', $classMatch, $testClassName),
             );
         }
     }
@@ -564,7 +564,7 @@ final class ProjectCodeTest extends TestCase
         self::assertNotContains(
             'defined',
             $this->extractFunctionNamesCalledInClass($className),
-            \sprintf('Class %s must not use "defined()", use "%s" to use newly introduced Token kinds.', $className, FCT::class)
+            \sprintf('Class %s must not use "defined()", use "%s" to use newly introduced Token kinds.', $className, FCT::class),
         );
     }
 
@@ -693,7 +693,7 @@ final class ProjectCodeTest extends TestCase
 
         $publicMethods = array_filter(
             $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC),
-            static fn (\ReflectionMethod $reflectionMethod): bool => $reflectionMethod->getDeclaringClass()->getName() === $reflectionClass->getName()
+            static fn (\ReflectionMethod $reflectionMethod): bool => $reflectionMethod->getDeclaringClass()->getName() === $reflectionClass->getName(),
         );
 
         if ([] === $publicMethods) {
@@ -705,39 +705,48 @@ final class ProjectCodeTest extends TestCase
         foreach ($publicMethods as $method) {
             $parameters = $method->getParameters();
 
-            if (\count($parameters) < 2) {
+            if (0 === \count($parameters)) {
                 $this->addToAssertionCount(1); // not enough parameters to test, all good!
 
                 continue;
             }
 
-            $expected = [
-                'expected' => false,
-                'input' => false,
-            ];
-
-            for ($i = \count($parameters) - 1; $i >= 0; --$i) {
-                \assert(\array_key_exists($i, $parameters));
-                $name = $parameters[$i]->getName();
-
-                if (isset($expected[$name])) {
-                    $expected[$name] = $i;
-                }
-            }
-
-            $expectedFound = array_filter($expected, static fn ($item): bool => false !== $item);
-
-            if (\count($expectedFound) < 2) {
-                $this->addToAssertionCount(1); // not enough parameters to test, all good!
-
-                continue;
-            }
-
-            self::assertLessThan(
-                $expected['input'],
-                $expected['expected'],
-                \sprintf('Public method "%s::%s" has parameter \'input\' before \'expected\'.', $reflectionClass->getName(), $method->getName())
+            $parameterNames = array_map(
+                static fn (\ReflectionParameter $item): string => $item->getName(),
+                $parameters,
             );
+            $parameterNamesToPosition = 0 === \count($parameterNames) ? [] : array_combine($parameterNames, range(0, \count($parameterNames) - 1));
+
+            if (
+                isset($parameterNamesToPosition['expected'], $parameterNamesToPosition['input'])
+            ) {
+                self::assertLessThan(
+                    $parameterNamesToPosition['input'],
+                    $parameterNamesToPosition['expected'],
+                    \sprintf('Public method "%s::%s" shall have parameter \'input\' after \'expected\'.', $reflectionClass->getName(), $method->getName()),
+                );
+            } else {
+                $this->addToAssertionCount(1); // not enough parameters to test, all good!
+            }
+
+            if (
+                $reflectionClass->isSubclassOf(AbstractFixerTestCase::class)
+                && str_starts_with($method->getName(), 'testFix')
+            ) {
+                $expectedTestFixPotentialParamsOrder = ['expected', 'input', 'configuration', 'file', 'whitespacesConfig'];
+
+                self::assertSame(
+                    [],
+                    array_diff($parameterNames, $expectedTestFixPotentialParamsOrder),
+                    \sprintf('Public method "%s::%s" has unexpected parameters.', $reflectionClass->getName(), $method->getName()),
+                );
+
+                self::assertSame(
+                    array_values(array_intersect($expectedTestFixPotentialParamsOrder, $parameterNames)),
+                    $parameterNames,
+                    \sprintf('Public method "%s::%s" has invalid parameters order.', $reflectionClass->getName(), $method->getName()),
+                );
+            }
         }
     }
 
@@ -829,7 +838,7 @@ final class ProjectCodeTest extends TestCase
             [
                 DeprecatedRuleSetDescriptionInterface::class, // @phpstan-ignore class.notFound
             ],
-            true
+            true,
         )) {
             self::markTestSkipped(\sprintf("Classy '%s' is deprecated alias and thus exception.", $className));
         }
@@ -900,7 +909,7 @@ final class ProjectCodeTest extends TestCase
 
         $allowedMethods = array_map(
             fn (\ReflectionClass $interface): array => $this->getPublicMethodNames($interface),
-            $rc->getInterfaces()
+            $rc->getInterfaces(),
         );
 
         if (\count($allowedMethods) > 0) {
@@ -918,12 +927,12 @@ final class ProjectCodeTest extends TestCase
 
         $methodsWithInheritdoc = array_filter(
             $rc->getMethods(),
-            static fn (\ReflectionMethod $rm): bool => false !== $rm->getDocComment() && str_contains(strtolower($rm->getDocComment()), '@inheritdoc')
+            static fn (\ReflectionMethod $rm): bool => false !== $rm->getDocComment() && str_contains(strtolower($rm->getDocComment()), '@inheritdoc'),
         );
 
         $methodsWithInheritdoc = array_map(
             static fn (\ReflectionMethod $rm): string => $rm->getName(),
-            $methodsWithInheritdoc
+            $methodsWithInheritdoc,
         );
 
         $extraMethods = array_diff($methodsWithInheritdoc, $allowedMethods);
@@ -933,8 +942,8 @@ final class ProjectCodeTest extends TestCase
             \sprintf(
                 "Class '%s' should not have methods with '@inheritdoc' in PHPDoc that are not inheriting PHPDoc.\nViolations:\n%s",
                 $className,
-                implode("\n", array_map(static fn ($item): string => " * {$item}", $extraMethods))
-            )
+                implode("\n", array_map(static fn ($item): string => " * {$item}", $extraMethods)),
+            ),
         );
     }
 
@@ -942,11 +951,11 @@ final class ProjectCodeTest extends TestCase
     {
         $testClassesWithShortOpenTag = array_filter(
             self::getTestsDirectoryClasses('*Test.php'),
-            fn (string $className): bool => str_contains($this->getFileContentForClass($className), 'short_open_tag') && self::class !== $className
+            fn (string $className): bool => str_contains($this->getFileContentForClass($className), 'short_open_tag') && self::class !== $className,
         );
         $testFilesWithShortOpenTag = array_map(
             fn (string $className): string => './'.$this->getFilePathForClass($className),
-            $testClassesWithShortOpenTag
+            $testClassesWithShortOpenTag,
         );
 
         $phpunitXmlContent = file_get_contents(__DIR__.'/../../phpunit.xml.dist');
@@ -976,12 +985,9 @@ final class ProjectCodeTest extends TestCase
         $exceptionsForDuplicatesCheck = [ // should only shrink
             'PhpCsFixer\Tests\AutoReview\CommandTest::provideCommandHasNameConstCases',
             'PhpCsFixer\Tests\AutoReview\DocumentationTest::provideFixerDocumentationFileIsUpToDateCases',
-            'PhpCsFixer\Tests\AutoReview\FixerFactoryTest::providePriorityIntegrationTestFilesAreListedInPriorityGraphCases',
             'PhpCsFixer\Tests\Console\Command\DescribeCommandTest::provideExecuteOutputCases',
             'PhpCsFixer\Tests\Console\Command\HelpCommandTest::provideGetDisplayableAllowedValuesCases',
             'PhpCsFixer\Tests\Documentation\FixerDocumentGeneratorTest::provideGenerateRuleSetsDocumentationCases',
-            'PhpCsFixer\Tests\Fixer\Basic\EncodingFixerTest::provideFixCases',
-            'PhpCsFixer\Tests\UtilsTest::provideStableSortCases',
         ];
 
         $dataProvider = new \ReflectionMethod($testClassName, $dataProviderName);
@@ -995,7 +1001,7 @@ final class ProjectCodeTest extends TestCase
             self::assertSame(
                 1,
                 substr_count($docComment, 'array'),
-                \sprintf('Data provider %s::%s must use _AutogeneratedInputConfiguration.', $testClassName, $dataProviderName)
+                \sprintf('Data provider %s::%s must use _AutogeneratedInputConfiguration.', $testClassName, $dataProviderName),
             );
         }
 
@@ -1009,7 +1015,8 @@ final class ProjectCodeTest extends TestCase
                 continue;
             }
 
-            $serializedCandidateData = serialize($candidateData);
+            $serializedCandidateData = self::naiveSerialize($candidateData);
+
             $foundInDuplicates = false;
             foreach ($alreadyFoundCases as $caseKey => $caseData) {
                 if ($serializedCandidateData === $caseData) {
@@ -1036,7 +1043,7 @@ final class ProjectCodeTest extends TestCase
             self::assertMatchesRegularExpression(
                 \sprintf('/@return iterable\<%s, (?:array\{|_PhpTokenArray)/', $type),
                 $docComment,
-                \sprintf('Data provider %s::%s iterable key "%s" must be present.', $testClassName, $dataProviderName, $type)
+                \sprintf('Data provider %s::%s iterable key "%s" must be present.', $testClassName, $dataProviderName, $type),
             );
         } else {
             // data provider's keys are of both types - int and string - type must be omitted
@@ -1046,7 +1053,7 @@ final class ProjectCodeTest extends TestCase
             self::assertMatchesRegularExpression(
                 '/@return iterable\<(?:array\{|_PhpTokenArray)/',
                 $docComment,
-                \sprintf('Data provider %s::%s iterable must not have key type.', $testClassName, $dataProviderName)
+                \sprintf('Data provider %s::%s iterable must not have key type.', $testClassName, $dataProviderName),
             );
         }
 
@@ -1066,7 +1073,7 @@ final class ProjectCodeTest extends TestCase
 
                 $dataProviderNames = array_filter(
                     $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC),
-                    static fn (\ReflectionMethod $reflectionMethod): bool => $reflectionMethod->getDeclaringClass()->getName() === $reflectionClass->getName() && str_starts_with($reflectionMethod->getName(), 'provide')
+                    static fn (\ReflectionMethod $reflectionMethod): bool => $reflectionMethod->getDeclaringClass()->getName() === $reflectionClass->getName() && str_starts_with($reflectionMethod->getName(), 'provide'),
                 );
 
                 foreach ($dataProviderNames as $dataProviderName) {
@@ -1269,6 +1276,27 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
+     * @param array<array-key, mixed> $data
+     */
+    private static function naiveSerialize(array $data): string
+    {
+        $serialized = [];
+        foreach ($data as $key => $value) {
+            if (\is_array($value)) {
+                $serialized[$key] = self::naiveSerialize($value);
+            } elseif ($value instanceof \Closure) {
+                $serialized[$key] = 'Closure#'.spl_object_id($value);
+            } elseif ($value instanceof \SplFileInfo) {
+                $serialized[$key] = 'SplFileInfo('.$value->getPathname().')';
+            } else {
+                $serialized[$key] = $value;
+            }
+        }
+
+        return serialize($serialized);
+    }
+
+    /**
      * @param class-string $className
      *
      * @return array<array-key, string>
@@ -1281,12 +1309,12 @@ final class ProjectCodeTest extends TestCase
         /** @var list<Token> $stringTokens */
         $stringTokens = array_filter(
             $tokens,
-            static fn (Token $token): bool => $token->isGivenKind(\T_STRING)
+            static fn (Token $token): bool => $token->isGivenKind(\T_STRING),
         );
 
         $strings = array_map(
             static fn (Token $token): string => $token->getContent(),
-            $stringTokens
+            $stringTokens,
         );
 
         return array_unique($strings);
@@ -1390,9 +1418,9 @@ final class ProjectCodeTest extends TestCase
                 'PhpCsFixer',
                 strtr($file->getRelativePath(), \DIRECTORY_SEPARATOR, '\\'),
                 '' !== $file->getRelativePath() ? '\\' : '',
-                $file->getBasename('.'.$file->getExtension())
+                $file->getBasename('.'.$file->getExtension()),
             ),
-            iterator_to_array($finder, false)
+            iterator_to_array($finder, false),
         );
 
         sort($classes);
@@ -1427,9 +1455,9 @@ final class ProjectCodeTest extends TestCase
                 'PhpCsFixer\Tests\%s%s%s',
                 strtr($file->getRelativePath(), \DIRECTORY_SEPARATOR, '\\'),
                 '' !== $file->getRelativePath() ? '\\' : '',
-                $file->getBasename('.'.$file->getExtension())
+                $file->getBasename('.'.$file->getExtension()),
             ),
-            iterator_to_array($finder, false)
+            iterator_to_array($finder, false),
         );
 
         sort($foundClasses);
@@ -1446,7 +1474,7 @@ final class ProjectCodeTest extends TestCase
     {
         return array_map(
             static fn (\ReflectionMethod $rm): string => $rm->getName(),
-            $rc->getMethods(\ReflectionMethod::IS_PUBLIC)
+            $rc->getMethods(\ReflectionMethod::IS_PUBLIC),
         );
     }
 }

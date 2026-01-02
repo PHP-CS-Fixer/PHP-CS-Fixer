@@ -67,7 +67,7 @@ final class RuleSetDocumentationGenerator
                     "\n%s\n%s\n\n%s",
                     $tag->title,
                     $titleLine,
-                    null === $tag->description ? '' : RstUtils::toRst($tag->description, 0)
+                    null === $tag->description ? '' : RstUtils::toRst($tag->description, 0),
                 );
             },
             $tags,
@@ -100,7 +100,7 @@ final class RuleSetDocumentationGenerator
                         $path = Preg::replace(
                             '#^'.preg_quote($this->locator->getFixersDocumentationDirectoryPath(), '#').'/#',
                             './../rules/',
-                            $this->locator->getFixerDocumentationFilePath($fixerNames[$rule])
+                            $this->locator->getFixerDocumentationFilePath($fixerNames[$rule]),
                         );
 
                         $doc .= "\n- `{$rule} <{$path}>`_";

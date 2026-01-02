@@ -33,7 +33,7 @@ final class FopenFlagOrderFixer extends AbstractFopenFlagFixer
             'Order the flags in `fopen` calls, `b` and `t` must be last.',
             [new CodeSample("<?php\n\$a = fopen(\$foo, 'br+');\n")],
             null,
-            'Risky when the function `fopen` is overridden.'
+            'Risky when the function `fopen` is overridden.',
         );
     }
 
@@ -118,7 +118,7 @@ final class FopenFlagOrderFixer extends AbstractFopenFlagFixer
                 }
 
                 return $flag1 < $flag2 ? -1 : 1;
-            }
+            },
         );
 
         return $flags;

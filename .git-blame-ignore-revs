@@ -6,3 +6,5 @@ adf95039e6c28528f19dcae5da7322d953761782
 cd245c59a94e44c47c027da59ee555ec94afe161
 # Apply (partially) multiline_string_to_heredoc (#9002)
 743fd2531d3a72019a98d0d795f85bc96030bd70
+# apply trailing_comma_in_multiline: elements.arguments (#9314)
+b7294c5125cdf97c08822630473b83663d994279

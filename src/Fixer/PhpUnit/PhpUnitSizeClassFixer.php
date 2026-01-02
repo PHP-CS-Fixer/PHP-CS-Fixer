@@ -55,7 +55,7 @@ final class PhpUnitSizeClassFixer extends AbstractPhpUnitFixer implements Whites
                 new CodeSample("<?php\nclass MyTest extends TestCase {}\n"),
                 new CodeSample("<?php\nclass MyTest extends TestCase {}\n", ['group' => 'medium']),
             ],
-            'The special groups [small, medium, large] provides a way to identify tests that are taking long to be executed.'
+            'The special groups [small, medium, large] provides a way to identify tests that are taking long to be executed.',
         );
     }
 

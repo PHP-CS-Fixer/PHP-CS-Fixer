@@ -77,7 +77,7 @@ final class PhpUnitStrictFixer extends AbstractPhpUnitFixer implements Configura
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -94,11 +94,11 @@ final class PhpUnitStrictFixer extends AbstractPhpUnitFixer implements Configura
                         }
 
                         PHP,
-                    ['assertions' => ['assertEquals']]
+                    ['assertions' => ['assertEquals']],
                 ),
             ],
             null,
-            'Risky when any of the functions are overridden or when testing object equality.'
+            'Risky when any of the functions are overridden or when testing object equality.',
         );
     }
 
@@ -130,7 +130,7 @@ final class PhpUnitStrictFixer extends AbstractPhpUnitFixer implements Configura
                 $argumentsCount = $argumentsAnalyzer->countArguments(
                     $tokens,
                     $openingParenthesisIndex,
-                    $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingParenthesisIndex)
+                    $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingParenthesisIndex),
                 );
 
                 if (2 === $argumentsCount || 3 === $argumentsCount) {

@@ -223,7 +223,7 @@ final class ControlCaseStructuresAnalyzer
                 $analysis['open'],
                 $analysis['end'],
                 $cases,
-                $default
+                $default,
             );
         }
 
@@ -232,7 +232,7 @@ final class ControlCaseStructuresAnalyzer
                 $analysis['index'],
                 $analysis['open'],
                 $analysis['end'],
-                $cases
+                $cases,
             );
         }
 
@@ -241,7 +241,7 @@ final class ControlCaseStructuresAnalyzer
                 $analysis['index'],
                 $analysis['open'],
                 $analysis['end'],
-                $default
+                $default,
             );
         }
 

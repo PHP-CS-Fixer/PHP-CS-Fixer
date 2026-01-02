@@ -40,7 +40,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
             'Code MUST use configured indentation type.',
             [
                 new CodeSample("<?php\n\nif (true) {\n\techo 'Hello!';\n}\n"),
-            ]
+            ],
         );
     }
 
@@ -117,7 +117,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
                 // change indent to expected one
                 return $matches[1].$this->getExpectedIndent($content, $indent);
             },
-            $content
+            $content,
         );
 
         if ($previousTokenHasTrailingLinebreak) {

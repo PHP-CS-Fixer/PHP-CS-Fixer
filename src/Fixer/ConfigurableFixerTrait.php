@@ -65,7 +65,7 @@ trait ConfigurableFixerTrait
                     $name,
                     $this->getName(),
                     Application::getMajorVersion() + 1,
-                    str_replace('`', '"', $option->getDeprecationMessage())
+                    str_replace('`', '"', $option->getDeprecationMessage()),
                 )));
             }
         }
@@ -76,19 +76,19 @@ trait ConfigurableFixerTrait
             throw new RequiredFixerConfigurationException(
                 $this->getName(),
                 \sprintf('Missing required configuration: %s', $exception->getMessage()),
-                $exception
+                $exception,
             );
         } catch (InvalidOptionsForEnvException $exception) {
             throw new InvalidForEnvFixerConfigurationException(
                 $this->getName(),
                 \sprintf('Invalid configuration for env: %s', $exception->getMessage()),
-                $exception
+                $exception,
             );
         } catch (ExceptionInterface $exception) {
             throw new InvalidFixerConfigurationException(
                 $this->getName(),
                 \sprintf('Invalid configuration: %s', $exception->getMessage()),
-                $exception
+                $exception,
             );
         }
 

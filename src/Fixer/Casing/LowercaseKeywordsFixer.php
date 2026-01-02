@@ -49,9 +49,9 @@ final class LowercaseKeywordsFixer extends AbstractFixer
                                 }
                             }
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

@@ -40,7 +40,7 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
             self::assertSame(
                 \in_array($index, $expectedPositives, true),
                 (new AlternativeSyntaxAnalyzer())->belongsToAlternativeSyntax($tokens, $index),
-                '@ index: '.$index
+                '@ index: '.$index,
             );
         }
     }
@@ -102,8 +102,8 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
             $expectedResult,
             $analyzer->findAlternativeSyntaxBlockEnd(
                 Tokens::fromCode($code),
-                $startIndex
-            )
+                $startIndex,
+            ),
         );
     }
 

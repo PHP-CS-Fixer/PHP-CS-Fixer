@@ -52,13 +52,13 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer implements Configurab
             'Replace control structure alternative syntax to use braces.',
             [
                 new CodeSample(
-                    "<?php\nif(true):echo 't';else:echo 'f';endif;\n"
+                    "<?php\nif(true):echo 't';else:echo 'f';endif;\n",
                 ),
                 new CodeSample(
                     "<?php if (\$condition): ?>\nLorem ipsum.\n<?php endif; ?>\n",
-                    ['fix_non_monolithic_code' => true]
+                    ['fix_non_monolithic_code' => true],
                 ),
-            ]
+            ],
         );
     }
 
@@ -226,7 +226,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer implements Configurab
         $tokens->clearAt($index);
         $tokens->insertAt(
             $index,
-            $items
+            $items,
         );
 
         // increment the position of the colon by number of items inserted
@@ -241,7 +241,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer implements Configurab
         $tokens->clearAt($colonIndex);
         $tokens->insertAt(
             $colonIndex,
-            $items
+            $items,
         );
     }
 }

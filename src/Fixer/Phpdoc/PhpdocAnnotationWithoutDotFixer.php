@@ -48,7 +48,7 @@ final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
                          */
                         function foo ($bar) {}
 
-                        PHP
+                        PHP,
                 ),
             ],
         );
@@ -120,7 +120,7 @@ final class PhpdocAnnotationWithoutDotFixer extends AbstractFixer
                     '/^(\s*\*\s*@\w+\s+'.$optionalTypeRegEx.')(\p{Lu}?(?=\p{Ll}|\p{Zs}))(.*)$/',
                     static fn (array $matches): string => $matches[1].mb_strtolower($matches[2]).$matches[3],
                     $startLine->getContent(),
-                    1
+                    1,
                 );
                 $startLine->setContent($content);
             }

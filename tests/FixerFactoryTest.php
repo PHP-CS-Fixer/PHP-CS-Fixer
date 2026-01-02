@@ -46,14 +46,14 @@ final class FixerFactoryTest extends TestCase
         self::assertSame($factory, $testInstance);
 
         $testInstance = $factory->registerCustomFixers(
-            [$this->createFixerDouble('Foo/f1'), $this->createFixerDouble('Foo/f2')]
+            [$this->createFixerDouble('Foo/f1'), $this->createFixerDouble('Foo/f2')],
         );
 
         self::assertSame($factory, $testInstance);
 
         $testInstance = $factory->registerFixer(
             $this->createFixerDouble('f3'),
-            false
+            false,
         );
 
         self::assertSame($factory, $testInstance);
@@ -85,7 +85,7 @@ final class FixerFactoryTest extends TestCase
         };
 
         $testInstance = $factory->useRuleSet(
-            $ruleSet
+            $ruleSet,
         );
 
         self::assertSame($factory, $testInstance);
@@ -109,14 +109,14 @@ final class FixerFactoryTest extends TestCase
                     && $class->implementsInterface(FixerInterface::class)
                     && !$class->implementsInterface(InternalFixerInterface::class)
                     && str_starts_with($class->getNamespaceName(), 'PhpCsFixer\Fixer\\');
-            }
+            },
         );
 
         sort($fixerClasses);
 
         $fixers = array_map(
             static fn (FixerInterface $fixer): string => \get_class($fixer),
-            $factory->getFixers()
+            $factory->getFixers(),
         );
 
         sort($fixers);
@@ -494,7 +494,7 @@ final class FixerFactoryTest extends TestCase
         $this->expectException(InvalidFixerConfigurationException::class);
 
         $this->expectExceptionMessage(
-            '[foo] Rule must be enabled (true), disabled (false) or configured (non-empty, assoc array). Other values are not allowed.'
+            '[foo] Rule must be enabled (true), disabled (false) or configured (non-empty, assoc array). Other values are not allowed.',
         );
 
         $factory->useRuleSet(new RuleSet([

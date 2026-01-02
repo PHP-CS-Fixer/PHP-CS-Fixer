@@ -50,7 +50,7 @@ final class BlankLineBetweenImportGroupsFixer extends AbstractFixer implements W
                         use const AAB;
                         use AAA;
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -63,7 +63,7 @@ final class BlankLineBetweenImportGroupsFixer extends AbstractFixer implements W
                         use function CCC\AA;
                         use function DDD;
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -76,7 +76,7 @@ final class BlankLineBetweenImportGroupsFixer extends AbstractFixer implements W
                         use function DDD;
                         use function CCC\AA;
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -89,9 +89,9 @@ final class BlankLineBetweenImportGroupsFixer extends AbstractFixer implements W
                         use function CCC\AA;
                         use Bar;
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

@@ -44,9 +44,9 @@ final class LineEndingFixer extends AbstractFixer implements WhitespacesAwareFix
             'All PHP files must use same line ending.',
             [
                 new CodeSample(
-                    "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\r\nAAAAA \r\n |\r\nTEST;\n"
+                    "<?php \$b = \" \$a \r\n 123\"; \$a = <<<TEST\r\nAAAAA \r\n |\r\nTEST;\n",
                 ),
-            ]
+            ],
         );
     }
 
@@ -64,7 +64,7 @@ final class LineEndingFixer extends AbstractFixer implements WhitespacesAwareFix
                         Preg::replace(
                             '#\R#',
                             $ending,
-                            $token->getContent()
+                            $token->getContent(),
                         ),
                     ]);
                 }
@@ -78,7 +78,7 @@ final class LineEndingFixer extends AbstractFixer implements WhitespacesAwareFix
                     Preg::replace(
                         '#\R#',
                         $ending,
-                        $token->getContent()
+                        $token->getContent(),
                     ),
                 ]);
             }

@@ -100,7 +100,7 @@ final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
                         function bar() {}
 
                         PHP,
-                    ['scalar_types' => false]
+                    ['scalar_types' => false],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -112,7 +112,7 @@ final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
                         function bar() {}
 
                         PHP,
-                    ['union_types' => false]
+                    ['union_types' => false],
                 ),
                 new VersionSpecificCodeSample(
                     <<<'PHP'
@@ -127,11 +127,11 @@ final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
                         }
 
                         PHP,
-                    new VersionSpecification(8_00_00)
+                    new VersionSpecification(8_00_00),
                 ),
             ],
             null,
-            'The `@return` annotation is mandatory for the fixer to make changes, signatures of methods without it (no docblock, inheritdocs) will not be fixed. Manual actions are required if inherited signatures are not properly documented.'
+            'The `@return` annotation is mandatory for the fixer to make changes, signatures of methods without it (no docblock, inheritdocs) will not be fixed. Manual actions are required if inherited signatures are not properly documented.',
         );
     }
 
@@ -241,7 +241,7 @@ final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
                     new Token([CT::T_TYPE_COLON, ':']),
                     new Token([\T_WHITESPACE, ' ']),
                 ],
-                $this->createTypeDeclarationTokens($returnType, $isNullable)
+                $this->createTypeDeclarationTokens($returnType, $isNullable),
             );
         }
 

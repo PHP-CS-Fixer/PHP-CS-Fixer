@@ -50,8 +50,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class Application extends BaseApplication
 {
     public const NAME = 'PHP CS Fixer';
-    public const VERSION = '3.91.4-DEV';
-    public const VERSION_CODENAME = 'Folding Bike';
+    public const VERSION = '3.92.4-DEV';
+    public const VERSION_CODENAME = 'Exceptional Exception';
 
     /**
      * @readonly
@@ -76,7 +76,7 @@ final class Application extends BaseApplication
         $this->add(new SelfUpdateCommand(
             new NewVersionChecker(new GithubClient()),
             $this->toolInfo,
-            new PharChecker()
+            new PharChecker(),
         ));
         $this->add(new WorkerCommand($this->toolInfo));
     }
@@ -230,7 +230,7 @@ final class Application extends BaseApplication
                     'code' => $e->getCode(),
                     'trace' => $e->getTraceAsString(),
                 ],
-                \JSON_THROW_ON_ERROR
+                \JSON_THROW_ON_ERROR,
             ));
 
             return;

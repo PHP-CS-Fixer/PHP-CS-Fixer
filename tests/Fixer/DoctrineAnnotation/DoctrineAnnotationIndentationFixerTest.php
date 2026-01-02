@@ -636,7 +636,7 @@ final class DoctrineAnnotationIndentationFixerTest extends AbstractDoctrineAnnot
  * )
  */'],
             ],
-            ['indent_mixed_lines' => true]
+            ['indent_mixed_lines' => true],
         );
     }
 }

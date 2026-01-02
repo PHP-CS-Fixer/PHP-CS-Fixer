@@ -75,8 +75,8 @@ final class DuplicatedTestsTest extends TestCase
             \sprintf(
                 "Duplicated methods found in %s:\n - %s",
                 $className,
-                implode("\n - ", $duplicates)
-            )
+                implode("\n - ", $duplicates),
+            ),
         );
     }
 
@@ -104,7 +104,7 @@ final class DuplicatedTestsTest extends TestCase
                 $duplicates[] = \sprintf(
                     'Method "%s" must be shorter, call "%s".',
                     $method->getName(),
-                    $alreadyFoundMethod
+                    $alreadyFoundMethod,
                 );
             }
             $alreadyFoundMethods[] = $method->getName();
@@ -116,8 +116,8 @@ final class DuplicatedTestsTest extends TestCase
             \sprintf(
                 "Duplicated methods found in %s:\n - %s",
                 $className,
-                implode("\n - ", $duplicates)
-            )
+                implode("\n - ", $duplicates),
+            ),
         );
     }
 
@@ -143,7 +143,7 @@ final class DuplicatedTestsTest extends TestCase
                  *  - single line methods
                  *  - single line methods with configs
                  */
-                && 4 < (int) $method->getEndLine() - (int) $method->getStartLine()
+                && 4 < (int) $method->getEndLine() - (int) $method->getStartLine(),
             );
 
             usort(

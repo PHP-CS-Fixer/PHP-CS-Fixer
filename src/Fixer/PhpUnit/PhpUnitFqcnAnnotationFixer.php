@@ -50,9 +50,9 @@ final class PhpUnitFqcnAnnotationFixer extends AbstractPhpUnitFixer
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 
@@ -84,7 +84,7 @@ final class PhpUnitFqcnAnnotationFixer extends AbstractPhpUnitFixer
                 $tokens[$index] = new Token([\T_DOC_COMMENT, Preg::replace(
                     '~^(\s*\*\s*@(?:expectedException|covers|coversDefaultClass|uses)\h+)(?!(?:self|static)::)(\w.*)$~m',
                     '$1\\\$2',
-                    $tokens[$index]->getContent()
+                    $tokens[$index]->getContent(),
                 )]);
             }
         }

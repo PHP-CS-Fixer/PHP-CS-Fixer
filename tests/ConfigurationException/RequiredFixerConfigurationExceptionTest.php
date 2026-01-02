@@ -36,7 +36,7 @@ final class RequiredFixerConfigurationExceptionTest extends TestCase
 
         $exception = new RequiredFixerConfigurationException(
             $fixerName,
-            $message
+            $message,
         );
 
         self::assertSame(\sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
@@ -53,7 +53,7 @@ final class RequiredFixerConfigurationExceptionTest extends TestCase
         $exception = new RequiredFixerConfigurationException(
             $fixerName,
             $message,
-            $previous
+            $previous,
         );
 
         self::assertSame(\sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());

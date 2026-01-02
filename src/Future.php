@@ -37,7 +37,7 @@ final class Future
     {
         return filter_var(
             getenv('PHP_CS_FIXER_FUTURE_MODE'),
-            \FILTER_VALIDATE_BOOL
+            \FILTER_VALIDATE_BOOL,
         );
     }
 
@@ -47,7 +47,7 @@ final class Future
             throw new \RuntimeException(
                 'Your are using something deprecated, see previous exception. Aborting execution because `PHP_CS_FIXER_FUTURE_MODE` environment variable is set.',
                 0,
-                $futureException
+                $futureException,
             );
         }
 

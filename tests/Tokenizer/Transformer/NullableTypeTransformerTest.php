@@ -42,7 +42,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
             $expectedTokens,
             [
                 CT::T_NULLABLE_TYPE,
-            ]
+            ],
         );
     }
 

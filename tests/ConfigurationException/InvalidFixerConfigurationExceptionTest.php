@@ -36,7 +36,7 @@ final class InvalidFixerConfigurationExceptionTest extends TestCase
 
         $exception = new InvalidFixerConfigurationException(
             $fixerName,
-            $message
+            $message,
         );
 
         self::assertSame(\sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
@@ -54,7 +54,7 @@ final class InvalidFixerConfigurationExceptionTest extends TestCase
         $exception = new InvalidFixerConfigurationException(
             $fixerName,
             $message,
-            $previous
+            $previous,
         );
 
         self::assertSame(\sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());

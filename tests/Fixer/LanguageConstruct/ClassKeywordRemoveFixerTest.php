@@ -319,7 +319,7 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
     /**
      * @requires PHP <8.0
      */
-    public function testFixPrePHP80(): void
+    public function testFixPrePHP8x0(): void
     {
         $this->doTest(
             "<?php echo 'DateTime'
@@ -329,7 +329,7 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
             '<?php echo \
 DateTime:: # a
  /* b */ class?>
-'
+',
         );
     }
 
@@ -346,7 +346,7 @@ DateTime:: # a
             '<?php
             echo Thing::class;
             echo $thing::class;
-            '
+            ',
         );
     }
 }

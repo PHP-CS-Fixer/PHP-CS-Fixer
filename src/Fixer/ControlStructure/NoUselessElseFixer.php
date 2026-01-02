@@ -36,7 +36,7 @@ final class NoUselessElseFixer extends AbstractNoUselessElseFixer
             'There should not be useless `else` cases.',
             [
                 new CodeSample("<?php\nif (\$a) {\n    return 1;\n} else {\n    return 2;\n}\n"),
-            ]
+            ],
         );
     }
 

@@ -118,7 +118,7 @@ abstract class AbstractFixerTestCase extends TestCase
         // If fixer is not risky then the method `isRisky` from `AbstractFixer` must be used
         self::assertSame(
             !$this->fixer->isRisky(),
-            AbstractFixer::class === $reflection->getDeclaringClass()->getName()
+            AbstractFixer::class === $reflection->getDeclaringClass()->getName(),
         );
     }
 
@@ -197,7 +197,7 @@ abstract class AbstractFixerTestCase extends TestCase
             $tokens = Tokens::fromCode($code);
             $this->fixer->fix(
                 $sample instanceof FileSpecificCodeSampleInterface ? $sample->getSplFileInfo() : $dummyFileInfo,
-                $tokens
+                $tokens,
             );
 
             self::assertTrue($tokens->isChanged(), \sprintf('[%s] Sample #%d is not changed during fixing.', $fixerName, $sampleCounter));
@@ -205,12 +205,12 @@ abstract class AbstractFixerTestCase extends TestCase
             $duplicatedCodeSample = array_search(
                 $sample,
                 \array_slice($samples, 0, $sampleCounter),
-                true
+                true,
             );
 
             self::assertFalse(
                 $duplicatedCodeSample,
-                \sprintf('[%s] Sample #%d duplicates #%d.', $fixerName, $sampleCounter, $duplicatedCodeSample)
+                \sprintf('[%s] Sample #%d duplicates #%d.', $fixerName, $sampleCounter, $duplicatedCodeSample),
             );
         }
 
@@ -233,7 +233,7 @@ abstract class AbstractFixerTestCase extends TestCase
                 self::assertMatchesRegularExpression(
                     '/^[A-Z].+\.$/s',
                     $option->getDescription(),
-                    \sprintf('[%s] Description of option "%s" must start with capital letter and end with dot.', $fixerName, $option->getName())
+                    \sprintf('[%s] Description of option "%s" must start with capital letter and end with dot.', $fixerName, $option->getName()),
                 );
             }
         }
@@ -247,7 +247,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
         self::assertTrue(
             $reflection->isFinal(),
-            \sprintf('Fixer "%s" must be declared "final".', $this->fixer->getName())
+            \sprintf('Fixer "%s" must be declared "final".', $this->fixer->getName()),
         );
     }
 
@@ -256,7 +256,7 @@ abstract class AbstractFixerTestCase extends TestCase
         self::assertStringNotContainsString(
             'DEPRECATED',
             $this->fixer->getDefinition()->getSummary(),
-            'Fixer cannot contain word "DEPRECATED" in summary'
+            'Fixer cannot contain word "DEPRECATED" in summary',
         );
 
         $reflection = $this->getFixerReflection();
@@ -286,7 +286,7 @@ abstract class AbstractFixerTestCase extends TestCase
                     'Successor fixer `%s` for deprecated fixer `%s` is deprecated itself.',
                     $successorName,
                     $this->fixer->getName(),
-                )
+                ),
             );
         }
     }
@@ -419,8 +419,8 @@ abstract class AbstractFixerTestCase extends TestCase
             array_values(array_filter(
                 $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC),
                 static fn (\ReflectionMethod $method): bool => $method->getDeclaringClass()->getName() === $reflectionClass->getName()
-                    && !\in_array($method->getName(), $methodNames, true)
-            ))
+                    && !\in_array($method->getName(), $methodNames, true),
+            )),
         );
 
         if (isset($allowedExtraMethods[static::class])) {
@@ -518,7 +518,7 @@ abstract class AbstractFixerTestCase extends TestCase
             self::assertThat(
                 $tokens->generateCode(),
                 new IsIdenticalString($expected),
-                'Code built on input code must match expected code.'
+                'Code built on input code must match expected code.',
             );
             self::assertTrue($tokens->isChanged(), 'Tokens collection built on input code must be marked as changed after fixing.');
 
@@ -527,7 +527,7 @@ abstract class AbstractFixerTestCase extends TestCase
             self::assertSameSize(
                 $tokens,
                 array_unique(array_map(static fn (Token $token): string => spl_object_hash($token), $tokens->toArray())),
-                'Token items inside Tokens collection must be unique.'
+                'Token items inside Tokens collection must be unique.',
             );
 
             Tokens::clearCache();
@@ -547,7 +547,7 @@ abstract class AbstractFixerTestCase extends TestCase
         self::assertThat(
             $tokens->generateCode(),
             new IsIdenticalString($expected),
-            'Code built on expected code must not change.'
+            'Code built on expected code must not change.',
         );
         self::assertFalse($tokens->isChanged(), 'Tokens collection built on expected code must not be marked as changed after fixing.');
     }
@@ -568,7 +568,7 @@ abstract class AbstractFixerTestCase extends TestCase
         self::assertSame(
             substr_count(strtolower($haystack), strtolower($needle)),
             substr_count($haystack, $needle),
-            \sprintf('[%s] `%s` must be in correct casing in %s.', $fixerName, $needle, $descriptionType)
+            \sprintf('[%s] `%s` must be in correct casing in %s.', $fixerName, $needle, $descriptionType),
         );
     }
 
@@ -592,7 +592,7 @@ abstract class AbstractFixerTestCase extends TestCase
             $linter = new CachingLinter(
                 filter_var(getenv('PHP_CS_FIXER_FAST_LINT_TEST_CASES'), \FILTER_VALIDATE_BOOLEAN)
                     ? new Linter()
-                    : new ProcessLinter()
+                    : new ProcessLinter(),
             );
         }
 
@@ -628,14 +628,14 @@ abstract class AbstractFixerTestCase extends TestCase
                     ? 'Option `%s` of fixer `%s` is wrongly listed in `ALLOWED_REQUIRED_OPTIONS` structure, as it is not required. If you just changed that option to not be required anymore, please adjust mentioned structure.'
                     : 'Option `%s` of fixer `%s` shall not be required. If you want to introduce new required option please adjust `ALLOWED_REQUIRED_OPTIONS` structure.',
                 $option->getName(),
-                $fixer->getName()
-            )
+                $fixer->getName(),
+            ),
         );
 
         self::assertStringNotContainsString(
             'DEPRECATED',
             $option->getDescription(),
-            'Option description cannot contain word "DEPRECATED"'
+            'Option description cannot contain word "DEPRECATED"',
         );
 
         if (!$option->hasDefault()) {
@@ -660,7 +660,7 @@ abstract class AbstractFixerTestCase extends TestCase
         self::assertSame(
             $option->getDefault(),
             $allowedValueSubset->getAllowedValues(),
-            \sprintf('[%s] `%s` has default and allowed sets of the same size, so they must be the same.', $fixer->getName(), $option->getName())
+            \sprintf('[%s] `%s` has default and allowed sets of the same size, so they must be the same.', $fixer->getName(), $option->getName()),
         );
     }
 
