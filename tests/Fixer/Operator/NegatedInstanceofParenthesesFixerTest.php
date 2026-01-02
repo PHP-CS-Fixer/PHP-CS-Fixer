@@ -219,5 +219,73 @@ final class NegatedInstanceofParenthesesFixerTest extends AbstractFixerTestCase
             '<?php !(foo() instanceof Foo);',
             ['use_parentheses' => false],
         ];
+
+        yield 'wrap_same' => [
+            '<?php !($a instanceof $a);',
+            '<?php !$a instanceof $a;',
+            ['use_parentheses' => true],
+        ];
+
+        yield 'unwrap_same' => [
+            '<?php !$a instanceof $a;',
+            '<?php !($a instanceof $a);',
+            ['use_parentheses' => false],
+        ];
+
+        yield 'wrap_wrapped_in_comments' => [
+            '<?php !(/*comment-1*/$x instanceof Foo/**comment-2*/);',
+            '<?php !/*comment-1*/$x instanceof Foo/**comment-2*/;',
+            ['use_parentheses' => true],
+        ];
+
+        yield 'unwrap_wrapped_in_comments' => [
+            '<?php !/*comment-1*/$x instanceof Foo/**comment-2*/;',
+            '<?php !(/*comment-1*/$x instanceof Foo/**comment-2*/);',
+            ['use_parentheses' => false],
+        ];
+
+        yield 'wrap_complex_comments' => [
+            '<?php
+                if (
+                    !(/*comment-1*/$x instanceof Foo/**comment-2*/) ||
+                    !(/*comment-3*/$y instanceof Foo/**comment-4*/)
+                    && !(/*comment-5*/$y instanceof Foo///comment-6)
+                ) {}',
+            '<?php
+                if (
+                    !/*comment-1*/$x instanceof Foo/**comment-2*/ ||
+                    !/*comment-3*/$y instanceof Foo/**comment-4*/
+                    && !/*comment-5*/$y instanceof Foo///comment-6
+                ) {}',
+            ['use_parentheses' => true],
+        ];
+
+        yield 'unwrap_complex_comments' => [
+            '<?php
+                if (
+                    !/*comment-1*/$x instanceof Foo/**comment-2*/ ||
+                    !/*comment-3*/$y instanceof Foo/**comment-4*/
+                    && !/*comment-5*/$y instanceof Foo///comment-6
+                ) {}',
+            '<?php
+                if (
+                    !(/*comment-1*/$x instanceof Foo/**comment-2*/) ||
+                    !(/*comment-3*/$y instanceof Foo/**comment-4*/)
+                    && !(/*comment-5*/$y instanceof Foo///comment-6)
+                ) {}',
+            ['use_parentheses' => false],
+        ];
+
+        yield 'wrap_var_dump_ternary' => [
+            '<?php var_dump(!((isset($b) ? $b : $a) instanceof SplFixedArray));',
+            '<?php var_dump(!(isset($b) ? $b : $a) instanceof SplFixedArray);',
+            ['use_parentheses' => true],
+        ];
+
+        yield 'unwrap_var_dump_ternary' => [
+            '<?php var_dump(!(isset($b) ? $b : $a) instanceof SplFixedArray);',
+            '<?php var_dump(!((isset($b) ? $b : $a) instanceof SplFixedArray));',
+            ['use_parentheses' => false],
+        ];
     }
 }
