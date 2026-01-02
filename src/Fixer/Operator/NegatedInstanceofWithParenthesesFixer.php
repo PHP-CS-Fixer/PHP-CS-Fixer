@@ -164,9 +164,7 @@ final class NegatedInstanceofWithParenthesesFixer extends AbstractFixer implemen
         $openIndex = $tokens->getPrevMeaningfulToken($startIndex);
         $closeIndex = $tokens->getNextMeaningfulToken($endIndex);
 
-        // Remove close parenthesis first (higher index) to avoid index shift
         $tokens->clearTokenAndMergeSurroundingWhitespace($closeIndex);
-        // Then remove open parenthesis (lower index, unaffected by first removal)
         $tokens->clearTokenAndMergeSurroundingWhitespace($openIndex);
     }
 }
