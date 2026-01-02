@@ -47,59 +47,75 @@ final class NegatedInstanceofParenthesesFixerTest extends AbstractFixerTestCase
      */
     public static function provideFixCases(): iterable
     {
+        yield 'default' => [
+            '<?php !$x instanceof Foo;',
+            '<?php !($x instanceof Foo);',
+        ];
+
         yield 'wrap_simple' => [
             '<?php !($x instanceof Foo);',
             '<?php !$x instanceof Foo;',
+            ['use_parentheses' => true],
         ];
 
         yield 'wrap_with_fqn' => [
             '<?php !($x instanceof \A\B\C);',
             '<?php !$x instanceof \A\B\C;',
+            ['use_parentheses' => true],
         ];
 
         yield 'wrap_with_namespace_relative' => [
             '<?php !($x instanceof namespace\Foo);',
             '<?php !$x instanceof namespace\Foo;',
+            ['use_parentheses' => true],
         ];
 
         yield 'wrap_with_self' => [
             '<?php !($x instanceof self);',
             '<?php !$x instanceof self;',
+            ['use_parentheses' => true],
         ];
 
         yield 'wrap_with_static' => [
             '<?php !($x instanceof static);',
             '<?php !$x instanceof static;',
+            ['use_parentheses' => true],
         ];
 
         yield 'wrap_with_parent' => [
             '<?php !($x instanceof parent);',
             '<?php !$x instanceof parent;',
+            ['use_parentheses' => true],
         ];
 
         yield 'wrap_already_wrapped' => [
             '<?php !($x instanceof Foo);',
             null,
+            ['use_parentheses' => true],
         ];
 
         yield 'wrap_not_negated' => [
             '<?php $x instanceof Foo;',
             null,
+            ['use_parentheses' => false],
         ];
 
         yield 'wrap_multiple_negated_expressions' => [
             '<?php !($x instanceof Foo) && !($y instanceof Bar);',
             '<?php !$x instanceof Foo && !$y instanceof Bar;',
+            ['use_parentheses' => true],
         ];
 
         yield 'wrap_mixed_negated_and_non_negated' => [
             '<?php !($x instanceof Foo) && $y instanceof Bar;',
             '<?php !$x instanceof Foo && $y instanceof Bar;',
+            ['use_parentheses' => true],
         ];
 
         yield 'wrap_mixed_wrapped_and_unwrapped' => [
             '<?php !(!($x instanceof Foo) && !($y instanceof Bar));',
             '<?php !(!$x instanceof Foo && !($y instanceof Bar));',
+            ['use_parentheses' => true],
         ];
 
         yield 'unwrap_simple' => [

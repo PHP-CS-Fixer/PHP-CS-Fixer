@@ -23,7 +23,7 @@ not.
 
 Allowed types: ``bool``
 
-Default value: ``true``
+Default value: ``false``
 
 Examples
 --------
@@ -38,21 +38,21 @@ Example #1
    --- Original
    +++ New
     <?php
-   -!$foo instanceof Foo;
-   +!($foo instanceof Foo);
+   -!($foo instanceof Foo);
+   +!$foo instanceof Foo;
 
 Example #2
 ~~~~~~~~~~
 
-With configuration: ``['use_parentheses' => false]``.
+With configuration: ``['use_parentheses' => true]``.
 
 .. code-block:: diff
 
    --- Original
    +++ New
     <?php
-   -!($foo instanceof Foo);
-   +!$foo instanceof Foo;
+   -!$foo instanceof Foo;
+   +!($foo instanceof Foo);
 
 References
 ----------

@@ -51,11 +51,11 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
             'Negated `instanceof` expressions must (not) be wrapped in parentheses.',
             [
                 new CodeSample(
-                    "<?php\n!\$foo instanceof Foo;\n",
+                    "<?php\n!(\$foo instanceof Foo);\n",
                 ),
                 new CodeSample(
-                    "<?php\n!(\$foo instanceof Foo);\n",
-                    ['use_parentheses' => false],
+                    "<?php\n!\$foo instanceof Foo;\n",
+                    ['use_parentheses' => true],
                 ),
             ],
         );
@@ -71,7 +71,7 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('use_parentheses', 'Whether negated `instanceof` expressions should be wrapped in parentheses or not.'))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(true)
+                ->setDefault(false)
                 ->getOption(),
         ]);
     }
