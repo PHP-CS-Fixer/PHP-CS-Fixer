@@ -168,6 +168,30 @@ final class ComposerJsonReaderTest extends TestCase
 }',
         ];
 
+        yield 'version with range separated by a hyphen and asterisk' => [
+            '9.1',
+            '{
+    "require": {},
+    "require-dev": { "phpunit/phpunit": "9.1.*-9.6.*" }
+}',
+        ];
+
+        yield 'version with beta' => [
+            '9.1',
+            '{
+    "require": {},
+    "require-dev": { "phpunit/phpunit": "9.1-BETA.0" }
+}',
+        ];
+
+        yield 'version with v' => [
+            '9.1',
+            '{
+    "require": {},
+    "require-dev": { "phpunit/phpunit": "v9.1 || v10" }
+}',
+        ];
+
         yield 'version with <=' => [
             null, // not supported !
             '{
