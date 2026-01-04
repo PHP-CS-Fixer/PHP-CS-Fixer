@@ -172,5 +172,10 @@ final class NegatedInstanceofParenthesesFixerTest extends AbstractFixerTestCase
             '<?php var_dump(!(isset($b) ? $b : $a) instanceof SplFixedArray);',
             '<?php var_dump(!((isset($b) ? $b : $a) instanceof SplFixedArray));',
         ];
+
+        yield 'array_item_to_object_property' => [
+            '<?php !$a[$key] instanceof $o->prop;',
+            '<?php !($a[$key] instanceof $o->prop);',
+        ];
     }
 }
