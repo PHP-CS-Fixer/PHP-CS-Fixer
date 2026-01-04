@@ -239,40 +239,43 @@ The rule is part of the following rule sets:
 
 - `@PER <./../../ruleSets/PER.rst>`_ *(deprecated)* with config:
 
-  ``['allow_single_line_empty_anonymous_classes' => true]``
+  ``['allow_single_line_anonymous_functions' => false, 'allow_single_line_empty_anonymous_classes' => true]``
 
 - `@PER-CS <./../../ruleSets/PER-CS.rst>`_ with config:
 
-  ``['allow_single_line_empty_anonymous_classes' => true]``
+  ``['allow_single_line_anonymous_functions' => false, 'allow_single_line_empty_anonymous_classes' => true]``
 
 - `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ *(deprecated)* with config:
 
-  ``['allow_single_line_empty_anonymous_classes' => true]``
+  ``['allow_single_line_anonymous_functions' => false, 'allow_single_line_empty_anonymous_classes' => true]``
 
 - `@PER-CS1x0 <./../../ruleSets/PER-CS1x0.rst>`_ with config:
 
-  ``['allow_single_line_empty_anonymous_classes' => true]``
+  ``['allow_single_line_anonymous_functions' => false, 'allow_single_line_empty_anonymous_classes' => true]``
 
 - `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ *(deprecated)* with config:
 
-  ``['allow_single_line_empty_anonymous_classes' => true]``
+  ``['allow_single_line_anonymous_functions' => false, 'allow_single_line_empty_anonymous_classes' => true]``
 
 - `@PER-CS2x0 <./../../ruleSets/PER-CS2x0.rst>`_ with config:
 
-  ``['allow_single_line_empty_anonymous_classes' => true]``
+  ``['allow_single_line_anonymous_functions' => false, 'allow_single_line_empty_anonymous_classes' => true]``
 
 - `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ *(deprecated)* with config:
 
-  ``['allow_single_line_empty_anonymous_classes' => true]``
+  ``['allow_single_line_anonymous_functions' => false, 'allow_single_line_empty_anonymous_classes' => true]``
 
 - `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_ with config:
 
-  ``['allow_single_line_empty_anonymous_classes' => true]``
+  ``['allow_single_line_anonymous_functions' => false, 'allow_single_line_empty_anonymous_classes' => true]``
 
-- `@PSR2 <./../../ruleSets/PSR2.rst>`_
+- `@PSR2 <./../../ruleSets/PSR2.rst>`_ with config:
+
+  ``['allow_single_line_anonymous_functions' => false]``
+
 - `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
 
-  ``['allow_single_line_empty_anonymous_classes' => true]``
+  ``['allow_single_line_anonymous_functions' => false, 'allow_single_line_empty_anonymous_classes' => true]``
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 

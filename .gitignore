@@ -1,3 +1,4 @@
+/.vscode
 /.env
 /.php-cs-fixer.cache
 /.php-cs-fixer.php
@@ -5,6 +6,7 @@
 /box.json
 /compose.override.yaml
 /composer.lock
+/composer.phar
 /dev-tools/bin/
 /dev-tools/infection/
 /dev-tools/php-compatibility/cache.json
