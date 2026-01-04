@@ -112,7 +112,8 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
             }
 
             if ($useParentheses) {
-                $this->addParentheses($tokens, $start, $end);
+                // $this->addParentheses($tokens, $start, $end);
+                $this->addParenthesesAlternative($tokens, $start, $end);
             } else {
                 $this->removeParentheses($tokens, $start, $end);
             }
@@ -127,13 +128,13 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
         while (($prev = $tokens->getPrevMeaningfulToken($index)) !== null) {
             $type = Tokens::detectBlockType($tokens[$prev]);
 
-            if (null !== $type && !$type['isStart']) {
+            if ($type && !$type['isStart']) {
                 $index = $tokens->findBlockStart($type['type'], $prev);
 
                 continue;
             }
 
-            if (null !== $type && true === $type['isStart'] && Tokens::BLOCK_TYPE_PARENTHESIS_BRACE === $type['type']) {
+            if ($type && $type['isStart'] && Tokens::BLOCK_TYPE_PARENTHESIS_BRACE === $type['type']) {
                 return [$prev, $tokens->findBlockEnd($type['type'], $prev)];
             }
 
@@ -172,11 +173,38 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
         return $index;
     }
 
+    /**
+     * Adds parentheses before the left operand and after the right operand.
+     */
     private function addParentheses(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         $tokens->insertSlices([
             $startIndex => new Token('('),
             $endIndex + 1 => new Token(')'),
+        ]);
+    }
+
+    /**
+     * Adds parentheses after the previous meaningful token left of the left operand and
+     * before the next meaningful or whitespace token after the right operand.
+     */
+    private function addParenthesesAlternative(Tokens $tokens, int $startIndex, int $endIndex): void
+    {
+        $openingIndex = $tokens->getPrevMeaningfulToken($startIndex);
+        $openingIndex = null !== $openingIndex ? $openingIndex + 1 : $startIndex;
+
+        $closingIndex = $tokens->getNextMeaningfulToken($endIndex);
+        $closingIndex = null !== $closingIndex ? $closingIndex : $endIndex + 1;
+
+        // We don't want to add the closing parenthesis right before the next meaningful token,
+        // but after the first non-whitespace token (or at the endIndex if there is no whitespace).
+        if ($tokens[$closingIndex - 1]->isWhitespace()) {
+            $closingIndex = $tokens->getPrevNonWhitespace($closingIndex) + 1;
+        }
+
+        $tokens->insertSlices([
+            $openingIndex => new Token('('),
+            $closingIndex => new Token(')'),
         ]);
     }
 

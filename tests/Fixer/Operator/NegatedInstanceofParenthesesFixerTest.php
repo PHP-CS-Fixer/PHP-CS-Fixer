@@ -149,6 +149,11 @@ final class NegatedInstanceofParenthesesFixerTest extends AbstractFixerTestCase
             '<?php !(/*comment-1*/$x instanceof Foo/**comment-2*/);',
         ];
 
+        yield 'wrapped_in_comments_2' => [
+            '<?php !/*comment-1*/$x instanceof Foo/**comment-2 */ ;',
+            '<?php !(/*comment-1*/$x instanceof Foo/**comment-2 */) ;',
+        ];
+
         yield 'multiple_wrapped_in_comments' => [
             <<<'EXPR'
                 <?php
