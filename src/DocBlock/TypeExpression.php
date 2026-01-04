@@ -506,7 +506,7 @@ final class TypeExpression
                             $innerValue .= $innerValues[$i]['next_glue_raw'];
 
                             ++$i;
-                            \assert(isset($innerValues[$i]));
+                            \assert(isset($innerValues[$i])); // for PHPStan
                         }
 
                         $this->innerTypeExpressions[] = [
