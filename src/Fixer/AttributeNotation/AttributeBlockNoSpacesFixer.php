@@ -48,9 +48,9 @@ class User
     ]
     private string $name;
 }
-'
+',
                 ),
-            ]
+            ],
         );
     }
 
