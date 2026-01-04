@@ -19,7 +19,7 @@ Configuration
 ``class``
 ~~~~~~~~~
 
-Whether class/interface/trait blocks should be single or multi line.
+Whether class/interface/enum/trait blocks should be single or multi line.
 
 Allowed values: ``'multi'``, ``'single'`` and ``null``
 
