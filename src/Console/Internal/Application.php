@@ -16,7 +16,9 @@ namespace PhpCsFixer\Console\Internal;
 
 use PhpCsFixer\Console\Application as PublicApplication;
 use PhpCsFixer\Console\Command\HelpCommand;
+use PhpCsFixer\Console\Internal\Command\DecodeIdCommand;
 use PhpCsFixer\Console\Internal\Command\DocumentationCommand;
+use PhpCsFixer\Console\Internal\Command\ParseCommand;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\CompleteCommand;
@@ -43,7 +45,9 @@ final class Application extends BaseApplication
             PublicApplication::VERSION,
         );
 
+        $this->add(new DecodeIdCommand());
         $this->add(new DocumentationCommand($filesystem));
+        $this->add(new ParseCommand());
     }
 
     // polyfill for `add` method, as it is not available in Symfony 8.0
