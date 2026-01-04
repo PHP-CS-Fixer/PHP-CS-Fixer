@@ -44,20 +44,18 @@ return (new Config())
     ->setParallelConfig(ParallelConfigFactory::detect()) // @TODO 4.0 no need to call this manually
     ->setUnsupportedPhpVersionAllowed(true)
     ->setRiskyAllowed(true)
-    ->registerCustomRuleSets(class_exists(InternalRiskySet::class) ? [
+    ->registerCustomRuleSets([
         new InternalRiskySet(), // available only on repo level, not exposed to external installations or phar build
-    ] : [])
-    ->registerCustomFixers(class_exists(ConfigurableFixerTemplateFixer::class) ? [
-        new ConfigurableFixerTemplateFixer(),  // @TODO shall be registered while registering the Set with it
-    ] : [])
+    ])
+    ->registerCustomFixers([
+        new ConfigurableFixerTemplateFixer(), // @TODO shall be registered while registering the Set with it
+    ])
     ->setRules([
         '@auto' => true,
         '@auto:risky' => true,
         '@PhpCsFixer' => true,
         '@PhpCsFixer:risky' => true,
-    ] + (class_exists(InternalRiskySet::class) ? [
         '@self/internal' => true, // internal rule set, shall not be used outside of main repo
-    ] : []) + [
         'final_internal_class' => [
             'include' => [],
             'exclude' => ['final', 'api-extendable'],
