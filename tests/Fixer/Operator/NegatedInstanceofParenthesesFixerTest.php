@@ -174,8 +174,8 @@ final class NegatedInstanceofParenthesesFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'array_item_to_object_property' => [
-            '<?php !$a[$key] instanceof $o->prop;',
-            '<?php !($a[$key] instanceof $o->prop);',
+            '<?php !$a[$key] instanceof $o->prop[aaa()];',
+            '<?php !($a[$key] instanceof $o->prop[aaa()]);',
         ];
     }
 }
