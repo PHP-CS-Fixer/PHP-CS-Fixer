@@ -33,7 +33,7 @@ final class ErrorTest extends TestCase
 
         $error = new Error(
             $type,
-            $filePath
+            $filePath,
         );
 
         self::assertSame($type, $error->getType());
@@ -56,7 +56,7 @@ final class ErrorTest extends TestCase
             $filePath,
             $source,
             $appliedFixers,
-            $diff
+            $diff,
         );
 
         self::assertSame($type, $error->getType());
@@ -79,7 +79,7 @@ final class ErrorTest extends TestCase
             $filePath,
             $source,
             $appliedFixers,
-            $diff
+            $diff,
         );
         $serialisedError = $error->jsonSerialize();
 

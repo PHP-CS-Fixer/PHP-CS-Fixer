@@ -57,9 +57,9 @@ final class PhpdocTrimConsecutiveBlankLineSeparationFixer extends AbstractFixer
                          */
                         function fnc($foo) {}
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

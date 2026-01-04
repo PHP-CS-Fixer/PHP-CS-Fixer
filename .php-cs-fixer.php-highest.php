@@ -28,7 +28,7 @@ $config = require __DIR__.'/.php-cs-fixer.dist.php';
 Closure::bind(
     static function (Config $config): void { $config->name = 'PHP-HIGHEST'.(Future::isFutureModeEnabled() ? ' (future mode)' : ''); },
     null,
-    Config::class
+    Config::class,
 )($config);
 
 $config->getFinder()->notPath([

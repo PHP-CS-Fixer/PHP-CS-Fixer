@@ -155,7 +155,7 @@ final class DocBlock implements \Stringable
 
         $usefulLines = array_filter(
             $this->lines,
-            static fn (Line $line): bool => $line->containsUsefulContent()
+            static fn (Line $line): bool => $line->containsUsefulContent(),
         );
 
         if (1 < \count($usefulLines)) {

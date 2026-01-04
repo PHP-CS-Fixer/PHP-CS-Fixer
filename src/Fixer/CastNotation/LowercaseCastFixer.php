@@ -49,7 +49,7 @@ final class LowercaseCastFixer extends AbstractFixer
 
                         PHP,
                 ),
-            ]
+            ],
         );
     }
 

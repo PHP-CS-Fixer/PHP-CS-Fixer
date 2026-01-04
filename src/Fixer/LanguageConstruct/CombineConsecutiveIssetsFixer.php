@@ -30,7 +30,7 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Using `isset($var) &&` multiple times should be done in one call.',
-            [new CodeSample("<?php\n\$a = isset(\$a) && isset(\$b);\n")]
+            [new CodeSample("<?php\n\$a = isset(\$a) && isset(\$b);\n")],
         );
     }
 
@@ -61,7 +61,7 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
 
             $issetInfo = $this->getIssetInfo($tokens, $index);
             $issetCloseBraceIndex = end($issetInfo); // ')' token
-            $insertLocation = prev($issetInfo) + 1; // one index after the previous meaningful of ')'
+            $insertLocation = (int) prev($issetInfo) + 1; // one index after the previous meaningful of ')'
 
             $booleanAndTokenIndex = $tokens->getNextMeaningfulToken($issetCloseBraceIndex);
 

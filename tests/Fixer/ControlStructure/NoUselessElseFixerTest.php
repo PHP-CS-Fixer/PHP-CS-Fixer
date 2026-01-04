@@ -169,7 +169,7 @@ else?><?php echo 5;',
                         }
                     }
                 }
-            '
+            ',
         );
 
         yield from self::generateCases('<?php
@@ -261,7 +261,7 @@ else?><?php echo 5;',
                     }
                 }
             }
-        '
+        ',
         );
 
         yield [
@@ -611,13 +611,13 @@ else?><?php echo 5;',
      *
      * @requires PHP 8.0
      */
-    public function testFix80(string $expected): void
+    public function testFix80(string $expected, ?string $input = null): void
     {
-        $this->doTest($expected);
+        $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -721,7 +721,7 @@ else?><?php echo 5;',
             self::assertSame(
                 $expected,
                 \Closure::bind(static fn (AbstractNoUselessElseFixer $fixer): bool => $fixer->isInConditionWithoutBraces($tokens, $index, 0), null, AbstractNoUselessElseFixer::class)($this->fixer),
-                \sprintf('Failed in condition without braces check for index %d', $index)
+                \sprintf('Failed in condition without braces check for index %d', $index),
             );
         }
     }

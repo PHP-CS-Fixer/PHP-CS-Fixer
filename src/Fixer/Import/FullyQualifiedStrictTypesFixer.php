@@ -167,7 +167,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -181,7 +181,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
                         }
 
                         PHP,
-                    ['leading_backslash_in_global_namespace' => true]
+                    ['leading_backslash_in_global_namespace' => true],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -200,7 +200,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
                         }
 
                         PHP,
-                    ['leading_backslash_in_global_namespace' => true]
+                    ['leading_backslash_in_global_namespace' => true],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -222,9 +222,9 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
                         }
 
                         PHP,
-                    ['import_symbols' => true]
+                    ['import_symbols' => true],
                 ),
-            ]
+            ],
         );
     }
 
@@ -261,21 +261,21 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder(
                 'leading_backslash_in_global_namespace',
-                'Whether FQCN is prefixed with backslash when that FQCN is used in global namespace context.'
+                'Whether FQCN is prefixed with backslash when that FQCN is used in global namespace context.',
             ))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
             (new FixerOptionBuilder(
                 'import_symbols',
-                'Whether FQCNs should be automatically imported.'
+                'Whether FQCNs should be automatically imported.',
             ))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
             (new FixerOptionBuilder(
                 'phpdoc_tags',
-                'Collection of PHPDoc annotation tags where FQCNs should be processed. As of now only simple tags with `@tag \F\Q\C\N` format are supported (no complex types).'
+                'Collection of PHPDoc annotation tags where FQCNs should be processed. As of now only simple tags with `@tag \F\Q\C\N` format are supported (no complex types).',
             ))
                 ->setAllowedTypes(['string[]'])
                 ->setDefault([
@@ -588,7 +588,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
             });
             foreach ($discoveredSymbols as $symbol) {
                 while (true) {
-                    $shortEndNameLower = strtolower(str_contains($symbol, '\\') ? substr($symbol, strrpos($symbol, '\\') + 1) : $symbol);
+                    $shortEndNameLower = strtolower(str_contains($symbol, '\\') ? substr($symbol, (int) strrpos($symbol, '\\') + 1) : $symbol);
                     if (!isset($discoveredFqcnByShortNameLower[$kind][$shortEndNameLower])) {
                         $shortStartNameLower = strtolower(explode('\\', ltrim($symbol, '\\'), 2)[0]);
                         if (str_starts_with($symbol, '\\') || ('' === $namespaceName && !isset($useByShortNameLower[$shortStartNameLower]))
@@ -619,7 +619,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
             foreach ($discoveredFqcnByShortNameLower[$kind] ?? [] as $fqcn) {
                 $shortenedName = ltrim($this->shortenSymbol($fqcn, $kind, [], $namespaceName), '\\');
                 if (str_contains($shortenedName, '\\')) { // prevent importing non-namespaced names in global namespace
-                    $shortEndName = str_contains($fqcn, '\\') ? substr($fqcn, strrpos($fqcn, '\\') + 1) : $fqcn;
+                    $shortEndName = str_contains($fqcn, '\\') ? substr($fqcn, (int) strrpos($fqcn, '\\') + 1) : $fqcn;
                     \assert('' !== $shortEndName);
                     $uses[$kind][$fqcn] = $shortEndName;
                     $this->symbolsForImport[$kind][$shortEndName] = $fqcn;
@@ -703,7 +703,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
 
             $newTypeValue = implode('', array_map(
                 static fn (Token $token) => $token->getContent(),
-                $shortTokens
+                $shortTokens,
             ));
 
             return $currentTypeValue === $newTypeValue

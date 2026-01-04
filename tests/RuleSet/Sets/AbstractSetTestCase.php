@@ -56,14 +56,14 @@ abstract class AbstractSetTestCase extends TestCase
                     $setDescription,
                 ),
             ),
-            \sprintf('Ruleset description of "%s" must not contain inline code marked with backticks other than link ("`desc <link>`_") or reference ("vide ``@OtherSet``"). Got:%s> %s', $setName, "\n", $setDescription)
+            \sprintf('Ruleset description of "%s" must not contain inline code marked with backticks other than link ("`desc <link>`_") or reference ("vide ``@OtherSet``"). Got:%s> %s', $setName, "\n", $setDescription),
         );
 
         if (Preg::match('/(\d+)(\d)Migration/', \get_class($set), $matches)) {
             self::assertStringEndsWith(
                 \sprintf(' %d.%d compatibility.', $matches[1], $matches[2]),
                 $setDescription,
-                \sprintf('Set %s has incorrect description: "%s".', $setName, $setDescription)
+                \sprintf('Set %s has incorrect description: "%s".', $setName, $setDescription),
             );
         }
 

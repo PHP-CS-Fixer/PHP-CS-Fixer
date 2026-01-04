@@ -45,21 +45,21 @@ final class FixCommandTest extends TestCase
 
         self::assertSame(
             Command::SUCCESS,
-            $cmdTester->getStatusCode()
+            $cmdTester->getStatusCode(),
         );
     }
 
     public function testEmptyRulesValue(): void
     {
         $this->expectException(
-            InvalidConfigurationException::class
+            InvalidConfigurationException::class,
         );
         $this->expectExceptionMessageMatches(
-            '#^Empty rules value is not allowed\.$#'
+            '#^Empty rules value is not allowed\.$#',
         );
 
         $this->doTestExecute(
-            ['--rules' => '']
+            ['--rules' => ''],
         );
     }
 
@@ -72,7 +72,7 @@ final class FixCommandTest extends TestCase
             [
                 '--using-cache' => 'not today',
                 '--rules' => 'switch_case_semicolon_to_colon',
-            ]
+            ],
         );
 
         $cmdTester->getStatusCode();
@@ -101,7 +101,7 @@ final class FixCommandTest extends TestCase
             [
                 '--config' => $tmpFile,
                 'path' => [__DIR__],
-            ]
+            ],
         );
 
         $availableMaxProcesses = ParallelConfigFactory::detect()->getMaxProcesses();
@@ -141,7 +141,7 @@ final class FixCommandTest extends TestCase
             [
                 '--config' => $tmpFile,
                 'path' => [__DIR__],
-            ]
+            ],
         );
 
         self::assertStringContainsString('Running analysis on 2 cores with 1 file per process.', $cmdTester->getDisplay());
@@ -175,7 +175,7 @@ final class FixCommandTest extends TestCase
             [
                 '--config' => $tmpFile,
                 'path' => [__DIR__],
-            ]
+            ],
         );
 
         self::assertStringContainsString('PHP CS Fixer currently supports PHP syntax only up to PHP '.ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED, $cmdTester->getDisplay());
@@ -204,7 +204,7 @@ final class FixCommandTest extends TestCase
             [
                 '--config' => $tmpFile,
                 'path' => [__DIR__],
-            ]
+            ],
         );
 
         self::assertStringContainsString('PHP CS Fixer currently supports PHP syntax only up to PHP '.ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED, $cmdTester->getDisplay());
@@ -227,13 +227,13 @@ final class FixCommandTest extends TestCase
             array_merge(
                 ['command' => $command->getName()],
                 $this->getDefaultArguments(),
-                $arguments
+                $arguments,
             ),
             [
                 'interactive' => false,
                 'decorated' => false,
                 'verbosity' => OutputInterface::VERBOSITY_DEBUG,
-            ]
+            ],
         );
 
         return $commandTester;

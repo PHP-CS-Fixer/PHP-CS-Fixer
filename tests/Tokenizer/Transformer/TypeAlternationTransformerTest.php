@@ -43,7 +43,7 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
             $expectedTokens,
             [
                 CT::T_TYPE_ALTERNATION,
-            ]
+            ],
         );
     }
 
@@ -437,7 +437,7 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
             $expectedTokens,
             [
                 CT::T_TYPE_ALTERNATION,
-            ]
+            ],
         );
     }
 

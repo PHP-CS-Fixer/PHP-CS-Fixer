@@ -64,7 +64,7 @@ final class ComposerFileTest extends TestCase
 
                 return $carry;
             },
-            []
+            [],
         );
 
         foreach ($aliases as $code => $alias) {

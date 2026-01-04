@@ -83,7 +83,7 @@ final class CiConfigurationTest extends TestCase
         } else {
             self::assertTrue(
                 version_compare($expectedPhp, $ciVersionsForDeployment, 'eq'),
-                \sprintf('Expects %s to be %s', $ciVersionsForDeployment, $expectedPhp)
+                \sprintf('Expects %s to be %s', $ciVersionsForDeployment, $expectedPhp),
             );
         }
     }
@@ -97,7 +97,7 @@ final class CiConfigurationTest extends TestCase
         $ci = Yaml::parseFile(__DIR__.'/../../.github/workflows/docker.yml');
         $ciServices = array_map(
             static fn ($item) => $item['docker-service'],
-            $ci['jobs']['docker-compose-build']['strategy']['matrix']['include']
+            $ci['jobs']['docker-compose-build']['strategy']['matrix']['include'],
         );
         sort($ciServices);
 
@@ -131,7 +131,7 @@ final class CiConfigurationTest extends TestCase
         Preg::matchAll(
             '/(?:ALPINE_VERSION=|alpine:)(\d+\.\d+)/',
             (string) file_get_contents(__DIR__.'/../../Dockerfile'),
-            $dockerVersions
+            $dockerVersions,
         );
 
         $dockerVersions = $dockerVersions[1];
@@ -188,7 +188,7 @@ final class CiConfigurationTest extends TestCase
             new TraversableContainsIdentical(\sprintf('%.1fsnapshot', $lastSupportedVersion + 0.1)),
             // GitHub CI uses just versions, without suffix, e.g. 8.1 for 8.1snapshot as of writing
             new TraversableContainsIdentical(\sprintf('%.1f', $lastSupportedVersion + 0.1)),
-            new TraversableContainsIdentical(\sprintf('%.1f', floor($lastSupportedVersion + 1.0)))
+            new TraversableContainsIdentical(\sprintf('%.1f', floor($lastSupportedVersion + 1.0))),
         ));
     }
 
@@ -208,7 +208,7 @@ final class CiConfigurationTest extends TestCase
 
         self::assertThat($ciVersions, self::logicalOr(
             new TraversableContainsIdentical($lastSupportedVersion),
-            new TraversableContainsIdentical(\sprintf('%.1fsnapshot', $lastSupportedVersion))
+            new TraversableContainsIdentical(\sprintf('%.1fsnapshot', $lastSupportedVersion)),
         ));
     }
 
@@ -217,7 +217,7 @@ final class CiConfigurationTest extends TestCase
         $matchResult = Preg::match(
             '/<config name="testVersion" value="(?<min>\d+\.\d+)-(?<max>\d+\.\d+)"\/>/',
             (string) file_get_contents(__DIR__.'/../../dev-tools/php-compatibility/phpcs-php-compatibility.xml'),
-            $capture
+            $capture,
         );
 
         if (!$matchResult) {
@@ -271,7 +271,7 @@ final class CiConfigurationTest extends TestCase
 
         return array_map(
             static fn ($item) => $item['php-version'],
-            $yaml['jobs']['docker-images']['strategy']['matrix']['include']
+            $yaml['jobs']['docker-images']['strategy']['matrix']['include'],
         );
     }
 
@@ -287,10 +287,10 @@ final class CiConfigurationTest extends TestCase
             array_filter(
                 array_map(
                     static fn ($item) => $item['docker-service'],
-                    $yaml['jobs']['docker-compose-build']['strategy']['matrix']['include']
+                    $yaml['jobs']['docker-compose-build']['strategy']['matrix']['include'],
                 ),
-                static fn ($item) => str_starts_with($item, 'php-')
-            )
+                static fn ($item) => str_starts_with($item, 'php-'),
+            ),
         );
     }
 }

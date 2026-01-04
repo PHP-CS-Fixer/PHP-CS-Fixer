@@ -29,7 +29,7 @@ final class DeclareParenthesesFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'There must not be spaces around `declare` statement parentheses.',
-            [new CodeSample("<?php declare ( strict_types=1 );\n")]
+            [new CodeSample("<?php declare ( strict_types=1 );\n")],
         );
     }
 

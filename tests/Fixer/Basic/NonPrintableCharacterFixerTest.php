@@ -245,7 +245,7 @@ TXT;
                 <<<'INPUT'
                     <?php echo 'Double " quote %s inside';
                     INPUT,
-                pack('H*', 'e2808b')
+                pack('H*', 'e2808b'),
             ),
             ['use_escape_sequences_in_strings' => true],
         ];
@@ -258,7 +258,7 @@ TXT;
                 <<<'INPUT'
                     <?php echo 'Single \' quote %s inside';
                     INPUT,
-                pack('H*', 'e2808b')
+                pack('H*', 'e2808b'),
             ),
             ['use_escape_sequences_in_strings' => true],
         ];
@@ -277,7 +277,7 @@ TXT;
                     STRING
                     ;
                     INPUT,
-                pack('H*', 'e2808b')
+                pack('H*', 'e2808b'),
             ),
             ['use_escape_sequences_in_strings' => true],
         ];
@@ -290,7 +290,7 @@ TXT;
                 <<<'INPUT'
                     <?php echo '\\%s"';
                     INPUT,
-                pack('H*', 'e2808b')
+                pack('H*', 'e2808b'),
             ),
             ['use_escape_sequences_in_strings' => true],
         ];
@@ -303,7 +303,7 @@ TXT;
                 <<<'INPUT'
                     <?php echo '\\%s\'';
                     INPUT,
-                pack('H*', 'e2808b')
+                pack('H*', 'e2808b'),
             ),
             ['use_escape_sequences_in_strings' => true],
         ];
@@ -316,7 +316,7 @@ TXT;
                 <<<'INPUT'
                     <?php echo 'Backslash 1 \ %s';
                     INPUT,
-                pack('H*', 'e2808b')
+                pack('H*', 'e2808b'),
             ),
             ['use_escape_sequences_in_strings' => true],
         ];
@@ -329,7 +329,7 @@ TXT;
                 <<<'INPUT'
                     <?php echo 'Backslash 2 \\ %s';
                     INPUT,
-                pack('H*', 'e2808b')
+                pack('H*', 'e2808b'),
             ),
             ['use_escape_sequences_in_strings' => true],
         ];
@@ -342,7 +342,7 @@ TXT;
                 <<<'INPUT'
                     <?php echo 'Backslash 3 \\\ %s';
                     INPUT,
-                pack('H*', 'e2808b')
+                pack('H*', 'e2808b'),
             ),
             ['use_escape_sequences_in_strings' => true],
         ];
@@ -355,7 +355,7 @@ TXT;
                 <<<'INPUT'
                     <?php echo 'Backslash 4 \\\\ %s';
                     INPUT,
-                pack('H*', 'e2808b')
+                pack('H*', 'e2808b'),
             ),
             ['use_escape_sequences_in_strings' => true],
         ];

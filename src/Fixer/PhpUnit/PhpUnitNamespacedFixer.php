@@ -85,7 +85,7 @@ final class PhpUnitNamespacedFixer extends AbstractFixer implements Configurable
             ."You could start preparing the upgrade by switching from non-namespaced TestCase to namespaced one.\n"
             .'Forward compatibility layer (`\PHPUnit\Framework\TestCase` class) was backported to PHPUnit v4.8.35 and PHPUnit v5.4.0.'."\n"
             .'Extended forward compatibility layer (`PHPUnit\Framework\Assert`, `PHPUnit\Framework\BaseTestListener`, `PHPUnit\Framework\TestListener` classes) was introduced in v5.7.0.'."\n",
-            'Risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.'
+            'Risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.',
         );
     }
 
@@ -185,7 +185,7 @@ final class PhpUnitNamespacedFixer extends AbstractFixer implements Configurable
             $tokens->clearAt($currIndex);
             $tokens->insertAt(
                 $currIndex,
-                isset($importedOriginalClassesMap[$originalClass]) ? $substituteTokens[$substituteTokens->getSize() - 1] : $substituteTokens
+                isset($importedOriginalClassesMap[$originalClass]) ? $substituteTokens[$substituteTokens->getSize() - 1] : $substituteTokens,
             );
 
             $prevIndex = $tokens->getPrevMeaningfulToken($currIndex);

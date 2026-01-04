@@ -150,7 +150,7 @@ final class ArgumentsAnalyzer
             $info['name'],
             $info['name_index'],
             $info['default'],
-            null !== $info['type'] ? new TypeAnalysis($info['type'], $info['type_index_start'], $info['type_index_end']) : null
+            null !== $info['type'] ? new TypeAnalysis($info['type'], $info['type_index_start'], $info['type_index_end']) : null,
         );
     }
 }

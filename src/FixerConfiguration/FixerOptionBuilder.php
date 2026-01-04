@@ -117,7 +117,7 @@ final class FixerOptionBuilder
             $this->default,
             $this->allowedTypes,
             $this->allowedValues,
-            $this->normalizer
+            $this->normalizer,
         );
 
         if (null !== $this->deprecationMessage) {

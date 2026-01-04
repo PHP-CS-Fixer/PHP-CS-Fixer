@@ -51,7 +51,7 @@ final class ErrorOutputTest extends TestCase
 Files that were not fixed due to errors reported during %s:
    1) %s',
             $process,
-            __FILE__
+            __FILE__,
         );
 
         if ($verbosityLevel >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
@@ -65,7 +65,7 @@ Files that were not fixed due to errors reported during %s:
 ',
                 \get_class($source),
                 $source->getMessage(),
-                $source->getCode()
+                $source->getCode(),
             );
         }
 
@@ -77,7 +77,7 @@ Files that were not fixed due to errors reported during %s:
       PhpCsFixer\Tests\Console\Output\ErrorOutputTest::provideErrorOutputCases()
 ',
                 __FILE__,
-                $lineNumber
+                $lineNumber,
             );
         }
 
@@ -181,7 +181,7 @@ Files that were not fixed due to errors reported during %s:
         $exception = new \RuntimeException(// note: keep exception constructor and __LINE__ separated with one line break
             'PHPUnit RT',
             888,
-            new \InvalidArgumentException('PHPUnit IAE')
+            new \InvalidArgumentException('PHPUnit IAE'),
         );
 
         return [$lineNumber + 1, new Error(Error::TYPE_EXCEPTION, __FILE__, $exception)];

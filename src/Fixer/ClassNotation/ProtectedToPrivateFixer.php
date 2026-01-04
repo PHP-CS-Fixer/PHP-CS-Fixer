@@ -51,9 +51,9 @@ final class ProtectedToPrivateFixer extends AbstractFixer
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

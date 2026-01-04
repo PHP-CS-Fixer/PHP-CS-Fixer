@@ -72,7 +72,7 @@ final class TypeDeclarationSpacesFixer extends AbstractFixer implements Configur
                             public function __invoke(array   $c) {}
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -88,7 +88,7 @@ final class TypeDeclarationSpacesFixer extends AbstractFixer implements Configur
                         }
 
                         PHP,
-                    ['elements' => ['function']]
+                    ['elements' => ['function']],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -101,7 +101,7 @@ final class TypeDeclarationSpacesFixer extends AbstractFixer implements Configur
                         }
 
                         PHP,
-                    ['elements' => ['property']]
+                    ['elements' => ['property']],
                 ),
                 new VersionSpecificCodeSample(
                     <<<'PHP'
@@ -113,9 +113,9 @@ final class TypeDeclarationSpacesFixer extends AbstractFixer implements Configur
 
                         PHP,
                     new VersionSpecification(8_03_00),
-                    ['elements' => ['constant']]
+                    ['elements' => ['constant']],
                 ),
-            ]
+            ],
         );
     }
 
@@ -131,7 +131,7 @@ final class TypeDeclarationSpacesFixer extends AbstractFixer implements Configur
                 ->setAllowedTypes(['string[]'])
                 ->setAllowedValues([new AllowedValueSubset(['function', 'property', 'constant'])])
                 ->setDefault(
-                    Future::getV4OrV3(['function', 'property', 'constant'], ['function', 'property'])
+                    Future::getV4OrV3(['function', 'property', 'constant'], ['function', 'property']),
                 )
                 ->getOption(),
         ]);
@@ -175,8 +175,8 @@ final class TypeDeclarationSpacesFixer extends AbstractFixer implements Configur
             static fn (array $element): string => $element['type'],
             array_filter(
                 $tokensAnalyzer->getClassyElements(),
-                static fn (array $element): bool => \in_array($element['type'], ['method', 'property', 'const'], true)
-            )
+                static fn (array $element): bool => \in_array($element['type'], ['method', 'property', 'const'], true),
+            ),
         );
 
         foreach ($tokens as $index => $token) {

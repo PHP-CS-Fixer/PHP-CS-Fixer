@@ -58,7 +58,7 @@ final class ListFilesCommand extends Command
         $this->setDefinition(
             [
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
-            ]
+            ],
         );
     }
 
@@ -75,7 +75,7 @@ final class ListFilesCommand extends Command
                 'config' => $passedConfig,
             ],
             $cwd,
-            $this->toolInfo
+            $this->toolInfo,
         );
 
         $finder = $resolver->getFinder();

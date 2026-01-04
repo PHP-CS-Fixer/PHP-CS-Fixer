@@ -46,7 +46,7 @@ final class ComposerJsonReaderTest extends TestCase
         \Closure::bind(
             static fn ($instance) => $instance->processJson($inputJson),
             null,
-            \get_class($instance)
+            \get_class($instance),
         )($instance);
 
         self::assertSame($expected, $instance->getPhpUnit());
@@ -144,6 +144,54 @@ final class ComposerJsonReaderTest extends TestCase
 }',
         ];
 
+        yield 'version with range separated by a space' => [
+            '9.1',
+            '{
+    "require": {},
+    "require-dev": { "phpunit/phpunit": ">=9.1 <9.6.25" }
+}',
+        ];
+
+        yield 'version with range separated by a comma' => [
+            '9.1',
+            '{
+    "require": {},
+    "require-dev": { "phpunit/phpunit": ">=9.1,<9.6.25" }
+}',
+        ];
+
+        yield 'version with range separated by a hyphen' => [
+            '9.1',
+            '{
+    "require": {},
+    "require-dev": { "phpunit/phpunit": "9.1-9.6.25" }
+}',
+        ];
+
+        yield 'version with range separated by a hyphen and asterisk' => [
+            '9.1',
+            '{
+    "require": {},
+    "require-dev": { "phpunit/phpunit": "9.1.*-9.6.*" }
+}',
+        ];
+
+        yield 'version with beta' => [
+            '9.1',
+            '{
+    "require": {},
+    "require-dev": { "phpunit/phpunit": "9.1-BETA.0" }
+}',
+        ];
+
+        yield 'version with v' => [
+            '9.1',
+            '{
+    "require": {},
+    "require-dev": { "phpunit/phpunit": "v9.1 || v10" }
+}',
+        ];
+
         yield 'version with <=' => [
             null, // not supported !
             '{
@@ -237,7 +285,7 @@ final class ComposerJsonReaderTest extends TestCase
         \Closure::bind(
             static fn ($instance) => $instance->processJson($inputJson),
             null,
-            \get_class($instance)
+            \get_class($instance),
         )($instance);
 
         self::assertSame($expected, $instance->getPhp());

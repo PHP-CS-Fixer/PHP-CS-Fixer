@@ -50,7 +50,7 @@ final class CheckCommandTest extends TestCase
             [
                 'command' => $command->getName(),
                 '--dry-run' => true,
-            ]
+            ],
         );
     }
 }

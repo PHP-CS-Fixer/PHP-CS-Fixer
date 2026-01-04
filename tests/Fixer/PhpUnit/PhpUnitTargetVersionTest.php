@@ -41,7 +41,7 @@ final class PhpUnitTargetVersionTest extends TestCase
 
         self::assertSame(
             $expected,
-            PhpUnitTargetVersion::fulfills($candidate, $target)
+            PhpUnitTargetVersion::fulfills($candidate, $target),
         );
     }
 

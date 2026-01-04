@@ -109,7 +109,7 @@ final class CiIntegrationTest extends AbstractSmokeTestCase
             [
                 "git checkout -b {$branchName} -q",
             ],
-            $caseCommands
+            $caseCommands,
         ));
 
         $integrationScript = explode("\n", str_replace('vendor/bin/', './../../../', (string) file_get_contents(__DIR__.'/../../doc/examples/ci-integration.sh')));
@@ -200,7 +200,7 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
             $availableMaxProcesses > 1 ? preg_quote('You can enable parallel runner and speed up the analysis! Please see https://cs.symfony.com/doc/usage.html for more information.', '/') : '',
             \strlen($expectedResult3FilesDots),
             preg_quote($expectedResult3FilesPercentage, '/'),
-            preg_quote('Legend: .-no changes, F-fixed, S-skipped (cached or empty file), M-skipped (non-monolithic), I-invalid file syntax (file ignored), E-error', '/')
+            preg_quote('Legend: .-no changes, F-fixed, S-skipped (cached or empty file), M-skipped (non-monolithic), I-invalid file syntax (file ignored), E-error', '/'),
         );
 
         self::assertMatchesRegularExpression($pattern, $result3->getError());
@@ -213,7 +213,7 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
 
         self::assertMatchesRegularExpression(
             '/^\s*Found \d+ of \d+ files that can be fixed in \d+\.\d+ seconds, \d+\.\d+ MB memory used\s*$/',
-            $result3->getOutput()
+            $result3->getOutput(),
         );
     }
 
@@ -313,7 +313,7 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
     {
         $output = ScriptExecutor::create(
             ['php php-cs-fixer check --config=tests/Fixtures/.php-cs-fixer.append-non-existing-file.php --show-progress=dots --no-interaction'],
-            __DIR__.'/../..'
+            __DIR__.'/../..',
         )->getResult();
 
         self::assertSame(0, $output->getCode());

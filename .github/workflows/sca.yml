@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Check spelling
-        uses: crate-ci/typos@v1.40.0
+        uses: crate-ci/typos@v1.41.0
         with:
           config: ./dev-tools/typos.toml
 
@@ -53,7 +53,7 @@ jobs:
           php: ${{ env.php-version }}
 
       - name: Cache dev-tools
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: dev-tools/bin/
           key: DevTools-${{ hashFiles('dev-tools/install.sh') }}

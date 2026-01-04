@@ -279,7 +279,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  * @todo: foo
  */'],
             ],
-            ['syntax' => 'with_braces']
+            ['syntax' => 'with_braces'],
         );
 
         yield [
@@ -541,7 +541,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
  * @todo: foo()
  */'],
             ],
-            ['syntax' => 'without_braces']
+            ['syntax' => 'without_braces'],
         );
 
         yield [

@@ -59,14 +59,14 @@ final class Token
             if (!\is_int($token[0])) {
                 throw new \InvalidArgumentException(\sprintf(
                     'Id must be an int, got "%s".',
-                    get_debug_type($token[0])
+                    get_debug_type($token[0]),
                 ));
             }
 
             if (!\is_string($token[1])) {
                 throw new \InvalidArgumentException(\sprintf(
                     'Content must be a string, got "%s".',
-                    get_debug_type($token[1])
+                    get_debug_type($token[1]),
                 ));
             }
 
@@ -206,7 +206,7 @@ final class Token
     {
         Future::triggerDeprecation(new \InvalidArgumentException(\sprintf(
             'Method "%s" is deprecated and will be removed in the next major version.',
-            __METHOD__
+            __METHOD__,
         )));
 
         if (\is_array($caseSensitive)) {
@@ -501,7 +501,7 @@ final class Token
                     'errorDescription' => 'Cannot encode Tokens to JSON.',
                     'rawErrorMessage' => $e->getMessage(),
                 ],
-                \JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT | \JSON_NUMERIC_CHECK
+                \JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT | \JSON_NUMERIC_CHECK,
             );
         }
     }

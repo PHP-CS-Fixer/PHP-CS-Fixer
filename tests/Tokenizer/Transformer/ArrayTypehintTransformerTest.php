@@ -43,7 +43,7 @@ final class ArrayTypehintTransformerTest extends AbstractTransformerTestCase
             [
                 \T_ARRAY,
                 CT::T_ARRAY_TYPEHINT,
-            ]
+            ],
         );
     }
 

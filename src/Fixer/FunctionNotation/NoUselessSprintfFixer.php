@@ -33,11 +33,11 @@ final class NoUselessSprintfFixer extends AbstractFixer
             'There must be no `sprintf` calls with only the first argument.',
             [
                 new CodeSample(
-                    "<?php\n\$foo = sprintf('bar');\n"
+                    "<?php\n\$foo = sprintf('bar');\n",
                 ),
             ],
             null,
-            'Risky when if the `sprintf` function is overridden.'
+            'Risky when if the `sprintf` function is overridden.',
         );
     }
 

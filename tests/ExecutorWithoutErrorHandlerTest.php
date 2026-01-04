@@ -37,7 +37,7 @@ final class ExecutorWithoutErrorHandlerTest extends TestCase
     public function testWithoutError(): void
     {
         self::assertTrue(
-            ExecutorWithoutErrorHandler::execute(static fn () => is_readable(__DIR__))
+            ExecutorWithoutErrorHandler::execute(static fn () => is_readable(__DIR__)),
         );
     }
 }

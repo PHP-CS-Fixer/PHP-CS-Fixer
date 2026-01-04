@@ -101,15 +101,12 @@ final class ComposerJsonReader
         $arr = Preg::split('/\s*\|\|?\s*/', trim($version));
 
         $arr = array_map(static function ($v) {
-            $v = ltrim($v, '^~>= ');
+            $v = ltrim($v, 'v^~>= ');
+
+            $v = substr($v, 0, strcspn($v, ' ,-'));
 
             if (str_ends_with($v, '.*')) {
                 $v = substr($v, 0, -\strlen('.*'));
-            }
-
-            $space = strpos($v, ' ');
-            if (false !== $space) {
-                $v = substr($v, 0, $space);
             }
 
             return $v;

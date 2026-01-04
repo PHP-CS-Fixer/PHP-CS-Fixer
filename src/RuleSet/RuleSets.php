@@ -43,7 +43,7 @@ final class RuleSets
     {
         $allRuleSets = array_merge(
             self::getBuiltInSetDefinitions(),
-            self::$customRuleSetDefinitions
+            self::$customRuleSetDefinitions,
         );
 
         uksort($allRuleSets, static fn (string $x, string $y): int => strnatcmp($x, $y));

@@ -61,7 +61,7 @@ final class SpacesInsideParenthesesFixer extends AbstractFixer implements Config
                             foo( );
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -71,7 +71,7 @@ final class SpacesInsideParenthesesFixer extends AbstractFixer implements Config
                         }
 
                         PHP,
-                    ['space' => 'none']
+                    ['space' => 'none'],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -81,7 +81,7 @@ final class SpacesInsideParenthesesFixer extends AbstractFixer implements Config
                         }
 
                         PHP,
-                    ['space' => 'single']
+                    ['space' => 'single'],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -91,10 +91,10 @@ final class SpacesInsideParenthesesFixer extends AbstractFixer implements Config
                         }
 
                         PHP,
-                    ['space' => 'single']
+                    ['space' => 'single'],
                 ),
             ],
-            'By default there are not any additional spaces inside parentheses, however with `space=single` configuration option whitespace inside parentheses will be unified to single space.'
+            'By default there are not any additional spaces inside parentheses, however with `space=single` configuration option whitespace inside parentheses will be unified to single space.',
         );
     }
 

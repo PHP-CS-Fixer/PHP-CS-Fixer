@@ -139,7 +139,7 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
      * Summary
      *'.'
      * Description
-    */'
+    */',
             ),
             str_replace(
                 "\n",
@@ -149,7 +149,7 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
      * Summary
      * '.'
      * Description
-    */'
+    */',
             ),
         ];
 
@@ -162,7 +162,7 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
      * Summary
      *'.'
      * Description
-    */'
+    */',
             ),
             str_replace(
                 "\n",
@@ -172,7 +172,7 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
      * Summary
      * '.'
      * Description
-    */'
+    */',
             ),
         ];
     }

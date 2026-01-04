@@ -60,11 +60,11 @@ final class PhpUnitMockShortWillReturnFixer extends AbstractPhpUnitFixer
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
             ],
             null,
-            'Risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.'
+            'Risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.',
         );
     }
 

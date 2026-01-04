@@ -45,7 +45,7 @@ final class NoSpacesInsideParenthesisFixer extends AbstractProxyFixer implements
                             foo( );
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -54,9 +54,9 @@ final class NoSpacesInsideParenthesisFixer extends AbstractProxyFixer implements
                         {
                         }
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

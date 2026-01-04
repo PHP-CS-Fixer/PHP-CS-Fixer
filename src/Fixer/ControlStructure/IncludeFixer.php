@@ -44,9 +44,9 @@ final class IncludeFixer extends AbstractFixer
                         include       "sample3.php";
                         include_once("sample4.php");
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

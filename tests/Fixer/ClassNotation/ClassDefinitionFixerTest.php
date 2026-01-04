@@ -929,7 +929,7 @@ namespace {
 %s /**/ B //
 /**/\n{}",
                     $classy,
-                    $classy
+                    $classy,
                 ),
                 \sprintf(
                     '<?php
@@ -940,7 +940,7 @@ namespace {
 %s/**/B //
 /**/ {}',
                     $classy,
-                    $classy
+                    $classy,
                 ),
             ],
             [
@@ -951,7 +951,7 @@ namespace {
 {
     }
 }',
-                    $classy
+                    $classy,
                 ),
                 \sprintf(
                     '<?php
@@ -959,7 +959,7 @@ namespace {
     %s IndentedNameSpacedClass    {
     }
 }',
-                    $classy
+                    $classy,
                 ),
             ],
         ];
