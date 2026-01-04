@@ -38,15 +38,15 @@ final class GetClassToClassKeywordFixer extends AbstractFixer
             [
                 new VersionSpecificCodeSample(
                     "<?php\nget_class(\$a);\n",
-                    new VersionSpecification(8_00_00)
+                    new VersionSpecification(8_00_00),
                 ),
                 new VersionSpecificCodeSample(
                     "<?php\n\n\$date = new \\DateTimeImmutable();\n\$class = get_class(\$date);\n",
-                    new VersionSpecification(8_00_00)
+                    new VersionSpecification(8_00_00),
                 ),
             ],
             null,
-            'Risky if the `get_class` function is overridden.'
+            'Risky if the `get_class` function is overridden.',
         );
     }
 

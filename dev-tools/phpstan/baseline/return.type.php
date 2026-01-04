@@ -2,11 +2,6 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
-    'rawMessage' => 'Method PhpCsFixer\\Config::getFinder() should return PhpCsFixer\\Finder but returns iterable<SplFileInfo>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Config.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Method PhpCsFixer\\Fixer\\ClassNotation\\NoPhp4ConstructorFixer::findFunction() should return array{nameIndex: int, startIndex: int, endIndex: int, bodyIndex: int, modifiers: list<int>}|null but returns array{nameIndex: int<0, max>, startIndex: int, endIndex: int|null, bodyIndex: int|null, modifiers: array<int, int>}.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/NoPhp4ConstructorFixer.php',

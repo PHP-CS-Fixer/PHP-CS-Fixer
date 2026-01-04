@@ -64,16 +64,16 @@ final class MagicMethodCasingFixer extends AbstractFixer
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
                         <?php
                         $foo->__INVOKE(1);
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

@@ -60,7 +60,7 @@ final class NamespacesAnalyzer
                 $index,
                 $declarationEndIndex,
                 $index,
-                $scopeEndIndex
+                $scopeEndIndex,
             );
 
             // Continue the analysis after the end of this namespace to find the next one

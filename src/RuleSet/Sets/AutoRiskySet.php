@@ -54,7 +54,7 @@ final class AutoRiskySet extends AbstractRuleSetDefinition implements AutomaticR
     {
         $sets = array_map(
             static fn (RuleSetDefinitionInterface $set): string => $set->getName(),
-            $this->getCandidates()
+            $this->getCandidates(),
         );
 
         return array_combine($sets, array_fill(0, \count($sets), true));

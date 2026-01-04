@@ -52,7 +52,7 @@ final class NoTrailingCommaInSinglelineFixer extends AbstractFixer implements Co
             [
                 new CodeSample("<?php\nfoo(\$a,);\n\$foo = array(1,);\n[\$foo, \$bar,] = \$array;\nuse a\\{ClassA, ClassB,};\n"),
                 new CodeSample("<?php\nfoo(\$a,);\n[\$foo, \$bar,] = \$array;\n", ['elements' => ['array_destructuring']]),
-            ]
+            ],
         );
     }
 

@@ -34,15 +34,15 @@ final class NativeFunctionTypeDeclarationCasingFixer extends AbstractProxyFixer 
             [
                 new CodeSample("<?php\nclass Bar {\n    public function Foo(CALLABLE \$bar)\n    {\n        return 1;\n    }\n}\n"),
                 new CodeSample(
-                    "<?php\nfunction Foo(INT \$a): Bool\n{\n    return true;\n}\n"
+                    "<?php\nfunction Foo(INT \$a): Bool\n{\n    return true;\n}\n",
                 ),
                 new CodeSample(
-                    "<?php\nfunction Foo(Iterable \$a): VOID\n{\n    echo 'Hello world';\n}\n"
+                    "<?php\nfunction Foo(Iterable \$a): VOID\n{\n    echo 'Hello world';\n}\n",
                 ),
                 new CodeSample(
                     "<?php\nfunction Foo(Object \$a)\n{\n    return 'hi!';\n}\n",
                 ),
-            ]
+            ],
         );
     }
 

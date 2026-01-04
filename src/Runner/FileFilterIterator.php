@@ -65,8 +65,8 @@ final class FileFilterIterator extends \FilterIterator
             throw new \RuntimeException(
                 \sprintf(
                     'Expected instance of "\SplFileInfo", got "%s".',
-                    get_debug_type($file)
-                )
+                    get_debug_type($file),
+                ),
             );
         }
 

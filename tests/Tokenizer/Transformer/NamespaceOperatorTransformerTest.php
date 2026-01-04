@@ -43,7 +43,7 @@ final class NamespaceOperatorTransformerTest extends AbstractTransformerTestCase
             [
                 \T_NAMESPACE,
                 CT::T_NAMESPACE_OPERATOR,
-            ]
+            ],
         );
     }
 

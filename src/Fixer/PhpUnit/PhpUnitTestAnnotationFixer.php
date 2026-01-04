@@ -70,7 +70,7 @@ final class PhpUnitTestAnnotationFixer extends AbstractPhpUnitFixer implements C
                              * @test
                              */
                             public function itDoesSomething() {} }
-                        PHP.$this->whitespacesConfig->getLineEnding()
+                        PHP.$this->whitespacesConfig->getLineEnding(),
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -84,7 +84,7 @@ final class PhpUnitTestAnnotationFixer extends AbstractPhpUnitFixer implements C
             ],
             null,
             'This fixer may change the name of your tests, and could cause incompatibility with'
-            .' abstract classes or interfaces.'
+            .' abstract classes or interfaces.',
         );
     }
 
@@ -379,7 +379,7 @@ final class PhpUnitTestAnnotationFixer extends AbstractPhpUnitFixer implements C
      */
     private function findWhereDependsFunctionNameStarts(array $line): int
     {
-        $index = stripos(implode('', $line), '@depends') + 8;
+        $index = (int) stripos(implode('', $line), '@depends') + 8;
 
         while (' ' === $line[$index]) {
             ++$index;

@@ -310,7 +310,7 @@ class FooTest extends TestCase {
     public function testFoo() {
         $someMock?->method("someMethod")?->will($this?->returnValue(10));
     }
-}'
+}',
         );
     }
 
@@ -325,7 +325,7 @@ class FooTest extends TestCase {
     public function testFoo() {
         $a = $someMock?->method("someMethod")->will($this?->returnValue(...));
     }
-}'
+}',
         );
     }
 }

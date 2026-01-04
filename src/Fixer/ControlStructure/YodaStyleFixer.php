@@ -83,7 +83,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurableFixerInt
                                 echo "null";
                             }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -97,7 +97,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurableFixerInt
                         'equal' => true,
                         'identical' => false,
                         'less_and_greater' => null,
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -107,7 +107,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurableFixerInt
                         PHP,
                     [
                         'always_move_variable' => true,
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -122,9 +122,9 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurableFixerInt
                         'equal' => false,
                         'identical' => false,
                         'less_and_greater' => false,
-                    ]
+                    ],
                 ),
-            ]
+            ],
         );
     }
 
@@ -304,7 +304,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurableFixerInt
                 $fixableCompareInfo['left']['end'],
                 $i,
                 $fixableCompareInfo['right']['start'],
-                $fixableCompareInfo['right']['end']
+                $fixableCompareInfo['right']['end'],
             );
         }
 
@@ -610,7 +610,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurableFixerInt
             ) {
                 $index = $tokens->findBlockEnd(
                     $next->equals('[') ? Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE : Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE,
-                    $nextIndex
+                    $nextIndex,
                 );
 
                 if ($index === $end) {

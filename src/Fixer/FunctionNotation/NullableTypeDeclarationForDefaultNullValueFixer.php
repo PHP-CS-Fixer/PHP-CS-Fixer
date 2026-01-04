@@ -67,31 +67,31 @@ final class NullableTypeDeclarationForDefaultNullValueFixer extends AbstractFixe
             'Adds or removes `?` before single type declarations or `|null` at the end of union types when parameters have a default `null` value.',
             [
                 new CodeSample(
-                    "<?php\nfunction sample(string \$str = null)\n{}\n"
+                    "<?php\nfunction sample(string \$str = null)\n{}\n",
                 ),
                 new CodeSample(
                     "<?php\nfunction sample(?string \$str = null)\n{}\n",
-                    ['use_nullable_type_declaration' => false]
+                    ['use_nullable_type_declaration' => false],
                 ),
                 new VersionSpecificCodeSample(
                     "<?php\nfunction sample(string|int \$str = null)\n{}\n",
-                    new VersionSpecification(8_00_00)
+                    new VersionSpecification(8_00_00),
                 ),
                 new VersionSpecificCodeSample(
                     "<?php\nfunction sample(string|int|null \$str = null)\n{}\n",
                     new VersionSpecification(8_00_00),
-                    ['use_nullable_type_declaration' => false]
+                    ['use_nullable_type_declaration' => false],
                 ),
                 new VersionSpecificCodeSample(
                     "<?php\nfunction sample(\\Foo&\\Bar \$str = null)\n{}\n",
-                    new VersionSpecification(8_02_00)
+                    new VersionSpecification(8_02_00),
                 ),
                 new VersionSpecificCodeSample(
                     "<?php\nfunction sample((\\Foo&\\Bar)|null \$str = null)\n{}\n",
                     new VersionSpecification(8_02_00),
-                    ['use_nullable_type_declaration' => false]
+                    ['use_nullable_type_declaration' => false],
                 ),
-            ]
+            ],
         );
     }
 

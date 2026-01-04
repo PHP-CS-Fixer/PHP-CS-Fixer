@@ -55,7 +55,7 @@ final class LowercaseStaticReferenceFixer extends AbstractFixer
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -68,9 +68,9 @@ final class LowercaseStaticReferenceFixer extends AbstractFixer
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

@@ -39,7 +39,7 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Lambda must not import variables it doesn\'t use.',
-            [new CodeSample("<?php\n\$foo = function() use (\$bar) {};\n")]
+            [new CodeSample("<?php\n\$foo = function() use (\$bar) {};\n")],
         );
     }
 

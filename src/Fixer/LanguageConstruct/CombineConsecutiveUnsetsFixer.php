@@ -30,7 +30,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Calling `unset` on multiple items should be done in one call.',
-            [new CodeSample("<?php\nunset(\$a); unset(\$b);\n")]
+            [new CodeSample("<?php\nunset(\$a); unset(\$b);\n")],
         );
     }
 
@@ -71,7 +71,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
                 $tokens,
                 $nextUnsetContentStart = $tokens->getNextTokenOfKind($index, ['(']),
                 $nextUnsetContentEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextUnsetContentStart),
-                $previousUnsetBraceEnd - 1
+                $previousUnsetBraceEnd - 1,
             );
 
             if (!$tokens[$previousUnsetBraceEnd]->isWhitespace()) {

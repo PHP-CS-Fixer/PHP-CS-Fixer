@@ -45,9 +45,9 @@ final class PhpdocTrimFixer extends AbstractFixer
                          */
                         final class Foo {}
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 
@@ -98,7 +98,7 @@ final class PhpdocTrimFixer extends AbstractFixer
                 (\R\h*(?:\*\h*)?\S) # first line with useful content
             ~x',
             '$1$2',
-            $content
+            $content,
         );
     }
 
@@ -117,7 +117,7 @@ final class PhpdocTrimFixer extends AbstractFixer
                 (\R\h*\*/$)            # DocComment end
             ~xu',
             '$1$2',
-            $content
+            $content,
         );
     }
 }

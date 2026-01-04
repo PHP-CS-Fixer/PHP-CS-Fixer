@@ -33,7 +33,7 @@ final class BlankLineAfterOpeningTagFixer extends AbstractFixer implements White
     {
         return new FixerDefinition(
             'Ensure there is no code on the same line as the PHP open tag and it is followed by a blank line.',
-            [new CodeSample("<?php \$a = 1;\n\$b = 1;\n")]
+            [new CodeSample("<?php \$a = 1;\n\$b = 1;\n")],
         );
     }
 

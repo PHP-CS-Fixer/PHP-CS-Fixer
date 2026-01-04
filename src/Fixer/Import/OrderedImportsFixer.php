@@ -127,7 +127,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
                         use const AAB;
                         use AAA;
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -136,7 +136,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
                         use const AA;
 
                         PHP,
-                    ['case_sensitive' => true]
+                    ['case_sensitive' => true],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -147,7 +147,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
                         use Bar;
 
                         PHP,
-                    ['sort_algorithm' => self::SORT_LENGTH]
+                    ['sort_algorithm' => self::SORT_LENGTH],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -170,7 +170,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
                             self::IMPORT_TYPE_CLASS,
                             self::IMPORT_TYPE_FUNCTION,
                         ],
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -193,7 +193,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
                             self::IMPORT_TYPE_CLASS,
                             self::IMPORT_TYPE_FUNCTION,
                         ],
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -216,9 +216,9 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
                             self::IMPORT_TYPE_CLASS,
                             self::IMPORT_TYPE_FUNCTION,
                         ],
-                    ]
+                    ],
                 ),
-            ]
+            ],
         );
     }
 
@@ -312,7 +312,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
                             throw new InvalidOptionsException(\sprintf(
                                 'Missing sort %s %s.',
                                 1 === \count($missing) ? 'type' : 'types',
-                                Utils::naturalLanguageJoin(array_values($missing))
+                                Utils::naturalLanguageJoin(array_values($missing)),
                             ));
                         }
 
@@ -321,7 +321,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
                             throw new InvalidOptionsException(\sprintf(
                                 'Unknown sort %s %s.',
                                 1 === \count($unknown) ? 'type' : 'types',
-                                Utils::naturalLanguageJoin(array_values($unknown))
+                                Utils::naturalLanguageJoin(array_values($unknown)),
                             ));
                         }
                     }
@@ -329,7 +329,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
                     return true;
                 }])
                 ->setDefault(
-                    Future::getV4OrV3(['class', 'function', 'const'], null)
+                    Future::getV4OrV3(['class', 'function', 'const'], null),
                 )
                 ->getOption(),
             (new FixerOptionBuilder('case_sensitive', 'Whether the sorting should be case sensitive.'))
@@ -605,7 +605,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
             $code = \sprintf(
                 '<?php use %s%s;',
                 self::IMPORT_TYPE_CLASS === $use['importType'] ? '' : ' '.$use['importType'].' ',
-                $use['namespace']
+                $use['namespace'],
             );
 
             $numberOfInitialTokensToClear = 3; // clear `<?php use `

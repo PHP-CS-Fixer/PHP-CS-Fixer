@@ -40,7 +40,7 @@ final class ReturnToYieldFromFixer extends AbstractFixer
                             return [1, 2, 3];
                         }
 
-                        PHP
+                        PHP,
                 ),
             ],
         );

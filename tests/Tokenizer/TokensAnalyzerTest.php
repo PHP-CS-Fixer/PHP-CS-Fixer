@@ -47,14 +47,14 @@ final class TokensAnalyzerTest extends TestCase
             static function (array &$element, int $index) use ($tokens): void {
                 $element['token'] = $tokens[$index];
                 ksort($element);
-            }
+            },
         );
 
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         self::assertSame(
             $expectedElements,
-            $tokensAnalyzer->getClassyElements()
+            $tokensAnalyzer->getClassyElements(),
         );
     }
 
@@ -296,7 +296,7 @@ final class TokensAnalyzerTest extends TestCase
                     'type' => 'property',
                 ],
             ],
-            $elements
+            $elements,
         );
     }
 
@@ -360,7 +360,7 @@ final class TokensAnalyzerTest extends TestCase
                     'type' => 'method', // C
                 ],
             ],
-            $elements
+            $elements,
         );
     }
 
@@ -503,7 +503,7 @@ final class TokensAnalyzerTest extends TestCase
                     'type' => 'method',
                 ],
             ],
-            $elements
+            $elements,
         );
     }
 
@@ -1912,17 +1912,17 @@ abstract class Baz
             self::assertSame(
                 $expect,
                 $tokensAnalyzer->isUnaryPredecessorOperator($index),
-                \sprintf('Expected %sunary predecessor operator, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
+                \sprintf('Expected %sunary predecessor operator, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true)),
             );
 
             if ($expect) {
                 self::assertFalse(
                     $tokensAnalyzer->isUnarySuccessorOperator($index),
-                    \sprintf('Expected no unary successor operator, got @ %d "%s".', $index, var_export($token, true))
+                    \sprintf('Expected no unary successor operator, got @ %d "%s".', $index, var_export($token, true)),
                 );
                 self::assertFalse(
                     $tokensAnalyzer->isBinaryOperator($index),
-                    \sprintf('Expected no binary operator, got @ %d "%s".', $index, var_export($token, true))
+                    \sprintf('Expected no binary operator, got @ %d "%s".', $index, var_export($token, true)),
                 );
             }
         }
@@ -2040,17 +2040,17 @@ abstract class Baz
             self::assertSame(
                 $expect,
                 $tokensAnalyzer->isBinaryOperator($index),
-                \sprintf('Expected %sbinary operator, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
+                \sprintf('Expected %sbinary operator, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true)),
             );
 
             if ($expect) {
                 self::assertFalse(
                     $tokensAnalyzer->isUnarySuccessorOperator($index),
-                    \sprintf('Expected no unary successor operator, got @ %d "%s".', $index, var_export($token, true))
+                    \sprintf('Expected no unary successor operator, got @ %d "%s".', $index, var_export($token, true)),
                 );
                 self::assertFalse(
                     $tokensAnalyzer->isUnaryPredecessorOperator($index),
-                    \sprintf('Expected no unary predecessor operator, got @ %d "%s".', $index, var_export($token, true))
+                    \sprintf('Expected no unary predecessor operator, got @ %d "%s".', $index, var_export($token, true)),
                 );
             }
         }
@@ -2247,13 +2247,13 @@ $b;',
             self::assertSame(
                 $isArray,
                 $tokensAnalyzer->isArray($index),
-                \sprintf('Expected %sarray, got @ %d "%s".', $isArray ? '' : 'no ', $index, var_export($token, true))
+                \sprintf('Expected %sarray, got @ %d "%s".', $isArray ? '' : 'no ', $index, var_export($token, true)),
             );
             if (\array_key_exists($index, $tokenIndices)) {
                 self::assertSame(
                     $tokenIndices[$index],
                     $tokensAnalyzer->isArrayMultiLine($index),
-                    \sprintf('Expected %sto be a multiline array', $tokenIndices[$index] ? '' : 'not ')
+                    \sprintf('Expected %sto be a multiline array', $tokenIndices[$index] ? '' : 'not '),
                 );
             }
         }
@@ -2710,7 +2710,7 @@ class TestClass {
             self::assertSame(
                 $isExpected,
                 $tokensAnalyzer->isWhilePartOfDoWhile($index),
-                \sprintf('Expected token at index "%d" to be detected as %sa "do-while"-loop.', $index, true === $isExpected ? '' : 'not ')
+                \sprintf('Expected token at index "%d" to be detected as %sa "do-while"-loop.', $index, true === $isExpected ? '' : 'not '),
             );
         }
     }
@@ -3372,7 +3372,7 @@ class MyTestWithAnonymousClass extends TestCase
         self::assertCount(
             $tokens->countTokenKind(\T_STRING),
             $expected,
-            'All T_STRING tokens must be tested'
+            'All T_STRING tokens must be tested',
         );
 
         $tokensAnalyzer = new TokensAnalyzer($tokens);
@@ -3381,7 +3381,7 @@ class MyTestWithAnonymousClass extends TestCase
             self::assertSame(
                 $expectedValue,
                 $tokensAnalyzer->isConstantInvocation($index),
-                \sprintf('Token at index '.$index.' should match the expected value (%s).', $expectedValue ? 'true' : 'false')
+                \sprintf('Token at index '.$index.' should match the expected value (%s).', $expectedValue ? 'true' : 'false'),
             );
         }
     }

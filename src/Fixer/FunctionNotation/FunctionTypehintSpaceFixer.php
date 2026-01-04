@@ -38,7 +38,7 @@ final class FunctionTypehintSpaceFixer extends AbstractProxyFixer implements Dep
             [
                 new CodeSample("<?php\nfunction sample(array\$a)\n{}\n"),
                 new CodeSample("<?php\nfunction sample(array  \$a)\n{}\n"),
-            ]
+            ],
         );
     }
 

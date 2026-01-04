@@ -34,7 +34,7 @@ final class ElseifFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'The keyword `elseif` should be used instead of `else if` so that all control keywords look like single words.',
-            [new CodeSample("<?php\nif (\$a) {\n} else if (\$b) {\n}\n")]
+            [new CodeSample("<?php\nif (\$a) {\n} else if (\$b) {\n}\n")],
         );
     }
 

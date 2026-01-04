@@ -105,11 +105,11 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
                         if (stripos($haystack, $needle) === false) {}
 
                         PHP,
-                    ['modernize_stripos' => true]
+                    ['modernize_stripos' => true],
                 ),
             ],
             null,
-            'Risky if `strpos`, `stripos`, `str_starts_with`, `str_contains` or `strtolower` functions are overridden.'
+            'Risky if `strpos`, `stripos`, `str_starts_with`, `str_contains` or `strtolower` functions are overridden.',
         );
     }
 

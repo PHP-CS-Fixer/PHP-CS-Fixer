@@ -327,7 +327,7 @@ final class TokenTest extends TestCase
     public function testIsMagicConstant(?int $tokenId, string $content, bool $isConstant = true): void
     {
         $token = new Token(
-            null === $tokenId ? $content : [$tokenId, $content]
+            null === $tokenId ? $content : [$tokenId, $content],
         );
 
         self::assertSame($isConstant, $token->isMagicConstant());

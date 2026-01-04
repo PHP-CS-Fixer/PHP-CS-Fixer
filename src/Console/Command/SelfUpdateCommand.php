@@ -87,7 +87,7 @@ final class SelfUpdateCommand extends Command
             ->setDefinition(
                 [
                     new InputOption('--force', '-f', InputOption::VALUE_NONE, 'Force update to next major version if available.'),
-                ]
+                ],
             )
         ;
     }
@@ -115,7 +115,7 @@ final class SelfUpdateCommand extends Command
         } catch (\Exception $exception) {
             $output->writeln(\sprintf(
                 '<error>Unable to determine newest version: %s</error>',
-                $exception->getMessage()
+                $exception->getMessage(),
             ));
 
             return 1;

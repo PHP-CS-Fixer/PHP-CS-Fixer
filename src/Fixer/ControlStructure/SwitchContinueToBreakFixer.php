@@ -45,7 +45,7 @@ final class SwitchContinueToBreakFixer extends AbstractFixer
                                 continue;
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -65,9 +65,9 @@ final class SwitchContinueToBreakFixer extends AbstractFixer
                                 }
                         }
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

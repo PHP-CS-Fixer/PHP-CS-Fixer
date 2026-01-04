@@ -44,9 +44,9 @@ final class PhpdocNoAccessFixer extends AbstractProxyFixer
                             private $bar;
                         }
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 
@@ -67,7 +67,7 @@ final class PhpdocNoAccessFixer extends AbstractProxyFixer
         $fixer->configure(
             ['annotations' => ['access'],
                 'case_sensitive' => true,
-            ]
+            ],
         );
 
         return [$fixer];

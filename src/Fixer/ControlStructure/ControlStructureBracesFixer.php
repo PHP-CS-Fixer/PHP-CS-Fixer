@@ -46,7 +46,7 @@ final class ControlStructureBracesFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'The body of each control structure MUST be enclosed within braces.',
-            [new CodeSample("<?php\nif (foo()) echo 'Hello!';\n")]
+            [new CodeSample("<?php\nif (foo()) echo 'Hello!';\n")],
         );
     }
 
@@ -96,7 +96,7 @@ final class ControlStructureBracesFixer extends AbstractFixer
             if ($tokenAfterParenthesis->isGivenKind([\T_IF, \T_FOR, \T_FOREACH, \T_SWITCH, \T_WHILE])) {
                 $tokenAfterParenthesisBlockEnd = $tokens->findBlockEnd( // go to ')'
                     Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
-                    $tokens->getNextMeaningfulToken($nextAfterParenthesisEndIndex)
+                    $tokens->getNextMeaningfulToken($nextAfterParenthesisEndIndex),
                 );
 
                 if ($tokens[$tokens->getNextMeaningfulToken($tokenAfterParenthesisBlockEnd)]->equals(':')) {

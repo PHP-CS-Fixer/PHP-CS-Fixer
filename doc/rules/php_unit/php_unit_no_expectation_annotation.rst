@@ -167,6 +167,10 @@ The rule is part of the following rule sets:
 
   ``['target' => '4.3']``
 
+- `@PHPUnit11x0Migration:risky <./../../ruleSets/PHPUnit11x0MigrationRisky.rst>`_ with config:
+
+  ``['target' => '4.3']``
+
 - `@PHPUnit32Migration:risky <./../../ruleSets/PHPUnit32MigrationRisky.rst>`_ *(deprecated)* with config:
 
   ``['target' => '3.2']``

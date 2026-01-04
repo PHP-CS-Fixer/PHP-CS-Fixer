@@ -52,19 +52,19 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Configurabl
             'Force strict types declaration in all files.',
             [
                 new CodeSample(
-                    "<?php\n"
+                    "<?php\n",
                 ),
                 new CodeSample(
                     "<?php\ndeclare(Strict_Types=0);\n",
-                    ['preserve_existing_declaration' => false]
+                    ['preserve_existing_declaration' => false],
                 ),
                 new CodeSample(
                     "<?php\ndeclare(Strict_Types=0);\n",
-                    ['preserve_existing_declaration' => true]
+                    ['preserve_existing_declaration' => true],
                 ),
             ],
             null,
-            'Forcing strict types will stop non strict code from working.'
+            'Forcing strict types will stop non strict code from working.',
         );
     }
 

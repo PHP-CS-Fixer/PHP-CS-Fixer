@@ -52,13 +52,13 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurableFixerIn
             'List (`array` destructuring) assignment should be declared using the configured syntax.',
             [
                 new CodeSample(
-                    "<?php\nlist(\$sample) = \$array;\n"
+                    "<?php\nlist(\$sample) = \$array;\n",
                 ),
                 new CodeSample(
                     "<?php\n[\$sample] = \$array;\n",
-                    ['syntax' => 'long']
+                    ['syntax' => 'long'],
                 ),
-            ]
+            ],
         );
     }
 

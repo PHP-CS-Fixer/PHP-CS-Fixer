@@ -45,7 +45,7 @@ final class UseTransformerTest extends AbstractTransformerTestCase
                 \T_USE,
                 CT::T_USE_LAMBDA,
                 CT::T_USE_TRAIT,
-            ]
+            ],
         );
     }
 

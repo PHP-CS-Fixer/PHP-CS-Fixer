@@ -82,7 +82,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
 
                         $d = new \DateTimeImmutable();
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -97,7 +97,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
                         }
 
                         PHP,
-                    ['import_classes' => true, 'import_constants' => true, 'import_functions' => true]
+                    ['import_classes' => true, 'import_constants' => true, 'import_functions' => true],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -116,9 +116,9 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
                         }
 
                         PHP,
-                    ['import_classes' => false, 'import_constants' => false, 'import_functions' => false]
+                    ['import_classes' => false, 'import_constants' => false, 'import_functions' => false],
                 ),
-            ]
+            ],
         );
     }
 

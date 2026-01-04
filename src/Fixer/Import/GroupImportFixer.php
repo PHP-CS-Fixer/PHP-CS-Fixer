@@ -66,7 +66,7 @@ final class GroupImportFixer extends AbstractFixer implements ConfigurableFixerI
             'There MUST be group use for the same namespaces.',
             [
                 new CodeSample(
-                    "<?php\nuse Foo\\Bar;\nuse Foo\\Baz;\n"
+                    "<?php\nuse Foo\\Bar;\nuse Foo\\Baz;\n",
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -78,9 +78,9 @@ final class GroupImportFixer extends AbstractFixer implements ConfigurableFixerI
                         use function B\bar;
 
                         PHP,
-                    ['group_types' => [self::GROUP_CLASSY]]
+                    ['group_types' => [self::GROUP_CLASSY]],
                 ),
-            ]
+            ],
         );
     }
 
@@ -103,8 +103,8 @@ final class GroupImportFixer extends AbstractFixer implements ConfigurableFixerI
                                 \sprintf(
                                     'Invalid group type: %s, allowed types: %s.',
                                     $type,
-                                    Utils::naturalLanguageJoin($allowedTypes)
-                                )
+                                    Utils::naturalLanguageJoin($allowedTypes),
+                                ),
                             );
                         }
                     }
@@ -164,7 +164,7 @@ final class GroupImportFixer extends AbstractFixer implements ConfigurableFixerI
 
         $allNamespaceAndType = array_map(
             fn (NamespaceUseAnalysis $useDeclaration): string => $this->getNamespaceNameWithSlash($useDeclaration).$useDeclaration->getType(),
-            $useDeclarations
+            $useDeclarations,
         );
 
         $sameNamespaces = array_filter(array_count_values($allNamespaceAndType), static fn (int $count): bool => $count > 1);
@@ -250,7 +250,7 @@ final class GroupImportFixer extends AbstractFixer implements ConfigurableFixerI
                     $tokens,
                     $insertIndex,
                     $useDeclaration,
-                    rtrim($this->getNamespaceNameWithSlash($currentUseDeclaration), '\\')
+                    rtrim($this->getNamespaceNameWithSlash($currentUseDeclaration), '\\'),
                 );
             } else {
                 $newTokens = [
@@ -296,7 +296,7 @@ final class GroupImportFixer extends AbstractFixer implements ConfigurableFixerI
     private function insertToGroupUseWithAlias(Tokens $tokens, int $insertIndex, NamespaceUseAnalysis $useDeclaration): int
     {
         $newTokens = [
-            new Token([\T_STRING, substr($useDeclaration->getFullName(), strripos($useDeclaration->getFullName(), '\\') + 1)]),
+            new Token([\T_STRING, substr($useDeclaration->getFullName(), (int) strripos($useDeclaration->getFullName(), '\\') + 1)]),
             new Token([\T_WHITESPACE, ' ']),
             new Token([\T_AS, 'as']),
             new Token([\T_WHITESPACE, ' ']),

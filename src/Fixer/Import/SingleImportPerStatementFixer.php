@@ -61,7 +61,7 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements Confi
                         <?php
                         use Foo, Sample, Sample\Sample as Sample2;
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -73,9 +73,9 @@ final class SingleImportPerStatementFixer extends AbstractFixer implements Confi
                         };
 
                         PHP,
-                    ['group_to_single_imports' => true]
+                    ['group_to_single_imports' => true],
                 ),
-            ]
+            ],
         );
     }
 

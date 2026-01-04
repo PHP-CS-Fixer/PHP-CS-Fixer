@@ -44,8 +44,8 @@ final class Utils
             Preg::replace(
                 '/(?<!^)(?<!_)((?=[\p{Lu}][^\p{Lu}])|(?<![\p{Lu}])(?=[\p{Lu}]))/',
                 '_',
-                $string
-            )
+                $string,
+            ),
         );
     }
 
@@ -62,7 +62,7 @@ final class Utils
 
         $str = strrchr(
             str_replace(["\r\n", "\r"], "\n", $token->getContent()),
-            "\n"
+            "\n",
         );
 
         if (false === $str) {
@@ -123,7 +123,7 @@ final class Utils
         return self::stableSort(
             $fixers,
             static fn (FixerInterface $fixer): int => $fixer->getPriority(),
-            static fn (int $a, int $b): int => $b <=> $a
+            static fn (int $a, int $b): int => $b <=> $a,
         );
     }
 

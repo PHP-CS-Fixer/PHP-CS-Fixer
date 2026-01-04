@@ -35,9 +35,9 @@ final class OctalNotationFixer extends AbstractFixer
             [
                 new VersionSpecificCodeSample(
                     "<?php \$foo = 0123;\n",
-                    new VersionSpecification(8_01_00)
+                    new VersionSpecification(8_01_00),
                 ),
-            ]
+            ],
         );
     }
 

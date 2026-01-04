@@ -134,6 +134,7 @@ final class CacheTest extends TestCase
                 'foo' => true,
                 'bar' => false,
             ],
+            'ruleCustomisationPolicyVersion' => '1.2.3',
             'hashes' => [],
         ];
 
@@ -180,7 +181,8 @@ final class CacheTest extends TestCase
             [
                 'foo' => true,
                 'bar' => true,
-            ]
+            ],
+            'fooBar',
         )];
 
         yield [new Signature(
@@ -191,7 +193,8 @@ final class CacheTest extends TestCase
             [
                 // value encoded in ANSI, not UTF
                 'header_comment' => ['header' => 'Dariusz '.base64_decode('UnVtafFza2k=', true)],
-            ]
+            ],
+            'fooBar',
         )];
     }
 
@@ -202,11 +205,11 @@ final class CacheTest extends TestCase
         $cache = new Cache($signature);
 
         $this->expectException(
-            \UnexpectedValueException::class
+            \UnexpectedValueException::class,
         );
 
         $this->expectExceptionMessage(
-            'Cannot encode cache signature to JSON, error: "Malformed UTF-8 characters, possibly incorrectly encoded". If you have non-UTF8 chars in your signature, like in license for `header_comment`, consider enabling `ext-mbstring` or install `symfony/polyfill-mbstring`.'
+            'Cannot encode cache signature to JSON, error: "Malformed UTF-8 characters, possibly incorrectly encoded". If you have non-UTF8 chars in your signature, like in license for `header_comment`, consider enabling `ext-mbstring` or install `symfony/polyfill-mbstring`.',
         );
 
         $cache->toJson();
@@ -240,6 +243,11 @@ final class CacheTest extends TestCase
                 return [
                     "\xB1\x31" => true, // invalid UTF8 sequence
                 ];
+            }
+
+            public function getRuleCustomisationPolicyVersion(): string
+            {
+                return 'Policy Version';
             }
 
             public function equals(SignatureInterface $signature): bool

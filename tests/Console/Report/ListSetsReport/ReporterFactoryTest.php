@@ -52,7 +52,7 @@ final class ReporterFactoryTest extends TestCase
         $builder->registerBuiltInReporters();
         self::assertSame(
             ['json', 'txt'],
-            $builder->getFormats()
+            $builder->getFormats(),
         );
     }
 
