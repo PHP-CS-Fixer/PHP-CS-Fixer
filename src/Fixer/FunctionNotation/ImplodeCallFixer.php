@@ -39,7 +39,7 @@ final class ImplodeCallFixer extends AbstractFixer
                 new CodeSample("<?php\nimplode(\$pieces);\n"),
             ],
             null,
-            'Risky when the function `implode` is overridden.'
+            'Risky when the function `implode` is overridden.',
         );
     }
 

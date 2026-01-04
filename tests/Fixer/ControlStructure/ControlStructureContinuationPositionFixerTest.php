@@ -289,7 +289,7 @@ final class ControlStructureContinuationPositionFixerTest extends AbstractFixerT
         }
 
         $this->fixer->setWhitespacesConfig(
-            new WhitespacesFixerConfig('    ', "\r\n")
+            new WhitespacesFixerConfig('    ', "\r\n"),
         );
 
         $this->doTest($expected, $input);

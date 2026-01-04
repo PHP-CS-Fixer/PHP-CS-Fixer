@@ -94,7 +94,7 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
                             return false;
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -102,7 +102,7 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
                         $f = function () {};
 
                         PHP,
-                    ['closure_function_spacing' => self::SPACING_NONE]
+                    ['closure_function_spacing' => self::SPACING_NONE],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -110,9 +110,9 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
                         $f = fn () => null;
 
                         PHP,
-                    ['closure_fn_spacing' => self::SPACING_NONE]
+                    ['closure_fn_spacing' => self::SPACING_NONE],
                 ),
-            ]
+            ],
         );
     }
 
@@ -246,8 +246,8 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
                 ->setDefault(
                     Future::getV4OrV3(
                         self::SPACING_NONE,
-                        self::SPACING_ONE
-                    )
+                        self::SPACING_ONE,
+                    ),
                 )
                 ->setAllowedValues(self::SUPPORTED_SPACINGS)
                 ->getOption(),

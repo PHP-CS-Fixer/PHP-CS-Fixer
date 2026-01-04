@@ -132,10 +132,10 @@ final class ProcessPoolTest extends TestCase
             new RunnerConfig(
                 true,
                 false,
-                ParallelConfigFactory::sequential()
+                ParallelConfigFactory::sequential(),
             ),
             $identifier,
-            10_000
+            10_000,
         );
     }
 
@@ -185,7 +185,7 @@ final class ProcessPoolTest extends TestCase
                 /** @phpstan-ignore-next-line */
                 public function emit($event, array $arguments = []): void {}
             },
-            $onServerClose
+            $onServerClose,
         );
     }
 }

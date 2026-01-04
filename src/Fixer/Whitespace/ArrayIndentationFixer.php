@@ -38,7 +38,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
             'Each element of an array must be indented exactly once.',
             [
                 new CodeSample("<?php\n\$foo = [\n   'bar' => [\n    'baz' => true,\n  ],\n];\n"),
-            ]
+            ],
         );
     }
 
@@ -120,7 +120,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
                     $content = Preg::replace(
                         '/(\R+)\h*$/',
                         '$1'.$scopes[$currentScope]['initial_indent'].($indent ? $this->whitespacesConfig->getIndent() : ''),
-                        $token->getContent()
+                        $token->getContent(),
                     );
 
                     $previousLineInitialIndent = $this->extractIndent($token->getContent());
@@ -129,7 +129,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
                     $content = Preg::replace(
                         '/(\R)'.preg_quote($scopes[$currentScope]['initial_indent'], '/').'(\h*)$/',
                         '$1'.$scopes[$currentScope]['new_indent'].'$2',
-                        $token->getContent()
+                        $token->getContent(),
                     );
                 }
 
@@ -182,7 +182,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
                 $type = Tokens::detectBlockType($searchEndToken);
                 $searchEndIndex = $tokens->findBlockEnd(
                     $type['type'],
-                    $searchEndIndex
+                    $searchEndIndex,
                 );
 
                 continue;

@@ -433,7 +433,7 @@ echo \#
 #
 M_PI;
 echo M_PI;
-'
+',
         );
     }
 

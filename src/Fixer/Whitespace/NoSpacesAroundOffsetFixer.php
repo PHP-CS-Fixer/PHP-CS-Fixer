@@ -54,7 +54,7 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer implements Configura
                 new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];\n"),
                 new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];\n", ['positions' => ['inside']]),
                 new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];\n", ['positions' => ['outside']]),
-            ]
+            ],
         );
     }
 

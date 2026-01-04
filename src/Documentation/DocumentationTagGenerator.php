@@ -62,7 +62,7 @@ final class DocumentationTagGenerator
                 0 !== \count($alternatives)
                     ? \sprintf(
                         'You should use %s instead.',
-                        Utils::naturalLanguageJoinWithBackticks($alternatives)
+                        Utils::naturalLanguageJoinWithBackticks($alternatives),
                     )
                     : 'No replacement available.',
             );
@@ -121,7 +121,7 @@ final class DocumentationTagGenerator
                 0 !== \count($alternatives)
                     ? \sprintf(
                         'You should use %s instead.',
-                        Utils::naturalLanguageJoinWithBackticks($alternatives)
+                        Utils::naturalLanguageJoinWithBackticks($alternatives),
                     )
                     : 'No replacement available.',
             );
@@ -144,7 +144,7 @@ final class DocumentationTagGenerator
         if ($fixer instanceof ConfigurableFixerInterface) {
             $options = array_map(
                 static fn (FixerOptionInterface $option): string => '`'.$option->getName().'`',
-                $fixer->getConfigurationDefinition()->getOptions()
+                $fixer->getConfigurationDefinition()->getOptions(),
             );
             $tags[] = new DocumentationTag(
                 DocumentationTagType::CONFIGURABLE,

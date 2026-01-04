@@ -85,15 +85,15 @@ final class NonPrintableCharacterFixer extends AbstractFixer implements Configur
             'Remove Zero-width space (ZWSP), Non-breaking space (NBSP) and other invisible unicode symbols.',
             [
                 new CodeSample(
-                    '<?php echo "'.pack('H*', 'e2808b').'Hello'.pack('H*', 'e28087').'World'.pack('H*', 'c2a0')."!\";\n"
+                    '<?php echo "'.pack('H*', 'e2808b').'Hello'.pack('H*', 'e28087').'World'.pack('H*', 'c2a0')."!\";\n",
                 ),
                 new CodeSample(
                     '<?php echo "'.pack('H*', 'e2808b').'Hello'.pack('H*', 'e28087').'World'.pack('H*', 'c2a0')."!\";\n",
-                    ['use_escape_sequences_in_strings' => false]
+                    ['use_escape_sequences_in_strings' => false],
                 ),
             ],
             null,
-            'Risky when strings contain intended invisible characters.'
+            'Risky when strings contain intended invisible characters.',
         );
     }
 

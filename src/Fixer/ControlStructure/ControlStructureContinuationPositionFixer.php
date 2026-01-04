@@ -77,7 +77,7 @@ final class ControlStructureContinuationPositionFixer extends AbstractFixer impl
                             echo "bar";
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -89,9 +89,9 @@ final class ControlStructureContinuationPositionFixer extends AbstractFixer impl
                         }
 
                         PHP,
-                    ['position' => self::NEXT_LINE]
+                    ['position' => self::NEXT_LINE],
                 ),
-            ]
+            ],
         );
     }
 
@@ -143,7 +143,7 @@ final class ControlStructureContinuationPositionFixer extends AbstractFixer impl
 
             if ($token->isGivenKind(\T_WHILE)) {
                 $prevIndex = $tokens->getPrevMeaningfulToken(
-                    $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $prevIndex)
+                    $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $prevIndex),
                 );
 
                 if (!$tokens[$prevIndex]->isGivenKind(\T_DO)) {
@@ -156,7 +156,7 @@ final class ControlStructureContinuationPositionFixer extends AbstractFixer impl
                 1,
                 self::NEXT_LINE === $this->configuration['position']
                     ? $this->whitespacesConfig->getLineEnding().WhitespacesAnalyzer::detectIndent($tokens, $index)
-                    : ' '
+                    : ' ',
             );
         }
     }

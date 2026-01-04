@@ -80,7 +80,7 @@ final class GeneralPhpdocTagRenameFixer extends AbstractFixer implements Configu
                     ],
                     'case_sensitive' => true,
                 ]),
-            ]
+            ],
         );
     }
 
@@ -126,7 +126,7 @@ final class GeneralPhpdocTagRenameFixer extends AbstractFixer implements Configu
                             throw new InvalidOptionsException(\sprintf(
                                 'Tag "%s" cannot be replaced by invalid tag "%s".',
                                 $from,
-                                $to
+                                $to,
                             ));
                         }
 
@@ -139,7 +139,7 @@ final class GeneralPhpdocTagRenameFixer extends AbstractFixer implements Configu
                             if (isset($normalizedValue[$lowercaseFrom]) && $normalizedValue[$lowercaseFrom] !== $to) {
                                 throw new InvalidOptionsException(\sprintf(
                                     'Tag "%s" cannot be configured to be replaced with several different tags when case sensitivity is off.',
-                                    $from
+                                    $from,
                                 ));
                             }
 
@@ -155,7 +155,7 @@ final class GeneralPhpdocTagRenameFixer extends AbstractFixer implements Configu
                                 'Cannot change tag "%1$s" to tag "%2$s", as the tag "%2$s" is configured to be replaced to "%3$s".',
                                 $from,
                                 $to,
-                                $normalizedValue[$to]
+                                $normalizedValue[$to],
                             ));
                         }
                     }
@@ -208,7 +208,7 @@ final class GeneralPhpdocTagRenameFixer extends AbstractFixer implements Configu
 
                     return $replacements[$matches['tag']];
                 },
-                $token->getContent()
+                $token->getContent(),
             )]);
         }
     }

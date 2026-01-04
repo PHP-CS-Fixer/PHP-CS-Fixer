@@ -507,9 +507,9 @@ EOT
      *
      * @requires PHP 8.0
      */
-    public function testFix80(string $input): void
+    public function testFix80(string $expected): void
     {
-        $this->doTest($input);
+        $this->doTest($expected);
     }
 
     /**

@@ -45,7 +45,7 @@ final class ImportTransformerTest extends AbstractTransformerTestCase
                 CT::T_CONST_IMPORT,
                 \T_FUNCTION,
                 CT::T_FUNCTION_IMPORT,
-            ]
+            ],
         );
     }
 

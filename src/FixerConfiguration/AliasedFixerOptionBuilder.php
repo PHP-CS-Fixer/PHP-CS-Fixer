@@ -74,7 +74,7 @@ final class AliasedFixerOptionBuilder
     {
         return new AliasedFixerOption(
             $this->optionBuilder->getOption(),
-            $this->alias
+            $this->alias,
         );
     }
 }

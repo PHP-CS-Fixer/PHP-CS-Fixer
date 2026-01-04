@@ -57,9 +57,9 @@ final class PhpdocVarWithoutNameFixer extends AbstractFixer
                             public $baz;
                         }
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

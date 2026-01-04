@@ -37,7 +37,7 @@ final class LintingExceptionTest extends TestCase
         $exception = new LintingException(
             $message,
             $code,
-            $previous
+            $previous,
         );
 
         self::assertSame($message, $exception->getMessage());

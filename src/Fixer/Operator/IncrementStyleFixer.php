@@ -65,9 +65,9 @@ final class IncrementStyleFixer extends AbstractIncrementOperatorFixer implement
                 new CodeSample("<?php\n\$a++;\n\$b--;\n"),
                 new CodeSample(
                     "<?php\n++\$a;\n--\$b;\n",
-                    ['style' => self::STYLE_POST]
+                    ['style' => self::STYLE_POST],
                 ),
-            ]
+            ],
         );
     }
 

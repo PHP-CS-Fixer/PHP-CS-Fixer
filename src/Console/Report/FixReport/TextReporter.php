@@ -57,7 +57,7 @@ final class TextReporter implements ReporterInterface
             $identifiedFiles,
             $reportSummary->getFilesCount(),
             $reportSummary->getMemory(),
-            $reportSummary->isDryRun()
+            $reportSummary->isDryRun(),
         );
     }
 
@@ -68,7 +68,7 @@ final class TextReporter implements ReporterInterface
     {
         return \sprintf(
             $isDecoratedOutput ? ' (<comment>%s</comment>)' : ' (%s)',
-            implode(', ', $appliedFixers)
+            implode(', ', $appliedFixers),
         );
     }
 
@@ -81,7 +81,7 @@ final class TextReporter implements ReporterInterface
         $diffFormatter = new DiffConsoleFormatter($isDecoratedOutput, \sprintf(
             '<comment>      ---------- begin diff ----------</comment>%s%%s%s<comment>      ----------- end diff -----------</comment>',
             \PHP_EOL,
-            \PHP_EOL
+            \PHP_EOL,
         ));
 
         return \PHP_EOL.$diffFormatter->format($diff).\PHP_EOL;
@@ -100,7 +100,7 @@ final class TextReporter implements ReporterInterface
             $files,
             $isDryRun ? 'files that can be fixed' : 'files',
             $time / 1_000,
-            $memory / 1_024 / 1_024
+            $memory / 1_024 / 1_024,
         );
     }
 }

@@ -62,7 +62,7 @@ final class NoUnneededBracesFixer extends AbstractFixer implements ConfigurableF
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -72,9 +72,9 @@ final class NoUnneededBracesFixer extends AbstractFixer implements ConfigurableF
                         }
 
                         PHP,
-                    ['namespaces' => true]
+                    ['namespaces' => true],
                 ),
-            ]
+            ],
         );
     }
 

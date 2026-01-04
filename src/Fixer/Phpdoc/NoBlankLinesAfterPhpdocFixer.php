@@ -49,9 +49,9 @@ final class NoBlankLinesAfterPhpdocFixer extends AbstractFixer
 
                         class Bar {}
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

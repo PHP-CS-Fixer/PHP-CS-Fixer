@@ -540,7 +540,7 @@ foo()
      ?->setPassword("233434")
         ?->setEmailConfirmed(false)
 ?->setEmailConfirmationCode("123456");
-'
+',
         );
     }
 }

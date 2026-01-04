@@ -39,7 +39,7 @@ final class BlankLineAfterNamespaceFixer extends AbstractFixer implements Whites
             [
                 new CodeSample("<?php\nnamespace Sample\\Sample;\n\n\n\$a;\n"),
                 new CodeSample("<?php\nnamespace Sample\\Sample;\nClass Test{}\n"),
-            ]
+            ],
         );
     }
 

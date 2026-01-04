@@ -126,8 +126,8 @@ final class PhpUnitStrictFixerTest extends AbstractFixerTestCase
                         \sprintf(
                             '$this->%s(%s);',
                             $candidate,
-                            substr(str_repeat('$a, ', $argumentCount), 0, -2)
-                        )
+                            substr(str_repeat('$a, ', $argumentCount), 0, -2),
+                        ),
                     ),
                 ];
             }

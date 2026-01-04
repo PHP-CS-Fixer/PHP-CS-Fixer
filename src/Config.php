@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer;
 
+use PhpCsFixer\Config\RuleCustomisationPolicyAwareConfigInterface;
+use PhpCsFixer\Config\RuleCustomisationPolicyInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
@@ -25,8 +27,10 @@ use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @api-extendable
  */
-class Config implements ConfigInterface, ParallelAwareConfigInterface, UnsupportedPhpVersionAllowedConfigInterface, CustomRulesetsAwareConfigInterface
+class Config implements ConfigInterface, ParallelAwareConfigInterface, UnsupportedPhpVersionAllowedConfigInterface, CustomRulesetsAwareConfigInterface, RuleCustomisationPolicyAwareConfigInterface
 {
     /**
      * @var non-empty-string
@@ -81,6 +85,8 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
 
     private bool $isUnsupportedPhpVersionAllowed = false;
 
+    private ?RuleCustomisationPolicyInterface $ruleCustomisationPolicy = null;
+
     public function __construct(string $name = 'default')
     {
         $this->name = $name.(Future::isFutureModeEnabled() ? ' (future mode)' : '');
@@ -119,7 +125,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     }
 
     /**
-     * @return Finder
+     * @return iterable<\SplFileInfo>
      */
     public function getFinder(): iterable
     {
@@ -181,6 +187,11 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     public function getUnsupportedPhpVersionAllowed(): bool
     {
         return $this->isUnsupportedPhpVersionAllowed;
+    }
+
+    public function getRuleCustomisationPolicy(): ?RuleCustomisationPolicyInterface
+    {
+        return $this->ruleCustomisationPolicy;
     }
 
     public function registerCustomFixers(iterable $fixers): ConfigInterface
@@ -293,6 +304,18 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
     public function setUnsupportedPhpVersionAllowed(bool $isUnsupportedPhpVersionAllowed): ConfigInterface
     {
         $this->isUnsupportedPhpVersionAllowed = $isUnsupportedPhpVersionAllowed;
+
+        return $this;
+    }
+
+    public function setRuleCustomisationPolicy(?RuleCustomisationPolicyInterface $ruleCustomisationPolicy): ConfigInterface
+    {
+        // explicitly prevent policy with no proper version defined
+        if (null !== $ruleCustomisationPolicy && '' === $ruleCustomisationPolicy->getPolicyVersionForCache()) {
+            throw new \InvalidArgumentException('The Rule Customisation Policy version cannot be an empty string.');
+        }
+
+        $this->ruleCustomisationPolicy = $ruleCustomisationPolicy;
 
         return $this;
     }

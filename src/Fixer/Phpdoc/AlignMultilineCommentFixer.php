@@ -67,7 +67,7 @@ final class AlignMultilineCommentFixer extends AbstractFixer implements Configur
 
                            */
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -77,7 +77,7 @@ final class AlignMultilineCommentFixer extends AbstractFixer implements Configur
                         */
 
                         PHP,
-                    ['comment_type' => 'phpdocs_like']
+                    ['comment_type' => 'phpdocs_like'],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -89,9 +89,9 @@ final class AlignMultilineCommentFixer extends AbstractFixer implements Configur
                            */
 
                         PHP,
-                    ['comment_type' => 'all_multiline']
+                    ['comment_type' => 'all_multiline'],
                 ),
-            ]
+            ],
         );
     }
 

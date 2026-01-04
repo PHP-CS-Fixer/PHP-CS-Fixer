@@ -57,7 +57,7 @@ final class TextReporterTest extends AbstractReporterTestCase
                       ----------- end diff -----------
 
 
-                TEXT
+                TEXT,
         );
     }
 
@@ -83,7 +83,7 @@ final class TextReporterTest extends AbstractReporterTestCase
                       ----------- end diff -----------
 
 
-                TEXT
+                TEXT,
         );
     }
 
@@ -95,7 +95,7 @@ final class TextReporterTest extends AbstractReporterTestCase
             <<<'TEXT'
                    1) someFile.php (some_fixer_name_here_1, some_fixer_name_here_2)
 
-                TEXT
+                TEXT,
         );
     }
 
@@ -123,7 +123,7 @@ final class TextReporterTest extends AbstractReporterTestCase
 
                 Fixed 1 of 10 files in 1.234 seconds, 2.50 MB memory used
 
-                TEXT
+                TEXT,
         );
     }
 
@@ -146,7 +146,7 @@ final class TextReporterTest extends AbstractReporterTestCase
 
                 Found 2 of 10 files that can be fixed in 1.234 seconds, 2.50 MB memory used
 
-                TEXT
+                TEXT,
         );
     }
 

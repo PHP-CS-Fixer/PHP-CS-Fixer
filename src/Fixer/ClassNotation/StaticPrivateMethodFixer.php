@@ -60,14 +60,14 @@ final class StaticPrivateMethodFixer extends AbstractFixer
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
             ],
             null,
             'Risky when the method:'
             .' contains dynamic generated calls to the instance,'
             .' is dynamically referenced,'
-            .' is referenced inside a Trait the class uses.'
+            .' is referenced inside a Trait the class uses.',
         );
     }
 

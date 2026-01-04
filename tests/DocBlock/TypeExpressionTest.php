@@ -48,12 +48,12 @@ final class TypeExpressionTest extends TestCase
         $unionExpression = $this->parseTypeExpression(
             $unionTestNs.'\A|'.$typesExpression.'|'.$unionTestNs.'\Z',
             null,
-            []
+            [],
         );
         if (!$expression->isCompositeType() || $expression->isUnionType()) {
             self::assertSame(
                 [$unionTestNs.'\A', ...$expectedTypes, $unionTestNs.'\Z'],
-                [...$unionExpression->getTypes()]
+                [...$unionExpression->getTypes()],
             );
         }
     }
@@ -1192,7 +1192,7 @@ final class TypeExpressionTest extends TestCase
             $innerExpressionStr = $innerExpression->toString();
             self::assertSame(
                 $innerExpressionStr,
-                substr($typeExpression->toString(), $innerStartIndex, \strlen($innerExpressionStr))
+                substr($typeExpression->toString(), $innerStartIndex, \strlen($innerExpressionStr)),
             );
 
             $res[] = [$innerStartIndex, $innerExpressionStr];

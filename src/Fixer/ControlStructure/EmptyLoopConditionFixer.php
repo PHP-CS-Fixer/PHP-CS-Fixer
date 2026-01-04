@@ -56,7 +56,7 @@ final class EmptyLoopConditionFixer extends AbstractFixer implements Configurabl
             [
                 new CodeSample("<?php\nfor(;;) {\n    foo();\n}\n\ndo {\n    foo();\n} while(true); // do while\n"),
                 new CodeSample("<?php\nwhile(true) {\n    foo();\n}\n", ['style' => self::STYLE_FOR]),
-            ]
+            ],
         );
     }
 

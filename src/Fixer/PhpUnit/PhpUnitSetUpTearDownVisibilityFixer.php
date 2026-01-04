@@ -51,12 +51,12 @@ final class PhpUnitSetUpTearDownVisibilityFixer extends AbstractPhpUnitFixer
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
             ],
             null,
             'This fixer may change functions named `setUp()` or `tearDown()` outside of PHPUnit tests, '
-            .'when a class is wrongly seen as a PHPUnit test.'
+            .'when a class is wrongly seen as a PHPUnit test.',
         );
     }
 

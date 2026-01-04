@@ -55,9 +55,9 @@ final class AttributeEmptyParenthesesFixer extends AbstractFixer implements Conf
                 new CodeSample("<?php\n\n#[Foo()]\nclass Sample1 {}\n\n#[Bar(), Baz()]\nclass Sample2 {}\n"),
                 new CodeSample(
                     "<?php\n\n#[Foo]\nclass Sample1 {}\n\n#[Bar, Baz]\nclass Sample2 {}\n",
-                    ['use_parentheses' => true]
+                    ['use_parentheses' => true],
                 ),
-            ]
+            ],
         );
     }
 
@@ -116,7 +116,7 @@ final class AttributeEmptyParenthesesFixer extends AbstractFixer implements Conf
 
         $tokens->insertAt(
             $tokens->getPrevMeaningfulToken($index) + 1,
-            [new Token('('), new Token(')')]
+            [new Token('('), new Token(')')],
         );
     }
 

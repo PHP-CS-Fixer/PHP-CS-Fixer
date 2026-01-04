@@ -55,13 +55,13 @@ final class PhpdocInlineTagNormalizerFixer extends AbstractFixer implements Conf
             'Fixes PHPDoc inline tags.',
             [
                 new CodeSample(
-                    "<?php\n/**\n * @{TUTORIAL}\n * {{ @link }}\n * @inheritDoc\n */\n"
+                    "<?php\n/**\n * @{TUTORIAL}\n * {{ @link }}\n * @inheritDoc\n */\n",
                 ),
                 new CodeSample(
                     "<?php\n/**\n * @{TUTORIAL}\n * {{ @link }}\n * @inheritDoc\n */\n",
-                    ['tags' => ['TUTORIAL']]
+                    ['tags' => ['TUTORIAL']],
                 ),
-            ]
+            ],
         );
     }
 
@@ -93,7 +93,7 @@ final class PhpdocInlineTagNormalizerFixer extends AbstractFixer implements Conf
             $content = Preg::replaceCallback(
                 \sprintf(
                     '#(?:@{+|{+\h*@)\h*(%s)\b([^}]*)(?:}+)#i',
-                    implode('|', array_map(static fn (string $tag): string => preg_quote($tag, '/'), $this->configuration['tags']))
+                    implode('|', array_map(static fn (string $tag): string => preg_quote($tag, '/'), $this->configuration['tags'])),
                 ),
                 static function (array $matches): string {
                     $doc = trim($matches[2]);
@@ -104,7 +104,7 @@ final class PhpdocInlineTagNormalizerFixer extends AbstractFixer implements Conf
 
                     return '{@'.$matches[1].' '.$doc.'}';
                 },
-                $token->getContent()
+                $token->getContent(),
             );
 
             $tokens[$index] = new Token([\T_DOC_COMMENT, $content]);

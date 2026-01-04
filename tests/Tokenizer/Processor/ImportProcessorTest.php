@@ -42,9 +42,9 @@ final class ImportProcessorTest extends TestCase
                 '',
                 array_map(
                     static fn (Token $token): string => $token->getContent(),
-                    ImportProcessor::tokenizeName($symbol)
-                )
-            )
+                    ImportProcessor::tokenizeName($symbol),
+                ),
+            ),
         );
     }
 
