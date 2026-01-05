@@ -112,8 +112,7 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
             }
 
             if ($useParentheses) {
-                // $this->addParentheses($tokens, $start, $end);
-                $this->addParenthesesAlternative($tokens, $start, $end);
+                $this->addParentheses($tokens, $start, $end);
             } else {
                 $this->removeParentheses($tokens, $start, $end);
             }
@@ -128,13 +127,13 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
         while (($prev = $tokens->getPrevMeaningfulToken($index)) !== null) {
             $type = Tokens::detectBlockType($tokens[$prev]);
 
-            if ($type && !$type['isStart']) {
+            if ($type && false === $type['isStart']) {
                 $index = $tokens->findBlockStart($type['type'], $prev);
 
                 continue;
             }
 
-            if ($type && $type['isStart'] && Tokens::BLOCK_TYPE_PARENTHESIS_BRACE === $type['type']) {
+            if ($type && true === $type['isStart'] && Tokens::BLOCK_TYPE_PARENTHESIS_BRACE === $type['type']) {
                 return [$prev, $tokens->findBlockEnd($type['type'], $prev)];
             }
 
@@ -174,32 +173,67 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
     }
 
     /**
-     * Adds parentheses before the left operand and after the right operand.
-     */
-    private function addParentheses(Tokens $tokens, int $startIndex, int $endIndex): void
-    {
-        $tokens->insertSlices([
-            $startIndex => new Token('('),
-            $endIndex + 1 => new Token(')'),
-        ]);
-    }
-
-    /**
      * Adds parentheses after the previous meaningful token left of the left operand and
      * before the next meaningful or whitespace token after the right operand.
      */
-    private function addParenthesesAlternative(Tokens $tokens, int $startIndex, int $endIndex): void
+    private function addParentheses(Tokens $tokens, int $startIndex, int $endIndex): void
     {
+        // Adding parentheses directly before the left operand and after the right operand would work in most
+        // cases, but would lead to unexpected output in some edge cases with comments, e.g.
+        //
+        // if (!/* comment */$foo instanceof Foo/* comment */) {};
+        // would become
+        // if (!/* comment */($foo instanceof Foo)/* comment */) {};
+        //
+        // To avoid this, we add the opening parenthesis right after the previous meaningful token (which we know
+        // is a `!` in this case) and the closing parenthesis right before the next meaningful token:
+        //
+        // if (!(/* comment */$foo instanceof Foo/* comment */)) {};
+
         $openingIndex = $tokens->getPrevMeaningfulToken($startIndex);
         $openingIndex = null !== $openingIndex ? $openingIndex + 1 : $startIndex;
 
         $closingIndex = $tokens->getNextMeaningfulToken($endIndex);
         $closingIndex = null !== $closingIndex ? $closingIndex : $endIndex + 1;
 
-        // We don't want to add the closing parenthesis right before the next meaningful token,
-        // but after the first non-whitespace token (or at the endIndex if there is no whitespace).
+        // However, this alone could lead to unwanted formatting in other cases:
+        //
+        // !$x instanceof Foo && !$y instanceof Bar;
+        // would become
+        // !($x instanceof Foo )&& !($y instanceof Bar);
+        //
+        // To prevent that, we need to put the closing parenthesis before any whitespace
+        // preceding the next meaningful token
+
         if ($tokens[$closingIndex - 1]->isWhitespace()) {
             $closingIndex = $tokens->getPrevNonWhitespace($closingIndex) + 1;
+        }
+
+        // So far so good, but there is still one edge case remaining: `//` comments
+        //
+        // if (
+        //     !$x instanceof Foo // comment
+        // ) {};
+        //
+        // would become
+        //
+        // if (
+        //     !($x instanceof Foo // comment)
+        // ) {};
+        //
+        // which is invalid, because the `//` comment comments out the closing parenthesis
+        // To fix that, we need to put the closing parenthesis before the next meaningful token
+        $potentialCommentIndex = $closingIndex - 1;
+
+        if (
+            $tokens[$potentialCommentIndex]->isComment()
+            && strpos($tokens[$potentialCommentIndex]->getContent(), '//') === 0
+        ) {
+            $nextIndex = $tokens->getNextMeaningfulToken($endIndex);
+
+            if (null !== $nextIndex) {
+                $closingIndex = $nextIndex;
+            }
         }
 
         $tokens->insertSlices([
