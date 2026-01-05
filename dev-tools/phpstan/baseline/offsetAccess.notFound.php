@@ -292,11 +292,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/DocBlock/TypeExpression.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset int<0, max> might not exist on non-empty-list<array{start_index: int<0, max>, value: string, next_glue: string|null, next_glue_raw: string|null}>.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/DocBlock/TypeExpression.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset int might not exist on list<PhpCsFixer\\Doctrine\\Annotation\\Token>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Doctrine/Annotation/DocLexer.php',
