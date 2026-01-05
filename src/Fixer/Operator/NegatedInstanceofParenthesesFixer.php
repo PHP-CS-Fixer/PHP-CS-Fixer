@@ -47,7 +47,7 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
     use ConfigurableFixerTrait;
 
     /** @var list<int> */
-    private array $skipTokens = [
+    private const SKIP_TOKENS = [
         CT::T_NAMESPACE_OPERATOR,
         \T_DOUBLE_COLON,
         \T_NS_SEPARATOR,
@@ -75,7 +75,7 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(\T_INSTANCEOF);
+        return $tokens->isAllTokenKindsFound([\T_INSTANCEOF, '!']);
     }
 
     public function createConfigurationDefinition(): FixerConfigurationResolverInterface
@@ -138,7 +138,7 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
                 return [$prev, $tokens->findBlockEnd($type['type'], $prev)];
             }
 
-            if ($tokens[$prev]->isGivenKind($this->skipTokens)) {
+            if ($tokens[$prev]->isGivenKind(self::SKIP_TOKENS)) {
                 $leftEdge = $prev;
 
                 continue;
@@ -163,7 +163,7 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
                 continue;
             }
 
-            if ($tokens[$next]->isGivenKind($this->skipTokens)) {
+            if ($tokens[$next]->isGivenKind(self::SKIP_TOKENS)) {
                 $rightEdge = $next;
 
                 continue;

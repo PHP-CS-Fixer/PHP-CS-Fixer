@@ -155,22 +155,22 @@ final class NegatedInstanceofParenthesesFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'multiple_wrapped_in_comments' => [
-            <<<'EXPR'
-                <?php
-                    if (
-                        !/*comment-1*/$x instanceof Foo/**comment-2*/ ||
-                        !/*comment-3*/$y instanceof Foo/**comment-4*/
-                        && !/*comment-5*/$y instanceof Foo///comment-6
-                    ) {}
-                EXPR,
-            <<<'EXPR'
-                <?php
-                    if (
-                        !(/*comment-1*/$x instanceof Foo/**comment-2*/) ||
-                        !(/*comment-3*/$y instanceof Foo/**comment-4*/)
-                        && !(/*comment-5*/$y instanceof Foo///comment-6
-                    )) {}
-                EXPR,
+            <<<'PHP'
+                                <?php
+                                    if (
+                                        !/*comment-1*/$x instanceof Foo/**comment-2*/ ||
+                                        !/*comment-3*/$y instanceof Foo/**comment-4*/
+                                        && !/*comment-5*/$y instanceof Foo///comment-6
+                                    ) {}
+                PHP,
+            <<<'PHP'
+                                <?php
+                                    if (
+                                        !(/*comment-1*/$x instanceof Foo/**comment-2*/) ||
+                                        !(/*comment-3*/$y instanceof Foo/**comment-4*/)
+                                        && !(/*comment-5*/$y instanceof Foo///comment-6
+                                    )) {}
+                PHP,
         ];
 
         yield 'ternary_inside_function_call' => [
