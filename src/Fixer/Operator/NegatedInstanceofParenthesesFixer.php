@@ -172,10 +172,6 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
         return $index;
     }
 
-    /**
-     * Adds parentheses after the previous meaningful token left of the left operand and
-     * before the next meaningful or whitespace token after the right operand.
-     */
     private function addParentheses(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         // Adding parentheses directly before the left operand and after the right operand would work in most
