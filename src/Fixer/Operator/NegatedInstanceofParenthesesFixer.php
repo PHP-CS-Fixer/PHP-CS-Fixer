@@ -98,7 +98,6 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
             }
 
             [$start, $end] = $this->findEdges($tokens, $index);
-            $end ??= $this->findEnd($tokens, $index);
 
             $hasParentheses = $tokens[$start]->equals('(') && $tokens[$end]->equals(')');
             $isNegated = $tokens[$tokens->getPrevMeaningfulToken($start)]->equals('!');
@@ -120,7 +119,7 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
     }
 
     /**
-     * @return array{0: int, 1: ?int}
+     * @return array{0: int, 1: int}
      */
     private function findEdges(Tokens $tokens, int $instanceofIndex): array
     {
@@ -148,7 +147,7 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
             break;
         }
 
-        return [$currentIndex, null];
+        return [$currentIndex, $this->findEnd($tokens, $instanceofIndex)];
     }
 
     private function findEnd(Tokens $tokens, int $index): int
