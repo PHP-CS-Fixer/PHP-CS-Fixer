@@ -227,7 +227,7 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
 
         if (
             $tokens[$potentialCommentIndex]->isComment()
-            && strpos($tokens[$potentialCommentIndex]->getContent(), '//') === 0
+            && str_starts_with($tokens[$potentialCommentIndex]->getContent(), '//')
         ) {
             $nextIndex = $tokens->getNextMeaningfulToken($endIndex);
 
