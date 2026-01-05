@@ -122,13 +122,15 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
     /**
      * @return array{0: int, 1: ?int}
      */
-    private function findEdges(Tokens $tokens, int $index): array
+    private function findEdges(Tokens $tokens, int $instanceofIndex): array
     {
-        while (($prev = $tokens->getPrevMeaningfulToken($index)) !== null) {
+        $currentIndex = $instanceofIndex;
+
+        while (($prev = $tokens->getPrevMeaningfulToken($currentIndex)) !== null) {
             $type = Tokens::detectBlockType($tokens[$prev]);
 
             if (null !== $type && false === $type['isStart']) {
-                $index = $tokens->findBlockStart($type['type'], $prev);
+                $currentIndex = $tokens->findBlockStart($type['type'], $prev);
 
                 continue;
             }
@@ -138,7 +140,7 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
             }
 
             if ($tokens[$prev]->isGivenKind($this->skipTokens)) {
-                $index = $prev;
+                $currentIndex = $prev;
 
                 continue;
             }
@@ -146,7 +148,7 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
             break;
         }
 
-        return [$index, null];
+        return [$currentIndex, null];
     }
 
     private function findEnd(Tokens $tokens, int $index): int
