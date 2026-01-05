@@ -127,13 +127,13 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
         while (($prev = $tokens->getPrevMeaningfulToken($index)) !== null) {
             $type = Tokens::detectBlockType($tokens[$prev]);
 
-            if ($type && false === $type['isStart']) {
+            if (null !== $type && false === $type['isStart']) {
                 $index = $tokens->findBlockStart($type['type'], $prev);
 
                 continue;
             }
 
-            if ($type && true === $type['isStart'] && Tokens::BLOCK_TYPE_PARENTHESIS_BRACE === $type['type']) {
+            if (null !== $type && true === $type['isStart'] && Tokens::BLOCK_TYPE_PARENTHESIS_BRACE === $type['type']) {
                 return [$prev, $tokens->findBlockEnd($type['type'], $prev)];
             }
 
