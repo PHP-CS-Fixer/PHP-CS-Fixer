@@ -542,7 +542,7 @@ How shall I decide on default option values for rules configurable via `PhpCsFix
   Default value should reflect default style of following standard, in order:
 
   - `PER-CS`_,
-  - if not specified - `Symfony Coding Standards`_ or PHPUnit,
+  - if not specified - `Symfony Coding Standards`_ or PHPUnit best practices,
   - if still not specified - by our own guidance (present your reasoning).
 
 Should I add new rule to ruleset?
