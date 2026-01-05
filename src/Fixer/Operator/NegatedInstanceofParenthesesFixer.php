@@ -123,13 +123,13 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
      */
     private function findEdges(Tokens $tokens, int $instanceofIndex): array
     {
-        $currentIndex = $instanceofIndex;
+        $leftEdge = $instanceofIndex;
 
-        while (($prev = $tokens->getPrevMeaningfulToken($currentIndex)) !== null) {
+        while (($prev = $tokens->getPrevMeaningfulToken($leftEdge)) !== null) {
             $type = Tokens::detectBlockType($tokens[$prev]);
 
             if (null !== $type && false === $type['isStart']) {
-                $currentIndex = $tokens->findBlockStart($type['type'], $prev);
+                $leftEdge = $tokens->findBlockStart($type['type'], $prev);
 
                 continue;
             }
@@ -139,7 +139,7 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
             }
 
             if ($tokens[$prev]->isGivenKind($this->skipTokens)) {
-                $currentIndex = $prev;
+                $leftEdge = $prev;
 
                 continue;
             }
@@ -147,22 +147,24 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
             break;
         }
 
-        return [$currentIndex, $this->findEnd($tokens, $instanceofIndex)];
+        return [$leftEdge, $this->findRightEdge($tokens, $instanceofIndex)];
     }
 
-    private function findEnd(Tokens $tokens, int $index): int
+    private function findRightEdge(Tokens $tokens, int $instanceofIndex): int
     {
-        while (($next = $tokens->getNextMeaningfulToken($index)) !== null) {
+        $rightEdge = $instanceofIndex;
+
+        while (($next = $tokens->getNextMeaningfulToken($rightEdge)) !== null) {
             $type = Tokens::detectBlockType($tokens[$next]);
 
             if (null !== $type && $type['isStart']) {
-                $index = $tokens->findBlockEnd($type['type'], $next);
+                $rightEdge = $tokens->findBlockEnd($type['type'], $next);
 
                 continue;
             }
 
             if ($tokens[$next]->isGivenKind($this->skipTokens)) {
-                $index = $next;
+                $rightEdge = $next;
 
                 continue;
             }
@@ -170,7 +172,7 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
             break;
         }
 
-        return $index;
+        return $rightEdge;
     }
 
     private function addParentheses(Tokens $tokens, int $startIndex, int $endIndex): void
