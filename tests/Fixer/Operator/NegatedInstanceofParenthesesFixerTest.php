@@ -94,9 +94,24 @@ final class NegatedInstanceofParenthesesFixerTest extends AbstractFixerTestCase
             '<?php !($x instanceof Foo) && $y instanceof Bar;',
         ];
 
-        yield 'nested_multiple' => [
+        yield 'unnegated_and_negated' => [
+            '<?php $x instanceof Foo && !$y instanceof Bar;',
+            '<?php $x instanceof Foo && !($y instanceof Bar);',
+        ];
+
+        yield 'nested_negated_and_negated' => [
             '<?php !(!$x instanceof Foo && !$y instanceof Bar);',
             '<?php !(!($x instanceof Foo) && !($y instanceof Bar));',
+        ];
+
+        yield 'nested_unnegated_and_negated' => [
+            '<?php !($x instanceof Foo && !$y instanceof Bar);',
+            '<?php !($x instanceof Foo && !($y instanceof Bar));',
+        ];
+
+        yield 'nested_negated_and_unnegated' => [
+            '<?php !(!$x instanceof Foo && $y instanceof Bar);',
+            '<?php !(!($x instanceof Foo) && $y instanceof Bar);',
         ];
 
         yield 'double_wrapped' => [
