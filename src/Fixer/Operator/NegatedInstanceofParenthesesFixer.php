@@ -175,17 +175,8 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
 
     private function addParentheses(Tokens $tokens, int $startIndex, int $endIndex): void
     {
-        // Adding parentheses directly before the left operand and after the right operand would work in most
-        // cases, but would lead to unexpected output in some edge cases with comments, e.g.
-        //
-        // if (!/* comment */$foo instanceof Foo/* comment */) {};
-        // would become
-        // if (!/* comment */($foo instanceof Foo)/* comment */) {};
-        //
-        // To avoid this, we add the opening parenthesis right after the previous meaningful token (which we know
-        // is a `!` in this case) and the closing parenthesis right before the next meaningful token:
-        //
-        // if (!(/* comment */$foo instanceof Foo/* comment */)) {};
+        // Place opening parenthesis after the `!` operator and closing parenthesis
+        // before the next meaningful token to handle edge cases with comments.
 
         $openingIndex = $tokens->getPrevMeaningfulToken($startIndex);
         $openingIndex = null !== $openingIndex ? $openingIndex + 1 : $startIndex;
@@ -193,33 +184,13 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
         $closingIndex = $tokens->getNextMeaningfulToken($endIndex);
         $closingIndex = null !== $closingIndex ? $closingIndex : $endIndex + 1;
 
-        // However, this alone could lead to unwanted formatting in other cases:
-        //
-        // !$x instanceof Foo && !$y instanceof Bar;
-        // would become
-        // !($x instanceof Foo )&& !($y instanceof Bar);
-        //
-        // To prevent that, we need to put the closing parenthesis before any whitespace
-        // preceding the next meaningful token
+        // Preserve whitespace before the next meaningful token to avoid unwanted formatting
 
         if ($tokens[$closingIndex - 1]->isWhitespace()) {
             $closingIndex = $tokens->getPrevNonWhitespace($closingIndex) + 1;
         }
 
-        // So far so good, but there is still one edge case remaining: `//` comments
-        //
-        // if (
-        //     !$x instanceof Foo // comment
-        // ) {};
-        //
-        // would become
-        //
-        // if (
-        //     !($x instanceof Foo // comment)
-        // ) {};
-        //
-        // which is invalid, because the `//` comment comments out the closing parenthesis
-        // To fix that, we need to put the closing parenthesis before the next meaningful token
+        // Handle line comments that would comment out the closing parenthesis
         $potentialCommentIndex = $closingIndex - 1;
 
         if (
