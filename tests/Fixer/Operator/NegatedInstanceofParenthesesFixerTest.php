@@ -161,12 +161,12 @@ final class NegatedInstanceofParenthesesFixerTest extends AbstractFixerTestCase
 
         yield 'wrapped_in_comments' => [
             '<?php !/*comment-1*/$x instanceof Foo/**comment-2*/;',
-            '<?php !(/*comment-1*/$x instanceof Foo/**comment-2*/);',
+            '<?php !(/*comment-1*/$x instanceof Foo)/**comment-2*/;',
         ];
 
         yield 'wrapped_in_comments_with_trailing_whitespaces' => [
             '<?php !/*comment-1*/$x instanceof Foo/**comment-2 */    ;',
-            '<?php !(/*comment-1*/$x instanceof Foo/**comment-2 */)    ;',
+            '<?php !(/*comment-1*/$x instanceof Foo)/**comment-2 */    ;',
         ];
 
         yield 'multiple_wrapped_in_comments' => [
@@ -181,10 +181,10 @@ final class NegatedInstanceofParenthesesFixerTest extends AbstractFixerTestCase
             <<<'PHP'
                 <?php
                     if (
-                        !(/*comment-1*/$x instanceof Foo/**comment-2*/) ||
-                        !(/*comment-3*/$y instanceof Foo/**comment-4*/)
-                        && !(/*comment-5*/$y instanceof Foo///comment-6
-                    )) {}
+                        !(/*comment-1*/$x instanceof Foo)/**comment-2*/ ||
+                        !(/*comment-3*/$y instanceof Foo)/**comment-4*/
+                        && !(/*comment-5*/$y instanceof Foo)///comment-6
+                    ) {}
                 PHP,
         ];
 

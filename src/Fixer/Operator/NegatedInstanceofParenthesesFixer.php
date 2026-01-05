@@ -183,6 +183,13 @@ final class NegatedInstanceofParenthesesFixer extends AbstractFixer implements C
         $openingIndex = $tokens->getPrevMeaningfulToken($startIndex);
         $openingIndex = null !== $openingIndex ? $openingIndex + 1 : $startIndex;
 
+        $tokens->insertSlices([
+            $openingIndex => new Token('('),
+            $endIndex + 1 => new Token(')'),
+        ]);
+
+        return;
+
         $closingIndex = $tokens->getNextMeaningfulToken($endIndex);
         $closingIndex = null !== $closingIndex ? $closingIndex : $endIndex + 1;
 
