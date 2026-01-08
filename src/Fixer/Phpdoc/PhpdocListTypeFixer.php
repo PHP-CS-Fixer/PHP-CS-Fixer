@@ -60,7 +60,7 @@ final class PhpdocListTypeFixer extends AbstractPhpdocTypesFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before PhpdocAlignFixer, PhpdocTypesOrderFixer.
+     * Must run before PhpdocAlignFixer, PhpdocTypesNoDuplicatesFixer, PhpdocTypesOrderFixer.
      * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocArrayTypeFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority(): int

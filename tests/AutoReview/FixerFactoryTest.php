@@ -823,12 +823,14 @@ final class FixerFactoryTest extends TestCase
             ],
             'phpdoc_array_type' => [
                 'phpdoc_list_type',
+                'phpdoc_types_no_duplicates',
                 'phpdoc_types_order',
             ],
             'phpdoc_line_span' => [
                 'no_superfluous_phpdoc_tags',
             ],
             'phpdoc_list_type' => [
+                'phpdoc_types_no_duplicates',
                 'phpdoc_types_order',
             ],
             'phpdoc_no_access' => [
