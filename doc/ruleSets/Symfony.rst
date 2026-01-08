@@ -159,6 +159,7 @@ Rules
 
 - `phpdoc_var_annotation_correct_order <./../rules/phpdoc/phpdoc_var_annotation_correct_order.rst>`_
 - `phpdoc_var_without_name <./../rules/phpdoc/phpdoc_var_without_name.rst>`_
+- `protected_to_private <./../rules/class_notation/protected_to_private.rst>`_
 - `semicolon_after_instruction <./../rules/semicolon/semicolon_after_instruction.rst>`_
 - `simple_to_complex_string_variable <./../rules/string_notation/simple_to_complex_string_variable.rst>`_
 - `single_import_per_statement <./../rules/import/single_import_per_statement.rst>`_
