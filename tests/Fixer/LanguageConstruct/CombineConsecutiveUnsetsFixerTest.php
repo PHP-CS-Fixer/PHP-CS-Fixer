@@ -163,7 +163,7 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php
-                unset($array1["foo"], $array2["bar2"],);
+                unset($array1["foo"],$array2["bar2"],);
 
                 ',
             '<?php
