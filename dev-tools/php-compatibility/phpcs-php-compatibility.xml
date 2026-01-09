@@ -19,11 +19,6 @@
         <exclude name="PHPCompatibility.FunctionUse.NewNamedParameters.Found"/>
         <!-- We explicitly check in codebase if new constants are defined -->
         <exclude name="PHPCompatibility.Constants.NewConstants"/>
-        <!-- We use Sf 8.1 polyfill (but no polyfill ruleset available yet)-->
-        <exclude name="PHPCompatibility.FunctionUse.NewFunctions.array_is_listFound"/>
-        <!-- We use Sf 8.4 polyfill (but no polyfill ruleset available yet)-->
-        <exclude name="PHPCompatibility.FunctionUse.NewFunctions.array_anyFound"/>
-        <exclude name="PHPCompatibility.FunctionUse.NewFunctions.array_findFound"/>
         <!-- we use it to test code using high PHP version -->
         <exclude name="PHPCompatibility.Numbers.RemovedHexadecimalNumericStrings.Found"/>
         <!-- we have explicit handling of different hash algo depends on PHP version -->
@@ -31,8 +26,11 @@
         <exclude-pattern>tests/Fixtures/**/*</exclude-pattern>
     </rule>
     <rule ref="PHPCompatibilitySymfonyPolyfillPHP80"/>
+    <rule ref="PHPCompatibilitySymfonyPolyfillPHP81"/>
+    <rule ref="PHPCompatibilitySymfonyPolyfillPHP84"/>
+    <rule ref="PHPCompatibilitySymfonyPolyfillPHP85"/>
 
-    <config name="testVersion" value="7.4-8.4"/>
+    <config name="testVersion" value="7.4-8.5"/>
 
     <file>../../src/</file>
     <file>../../tests/</file>

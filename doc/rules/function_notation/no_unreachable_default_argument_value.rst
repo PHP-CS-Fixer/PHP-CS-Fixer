@@ -8,8 +8,8 @@ non-default ones.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Modifies the signature of functions; therefore risky when using systems (such as
 some Symfony components) that rely on those (for example through reflection).
@@ -42,7 +42,10 @@ The rule is part of the following rule sets:
 - `@PER-CS:risky <./../../ruleSets/PER-CSRisky.rst>`_
 - `@PER:risky <./../../ruleSets/PERRisky.rst>`_ *(deprecated)*
 - `@PHP8x0Migration:risky <./../../ruleSets/PHP8x0MigrationRisky.rst>`_
+- `@PHP8x1Migration:risky <./../../ruleSets/PHP8x1MigrationRisky.rst>`_
 - `@PHP8x2Migration:risky <./../../ruleSets/PHP8x2MigrationRisky.rst>`_
+- `@PHP8x3Migration:risky <./../../ruleSets/PHP8x3MigrationRisky.rst>`_
+- `@PHP8x4Migration:risky <./../../ruleSets/PHP8x4MigrationRisky.rst>`_
 - `@PHP8x5Migration:risky <./../../ruleSets/PHP8x5MigrationRisky.rst>`_
 - `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ *(deprecated)*
 - `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_ *(deprecated)*

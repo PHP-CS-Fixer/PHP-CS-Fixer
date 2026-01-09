@@ -2,15 +2,16 @@
 Rule set ``@autoPHPMigration``
 ==============================
 
-Rules to improve code for PHP. Target version is automatically detected from project's "composer.json" file.
+Migration rules to improve code towards the minimum ``PHP`` supported by your project (taken from ``composer.json`` file).
 
 Warning
 -------
 
-Automatic rule set
-~~~~~~~~~~~~~~~~~~
+This rule set is AUTOMATIC
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-⚡ This rule is automatic: it's definition depends on your project, eg "composer.json" file.
+⚡ This rule is automatic: it's definition depends on your project, eg
+"composer.json" file.
 
 Rules candidates
 ----------------

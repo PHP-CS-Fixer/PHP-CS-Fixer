@@ -44,15 +44,30 @@ abstract class AbstractSetTestCase extends TestCase
         self::assertSanityString($setName);
         self::assertSanityString($setDescription);
         self::assertStringEndsWith('.', $setDescription, \sprintf('Ruleset description of "%s" must end with ".", got "%s".', $setName, $setDescription));
-        self::assertRules($setRules, $factory, $setName);
+
+        self::assertStringNotContainsStringIgnoringCase(
+            '`',
+            Preg::replace(
+                '/`[^`]+`_/',
+                '',
+                Preg::replace(
+                    '/``[^`]+``/',
+                    '',
+                    $setDescription,
+                ),
+            ),
+            \sprintf('Ruleset description of "%s" must not contain inline code marked with backticks other than link ("`desc <link>`_") or reference ("vide ``@OtherSet``"). Got:%s> %s', $setName, "\n", $setDescription),
+        );
 
         if (Preg::match('/(\d+)(\d)Migration/', \get_class($set), $matches)) {
             self::assertStringEndsWith(
                 \sprintf(' %d.%d compatibility.', $matches[1], $matches[2]),
                 $setDescription,
-                \sprintf('Set %s has incorrect description: "%s".', $setName, $setDescription)
+                \sprintf('Set %s has incorrect description: "%s".', $setName, $setDescription),
             );
         }
+
+        self::assertRules($setRules, $factory, $setName);
 
         try {
             $factory->useRuleSet(new RuleSet($set->getRules()));

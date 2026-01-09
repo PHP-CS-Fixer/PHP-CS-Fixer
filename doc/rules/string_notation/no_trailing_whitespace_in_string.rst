@@ -2,13 +2,13 @@
 Rule ``no_trailing_whitespace_in_string``
 =========================================
 
-There must be no trailing whitespace in strings.
+There must be no trailing whitespace at the end of lines in strings.
 
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Changing the whitespaces in strings might affect string comparisons and outputs.
 

@@ -53,11 +53,11 @@ final class OrderedTraitsFixer extends AbstractFixer implements ConfigurableFixe
                     "<?php class Foo { \nuse Aaa; use AA; }\n",
                     [
                         'case_sensitive' => true,
-                    ]
+                    ],
                 ),
             ],
             null,
-            'Risky when depending on order of the imports.'
+            'Risky when depending on order of the imports.',
         );
     }
 
@@ -113,6 +113,8 @@ final class OrderedTraitsFixer extends AbstractFixer implements ConfigurableFixe
             }
 
             $startIndex = $tokens->getNextNonWhitespace($tokens->getPrevMeaningfulToken($index));
+            \assert(\is_int($startIndex));
+
             $endIndex = $tokens->getNextTokenOfKind($index, [';', '{']);
 
             if ($tokens[$endIndex]->equals('{')) {
@@ -204,12 +206,12 @@ final class OrderedTraitsFixer extends AbstractFixer implements ConfigurableFixe
             $sortedElements,
             fn (Tokens $useA, Tokens $useB): int => true === $this->configuration['case_sensitive']
                 ? $toTraitName($useA) <=> $toTraitName($useB)
-                : strcasecmp($toTraitName($useA), $toTraitName($useB))
+                : strcasecmp($toTraitName($useA), $toTraitName($useB)),
         );
 
         $sortedElements = array_combine(
             array_keys($elements),
-            array_values($sortedElements)
+            array_values($sortedElements),
         );
 
         $beforeOverrideCount = $tokens->count();
@@ -218,7 +220,7 @@ final class OrderedTraitsFixer extends AbstractFixer implements ConfigurableFixe
             $tokens->overrideRange(
                 $index,
                 $index + \count($elements[$index]) - 1,
-                $tokensToInsert
+                $tokensToInsert,
             );
         }
 

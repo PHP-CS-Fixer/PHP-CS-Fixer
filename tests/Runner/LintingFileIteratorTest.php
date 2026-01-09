@@ -34,7 +34,7 @@ final class LintingFileIteratorTest extends TestCase
 
         $lintingFileIterator = new LintingFileIterator(
             $iterator,
-            $this->createLinterDouble()
+            $this->createLinterDouble(),
         );
 
         self::assertNull($lintingFileIterator->current());
@@ -58,7 +58,7 @@ final class LintingFileIteratorTest extends TestCase
 
         $lintingFileIterator = new LintingFileIterator(
             $iterator,
-            $this->createLinterDouble($lintingResult)
+            $this->createLinterDouble($lintingResult),
         );
 
         // test when not touched current is null

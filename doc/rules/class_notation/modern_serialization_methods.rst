@@ -8,8 +8,8 @@ deprecated ones ``__sleep`` and ``__wakeup``.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when calling the old methods directly or having logic in the ``__sleep``
 and ``__wakeup`` methods.

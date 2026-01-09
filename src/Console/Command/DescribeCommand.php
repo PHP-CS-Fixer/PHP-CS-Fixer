@@ -19,12 +19,12 @@ use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Differ\DiffConsoleFormatter;
 use PhpCsFixer\Differ\FullDiffer;
+use PhpCsFixer\Documentation\DocumentationTag;
+use PhpCsFixer\Documentation\DocumentationTagGenerator;
+use PhpCsFixer\Documentation\DocumentationTagType;
 use PhpCsFixer\Documentation\FixerDocumentGenerator;
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
-use PhpCsFixer\Fixer\DeprecatedFixerInterface;
-use PhpCsFixer\Fixer\ExperimentalFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
-use PhpCsFixer\Fixer\InternalFixerInterface;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
@@ -48,6 +48,9 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Formatter\OutputFormatter;
+use Symfony\Component\Console\Helper\TreeHelper;
+use Symfony\Component\Console\Helper\TreeNode;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -65,6 +68,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 #[AsCommand(name: 'describe', description: 'Describe rule / ruleset.')]
 final class DescribeCommand extends Command
 {
+    private const SET_ALIAS_TO_DESCRIBE_CONFIG = '@';
+    private const SET_ALIAS_TO_DESCRIBE_RULES_WITHOUT_SET = '@-';
+
     /** @TODO PHP 8.0 - remove the property */
     protected static $defaultName = 'describe';
 
@@ -102,7 +108,8 @@ final class DescribeCommand extends Command
                 new InputArgument('name', InputArgument::OPTIONAL, 'Name of rule / set.', null, fn () => array_merge($this->getSetNames(), array_keys($this->getFixers()))),
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
                 new InputOption('expand', '', InputOption::VALUE_NONE, 'Shall nested sets be expanded into nested rules.'),
-            ]
+                new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats (txt, tree).', 'txt', ['txt', 'tree']),
+            ],
         );
     }
 
@@ -117,7 +124,7 @@ final class DescribeCommand extends Command
             new Config(),
             ['config' => $input->getOption('config')],
             getcwd(), // @phpstan-ignore argument.type
-            new ToolInfo()
+            new ToolInfo(),
         );
 
         $this->fixerFactory->registerCustomFixers($resolver->getConfig()->getCustomFixers());
@@ -125,6 +132,7 @@ final class DescribeCommand extends Command
         /** @var ?string $name */
         $name = $input->getArgument('name');
         $expand = $input->getOption('expand');
+        $format = $input->getOption('format');
 
         if (null === $name) {
             if (false === $input->isInteractive()) {
@@ -138,12 +146,23 @@ final class DescribeCommand extends Command
                 'yes',
             );
             if ($shallDescribeConfigInUse) {
-                $name = '@'; // '@' means "describe config file"
+                $name = self::SET_ALIAS_TO_DESCRIBE_CONFIG;
             } else {
                 $name = $io->choice(
                     'Please select rule / set to describe',
-                    array_merge($this->getSetNames(), array_keys($this->getFixers()))
+                    array_merge($this->getSetNames(), array_keys($this->getFixers())),
                 );
+            }
+        }
+
+        if ('tree' === $format) {
+            if (!str_starts_with($name, '@')) {
+                throw new \InvalidArgumentException(
+                    'The "--format=tree" option is available only when describing a set (name starting with "@").',
+                );
+            }
+            if (!class_exists(TreeHelper::class)) {
+                throw new \RuntimeException('The "--format=tree" option requires symfony/console 7.3+.');
             }
         }
 
@@ -165,7 +184,7 @@ final class DescribeCommand extends Command
             $this->describeRule($output, $name);
         } catch (DescribeNameNotFoundException $e) {
             $matcher = new WordMatcher(
-                'set' === $e->getType() ? $this->getSetNames() : array_keys($this->getFixers())
+                'set' === $e->getType() ? $this->getSetNames() : array_keys($this->getFixers()),
             );
 
             $alternative = $matcher->match($name);
@@ -176,7 +195,7 @@ final class DescribeCommand extends Command
                 '%s "%s" not found.%s',
                 ucfirst($e->getType()),
                 $name,
-                null === $alternative ? '' : ' Did you mean "'.$alternative.'"?'
+                null === $alternative ? '' : ' Did you mean "'.$alternative.'"?',
             ));
         }
 
@@ -203,19 +222,6 @@ final class DescribeCommand extends Command
             $output->writeln('');
         }
 
-        if ($fixer instanceof DeprecatedFixerInterface) {
-            $successors = $fixer->getSuccessorsNames();
-            $message = [] === $successors
-                ? \sprintf('it will be removed in version %d.0', Application::getMajorVersion() + 1)
-                : \sprintf('use %s instead', Utils::naturalLanguageJoinWithBackticks($successors));
-
-            $endMessage = '. '.ucfirst($message);
-            Future::triggerDeprecation(new \RuntimeException(str_replace('`', '"', "Rule \"{$name}\" is deprecated{$endMessage}.")));
-            $message = Preg::replace('/(`[^`]+`)/', '<info>$1</info>', $message);
-            $output->writeln(\sprintf('<error>DEPRECATED</error>: %s.', $message));
-            $output->writeln('');
-        }
-
         $output->writeln($definition->getSummary());
 
         $description = $definition->getDescription();
@@ -226,27 +232,29 @@ final class DescribeCommand extends Command
 
         $output->writeln('');
 
-        if ($fixer instanceof ExperimentalFixerInterface) {
-            $output->writeln('<error>Fixer applying this rule is EXPERIMENTAL.</error>.');
-            $output->writeln('It is not covered with backward compatibility promise and may produce unstable or unexpected results.');
+        $tags = DocumentationTagGenerator::analyseRule($fixer);
 
-            $output->writeln('');
-        }
+        foreach ($tags as $tag) {
+            if (DocumentationTagType::DEPRECATED === $tag->type) {
+                Future::triggerDeprecation(new \RuntimeException(str_replace(
+                    '`',
+                    '"',
+                    \sprintf(
+                        '%s%s',
+                        str_replace('This rule', \sprintf('Rule "%s"', $name), $tag->title),
+                        null !== $tag->description ? '. '.$tag->description : '',
+                    ),
+                )));
+            } elseif (DocumentationTagType::CONFIGURABLE === $tag->type) {
+                continue; // skip, handled later
+            }
 
-        if ($fixer instanceof InternalFixerInterface) {
-            $output->writeln('<error>Fixer applying this rule is INTERNAL.</error>.');
-            $output->writeln('It is expected to be used only on PHP CS Fixer project itself.');
+            $output->writeln(\sprintf('<error>%s</error>', $tag->title));
+            $tagDescription = $tag->description;
 
-            $output->writeln('');
-        }
-
-        if ($fixer->isRisky()) {
-            $output->writeln('<error>Fixer applying this rule is RISKY.</error>');
-
-            $riskyDescription = $definition->getRiskyDescription();
-
-            if (null !== $riskyDescription) {
-                $output->writeln($riskyDescription);
+            if (null !== $tagDescription) {
+                $tagDescription = Preg::replace('/(`[^`]+`)/', '<info>$1</info>', $tagDescription);
+                $output->writeln($tagDescription);
             }
 
             $output->writeln('');
@@ -286,7 +294,7 @@ final class DescribeCommand extends Command
                 if ($option->hasDefault()) {
                     $line .= \sprintf(
                         'defaults to <comment>%s</comment>',
-                        Utils::toString($option->getDefault())
+                        Utils::toString($option->getDefault()),
                     );
                 } else {
                     $line .= '<comment>required</comment>';
@@ -296,7 +304,7 @@ final class DescribeCommand extends Command
                     $line .= '. <error>DEPRECATED</error>: '.Preg::replace(
                         '/(`.+?`)/',
                         '<info>$1</info>',
-                        OutputFormatter::escape(lcfirst($option->getDeprecationMessage()))
+                        OutputFormatter::escape(lcfirst($option->getDeprecationMessage())),
                     );
                 }
 
@@ -337,8 +345,8 @@ final class DescribeCommand extends Command
                 \sprintf(
                     '<comment>   ---------- begin diff ----------</comment>%s%%s%s<comment>   ----------- end diff -----------</comment>',
                     \PHP_EOL,
-                    \PHP_EOL
-                )
+                    \PHP_EOL,
+                ),
             );
 
             foreach ($codeSamples as $index => $codeSample) {
@@ -404,12 +412,14 @@ final class DescribeCommand extends Command
 
     private function describeSet(InputInterface $input, OutputInterface $output, string $name, ConfigurationResolver $resolver): void
     {
-        if ('@' !== $name && !\in_array($name, $this->getSetNames(), true)) {
+        if (
+            !\in_array($name, [self::SET_ALIAS_TO_DESCRIBE_CONFIG, self::SET_ALIAS_TO_DESCRIBE_RULES_WITHOUT_SET], true)
+            && !\in_array($name, $this->getSetNames(), true)) {
             throw new DescribeNameNotFoundException($name, 'set');
         }
 
-        if ('@' === $name) {
-            $defaultRuleSetDefinition = $this->createRuleSetDefinition(
+        if (self::SET_ALIAS_TO_DESCRIBE_CONFIG === $name) {
+            $aliasedRuleSetDefinition = $this->createRuleSetDefinition(
                 null,
                 [],
                 [
@@ -417,12 +427,38 @@ final class DescribeCommand extends Command
                     'getName' => \sprintf('@ - %s', $resolver->getConfig()->getName()),
                     'getRules' => $resolver->getConfig()->getRules(),
                     'isRisky' => $resolver->getRiskyAllowed(),
-                ]
+                ],
+            );
+        } elseif (self::SET_ALIAS_TO_DESCRIBE_RULES_WITHOUT_SET === $name) {
+            $rulesWithoutSet = array_filter(
+                $this->getFixers(),
+                static fn (string $name): bool => [] === FixerDocumentGenerator::getSetsOfRule($name),
+                \ARRAY_FILTER_USE_KEY,
+            );
+
+            $aliasedRuleSetDefinition = $this->createRuleSetDefinition(
+                null,
+                [],
+                [
+                    'getDescription' => 'Rules that are not part of any set.',
+                    'getName' => '@- - rules without set',
+                    'getRules' => array_combine(
+                        array_map(
+                            static fn (FixerInterface $fixer): string => $fixer->getName(),
+                            $rulesWithoutSet,
+                        ),
+                        array_fill(0, \count($rulesWithoutSet), true),
+                    ),
+                    'isRisky' => array_any(
+                        $rulesWithoutSet,
+                        static fn (FixerInterface $fixer): bool => $fixer->isRisky(),
+                    ),
+                ],
             );
         }
 
         $ruleSetDefinitions = RuleSets::getSetDefinitions();
-        $ruleSetDefinition = $defaultRuleSetDefinition ?? $ruleSetDefinitions[$name];
+        $ruleSetDefinition = $aliasedRuleSetDefinition ?? $ruleSetDefinitions[$name];
         $fixers = $this->getFixers();
 
         if (true === $input->getOption('expand')) {
@@ -437,52 +473,144 @@ final class DescribeCommand extends Command
         $output->writeln($this->replaceRstLinks($ruleSetDefinition->getDescription()));
         $output->writeln('');
 
-        if ($ruleSetDefinition instanceof DeprecatedRuleSetDefinitionInterface) {
-            $successors = $ruleSetDefinition->getSuccessorsNames();
-            $message = [] === $successors
-                ? \sprintf('it will be removed in version %d.0', Application::getMajorVersion() + 1)
-                : \sprintf('use %s instead', Utils::naturalLanguageJoinWithBackticks($successors));
+        $tags = DocumentationTagGenerator::analyseRuleSet($ruleSetDefinition);
 
-            Future::triggerDeprecation(new \RuntimeException(str_replace('`', '"', "Set \"{$name}\" is deprecated, {$message}.")));
-            $message = Preg::replace('/(`[^`]+`)/', '<info>$1</info>', $message);
-            $output->writeln(\sprintf('<error>DEPRECATED</error>: %s.', $message));
+        foreach ($tags as $tag) {
+            if (DocumentationTagType::DEPRECATED === $tag->type) {
+                Future::triggerDeprecation(new \RuntimeException(str_replace(
+                    '`',
+                    '"',
+                    \sprintf(
+                        '%s%s',
+                        str_replace('This rule set', \sprintf('Rule set "%s"', $name), $tag->title),
+                        null !== $tag->description ? '. '.$tag->description : '',
+                    ),
+                )));
+            }
+
+            $output->writeln(\sprintf('<error>%s</error>', $tag->title));
+            $tagDescription = $tag->description;
+
+            if (null !== $tagDescription) {
+                $tagDescription = Preg::replace('/(`[^`]+`)/', '<info>$1</info>', $tagDescription);
+                $output->writeln($tagDescription);
+            }
+
             $output->writeln('');
         }
 
-        if ($ruleSetDefinition->isRisky()) {
-            $output->writeln('<error>This set contains risky rules.</error>');
-            $output->writeln('');
+        if ('tree' === $input->getOption('format')) {
+            $this->describeSetContentAsTree($output, $ruleSetDefinition, $ruleSetDefinitions, $fixers);
+        } else {
+            $this->describeSetContentAsTxt($output, $ruleSetDefinition, $ruleSetDefinitions, $fixers);
+        }
+    }
+
+    /**
+     * @param array<string, RuleSetDefinitionInterface> $ruleSetDefinitions
+     * @param array<string, FixerInterface>             $fixers
+     */
+    private function createTreeNode(RuleSetDefinitionInterface $ruleSetDefinition, array $ruleSetDefinitions, array $fixers): TreeNode
+    {
+        $tags = DocumentationTagGenerator::analyseRuleSet($ruleSetDefinition);
+        $extra = [] !== $tags
+            ? ' '.implode(' ', array_map(
+                static fn (DocumentationTag $tag): string => "<error>{$tag->type}</error>",
+                $tags,
+            ))
+            : '';
+
+        $node = new TreeNode($ruleSetDefinition->getName().$extra);
+
+        $rules = $ruleSetDefinition->getRules();
+        $rulesKeys = array_keys($rules);
+        natcasesort($rulesKeys);
+
+        foreach ($rulesKeys as $rule) {
+            \assert(isset($rules[$rule]));
+            $config = $rules[$rule];
+            if (str_starts_with($rule, '@')) {
+                $child = $this->createTreeNode($ruleSetDefinitions[$rule], $ruleSetDefinitions, $fixers);
+            } else {
+                $fixer = $fixers[$rule];
+                $tags = DocumentationTagGenerator::analyseRule($fixer);
+                $extra = [] !== $tags
+                    ? ' '.implode(' ', array_map(
+                        static fn (DocumentationTag $tag): string => "<error>{$tag->type}</error>",
+                        $tags,
+                    ))
+                    : '';
+                if (false === $config) {
+                    $extra = \sprintf('    | <error>Configuration: %s</>', Utils::toString($config));
+                } elseif (true !== $config) {
+                    $extra = \sprintf('    | <comment>Configuration: %s</>', Utils::toString($config));
+                }
+                $child = new TreeNode($rule.$extra);
+            }
+            $node->addChild($child);
         }
 
-        if ($ruleSetDefinition instanceof AutomaticRuleSetDefinitionInterface) {
-            $output->writeln(AutomaticRuleSetDefinitionInterface::WARNING_MESSAGE_DECORATED);
-            $output->writeln('');
-        }
+        return $node;
+    }
 
+    /**
+     * @param array<string, RuleSetDefinitionInterface> $ruleSetDefinitions
+     * @param array<string, FixerInterface>             $fixers
+     */
+    private function describeSetContentAsTree(OutputInterface $output, RuleSetDefinitionInterface $ruleSetDefinition, array $ruleSetDefinitions, array $fixers): void
+    {
+        $io = new SymfonyStyle(
+            new ArrayInput([]),
+            $output,
+        );
+
+        $root = $this->createTreeNode($ruleSetDefinition, $ruleSetDefinitions, $fixers);
+        $tree = TreeHelper::createTree($io, $root);
+        $tree->render();
+    }
+
+    /**
+     * @param array<string, RuleSetDefinitionInterface> $ruleSetDefinitions
+     * @param array<string, FixerInterface>             $fixers
+     */
+    private function describeSetContentAsTxt(OutputInterface $output, RuleSetDefinitionInterface $ruleSetDefinition, array $ruleSetDefinitions, array $fixers): void
+    {
         $help = '';
 
         foreach ($ruleSetDefinition->getRules() as $rule => $config) {
             if (str_starts_with($rule, '@')) {
+                \assert(isset($ruleSetDefinitions[$rule]));
                 $set = $ruleSetDefinitions[$rule];
+                $tags = DocumentationTagGenerator::analyseRuleSet($set);
                 $help .= \sprintf(
-                    " * <info>%s</info>%s\n   | %s\n\n",
+                    " * <info>%s</info>%s%s\n   | %s\n\n",
                     $rule,
-                    $set->isRisky() ? ' <error>risky</error>' : '',
-                    $this->replaceRstLinks($set->getDescription())
+                    [] !== $tags ? ' ' : '',
+                    implode(' ', array_map(
+                        static fn (DocumentationTag $tag): string => "<error>{$tag->type}</error>",
+                        $tags,
+                    )),
+                    $this->replaceRstLinks($set->getDescription()),
                 );
 
                 continue;
             }
 
+            \assert(isset($fixers[$rule]));
             $fixer = $fixers[$rule];
+            $tags = DocumentationTagGenerator::analyseRule($fixer);
 
             $definition = $fixer->getDefinition();
             $help .= \sprintf(
-                " * <info>%s</info>%s\n   | %s\n%s\n",
+                " * <info>%s</info>%s%s\n   | %s\n%s\n",
                 $rule,
-                $fixer->isRisky() ? ' <error>risky</error>' : '',
+                [] !== $tags ? ' ' : '',
+                implode(' ', array_map(
+                    static fn (DocumentationTag $tag): string => "<error>{$tag->type}</error>",
+                    $tags,
+                )),
                 $definition->getSummary(),
-                true !== $config ? \sprintf("   <comment>| Configuration: %s</comment>\n", Utils::toString($config)) : ''
+                true !== $config ? \sprintf("   <comment>| Configuration: %s</comment>\n", Utils::toString($config)) : '',
             );
         }
 
@@ -559,9 +687,9 @@ final class DescribeCommand extends Command
             static fn (array $matches) => Preg::replaceCallback(
                 '/`(.*)<(.*)>`_/',
                 static fn (array $matches): string => $matches[1].'('.$matches[2].')',
-                $matches[1]
+                $matches[1],
             ),
-            $content
+            $content,
         );
     }
 

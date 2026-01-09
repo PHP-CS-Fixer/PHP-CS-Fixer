@@ -9,6 +9,14 @@ keyword modifiers MUST be in the following order: inheritance modifier
 ``private(set)``), scope modifier (``static``), mutation modifier
 (``readonly``), type declaration, name.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``elements``.
+
 Configuration
 -------------
 

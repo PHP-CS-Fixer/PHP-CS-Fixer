@@ -54,7 +54,7 @@ final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer implements Co
             [
                 new CodeSample("<?php\n\$sample = array(1,'a',\$b,);\n"),
                 new CodeSample("<?php\n\$sample = [1,2, 3,  4,    5];\n", ['ensure_single_space' => true]),
-            ]
+            ],
         );
     }
 

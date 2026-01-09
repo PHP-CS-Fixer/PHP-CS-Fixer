@@ -56,7 +56,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
                 CT::T_GROUP_IMPORT_BRACE_CLOSE,
                 CT::T_PROPERTY_HOOK_BRACE_OPEN,
                 CT::T_PROPERTY_HOOK_BRACE_CLOSE,
-            ]
+            ],
         );
     }
 
@@ -246,7 +246,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
                 CT::T_GROUP_IMPORT_BRACE_CLOSE,
                 CT::T_PROPERTY_HOOK_BRACE_OPEN,
                 CT::T_PROPERTY_HOOK_BRACE_CLOSE,
-            ]
+            ],
         );
     }
 
@@ -344,7 +344,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
                 CT::T_GROUP_IMPORT_BRACE_CLOSE,
                 CT::T_PROPERTY_HOOK_BRACE_OPEN,
                 CT::T_PROPERTY_HOOK_BRACE_CLOSE,
-            ]
+            ],
         );
     }
 
@@ -542,8 +542,8 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
                 [
                     CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
                     CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
-                ]
-            )
+                ],
+            ),
         );
     }
 

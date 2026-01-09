@@ -7,8 +7,8 @@ Rules that follow `PER Coding Style 3.0 <https://www.php-fig.org/per/coding-styl
 Warning
 -------
 
-This rule set is deprecated and will be removed in the next major version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This rule set is DEPRECATED and will be removed in the next major version 4.0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You should use ``@PER-CS3x0`` instead.
 

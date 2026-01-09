@@ -46,7 +46,7 @@ final class ComposerJsonReaderTest extends TestCase
         \Closure::bind(
             static fn ($instance) => $instance->processJson($inputJson),
             null,
-            \get_class($instance)
+            \get_class($instance),
         )($instance);
 
         self::assertSame($expected, $instance->getPhpUnit());
@@ -121,6 +121,13 @@ final class ComposerJsonReaderTest extends TestCase
 }',
         ];
 
+        yield 'version with >= and a space' => [
+            '9.6',
+            '{
+    "require-dev": { "phpunit/phpunit": ">= 9.6.25" }
+}',
+        ];
+
         yield 'version with <' => [
             null, // not supported !
             '{
@@ -134,6 +141,54 @@ final class ComposerJsonReaderTest extends TestCase
             '{
     "require": {},
     "require-dev": { "phpunit/phpunit": "^10 || ^9.1 <9.6.25" }
+}',
+        ];
+
+        yield 'version with range separated by a space' => [
+            '9.1',
+            '{
+    "require": {},
+    "require-dev": { "phpunit/phpunit": ">=9.1 <9.6.25" }
+}',
+        ];
+
+        yield 'version with range separated by a comma' => [
+            '9.1',
+            '{
+    "require": {},
+    "require-dev": { "phpunit/phpunit": ">=9.1,<9.6.25" }
+}',
+        ];
+
+        yield 'version with range separated by a hyphen' => [
+            '9.1',
+            '{
+    "require": {},
+    "require-dev": { "phpunit/phpunit": "9.1-9.6.25" }
+}',
+        ];
+
+        yield 'version with range separated by a hyphen and asterisk' => [
+            '9.1',
+            '{
+    "require": {},
+    "require-dev": { "phpunit/phpunit": "9.1.*-9.6.*" }
+}',
+        ];
+
+        yield 'version with beta' => [
+            '9.1',
+            '{
+    "require": {},
+    "require-dev": { "phpunit/phpunit": "9.1-BETA.0" }
+}',
+        ];
+
+        yield 'version with v' => [
+            '9.1',
+            '{
+    "require": {},
+    "require-dev": { "phpunit/phpunit": "v9.1 || v10" }
 }',
         ];
 
@@ -158,6 +213,14 @@ final class ComposerJsonReaderTest extends TestCase
             '{
     "require": {},
     "require-dev": { "phpunit/phpunit": "^9.6.25@dev" }
+}',
+        ];
+
+        yield 'version with asterisk' => [
+            '8.1',
+            '{
+    "require": {},
+    "require-dev": { "phpunit/phpunit": "  8.1.*  ||  8.2.*  ||  8.3.*  ||  8.4.*  " }
 }',
         ];
 
@@ -222,7 +285,7 @@ final class ComposerJsonReaderTest extends TestCase
         \Closure::bind(
             static fn ($instance) => $instance->processJson($inputJson),
             null,
-            \get_class($instance)
+            \get_class($instance),
         )($instance);
 
         self::assertSame($expected, $instance->getPhp());
@@ -236,6 +299,15 @@ final class ComposerJsonReaderTest extends TestCase
         yield 'all missing' => [
             null,
             '{}',
+        ];
+
+        yield 'standard usage' => [
+            '8.4',
+            '{
+    "require": {
+        "php": "^8.4"
+    }
+}',
         ];
 
         yield 'all mixed with prio for require' => [
@@ -286,6 +358,20 @@ final class ComposerJsonReaderTest extends TestCase
             "php": "7.0"
         }
     }
+}',
+        ];
+
+        yield 'version with asterisk' => [
+            '8.1',
+            '{
+    "require": { "php": "  8.1.*  ||  8.2.*  ||  8.3.*  ||  8.4.*  " }
+}',
+        ];
+
+        yield 'version with >= and a space' => [
+            '8.2',
+            '{
+    "require": { "php": ">= 8.2" }
 }',
         ];
     }

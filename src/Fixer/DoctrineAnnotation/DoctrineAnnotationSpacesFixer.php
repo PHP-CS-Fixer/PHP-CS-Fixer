@@ -69,14 +69,14 @@ final class DoctrineAnnotationSpacesFixer extends AbstractDoctrineAnnotationFixe
             'Fixes spaces in Doctrine annotations.',
             [
                 new CodeSample(
-                    "<?php\n/**\n * @Foo ( )\n */\nclass Bar {}\n\n/**\n * @Foo(\"bar\" ,\"baz\")\n */\nclass Bar2 {}\n\n/**\n * @Foo(foo = \"foo\", bar = {\"foo\":\"foo\", \"bar\"=\"bar\"})\n */\nclass Bar3 {}\n"
+                    "<?php\n/**\n * @Foo ( )\n */\nclass Bar {}\n\n/**\n * @Foo(\"bar\" ,\"baz\")\n */\nclass Bar2 {}\n\n/**\n * @Foo(foo = \"foo\", bar = {\"foo\":\"foo\", \"bar\"=\"bar\"})\n */\nclass Bar3 {}\n",
                 ),
                 new CodeSample(
                     "<?php\n/**\n * @Foo(foo = \"foo\", bar = {\"foo\":\"foo\", \"bar\"=\"bar\"})\n */\nclass Bar {}\n",
-                    ['after_array_assignments_equals' => false, 'before_array_assignments_equals' => false]
+                    ['after_array_assignments_equals' => false, 'before_array_assignments_equals' => false],
                 ),
             ],
-            'There must not be any space around parentheses; commas must be preceded by no space and followed by one space; there must be no space around named arguments assignment operator; there must be one space around array assignment operator.'
+            'There must not be any space around parentheses; commas must be preceded by no space and followed by one space; there must be no space around named arguments assignment operator; there must be one space around array assignment operator.',
         );
     }
 

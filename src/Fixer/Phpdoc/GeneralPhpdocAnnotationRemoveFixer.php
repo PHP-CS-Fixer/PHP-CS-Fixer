@@ -66,7 +66,7 @@ final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer implements 
                         function foo() {}
 
                         PHP,
-                    ['annotations' => ['author']]
+                    ['annotations' => ['author']],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -79,7 +79,7 @@ final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer implements 
                         function foo() {}
 
                         PHP,
-                    ['annotations' => ['author'], 'case_sensitive' => false]
+                    ['annotations' => ['author'], 'case_sensitive' => false],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -93,9 +93,9 @@ final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer implements 
                         function foo() {}
 
                         PHP,
-                    ['annotations' => ['package', 'subpackage']]
+                    ['annotations' => ['package', 'subpackage']],
                 ),
-            ]
+            ],
         );
     }
 

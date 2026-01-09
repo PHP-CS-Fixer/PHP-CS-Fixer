@@ -5,14 +5,20 @@ Rule ``php_unit_no_expectation_annotation``
 Usages of ``@expectedException*`` annotations MUST be replaced by
 ``->setExpectedException*`` methods.
 
-Warning
--------
+Warnings
+--------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when PHPUnit classes are overridden or not accessible, or when project has
 PHPUnit incompatibilities.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``target``,
+``use_class_const``.
 
 Configuration
 -------------
@@ -158,6 +164,10 @@ The rule is part of the following rule sets:
   ``['target' => '4.3']``
 
 - `@PHPUnit10x0Migration:risky <./../../ruleSets/PHPUnit10x0MigrationRisky.rst>`_ with config:
+
+  ``['target' => '4.3']``
+
+- `@PHPUnit11x0Migration:risky <./../../ruleSets/PHPUnit11x0MigrationRisky.rst>`_ with config:
 
   ``['target' => '4.3']``
 

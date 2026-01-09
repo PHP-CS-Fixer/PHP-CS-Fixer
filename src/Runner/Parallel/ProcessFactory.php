@@ -42,7 +42,7 @@ final class ProcessFactory
         return new Process(
             implode(' ', $commandArgs),
             $loop,
-            $runnerConfig->getParallelConfig()->getProcessTimeout()
+            $runnerConfig->getParallelConfig()->getProcessTimeout(),
         );
     }
 
@@ -75,10 +75,8 @@ final class ProcessFactory
             ProcessUtils::escapeArgument($phpBinary),
             ProcessUtils::escapeArgument($mainScript),
             'worker',
-            '--port',
-            (string) $serverPort,
-            '--identifier',
-            ProcessUtils::escapeArgument($identifier->toString()),
+            \sprintf('--port=%s', (string) $serverPort),
+            \sprintf('--identifier=%s', ProcessUtils::escapeArgument($identifier->toString())),
         ];
 
         if ($runnerConfig->isDryRun()) {
@@ -97,8 +95,7 @@ final class ProcessFactory
             $optionValue = $input->getOption($option);
 
             if (null !== $optionValue) {
-                $commandArgs[] = "--{$option}";
-                $commandArgs[] = ProcessUtils::escapeArgument($optionValue);
+                $commandArgs[] = \sprintf('--%s=%s', $option, ProcessUtils::escapeArgument($optionValue));
             }
         }
 

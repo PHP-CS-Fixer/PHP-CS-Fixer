@@ -114,7 +114,7 @@ final class Tokens extends \SplFixedArray
                         ? new Token(
                             $scannedToken->getType(),
                             '"'.str_replace('"', '""', $scannedToken->getContent()).'"',
-                            $scannedToken->getPosition()
+                            $scannedToken->getPosition(),
                         )
                         : $scannedToken;
 
@@ -123,7 +123,7 @@ final class Tokens extends \SplFixedArray
                         $tokens[] = new Token(DocLexer::T_NONE, substr(
                             $content,
                             $nextAtPosition + $lastTokenEndIndex,
-                            $missingTextLength
+                            $missingTextLength,
                         ));
                     }
 

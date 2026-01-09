@@ -34,6 +34,8 @@ final class FutureTest extends TestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->originalValueOfFutureMode = getenv('PHP_CS_FIXER_FUTURE_MODE');
     }
 
@@ -86,7 +88,7 @@ final class FutureTest extends TestCase
 
         self::assertSame(
             'old',
-            Future::getV4OrV3('new', 'old')
+            Future::getV4OrV3('new', 'old'),
         );
     }
 
@@ -96,7 +98,7 @@ final class FutureTest extends TestCase
 
         self::assertSame(
             'new',
-            Future::getV4OrV3('new', 'old')
+            Future::getV4OrV3('new', 'old'),
         );
     }
 }

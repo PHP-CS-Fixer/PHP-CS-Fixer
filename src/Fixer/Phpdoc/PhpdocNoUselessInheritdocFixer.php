@@ -37,7 +37,7 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
             [
                 new CodeSample("<?php\n/** {@inheritdoc} */\nclass Sample\n{\n}\n"),
                 new CodeSample("<?php\nclass Sample\n{\n    /**\n     * @inheritdoc\n     */\n    public function Test()\n    {\n    }\n}\n"),
-            ]
+            ],
         );
     }
 
@@ -120,7 +120,7 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
             static fn (array $matches): string => ' '.$matches[2],
             $tokens[$tokenIndex]->getContent(),
             -1,
-            $count
+            $count,
         );
 
         if ($count > 0) {

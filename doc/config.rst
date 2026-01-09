@@ -5,20 +5,26 @@ Config file
 No config
 ---------
 
-It is possible to *not* have the config file. In that case, the default rule set (@PSR12) will be applied, yet the path will need to be provided via CLI.
+It is possible to *not* have the config file. In that case, the default rule set (``@PSR12`` for v3, ``@auto`` for v4) will be applied,
+and under v3, the path will need to be provided via CLI (defaults to ``.`` under v4).
 
 .. code-block:: console
 
     php php-cs-fixer.phar fix .
 
-It is also possible to provide command line options to customize rules, yet instead of using them,
+While it is possible to provide command line options to configure rules,
 it's recommended to save the project configuration in a ``.php-cs-fixer.dist.php`` file in the root directory of your project.
-The file must return an instance of `PhpCsFixer\\ConfigInterface <./../src/ConfigInterface.php>`_
-which lets you configure the rules, the files and directories that
-need to be analyzed. You may also create ``.php-cs-fixer.php`` file, which is
-the local configuration that will be used instead of the project configuration. It
-is a good practice to add that file into your ``.gitignore`` file.
-With the ``--config`` option you can specify the path to the config file.
+The file must return an instance of `PhpCsFixer\\ConfigInterface <./../src/ConfigInterface.php>`_,
+which lets you configure the rules, finder (the files and directories that
+need to be analysed), select output format and even configure path to ``PHP``.
+
+You may also create ``.php-cs-fixer.php`` file, which is
+the local configuration that will be used instead of the project configuration.
+You can use it to customise for your environment (like path to ``PHP``) or preference (like output format or progress indicator),
+while ruleset / finder shall be re-imported from project configuration.
+It is a good practice to add that file into your ``.gitignore`` file.
+
+With the ``--config`` option you can specify the path to the config file, when it is named differently.
 
 
 The simplest config
@@ -37,7 +43,7 @@ The simplest config declares paths under control and rules to apply/check:
     return (new PhpCsFixer\Config())
         ->setRules([
             '@PER-CS' => true,
-            '@PHP82Migration' => true,
+            '@PHP8x2Migration' => true,
         ])
         ->setFinder($finder)
     ;
@@ -118,6 +124,9 @@ The following example shows how to use all ``PhpCsFixer`` rules but without the 
         ])
         ->setFinder($finder)
     ;
+
+If you need to set up exception for rules, eg ignore or reconfigure a rule for specific files, check the `Rules exceptions <./rules_exceptions.rst>`_.
+
 
 Configuring whitespaces
 -----------------------

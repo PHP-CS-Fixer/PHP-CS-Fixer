@@ -44,7 +44,7 @@ final class PERRiskySet extends AbstractRuleSetDefinition implements DeprecatedR
 
     public function getDescription(): string
     {
-        return 'Alias for the newest PER-CS risky rules. It is recommended you use ``@PER-CS2.0:risky`` instead if you want to stick with stable ruleset.';
+        return 'Alias for the newest ``PER-CS`` risky rules. It is recommended you use ``@PER-CS2.0:risky`` instead if you want to stick with stable ruleset.';
     }
 
     public function getSuccessorsNames(): array

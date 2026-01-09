@@ -46,7 +46,7 @@ final class ModernSerializationMethodsFixer extends AbstractFixer
                 ),
             ],
             null,
-            'Risky when calling the old methods directly or having logic in the `__sleep` and `__wakeup` methods.'
+            'Risky when calling the old methods directly or having logic in the `__sleep` and `__wakeup` methods.',
         );
     }
 

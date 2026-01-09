@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @TODO 4.0: mark @internal
  */
 final class ControlCaseStructuresAnalyzer
 {
@@ -35,7 +37,7 @@ final class ControlCaseStructuresAnalyzer
     ];
 
     /**
-     * @param list<int> $types Token types of interest of which analyzes must be returned
+     * @param list<int> $types Token types of interest of which analyses must be returned
      *
      * @return \Generator<int, AbstractControlCaseStructuresAnalysis>
      */
@@ -176,7 +178,7 @@ final class ControlCaseStructuresAnalyzer
             }
 
             if (!$isTypeOfInterest) {
-                continue; // don't bother to analyze stuff that caller is not interested in
+                continue; // don't bother to analyse stuff that caller is not interested in
             }
 
             if ($token->isGivenKind(\T_CASE)) {
@@ -221,7 +223,7 @@ final class ControlCaseStructuresAnalyzer
                 $analysis['open'],
                 $analysis['end'],
                 $cases,
-                $default
+                $default,
             );
         }
 
@@ -230,7 +232,7 @@ final class ControlCaseStructuresAnalyzer
                 $analysis['index'],
                 $analysis['open'],
                 $analysis['end'],
-                $cases
+                $cases,
             );
         }
 
@@ -239,7 +241,7 @@ final class ControlCaseStructuresAnalyzer
                 $analysis['index'],
                 $analysis['open'],
                 $analysis['end'],
-                $default
+                $default,
             );
         }
 

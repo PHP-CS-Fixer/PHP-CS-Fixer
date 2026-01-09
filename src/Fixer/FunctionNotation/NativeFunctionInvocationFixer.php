@@ -99,7 +99,7 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
                             return json_encode($options);
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -119,7 +119,7 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
                         'exclude' => [
                             'json_encode',
                         ],
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -132,7 +132,7 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
                         }
 
                         PHP,
-                    ['scope' => 'all']
+                    ['scope' => 'all'],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -145,7 +145,7 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
                         }
 
                         PHP,
-                    ['scope' => 'namespaced']
+                    ['scope' => 'namespaced'],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -154,7 +154,7 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
                         count();
 
                         PHP,
-                    ['include' => ['myGlobalFunction']]
+                    ['include' => ['myGlobalFunction']],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -163,7 +163,7 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
                         count();
 
                         PHP,
-                    ['include' => [self::SET_ALL]]
+                    ['include' => [self::SET_ALL]],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -172,7 +172,7 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
                         count();
 
                         PHP,
-                    ['include' => [self::SET_INTERNAL]]
+                    ['include' => [self::SET_INTERNAL]],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -181,11 +181,11 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
                         $c = get_class($d);
 
                         PHP,
-                    ['include' => [self::SET_COMPILER_OPTIMIZED]]
+                    ['include' => [self::SET_COMPILER_OPTIMIZED]],
                 ),
             ],
             null,
-            'Risky when any of the functions are overridden.'
+            'Risky when any of the functions are overridden.',
         );
     }
 
@@ -241,7 +241,7 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
                         if ('' === trim($functionName) || trim($functionName) !== $functionName) {
                             throw new InvalidOptionsException(\sprintf(
                                 'Each element must be a non-empty, trimmed string, got "%s" instead.',
-                                get_debug_type($functionName)
+                                get_debug_type($functionName),
                             ));
                         }
                     }
@@ -257,7 +257,7 @@ final class NativeFunctionInvocationFixer extends AbstractFixer implements Confi
                         if ('' === trim($functionName) || trim($functionName) !== $functionName) {
                             throw new InvalidOptionsException(\sprintf(
                                 'Each element must be a non-empty, trimmed string, got "%s" instead.',
-                                get_debug_type($functionName)
+                                get_debug_type($functionName),
                             ));
                         }
 

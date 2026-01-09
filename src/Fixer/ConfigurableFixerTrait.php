@@ -31,6 +31,8 @@ use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
  * @template TFixerInputConfig of array<string, mixed>
  * @template TFixerComputedConfig of array<string, mixed>
  *
+ * @phpstan-require-implements ConfigurableFixerInterface<TFixerInputConfig, TFixerComputedConfig>
+ *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
@@ -63,7 +65,7 @@ trait ConfigurableFixerTrait
                     $name,
                     $this->getName(),
                     Application::getMajorVersion() + 1,
-                    str_replace('`', '"', $option->getDeprecationMessage())
+                    str_replace('`', '"', $option->getDeprecationMessage()),
                 )));
             }
         }
@@ -74,19 +76,19 @@ trait ConfigurableFixerTrait
             throw new RequiredFixerConfigurationException(
                 $this->getName(),
                 \sprintf('Missing required configuration: %s', $exception->getMessage()),
-                $exception
+                $exception,
             );
         } catch (InvalidOptionsForEnvException $exception) {
             throw new InvalidForEnvFixerConfigurationException(
                 $this->getName(),
                 \sprintf('Invalid configuration for env: %s', $exception->getMessage()),
-                $exception
+                $exception,
             );
         } catch (ExceptionInterface $exception) {
             throw new InvalidFixerConfigurationException(
                 $this->getName(),
                 \sprintf('Invalid configuration: %s', $exception->getMessage()),
-                $exception
+                $exception,
             );
         }
 

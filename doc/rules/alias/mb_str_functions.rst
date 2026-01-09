@@ -7,8 +7,8 @@ Replace non multibyte-safe functions with corresponding mb function.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when any of the functions are overridden, or when relying on the string
 byte size rather than its length in characters.

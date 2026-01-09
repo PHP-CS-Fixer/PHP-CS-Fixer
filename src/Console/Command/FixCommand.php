@@ -36,11 +36,13 @@ use PhpCsFixer\ToolInfoInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Formatter\OutputFormatter;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Terminal;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -51,6 +53,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @final
+ *
+ * @TODO 4.0: mark as final
  *
  * @internal
  *
@@ -133,32 +137,20 @@ use Symfony\Component\Stopwatch\Stopwatch;
             * `-vv`: very verbose
             * `-vvv`: debug
 
-            The <comment>--rules</comment> option limits the rules to apply to the
-            project:
-
             EOF. /* @TODO: 4.0 - change to @PER */ <<<'EOF'
 
-                <info>$ php %command.full_name% /path/to/project --rules=@PSR12</info>
+            The <comment>--rules</comment> option allows to explicitly select rules to use,
+            overriding the default PSR-12 or your own project config:
 
-            By default the PSR-12 rules are used.
+                <info>$ php %command.full_name% . --rules=line_ending,full_opening_tag,indentation_type</info>
 
-            The <comment>--rules</comment> option lets you choose the exact rules to
-            apply (the rule names must be separated by a comma):
+            You can also exclude the rules you don't want by placing a dash in front of the rule name, like <comment>-name_of_fixer</comment>.
 
-                <info>$ php %command.full_name% /path/to/dir --rules=line_ending,full_opening_tag,indentation_type</info>
+                <info>$ php %command.full_name% . --rules=@Symfony,-@PSR1,-blank_line_before_statement,strict_comparison</info>
 
-            You can also exclude the rules you don't want by placing a dash in front of the rule name, if this is more convenient,
-            using <comment>-name_of_fixer</comment>:
+            Complete configuration for rules can be supplied using a `json` formatted string as well.
 
-                <info>$ php %command.full_name% /path/to/dir --rules=-full_opening_tag,-indentation_type</info>
-
-            When using combinations of exact and exclude rules, applying exact rules along with above excluded results:
-
-                <info>$ php %command.full_name% /path/to/project --rules=@Symfony,-@PSR1,-blank_line_before_statement,strict_comparison</info>
-
-            Complete configuration for rules can be supplied using a `json` formatted string.
-
-                <info>$ php %command.full_name% /path/to/project --rules='{"concat_space": {"spacing": "none"}}'</info>
+                <info>$ php %command.full_name% . --rules='{"concat_space": {"spacing": "none"}}'</info>
 
             The <comment>--dry-run</comment> flag will run the fixer without making changes to your files.
 
@@ -241,7 +233,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
                 new InputOption('show-progress', '', InputOption::VALUE_REQUIRED, HelpCommand::getDescriptionWithAllowedValues('Type of progress indicator (%s).', $progressOutputTypes), null, $progressOutputTypes),
                 new InputOption('sequential', '', InputOption::VALUE_NONE, 'Enforce sequential analysis.'),
-            ]
+            ],
         );
     }
 
@@ -252,7 +244,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
         $passedConfig = $input->getOption('config');
         $passedRules = $input->getOption('rules');
 
-        if (null !== $passedConfig && null !== $passedRules) {
+        if (null !== $passedConfig && ConfigurationResolver::IGNORE_CONFIG_FILE !== $passedConfig && null !== $passedRules) {
             throw new InvalidConfigurationException('Passing both `--config` and `--rules` options is not allowed.');
         }
 
@@ -276,7 +268,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 'sequential' => $input->getOption('sequential'),
             ],
             getcwd(), // @phpstan-ignore argument.type
-            $this->toolInfo
+            $this->toolInfo,
         );
 
         $reporter = $resolver->getReporter();
@@ -292,14 +284,14 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 $message = \sprintf(
                     'PHP CS Fixer currently supports PHP syntax only up to PHP %s, current PHP version: %s.',
                     ConfigInterface::PHP_VERSION_SYNTAX_SUPPORTED,
-                    \PHP_VERSION
+                    \PHP_VERSION,
                 );
 
                 if (!$resolver->getUnsupportedPhpVersionAllowed()) {
-                    $message .= ' Add Config::setUnsupportedPhpVersionAllowed(true) to allow executions on unsupported PHP versions. Such execution may be unstable and you may experience code modified in a wrong way.';
+                    $message .= ' Add `Config::setUnsupportedPhpVersionAllowed(true)` to allow executions on unsupported PHP versions. Such execution may be unstable and you may experience code modified in a wrong way.';
                     $stdErr->writeln(\sprintf(
                         $stdErr->isDecorated() ? '<bg=red;fg=white;>%s</>' : '%s',
-                        $message
+                        $message,
                     ));
 
                     return 1;
@@ -307,8 +299,40 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 $message .= ' Execution may be unstable. You may experience code modified in a wrong way. Please report such cases at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer. Remove Config::setUnsupportedPhpVersionAllowed(true) to allow executions only on supported PHP versions.';
                 $stdErr->writeln(\sprintf(
                     $stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s',
-                    $message
+                    $message,
                 ));
+            }
+
+            $configFile = $resolver->getConfigFile();
+            $stdErr->writeln(\sprintf('Loaded config <comment>%s</comment>%s.', $resolver->getConfig()->getName(), null === $configFile ? '' : ' from "'.$configFile.'"'));
+
+            if (null === $configFile) {
+                if (false === $input->isInteractive()) {
+                    $stdErr->writeln(
+                        \sprintf(
+                            $stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s',
+                            'No config file found. Please create one using `php-cs-fixer init`.',
+                        ),
+                    );
+                } else {
+                    $io = new SymfonyStyle($input, $stdErr);
+                    $shallCreateConfigFile = 'yes' === $io->choice(
+                        'Do you want to create the config file?',
+                        ['yes', 'no'],
+                        'yes',
+                    );
+                    if ($shallCreateConfigFile) {
+                        $returnCode = $this->getApplication()->doRun(
+                            new ArrayInput([
+                                'command' => 'init',
+                            ]),
+                            $output,
+                        );
+                        $stdErr->writeln('Config file created, re-run the command to put it in action.');
+
+                        return $returnCode;
+                    }
+                }
             }
 
             $isParallel = $resolver->getParallelConfig()->getMaxProcesses() > 1;
@@ -319,8 +343,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
                 $isParallel ? \sprintf(
                     's with %d file%s per process',
                     $resolver->getParallelConfig()->getFilesPerProcess(),
-                    $resolver->getParallelConfig()->getFilesPerProcess() > 1 ? 's' : ''
-                ) : ' sequentially'
+                    $resolver->getParallelConfig()->getFilesPerProcess() > 1 ? 's' : '',
+                ) : ' sequentially',
             ));
 
             /** @TODO v4 remove warnings related to parallel runner */
@@ -335,13 +359,10 @@ use Symfony\Component\Stopwatch\Stopwatch;
                             'You can enable parallel runner and speed up the analysis! Please see %s for more information.',
                             $stdErr->isDecorated()
                                 ? \sprintf('<href=%s;bg=yellow;fg=red;bold>usage docs</>', OutputFormatter::escape($usageDocs))
-                                : $usageDocs
-                        )
+                                : $usageDocs,
+                        ),
                 ));
             }
-
-            $configFile = $resolver->getConfigFile();
-            $stdErr->writeln(\sprintf('Loaded config <comment>%s</comment>%s.', $resolver->getConfig()->getName(), null === $configFile ? '' : ' from "'.$configFile.'"'));
 
             if ($resolver->getUsingCache()) {
                 $cacheFile = $resolver->getCacheFile();
@@ -357,10 +378,18 @@ use Symfony\Component\Stopwatch\Stopwatch;
             static fn (\SplFileInfo $fileInfo) => false !== $fileInfo->getRealPath(),
         ));
 
-        if (null !== $stdErr && $resolver->configFinderIsOverridden()) {
-            $stdErr->writeln(
-                \sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'Paths from configuration file have been overridden by paths provided as command arguments.')
-            );
+        if (null !== $stdErr) {
+            if ($resolver->configFinderIsOverridden()) {
+                $stdErr->writeln(
+                    \sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'Paths from configuration have been overridden by paths provided as command arguments.'),
+                );
+            }
+
+            if ($resolver->configRulesAreOverridden()) {
+                $stdErr->writeln(
+                    \sprintf($stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s', 'Rules from configuration have been overridden by rules provided as command argument.'),
+                );
+            }
         }
 
         $progressType = $resolver->getProgressType();
@@ -369,8 +398,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
             new OutputContext(
                 $stdErr,
                 (new Terminal())->getWidth(),
-                \count($finder)
-            )
+                \count($finder),
+            ),
         );
 
         $runner = new Runner(
@@ -386,7 +415,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
             $resolver->shouldStopOnViolation(),
             $resolver->getParallelConfig(),
             $input,
-            $resolver->getConfigFile()
+            $resolver->getConfigFile(),
+            $resolver->getRuleCustomisationPolicy(),
         );
 
         $this->eventDispatcher->addListener(FileProcessed::NAME, [$progressOutput, 'onFixerFileProcessed']);
@@ -406,7 +436,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
             $fixEvent->getMemory(),
             OutputInterface::VERBOSITY_VERBOSE <= $verbosity,
             $resolver->isDryRun(),
-            $output->isDecorated()
+            $output->isDecorated(),
         );
 
         $output->isDecorated()
@@ -426,7 +456,6 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
             if (\count($exceptionErrors) > 0) {
                 $errorOutput->listErrors('fixing', $exceptionErrors);
-                \assert(isset($isParallel));
                 if ($isParallel) {
                     $stdErr->writeln('To see details of the error(s), re-run the command with `--sequential -vvv [file]`');
                 }
@@ -444,7 +473,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
             \count($changed) > 0,
             \count($invalidErrors) > 0,
             \count($exceptionErrors) > 0,
-            \count($lintErrors) > 0
+            \count($lintErrors) > 0,
         );
     }
 

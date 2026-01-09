@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\ConfigInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tests\Test\CiReader;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
@@ -42,7 +43,7 @@ final class CiConfigurationTest extends TestCase
                 'PHP_MAX' => $this->getMaxPhpVersionFromEntryFile(),
                 'PHP_MIN' => $this->getMinPhpVersionFromEntryFile(),
             ],
-            $this->getGitHubCiEnvs(),
+            CiReader::getGitHubCiEnvs(),
         );
     }
 
@@ -55,7 +56,7 @@ final class CiConfigurationTest extends TestCase
 
         self::assertTrue(\count($supportedVersions) > 0);
 
-        $ciVersions = $this->getAllPhpVersionsUsedByCiForTests();
+        $ciVersions = CiReader::getAllPhpBuildsUsedByCiForTests();
 
         self::assertNotEmpty($ciVersions);
 
@@ -68,8 +69,8 @@ final class CiConfigurationTest extends TestCase
 
     public function testDeploymentJobRunOnLatestStablePhpThatIsSupportedByTool(): void
     {
-        $ciVersionsForDeployment = $this->getPhpVersionUsedByCiForDeployments();
-        $ciVersions = $this->getAllPhpVersionsUsedByCiForTests();
+        $ciVersionsForDeployment = CiReader::getPhpVersionUsedByCiForDeployments();
+        $ciVersions = CiReader::getAllPhpVersionsUsedByCiForTests();
         $expectedPhp = $this->getMaxPhpVersionFromEntryFile();
 
         if (\in_array($expectedPhp.'snapshot', $ciVersions, true)) {
@@ -77,10 +78,14 @@ final class CiConfigurationTest extends TestCase
             $expectedPhp = (string) ((float) $expectedPhp - 0.1);
         }
 
-        self::assertTrue(
-            version_compare($expectedPhp, $ciVersionsForDeployment, 'eq'),
-            \sprintf('Expects %s to be %s', $ciVersionsForDeployment, $expectedPhp)
-        );
+        if (str_starts_with($ciVersionsForDeployment, '$')) {
+            self::assertSame('${{ needs.setup.outputs.PHP_MAX }}', $ciVersionsForDeployment);
+        } else {
+            self::assertTrue(
+                version_compare($expectedPhp, $ciVersionsForDeployment, 'eq'),
+                \sprintf('Expects %s to be %s', $ciVersionsForDeployment, $expectedPhp),
+            );
+        }
     }
 
     public function testDockerCIBuildsComposeServices(): void
@@ -92,7 +97,7 @@ final class CiConfigurationTest extends TestCase
         $ci = Yaml::parseFile(__DIR__.'/../../.github/workflows/docker.yml');
         $ciServices = array_map(
             static fn ($item) => $item['docker-service'],
-            $ci['jobs']['docker-compose-build']['strategy']['matrix']['include']
+            $ci['jobs']['docker-compose-build']['strategy']['matrix']['include'],
         );
         sort($ciServices);
 
@@ -111,10 +116,11 @@ final class CiConfigurationTest extends TestCase
         $dockerMap = [];
         foreach ($yaml['services'] as $item) {
             if (isset($item['build']['args']['PHP_VERSION'], $item['build']['args']['ALPINE_VERSION'])) {
-                // PHP 8.5 at this point is only allowed for local development and is not a part of Docker releases
-                if (str_starts_with($item['build']['args']['PHP_VERSION'], '8.5')) {
-                    continue;
-                }
+                // @TODO uncomment and adjust me when new development PHP version is added
+                // // PHP 8.x at this point is only allowed for local development and is not a part of Docker releases
+                // if (str_starts_with($item['build']['args']['PHP_VERSION'], '8.x')) {
+                //     continue;
+                // }
 
                 $dockerMap[$item['build']['args']['PHP_VERSION']] = $item['build']['args']['ALPINE_VERSION'];
             }
@@ -125,7 +131,7 @@ final class CiConfigurationTest extends TestCase
         Preg::matchAll(
             '/(?:ALPINE_VERSION=|alpine:)(\d+\.\d+)/',
             (string) file_get_contents(__DIR__.'/../../Dockerfile'),
-            $dockerVersions
+            $dockerVersions,
         );
 
         $dockerVersions = $dockerVersions[1];
@@ -167,8 +173,8 @@ final class CiConfigurationTest extends TestCase
     }
 
     /**
-     * @param numeric-string       $lastSupportedVersion
-     * @param list<numeric-string> $ciVersions
+     * @param numeric-string $lastSupportedVersion
+     * @param list<string>   $ciVersions
      */
     private static function assertUpcomingPhpVersionIsCoveredByCiJob(string $lastSupportedVersion, array $ciVersions): void
     {
@@ -182,7 +188,7 @@ final class CiConfigurationTest extends TestCase
             new TraversableContainsIdentical(\sprintf('%.1fsnapshot', $lastSupportedVersion + 0.1)),
             // GitHub CI uses just versions, without suffix, e.g. 8.1 for 8.1snapshot as of writing
             new TraversableContainsIdentical(\sprintf('%.1f', $lastSupportedVersion + 0.1)),
-            new TraversableContainsIdentical(\sprintf('%.1f', floor($lastSupportedVersion + 1.0)))
+            new TraversableContainsIdentical(\sprintf('%.1f', floor($lastSupportedVersion + 1.0))),
         ));
     }
 
@@ -202,7 +208,7 @@ final class CiConfigurationTest extends TestCase
 
         self::assertThat($ciVersions, self::logicalOr(
             new TraversableContainsIdentical($lastSupportedVersion),
-            new TraversableContainsIdentical(\sprintf('%.1fsnapshot', $lastSupportedVersion))
+            new TraversableContainsIdentical(\sprintf('%.1fsnapshot', $lastSupportedVersion)),
         ));
     }
 
@@ -211,7 +217,7 @@ final class CiConfigurationTest extends TestCase
         $matchResult = Preg::match(
             '/<config name="testVersion" value="(?<min>\d+\.\d+)-(?<max>\d+\.\d+)"\/>/',
             (string) file_get_contents(__DIR__.'/../../dev-tools/php-compatibility/phpcs-php-compatibility.xml'),
-            $capture
+            $capture,
         );
 
         if (!$matchResult) {
@@ -220,23 +226,6 @@ final class CiConfigurationTest extends TestCase
 
         self::assertSame($supportedMinPhp, (float) $capture['min']);
         self::assertSame($supportedMaxPhp, (float) $capture['max']);
-    }
-
-    private function getPhpVersionUsedByCiForDeployments(): string
-    {
-        $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/ci.yml');
-
-        $version = $yaml['jobs']['deployment']['env']['php-version'];
-
-        return \is_string($version) ? $version : \sprintf('%.1f', $version);
-    }
-
-    /**
-     * @return list<numeric-string>
-     */
-    private function getAllPhpVersionsUsedByCiForTests(): array
-    {
-        return $this->getPhpVersionsUsedByGitHub();
     }
 
     private function convertPhpVerIdToNiceVer(string $verId): string
@@ -274,32 +263,6 @@ final class CiConfigurationTest extends TestCase
     }
 
     /**
-     * @return array<string, string>
-     */
-    private function getGitHubCiEnvs(): array
-    {
-        $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/ci.yml');
-
-        return $yaml['env'];
-    }
-
-    /**
-     * @return list<numeric-string>
-     */
-    private function getPhpVersionsUsedByGitHub(): array
-    {
-        $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/ci.yml');
-
-        $phpVersions = $yaml['jobs']['tests']['strategy']['matrix']['php-version'] ?? [];
-
-        foreach ($yaml['jobs']['tests']['strategy']['matrix']['include'] as $job) {
-            $phpVersions[] = $job['php-version'];
-        }
-
-        return array_unique($phpVersions); // @phpstan-ignore return.type (we know it's a list of parsed strings)
-    }
-
-    /**
      * @return array<array-key, string>
      */
     private function getPhpVersionsUsedForBuildingOfficialImages(): array
@@ -308,7 +271,7 @@ final class CiConfigurationTest extends TestCase
 
         return array_map(
             static fn ($item) => $item['php-version'],
-            $yaml['jobs']['docker-images']['strategy']['matrix']['include']
+            $yaml['jobs']['docker-images']['strategy']['matrix']['include'],
         );
     }
 
@@ -324,10 +287,10 @@ final class CiConfigurationTest extends TestCase
             array_filter(
                 array_map(
                     static fn ($item) => $item['docker-service'],
-                    $yaml['jobs']['docker-compose-build']['strategy']['matrix']['include']
+                    $yaml['jobs']['docker-compose-build']['strategy']['matrix']['include'],
                 ),
-                static fn ($item) => str_starts_with($item, 'php-')
-            )
+                static fn ($item) => str_starts_with($item, 'php-'),
+            ),
         );
     }
 }

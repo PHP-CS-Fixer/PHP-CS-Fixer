@@ -43,8 +43,9 @@ final class JunitReporter implements ReporterInterface
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $testsuites = $dom->appendChild($dom->createElement('testsuites'));
 
-        /** @var \DOMElement $testsuite */
         $testsuite = $testsuites->appendChild($dom->createElement('testsuite'));
+        \assert($testsuite instanceof \DOMElement);
+
         $testsuite->setAttribute('name', 'PHP CS Fixer');
 
         $properties = $dom->createElement('properties');
@@ -65,8 +66,8 @@ final class JunitReporter implements ReporterInterface
                 'time',
                 \sprintf(
                     '%.3f',
-                    $reportSummary->getTime() / 1_000
-                )
+                    $reportSummary->getTime() / 1_000,
+                ),
             );
         }
 
@@ -101,7 +102,7 @@ final class JunitReporter implements ReporterInterface
                 $dom,
                 $file,
                 $fixResult,
-                $reportSummary->shouldAddAppliedFixers()
+                $reportSummary->shouldAddAppliedFixers(),
             );
             $testsuite->appendChild($testcase);
             $assertionsCount += (int) $testcase->getAttribute('assertions');

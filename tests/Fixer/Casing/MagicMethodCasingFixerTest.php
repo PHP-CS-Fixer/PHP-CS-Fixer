@@ -345,7 +345,7 @@ function __Tostring() {}',
     {
         $this->doTest(
             '<?php $foo?->__invoke(1, );',
-            '<?php $foo?->__INVOKE(1, );'
+            '<?php $foo?->__INVOKE(1, );',
         );
     }
 

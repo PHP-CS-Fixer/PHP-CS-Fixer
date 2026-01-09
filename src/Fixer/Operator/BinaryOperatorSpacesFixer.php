@@ -204,7 +204,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                         <?php
                         $a= 1  + $b^ $d !==  $e or   $f;
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -216,7 +216,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                         $f    -=  1;
 
                         PHP,
-                    ['operators' => ['=' => self::ALIGN, 'xor' => null]]
+                    ['operators' => ['=' => self::ALIGN, 'xor' => null]],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -228,7 +228,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                         $h = $ee+=$f;
 
                         PHP,
-                    ['operators' => ['+=' => self::ALIGN_SINGLE_SPACE]]
+                    ['operators' => ['+=' => self::ALIGN_SINGLE_SPACE]],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -238,7 +238,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                         $h = $i===  $j;
 
                         PHP,
-                    ['operators' => ['===' => self::ALIGN_SINGLE_SPACE_MINIMAL]]
+                    ['operators' => ['===' => self::ALIGN_SINGLE_SPACE_MINIMAL]],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -246,7 +246,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                         $foo = \json_encode($bar, JSON_PRESERVE_ZERO_FRACTION | JSON_PRETTY_PRINT);
 
                         PHP,
-                    ['operators' => ['|' => self::NO_SPACE]]
+                    ['operators' => ['|' => self::NO_SPACE]],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -257,7 +257,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                         ];
 
                         PHP,
-                    ['operators' => ['=>' => self::SINGLE_SPACE]]
+                    ['operators' => ['=>' => self::SINGLE_SPACE]],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -270,7 +270,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                         ];
 
                         PHP,
-                    ['operators' => ['=>' => self::ALIGN]]
+                    ['operators' => ['=>' => self::ALIGN]],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -283,7 +283,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                         ];
 
                         PHP,
-                    ['operators' => ['=>' => self::ALIGN_BY_SCOPE]]
+                    ['operators' => ['=>' => self::ALIGN_BY_SCOPE]],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -296,7 +296,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                         ];
 
                         PHP,
-                    ['operators' => ['=>' => self::ALIGN_SINGLE_SPACE]]
+                    ['operators' => ['=>' => self::ALIGN_SINGLE_SPACE]],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -309,7 +309,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                         ];
 
                         PHP,
-                    ['operators' => ['=>' => self::ALIGN_SINGLE_SPACE_BY_SCOPE]]
+                    ['operators' => ['=>' => self::ALIGN_SINGLE_SPACE_BY_SCOPE]],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -322,7 +322,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                         ];
 
                         PHP,
-                    ['operators' => ['=>' => self::ALIGN_SINGLE_SPACE_MINIMAL]]
+                    ['operators' => ['=>' => self::ALIGN_SINGLE_SPACE_MINIMAL]],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -335,9 +335,9 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                         ];
 
                         PHP,
-                    ['operators' => ['=>' => self::ALIGN_SINGLE_SPACE_MINIMAL_BY_SCOPE]]
+                    ['operators' => ['=>' => self::ALIGN_SINGLE_SPACE_MINIMAL_BY_SCOPE]],
                 ),
-            ]
+            ],
         );
     }
 
@@ -407,8 +407,8 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                                 \sprintf(
                                     'Unexpected "operators" key, expected any of %s, got "%s".',
                                     Utils::naturalLanguageJoin(self::SUPPORTED_OPERATORS),
-                                    \gettype($operator).'#'.$operator
-                                )
+                                    \gettype($operator).'#'.$operator,
+                                ),
                             );
                         }
 
@@ -419,10 +419,10 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                                     $operator,
                                     Utils::naturalLanguageJoin(array_map(
                                         static fn ($value): string => Utils::toString($value),
-                                        self::ALLOWED_VALUES
+                                        self::ALLOWED_VALUES,
                                     )),
-                                    \is_object($value) ? \get_class($value) : (null === $value ? 'null' : \gettype($value).'#'.$value)
-                                )
+                                    \is_object($value) ? \get_class($value) : (null === $value ? 'null' : \gettype($value).'#'.$value),
+                                ),
                             );
                         }
                     }
@@ -599,7 +599,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
             // The placeholder will be resolved by `replacePlaceholders` method by removing placeholder or changing it into spaces.
             // That way of fixing the code causes disturbances in marking Token as changed - if code is perfectly valid then placeholder
             // still be injected and removed, which will cause the `changed` flag to be set.
-            // To handle that unwanted behavior we work on clone of Tokens collection and then override original collection with fixed collection.
+            // To handle that unwanted behaviour we work on clone of Tokens collection and then override original collection with fixed collection.
             $tokensClone = clone $tokens;
 
             if ('=>' === $tokenContent) {
@@ -784,7 +784,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                 continue;
             }
 
-            // no need to analyze for `isBinaryOperator` (always true), nor if part of declare statement (not valid PHP)
+            // no need to analyse for `isBinaryOperator` (always true), nor if part of declare statement (not valid PHP)
             // there is also no need to analyse the second arrow of a line
             if ($token->isGivenKind(\T_DOUBLE_ARROW) && $newLineFoundSinceLastPlaceholder) {
                 if ($yieldFoundSinceLastPlaceholder) {

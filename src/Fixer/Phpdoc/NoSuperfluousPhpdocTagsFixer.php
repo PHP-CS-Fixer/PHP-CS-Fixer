@@ -169,7 +169,7 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
                         PHP,
                     ['allow_unused_params' => true],
                 ),
-            ]
+            ],
         );
     }
 
@@ -376,7 +376,7 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
         $argumentsInfo = $this->getArgumentsInfo(
             $tokens,
             $openingParenthesisIndex + 1,
-            $closingParenthesisIndex - 1
+            $closingParenthesisIndex - 1,
         );
 
         foreach ($docBlock->getAnnotationsOfType('param') as $annotation) {
@@ -684,7 +684,7 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
 
                 return $type;
             },
-            $types
+            $types,
         );
 
         sort($normalized);

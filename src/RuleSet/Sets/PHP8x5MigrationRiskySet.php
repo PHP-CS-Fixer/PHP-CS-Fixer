@@ -26,7 +26,7 @@ final class PHP8x5MigrationRiskySet extends AbstractMigrationSetDefinition
     public function getRules(): array
     {
         return [
-            '@PHP8x2Migration:risky' => true,
+            '@PHP8x4Migration:risky' => true,
             'modern_serialization_methods' => true,
         ];
     }

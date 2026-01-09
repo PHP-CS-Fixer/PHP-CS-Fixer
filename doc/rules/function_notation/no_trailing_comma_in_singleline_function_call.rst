@@ -8,8 +8,8 @@ trailing comma after the last argument.
 Warning
 -------
 
-This rule is deprecated and will be removed in the next major version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is DEPRECATED and will be removed in the next major version 4.0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You should use ``no_trailing_comma_in_singleline`` instead.
 

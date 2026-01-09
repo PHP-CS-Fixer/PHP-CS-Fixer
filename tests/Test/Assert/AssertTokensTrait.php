@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Test\Assert;
 
+use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -21,6 +22,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @phpstan-require-extends TestCase
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
@@ -37,7 +40,7 @@ trait AssertTokensTrait
 
             self::assertTrue(
                 $expectedToken->equals($inputToken),
-                \sprintf("The token at index %d must be:\n%s,\ngot:\n%s.", $index, $expectedToken->toJson(), $inputToken->toJson())
+                \sprintf("The token at index %d must be:\n%s,\ngot:\n%s.", $index, $expectedToken->toJson(), $inputToken->toJson()),
             );
 
             $expectedTokenKind = $expectedToken->isArray() ? $expectedToken->getId() : $expectedToken->getContent();
@@ -46,8 +49,8 @@ trait AssertTokensTrait
                 \sprintf(
                     'The token kind %s (%s) must be found in tokens collection.',
                     $expectedTokenKind,
-                    \is_string($expectedTokenKind) ? $expectedTokenKind : Token::getNameForId($expectedTokenKind)
-                )
+                    \is_string($expectedTokenKind) ? $expectedTokenKind : Token::getNameForId($expectedTokenKind),
+                ),
             );
         }
 

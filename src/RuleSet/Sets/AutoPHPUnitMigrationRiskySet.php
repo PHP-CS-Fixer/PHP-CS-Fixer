@@ -41,12 +41,12 @@ final class AutoPHPUnitMigrationRiskySet extends AbstractRuleSetDefinition imple
 
     public function getDescription(): string
     {
-        return 'Rules to improve test code for PHPUnit. Target version is automatically detected from project\'s "composer.json" file.';
+        return 'Migration rules to improve test code towards the minimum ``PHPUnit`` supported by your project (taken from ``composer.json`` file).';
     }
 
     public function getRulesCandidates(): array
     {
-        $sets = array_values(self::calculateCandidateSets('PHP', $this->isRisky()));
+        $sets = array_values(self::calculateCandidateSets('PHPUnit', $this->isRisky()));
 
         ksort($sets);
 

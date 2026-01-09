@@ -240,7 +240,7 @@ final class FileCacheManagerTest extends TestCase
             \Closure::bind(
                 static fn ($handler): int => $handler->writeCallCount,
                 null,
-                \get_class($handler)
+                \get_class($handler),
             )($handler),
         );
     }
@@ -298,6 +298,11 @@ final class FileCacheManagerTest extends TestCase
             }
 
             public function getRules(): array
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
+            public function getRuleCustomisationPolicyVersion(): string
             {
                 throw new \LogicException('Not implemented.');
             }

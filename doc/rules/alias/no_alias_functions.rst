@@ -4,13 +4,18 @@ Rule ``no_alias_functions``
 
 Master functions shall be used instead of aliases.
 
-Warning
--------
+Warnings
+--------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when any of the alias functions are overridden.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``sets``.
 
 Configuration
 -------------
@@ -121,7 +126,19 @@ The rule is part of the following rule sets:
 
   ``['sets' => ['@all']]``
 
+- `@PHP8x1Migration:risky <./../../ruleSets/PHP8x1MigrationRisky.rst>`_ with config:
+
+  ``['sets' => ['@all']]``
+
 - `@PHP8x2Migration:risky <./../../ruleSets/PHP8x2MigrationRisky.rst>`_ with config:
+
+  ``['sets' => ['@all']]``
+
+- `@PHP8x3Migration:risky <./../../ruleSets/PHP8x3MigrationRisky.rst>`_ with config:
+
+  ``['sets' => ['@all']]``
+
+- `@PHP8x4Migration:risky <./../../ruleSets/PHP8x4MigrationRisky.rst>`_ with config:
 
   ``['sets' => ['@all']]``
 

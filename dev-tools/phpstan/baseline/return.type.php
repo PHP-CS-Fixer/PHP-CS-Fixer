@@ -2,11 +2,6 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
-    'rawMessage' => 'Method PhpCsFixer\\Config::getFinder() should return PhpCsFixer\\Finder but returns iterable<SplFileInfo>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Config.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Method PhpCsFixer\\Fixer\\ClassNotation\\NoPhp4ConstructorFixer::findFunction() should return array{nameIndex: int, startIndex: int, endIndex: int, bodyIndex: int, modifiers: list<int>}|null but returns array{nameIndex: int<0, max>, startIndex: int, endIndex: int|null, bodyIndex: int|null, modifiers: array<int, int>}.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/NoPhp4ConstructorFixer.php',
@@ -22,7 +17,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/FunctionNotation/ImplodeCallFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Method PhpCsFixer\\Fixer\\Import\\OrderedImportsFixer::getNewOrder() should return array<int, array{namespace: non-empty-string, startIndex: int, endIndex: int, importType: \'class\'|\'const\'|\'function\', group: bool}> but returns array<\'\'|int, array{namespace: string, startIndex: int|null, endIndex: int, importType: \'class\'|\'const\'|\'function\', group: bool}>.',
+    'rawMessage' => 'Method PhpCsFixer\\Fixer\\Import\\OrderedImportsFixer::getNewOrder() should return array<int, array{namespace: non-empty-string, startIndex: int, endIndex: int, importType: \'class\'|\'const\'|\'function\', group: bool}> but returns array<\'\'|int, array{namespace: non-empty-string, startIndex: int, endIndex: int, importType: \'class\'|\'const\'|\'function\', group: bool}>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Import/OrderedImportsFixer.php',
 ];

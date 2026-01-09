@@ -92,7 +92,7 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
 
                         $foo = new  class  extends  Bar  implements  Baz,  BarBaz {};
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -104,7 +104,7 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
                         {}
 
                         PHP,
-                    ['single_line' => true]
+                    ['single_line' => true],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -116,7 +116,7 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
                         {}
 
                         PHP,
-                    ['single_item_single_line' => true]
+                    ['single_item_single_line' => true],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -127,7 +127,7 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
                         {}
 
                         PHP,
-                    ['multi_line_extends_each_single_line' => true]
+                    ['multi_line_extends_each_single_line' => true],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -135,13 +135,13 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
                         $foo = new class(){};
 
                         PHP,
-                    ['space_before_parenthesis' => true]
+                    ['space_before_parenthesis' => true],
                 ),
                 new CodeSample(
                     "<?php\n\$foo = new class(\n    \$bar,\n    \$baz\n) {};\n",
-                    ['inline_constructor_arguments' => true]
+                    ['inline_constructor_arguments' => true],
                 ),
-            ]
+            ],
         );
     }
 
@@ -149,7 +149,7 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
      * {@inheritdoc}
      *
      * Must run before BracesFixer, SingleLineEmptyBodyFixer.
-     * Must run after NewWithBracesFixer, NewWithParenthesesFixer.
+     * Must run after NewWithBracesFixer, NewWithParenthesesFixer, StringableForToStringFixer.
      */
     public function getPriority(): int
     {
@@ -211,7 +211,7 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
             $classDefInfo['implements'] = $this->fixClassyDefinitionImplements(
                 $tokens,
                 $classDefInfo['open'],
-                $classDefInfo['implements']
+                $classDefInfo['implements'],
             );
         }
 
@@ -219,7 +219,7 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
             $classDefInfo['extends'] = $this->fixClassyDefinitionExtends(
                 $tokens,
                 false === $classDefInfo['implements'] ? $classDefInfo['open'] : $classDefInfo['implements']['start'],
-                $classDefInfo['extends']
+                $classDefInfo['extends'],
             );
         }
 
@@ -505,7 +505,7 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
             $this->makeClassyDefinitionSingleLine(
                 $tokens,
                 $breakAtIndex,
-                $i
+                $i,
             );
 
             // make sure the part is on its own line

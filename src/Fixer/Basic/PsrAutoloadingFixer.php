@@ -65,7 +65,7 @@ final class PsrAutoloadingFixer extends AbstractFixer implements ConfigurableFix
                         class InvalidName {}
 
                         PHP,
-                    new \SplFileInfo(__FILE__)
+                    new \SplFileInfo(__FILE__),
                 ),
                 new FileSpecificCodeSample(
                     <<<'PHP'
@@ -75,11 +75,11 @@ final class PsrAutoloadingFixer extends AbstractFixer implements ConfigurableFix
 
                         PHP,
                     new \SplFileInfo(__FILE__),
-                    ['dir' => './src']
+                    ['dir' => './src'],
                 ),
             ],
             null,
-            'This fixer may change your class name, which will break the code that depends on the old name.'
+            'This fixer may change your class name, which will break the code that depends on the old name.',
         );
     }
 

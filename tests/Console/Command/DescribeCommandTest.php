@@ -33,6 +33,7 @@ use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Tests\Fixtures\DescribeCommand\DescribeFixtureFixer;
+use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleSet;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -55,10 +56,8 @@ final class DescribeCommandTest extends TestCase
      */
     public function testExecuteOutput(string $expected, bool $expectedIsRegEx, bool $decorated, FixerInterface $fixer): void
     {
-        $this->expectDeprecationOfDeprecatedRuleSets();
-
         if ($fixer instanceof DeprecatedFixerInterface) {
-            $this->expectDeprecation(\sprintf('Rule "%s" is deprecated. Use "%s" instead.', $fixer->getName(), implode('", "', $fixer->getSuccessorsNames())));
+            $this->expectDeprecation(\sprintf('Rule "%s" is DEPRECATED and will be removed in the next major version 4.0. You should use "%s" instead.', $fixer->getName(), implode('", "', $fixer->getSuccessorsNames())));
         }
 
         $actual = $this->execute($fixer->getName(), $decorated, $fixer)->getDisplay(true);
@@ -78,12 +77,13 @@ final class DescribeCommandTest extends TestCase
         yield 'rule is configurable, risky and deprecated' => [
             "Description of the `Foo/bar` rule.
 
-DEPRECATED: use `Foo/baz` instead.
-
 Fixes stuff.
 Replaces bad stuff with good stuff.
 
-Fixer applying this rule is RISKY.
+This rule is DEPRECATED and will be removed in the next major version 4.0
+You should use `Foo/baz` instead.
+
+This rule is RISKY
 Can break stuff.
 
 Fixer is configurable using following options:
@@ -120,12 +120,13 @@ Fixing examples:
         yield 'rule is configurable, risky and deprecated [with decoration]' => [
             "\033[34mDescription of the \033[39m\033[32m`Foo/bar`\033[39m\033[34m rule.\033[39m
 
-\033[37;41mDEPRECATED\033[39;49m: use \033[32m`Foo/baz`\033[39m instead.
-
 Fixes stuff.
 Replaces bad stuff with good stuff.
 
-\033[37;41mFixer applying this rule is RISKY.\033[39;49m
+\033[37;41mThis rule is DEPRECATED and will be removed in the next major version 4.0\033[39;49m
+You should use \033[32m`Foo/baz`\033[39m instead.
+
+\033[37;41mThis rule is RISKY\033[39;49m
 Can break stuff.
 
 Fixer is configurable using following options:
@@ -239,7 +240,7 @@ Fixing examples:
                 ),
                 new VersionSpecificCodeSample(
                     "<?php echo 'BEFORE'.'-B';".\PHP_EOL,
-                    new VersionSpecification(20_00_00)
+                    new VersionSpecification(20_00_00),
                 ),
             ]),
         ];
@@ -258,11 +259,11 @@ Fixing examples cannot be demonstrated on the current PHP version.
             self::createFixerWithSamplesDouble([
                 new VersionSpecificCodeSample(
                     "<?php echo 'BEFORE';".\PHP_EOL,
-                    new VersionSpecification(20_00_00)
+                    new VersionSpecification(20_00_00),
                 ),
                 new VersionSpecificCodeSample(
                     "<?php echo 'BEFORE'.'-B';".\PHP_EOL,
-                    new VersionSpecification(20_00_00)
+                    new VersionSpecification(20_00_00),
                 ),
             ]),
         ];
@@ -293,9 +294,7 @@ $/s',
 
     public function testExecuteStatusCode(): void
     {
-        $this->expectDeprecationOfDeprecatedRuleSets();
-
-        $this->expectDeprecation('Rule "Foo/bar" is deprecated. Use "Foo/baz" instead.');
+        $this->expectDeprecation('Rule "Foo/bar" is DEPRECATED and will be removed in the next major version 4.0. You should use "Foo/baz" instead.');
 
         self::assertSame(0, $this->execute('Foo/bar', false)->getStatusCode());
     }
@@ -314,6 +313,8 @@ $/s',
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => 'Foo/bar',
+
+            '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php',
         ]);
     }
 
@@ -331,6 +332,7 @@ $/s',
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => '@NoSuchSet',
+            '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php',
         ]);
     }
 
@@ -347,6 +349,7 @@ $/s',
         $this->expectExceptionMessage('Not enough arguments (missing: "name") when not running interactively.');
         $commandTester->execute([
             'command' => $command->getName(),
+            '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php',
         ], ['interactive' => false]);
     }
 
@@ -359,8 +362,6 @@ $/s',
 
     public function testFixerClassNameIsExposedWhenVerbose(): void
     {
-        $this->expectDeprecationOfDeprecatedRuleSets();
-
         $fixer = new class implements FixerInterface {
             public function isCandidate(Tokens $tokens): bool
             {
@@ -411,10 +412,11 @@ $/s',
             [
                 'command' => $command->getName(),
                 'name' => 'Foo/bar_baz',
+                '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php',
             ],
             [
                 'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
-            ]
+            ],
         );
 
         self::assertStringContainsString(str_replace("\0", '\\', \get_class($fixer)), $commandTester->getDisplay(true));
@@ -422,8 +424,6 @@ $/s',
 
     public function testCommandDescribesCustomFixer(): void
     {
-        $this->expectDeprecationOfDeprecatedRuleSets();
-
         $application = new Application();
         $application->add(new DescribeCommand());
 
@@ -433,7 +433,7 @@ $/s',
         $commandTester->execute([
             'command' => $command->getName(),
             'name' => (new DescribeFixtureFixer())->getName(),
-            '--config' => __DIR__.'/../../Fixtures/DescribeCommand/.php-cs-fixer.fixture.php',
+            '--config' => __DIR__.'/../../Fixtures/DescribeCommand/.php-cs-fixer.custom-rule.php',
         ]);
 
         $expected = "Description of the `Vendor/describe_fixture` rule.
@@ -453,6 +453,34 @@ Fixing examples:
    ----------- end diff -----------
 
 ';
+        self::assertSame($expected, $commandTester->getDisplay(true));
+        self::assertSame(0, $commandTester->getStatusCode());
+    }
+
+    public function testCommandDescribesCustomSet(): void
+    {
+        $application = new Application();
+        $application->add(new DescribeCommand());
+
+        $command = $application->find('describe');
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            'name' => (new ExampleRuleSet())->getName(),
+            '--config' => __DIR__.'/../../Fixtures/DescribeCommand/.php-cs-fixer.custom-set.php',
+        ]);
+
+        $expected = "You may the '--expand' option to see nested sets expanded into nested rules.
+Description of the `@Vendor/RuleSet` set.
+
+Purpose of example rule set description.
+
+ * align_multiline_comment configurable
+   | Each line of multi-line DocComments must have an asterisk [PSR-5] and must be aligned with the first one.
+   | Configuration: false
+
+";
         self::assertSame($expected, $commandTester->getDisplay(true));
         self::assertSame(0, $commandTester->getStatusCode());
     }
@@ -566,15 +594,15 @@ Fixing examples:
                     'Fixes stuff.',
                     [
                         new CodeSample(
-                            "<?php echo 'bad stuff and bad thing';\n"
+                            "<?php echo 'bad stuff and bad thing';\n",
                         ),
                         new CodeSample(
                             "<?php echo 'bad stuff and bad thing';\n",
-                            ['functions' => ['foo', 'bar']]
+                            ['functions' => ['foo', 'bar']],
                         ),
                     ],
                     'Replaces bad stuff with good stuff.',
-                    'Can break stuff.'
+                    'Can break stuff.',
                 );
             }
 
@@ -615,10 +643,11 @@ Fixing examples:
             [
                 'command' => $command->getName(),
                 'name' => $name,
+                '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.vanilla.php',
             ],
             [
                 'decorated' => $decorated,
-            ]
+            ],
         );
 
         return $commandTester;

@@ -132,7 +132,7 @@ final class FixerFactoryTest extends TestCase
             self::assertSame(
                 \sprintf('Integration of fixers: %s,%s.', $fixerName, $edge),
                 $test->getTitle(),
-                \sprintf('Please fix the title in "%s".', $file)
+                \sprintf('Please fix the title in "%s".', $file),
             );
 
             self::assertCount(2, $rules, \sprintf('Only the two rules that are tested for priority should be in the ruleset of "%s".', $file));
@@ -168,7 +168,7 @@ final class FixerFactoryTest extends TestCase
         self::assertFalse($file->isLink(), \sprintf('No (sym)links expected the priority integration test directory, got "%s".', $fileName));
         self::assertTrue(
             Preg::match('#^([a-z][a-z0-9_]*),([a-z][a-z_]*)(?:_\d{1,3})?\.test(-(in|out)\.php)?$#', $fileName, $matches),
-            \sprintf('File with unexpected name "%s" in the priority integration test directory.', $fileName)
+            \sprintf('File with unexpected name "%s" in the priority integration test directory.', $fileName),
         );
 
         [, $fixerName1, $fixerName2] = $matches;
@@ -176,7 +176,7 @@ final class FixerFactoryTest extends TestCase
 
         self::assertTrue(
             isset($graph[$fixerName1]) && \in_array($fixerName2, $graph[$fixerName1], true),
-            \sprintf('Missing priority test entry for file "%s".', $fileName)
+            \sprintf('Missing priority test entry for file "%s".', $fileName),
         );
     }
 
@@ -219,7 +219,7 @@ final class FixerFactoryTest extends TestCase
 
         $mergedGraph = array_merge_recursive(
             self::getFixersPriorityGraph(),
-            self::getPhpDocFixersPriorityGraph()
+            self::getPhpDocFixersPriorityGraph(),
         );
 
         // expend $graph
@@ -987,6 +987,11 @@ final class FixerFactoryTest extends TestCase
                 'no_extra_blank_lines',
                 'no_trailing_whitespace',
             ],
+            'stringable_for_to_string' => [
+                'class_definition',
+                'global_namespace_import',
+                'ordered_interfaces',
+            ],
             'ternary_to_elvis_operator' => [
                 'no_trailing_whitespace',
                 'ternary_operator_spaces',
@@ -1040,7 +1045,7 @@ final class FixerFactoryTest extends TestCase
 
         $docFixerNames = array_filter(
             array_keys(self::getAllFixers()),
-            static fn (string $name): bool => str_contains($name, 'phpdoc')
+            static fn (string $name): bool => str_contains($name, 'phpdoc'),
         );
 
         foreach ($docFixerNames as $docFixerName) {

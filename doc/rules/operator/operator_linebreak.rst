@@ -5,6 +5,15 @@ Rule ``operator_linebreak``
 Operators - when multiline - must always be at the beginning or at the end of
 the line.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``only_booleans``,
+``position``.
+
 Configuration
 -------------
 

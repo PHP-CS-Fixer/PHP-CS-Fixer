@@ -39,9 +39,9 @@ final class SingleLineCommentSpacingFixer extends AbstractFixer
                         #comment 2
                         /*comment 3*/
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

@@ -5,14 +5,19 @@ Rule ``random_api_migration``
 Replaces ``rand``, ``srand``, ``getrandmax`` functions calls with their ``mt_*``
 analogs or ``random_int``.
 
-Warning
--------
+Warnings
+--------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when the configured functions are overridden. Or when relying on the seed
 based generating of the numbers.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``replacements``.
 
 Configuration
 -------------
@@ -94,7 +99,19 @@ The rule is part of the following rule sets:
 
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
 
+- `@PHP8x1Migration:risky <./../../ruleSets/PHP8x1MigrationRisky.rst>`_ with config:
+
+  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
+
 - `@PHP8x2Migration:risky <./../../ruleSets/PHP8x2MigrationRisky.rst>`_ with config:
+
+  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
+
+- `@PHP8x3Migration:risky <./../../ruleSets/PHP8x3MigrationRisky.rst>`_ with config:
+
+  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
+
+- `@PHP8x4Migration:risky <./../../ruleSets/PHP8x4MigrationRisky.rst>`_ with config:
 
   ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
 

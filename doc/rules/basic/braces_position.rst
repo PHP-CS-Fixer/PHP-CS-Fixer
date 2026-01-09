@@ -4,6 +4,19 @@ Rule ``braces_position``
 
 Braces must be placed as configured.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options:
+``allow_single_line_anonymous_functions``,
+``allow_single_line_empty_anonymous_classes``,
+``anonymous_classes_opening_brace``, ``anonymous_functions_opening_brace``,
+``classes_opening_brace``, ``control_structures_opening_brace``,
+``functions_opening_brace``.
+
 Configuration
 -------------
 

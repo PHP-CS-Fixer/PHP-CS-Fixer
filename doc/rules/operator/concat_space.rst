@@ -4,6 +4,14 @@ Rule ``concat_space``
 
 Concatenation should be spaced according to configuration.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``spacing``.
+
 Configuration
 -------------
 

@@ -19,7 +19,8 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSets;
-use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleset;
+use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleSet;
+use PhpCsFixer\Tests\Test\CiReader;
 use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
 
@@ -43,7 +44,7 @@ final class RuleSetsTest extends TestCase
         \Closure::bind(
             static function (): void { RuleSets::$customRuleSetDefinitions = []; },
             null,
-            RuleSets::class
+            RuleSets::class,
         )();
     }
 
@@ -51,7 +52,7 @@ final class RuleSetsTest extends TestCase
     {
         self::assertSame(
             array_keys(RuleSets::getSetDefinitions()),
-            RuleSets::getSetDefinitionNames()
+            RuleSets::getSetDefinitionNames(),
         );
     }
 
@@ -74,6 +75,21 @@ final class RuleSetsTest extends TestCase
         $this->expectExceptionMessageMatches(\sprintf('#^Set "%s" does not exist\.$#', $name));
 
         RuleSets::getSetDefinition($name);
+    }
+
+    public function testThatPhpMigrationSetsAreDefinedForEachSupportedPhpVersion(): void
+    {
+        $supportedPhpVersions = CiReader::getAllPhpVersionsUsedByCiForTests();
+
+        $sets = RuleSets::getSetDefinitions();
+        self::assertNotEmpty($supportedPhpVersions);
+        foreach ($supportedPhpVersions as $version) {
+            foreach (['', ':risky'] as $suffix) {
+                $setName = \sprintf('@PHP%sMigration%s', str_replace('.', 'x', $version), $suffix);
+                // var_dump($setName);
+                self::assertArrayHasKey($setName, $sets, \sprintf('Set "%s" is not defined.', $setName));
+            }
+        }
     }
 
     /**
@@ -104,6 +120,7 @@ final class RuleSetsTest extends TestCase
             '@PhpCsFixer:risky',
             '@PhpCsFixer',
             '@PHPUnit10x0Migration:risky',
+            '@PHPUnit11x0Migration:risky',
             '@PHPUnit4x8Migration',
             '@PHPUnit5x5Migration:risky',
             '@PHPUnit7x5Migration:risky',
@@ -125,6 +142,16 @@ final class RuleSetsTest extends TestCase
             self::markTestSkipped(\sprintf('Set "%s" is automatic and it\'s definition depends on individual project.', $setDefinitionName));
         }
 
+        \assert(\array_key_exists($setDefinitionName, RuleSets::getSetDefinitions()));
+        $setDefinition = RuleSets::getSetDefinitions()[$setDefinitionName]->getRules();
+
+        if (1 === \count($setDefinition)
+            && str_starts_with($setDefinitionName, '@PHP')
+            && str_starts_with(array_key_first($setDefinition), '@PHP')
+        ) {
+            self::markTestSkipped(\sprintf('Set "%s" only includes previous, no own rules to test.', $setDefinitionName));
+        }
+
         $setDefinitionFileNamePrefix = str_replace(':', '-', $setDefinitionName);
         $dir = __DIR__.'/../../tests/Fixtures/Integration/set';
         $file = \sprintf('%s/%s.test', $dir, $setDefinitionFileNamePrefix);
@@ -140,7 +167,7 @@ Integration of %s.
 ';
         self::assertStringStartsWith(
             \sprintf($template, $setDefinitionName, $setDefinitionName),
-            (string) file_get_contents($file)
+            (string) file_get_contents($file),
         );
     }
 
@@ -164,7 +191,7 @@ Integration of %s.
 
         self::assertSame($sortedSetDefinition, $setDefinition, \sprintf(
             'Failed to assert that the set definition for "%s" is sorted by key.',
-            $setDefinitionName
+            $setDefinitionName,
         ));
     }
 
@@ -222,16 +249,16 @@ Integration of %s.
 
     public function testRegisteringRulesetMultipleTimesCausesAnException(): void
     {
-        RuleSets::registerCustomRuleSet(new ExampleRuleset());
+        RuleSets::registerCustomRuleSet(new ExampleRuleSet());
         self::expectException(\InvalidArgumentException::class);
-        RuleSets::registerCustomRuleSet(new ExampleRuleset());
+        RuleSets::registerCustomRuleSet(new ExampleRuleSet());
     }
 
     public function testCanReadCustomRegisteredRuleSet(): void
     {
-        RuleSets::registerCustomRuleSet(new ExampleRuleset());
-        $set = RuleSets::getSetDefinition('@Vendor/Ruleset');
-        self::assertSame('@Vendor/Ruleset', $set->getName());
+        RuleSets::registerCustomRuleSet(new ExampleRuleSet());
+        $set = RuleSets::getSetDefinition('@Vendor/RuleSet');
+        self::assertSame('@Vendor/RuleSet', $set->getName());
     }
 
     private static function assertPHPUnitVersionIsLargestAllowed(string $setName, string $ruleName, string $actualTargetVersion): void
@@ -249,7 +276,7 @@ Integration of %s.
 
                 $allowedVersionsForFixer = array_diff(
                     $allowedValues,
-                    [PhpUnitTargetVersion::VERSION_NEWEST]
+                    [PhpUnitTargetVersion::VERSION_NEWEST],
                 );
 
                 break;
@@ -263,7 +290,7 @@ Integration of %s.
         /** @var list<PhpUnitTargetVersion::VERSION_*> */
         $allowedVersionsForRuleset = array_filter(
             $allowedVersionsForFixer,
-            static fn (string $version): bool => version_compare($maximumVersionForRuleset, $version) >= 0
+            static fn (string $version): bool => version_compare($maximumVersionForRuleset, $version) >= 0,
         );
 
         self::assertTrue(\in_array($actualTargetVersion, $allowedVersionsForRuleset, true), \sprintf(
@@ -271,7 +298,7 @@ Integration of %s.
             $fixer->getName(),
             $setName,
             $actualTargetVersion,
-            implode('", "', $allowedVersionsForRuleset)
+            implode('", "', $allowedVersionsForRuleset),
         ));
 
         rsort($allowedVersionsForRuleset);
@@ -282,7 +309,7 @@ Integration of %s.
             $fixer->getName(),
             $setName,
             $actualTargetVersion,
-            $maximumAllowedVersionForRuleset
+            $maximumAllowedVersionForRuleset,
         ));
     }
 
@@ -319,7 +346,7 @@ Integration of %s.
             if (\is_array($value)) {
                 $this->doSort(
                     $data[$key],
-                    $path.('' !== $path ? '.' : '').$key
+                    $path.('' !== $path ? '.' : '').$key,
                 );
             }
         }

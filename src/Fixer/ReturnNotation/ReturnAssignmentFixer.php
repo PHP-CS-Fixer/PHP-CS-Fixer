@@ -35,7 +35,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Local, dynamic and directly referenced variables should not be assigned and directly returned by a function or method.',
-            [new CodeSample("<?php\nfunction a() {\n    \$a = 1;\n    return \$a;\n}\n")]
+            [new CodeSample("<?php\nfunction a() {\n    \$a = 1;\n    return \$a;\n}\n")],
         );
     }
 
@@ -85,7 +85,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
                     $tokens,
                     $index,
                     $functionOpenIndex,
-                    $functionCloseIndex
+                    $functionCloseIndex,
                 );
 
                 $functionCloseIndex += $tokensAdded;
@@ -144,7 +144,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
                     $tokens,
                     $index,
                     $nestedFunctionOpenIndex,
-                    $nestedFunctionCloseIndex
+                    $nestedFunctionCloseIndex,
                 );
 
                 $index = $nestedFunctionCloseIndex + $tokensAdded;
@@ -175,7 +175,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
                 CT::T_DYNAMIC_VAR_BRACE_OPEN, // "$h = ${$g};" case
                 \T_EVAL,                       // "$c = eval('return $this;');" case
                 \T_GLOBAL,
-                \T_INCLUDE,                    // loading additional symbols we cannot analyze here
+                \T_INCLUDE,                    // loading additional symbols we cannot analyse here
                 \T_INCLUDE_ONCE,               // "
                 \T_REQUIRE,                    // "
                 \T_REQUIRE_ONCE,               // "
@@ -249,7 +249,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
 
             $assignVarOperatorIndex = $tokens->getPrevTokenOfKind(
                 $assignVarEndIndex,
-                ['=', ';', '{', '}', [\T_OPEN_TAG], [\T_OPEN_TAG_WITH_ECHO]]
+                ['=', ';', '{', '}', [\T_OPEN_TAG], [\T_OPEN_TAG_WITH_ECHO]],
             );
 
             if ($tokens[$assignVarOperatorIndex]->equals('}')) {
@@ -289,7 +289,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
                 $assignVarIndex,
                 $assignVarOperatorIndex,
                 $index,
-                $endReturnVarIndex
+                $endReturnVarIndex,
             );
         }
 

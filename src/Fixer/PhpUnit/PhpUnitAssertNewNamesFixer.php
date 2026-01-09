@@ -50,11 +50,11 @@ final class PhpUnitAssertNewNamesFixer extends AbstractPhpUnitFixer
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
             ],
             null,
-            'Fixer could be risky if one is overriding PHPUnit\'s native methods.'
+            'Fixer could be risky if one is overriding PHPUnit\'s native methods.',
         );
     }
 

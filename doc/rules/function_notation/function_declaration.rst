@@ -4,6 +4,15 @@ Rule ``function_declaration``
 
 Spaces should be properly placed in a function declaration.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``closure_fn_spacing``,
+``closure_function_spacing``, ``trailing_comma_single_line``.
+
 Configuration
 -------------
 

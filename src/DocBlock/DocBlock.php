@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class DocBlock
+final class DocBlock implements \Stringable
 {
     /**
      * @var list<Line>
@@ -155,7 +155,7 @@ final class DocBlock
 
         $usefulLines = array_filter(
             $this->lines,
-            static fn (Line $line): bool => $line->containsUsefulContent()
+            static fn (Line $line): bool => $line->containsUsefulContent(),
         );
 
         if (1 < \count($usefulLines)) {

@@ -4,14 +4,19 @@ Rule ``comment_to_phpdoc``
 
 Comments with annotation should be docblock when used on structural elements.
 
-Warning
--------
+Warnings
+--------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky as new docblocks might mean more, e.g. a Doctrine entity might have a new
 column in database.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``ignored_tags``.
 
 Configuration
 -------------

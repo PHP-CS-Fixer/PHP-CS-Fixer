@@ -54,23 +54,23 @@ final class NewExpressionParenthesesFixer extends AbstractFixer implements Confi
             [
                 new VersionSpecificCodeSample(
                     "<?php\n\n(new Foo())->bar();\n",
-                    new VersionSpecification(8_04_00)
+                    new VersionSpecification(8_04_00),
                 ),
                 new VersionSpecificCodeSample(
                     "<?php\n\n(new class {})->bar();\n",
-                    new VersionSpecification(8_04_00)
+                    new VersionSpecification(8_04_00),
                 ),
                 new VersionSpecificCodeSample(
                     "<?php\n\nnew Foo()->bar();\n",
                     new VersionSpecification(8_04_00),
-                    ['use_parentheses' => true]
+                    ['use_parentheses' => true],
                 ),
                 new VersionSpecificCodeSample(
                     "<?php\n\nnew class {}->bar();\n",
                     new VersionSpecification(8_04_00),
-                    ['use_parentheses' => true]
+                    ['use_parentheses' => true],
                 ),
-            ]
+            ],
         );
     }
 

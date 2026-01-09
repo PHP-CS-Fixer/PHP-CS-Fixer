@@ -341,9 +341,9 @@ class FooTest extends TestCase {
                         public function notProvider(): array {}
                     }
                     PHP,
-                $type
+                $type,
             ),
-            $types
+            $types,
         );
     }
 }

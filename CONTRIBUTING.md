@@ -29,9 +29,9 @@ A *config* knows about the code style rules and the files and directories that m
 * Create new branch on top of the latest revision of `master` branch (if you already had project locally, then make sure to update this branch before going to next steps). It's good when branch's name reflects intent of the changes, but this is not strict requirement since pull request provides description of the change. However, with good branch naming it's easier to work on multiple changes simultaneously.
 * Install dependencies by running `composer update` (since project does not contain `composer.lock` it's better to ensure latest versions of packages by running `update` command instead of `install`).
 * Make changes. Please remember that **all** changes have to be covered by tests.
-   * if you work on a bug fix, please start with reproducing the problem by adding failing test case(s). When you have failing test case(s), you can [create pull request](#opening-a-pull-request) just to reproduce fail in the CI. Then you can provide fix _in the subsequent commits_, it will make code review easier. It's allowed to modify existing test cases in bug fix pull request, but *only if* current behavior is proved to be invalid.
+   * if you work on a bug fix, please start with reproducing the problem by adding failing test case(s). When you have failing test case(s), you can [create pull request](#opening-a-pull-request) just to reproduce fail in the CI. Then you can provide fix _in the subsequent commits_, it will make code review easier. It's allowed to modify existing test cases in bug fix pull request, but *only if* current behaviour is proved to be invalid.
    * if you work on existing fixers then don't change existing test cases, because these are contract between the maintainers and users (they ensure how tool works). Add new test cases that cover provided changes - preferred way of defining test cases is with [data provider](https://docs.phpunit.de/en/10.0/writing-tests-for-phpunit.html#data-providers) which uses `yield` with proper case description as a key (e.g. `yield 'Some specific scenario' => ['some', 'example', 'data'];`). Codebase may still contain test cases in different format, and it's totally acceptable to use `yield` approach next to existing `return` usages.
-* Update documentation: `composer docs`. This requires the highest version of PHP supported by PHP CS Fixer. If it is not installed on your system, you can run it in a Docker container instead: `docker compose run php-8.2 php dev-tools/doc.php`.
+* Update documentation: `composer docs`. This requires the highest version of PHP supported by PHP CS Fixer. If it is not installed on your system, you can run it in a Docker container instead: `docker compose run php-8.4 php dev-tools/php-cs-fixer-internal docs`.
 * Run QA suite: `composer qa`.
 * Fix project itself (if needed): `composer cs:fix`.
 
@@ -103,3 +103,7 @@ We follow our own recommended standard [@PhpCsFixer](doc/ruleSets/PhpCsFixer.rst
 * [PSR-5: PHPDoc Standard (draft)](https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc.md) + [PSR-19: PHPDoc tags (draft)](https://github.com/php-fig/fig-standards/blob/master/proposed/phpdoc-tags.md)
 * [PSR-4: Autoloading Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md)
 * and many additional rules to make things even more strict and unified
+
+### Language
+
+* Use British English spelling throughout the codebase, documentation, and comments (e.g., "behaviour" not "behavior", "colour" not "color", "initialise" not "initialize").

@@ -48,7 +48,7 @@ final class PhpdocNoEmptyReturnFixer extends AbstractFixer
                         */
                         function foo() {}
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -58,9 +58,9 @@ final class PhpdocNoEmptyReturnFixer extends AbstractFixer
                         */
                         function foo() {}
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

@@ -13,6 +13,15 @@ Description
 
 This fixer covers rules defined in PSR2 ¶4.4, ¶4.6.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``after_heredoc``,
+``attribute_placement``, ``keep_multiple_spaces_after_comma``, ``on_multiline``.
+
 Configuration
 -------------
 

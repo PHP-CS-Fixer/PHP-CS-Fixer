@@ -46,7 +46,7 @@ final class UseArrowFunctionsFixer extends AbstractFixer
                 ),
             ],
             null,
-            'Risky when using `isset()` on outside variables that are not imported with `use ()`.'
+            'Risky when using `isset()` on outside variables that are not imported with `use ()`.',
         );
     }
 
@@ -169,7 +169,9 @@ final class UseArrowFunctionsFixer extends AbstractFixer
             $tokensToInsert[] = new Token([\T_STRING, 'null']);
         }
 
-        $tokens->clearRange($semicolon, $braceClose);
+        $tokens->clearRange($semicolon, $braceClose - 1);
+        $tokens->clearTokenAndMergeSurroundingWhitespace($braceClose);
+
         $tokens->clearRange($braceOpen + 1, $return);
         $tokens->overrideRange($braceOpen, $braceOpen, $tokensToInsert);
 

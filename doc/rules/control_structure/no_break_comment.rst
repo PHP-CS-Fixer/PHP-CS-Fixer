@@ -11,6 +11,14 @@ Description
 Adds a "no break" comment before fall-through cases, and removes it if there is
 no fall-through.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``comment_text``.
+
 Configuration
 -------------
 

@@ -34,7 +34,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
 final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @param array<array-key, mixed> $configuration
+     * @param array<string, mixed> $configuration
      *
      * @dataProvider provideInvalidConfigurationCases
      */
@@ -47,7 +47,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     }
 
     /**
-     * @return iterable<string, array{mixed, string}>
+     * @return iterable<string, array{array<string, mixed>, string}>
      */
     public static function provideInvalidConfigurationCases(): iterable
     {
@@ -87,12 +87,10 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      *
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null, array $configuration = [], bool $useTabsAndWindowsNewlines = false): void
+    public function testFix(string $expected, ?string $input = null, array $configuration = [], ?WhitespacesFixerConfig $whitespacesConfig = null): void
     {
         $this->fixer->configure($configuration);
-        if ($useTabsAndWindowsNewlines) {
-            $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
-        }
+        $this->fixer->setWhitespacesConfig($whitespacesConfig ?? new WhitespacesFixerConfig());
         $this->doTest($expected, $input);
     }
 
@@ -411,7 +409,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
             "<?php\r\n\t/**\r\n\t * @param int \$bar\r\n\t * @param null|string \$foo\r\n\t */\r\n\tfunction f7(string \$foo = nuLl, \$bar) {}",
             "<?php\r\n\t/**\r\n\t * @param int \$bar\r\n\t */\r\n\tfunction f7(string \$foo = nuLl, \$bar) {}",
             ['only_untyped' => false],
-            true,
+            new WhitespacesFixerConfig("\t", "\r\n"),
         ];
 
         yield [

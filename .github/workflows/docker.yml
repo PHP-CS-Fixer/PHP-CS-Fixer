@@ -35,7 +35,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Docker Compose build
         run: docker compose build --no-cache --pull ${{ matrix.docker-service }}

@@ -42,8 +42,6 @@ final class DocumentationTest extends TestCase
      */
     public function testFixerDocumentationFileIsUpToDate(FixerInterface $fixer): void
     {
-        $this->expectDeprecationOfDeprecatedRuleSets();
-
         if ('ordered_imports' === $fixer->getName()) {
             $this->expectDeprecation('[ordered_imports] Option "sort_algorithm:length" is deprecated and will be removed in version 4.0.');
         }
@@ -98,7 +96,7 @@ final class DocumentationTest extends TestCase
 
                 return $matches['before'].$replacement.$matches['after'];
             },
-            $expected
+            $expected,
         );
 
         self::assertSame($expected, $actual);
@@ -121,7 +119,7 @@ final class DocumentationTest extends TestCase
 
         self::assertFileEqualsString(
             $generator->generateFixersDocumentationIndex(self::getFixers()),
-            $locator->getFixersDocumentationIndexFilePath()
+            $locator->getFixersDocumentationIndexFilePath(),
         );
     }
 
@@ -131,7 +129,7 @@ final class DocumentationTest extends TestCase
 
         self::assertCount(
             \count(self::getFixers()) + 1,
-            (new Finder())->files()->in($generator->getFixersDocumentationDirectoryPath())
+            (new Finder())->files()->in($generator->getFixersDocumentationDirectoryPath()),
         );
     }
 
@@ -150,7 +148,7 @@ final class DocumentationTest extends TestCase
             self::assertFileEqualsString(
                 $generator->generateRuleSetsDocumentation($definition, $fixers),
                 $path,
-                \sprintf('RuleSet documentation is generated (please see CONTRIBUTING.md), file "%s".', $path)
+                \sprintf('RuleSet documentation is generated (please see CONTRIBUTING.md), file "%s".', $path),
             );
         }
 
@@ -159,7 +157,7 @@ final class DocumentationTest extends TestCase
         self::assertFileEqualsString(
             $generator->generateRuleSetsDocumentationIndex($paths),
             $indexFilePath,
-            \sprintf('RuleSet documentation is generated (please CONTRIBUTING.md), file "%s".', $indexFilePath)
+            \sprintf('RuleSet documentation is generated (please CONTRIBUTING.md), file "%s".', $indexFilePath),
         );
     }
 
@@ -169,7 +167,7 @@ final class DocumentationTest extends TestCase
 
         self::assertCount(
             \count(RuleSets::getBuiltInSetDefinitions()) + 1,
-            (new Finder())->files()->in($generator->getRuleSetsDocumentationDirectoryPath())
+            (new Finder())->files()->in($generator->getRuleSetsDocumentationDirectoryPath()),
         );
     }
 
@@ -187,7 +185,7 @@ final class DocumentationTest extends TestCase
         self::assertStringContainsString(
             $minimumVersionInformation,
             (string) file_get_contents($installationDocPath),
-            \sprintf('Files %s needs to contain information "%s"', $installationDocPath, $minimumVersionInformation)
+            \sprintf('Files %s needs to contain information "%s"', $installationDocPath, $minimumVersionInformation),
         );
     }
 

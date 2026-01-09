@@ -73,7 +73,7 @@ final class WorkerCommandTest extends TestCase
 
         self::assertStringContainsString(
             'Connection refused',
-            $commandTester->getErrorOutput()
+            $commandTester->getErrorOutput(),
         );
     }
 
@@ -94,8 +94,13 @@ final class WorkerCommandTest extends TestCase
         $process = new Process(implode(' ', $processFactory->getCommandArgs(
             $serverPort, // @phpstan-ignore-line
             $processIdentifier,
-            new ArrayInput([], (new FixCommand(new ToolInfo()))->getDefinition()),
-            new RunnerConfig(true, false, ParallelConfigFactory::sequential())
+            new ArrayInput(
+                [
+                    '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.parallel.php',
+                ],
+                (new FixCommand(new ToolInfo()))->getDefinition(),
+            ),
+            new RunnerConfig(true, false, ParallelConfigFactory::sequential()),
         )));
 
         /**
@@ -139,9 +144,9 @@ final class WorkerCommandTest extends TestCase
                         if (3 === \count($workerScope['messages'])) {
                             $encoder->write(['action' => ParallelAction::RUNNER_THANK_YOU]);
                         }
-                    }
+                    },
                 );
-            }
+            },
         );
         $process->on('exit', static function () use ($streamSelectLoop): void {
             $streamSelectLoop->stop();
@@ -178,15 +183,18 @@ final class WorkerCommandTest extends TestCase
 
         $commandTester->execute(
             array_merge(
-                ['command' => $command->getName()],
-                $arguments
+                [
+                    'command' => $command->getName(),
+                    '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.parallel.php',
+                ],
+                $arguments,
             ),
             [
                 'capture_stderr_separately' => true,
                 'interactive' => false,
                 'decorated' => false,
                 'verbosity' => OutputInterface::VERBOSITY_DEBUG,
-            ]
+            ],
         );
 
         return $commandTester;

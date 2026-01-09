@@ -52,49 +52,26 @@ final class RuleSetDocumentationGenerator
         $titleLine = str_repeat('=', \strlen($title));
         $doc = "{$titleLine}\n{$title}\n{$titleLine}\n\n".$definition->getDescription();
 
-        $warnings = [];
-        if ($definition instanceof DeprecatedRuleSetDefinitionInterface) {
-            $deprecationDescription = <<<'RST'
-
-                This rule set is deprecated and will be removed in the next major version
-                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                RST;
-            $alternatives = $definition->getSuccessorsNames();
-
-            if (0 !== \count($alternatives)) {
-                $deprecationDescription .= RstUtils::toRst(
-                    \sprintf(
-                        "\n\nYou should use %s instead.",
-                        Utils::naturalLanguageJoinWithBackticks($alternatives)
-                    ),
-                    0
-                );
-            } else {
-                $deprecationDescription .= 'No replacement available.';
-            }
-
-            $warnings[] = $deprecationDescription;
-        }
-
-        if ($definition->isRisky()) {
-            $warnings[] = <<<'RST'
-
-                This set contains rules that are risky
-                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-                Using this rule set may lead to changes in your code's logic and behaviour. Use it with caution and review changes before incorporating them into your code base.
-                RST;
-        }
-
         $header = static function (string $message, string $underline = '-'): string {
             $line = str_repeat($underline, \strlen($message));
 
             return "{$message}\n{$line}\n";
         };
 
-        if ($definition instanceof AutomaticRuleSetDefinitionInterface) {
-            $warnings[] = "\n".$header('Automatic rule set', '~')."\n⚡ ".strip_tags(AutomaticRuleSetDefinitionInterface::WARNING_MESSAGE_DECORATED);
-        }
+        $tags = DocumentationTagGenerator::analyseRuleSet($definition);
+        $warnings = array_map(
+            static function (DocumentationTag $tag): string {
+                $titleLine = str_repeat('~', \strlen($tag->title));
+
+                return \sprintf(
+                    "\n%s\n%s\n\n%s",
+                    $tag->title,
+                    $titleLine,
+                    null === $tag->description ? '' : RstUtils::toRst($tag->description, 0),
+                );
+            },
+            $tags,
+        );
 
         if ([] !== $warnings) {
             $warningsHeader = 1 === \count($warnings) ? 'Warning' : 'Warnings';
@@ -123,7 +100,7 @@ final class RuleSetDocumentationGenerator
                         $path = Preg::replace(
                             '#^'.preg_quote($this->locator->getFixersDocumentationDirectoryPath(), '#').'/#',
                             './../rules/',
-                            $this->locator->getFixerDocumentationFilePath($fixerNames[$rule])
+                            $this->locator->getFixerDocumentationFilePath($fixerNames[$rule]),
                         );
 
                         $doc .= "\n- `{$rule} <{$path}>`_";

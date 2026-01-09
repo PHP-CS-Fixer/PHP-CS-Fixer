@@ -43,7 +43,7 @@ final class RuleSets
     {
         $allRuleSets = array_merge(
             self::getBuiltInSetDefinitions(),
-            self::$customRuleSetDefinitions
+            self::$customRuleSetDefinitions,
         );
 
         uksort($allRuleSets, static fn (string $x, string $y): int => strnatcmp($x, $y));
@@ -59,7 +59,13 @@ final class RuleSets
         if (null === self::$builtInSetDefinitions) {
             self::$builtInSetDefinitions = [];
 
-            foreach (Finder::create()->files()->in(__DIR__.'/Sets') as $file) {
+            $finder = Finder::create()
+                ->files()
+                ->in(__DIR__.'/Sets')
+                ->exclude('Internal/')
+            ;
+
+            foreach ($finder as $file) {
                 /** @var class-string<RuleSetDefinitionInterface> $class */
                 $class = 'PhpCsFixer\RuleSet\Sets\\'.$file->getBasename('.php');
 

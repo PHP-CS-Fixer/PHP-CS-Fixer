@@ -5,6 +5,15 @@ Rule ``types_spaces``
 A single space or none should be around union type and intersection type
 operators.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``space``,
+``space_multiple_catch``.
+
 Configuration
 -------------
 

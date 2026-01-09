@@ -270,6 +270,20 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
+            '<?php
+                    class N
+                    {
+                        public function O()
+                        {
+                            $a = function () {
+                                return new class($this) {};
+                            };
+                        }
+                    }
+                ',
+        ];
+
+        yield [
             '<?php function test(){} test();',
         ];
 

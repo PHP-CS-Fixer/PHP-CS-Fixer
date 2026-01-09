@@ -11,6 +11,14 @@ Description
 The special groups [small, medium, large] provides a way to identify tests that
 are taking long to be executed.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``group``.
+
 Configuration
 -------------
 

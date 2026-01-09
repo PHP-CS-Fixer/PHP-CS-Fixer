@@ -44,6 +44,8 @@ final class FileRemovalTest extends TestCase
             @unlink(sys_get_temp_dir().'/cs_fixer_foo.php');
             @unlink(sys_get_temp_dir().'/cs_fixer_bar.php');
         }
+
+        parent::tearDownAfterClass();
     }
 
     public function testCleanRemovesObservedFiles(): void
@@ -126,8 +128,6 @@ final class FileRemovalTest extends TestCase
      * Must NOT be run as first test, see https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/7104.
      *
      * @runInSeparateProcess
-     *
-     * @group sf-8-problematic
      *
      * @preserveGlobalState disabled
      *

@@ -178,7 +178,19 @@ final class SymfonySet extends AbstractRuleSetDefinition
                 ],
             ],
             'phpdoc_return_self_reference' => true,
-            'phpdoc_scalar' => true,
+            'phpdoc_scalar' => [
+                'types' => [ // @TODO v4 drop custom config with => true, as v4 defaults are same
+                    'boolean',
+                    'callback',
+                    'double',
+                    'integer',
+                    'never-return',
+                    'never-returns',
+                    'no-return',
+                    'real',
+                    'str',
+                ],
+            ],
             'phpdoc_separation' => [
                 'groups' => [
                     ['Annotation', 'NamedArgumentConstructor', 'Target'],
@@ -248,6 +260,6 @@ final class SymfonySet extends AbstractRuleSetDefinition
 
     public function getDescription(): string
     {
-        return 'Rules that follow the official `Symfony Coding Standards <https://symfony.com/doc/current/contributing/code/standards.html>`_.';
+        return 'Rules that follow the official `Symfony Coding Standards <https://symfony.com/doc/current/contributing/code/standards.html>`_. Extends ``@PER-CS``.';
     }
 }

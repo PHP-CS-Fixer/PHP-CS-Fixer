@@ -57,7 +57,7 @@ final class ParallelConfigFactory
         return new ParallelConfig(
             $available->availableCpus,
             $filesPerProcess ?? ParallelConfig::DEFAULT_FILES_PER_PROCESS,
-            $processTimeout ?? ParallelConfig::DEFAULT_PROCESS_TIMEOUT
+            $processTimeout ?? ParallelConfig::DEFAULT_PROCESS_TIMEOUT,
         );
     }
 }

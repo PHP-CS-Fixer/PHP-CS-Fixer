@@ -27,7 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Marc Aubé
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
- * @deprecated in favor of SpacesInsideParenthesisFixer
+ * @deprecated in favour of SpacesInsideParenthesisFixer
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
@@ -45,7 +45,7 @@ final class NoSpacesInsideParenthesisFixer extends AbstractProxyFixer implements
                             foo( );
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -54,9 +54,9 @@ final class NoSpacesInsideParenthesisFixer extends AbstractProxyFixer implements
                         {
                         }
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 
