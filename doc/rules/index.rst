@@ -227,6 +227,9 @@ Class Notation
 - `protected_to_private <./class_notation/protected_to_private.rst>`_
 
   Converts ``protected`` variables and methods to ``private`` where possible.
+- `remove_redundant_readonly_property <./class_notation/remove_redundant_readonly_property.rst>`_
+
+  Removes redundant readonly from properties in readonly classes.
 - `self_accessor <./class_notation/self_accessor.rst>`_ *(risky)*
 
   Inside class or interface element ``self`` should be preferred to the class name itself.
