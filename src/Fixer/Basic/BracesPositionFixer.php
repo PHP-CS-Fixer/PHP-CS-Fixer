@@ -25,6 +25,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Future;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\FCT;
@@ -221,7 +222,7 @@ final class BracesPositionFixer extends AbstractFixer implements ConfigurableFix
                 ->getOption(),
             (new FixerOptionBuilder('allow_single_line_anonymous_functions', 'Allow anonymous functions to have opening and closing braces on the same line.'))
                 ->setAllowedTypes(['bool'])
-                ->setDefault(true)
+                ->setDefault(Future::getV4OrV3(false, true))
                 ->getOption(),
         ]);
     }

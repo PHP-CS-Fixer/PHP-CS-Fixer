@@ -9,7 +9,10 @@ Rules
 
 - `@PSR1 <./PSR1.rst>`_
 - `blank_line_after_namespace <./../rules/namespace_notation/blank_line_after_namespace.rst>`_
-- `braces_position <./../rules/basic/braces_position.rst>`_
+- `braces_position <./../rules/basic/braces_position.rst>`_ with config:
+
+  ``['allow_single_line_anonymous_functions' => false]``
+
 - `class_definition <./../rules/class_notation/class_definition.rst>`_
 - `constant_case <./../rules/casing/constant_case.rst>`_
 - `control_structure_braces <./../rules/control_structure/control_structure_braces.rst>`_

@@ -34,6 +34,7 @@ final class PSR12Set extends AbstractRuleSetDefinition
             'blank_line_between_import_groups' => true,
             'blank_lines_before_namespace' => true,
             'braces_position' => [
+                'allow_single_line_anonymous_functions' => false,
                 'allow_single_line_empty_anonymous_classes' => true,
             ],
             'class_definition' => [
