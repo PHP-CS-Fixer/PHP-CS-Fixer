@@ -194,6 +194,9 @@ Class Notation
 - `final_public_method_for_abstract_class <./class_notation/final_public_method_for_abstract_class.rst>`_ *(risky)*
 
   All ``public`` methods of ``abstract`` classes should be ``final``.
+- `modern_serialization_methods <./class_notation/modern_serialization_methods.rst>`_ *(risky)*
+
+  Use new serialization methods ``__serialize`` and ``__unserialize`` instead of deprecated ones ``__sleep`` and ``__wakeup``.
 - `modifier_keywords <./class_notation/modifier_keywords.rst>`_ *(configurable)*
 
   Classes, constants, properties, and methods MUST have visibility declared, and keyword modifiers MUST be in the following order: inheritance modifier (``abstract`` or ``final``), visibility modifier (``public``, ``protected``, or ``private``), set-visibility modifier (``public(set)``, ``protected(set)``, or ``private(set)``), scope modifier (``static``), mutation modifier (``readonly``), type declaration, name.
