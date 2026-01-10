@@ -1,5 +1,5 @@
 ===========================================
-Rule ``remove_redundant_readonly_property``
+Rule ``no_redundant_readonly_property``
 ===========================================
 
 Removes redundant readonly from properties in readonly classes.
@@ -24,7 +24,7 @@ Example #1
 References
 ----------
 
-- Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\RemoveRedundantReadonlyPropertyFixer <./../../../src/Fixer/ClassNotation/RemoveRedundantReadonlyPropertyFixer.php>`_
-- Test class: `PhpCsFixer\\Tests\\Fixer\\ClassNotation\\RemoveRedundantReadonlyPropertyFixerTest <./../../../tests/Fixer/ClassNotation/RemoveRedundantReadonlyPropertyFixerTest.php>`_
+- Fixer class: `PhpCsFixer\\Fixer\\ClassNotation\\NoRedundantReadonlyPropertyFixer <./../../../src/Fixer/ClassNotation/NoRedundantReadonlyPropertyFixer.php>`_
+- Test class: `PhpCsFixer\\Tests\\Fixer\\ClassNotation\\NoRedundantReadonlyPropertyFixerTest <./../../../tests/Fixer/ClassNotation/NoRedundantReadonlyPropertyFixerTest.php>`_
 
 The test class defines officially supported behaviour. Each test case is a part of our backward compatibility promise.

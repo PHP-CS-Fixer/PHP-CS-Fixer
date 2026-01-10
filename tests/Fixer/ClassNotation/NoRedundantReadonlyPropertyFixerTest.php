@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\ClassNotation\RemoveRedundantReadonlyPropertyFixer
+ * @covers \PhpCsFixer\Fixer\ClassNotation\NoRedundantReadonlyPropertyFixer
  *
- * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\RemoveRedundantReadonlyPropertyFixer>
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\NoRedundantReadonlyPropertyFixer>
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class RemoveRedundantReadonlyPropertyFixerTest extends AbstractFixerTestCase
+final class NoRedundantReadonlyPropertyFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
