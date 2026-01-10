@@ -73,6 +73,9 @@ Array Notation
 Attribute Notation
 ------------------
 
+- `attribute_block_no_spaces <./attribute_notation/attribute_block_no_spaces.rst>`_
+
+  Remove spaces before and after the attributes block.
 - `attribute_empty_parentheses <./attribute_notation/attribute_empty_parentheses.rst>`_ *(configurable)*
 
   PHP attributes declared without arguments must (not) be followed by empty parentheses.
