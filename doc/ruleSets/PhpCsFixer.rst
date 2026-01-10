@@ -42,10 +42,6 @@ Rules
 
   ``['allow_hidden_params' => true, 'allow_mixed' => true, 'remove_inheritdoc' => true]``
 
-- `no_unneeded_control_parentheses <./../rules/control_structure/no_unneeded_control_parentheses.rst>`_ with config:
-
-  ``['statements' => ['break', 'clone', 'continue', 'echo_print', 'negative_instanceof', 'others', 'return', 'switch_case', 'yield', 'yield_from']]``
-
 - `no_useless_else <./../rules/control_structure/no_useless_else.rst>`_
 - `no_useless_return <./../rules/return_notation/no_useless_return.rst>`_
 - `operator_linebreak <./../rules/operator/operator_linebreak.rst>`_
