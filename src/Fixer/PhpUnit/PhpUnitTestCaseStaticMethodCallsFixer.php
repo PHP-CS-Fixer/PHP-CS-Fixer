@@ -453,7 +453,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
             (new FixerOptionBuilder('call_type', 'The call type to use for referring to PHPUnit methods.'))
                 ->setAllowedTypes(['string'])
                 ->setAllowedValues(array_keys(self::ALLOWED_VALUES))
-                ->setDefault(self::CALL_TYPE_STATIC)
+                ->setDefault(Future::getV4OrV3(self::CALL_TYPE_THIS, self::CALL_TYPE_STATIC)) // vide https://github.com/sebastianbergmann/phpunit/issues/2104#issuecomment-192919598
                 ->getOption(),
             (new FixerOptionBuilder('methods', 'Dictionary of `method` => `call_type` values that differ from the default strategy.'))
                 ->setAllowedTypes(['array<string, string>'])
