@@ -42,9 +42,9 @@ final class PhpdocTypesNoDuplicatesFixer extends AbstractFixer
                          * @param string|string|int $bar
                          */
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 
@@ -84,7 +84,7 @@ final class PhpdocTypesNoDuplicatesFixer extends AbstractFixer
                     $annotation->setTypes(
                         $annotation->getTypeExpression()
                             ->removeDuplicateTypes()
-                            ->getTypes()
+                            ->getTypes(),
                     );
                 }
 
