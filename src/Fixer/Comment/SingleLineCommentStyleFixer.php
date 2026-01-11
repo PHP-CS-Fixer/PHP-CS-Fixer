@@ -71,7 +71,7 @@ final class SingleLineCommentStyleFixer extends AbstractFixer implements Configu
                          */
                         $c = 3;
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -91,13 +91,13 @@ final class SingleLineCommentStyleFixer extends AbstractFixer implements Configu
                         $c = 3;
 
                         PHP,
-                    ['comment_types' => ['asterisk']]
+                    ['comment_types' => ['asterisk']],
                 ),
                 new CodeSample(
                     "<?php # comment\n",
-                    ['comment_types' => ['hash']]
+                    ['comment_types' => ['hash']],
                 ),
-            ]
+            ],
         );
     }
 

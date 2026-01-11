@@ -45,9 +45,9 @@ final class NoUselessReturnFixer extends AbstractFixer
                             return;
                         }
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

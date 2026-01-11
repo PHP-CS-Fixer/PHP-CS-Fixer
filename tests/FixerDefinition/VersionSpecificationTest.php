@@ -47,7 +47,7 @@ final class VersionSpecificationTest extends TestCase
 
         new VersionSpecification(
             $minimum,
-            $maximum
+            $maximum,
         );
     }
 
@@ -77,7 +77,7 @@ final class VersionSpecificationTest extends TestCase
     {
         $versionSpecification = new VersionSpecification(
             $minimum,
-            $maximum
+            $maximum,
         );
 
         self::assertTrue($versionSpecification->isSatisfiedBy($actual));
@@ -107,7 +107,7 @@ final class VersionSpecificationTest extends TestCase
     {
         $versionSpecification = new VersionSpecification(
             $minimum,
-            $maximum
+            $maximum,
         );
 
         self::assertFalse($versionSpecification->isSatisfiedBy($actual));

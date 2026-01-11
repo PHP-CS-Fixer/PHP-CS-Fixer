@@ -86,7 +86,7 @@ final class TagComparatorTest extends TestCase
 
         self::assertSame(
             $expected,
-            TagComparator::shouldBeTogether($tag1, $tag2, $groups)
+            TagComparator::shouldBeTogether($tag1, $tag2, $groups),
         );
     }
 

@@ -3,6 +3,26 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.92.5
+---------------------
+
+* fix: `CombineConsecutiveUnsetsFixer` - proper handling of trailing comma (#9335)
+* chore: cleanup self-config file (#9324)
+* chore: fix `variable.undefined` error from PHPStan (#9330)
+* deps: bump crate-ci/typos from 1.40.0 to 1.41.0 (#9325)
+* docs: extend Q&A for creating the rule (#9331)
+
+Changelog for v3.92.4
+---------------------
+
+* fix: `ComposerJsonReader` - handle more syntaxes (#9327)
+* UX: Runner/Parallel/Process - friendly message when tmp dir not writable (#9319)
+* docs: fix RST links (#9321)
+* DX: internal commands for working with tokens (#9251)
+* chore: Add CS commit to .git-blame-ignore-revs
+* chore: apply trailing_comma_in_multiline: elements.arguments (#9314)
+* deps: upgrade dev-deps (#9318)
+
 Changelog for v3.92.3
 ---------------------
 

@@ -251,7 +251,7 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
             yield [
                 \sprintf(
                     '<?php array_push($a, %s);',
-                    $precedenceCase
+                    $precedenceCase,
                 ),
             ];
         }

@@ -35,7 +35,7 @@ final class NoTrailingCommaInSinglelineArrayFixer extends AbstractProxyFixer imp
     {
         return new FixerDefinition(
             'PHP single-line arrays should not have trailing comma.',
-            [new CodeSample("<?php\n\$a = array('sample',  );\n")]
+            [new CodeSample("<?php\n\$a = array('sample',  );\n")],
         );
     }
 

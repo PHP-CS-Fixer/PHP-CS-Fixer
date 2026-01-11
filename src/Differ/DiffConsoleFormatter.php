@@ -69,7 +69,7 @@ final class DiffConsoleFormatter
                                 },
                                 $line,
                                 1,
-                                $count
+                                $count,
                             );
 
                             if (0 === $count) {
@@ -79,9 +79,9 @@ final class DiffConsoleFormatter
 
                         return \sprintf($lineTemplate, $line);
                     },
-                    Preg::split('#\R#u', $diff)
-                )
-            )
+                    Preg::split('#\R#u', $diff),
+                ),
+            ),
         );
     }
 }

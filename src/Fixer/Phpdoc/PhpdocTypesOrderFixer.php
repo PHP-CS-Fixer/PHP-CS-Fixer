@@ -63,7 +63,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
                          * @param string|null $bar
                          */
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -73,7 +73,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
                          */
 
                         PHP,
-                    ['null_adjustment' => 'always_last']
+                    ['null_adjustment' => 'always_last'],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -83,7 +83,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
                          */
 
                         PHP,
-                    ['sort_algorithm' => 'alpha']
+                    ['sort_algorithm' => 'alpha'],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -96,7 +96,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
                     [
                         'sort_algorithm' => 'alpha',
                         'null_adjustment' => 'always_last',
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -109,7 +109,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
                     [
                         'sort_algorithm' => 'alpha',
                         'null_adjustment' => 'none',
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -119,9 +119,9 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
                          */
 
                         PHP,
-                    ['case_sensitive' => true]
+                    ['case_sensitive' => true],
                 ),
-            ]
+            ],
         );
     }
 
@@ -178,8 +178,8 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
                 if (null !== $annotation->getTypeExpression()) {
                     $annotation->setTypes(
                         $this->sortTypes(
-                            $annotation->getTypeExpression()
-                        )
+                            $annotation->getTypeExpression(),
+                        ),
                     );
                 }
 
@@ -226,7 +226,7 @@ final class PhpdocTypesOrderFixer extends AbstractFixer implements ConfigurableF
                 }
 
                 return 0;
-            }
+            },
         );
 
         return $sortedTypeExpression->getTypes();

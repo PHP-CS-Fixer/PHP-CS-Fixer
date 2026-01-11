@@ -85,7 +85,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
                 new CodeSample("<?php\n// @todo do something later\n\$foo = 1;\n\n// @var int \$a\n\$a = foo();\n", ['ignored_tags' => ['todo']]),
             ],
             null,
-            'Risky as new docblocks might mean more, e.g. a Doctrine entity might have a new column in database.'
+            'Risky as new docblocks might mean more, e.g. a Doctrine entity might have a new column in database.',
         );
     }
 
@@ -93,7 +93,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
     {
         $this->ignoredTags = array_map(
             static fn (string $tag): string => strtolower($tag),
-            $this->configuration['ignored_tags']
+            $this->configuration['ignored_tags'],
         );
     }
 
@@ -157,7 +157,7 @@ final class CommentToPhpdocFixer extends AbstractFixer implements ConfigurableFi
 
                 return !\in_array(strtolower($matches[1]), $this->ignoredTags, true);
             },
-            false
+            false,
         );
     }
 

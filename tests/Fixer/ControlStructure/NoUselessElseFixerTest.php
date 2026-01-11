@@ -169,7 +169,7 @@ else?><?php echo 5;',
                         }
                     }
                 }
-            '
+            ',
         );
 
         yield from self::generateCases('<?php
@@ -261,7 +261,7 @@ else?><?php echo 5;',
                     }
                 }
             }
-        '
+        ',
         );
 
         yield [
@@ -721,7 +721,7 @@ else?><?php echo 5;',
             self::assertSame(
                 $expected,
                 \Closure::bind(static fn (AbstractNoUselessElseFixer $fixer): bool => $fixer->isInConditionWithoutBraces($tokens, $index, 0), null, AbstractNoUselessElseFixer::class)($this->fixer),
-                \sprintf('Failed in condition without braces check for index %d', $index)
+                \sprintf('Failed in condition without braces check for index %d', $index),
             );
         }
     }

@@ -67,7 +67,7 @@ abstract class AbstractDoctrineAnnotationFixer extends AbstractFixer implements 
 
             $doctrineAnnotationTokens = DoctrineAnnotationTokens::createFromDocComment(
                 $docCommentToken,
-                $this->configuration['ignored_tags'] // @phpstan-ignore-line
+                $this->configuration['ignored_tags'], // @phpstan-ignore-line
             );
 
             $this->fixAnnotations($doctrineAnnotationTokens);

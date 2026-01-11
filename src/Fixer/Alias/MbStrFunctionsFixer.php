@@ -85,7 +85,7 @@ final class MbStrFunctionsFixer extends AbstractFixer
 
         $this->functions = array_filter(
             self::$functionsMap,
-            static fn (array $mapping): bool => (new \ReflectionFunction($mapping['alternativeName']))->isInternal()
+            static fn (array $mapping): bool => (new \ReflectionFunction($mapping['alternativeName']))->isInternal(),
         );
     }
 
@@ -130,11 +130,11 @@ final class MbStrFunctionsFixer extends AbstractFixer
                         $a = strrchr($a, $b);
                         $a = substr_count($a, $b);
 
-                        PHP
+                        PHP,
                 ),
             ],
             null,
-            'Risky when any of the functions are overridden, or when relying on the string byte size rather than its length in characters.'
+            'Risky when any of the functions are overridden, or when relying on the string byte size rather than its length in characters.',
         );
     }
 

@@ -42,8 +42,8 @@ trait AssertJsonSchemaTrait
                 array_map(
                     static fn (array $item): string => \sprintf('Property `%s`: %s.', $item['property'], $item['message']),
                     $errors,
-                )
-            )
+                ),
+            ),
         );
     }
 }

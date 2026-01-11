@@ -126,7 +126,7 @@ final class StringLineEndingFixerTest extends AbstractFixerTestCase
 
         $this->doTest(
             "<?php \$a = 'my\r\nmulti\r\nline\r\nstring';",
-            "<?php \$a = 'my\nmulti\nline\nstring';"
+            "<?php \$a = 'my\nmulti\nline\nstring';",
         );
     }
 }

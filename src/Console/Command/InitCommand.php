@@ -103,13 +103,13 @@ final class InitCommand extends Command
                 static fn (RuleSetDefinitionInterface $item): string => \sprintf(
                     '<fg=blue>`%s`</> - %s',
                     $item->getName(),
-                    $item->getDescription()
+                    $item->getDescription(),
                 ),
                 array_map(
                     static fn (string $name): RuleSetDefinitionInterface => $setsByName[$name], // @phpstan-ignore-line offsetAccess.notFound
                     $setsBehindAutoSet,
-                )
-            )
+                ),
+            ),
         );
 
         $rules = [];
@@ -159,11 +159,11 @@ final class InitCommand extends Command
                 $extraSets,
                 array_map(
                     static fn (string $item): string => $setsByName[$item]->getDescription(), // @phpstan-ignore-line offsetAccess.notFound
-                    $extraSets
-                )
+                    $extraSets,
+                ),
             ) + ['none' => 'none'],
             'none',
-            true
+            true,
         );
 
         // older Symfony version can return single string instead of array with single string, let's unify
@@ -192,11 +192,11 @@ final class InitCommand extends Command
                     ",\n",
                     array_map(
                         static fn ($item) => "        '{$item}' => true",
-                        $rules
-                    )
+                        $rules,
+                    ),
                 )."\n    ]",
             ],
-            $readResult
+            $readResult,
         );
 
         $writeResult = @file_put_contents(self::FIXER_FILENAME, $content);

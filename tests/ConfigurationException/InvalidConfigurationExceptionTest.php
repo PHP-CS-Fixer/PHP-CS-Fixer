@@ -49,7 +49,7 @@ final class InvalidConfigurationExceptionTest extends TestCase
         $exception = new InvalidConfigurationException(
             $message,
             $code,
-            $previous
+            $previous,
         );
 
         self::assertSame($message, $exception->getMessage());

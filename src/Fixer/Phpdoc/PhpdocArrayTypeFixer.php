@@ -49,11 +49,11 @@ final class PhpdocArrayTypeFixer extends AbstractPhpdocTypesFixer
                          * @param string[][] $y
                          */
 
-                        PHP
+                        PHP,
                 ),
             ],
             null,
-            'Risky when using `T[]` in union types.'
+            'Risky when using `T[]` in union types.',
         );
     }
 

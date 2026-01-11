@@ -99,7 +99,7 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
                          * @return inT[]
                          */
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -111,9 +111,9 @@ final class PhpdocTypesFixer extends AbstractPhpdocTypesFixer implements Configu
                          */
 
                         PHP,
-                    ['groups' => ['simple', 'alias']]
+                    ['groups' => ['simple', 'alias']],
                 ),
-            ]
+            ],
         );
     }
 

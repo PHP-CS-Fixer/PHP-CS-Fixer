@@ -46,11 +46,11 @@ final class NoPhp4ConstructorFixer extends AbstractFixer
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
             ],
             null,
-            'Risky when old style constructor being fixed is overridden or overrides parent one.'
+            'Risky when old style constructor being fixed is overridden or overrides parent one.',
         );
     }
 

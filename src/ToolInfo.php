@@ -111,7 +111,7 @@ final class ToolInfo implements ToolInfoInterface
     {
         return \sprintf(
             'https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases/download/%s/php-cs-fixer.phar',
-            $version
+            $version,
         );
     }
 

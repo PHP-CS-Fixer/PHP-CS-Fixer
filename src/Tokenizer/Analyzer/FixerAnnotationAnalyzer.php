@@ -92,7 +92,7 @@ final class FixerAnnotationAnalyzer
         Preg::matchAll(
             '/^\h*[*\/]+\h+@(php-cs-fixer-\w+\h+(?:@?[\w\/,])+)/m',
             implode("\n", $comments),
-            $matches
+            $matches,
         );
 
         foreach ($matches[1] as $match) {
@@ -108,7 +108,7 @@ final class FixerAnnotationAnalyzer
                 array_filter(
                     array_count_values($vals),
                     static fn (int $c): bool => $c > 1,
-                )
+                ),
             );
 
             if (0 !== \count($duplicates)) {

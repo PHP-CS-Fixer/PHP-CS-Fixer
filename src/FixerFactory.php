@@ -233,7 +233,7 @@ final class FixerFactory
             // filter mutual conflicts
             $report[$fixer] = array_values(array_filter(
                 $fixers,
-                static fn (string $candidate): bool => !\array_key_exists($candidate, $report) || !\in_array($fixer, $report[$candidate], true)
+                static fn (string $candidate): bool => !\array_key_exists($candidate, $report) || !\in_array($fixer, $report[$candidate], true),
             ));
 
             if (\count($report[$fixer]) > 0) {

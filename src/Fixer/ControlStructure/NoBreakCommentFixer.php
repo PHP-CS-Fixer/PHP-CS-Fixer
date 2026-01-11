@@ -72,7 +72,7 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
                                 baz();
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -85,10 +85,10 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
                         }
 
                         PHP,
-                    ['comment_text' => 'some comment']
+                    ['comment_text' => 'some comment'],
                 ),
             ],
-            'Adds a "no break" comment before fall-through cases, and removes it if there is no fall-through.'
+            'Adds a "no break" comment before fall-through cases, and removes it if there is no fall-through.',
         );
     }
 
@@ -323,7 +323,7 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
         if ($initialToken->isGivenKind(self::STRUCTURE_KINDS)) {
             $position = $tokens->findBlockEnd(
                 Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
-                $tokens->getNextTokenOfKind($position, ['('])
+                $tokens->getNextTokenOfKind($position, ['(']),
             );
         } elseif ($initialToken->isGivenKind(\T_CLASS)) {
             $openParenthesisPosition = $tokens->getNextMeaningfulToken($position);
@@ -331,7 +331,7 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
             if ('(' === $tokens[$openParenthesisPosition]->getContent()) {
                 $position = $tokens->findBlockEnd(
                     Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
-                    $openParenthesisPosition
+                    $openParenthesisPosition,
                 );
             }
         }
@@ -351,7 +351,7 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
         if ($initialToken->isGivenKind(\T_DO)) {
             $position = $tokens->findBlockEnd(
                 Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
-                $tokens->getNextTokenOfKind($position, ['('])
+                $tokens->getNextTokenOfKind($position, ['(']),
             );
 
             return $tokens->getNextTokenOfKind($position, [';']);

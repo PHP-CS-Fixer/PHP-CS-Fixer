@@ -34,7 +34,7 @@ final class InvalidForEnvFixerConfigurationExceptionTest extends TestCase
 
         $exception = new InvalidForEnvFixerConfigurationException(
             $fixerName,
-            $message
+            $message,
         );
 
         self::assertSame(\sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());

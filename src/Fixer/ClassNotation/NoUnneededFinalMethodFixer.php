@@ -67,7 +67,7 @@ final class NoUnneededFinalMethodFixer extends AbstractFixer implements Configur
                             final private function bar1() {}
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -83,11 +83,11 @@ final class NoUnneededFinalMethodFixer extends AbstractFixer implements Configur
                         }
 
                         PHP,
-                    ['private_methods' => false]
+                    ['private_methods' => false],
                 ),
             ],
             null,
-            'Risky when child class overrides a `private` method.'
+            'Risky when child class overrides a `private` method.',
         );
     }
 

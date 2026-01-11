@@ -65,7 +65,7 @@ final class PhpdocOrderByValueFixer extends AbstractFixer implements Configurabl
                         final class MyTest extends \PHPUnit_Framework_TestCase
                         {}
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -82,9 +82,9 @@ final class PhpdocOrderByValueFixer extends AbstractFixer implements Configurabl
                         'annotations' => [
                             'author',
                         ],
-                    ]
+                    ],
                 ),
-            ]
+            ],
         );
     }
 
@@ -115,7 +115,7 @@ final class PhpdocOrderByValueFixer extends AbstractFixer implements Configurabl
                 $findPattern = \sprintf(
                     '/@%s\s.+@%s\s/s',
                     $type,
-                    $type
+                    $type,
                 );
 
                 if (
@@ -133,7 +133,7 @@ final class PhpdocOrderByValueFixer extends AbstractFixer implements Configurabl
                 if (\in_array($type, ['property', 'property-read', 'property-write'], true)) {
                     $replacePattern = \sprintf(
                         '/(?s)\*\s*@%s\s+(?P<optionalTypes>.+\s+)?\$(?P<comparableContent>\S+).*/',
-                        $type
+                        $type,
                     );
 
                     $replacement = '\2';
@@ -143,7 +143,7 @@ final class PhpdocOrderByValueFixer extends AbstractFixer implements Configurabl
                 } else {
                     $replacePattern = \sprintf(
                         '/\*\s*@%s\s+(?P<comparableContent>.+)/',
-                        $typeLowerCase
+                        $typeLowerCase,
                     );
 
                     $replacement = '\1';
@@ -155,7 +155,7 @@ final class PhpdocOrderByValueFixer extends AbstractFixer implements Configurabl
                     $comparableContent = Preg::replace(
                         $replacePattern,
                         $replacement,
-                        strtolower(trim($rawContent))
+                        strtolower(trim($rawContent)),
                     );
 
                     $annotationMap[$comparableContent] = $rawContent;
@@ -176,7 +176,7 @@ final class PhpdocOrderByValueFixer extends AbstractFixer implements Configurabl
                         $lines,
                         $annotation->getStart(),
                         $annotation->getEnd() - $annotation->getStart() + 1,
-                        array_pop($orderedAnnotationMap)
+                        array_pop($orderedAnnotationMap),
                     );
                 }
 

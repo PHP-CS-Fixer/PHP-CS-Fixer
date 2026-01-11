@@ -42,7 +42,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         $this->doTest(
             $source,
             $expectedTokens,
-            $observedKinds
+            $observedKinds,
         );
     }
 
@@ -401,7 +401,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         $this->doTest(
             $source,
             $expectedTokens,
-            $observedKinds
+            $observedKinds,
         );
     }
 
@@ -455,7 +455,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         $this->doTest(
             $source,
             $expectedTokens,
-            $observedKinds
+            $observedKinds,
         );
     }
 
@@ -514,7 +514,7 @@ function test2($param = (new Foo)) {}
         $this->doTest(
             $source,
             $expectedTokens,
-            $observedKinds
+            $observedKinds,
         );
     }
 

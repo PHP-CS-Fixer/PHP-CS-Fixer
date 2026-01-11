@@ -82,7 +82,7 @@ final class SingleClassElementPerStatementFixer extends AbstractFixer implements
                             private static $bar1 = array(1,2,3), $bar2 = [1,2,3];
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -94,9 +94,9 @@ final class SingleClassElementPerStatementFixer extends AbstractFixer implements
                         }
 
                         PHP,
-                    ['elements' => ['property']]
+                    ['elements' => ['property']],
                 ),
-            ]
+            ],
         );
     }
 
@@ -161,7 +161,7 @@ final class SingleClassElementPerStatementFixer extends AbstractFixer implements
             $tokens,
             $type,
             $tokens->getNextMeaningfulToken($start),
-            $tokens->getNextTokenOfKind($index, [';'])
+            $tokens->getNextTokenOfKind($index, [';']),
         );
     }
 

@@ -54,7 +54,7 @@ final class TokensWithObservedTransformers extends Tokens
         $items = \Closure::bind(
             static fn (Transformers $transformers): array => $transformers->items,
             null,
-            Transformers::class
+            Transformers::class,
         )($transformers);
 
         foreach ($items as $transformer) {

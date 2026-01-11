@@ -101,7 +101,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
 
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -113,7 +113,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
                         }
 
                         PHP,
-                    ['elements' => ['property' => self::SPACING_ONE]]
+                    ['elements' => ['property' => self::SPACING_ONE]],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -126,7 +126,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
                         }
 
                         PHP,
-                    ['elements' => ['const' => self::SPACING_ONE]]
+                    ['elements' => ['const' => self::SPACING_ONE]],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -144,7 +144,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
                         }
 
                         PHP,
-                    ['elements' => ['const' => self::SPACING_ONLY_IF_META]]
+                    ['elements' => ['const' => self::SPACING_ONLY_IF_META]],
                 ),
                 new VersionSpecificCodeSample(
                     <<<'PHP'
@@ -165,9 +165,9 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
 
                         PHP,
                     new VersionSpecification(8_00_00),
-                    ['elements' => ['property' => self::SPACING_ONLY_IF_META]]
+                    ['elements' => ['property' => self::SPACING_ONLY_IF_META]],
                 ),
-            ]
+            ],
         );
     }
 
@@ -231,8 +231,8 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
                                 \sprintf(
                                     'Unexpected element type, expected any of %s, got "%s".',
                                     Utils::naturalLanguageJoin($supportedTypes),
-                                    \gettype($type).'#'.$type
-                                )
+                                    \gettype($type).'#'.$type,
+                                ),
                             );
                         }
 
@@ -244,8 +244,8 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
                                     'Unexpected spacing for element type "%s", expected any of %s, got "%s".',
                                     $spacing,
                                     Utils::naturalLanguageJoin($supportedSpacings),
-                                    \is_object($spacing) ? \get_class($spacing) : (null === $spacing ? 'null' : \gettype($spacing).'#'.$spacing)
-                                )
+                                    \is_object($spacing) ? \get_class($spacing) : (null === $spacing ? 'null' : \gettype($spacing).'#'.$spacing),
+                                ),
                             );
                         }
                     }

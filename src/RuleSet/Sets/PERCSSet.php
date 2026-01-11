@@ -40,7 +40,7 @@ final class PERCSSet extends AbstractRuleSetDefinition
 
     public function getDescription(): string
     {
-        return 'Rules that follow `PER Coding Style (https://www.php-fig.org/per/coding-style/)`_, Set is an alias for the latest revision of ``PER-CS`` rules - use it if you always want to be in sync with newest ``PER-CS`` standard.';
+        return 'Rules that follow `PER Coding Style <https://www.php-fig.org/per/coding-style/>`_, Set is an alias for the latest revision of ``PER-CS`` rules - use it if you always want to be in sync with newest ``PER-CS`` standard.';
     }
 
     private function getHighestPerCsSet(): RuleSetDefinitionInterface
@@ -55,7 +55,7 @@ final class PERCSSet extends AbstractRuleSetDefinition
                 static fn (RuleSetDefinitionInterface $set): bool => !($set instanceof DeprecatedRuleSetDefinitionInterface)
                     && $set->isRisky() === $currentSet->isRisky()
                     && $set->getName() !== $currentSet->getName()
-                    && str_starts_with($set->getName(), $currentSet->getName())
+                    && str_starts_with($set->getName(), $currentSet->getName()),
             );
 
             ksort($sets, \SORT_NATURAL);

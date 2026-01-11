@@ -43,11 +43,11 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
                             $a = strval ($b);
                             $a = boolval($b);
 
-                        PHP
+                        PHP,
                 ),
             ],
             null,
-            'Risky if any of the functions `intval`, `floatval`, `doubleval`, `strval` or `boolval` are overridden.'
+            'Risky if any of the functions `intval`, `floatval`, `doubleval`, `strval` or `boolval` are overridden.',
         );
     }
 

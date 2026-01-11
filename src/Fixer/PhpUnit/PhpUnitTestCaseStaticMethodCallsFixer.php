@@ -428,7 +428,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
                 new CodeSample($codeSample, ['methods' => ['assertTrue' => self::CALL_TYPE_THIS]]),
             ],
             null,
-            'Risky when PHPUnit methods are overridden or not accessible, or when project has PHPUnit incompatibilities.'
+            'Risky when PHPUnit methods are overridden or not accessible, or when project has PHPUnit incompatibilities.',
         );
     }
 
@@ -464,8 +464,8 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
                                 \sprintf(
                                     'Unexpected "methods" key, expected any of %s, got "%s".',
                                     Utils::naturalLanguageJoin(array_keys(self::METHODS)),
-                                    \gettype($method).'#'.$method
-                                )
+                                    \gettype($method).'#'.$method,
+                                ),
                             );
                         }
 
@@ -475,8 +475,8 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
                                     'Unexpected value for method "%s", expected any of %s, got "%s".',
                                     $method,
                                     Utils::naturalLanguageJoin(array_keys(self::ALLOWED_VALUES)),
-                                    \is_object($value) ? \get_class($value) : (null === $value ? 'null' : \gettype($value).'#'.$value)
-                                )
+                                    \is_object($value) ? \get_class($value) : (null === $value ? 'null' : \gettype($value).'#'.$value),
+                                ),
                             );
                         }
                     }
@@ -525,7 +525,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
             if (isset($this->configuration['methods'][$method])) {
                 throw new InvalidFixerConfigurationException(
                     $this->getName(),
-                    \sprintf('Configuration cannot contain method "%s" and target "%s", it is dynamic in that PHPUnit version.', $method, $this->configuration['target'])
+                    \sprintf('Configuration cannot contain method "%s" and target "%s", it is dynamic in that PHPUnit version.', $method, $this->configuration['target']),
                 );
             }
 

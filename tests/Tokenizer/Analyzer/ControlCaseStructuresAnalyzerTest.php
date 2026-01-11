@@ -87,7 +87,7 @@ final class ControlCaseStructuresAnalyzerTest extends TestCase
                         new CaseAnalysis(60, 71),
                         new CaseAnalysis(78, 125),
                     ],
-                    new DefaultAnalysis(9, 10)
+                    new DefaultAnalysis(9, 10),
                 ),
             ],
             '<?php switch (true) {
@@ -194,7 +194,7 @@ switch ($foo) {
                 [
                     new CaseAnalysis(8, 11),
                 ],
-                new DefaultAnalysis(16, 17)
+                new DefaultAnalysis(16, 17),
             ),
         ];
 
@@ -221,7 +221,7 @@ default:
                     [
                         new CaseAnalysis(8, 12),
                     ],
-                    null
+                    null,
                 ),
             ],
             '<?php switch($a) {
@@ -239,7 +239,7 @@ case 1/* 1 */:
                     [
                         new CaseAnalysis(10, 22),
                     ],
-                    null
+                    null,
                 ),
             ],
             '<?php
@@ -260,7 +260,7 @@ case 1/* 1 */:
                         new CaseAnalysis(18, 21),
                         new CaseAnalysis(47, 50),
                     ],
-                    null
+                    null,
                 ),
                 23 => new SwitchAnalysis(
                     23,
@@ -269,7 +269,7 @@ case 1/* 1 */:
                     [
                         new CaseAnalysis(32, 35),
                     ],
-                    null
+                    null,
                 ),
             ],
             '<?php
@@ -299,7 +299,7 @@ switch(foo()) {
                     [
                         new CaseAnalysis(10, 13),
                     ],
-                    null
+                    null,
                 ),
             ],
             '<?php /* */ switch ($foo):
@@ -445,7 +445,7 @@ $expressionResult = match ($condition) {
 
         self::assertSame(
             serialize($expectedAnalysis),
-            serialize($analysis)
+            serialize($analysis),
         );
     }
 }

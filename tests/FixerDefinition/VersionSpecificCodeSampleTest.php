@@ -39,7 +39,7 @@ final class VersionSpecificCodeSampleTest extends TestCase
         $codeSample = new VersionSpecificCodeSample(
             $code,
             $this->createVersionSpecificationDouble(),
-            $configuration
+            $configuration,
         );
 
         self::assertSame($code, $codeSample->getCode());
@@ -50,7 +50,7 @@ final class VersionSpecificCodeSampleTest extends TestCase
     {
         $codeSample = new VersionSpecificCodeSample(
             '<php echo $foo;',
-            $this->createVersionSpecificationDouble()
+            $this->createVersionSpecificationDouble(),
         );
 
         self::assertNull($codeSample->getConfiguration());
@@ -63,7 +63,7 @@ final class VersionSpecificCodeSampleTest extends TestCase
     {
         $codeSample = new VersionSpecificCodeSample(
             '<php echo $foo;',
-            $this->createVersionSpecificationDouble($isSatisfied)
+            $this->createVersionSpecificationDouble($isSatisfied),
         );
 
         self::assertSame($isSatisfied, $codeSample->isSuitableFor($version));

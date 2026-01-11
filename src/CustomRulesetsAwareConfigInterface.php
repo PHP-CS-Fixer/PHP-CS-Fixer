@@ -31,6 +31,8 @@ interface CustomRulesetsAwareConfigInterface extends ConfigInterface
      * @param list<RuleSetDefinitionInterface> $ruleSets
      *
      * @todo v4 Introduce it in main ConfigInterface
+     *
+     * @return $this
      */
     public function registerCustomRuleSets(array $ruleSets): ConfigInterface;
 

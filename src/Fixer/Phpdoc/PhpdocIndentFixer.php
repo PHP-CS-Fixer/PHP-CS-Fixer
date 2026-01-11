@@ -47,9 +47,9 @@ final class PhpdocIndentFixer extends AbstractFixer
                             const INDENT = 1;
                         }
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

@@ -167,7 +167,7 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
  * See {@link https://help Help} or {@see BarClass} for details.
  */'],
             ],
-            ['operator' => ':']
+            ['operator' => ':'],
         );
     }
 

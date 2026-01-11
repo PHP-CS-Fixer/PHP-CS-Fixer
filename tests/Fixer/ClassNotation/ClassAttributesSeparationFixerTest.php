@@ -2350,7 +2350,7 @@ enum Cards: string
         self::assertSame(
             $expected,
             $result,
-            \sprintf('Expected index %d (%s) got index %d (%s).', $expected, $tokens[$expected]->toJson(), $result, $tokens[$result]->toJson())
+            \sprintf('Expected index %d (%s) got index %d (%s).', $expected, $tokens[$expected]->toJson(), $result, $tokens[$result]->toJson()),
         );
     }
 

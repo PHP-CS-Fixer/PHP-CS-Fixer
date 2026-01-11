@@ -40,7 +40,7 @@ final class SingleLineEmptyBodyFixer extends AbstractFixer
                         {
                         }
 
-                        PHP
+                        PHP,
                 ),
             ],
         );

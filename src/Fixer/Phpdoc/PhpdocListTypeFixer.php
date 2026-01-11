@@ -49,11 +49,11 @@ final class PhpdocListTypeFixer extends AbstractPhpdocTypesFixer
                          * @param array<array<string>> $y
                          */
 
-                        PHP
+                        PHP,
                 ),
             ],
             null,
-            'Risky when `array` key should be present, but is missing.'
+            'Risky when `array` key should be present, but is missing.',
         );
     }
 

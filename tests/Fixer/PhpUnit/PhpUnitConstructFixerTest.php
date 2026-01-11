@@ -49,7 +49,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
                 $this->fixer->configure(['assertions' => [$method]]);
                 $this->doTest(
                     $expected,
-                    null !== $input && str_contains($input, $method) ? $input : null
+                    null !== $input && str_contains($input, $method) ? $input : null,
                 );
             }
         }
@@ -130,7 +130,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
                 if (isset($case[1])) {
                     $case[1] = self::generateTest($case[1]);
                 }
-            }
+            },
         );
 
         yield from array_merge(
@@ -155,7 +155,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
             self::generateCases('$this->assert%s%s($a, "%s", "%s");', '$this->assert%s(%s, $a, "%s", "%s");'),
             self::generateCases('static::assert%s%s($a); //%s %s', 'static::assert%s(%s, $a); //%s %s'),
             self::generateCases('STATIC::assert%s%s($a); //%s %s', 'STATIC::assert%s(%s, $a); //%s %s'),
-            self::generateCases('self::assert%s%s($a); //%s %s', 'self::assert%s(%s, $a); //%s %s')
+            self::generateCases('self::assert%s%s($a); //%s %s', 'self::assert%s(%s, $a); //%s %s'),
         );
 
         yield [
