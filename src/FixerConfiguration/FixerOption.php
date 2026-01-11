@@ -63,13 +63,10 @@ final class FixerOption implements FixerOptionInterface
         }
 
         if (null !== $allowedValues) {
-            $allowedValues = array_map(function ($allowedValue) {
-                if ($allowedValue instanceof \Closure) {
-                    return $this->unbind($allowedValue);
-                }
-
-                return $allowedValue;
-            }, $allowedValues);
+            $allowedValues = array_map(
+                fn ($allowedValue) => $allowedValue instanceof \Closure ? $this->unbind($allowedValue) : $allowedValue,
+                $allowedValues,
+            );
         }
 
         $this->name = $name;
