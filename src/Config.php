@@ -194,9 +194,6 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
         return $this->ruleCustomisationPolicy;
     }
 
-    /**
-     * @return $this
-     */
     public function registerCustomFixers(iterable $fixers): ConfigInterface
     {
         foreach ($fixers as $fixer) {
@@ -208,8 +205,6 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
 
     /**
      * @param list<RuleSetDefinitionInterface> $ruleSets
-     *
-     * @return $this
      */
     public function registerCustomRuleSets(array $ruleSets): ConfigInterface
     {
@@ -222,8 +217,6 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
 
     /**
      * @param non-empty-string $cacheFile
-     *
-     * @return $this
      */
     public function setCacheFile(string $cacheFile): ConfigInterface
     {
@@ -232,9 +225,6 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function setFinder(iterable $finder): ConfigInterface
     {
         $this->finder = $finder;
@@ -242,9 +232,6 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function setFormat(string $format): ConfigInterface
     {
         $this->format = $format;
@@ -252,9 +239,6 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function setHideProgress(bool $hideProgress): ConfigInterface
     {
         $this->hideProgress = $hideProgress;
@@ -264,8 +248,6 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
 
     /**
      * @param non-empty-string $indent
-     *
-     * @return $this
      */
     public function setIndent(string $indent): ConfigInterface
     {
@@ -276,8 +258,6 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
 
     /**
      * @param non-empty-string $lineEnding
-     *
-     * @return $this
      */
     public function setLineEnding(string $lineEnding): ConfigInterface
     {
@@ -286,9 +266,6 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function setParallelConfig(ParallelConfig $config): ConfigInterface
     {
         $this->parallelConfig = $config;
@@ -296,9 +273,6 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function setPhpExecutable(?string $phpExecutable): ConfigInterface
     {
         $this->phpExecutable = $phpExecutable;
@@ -306,9 +280,6 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function setRiskyAllowed(bool $isRiskyAllowed): ConfigInterface
     {
         $this->isRiskyAllowed = $isRiskyAllowed;
@@ -316,9 +287,6 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function setRules(array $rules): ConfigInterface
     {
         $this->rules = $rules;
@@ -326,9 +294,6 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function setUsingCache(bool $usingCache): ConfigInterface
     {
         $this->usingCache = $usingCache;
@@ -336,9 +301,6 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function setUnsupportedPhpVersionAllowed(bool $isUnsupportedPhpVersionAllowed): ConfigInterface
     {
         $this->isUnsupportedPhpVersionAllowed = $isUnsupportedPhpVersionAllowed;
@@ -346,9 +308,6 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface, Unsupport
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function setRuleCustomisationPolicy(?RuleCustomisationPolicyInterface $ruleCustomisationPolicy): ConfigInterface
     {
         // explicitly prevent policy with no proper version defined

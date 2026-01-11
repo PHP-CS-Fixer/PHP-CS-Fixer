@@ -26,5 +26,8 @@ interface UnsupportedPhpVersionAllowedConfigInterface extends ConfigInterface
      */
     public function getUnsupportedPhpVersionAllowed(): bool;
 
+    /**
+     * @return $this
+     */
     public function setUnsupportedPhpVersionAllowed(bool $isUnsupportedPhpVersionAllowed): ConfigInterface;
 }
