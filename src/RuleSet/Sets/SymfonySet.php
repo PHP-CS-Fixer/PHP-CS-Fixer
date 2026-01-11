@@ -218,6 +218,7 @@ final class SymfonySet extends AbstractRuleSetDefinition
             ],
             'phpdoc_var_annotation_correct_order' => true,
             'phpdoc_var_without_name' => true,
+            'protected_to_private' => true,
             'semicolon_after_instruction' => true,
             'simple_to_complex_string_variable' => true,
             'single_import_per_statement' => true,
