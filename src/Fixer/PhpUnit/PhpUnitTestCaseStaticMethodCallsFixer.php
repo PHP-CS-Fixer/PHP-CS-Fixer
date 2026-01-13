@@ -421,7 +421,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
             PHP;
 
         return new FixerDefinition(
-            'Calls to `PHPUnit\Framework\TestCase` static methods must all be of the same type, either `$this->`, `self::` or `static::`.',
+            'Calls to `PHPUnit\Framework\TestCase` static methods (like assertions) must all be of the same type, either `$this->`, `self::` or `static::`.',
             [
                 new CodeSample($codeSample),
                 new CodeSample($codeSample, ['call_type' => self::CALL_TYPE_THIS]),
@@ -501,6 +501,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
     {
         $dynamicMethods = [];
         if (PhpUnitTargetVersion::fulfills($this->configuration['target'], PhpUnitTargetVersion::VERSION_11_0)) {
+            // not statc since v11
             $dynamicMethods = [
                 'any',
                 'atLeast',
@@ -513,6 +514,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
             ];
         }
         if (PhpUnitTargetVersion::VERSION_11_0 === $this->configuration['target']) {
+            // not static since v11, removed in v12
             $dynamicMethods[] = 'onConsecutiveCalls';
             $dynamicMethods[] = 'returnArgument';
             $dynamicMethods[] = 'returnCallback';
