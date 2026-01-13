@@ -52,9 +52,7 @@ final class AutoPHPUnitMigrationRiskySetTest extends AbstractSetTestCase
     {
         $versionInRuleName = Preg::replace('/^@PHPUnit(\d+)x(\d+)Migration:risky$/', '$1.$2', $setName);
 
-        $setClassName = 'PhpCsFixer\RuleSet\Sets\\'.str_replace(['@', ':risky'], ['', 'Risky'], $setName).'Set';
-        $set = new $setClassName();
-        \assert($set instanceof RuleSetDefinitionInterface);
+        $set = $this->createSetDefinitionBySetName($setName);
 
         $rulesWithTarget = array_filter(
             $set->getRules(),
@@ -82,14 +80,7 @@ final class AutoPHPUnitMigrationRiskySetTest extends AbstractSetTestCase
      */
     public static function provideThatSetDoNotUseNewestTargetCases(): iterable
     {
-        $setDefinition = self::getSet();
-        \assert($setDefinition instanceof AutomaticRuleSetDefinitionInterface);
-
-        $sets = array_keys($setDefinition->getRulesCandidates());
-
-        foreach ($sets as $set) {
-            yield $set => [$set];
-        }
+        yield from self::provideSets();
     }
 
     public function testThatHighestSetUsesHighestTargets(): void
@@ -111,6 +102,34 @@ final class AutoPHPUnitMigrationRiskySetTest extends AbstractSetTestCase
                 ),
             );
         }
+    }
+
+    /**
+     * @return iterable<string, array{0: string}>
+     */
+    private static function provideSets(): iterable
+    {
+        $setDefinition = self::getSet();
+        \assert($setDefinition instanceof AutomaticRuleSetDefinitionInterface);
+
+        $sets = array_keys($setDefinition->getRulesCandidates());
+
+        foreach ($sets as $set) {
+            yield $set => [$set];
+        }
+    }
+
+    private function createSetDefinitionBySetName(string $setName): RuleSetDefinitionInterface
+    {
+        $setClassName = \sprintf(
+            'PhpCsFixer\RuleSet\Sets\%sSet',
+            str_replace(['@', ':risky'], ['', 'Risky'], $setName),
+        );
+
+        $set = new $setClassName();
+        \assert($set instanceof RuleSetDefinitionInterface);
+
+        return $set;
     }
 
     private static function getHighestConfigurationForPHPUnitFixer(string $rule): ?string
