@@ -18,3 +18,7 @@ Rules
 -----
 
 - `@PHPUnit10x0Migration:risky <./PHPUnit10x0MigrationRisky.rst>`_
+- `php_unit_test_case_static_method_calls <./../rules/php_unit/php_unit_test_case_static_method_calls.rst>`_ with config:
+
+  ``['target' => '11.0']``
+
