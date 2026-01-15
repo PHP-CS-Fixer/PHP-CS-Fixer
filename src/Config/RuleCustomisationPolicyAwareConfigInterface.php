@@ -30,6 +30,8 @@ interface RuleCustomisationPolicyAwareConfigInterface extends ConfigInterface
      * Registers a filter to be applied to fixers right before running them.
      *
      * @todo v4 Introduce it in main ConfigInterface
+     *
+     * @return $this
      */
     public function setRuleCustomisationPolicy(?RuleCustomisationPolicyInterface $ruleCustomisationPolicy): ConfigInterface;
 

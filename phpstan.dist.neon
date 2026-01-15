@@ -47,12 +47,6 @@ parameters:
                 - src/Fixer/Import/GlobalNamespaceImportFixer.php
                 - src/Fixer/LanguageConstruct/GetClassToClassKeywordFixer.php
 
-        # We allow own config to call v4 interfaces
-        -
-            message: '/Call to an undefined method PhpCsFixer\\ConfigInterface::setUnsupportedPhpVersionAllowed\(\)/'
-            paths:
-                - .php-cs-fixer.dist.php
-
         # We allow own config to eat internal rules/sets
         -
             message: '/(on|of) internal class.*(Set|Fixer)/'
@@ -76,7 +70,7 @@ parameters:
         -
             message: '/^Unused PhpCsFixer\\[a-zA-Z\\]+Interface::[a-zA-Z]+$/'
             path: src
-            count: 12
+            count: 19
 
         -
             message: '/^AnonymousClass/'
