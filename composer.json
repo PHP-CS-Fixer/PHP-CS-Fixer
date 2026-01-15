@@ -124,7 +124,6 @@
         "phpstan": "@php -d memory_limit=512M dev-tools/vendor/bin/phpstan analyse",
         "phpstan:baseline": [
             "@php -d memory_limit=512M dev-tools/vendor/bin/phpstan analyse --generate-baseline=./dev-tools/phpstan/baseline/_loader.php",
-            "find ./dev-tools/phpstan/baseline/ -type f -not -name _loader.php -delete",
             "@php dev-tools/vendor/bin/split-phpstan-baseline ./dev-tools/phpstan/baseline/_loader.php --no-error-count"
         ],
         "qa": "@quality-assurance",
