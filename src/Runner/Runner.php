@@ -97,6 +97,11 @@ final class Runner
     private int $fileCount;
 
     /**
+     * @var array<string, int> key is process identifier, value is memory usage in bytes
+     */
+    private array $workersMemoryUsageByProcess = [];
+
+    /**
      * @var list<FixerInterface>
      */
     private array $fixers;
@@ -163,6 +168,14 @@ final class Runner
         $this->input = $input;
         $this->configFile = $configFile;
         $this->ruleCustomisationPolicy = $ruleCustomisationPolicy ?? new NullRuleCustomisationPolicy();
+    }
+
+    /**
+     * Total workers memory. 0 if not run in parallel mode.
+     */
+    public function getWorkersMemoryUsage(): int
+    {
+        return array_sum($this->workersMemoryUsageByProcess);
     }
 
     /**
@@ -391,6 +404,9 @@ final class Runner
                                 $error['diff'],
                             ));
                         }
+
+                        // we collect memory on each file, as any violation may terminate processPool via stopOnViolation
+                        $this->workersMemoryUsageByProcess[$identifier->toString()] = $workerResponse['memoryUsage'];
 
                         // Pass-back information about applied changes (only if there are any)
                         if (isset($workerResponse['fixInfo'])) {
