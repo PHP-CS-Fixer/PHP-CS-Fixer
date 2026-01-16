@@ -363,24 +363,57 @@ final class TypeExpression
     public function sortTypes(\Closure $compareCallback): self
     {
         return $this->mapTypes(function (self $type) use ($compareCallback): self {
-            if ($type->isCompositeType) {
-                $innerTypeExpressions = Utils::stableSort(
-                    $type->innerTypeExpressions,
-                    static fn (array $v): self => $v['expression'],
-                    $compareCallback,
+            if (!$type->isCompositeType) {
+                return $type;
+            }
+
+            $innerTypeExpressions = Utils::stableSort(
+                $type->innerTypeExpressions,
+                static fn (array $v): self => $v['expression'],
+                $compareCallback,
+            );
+
+            if ($innerTypeExpressions !== $type->innerTypeExpressions) {
+                $value = implode(
+                    $type->getTypesGlue(),
+                    array_map(static fn (array $v): string => $v['expression']->toString(), $innerTypeExpressions),
                 );
 
-                if ($innerTypeExpressions !== $type->innerTypeExpressions) {
-                    $value = implode(
-                        $type->getTypesGlue(),
-                        array_map(static fn (array $v): string => $v['expression']->toString(), $innerTypeExpressions),
-                    );
-
-                    return $this->inner($value);
-                }
+                return $this->inner($value);
             }
 
             return $type;
+        });
+    }
+
+    public function removeDuplicateTypes(): self
+    {
+        return $this->mapTypes(function (self $type): self {
+            if (!$type->isCompositeType) {
+                return $type;
+            }
+
+            $seenNormalized = [];
+            $uniqueTypeExpressions = [];
+
+            foreach ($type->innerTypeExpressions as $innerType) {
+                $normalized = $innerType['expression']
+                    ->sortTypes(static fn (self $a, self $b): int => $a->toString() <=> $b->toString())
+                    ->toString()
+                ;
+
+                if (!\in_array($normalized, $seenNormalized, true)) {
+                    $seenNormalized[] = $normalized;
+                    $uniqueTypeExpressions[] = $innerType['expression'];
+                }
+            }
+
+            $value = implode(
+                $type->getTypesGlue(),
+                array_map(static fn (self $expr): string => $expr->toString(), $uniqueTypeExpressions),
+            );
+
+            return $this->inner($value);
         });
     }
 
