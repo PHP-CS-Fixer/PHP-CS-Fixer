@@ -70,8 +70,8 @@ final class NoUselessElseFixer extends AbstractNoUselessElseFixer
                 continue;
             }
 
-            // clean up `else` if possible
-            // ignore `else` blocks containing named function or classy declarations, because in php function/class
+            // Clean up `else` if possible.
+            // Ignore `else` blocks containing named function or classy declarations, because in PHP function/class
             // declarations outside any conditional block are always evaluated first, even if the code before the declaration
             // returns/throws/etc. So removing such `else` blocks would change the behaviour.
             if ($this->isSuperfluousElse($tokens, $index) && !$this->containsNamedSymbolDeclaration($tokens, $index)) {
