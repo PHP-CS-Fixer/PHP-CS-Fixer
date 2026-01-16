@@ -604,6 +604,28 @@ else?><?php echo 5;',
         yield from self::generateConditionsWithoutBracesCase('throw new class extends Exception{};');
 
         yield from self::generateConditionsWithoutBracesCase('throw new class ($a, 9) extends Exception{ public function z($a, $b){ echo 7;} };');
+
+        yield [
+            '<?php if ($a) {return null;}   return function () {}; ',
+            '<?php if ($a) {return null;} else { return function () {}; }',
+        ];
+
+        yield [
+            '<?php if ($a) {return null;}   return new class {}; ',
+            '<?php if ($a) {return null;} else { return new class {}; }',
+        ];
+
+        yield [
+            '<?php if ($a) {return;} else { foo(); function bar() {} }',
+        ];
+
+        yield [
+            '<?php if ($a) {return;} else { abstract class Foo {} }',
+        ];
+
+        yield [
+            '<?php if ($a) {return;} else { interface Foo {} }',
+        ];
     }
 
     /**
