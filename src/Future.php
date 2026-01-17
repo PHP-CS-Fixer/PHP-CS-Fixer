@@ -23,6 +23,8 @@ namespace PhpCsFixer;
  */
 final class Future
 {
+    private static bool $isFutureModeEnforced = false;
+
     /**
      * @var array<string, true>
      */
@@ -33,9 +35,19 @@ final class Future
         // cannot create instance
     }
 
+    public static function enforceFutureMode(): void
+    {
+        self::$isFutureModeEnforced = true;
+    }
+
+    public static function stopEnforcingFutureMode(): void
+    {
+        self::$isFutureModeEnforced = false;
+    }
+
     public static function isFutureModeEnabled(): bool
     {
-        return filter_var(
+        return self::$isFutureModeEnforced || filter_var(
             getenv('PHP_CS_FIXER_FUTURE_MODE'),
             \FILTER_VALIDATE_BOOL,
         );

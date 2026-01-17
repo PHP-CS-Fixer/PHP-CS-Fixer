@@ -21,9 +21,11 @@ use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOptionInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
+use PhpCsFixer\Future;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\DeprecatedRuleSetDefinitionInterface;
@@ -157,8 +159,7 @@ final class FixerDocumentGenerator
                 }
 
                 if ($option->hasDefault()) {
-                    $default = Utils::toString($option->getDefault());
-                    $optionInfo .= "\n\nDefault value: ``{$default}``";
+                    $optionInfo .= self::getDefaultValues($fixer, $option);
                 } else {
                     $optionInfo .= "\n\nThis option is required.";
                 }
@@ -353,6 +354,30 @@ final class FixerDocumentGenerator
         }
 
         return "{$documentation}\n";
+    }
+
+    private static function getDefaultValues(FixerInterface $fixer, FixerOptionInterface $option): string
+    {
+        $default = Utils::toString($option->getDefault());
+        $defaults = "\n\nDefault value: ``{$default}``";
+
+        Future::enforceFutureMode();
+        $fixerInFutureMode = (new \ReflectionObject($fixer))->newInstance();
+        \assert($fixerInFutureMode instanceof ConfigurableFixerInterface);
+        foreach ($fixerInFutureMode->getConfigurationDefinition()->getOptions() as $optionInFutureMode) {
+            if ($option->getName() !== $optionInFutureMode->getName()) {
+                continue;
+            }
+            if ($optionInFutureMode->getDefault() !== $option->getDefault()) {
+                $default = Utils::toString($optionInFutureMode->getDefault());
+                $defaults .= "\n\nDefault value (future-mode): ``{$default}``";
+
+                break;
+            }
+        }
+        Future::stopEnforcingFutureMode();
+
+        return $defaults;
     }
 
     private function generateSampleDiff(FixerInterface $fixer, CodeSampleInterface $sample, int $sampleNumber, string $ruleName): string
