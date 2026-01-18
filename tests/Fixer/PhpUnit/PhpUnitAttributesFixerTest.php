@@ -781,7 +781,7 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
             ['keep_annotations' => true],
         ];
 
-        yield 'do not add for annotation "@testWith" when attribute "TestWith" already present' => [
+        yield 'do not add for annotation "@testWith" when attribute "\PHPUnit\Framework\Attributes\TestWith" is already present' => [
             <<<'PHP'
                 <?php
                 class FooTest extends \PHPUnit\Framework\TestCase {
@@ -791,6 +791,25 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
                      */
                     #[\PHPUnit\Framework\Attributes\TestWith([1, 2])]
                     #[\PHPUnit\Framework\Attributes\TestWith(["a", "b"])]
+                    public function testFoo() {}
+                }
+                PHP,
+            null,
+            ['keep_annotations' => true],
+        ];
+
+        yield 'do not add for annotation "@testWith" when attribute "TestWith" is already present' => [
+            <<<'PHP'
+                <?php
+                namespace MyTests;
+                use PHPUnit\Framework\Attributes\TestWith;
+                class FooTest extends \PHPUnit\Framework\TestCase {
+                    /**
+                     * @testWith [1, 2]
+                     *           ["a", "b"]
+                     */
+                    #[TestWith([1, 2])]
+                    #[TestWith(["a", "b"])]
                     public function testFoo() {}
                 }
                 PHP,
