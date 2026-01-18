@@ -42,7 +42,6 @@ Rules
 
   ``['allow_hidden_params' => true, 'allow_mixed' => true, 'remove_inheritdoc' => true]``
 
-- `no_useless_return <./../rules/return_notation/no_useless_return.rst>`_
 - `operator_linebreak <./../rules/operator/operator_linebreak.rst>`_
 - `ordered_class_elements <./../rules/class_notation/ordered_class_elements.rst>`_
 - `ordered_types <./../rules/class_notation/ordered_types.rst>`_ with config:
