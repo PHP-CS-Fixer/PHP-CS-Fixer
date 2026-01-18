@@ -235,7 +235,7 @@ class srand extends SrandClass{
                     'mt_getrandmax' => 'getrandmax',
                     'mt_rand' => 'random_int',
                     'mt_srand' => 'srand',
-                    'rand' => 'random_int'
+                    'rand' => 'random_int',
                 ],
             ],
         ];
