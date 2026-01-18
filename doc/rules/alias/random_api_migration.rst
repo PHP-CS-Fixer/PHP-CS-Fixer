@@ -31,7 +31,7 @@ Allowed types: ``array<string, string>``
 
 Default value: ``['getrandmax' => 'mt_getrandmax', 'rand' => 'mt_rand', 'srand' => 'mt_srand']``
 
-Default value (future-mode): ``['getrandmax' => 'mt_getrandmax', 'rand' => 'random_int', 'srand' => 'mt_srand']``
+Default value (future-mode): ``['mt_getrandmax' => 'getrandmax', 'mt_rand' => 'random_int', 'mt_srand' => 'srand', 'rand' => 'random_int']``
 
 Examples
 --------
