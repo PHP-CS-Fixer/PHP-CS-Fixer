@@ -37,9 +37,8 @@ final class Future
 
     public static function runWithEnforcedFutureMode(callable $callback): void
     {
-        self::$isFutureModeEnforced = true;
-
         try {
+            self::$isFutureModeEnforced = true;
             $callback();
         } finally {
             self::$isFutureModeEnforced = false;
