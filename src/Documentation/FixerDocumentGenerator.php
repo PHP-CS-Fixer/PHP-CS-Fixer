@@ -361,21 +361,23 @@ final class FixerDocumentGenerator
         $default = Utils::toString($option->getDefault());
         $defaults = "\n\nDefault value: ``{$default}``";
 
-        Future::enforceFutureMode();
-        $fixerInFutureMode = (new \ReflectionObject($fixer))->newInstance();
-        \assert($fixerInFutureMode instanceof ConfigurableFixerInterface);
-        foreach ($fixerInFutureMode->getConfigurationDefinition()->getOptions() as $optionInFutureMode) {
-            if ($option->getName() !== $optionInFutureMode->getName()) {
-                continue;
-            }
-            if ($optionInFutureMode->getDefault() !== $option->getDefault()) {
-                $default = Utils::toString($optionInFutureMode->getDefault());
-                $defaults .= "\n\nDefault value (future-mode): ``{$default}``";
+        Future::runWithEnforcedFutureMode(
+            static function () use (&$defaults, $fixer, $option): void {
+                $fixerInFutureMode = (new \ReflectionObject($fixer))->newInstance();
+                \assert($fixerInFutureMode instanceof ConfigurableFixerInterface);
+                foreach ($fixerInFutureMode->getConfigurationDefinition()->getOptions() as $optionInFutureMode) {
+                    if ($option->getName() !== $optionInFutureMode->getName()) {
+                        continue;
+                    }
+                    if ($optionInFutureMode->getDefault() !== $option->getDefault()) {
+                        $default = Utils::toString($optionInFutureMode->getDefault());
+                        $defaults .= "\n\nDefault value (future-mode): ``{$default}``";
 
-                break;
-            }
-        }
-        Future::stopEnforcingFutureMode();
+                        break;
+                    }
+                }
+            },
+        );
 
         return $defaults;
     }

@@ -35,14 +35,15 @@ final class Future
         // cannot create instance
     }
 
-    public static function enforceFutureMode(): void
+    public static function runWithEnforcedFutureMode(callable $callback): void
     {
         self::$isFutureModeEnforced = true;
-    }
 
-    public static function stopEnforcingFutureMode(): void
-    {
-        self::$isFutureModeEnforced = false;
+        try {
+            $callback();
+        } finally {
+            self::$isFutureModeEnforced = false;
+        }
     }
 
     public static function isFutureModeEnabled(): bool
