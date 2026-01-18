@@ -607,9 +607,11 @@ final class Runner
                         try {
                             $this->linter->lintSource($tokens->generateCode())->check();
                         } catch (LintingException $e) {
-                            echo "\n\nFixer {$fixer->getName()} introduced linting issue:\n\n{$tokens->generateCode()}\n";
+                            $this->dispatchEvent(FileProcessed::NAME, new FileProcessed(FileProcessed::STATUS_LINT));
 
-                            exit(1);
+                            $this->errorsManager->report(new Error(Error::TYPE_LINT, $filePathname, $e, [$fixer->getName()], $this->differ->diff($old, $tokens->generateCode(), $file)));
+
+                            return null;
                         }
                     }
                 }
