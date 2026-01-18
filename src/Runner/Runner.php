@@ -623,6 +623,17 @@ final class Runner
                     $tokens->clearEmptyTokens();
                     $tokens->clearChanged();
                     $appliedFixers[] = $fixer->getName();
+                    if (filter_var(getenv('PHP_CS_FIXER_DEBUG'), \FILTER_VALIDATE_BOOL)) {
+                        try {
+                            $this->linter->lintSource($tokens->generateCode())->check();
+                        } catch (LintingException $e) {
+                            $this->dispatchEvent(FileProcessed::NAME, new FileProcessed(FileProcessed::STATUS_LINT));
+
+                            $this->errorsManager->report(new Error(Error::TYPE_LINT, $filePathname, $e, [$fixer->getName()], $this->differ->diff($old, $tokens->generateCode(), $file)));
+
+                            return null;
+                        }
+                    }
                 }
             }
         } catch (\ParseError $e) {
