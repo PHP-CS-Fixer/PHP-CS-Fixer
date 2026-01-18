@@ -137,6 +137,7 @@ final class SymfonySet extends AbstractRuleSetDefinition
             'no_unset_cast' => true,
             'no_unused_imports' => true,
             'no_useless_concat_operator' => true,
+            'no_useless_else' => true,
             'no_useless_nullsafe_operator' => true,
             'no_useless_return' => true,
             'no_whitespace_before_comma_in_array' => ['after_heredoc' => true],

@@ -59,6 +59,7 @@ Rules
 - `psr_autoloading <./../rules/basic/psr_autoloading.rst>`_
 - `self_accessor <./../rules/class_notation/self_accessor.rst>`_
 - `set_type_to_cast <./../rules/alias/set_type_to_cast.rst>`_
+- `static_lambda <./../rules/function_notation/static_lambda.rst>`_
 - `string_length_to_empty <./../rules/string_notation/string_length_to_empty.rst>`_
 - `string_line_ending <./../rules/string_notation/string_line_ending.rst>`_
 - `ternary_to_elvis_operator <./../rules/operator/ternary_to_elvis_operator.rst>`_
