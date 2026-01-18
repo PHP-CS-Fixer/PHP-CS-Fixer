@@ -91,7 +91,6 @@ final class PhpCsFixerSet extends AbstractRuleSetDefinition
                 'allow_mixed' => true, // @TODO revalidate to keep `true` or unify into `false`
                 'remove_inheritdoc' => true,
             ],
-            'no_useless_else' => true,
             'no_useless_return' => true,
             'operator_linebreak' => true,
             'ordered_class_elements' => true,
