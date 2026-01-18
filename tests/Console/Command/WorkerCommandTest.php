@@ -158,12 +158,18 @@ final class WorkerCommandTest extends TestCase
 
         self::assertSame(Command::SUCCESS, $process->getExitCode());
         self::assertCount(3, $workerScope['messages']);
+
         self::assertArrayHasKey('action', $workerScope['messages'][0]);
         self::assertSame(ParallelAction::WORKER_HELLO, $workerScope['messages'][0]['action']);
+
         self::assertArrayHasKey('action', $workerScope['messages'][1]);
         self::assertSame(ParallelAction::WORKER_RESULT, $workerScope['messages'][1]['action']);
         self::assertArrayHasKey('status', $workerScope['messages'][1]);
         self::assertSame(FileProcessed::STATUS_FIXED, $workerScope['messages'][1]['status']);
+        self::assertArrayHasKey('memoryUsage', $workerScope['messages'][1]);
+        self::assertIsInt($workerScope['messages'][1]['memoryUsage']);
+        self::assertGreaterThanOrEqual(0, $workerScope['messages'][1]['memoryUsage']);
+
         self::assertArrayHasKey('action', $workerScope['messages'][2]);
         self::assertSame(ParallelAction::WORKER_GET_FILE_CHUNK, $workerScope['messages'][2]['action']);
 

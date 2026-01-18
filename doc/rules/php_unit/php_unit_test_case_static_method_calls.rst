@@ -51,6 +51,8 @@ Allowed values: ``'10.0'``, ``'11.0'`` and ``'newest'``
 
 Default value: ``'10.0'``
 
+Default value (future-mode): ``'newest'``
+
 Examples
 --------
 
