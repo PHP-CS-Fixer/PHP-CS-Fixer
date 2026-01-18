@@ -35,7 +35,10 @@ final class Future
         // cannot create instance
     }
 
-    public static function runWithEnforcedFutureMode(callable $callback): mixed
+    /**
+     * @return mixed
+     */
+    public static function runWithEnforcedFutureMode(callable $callback)
     {
         try {
             self::$isFutureModeEnforced = true;
