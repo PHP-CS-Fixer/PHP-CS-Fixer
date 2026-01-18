@@ -32,7 +32,9 @@ final class PHP7x0MigrationRiskySet extends AbstractMigrationSetDefinition
             'non_printable_character' => true,
             'random_api_migration' => [
                 'replacements' => [
+                    'mt_getrandmax' => 'getrandmax',
                     'mt_rand' => 'random_int',
+                    'mt_srand' => 'srand',
                     'rand' => 'random_int',
                 ],
             ],
