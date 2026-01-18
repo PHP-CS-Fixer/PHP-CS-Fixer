@@ -333,6 +333,10 @@ final class Runner
                     return;
                 }
 
+                \assert(isset(
+                    $data['identifier'],
+                ));
+
                 $identifier = ProcessIdentifier::fromRaw($data['identifier']);
 
                 // Avoid race condition where worker tries to establish connection,
@@ -387,7 +391,12 @@ final class Runner
                     // File analysis result (we want close-to-realtime progress with frequent cache savings)
                     if (ParallelAction::WORKER_RESULT === $workerResponse['action']) {
                         \assert(isset(
+                            $workerResponse['errors'],
+                            $workerResponse['file'],
+                            // $workerResponse['fileHash'], // optional
+                            // $workerResponse['fixInfo'], // optional
                             $workerResponse['memoryUsage'],
+                            $workerResponse['status'],
                         ));
 
                         // Dispatch an event for each file processed and dispatch its status (required for progress output)
@@ -428,6 +437,8 @@ final class Runner
                     }
 
                     if (ParallelAction::WORKER_GET_FILE_CHUNK === $workerResponse['action']) {
+                        // no payload to assert on
+
                         // Request another chunk of files, if still available
                         $fileChunk = $getFileChunk();
 
@@ -444,6 +455,15 @@ final class Runner
                     }
 
                     if (ParallelAction::WORKER_ERROR_REPORT === $workerResponse['action']) {
+                        \assert(isset(
+                            $workerResponse['class'],
+                            $workerResponse['message'],
+                            $workerResponse['file'],
+                            $workerResponse['line'],
+                            $workerResponse['code'],
+                            $workerResponse['trace'],
+                        ));
+
                         throw WorkerException::fromRaw($workerResponse); // @phpstan-ignore-line
                     }
 
