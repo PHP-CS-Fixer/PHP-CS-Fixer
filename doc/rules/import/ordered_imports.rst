@@ -34,6 +34,8 @@ Allowed types: ``list<string>`` and ``null``
 
 Default value: ``null``
 
+Default value (future-mode): ``['class', 'function', 'const']``
+
 ``sort_algorithm``
 ~~~~~~~~~~~~~~~~~~
 
