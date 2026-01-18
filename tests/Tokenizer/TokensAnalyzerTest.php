@@ -914,6 +914,22 @@ enum Foo: string
                 }
                 PHP,
         ];
+
+        yield 'closure in attribute' => [
+            [
+                46 => [
+                    'classIndex' => 1,
+                    'type' => 'method',
+                ],
+            ],
+            <<<'PHP'
+                <?php class Foo {
+                    #[WithRegularAttribute(static function (): void {})]
+                    #[WithNamedAttribute(foo: static function (): void {})]
+                    function yes() {}
+                }
+                PHP,
+        ];
     }
 
     /**
