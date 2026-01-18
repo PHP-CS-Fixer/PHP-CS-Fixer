@@ -410,7 +410,7 @@ final class Runner
                             $this->cacheManager->setFileHash($workerResponse['file'], $workerResponse['fileHash']);
                         }
 
-                        foreach ($workerResponse['errors'] ?? [] as $error) {
+                        foreach ($workerResponse['errors'] as $error) {
                             $this->errorsManager->report(new Error(
                                 $error['type'],
                                 $error['filePath'],
@@ -468,7 +468,7 @@ final class Runner
                             $workerResponse['trace'],
                         ));
 
-                        throw WorkerException::fromRaw($workerResponse); // @phpstan-ignore-line
+                        throw WorkerException::fromRaw($workerResponse);
                     }
 
                     throw new ParallelisationException('Unsupported action: '.($workerResponse['action'] ?? 'n/a'));
