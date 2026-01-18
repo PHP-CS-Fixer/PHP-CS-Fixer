@@ -138,7 +138,9 @@ final class WorkerCommand extends Command
 
                     // [REACT] Listen for messages from the parallelisation operator (analysis requests)
                     $in->on('data', function (array $json) use ($loop, $runner, $out): void {
-                        $action = $json['action'] ?? null;
+                        \assert(isset($json['action']));
+
+                        $action = $json['action'];
 
                         // Parallelisation operator does not have more to do, let's close the connection
                         if (ParallelAction::RUNNER_THANK_YOU === $action) {

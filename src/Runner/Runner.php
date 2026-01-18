@@ -329,6 +329,8 @@ final class Runner
 
             // [REACT] Bind connection when worker's process requests "hello" action (enables 2-way communication)
             $decoder->on('data', static function (array $data) use ($processPool, $getFileChunk, $decoder, $encoder): void {
+                \assert(isset($data['action']));
+
                 if (ParallelAction::WORKER_HELLO !== $data['action']) {
                     return;
                 }
@@ -388,6 +390,8 @@ final class Runner
             $process->start(
                 // [REACT] Handle workers' responses (multiple actions possible)
                 function (array $workerResponse) use ($processPool, $process, $identifier, $getFileChunk, &$changed): void {
+                    \assert(isset($workerResponse['action']));
+
                     // File analysis result (we want close-to-realtime progress with frequent cache savings)
                     if (ParallelAction::WORKER_RESULT === $workerResponse['action']) {
                         \assert(isset(
