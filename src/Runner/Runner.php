@@ -603,6 +603,15 @@ final class Runner
                     $tokens->clearEmptyTokens();
                     $tokens->clearChanged();
                     $appliedFixers[] = $fixer->getName();
+                    if (filter_var(getenv('PHP_CS_FIXER_DEBUG'), \FILTER_VALIDATE_BOOL)) {
+                        try {
+                            $this->linter->lintSource($tokens->generateCode())->check();
+                        } catch (LintingException $e) {
+                            echo "\n\nFixer {$fixer->getName()} introduced linting issue:\n\n{$tokens->generateCode()}\n";
+
+                            exit(1);
+                        }
+                    }
                 }
             }
         } catch (\ParseError $e) {
