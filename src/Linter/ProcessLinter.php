@@ -91,6 +91,8 @@ final class ProcessLinter implements LinterInterface
      * Disable the deserialization of the class to prevent attacker executing
      * code by leveraging the __destruct method.
      *
+     * @param array<string, mixed> $data
+     *
      * @see https://owasp.org/www-community/vulnerabilities/PHP_Object_Injection
      */
     public function __unserialize(array $data): void
