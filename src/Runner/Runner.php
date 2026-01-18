@@ -386,6 +386,10 @@ final class Runner
                 function (array $workerResponse) use ($processPool, $process, $identifier, $getFileChunk, &$changed): void {
                     // File analysis result (we want close-to-realtime progress with frequent cache savings)
                     if (ParallelAction::WORKER_RESULT === $workerResponse['action']) {
+                        \assert(isset(
+                            $workerResponse['memoryUsage'],
+                        ));
+
                         // Dispatch an event for each file processed and dispatch its status (required for progress output)
                         $this->dispatchEvent(FileProcessed::NAME, new FileProcessed($workerResponse['status']));
 
