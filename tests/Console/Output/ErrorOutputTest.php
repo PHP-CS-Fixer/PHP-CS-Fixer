@@ -172,9 +172,6 @@ Files that were not fixed due to errors reported during the_process:
                                               '.'
 
       Applied fixers: TheFixer
-      ---------- begin diff ----------
-
-      ----------- end diff -----------
 ',
                 __DIR__.\DIRECTORY_SEPARATOR,
             ),
