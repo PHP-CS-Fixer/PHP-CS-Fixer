@@ -821,6 +821,12 @@ final class TokensAnalyzer
                 continue;
             }
 
+            if ($token->isGivenKind(FCT::T_ATTRIBUTE)) {
+                $index = $this->tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
+
+                continue;
+            }
+
             if ($token->isGivenKind(\T_FUNCTION)) {
                 $elements[$index] = [
                     'classIndex' => $classIndex,
