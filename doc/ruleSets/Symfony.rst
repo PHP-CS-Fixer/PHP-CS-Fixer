@@ -99,6 +99,7 @@ Rules
 - `no_unused_imports <./../rules/import/no_unused_imports.rst>`_
 - `no_useless_concat_operator <./../rules/operator/no_useless_concat_operator.rst>`_
 - `no_useless_nullsafe_operator <./../rules/operator/no_useless_nullsafe_operator.rst>`_
+- `no_useless_return <./../rules/return_notation/no_useless_return.rst>`_
 - `no_whitespace_before_comma_in_array <./../rules/array_notation/no_whitespace_before_comma_in_array.rst>`_ with config:
 
   ``['after_heredoc' => true]``
