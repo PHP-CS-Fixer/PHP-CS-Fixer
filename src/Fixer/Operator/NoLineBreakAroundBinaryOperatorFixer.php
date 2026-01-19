@@ -171,13 +171,11 @@ final class NoLineBreakAroundBinaryOperatorFixer extends AbstractFixer implement
             return;
         }
 
-        $currentIndexContent = $tokens[$index]->getContent();
-        if (!str_contains($currentIndexContent, "\n")) {
+        if (!str_contains($tokens[$index]->getContent(), "\n")) {
             return;
         }
 
-        $nextIndexContent = $tokens[$index + 1]->getContent();
-        if (str_contains($nextIndexContent, '/*')) {
+        if (str_contains($tokens[$index + 1]->getContent(), '/*')) {
             return;
         }
 
