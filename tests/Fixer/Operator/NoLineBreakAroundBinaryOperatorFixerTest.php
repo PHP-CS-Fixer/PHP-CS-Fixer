@@ -146,8 +146,15 @@ final class NoLineBreakAroundBinaryOperatorFixerTest extends AbstractFixerTestCa
             '<?php
                 $var1 = "Text" . // Some comment
                     "Text2";
-                $var2 = 1234 + // Some comment 2
+                $var2 = 1234 +
+                // Some comment
+                // Some comment
                     4567;
+                $var1 = "Text" .
+                /**
+                 * Some comment
+                 */
+                    "Text2";
             ',
         ];
 

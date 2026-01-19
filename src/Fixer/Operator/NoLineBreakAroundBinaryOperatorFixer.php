@@ -167,12 +167,17 @@ final class NoLineBreakAroundBinaryOperatorFixer extends AbstractFixer implement
 
     private function removeLineBreak(Tokens $tokens, int $index): void
     {
-        if (!$tokens[$index]->isWhitespace()) {
+        if (!$tokens[$index]->isWhitespace() || $tokens[$index + 1]->isComment()) {
             return;
         }
 
-        $content = $tokens[$index]->getContent();
-        if (!str_contains($content, "\n")) {
+        $currentIndexContent = $tokens[$index]->getContent();
+        if (!str_contains($currentIndexContent, "\n")) {
+            return;
+        }
+
+        $nextIndexContent = $tokens[$index + 1]->getContent();
+        if (str_contains($nextIndexContent, "/*")) {
             return;
         }
 
