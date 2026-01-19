@@ -344,7 +344,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
     /**
      * {@inheritdoc}
      *
-     * Must run after ArrayIndentationFixer, ArraySyntaxFixer, AssignNullCoalescingToCoalesceEqualFixer, ListSyntaxFixer, LongToShorthandOperatorFixer, ModernizeStrposFixer, NoMultilineWhitespaceAroundDoubleArrowFixer, NoUnsetCastFixer, PowToExponentiationFixer, StandardizeNotEqualsFixer, StrictComparisonFixer, BinaryOperatorSpacesFixer.
+     * Must run after ArrayIndentationFixer, ArraySyntaxFixer, AssignNullCoalescingToCoalesceEqualFixer, ListSyntaxFixer, LongToShorthandOperatorFixer, ModernizeStrposFixer, NoLineBreakAroundBinaryOperatorFixer, NoMultilineWhitespaceAroundDoubleArrowFixer, NoUnsetCastFixer, PowToExponentiationFixer, StandardizeNotEqualsFixer, StrictComparisonFixer.
      */
     public function getPriority(): int
     {

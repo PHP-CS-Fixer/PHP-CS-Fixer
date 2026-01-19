@@ -110,11 +110,11 @@ final class NoLineBreakAroundBinaryOperatorFixer extends AbstractFixer implement
     /**
      * {@inheritdoc}
      *
-     * Must run after ArrayIndentationFixer, ArraySyntaxFixer, AssignNullCoalescingToCoalesceEqualFixer, ListSyntaxFixer, LongToShorthandOperatorFixer, ModernizeStrposFixer, NoMultilineWhitespaceAroundDoubleArrowFixer, NoUnsetCastFixer, PowToExponentiationFixer, StandardizeNotEqualsFixer, StrictComparisonFixer.
+     * Must run before BinaryOperatorSpacesFixer.
      */
     public function getPriority(): int
     {
-        return -33;
+        return -31;
     }
 
     public function isCandidate(Tokens $tokens): bool

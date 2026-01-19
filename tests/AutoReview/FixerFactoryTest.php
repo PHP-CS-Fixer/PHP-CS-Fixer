@@ -636,6 +636,9 @@ final class FixerFactoryTest extends TestCase
             'no_leading_import_slash' => [
                 'ordered_imports',
             ],
+            'no_line_break_around_binary_operator' => [
+                'binary_operator_spaces',
+            ],
             'no_multiline_whitespace_around_double_arrow' => [
                 'binary_operator_spaces',
                 'method_argument_space',
