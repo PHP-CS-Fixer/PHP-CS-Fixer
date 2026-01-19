@@ -602,6 +602,9 @@ Operator
 - `new_with_parentheses <./operator/new_with_parentheses.rst>`_ *(configurable)*
 
   All instances created with ``new`` keyword must (not) be followed by parentheses.
+- `no_line_break_around_binary_operator <./operator/no_line_break_around_binary_operator.rst>`_ *(configurable)*
+
+  Binary operators should be on the same line as their operands.
 - `no_space_around_double_colon <./operator/no_space_around_double_colon.rst>`_
 
   There must be no space around double colons (also called Scope Resolution Operator or Paamayim Nekudotayim).
