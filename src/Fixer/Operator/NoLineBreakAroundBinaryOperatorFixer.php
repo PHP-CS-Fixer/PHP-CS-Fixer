@@ -177,7 +177,7 @@ final class NoLineBreakAroundBinaryOperatorFixer extends AbstractFixer implement
         }
 
         $nextIndexContent = $tokens[$index + 1]->getContent();
-        if (str_contains($nextIndexContent, "/*")) {
+        if (str_contains($nextIndexContent, '/*')) {
             return;
         }
 
