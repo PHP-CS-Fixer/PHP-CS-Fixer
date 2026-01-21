@@ -147,11 +147,19 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
 
                     return true;
                 }])
-                ->setDefault([
-                    'getrandmax' => 'mt_getrandmax',
-                    'rand' => Future::getV4OrV3('random_int', 'mt_rand'),
-                    'srand' => 'mt_srand',
-                ])
+                ->setDefault(Future::getV4OrV3(
+                    [
+                        'mt_getrandmax' => 'getrandmax',
+                        'mt_rand' => 'random_int',
+                        'mt_srand' => 'srand',
+                        'rand' => 'random_int',
+                    ],
+                    [
+                        'getrandmax' => 'mt_getrandmax',
+                        'rand' => 'mt_rand',
+                        'srand' => 'mt_srand',
+                    ],
+                ))
                 ->getOption(),
         ]);
     }
