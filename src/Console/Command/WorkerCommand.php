@@ -176,6 +176,7 @@ final class WorkerCommand extends Command
                                 'status' => $this->events[0]->getStatus(),
                                 'fixInfo' => array_pop($analysisResult),
                                 'errors' => $this->errorsManager->forPath($path),
+                                'memoryUsage' => memory_get_peak_usage(true),
                             ]);
                         }
 

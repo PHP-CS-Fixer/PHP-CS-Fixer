@@ -25,6 +25,8 @@ Allowed values: ``'none'`` and ``'one'``
 
 Default value: ``'one'``
 
+Default value (future-mode): ``'none'``
+
 ``closure_function_spacing``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

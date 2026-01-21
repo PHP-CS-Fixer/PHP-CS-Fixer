@@ -26,6 +26,8 @@ Allowed types: ``bool``
 
 Default value: ``true``
 
+Default value (future-mode): ``false``
+
 ``named_class``
 ~~~~~~~~~~~~~~~
 
