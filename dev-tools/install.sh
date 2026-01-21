@@ -19,7 +19,7 @@ cd "$(dirname "$0")"
 
 mkdir -p bin
 
-VERSION_CB="v2.25.19"
+VERSION_CB="v2.26.5"
 VERSION_SC="v0.11.0"
 
 OS_KERNEL=$(uname -s | tr '[:upper:]' '[:lower:]')

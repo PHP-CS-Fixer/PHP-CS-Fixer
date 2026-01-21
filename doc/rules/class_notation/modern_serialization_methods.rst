@@ -34,9 +34,11 @@ Example #1
 Rule sets
 ---------
 
-The rule is part of the following rule set:
+The rule is part of the following rule sets:
 
 - `@PHP8x5Migration:risky <./../../ruleSets/PHP8x5MigrationRisky.rst>`_
+- `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
+- `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
 References
 ----------

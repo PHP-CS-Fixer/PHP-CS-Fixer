@@ -228,6 +228,19 @@ class srand extends SrandClass{
         ];
 
         yield [
+            '<?php srand(123); return random_int(0, getrandmax()) + random_int(456, 789);',
+            '<?php mt_srand(123); return mt_rand(0, mt_getrandmax()) + rand(456, 789);',
+            [
+                'replacements' => [
+                    'mt_getrandmax' => 'getrandmax',
+                    'mt_rand' => 'random_int',
+                    'mt_srand' => 'srand',
+                    'rand' => 'random_int',
+                ],
+            ],
+        ];
+
+        yield [
             '<?php mt_srand($a,);',
             '<?php srand($a,);',
         ];

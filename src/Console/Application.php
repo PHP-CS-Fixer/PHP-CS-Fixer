@@ -88,7 +88,7 @@ final class Application extends BaseApplication
             return $this->addCommand($command);
         }
 
-        return parent::add($command);
+        return parent::add($command); // @phpstan-ignore-line
     }
 
     public static function getMajorVersion(): int
