@@ -30,7 +30,7 @@ final class PHP7x0MigrationRiskySet extends AbstractMigrationSetDefinition
             'combine_nested_dirname' => true,
             'declare_strict_types' => true,
             'non_printable_character' => true,
-            'random_api_migration' => [
+            'random_api_migration' => [ // @TODO v4 replace with `true`
                 'replacements' => [
                     'mt_getrandmax' => 'getrandmax',
                     'mt_rand' => 'random_int',
