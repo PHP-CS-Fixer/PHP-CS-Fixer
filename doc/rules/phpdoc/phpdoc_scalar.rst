@@ -25,6 +25,8 @@ Allowed values: a subset of ``['boolean', 'callback', 'double', 'integer', 'neve
 
 Default value: ``['boolean', 'callback', 'double', 'integer', 'real', 'str']``
 
+Default value (future-mode): ``['boolean', 'callback', 'double', 'integer', 'never-return', 'never-returns', 'no-return', 'real', 'str']``
+
 Examples
 --------
 

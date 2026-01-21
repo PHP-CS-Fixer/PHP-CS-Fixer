@@ -23,5 +23,5 @@ Rules
 - `non_printable_character <./../rules/basic/non_printable_character.rst>`_
 - `random_api_migration <./../rules/alias/random_api_migration.rst>`_ with config:
 
-  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
+  ``['replacements' => ['mt_getrandmax' => 'getrandmax', 'mt_rand' => 'random_int', 'mt_srand' => 'srand', 'rand' => 'random_int']]``
 
