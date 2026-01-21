@@ -29,6 +29,8 @@ Allowed types: ``bool``
 
 Default value: ``true``
 
+Default value (future-mode): ``false``
+
 ``allow_single_line_empty_anonymous_classes``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
