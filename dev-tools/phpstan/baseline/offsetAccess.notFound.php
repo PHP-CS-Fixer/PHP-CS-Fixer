@@ -57,11 +57,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Console/Command/SelfUpdateCommand.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset \'files\' might not exist on array.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/Command/WorkerCommand.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset 0 might not exist on list<string>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Console/SelfUpdate/NewVersionChecker.php',
@@ -865,26 +860,6 @@ $ignoreErrors[] = [
     'rawMessage' => 'Offset string might not exist on array<string, array<string, mixed>|true>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/RuleSet/RuleSet.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset \'action\' might not exist on array.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Runner/Runner.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset \'file\' might not exist on non-empty-array.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Runner/Runner.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset \'identifier\' might not exist on non-empty-array.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Runner/Runner.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset \'status\' might not exist on non-empty-array.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Runner/Runner.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Offset 0 might not exist on list<non-empty-string>.',
