@@ -31,6 +31,8 @@ Allowed types: ``bool``
 
 Default value: ``false``
 
+Default value (future-mode): ``true``
+
 Examples
 --------
 
