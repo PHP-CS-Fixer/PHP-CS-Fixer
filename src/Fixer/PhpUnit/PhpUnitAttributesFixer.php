@@ -28,7 +28,6 @@ use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
-use PhpCsFixer\Tokenizer\Analyzer\FullyQualifiedNameAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Processor\ImportProcessor;
 use PhpCsFixer\Tokenizer\Token;
@@ -119,8 +118,6 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
 
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
-        $fullyQualifiedNameAnalyzer = new FullyQualifiedNameAnalyzer($tokens);
-
         $classIndex = $tokens->getPrevTokenOfKind($startIndex, [[\T_CLASS]]);
         $docBlockIndex = $this->getDocBlockIndex($tokens, $classIndex);
         if ($tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT)) {
@@ -155,7 +152,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
                 /** @phpstan-ignore-next-line */
                 $tokensToInsert = self::{$this->fixingMap[$annotationName]}($tokens, $index, $annotation);
 
-                $presentAttributes[$annotationName] ??= self::isAttributeAlreadyPresent($fullyQualifiedNameAnalyzer, $tokens, $index, $tokensToInsert);
+                $presentAttributes[$annotationName] ??= self::isAttributeAlreadyPresent($tokens, $index, $tokensToInsert);
 
                 if ([] === $tokensToInsert) {
                     continue;
@@ -242,7 +239,6 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
      * @param list<Token> $tokensToInsert
      */
     private static function isAttributeAlreadyPresent(
-        FullyQualifiedNameAnalyzer $fullyQualifiedNameAnalyzer,
         Tokens $tokens,
         int $index,
         array $tokensToInsert
@@ -265,6 +261,10 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
                 $className = ltrim(AttributeAnalyzer::determineAttributeFullyQualifiedName($tokens, $attribute['name'], $attribute['start']), '\\');
 
                 if ($insertedClassName === $className) {
+                    return true;
+                }
+
+                if ('PHPUnit\Framework\Attributes\TestWithJson' === $insertedClassName && 'PHPUnit\Framework\Attributes\TestWith' === $className) {
                     return true;
                 }
             }

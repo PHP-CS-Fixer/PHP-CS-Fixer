@@ -21,9 +21,11 @@ use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOptionInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
+use PhpCsFixer\Future;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\DeprecatedRuleSetDefinitionInterface;
@@ -109,6 +111,8 @@ final class FixerDocumentGenerator
         }
 
         if ($fixer instanceof ConfigurableFixerInterface) {
+            $fixerInFutureMode = self::createFixerInFutureMode($fixer);
+
             $doc .= <<<'RST'
 
 
@@ -157,8 +161,16 @@ final class FixerDocumentGenerator
                 }
 
                 if ($option->hasDefault()) {
-                    $default = Utils::toString($option->getDefault());
-                    $optionInfo .= "\n\nDefault value: ``{$default}``";
+                    $optionInfo .= \sprintf("\n\nDefault value: ``%s``", Utils::toString($option->getDefault()));
+
+                    $optionInFutureMode = array_find(
+                        $fixerInFutureMode->getConfigurationDefinition()->getOptions(),
+                        static fn (FixerOptionInterface $opt): bool => $option->getName() === $opt->getName(),
+                    );
+                    \assert(null !== $optionInFutureMode); // if rule exist in v3, shall exist in future mode too, as it does not remove options
+                    if ($optionInFutureMode->getDefault() !== $option->getDefault()) {
+                        $optionInfo .= \sprintf("\n\nDefault value (future-mode): ``%s``", Utils::toString($optionInFutureMode->getDefault()));
+                    }
                 } else {
                     $optionInfo .= "\n\nThis option is required.";
                 }
@@ -353,6 +365,24 @@ final class FixerDocumentGenerator
         }
 
         return "{$documentation}\n";
+    }
+
+    /**
+     * @template T of FixerInterface
+     *
+     * @param T $fixer
+     *
+     * @return T
+     */
+    private static function createFixerInFutureMode(FixerInterface $fixer): FixerInterface
+    {
+        $object = Future::runWithEnforcedFutureMode(
+            static fn () => (new \ReflectionObject($fixer))->newInstance(),
+        );
+
+        \assert($object instanceof $fixer);
+
+        return $object;
     }
 
     private function generateSampleDiff(FixerInterface $fixer, CodeSampleInterface $sample, int $sampleNumber, string $ruleName): string

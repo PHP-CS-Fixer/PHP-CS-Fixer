@@ -50,7 +50,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class Application extends BaseApplication
 {
     public const NAME = 'PHP CS Fixer';
-    public const VERSION = '3.92.4-DEV';
+    public const VERSION = '3.92.6-DEV';
     public const VERSION_CODENAME = 'Exceptional Exception';
 
     /**
@@ -88,7 +88,7 @@ final class Application extends BaseApplication
             return $this->addCommand($command);
         }
 
-        return parent::add($command);
+        return parent::add($command); // @phpstan-ignore-line
     }
 
     public static function getMajorVersion(): int

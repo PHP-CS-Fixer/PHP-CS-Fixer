@@ -2177,6 +2177,9 @@ use Foo\Bar\Bam;
 /**
  * @see Baz
  * @see Bam
+ * @see Baz::$someProp
+ * @see Bam::someMethod()
+ * @see Baz::SOME_CONST
  */
 class SomeClass
 {
@@ -2198,6 +2201,9 @@ use Foo\Bar\Bam;
 /**
  * @see \Foo\Bar\Baz
  * @see \Foo\Bar\Bam
+ * @see \Foo\Bar\Baz::$someProp
+ * @see \Foo\Bar\Bam::someMethod()
+ * @see \Foo\Bar\Baz::SOME_CONST
  */
 class SomeClass
 {

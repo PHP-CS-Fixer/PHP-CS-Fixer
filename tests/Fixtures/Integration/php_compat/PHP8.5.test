@@ -47,6 +47,13 @@ switch ($a) {
         break;
 }
 
+// https://wiki.php.net/rfc/closures_in_const_expr
+class ClosuresInAttibutes
+{
+    #[Attribute123(someName: static function (): void {})]
+    public string $foo;
+}
+
 --INPUT--
 <?php
 
@@ -85,4 +92,11 @@ switch ($a) {
 
     default;
         break;
+}
+
+// https://wiki.php.net/rfc/closures_in_const_expr
+class ClosuresInAttibutes
+{
+    #[Attribute123(someName: static function (): void {})]
+    public string $foo;
 }
