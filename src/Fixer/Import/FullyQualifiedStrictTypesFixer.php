@@ -675,6 +675,14 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
             return $matches[1].$matches[2].$matches[3].$this->fixPhpDocType($matches[4], $uses, $namespaceName);
         }, $phpDocContent);
 
+        if (\in_array('see', $allowedTags, true)) {
+            $phpDocContentNew = Preg::replaceCallback(
+                '/([*{]\h*)@see(\h+)('.self::REGEX_CLASS.')(::(?:\$\w+|\w+\(\)))(?!(?!\})\S)/',
+                fn ($matches) => $matches[1].'@see'.$matches[2].$this->fixPhpDocType($matches[3], $uses, $namespaceName).$matches[5],
+                $phpDocContentNew,
+            );
+        }
+
         if ($phpDocContentNew !== $phpDocContent) {
             $tokens[$index] = new Token([\T_DOC_COMMENT, $phpDocContentNew]);
         }
