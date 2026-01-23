@@ -212,6 +212,9 @@ Class Notation
 - `no_php4_constructor <./class_notation/no_php4_constructor.rst>`_ *(risky)*
 
   Convert PHP4-style constructors to ``__construct``.
+- `no_redundant_readonly_property <./class_notation/no_redundant_readonly_property.rst>`_
+
+  Removes redundant readonly from properties in readonly classes.
 - `no_unneeded_final_method <./class_notation/no_unneeded_final_method.rst>`_ *(risky, configurable)*
 
   Removes ``final`` from methods where possible.
