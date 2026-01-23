@@ -32,6 +32,8 @@ Allowed values: ``'self'``, ``'static'`` and ``'this'``
 
 Default value: ``'static'``
 
+Default value (future-mode): ``'this'``
+
 ``methods``
 ~~~~~~~~~~~
 
