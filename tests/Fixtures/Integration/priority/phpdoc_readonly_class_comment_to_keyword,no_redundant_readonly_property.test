@@ -1,0 +1,26 @@
+--TEST--
+Integration of fixers: phpdoc_readonly_class_comment_to_keyword,no_redundant_readonly_property.
+--RULESET--
+{"phpdoc_readonly_class_comment_to_keyword": true, "no_redundant_readonly_property": true}
+--REQUIREMENTS--
+{"php": 80200}
+--EXPECT--
+<?php
+/**
+ */
+readonly class C2
+{
+    private int $bar;
+    private int $baz;
+}
+
+--INPUT--
+<?php
+/**
+ * @readonly
+ */
+class C2
+{
+    private readonly int $bar;
+    private readonly int $baz;
+}
