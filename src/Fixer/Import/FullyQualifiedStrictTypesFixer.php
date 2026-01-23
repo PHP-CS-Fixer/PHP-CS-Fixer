@@ -388,7 +388,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
                 }
             }
 
-            if ([] !== $this->symbolsForImport) {
+            if ([] !== $this->symbolsForImport) { // @phpstan-ignore-line notIdentical.alwaysFalse PHP started to complain, please fix me
                 if (null !== $lastUse) {
                     $atIndex = $lastUse->getEndIndex() + 1;
                 } elseif (0 !== $namespace->getEndIndex()) {
