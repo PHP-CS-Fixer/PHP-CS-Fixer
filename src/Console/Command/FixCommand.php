@@ -433,7 +433,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
             $changed,
             \count($finder),
             (int) $fixEvent->getDuration(), // ignore microseconds fraction
-            $fixEvent->getMemory(),
+            memory_get_peak_usage(true) + $runner->getWorkersMemoryUsage(),
             OutputInterface::VERBOSITY_VERBOSE <= $verbosity,
             $resolver->isDryRun(),
             $output->isDecorated(),

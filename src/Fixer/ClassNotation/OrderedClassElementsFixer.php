@@ -379,6 +379,12 @@ Custom values:
             for ($i = $startIndex;; ++$i) {
                 $token = $tokens[$i];
 
+                if ($token->isGivenKind(FCT::T_ATTRIBUTE)) {
+                    $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $i);
+
+                    continue;
+                }
+
                 // class end
                 if ($token->equals('}')) {
                     return $elements;
