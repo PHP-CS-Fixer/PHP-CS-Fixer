@@ -313,18 +313,23 @@ final class NoLineBreakNearBinaryOperatorFixerTest extends AbstractFixerTestCase
                 ];
                 $var2 ??= new stdClass();
                 $var3 *= 123;
-                $var4 /= 12456767;
+                $var4 /=
+                12456767;
                 $var5 .= "Text";
-                $var6 &= true;
+                $var6
+                    &= true;
                 $var7 |= false;
                 $var8 = $var5
                     . "Text2";
             ',
             '<?php
-                $var1 =
+                $var1
+                =
                 [
-                    "foo" => "bar",
-                    "bar" => "baz",
+                    "foo"
+                    => "bar",
+                    "bar" =>
+                    "baz",
                 ];
                 $var2 ??=
                 new stdClass();
@@ -344,9 +349,11 @@ final class NoLineBreakNearBinaryOperatorFixerTest extends AbstractFixerTestCase
                     "Text2";
             ',
             [
-                'default_strategy' => NoLineBreakNearBinaryOperatorFixer::AROUND,
                 'operators' => [
-                    '.' => NoLineBreakNearBinaryOperatorFixer::AFTER,
+                    '/=' => NoLineBreakNearBinaryOperatorFixer::BEFORE,
+                    '.=' => NoLineBreakNearBinaryOperatorFixer::AROUND,
+                    '=' => NoLineBreakNearBinaryOperatorFixer::AROUND,
+                    '=>' => NoLineBreakNearBinaryOperatorFixer::AROUND,
                 ],
             ],
         ];
