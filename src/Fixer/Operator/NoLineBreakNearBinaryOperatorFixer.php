@@ -171,8 +171,9 @@ final class NoLineBreakNearBinaryOperatorFixer extends AbstractFixer implements 
                             = [
                                 'foo'
                                     => 'bar',
-                                'bar' =>
-                                'baz',
+                                'bar'
+                                    =>
+                                    'baz',
                             ];
 
                         $var2

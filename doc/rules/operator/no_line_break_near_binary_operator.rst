@@ -154,8 +154,9 @@ With configuration: ``['operators' => ['=>' => 'around']]``.
         = [
    -        'foo'
    -            => 'bar',
-   -        'bar' =>
-   -        'baz',
+   -        'bar'
+   -            =>
+   -            'baz',
    +        'foo' => 'bar',
    +        'bar' => 'baz',
         ];
