@@ -4,6 +4,14 @@ Rule ``no_multiline_whitespace_around_double_arrow``
 
 Operator ``=>`` should not be surrounded by multi-line whitespaces.
 
+Warning
+-------
+
+This rule is DEPRECATED and will be removed in the next major version 4.0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You should use ``no_line_break_near_binary_operator`` instead.
+
 Examples
 --------
 

@@ -45,7 +45,7 @@ Array Notation
 - `array_syntax <./array_notation/array_syntax.rst>`_ *(configurable)*
 
   PHP arrays should be declared using the configured syntax.
-- `no_multiline_whitespace_around_double_arrow <./array_notation/no_multiline_whitespace_around_double_arrow.rst>`_
+- `no_multiline_whitespace_around_double_arrow <./array_notation/no_multiline_whitespace_around_double_arrow.rst>`_ *(deprecated)*
 
   Operator ``=>`` should not be surrounded by multi-line whitespaces.
 - `no_trailing_comma_in_singleline_array <./array_notation/no_trailing_comma_in_singleline_array.rst>`_ *(deprecated)*
