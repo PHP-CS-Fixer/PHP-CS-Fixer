@@ -327,5 +327,63 @@ final class NoLineBreakNearBinaryOperatorFixerTest extends AbstractFixerTestCase
                 ],
             ],
         ];
+
+        yield 'fix only selected operators' => [
+            '<?php
+                $var1 =
+                [
+                    "foo" => "bar",
+                    "bar" => "baz",
+                ];
+                $var2 ??=
+                new stdClass();
+                $var3 *=
+                    123;
+                $var4 /=
+                12456767;
+                $var5
+                .=
+                "Text";
+                $var6
+                    &=
+                    true;
+                $var7 |= false;
+                $var8 = $var5
+                    .
+                    "Text2";
+            ',
+            '<?php
+                $var1 =
+                [
+                    "foo"
+                        =>
+                        "bar",
+                    "bar"
+                        => "baz",
+                ];
+                $var2 ??=
+                new stdClass();
+                $var3 *=
+                    123;
+                $var4 /=
+                12456767;
+                $var5
+                .=
+                "Text";
+                $var6
+                    &=
+                    true;
+                $var7 |= false;
+                $var8 = $var5
+                    .
+                    "Text2";
+            ',
+            [
+                'default_strategy' => null,
+                'operators' => [
+                    '=>' => NoLineBreakNearBinaryOperatorFixer::AROUND,
+                ],
+            ],
+        ];
     }
 }

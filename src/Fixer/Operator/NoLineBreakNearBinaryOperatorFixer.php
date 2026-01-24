@@ -239,6 +239,9 @@ final class NoLineBreakNearBinaryOperatorFixer extends AbstractFixer implements 
             }
 
             $operatorStrategy ??= $this->configuration['default_strategy'];
+            if ($operatorStrategy === null) {
+                continue;
+            }
 
             if (\in_array($operatorStrategy, [self::BEFORE, self::AROUND], true)) {
                 $prevIndex = $tokens->getPrevNonWhitespace($index);
