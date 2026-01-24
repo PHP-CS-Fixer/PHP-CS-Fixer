@@ -244,14 +244,13 @@ final class NoLineBreakNearBinaryOperatorFixer extends AbstractFixer implements 
             }
 
             if (\in_array($operatorStrategy, [self::BEFORE, self::AROUND], true)) {
-                $prevIndex = $tokens->getPrevNonWhitespace($index);
-                if (null !== $prevIndex) {
-                    $this->removeLineBreak($tokens, $prevIndex + 1);
+                if (!$tokens[$index - 2]->isComment() || str_starts_with($tokens[$index - 2]->getContent(), '/*')) {
+                    $this->removeLineBreak($tokens, $index - 1);
                 }
             }
 
             if (\in_array($operatorStrategy, [self::AFTER, self::AROUND], true)) {
-                if (null !== $tokens->getNextNonWhitespace($index)) {
+                if (!$tokens[$index + 2]->isComment()) {
                     $this->removeLineBreak($tokens, $index + 1);
                 }
             }
@@ -295,18 +294,10 @@ final class NoLineBreakNearBinaryOperatorFixer extends AbstractFixer implements 
 
     private function removeLineBreak(Tokens $tokens, int $index): void
     {
-        if (!$tokens[$index]->isWhitespace() || $tokens[$index + 1]->isComment()) {
-            return;
-        }
+        $token = $tokens[$index];
 
-        if (!str_contains($tokens[$index]->getContent(), "\n")) {
-            return;
+        if ($token->isWhitespace() && !$token->isWhitespace(" \t")) {
+            $tokens[$index] = new Token([\T_WHITESPACE, rtrim($token->getContent()).' ']);
         }
-
-        if (str_contains($tokens[$index + 1]->getContent(), '/*')) {
-            return;
-        }
-
-        $tokens[$index] = new Token([\T_WHITESPACE, ' ']);
     }
 }

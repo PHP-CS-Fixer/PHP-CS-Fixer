@@ -193,7 +193,30 @@ final class NoLineBreakNearBinaryOperatorFixerTest extends AbstractFixerTestCase
             ',
         ];
 
-        yield 'incorrect code (before_operator)' => [
+        yield 'operators with comments (around operator)' => [
+            '<?php
+                $var1 = "Text" . // Some comment
+                    "Text2";
+                $var2 = 1234 +
+                // Some comment
+                // Some comment
+                    4567;
+                $var1 = "Text" .
+                /**
+                 * Some comment
+                 */
+                    "Text2";
+                $foo = [
+                    1 // foo
+                        => $one,
+                    2 => $two,
+                ];
+            ',
+            null,
+            ['default_strategy' => NoLineBreakNearBinaryOperatorFixer::AROUND],
+        ];
+
+        yield 'incorrect code (before operator)' => [
             '<?php
                 $var1 =
                 [
@@ -239,7 +262,7 @@ final class NoLineBreakNearBinaryOperatorFixerTest extends AbstractFixerTestCase
             ['default_strategy' => NoLineBreakNearBinaryOperatorFixer::BEFORE],
         ];
 
-        yield 'incorrect code (around_operator)' => [
+        yield 'incorrect code (around operator)' => [
             '<?php
                 $var1 = [
                     "foo" => "bar",
