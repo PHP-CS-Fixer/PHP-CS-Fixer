@@ -50,11 +50,7 @@ final class Cache implements CacheInterface
 
     public function get(string $file): ?string
     {
-        if (!$this->has($file)) {
-            return null;
-        }
-
-        return $this->hashes[$file];
+        return $this->hashes[$file] ?? null;
     }
 
     public function set(string $file, string $hash): void
