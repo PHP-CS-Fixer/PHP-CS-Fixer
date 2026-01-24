@@ -143,29 +143,25 @@ With configuration: ``['default_strategy' => 'around']``.
 Example #4
 ~~~~~~~~~~
 
-With configuration: ``['operators' => ['=' => 'around']]``.
+With configuration: ``['operators' => ['=>' => 'around']]``.
 
 .. code-block:: diff
 
    --- Original
    +++ New
     <?php
-    $var1 = [
-            'foo' => 'bar',
-            'bar' => 'baz',
+    $var1
+        = [
+   -        'foo'
+   -            => 'bar',
+   -        'bar' =>
+   -        'baz',
+   +        'foo' => 'bar',
+   +        'bar' => 'baz',
         ];
 
     $var2
         ??= new stdClass();
-
-   -$var3 =
-   -[
-   +$var3 = [
-        'foo'
-            => 'bar',
-        'bar'
-            => 'baz',
-    ];
 
     $var4 = 'Some text'
         . 'Second text';

@@ -167,27 +167,22 @@ final class NoLineBreakNearBinaryOperatorFixer extends AbstractFixer implements 
                 new CodeSample(
                     <<<'PHP'
                         <?php
-                        $var1 = [
-                                'foo' => 'bar',
-                                'bar' => 'baz',
+                        $var1
+                            = [
+                                'foo'
+                                    => 'bar',
+                                'bar' =>
+                                'baz',
                             ];
 
                         $var2
                             ??= new stdClass();
 
-                        $var3 =
-                        [
-                            'foo'
-                                => 'bar',
-                            'bar'
-                                => 'baz',
-                        ];
-
                         $var4 = 'Some text'
                             . 'Second text';
 
                         PHP,
-                    ['operators' => ['=' => self::AROUND]],
+                    ['operators' => ['=>' => self::AROUND]],
                 ),
             ],
         );
