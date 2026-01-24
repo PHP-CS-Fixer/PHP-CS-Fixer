@@ -15,9 +15,11 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Phpdoc;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\AbstractProxyFixer;
 use PhpCsFixer\DocBlock\Annotation;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\TypeExpression;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
@@ -28,7 +30,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PhpdocTypesNoDuplicatesFixer extends AbstractFixer
+final class PhpdocTypesNoDuplicatesFixer extends AbstractProxyFixer implements DeprecatedFixerInterface
 {
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -52,54 +54,22 @@ final class PhpdocTypesNoDuplicatesFixer extends AbstractFixer
      * {@inheritdoc}
      *
      * Must run before PhpdocAlignFixer.
-     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocArrayTypeFixer, PhpdocIndentFixer, PhpdocListTypeFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
+     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority(): int
     {
-        return 0;
+        return $this->createProxyFixers()[0]->getPriority();
     }
 
-    public function isCandidate(Tokens $tokens): bool
+    public function getSuccessorsNames(): array
     {
-        return $tokens->isTokenKindFound(\T_DOC_COMMENT);
+        return array_keys($this->proxyFixers);
     }
 
-    protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
+    protected function createProxyFixers(): array
     {
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(\T_DOC_COMMENT)) {
-                continue;
-            }
+        $fixer = new PhpdocNoDuplicateTypesFixer();
 
-            $doc = new DocBlock($token->getContent());
-            $annotations = $doc->getAnnotationsOfType(Annotation::TAGS_WITH_TYPES);
-
-            if (0 === \count($annotations)) {
-                continue;
-            }
-
-            foreach ($annotations as $annotation) {
-                // fix main types
-                if (null !== $annotation->getTypeExpression()) {
-                    $annotation->setTypes(
-                        $annotation->getTypeExpression()
-                            ->removeDuplicateTypes()
-                            ->getTypes(),
-                    );
-                }
-
-                // fix @method parameters types
-                $line = $doc->getLine($annotation->getStart());
-                $line->setContent(Preg::replaceCallback('/\*\h*@method\h+'.TypeExpression::REGEX_TYPES.'\h+\K(?&callable)/', static function (array $matches): string {
-                    \assert(isset($matches[0]));
-
-                    $typeExpression = new TypeExpression($matches[0], null, []);
-
-                    return implode('|', $typeExpression->removeDuplicateTypes()->getTypes());
-                }, $line->getContent()));
-            }
-
-            $tokens[$index] = new Token([\T_DOC_COMMENT, $doc->getContent()]);
-        }
+        return [$fixer];
     }
 }

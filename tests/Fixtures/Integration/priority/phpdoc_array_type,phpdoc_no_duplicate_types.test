@@ -1,7 +1,7 @@
 --TEST--
-Integration of fixers: phpdoc_array_type,phpdoc_types_no_duplicates.
+Integration of fixers: phpdoc_array_type,phpdoc_no_duplicate_types.
 --RULESET--
-{"phpdoc_array_type": true, "phpdoc_types_no_duplicates": true}
+{"phpdoc_array_type": true, "phpdoc_no_duplicate_types": true}
 --EXPECT--
 <?php
 /**
