@@ -20,14 +20,6 @@ Example #1
    -=> 2);
    +$a = array(1 => 2);
 
-Rule sets
----------
-
-The rule is part of the following rule sets:
-
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
-- `@Symfony <./../../ruleSets/Symfony.rst>`_
-
 References
 ----------
 
