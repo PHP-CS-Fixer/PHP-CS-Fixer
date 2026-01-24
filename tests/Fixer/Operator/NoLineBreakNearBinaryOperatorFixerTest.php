@@ -256,10 +256,14 @@ final class NoLineBreakNearBinaryOperatorFixerTest extends AbstractFixerTestCase
             '<?php
                 $var1 =
                 [
-                    "foo" => "bar",
-                    "bar" => "baz",
+                    "foo"
+                        =>
+                        "bar",
+                    "bar"
+                        => "baz",
                 ];
-                $var2 ??=
+                $var2
+                ??=
                 new stdClass();
                 $var3 *=
                     123;
