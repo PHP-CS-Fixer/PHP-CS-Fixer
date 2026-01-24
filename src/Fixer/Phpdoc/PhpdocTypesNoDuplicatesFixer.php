@@ -22,6 +22,8 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @deprecated in favour of PhpdocNoDuplicateTypesFixer
  */
 final class PhpdocTypesNoDuplicatesFixer extends AbstractProxyFixer implements DeprecatedFixerInterface
 {
