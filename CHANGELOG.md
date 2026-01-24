@@ -3,6 +3,46 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.93.0
+---------------------
+
+* feat: add `ModernSerializationMethodsFixer` (#9108)
+* feat: Add `NoRedundantReadonlyPropertyFixer` (#9339)
+* feat: add `PhpdocTypesNoDuplicatesFixer` (#9312)
+* feat: do not suggest config file creation if config explicitly skipped with `--config=-` (#9379)
+* feat: improve handling of `@see` tags in `FullyQualifiedStrictTypesFixer` (#9350)
+* feat: PER attribute block no spaces (#9264)
+* feat: php_unit_test_case_static_method_calls - change default 'call_type' to 'this' for v4 (#9328)
+* feat: protected_to_private - add to`@Symfony` set (#9303)
+* feat: PSR/PER-CS - adjust `braces_position` rule (#9329)
+* feat: remove `php_unit_test_case_static_method_calls` from PHPUnit sets (#9341)
+* feat: `@PHP7x0MigrationRisky` - update configuration of `RandomApiMigrationFixer` to match it's newly updated v4 defaults (#9368)
+* feat: `@Symfony:risky` - extend set with `modern_serialization_methods` (#9366)
+* feat: `@Symfony:risky` - extend set with `static_lambda` (#9365)
+* feat: `@Symfony` - enable `no_unneeded_control_parentheses.statements.negative_instanceof` (#9336)
+* feat: `@Symfony` - extend set with `no_useless_else` (#9363)
+* feat: `@Symfony` - extend set with `no_useless_return` (#9364)
+* feat: `RandomApiMigrationFixer` - allow to convert `mt_getrandmax` and `mt_srand` (#9367)
+* fix: properly expose memory usage while running parallel mode (#9352)
+* fix: `ModifierKeywordsFixer` - closure in attribute (#9358)
+* fix: `NoUselessElseFixer` - handle conditional symbol declarations (#9347)
+* fix: `OrderedClassElementsFixer` - closure in attribute (#9357)
+* fix: `PhpUnitAttributesFixer` - do not add for annotation `@testWith` when attribute `TestWith` already present (#9354)
+* refactor: add base key-existence check for cross-process communication in parallel runner (#9360)
+* refactor: FixerDocumentGenerator - limit the scope to create rule instance in future mode only (#9359)
+* test: fix compatibility towards Symfony 8 (#9370)
+* test: update PHP 8.5 compat test to cover closure in attribute and prevent conversion to empty arrow function (#9373)
+* chore: add clarifying `@return` annotations to `Config` (#9337)
+* chore: fix `assign.propertyType` error from PHPStan (#9332)
+* chore: PHPUnit sets - cleanup test, update docs/comments (#9342)
+* chore: simplify `phpstan:baseline` command (#9346)
+* deps: bump crate-ci/typos from 1.41.0 to 1.42.0 (#9338)
+* deps: bump crate-ci/typos from 1.42.0 to 1.42.1 (#9376)
+* deps: bump dev deps (#9369)
+* deps: bump the phpstan group in /dev-tools with 3 updates (#9375)
+* docs: show default value for future mode (#9355)
+* DX: add env for easier finding which fixer break a PHP syntax (#9356)
+
 Changelog for v3.92.5
 ---------------------
 
