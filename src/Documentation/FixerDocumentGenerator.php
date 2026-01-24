@@ -111,6 +111,8 @@ final class FixerDocumentGenerator
         }
 
         if ($fixer instanceof ConfigurableFixerInterface) {
+            $fixerInFutureMode = self::createFixerInFutureMode($fixer);
+
             $doc .= <<<'RST'
 
 
@@ -159,7 +161,16 @@ final class FixerDocumentGenerator
                 }
 
                 if ($option->hasDefault()) {
-                    $optionInfo .= self::getDefaultValues($fixer, $option);
+                    $optionInfo .= \sprintf("\n\nDefault value: ``%s``", Utils::toString($option->getDefault()));
+
+                    $optionInFutureMode = array_find(
+                        $fixerInFutureMode->getConfigurationDefinition()->getOptions(),
+                        static fn (FixerOptionInterface $opt): bool => $option->getName() === $opt->getName(),
+                    );
+                    \assert(null !== $optionInFutureMode); // if rule exist in v3, shall exist in future mode too, as it does not remove options
+                    if ($optionInFutureMode->getDefault() !== $option->getDefault()) {
+                        $optionInfo .= \sprintf("\n\nDefault value (future-mode): ``%s``", Utils::toString($optionInFutureMode->getDefault()));
+                    }
                 } else {
                     $optionInfo .= "\n\nThis option is required.";
                 }
@@ -356,30 +367,22 @@ final class FixerDocumentGenerator
         return "{$documentation}\n";
     }
 
-    private static function getDefaultValues(FixerInterface $fixer, FixerOptionInterface $option): string
+    /**
+     * @template T of FixerInterface
+     *
+     * @param T $fixer
+     *
+     * @return T
+     */
+    private static function createFixerInFutureMode(FixerInterface $fixer): FixerInterface
     {
-        $default = Utils::toString($option->getDefault());
-        $defaults = "\n\nDefault value: ``{$default}``";
-
-        Future::runWithEnforcedFutureMode(
-            static function () use (&$defaults, $fixer, $option): void {
-                $fixerInFutureMode = (new \ReflectionObject($fixer))->newInstance();
-                \assert($fixerInFutureMode instanceof ConfigurableFixerInterface);
-                foreach ($fixerInFutureMode->getConfigurationDefinition()->getOptions() as $optionInFutureMode) {
-                    if ($option->getName() !== $optionInFutureMode->getName()) {
-                        continue;
-                    }
-                    if ($optionInFutureMode->getDefault() !== $option->getDefault()) {
-                        $default = Utils::toString($optionInFutureMode->getDefault());
-                        $defaults .= "\n\nDefault value (future-mode): ``{$default}``";
-
-                        break;
-                    }
-                }
-            },
+        $object = Future::runWithEnforcedFutureMode(
+            static fn () => (new \ReflectionObject($fixer))->newInstance(),
         );
 
-        return $defaults;
+        \assert($object instanceof $fixer);
+
+        return $object;
     }
 
     private function generateSampleDiff(FixerInterface $fixer, CodeSampleInterface $sample, int $sampleNumber, string $ruleName): string

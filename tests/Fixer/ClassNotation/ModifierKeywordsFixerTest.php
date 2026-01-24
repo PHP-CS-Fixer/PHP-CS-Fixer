@@ -1060,6 +1060,23 @@ var_dump(Foo::CAT->test());',
                 }
                 PHP,
         ];
+
+        yield 'closure in attribute' => [
+            <<<'PHP'
+                <?php class Foo {
+                    #[WithRegularAttribute(static function (): void {})]
+                    #[WithNamedAttribute(foo: static function (): void {})]
+                    public function yes() {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo {
+                    #[WithRegularAttribute(static function (): void {})]
+                    #[WithNamedAttribute(foo: static function (): void {})]
+                    function yes() {}
+                }
+                PHP,
+        ];
     }
 
     /**

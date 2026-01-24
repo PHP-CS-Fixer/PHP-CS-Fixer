@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\RuleSet\Sets;
 
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixer;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSet;
@@ -102,6 +103,33 @@ final class AutoPHPUnitMigrationRiskySetTest extends AbstractSetTestCase
                 ),
             );
         }
+    }
+
+    /**
+     * While there is conflict between declaration (static) and expected usage (dynamic), we do not recommend to blindly go left or right till concluded.
+     * Enabling rule on any repo automatically via PHPUnit migration set will cause massive diff, while there is no wide alignment which way to go.
+     *
+     * We hope for conclusion at PHPUnit directly: https://github.com/sebastianbergmann/phpunit/issues/6458 .
+     *
+     * @dataProvider provideThatSetDoesNotIncludeProblematicRuleCases
+     */
+    public function testThatSetDoesNotIncludeProblematicRule(string $setName): void
+    {
+        $problematicFixer = new PhpUnitTestCaseStaticMethodCallsFixer();
+
+        $set = $this->createSetDefinitionBySetName($setName);
+        self::assertArrayNotHasKey(
+            $problematicFixer->getName(),
+            $set->getRules(),
+        );
+    }
+
+    /**
+     * @return iterable<string, array{0: string}>
+     */
+    public static function provideThatSetDoesNotIncludeProblematicRuleCases(): iterable
+    {
+        yield from self::provideSets();
     }
 
     /**

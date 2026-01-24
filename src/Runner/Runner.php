@@ -329,9 +329,15 @@ final class Runner
 
             // [REACT] Bind connection when worker's process requests "hello" action (enables 2-way communication)
             $decoder->on('data', static function (array $data) use ($processPool, $getFileChunk, $decoder, $encoder): void {
+                \assert(isset($data['action']));
+
                 if (ParallelAction::WORKER_HELLO !== $data['action']) {
                     return;
                 }
+
+                \assert(isset(
+                    $data['identifier'],
+                ));
 
                 $identifier = ProcessIdentifier::fromRaw($data['identifier']);
 
@@ -384,10 +390,17 @@ final class Runner
             $process->start(
                 // [REACT] Handle workers' responses (multiple actions possible)
                 function (array $workerResponse) use ($processPool, $process, $identifier, $getFileChunk, &$changed): void {
+                    \assert(isset($workerResponse['action']));
+
                     // File analysis result (we want close-to-realtime progress with frequent cache savings)
                     if (ParallelAction::WORKER_RESULT === $workerResponse['action']) {
                         \assert(isset(
+                            $workerResponse['errors'],
+                            $workerResponse['file'],
+                            // $workerResponse['fileHash'], // optional
+                            // $workerResponse['fixInfo'], // optional
                             $workerResponse['memoryUsage'],
+                            $workerResponse['status'],
                         ));
 
                         // Dispatch an event for each file processed and dispatch its status (required for progress output)
@@ -397,7 +410,7 @@ final class Runner
                             $this->cacheManager->setFileHash($workerResponse['file'], $workerResponse['fileHash']);
                         }
 
-                        foreach ($workerResponse['errors'] ?? [] as $error) {
+                        foreach ($workerResponse['errors'] as $error) {
                             $this->errorsManager->report(new Error(
                                 $error['type'],
                                 $error['filePath'],
@@ -428,6 +441,8 @@ final class Runner
                     }
 
                     if (ParallelAction::WORKER_GET_FILE_CHUNK === $workerResponse['action']) {
+                        // no payload to assert on
+
                         // Request another chunk of files, if still available
                         $fileChunk = $getFileChunk();
 
@@ -444,7 +459,16 @@ final class Runner
                     }
 
                     if (ParallelAction::WORKER_ERROR_REPORT === $workerResponse['action']) {
-                        throw WorkerException::fromRaw($workerResponse); // @phpstan-ignore-line
+                        \assert(isset(
+                            $workerResponse['class'],
+                            $workerResponse['message'],
+                            $workerResponse['file'],
+                            $workerResponse['line'],
+                            $workerResponse['code'],
+                            $workerResponse['trace'],
+                        ));
+
+                        throw WorkerException::fromRaw($workerResponse);
                     }
 
                     throw new ParallelisationException('Unsupported action: '.($workerResponse['action'] ?? 'n/a'));
@@ -623,6 +647,17 @@ final class Runner
                     $tokens->clearEmptyTokens();
                     $tokens->clearChanged();
                     $appliedFixers[] = $fixer->getName();
+                    if (filter_var(getenv('PHP_CS_FIXER_DEBUG'), \FILTER_VALIDATE_BOOL)) {
+                        try {
+                            $this->linter->lintSource($tokens->generateCode())->check();
+                        } catch (LintingException $e) {
+                            $this->dispatchEvent(FileProcessed::NAME, new FileProcessed(FileProcessed::STATUS_LINT));
+
+                            $this->errorsManager->report(new Error(Error::TYPE_LINT, $filePathname, $e, [$fixer->getName()], $this->differ->diff($old, $tokens->generateCode(), $file)));
+
+                            return null;
+                        }
+                    }
                 }
             }
         } catch (\ParseError $e) {

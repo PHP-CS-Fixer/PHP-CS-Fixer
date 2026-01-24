@@ -31,7 +31,7 @@ Allowed types: ``array<string, string>``
 
 Default value: ``['getrandmax' => 'mt_getrandmax', 'rand' => 'mt_rand', 'srand' => 'mt_srand']``
 
-Default value (future-mode): ``['getrandmax' => 'mt_getrandmax', 'rand' => 'random_int', 'srand' => 'mt_srand']``
+Default value (future-mode): ``['mt_getrandmax' => 'getrandmax', 'mt_rand' => 'random_int', 'mt_srand' => 'srand', 'rand' => 'random_int']``
 
 Examples
 --------
@@ -87,59 +87,59 @@ The rule is part of the following rule sets:
 
 - `@PHP7x0Migration:risky <./../../ruleSets/PHP7x0MigrationRisky.rst>`_ with config:
 
-  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
+  ``['replacements' => ['mt_getrandmax' => 'getrandmax', 'mt_rand' => 'random_int', 'mt_srand' => 'srand', 'rand' => 'random_int']]``
 
 - `@PHP7x1Migration:risky <./../../ruleSets/PHP7x1MigrationRisky.rst>`_ with config:
 
-  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
+  ``['replacements' => ['mt_getrandmax' => 'getrandmax', 'mt_rand' => 'random_int', 'mt_srand' => 'srand', 'rand' => 'random_int']]``
 
 - `@PHP7x4Migration:risky <./../../ruleSets/PHP7x4MigrationRisky.rst>`_ with config:
 
-  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
+  ``['replacements' => ['mt_getrandmax' => 'getrandmax', 'mt_rand' => 'random_int', 'mt_srand' => 'srand', 'rand' => 'random_int']]``
 
 - `@PHP8x0Migration:risky <./../../ruleSets/PHP8x0MigrationRisky.rst>`_ with config:
 
-  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
+  ``['replacements' => ['mt_getrandmax' => 'getrandmax', 'mt_rand' => 'random_int', 'mt_srand' => 'srand', 'rand' => 'random_int']]``
 
 - `@PHP8x1Migration:risky <./../../ruleSets/PHP8x1MigrationRisky.rst>`_ with config:
 
-  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
+  ``['replacements' => ['mt_getrandmax' => 'getrandmax', 'mt_rand' => 'random_int', 'mt_srand' => 'srand', 'rand' => 'random_int']]``
 
 - `@PHP8x2Migration:risky <./../../ruleSets/PHP8x2MigrationRisky.rst>`_ with config:
 
-  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
+  ``['replacements' => ['mt_getrandmax' => 'getrandmax', 'mt_rand' => 'random_int', 'mt_srand' => 'srand', 'rand' => 'random_int']]``
 
 - `@PHP8x3Migration:risky <./../../ruleSets/PHP8x3MigrationRisky.rst>`_ with config:
 
-  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
+  ``['replacements' => ['mt_getrandmax' => 'getrandmax', 'mt_rand' => 'random_int', 'mt_srand' => 'srand', 'rand' => 'random_int']]``
 
 - `@PHP8x4Migration:risky <./../../ruleSets/PHP8x4MigrationRisky.rst>`_ with config:
 
-  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
+  ``['replacements' => ['mt_getrandmax' => 'getrandmax', 'mt_rand' => 'random_int', 'mt_srand' => 'srand', 'rand' => 'random_int']]``
 
 - `@PHP8x5Migration:risky <./../../ruleSets/PHP8x5MigrationRisky.rst>`_ with config:
 
-  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
+  ``['replacements' => ['mt_getrandmax' => 'getrandmax', 'mt_rand' => 'random_int', 'mt_srand' => 'srand', 'rand' => 'random_int']]``
 
 - `@PHP70Migration:risky <./../../ruleSets/PHP70MigrationRisky.rst>`_ *(deprecated)* with config:
 
-  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
+  ``['replacements' => ['mt_getrandmax' => 'getrandmax', 'mt_rand' => 'random_int', 'mt_srand' => 'srand', 'rand' => 'random_int']]``
 
 - `@PHP71Migration:risky <./../../ruleSets/PHP71MigrationRisky.rst>`_ *(deprecated)* with config:
 
-  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
+  ``['replacements' => ['mt_getrandmax' => 'getrandmax', 'mt_rand' => 'random_int', 'mt_srand' => 'srand', 'rand' => 'random_int']]``
 
 - `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_ *(deprecated)* with config:
 
-  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
+  ``['replacements' => ['mt_getrandmax' => 'getrandmax', 'mt_rand' => 'random_int', 'mt_srand' => 'srand', 'rand' => 'random_int']]``
 
 - `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ *(deprecated)* with config:
 
-  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
+  ``['replacements' => ['mt_getrandmax' => 'getrandmax', 'mt_rand' => 'random_int', 'mt_srand' => 'srand', 'rand' => 'random_int']]``
 
 - `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_ *(deprecated)* with config:
 
-  ``['replacements' => ['mt_rand' => 'random_int', 'rand' => 'random_int']]``
+  ``['replacements' => ['mt_getrandmax' => 'getrandmax', 'mt_rand' => 'random_int', 'mt_srand' => 'srand', 'rand' => 'random_int']]``
 
 References
 ----------

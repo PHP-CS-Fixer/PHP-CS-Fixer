@@ -52,10 +52,12 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
      * @var array<string, array<int, int>>
      */
     private const ARGUMENT_COUNTS = [
+        'mt_getrandmax' => [0],
         'getrandmax' => [0],
         'mt_rand' => [1, 2],
         'rand' => [0, 2],
         'srand' => [0, 1],
+        'mt_srand' => [0, 1],
         'random_int' => [0, 2],
     ];
 
@@ -145,11 +147,19 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
 
                     return true;
                 }])
-                ->setDefault([
-                    'getrandmax' => 'mt_getrandmax',
-                    'rand' => Future::getV4OrV3('random_int', 'mt_rand'),
-                    'srand' => 'mt_srand',
-                ])
+                ->setDefault(Future::getV4OrV3(
+                    [
+                        'mt_getrandmax' => 'getrandmax',
+                        'mt_rand' => 'random_int',
+                        'mt_srand' => 'srand',
+                        'rand' => 'random_int',
+                    ],
+                    [
+                        'getrandmax' => 'mt_getrandmax',
+                        'rand' => 'mt_rand',
+                        'srand' => 'mt_srand',
+                    ],
+                ))
                 ->getOption(),
         ]);
     }
