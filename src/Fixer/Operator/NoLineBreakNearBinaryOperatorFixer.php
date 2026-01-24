@@ -239,7 +239,7 @@ final class NoLineBreakNearBinaryOperatorFixer extends AbstractFixer implements 
             }
 
             $operatorStrategy ??= $this->configuration['default_strategy'];
-            if ($operatorStrategy === null) {
+            if (null === $operatorStrategy) {
                 continue;
             }
 
