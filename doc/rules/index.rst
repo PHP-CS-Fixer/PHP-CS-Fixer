@@ -781,7 +781,7 @@ PHPDoc
   Fixes PHPDoc inline tags.
 - `phpdoc_line_span <./phpdoc/phpdoc_line_span.rst>`_ *(configurable)*
 
-  Changes doc blocks from single to multi line, or reversed. Works for class constants, properties and methods only.
+  Changes doc blocks from single to multi line, or reversed.
 - `phpdoc_list_type <./phpdoc/phpdoc_list_type.rst>`_ *(risky)*
 
   PHPDoc ``list`` type must be used instead of ``array`` without a key.
