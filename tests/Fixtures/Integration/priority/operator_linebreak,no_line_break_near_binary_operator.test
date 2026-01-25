@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: operator_linebreak,no_line_break_near_binary_operator.
+--RULESET--
+{"operator_linebreak": true, "no_line_break_near_binary_operator": true}
+--EXPECT--
+<?php
+if ($a < $b
+    && null === $arg1) {
+    foo();
+}
+
+--INPUT--
+<?php
+if ($a < $b &&
+    null === $arg1) {
+    foo();
+}
