@@ -27,7 +27,12 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/PhpdocAlignFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Method PhpCsFixer\\Tokenizer\\Tokens::findGivenKind() should return array<int, array<int<0, max>, PhpCsFixer\\Tokenizer\\Token>|PhpCsFixer\\Tokenizer\\Token> but returns array<int, array<int, PhpCsFixer\\Tokenizer\\Token>|PhpCsFixer\\Tokenizer\\Token>.',
+    'rawMessage' => 'Method PhpCsFixer\\Tokenizer\\Tokens::findGivenKind() should return array<array<int<0, max>, PhpCsFixer\\Tokenizer\\Token>|PhpCsFixer\\Tokenizer\\Token> but returns array<int, array<int, PhpCsFixer\\Tokenizer\\Token>|PhpCsFixer\\Tokenizer\\Token>.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../src/Tokenizer/Tokens.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Method PhpCsFixer\\Tokenizer\\Tokens::findKinds() should return non-empty-array<int|string, array<int<0, max>, PhpCsFixer\\Tokenizer\\Token>> but returns non-empty-array<int|string, array<int, PhpCsFixer\\Tokenizer\\Token>>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Tokenizer/Tokens.php',
 ];
