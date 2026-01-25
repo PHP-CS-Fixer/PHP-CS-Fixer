@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Console\Output;
 
 use PhpCsFixer\Console\Output\ErrorOutput;
+use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Tests\TestCase;
@@ -143,6 +144,39 @@ Files that were not fixed due to errors reported during %s:
 
         self::assertStringNotContainsString($invalidErrorFixerName, $displayed);
         self::assertStringNotContainsString($invalidDiff, $displayed);
+    }
+
+    public function testLintingExceptionOutputsAppliedFixersAndNoDiff(): void
+    {
+        $fixerName = 'TheFixer';
+        $diff = (new NullDiffer())->diff('old', 'new');
+
+        $lintError = new Error(Error::TYPE_LINT, __FILE__, new LintingException(), [$fixerName], $diff);
+
+        $output = $this->createStreamOutput(OutputInterface::VERBOSITY_VERY_VERBOSE);
+
+        $errorOutput = new ErrorOutput($output);
+        $errorOutput->listErrors('the_process', [$lintError]);
+
+        $displayed = $this->readFullStreamOutput($output);
+
+        self::assertSame(
+            \sprintf(
+                '
+Files that were not fixed due to errors reported during the_process:
+   1) %sErrorOutputTest.php
+
+                                              '.'
+        [PhpCsFixer\Linter\LintingException]  '.'
+                                              '.'
+                                              '.'
+
+      Applied fixers: TheFixer
+',
+                __DIR__.\DIRECTORY_SEPARATOR,
+            ),
+            $displayed,
+        );
     }
 
     /**
