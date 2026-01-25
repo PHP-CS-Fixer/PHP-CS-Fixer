@@ -681,7 +681,9 @@ final class ConfigurationResolver
             if ('@auto' === $this->format) {
                 $this->format = $parts[1] ?? 'txt';
 
-                if (filter_var(getenv('GITLAB_CI'), \FILTER_VALIDATE_BOOL)) {
+                if (filter_var(getenv('GITHUB_ACTIONS'), \FILTER_VALIDATE_BOOL)) {
+                    $this->format = 'github';
+                } elseif (filter_var(getenv('GITLAB_CI'), \FILTER_VALIDATE_BOOL)) {
                     $this->format = 'gitlab';
                 }
             }

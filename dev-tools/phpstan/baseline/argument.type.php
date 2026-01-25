@@ -12,7 +12,12 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Console/ConfigurationResolver.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $diffs of static method PhpCsFixer\\Console\\Report\\FixReport\\GitlabReporter::getLines() expects list<SebastianBergmann\\Diff\\Diff>, array<SebastianBergmann\\Diff\\Diff> given.',
+    'rawMessage' => 'Parameter #1 $diffs of static method PhpCsFixer\\Console\\Report\\FixReport\\LineExtractor::getLines() expects list<SebastianBergmann\\Diff\\Diff>, array<SebastianBergmann\\Diff\\Diff> given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../src/Console/Report/FixReport/GitHubReporter.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Parameter #1 $diffs of static method PhpCsFixer\\Console\\Report\\FixReport\\LineExtractor::getLines() expects list<SebastianBergmann\\Diff\\Diff>, array<SebastianBergmann\\Diff\\Diff> given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Console/Report/FixReport/GitlabReporter.php',
 ];
@@ -200,6 +205,11 @@ $ignoreErrors[] = [
     'rawMessage' => 'Parameter #3 $expectedOutputClass of method PhpCsFixer\\Tests\\Console\\Output\\Progress\\ProgressOutputFactoryTest::testValidProcessOutputIsCreated() expects class-string<Throwable>, string given.',
     'count' => 4,
     'path' => __DIR__ . '/../../../tests/Console/Output/Progress/ProgressOutputFactoryTest.php',
+];
+$ignoreErrors[] = [
+    'rawMessage' => 'Parameter #1 $diffs of static method PhpCsFixer\\Console\\Report\\FixReport\\LineExtractor::getLines() expects list<SebastianBergmann\\Diff\\Diff>, array<SebastianBergmann\\Diff\\Diff> given.',
+    'count' => 1,
+    'path' => __DIR__ . '/../../../tests/Console/Report/FixReport/LineExtractorTest.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Parameter #3 $configuration of method PhpCsFixer\\Tests\\Fixer\\AttributeNotation\\GeneralAttributeRemoveFixerTest::testFix() expects array{attributes?: list<class-string>}, array{attributes: array{\'A\\\\B\\\\Bar\', \'Test\\\\AB\\\\Baz\', \'A\\\\B\\\\Quux\', \'A\\\\B\\\\Baz\', \'A\\\\B\\\\Foo\', \'\\\\AB\\\\Baz\'}} given.',

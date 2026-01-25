@@ -58,10 +58,11 @@ which will use the intersection of the paths from the config file and from the a
 
     php php-cs-fixer.phar fix --path-mode=intersection /path/to/dir
 
-The ``--format`` option for the output format. Supported formats are ``@auto`` (default one on v4+), ``txt`` (default one on v3), ``checkstyle``, ``gitlab``, ``json``, ``junit`` and ``xml``.
+The ``--format`` option for the output format. Supported formats are ``@auto`` (default one on v4+), ``txt`` (default one on v3), ``checkstyle``, ``github``, ``gitlab``, ``json``, ``junit`` and ``xml``.
 
 * ``@auto`` aims to auto-select best reporter for given CI or local execution (resolution into best format is outside of BC promise and is future-ready)
 
+  * ``github`` for GitHub Actions
   * ``gitlab`` for GitLab
 
 * ``@auto,{format}`` takes ``@auto`` under CI, and {format} otherwise
@@ -69,6 +70,7 @@ The ``--format`` option for the output format. Supported formats are ``@auto`` (
 NOTE: the output for the following formats are generated in accordance with schemas
 
 * ``checkstyle`` follows the common `"checkstyle" XML schema </doc/schemas/fix/checkstyle.xsd>`_
+* ``github`` follows the `GitHub Actions workflow commands <https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-error-message>`_
 * ``gitlab`` follows the `codeclimate JSON schema </doc/schemas/fix/codeclimate.json>`_
 * ``json`` follows the `own JSON schema </doc/schemas/fix/schema.json>`_
 * ``junit`` follows the `JUnit XML schema from Jenkins </doc/schemas/fix/junit-10.xsd>`_
@@ -274,10 +276,16 @@ Then, add the following command to your CI:
 
 Where ``$COMMIT_RANGE`` is your range of commits, e.g. ``${{github.event.before}}...${{github.event.after}}`` or ``HEAD~..HEAD``.
 
+GitHub Actions Workflow Commands
+################################
+
+If you want to integrate with GitHub's workflow commands feature, in order for the report to contain correct line numbers, you
+will need to use both ``--format=github`` and ``--diff`` arguments.
+
 GitLab Code Quality Integration
 ###############################
 
-If you want to integrate with GitLab's Code Quality feature, in order for report to contain correct line numbers, you
+If you want to integrate with GitLab's Code Quality feature, in order for the report to contain correct line numbers, you
 will need to use both ``--format=gitlab`` and ``--diff`` arguments.
 
 Environment
