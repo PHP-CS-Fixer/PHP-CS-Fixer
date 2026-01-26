@@ -1,7 +1,11 @@
 --TEST--
 PHPStan comment after anonymous class opening brace must stay on the same line.
 --RULESET--
-{"@PhpCsFixer": true, "@PhpCsFixer:risky": true}
+{
+    "@PhpCsFixer": true,
+    "@PhpCsFixer:risky": true,
+    "declare_strict_types": false
+}
 --EXPECT--
 <?php
 
