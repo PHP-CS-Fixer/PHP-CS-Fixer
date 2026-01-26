@@ -21,6 +21,10 @@ Rules
 - `@PSR12:risky <./PSR12Risky.rst>`_
 - `array_push <./../rules/alias/array_push.rst>`_
 - `combine_nested_dirname <./../rules/function_notation/combine_nested_dirname.rst>`_
+- `declare_strict_types <./../rules/strict/declare_strict_types.rst>`_ with config:
+
+  ``['remove_existing_declaration' => true]``
+
 - `dir_constant <./../rules/language_construct/dir_constant.rst>`_
 - `ereg_to_preg <./../rules/alias/ereg_to_preg.rst>`_
 - `error_suppression <./../rules/language_construct/error_suppression.rst>`_

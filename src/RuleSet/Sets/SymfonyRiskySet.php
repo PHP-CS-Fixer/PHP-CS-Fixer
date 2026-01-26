@@ -30,6 +30,9 @@ final class SymfonyRiskySet extends AbstractRuleSetDefinition
             '@PSR12:risky' => true,
             'array_push' => true,
             'combine_nested_dirname' => true,
+            'declare_strict_types' => [
+                'remove_existing_declaration' => true,
+            ],
             'dir_constant' => true,
             'ereg_to_preg' => true,
             'error_suppression' => true,

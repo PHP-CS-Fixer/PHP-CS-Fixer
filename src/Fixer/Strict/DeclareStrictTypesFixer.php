@@ -95,7 +95,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Configurabl
 
     public function isRisky(): bool
     {
-        return !($this->configuration['remove_existing_declaration'] ?? false);
+        return true;
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface

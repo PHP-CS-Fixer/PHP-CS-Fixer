@@ -52,9 +52,6 @@ final class SymfonySet extends AbstractRuleSetDefinition
             'clean_namespace' => true,
             'concat_space' => true, // overrides @PER-CS2.0
             'declare_parentheses' => true,
-            'declare_strict_types' => [
-                'remove_existing_declaration' => true,
-            ],
             'echo_tag_syntax' => true,
             'empty_loop_body' => ['style' => 'braces'],
             'empty_loop_condition' => true,

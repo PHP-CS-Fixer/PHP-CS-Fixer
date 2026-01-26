@@ -128,11 +128,11 @@ The rule is part of the following rule sets:
 - `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_ *(deprecated)*
 - `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ *(deprecated)*
 - `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_ *(deprecated)*
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+- `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ with config:
 
   ``['remove_existing_declaration' => false]``
 
-- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+- `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_ with config:
 
   ``['remove_existing_declaration' => true]``
 
