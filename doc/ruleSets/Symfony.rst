@@ -31,6 +31,10 @@ Rules
 - `clean_namespace <./../rules/namespace_notation/clean_namespace.rst>`_
 - `concat_space <./../rules/operator/concat_space.rst>`_
 - `declare_parentheses <./../rules/language_construct/declare_parentheses.rst>`_
+- `declare_strict_types <./../rules/strict/declare_strict_types.rst>`_ with config:
+
+  ``['remove_existing_declaration' => true]``
+
 - `echo_tag_syntax <./../rules/php_tag/echo_tag_syntax.rst>`_
 - `empty_loop_body <./../rules/control_structure/empty_loop_body.rst>`_ with config:
 

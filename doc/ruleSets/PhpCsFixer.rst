@@ -15,6 +15,10 @@ Rules
 
 - `combine_consecutive_issets <./../rules/language_construct/combine_consecutive_issets.rst>`_
 - `combine_consecutive_unsets <./../rules/language_construct/combine_consecutive_unsets.rst>`_
+- `declare_strict_types <./../rules/strict/declare_strict_types.rst>`_ with config:
+
+  ``['remove_existing_declaration' => false]``
+
 - `empty_loop_body <./../rules/control_structure/empty_loop_body.rst>`_
 - `explicit_indirect_variable <./../rules/language_construct/explicit_indirect_variable.rst>`_
 - `explicit_string_variable <./../rules/string_notation/explicit_string_variable.rst>`_

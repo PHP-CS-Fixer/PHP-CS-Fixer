@@ -2,7 +2,7 @@
 Rule ``declare_strict_types``
 =============================
 
-Force strict types declaration in all files.
+Force a strict types mode in all files.
 
 Warnings
 --------
@@ -10,13 +10,13 @@ Warnings
 This rule is RISKY
 ~~~~~~~~~~~~~~~~~~
 
-Forcing strict types will stop non strict code from working.
+Enabling strict types will stop non strict code from working.
 
 This rule is CONFIGURABLE
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can configure this rule using the following option:
-``preserve_existing_declaration``.
+You can configure this rule using the following options:
+``preserve_existing_declaration``, ``remove_existing_declaration``.
 
 Configuration
 -------------
@@ -25,6 +25,17 @@ Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Whether existing strict_types=? should be preserved and not overridden.
+
+Allowed types: ``bool``
+
+Default value: ``false``
+
+``remove_existing_declaration``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether existing strict_types=? should be removed, effectively turning strict
+mode off and using the engine into default type coercion mode.
+``preserve_existing_declaration`` is ignored if this is set to ``true``.
 
 Allowed types: ``bool``
 
@@ -72,6 +83,32 @@ With configuration: ``['preserve_existing_declaration' => true]``.
    -declare(Strict_Types=0);
    +declare(strict_types=0);
 
+Example #4
+~~~~~~~~~~
+
+With configuration: ``['remove_existing_declaration' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -declare(strict_types=1);
+   +
+
+Example #5
+~~~~~~~~~~
+
+With configuration: ``['remove_existing_declaration' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -declare(strict_types=1, ticks=1);
+   +declare(ticks=1);
+
 Rule sets
 ---------
 
@@ -91,6 +128,13 @@ The rule is part of the following rule sets:
 - `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_ *(deprecated)*
 - `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ *(deprecated)*
 - `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_ *(deprecated)*
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
+  ``['remove_existing_declaration' => false]``
+
+- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
+  ``['remove_existing_declaration' => true]``
 
 References
 ----------
