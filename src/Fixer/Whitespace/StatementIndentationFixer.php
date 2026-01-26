@@ -71,6 +71,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
         \T_IMPLEMENTS,
         \T_CONST,
         FCT::T_MATCH,
+        FCT::T_ENUM,
     ];
     private const CONTROL_STRUCTURE_POSSIBIBLY_WITHOUT_BRACES_TOKENS = [
         \T_IF,
@@ -381,7 +382,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                     'end_index' => $endIndex,
                     'end_index_inclusive' => true,
                     'initial_indent' => $this->getLineIndentationWithBracesCompatibility($tokens, $index, $lastIndent),
-                    'is_indented_block' => $isPropertyStart || $token->isGivenKind([\T_EXTENDS, \T_IMPLEMENTS, \T_CONST]),
+                    'is_indented_block' => $isPropertyStart || $token->isGivenKind([\T_EXTENDS, \T_IMPLEMENTS, \T_CONST, \T_CASE]),
                 ];
 
                 continue;
