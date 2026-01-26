@@ -17,11 +17,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/AbstractFunctionReferenceFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset string might not exist on array<string, string>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Cache/Cache.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset 1 might not exist on array.',
     'count' => 2,
     'path' => __DIR__ . '/../../../src/Console/Command/DescribeCommand.php',
@@ -285,11 +280,6 @@ $ignoreErrors[] = [
     'rawMessage' => 'Offset 0 might not exist on non-empty-array<array{string, int<-1, max>}>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/DocBlock/TypeExpression.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset int might not exist on list<PhpCsFixer\\Doctrine\\Annotation\\Token>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Doctrine/Annotation/DocLexer.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Offset 1 might not exist on array.',
