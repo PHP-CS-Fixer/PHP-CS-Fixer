@@ -154,16 +154,14 @@ final class UseArrowFunctionsFixer extends AbstractFixer
                 continue;
             }
 
-            // Abort if closure has `use()` clause and return statement includes external files
-            // Converting such closures to arrow functions changes behavior as the used variables
-            // are no longer exposed to the included file
-
+            // Abort if closure has `use()` clause and return statement includes external files.
+            // Converting such closures to arrow functions changes behaviour as the used variables
+            // are no longer exposed to the included file.
             if (null !== $useStart && $this->containsIncludeOrRequire($tokens, $return, $semicolon)) {
                 continue;
             }
 
             // Transform the function to an arrow function
-
             $this->transform($tokens, $index, $useStart, $useEnd, $braceOpen, $return, $semicolon, $braceClose);
         }
     }
