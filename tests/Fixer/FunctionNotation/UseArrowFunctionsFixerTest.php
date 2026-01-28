@@ -38,7 +38,7 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
