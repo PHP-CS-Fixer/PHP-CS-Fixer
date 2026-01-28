@@ -244,5 +244,51 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
                 }
             );',
         ];
+
+        yield 'do not convert when closure with use() includes external file' => [
+            '<?php
+$load = \Closure::bind(static function ($path, $env) use ($container, $loader, $resource, $type) {
+    return include $path;
+}, null, null);',
+        ];
+
+        yield 'do not convert when closure with use() includes_once external file' => [
+            '<?php
+$load = function ($path) use ($config) {
+    return include_once $path;
+};',
+        ];
+
+        yield 'do not convert when closure with use() requires external file' => [
+            '<?php
+$load = function ($path) use ($data) {
+    return require $path;
+};',
+        ];
+
+        yield 'do not convert when closure with use() requires_once external file' => [
+            '<?php
+$load = function ($path) use ($settings) {
+    return require_once $path;
+};',
+        ];
+
+        yield 'convert when closure without use() includes external file' => [
+            '<?php
+$load = fn ($path) => include $path;',
+            '<?php
+$load = function ($path) {
+    return include $path;
+};',
+        ];
+
+        yield 'convert when closure with use() does not include external file' => [
+            '<?php
+$load = fn ($path) => $data[$path];',
+            '<?php
+$load = function ($path) use ($data) {
+    return $data[$path];
+};',
+        ];
     }
 }
