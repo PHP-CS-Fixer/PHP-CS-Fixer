@@ -10,11 +10,20 @@ Warning
 This rule is CONFIGURABLE
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can configure this rule using the following options: ``class``, ``const``,
-``method``, ``other``, ``property``, ``trait_import``.
+You can configure this rule using the following options: ``case``, ``class``,
+``const``, ``method``, ``other``, ``property``, ``trait_import``.
 
 Configuration
 -------------
+
+``case``
+~~~~~~~~
+
+Whether enum case doc blocks should be single or multi line.
+
+Allowed values: ``'multi'``, ``'single'`` and ``null``
+
+Default value: ``'multi'``
 
 ``class``
 ~~~~~~~~~
