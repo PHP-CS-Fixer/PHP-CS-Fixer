@@ -389,7 +389,7 @@ final class Runner
             $processPool->addProcess($identifier, $process);
             $process->start(
                 // [REACT] Handle workers' responses (multiple actions possible)
-                function (array $workerResponse) use ($processPool, $process, $identifier, $getFileChunk, &$changed): void {
+                function (array $workerResponse) use ($processPool, $process, $identifier, $getFileChunk, &$changed, $streamSelectLoop): void {
                     \assert(isset($workerResponse['action']));
 
                     // File analysis result (we want close-to-realtime progress with frequent cache savings)
@@ -432,6 +432,7 @@ final class Runner
 
                             if ($this->stopOnViolation) {
                                 $processPool->endAll();
+                                $streamSelectLoop->stop();
 
                                 return;
                             }
@@ -475,8 +476,9 @@ final class Runner
                 },
 
                 // [REACT] Handle errors encountered during worker's execution
-                static function (\Throwable $error) use ($processPool): void {
+                static function (\Throwable $error) use ($processPool, $streamSelectLoop): void {
                     $processPool->endAll();
+                    $streamSelectLoop->stop();
 
                     throw new ParallelisationException($error->getMessage(), $error->getCode(), $error);
                 },
