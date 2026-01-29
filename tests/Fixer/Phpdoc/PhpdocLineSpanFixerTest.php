@@ -930,6 +930,76 @@ class Foo
                 }
             ',
         ];
+
+        yield 'It handles enum cases correctly' => [
+            '<?php
+                enum Foo
+                {
+                        /**
+                         * 0
+                         */
+                        const B0 = "0";
+
+                        /**
+                         * 1
+                         */
+                        const B1 = "1";
+                }
+            ',
+            '<?php
+                enum Foo
+                {
+                        /** 0 */
+                        const B0 = "0";
+
+                        /** 1 */
+                        const B1 = "1";
+                }
+            ',
+        ];
+
+        yield 'It handles enum case with attributes correctly' => [
+            '<?php
+                enum Foo
+                {
+                        /**
+                         * 0
+                         */
+                        #[Attribute1]
+                        const B0 = "0";
+
+                        /**
+                         * 1
+                         */
+                        #[Attribute1]
+                        #[Attribute2]
+                        const B1 = "1";
+
+                        /**
+                         * 2
+                         */
+                        #[Attribute1, Attribute2]
+                        const B2 = "2";
+                }
+            ',
+            '<?php
+                enum Foo
+                {
+                        /** 0 */
+                        #[Attribute1]
+                        const B0 = "0";
+
+                        /** 1 */
+                        #[Attribute1]
+                        #[Attribute2]
+                        const B1 = "1";
+
+                        /** 2 */
+                        #[Attribute1, Attribute2]
+                        const B2 = "2";
+                }
+            ',
+        ];
     }
 
     /**
