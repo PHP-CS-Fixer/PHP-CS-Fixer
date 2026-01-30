@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "339dd95a3d601420622d85d28a05ace4",
+    "content-hash": "adc2bb8b6b07ee380dab247cfa73a3c6",
     "packages": [
         {
             "name": "composer/pcre",
@@ -106,16 +106,16 @@
         },
         {
             "name": "ergebnis/composer-normalize",
-            "version": "2.48.2",
+            "version": "2.49.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ergebnis/composer-normalize.git",
-                "reference": "86dc9731b8320f49e9be9ad6d8e4de9b8b0e9b8b"
+                "reference": "84f3b39dd5d5847a21ec7ca83fc80af97d3ab65c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ergebnis/composer-normalize/zipball/86dc9731b8320f49e9be9ad6d8e4de9b8b0e9b8b",
-                "reference": "86dc9731b8320f49e9be9ad6d8e4de9b8b0e9b8b"
+                "url": "https://api.github.com/repos/ergebnis/composer-normalize/zipball/84f3b39dd5d5847a21ec7ca83fc80af97d3ab65c",
+                "reference": "84f3b39dd5d5847a21ec7ca83fc80af97d3ab65c"
             },
             "require": {
                 "composer-plugin-api": "^2.0.0",
