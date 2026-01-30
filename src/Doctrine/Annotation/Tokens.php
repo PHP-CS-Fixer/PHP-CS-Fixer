@@ -244,6 +244,10 @@ final class Tokens extends \SplFixedArray
         $this[$index] = $token;
     }
 
+    /**
+     * @param null|int   $index
+     * @param null|Token $token
+     */
     public function offsetSet($index, $token): void
     {
         if (!$token instanceof Token) {
