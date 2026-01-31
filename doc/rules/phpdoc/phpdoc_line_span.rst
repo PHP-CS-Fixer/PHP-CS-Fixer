@@ -3,7 +3,7 @@ Rule ``phpdoc_line_span``
 =========================
 
 Changes doc blocks from single to multi line, or reversed. Works for class
-constants, properties and methods only.
+constants, properties, methods, and enum cases only.
 
 Warning
 -------
@@ -11,11 +11,20 @@ Warning
 This rule is CONFIGURABLE
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can configure this rule using the following options: ``const``, ``method``,
-``property``.
+You can configure this rule using the following options: ``case``, ``const``,
+``method``, ``property``.
 
 Configuration
 -------------
+
+``case``
+~~~~~~~~
+
+Whether enum case doc blocks should be single or multi line.
+
+Allowed values: ``'multi'``, ``'single'`` and ``null``
+
+Default value: ``'multi'``
 
 ``const``
 ~~~~~~~~~
