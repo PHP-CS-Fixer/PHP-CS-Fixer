@@ -46,6 +46,13 @@ final class Token
     private ?int $id;
 
     /**
+     * Token ID (if available) or token content otherwise.
+     *
+     * @var _PhpTokenKind
+     */
+    private $kind;
+
+    /**
      * If token prototype is an array.
      */
     private bool $isArray;
@@ -76,10 +83,12 @@ final class Token
 
             $this->isArray = true;
             $this->id = $token[0];
+            $this->kind = $token[0];
             $this->content = $token[1];
         } elseif (\is_string($token)) {
             $this->isArray = false;
             $this->id = null;
+            $this->kind = $token;
             $this->content = $token;
         } else {
             throw new \InvalidArgumentException(\sprintf('Cannot recognize input value as valid Token prototype, got "%s".', get_debug_type($token)));
@@ -125,10 +134,10 @@ final class Token
     public function equals($other, bool $caseSensitive = true): bool
     {
         if ('&' === $other) {
-            return '&' === $this->content && (null === $this->id || $this->isGivenKind([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]));
+            return '&' === $this->content && (null === $this->id || $this->isKind([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]));
         }
-        if (null === $this->id && '&' === $this->content) {
-            return $other instanceof self && '&' === $other->content && (null === $other->id || $other->isGivenKind([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]));
+        if ('&' === $this->kind) {
+            return $other instanceof self && '&' === $other->content && (null === $other->id || $other->isKind([FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]));
         }
 
         if ($other instanceof self) {
@@ -254,6 +263,16 @@ final class Token
     }
 
     /**
+     * Get token's kind.
+     *
+     * @return _PhpTokenKind token ID (if available) or token content otherwise
+     */
+    public function getKind()
+    {
+        return $this->kind;
+    }
+
+    /**
      * Get token's name.
      *
      * It shall be used only for getting the name of token, not for checking it against excepted value.
@@ -368,7 +387,7 @@ final class Token
      */
     public function isCast(): bool
     {
-        return $this->isGivenKind(self::getCastTokenKinds());
+        return $this->isKind(self::getCastTokenKinds());
     }
 
     /**
@@ -378,7 +397,7 @@ final class Token
      */
     public function isClassy(): bool
     {
-        return $this->isGivenKind(self::getClassyTokenKinds());
+        return $this->isKind(self::getClassyTokenKinds());
     }
 
     /**
@@ -388,7 +407,7 @@ final class Token
      */
     public function isComment(): bool
     {
-        return $this->isGivenKind([\T_COMMENT, \T_DOC_COMMENT]);
+        return $this->isKind([\T_COMMENT, \T_DOC_COMMENT]);
     }
 
     /**
@@ -398,7 +417,7 @@ final class Token
      */
     public function isObjectOperator(): bool
     {
-        return $this->isGivenKind(self::getObjectOperatorKinds());
+        return $this->isKind(self::getObjectOperatorKinds());
     }
 
     /**
@@ -408,10 +427,26 @@ final class Token
      *
      * @phpstan-assert-if-true !=null $this->getId()
      * @phpstan-assert-if-true !='' $this->getContent()
+     *
+     * @deprecated Use `Token::isKind` instead
+     *
+     * @TODO 4.0 remove me
      */
     public function isGivenKind($possibleKind): bool
     {
         return $this->isArray && (\is_array($possibleKind) ? \in_array($this->id, $possibleKind, true) : $this->id === $possibleKind);
+    }
+
+    /**
+     * Check if token is one of given kind.
+     *
+     * @param _PhpTokenKind|list<_PhpTokenKind> $kind kind or array of kinds
+     *
+     * @phpstan-assert-if-true !='' $this->getContent()
+     */
+    public function isKind($kind): bool
+    {
+        return \is_array($kind) ? \in_array($this->kind, $kind, true) : $this->kind === $kind;
     }
 
     /**
@@ -461,7 +496,7 @@ final class Token
             $whitespaces = " \t\n\r\0\x0B";
         }
 
-        if ($this->isArray && !$this->isGivenKind(\T_WHITESPACE)) {
+        if ($this->isArray && !$this->isKind(\T_WHITESPACE)) {
             return false;
         }
 
