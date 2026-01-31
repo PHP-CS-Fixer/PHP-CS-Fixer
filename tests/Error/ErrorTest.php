@@ -40,7 +40,7 @@ final class ErrorTest extends TestCase
         self::assertSame($filePath, $error->getFilePath());
         self::assertNull($error->getSource());
         self::assertSame([], $error->getAppliedFixers());
-        self::assertNull($error->getDiff());
+        self::assertSame('', $error->getDiff());
     }
 
     public function testConstructorSetsValues2(): void

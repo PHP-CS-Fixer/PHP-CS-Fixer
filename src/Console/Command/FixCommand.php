@@ -306,7 +306,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
             $configFile = $resolver->getConfigFile();
             $stdErr->writeln(\sprintf('Loaded config <comment>%s</comment>%s.', $resolver->getConfig()->getName(), null === $configFile ? '' : ' from "'.$configFile.'"'));
 
-            if (null === $configFile) {
+            if (null === $configFile && ConfigurationResolver::IGNORE_CONFIG_FILE !== $passedConfig) {
                 if (false === $input->isInteractive()) {
                     $stdErr->writeln(
                         \sprintf(
@@ -433,7 +433,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
             $changed,
             \count($finder),
             (int) $fixEvent->getDuration(), // ignore microseconds fraction
-            $fixEvent->getMemory(),
+            memory_get_peak_usage(true) + $runner->getWorkersMemoryUsage(),
             OutputInterface::VERBOSITY_VERBOSE <= $verbosity,
             $resolver->isDryRun(),
             $output->isDecorated(),

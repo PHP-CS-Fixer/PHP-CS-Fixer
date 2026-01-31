@@ -99,11 +99,7 @@ final class DocLexer
 
     public function peek(): ?Token
     {
-        if (isset($this->tokens[$this->position + $this->peek])) {
-            return $this->tokens[$this->position + $this->peek++];
-        }
-
-        return null;
+        return $this->tokens[$this->position + $this->peek++] ?? null;
     }
 
     /**

@@ -154,8 +154,14 @@ final class UseArrowFunctionsFixer extends AbstractFixer
                 continue;
             }
 
-            // Transform the function to an arrow function
+            // Abort if closure has `use()` clause and return statement includes external files.
+            // Converting such closures to arrow functions changes behaviour as the used variables
+            // are no longer exposed to the included file.
+            if (null !== $useStart && $this->containsIncludeOrRequire($tokens, $return, $semicolon)) {
+                continue;
+            }
 
+            // Transform the function to an arrow function
             $this->transform($tokens, $index, $useStart, $useEnd, $braceOpen, $return, $semicolon, $braceClose);
         }
     }
@@ -180,5 +186,19 @@ final class UseArrowFunctionsFixer extends AbstractFixer
         }
 
         $tokens[$index] = new Token([\T_FN, 'fn']);
+    }
+
+    /**
+     * Check if the return statement contains include/include_once/require/require_once.
+     */
+    private function containsIncludeOrRequire(Tokens $tokens, int $start, int $end): bool
+    {
+        for ($i = $start; $i < $end; ++$i) {
+            if ($tokens[$i]->isGivenKind([\T_INCLUDE, \T_INCLUDE_ONCE, \T_REQUIRE, \T_REQUIRE_ONCE])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

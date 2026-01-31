@@ -73,6 +73,9 @@ Array Notation
 Attribute Notation
 ------------------
 
+- `attribute_block_no_spaces <./attribute_notation/attribute_block_no_spaces.rst>`_
+
+  Remove spaces before and after the attributes block.
 - `attribute_empty_parentheses <./attribute_notation/attribute_empty_parentheses.rst>`_ *(configurable)*
 
   PHP attributes declared without arguments must (not) be followed by empty parentheses.
@@ -194,6 +197,9 @@ Class Notation
 - `final_public_method_for_abstract_class <./class_notation/final_public_method_for_abstract_class.rst>`_ *(risky)*
 
   All ``public`` methods of ``abstract`` classes should be ``final``.
+- `modern_serialization_methods <./class_notation/modern_serialization_methods.rst>`_ *(risky)*
+
+  Use new serialization methods ``__serialize`` and ``__unserialize`` instead of deprecated ones ``__sleep`` and ``__wakeup``.
 - `modifier_keywords <./class_notation/modifier_keywords.rst>`_ *(configurable)*
 
   Classes, constants, properties, and methods MUST have visibility declared, and keyword modifiers MUST be in the following order: inheritance modifier (``abstract`` or ``final``), visibility modifier (``public``, ``protected``, or ``private``), set-visibility modifier (``public(set)``, ``protected(set)``, or ``private(set)``), scope modifier (``static``), mutation modifier (``readonly``), type declaration, name.
@@ -206,6 +212,9 @@ Class Notation
 - `no_php4_constructor <./class_notation/no_php4_constructor.rst>`_ *(risky)*
 
   Convert PHP4-style constructors to ``__construct``.
+- `no_redundant_readonly_property <./class_notation/no_redundant_readonly_property.rst>`_
+
+  Removes redundant readonly from properties in readonly classes.
 - `no_unneeded_final_method <./class_notation/no_unneeded_final_method.rst>`_ *(risky, configurable)*
 
   Removes ``final`` from methods where possible.
@@ -726,7 +735,7 @@ PHPUnit
   Adds or removes @test annotations from tests, following configuration.
 - `php_unit_test_case_static_method_calls <./php_unit/php_unit_test_case_static_method_calls.rst>`_ *(risky, configurable)*
 
-  Calls to ``PHPUnit\Framework\TestCase`` static methods must all be of the same type, either ``$this->``, ``self::`` or ``static::``.
+  Calls to ``PHPUnit\Framework\TestCase`` static methods (like assertions) must all be of the same type, either ``$this->``, ``self::`` or ``static::``.
 - `php_unit_test_class_requires_covers <./php_unit/php_unit_test_class_requires_covers.rst>`_
 
   Adds a default ``@coversNothing`` annotation to PHPUnit test classes that have no ``@covers*`` annotation.
@@ -836,6 +845,9 @@ PHPDoc
 - `phpdoc_types <./phpdoc/phpdoc_types.rst>`_ *(configurable)*
 
   The correct case must be used for standard PHP types in PHPDoc.
+- `phpdoc_types_no_duplicates <./phpdoc/phpdoc_types_no_duplicates.rst>`_
+
+  Removes duplicate PHPDoc types.
 - `phpdoc_types_order <./phpdoc/phpdoc_types_order.rst>`_ *(configurable)*
 
   Sorts PHPDoc types.

@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\RuleSet\Sets;
 
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixer;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSet;
@@ -52,9 +53,7 @@ final class AutoPHPUnitMigrationRiskySetTest extends AbstractSetTestCase
     {
         $versionInRuleName = Preg::replace('/^@PHPUnit(\d+)x(\d+)Migration:risky$/', '$1.$2', $setName);
 
-        $setClassName = 'PhpCsFixer\RuleSet\Sets\\'.str_replace(['@', ':risky'], ['', 'Risky'], $setName).'Set';
-        $set = new $setClassName();
-        \assert($set instanceof RuleSetDefinitionInterface);
+        $set = $this->createSetDefinitionBySetName($setName);
 
         $rulesWithTarget = array_filter(
             $set->getRules(),
@@ -82,14 +81,7 @@ final class AutoPHPUnitMigrationRiskySetTest extends AbstractSetTestCase
      */
     public static function provideThatSetDoNotUseNewestTargetCases(): iterable
     {
-        $setDefinition = self::getSet();
-        \assert($setDefinition instanceof AutomaticRuleSetDefinitionInterface);
-
-        $sets = array_keys($setDefinition->getRulesCandidates());
-
-        foreach ($sets as $set) {
-            yield $set => [$set];
-        }
+        yield from self::provideSets();
     }
 
     public function testThatHighestSetUsesHighestTargets(): void
@@ -111,6 +103,61 @@ final class AutoPHPUnitMigrationRiskySetTest extends AbstractSetTestCase
                 ),
             );
         }
+    }
+
+    /**
+     * While there is conflict between declaration (static) and expected usage (dynamic), we do not recommend to blindly go left or right till concluded.
+     * Enabling rule on any repo automatically via PHPUnit migration set will cause massive diff, while there is no wide alignment which way to go.
+     *
+     * We hope for conclusion at PHPUnit directly: https://github.com/sebastianbergmann/phpunit/issues/6458 .
+     *
+     * @dataProvider provideThatSetDoesNotIncludeProblematicRuleCases
+     */
+    public function testThatSetDoesNotIncludeProblematicRule(string $setName): void
+    {
+        $problematicFixer = new PhpUnitTestCaseStaticMethodCallsFixer();
+
+        $set = $this->createSetDefinitionBySetName($setName);
+        self::assertArrayNotHasKey(
+            $problematicFixer->getName(),
+            $set->getRules(),
+        );
+    }
+
+    /**
+     * @return iterable<string, array{0: string}>
+     */
+    public static function provideThatSetDoesNotIncludeProblematicRuleCases(): iterable
+    {
+        yield from self::provideSets();
+    }
+
+    /**
+     * @return iterable<string, array{0: string}>
+     */
+    private static function provideSets(): iterable
+    {
+        $setDefinition = self::getSet();
+        \assert($setDefinition instanceof AutomaticRuleSetDefinitionInterface);
+
+        $sets = array_keys($setDefinition->getRulesCandidates());
+
+        foreach ($sets as $set) {
+            yield $set => [$set];
+        }
+    }
+
+    private function createSetDefinitionBySetName(string $setName): RuleSetDefinitionInterface
+    {
+        $setClassName = \sprintf(
+            'PhpCsFixer\RuleSet\Sets\%sSet',
+            str_replace(['@', ':risky'], ['', 'Risky'], $setName),
+        );
+
+        $set = new $setClassName();
+        \assert($set instanceof RuleSetDefinitionInterface);
+
+        return $set;
     }
 
     private static function getHighestConfigurationForPHPUnitFixer(string $rule): ?string

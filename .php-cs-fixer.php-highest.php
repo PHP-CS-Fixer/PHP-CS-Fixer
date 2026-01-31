@@ -32,6 +32,7 @@ Closure::bind(
 )($config);
 
 $config->getFinder()->notPath([
+    'src/Doctrine/Annotation/Tokens.php', // due to some quirks on SplFixedArray typing
     'src/Tokenizer/Tokens.php', // due to some quirks on SplFixedArray typing
 ]);
 

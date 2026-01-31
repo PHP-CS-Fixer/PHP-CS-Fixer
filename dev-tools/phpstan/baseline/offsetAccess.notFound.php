@@ -17,11 +17,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/AbstractFunctionReferenceFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset string might not exist on array<string, string>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Cache/Cache.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset 1 might not exist on array.',
     'count' => 2,
     'path' => __DIR__ . '/../../../src/Console/Command/DescribeCommand.php',
@@ -55,11 +50,6 @@ $ignoreErrors[] = [
     'rawMessage' => 'Offset \'major\' might not exist on array{0?: string, major?: numeric-string, 1?: numeric-string}.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Console/Command/SelfUpdateCommand.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset \'files\' might not exist on array.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/Command/WorkerCommand.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Offset 0 might not exist on list<string>.',
@@ -290,16 +280,6 @@ $ignoreErrors[] = [
     'rawMessage' => 'Offset 0 might not exist on non-empty-array<array{string, int<-1, max>}>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/DocBlock/TypeExpression.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset int<0, max> might not exist on non-empty-list<array{start_index: int<0, max>, value: string, next_glue: string|null, next_glue_raw: string|null}>.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/DocBlock/TypeExpression.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset int might not exist on list<PhpCsFixer\\Doctrine\\Annotation\\Token>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Doctrine/Annotation/DocLexer.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Offset 1 might not exist on array.',
@@ -742,11 +722,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/PhpdocTagTypeFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset 0 might not exist on array.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/PhpdocTypesOrderFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset int<0, max> might not exist on list<int>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ReturnNotation/ReturnAssignmentFixer.php',
@@ -875,26 +850,6 @@ $ignoreErrors[] = [
     'rawMessage' => 'Offset string might not exist on array<string, array<string, mixed>|true>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/RuleSet/RuleSet.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset \'action\' might not exist on array.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Runner/Runner.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset \'file\' might not exist on non-empty-array.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Runner/Runner.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset \'identifier\' might not exist on non-empty-array.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Runner/Runner.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset \'status\' might not exist on non-empty-array.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Runner/Runner.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Offset 0 might not exist on list<non-empty-string>.',

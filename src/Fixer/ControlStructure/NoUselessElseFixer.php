@@ -19,6 +19,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
@@ -69,8 +70,11 @@ final class NoUselessElseFixer extends AbstractNoUselessElseFixer
                 continue;
             }
 
-            // clean up `else` if possible
-            if ($this->isSuperfluousElse($tokens, $index)) {
+            // Clean up `else` if possible.
+            // Ignore `else` blocks containing named function or classy declarations, because in PHP function/class
+            // declarations outside any conditional block are always evaluated first, even if the code before the declaration
+            // returns/throws/etc. So removing such `else` blocks would change the behaviour.
+            if ($this->isSuperfluousElse($tokens, $index) && !$this->containsNamedSymbolDeclaration($tokens, $index)) {
                 $this->clearElse($tokens, $index);
             }
         }
@@ -119,5 +123,32 @@ final class NoUselessElseFixer extends AbstractNoUselessElseFixer
 
         $tokens->clearTokenAndMergeSurroundingWhitespace($tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $next));
         $tokens->clearTokenAndMergeSurroundingWhitespace($next);
+    }
+
+    /**
+     * @param int $index index of T_ELSE
+     */
+    private function containsNamedSymbolDeclaration(Tokens $tokens, int $index): bool
+    {
+        $next = $tokens->getNextMeaningfulToken($index);
+
+        if (!$tokens[$next]->equals('{')) {
+            // short `else` can't contain symbol declaration (`else class Foo {}` is invalid syntax)
+            return false;
+        }
+
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $close = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $next);
+        for ($i = $next + 1; $i < $close; ++$i) {
+            if ($tokens[$i]->isGivenKind(\T_FUNCTION) && !$tokensAnalyzer->isLambda($i)) {
+                return true;
+            }
+
+            if ($tokens[$i]->isClassy() && !$tokensAnalyzer->isAnonymousClass($i)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

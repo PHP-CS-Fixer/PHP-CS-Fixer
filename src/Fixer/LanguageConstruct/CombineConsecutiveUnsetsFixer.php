@@ -79,8 +79,15 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
                 ++$tokensAddCount;
             }
 
-            $tokens->insertAt($previousUnsetBraceEnd, new Token(','));
-            ++$tokensAddCount;
+            $tokenBeforePreviousUnsetBraceEnd = $tokens->getPrevMeaningfulToken($previousUnsetBraceEnd);
+
+            if (!$tokens[$tokenBeforePreviousUnsetBraceEnd]->equals(',')) {
+                $tokens->insertAt($previousUnsetBraceEnd, new Token(','));
+                ++$tokensAddCount;
+            } elseif ($tokens[$tokenBeforePreviousUnsetBraceEnd + 1]->isWhitespace()) {
+                // keeping trailing comma from previous `unset`, but tokens moved - may cause 2 whitespaces tokens one after another - needed to clean this up
+                $tokens->clearTokenAndMergeSurroundingWhitespace($tokenBeforePreviousUnsetBraceEnd + 1);
+            }
 
             // Remove 'unset', '(', ')' and (possibly) ';' from the merged 'unset' call.
             $this->clearOffsetTokens($tokens, $tokensAddCount, [$index, $nextUnsetContentStart, $nextUnsetContentEnd]);

@@ -823,12 +823,14 @@ final class FixerFactoryTest extends TestCase
             ],
             'phpdoc_array_type' => [
                 'phpdoc_list_type',
+                'phpdoc_types_no_duplicates',
                 'phpdoc_types_order',
             ],
             'phpdoc_line_span' => [
                 'no_superfluous_phpdoc_tags',
             ],
             'phpdoc_list_type' => [
+                'phpdoc_types_no_duplicates',
                 'phpdoc_types_order',
             ],
             'phpdoc_no_access' => [
@@ -861,6 +863,7 @@ final class FixerFactoryTest extends TestCase
             'phpdoc_readonly_class_comment_to_keyword' => [
                 'no_empty_phpdoc',
                 'no_extra_blank_lines',
+                'no_redundant_readonly_property',
                 'phpdoc_align',
             ],
             'phpdoc_return_self_reference' => [

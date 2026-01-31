@@ -37,7 +37,7 @@ final class CommandTest extends TestCase
      */
     public function testCommandHasNameConst(Command $command): void
     {
-        self::assertNotNull($command::getDefaultName());
+        self::assertNotNull($command->getName());
     }
 
     /**
