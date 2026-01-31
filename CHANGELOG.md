@@ -3,6 +3,13 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.93.1
+---------------------
+
+* fix: `ErrorOutput` - do not show "begin diff"/"end diff" when there is no diff (#9361)
+* fix: `UseArrowFunctionsFixer` - don't convert lambda with `use($var)` clause if it includes another file (#9389)
+* DX: use null coalescing operator (#9380)
+
 Changelog for v3.93.0
 ---------------------
 
