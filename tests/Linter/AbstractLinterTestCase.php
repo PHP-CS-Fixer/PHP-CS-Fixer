@@ -14,8 +14,10 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Linter;
 
+use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
+use PhpCsFixer\Linter\TokenizerLinter;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -78,6 +80,33 @@ abstract class AbstractLinterTestCase extends TestCase
             __DIR__.'/../Fixtures/Linter/invalid-multiple.php',
             'Fatal error: Multiple access type modifiers are not allowed on line 4.',
         ];
+    }
+
+    /**
+     * This test is documenting flaws in some Linters, exposing false-positives for files wrongly being considers as valid.
+     *
+     * @see Schrodinger's cat
+     */
+    public function testLintSchrodingersFile(): void
+    {
+        $file = __DIR__.'/../Fixtures/Linter/schrodingers-validity.php';
+
+        $linter = $this->createLinter();
+
+        // Ideally this array shall be empty.
+        // We accept this imperfection for actual Fixer execution, while avoiding using those Linters for tests.
+        $notDetectingInvaldidSyntax = [
+            Linter::class,
+            TokenizerLinter::class,
+        ];
+
+        if (!\in_array(\get_class($linter), $notDetectingInvaldidSyntax, true)) {
+            $this->expectException(LintingException::class);
+        } else {
+            $this->expectNotToPerformAssertions();
+        }
+
+        $linter->lintFile($file)->check();
     }
 
     /**
