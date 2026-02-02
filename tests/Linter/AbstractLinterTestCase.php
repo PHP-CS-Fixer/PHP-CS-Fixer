@@ -75,7 +75,7 @@ abstract class AbstractLinterTestCase extends TestCase
         ];
 
         yield [
-            __DIR__.'/../Fixtures/Linter/multiple.php',
+            __DIR__.'/../Fixtures/Linter/invalid-multiple.php',
             'Fatal error: Multiple access type modifiers are not allowed on line 4.',
         ];
     }
