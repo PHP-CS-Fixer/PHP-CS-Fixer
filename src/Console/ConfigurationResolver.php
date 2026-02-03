@@ -331,7 +331,9 @@ final class ConfigurationResolver
     public function getDirectory(): DirectoryInterface
     {
         if (null === $this->directory) {
-            $this->directory = new Directory($this->cwd);
+            $cwd = realpath($this->cwd);
+
+            $this->directory = new Directory(false !== $cwd ? $cwd : $this->cwd);
         }
 
         return $this->directory;
