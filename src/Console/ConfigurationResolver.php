@@ -331,19 +331,7 @@ final class ConfigurationResolver
     public function getDirectory(): DirectoryInterface
     {
         if (null === $this->directory) {
-            $path = $this->getCacheFile();
-            if (null === $path) {
-                $absolutePath = $this->cwd;
-            } else {
-                $filesystem = new Filesystem();
-
-                $absolutePath = $filesystem->isAbsolutePath($path)
-                    ? $path
-                    : $this->cwd.\DIRECTORY_SEPARATOR.$path;
-                $absolutePath = \dirname($absolutePath);
-            }
-
-            $this->directory = new Directory($absolutePath);
+            $this->directory = new Directory($this->cwd);
         }
 
         return $this->directory;
