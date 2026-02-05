@@ -141,6 +141,28 @@ final class ArgumentsAnalyzerTest extends TestCase
     }
 
     /**
+     * @param array<int, int> $arguments
+     *
+     * @requires PHP 8.5
+     *
+     * @dataProvider provideArguments85Cases
+     */
+    public function testArguments85(string $code, int $openIndex, int $closeIndex, array $arguments): void
+    {
+        $this->testArguments($code, $openIndex, $closeIndex, $arguments);
+    }
+
+    /**
+     * @return iterable<string, array{string, int, int, array<int, int>}>
+     */
+    public static function provideArguments85Cases(): iterable
+    {
+        yield 'closure in default parameter value' => ['<?php function x(Closure $y = static function (): void {}) {}', 4, 16, [5 => 15]];
+
+        yield 'closure with body in default parameter value' => ['<?php function z(Closure $callback = function (): int { return 42; }) {}', 4, 25, [5 => 24]];
+    }
+
+    /**
      * @dataProvider provideArgumentInfoCases
      */
     public function testArgumentInfo(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void
@@ -487,6 +509,22 @@ class Foo
                     'Bar',
                     18,
                     18,
+                ),
+            ),
+        ];
+
+        yield 'closure in default parameter value' => [
+            '<?php function x(Closure $y = static function (): void {}) {}',
+            4,
+            16,
+            new ArgumentAnalysis(
+                '$y',
+                7,
+                'staticfunction():void{}',
+                new TypeAnalysis(
+                    'Closure',
+                    5,
+                    5,
                 ),
             ),
         ];
