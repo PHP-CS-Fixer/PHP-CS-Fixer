@@ -54,6 +54,16 @@ class ClosuresInAttibutes
     public string $foo;
 }
 
+// https://wiki.php.net/rfc/closures_in_const_expr - closure in parameter default value
+function x(Closure $y = static function (): void {})
+{
+}
+function z(Closure $callback = function (): int {
+    return 42;
+})
+{
+}
+
 --INPUT--
 <?php
 
@@ -100,3 +110,12 @@ class ClosuresInAttibutes
     #[Attribute123(someName: static function (): void {})]
     public string $foo;
 }
+
+// https://wiki.php.net/rfc/closures_in_const_expr - closure in parameter default value
+function x(Closure $y = static function (): void {}) {
+}
+function z(Closure $callback = function (): int {
+    return 42;
+}) {
+}
+
