@@ -293,7 +293,9 @@ final class Runner
             ));
         }
 
-        $processPool = new ProcessPool($server);
+        $processPool = new ProcessPool($server, static function () use ($streamSelectLoop): void {
+            $streamSelectLoop->stop();
+        });
         $maxFilesPerProcess = $this->parallelConfig->getFilesPerProcess();
         $fileIterator = $this->getFilteringFileIterator();
         $fileIterator->rewind();
@@ -389,7 +391,7 @@ final class Runner
             $processPool->addProcess($identifier, $process);
             $process->start(
                 // [REACT] Handle workers' responses (multiple actions possible)
-                function (array $workerResponse) use ($processPool, $process, $identifier, $getFileChunk, &$changed, $streamSelectLoop): void {
+                function (array $workerResponse) use ($processPool, $process, $identifier, $getFileChunk, &$changed): void {
                     \assert(isset($workerResponse['action']));
 
                     // File analysis result (we want close-to-realtime progress with frequent cache savings)
@@ -432,7 +434,6 @@ final class Runner
 
                             if ($this->stopOnViolation) {
                                 $processPool->endAll();
-                                $streamSelectLoop->stop();
 
                                 return;
                             }
@@ -476,9 +477,8 @@ final class Runner
                 },
 
                 // [REACT] Handle errors encountered during worker's execution
-                static function (\Throwable $error) use ($processPool, $streamSelectLoop): void {
+                static function (\Throwable $error) use ($processPool): void {
                     $processPool->endAll();
-                    $streamSelectLoop->stop();
 
                     throw new ParallelisationException($error->getMessage(), $error->getCode(), $error);
                 },
