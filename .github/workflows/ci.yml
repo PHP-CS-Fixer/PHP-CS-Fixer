@@ -161,7 +161,7 @@ jobs:
             php-version: ${{ needs.setup.outputs.PHP_MAX }}
             job-description: Fixer on Windows
             run-fixer: 'yes'
-            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
+            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
 
           - operating-system: windows-latest
             php-version: ${{ needs.setup.outputs.PHP_MAX }}
@@ -179,7 +179,7 @@ jobs:
             php-version: ${{ needs.setup.outputs.PHP_MAX }}
             job-description: tests on macOS
             run-tests: 'yes'
-            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
+            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
 
           - operating-system: ubuntu-24.04
             php-version: ${{ needs.setup.outputs.PHP_MAX }}
