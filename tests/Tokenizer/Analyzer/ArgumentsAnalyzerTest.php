@@ -157,9 +157,9 @@ final class ArgumentsAnalyzerTest extends TestCase
      */
     public static function provideArguments85Cases(): iterable
     {
-        yield 'closure in default parameter value' => ['<?php function x(Closure $y = static function (): void {}) {}', 4, 16, [5 => 15]];
+        yield 'closure in default parameter value' => ['<?php function x(Closure $y = static function (): void {}) {}', 4, 23, [5 => 22]];
 
-        yield 'closure with body in default parameter value' => ['<?php function z(Closure $callback = function (): int { return 42; }) {}', 4, 25, [5 => 24]];
+        yield 'closure with body in default parameter value' => ['<?php function z(Closure $callback = function (): int { return 42; }) {}', 4, 27, [5 => 26]];
     }
 
     /**
@@ -515,8 +515,8 @@ class Foo
 
         yield 'closure in default parameter value' => [
             '<?php function x(Closure $y = static function (): void {}) {}',
-            4,
-            16,
+            5,
+            22,
             new ArgumentAnalysis(
                 '$y',
                 7,
