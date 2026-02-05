@@ -293,9 +293,12 @@ final class Runner
             ));
         }
 
-        $processPool = new ProcessPool($server, static function () use ($streamSelectLoop): void {
-            $streamSelectLoop->stop();
-        });
+        $processPool = new ProcessPool(
+            $server,
+            static function () use ($streamSelectLoop): void {
+                $streamSelectLoop->stop();
+            },
+        );
         $maxFilesPerProcess = $this->parallelConfig->getFilesPerProcess();
         $fileIterator = $this->getFilteringFileIterator();
         $fileIterator->rewind();
