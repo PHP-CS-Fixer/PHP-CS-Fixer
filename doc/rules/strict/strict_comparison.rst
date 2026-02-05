@@ -7,10 +7,10 @@ Comparisons should be strict.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
-Changing comparisons to strict might change code behavior.
+Changing comparisons to strict might change code behaviour.
 
 Examples
 --------

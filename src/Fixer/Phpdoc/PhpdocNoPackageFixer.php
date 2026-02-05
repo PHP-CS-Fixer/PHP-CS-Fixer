@@ -22,6 +22,8 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocNoPackageFixer extends AbstractProxyFixer
 {
@@ -31,18 +33,20 @@ final class PhpdocNoPackageFixer extends AbstractProxyFixer
             '`@package` and `@subpackage` annotations must be removed from PHPDoc.',
             [
                 new CodeSample(
-                    '<?php
-/**
- * @internal
- * @package Foo
- * subpackage Bar
- */
-class Baz
-{
-}
-'
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @internal
+                         * @package Foo
+                         * subpackage Bar
+                         */
+                        class Baz
+                        {
+                        }
+
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

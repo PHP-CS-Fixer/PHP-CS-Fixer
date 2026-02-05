@@ -26,6 +26,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\DocBlock\TagComparator
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TagComparatorTest extends TestCase
 {
@@ -84,7 +86,7 @@ final class TagComparatorTest extends TestCase
 
         self::assertSame(
             $expected,
-            TagComparator::shouldBeTogether($tag1, $tag2, $groups)
+            TagComparator::shouldBeTogether($tag1, $tag2, $groups),
         );
     }
 

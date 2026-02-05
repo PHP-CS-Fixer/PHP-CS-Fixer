@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\VoidReturnFixer>
  *
  * @author Mark Nielsen
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class VoidReturnFixerTest extends AbstractFixerTestCase
 {
@@ -272,7 +274,7 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
                 implode(',', array_map(
                     static fn (int $n): string => \sprintf('$x%d', $n),
                     array_keys(array_fill(0, $arguments, true)),
-                ))
+                )),
             );
 
             $input = \sprintf($code, '');

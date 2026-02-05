@@ -30,6 +30,8 @@ use Symfony\Component\Filesystem\Filesystem;
  * @group covers-nothing
  *
  * @large
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class InstallViaComposerTest extends AbstractSmokeTestCase
 {
@@ -94,6 +96,8 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->fs = new Filesystem();
     }
 
@@ -198,13 +202,13 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
         try {
             file_put_contents(
                 $tmpPath.'/composer.json',
-                json_encode($initialComposerFileState, \JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT)
+                json_encode($initialComposerFileState, \JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT),
             );
         } catch (\JsonException $e) {
             throw new \InvalidArgumentException(
                 'Initial Composer file state could not be saved as composer.json',
                 $e->getCode(),
-                $e
+                $e,
             );
         }
 

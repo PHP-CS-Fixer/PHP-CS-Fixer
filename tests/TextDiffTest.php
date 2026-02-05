@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Console\Command\FixCommand;
+use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Console\Report\FixReport\ReporterFactory;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -26,6 +27,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @coversNothing
  *
  * @group covers-nothing
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TextDiffTest extends TestCase
 {
@@ -44,11 +47,13 @@ final class TextDiffTest extends TestCase
                 '--format' => $format,
                 '--rules' => 'cast_spaces',
                 '--using-cache' => 'no',
+                '--config' => ConfigurationResolver::IGNORE_CONFIG_FILE,
             ],
             [
                 'decorated' => $isDecorated,
+                'interactive' => false,
                 'verbosity' => OutputInterface::VERBOSITY_NORMAL,
-            ]
+            ],
         );
 
         if ($isDecorated !== $commandTester->getOutput()->isDecorated()) {
@@ -99,7 +104,7 @@ final class TextDiffTest extends TestCase
 
         self::assertSame(
             ['checkstyle', 'gitlab', 'json', 'junit', 'txt', 'xml'],
-            $formats
+            $formats,
         );
     }
 }

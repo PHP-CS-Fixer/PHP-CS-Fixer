@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitAssertNewNamesFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitAssertNewNamesFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpUnitAssertNewNamesFixerTest extends AbstractFixerTestCase
 {
@@ -51,7 +53,7 @@ final class PhpUnitAssertNewNamesFixerTest extends AbstractFixerTestCase
                     $this->assertFileIsNotWriteable($a);
                     $this->assertMatchesRegularExpression($a);
                     $this->assertDoesNotMatchRegularExpression($a);
-                '
+                ',
             ),
             self::generateTest(
                 '
@@ -65,7 +67,7 @@ final class PhpUnitAssertNewNamesFixerTest extends AbstractFixerTestCase
                     $this->assertFileNotIsWritable($a);
                     $this->assertRegExp($a);
                     $this->assertNotRegExp($a);
-                '
+                ',
             ),
         ];
     }

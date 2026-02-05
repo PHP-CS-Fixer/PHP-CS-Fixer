@@ -26,6 +26,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Michał Adamski <michal.adamski@gmail.com>
  * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpUnitMockShortWillReturnFixer extends AbstractPhpUnitFixer
 {
@@ -42,23 +44,27 @@ final class PhpUnitMockShortWillReturnFixer extends AbstractPhpUnitFixer
         return new FixerDefinition(
             'Usage of PHPUnit\'s mock e.g. `->will($this->returnValue(..))` must be replaced by its shorter equivalent such as `->willReturn(...)`.',
             [
-                new CodeSample('<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testSomeTest()
-    {
-        $someMock = $this->createMock(Some::class);
-        $someMock->method("some")->will($this->returnSelf());
-        $someMock->method("some")->will($this->returnValue("example"));
-        $someMock->method("some")->will($this->returnArgument(2));
-        $someMock->method("some")->will($this->returnCallback("str_rot13"));
-        $someMock->method("some")->will($this->returnValueMap(["a","b","c"]));
-    }
-}
-'),
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        final class MyTest extends \PHPUnit_Framework_TestCase
+                        {
+                            public function testSomeTest()
+                            {
+                                $someMock = $this->createMock(Some::class);
+                                $someMock->method("some")->will($this->returnSelf());
+                                $someMock->method("some")->will($this->returnValue("example"));
+                                $someMock->method("some")->will($this->returnArgument(2));
+                                $someMock->method("some")->will($this->returnCallback("str_rot13"));
+                                $someMock->method("some")->will($this->returnValueMap(["a","b","c"]));
+                            }
+                        }
+
+                        PHP,
+                ),
             ],
             null,
-            'Risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.'
+            'Risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.',
         );
     }
 

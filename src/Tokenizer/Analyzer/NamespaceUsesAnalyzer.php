@@ -27,6 +27,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * @internal
  *
  * @TODO Drop `allowMultiUses` opt-in flag when all fixers are updated and can handle multi-use statements.
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NamespaceUsesAnalyzer
 {
@@ -110,16 +112,18 @@ final class NamespaceUsesAnalyzer
                     }
 
                     $groupQualifiedName = $this->getNearestQualifiedName($tokens, $chunkStart);
+                    \assert('' !== $groupQualifiedName['fullName']);
+                    \assert('' !== $groupQualifiedName['shortName']);
                     $imports[] = new NamespaceUseAnalysis(
                         $type,
-                        $qualifiedName['fullName'].$groupQualifiedName['fullName'], // @phpstan-ignore argument.type
+                        $qualifiedName['fullName'].$groupQualifiedName['fullName'],
                         $groupQualifiedName['shortName'],
                         $groupQualifiedName['aliased'],
                         true,
                         $startIndex,
                         $endIndex,
                         $chunkStart,
-                        $tokens->getPrevMeaningfulToken($groupQualifiedName['afterIndex'])
+                        $tokens->getPrevMeaningfulToken($groupQualifiedName['afterIndex']),
                     );
 
                     $groupIndex = $groupQualifiedName['afterIndex'];
@@ -130,6 +134,8 @@ final class NamespaceUsesAnalyzer
                 $previousToken = $tokens->getPrevMeaningfulToken($qualifiedName['afterIndex']);
 
                 if (!$tokens[$previousToken]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)) {
+                    \assert('' !== $qualifiedName['fullName']);
+                    \assert('' !== $qualifiedName['shortName']);
                     $imports[] = new NamespaceUseAnalysis(
                         $type,
                         $qualifiedName['fullName'],
@@ -139,7 +145,7 @@ final class NamespaceUsesAnalyzer
                         $startIndex,
                         $endIndex,
                         $multi ? $index : null,
-                        $multi ? $previousToken : null
+                        $multi ? $previousToken : null,
                     );
                 }
 
@@ -171,7 +177,7 @@ final class NamespaceUsesAnalyzer
     }
 
     /**
-     * @return array{fullName: class-string, shortName: string, aliased: bool, afterIndex: int}
+     * @return array{fullName: string, shortName: string, aliased: bool, afterIndex: int}
      */
     private function getNearestQualifiedName(Tokens $tokens, int $index): array
     {
@@ -203,11 +209,8 @@ final class NamespaceUsesAnalyzer
             $index = $tokens->getNextMeaningfulToken($index);
         }
 
-        /** @var class-string $fqn */
-        $fqn = $fullName;
-
         return [
-            'fullName' => $fqn,
+            'fullName' => $fullName,
             'shortName' => $shortName,
             'aliased' => $aliased,
             'afterIndex' => $index,

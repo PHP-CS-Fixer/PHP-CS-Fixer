@@ -26,6 +26,8 @@ use Symfony\Contracts\EventDispatcher\Event;
  * @extends \FilterIterator<mixed, \SplFileInfo, \Iterator<mixed, \SplFileInfo>>
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FileFilterIterator extends \FilterIterator
 {
@@ -63,8 +65,8 @@ final class FileFilterIterator extends \FilterIterator
             throw new \RuntimeException(
                 \sprintf(
                     'Expected instance of "\SplFileInfo", got "%s".',
-                    get_debug_type($file)
-                )
+                    get_debug_type($file),
+                ),
             );
         }
 

@@ -7,8 +7,8 @@ Lambdas not (indirectly) referencing ``$this`` must be declared ``static``.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when using ``->bindTo`` on lambdas without referencing to ``$this``.
 
@@ -31,9 +31,10 @@ Example #1
 Rule sets
 ---------
 
-The rule is part of the following rule set:
+The rule is part of the following rule sets:
 
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
+- `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
 References
 ----------

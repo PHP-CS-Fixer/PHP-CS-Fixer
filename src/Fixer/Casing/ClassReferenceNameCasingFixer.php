@@ -25,6 +25,9 @@ use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class ClassReferenceNameCasingFixer extends AbstractFixer
 {
     private const NOT_BEFORE_KINDS = [
@@ -49,7 +52,7 @@ final class ClassReferenceNameCasingFixer extends AbstractFixer
             'When referencing an internal class it must be written using the correct casing.',
             [
                 new CodeSample("<?php\nthrow new \\exception();\n"),
-            ]
+            ],
         );
     }
 

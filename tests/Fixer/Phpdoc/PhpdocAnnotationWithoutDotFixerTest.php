@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocAnnotationWithoutDotFixer>
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
 {
@@ -234,6 +236,28 @@ function foo ($bar) {}
  */
 function foo ($bar) {}
 ',
+        ];
+
+        yield [
+            '<?php
+    /**
+     * @param Url $url URL is not lowercased
+     */',
+            '<?php
+    /**
+     * @param Url $url URL is not lowercased.
+     */',
+        ];
+
+        yield [
+            '<?php
+    /**
+     * @param Url URL is not lowercased and note that name of param is ommited
+     */',
+            '<?php
+    /**
+     * @param Url URL is not lowercased and note that name of param is ommited.
+     */',
         ];
     }
 }

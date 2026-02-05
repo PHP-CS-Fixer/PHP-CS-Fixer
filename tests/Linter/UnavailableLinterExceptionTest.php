@@ -23,6 +23,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Linter\UnavailableLinterException
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class UnavailableLinterExceptionTest extends TestCase
 {
@@ -35,7 +37,7 @@ final class UnavailableLinterExceptionTest extends TestCase
         $exception = new UnavailableLinterException(
             $message,
             $code,
-            $previous
+            $previous,
         );
 
         self::assertSame($message, $exception->getMessage());

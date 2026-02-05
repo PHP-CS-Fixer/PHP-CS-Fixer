@@ -23,6 +23,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Runner\FileCachingLintingFileIterator
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FileCachingLintingFileIteratorTest extends TestCase
 {
@@ -32,7 +34,7 @@ final class FileCachingLintingFileIteratorTest extends TestCase
 
         $fileCachingLintingIterator = new FileCachingLintingFileIterator(
             $iterator,
-            $this->createLinterDouble()
+            $this->createLinterDouble(),
         );
 
         self::assertNull($fileCachingLintingIterator->current());
@@ -59,7 +61,7 @@ final class FileCachingLintingFileIteratorTest extends TestCase
 
         $fileCachingLintingIterator = new FileCachingLintingFileIterator(
             $iterator,
-            $this->createLinterDouble($lintingResult)
+            $this->createLinterDouble($lintingResult),
         );
 
         self::assertLintingIteratorIteration($fileCachingLintingIterator, $lintingResult, ...$files);

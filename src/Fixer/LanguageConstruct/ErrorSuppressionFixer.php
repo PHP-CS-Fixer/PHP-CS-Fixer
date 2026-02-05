@@ -43,6 +43,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Jules Pietri <jules@heahprod.com>
  * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ErrorSuppressionFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -72,18 +74,18 @@ final class ErrorSuppressionFixer extends AbstractFixer implements ConfigurableF
                 new CodeSample("<?php\ntrigger_error('Warning.', E_USER_DEPRECATED);\n"),
                 new CodeSample(
                     "<?php\n@mkdir(\$dir);\n@unlink(\$path);\n",
-                    [self::OPTION_NOISE_REMAINING_USAGES => true]
+                    [self::OPTION_NOISE_REMAINING_USAGES => true],
                 ),
                 new CodeSample(
                     "<?php\n@mkdir(\$dir);\n@unlink(\$path);\n",
                     [
                         self::OPTION_NOISE_REMAINING_USAGES => true,
                         self::OPTION_NOISE_REMAINING_USAGES_EXCLUDE => ['unlink'],
-                    ]
+                    ],
                 ),
             ],
             null,
-            'Risky because adding/removing `@` might cause changes to code behaviour or if `trigger_error` function is overridden.'
+            'Risky because adding/removing `@` might cause changes to code behaviour or if `trigger_error` function is overridden.',
         );
     }
 

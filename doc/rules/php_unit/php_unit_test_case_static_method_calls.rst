@@ -2,17 +2,23 @@
 Rule ``php_unit_test_case_static_method_calls``
 ===============================================
 
-Calls to ``PHPUnit\Framework\TestCase`` static methods must all be of the same
-type, either ``$this->``, ``self::`` or ``static::``.
+Calls to ``PHPUnit\Framework\TestCase`` static methods (like assertions) must
+all be of the same type, either ``$this->``, ``self::`` or ``static::``.
 
-Warning
--------
+Warnings
+--------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when PHPUnit methods are overridden or not accessible, or when project has
 PHPUnit incompatibilities.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``call_type``,
+``methods``, ``target``.
 
 Configuration
 -------------
@@ -26,6 +32,8 @@ Allowed values: ``'self'``, ``'static'`` and ``'this'``
 
 Default value: ``'static'``
 
+Default value (future-mode): ``'this'``
+
 ``methods``
 ~~~~~~~~~~~
 
@@ -35,6 +43,17 @@ strategy.
 Allowed types: ``array<string, string>``
 
 Default value: ``[]``
+
+``target``
+~~~~~~~~~~
+
+Target version of PHPUnit.
+
+Allowed values: ``'10.0'``, ``'11.0'`` and ``'newest'``
+
+Default value: ``'10.0'``
+
+Default value (future-mode): ``'newest'``
 
 Examples
 --------

@@ -28,6 +28,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 #[AsCommand(name: 'help')]
 final class HelpCommand extends BaseHelpCommand
@@ -51,7 +53,7 @@ final class HelpCommand extends BaseHelpCommand
     /**
      * Returns the allowed values of the given option that can be converted to a string.
      *
-     * @return null|list<AllowedValueSubset|mixed>
+     * @return null|non-empty-list<AllowedValueSubset|mixed>
      */
     public static function getDisplayableAllowedValues(FixerOptionInterface $option): ?array
     {
@@ -71,7 +73,7 @@ final class HelpCommand extends BaseHelpCommand
 
                 return strcasecmp(
                     Utils::toString($valueA),
-                    Utils::toString($valueB)
+                    Utils::toString($valueB),
                 );
             });
 

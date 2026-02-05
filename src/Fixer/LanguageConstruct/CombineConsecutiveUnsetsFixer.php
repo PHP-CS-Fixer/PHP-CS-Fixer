@@ -21,13 +21,16 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class CombineConsecutiveUnsetsFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Calling `unset` on multiple items should be done in one call.',
-            [new CodeSample("<?php\nunset(\$a); unset(\$b);\n")]
+            [new CodeSample("<?php\nunset(\$a); unset(\$b);\n")],
         );
     }
 
@@ -68,7 +71,7 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
                 $tokens,
                 $nextUnsetContentStart = $tokens->getNextTokenOfKind($index, ['(']),
                 $nextUnsetContentEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextUnsetContentStart),
-                $previousUnsetBraceEnd - 1
+                $previousUnsetBraceEnd - 1,
             );
 
             if (!$tokens[$previousUnsetBraceEnd]->isWhitespace()) {
@@ -76,8 +79,15 @@ final class CombineConsecutiveUnsetsFixer extends AbstractFixer
                 ++$tokensAddCount;
             }
 
-            $tokens->insertAt($previousUnsetBraceEnd, new Token(','));
-            ++$tokensAddCount;
+            $tokenBeforePreviousUnsetBraceEnd = $tokens->getPrevMeaningfulToken($previousUnsetBraceEnd);
+
+            if (!$tokens[$tokenBeforePreviousUnsetBraceEnd]->equals(',')) {
+                $tokens->insertAt($previousUnsetBraceEnd, new Token(','));
+                ++$tokensAddCount;
+            } elseif ($tokens[$tokenBeforePreviousUnsetBraceEnd + 1]->isWhitespace()) {
+                // keeping trailing comma from previous `unset`, but tokens moved - may cause 2 whitespaces tokens one after another - needed to clean this up
+                $tokens->clearTokenAndMergeSurroundingWhitespace($tokenBeforePreviousUnsetBraceEnd + 1);
+            }
 
             // Remove 'unset', '(', ')' and (possibly) ';' from the merged 'unset' call.
             $this->clearOffsetTokens($tokens, $tokensAddCount, [$index, $nextUnsetContentStart, $nextUnsetContentEnd]);

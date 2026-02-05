@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Command\FixCommandExitStatusCalculator
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FixCommandExitStatusCalculatorTest extends TestCase
 {
@@ -47,8 +49,8 @@ final class FixCommandExitStatusCalculatorTest extends TestCase
                 $hasChangedFiles,
                 $hasInvalidErrors,
                 $hasExceptionErrors,
-                $hasLintErrorsAfterFixing
-            )
+                $hasLintErrorsAfterFixing,
+            ),
         );
     }
 

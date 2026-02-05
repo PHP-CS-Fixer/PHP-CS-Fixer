@@ -5,6 +5,15 @@ Rule ``operator_linebreak``
 Operators - when multiline - must always be at the beginning or at the end of
 the line.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``only_booleans``,
+``position``.
+
 Configuration
 -------------
 
@@ -89,9 +98,10 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PER <./../../ruleSets/PER.rst>`_
+- `@PER <./../../ruleSets/PER.rst>`_ *(deprecated)*
 - `@PER-CS <./../../ruleSets/PER-CS.rst>`_
-- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ *(deprecated)*
+- `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 

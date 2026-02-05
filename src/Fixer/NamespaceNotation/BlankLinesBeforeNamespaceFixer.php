@@ -43,6 +43,8 @@ use Symfony\Component\OptionsResolver\Options;
  *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Greg Korba <greg@codito.dev>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements WhitespacesAwareFixerInterface, ConfigurableFixerInterface
 {
@@ -59,7 +61,7 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
                 new CodeSample("<?php\n\ndeclare(strict_types=1);\n\n\n\nnamespace A{}\n", ['max_line_breaks' => 2]),
                 new CodeSample("<?php\n\n/** Some comment */\nnamespace A{}\n", ['min_line_breaks' => 2]),
                 new CodeSample("<?php\n\nnamespace A{}\n", ['min_line_breaks' => 0, 'max_line_breaks' => 0]),
-            ]
+            ],
         );
     }
 
@@ -88,7 +90,7 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
                     if ($value < 0) {
                         throw new InvalidFixerConfigurationException(
                             (new self())->getName(),
-                            'Option `min_line_breaks` cannot be lower than 0.'
+                            'Option `min_line_breaks` cannot be lower than 0.',
                         );
                     }
 
@@ -102,14 +104,14 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
                     if ($value < 0) {
                         throw new InvalidFixerConfigurationException(
                             (new self())->getName(),
-                            'Option `max_line_breaks` cannot be lower than 0.'
+                            'Option `max_line_breaks` cannot be lower than 0.',
                         );
                     }
 
                     if ($value < $options['min_line_breaks']) {
                         throw new InvalidFixerConfigurationException(
                             (new self())->getName(),
-                            'Option `max_line_breaks` cannot have lower value than `min_line_breaks`.'
+                            'Option `max_line_breaks` cannot have lower value than `min_line_breaks`.',
                         );
                     }
 
@@ -129,7 +131,7 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
                     $tokens,
                     $index,
                     $this->configuration['min_line_breaks'],
-                    $this->configuration['max_line_breaks']
+                    $this->configuration['max_line_breaks'],
                 );
             }
         }
@@ -225,15 +227,10 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
 
         if ($previous->isWhitespace()) {
             // Fix the previous whitespace token
-            $tokens[$previousIndex] = new Token(
-                [
-                    \T_WHITESPACE,
-                    str_repeat($lineEnding, $newlinesForWhitespaceToken).substr(
-                        $previous->getContent(),
-                        strrpos($previous->getContent(), "\n") + 1
-                    ),
-                ]
-            );
+            $content = $previous->getContent();
+            $pos = strrpos($content, "\n");
+            $content = false === $pos ? '' : substr($content, $pos + 1);
+            $tokens[$previousIndex] = new Token([\T_WHITESPACE, str_repeat($lineEnding, $newlinesForWhitespaceToken).$content]);
         } else {
             // Add a new whitespace token
             $tokens->insertAt($index, new Token([\T_WHITESPACE, str_repeat($lineEnding, $newlinesForWhitespaceToken)]));

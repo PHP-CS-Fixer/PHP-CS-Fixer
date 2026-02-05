@@ -21,6 +21,9 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class PhpdocArrayTypeFixer extends AbstractPhpdocTypesFixer
 {
     public function isCandidate(Tokens $tokens): bool
@@ -38,24 +41,26 @@ final class PhpdocArrayTypeFixer extends AbstractPhpdocTypesFixer
         return new FixerDefinition(
             'PHPDoc `array<T>` type must be used instead of `T[]`.',
             [
-                new CodeSample(<<<'PHP'
-                    <?php
-                    /**
-                     * @param int[] $x
-                     * @param string[][] $y
-                     */
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @param int[] $x
+                         * @param string[][] $y
+                         */
 
-                    PHP),
+                        PHP,
+                ),
             ],
             null,
-            'Risky when using `T[]` in union types.'
+            'Risky when using `T[]` in union types.',
         );
     }
 
     /**
      * {@inheritdoc}
      *
-     * Must run before PhpdocAlignFixer, PhpdocListTypeFixer, PhpdocTypesOrderFixer.
+     * Must run before PhpdocAlignFixer, PhpdocListTypeFixer, PhpdocTypesNoDuplicatesFixer, PhpdocTypesOrderFixer.
      * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority(): int

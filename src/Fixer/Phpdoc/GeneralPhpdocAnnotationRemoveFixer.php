@@ -42,6 +42,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -54,40 +56,46 @@ final class GeneralPhpdocAnnotationRemoveFixer extends AbstractFixer implements 
             'Removes configured annotations from PHPDoc.',
             [
                 new CodeSample(
-                    '<?php
-/**
- * @internal
- * @author John Doe
- * @AuThOr Jane Doe
- */
-function foo() {}
-',
-                    ['annotations' => ['author']]
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @internal
+                         * @author John Doe
+                         * @AuThOr Jane Doe
+                         */
+                        function foo() {}
+
+                        PHP,
+                    ['annotations' => ['author']],
                 ),
                 new CodeSample(
-                    '<?php
-/**
- * @internal
- * @author John Doe
- * @AuThOr Jane Doe
- */
-function foo() {}
-',
-                    ['annotations' => ['author'], 'case_sensitive' => false]
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @internal
+                         * @author John Doe
+                         * @AuThOr Jane Doe
+                         */
+                        function foo() {}
+
+                        PHP,
+                    ['annotations' => ['author'], 'case_sensitive' => false],
                 ),
                 new CodeSample(
-                    '<?php
-/**
- * @author John Doe
- * @package ACME API
- * @subpackage Authorization
- * @version 1.0
- */
-function foo() {}
-',
-                    ['annotations' => ['package', 'subpackage']]
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @author John Doe
+                         * @package ACME API
+                         * @subpackage Authorization
+                         * @version 1.0
+                         */
+                        function foo() {}
+
+                        PHP,
+                    ['annotations' => ['package', 'subpackage']],
                 ),
-            ]
+            ],
         );
     }
 

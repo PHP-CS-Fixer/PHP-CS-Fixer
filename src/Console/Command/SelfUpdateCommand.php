@@ -33,6 +33,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 #[AsCommand(name: 'self-update', description: 'Update php-cs-fixer.phar to the latest stable version.')]
 final class SelfUpdateCommand extends Command
@@ -85,7 +87,7 @@ final class SelfUpdateCommand extends Command
             ->setDefinition(
                 [
                     new InputOption('--force', '-f', InputOption::VALUE_NONE, 'Force update to next major version if available.'),
-                ]
+                ],
             )
         ;
     }
@@ -113,7 +115,7 @@ final class SelfUpdateCommand extends Command
         } catch (\Exception $exception) {
             $output->writeln(\sprintf(
                 '<error>Unable to determine newest version: %s</error>',
-                $exception->getMessage()
+                $exception->getMessage(),
             ));
 
             return 1;

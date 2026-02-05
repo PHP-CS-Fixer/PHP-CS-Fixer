@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\CT;
  * @covers \PhpCsFixer\Tokenizer\Transformer\NullableTypeTransformer
  *
  * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NullableTypeTransformerTest extends AbstractTransformerTestCase
 {
@@ -40,7 +42,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
             $expectedTokens,
             [
                 CT::T_NULLABLE_TYPE,
-            ]
+            ],
         );
     }
 

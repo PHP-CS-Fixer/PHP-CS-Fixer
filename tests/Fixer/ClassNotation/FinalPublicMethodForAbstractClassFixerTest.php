@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\FinalPublicMethodForAbstractClassFixer>
  *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTestCase
 {
@@ -116,7 +118,7 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
         yield 'anonymous-class' => [
             \sprintf(
                 '<?php abstract class MyClass { private function test() { $a = new class { %s }; } }',
-                self::getClassElementStubs()
+                self::getClassElementStubs(),
             ),
         ];
 

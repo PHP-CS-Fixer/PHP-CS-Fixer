@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NormalizeIndexBraceFixer extends AbstractFixer
 {
@@ -34,8 +36,8 @@ final class NormalizeIndexBraceFixer extends AbstractFixer
             'Array index should always be written by using square braces.',
             [new VersionSpecificCodeSample(
                 "<?php\necho \$sample{\$index};\n",
-                new VersionSpecification(null, 8_04_00 - 1)
-            )]
+                new VersionSpecification(null, 8_04_00 - 1),
+            )],
         );
     }
 

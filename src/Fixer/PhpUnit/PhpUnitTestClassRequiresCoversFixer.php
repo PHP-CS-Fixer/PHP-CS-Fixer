@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpUnitTestClassRequiresCoversFixer extends AbstractPhpUnitFixer implements WhitespacesAwareFixerInterface
 {
@@ -33,17 +35,19 @@ final class PhpUnitTestClassRequiresCoversFixer extends AbstractPhpUnitFixer imp
             'Adds a default `@coversNothing` annotation to PHPUnit test classes that have no `@covers*` annotation.',
             [
                 new CodeSample(
-                    '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testSomeTest()
-    {
-        $this->assertSame(a(), b());
-    }
-}
-'
+                    <<<'PHP'
+                        <?php
+                        final class MyTest extends \PHPUnit_Framework_TestCase
+                        {
+                            public function testSomeTest()
+                            {
+                                $this->assertSame(a(), b());
+                            }
+                        }
+
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

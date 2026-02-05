@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\CT;
  * @covers \PhpCsFixer\Tokenizer\Transformer\ImportTransformer
  *
  * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ImportTransformerTest extends AbstractTransformerTestCase
 {
@@ -43,7 +45,7 @@ final class ImportTransformerTest extends AbstractTransformerTestCase
                 CT::T_CONST_IMPORT,
                 \T_FUNCTION,
                 CT::T_FUNCTION_IMPORT,
-            ]
+            ],
         );
     }
 

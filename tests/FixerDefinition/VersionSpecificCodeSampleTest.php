@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\FixerDefinition\VersionSpecificCodeSample
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class VersionSpecificCodeSampleTest extends TestCase
 {
@@ -37,7 +39,7 @@ final class VersionSpecificCodeSampleTest extends TestCase
         $codeSample = new VersionSpecificCodeSample(
             $code,
             $this->createVersionSpecificationDouble(),
-            $configuration
+            $configuration,
         );
 
         self::assertSame($code, $codeSample->getCode());
@@ -48,7 +50,7 @@ final class VersionSpecificCodeSampleTest extends TestCase
     {
         $codeSample = new VersionSpecificCodeSample(
             '<php echo $foo;',
-            $this->createVersionSpecificationDouble()
+            $this->createVersionSpecificationDouble(),
         );
 
         self::assertNull($codeSample->getConfiguration());
@@ -61,7 +63,7 @@ final class VersionSpecificCodeSampleTest extends TestCase
     {
         $codeSample = new VersionSpecificCodeSample(
             '<php echo $foo;',
-            $this->createVersionSpecificationDouble($isSatisfied)
+            $this->createVersionSpecificationDouble($isSatisfied),
         );
 
         self::assertSame($isSatisfied, $codeSample->isSuitableFor($version));

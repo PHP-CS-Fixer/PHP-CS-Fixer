@@ -26,23 +26,11 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractPhpdocTypesFixer extends AbstractFixer
 {
-    /**
-     * The annotation tags search inside.
-     *
-     * @var list<string>
-     */
-    protected array $tags;
-
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->tags = Annotation::getTagsWithTypes();
-    }
-
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(\T_DOC_COMMENT);
@@ -56,7 +44,7 @@ abstract class AbstractPhpdocTypesFixer extends AbstractFixer
             }
 
             $doc = new DocBlock($token->getContent());
-            $annotations = $doc->getAnnotationsOfType($this->tags);
+            $annotations = $doc->getAnnotationsOfType(Annotation::TAGS_WITH_TYPES);
 
             if (0 === \count($annotations)) {
                 continue;

@@ -4,8 +4,15 @@ Rule set ``@PHP85Migration``
 
 Rules to improve code for PHP 8.5 compatibility.
 
+Warning
+-------
+
+This rule set is DEPRECATED and will be removed in the next major version 4.0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You should use ``@PHP8x5Migration`` instead.
+
 Rules
 -----
 
-- `@PHP84Migration <./PHP84Migration.rst>`_
-- `switch_case_semicolon_to_colon <./../rules/control_structure/switch_case_semicolon_to_colon.rst>`_
+- `@PHP8x5Migration <./PHP8x5Migration.rst>`_

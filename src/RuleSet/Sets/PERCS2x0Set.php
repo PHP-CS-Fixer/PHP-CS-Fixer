@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
+use PhpCsFixer\RuleSet\AbstractRuleSetDefinition;
 
 /**
  * @internal
@@ -22,26 +22,31 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
  * PER Coding Style v2.0.
  *
  * @see https://github.com/php-fig/per-coding-style/blob/2.0.0/spec.md
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PERCS2x0Set extends AbstractRuleSetDescription
+final class PERCS2x0Set extends AbstractRuleSetDefinition
 {
     public function getName(): string
     {
-        return '@PER-CS2.0';
+        return '@PER-CS2x0';
     }
 
     public function getRules(): array
     {
         return [
-            '@PER-CS1.0' => true,
+            '@PER-CS1x0' => true,
             'array_indentation' => true,
             'array_syntax' => true,
+            'attribute_block_no_spaces' => true,
             'cast_spaces' => true,
             'concat_space' => ['spacing' => 'one'],
             'function_declaration' => [
                 'closure_fn_spacing' => 'none',
             ],
-            'method_argument_space' => true,
+            'method_argument_space' => [
+                'after_heredoc' => false, // @TODO: default value of this option changed, consider to switch to new default
+            ],
             'new_with_parentheses' => [
                 'anonymous_class' => false,
             ],

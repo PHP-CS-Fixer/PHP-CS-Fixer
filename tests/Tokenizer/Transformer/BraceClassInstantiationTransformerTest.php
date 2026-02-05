@@ -26,6 +26,8 @@ use PhpCsFixer\Tokenizer\CT;
  *
  * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
  * @phpstan-import-type _TransformerTestObservedKinds from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class BraceClassInstantiationTransformerTest extends AbstractTransformerTestCase
 {
@@ -40,7 +42,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         $this->doTest(
             $source,
             $expectedTokens,
-            $observedKinds
+            $observedKinds,
         );
     }
 
@@ -399,7 +401,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         $this->doTest(
             $source,
             $expectedTokens,
-            $observedKinds
+            $observedKinds,
         );
     }
 
@@ -453,7 +455,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         $this->doTest(
             $source,
             $expectedTokens,
-            $observedKinds
+            $observedKinds,
         );
     }
 
@@ -512,7 +514,7 @@ function test2($param = (new Foo)) {}
         $this->doTest(
             $source,
             $expectedTokens,
-            $observedKinds
+            $observedKinds,
         );
     }
 

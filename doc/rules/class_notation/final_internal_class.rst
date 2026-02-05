@@ -4,13 +4,20 @@ Rule ``final_internal_class``
 
 Internal classes should be ``final``.
 
-Warning
--------
+Warnings
+--------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Changing classes to ``final`` might cause code execution to break.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``annotation_exclude``,
+``annotation_include``, ``consider_absent_docblock_as_internal_class``,
+``exclude``, ``include``.
 
 Configuration
 -------------

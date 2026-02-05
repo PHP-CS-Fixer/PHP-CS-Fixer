@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ImplodeCallFixer extends AbstractFixer
 {
@@ -37,7 +39,7 @@ final class ImplodeCallFixer extends AbstractFixer
                 new CodeSample("<?php\nimplode(\$pieces);\n"),
             ],
             null,
-            'Risky when the function `implode` is overridden.'
+            'Risky when the function `implode` is overridden.',
         );
     }
 

@@ -20,6 +20,8 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  * @author Boris Gorbylev <ekho@ekho.name>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ReporterFactory
 {
@@ -30,7 +32,7 @@ final class ReporterFactory
 
     public function registerBuiltInReporters(): self
     {
-        /** @var null|list<string> $builtInReporters */
+        /** @var null|list<class-string<ReporterInterface>> $builtInReporters */
         static $builtInReporters;
 
         if (null === $builtInReporters) {
@@ -38,12 +40,15 @@ final class ReporterFactory
 
             foreach (SymfonyFinder::create()->files()->name('*Reporter.php')->in(__DIR__) as $file) {
                 $relativeNamespace = $file->getRelativePath();
-                $builtInReporters[] = \sprintf(
+
+                /** @var class-string<ReporterInterface> $class */
+                $class = \sprintf(
                     '%s\%s%s',
                     __NAMESPACE__,
                     '' !== $relativeNamespace ? $relativeNamespace.'\\' : '',
-                    $file->getBasename('.php')
+                    $file->getBasename('.php'),
                 );
+                $builtInReporters[] = $class;
             }
         }
 

@@ -23,6 +23,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Command\DescribeNameNotFoundException
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DescribeNameNotFoundExceptionTest extends TestCase
 {
@@ -33,7 +35,7 @@ final class DescribeNameNotFoundExceptionTest extends TestCase
 
         $exception = new DescribeNameNotFoundException(
             $name,
-            $type
+            $type,
         );
 
         self::assertSame($name, $exception->getName());

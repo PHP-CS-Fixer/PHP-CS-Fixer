@@ -7,11 +7,15 @@
         "KevinGH\\Box\\Compactor\\Php"
     ],
     "files": [
-        "ci-integration.sh",
+        "resources/.php-cs-fixer.dist.php.template",
         "LICENSE"
     ],
     "finder": [
         {
+            "in": [
+                "src",
+                "resources"
+            ],
             "name": [
                 "*.php",
                 "*.php8",
@@ -23,9 +27,24 @@
                 "Tests",
                 "tests"
             ],
+            "notPath": [
+                "|.*/Internal/.*|"
+            ]
+        },
+        {
             "in": [
-                "src",
                 "vendor"
+            ],
+            "name": [
+                "*.php",
+                "*.php8",
+                "completion.*"
+            ],
+            "exclude": [
+                "Test",
+                "test",
+                "Tests",
+                "tests"
             ]
         }
     ],

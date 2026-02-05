@@ -27,6 +27,8 @@ use PhpCsFixer\Tests\Test\InternalIntegrationCaseFactory;
  * @coversNothing
  *
  * @group covers-nothing
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class IntegrationTest extends AbstractIntegrationTestCase
 {
@@ -63,7 +65,7 @@ final class IntegrationTest extends AbstractIntegrationTestCase
                     'Test "%s" in "%s" is expected to be priority check, but fixers applied in reversed order made the same changes.',
                     $case->getTitle(),
                     $case->getFileName(),
-                )
+                ),
             );
         }
     }

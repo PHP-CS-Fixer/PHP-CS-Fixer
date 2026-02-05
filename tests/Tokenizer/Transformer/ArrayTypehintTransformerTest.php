@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\CT;
  * @covers \PhpCsFixer\Tokenizer\Transformer\ArrayTypehintTransformer
  *
  * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ArrayTypehintTransformerTest extends AbstractTransformerTestCase
 {
@@ -41,7 +43,7 @@ final class ArrayTypehintTransformerTest extends AbstractTransformerTestCase
             [
                 \T_ARRAY,
                 CT::T_ARRAY_TYPEHINT,
-            ]
+            ],
         );
     }
 

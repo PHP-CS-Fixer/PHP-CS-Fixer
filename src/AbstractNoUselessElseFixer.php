@@ -16,6 +16,9 @@ namespace PhpCsFixer;
 
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 abstract class AbstractNoUselessElseFixer extends AbstractFixer
 {
     public function getPriority(): int
@@ -58,7 +61,7 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
                     [\T_IF],
                     [\T_RETURN],
                     [\T_THROW],
-                ]
+                ],
             );
 
             if (null === $candidateIndex || $tokens[$candidateIndex]->equalsAny([';', [\T_CLOSE_TAG], [\T_IF]])) {
@@ -179,7 +182,7 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
 
                 $index = $tokens->findBlockStart(
                     Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
-                    $index
+                    $index,
                 );
 
                 $index = $tokens->getPrevMeaningfulToken($index);
@@ -190,7 +193,7 @@ abstract class AbstractNoUselessElseFixer extends AbstractFixer
                 $type = Tokens::detectBlockType($token);
                 $index = $tokens->findBlockStart(
                     $type['type'],
-                    $index
+                    $index,
                 );
 
                 $index = $tokens->getPrevMeaningfulToken($index);

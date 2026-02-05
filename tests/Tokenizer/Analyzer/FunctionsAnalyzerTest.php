@@ -26,6 +26,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FunctionsAnalyzerTest extends TestCase
 {
@@ -52,8 +54,8 @@ final class FunctionsAnalyzerTest extends TestCase
             \sprintf(
                 'Global function calls found at positions: [%s], expected at [%s].',
                 implode(', ', $calculatedIndices),
-                implode(', ', $expectedIndices)
-            )
+                implode(', ', $expectedIndices),
+            ),
         );
     }
 
@@ -512,7 +514,7 @@ class(){};
                 '$a',
                 3,
                 null,
-                null
+                null,
             ),
         ]];
 
@@ -521,13 +523,13 @@ class(){};
                 '$a',
                 3,
                 null,
-                null
+                null,
             ),
             '$b' => new ArgumentAnalysis(
                 '$b',
                 6,
                 null,
-                null
+                null,
             ),
         ]];
 
@@ -536,19 +538,19 @@ class(){};
                 '$a',
                 3,
                 null,
-                null
+                null,
             ),
             '$b' => new ArgumentAnalysis(
                 '$b',
                 6,
                 'array(1,2)',
-                null
+                null,
             ),
             '$c' => new ArgumentAnalysis(
                 '$c',
                 18,
                 '3',
-                null
+                null,
             ),
         ]];
 
@@ -560,8 +562,8 @@ class(){};
                 new TypeAnalysis(
                     'array',
                     3,
-                    3
-                )
+                    3,
+                ),
             ),
         ]];
 
@@ -573,8 +575,8 @@ class(){};
                 new TypeAnalysis(
                     'array',
                     3,
-                    3
-                )
+                    3,
+                ),
             ),
         ]];
 
@@ -586,8 +588,8 @@ class(){};
                 new TypeAnalysis(
                     '\Foo\Bar',
                     3,
-                    6
-                )
+                    6,
+                ),
             ),
         ]];
 
@@ -598,7 +600,7 @@ class(){};
                 '$a',
                 3,
                 null,
-                null
+                null,
             ),
         ]];
 
@@ -607,13 +609,13 @@ class(){};
                 '$a',
                 3,
                 null,
-                null
+                null,
             ),
             '$b' => new ArgumentAnalysis(
                 '$b',
                 6,
                 null,
-                null
+                null,
             ),
         ]];
 
@@ -622,19 +624,19 @@ class(){};
                 '$a',
                 3,
                 null,
-                null
+                null,
             ),
             '$b' => new ArgumentAnalysis(
                 '$b',
                 6,
                 'array(1,2)',
-                null
+                null,
             ),
             '$c' => new ArgumentAnalysis(
                 '$c',
                 18,
                 '3',
-                null
+                null,
             ),
         ]];
 
@@ -646,8 +648,8 @@ class(){};
                 new TypeAnalysis(
                     'array',
                     3,
-                    3
-                )
+                    3,
+                ),
             ),
         ]];
 
@@ -659,8 +661,8 @@ class(){};
                 new TypeAnalysis(
                     'array',
                     3,
-                    3
-                )
+                    3,
+                ),
             ),
         ]];
 
@@ -672,8 +674,8 @@ class(){};
                 new TypeAnalysis(
                     '\Foo\Bar',
                     3,
-                    6
-                )
+                    6,
+                ),
             ),
         ]];
     }
@@ -703,8 +705,8 @@ class(){};
                 new TypeAnalysis(
                     '\Foo\Bar',
                     3,
-                    7
-                )
+                    7,
+                ),
             ),
         ]];
 
@@ -716,8 +718,8 @@ class(){};
                 new TypeAnalysis(
                     '\Foo\Bar',
                     3,
-                    7
-                )
+                    7,
+                ),
             ),
         ]];
     }
@@ -803,7 +805,7 @@ class(){};
             self::assertSame(
                 \in_array($index, $sameClassCallIndices, true),
                 $analyzer->isTheSameClassCall($tokens, $index),
-                \sprintf('Index %d failed check.', $index)
+                \sprintf('Index %d failed check.', $index),
             );
         }
     }
@@ -921,7 +923,7 @@ class(){};
                 '$aa',
                 3,
                 null,
-                null
+                null,
             ),
         ]];
 
@@ -930,13 +932,13 @@ class(){};
                 '$a',
                 3,
                 null,
-                null
+                null,
             ),
             '$bc' => new ArgumentAnalysis(
                 '$bc',
                 6,
                 null,
-                null
+                null,
             ),
         ]];
     }

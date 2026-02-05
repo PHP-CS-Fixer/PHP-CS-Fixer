@@ -24,6 +24,8 @@ use Symfony\Component\Console\Output\BufferedOutput;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Output\Progress\DotsOutput
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DotsOutputTest extends TestCase
 {
@@ -155,22 +157,22 @@ final class DotsOutputTest extends TestCase
         ];
     }
 
-    public function testSleep(): void
+    public function testSerialize(): void
     {
+        $processOutput = new DotsOutput(new OutputContext(new BufferedOutput(), 1, 1));
+
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage('Cannot serialize '.DotsOutput::class);
 
-        $processOutput = new DotsOutput(new OutputContext(new BufferedOutput(), 1, 1));
-        $processOutput->__sleep();
+        serialize($processOutput);
     }
 
-    public function testWakeup(): void
+    public function testUnserialize(): void
     {
         $this->expectException(\BadMethodCallException::class);
         $this->expectExceptionMessage('Cannot unserialize '.DotsOutput::class);
 
-        $processOutput = new DotsOutput(new OutputContext(new BufferedOutput(), 1, 1));
-        $processOutput->__wakeup();
+        unserialize(self::createSerializedStringOfClassName(DotsOutput::class));
     }
 
     /**

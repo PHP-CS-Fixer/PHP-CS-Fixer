@@ -26,6 +26,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Report\ListSetsReport\ReporterFactory
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ReporterFactoryTest extends TestCase
 {
@@ -50,7 +52,7 @@ final class ReporterFactoryTest extends TestCase
         $builder->registerBuiltInReporters();
         self::assertSame(
             ['json', 'txt'],
-            $builder->getFormats()
+            $builder->getFormats(),
         );
     }
 

@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * Remove inheritdoc tags from classy that does not inherit.
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
 {
@@ -35,7 +37,7 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
             [
                 new CodeSample("<?php\n/** {@inheritdoc} */\nclass Sample\n{\n}\n"),
                 new CodeSample("<?php\nclass Sample\n{\n    /**\n     * @inheritdoc\n     */\n    public function Test()\n    {\n    }\n}\n"),
-            ]
+            ],
         );
     }
 
@@ -118,7 +120,7 @@ final class PhpdocNoUselessInheritdocFixer extends AbstractFixer
             static fn (array $matches): string => ' '.$matches[2],
             $tokens[$tokenIndex]->getContent(),
             -1,
-            $count
+            $count,
         );
 
         if ($count > 0) {

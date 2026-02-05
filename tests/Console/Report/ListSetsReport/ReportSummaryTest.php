@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Report\ListSetsReport\ReportSummary
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ReportSummaryTest extends TestCase
 {
@@ -33,7 +35,7 @@ final class ReportSummaryTest extends TestCase
             new PhpCsFixerSet(),
         ];
         $reportSummary = new ReportSummary(
-            $sets
+            $sets,
         );
 
         self::assertSame($sets, $reportSummary->getSets());

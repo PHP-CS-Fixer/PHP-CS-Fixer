@@ -18,8 +18,8 @@ Consider this code:
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when depending on the actual timings being used even when not explicit set
 in format.

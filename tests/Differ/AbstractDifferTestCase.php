@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\TestCase;
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractDifferTestCase extends TestCase
 {
@@ -33,8 +35,8 @@ abstract class AbstractDifferTestCase extends TestCase
             str_replace(
                 'PhpCsFixer\Tests\Differ\\',
                 'PhpCsFixer\Differ\\',
-                static::class
-            )
+                static::class,
+            ),
         );
 
         $differ = new $className();

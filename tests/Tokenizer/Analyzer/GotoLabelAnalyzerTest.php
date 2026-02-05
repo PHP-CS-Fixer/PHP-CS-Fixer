@@ -22,6 +22,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class GotoLabelAnalyzerTest extends TestCase
 {
@@ -38,7 +40,7 @@ final class GotoLabelAnalyzerTest extends TestCase
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             self::assertSame(
                 \in_array($index, $expectedTrue, true),
-                $analyzer->belongsToGoToLabel($tokens, $index)
+                $analyzer->belongsToGoToLabel($tokens, $index),
             );
         }
     }

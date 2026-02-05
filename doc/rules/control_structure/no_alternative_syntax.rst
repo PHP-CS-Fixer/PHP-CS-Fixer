@@ -4,6 +4,15 @@ Rule ``no_alternative_syntax``
 
 Replace control structure alternative syntax to use braces.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option:
+``fix_non_monolithic_code``.
+
 Configuration
 -------------
 
@@ -15,6 +24,8 @@ Whether to also fix code with inline HTML.
 Allowed types: ``bool``
 
 Default value: ``true``
+
+Default value (future-mode): ``false``
 
 Examples
 --------

@@ -26,6 +26,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @covers \PhpCsFixer\Tokenizer\Transformer\BraceTransformer
  *
  * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class BraceTransformerTest extends AbstractTransformerTestCase
 {
@@ -54,7 +56,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
                 CT::T_GROUP_IMPORT_BRACE_CLOSE,
                 CT::T_PROPERTY_HOOK_BRACE_OPEN,
                 CT::T_PROPERTY_HOOK_BRACE_CLOSE,
-            ]
+            ],
         );
     }
 
@@ -244,7 +246,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
                 CT::T_GROUP_IMPORT_BRACE_CLOSE,
                 CT::T_PROPERTY_HOOK_BRACE_OPEN,
                 CT::T_PROPERTY_HOOK_BRACE_CLOSE,
-            ]
+            ],
         );
     }
 
@@ -342,7 +344,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
                 CT::T_GROUP_IMPORT_BRACE_CLOSE,
                 CT::T_PROPERTY_HOOK_BRACE_OPEN,
                 CT::T_PROPERTY_HOOK_BRACE_CLOSE,
-            ]
+            ],
         );
     }
 
@@ -540,8 +542,8 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
                 [
                     CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
                     CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
-                ]
-            )
+                ],
+            ),
         );
     }
 

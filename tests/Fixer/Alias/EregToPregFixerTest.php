@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\EregToPregFixer>
  *
  * @author Matteo Beccati <matteo@beccati.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class EregToPregFixerTest extends AbstractFixerTestCase
 {

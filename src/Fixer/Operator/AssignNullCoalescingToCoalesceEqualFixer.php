@@ -21,6 +21,9 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class AssignNullCoalescingToCoalesceEqualFixer extends AbstractShortOperatorFixer
 {
     public function getDefinition(): FixerDefinitionInterface
@@ -31,7 +34,7 @@ final class AssignNullCoalescingToCoalesceEqualFixer extends AbstractShortOperat
                 new CodeSample(
                     "<?php\n\$foo = \$foo ?? 1;\n",
                 ),
-            ]
+            ],
         );
     }
 

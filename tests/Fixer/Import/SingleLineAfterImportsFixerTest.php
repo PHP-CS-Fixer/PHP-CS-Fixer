@@ -25,6 +25,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Import\SingleLineAfterImportsFixer>
  *
  * @author Ceeram <ceeram@cakephp.org>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SingleLineAfterImportsFixerTest extends AbstractFixerTestCase
 {

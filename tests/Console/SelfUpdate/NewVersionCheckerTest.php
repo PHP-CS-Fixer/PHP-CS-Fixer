@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Console\SelfUpdate\NewVersionChecker
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NewVersionCheckerTest extends TestCase
 {
@@ -63,11 +65,11 @@ final class NewVersionCheckerTest extends TestCase
 
         self::assertSame(
             $expectedResult,
-            $checker->compareVersions($versionA, $versionB)
+            $checker->compareVersions($versionA, $versionB),
         );
         self::assertSame(
             -$expectedResult,
-            $checker->compareVersions($versionB, $versionA)
+            $checker->compareVersions($versionB, $versionA),
         );
     }
 

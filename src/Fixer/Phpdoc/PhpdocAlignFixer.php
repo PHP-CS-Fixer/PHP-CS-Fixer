@@ -51,6 +51,8 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Jakub Kwaśniewski <jakub@zero-85.pl>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
@@ -157,14 +159,14 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
     /**
      * {@inheritdoc}
      *
-     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, GeneralPhpdocAnnotationRemoveFixer, GeneralPhpdocTagRenameFixer, NoBlankLinesAfterPhpdocFixer, NoEmptyPhpdocFixer, NoSuperfluousPhpdocTagsFixer, PhpdocAddMissingParamAnnotationFixer, PhpdocAnnotationWithoutDotFixer, PhpdocArrayTypeFixer, PhpdocIndentFixer, PhpdocInlineTagNormalizerFixer, PhpdocLineSpanFixer, PhpdocListTypeFixer, PhpdocNoAccessFixer, PhpdocNoAliasTagFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer, PhpdocNoUselessInheritdocFixer, PhpdocOrderByValueFixer, PhpdocOrderFixer, PhpdocParamOrderFixer, PhpdocReadonlyClassCommentToKeywordFixer, PhpdocReturnSelfReferenceFixer, PhpdocScalarFixer, PhpdocSeparationFixer, PhpdocSingleLineVarSpacingFixer, PhpdocSummaryFixer, PhpdocTagCasingFixer, PhpdocTagTypeFixer, PhpdocToCommentFixer, PhpdocToParamTypeFixer, PhpdocToPropertyTypeFixer, PhpdocToReturnTypeFixer, PhpdocTrimConsecutiveBlankLineSeparationFixer, PhpdocTrimFixer, PhpdocTypesFixer, PhpdocTypesOrderFixer, PhpdocVarAnnotationCorrectOrderFixer, PhpdocVarWithoutNameFixer.
+     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, GeneralPhpdocAnnotationRemoveFixer, GeneralPhpdocTagRenameFixer, NoBlankLinesAfterPhpdocFixer, NoEmptyPhpdocFixer, NoSuperfluousPhpdocTagsFixer, PhpdocAddMissingParamAnnotationFixer, PhpdocAnnotationWithoutDotFixer, PhpdocArrayTypeFixer, PhpdocIndentFixer, PhpdocInlineTagNormalizerFixer, PhpdocLineSpanFixer, PhpdocListTypeFixer, PhpdocNoAccessFixer, PhpdocNoAliasTagFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer, PhpdocNoUselessInheritdocFixer, PhpdocOrderByValueFixer, PhpdocOrderFixer, PhpdocParamOrderFixer, PhpdocReadonlyClassCommentToKeywordFixer, PhpdocReturnSelfReferenceFixer, PhpdocScalarFixer, PhpdocSeparationFixer, PhpdocSingleLineVarSpacingFixer, PhpdocSummaryFixer, PhpdocTagCasingFixer, PhpdocTagNoNamedArgumentsFixer, PhpdocTagTypeFixer, PhpdocToCommentFixer, PhpdocToParamTypeFixer, PhpdocToPropertyTypeFixer, PhpdocToReturnTypeFixer, PhpdocTrimConsecutiveBlankLineSeparationFixer, PhpdocTrimFixer, PhpdocTypesFixer, PhpdocTypesNoDuplicatesFixer, PhpdocTypesOrderFixer, PhpdocVarAnnotationCorrectOrderFixer, PhpdocVarWithoutNameFixer.
      */
     public function getPriority(): int
     {
         /*
          * Should be run after all other docblock fixers. This because they
          * modify other annotations to change their type and or separation
-         * which totally change the behavior of this fixer. It's important that
+         * which totally change the behaviour of this fixer. It's important that
          * annotations are of the correct type, and are grouped correctly
          * before running this fixer.
          */
@@ -242,7 +244,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
 
         $tags = new FixerOptionBuilder(
             'tags',
-            'The tags that should be aligned. Allowed values are tags with name (`\''.implode('\', \'', self::TAGS_WITH_NAME).'\'`), tags with method signature (`\''.implode('\', \'', self::TAGS_WITH_METHOD_SIGNATURE).'\'`) and any custom tag with description (e.g. `@tag <desc>`).'
+            'The tags that should be aligned. Allowed values are tags with name (`\''.implode('\', \'', self::TAGS_WITH_NAME).'\'`), tags with method signature (`\''.implode('\', \'', self::TAGS_WITH_METHOD_SIGNATURE).'\'`) and any custom tag with description (e.g. `@tag <desc>`).',
         );
         $tags
             ->setAllowedTypes(['string[]'])
@@ -258,7 +260,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
 
         $spacing = new FixerOptionBuilder(
             'spacing',
-            'Spacing between tag, hint, comment, signature, etc. You can set same spacing for all tags using a positive integer or different spacings for different tags using an associative array of positive integers `[\'tagA\' => spacingForA, \'tagB\' => spacingForB]`. If you want to define default spacing to more than 1 space use `_default` key in config array, e.g.: `[\'tagA\' => spacingForA, \'tagB\' => spacingForB, \'_default\' => spacingForAllOthers]`.'
+            'Spacing between tag, hint, comment, signature, etc. You can set same spacing for all tags using a positive integer or different spacings for different tags using an associative array of positive integers `[\'tagA\' => spacingForA, \'tagB\' => spacingForB]`. If you want to define default spacing to more than 1 space use `_default` key in config array, e.g.: `[\'tagA\' => spacingForA, \'tagB\' => spacingForB, \'_default\' => spacingForAllOthers]`.',
         );
         $spacing->setAllowedTypes(['int', 'array<string, int>'])
             ->setAllowedValues([$allowPositiveIntegers])
@@ -342,7 +344,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
                         .('' !== $itemOpeningLine['hint'] ? ' ' : '')
                         .$this->getIndent(
                             $tagMax + $hintMax + $extraIndent,
-                            $this->getLeftAlignedDescriptionIndent($items, $j)
+                            $this->getLeftAlignedDescriptionIndent($items, $j),
                         )
                         .$item['desc'];
 
@@ -364,7 +366,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
                 if ($hasStatic) {
                     $line .= $this->getIndent(
                         $tagMax - \strlen($item['tag']) + $spacingForTag,
-                        '' !== $item['static'] ? $spacingForTag : 0
+                        '' !== $item['static'] ? $spacingForTag : 0,
                     )
                         .('' !== $item['static'] ? $item['static'] : $this->getIndent(6 /* \strlen('static') */, 0));
                     $hintVerticalAlignIndent = $spacingForTag;
@@ -374,7 +376,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
 
                 $line .= $this->getIndent(
                     $hintVerticalAlignIndent,
-                    '' !== $item['hint'] ? $spacingForTag : 0
+                    '' !== $item['hint'] ? $spacingForTag : 0,
                 )
                     .$item['hint'];
 

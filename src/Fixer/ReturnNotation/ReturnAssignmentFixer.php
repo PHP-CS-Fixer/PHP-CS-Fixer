@@ -24,6 +24,9 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class ReturnAssignmentFixer extends AbstractFixer
 {
     private TokensAnalyzer $tokensAnalyzer;
@@ -32,7 +35,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Local, dynamic and directly referenced variables should not be assigned and directly returned by a function or method.',
-            [new CodeSample("<?php\nfunction a() {\n    \$a = 1;\n    return \$a;\n}\n")]
+            [new CodeSample("<?php\nfunction a() {\n    \$a = 1;\n    return \$a;\n}\n")],
         );
     }
 
@@ -82,7 +85,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
                     $tokens,
                     $index,
                     $functionOpenIndex,
-                    $functionCloseIndex
+                    $functionCloseIndex,
                 );
 
                 $functionCloseIndex += $tokensAdded;
@@ -141,7 +144,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
                     $tokens,
                     $index,
                     $nestedFunctionOpenIndex,
-                    $nestedFunctionCloseIndex
+                    $nestedFunctionCloseIndex,
                 );
 
                 $index = $nestedFunctionCloseIndex + $tokensAdded;
@@ -172,7 +175,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
                 CT::T_DYNAMIC_VAR_BRACE_OPEN, // "$h = ${$g};" case
                 \T_EVAL,                       // "$c = eval('return $this;');" case
                 \T_GLOBAL,
-                \T_INCLUDE,                    // loading additional symbols we cannot analyze here
+                \T_INCLUDE,                    // loading additional symbols we cannot analyse here
                 \T_INCLUDE_ONCE,               // "
                 \T_REQUIRE,                    // "
                 \T_REQUIRE_ONCE,               // "
@@ -235,18 +238,18 @@ final class ReturnAssignmentFixer extends AbstractFixer
 
             // Note: here we are @ "; return $a;" (or "; return $a ? >")
             while (true) {
-                $prevMeaningFul = $tokens->getPrevMeaningfulToken($assignVarEndIndex);
+                $prevMeaningful = $tokens->getPrevMeaningfulToken($assignVarEndIndex);
 
-                if (!$tokens[$prevMeaningFul]->equals(')')) {
+                if (!$tokens[$prevMeaningful]->equals(')')) {
                     break;
                 }
 
-                $assignVarEndIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $prevMeaningFul);
+                $assignVarEndIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $prevMeaningful);
             }
 
             $assignVarOperatorIndex = $tokens->getPrevTokenOfKind(
                 $assignVarEndIndex,
-                ['=', ';', '{', '}', [\T_OPEN_TAG], [\T_OPEN_TAG_WITH_ECHO]]
+                ['=', ';', '{', '}', [\T_OPEN_TAG], [\T_OPEN_TAG_WITH_ECHO]],
             );
 
             if ($tokens[$assignVarOperatorIndex]->equals('}')) {
@@ -286,7 +289,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
                 $assignVarIndex,
                 $assignVarOperatorIndex,
                 $index,
-                $endReturnVarIndex
+                $endReturnVarIndex,
             );
         }
 

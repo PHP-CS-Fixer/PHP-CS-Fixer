@@ -27,6 +27,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Jonathan Gruber <gruberjonathan@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocParamOrderFixer extends AbstractFixer
 {
@@ -54,18 +56,20 @@ final class PhpdocParamOrderFixer extends AbstractFixer
             'Orders all `@param` annotations in DocBlocks according to method signature.',
             [
                 new CodeSample(
-                    '<?php
-/**
- * Annotations in wrong order
- *
- * @param int   $a
- * @param Foo   $c
- * @param array $b
- */
-function m($a, array $b, Foo $c) {}
-'
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * Annotations in wrong order
+                         *
+                         * @param int   $a
+                         * @param Foo   $c
+                         * @param array $b
+                         */
+                        function m($a, array $b, Foo $c) {}
+
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 
@@ -124,8 +128,8 @@ function m($a, array $b, Foo $c) {}
     /**
      * Overwrite the param annotations in order.
      *
-     * @param list<Token>      $paramNames
-     * @param list<Annotation> $paramAnnotations
+     * @param list<Token>                $paramNames
+     * @param non-empty-list<Annotation> $paramAnnotations
      */
     private function rewriteDocBlock(DocBlock $doc, array $paramNames, array $paramAnnotations): DocBlock
     {
@@ -161,29 +165,24 @@ function m($a, array $b, Foo $c) {}
     /**
      * Sort the param annotations according to the function parameters.
      *
-     * @param list<Token>      $funcParamNames
-     * @param list<Annotation> $paramAnnotations
+     * @param list<Token>                $funcParamNames
+     * @param non-empty-list<Annotation> $paramAnnotations
      *
-     * @return list<string>
+     * @return non-empty-list<string>
      */
     private function sortParamAnnotations(array $funcParamNames, array $paramAnnotations): array
     {
         $validParams = [];
         foreach ($funcParamNames as $paramName) {
-            $indices = $this->findParamAnnotationByIdentifier($paramAnnotations, $paramName->getContent());
-
-            // Found an exactly matching @param annotation
-            if (\is_array($indices)) {
-                foreach ($indices as $index) {
-                    $validParams[$index] = $paramAnnotations[$index]->getContent();
-                }
+            foreach ($this->findParamAnnotationByIdentifier($paramAnnotations, $paramName->getContent()) as $index => $annotation) {
+                // Found an exactly matching @param annotation
+                $validParams[$index] = $annotation->getContent();
             }
         }
 
         // Detect superfluous annotations
-        /** @var list<Annotation> $invalidParams */
         $invalidParams = array_values(
-            array_diff_key($paramAnnotations, $validParams)
+            array_diff_key($paramAnnotations, $validParams),
         );
 
         // Append invalid parameters to the (ordered) valid ones
@@ -191,6 +190,7 @@ function m($a, array $b, Foo $c) {}
         foreach ($invalidParams as $params) {
             $orderedParams[] = $params->getContent();
         }
+        \assert(\count($orderedParams) > 0);
 
         return $orderedParams;
     }
@@ -230,9 +230,9 @@ function m($a, array $b, Foo $c) {}
      *
      * @param list<Annotation> $paramAnnotations
      *
-     * @return ?list<int>
+     * @return array<int, Annotation> Mapping of found indices and corresponding Annotations
      */
-    private function findParamAnnotationByIdentifier(array $paramAnnotations, string $identifier): ?array
+    private function findParamAnnotationByIdentifier(array $paramAnnotations, string $identifier): array
     {
         $blockLevel = 0;
         $blockMatch = false;
@@ -248,7 +248,7 @@ function m($a, array $b, Foo $c) {}
                 if ($blockStart) {
                     $blockMatch = true; // Start of a nested block
                 } else {
-                    return [$i]; // Top level match
+                    return [$i => $param]; // Top level match
                 }
             }
 
@@ -261,13 +261,13 @@ function m($a, array $b, Foo $c) {}
             }
 
             if ($blockMatch) {
-                $blockIndices[] = $i;
+                $blockIndices[$i] = $param;
                 if (0 === $blockLevel) {
                     return $blockIndices;
                 }
             }
         }
 
-        return null;
+        return [];
     }
 }

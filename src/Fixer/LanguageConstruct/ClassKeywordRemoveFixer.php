@@ -28,6 +28,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  * @deprecated
  *
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ClassKeywordRemoveFixer extends AbstractFixer implements DeprecatedFixerInterface
 {
@@ -42,14 +44,16 @@ final class ClassKeywordRemoveFixer extends AbstractFixer implements DeprecatedF
             'Converts `::class` keywords to FQCN strings.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-use Foo\Bar\Baz;
+                        use Foo\Bar\Baz;
 
-$className = Baz::class;
-'
+                        $className = Baz::class;
+
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 
@@ -109,7 +113,7 @@ $className = Baz::class;
                 $groupEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, $index);
                 $groupImports = array_map(
                     static fn (string $import): string => trim($import),
-                    explode(',', $tokens->generatePartialCode($index + 1, $groupEndIndex - 1))
+                    explode(',', $tokens->generatePartialCode($index + 1, $groupEndIndex - 1)),
                 );
                 foreach ($groupImports as $groupImport) {
                     $groupImportParts = array_map(static fn (string $import): string => trim($import), explode(' as ', $groupImport));
@@ -170,7 +174,7 @@ $className = Baz::class;
             $tokens[$classBeginIndex]->isGivenKind(\T_NS_SEPARATOR)
                 ? $tokens->getNextMeaningfulToken($classBeginIndex)
                 : $classBeginIndex,
-            $classEndIndex
+            $classEndIndex,
         );
 
         $classImport = false;
@@ -227,7 +231,7 @@ $className = Baz::class;
 
         return implode('\\', array_merge(
             \array_slice($classImportArray, 0, $classImportLength - $classStringLength + 1),
-            $classStringArray
+            $classStringArray,
         ));
     }
 }

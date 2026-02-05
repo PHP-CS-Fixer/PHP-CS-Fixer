@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\ConfigurationException\InvalidConfigurationException
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class InvalidConfigurationExceptionTest extends TestCase
 {
@@ -47,7 +49,7 @@ final class InvalidConfigurationExceptionTest extends TestCase
         $exception = new InvalidConfigurationException(
             $message,
             $code,
-            $previous
+            $previous,
         );
 
         self::assertSame($message, $exception->getMessage());

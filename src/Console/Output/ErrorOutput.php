@@ -25,6 +25,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @readonly
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ErrorOutput
 {
@@ -45,7 +47,7 @@ final class ErrorOutput
     {
         $this->output->writeln(['', \sprintf(
             'Files that were not fixed due to errors reported during %s:',
-            $process
+            $process,
         )]);
 
         $showDetails = $this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERY_VERBOSE;
@@ -101,14 +103,14 @@ final class ErrorOutput
                 $this->output->writeln(\sprintf('      Applied fixers: <comment>%s</comment>', implode(', ', $error->getAppliedFixers())));
 
                 $diff = $error->getDiff();
-                if (null !== $diff) {
+                if ('' !== $diff) {
                     $diffFormatter = new DiffConsoleFormatter(
                         $this->isDecorated,
                         \sprintf(
                             '<comment>      ---------- begin diff ----------</comment>%s%%s%s<comment>      ----------- end diff -----------</comment>',
                             \PHP_EOL,
-                            \PHP_EOL
-                        )
+                            \PHP_EOL,
+                        ),
                     );
 
                     $this->output->writeln($diffFormatter->format($diff));
@@ -124,7 +126,7 @@ final class ErrorOutput
      *     file?: string,
      *     class?: class-string,
      *     type?: '->'|'::',
-     *     args?: mixed[],
+     *     args?: list<mixed>,
      *     object?: object,
      * } $trace
      */
@@ -135,14 +137,17 @@ final class ErrorOutput
                 '      <comment>%s</comment>%s<comment>%s()</comment>',
                 $this->prepareOutput($trace['class']),
                 $this->prepareOutput($trace['type']),
-                $this->prepareOutput($trace['function'])
+                $this->prepareOutput($trace['function']),
             ));
         } elseif (isset($trace['function'])) {
             $this->output->writeln(\sprintf('      <comment>%s()</comment>', $this->prepareOutput($trace['function'])));
         }
 
         if (isset($trace['file'])) {
-            $this->output->writeln(\sprintf('        in <info>%s</info> at line <info>%d</info>', $this->prepareOutput($trace['file']), $trace['line']));
+            $this->output->writeln(
+                \sprintf('        in <info>%s</info>', $this->prepareOutput($trace['file']))
+                .(isset($trace['line']) ? \sprintf(' at line <info>%d</info>', $trace['line']) : ' at unknown line'),
+            );
         }
     }
 

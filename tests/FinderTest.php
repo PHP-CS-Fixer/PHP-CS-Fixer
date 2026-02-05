@@ -21,6 +21,8 @@ use Symfony\Component\Finder\SplFileInfo;
  * @internal
  *
  * @covers \PhpCsFixer\Finder
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FinderTest extends TestCase
 {
@@ -45,8 +47,8 @@ final class FinderTest extends TestCase
             realpath(__DIR__.'/../.php-cs-fixer.dist.php'),
             array_map(
                 static fn (SplFileInfo $file): string => $file->getRealPath(),
-                iterator_to_array($finder->getIterator())
-            )
+                iterator_to_array($finder->getIterator()),
+            ),
         );
     }
 }

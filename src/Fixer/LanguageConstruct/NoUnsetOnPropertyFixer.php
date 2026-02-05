@@ -31,6 +31,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * }
  *
  * @author Gert de Pagter <BackEndTea@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoUnsetOnPropertyFixer extends AbstractFixer
 {
@@ -43,7 +45,7 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
             'Risky when relying on attributes to be removed using `unset` rather than be set to `null`.'
             .' Changing variables to `null` instead of unsetting means these still show up when looping over class variables'
             .' and reference properties remain unbroken.'
-            .' Since PHP 7.4, this rule might introduce `null` assignments to properties whose type declaration does not allow it.'
+            .' Since PHP 7.4, this rule might introduce `null` assignments to properties whose type declaration does not allow it.',
         );
     }
 
@@ -206,7 +208,7 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
                 [
                     new Token([\T_UNSET, 'unset']),
                     new Token('('),
-                ]
+                ],
             );
         }
 
@@ -220,7 +222,7 @@ final class NoUnsetOnPropertyFixer extends AbstractFixer
                     new Token('='),
                     new Token([\T_WHITESPACE, ' ']),
                     new Token([\T_STRING, 'null']),
-                ]
+                ],
             );
         }
     }

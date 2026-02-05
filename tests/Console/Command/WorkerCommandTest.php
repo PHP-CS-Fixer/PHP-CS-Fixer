@@ -43,6 +43,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Command\WorkerCommand
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class WorkerCommandTest extends TestCase
 {
@@ -71,7 +73,7 @@ final class WorkerCommandTest extends TestCase
 
         self::assertStringContainsString(
             'Connection refused',
-            $commandTester->getErrorOutput()
+            $commandTester->getErrorOutput(),
         );
     }
 
@@ -88,13 +90,17 @@ final class WorkerCommandTest extends TestCase
         $server = new TcpServer('127.0.0.1:0', $streamSelectLoop);
         $serverPort = parse_url($server->getAddress() ?? '', \PHP_URL_PORT);
         $processIdentifier = ProcessIdentifier::create();
-        $processFactory = new ProcessFactory(
-            new ArrayInput([], (new FixCommand(new ToolInfo()))->getDefinition())
-        );
+        $processFactory = new ProcessFactory();
         $process = new Process(implode(' ', $processFactory->getCommandArgs(
             $serverPort, // @phpstan-ignore-line
             $processIdentifier,
-            new RunnerConfig(true, false, ParallelConfigFactory::sequential())
+            new ArrayInput(
+                [
+                    '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.parallel.php',
+                ],
+                (new FixCommand(new ToolInfo()))->getDefinition(),
+            ),
+            new RunnerConfig(true, false, ParallelConfigFactory::sequential()),
         )));
 
         /**
@@ -138,9 +144,9 @@ final class WorkerCommandTest extends TestCase
                         if (3 === \count($workerScope['messages'])) {
                             $encoder->write(['action' => ParallelAction::RUNNER_THANK_YOU]);
                         }
-                    }
+                    },
                 );
-            }
+            },
         );
         $process->on('exit', static function () use ($streamSelectLoop): void {
             $streamSelectLoop->stop();
@@ -152,12 +158,18 @@ final class WorkerCommandTest extends TestCase
 
         self::assertSame(Command::SUCCESS, $process->getExitCode());
         self::assertCount(3, $workerScope['messages']);
+
         self::assertArrayHasKey('action', $workerScope['messages'][0]);
         self::assertSame(ParallelAction::WORKER_HELLO, $workerScope['messages'][0]['action']);
+
         self::assertArrayHasKey('action', $workerScope['messages'][1]);
         self::assertSame(ParallelAction::WORKER_RESULT, $workerScope['messages'][1]['action']);
         self::assertArrayHasKey('status', $workerScope['messages'][1]);
         self::assertSame(FileProcessed::STATUS_FIXED, $workerScope['messages'][1]['status']);
+        self::assertArrayHasKey('memoryUsage', $workerScope['messages'][1]);
+        self::assertIsInt($workerScope['messages'][1]['memoryUsage']);
+        self::assertGreaterThanOrEqual(0, $workerScope['messages'][1]['memoryUsage']);
+
         self::assertArrayHasKey('action', $workerScope['messages'][2]);
         self::assertSame(ParallelAction::WORKER_GET_FILE_CHUNK, $workerScope['messages'][2]['action']);
 
@@ -177,15 +189,18 @@ final class WorkerCommandTest extends TestCase
 
         $commandTester->execute(
             array_merge(
-                ['command' => $command->getName()],
-                $arguments
+                [
+                    'command' => $command->getName(),
+                    '--config' => __DIR__.'/../../Fixtures/.php-cs-fixer.parallel.php',
+                ],
+                $arguments,
             ),
             [
                 'capture_stderr_separately' => true,
                 'interactive' => false,
                 'decorated' => false,
                 'verbosity' => OutputInterface::VERBOSITY_DEBUG,
-            ]
+            ],
         );
 
         return $commandTester;

@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\CT;
  * @covers \PhpCsFixer\Tokenizer\Transformer\NamespaceOperatorTransformer
  *
  * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NamespaceOperatorTransformerTest extends AbstractTransformerTestCase
 {
@@ -41,7 +43,7 @@ final class NamespaceOperatorTransformerTest extends AbstractTransformerTestCase
             [
                 \T_NAMESPACE,
                 CT::T_NAMESPACE_OPERATOR,
-            ]
+            ],
         );
     }
 

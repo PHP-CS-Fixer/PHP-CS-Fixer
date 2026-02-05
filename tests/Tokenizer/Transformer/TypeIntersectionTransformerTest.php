@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\FCT;
  * @covers \PhpCsFixer\Tokenizer\Transformer\TypeIntersectionTransformer
  *
  * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
 {
@@ -41,7 +43,7 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
             $expectedTokens,
             [
                 CT::T_TYPE_INTERSECTION,
-            ]
+            ],
         );
     }
 

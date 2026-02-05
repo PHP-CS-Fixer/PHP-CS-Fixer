@@ -5,6 +5,14 @@ Rule ``new_expression_parentheses``
 All ``new`` expressions with a further call must (not) be wrapped in
 parentheses.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``use_parentheses``.
+
 Configuration
 -------------
 
@@ -82,8 +90,10 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PHP84Migration <./../../ruleSets/PHP84Migration.rst>`_
-- `@PHP85Migration <./../../ruleSets/PHP85Migration.rst>`_
+- `@PHP8x4Migration <./../../ruleSets/PHP8x4Migration.rst>`_
+- `@PHP8x5Migration <./../../ruleSets/PHP8x5Migration.rst>`_
+- `@PHP84Migration <./../../ruleSets/PHP84Migration.rst>`_ *(deprecated)*
+- `@PHP85Migration <./../../ruleSets/PHP85Migration.rst>`_ *(deprecated)*
 
 References
 ----------

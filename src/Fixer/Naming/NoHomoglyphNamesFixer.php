@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Fred Cox <mcfedr@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoHomoglyphNamesFixer extends AbstractFixer
 {
@@ -199,7 +201,7 @@ final class NoHomoglyphNamesFixer extends AbstractFixer
             'Replace accidental usage of homoglyphs (non ascii characters) in names.',
             [new CodeSample("<?php \$nаmе = 'wrong \"a\" character';\n")],
             null,
-            'Renames classes and cannot rename the files. You might have string references to renamed code (`$$name`).'
+            'Renames classes and cannot rename the files. You might have string references to renamed code (`$$name`).',
         );
     }
 

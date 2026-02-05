@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\FullyQualifiedNameAnalyzer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FullyQualifiedNameAnalyzerTest extends TestCase
 {
@@ -36,7 +38,7 @@ final class FullyQualifiedNameAnalyzerTest extends TestCase
         $analyzer = new FullyQualifiedNameAnalyzer(Tokens::fromCode($code));
         self::assertSame(
             $fullyQualifiedName,
-            $analyzer->getFullyQualifiedName($name, $indexInNamespace, $importType)
+            $analyzer->getFullyQualifiedName($name, $indexInNamespace, $importType),
         );
     }
 
@@ -231,7 +233,7 @@ final class FullyQualifiedNameAnalyzerTest extends TestCase
                 namespace Namespace1 { use Vendor1\Foo; function f(Foo $x) {} }
                 namespace Namespace2 { use Vendor1\Bar; function f(Bar $x) {} }
                 namespace Namespace1 { use Vendor2\Foo; function f(Foo $x) {} }
-                PHP
+                PHP,
         ));
 
         self::assertSame('Vendor1\Foo', $analyzer->getFullyQualifiedName('Foo', 18, NamespaceUseAnalysis::TYPE_CLASS));

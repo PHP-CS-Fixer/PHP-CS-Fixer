@@ -21,13 +21,16 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class SemicolonAfterInstructionFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Instructions must be terminated with a semicolon.',
-            [new CodeSample("<?php echo 1 ?>\n")]
+            [new CodeSample("<?php echo 1 ?>\n")],
         );
     }
 

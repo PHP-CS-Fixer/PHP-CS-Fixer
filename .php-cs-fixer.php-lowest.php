@@ -12,6 +12,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use PhpCsFixer\Config;
+use PhpCsFixer\Future;
+
 if (\PHP_VERSION_ID < 7_04_00 || \PHP_VERSION_ID >= 7_05_00) {
     fwrite(\STDERR, "PHP CS Fixer's config for PHP-LOWEST can be executed only on lowest supported PHP version - ~7.4.0.\n");
     fwrite(\STDERR, "Running it on higher PHP version would falsy expect more changes, eg `mixed` type on PHP 8.\n");
@@ -20,6 +23,12 @@ if (\PHP_VERSION_ID < 7_04_00 || \PHP_VERSION_ID >= 7_05_00) {
 }
 
 $config = require __DIR__.'/.php-cs-fixer.dist.php';
+
+Closure::bind(
+    static function (Config $config): void { $config->name = 'PHP-LOWEST'.(Future::isFutureModeEnabled() ? ' (future mode)' : ''); },
+    null,
+    Config::class,
+)($config);
 
 $config->getFinder()->notPath([
     // @TODO 4.0 change interface to be fully typehinted and remove the exceptions from this list

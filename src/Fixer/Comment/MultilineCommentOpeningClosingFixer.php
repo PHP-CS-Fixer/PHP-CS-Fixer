@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class MultilineCommentOpeningClosingFixer extends AbstractFixer
 {
@@ -48,9 +50,9 @@ final class MultilineCommentOpeningClosingFixer extends AbstractFixer
                          * DocBlock with arbitrary asterisk count at the end
                          **/
 
-                        EOT
+                        EOT,
                 ),
-            ]
+            ],
         );
     }
 

@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\AutoReview;
 use PhpCsFixer\Config;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Fixer\InternalFixerInterface;
+use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
 
@@ -27,9 +28,26 @@ use PhpCsFixer\ToolInfo;
  *
  * @group auto-review
  * @group covers-nothing
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ProjectFixerConfigurationTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        // Reset the global state of RuleSets::$customRuleSetDefinitions that was modified
+        // when using `.php-cs-fixer.dist.php`, which registers custom rules/sets.
+        //
+        // @TODO: ideally, we don't have the global state but inject the state instead
+        \Closure::bind(
+            static fn () => RuleSets::$customRuleSetDefinitions = [],
+            null,
+            RuleSets::class,
+        )();
+    }
+
     public function testCreate(): void
     {
         $config = $this->loadConfig();
@@ -42,7 +60,7 @@ final class ProjectFixerConfigurationTest extends TestCase
             $config,
             [],
             __DIR__,
-            new ToolInfo()
+            new ToolInfo(),
         );
 
         $resolver->getFixers();
@@ -51,12 +69,12 @@ final class ProjectFixerConfigurationTest extends TestCase
     public function testRuleDefinedAlpha(): void
     {
         $rules = $rulesSorted = array_keys($this->loadConfig()->getRules());
-        sort($rulesSorted);
+        natcasesort($rulesSorted);
         self::assertSame($rulesSorted, $rules, 'Please sort the "rules" in `.php-cs-fixer.dist.php` of this project.');
     }
 
     private function loadConfig(): Config
     {
-        return require __DIR__.'/../../.php-cs-fixer.dist.php';
+        return require __DIR__.'/../Fixtures/.php-cs-fixer.one-time-proxy.php';
     }
 }

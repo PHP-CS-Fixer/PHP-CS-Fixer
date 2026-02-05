@@ -23,6 +23,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\Casing\MagicMethodCasingFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Casing\MagicMethodCasingFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
 {
@@ -343,7 +345,7 @@ function __Tostring() {}',
     {
         $this->doTest(
             '<?php $foo?->__invoke(1, );',
-            '<?php $foo?->__INVOKE(1, );'
+            '<?php $foo?->__INVOKE(1, );',
         );
     }
 

@@ -19,6 +19,10 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @internal
+ *
+ * @phpstan-require-implements FixerInterface
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 trait IndentationTrait
 {

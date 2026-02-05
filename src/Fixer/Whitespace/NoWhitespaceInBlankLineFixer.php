@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
@@ -31,7 +33,7 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
     {
         return new FixerDefinition(
             'Remove trailing whitespace at the end of blank lines.',
-            [new CodeSample("<?php\n   \n\$a = 1;\n")]
+            [new CodeSample("<?php\n   \n\$a = 1;\n")],
         );
     }
 

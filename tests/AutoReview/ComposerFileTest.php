@@ -23,6 +23,8 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @group covers-nothing
  * @group auto-review
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ComposerFileTest extends TestCase
 {
@@ -62,7 +64,7 @@ final class ComposerFileTest extends TestCase
 
                 return $carry;
             },
-            []
+            [],
         );
 
         foreach ($aliases as $code => $alias) {

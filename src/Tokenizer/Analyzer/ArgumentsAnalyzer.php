@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Vladimir Reznichenko <kalessil@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ArgumentsAnalyzer
 {
@@ -148,7 +150,7 @@ final class ArgumentsAnalyzer
             $info['name'],
             $info['name_index'],
             $info['default'],
-            null !== $info['type'] ? new TypeAnalysis($info['type'], $info['type_index_start'], $info['type_index_end']) : null
+            null !== $info['type'] ? new TypeAnalysis($info['type'], $info['type_index_start'], $info['type_index_end']) : null,
         );
     }
 }

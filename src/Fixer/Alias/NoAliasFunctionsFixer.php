@@ -41,6 +41,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Vladimir Reznichenko <kalessil@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -179,40 +181,44 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableF
             'Master functions shall be used instead of aliases.',
             [
                 new CodeSample(
-                    '<?php
-$a = chop($b);
-close($b);
-$a = doubleval($b);
-$a = fputs($b, $c);
-$a = get_required_files();
-ini_alter($b, $c);
-$a = is_double($b);
-$a = is_integer($b);
-$a = is_long($b);
-$a = is_real($b);
-$a = is_writeable($b);
-$a = join($glue, $pieces);
-$a = key_exists($key, $array);
-magic_quotes_runtime($new_setting);
-$a = pos($array);
-$a = show_source($filename, true);
-$a = sizeof($b);
-$a = strchr($haystack, $needle);
-$a = imap_header($imap_stream, 1);
-user_error($message);
-mbereg_search_getregs();
-'
+                    <<<'PHP'
+                        <?php
+                        $a = chop($b);
+                        close($b);
+                        $a = doubleval($b);
+                        $a = fputs($b, $c);
+                        $a = get_required_files();
+                        ini_alter($b, $c);
+                        $a = is_double($b);
+                        $a = is_integer($b);
+                        $a = is_long($b);
+                        $a = is_real($b);
+                        $a = is_writeable($b);
+                        $a = join($glue, $pieces);
+                        $a = key_exists($key, $array);
+                        magic_quotes_runtime($new_setting);
+                        $a = pos($array);
+                        $a = show_source($filename, true);
+                        $a = sizeof($b);
+                        $a = strchr($haystack, $needle);
+                        $a = imap_header($imap_stream, 1);
+                        user_error($message);
+                        mbereg_search_getregs();
+
+                        PHP,
                 ),
                 new CodeSample(
-                    '<?php
-$a = is_double($b);
-mbereg_search_getregs();
-',
-                    ['sets' => ['@mbreg']]
+                    <<<'PHP'
+                        <?php
+                        $a = is_double($b);
+                        mbereg_search_getregs();
+
+                        PHP,
+                    ['sets' => ['@mbreg']],
                 ),
             ],
             null,
-            'Risky when any of the alias functions are overridden.'
+            'Risky when any of the alias functions are overridden.',
         );
     }
 

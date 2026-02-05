@@ -27,6 +27,10 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @internal
+ *
+ * @phpstan-require-implements FixerInterface
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 trait DocBlockAnnotationTrait
 {
@@ -44,8 +48,8 @@ trait DocBlockAnnotationTrait
     }
 
     /**
-     * @param list<string>       $preventingAnnotations
-     * @param list<class-string> $preventingAttributes
+     * @param list<string>                     $preventingAnnotations
+     * @param list<non-empty-lowercase-string> $preventingAttributes
      */
     final protected function ensureIsDocBlockWithAnnotation(
         Tokens $tokens,
@@ -116,7 +120,7 @@ trait DocBlockAnnotationTrait
     }
 
     /**
-     * @param list<class-string> $preventingAttributes
+     * @param list<lowercase-string> $preventingAttributes
      */
     private function isPreventedByAttribute(Tokens $tokens, int $index, array $preventingAttributes): bool
     {
@@ -146,7 +150,7 @@ trait DocBlockAnnotationTrait
     }
 
     /**
-     * @return list<Line>
+     * @return non-empty-list<Line>
      */
     private function addAnnotation(
         DocBlock $docBlock,

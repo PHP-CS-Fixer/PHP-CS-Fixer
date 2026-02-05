@@ -21,6 +21,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Console\SelfUpdate\GithubClient
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class GithubClientTest extends TestCase
 {
@@ -34,7 +36,7 @@ final class GithubClientTest extends TestCase
                 'v3.47.1',
                 'v3.47.0',
             ],
-            $githubClient->getTags()
+            $githubClient->getTags(),
         );
     }
 }

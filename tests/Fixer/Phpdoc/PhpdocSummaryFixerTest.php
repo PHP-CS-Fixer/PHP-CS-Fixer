@@ -25,22 +25,22 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocSummaryFixer>
  *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocSummaryFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null, bool $useTabsAndWindowsNewlines = false): void
+    public function testFix(string $expected, ?string $input = null, ?WhitespacesFixerConfig $whitespacesConfig = null): void
     {
-        if ($useTabsAndWindowsNewlines) {
-            $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
-        }
+        $this->fixer->setWhitespacesConfig($whitespacesConfig ?? new WhitespacesFixerConfig());
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<string, array{0: string, 1?: string, 2?: true}>
+     * @return iterable<string, array{0: string, 1?: string, 2?: WhitespacesFixerConfig}>
      */
     public static function provideFixCases(): iterable
     {
@@ -349,7 +349,7 @@ final class PhpdocSummaryFixerTest extends AbstractFixerTestCase
         yield 'tabs and windows line endings' => [
             "<?php\r\n\t/**\r\n\t * Hello there.\r\n\t */",
             "<?php\r\n\t/**\r\n\t * Hello there\r\n\t */",
-            true,
+            new WhitespacesFixerConfig("\t", "\r\n"),
         ];
     }
 }

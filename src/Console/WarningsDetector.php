@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Console;
 
+use PhpCsFixer\ComposerJsonReader;
 use PhpCsFixer\ToolInfo;
 use PhpCsFixer\ToolInfoInterface;
 
@@ -21,6 +22,8 @@ use PhpCsFixer\ToolInfoInterface;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class WarningsDetector
 {
@@ -53,7 +56,7 @@ final class WarningsDetector
                 $this->warnings[] = \sprintf(
                     'You are running PHP CS Fixer installed with old vendor `%s`. Please update to `%s`.',
                     ToolInfo::COMPOSER_LEGACY_PACKAGE_NAME,
-                    ToolInfo::COMPOSER_PACKAGE_NAME
+                    ToolInfo::COMPOSER_PACKAGE_NAME,
                 );
             }
         }
@@ -63,6 +66,37 @@ final class WarningsDetector
     {
         if (filter_var(getenv('PHP_CS_FIXER_NON_MONOLITHIC'), \FILTER_VALIDATE_BOOL)) {
             $this->warnings[] = 'Processing non-monolithic files enabled, because `PHP_CS_FIXER_NON_MONOLITHIC` is set. Execution result may be unpredictable - non-monolithic files are not officially supported.';
+        }
+    }
+
+    public function detectHigherPhpVersion(): void
+    {
+        try {
+            $composerJsonReader = ComposerJsonReader::createSingleton();
+            $minPhpVersion = $composerJsonReader->getPhp();
+
+            if (null === $minPhpVersion) {
+                $this->warnings[] = 'No PHP version requirement found in composer.json. It is recommended to specify a minimum PHP version supported by your project.';
+
+                return;
+            }
+
+            $currentPhpVersion = \PHP_VERSION;
+            $currentPhpMajorMinor = \sprintf('%d.%d', \PHP_MAJOR_VERSION, \PHP_MINOR_VERSION);
+
+            // Compare major.minor versions
+            if (version_compare($currentPhpMajorMinor, $minPhpVersion, '>')) {
+                $this->warnings[] = \sprintf(
+                    'You are running PHP CS Fixer on PHP %1$s, but the minimum PHP version supported by your project in composer.json is PHP %2$s. Executing PHP CS Fixer on newer PHP versions may introduce syntax or features not yet available in PHP %2$s, which could cause issues under that version. It is recommended to run PHP CS Fixer on PHP %2$s, to fit your project specifics.',
+                    $currentPhpVersion,
+                    $minPhpVersion,
+                );
+            }
+        } catch (\Throwable $e) {
+            $this->warnings[] = \sprintf(
+                'Unable to determine minimum PHP version supported by your project from composer.json: %s',
+                $e->getMessage(),
+            );
         }
     }
 
@@ -77,7 +111,7 @@ final class WarningsDetector
 
         return array_values(array_unique(array_merge(
             $this->warnings,
-            ['If you need help while solving warnings, ask at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/discussions/, we will help you!']
+            ['If you need help while solving warnings, ask at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/discussions/, we will help you!'],
         )));
     }
 }

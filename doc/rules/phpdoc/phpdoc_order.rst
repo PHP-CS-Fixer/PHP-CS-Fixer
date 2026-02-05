@@ -4,6 +4,14 @@ Rule ``phpdoc_order``
 
 Annotations in PHPDoc should be ordered in defined sequence.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``order``.
+
 Configuration
 -------------
 
@@ -15,6 +23,8 @@ Sequence in which annotations in PHPDoc should be ordered.
 Allowed types: ``list<string>``
 
 Default value: ``['param', 'throws', 'return']``
+
+Default value (future-mode): ``['param', 'return', 'throws']``
 
 Examples
 --------
@@ -44,28 +54,6 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
-With configuration: ``['order' => ['param', 'throws', 'return']]``.
-
-.. code-block:: diff
-
-   --- Original
-   +++ New
-    <?php
-    /**
-     * Hello there!
-     *
-   - * @throws Exception|RuntimeException foo
-     * @custom Test!
-   - * @return int  Return the number of changes.
-     * @param string $foo
-     * @param bool   $bar Bar
-   + * @throws Exception|RuntimeException foo
-   + * @return int  Return the number of changes.
-     */
-
-Example #3
-~~~~~~~~~~
-
 With configuration: ``['order' => ['param', 'return', 'throws']]``.
 
 .. code-block:: diff
@@ -83,6 +71,28 @@ With configuration: ``['order' => ['param', 'return', 'throws']]``.
      * @param bool   $bar Bar
    + * @return int  Return the number of changes.
    + * @throws Exception|RuntimeException foo
+     */
+
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['order' => ['param', 'throws', 'return']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    /**
+     * Hello there!
+     *
+   - * @throws Exception|RuntimeException foo
+     * @custom Test!
+   - * @return int  Return the number of changes.
+     * @param string $foo
+     * @param bool   $bar Bar
+   + * @throws Exception|RuntimeException foo
+   + * @return int  Return the number of changes.
      */
 
 Example #4

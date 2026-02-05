@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\Alias\ArrayPushFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\ArrayPushFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ArrayPushFixerTest extends AbstractFixerTestCase
 {
@@ -249,7 +251,7 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
             yield [
                 \sprintf(
                     '<?php array_push($a, %s);',
-                    $precedenceCase
+                    $precedenceCase,
                 ),
             ];
         }

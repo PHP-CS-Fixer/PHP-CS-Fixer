@@ -23,6 +23,9 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
 {
     public function isCandidate(Tokens $tokens): bool
@@ -37,11 +40,11 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
             'Converts `pow` to the `**` operator.',
             [
                 new CodeSample(
-                    "<?php\n pow(\$a, 1);\n"
+                    "<?php\n pow(\$a, 1);\n",
                 ),
             ],
             null,
-            'Risky when the function `pow` is overridden.'
+            'Risky when the function `pow` is overridden.',
         );
     }
 
@@ -91,7 +94,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
                 $candidate[0], // functionNameIndex,
                 $candidate[1], // openParenthesisIndex,
                 $candidate[2], // closeParenthesisIndex,
-                $arguments
+                $arguments,
             );
         }
     }
@@ -205,7 +208,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
     }
 
     /**
-     * @return list<int>
+     * @return non-empty-list<int>
      */
     private function getAllowedKinds(): array
     {

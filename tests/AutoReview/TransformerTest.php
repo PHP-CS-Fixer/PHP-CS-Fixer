@@ -27,6 +27,8 @@ use PhpCsFixer\Tokenizer\Transformers;
  *
  * @group auto-review
  * @group covers-nothing
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TransformerTest extends TestCase
 {
@@ -38,7 +40,7 @@ final class TransformerTest extends TestCase
         self::assertLessThan(
             $first->getPriority(),
             $second->getPriority(),
-            \sprintf('"%s" should have less priority than "%s"', \get_class($second), \get_class($first))
+            \sprintf('"%s" should have less priority than "%s"', \get_class($second), \get_class($first)),
         );
     }
 

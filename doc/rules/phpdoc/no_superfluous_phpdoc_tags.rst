@@ -5,6 +5,16 @@ Rule ``no_superfluous_phpdoc_tags``
 Removes ``@param``, ``@return`` and ``@var`` tags that don't provide any useful
 information.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options:
+``allow_hidden_params``, ``allow_mixed``, ``allow_unused_params``,
+``remove_inheritdoc``.
+
 Configuration
 -------------
 
@@ -16,6 +26,8 @@ Whether ``param`` annotation for hidden params in method signature are allowed.
 Allowed types: ``bool``
 
 Default value: ``false``
+
+Default value (future-mode): ``true``
 
 ``allow_mixed``
 ~~~~~~~~~~~~~~~
@@ -152,7 +164,7 @@ The rule is part of the following rule sets:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 
-  ``['allow_mixed' => true, 'remove_inheritdoc' => true]``
+  ``['allow_hidden_params' => true, 'allow_mixed' => true, 'remove_inheritdoc' => true]``
 
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 

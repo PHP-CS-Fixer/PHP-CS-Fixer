@@ -20,6 +20,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NamespacesAnalyzer
 {
@@ -58,7 +60,7 @@ final class NamespacesAnalyzer
                 $index,
                 $declarationEndIndex,
                 $index,
-                $scopeEndIndex
+                $scopeEndIndex,
             );
 
             // Continue the analysis after the end of this namespace to find the next one

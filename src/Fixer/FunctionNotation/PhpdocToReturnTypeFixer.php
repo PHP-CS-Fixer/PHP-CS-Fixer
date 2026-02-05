@@ -43,13 +43,15 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @phpstan-import-type _PhpTokenArray from Token
  *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer implements ConfigurableFixerInterface, ExperimentalFixerInterface
 {
     private const TYPE_CHECK_TEMPLATE = '<?php function f(): %s {}';
 
     /**
-     * @var list<_PhpTokenArray>
+     * @var non-empty-list<_PhpTokenArray>
      */
     private array $excludeFuncNames = [
         [\T_STRING, '__construct'],
@@ -71,57 +73,65 @@ final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
             'Takes `@return` annotation of non-mixed types and adjusts accordingly the function signature.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-/** @return \My\Bar */
-function f1()
-{}
+                        /** @return \My\Bar */
+                        function f1()
+                        {}
 
-/** @return void */
-function f2()
-{}
+                        /** @return void */
+                        function f2()
+                        {}
 
-/** @return object */
-function my_foo()
-{}
-',
+                        /** @return object */
+                        function my_foo()
+                        {}
+
+                        PHP,
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-/** @return Foo */
-function foo() {}
-/** @return string */
-function bar() {}
-',
-                    ['scalar_types' => false]
+                        /** @return Foo */
+                        function foo() {}
+                        /** @return string */
+                        function bar() {}
+
+                        PHP,
+                    ['scalar_types' => false],
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-/** @return Foo */
-function foo() {}
-/** @return int|string */
-function bar() {}
-',
-                    ['union_types' => false]
+                        /** @return Foo */
+                        function foo() {}
+                        /** @return int|string */
+                        function bar() {}
+
+                        PHP,
+                    ['union_types' => false],
                 ),
                 new VersionSpecificCodeSample(
-                    '<?php
-final class Foo {
-    /**
-     * @return static
-     */
-    public function create($prototype) {
-        return new static($prototype);
-    }
-}
-',
-                    new VersionSpecification(8_00_00)
+                    <<<'PHP'
+                        <?php
+                        final class Foo {
+                            /**
+                             * @return static
+                             */
+                            public function create($prototype) {
+                                return new static($prototype);
+                            }
+                        }
+
+                        PHP,
+                    new VersionSpecification(8_00_00),
                 ),
             ],
             null,
-            'The `@return` annotation is mandatory for the fixer to make changes, signatures of methods without it (no docblock, inheritdocs) will not be fixed. Manual actions are required if inherited signatures are not properly documented.'
+            'The `@return` annotation is mandatory for the fixer to make changes, signatures of methods without it (no docblock, inheritdocs) will not be fixed. Manual actions are required if inherited signatures are not properly documented.',
         );
     }
 
@@ -231,7 +241,7 @@ final class Foo {
                     new Token([CT::T_TYPE_COLON, ':']),
                     new Token([\T_WHITESPACE, ' ']),
                 ],
-                $this->createTypeDeclarationTokens($returnType, $isNullable)
+                $this->createTypeDeclarationTokens($returnType, $isNullable),
             );
         }
 

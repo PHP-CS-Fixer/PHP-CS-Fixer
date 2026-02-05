@@ -22,6 +22,9 @@ use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
 {
     public function getDefinition(): FixerDefinitionInterface
@@ -30,7 +33,7 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
             'String tests for empty must be done against `\'\'`, not with `strlen`.',
             [new CodeSample("<?php \$a = 0 === strlen(\$b) || \\STRLEN(\$c) < 1;\n")],
             null,
-            'Risky when `strlen` is overridden, when called using a `stringable` object, also no longer triggers warning when called using non-string(able).'
+            'Risky when `strlen` is overridden, when called using a `stringable` object, also no longer triggers warning when called using non-string(able).',
         );
     }
 

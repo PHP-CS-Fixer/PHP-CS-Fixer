@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class RequiredFixerConfigurationExceptionTest extends TestCase
 {
@@ -34,7 +36,7 @@ final class RequiredFixerConfigurationExceptionTest extends TestCase
 
         $exception = new RequiredFixerConfigurationException(
             $fixerName,
-            $message
+            $message,
         );
 
         self::assertSame(\sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());
@@ -51,7 +53,7 @@ final class RequiredFixerConfigurationExceptionTest extends TestCase
         $exception = new RequiredFixerConfigurationException(
             $fixerName,
             $message,
-            $previous
+            $previous,
         );
 
         self::assertSame(\sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());

@@ -25,6 +25,8 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\StringLineEndingFixer>
  *
  * @author Ilija Tovilo <ilija.tovilo@me.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class StringLineEndingFixerTest extends AbstractFixerTestCase
 {
@@ -124,7 +126,7 @@ final class StringLineEndingFixerTest extends AbstractFixerTestCase
 
         $this->doTest(
             "<?php \$a = 'my\r\nmulti\r\nline\r\nstring';",
-            "<?php \$a = 'my\nmulti\nline\nstring';"
+            "<?php \$a = 'my\nmulti\nline\nstring';",
         );
     }
 }

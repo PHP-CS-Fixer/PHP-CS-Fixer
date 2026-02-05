@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @covers \PhpCsFixer\Tokenizer\Transformer\ConstructorPromotionTransformer
  *
  * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ConstructorPromotionTransformerTest extends AbstractTransformerTestCase
 {
@@ -43,7 +45,7 @@ final class ConstructorPromotionTransformerTest extends AbstractTransformerTestC
                 CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
                 CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
                 CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE,
-            ]
+            ],
         );
     }
 
@@ -145,7 +147,7 @@ class Point {
             $expectedTokens,
             [
                 CT::T_TYPE_ALTERNATION,
-            ]
+            ],
         );
     }
 

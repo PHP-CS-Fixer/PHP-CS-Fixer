@@ -20,6 +20,9 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class NoUselessReturnFixer extends AbstractFixer
 {
     public function isCandidate(Tokens $tokens): bool
@@ -33,16 +36,18 @@ final class NoUselessReturnFixer extends AbstractFixer
             'There should not be an empty `return` statement at the end of a function.',
             [
                 new CodeSample(
-                    '<?php
-function example($b) {
-    if ($b) {
-        return;
-    }
-    return;
-}
-'
+                    <<<'PHP'
+                        <?php
+                        function example($b) {
+                            if ($b) {
+                                return;
+                            }
+                            return;
+                        }
+
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

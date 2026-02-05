@@ -4,6 +4,14 @@ Rule ``no_extra_blank_lines``
 
 Removes extra blank lines and/or blank lines following configuration.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``tokens``.
+
 Configuration
 -------------
 
@@ -219,7 +227,7 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PER <./../../ruleSets/PER.rst>`_ with config:
+- `@PER <./../../ruleSets/PER.rst>`_ *(deprecated)* with config:
 
   ``['tokens' => ['use']]``
 
@@ -227,15 +235,27 @@ The rule is part of the following rule sets:
 
   ``['tokens' => ['use']]``
 
-- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ *(deprecated)* with config:
 
   ``['tokens' => ['use']]``
 
-- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+- `@PER-CS1x0 <./../../ruleSets/PER-CS1x0.rst>`_ with config:
 
   ``['tokens' => ['use']]``
 
-- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ *(deprecated)* with config:
+
+  ``['tokens' => ['use']]``
+
+- `@PER-CS2x0 <./../../ruleSets/PER-CS2x0.rst>`_ with config:
+
+  ``['tokens' => ['use']]``
+
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ *(deprecated)* with config:
+
+  ``['tokens' => ['use']]``
+
+- `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_ with config:
 
   ``['tokens' => ['use']]``
 

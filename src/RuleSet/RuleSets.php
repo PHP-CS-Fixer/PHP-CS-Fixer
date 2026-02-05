@@ -14,41 +14,75 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet;
 
+use PhpCsFixer\RuleSetNameValidator;
 use Symfony\Component\Finder\Finder;
 
 /**
  * Set of rule sets to be used by fixer.
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class RuleSets
 {
     /**
-     * @var null|array<string, RuleSetDescriptionInterface>
+     * @var null|array<string, RuleSetDefinitionInterface>
      */
-    private static ?array $setDefinitions = null;
+    private static ?array $builtInSetDefinitions = null;
 
     /**
-     * @return array<string, RuleSetDescriptionInterface>
+     * @var array<string, RuleSetDefinitionInterface>
+     */
+    private static array $customRuleSetDefinitions = [];
+
+    /**
+     * @return array<string, RuleSetDefinitionInterface>
      */
     public static function getSetDefinitions(): array
     {
-        if (null === self::$setDefinitions) {
-            self::$setDefinitions = [];
+        $allRuleSets = array_merge(
+            self::getBuiltInSetDefinitions(),
+            self::$customRuleSetDefinitions,
+        );
 
-            foreach (Finder::create()->files()->in(__DIR__.'/Sets') as $file) {
+        uksort($allRuleSets, static fn (string $x, string $y): int => strnatcmp($x, $y));
+
+        return $allRuleSets;
+    }
+
+    /**
+     * @return array<string, RuleSetDefinitionInterface>
+     */
+    public static function getBuiltInSetDefinitions(): array
+    {
+        if (null === self::$builtInSetDefinitions) {
+            self::$builtInSetDefinitions = [];
+
+            $finder = Finder::create()
+                ->files()
+                ->in(__DIR__.'/Sets')
+                ->exclude('Internal/')
+            ;
+
+            foreach ($finder as $file) {
+                /** @var class-string<RuleSetDefinitionInterface> $class */
                 $class = 'PhpCsFixer\RuleSet\Sets\\'.$file->getBasename('.php');
 
-                /** @var RuleSetDescriptionInterface */
+                /** @var RuleSetDefinitionInterface */
                 $set = new $class();
 
-                self::$setDefinitions[$set->getName()] = $set;
+                if (!RuleSetNameValidator::isValid($set->getName(), false)) {
+                    throw new \InvalidArgumentException(\sprintf('Rule set name invalid: %s', $set->getName()));
+                }
+
+                self::$builtInSetDefinitions[$set->getName()] = $set;
             }
 
-            uksort(self::$setDefinitions, static fn (string $x, string $y): int => strnatcmp($x, $y));
+            uksort(self::$builtInSetDefinitions, static fn (string $x, string $y): int => strnatcmp($x, $y));
         }
 
-        return self::$setDefinitions;
+        return self::$builtInSetDefinitions;
     }
 
     /**
@@ -59,7 +93,7 @@ final class RuleSets
         return array_keys(self::getSetDefinitions());
     }
 
-    public static function getSetDefinition(string $name): RuleSetDescriptionInterface
+    public static function getSetDefinition(string $name): RuleSetDefinitionInterface
     {
         $definitions = self::getSetDefinitions();
 
@@ -68,5 +102,20 @@ final class RuleSets
         }
 
         return $definitions[$name];
+    }
+
+    public static function registerCustomRuleSet(RuleSetDefinitionInterface $ruleset): void
+    {
+        $name = $ruleset->getName();
+
+        if (!RuleSetNameValidator::isValid($name, true)) {
+            throw new \InvalidArgumentException('RuleSet name must begin with "@" and a letter (a-z, A-Z), and can contain only letters (a-z, A-Z), numbers, underscores, slashes, colons, dots and hyphens.');
+        }
+
+        if (\array_key_exists($name, self::getSetDefinitions())) {
+            throw new \InvalidArgumentException(\sprintf('Set "%s" is already defined.', $name));
+        }
+
+        self::$customRuleSetDefinitions[$name] = $ruleset;
     }
 }

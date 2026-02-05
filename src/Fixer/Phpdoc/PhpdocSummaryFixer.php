@@ -26,6 +26,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocSummaryFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
@@ -33,12 +35,18 @@ final class PhpdocSummaryFixer extends AbstractFixer implements WhitespacesAware
     {
         return new FixerDefinition(
             'PHPDoc summary should end in either a full stop, exclamation mark, or question mark.',
-            [new CodeSample('<?php
-/**
- * Foo function is great
- */
-function foo () {}
-')]
+            [
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * Foo function is great
+                         */
+                        function foo () {}
+
+                        PHP,
+                ),
+            ],
         );
     }
 

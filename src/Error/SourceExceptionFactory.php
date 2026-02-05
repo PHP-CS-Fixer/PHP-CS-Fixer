@@ -18,6 +18,8 @@ namespace PhpCsFixer\Error;
  * @readonly
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SourceExceptionFactory
 {
@@ -40,7 +42,7 @@ final class SourceExceptionFactory
         } catch (\Throwable $e) {
             $exception = new \RuntimeException(
                 \sprintf('[%s] %s', $exceptionClass, $error['message']),
-                $error['code']
+                $error['code'],
             );
         }
 

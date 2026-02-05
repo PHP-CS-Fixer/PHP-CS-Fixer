@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * Fixer for rules defined in PSR2 ¶5.1.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ElseifFixer extends AbstractFixer
 {
@@ -32,7 +34,7 @@ final class ElseifFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'The keyword `elseif` should be used instead of `else if` so that all control keywords look like single words.',
-            [new CodeSample("<?php\nif (\$a) {\n} else if (\$b) {\n}\n")]
+            [new CodeSample("<?php\nif (\$a) {\n} else if (\$b) {\n}\n")],
         );
     }
 

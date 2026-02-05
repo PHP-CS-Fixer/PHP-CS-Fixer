@@ -26,6 +26,8 @@ use PhpCsFixer\Tokenizer\CT;
  *
  * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
  * @phpstan-import-type _TransformerTestObservedKinds from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class UseTransformerTest extends AbstractTransformerTestCase
 {
@@ -43,7 +45,7 @@ final class UseTransformerTest extends AbstractTransformerTestCase
                 \T_USE,
                 CT::T_USE_LAMBDA,
                 CT::T_USE_TRAIT,
-            ]
+            ],
         );
     }
 

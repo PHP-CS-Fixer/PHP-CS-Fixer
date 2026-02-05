@@ -18,21 +18,23 @@ use PhpCsFixer\Console\Command\CheckCommand;
 use PhpCsFixer\Console\Command\DescribeCommand;
 use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\Command\HelpCommand;
+use PhpCsFixer\Console\Command\InitCommand;
 use PhpCsFixer\Console\Command\ListFilesCommand;
 use PhpCsFixer\Console\Command\ListSetsCommand;
 use PhpCsFixer\Console\Command\SelfUpdateCommand;
 use PhpCsFixer\Console\Command\WorkerCommand;
 use PhpCsFixer\Console\SelfUpdate\GithubClient;
 use PhpCsFixer\Console\SelfUpdate\NewVersionChecker;
+use PhpCsFixer\Future;
 use PhpCsFixer\PharChecker;
 use PhpCsFixer\Runner\Parallel\WorkerException;
 use PhpCsFixer\ToolInfo;
-use PhpCsFixer\Utils;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\CompleteCommand;
 use Symfony\Component\Console\Command\DumpCompletionCommand;
 use Symfony\Component\Console\Command\ListCommand;
+use Symfony\Component\Console\Exception\CommandNotFoundException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -42,17 +44,20 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class Application extends BaseApplication
 {
     public const NAME = 'PHP CS Fixer';
-    public const VERSION = '3.86.1-DEV';
-    public const VERSION_CODENAME = 'Alexander';
+    public const VERSION = '3.93.2-DEV';
+    public const VERSION_CODENAME = 'Exceptional Exception';
 
     /**
      * @readonly
      */
     private ToolInfo $toolInfo;
+
     private ?Command $executedCommand = null;
 
     public function __construct()
@@ -62,15 +67,16 @@ final class Application extends BaseApplication
         $this->toolInfo = new ToolInfo();
 
         // in alphabetical order
-        $this->add(new DescribeCommand());
         $this->add(new CheckCommand($this->toolInfo));
+        $this->add(new DescribeCommand());
         $this->add(new FixCommand($this->toolInfo));
+        $this->add(new InitCommand());
         $this->add(new ListFilesCommand($this->toolInfo));
         $this->add(new ListSetsCommand());
         $this->add(new SelfUpdateCommand(
             new NewVersionChecker(new GithubClient()),
             $this->toolInfo,
-            new PharChecker()
+            new PharChecker(),
         ));
         $this->add(new WorkerCommand($this->toolInfo));
     }
@@ -78,11 +84,11 @@ final class Application extends BaseApplication
     // polyfill for `add` method, as it is not available in Symfony 8.0
     public function add(Command $command): ?Command
     {
-        if (method_exists($this, 'addCommand')) { // @phpstan-ignore function.impossibleType
+        if (method_exists($this, 'addCommand')) { // @phpstan-ignore-line
             return $this->addCommand($command);
         }
 
-        return parent::add($command);
+        return parent::add($command); // @phpstan-ignore-line
     }
 
     public static function getMajorVersion(): int
@@ -100,7 +106,22 @@ final class Application extends BaseApplication
             $warningsDetector = new WarningsDetector($this->toolInfo);
             $warningsDetector->detectOldVendor();
             $warningsDetector->detectOldMajor();
-            $warningsDetector->detectNonMonolithic();
+
+            try {
+                $commandName = $this->getCommandName($input);
+                if (null === $commandName) {
+                    throw new CommandNotFoundException('No command name found.');
+                }
+                $command = $this->find($commandName);
+
+                if (($command instanceof CheckCommand) || ($command instanceof FixCommand)) {
+                    $warningsDetector->detectHigherPhpVersion();
+                    $warningsDetector->detectNonMonolithic();
+                }
+            } catch (CommandNotFoundException $e) {
+                // no-op
+            }
+
             $warnings = $warningsDetector->getWarnings();
 
             if (\count($warnings) > 0) {
@@ -117,7 +138,7 @@ final class Application extends BaseApplication
             null !== $stdErr
             && $output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE
         ) {
-            $triggeredDeprecations = Utils::getTriggeredDeprecations();
+            $triggeredDeprecations = Future::getTriggeredDeprecations();
 
             if (\count($triggeredDeprecations) > 0) {
                 $stdErr->writeln('');
@@ -138,12 +159,13 @@ final class Application extends BaseApplication
     {
         $longVersion = \sprintf('%s <info>%s</info>', self::NAME, self::VERSION);
 
-        $commit = '@git-commit@';
-        $versionCommit = '';
+        // value of `$commitPlaceholderPossiblyEvaluated` will be changed during phar building, other value will not
+        $commitPlaceholderPossiblyEvaluated = '@git-commit@';
+        $commitPlaceholder = implode('', ['@', 'git-commit@']); // do not replace with imploded value, as here we need to prevent phar builder to replace the placeholder
 
-        if ('@'.'git-commit@' !== $commit) { /** @phpstan-ignore-line as `$commit` is replaced during phar building */
-            $versionCommit = substr($commit, 0, 7);
-        }
+        $versionCommit = $commitPlaceholder !== $commitPlaceholderPossiblyEvaluated
+            ? substr($commitPlaceholderPossiblyEvaluated, 0, 7) // for phar builds
+            : '';
 
         $about = implode('', [
             $longVersion,
@@ -207,7 +229,8 @@ final class Application extends BaseApplication
                     'line' => $e->getLine(),
                     'code' => $e->getCode(),
                     'trace' => $e->getTraceAsString(),
-                ]
+                ],
+                \JSON_THROW_ON_ERROR,
             ));
 
             return;

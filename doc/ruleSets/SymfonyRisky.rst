@@ -2,20 +2,22 @@
 Rule set ``@Symfony:risky``
 ===========================
 
-Rules that follow the official `Symfony Coding Standards <https://symfony.com/doc/current/contributing/code/standards.html>`_.
+Rules that follow the official `Symfony Coding Standards <https://symfony.com/doc/current/contributing/code/standards.html>`_. Extends ``@PER-CS:risky``.
 
 Warning
 -------
 
-This set contains rules that are risky
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This rule set is RISKY
+~~~~~~~~~~~~~~~~~~~~~~
 
-Using this rule set may lead to changes in your code's logic and behaviour. Use it with caution and review changes before incorporating them into your code base.
+This set contains rules that are risky. Using it may lead to changes in your
+code's logic and behaviour. Use it with caution and review changes before
+incorporating them into your code base.
 
 Rules
 -----
 
-- `@PHP56Migration:risky <./PHP56MigrationRisky.rst>`_
+- `@PHP5x6Migration:risky <./PHP5x6MigrationRisky.rst>`_
 - `@PSR12:risky <./PSR12Risky.rst>`_
 - `array_push <./../rules/alias/array_push.rst>`_
 - `combine_nested_dirname <./../rules/function_notation/combine_nested_dirname.rst>`_
@@ -33,6 +35,7 @@ Rules
 - `is_null <./../rules/language_construct/is_null.rst>`_
 - `logical_operators <./../rules/operator/logical_operators.rst>`_
 - `long_to_shorthand_operator <./../rules/operator/long_to_shorthand_operator.rst>`_
+- `modern_serialization_methods <./../rules/class_notation/modern_serialization_methods.rst>`_
 - `modernize_strpos <./../rules/alias/modernize_strpos.rst>`_
 - `modernize_types_casting <./../rules/cast_notation/modernize_types_casting.rst>`_
 - `native_constant_invocation <./../rules/constant_notation/native_constant_invocation.rst>`_ with config:
@@ -57,6 +60,7 @@ Rules
 - `psr_autoloading <./../rules/basic/psr_autoloading.rst>`_
 - `self_accessor <./../rules/class_notation/self_accessor.rst>`_
 - `set_type_to_cast <./../rules/alias/set_type_to_cast.rst>`_
+- `static_lambda <./../rules/function_notation/static_lambda.rst>`_
 - `string_length_to_empty <./../rules/string_notation/string_length_to_empty.rst>`_
 - `string_line_ending <./../rules/string_notation/string_line_ending.rst>`_
 - `ternary_to_elvis_operator <./../rules/operator/ternary_to_elvis_operator.rst>`_

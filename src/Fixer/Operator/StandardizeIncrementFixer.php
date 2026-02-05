@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author ntzm
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class StandardizeIncrementFixer extends AbstractIncrementOperatorFixer
 {
@@ -45,7 +47,7 @@ final class StandardizeIncrementFixer extends AbstractIncrementOperatorFixer
             [
                 new CodeSample("<?php\n\$i += 1;\n"),
                 new CodeSample("<?php\n\$i -= 1;\n"),
-            ]
+            ],
         );
     }
 
@@ -90,12 +92,12 @@ final class StandardizeIncrementFixer extends AbstractIncrementOperatorFixer
             $this->clearRangeLeaveComments(
                 $tokens,
                 $tokens->getPrevMeaningfulToken($operatorIndex) + 1,
-                $numberIndex
+                $numberIndex,
             );
 
             $tokens->insertAt(
                 $startIndex,
-                new Token($operator->isGivenKind(\T_PLUS_EQUAL) ? [\T_INC, '++'] : [\T_DEC, '--'])
+                new Token($operator->isGivenKind(\T_PLUS_EQUAL) ? [\T_INC, '++'] : [\T_DEC, '--']),
             );
         }
     }

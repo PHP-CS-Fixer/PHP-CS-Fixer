@@ -23,6 +23,9 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class ArrayPushFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
@@ -31,7 +34,7 @@ final class ArrayPushFixer extends AbstractFixer
             'Converts simple usages of `array_push($x, $y);` to `$x[] = $y;`.',
             [new CodeSample("<?php\narray_push(\$x, \$y);\n")],
             null,
-            'Risky when the function `array_push` is overridden.'
+            'Risky when the function `array_push` is overridden.',
         );
     }
 
@@ -128,7 +131,7 @@ final class ArrayPushFixer extends AbstractFixer
                     new Token(']'),
                     new Token([\T_WHITESPACE, ' ']),
                     new Token('='),
-                ]
+                ],
             );
             $tokens->clearTokenAndMergeSurroundingWhitespace($openBraceIndex);
             $tokens->clearTokenAndMergeSurroundingWhitespace($callIndex);

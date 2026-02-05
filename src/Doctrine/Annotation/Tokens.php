@@ -23,6 +23,15 @@ use PhpCsFixer\Tokenizer\Token as PhpToken;
  * @internal
  *
  * @extends \SplFixedArray<Token>
+ *
+ * `SplFixedArray` uses `T|null` in return types because value can be null if an offset is unset or if the size does not match the number of elements.
+ * But our class takes care of it and always ensures correct size and indexes, so that these methods never return `null` instead of `Token`.
+ *
+ * @method Token                    offsetGet($offset)
+ * @method \Traversable<int, Token> getIterator()
+ * @method array<int, Token>        toArray()
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class Tokens extends \SplFixedArray
 {
@@ -105,7 +114,7 @@ final class Tokens extends \SplFixedArray
                         ? new Token(
                             $scannedToken->getType(),
                             '"'.str_replace('"', '""', $scannedToken->getContent()).'"',
-                            $scannedToken->getPosition()
+                            $scannedToken->getPosition(),
                         )
                         : $scannedToken;
 
@@ -114,7 +123,7 @@ final class Tokens extends \SplFixedArray
                         $tokens[] = new Token(DocLexer::T_NONE, substr(
                             $content,
                             $nextAtPosition + $lastTokenEndIndex,
-                            $missingTextLength
+                            $missingTextLength,
                         ));
                     }
 
@@ -235,20 +244,14 @@ final class Tokens extends \SplFixedArray
         $this[$index] = $token;
     }
 
+    /**
+     * @param null|int   $index
+     * @param null|Token $token
+     */
     public function offsetSet($index, $token): void
     {
-        if (null === $token) {
-            throw new \InvalidArgumentException('Token must be an instance of PhpCsFixer\Doctrine\Annotation\Token, "null" given.');
-        }
-
         if (!$token instanceof Token) {
-            $type = \gettype($token);
-
-            if ('object' === $type) {
-                $type = \get_class($token);
-            }
-
-            throw new \InvalidArgumentException(\sprintf('Token must be an instance of PhpCsFixer\Doctrine\Annotation\Token, "%s" given.', $type));
+            throw new \InvalidArgumentException(\sprintf('Token must be an instance of %s, "%s" given.', Token::class, get_debug_type($token)));
         }
 
         parent::offsetSet($index, $token);

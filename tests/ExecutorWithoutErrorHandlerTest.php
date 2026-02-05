@@ -21,6 +21,8 @@ use PhpCsFixer\ExecutorWithoutErrorHandlerException;
  * @internal
  *
  * @covers \PhpCsFixer\ExecutorWithoutErrorHandler
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ExecutorWithoutErrorHandlerTest extends TestCase
 {
@@ -35,7 +37,7 @@ final class ExecutorWithoutErrorHandlerTest extends TestCase
     public function testWithoutError(): void
     {
         self::assertTrue(
-            ExecutorWithoutErrorHandler::execute(static fn () => is_readable(__DIR__))
+            ExecutorWithoutErrorHandler::execute(static fn () => is_readable(__DIR__)),
         );
     }
 }

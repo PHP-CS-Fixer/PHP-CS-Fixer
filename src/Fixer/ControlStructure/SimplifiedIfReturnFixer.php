@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @phpstan-import-type _PhpTokenPrototypePartial from Token
  *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SimplifiedIfReturnFixer extends AbstractFixer
 {
@@ -66,7 +68,7 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Simplify `if` control structures that return the boolean result of their condition.',
-            [new CodeSample("<?php\nif (\$foo) { return true; } return false;\n")]
+            [new CodeSample("<?php\nif (\$foo) { return true; } return false;\n")],
         );
     }
 

@@ -23,6 +23,9 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class OctalNotationFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
@@ -32,9 +35,9 @@ final class OctalNotationFixer extends AbstractFixer
             [
                 new VersionSpecificCodeSample(
                     "<?php \$foo = 0123;\n",
-                    new VersionSpecification(8_01_00)
+                    new VersionSpecification(8_01_00),
                 ),
-            ]
+            ],
         );
     }
 

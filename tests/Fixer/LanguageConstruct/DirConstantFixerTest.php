@@ -25,6 +25,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\DirConstantFixer>
  *
  * @author Vladimir Reznichenko <kalessil@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DirConstantFixerTest extends AbstractFixerTestCase
 {
@@ -209,7 +211,7 @@ dirname# B
 __FILE__# D
 )# E
 ;# F
-'
+',
         );
     }
 }

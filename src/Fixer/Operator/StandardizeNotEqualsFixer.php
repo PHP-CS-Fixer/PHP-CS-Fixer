@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class StandardizeNotEqualsFixer extends AbstractFixer
 {
@@ -30,7 +32,7 @@ final class StandardizeNotEqualsFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Replace all `<>` with `!=`.',
-            [new CodeSample("<?php\n\$a = \$b <> \$c;\n")]
+            [new CodeSample("<?php\n\$a = \$b <> \$c;\n")],
         );
     }
 

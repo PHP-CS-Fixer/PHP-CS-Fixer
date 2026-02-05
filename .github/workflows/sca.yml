@@ -1,8 +1,10 @@
 name: Static Code Analysis
 
 on:
-  - pull_request
-  - push
+  pull_request:
+  push:
+    branches:
+      - master
 
 permissions:
   contents: read # to fetch code (actions/checkout)
@@ -12,18 +14,32 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  everything:
+  spelling:
+    name: Check spelling
+
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Check spelling
+        uses: crate-ci/typos@v1.42.3
+        with:
+          config: ./dev-tools/typos.toml
+
+  everything_else:
     name: Static Code Analysis
 
     runs-on: ubuntu-24.04
     env:
-      php-version: '8.4'
+      php-version: '8.5'
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
-      # We need to fetch base branch because `actions/checkout` only initializes empty repo and fetches PR's meta-branch
+      # We need to fetch base branch because `actions/checkout` only initialises empty repo and fetches PR's meta-branch
       # which leads to `fatal: ambiguous argument 'origin/...': unknown revision or path not in the working tree.`,
       # because of that `CHANGED_PHP_FILES` is not set, and tools based on diff between branches (like Mess Detector) don't work.
       - name: Fetch base branch
@@ -37,7 +53,7 @@ jobs:
           php: ${{ env.php-version }}
 
       - name: Cache dev-tools
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: dev-tools/bin/
           key: DevTools-${{ hashFiles('dev-tools/install.sh') }}
@@ -71,11 +87,8 @@ jobs:
       - name: Check - PHP compatibility
         run: composer php-compatibility
 
-      - name: Check - composer-unused
-        run: ./dev-tools/vendor/bin/composer-unused --no-progress --excludePackage=composer/xdebug-handler
-
-      - name: Check - composer-require-checker
-        run: ./dev-tools/vendor/bin/composer-require-checker check composer.json --config-file .composer-require-checker.json
+      - name: Analyse Composer dependencies
+        run: ./dev-tools/vendor/bin/composer-dependency-analyser
 
       - name: Check - composer normalize
         run: |
@@ -85,6 +98,9 @@ jobs:
 
       - name: Check - shell scripts
         run: ./dev-tools/check_shell_scripts.sh
+
+      - name: Check - no American English
+        run: ./dev-tools/check_no_american_english.sh
 
       - name: Find changed files (for pull request)
         if: ${{ github.event_name == 'pull_request' }}

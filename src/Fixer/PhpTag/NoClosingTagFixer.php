@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * Fixer for rules defined in PSR2 ¶2.2.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoClosingTagFixer extends AbstractFixer
 {
@@ -32,7 +34,7 @@ final class NoClosingTagFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'The closing `?>` tag MUST be omitted from files containing only PHP.',
-            [new CodeSample("<?php\nclass Sample\n{\n}\n?>\n")]
+            [new CodeSample("<?php\nclass Sample\n{\n}\n?>\n")],
         );
     }
 

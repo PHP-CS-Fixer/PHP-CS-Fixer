@@ -24,6 +24,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Comment\NoTrailingWhitespaceInCommentFixer>
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
 {
@@ -137,7 +139,7 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
      * Summary
      *'.'
      * Description
-    */'
+    */',
             ),
             str_replace(
                 "\n",
@@ -147,7 +149,7 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
      * Summary
      * '.'
      * Description
-    */'
+    */',
             ),
         ];
 
@@ -160,7 +162,7 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
      * Summary
      *'.'
      * Description
-    */'
+    */',
             ),
             str_replace(
                 "\n",
@@ -170,7 +172,7 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
      * Summary
      * '.'
      * Description
-    */'
+    */',
             ),
         ];
     }

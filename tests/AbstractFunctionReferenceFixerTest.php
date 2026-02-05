@@ -22,6 +22,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class AbstractFunctionReferenceFixerTest extends TestCase
 {
@@ -49,8 +51,8 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
                 $functionNameToSearch,
                 $tokens,
                 $start,
-                $end
-            ), null, AbstractFunctionReferenceFixer::class)($fixer)
+                $end,
+            ), null, AbstractFunctionReferenceFixer::class)($fixer),
         );
 
         self::assertFalse($tokens->isChanged());

@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Krzysztof Ciszewski <krzysztof@ciszew.ski>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpUnitAssertNewNamesFixer extends AbstractPhpUnitFixer
 {
@@ -37,20 +39,22 @@ final class PhpUnitAssertNewNamesFixer extends AbstractPhpUnitFixer
             'Rename deprecated PHPUnit assertions like `assertFileNotExists` to new methods like `assertFileDoesNotExist`.',
             [
                 new CodeSample(
-                    '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testSomeTest()
-    {
-        $this->assertFileNotExists("test.php");
-        $this->assertNotIsWritable("path.php");
-    }
-}
-'
+                    <<<'PHP'
+                        <?php
+                        final class MyTest extends \PHPUnit_Framework_TestCase
+                        {
+                            public function testSomeTest()
+                            {
+                                $this->assertFileNotExists("test.php");
+                                $this->assertNotIsWritable("path.php");
+                            }
+                        }
+
+                        PHP,
                 ),
             ],
             null,
-            'Fixer could be risky if one is overriding PHPUnit\'s native methods.'
+            'Fixer could be risky if one is overriding PHPUnit\'s native methods.',
         );
     }
 

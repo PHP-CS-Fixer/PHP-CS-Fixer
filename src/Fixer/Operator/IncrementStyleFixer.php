@@ -39,6 +39,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *
  * @author Gregor Harlan <gharlan@web.de>
  * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class IncrementStyleFixer extends AbstractIncrementOperatorFixer implements ConfigurableFixerInterface
 {
@@ -63,9 +65,9 @@ final class IncrementStyleFixer extends AbstractIncrementOperatorFixer implement
                 new CodeSample("<?php\n\$a++;\n\$b--;\n"),
                 new CodeSample(
                     "<?php\n++\$a;\n--\$b;\n",
-                    ['style' => self::STYLE_POST]
+                    ['style' => self::STYLE_POST],
                 ),
-            ]
+            ],
         );
     }
 

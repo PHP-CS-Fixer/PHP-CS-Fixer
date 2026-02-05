@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author ntzm
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class MagicConstantCasingFixer extends AbstractFixer
 {
@@ -45,7 +47,7 @@ final class MagicConstantCasingFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Magic constants should be referred to using the correct casing.',
-            [new CodeSample("<?php\necho __dir__;\n")]
+            [new CodeSample("<?php\necho __dir__;\n")],
         );
     }
 
@@ -66,7 +68,7 @@ final class MagicConstantCasingFixer extends AbstractFixer
     }
 
     /**
-     * @return list<int>
+     * @return non-empty-list<int>
      */
     private function getMagicConstantTokens(): array
     {

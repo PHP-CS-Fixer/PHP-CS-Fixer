@@ -27,6 +27,8 @@ use Symfony\Component\Console\Command\Command;
  *
  * @group auto-review
  * @group covers-nothing
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class CommandTest extends TestCase
 {
@@ -35,7 +37,7 @@ final class CommandTest extends TestCase
      */
     public function testCommandHasNameConst(Command $command): void
     {
-        self::assertNotNull($command::getDefaultName());
+        self::assertNotNull($command->getName());
     }
 
     /**
@@ -49,7 +51,7 @@ final class CommandTest extends TestCase
         $names = array_filter(
             array_keys($commands),
             // @phpstan-ignore-next-line offsetAccess.notFound is not an alias and is our command
-            static fn (string $name): bool => !\in_array($name, $commands[$name]->getAliases(), true) && str_starts_with(\get_class($commands[$name]), 'PhpCsFixer\\')
+            static fn (string $name): bool => !\in_array($name, $commands[$name]->getAliases(), true) && str_starts_with(\get_class($commands[$name]), 'PhpCsFixer\\'),
         );
 
         // @phpstan-ignore-next-line offsetAccess.notFound

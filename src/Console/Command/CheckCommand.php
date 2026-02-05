@@ -24,6 +24,8 @@ use Symfony\Component\Console\Input\InputOption;
  * @author Greg Korba <greg@codito.dev>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 #[AsCommand(name: 'check', description: 'Checks if configured files/directories comply with configured rules.')]
 final class CheckCommand extends FixCommand
@@ -52,7 +54,7 @@ final class CheckCommand extends FixCommand
             ...array_values($this->getDefinition()->getArguments()),
             ...array_values(array_filter(
                 $this->getDefinition()->getOptions(),
-                static fn (InputOption $option): bool => 'dry-run' !== $option->getName()
+                static fn (InputOption $option): bool => 'dry-run' !== $option->getName(),
             )),
         ]);
     }

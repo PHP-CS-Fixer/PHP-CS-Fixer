@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoEmptyStatementFixer extends AbstractFixer
 {
@@ -35,7 +37,7 @@ final class NoEmptyStatementFixer extends AbstractFixer
                 new CodeSample("<?php \$a = 1;;\n"),
                 new CodeSample("<?php echo 1;2;\n"),
                 new CodeSample("<?php while(foo()){\n    continue 1;\n}\n"),
-            ]
+            ],
         );
     }
 

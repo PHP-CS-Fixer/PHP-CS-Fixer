@@ -10,6 +10,7 @@ parameters:
         - src
         - tests
         - php-cs-fixer
+        - .php-cs-fixer.dist.php
         - dev-tools/phpstan/src
     excludePaths:
         - tests/Fixtures
@@ -19,11 +20,11 @@ parameters:
     reportPossiblyNonexistentConstantArrayOffset: true
     treatPhpDocTypesAsCertain: false
     ignoreErrors:
-        - identifier: method.internal
-        - identifier: method.internalClass
-        - identifier: new.internalClass
         - '/^Class [a-zA-Z\\]+ extends @final class PhpCsFixer\\(ConfigurationException\\InvalidConfigurationException|ConfigurationException\\InvalidFixerConfigurationException|Tokenizer\\Tokens|Console\\Command\\FixCommand)\.$/'
-        - '/^\$this\(PhpCsFixer\\Tokenizer\\Tokens\) does not accept PhpCsFixer\\Tokenizer\\Token\|null\.$/'
+
+        -
+            rawMessage: 'Call to internal method PHPUnit\Framework\TestCase::addToAssertionCount() from outside its root namespace PHPUnit.'
+            identifier: method.internal
 
         # We often need to iterate multiple times within single method and we re-use variable name
         -
@@ -46,28 +47,46 @@ parameters:
                 - src/Fixer/Import/GlobalNamespaceImportFixer.php
                 - src/Fixer/LanguageConstruct/GetClassToClassKeywordFixer.php
 
+        # We allow own config to eat internal rules/sets
+        -
+            message: '/(on|of) internal class.*(Set|Fixer)/'
+            paths:
+                - .php-cs-fixer.dist.php
+
         # Types related to tokens collections are purposefully narrowed, because we expect only tokens there
         - '/^Parameter #1 \$array \(array<int, PhpCsFixer\\(Tokenizer|Doctrine\\Annotation)+\\Token>\) of method PhpCsFixer\\(Tokenizer|Doctrine\\Annotation)+\\Tokens::fromArray\(\) should be contravariant with parameter \$array \(array<int, mixed>\) of method SplFixedArray<PhpCsFixer\\(Tokenizer|Doctrine\\Annotation)+\\Token>::fromArray\(\)$/'
         - '/^Parameter .* of method PhpCsFixer\\Tokenizer\\Tokens::offsetSet\(\) should be contravariant with parameter .* of method .*::offsetSet\(\)$/'
         - '/^Parameter .* of method PhpCsFixer\\Tests\\Test\\TokensWithObservedTransformers::offsetSet\(\) should be contravariant with parameter .* of method .*::offsetSet\(\)$/'
 
-        # We retrieve these FQNs in various ways, we process them along the way, let's assume it's always class-string
-        - '/^Parameter #2 \$fullName of class PhpCsFixer\\Tokenizer\\Analyzer\\Analysis\\NamespaceUseAnalysis constructor expects class-string, string given\.$/'
+        # We often access tokens collection with `int|null` because our token traversing methods (`getNextMeaningfulToken` etc.) have nullable return type at the moment
+        -
+            message: '/^Offset int(<0, max>)?\|null might not exist on (\$this\()?PhpCsFixer\\Tokenizer\\Tokens\)?\.$/'
+            identifier: offsetAccess.notFound
 
         # Type for Command::$defaultName and ::$defaultDescription can not be specified because parent property also does not have a type
         -
-            message: '/^Property PhpCsFixer\\Console\\Command\\\w+Command::\$default(?:Name|Description) has no type specified\.$/'
+            message: '/^Property PhpCsFixer\\Console\\(Internal\\)?Command\\\w+Command::\$default(?:Name|Description) has no type specified\.$/'
             identifier: missingType.property
         -
             message: '/^Unused PhpCsFixer\\[a-zA-Z\\]+Interface::[a-zA-Z]+$/'
             path: src
-            count: 17
+            count: 19
+
+        -
+            message: '/^AnonymousClass/'
+            path: tests/
+            identifier: phpCsFixer.internalTypeInPublicApi
     tipsOfTheDay: false
     symfony:
         consoleApplicationLoader: dev-tools/phpstan/console-application.php
     tmpDir: dev-tools/phpstan/cache
 
 services:
+    -
+        class: PhpCsFixer\PHPStan\Rules\NoInternalTypesInPublicApiRule
+        tags:
+            - phpstan.rules.rule
+
     -
         class: PhpCsFixer\PHPStan\Extension\PregMatchParameterOutExtension
         tags:

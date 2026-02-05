@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\LanguageConstruct\CombineConsecutiveUnsetsFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\CombineConsecutiveUnsetsFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
 {
@@ -139,6 +141,35 @@ final class CombineConsecutiveUnsetsFixerTest extends AbstractFixerTestCase
                     unset($a->b->c);
                     unset($a->b[0]->c[\'a\']);
                 ',
+        ];
+
+        yield [
+            '<?php
+                unset(
+                    $array1["foo"],
+                    $array2["bar2"],
+                );
+
+                ',
+            '<?php
+                unset(
+                    $array1["foo"],
+                );
+
+                unset(
+                    $array2["bar2"],
+                );',
+        ];
+
+        yield [
+            '<?php
+                unset($array1["foo"],$array2["bar2"],);
+
+                ',
+            '<?php
+                unset($array1["foo"],);
+
+                unset($array2["bar2"],);',
         ];
     }
 

@@ -1,8 +1,10 @@
 name: CI
 
 on:
-  - pull_request
-  - push
+  pull_request:
+  push:
+    branches:
+      - master
 
 permissions:
   contents: read # to fetch code (actions/checkout)
@@ -12,16 +14,28 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  PHP_MAX: '8.4'
+  PHP_MAX: '8.5'
   PHP_MIN: '7.4'
 
 jobs:
+  # jobs can't use env.* as part of job definitions, so we need a `setup` job to pass such values via outputs
+  setup:
+    runs-on: ubuntu-slim
+    outputs:
+      PHP_MAX: ${{ steps.set-version.outputs.PHP_MAX }}
+      PHP_MIN: ${{ steps.set-version.outputs.PHP_MIN }}
+    steps:
+      - id: set-version
+        run: |
+          echo "PHP_MAX=${{ env.PHP_MAX }}" >> $GITHUB_OUTPUT
+          echo "PHP_MIN=${{ env.PHP_MIN }}" >> $GITHUB_OUTPUT
+
   entrypoint-low-php-compat:
     name: Entrypoint low-PHP compat
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup PHP
         uses: ./.github/composite-actions/setup-php
@@ -32,6 +46,7 @@ jobs:
         run: php -l $(cat composer.json | jq -r '.bin[]')
 
   tests:
+    needs: setup
     continue-on-error: ${{ matrix.allow-to-fail == 'yes' }}
     strategy:
       fail-fast: false
@@ -97,99 +112,95 @@ jobs:
 
           - operating-system: ubuntu-24.04
             php-version: '8.4'
-            job-description: Fixer
-            run-fixer: 'yes'
-
-          - operating-system: ubuntu-24.04
-            php-version: '8.4'
-            job-description: tests
-            run-tests: 'yes'
-
-          - operating-system: ubuntu-24.04
-            php-version: '8.4'
             job-description: Fixer with Symfony ^8
             run-fixer: 'yes'
-            allow-to-fail: 'yes' # because Symfony v8 is not yet stable
-            execute-flex-with-symfony-version: ^8@dev # explicit check for Symfony 8.x compatibility
+            execute-flex-with-symfony-version: ^8 # explicit check for Symfony 8.x compatibility
 
           - operating-system: ubuntu-24.04
             php-version: '8.4'
             job-description: tests with Symfony ^8
             run-tests: 'yes'
-            allow-to-fail: 'yes' # because Symfony v8 is not yet stable
-            AVOID_PARAUNIT: 'yes' # as it doesn't support Symfony 8 yet
-            phpunit-flags: --exclude-group=sf-8-problematic # @todo: solve before claiming Symfony 8.x support
-            execute-flex-with-symfony-version: ^8@dev # explicit check for Symfony 8.x compatibility
-
-          - operating-system: ubuntu-24.04
-            php-version: '8.4'
-            job-description: Fixer with migration rules
-            run-fixer: 'yes'
-            run-migration-rules: 'yes' # should be checked on the highest supported PHP version
-
-          - operating-system: ubuntu-24.04
-            php-version: '8.4'
-            job-description: tests with migration rules
-            run-tests: 'yes'
-            run-migration-rules: 'yes' # should be checked on the highest supported PHP version
-
-          - operating-system: windows-latest
-            php-version: '8.4'
-            job-description: Fixer on Windows
-            run-fixer: 'yes'
-            FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
-
-          - operating-system: windows-latest
-            php-version: '8.4'
-            job-description: tests on Windows
-            run-tests: 'yes'
-            FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
-
-          - operating-system: macos-latest
-            php-version: '8.4'
-            job-description: Fixer on macOS
-            run-fixer: 'yes'
-            allow-to-fail: 'yes' # we experience random failures on macOS
-            FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
-
-          - operating-system: macos-latest
-            php-version: '8.4'
-            job-description: tests on macOS
-            run-tests: 'yes'
-            allow-to-fail: 'yes' # we experience random failures on macOS
-            AVOID_PARAUNIT: 'yes' # macOS job is having weird issue on CI under ParaUnit
-            FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
-
-          - operating-system: ubuntu-24.04
-            php-version: '8.4'
-            job-description: tests using PHPUnit 12
-            install-phpunit-12: 'yes'
-            run-tests: 'yes'
-
-          - operating-system: ubuntu-24.04
-            php-version: '8.4'
-            job-description: code coverage
-            run-tests: 'yes'
-            collect-code-coverage: 'yes'
-
-          - operating-system: ubuntu-24.04
-            php-version: '8.4'
-            job-description: mutation tests
-            run-mutation-tests: 'yes'
+            execute-flex-with-symfony-version: ^8 # explicit check for Symfony 8.x compatibility
 
           - operating-system: ubuntu-24.04
             php-version: '8.5'
             job-description: Fixer
             run-fixer: 'yes'
-            PHP_CS_FIXER_IGNORE_ENV: 1
 
           - operating-system: ubuntu-24.04
             php-version: '8.5'
             job-description: tests
             run-tests: 'yes'
-            allow-to-fail: 'yes' # with newest 8.5 development, we are not longer (and not yet) compatible with 8.5
-            AVOID_PARAUNIT: 'yes' # for easier issues debugging
+
+          - operating-system: ubuntu-24.04
+            php-version: 8.6snapshot # replace with PHP 8.6 when dev version is released
+            job-description: Fixer
+            run-fixer: 'yes'
+            allow-to-fail: 'yes' # currently not compatible
+
+          - operating-system: ubuntu-24.04
+            php-version: 8.6snapshot # replace with PHP 8.6 when dev version is released
+            job-description: tests
+            run-tests: 'yes'
+            allow-to-fail: 'yes' # currently not compatible
             PHP_CS_FIXER_IGNORE_ENV: 1
+
+          - operating-system: ubuntu-24.04
+            php-version: ${{ needs.setup.outputs.PHP_MAX }}
+            job-description: Fixer with migration rules
+            run-fixer: 'yes'
+            run-migration-rules: 'yes' # should be checked on the highest supported PHP version
+
+          - operating-system: ubuntu-24.04
+            php-version: ${{ needs.setup.outputs.PHP_MAX }}
+            job-description: tests with migration rules
+            run-tests: 'yes'
+            run-migration-rules: 'yes' # should be checked on the highest supported PHP version
+
+          - operating-system: windows-latest
+            php-version: ${{ needs.setup.outputs.PHP_MAX }}
+            job-description: Fixer on Windows
+            run-fixer: 'yes'
+            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
+
+          - operating-system: windows-latest
+            php-version: ${{ needs.setup.outputs.PHP_MAX }}
+            job-description: tests on Windows
+            run-tests: 'yes'
+            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
+
+          - operating-system: macos-latest
+            php-version: ${{ needs.setup.outputs.PHP_MAX }}
+            job-description: Fixer on macOS
+            run-fixer: 'yes'
+            allow-to-fail: 'yes' # we experience random failures on macOS
+            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
+
+          - operating-system: macos-latest
+            php-version: ${{ needs.setup.outputs.PHP_MAX }}
+            job-description: tests on macOS
+            run-tests: 'yes'
+            allow-to-fail: 'yes' # we experience random failures on macOS
+            AVOID_PARAUNIT: 'yes' # macOS job is having weird issue on CI under ParaUnit
+            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
+
+          - operating-system: ubuntu-24.04
+            php-version: ${{ needs.setup.outputs.PHP_MAX }}
+            job-description: tests using PHPUnit 12
+            install-phpunit-12: 'yes'
+            run-tests: 'yes'
+
+          - operating-system: ubuntu-24.04
+            php-version: ${{ needs.setup.outputs.PHP_MAX }}
+            job-description: code coverage
+            run-tests: 'yes'
+            collect-code-coverage: 'yes'
+            allow-to-fail: 'yes' # don't prevent the build when remote coverage reporting service is down
+
+          - operating-system: ubuntu-24.04
+            php-version: ${{ needs.setup.outputs.PHP_MAX }}
+            job-description: mutation tests
+            run-mutation-tests: 'yes'
 
     name: PHP ${{ matrix.php-version }} ${{ matrix.job-description }}
 
@@ -197,7 +208,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Remove Infection requirement if not needed
         # TODO: Fix it properly. It somehow stopped working on MacOS (Composer not available)
@@ -211,6 +222,7 @@ jobs:
           php: ${{ matrix.php-version }}
           php-coverage: ${{ matrix.collect-code-coverage || matrix.run-mutation-tests }}
           composer-flags: ${{ matrix.composer-flags }}
+          composer-minimum-stability: ${{ matrix.composer-minimum-stability }}
           composer-flex-with-symfony-version: ${{ matrix.execute-flex-with-symfony-version }}
 
       # Execute migration rules before running tests and self-fixing,
@@ -226,19 +238,13 @@ jobs:
         if: matrix.operating-system == 'windows-latest'
         run: (Get-Content phpunit.xml.dist) -replace 'enforceTimeLimit="true"', 'enforceTimeLimit="false"' | Out-File phpunit.xml
 
-      - name: Fix PHP 8.4 deprecations for tests
-        if: matrix.run-tests == 'yes' && matrix.php-version == '8.4'
-        env:
-          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
-        run: php php-cs-fixer fix --rules=no_unreachable_default_argument_value,nullable_type_declaration_for_default_null_value --diff vendor
-
       - name: Install PHPUnit 12
         if: matrix.run-tests == 'yes' && matrix.install-phpunit-12 == 'yes'
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
-          FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
+          PHP_CS_FIXER_FAST_LINT_TEST_CASES: ${{ matrix.PHP_CS_FIXER_FAST_LINT_TEST_CASES }}
         run: |
-          composer require --dev --with-all-dependencies phpunit/phpunit:^12.1.5
+          composer require --dev --with-all-dependencies phpunit/phpunit:"^9.6 || ^12.1.5" # mention ^9.6 to keep trace of minimum supported version, needed for utests
           php php-cs-fixer fix --quiet --rules=php_unit_attributes
 
       - name: Check configuration for PHPUnit
@@ -249,27 +255,27 @@ jobs:
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes' && matrix.AVOID_PARAUNIT == 'yes'
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
-          FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
+          PHP_CS_FIXER_FAST_LINT_TEST_CASES: ${{ matrix.PHP_CS_FIXER_FAST_LINT_TEST_CASES }}
         run: vendor/bin/phpunit --testsuite unit,integration ${{ matrix.phpunit-flags }}
 
       - name: Run tests (via ParaUnit)
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes' && matrix.AVOID_PARAUNIT != 'yes'
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
-          FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
+          PHP_CS_FIXER_FAST_LINT_TEST_CASES: ${{ matrix.PHP_CS_FIXER_FAST_LINT_TEST_CASES }}
         run: vendor/bin/paraunit run --testsuite unit,integration
 
       - name: Run tests with "short_open_tag" enabled
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes'
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
-          FAST_LINT_TEST_CASES: ${{ matrix.FAST_LINT_TEST_CASES }}
+          PHP_CS_FIXER_FAST_LINT_TEST_CASES: ${{ matrix.PHP_CS_FIXER_FAST_LINT_TEST_CASES }}
         run: composer test:short-open-tag
 
       - name: Run tests and collect code coverage
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
         env:
-          FAST_LINT_TEST_CASES: 1
+          PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
         run: vendor/bin/paraunit coverage --testsuite unit --pass-through=--exclude-group=covers-nothing --clover=build/logs/clover.xml
 
@@ -277,11 +283,11 @@ jobs:
         # Run only on pull requests because we run mutations tests only for diff between branches
         if: github.event_name == 'pull_request' && matrix.run-mutation-tests == 'yes'
         env:
-          FAST_LINT_TEST_CASES: 1
+          PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
         run: |
           git fetch origin $GITHUB_BASE_REF
-          vendor/bin/infection --threads=max --map-source-class-to-test --git-diff-lines --git-diff-base=origin/$GITHUB_BASE_REF --ignore-msi-with-no-mutations --only-covered
+          vendor/bin/infection --threads=max --map-source-class-to-test --git-diff-lines --git-diff-base=origin/$GITHUB_BASE_REF --ignore-msi-with-no-mutations --only-covering-test-cases --logger-github=false
 
       - name: Upload coverage results to Coveralls
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
@@ -305,13 +311,13 @@ jobs:
         run: php php-cs-fixer check --diff -vvv --config .php-cs-fixer.php-lowest.php
 
   deployment:
-    needs: tests
+    needs: [setup, tests]
     if: always()
     name: Deployment checks
 
     runs-on: ubuntu-24.04
     env:
-      php-version: '8.4'
+      php-version: ${{ needs.setup.outputs.PHP_MAX }}
 
     steps:
       - name: Check if the tests passed
@@ -322,7 +328,7 @@ jobs:
           fi
 
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup PHP with Composer deps
         uses: ./.github/composite-actions/setup-php-with-composer-deps
@@ -331,7 +337,7 @@ jobs:
           php: ${{ env.php-version }}
 
       - name: Cache dev-tools
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: dev-tools/bin/
           key: Build-${{ hashFiles('dev-tools/build.sh') }}
@@ -344,5 +350,5 @@ jobs:
 
       - name: Run smoke tests
         env:
-          FAST_LINT_TEST_CASES: 1
+          PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1
         run: vendor/bin/phpunit --testsuite smoke ${{ matrix.phpunit-flags }}

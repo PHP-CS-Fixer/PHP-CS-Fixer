@@ -27,6 +27,8 @@ use PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer;
  * @covers \PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer
  *
  * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SquareBraceTransformerTest extends AbstractTransformerTestCase
 {
@@ -57,7 +59,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
             self::assertSame(
                 $expected,
                 \Closure::bind(static fn (SquareBraceTransformer $transformer): bool => $transformer->isShortArray($tokens, $index), null, SquareBraceTransformer::class)($transformer),
-                \sprintf('Excepted token "%s" @ index %d %sto be detected as short array.', $token->toJson(), $index, $exp ? '' : 'not ')
+                \sprintf('Excepted token "%s" @ index %d %sto be detected as short array.', $token->toJson(), $index, $exp ? '' : 'not '),
             );
         }
     }
@@ -101,7 +103,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
                 CT::T_ARRAY_SQUARE_BRACE_CLOSE,
                 CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
                 CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-            ]
+            ],
         );
     }
 

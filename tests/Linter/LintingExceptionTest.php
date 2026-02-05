@@ -23,6 +23,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Linter\LintingException
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class LintingExceptionTest extends TestCase
 {
@@ -35,7 +37,7 @@ final class LintingExceptionTest extends TestCase
         $exception = new LintingException(
             $message,
             $code,
-            $previous
+            $previous,
         );
 
         self::assertSame($message, $exception->getMessage());

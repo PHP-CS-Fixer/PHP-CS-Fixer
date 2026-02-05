@@ -19,6 +19,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractFopenFlagFixer extends AbstractFunctionReferenceFixer
 {
@@ -46,7 +48,7 @@ abstract class AbstractFopenFlagFixer extends AbstractFunctionReferenceFixer
             $arguments = $argumentsAnalyzer->getArguments(
                 $tokens,
                 $index,
-                $candidate[2]
+                $candidate[2],
             );
 
             $argumentsCount = \count($arguments); // argument count sanity check
@@ -60,7 +62,7 @@ abstract class AbstractFopenFlagFixer extends AbstractFunctionReferenceFixer
             $this->fixFopenFlagToken(
                 $tokens,
                 $argumentStartIndex,
-                $arguments[$argumentStartIndex]
+                $arguments[$argumentStartIndex],
             );
         }
     }

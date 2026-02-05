@@ -22,6 +22,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\AlternativeSyntaxAnalyzer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class AlternativeSyntaxAnalyzerTest extends TestCase
 {
@@ -38,7 +40,7 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
             self::assertSame(
                 \in_array($index, $expectedPositives, true),
                 (new AlternativeSyntaxAnalyzer())->belongsToAlternativeSyntax($tokens, $index),
-                '@ index: '.$index
+                '@ index: '.$index,
             );
         }
     }
@@ -100,8 +102,8 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
             $expectedResult,
             $analyzer->findAlternativeSyntaxBlockEnd(
                 Tokens::fromCode($code),
-                $startIndex
-            )
+                $startIndex,
+            ),
         );
     }
 

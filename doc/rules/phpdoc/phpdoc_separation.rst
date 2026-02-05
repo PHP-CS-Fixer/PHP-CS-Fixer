@@ -6,6 +6,15 @@ Annotations in PHPDoc should be grouped together so that annotations of the same
 type immediately follow each other. Annotations of a different type are
 separated by a single blank line.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``groups``,
+``skip_unlisted_annotations``.
+
 Configuration
 -------------
 
@@ -27,6 +36,8 @@ Whether to skip annotations that are not listed in any group.
 Allowed types: ``bool``
 
 Default value: ``false``
+
+Default value (future-mode): ``true``
 
 Examples
 --------
@@ -157,11 +168,11 @@ The rule is part of the following rule sets:
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 
-  ``['groups' => [['Annotation', 'NamedArgumentConstructor', 'Target'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write'], ['deprecated', 'link', 'see', 'since']]]``
+  ``['groups' => [['Annotation', 'NamedArgumentConstructor', 'Target'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write'], ['deprecated', 'link', 'see', 'since']], 'skip_unlisted_annotations' => false]``
 
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
-  ``['groups' => [['Annotation', 'NamedArgumentConstructor', 'Target'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write'], ['deprecated', 'link', 'see', 'since']]]``
+  ``['groups' => [['Annotation', 'NamedArgumentConstructor', 'Target'], ['author', 'copyright', 'license'], ['category', 'package', 'subpackage'], ['property', 'property-read', 'property-write'], ['deprecated', 'link', 'see', 'since']], 'skip_unlisted_annotations' => false]``
 
 References
 ----------

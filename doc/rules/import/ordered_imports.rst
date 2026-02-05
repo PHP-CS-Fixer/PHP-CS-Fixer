@@ -4,6 +4,15 @@ Rule ``ordered_imports``
 
 Ordering ``use`` statements.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``case_sensitive``,
+``imports_order``, ``sort_algorithm``.
+
 Configuration
 -------------
 
@@ -24,6 +33,8 @@ Defines the order of import types.
 Allowed types: ``list<string>`` and ``null``
 
 Default value: ``null``
+
+Default value (future-mode): ``['class', 'function', 'const']``
 
 ``sort_algorithm``
 ~~~~~~~~~~~~~~~~~~
@@ -160,7 +171,7 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PER <./../../ruleSets/PER.rst>`_ with config:
+- `@PER <./../../ruleSets/PER.rst>`_ *(deprecated)* with config:
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
 
@@ -168,15 +179,27 @@ The rule is part of the following rule sets:
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
 
-- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ *(deprecated)* with config:
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
 
-- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+- `@PER-CS1x0 <./../../ruleSets/PER-CS1x0.rst>`_ with config:
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
 
-- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ *(deprecated)* with config:
+
+  ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
+
+- `@PER-CS2x0 <./../../ruleSets/PER-CS2x0.rst>`_ with config:
+
+  ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
+
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ *(deprecated)* with config:
+
+  ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
+
+- `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_ with config:
 
   ``['imports_order' => ['class', 'function', 'const'], 'sort_algorithm' => 'none']``
 

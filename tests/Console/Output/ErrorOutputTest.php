@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Console\Output;
 
 use PhpCsFixer\Console\Output\ErrorOutput;
+use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Tests\TestCase;
@@ -25,6 +26,8 @@ use Symfony\Component\Console\Output\StreamOutput;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Output\ErrorOutput
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ErrorOutputTest extends TestCase
 {
@@ -49,7 +52,7 @@ final class ErrorOutputTest extends TestCase
 Files that were not fixed due to errors reported during %s:
    1) %s',
             $process,
-            __FILE__
+            __FILE__,
         );
 
         if ($verbosityLevel >= OutputInterface::VERBOSITY_VERY_VERBOSE) {
@@ -63,7 +66,7 @@ Files that were not fixed due to errors reported during %s:
 ',
                 \get_class($source),
                 $source->getMessage(),
-                $source->getCode()
+                $source->getCode(),
             );
         }
 
@@ -75,7 +78,7 @@ Files that were not fixed due to errors reported during %s:
       PhpCsFixer\Tests\Console\Output\ErrorOutputTest::provideErrorOutputCases()
 ',
                 __FILE__,
-                $lineNumber
+                $lineNumber,
             );
         }
 
@@ -143,6 +146,39 @@ Files that were not fixed due to errors reported during %s:
         self::assertStringNotContainsString($invalidDiff, $displayed);
     }
 
+    public function testLintingExceptionOutputsAppliedFixersAndNoDiff(): void
+    {
+        $fixerName = 'TheFixer';
+        $diff = (new NullDiffer())->diff('old', 'new');
+
+        $lintError = new Error(Error::TYPE_LINT, __FILE__, new LintingException(), [$fixerName], $diff);
+
+        $output = $this->createStreamOutput(OutputInterface::VERBOSITY_VERY_VERBOSE);
+
+        $errorOutput = new ErrorOutput($output);
+        $errorOutput->listErrors('the_process', [$lintError]);
+
+        $displayed = $this->readFullStreamOutput($output);
+
+        self::assertSame(
+            \sprintf(
+                '
+Files that were not fixed due to errors reported during the_process:
+   1) %sErrorOutputTest.php
+
+                                              '.'
+        [PhpCsFixer\Linter\LintingException]  '.'
+                                              '.'
+                                              '.'
+
+      Applied fixers: TheFixer
+',
+                __DIR__.\DIRECTORY_SEPARATOR,
+            ),
+            $displayed,
+        );
+    }
+
     /**
      * @param OutputInterface::VERBOSITY_* $verbosityLevel
      */
@@ -179,7 +215,7 @@ Files that were not fixed due to errors reported during %s:
         $exception = new \RuntimeException(// note: keep exception constructor and __LINE__ separated with one line break
             'PHPUnit RT',
             888,
-            new \InvalidArgumentException('PHPUnit IAE')
+            new \InvalidArgumentException('PHPUnit IAE'),
         );
 
         return [$lineNumber + 1, new Error(Error::TYPE_EXCEPTION, __FILE__, $exception)];

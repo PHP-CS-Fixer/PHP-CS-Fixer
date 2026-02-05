@@ -23,6 +23,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\FixerDefinition\VersionSpecification
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class VersionSpecificationTest extends TestCase
 {
@@ -45,7 +47,7 @@ final class VersionSpecificationTest extends TestCase
 
         new VersionSpecification(
             $minimum,
-            $maximum
+            $maximum,
         );
     }
 
@@ -75,7 +77,7 @@ final class VersionSpecificationTest extends TestCase
     {
         $versionSpecification = new VersionSpecification(
             $minimum,
-            $maximum
+            $maximum,
         );
 
         self::assertTrue($versionSpecification->isSatisfiedBy($actual));
@@ -105,7 +107,7 @@ final class VersionSpecificationTest extends TestCase
     {
         $versionSpecification = new VersionSpecification(
             $minimum,
-            $maximum
+            $maximum,
         );
 
         self::assertFalse($versionSpecification->isSatisfiedBy($actual));

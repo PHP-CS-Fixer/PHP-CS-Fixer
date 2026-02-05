@@ -43,6 +43,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  * @author Michael Vorisek <https://github.com/mvorisek>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class StringImplicitBackslashesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -70,15 +72,15 @@ final class StringImplicitBackslashesFixer extends AbstractFixer implements Conf
                 new CodeSample($codeSample),
                 new CodeSample(
                     $codeSample,
-                    ['single_quoted' => 'escape']
+                    ['single_quoted' => 'escape'],
                 ),
                 new CodeSample(
                     $codeSample,
-                    ['double_quoted' => 'unescape']
+                    ['double_quoted' => 'unescape'],
                 ),
                 new CodeSample(
                     $codeSample,
-                    ['heredoc' => 'unescape']
+                    ['heredoc' => 'unescape'],
                 ),
             ],
             'In PHP double-quoted strings and heredocs some chars like `n`, `$` or `u` have special meanings if preceded by a backslash '
@@ -87,7 +89,7 @@ final class StringImplicitBackslashesFixer extends AbstractFixer implements Conf
             ."that do not start a special interpretation with the char after them.\n"
             .'It is possible to fix also single-quoted strings: in this case there is no special chars apart from single-quote and backslash '
             .'itself, so the fixer simply ensure that all backslashes are escaped. Both single and double backslashes are allowed in single-quoted '
-            .'strings, so the purpose in this context is mainly to have a uniformed way to have them written all over the codebase.'
+            .'strings, so the purpose in this context is mainly to have a uniformed way to have them written all over the codebase.',
         );
     }
 

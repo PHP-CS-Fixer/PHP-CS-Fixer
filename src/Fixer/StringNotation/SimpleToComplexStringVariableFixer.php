@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dave van der Brugge <dmvdbrugge@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SimpleToComplexStringVariableFixer extends AbstractFixer
 {
@@ -38,7 +40,7 @@ final class SimpleToComplexStringVariableFixer extends AbstractFixer
                         $name = 'World';
                         echo "Hello ${name}!";
 
-                        EOT
+                        EOT,
                 ),
                 new CodeSample(
                     <<<'EOT'
@@ -48,10 +50,10 @@ final class SimpleToComplexStringVariableFixer extends AbstractFixer
                         Hello ${name}!
                         TEST;
 
-                        EOT
+                        EOT,
                 ),
             ],
-            "Doesn't touch implicit variables. Works together nicely with `explicit_string_variable`."
+            "Doesn't touch implicit variables. Works together nicely with `explicit_string_variable`.",
         );
     }
 

@@ -26,6 +26,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class IncludeFixer extends AbstractFixer
 {
@@ -35,14 +37,16 @@ final class IncludeFixer extends AbstractFixer
             'Include/Require and file path should be divided with a single space. File path should not be placed within parentheses.',
             [
                 new CodeSample(
-                    '<?php
-require ("sample1.php");
-require_once  "sample2.php";
-include       "sample3.php";
-include_once("sample4.php");
-'
+                    <<<'PHP'
+                        <?php
+                        require ("sample1.php");
+                        require_once  "sample2.php";
+                        include       "sample3.php";
+                        include_once("sample4.php");
+
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

@@ -22,6 +22,8 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Error\ErrorsManager
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ErrorsManagerTest extends TestCase
 {
@@ -39,7 +41,7 @@ final class ErrorsManagerTest extends TestCase
     {
         $error = new Error(
             Error::TYPE_INVALID,
-            'foo.php'
+            'foo.php',
         );
 
         $errorsManager = new ErrorsManager();
@@ -61,7 +63,7 @@ final class ErrorsManagerTest extends TestCase
     {
         $error = new Error(
             Error::TYPE_EXCEPTION,
-            'foo.php'
+            'foo.php',
         );
 
         $errorsManager = new ErrorsManager();
@@ -83,7 +85,7 @@ final class ErrorsManagerTest extends TestCase
     {
         $error = new Error(
             Error::TYPE_LINT,
-            'foo.php'
+            'foo.php',
         );
 
         $errorsManager = new ErrorsManager();
