@@ -791,6 +791,9 @@ PHPDoc
 - `phpdoc_no_alias_tag <./phpdoc/phpdoc_no_alias_tag.rst>`_ *(configurable)*
 
   No alias PHPDoc tags should be used.
+- `phpdoc_no_duplicate_types <./phpdoc/phpdoc_no_duplicate_types.rst>`_
+
+  Removes duplicate PHPDoc types.
 - `phpdoc_no_empty_return <./phpdoc/phpdoc_no_empty_return.rst>`_
 
   ``@return void`` and ``@return null`` annotations must be removed from PHPDoc.
@@ -845,7 +848,7 @@ PHPDoc
 - `phpdoc_types <./phpdoc/phpdoc_types.rst>`_ *(configurable)*
 
   The correct case must be used for standard PHP types in PHPDoc.
-- `phpdoc_types_no_duplicates <./phpdoc/phpdoc_types_no_duplicates.rst>`_
+- `phpdoc_types_no_duplicates <./phpdoc/phpdoc_types_no_duplicates.rst>`_ *(deprecated)*
 
   Removes duplicate PHPDoc types.
 - `phpdoc_types_order <./phpdoc/phpdoc_types_order.rst>`_ *(configurable)*
