@@ -70,7 +70,7 @@ final class StrictComparisonFixer extends AbstractFixer
                     'id' => \T_IS_NOT_IDENTICAL,
                     'content' => '!==',
                 ],
-            ][$token->getId()] ?? null;
+            ][$token->getId() ?? ''] ?? null;
 
             if (null !== $newToken) {
                 $tokens[$index] = new Token([$newToken['id'], $newToken['content']]);
