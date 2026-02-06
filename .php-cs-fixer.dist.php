@@ -16,7 +16,6 @@ use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\Internal\ConfigurableFixerTemplateFixer;
 use PhpCsFixer\RuleSet\Sets\Internal\InternalRiskySet;
-use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
 if (
     filter_var(getenv('PHP_CS_FIXER_TESTS_SYSTEM_UNDER_TEST'), \FILTER_VALIDATE_BOOL)
@@ -41,7 +40,6 @@ $fileHeaderParts = [
 ];
 
 return (new Config())
-    ->setParallelConfig(ParallelConfigFactory::detect()) // @TODO 4.0 no need to call this manually
     ->setUnsupportedPhpVersionAllowed(true)
     ->setRiskyAllowed(true)
     ->registerCustomRuleSets([

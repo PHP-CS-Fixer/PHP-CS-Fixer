@@ -321,8 +321,9 @@ final class ConfigTest extends TestCase
     public function testConfigWithDefaultParallelConfig(): void
     {
         $config = new Config();
+        $defaultParallelConfig = \PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect();
 
-        self::assertSame(1, $config->getParallelConfig()->getMaxProcesses());
+        self::assertSame($defaultParallelConfig->getMaxProcesses(), $config->getParallelConfig()->getMaxProcesses());
     }
 
     public function testConfigWithExplicitParallelConfig(): void
