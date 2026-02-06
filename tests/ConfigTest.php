@@ -25,6 +25,7 @@ use PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer;
 use PhpCsFixer\Fixer\ControlStructure\IncludeFixer;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
+use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleSet;
 use PhpCsFixer\ToolInfo;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -321,7 +322,7 @@ final class ConfigTest extends TestCase
     public function testConfigWithDefaultParallelConfig(): void
     {
         $config = new Config();
-        $defaultParallelConfig = \PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect();
+        $defaultParallelConfig = ParallelConfigFactory::detect();
 
         self::assertSame($defaultParallelConfig->getMaxProcesses(), $config->getParallelConfig()->getMaxProcesses());
     }
