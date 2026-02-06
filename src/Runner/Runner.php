@@ -164,7 +164,7 @@ final class Runner
         $this->cacheManager = $cacheManager;
         $this->directory = $directory ?? new Directory('');
         $this->stopOnViolation = $stopOnViolation;
-        $this->parallelConfig = $parallelConfig ?? ParallelConfigFactory::sequential();
+        $this->parallelConfig = $parallelConfig ?? ParallelConfigFactory::detect();
         $this->input = $input;
         $this->configFile = $configFile;
         $this->ruleCustomisationPolicy = $ruleCustomisationPolicy ?? new NullRuleCustomisationPolicy();
