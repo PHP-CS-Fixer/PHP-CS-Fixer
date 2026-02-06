@@ -47,6 +47,42 @@ final class DeclareStrictTypesFixerTest extends AbstractFixerTestCase
      */
     public static function provideFixCases(): iterable
     {
+        yield 'remove existing declaration' => [
+            '<?php ',
+            '<?php declare(strict_types=1);',
+            ['remove_existing_declaration' => true],
+        ];
+
+        yield 'remove existing declaration with ticks' => [
+            '<?php declare(ticks=1);',
+            '<?php declare(strict_types=1, ticks=1);',
+            ['remove_existing_declaration' => true],
+        ];
+
+        yield 'remove existing declaration with ticks before' => [
+            '<?php declare(ticks=1);',
+            '<?php declare(ticks=1, strict_types=1);',
+            ['remove_existing_declaration' => true],
+        ];
+
+        yield 'remove existing declaration with strict_types=0' => [
+            '<?php ',
+            '<?php declare(strict_types=0);',
+            ['remove_existing_declaration' => true],
+        ];
+
+        yield 'remove existing declaration with comments' => [
+            '<?php /**/ ',
+            '<?php /**/ declare(strict_types=1);',
+            ['remove_existing_declaration' => true],
+        ];
+
+        yield 'do not remove declaration when disabled' => [
+            '<?php declare(strict_types=1, ticks=1);',
+            '<?php declare(strict_types=0, ticks=1);',
+            ['remove_existing_declaration' => false],
+        ];
+
         yield [
             '<?php
 declare(ticks=1);
