@@ -173,15 +173,12 @@ jobs:
             php-version: ${{ needs.setup.outputs.PHP_MAX }}
             job-description: Fixer on macOS
             run-fixer: 'yes'
-            allow-to-fail: 'yes' # we experience random failures on macOS
             PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
 
           - operating-system: macos-latest
             php-version: ${{ needs.setup.outputs.PHP_MAX }}
             job-description: tests on macOS
             run-tests: 'yes'
-            allow-to-fail: 'yes' # we experience random failures on macOS
-            AVOID_PARAUNIT: 'yes' # macOS job is having weird issue on CI under ParaUnit
             PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
 
           - operating-system: ubuntu-24.04
