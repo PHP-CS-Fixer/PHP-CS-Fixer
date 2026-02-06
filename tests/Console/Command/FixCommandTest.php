@@ -104,8 +104,6 @@ final class FixCommandTest extends TestCase
             ],
         );
 
-        $availableMaxProcesses = ParallelConfigFactory::detect()->getMaxProcesses();
-
         self::assertStringContainsString('Running analysis on 1 core sequentially.', $cmdTester->getDisplay());
         self::assertStringContainsString('(header_comment)', $cmdTester->getDisplay());
         self::assertSame(8, $cmdTester->getStatusCode());
