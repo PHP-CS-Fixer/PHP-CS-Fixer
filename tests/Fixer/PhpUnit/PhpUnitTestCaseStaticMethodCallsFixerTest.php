@@ -648,7 +648,15 @@ class MyTest extends \PHPUnit_Framework_TestCase
      */
     public function testPHPUnit13(): void
     {
-        self::fail('Hello, please implement me, and add new case for PHPUnit 13.');
+        self::assertPHPUnit(PhpUnitTargetVersion::VERSION_NEWEST);
+    }
+
+    /**
+     * @requires PHPUnit ^14.0
+     */
+    public function testPHPUnit14(): void
+    {
+        self::fail('Hello, please implement me, and add new case for PHPUnit 15.');
     }
 
     /**

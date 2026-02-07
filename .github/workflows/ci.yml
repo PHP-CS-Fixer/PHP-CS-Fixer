@@ -189,6 +189,13 @@ jobs:
 
           - operating-system: ubuntu-24.04
             php-version: ${{ needs.setup.outputs.PHP_MAX }}
+            job-description: tests using PHPUnit 13
+            install-phpunit-13: 'yes'
+            run-tests: 'yes'
+            AVOID_PARAUNIT: 'yes'
+
+          - operating-system: ubuntu-24.04
+            php-version: ${{ needs.setup.outputs.PHP_MAX }}
             job-description: code coverage
             run-tests: 'yes'
             collect-code-coverage: 'yes'
@@ -242,6 +249,17 @@ jobs:
           PHP_CS_FIXER_FAST_LINT_TEST_CASES: ${{ matrix.PHP_CS_FIXER_FAST_LINT_TEST_CASES }}
         run: |
           composer require --dev --with-all-dependencies phpunit/phpunit:"^9.6 || ^12.1.5" # mention ^9.6 to keep trace of minimum supported version, needed for utests
+          php php-cs-fixer fix --quiet --rules=php_unit_attributes
+
+      - name: Install PHPUnit 13
+        if: matrix.run-tests == 'yes' && matrix.install-phpunit-13 == 'yes'
+        env:
+          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
+          PHP_CS_FIXER_FAST_LINT_TEST_CASES: ${{ matrix.PHP_CS_FIXER_FAST_LINT_TEST_CASES }}
+        run: |
+          sed -i '/<extensions>/,/<\/extensions>/d' phpunit.xml.dist
+          composer remove --dev facile-it/paraunit --no-update
+          composer require --dev --with-all-dependencies phpunit/phpunit:"^9.6 || ^13.0" # mention ^9.6 to keep trace of minimum supported version, needed for utests
           php php-cs-fixer fix --quiet --rules=php_unit_attributes
 
       - name: Check configuration for PHPUnit
