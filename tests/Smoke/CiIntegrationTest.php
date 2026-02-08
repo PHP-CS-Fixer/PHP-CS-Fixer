@@ -19,7 +19,6 @@ use Keradus\CliExecutor\CommandExecutor;
 use Keradus\CliExecutor\ScriptExecutor;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Preg;
-use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
