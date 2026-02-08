@@ -306,7 +306,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
             $configFile = $resolver->getConfigFile();
             $stdErr->writeln(\sprintf('Loaded config <comment>%s</comment>%s.', $resolver->getConfig()->getName(), null === $configFile ? '' : ' from "'.$configFile.'"'));
 
-            if (null === $configFile && null === $passedRules) {
+            if (null === $configFile && ConfigurationResolver::IGNORE_CONFIG_FILE !== $passedConfig && null === $passedRules) {
                 if (false === $input->isInteractive()) {
                     $stdErr->writeln(
                         \sprintf(

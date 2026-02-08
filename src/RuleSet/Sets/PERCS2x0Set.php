@@ -38,6 +38,7 @@ final class PERCS2x0Set extends AbstractRuleSetDefinition
             '@PER-CS1x0' => true,
             'array_indentation' => true,
             'array_syntax' => true,
+            'attribute_block_no_spaces' => true,
             'cast_spaces' => true,
             'concat_space' => ['spacing' => 'one'],
             'function_declaration' => [

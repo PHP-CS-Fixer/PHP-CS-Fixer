@@ -1228,12 +1228,16 @@ class Foo
 {
     const
         FOO = 1;
+    const BAR
+        = 2;
 }',
             '<?php
 class Foo
 {
   const
      FOO = 1;
+  const BAR
+  = 2;
 }',
         ];
 
@@ -1652,7 +1656,7 @@ enum Color {
 }',
         ];
 
-        yield 'backend enum' => [
+        yield 'backed enum' => [
             '<?php
 enum Color: string {
     case Red = "R";
@@ -1664,6 +1668,19 @@ enum Color: string {
  case Red = "R";
       case Green = "G";
   case Blue = "B";
+}',
+        ];
+
+        yield 'backed enum with multiline assignment' => [
+            '<?php
+enum Color: string {
+    case REALLY_LONG_ENUM_NAME_BLA_BLA_BLA
+        = "REALLY_LONG_ENUM_VALUE_BLA_BLA_BLA";
+}',
+            '<?php
+enum Color: string {
+    case REALLY_LONG_ENUM_NAME_BLA_BLA_BLA
+    = "REALLY_LONG_ENUM_VALUE_BLA_BLA_BLA";
 }',
         ];
 

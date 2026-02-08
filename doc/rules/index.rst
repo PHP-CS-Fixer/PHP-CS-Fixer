@@ -73,6 +73,9 @@ Array Notation
 Attribute Notation
 ------------------
 
+- `attribute_block_no_spaces <./attribute_notation/attribute_block_no_spaces.rst>`_
+
+  Remove spaces before and after the attributes block.
 - `attribute_empty_parentheses <./attribute_notation/attribute_empty_parentheses.rst>`_ *(configurable)*
 
   PHP attributes declared without arguments must (not) be followed by empty parentheses.
@@ -209,6 +212,9 @@ Class Notation
 - `no_php4_constructor <./class_notation/no_php4_constructor.rst>`_ *(risky)*
 
   Convert PHP4-style constructors to ``__construct``.
+- `no_redundant_readonly_property <./class_notation/no_redundant_readonly_property.rst>`_
+
+  Removes redundant readonly from properties in readonly classes.
 - `no_unneeded_final_method <./class_notation/no_unneeded_final_method.rst>`_ *(risky, configurable)*
 
   Removes ``final`` from methods where possible.
@@ -775,7 +781,7 @@ PHPDoc
   Fixes PHPDoc inline tags.
 - `phpdoc_line_span <./phpdoc/phpdoc_line_span.rst>`_ *(configurable)*
 
-  Changes doc blocks from single to multi line, or reversed. Works for class constants, properties and methods only.
+  Changes doc blocks from single to multi line, or reversed.
 - `phpdoc_list_type <./phpdoc/phpdoc_list_type.rst>`_ *(risky)*
 
   PHPDoc ``list`` type must be used instead of ``array`` without a key.
