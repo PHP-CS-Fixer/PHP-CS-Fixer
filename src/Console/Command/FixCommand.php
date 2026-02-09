@@ -30,12 +30,10 @@ use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Runner\Event\FileProcessed;
-use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\ToolInfoInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -346,23 +344,6 @@ use Symfony\Component\Stopwatch\Stopwatch;
                     $resolver->getParallelConfig()->getFilesPerProcess() > 1 ? 's' : '',
                 ) : ' sequentially',
             ));
-
-            /** @TODO v4 remove warnings related to parallel runner */
-            $availableMaxProcesses = ParallelConfigFactory::detect()->getMaxProcesses();
-            if ($isParallel || $availableMaxProcesses > 1) {
-                $usageDocs = 'https://cs.symfony.com/doc/usage.html';
-                $stdErr->writeln(\sprintf(
-                    $stdErr->isDecorated() ? '<bg=yellow;fg=black;>%s</>' : '%s',
-                    $isParallel
-                        ? 'Parallel runner is an experimental feature and may be unstable, use it at your own risk. Feedback highly appreciated!'
-                        : \sprintf(
-                            'You can enable parallel runner and speed up the analysis! Please see %s for more information.',
-                            $stdErr->isDecorated()
-                                ? \sprintf('<href=%s;bg=yellow;fg=red;bold>usage docs</>', OutputFormatter::escape($usageDocs))
-                                : $usageDocs,
-                        ),
-                ));
-            }
 
             if ($resolver->getUsingCache()) {
                 $cacheFile = $resolver->getCacheFile();
