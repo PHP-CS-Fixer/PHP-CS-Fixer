@@ -21,6 +21,8 @@ use SebastianBergmann\Diff\Parser;
 /**
  * Generates a report in GitHub Actions workflow command format to create file annotations.
  *
+ * @experimental
+ *
  * @author HypeMC <hypemc@gmail.com>
  *
  * @see https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-error-message
