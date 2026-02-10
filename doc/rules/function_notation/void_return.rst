@@ -5,13 +5,30 @@ Rule ``void_return``
 Add ``void`` return type to functions with missing or empty return statements,
 but priority is given to ``@return`` annotations.
 
-Warning
--------
+Warnings
+--------
 
 This rule is RISKY
 ~~~~~~~~~~~~~~~~~~
 
 Modifies the signature of functions.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``fix_lambda``.
+
+Configuration
+-------------
+
+``fix_lambda``
+~~~~~~~~~~~~~~
+
+Whether to fix lambda functions as well.
+
+Allowed types: ``bool``
+
+Default value: ``true``
 
 Examples
 --------
@@ -19,13 +36,45 @@ Examples
 Example #1
 ~~~~~~~~~~
 
+*Default* configuration.
+
 .. code-block:: diff
 
    --- Original
    +++ New
     <?php
-   -function foo($a) {};
-   +function foo($a): void {};
+
+    class Foo
+    {
+   -    public function hello()
+   +    public function hello(): void
+        {
+   -        $hello = function($a) { echo 'Hello '.$a; };
+   +        $hello = function($a): void { echo 'Hello '.$a; };
+            echo $hello('World');
+        }
+    }
+
+Example #2
+~~~~~~~~~~
+
+With configuration: ``['fix_lambda' => false]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+
+    class Foo
+    {
+   -    public function hello()
+   +    public function hello(): void
+        {
+            $hello = function($a) { echo 'Hello '.$a; };
+            echo $hello('World');
+        }
+    }
 
 Rule sets
 ---------
