@@ -75,6 +75,12 @@ final class UseArrowFunctionsFixer extends AbstractFixer
         $analyzer = new TokensAnalyzer($tokens);
 
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
+            if ($tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
+
+                continue;
+            }
+
             if (!$tokens[$index]->isGivenKind(\T_FUNCTION) || !$analyzer->isLambda($index)) {
                 continue;
             }
