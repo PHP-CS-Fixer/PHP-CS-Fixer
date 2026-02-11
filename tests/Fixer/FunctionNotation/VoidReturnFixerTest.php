@@ -260,7 +260,6 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
         yield [
             '<?php fn($a) => var_dump($a);',
         ];
-// ['__clone', '__construct', '__debugInfo', '__destruct', '__isset', '__serialize', '__set_state', '__sleep', '__toString'];
         $excludedMagicMethod = [
             '__clone', // @TODO v8 possible since PHP 8.0 only, remove line when PHP bumped
             '__construct', // :void in phpdocs, but actual linter error if so
