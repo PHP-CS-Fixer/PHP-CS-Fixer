@@ -260,7 +260,7 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
         yield [
             '<?php fn($a) => var_dump($a);',
         ];
-        $excludedMagicMethod = [
+        $excludedMagicMethods = [
             '__clone', // @TODO v8 possible since PHP 8.0 only, remove line when PHP bumped
             '__construct', // :void in phpdocs, but actual linter error if so
             '__debugInfo', // non :void case
@@ -287,7 +287,7 @@ final class VoidReturnFixerTest extends AbstractFixerTestCase
             );
 
             $input = \sprintf($code, '');
-            $expected = \sprintf($code, \in_array($name, $excludedMagicMethod, true) ? '' : ': void');
+            $expected = \sprintf($code, \in_array($name, $excludedMagicMethods, true) ? '' : ': void');
 
             yield \sprintf('Test if magic method %s is handled without causing syntax error', $name) => [
                 $expected,
