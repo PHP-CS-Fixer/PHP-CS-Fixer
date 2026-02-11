@@ -3,6 +3,33 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.94.0
+---------------------
+
+* UX: enable parallel runner by default (#9408)
+* feat: Add option `case` to `phpdoc_line_span` fixer (#9391)
+* feat: PhpdocLineSpanFixer - support docs for classes, trait usages and other code lines (#8832)
+* feat: `VoidReturnFixer` - allow to skip lambdas (#9417)
+* chore: fix comment (#9404)
+* chore: Linter tests for Schrodinger's validity (#9398)
+* chore: ModernizeStrposFixer - no need for configuration hooks (#9419)
+* chore: `VoidReturnFixer` - better describe exceptions (#9418)
+* CI: no need for special handling of MacOS (#9403)
+* CI: run tests using PHPUnit 13 (#9410)
+* deps: bump crate-ci/typos from 1.42.1 to 1.42.3 (#9395)
+* deps: bump crate-ci/typos from 1.42.3 to 1.43.2 (#9405)
+* deps: bump ergebnis/composer-normalize from 2.48.2 to 2.49.0 in /dev-tools (#9396)
+* deps: bump the phpstan group in /dev-tools with 2 updates (#9394)
+* deps: upgrade dev-deps (#9411)
+* DX: use custom name for custom config (#9402)
+* fix: absolute path in reports (#9399)
+* fix: indentation for backed enum with multiline assignment (#9362)
+* fix: Runner - fix occasional sub-process freeze on parallel execution with `--stop-on-violation` (#9393)
+* fix: `NoUnreachableDefaultArgumentValueFixer` - fix for closures (#9409)
+* fix: `UseArrowFunctionsFixer` - do not convert closure in attribute (#9416)
+* test: create PHP 8.5 risky compat test (#9420)
+* UX: Do not run interactive configurator when rules are passed explicitly (#9378)
+
 Changelog for v3.93.1
 ---------------------
 
