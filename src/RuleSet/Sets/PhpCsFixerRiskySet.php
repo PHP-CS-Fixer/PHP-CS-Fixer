@@ -29,6 +29,9 @@ final class PhpCsFixerRiskySet extends AbstractRuleSetDefinition
             '@PER-CS:risky' => true,
             '@Symfony:risky' => true,
             'comment_to_phpdoc' => true,
+            'declare_strict_types' => [
+                'remove_existing_declaration' => false,
+            ],
             'final_internal_class' => true,
             'get_class_to_class_keyword' => false,
             'modernize_strpos' => false,
