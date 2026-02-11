@@ -60,6 +60,8 @@ final class VoidReturnFixer extends AbstractFixer implements ConfigurableFixerIn
         FCT::T_ATTRIBUTE,
     ];
 
+    private TokensAnalyzer $tokensAnalyzer;
+
     public function getDefinition(): FixerDefinitionInterface
     {
         $sharedSnipped = <<<'PHP'
