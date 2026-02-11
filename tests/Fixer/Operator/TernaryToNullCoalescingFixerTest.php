@@ -233,6 +233,26 @@ null
             '<?php $x = $THIS ?? null;',
             '<?php $x = isset($THIS) ? $THIS : null;',
         ];
+
+        yield 'Parenthesized isset.' => [
+            '<?php $x = $a ?? null;',
+            '<?php $x = (isset($a)) ? $a : null;',
+        ];
+
+        yield 'Parenthesized isset with spaces.' => [
+            '<?php $x = $a ?? null;',
+            '<?php $x = ( isset($a) ) ? $a : null;',
+        ];
+
+        yield 'Parenthesized isset with property access.' => [
+            '<?php $x = $obj->a ?? null;',
+            '<?php $x = (isset($obj->a)) ? $obj->a : null;',
+        ];
+
+        yield 'Parenthesized isset with array access.' => [
+            '<?php $x = $a[0] ?? 1;',
+            '<?php $x = (isset($a[0])) ? $a[0] : 1;',
+        ];
     }
 
     /**
