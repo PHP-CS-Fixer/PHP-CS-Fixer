@@ -101,6 +101,10 @@ Rule sets
 
 The rule is part of the following rule sets:
 
+- `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ with config:
+
+  ``['force' => true]``
+
 - `@PHPUnit10x0Migration:risky <./../../ruleSets/PHPUnit10x0MigrationRisky.rst>`_ with config:
 
   ``['force' => true]``
@@ -110,10 +114,6 @@ The rule is part of the following rule sets:
   ``['force' => true]``
 
 - `@PHPUnit100Migration:risky <./../../ruleSets/PHPUnit100MigrationRisky.rst>`_ *(deprecated)* with config:
-
-  ``['force' => true]``
-
-- `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ with config:
 
   ``['force' => true]``
 

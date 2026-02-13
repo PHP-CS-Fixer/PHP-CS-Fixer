@@ -290,11 +290,11 @@ The rule is part of the following rule sets:
 
   ``['default' => 'at_least_single_space']``
 
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
 
   ``['default' => 'at_least_single_space']``
 
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
 References
