@@ -137,15 +137,15 @@ The rule is part of the following rule sets:
 
   ``['closure_fn_spacing' => 'none']``
 
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
+  ``['closure_fn_spacing' => 'one']``
+
 - `@PSR2 <./../../ruleSets/PSR2.rst>`_ with config:
 
   ``['closure_fn_spacing' => 'one']``
 
 - `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
-
-  ``['closure_fn_spacing' => 'one']``
-
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 
   ``['closure_fn_spacing' => 'one']``
 
