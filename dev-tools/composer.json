@@ -2,7 +2,7 @@
     "type": "project",
     "require": {
         "php": "^8.4",
-        "ergebnis/composer-normalize": "^2.49.0",
+        "ergebnis/composer-normalize": "^2.50.0",
         "kubawerlos/composer-smaller-lock": "^1.1.0",
         "mi-schi/phpmd-extension": "^4.3.0",
         "phpcompatibility/php-compatibility": "^10-alpha2",
