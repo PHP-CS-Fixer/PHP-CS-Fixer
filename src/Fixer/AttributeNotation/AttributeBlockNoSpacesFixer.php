@@ -64,17 +64,18 @@ class User
         $index = 0;
 
         while (null !== $index = $tokens->getNextTokenOfKind($index, [[\T_ATTRIBUTE]])) {
+            $nextIndex = $index;
             $attributeAnalysis = AttributeAnalyzer::collectOne($tokens, $index);
 
             $endIndex = $attributeAnalysis->getEndIndex();
-            while ($index <= $endIndex) {
-                $token = $tokens[$index];
+            while ($nextIndex <= $endIndex) {
+                $token = $tokens[$nextIndex];
 
                 $toDelete = [];
 
                 if ($token->isGivenKind([\T_ATTRIBUTE])) {
-                    $nextTokenIndex = $tokens->getNextMeaningfulToken($index);
-                    for ($i = $index + 1; $i < $nextTokenIndex; ++$i) {
+                    $nextTokenIndex = $tokens->getNextMeaningfulToken($nextIndex);
+                    for ($i = $nextIndex + 1; $i < $nextTokenIndex; ++$i) {
                         if (!$tokens[$i]->isWhitespace()) {
                             $toDelete = [];
 
@@ -85,8 +86,8 @@ class User
                 }
 
                 if ($token->isGivenKind([CT::T_ATTRIBUTE_CLOSE])) {
-                    $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
-                    for ($i = $prevTokenIndex + 1; $i < $index; ++$i) {
+                    $prevTokenIndex = $tokens->getPrevMeaningfulToken($nextIndex);
+                    for ($i = $prevTokenIndex + 1; $i < $nextIndex; ++$i) {
                         if (!$tokens[$i]->isWhitespace()) {
                             $toDelete = [];
 
@@ -100,7 +101,7 @@ class User
                     $tokens->clearAt($i);
                 }
 
-                ++$index;
+                ++$nextIndex;
             }
         }
     }
