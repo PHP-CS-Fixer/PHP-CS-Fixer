@@ -111,15 +111,17 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
                 <info>$ php %command.full_name% --path-mode=intersection /path/to/dir</info>
 
-            The <comment>--format</comment> option for the output format. Supported formats are `@auto` (default one on v4+), `txt` (default one on v3), `json`, `xml`, `checkstyle`, `junit` and `gitlab`.
+            The <comment>--format</comment> option for the output format. Supported formats are `@auto` (default one on v4+), `txt` (default one on v3), `json`, `xml`, `checkstyle`, `junit`, `github` and `gitlab`.
 
             * `@auto` aims to auto-select best reporter for given CI or local execution (resolution into best format is outside of BC promise and is future-ready)
+              * `github` for GitHub Actions
               * `gitlab` for GitLab
             * `@auto,{format}` takes `@auto` under CI, and {format} otherwise
 
             NOTE: the output for the following formats are generated in accordance with schemas
 
             * `checkstyle` follows the common `"checkstyle" XML schema </doc/schemas/fix/checkstyle.xsd>`_
+            * `github` follows the `GitHub Actions workflow commands <https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-error-message>`_
             * `gitlab` follows the `codeclimate JSON schema </doc/schemas/fix/codeclimate.json>`_
             * `json` follows the `own JSON schema </doc/schemas/fix/schema.json>`_
             * `junit` follows the `JUnit XML schema from Jenkins </doc/schemas/fix/junit-10.xsd>`_
