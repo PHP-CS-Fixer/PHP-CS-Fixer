@@ -170,6 +170,23 @@ final class CiConfigurationTest extends TestCase
         );
     }
 
+    public function testPhpVersionInSCAComposerFile(): void
+    {
+        $expectedPhpVersion = $this->getMaxPhpVersionFromEntryFile();
+        $composerJsonContent = (string) file_get_contents(__DIR__.'/../../dev-tools/composer.json');
+        $composerJson = json_decode($composerJsonContent, true, 512, \JSON_THROW_ON_ERROR);
+
+        self::assertSame(
+            $composerJson['require']['php'],
+            "^{$expectedPhpVersion}",
+        );
+
+        self::assertSame(
+            $composerJson['config']['platform']['php'],
+            $expectedPhpVersion,
+        );
+    }
+
     /**
      * @return list<numeric-string>
      */
