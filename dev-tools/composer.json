@@ -10,7 +10,7 @@
         "phpmd/phpmd": "dev-master as 2.16.0",
         "phpstan/extension-installer": "^1.4.3",
         "phpstan/phpstan": "^2.1.39",
-        "phpstan/phpstan-phpunit": "^2.0.15",
+        "phpstan/phpstan-phpunit": "^2.0.16",
         "phpstan/phpstan-strict-rules": "^2.0.10",
         "phpstan/phpstan-symfony": "^2.0.14",
         "shipmonk/composer-dependency-analyser": "^1.8.4",
