@@ -34,7 +34,7 @@ use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
  * But our class takes care of it and always ensures correct size and indexes, so that these methods never return `null` instead of `Token`.
  *
  * @method Token                    offsetGet($offset)
- * @method \Traversable<int, Token> getIterator()
+ * @method \Iterator<int, Token>    getIterator()
  * @method array<int, Token>        toArray()
  *
  * @phpstan-import-type _PhpTokenKind from Token
