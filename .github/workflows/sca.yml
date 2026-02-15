@@ -23,10 +23,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Check spelling
+      - name: Check typos
         uses: crate-ci/typos@v1.43.4
         with:
           config: ./dev-tools/typos.toml
+
+      - name: Check - no American English
+        run: ./dev-tools/check_no_american_english.sh
 
   everything_else:
     name: Static Code Analysis
@@ -98,9 +101,6 @@ jobs:
 
       - name: Check - shell scripts
         run: ./dev-tools/check_shell_scripts.sh
-
-      - name: Check - no American English
-        run: ./dev-tools/check_no_american_english.sh
 
       - name: Find changed files (for pull request)
         if: ${{ github.event_name == 'pull_request' }}
