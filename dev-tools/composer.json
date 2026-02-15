@@ -1,7 +1,7 @@
 {
     "type": "project",
     "require": {
-        "php": "^8.4",
+        "php": "^8.5",
         "ergebnis/composer-normalize": "^2.50.0",
         "kubawerlos/composer-smaller-lock": "^1.1.0",
         "mi-schi/phpmd-extension": "^4.3.0",
@@ -28,7 +28,7 @@
         },
         "optimize-autoloader": true,
         "platform": {
-            "php": "8.4"
+            "php": "8.5"
         },
         "prefer-stable": true,
         "sort-packages": true
