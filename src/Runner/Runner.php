@@ -164,7 +164,7 @@ final class Runner
         $this->cacheManager = $cacheManager;
         $this->directory = $directory ?? new Directory('');
         $this->stopOnViolation = $stopOnViolation;
-        $this->parallelConfig = $parallelConfig ?? ParallelConfigFactory::sequential();
+        $this->parallelConfig = $parallelConfig ?? ParallelConfigFactory::detect();
         $this->input = $input;
         $this->configFile = $configFile;
         $this->ruleCustomisationPolicy = $ruleCustomisationPolicy ?? new NullRuleCustomisationPolicy();
@@ -293,7 +293,12 @@ final class Runner
             ));
         }
 
-        $processPool = new ProcessPool($server);
+        $processPool = new ProcessPool(
+            $server,
+            static function () use ($streamSelectLoop): void {
+                $streamSelectLoop->stop();
+            },
+        );
         $maxFilesPerProcess = $this->parallelConfig->getFilesPerProcess();
         $fileIterator = $this->getFilteringFileIterator();
         $fileIterator->rewind();

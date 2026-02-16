@@ -67,10 +67,10 @@ final class ConfigurationResolverTest extends TestCase
         self::assertSame($parallelConfig, $resolver->getParallelConfig());
     }
 
-    public function testDefaultParallelConfigFallbacksToSequential(): void
+    public function testDefaultParallelConfigFallbacksToAutoDetect(): void
     {
         $parallelConfig = $this->createConfigurationResolver([])->getParallelConfig();
-        $defaultParallelConfig = ParallelConfigFactory::sequential();
+        $defaultParallelConfig = ParallelConfigFactory::detect();
 
         self::assertSame($defaultParallelConfig->getMaxProcesses(), $parallelConfig->getMaxProcesses());
         self::assertSame($defaultParallelConfig->getFilesPerProcess(), $parallelConfig->getFilesPerProcess());
@@ -1462,9 +1462,11 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
         yield ['/my/path/.php-cs-fixer.cache', '/my/path/my/file', 'my/file'];
 
-        yield ['/my/path2/dir/.php-cs-fixer.cache', '/my/path2/dir/dir2/file', 'dir2/file'];
+        yield ['/my/path2/dir/.php-cs-fixer.cache', '/my/path2/dir/dir2/file', '/my/path2/dir/dir2/file'];
 
-        yield ['dir/.php-cs-fixer.cache', '/my/path/dir/dir3/file', 'dir3/file'];
+        yield ['dir/.php-cs-fixer.cache', '/my/path/dir/dir3/file', 'dir/dir3/file'];
+
+        yield ['var/.php-cs-fixer.cache', '/my/path/my/file', 'my/file'];
     }
 
     /**

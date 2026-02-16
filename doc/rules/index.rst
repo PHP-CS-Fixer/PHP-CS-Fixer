@@ -455,7 +455,7 @@ Function Notation
 - `use_arrow_functions <./function_notation/use_arrow_functions.rst>`_ *(risky)*
 
   Anonymous functions with return as the only statement must use arrow functions.
-- `void_return <./function_notation/void_return.rst>`_ *(risky)*
+- `void_return <./function_notation/void_return.rst>`_ *(risky, configurable)*
 
   Add ``void`` return type to functions with missing or empty return statements, but priority is given to ``@return`` annotations.
 
@@ -781,7 +781,7 @@ PHPDoc
   Fixes PHPDoc inline tags.
 - `phpdoc_line_span <./phpdoc/phpdoc_line_span.rst>`_ *(configurable)*
 
-  Changes doc blocks from single to multi line, or reversed. Works for class constants, properties and methods only.
+  Changes doc blocks from single to multi line, or reversed.
 - `phpdoc_list_type <./phpdoc/phpdoc_list_type.rst>`_ *(risky)*
 
   PHPDoc ``list`` type must be used instead of ``array`` without a key.

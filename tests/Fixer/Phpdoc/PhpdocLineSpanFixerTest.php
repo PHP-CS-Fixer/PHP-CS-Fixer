@@ -50,6 +50,9 @@ final class PhpdocLineSpanFixerTest extends AbstractFixerTestCase
         yield 'It does not change doc blocks if not needed' => [
             '<?php
 
+/**
+ * Class description.
+ */
 class Foo
 {
     /**
@@ -72,6 +75,32 @@ class Foo
      * @return void
      */
     public function hello() {}
+}
+',
+        ];
+
+        yield 'It does not change trait_import and other doc blocks by default' => [
+            '<?php
+
+class Foo
+{
+    /**
+     * @use Bar<string>
+     */
+    use Bar;
+
+    /** @use Baz<string> */
+    use Baz;
+
+    function a() {
+        /**
+         * @var string
+         */
+        $a = "test";
+
+        /** @var non-empty-string */
+        return $a;
+    }
 }
 ',
         ];
@@ -79,6 +108,9 @@ class Foo
         yield 'It does change doc blocks to multi by default' => [
             '<?php
 
+/**
+ * Class description.
+ */
 class Foo
 {
     /**
@@ -105,6 +137,7 @@ class Foo
 ',
             '<?php
 
+/** Class description. */
 class Foo
 {
     /** Important */
@@ -123,11 +156,62 @@ class Foo
 ',
         ];
 
-        yield 'It does change doc blocks to single if configured to do so' => [
+        yield 'It does change trait_import and other doc blocks to multi if configured to do so' => [
             '<?php
 
 class Foo
 {
+    /**
+     * @use Bar<string>
+     */
+    use Bar;
+
+    public function hello()
+    {
+        /**
+         * @var string
+         */
+        $a = "test";
+
+        /**
+         * @var non-empty-string
+         */
+        return $a;
+    }
+}
+',
+            '<?php
+
+class Foo
+{
+    /** @use Bar<string> */
+    use Bar;
+
+    public function hello()
+    {
+        /** @var string */
+        $a = "test";
+
+        /** @var non-empty-string */
+        return $a;
+    }
+}
+',
+            [
+                'trait_import' => 'multi',
+                'other' => 'multi',
+            ],
+        ];
+
+        yield 'It does change doc blocks to single if configured to do so' => [
+            '<?php
+
+/** Class description. */
+class Foo
+{
+    /** @use Bar<string> */
+    use Bar;
+
     /** Important */
     const FOO_BAR = "foobar";
 
@@ -139,13 +223,28 @@ class Foo
 
 
     /** @return void */
-    public function hello() {}
+    public function hello()
+    {
+        /** @var string */
+        $a = "test";
+
+        /** @var non-empty-string */
+        return $a;
+    }
 }
 ',
             '<?php
 
+/**
+ * Class description.
+ */
 class Foo
 {
+    /**
+     * @use Bar<string>
+     */
+    use Bar;
+
     /**
      * Important
      */
@@ -165,13 +264,27 @@ class Foo
     /**
      * @return void
      */
-    public function hello() {}
+    public function hello()
+    {
+        /**
+         * @var string
+         */
+        $a = "test";
+
+        /**
+         * @var non-empty-string
+         */
+        return $a;
+    }
 }
 ',
             [
+                'class' => 'single',
+                'trait_import' => 'single',
                 'property' => 'single',
                 'const' => 'single',
                 'method' => 'single',
+                'other' => 'single',
             ],
         ];
 
@@ -216,8 +329,12 @@ class Foo
         yield 'It does not changes doc blocks from single if configured to do so' => [
             '<?php
 
+/** Class description. */
 class Foo
 {
+    /** @use Bar<string> */
+    use Bar;
+
     /** Important */
     const FOO_BAR = "foobar";
 
@@ -229,14 +346,21 @@ class Foo
 
 
     /** @return void */
-    public function hello() {}
+    public function hello()
+    {
+        /** @var string */
+        $a = "test";
+    }
 }
 ',
             null,
             [
+                'class' => 'single',
+                'trait_import' => 'single',
                 'property' => 'single',
                 'const' => 'single',
                 'method' => 'single',
+                'other' => 'single',
             ],
         ];
 
@@ -581,6 +705,40 @@ class Foo
                 'property' => 'single',
             ],
         ];
+
+        yield 'It handles all classy types' => [
+            '<?php
+
+/** Foo */
+abstract class Foo {}
+
+/** Bar */
+interface Bar {}
+
+/** Baz */
+trait Baz {}
+',
+            '<?php
+
+/**
+ * Foo
+ */
+abstract class Foo {}
+
+/**
+ * Bar
+ */
+interface Bar {}
+
+/**
+ * Baz
+ */
+trait Baz {}
+',
+            [
+                'class' => 'single',
+            ],
+        ];
     }
 
     /**
@@ -640,6 +798,13 @@ class Foo
         yield 'It detects attributes between docblock and token' => [
             '<?php
 
+/**
+ * @internal
+ */
+#[Attribute1(
+    /** @phpstan-ignore */
+    Bar::class
+)]
 class Foo
 {
     /** @var string[] */
@@ -657,6 +822,13 @@ class Foo
 }',
             '<?php
 
+/** @internal */
+#[Attribute1(
+    /**
+     * @phpstan-ignore
+     */
+    Bar::class
+)]
 class Foo
 {
     /**
@@ -679,7 +851,9 @@ class Foo
     public array $foo3;
 }',
             [
+                'class' => 'multi',
                 'property' => 'single',
+                'other' => 'single',
             ],
         ];
 
@@ -869,8 +1043,11 @@ class Foo
 ',
         ];
 
-        yield 'It handles enum functions correctly' => [
+        yield 'It handles enums correctly' => [
             '<?php
+                /**
+                 * @internal
+                 */
                 enum Foo
                 {
                     /**
@@ -880,6 +1057,7 @@ class Foo
                 }
             ',
             '<?php
+                /** @internal  */
                 enum Foo
                 {
                     /** @return void */
@@ -927,6 +1105,76 @@ class Foo
                     /** @return void */
                     #[Attribute1, Attribute2]
                     public function hello3() {}
+                }
+            ',
+        ];
+
+        yield 'It handles enum cases correctly' => [
+            '<?php
+                enum Foo: string
+                {
+                        /**
+                         * 0
+                         */
+                        case B0 = "0";
+
+                        /**
+                         * 1
+                         */
+                        case B1 = "1";
+                }
+            ',
+            '<?php
+                enum Foo: string
+                {
+                        /** 0 */
+                        case B0 = "0";
+
+                        /** 1 */
+                        case B1 = "1";
+                }
+            ',
+        ];
+
+        yield 'It handles enum case with attributes correctly' => [
+            '<?php
+                enum Foo: string
+                {
+                        /**
+                         * 0
+                         */
+                        #[Attribute1]
+                        case B0 = "0";
+
+                        /**
+                         * 1
+                         */
+                        #[Attribute1]
+                        #[Attribute2]
+                        case B1 = "1";
+
+                        /**
+                         * 2
+                         */
+                        #[Attribute1, Attribute2]
+                        case B2 = "2";
+                }
+            ',
+            '<?php
+                enum Foo: string
+                {
+                        /** 0 */
+                        #[Attribute1]
+                        case B0 = "0";
+
+                        /** 1 */
+                        #[Attribute1]
+                        #[Attribute2]
+                        case B1 = "1";
+
+                        /** 2 */
+                        #[Attribute1, Attribute2]
+                        case B2 = "2";
                 }
             ',
         ];
@@ -1011,6 +1259,59 @@ class Foo
                     public private(set) bool $c;
                 }
                 PHP,
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix85Cases
+     *
+     * @requires PHP 8.5
+     *
+     * @param _AutogeneratedInputConfiguration $configuration
+     */
+    public function testFix85(string $expected, ?string $input = null, array $configuration = []): void
+    {
+        $this->fixer->configure($configuration);
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: null|string, 2?: _AutogeneratedInputConfiguration}>
+     */
+    public static function provideFix85Cases(): iterable
+    {
+        yield 'It handles callables inside attributes' => [
+            <<<'PHP'
+                <?php
+                /**
+                 * @internal
+                 */
+                #[Attribute1(
+                    /** @phpstan-ignore */
+                    static function (#[Attribute2] string $str) {
+                        /** @var non-false-string */
+                        return $str;
+                    }
+                )]
+                class Foo {}
+                PHP,
+            <<<'PHP'
+                <?php
+                /** @internal */
+                #[Attribute1(
+                    /** @phpstan-ignore */
+                    static function (#[Attribute2] string $str) {
+                        /**
+                         * @var non-false-string
+                         */
+                        return $str;
+                    }
+                )]
+                class Foo {}
+                PHP,
+            [
+                'other' => 'single',
+            ],
         ];
     }
 }

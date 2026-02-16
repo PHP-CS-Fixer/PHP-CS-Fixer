@@ -161,7 +161,7 @@ jobs:
             php-version: ${{ needs.setup.outputs.PHP_MAX }}
             job-description: Fixer on Windows
             run-fixer: 'yes'
-            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
+            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
 
           - operating-system: windows-latest
             php-version: ${{ needs.setup.outputs.PHP_MAX }}
@@ -173,22 +173,26 @@ jobs:
             php-version: ${{ needs.setup.outputs.PHP_MAX }}
             job-description: Fixer on macOS
             run-fixer: 'yes'
-            allow-to-fail: 'yes' # we experience random failures on macOS
             PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
 
           - operating-system: macos-latest
             php-version: ${{ needs.setup.outputs.PHP_MAX }}
             job-description: tests on macOS
             run-tests: 'yes'
-            allow-to-fail: 'yes' # we experience random failures on macOS
-            AVOID_PARAUNIT: 'yes' # macOS job is having weird issue on CI under ParaUnit
-            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional
+            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
 
           - operating-system: ubuntu-24.04
             php-version: ${{ needs.setup.outputs.PHP_MAX }}
             job-description: tests using PHPUnit 12
             install-phpunit-12: 'yes'
             run-tests: 'yes'
+
+          - operating-system: ubuntu-24.04
+            php-version: ${{ needs.setup.outputs.PHP_MAX }}
+            job-description: tests using PHPUnit 13
+            install-phpunit-13: 'yes'
+            run-tests: 'yes'
+            AVOID_PARAUNIT: 'yes'
 
           - operating-system: ubuntu-24.04
             php-version: ${{ needs.setup.outputs.PHP_MAX }}
@@ -245,6 +249,17 @@ jobs:
           PHP_CS_FIXER_FAST_LINT_TEST_CASES: ${{ matrix.PHP_CS_FIXER_FAST_LINT_TEST_CASES }}
         run: |
           composer require --dev --with-all-dependencies phpunit/phpunit:"^9.6 || ^12.1.5" # mention ^9.6 to keep trace of minimum supported version, needed for utests
+          php php-cs-fixer fix --quiet --rules=php_unit_attributes
+
+      - name: Install PHPUnit 13
+        if: matrix.run-tests == 'yes' && matrix.install-phpunit-13 == 'yes'
+        env:
+          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
+          PHP_CS_FIXER_FAST_LINT_TEST_CASES: ${{ matrix.PHP_CS_FIXER_FAST_LINT_TEST_CASES }}
+        run: |
+          sed -i '/<extensions>/,/<\/extensions>/d' phpunit.xml.dist
+          composer remove --dev facile-it/paraunit --no-update
+          composer require --dev --with-all-dependencies phpunit/phpunit:"^9.6 || ^13.0" # mention ^9.6 to keep trace of minimum supported version, needed for utests
           php php-cs-fixer fix --quiet --rules=php_unit_attributes
 
       - name: Check configuration for PHPUnit
