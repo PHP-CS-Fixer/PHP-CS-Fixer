@@ -95,7 +95,7 @@ final class Transformers
     }
 
     /**
-     * @return \Generator<TransformerInterface>
+     * @return iterable<TransformerInterface>
      */
     private function findBuiltInTransformers(): iterable
     {
