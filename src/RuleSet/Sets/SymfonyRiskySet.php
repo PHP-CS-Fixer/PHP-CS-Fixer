@@ -31,7 +31,7 @@ final class SymfonyRiskySet extends AbstractRuleSetDefinition
             'array_push' => true,
             'combine_nested_dirname' => true,
             'declare_strict_types' => [
-                'remove_existing_declaration' => true,
+                'strategy' => 'remove',
             ],
             'dir_constant' => true,
             'ereg_to_preg' => true,
