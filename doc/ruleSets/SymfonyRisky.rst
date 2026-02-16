@@ -23,7 +23,7 @@ Rules
 - `combine_nested_dirname <./../rules/function_notation/combine_nested_dirname.rst>`_
 - `declare_strict_types <./../rules/strict/declare_strict_types.rst>`_ with config:
 
-  ``['remove_existing_declaration' => true]``
+  ``['strategy' => 'remove']``
 
 - `dir_constant <./../rules/language_construct/dir_constant.rst>`_
 - `ereg_to_preg <./../rules/alias/ereg_to_preg.rst>`_

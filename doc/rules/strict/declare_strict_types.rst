@@ -16,7 +16,7 @@ This rule is CONFIGURABLE
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can configure this rule using the following options:
-``preserve_existing_declaration``, ``remove_existing_declaration``.
+``preserve_existing_declaration``, ``strategy``.
 
 Configuration
 -------------
@@ -24,22 +24,24 @@ Configuration
 ``preserve_existing_declaration``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. warning:: This option is deprecated and will be removed in the next major version. Use ``strategy`` to configure behaviour.
+
 Whether existing strict_types=? should be preserved and not overridden.
 
 Allowed types: ``bool``
 
 Default value: ``false``
 
-``remove_existing_declaration``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``strategy``
+~~~~~~~~~~~~
 
-Whether existing strict_types=? should be removed, effectively turning strict
-mode off and using the engine into default type coercion mode.
-``preserve_existing_declaration`` is ignored if this is set to ``true``.
+Whether existing strict_types=? should be enforced, removed (effectively turning
+strict mode off and using the engine into default type coercion mode), or added
+when missing.
 
-Allowed types: ``bool``
+Allowed values: ``'add_when_missing'``, ``'enforce'`` and ``'remove'``
 
-Default value: ``false``
+Default value: ``'enforce'``
 
 Examples
 --------
@@ -60,7 +62,7 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
-With configuration: ``['preserve_existing_declaration' => false]``.
+With configuration: ``['strategy' => 'enforce']``.
 
 .. code-block:: diff
 
@@ -73,7 +75,7 @@ With configuration: ``['preserve_existing_declaration' => false]``.
 Example #3
 ~~~~~~~~~~
 
-With configuration: ``['preserve_existing_declaration' => true]``.
+With configuration: ``['strategy' => 'add_when_missing']``.
 
 .. code-block:: diff
 
@@ -86,7 +88,7 @@ With configuration: ``['preserve_existing_declaration' => true]``.
 Example #4
 ~~~~~~~~~~
 
-With configuration: ``['remove_existing_declaration' => true]``.
+With configuration: ``['strategy' => 'remove']``.
 
 .. code-block:: diff
 
@@ -99,7 +101,7 @@ With configuration: ``['remove_existing_declaration' => true]``.
 Example #5
 ~~~~~~~~~~
 
-With configuration: ``['remove_existing_declaration' => true]``.
+With configuration: ``['strategy' => 'remove']``.
 
 .. code-block:: diff
 
@@ -108,6 +110,32 @@ With configuration: ``['remove_existing_declaration' => true]``.
     <?php
    -declare(strict_types=1, ticks=1);
    +declare(ticks=1);
+
+Example #6
+~~~~~~~~~~
+
+With configuration: ``['preserve_existing_declaration' => false]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -declare(Strict_Types=0);
+   +declare(strict_types=1);
+
+Example #7
+~~~~~~~~~~
+
+With configuration: ``['preserve_existing_declaration' => true]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -declare(Strict_Types=0);
+   +declare(strict_types=0);
 
 Rule sets
 ---------
@@ -128,13 +156,10 @@ The rule is part of the following rule sets:
 - `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_ *(deprecated)*
 - `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ *(deprecated)*
 - `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_ *(deprecated)*
-- `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ with config:
-
-  ``['remove_existing_declaration' => false]``
-
+- `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
 - `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_ with config:
 
-  ``['remove_existing_declaration' => true]``
+  ``['strategy' => 'remove']``
 
 References
 ----------

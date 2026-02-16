@@ -20,10 +20,7 @@ Rules
 - `@PER-CS:risky <./PER-CSRisky.rst>`_
 - `@Symfony:risky <./SymfonyRisky.rst>`_
 - `comment_to_phpdoc <./../rules/comment/comment_to_phpdoc.rst>`_
-- `declare_strict_types <./../rules/strict/declare_strict_types.rst>`_ with config:
-
-  ``['remove_existing_declaration' => false]``
-
+- `declare_strict_types <./../rules/strict/declare_strict_types.rst>`_
 - `final_internal_class <./../rules/class_notation/final_internal_class.rst>`_
 - `native_constant_invocation <./../rules/constant_notation/native_constant_invocation.rst>`_ with config:
 
