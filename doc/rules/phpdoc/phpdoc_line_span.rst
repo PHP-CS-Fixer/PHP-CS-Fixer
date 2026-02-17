@@ -11,7 +11,7 @@ This rule is CONFIGURABLE
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can configure this rule using the following options: ``case``, ``class``,
-``const``, ``method``, ``other``, ``property``, ``trait_import``.
+``const``, ``function``, ``method``, ``other``, ``property``, ``trait_import``.
 
 Configuration
 -------------
@@ -38,6 +38,15 @@ Default value: ``'multi'``
 ~~~~~~~~~
 
 Whether const blocks should be single or multi line.
+
+Allowed values: ``'multi'``, ``'single'`` and ``null``
+
+Default value: ``'multi'``
+
+``function``
+~~~~~~~~~~~~
+
+Whether function declaration doc blocks should be single or multi line.
 
 Allowed values: ``'multi'``, ``'single'`` and ``null``
 
@@ -121,6 +130,23 @@ With configuration: ``['property' => 'single']``.
     }
 
 Example #3
+~~~~~~~~~~
+
+With configuration: ``['function' => 'multi']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+
+   -/** Description of foo function. */
+   +/**
+   + * Description of foo function.
+   + */
+    function foo(): void {}
+
+Example #4
 ~~~~~~~~~~
 
 With configuration: ``['other' => 'single']``.

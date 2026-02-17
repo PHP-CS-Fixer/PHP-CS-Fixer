@@ -37,6 +37,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *  case?: 'multi'|'single'|null,
  *  class?: 'multi'|'single'|null,
  *  const?: 'multi'|'single'|null,
+ *  function?: 'multi'|'single'|null,
  *  method?: 'multi'|'single'|null,
  *  other?: 'multi'|'single'|null,
  *  property?: 'multi'|'single'|null,
@@ -46,6 +47,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *  case: 'multi'|'single'|null,
  *  class: 'multi'|'single'|null,
  *  const: 'multi'|'single'|null,
+ *  function: 'multi'|'single'|null,
  *  method: 'multi'|'single'|null,
  *  other: 'multi'|'single'|null,
  *  property: 'multi'|'single'|null,
@@ -94,6 +96,10 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
                 new CodeSample(
                     "<?php\n\nclass Foo{\n    /**\n    * @var bool\n    */\n    public \$var;\n}\n",
                     ['property' => 'single'],
+                ),
+                new CodeSample(
+                    "<?php\n\n/** Description of foo function. */\nfunction foo(): void {}\n",
+                    ['function' => 'multi'],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -153,6 +159,10 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
                 ->setAllowedValues(['single', 'multi', null])
                 ->setDefault('multi')
                 ->getOption(),
+            (new FixerOptionBuilder('function', 'Whether function declaration doc blocks should be single or multi line.'))
+                ->setAllowedValues(['single', 'multi', null])
+                ->setDefault('multi')
+                ->getOption(),
             (new FixerOptionBuilder('other', 'Whether blocks for other code lines should be single or multi line.'))
                 ->setAllowedValues(['single', 'multi', null])
                 ->setDefault(null)
@@ -178,7 +188,11 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
             $this->fixDocBlock($tokens, $docIndex, $type);
         }
 
-        if (!isset($this->configuration['class']) && !isset($this->configuration['other'])) {
+        if (
+            !isset($this->configuration['class'])
+            && !isset($this->configuration['function'])
+            && !isset($this->configuration['other'])
+        ) {
             return;
         }
 
@@ -188,6 +202,20 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
             }
 
             $token = $tokens[$index];
+
+            if ($token->isGivenKind(\T_FUNCTION) && !$analyzer->isLambda($index)) {
+                $docIndex = $this->getDocBlockIndex($tokens, $index);
+
+                if (null === $docIndex || isset($handled[$docIndex])) {
+                    continue;
+                }
+
+                $handled[$docIndex] = true;
+                $this->fixDocBlock($tokens, $docIndex, 'function');
+
+                continue;
+            }
+
             if ($token->isGivenKind(\T_DOC_COMMENT)) {
                 $this->fixDocBlock($tokens, $index, 'other');
 
