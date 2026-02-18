@@ -3,6 +3,23 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.94.1
+---------------------
+
+* chore: add tests for `ArgumentsAnalyzer` (#9422)
+* chore: bump dev-tools to PHP 8.5 (#9432)
+* chore: ConfigurableFixerTemplateFixer - allow to remove option from computed options (#9437)
+* chore: fix Tokens::getIterator() type (#9433)
+* chore: reduce Generator into iterable (#9435)
+* chore: reduce Iterator->Traversable and Traversable->iterable when possible (#9434)
+* CI: cleanup sca.yml (#9430)
+* deps: bump crate-ci/typos from 1.43.2 to 1.43.4 (#9426)
+* deps: bump ergebnis/composer-normalize from 2.49.0 to 2.50.0 in /dev-tools (#9427)
+* deps: bump the phpstan group in /dev-tools with 4 updates (#9425)
+* deps: dependabot group for shipmonk/ (#9429)
+* docs: switch sets ordering to case-insensitive (#9423)
+* test: check PHP env in CI jobs (#9428)
+
 Changelog for v3.94.0
 ---------------------
 
