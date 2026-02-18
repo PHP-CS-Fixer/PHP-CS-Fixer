@@ -179,14 +179,15 @@ final class Runner
     }
 
     /**
-     * @TODO consider to drop this method and make iterator parameter obligatory in constructor,
-     * more in https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/7777/files#r1590447581
-     *
      * @param \Traversable<array-key, \SplFileInfo> $fileIterator
+     *
+     * @TODO v4: mark internal
+     * @TODO consider to drop this method and make iterator parameter obligatory in constructor,
+     *       more in https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/7777/files#r1590447581
      */
     public function setFileIterator(iterable $fileIterator): void
     {
-        $this->fileIterator = $fileIterator;
+        $this->fileIterator = $fileIterator instanceof \Traversable ? $fileIterator : new \ArrayIterator($fileIterator);
 
         // Required only for main process (calculating workers count)
         $this->fileCount = \count(iterator_to_array($fileIterator));
