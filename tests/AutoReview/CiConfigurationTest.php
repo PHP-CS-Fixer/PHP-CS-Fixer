@@ -143,6 +143,50 @@ final class CiConfigurationTest extends TestCase
         self::assertSame($alpineHighestVersion, $dockerVersions[0], 'Expects Alpine version used in Dockerfile to be highest Alpine version used in compose.yaml.');
     }
 
+    public function testPhpVersionInAddMilestoneWorkflow(): void
+    {
+        $expectedPhpVersion = $this->getMaxPhpVersionFromEntryFile();
+        $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/add-milestone.yml');
+
+        foreach ($yaml['jobs'] as $job) {
+            if (str_contains($job['if'] ?? '', "'topic/PHP{$expectedPhpVersion}'")) {
+                $this->addToAssertionCount(1);
+
+                return;
+            }
+        }
+
+        self::fail(\sprintf('Expects workflow to contain "%s" in job conditions.', $expectedPhpVersion));
+    }
+
+    public function testPhpVersionInSCAWorkflow(): void
+    {
+        $expectedPhpVersion = $this->getMaxPhpVersionFromEntryFile();
+        $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/sca.yml');
+
+        self::assertSame(
+            $yaml['jobs']['everything_else']['env']['php-version'],
+            $expectedPhpVersion,
+        );
+    }
+
+    public function testPhpVersionInSCAComposerFile(): void
+    {
+        $expectedPhpVersion = $this->getMaxPhpVersionFromEntryFile();
+        $composerJsonContent = (string) file_get_contents(__DIR__.'/../../dev-tools/composer.json');
+        $composerJson = json_decode($composerJsonContent, true, 512, \JSON_THROW_ON_ERROR);
+
+        self::assertSame(
+            $composerJson['require']['php'],
+            "^{$expectedPhpVersion}",
+        );
+
+        self::assertSame(
+            $composerJson['config']['platform']['php'],
+            $expectedPhpVersion,
+        );
+    }
+
     /**
      * @return list<numeric-string>
      */
