@@ -109,7 +109,10 @@
         ],
         "docs": "@php dev-tools/php-cs-fixer-internal docs",
         "infection": "@test:mutation",
-        "install-tools": "./dev-tools/install.sh",
+        "install-tools": [
+            "./dev-tools/install.sh",
+            "@composer install --working-dir=dev-tools"
+        ],
         "internal": "@php dev-tools/php-cs-fixer-internal",
         "mess-detector": "@php dev-tools/vendor/bin/phpmd . ansi dev-tools/mess-detector/phpmd.xml --exclude vendor/*,dev-tools/vendor/*,dev-tools/phpstan/*,tests/Fixtures/*",
         "normalize": [
