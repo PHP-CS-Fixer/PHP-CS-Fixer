@@ -1722,11 +1722,15 @@ const D = new Foo7(1,2);
         yield 'typed class constants' => [
             <<<'PHP'
                 <?php
+                use Vendor\Type02;
                 use Vendor\Type04;
+                use Vendor\Type06;
                 use Vendor\Type08;
                 use Vendor\Type10;
+                use Vendor\Type12;
                 use Vendor\Type14;
                 use Vendor\Type16;
+                use Vendor\Type18;
                 use Vendor\Type20;
                 use Vendor\Type22;
                 use Vendor\Type24;
