@@ -50,8 +50,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class Application extends BaseApplication
 {
     public const NAME = 'PHP CS Fixer';
-    public const VERSION = '3.93.2-DEV';
-    public const VERSION_CODENAME = 'Exceptional Exception';
+    public const VERSION = '3.94.2-DEV';
+    public const VERSION_CODENAME = '7th Gear';
 
     /**
      * @readonly

@@ -455,7 +455,7 @@ Function Notation
 - `use_arrow_functions <./function_notation/use_arrow_functions.rst>`_ *(risky)*
 
   Anonymous functions with return as the only statement must use arrow functions.
-- `void_return <./function_notation/void_return.rst>`_ *(risky)*
+- `void_return <./function_notation/void_return.rst>`_ *(risky, configurable)*
 
   Add ``void`` return type to functions with missing or empty return statements, but priority is given to ``@return`` annotations.
 

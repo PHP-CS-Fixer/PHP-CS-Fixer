@@ -84,7 +84,10 @@ final class ClassReferenceNameCasingFixer extends AbstractFixer
         }
     }
 
-    private function getClassReference(Tokens $tokens, NamespaceAnalysis $namespace): \Generator
+    /**
+     * @return iterable<int>
+     */
+    private function getClassReference(Tokens $tokens, NamespaceAnalysis $namespace): iterable
     {
         static $blockKinds;
 

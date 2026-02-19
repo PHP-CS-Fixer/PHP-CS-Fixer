@@ -3,6 +3,50 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.94.1
+---------------------
+
+* chore: add tests for `ArgumentsAnalyzer` (#9422)
+* chore: bump dev-tools to PHP 8.5 (#9432)
+* chore: ConfigurableFixerTemplateFixer - allow to remove option from computed options (#9437)
+* chore: fix Tokens::getIterator() type (#9433)
+* chore: reduce Generator into iterable (#9435)
+* chore: reduce Iterator->Traversable and Traversable->iterable when possible (#9434)
+* CI: cleanup sca.yml (#9430)
+* deps: bump crate-ci/typos from 1.43.2 to 1.43.4 (#9426)
+* deps: bump ergebnis/composer-normalize from 2.49.0 to 2.50.0 in /dev-tools (#9427)
+* deps: bump the phpstan group in /dev-tools with 4 updates (#9425)
+* deps: dependabot group for shipmonk/ (#9429)
+* docs: switch sets ordering to case-insensitive (#9423)
+* test: check PHP env in CI jobs (#9428)
+
+Changelog for v3.94.0
+---------------------
+
+* UX: enable parallel runner by default (#9408)
+* feat: Add option `case` to `phpdoc_line_span` fixer (#9391)
+* feat: PhpdocLineSpanFixer - support docs for classes, trait usages and other code lines (#8832)
+* feat: `VoidReturnFixer` - allow to skip lambdas (#9417)
+* chore: fix comment (#9404)
+* chore: Linter tests for Schrodinger's validity (#9398)
+* chore: ModernizeStrposFixer - no need for configuration hooks (#9419)
+* chore: `VoidReturnFixer` - better describe exceptions (#9418)
+* CI: no need for special handling of MacOS (#9403)
+* CI: run tests using PHPUnit 13 (#9410)
+* deps: bump crate-ci/typos from 1.42.1 to 1.42.3 (#9395)
+* deps: bump crate-ci/typos from 1.42.3 to 1.43.2 (#9405)
+* deps: bump ergebnis/composer-normalize from 2.48.2 to 2.49.0 in /dev-tools (#9396)
+* deps: bump the phpstan group in /dev-tools with 2 updates (#9394)
+* deps: upgrade dev-deps (#9411)
+* DX: use custom name for custom config (#9402)
+* fix: absolute path in reports (#9399)
+* fix: indentation for backed enum with multiline assignment (#9362)
+* fix: Runner - fix occasional sub-process freeze on parallel execution with `--stop-on-violation` (#9393)
+* fix: `NoUnreachableDefaultArgumentValueFixer` - fix for closures (#9409)
+* fix: `UseArrowFunctionsFixer` - do not convert closure in attribute (#9416)
+* test: create PHP 8.5 risky compat test (#9420)
+* UX: Do not run interactive configurator when rules are passed explicitly (#9378)
+
 Changelog for v3.93.1
 ---------------------
 
