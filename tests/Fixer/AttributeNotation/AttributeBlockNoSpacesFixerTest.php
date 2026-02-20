@@ -111,5 +111,30 @@ class User
     private string $name;
 }', null,
         ];
+
+        yield 'With multiple attributes in a row' => [
+            '<?php
+class User
+{
+    #[ApiProperty1()]
+    #[ApiProperty2()]
+    #[ApiProperty3()]
+    private string $name;
+}',
+            '<?php
+class User
+{
+    #[
+        ApiProperty1()
+    ]
+    #[
+        ApiProperty2()
+    ]
+    #[
+        ApiProperty3()
+    ]
+    private string $name;
+}',
+        ];
     }
 }
