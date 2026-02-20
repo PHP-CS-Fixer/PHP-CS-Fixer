@@ -712,18 +712,6 @@ final class ConfigurationResolver
     }
 
     /**
-     * @template T
-     *
-     * @param iterable<T> $iterable
-     *
-     * @return \Traversable<T>
-     */
-    private function iterableToTraversable(iterable $iterable): \Traversable
-    {
-        return \is_array($iterable) ? new \ArrayIterator($iterable) : $iterable;
-    }
-
-    /**
      * @return array<string, mixed>
      */
     private function parseRules(): array
@@ -942,7 +930,7 @@ final class ConfigurationResolver
                 return new \ArrayIterator([]);
             }
 
-            return $this->iterableToTraversable($this->getConfig()->getFinder());
+            return $this->getConfig()->getFinder();
         }
 
         $pathsByType = [
@@ -959,10 +947,16 @@ final class ConfigurationResolver
         }
 
         $nestedFinder = null;
-        $currentFinder = $this->iterableToTraversable($this->getConfig()->getFinder());
+        $currentFinder = $this->getConfig()->getFinder();
 
         try {
-            $nestedFinder = $currentFinder instanceof \IteratorAggregate ? $currentFinder->getIterator() : $currentFinder;
+            $nestedFinder = $currentFinder instanceof \IteratorAggregate
+                ? $currentFinder->getIterator()
+                : (
+                    $currentFinder instanceof \Traversable
+                        ? $currentFinder
+                        : new \ArrayIterator($currentFinder)
+                );
         } catch (\Exception $e) {
         }
 
