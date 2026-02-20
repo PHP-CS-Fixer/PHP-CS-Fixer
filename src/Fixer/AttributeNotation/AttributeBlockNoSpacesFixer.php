@@ -66,8 +66,8 @@ class User
         while (null !== $index = $tokens->getNextTokenOfKind($index, [[\T_ATTRIBUTE]])) {
             $attributeAnalysis = AttributeAnalyzer::collectOne($tokens, $index);
 
-            $endIndex = $attributeAnalysis->getClosingBracketIndex();
-            while ($index <= $endIndex) {
+            $closingBracketIndex = $attributeAnalysis->getClosingBracketIndex();
+            while ($index <= $closingBracketIndex) {
                 $token = $tokens[$index];
 
                 $toDelete = [];
