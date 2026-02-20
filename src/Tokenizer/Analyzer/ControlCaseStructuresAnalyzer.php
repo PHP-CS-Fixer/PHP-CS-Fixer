@@ -39,9 +39,9 @@ final class ControlCaseStructuresAnalyzer
     /**
      * @param list<int> $types Token types of interest of which analyses must be returned
      *
-     * @return \Generator<int, AbstractControlCaseStructuresAnalysis>
+     * @return iterable<int, AbstractControlCaseStructuresAnalysis>
      */
-    public static function findControlStructures(Tokens $tokens, array $types): \Generator
+    public static function findControlStructures(Tokens $tokens, array $types): iterable
     {
         if (\count($types) < 1) {
             return; // quick skip

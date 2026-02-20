@@ -15,6 +15,9 @@ updates:
       phpstan:
         patterns:
           - phpstan/*
+      shipmonk:
+        patterns:
+          - shipmonk/*
   - package-ecosystem: docker
     directory: /
     commit-message:

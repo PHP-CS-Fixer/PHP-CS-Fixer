@@ -487,11 +487,9 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
     }
 
     /**
-     * @TODO Introduce proper DTO instead of an array
-     *
-     * @return \Generator<_Class>
+     * @return iterable<_Class>
      */
-    private function getElementsByClass(Tokens $tokens): \Generator
+    private function getElementsByClass(Tokens $tokens): iterable
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $class = null;
