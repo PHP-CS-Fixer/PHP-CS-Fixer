@@ -3,6 +3,14 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.94.2
+---------------------
+
+* fix: `AttributeBlockNoSpacesFixer` - skipping some attributes when multiple present (#9445)
+* fix: `NoUnusedImportsFixer` - do not remove constant types (#9442)
+* fix: `PhpdocLineSpanFixer` - handle unions and intersections in properties (#9438)
+* deps: bump crate-ci/typos from 1.43.4 to 1.43.5 (#9444)
+
 Changelog for v3.94.1
 ---------------------
 
