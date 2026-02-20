@@ -78,6 +78,8 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
         CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE,
         CT::T_ARRAY_TYPEHINT,
         CT::T_NULLABLE_TYPE,
+        CT::T_TYPE_ALTERNATION,
+        CT::T_TYPE_INTERSECTION,
         FCT::T_ATTRIBUTE,
         FCT::T_READONLY,
         FCT::T_PRIVATE_SET,
