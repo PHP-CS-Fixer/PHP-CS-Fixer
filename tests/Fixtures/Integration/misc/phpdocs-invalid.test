@@ -3,7 +3,8 @@ Invalid phpdocs must be kept unfixed.
 --RULESET--
 {
     "@PhpCsFixer": true,
-    "@PhpCsFixer:risky": true
+    "@PhpCsFixer:risky": true,
+    "declare_strict_types": false
 }
 --EXPECT--
 <?php
