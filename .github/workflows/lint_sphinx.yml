@@ -1,4 +1,4 @@
-name: Sphinx
+name: Lint
 
 on:
   pull_request:
@@ -18,8 +18,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  sphinx:
-    name: Sphinx reStructuredText validity
+  lint-sphinx:
+    name: Sphinx
     runs-on: ubuntu-latest
     timeout-minutes: 1
     steps:

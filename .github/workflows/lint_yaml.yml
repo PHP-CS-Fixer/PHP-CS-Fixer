@@ -1,4 +1,4 @@
-name: YAML Validation
+name: Lint
 
 on:
   pull_request:
@@ -16,8 +16,8 @@ permissions:
   contents: read # to fetch code (actions/checkout)
 
 jobs:
-  validate-yaml:
-    name: Validate YAML
+  lint-yaml:
+    name: YAML
     runs-on: ubuntu-latest
 
     steps:

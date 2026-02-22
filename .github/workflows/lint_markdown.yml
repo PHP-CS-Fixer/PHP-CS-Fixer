@@ -1,4 +1,4 @@
-name: Markdown
+name: Lint
 
 on:
   pull_request:
@@ -20,8 +20,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  markdownlint:
-    name: Lint markdown files
+  lint-markdown:
+    name: Markdown
     runs-on: ubuntu-latest
     timeout-minutes: 1
     steps:
