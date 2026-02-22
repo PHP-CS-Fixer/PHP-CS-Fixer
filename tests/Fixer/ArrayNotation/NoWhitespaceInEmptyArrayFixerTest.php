@@ -114,5 +114,27 @@ final class NoWhitespaceInEmptyArrayFixerTest extends AbstractFixerTestCase
                 }
                 PHP,
         ];
+
+        yield 'mix of multiple candidates' => [
+            <<<'PHP'
+                <?php
+                $a = [];
+                $b = [];
+                $c = [];
+                $d = [ /**/  ];
+                $e = [];
+                $f = [];
+                PHP,
+            <<<'PHP'
+                <?php
+                $a = [
+                ];
+                $b = [   ];
+                $c = [];
+                $d = [ /**/  ];
+                $e = [   ];
+                $f = [      ];
+                PHP,
+        ];
     }
 }
