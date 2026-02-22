@@ -942,6 +942,26 @@ class Foo
                 }
             ',
         ];
+
+        yield 'It handles unions in properties correctly' => [
+            '<?php
+                class Foo
+                {
+                    /**
+                     * @var string[]|string
+                     */
+                    public array|string $foo;
+                }
+            ',
+            '<?php
+                class Foo
+                {
+                    /** @var string[]|string */
+                    public array|string $foo;
+                }
+            ',
+            ['property' => 'multi'],
+        ];
     }
 
     /**
@@ -1177,6 +1197,26 @@ class Foo
                         case B2 = "2";
                 }
             ',
+        ];
+
+        yield 'It handles intersection types in properties correctly' => [
+            '<?php
+                class Foo
+                {
+                    /**
+                     * @var Countable&Traversable
+                     */
+                    public Countable&Traversable $foo;
+                }
+            ',
+            '<?php
+                class Foo
+                {
+                    /** @var Countable&Traversable */
+                    public Countable&Traversable $foo;
+                }
+            ',
+            ['property' => 'multi'],
         ];
     }
 
