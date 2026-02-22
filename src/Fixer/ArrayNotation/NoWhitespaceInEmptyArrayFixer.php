@@ -31,7 +31,7 @@ final class NoWhitespaceInEmptyArrayFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Empty arrays should not contain any whitespace.',
+            'Empty arrays should not contain only whitespace.',
             [new CodeSample("<?php\n\n\$foo = [\n];\n")],
         );
     }

@@ -2,7 +2,7 @@
 Rule ``no_whitespace_in_empty_array``
 =====================================
 
-Empty arrays should not contain any whitespace.
+Empty arrays should not contain only whitespace.
 
 Examples
 --------
