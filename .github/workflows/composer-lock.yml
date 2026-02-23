@@ -2,10 +2,10 @@ name: Lock cleanup
 
 on:
   push:
-    branches:
-      - dependabot/**
-    paths:
-      - dev-tools/composer.lock
+    # branches:
+    #   - dependabot/**
+    # paths:
+    #   - dev-tools/composer.lock
 
 permissions:
   pull-requests: write

@@ -2,15 +2,15 @@ name: Markdown
 
 on:
   pull_request:
-    paths:
-      - '*.md'
-      - '**/*.md'
-  push:
-    branches:
-      - master
-    paths:
-      - '*.md'
-      - '**/*.md'
+  #   paths:
+  #     - '*.md'
+  #     - '**/*.md'
+  # push:
+  #   branches:
+  #     - master
+  #   paths:
+  #     - '*.md'
+  #     - '**/*.md'
 
 permissions:
   contents: read
