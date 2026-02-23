@@ -14,7 +14,7 @@ permissions:
 jobs:
   automate:
     name: Automate
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     env:
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
     steps:
