@@ -1,0 +1,25 @@
+name: Spelling
+
+on:
+  pull_request:
+
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
+jobs:
+  spelling:
+    name: Check spelling
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Check typos
+        uses: crate-ci/typos@v1.43.5
+        with:
+          config: ./dev-tools/typos.toml
+
+      - name: Check - no American English
+        run: ./dev-tools/check_no_american_english.sh

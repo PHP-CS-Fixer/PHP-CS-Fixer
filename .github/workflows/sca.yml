@@ -14,23 +14,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  spelling:
-    name: Check spelling
-
-    runs-on: ubuntu-24.04
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Check typos
-        uses: crate-ci/typos@v1.43.5
-        with:
-          config: ./dev-tools/typos.toml
-
-      - name: Check - no American English
-        run: ./dev-tools/check_no_american_english.sh
-
   scripts:
     name: Check scripts
 
