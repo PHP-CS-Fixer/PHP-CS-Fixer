@@ -35,7 +35,6 @@ jobs:
   handle_stale:
     name: Stale
     runs-on: ubuntu-slim
-
     steps:
       # Config reference: https://github.com/actions/stale
       - name: Handle stale issues and pull requests
