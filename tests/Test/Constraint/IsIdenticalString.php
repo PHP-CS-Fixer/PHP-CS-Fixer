@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Test\Constraint;
 
+use PhpCsFixer\Preg;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsIdentical;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -77,7 +78,7 @@ final class IsIdenticalString extends Constraint
     {
         if (
             $other === $this->value
-            || preg_replace('/(\r\n|\n\r|\r)/', "\n", $other) !== preg_replace('/(\r\n|\n\r|\r)/', "\n", $this->value)
+            || Preg::replace('/(\r\n|\n\r|\r)/', "\n", $other) !== Preg::replace('/(\r\n|\n\r|\r)/', "\n", $this->value)
         ) {
             return '';
         }
