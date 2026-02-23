@@ -69,7 +69,7 @@ final class CiConfigurationTest extends TestCase
 
     public function testDeploymentJobRunOnLatestStablePhpThatIsSupportedByTool(): void
     {
-        $ciVersionsForDeployment = CiReader::getPhpVersionUsedByCiForDeployments();
+        $ciVersionsForDeployment = CiReader::getPhpVersionUsedByCiForReleasableChecks();
         $ciVersions = CiReader::getAllPhpVersionsUsedByCiForTests();
         $expectedPhp = $this->getMaxPhpVersionFromEntryFile();
 
@@ -146,7 +146,7 @@ final class CiConfigurationTest extends TestCase
     public function testPhpVersionInAddMilestoneWorkflow(): void
     {
         $expectedPhpVersion = $this->getMaxPhpVersionFromEntryFile();
-        $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/add-milestone.yml');
+        $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/maint_add-milestone.yml');
 
         foreach ($yaml['jobs'] as $job) {
             if (str_contains($job['if'] ?? '', "'topic/PHP{$expectedPhpVersion}'")) {
@@ -165,7 +165,7 @@ final class CiConfigurationTest extends TestCase
         $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/sca.yml');
 
         self::assertSame(
-            $yaml['jobs']['everything_else']['env']['php-version'],
+            $yaml['jobs']['checks']['env']['php-version'],
             $expectedPhpVersion,
         );
     }
