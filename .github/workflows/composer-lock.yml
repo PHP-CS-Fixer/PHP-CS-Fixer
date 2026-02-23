@@ -1,7 +1,7 @@
 name: Lock cleanup
 
 on:
-  push:
+  pull_request:
     # branches:
     #   - dependabot/**
     # paths:
