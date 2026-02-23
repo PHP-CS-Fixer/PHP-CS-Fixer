@@ -33,7 +33,7 @@ final class IsIdenticalString extends Constraint
     /**
      * @var IsIdentical
      */
-    private $isIdentical;
+    private IsIdentical $isIdentical;
 
     /**
      * @param mixed $value

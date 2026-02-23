@@ -28,17 +28,17 @@ final class XmlMatchesXsd extends Constraint
     /**
      * @var string[]
      */
-    private $xmlConstraintErrors = [];
+    private array $xmlConstraintErrors = [];
 
     /**
      * @var string
      */
-    private $xsd;
+    private string $xsd;
 
     /**
      * @param string $xsd
      */
-    public function __construct($xsd)
+    public function __construct(string $xsd)
     {
         // replace first only
         $needle = 'http://www.w3.org/2001/xml.xsd';
@@ -89,7 +89,7 @@ final class XmlMatchesXsd extends Constraint
      *
      * @return bool
      */
-    private function stringMatches($other)
+    private function stringMatches(string $other): bool
     {
         $internalErrors = libxml_use_internal_errors(true);
         libxml_clear_errors();
