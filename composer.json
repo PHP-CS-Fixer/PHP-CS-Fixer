@@ -53,8 +53,6 @@
         "keradus/cli-executor": "^2.3",
         "mikey179/vfsstream": "^1.6.12",
         "php-coveralls/php-coveralls": "^2.9.1",
-        "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.7",
-        "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.7",
         "phpunit/phpunit": "^9.6.34 || ^10.5.63 || ^11.5.51",
         "symfony/polyfill-php85": "^1.33",
         "symfony/var-dumper": "^5.4.48 || ^6.4.32 || ^7.4.4 || ^8.0.4",
