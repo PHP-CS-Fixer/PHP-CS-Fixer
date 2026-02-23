@@ -2,15 +2,15 @@ name: YAML Validation
 
 on:
   pull_request:
-  #   paths:
-  #     - '**.yml'
-  #     - '**.yaml'
-  # push:
-  #   branches:
-  #     - master
-  #   paths:
-  #     - '**.yml'
-  #     - '**.yaml'
+    paths:
+      - '**.yml'
+      - '**.yaml'
+  push:
+    branches:
+      - master
+    paths:
+      - '**.yml'
+      - '**.yaml'
 
 permissions:
   contents: read # to fetch code (actions/checkout)

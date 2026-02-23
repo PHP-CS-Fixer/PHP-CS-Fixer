@@ -2,13 +2,13 @@ name: Sphinx
 
 on:
   pull_request:
-  #   paths:
-  #     - '**/*.rst'
-  # push:
-  #   branches:
-  #     - master
-  #   paths:
-  #     - '**/*.rst'
+    paths:
+      - '**/*.rst'
+  push:
+    branches:
+      - master
+    paths:
+      - '**/*.rst'
 
 permissions:
   contents: read
