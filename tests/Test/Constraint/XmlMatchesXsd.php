@@ -36,7 +36,8 @@ final class XmlMatchesXsd extends Constraint
     {
         // replace first only
         $needle = 'http://www.w3.org/2001/xml.xsd';
-        if (false !== $pos = strpos($xsd, $needle)) {
+        $pos = strpos($xsd, $needle);
+        if (false !== $pos) {
             $xsd = substr_replace($xsd, 'file:///'.str_replace('\\', '/', __DIR__).'/xml.xsd', $pos, \strlen($needle));
         }
 
@@ -99,7 +100,8 @@ final class XmlMatchesXsd extends Constraint
 
         libxml_clear_errors();
 
-        if (false === $result = @$dom->schemaValidateSource($this->xsd)) {
+        $result = @$dom->schemaValidateSource($this->xsd);
+        if (false === $result) {
             $this->setXMLConstraintErrors();
         }
 
