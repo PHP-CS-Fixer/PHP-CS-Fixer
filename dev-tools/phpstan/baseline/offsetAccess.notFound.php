@@ -817,11 +817,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Whitespace/NoTrailingWhitespaceFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset int<1, max> might not exist on array<int<0, max>, string>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Whitespace/NoTrailingWhitespaceFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset int<0, max> might not exist on non-empty-array<int<0, max>, string>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Whitespace/NoWhitespaceInBlankLineFixer.php',
