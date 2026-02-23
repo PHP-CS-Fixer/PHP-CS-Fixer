@@ -24,7 +24,7 @@ jobs:
 
   add-to-milestone-8x6:
     name: Add milestone PHP 8.6
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     if: ${{ github.event.label.name == 'topic/PHP8.6' }}
     env:
       PR_URL: ${{github.event.pull_request.html_url}}
