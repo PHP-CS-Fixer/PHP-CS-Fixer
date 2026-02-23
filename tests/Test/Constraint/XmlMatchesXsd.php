@@ -26,18 +26,12 @@ use PHPUnit\Framework\Constraint\Constraint;
 final class XmlMatchesXsd extends Constraint
 {
     /**
-     * @var string[]
+     * @var list<string>
      */
     private array $xmlConstraintErrors = [];
 
-    /**
-     * @var string
-     */
     private string $xsd;
 
-    /**
-     * @param string $xsd
-     */
     public function __construct(string $xsd)
     {
         // replace first only
@@ -84,11 +78,6 @@ final class XmlMatchesXsd extends Constraint
             : false;
     }
 
-    /**
-     * @param string $other
-     *
-     * @return bool
-     */
     private function stringMatches(string $other): bool
     {
         $internalErrors = libxml_use_internal_errors(true);

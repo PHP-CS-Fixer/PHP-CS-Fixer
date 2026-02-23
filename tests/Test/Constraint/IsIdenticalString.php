@@ -30,9 +30,6 @@ final class IsIdenticalString extends Constraint
      */
     private $value;
 
-    /**
-     * @var IsIdentical
-     */
     private IsIdentical $isIdentical;
 
     /**
