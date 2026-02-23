@@ -1,4 +1,4 @@
-name: Add milestone
+name: Maint
 
 on:
   issues:
@@ -12,6 +12,7 @@ permissions:
 
 jobs:
   add-to-milestone-8x5:
+    name: Add milestone PHP 8.5
     runs-on: ubuntu-slim
     if: ${{ github.event.label.name == 'topic/PHP8.5' }}
     env:
@@ -22,6 +23,7 @@ jobs:
       - run: gh pr edit "$PR_URL" --milestone 'PHP 8.5 initial compatibility'
 
   add-to-milestone-8x6:
+    name: Add milestone PHP 8.6
     runs-on: ubuntu-latest
     if: ${{ github.event.label.name == 'topic/PHP8.6' }}
     env:
