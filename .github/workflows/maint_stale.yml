@@ -1,6 +1,4 @@
-# https://docs.github.com/en/actions
-
-name: Issues and Pull Requests
+name: Maint
 
 on:
   # Allow running on demand using Github UI
@@ -27,17 +25,16 @@ env:
     You may let maintainers handle this or verify current relevancy by yourself, to help with re-triage.
     Any activity will remove stale label so it won't be automatically closed at this point.
 
+# See: https://github.com/actions/stale#recommended-permissions
+permissions:
+  contents: write # only for delete-branch option
+  issues: write
+  pull-requests: write
+
 jobs:
   handle_stale:
-    name: Handle stale state
-
+    name: Stale
     runs-on: ubuntu-slim
-
-    # See: https://github.com/actions/stale#recommended-permissions
-    permissions:
-      contents: write # only for delete-branch option
-      issues: write
-      pull-requests: write
 
     steps:
       # Config reference: https://github.com/actions/stale
