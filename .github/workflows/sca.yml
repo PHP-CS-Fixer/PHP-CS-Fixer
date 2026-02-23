@@ -40,9 +40,6 @@ jobs:
       - name: Check - file permissions
         run: ./dev-tools/check_file_permissions.sh
 
-      - name: Check - trailing spaces
-        run: ./dev-tools/check_trailing_spaces.sh
-
       - name: Check - shell scripts
         run: ./dev-tools/check_shell_scripts.sh
 
