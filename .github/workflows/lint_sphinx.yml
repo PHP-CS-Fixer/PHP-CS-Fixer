@@ -20,7 +20,7 @@ concurrency:
 jobs:
   lint-sphinx:
     name: Sphinx
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     timeout-minutes: 1
     steps:
       - name: Checkout repository
