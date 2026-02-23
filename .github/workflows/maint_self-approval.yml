@@ -20,6 +20,7 @@ jobs:
       PR_URL: ${{github.event.pull_request.html_url}}
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       MARKER: self-approval
+
     steps:
       - name: Checkout
         uses: actions/checkout@v6
