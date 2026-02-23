@@ -287,7 +287,7 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                 } elseif ($fixer instanceof OrderedAttributesFixer && 'sort_algorithm' === $optionName) {
                     // nothing to do
                 } elseif ($fixer instanceof OrderedAttributesFixer && 'order' === $optionName) {
-                    $allowedAfterNormalization = 'array<string, int>';
+                    $allowedAfterNormalization = 'array{fixed: array<string, int>, wildcard: array<string, int>}';
                 } elseif ($fixer instanceof FinalInternalClassFixer && \in_array($optionName, ['annotation_include', 'annotation_exclude', 'include', 'exclude'], true)) {
                     $allowedAfterNormalization = 'array<string, string>';
                 } elseif ($fixer instanceof PhpdocTagTypeFixer && 'tags' === $optionName) {
