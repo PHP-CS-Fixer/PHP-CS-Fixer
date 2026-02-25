@@ -77,7 +77,7 @@ final class TokensWithObservedTransformers extends Tokens
     private function extractTokenKind($token)
     {
         return $token instanceof Token
-            ? ($token->isArray() ? $token->getId() : $token->getContent())
+            ? $token->getKind()
             : (\is_array($token) ? $token[0] : $token);
     }
 }

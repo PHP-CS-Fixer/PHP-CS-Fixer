@@ -57,11 +57,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $possibleKind of method PhpCsFixer\\Tokenizer\\Token::isGivenKind() expects int|list<int>, list<int|string> given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/ControlStructure/YodaStyleFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #3 $length of function substr expects int|null, int|false given.',
     'count' => 2,
     'path' => __DIR__ . '/../../../src/Fixer/Import/FullyQualifiedStrictTypesFixer.php',
