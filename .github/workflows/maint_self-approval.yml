@@ -2,7 +2,7 @@
 # To trigger it, the maintainer needs to commit and push:
 # $ git commit -m "self-approval" --allow-empty
 
-name: Maint
+name: Maintenance
 
 on:
   - pull_request_target
