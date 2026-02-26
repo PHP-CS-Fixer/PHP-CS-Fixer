@@ -318,10 +318,10 @@ jobs:
           PHP_CS_FIXER_FUTURE_MODE: 1
         run: php php-cs-fixer check --diff -vvv --config .php-cs-fixer.php-lowest.php
 
-  deployment:
+  releasable:
     needs: [setup, tests]
     if: always()
-    name: Deployment checks
+    name: Releasable checks
 
     runs-on: ubuntu-24.04
     env:

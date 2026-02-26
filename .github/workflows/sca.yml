@@ -14,39 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  scripts:
-    name: Check scripts
-
-    runs-on: ubuntu-24.04
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Cache dev-tools
-        uses: actions/cache@v5
-        with:
-          path: dev-tools/bin/
-          key: DevTools-${{ hashFiles('dev-tools/install.sh') }}
-
-      - name: Install dev-tools
-        uses: nick-invision/retry@v3
-        with:
-          timeout_minutes: 5
-          max_attempts: 5
-          retry_wait_seconds: 30
-          command: ./dev-tools/install.sh
-
-      - name: Check - file permissions
-        run: ./dev-tools/check_file_permissions.sh
-
-      - name: Check - trailing spaces
-        run: ./dev-tools/check_trailing_spaces.sh
-
-      - name: Check - shell scripts
-        run: ./dev-tools/check_shell_scripts.sh
-
-  everything_else:
+  checks:
     name: Static Code Analysis
 
     runs-on: ubuntu-24.04

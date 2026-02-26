@@ -9,7 +9,6 @@ permissions:
 jobs:
   spelling:
     name: Check spelling
-
     runs-on: ubuntu-latest
 
     steps:
@@ -23,3 +22,6 @@ jobs:
 
       - name: Check - no American English
         run: ./dev-tools/check_no_american_english.sh
+
+      - name: Check - trailing spaces
+        run: ./dev-tools/check_trailing_spaces.sh
