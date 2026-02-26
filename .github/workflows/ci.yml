@@ -65,6 +65,7 @@ jobs:
             run-tests: 'yes'
             composer-flags: --prefer-lowest # should be checked on the lowest supported PHP version
             execute-flex-with-symfony-version: ^5 # explicit check for Symfony 5.x compatibility
+            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 0 # run full linting on lowest supported PHP version to be sure that all cases are valid
 
           - operating-system: ubuntu-24.04
             php-version: '8.0'
@@ -131,6 +132,7 @@ jobs:
             php-version: '8.5'
             job-description: tests
             run-tests: 'yes'
+            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 0 # run full linting on highest supported PHP version to be sure that all cases are valid
 
           - operating-system: ubuntu-24.04
             php-version: 8.6snapshot # replace with PHP 8.6 when dev version is released
@@ -161,25 +163,21 @@ jobs:
             php-version: ${{ needs.setup.outputs.PHP_MAX }}
             job-description: Fixer on Windows
             run-fixer: 'yes'
-            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
 
           - operating-system: windows-latest
             php-version: ${{ needs.setup.outputs.PHP_MAX }}
             job-description: tests on Windows
             run-tests: 'yes'
-            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
 
           - operating-system: macos-latest
             php-version: ${{ needs.setup.outputs.PHP_MAX }}
             job-description: Fixer on macOS
             run-fixer: 'yes'
-            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
 
           - operating-system: macos-latest
             php-version: ${{ needs.setup.outputs.PHP_MAX }}
             job-description: tests on macOS
             run-tests: 'yes'
-            PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1 # we need full syntax check on one job at least, no need to do it on additional systems
 
           - operating-system: ubuntu-24.04
             php-version: ${{ needs.setup.outputs.PHP_MAX }}
@@ -246,7 +244,6 @@ jobs:
         if: matrix.run-tests == 'yes' && matrix.install-phpunit-12 == 'yes'
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
-          PHP_CS_FIXER_FAST_LINT_TEST_CASES: ${{ matrix.PHP_CS_FIXER_FAST_LINT_TEST_CASES }}
         run: |
           composer require --dev --with-all-dependencies phpunit/phpunit:"^9.6 || ^12.5.14" # mention ^9.6 to keep trace of minimum supported version, needed for utests
           php php-cs-fixer fix --quiet --rules=php_unit_attributes
@@ -255,7 +252,6 @@ jobs:
         if: matrix.run-tests == 'yes' && matrix.install-phpunit-13 == 'yes'
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
-          PHP_CS_FIXER_FAST_LINT_TEST_CASES: ${{ matrix.PHP_CS_FIXER_FAST_LINT_TEST_CASES }}
         run: |
           sed -i '/<extensions>/,/<\/extensions>/d' phpunit.xml.dist
           composer remove --dev facile-it/paraunit --no-update
@@ -284,13 +280,11 @@ jobs:
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage != 'yes'
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
-          PHP_CS_FIXER_FAST_LINT_TEST_CASES: ${{ matrix.PHP_CS_FIXER_FAST_LINT_TEST_CASES }}
         run: composer test:short-open-tag
 
       - name: Run tests and collect code coverage
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
         env:
-          PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
         run: vendor/bin/paraunit coverage --testsuite unit --pass-through=--exclude-group=covers-nothing --clover=build/logs/clover.xml
 
@@ -298,7 +292,6 @@ jobs:
         # Run only on pull requests because we run mutations tests only for diff between branches
         if: github.event_name == 'pull_request' && matrix.run-mutation-tests == 'yes'
         env:
-          PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
         run: |
           git fetch origin $GITHUB_BASE_REF
@@ -364,6 +357,4 @@ jobs:
         run: vendor/bin/phpunit --check-php-configuration
 
       - name: Run smoke tests
-        env:
-          PHP_CS_FIXER_FAST_LINT_TEST_CASES: 1
         run: vendor/bin/phpunit --testsuite smoke ${{ matrix.phpunit-flags }}
