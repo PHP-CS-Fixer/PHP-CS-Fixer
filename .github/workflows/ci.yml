@@ -248,7 +248,7 @@ jobs:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           PHP_CS_FIXER_FAST_LINT_TEST_CASES: ${{ matrix.PHP_CS_FIXER_FAST_LINT_TEST_CASES }}
         run: |
-          composer require --dev --with-all-dependencies phpunit/phpunit:"^9.6 || ^12.1.5" # mention ^9.6 to keep trace of minimum supported version, needed for utests
+          composer require --dev --with-all-dependencies phpunit/phpunit:"^9.6 || ^12.5.14" # mention ^9.6 to keep trace of minimum supported version, needed for utests
           php php-cs-fixer fix --quiet --rules=php_unit_attributes
 
       - name: Install PHPUnit 13
