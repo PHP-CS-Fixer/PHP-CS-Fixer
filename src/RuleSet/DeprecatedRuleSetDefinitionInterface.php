@@ -25,6 +25,8 @@ interface DeprecatedRuleSetDefinitionInterface extends RuleSetDefinitionInterfac
      * Returns names of rule sets to use instead, if any.
      *
      * @return list<string>
+     *
+     * @TODO v4: remove me
      */
     public function getSuccessorsNames(): array;
 }
