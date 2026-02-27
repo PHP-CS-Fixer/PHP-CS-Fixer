@@ -20,9 +20,9 @@ Configuration
 
 Type groups to fix.
 
-Allowed values: a subset of ``['alias', 'meta', 'simple']``
+Allowed values: a subset of ``['alias', 'meta', 'simple', 'soft_reserved']``
 
-Default value: ``['alias', 'meta', 'simple']``
+Default value: ``['alias', 'meta', 'simple', 'soft_reserved']``
 
 Examples
 --------
