@@ -72,7 +72,7 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
     /**
      * {@inheritdoc}
      *
-     * Must run before BinaryOperatorSpacesFixer, SingleSpaceAfterConstructFixer, SingleSpaceAroundConstructFixer, TernaryOperatorSpacesFixer.
+     * Must run before BinaryOperatorSpacesFixer, NoWhitespaceInEmptyArrayFixer, SingleSpaceAfterConstructFixer, SingleSpaceAroundConstructFixer, TernaryOperatorSpacesFixer.
      */
     public function getPriority(): int
     {
