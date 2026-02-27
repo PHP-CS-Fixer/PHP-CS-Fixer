@@ -79,7 +79,10 @@ final class NoRedundantReadonlyPropertyFixer extends AbstractFixer
                 continue;
             }
 
-            $classIndex = $tokens->getPrevTokenOfKind($index, [[\T_CLASS]]);
+            $classIndex = $element['classIndex'];
+            if (!$tokens[$classIndex]->isGivenKind(\T_CLASS)) {
+                continue;
+            }
             $modifiers = $tokensAnalyzer->getClassyModifiers($classIndex);
             if (null === $modifiers['readonly']) {
                 continue;
