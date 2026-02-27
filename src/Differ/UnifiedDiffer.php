@@ -23,6 +23,13 @@ use SebastianBergmann\Diff\Output\StrictUnifiedDiffOutputBuilder;
  */
 final class UnifiedDiffer implements DifferInterface
 {
+    private array $options;
+
+    public function __construct(array $options = [])
+    {
+        $this->options = $options;
+    }
+
     public function diff(string $old, string $new, ?\SplFileInfo $file = null): string
     {
         if (null === $file) {
@@ -42,6 +49,8 @@ final class UnifiedDiffer implements DifferInterface
                 'toFile' => $filePath,
             ];
         }
+
+        $options = array_merge($this->options, $options);
 
         $differ = new Differ(new StrictUnifiedDiffOutputBuilder($options));
 
