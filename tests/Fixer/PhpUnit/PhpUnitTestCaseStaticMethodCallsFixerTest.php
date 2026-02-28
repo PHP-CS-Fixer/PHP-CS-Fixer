@@ -86,6 +86,21 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
             ['methods' => ['assertSame' => 123]],
             '[php_unit_test_case_static_method_calls] Invalid configuration: The option "methods" with value array is expected to be of type "string[]", but one of the elements is of type "int".',
         ];
+
+        yield 'unknown assertion set' => [
+            ['assertions' => ['@Unknown']],
+            'Unknown set "@Unknown"',
+        ];
+
+        yield 'empty assertion string' => [
+            ['assertions' => ['']],
+            'Each element must be a non-empty, trimmed string',
+        ];
+
+        yield 'unrecognized method without custom assertion' => [
+            ['methods' => ['assertCustomThing' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_THIS]],
+            'Method "assertCustomThing" is not recognized',
+        ];
     }
 
     public function testWrongConfigTypeForMethodsAndTargetVersion(): void
@@ -96,36 +111,6 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
         $this->fixer->configure([
             'methods' => ['once' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_SELF],
             'target' => PhpUnitTargetVersion::VERSION_11_0,
-        ]);
-    }
-
-    public function testInvalidAssertionUnknownSet(): void
-    {
-        $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches('/Unknown set "@Unknown"/');
-
-        $this->fixer->configure([
-            'assertions' => ['@Unknown'],
-        ]);
-    }
-
-    public function testInvalidAssertionEmptyString(): void
-    {
-        $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches('/Each element must be a non-empty, trimmed string/');
-
-        $this->fixer->configure([
-            'assertions' => [''],
-        ]);
-    }
-
-    public function testMethodsConfigWithUnrecognizedMethod(): void
-    {
-        $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches('/Method "assertCustomThing" is not recognized/');
-
-        $this->fixer->configure([
-            'methods' => ['assertCustomThing' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_THIS],
         ]);
     }
 
