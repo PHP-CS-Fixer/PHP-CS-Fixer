@@ -402,7 +402,7 @@ abstract class AbstractFixerTestCase extends TestCase
             ClassDefinitionFixerTest::class => ['testClassyDefinitionInfo', 'provideClassyDefinitionInfoCases', 'testClassyInheritanceInfo', 'provideClassyInheritanceInfoCases', 'testClassyInheritanceInfoPre80', 'provideClassyInheritanceInfoPre80Cases'],
             NoEmptyCommentFixerTest::class => ['testGetCommentBlock', 'provideGetCommentBlockCases'],
             NoUselessElseFixerTest::class => ['testBlockDetection', 'provideBlockDetectionCases', 'testIsInConditionWithoutBraces', 'provideIsInConditionWithoutBracesCases'],
-            PhpUnitTestCaseStaticMethodCallsFixerTest::class => ['testFixerContainsAllPhpunitStaticMethodsInItsList', 'testWrongConfigTypeForMethodsAndTargetVersion', 'testPHPUnit10', 'testPHPUnit11', 'testPHPUnit12', 'testPHPUnit13', 'testPHPUnit14'],
+            PhpUnitTestCaseStaticMethodCallsFixerTest::class => ['testFixerContainsAllPhpunitStaticMethodsInItsList', 'testWrongConfigTypeForMethodsAndTargetVersion', 'testMethodsConfigWithCustomAssertionWorks', 'testPHPUnit10', 'testPHPUnit11', 'testPHPUnit12', 'testPHPUnit13', 'testPHPUnit14'],
         ];
 
         $names = ['Fix', 'FixDeprecated', 'FixPre80', 'Fix80', 'FixPre81', 'Fix81', 'Fix82', 'Fix83', 'FixPre84', 'Fix84', 'FixPre85', 'Fix85', 'WithShortOpenTag', 'WithWhitespacesConfig', 'InvalidConfiguration'];

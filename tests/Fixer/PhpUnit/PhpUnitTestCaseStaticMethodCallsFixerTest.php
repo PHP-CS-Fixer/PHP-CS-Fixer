@@ -86,6 +86,21 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
             ['methods' => ['assertSame' => 123]],
             '[php_unit_test_case_static_method_calls] Invalid configuration: The option "methods" with value array is expected to be of type "string[]", but one of the elements is of type "int".',
         ];
+
+        yield 'unknown assertion set' => [
+            ['assertions' => ['@Unknown']],
+            'Unknown set "@Unknown"',
+        ];
+
+        yield 'empty assertion string' => [
+            ['assertions' => ['']],
+            'Each element must be a non-empty, trimmed string',
+        ];
+
+        yield 'unrecognized method without custom assertion' => [
+            ['methods' => ['assertCustomThing' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_THIS]],
+            'Method "assertCustomThing" is not recognized',
+        ];
     }
 
     public function testWrongConfigTypeForMethodsAndTargetVersion(): void
@@ -97,6 +112,17 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
             'methods' => ['once' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_SELF],
             'target' => PhpUnitTargetVersion::VERSION_11_0,
         ]);
+    }
+
+    public function testMethodsConfigWithCustomAssertionWorks(): void
+    {
+        // This should not throw an exception
+        $this->fixer->configure([
+            'assertions' => ['assertCustomThing'],
+            'methods' => ['assertCustomThing' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_SELF],
+        ]);
+
+        $this->addToAssertionCount(1); // If we get here without exception, test passes
     }
 
     /**
@@ -588,6 +614,207 @@ class MyTest extends \PHPUnit_Framework_TestCase
                     }
                 };
                 PHP,
+        ];
+
+        yield 'custom assertion with default call_type' => [
+            <<<'EOF'
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testCustom()
+                    {
+                        static::assertCustomThing(1, 2);
+                        static::assertSame(3, 4);
+                    }
+                }
+                EOF,
+            <<<'EOF'
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testCustom()
+                    {
+                        $this->assertCustomThing(1, 2);
+                        $this->assertSame(3, 4);
+                    }
+                }
+                EOF,
+            ['assertions' => ['assertCustomThing']],
+        ];
+
+        yield 'Symfony set assertions' => [
+            <<<'EOF'
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testSymfony()
+                    {
+                        static::assertResponseIsSuccessful();
+                        static::assertResponseStatusCodeSame(200);
+                        static::assertSelectorTextContains('h1', 'Hello');
+                        static::assertSame(1, 2);
+                    }
+                }
+                EOF,
+            <<<'EOF'
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testSymfony()
+                    {
+                        $this->assertResponseIsSuccessful();
+                        $this->assertResponseStatusCodeSame(200);
+                        $this->assertSelectorTextContains('h1', 'Hello');
+                        $this->assertSame(1, 2);
+                    }
+                }
+                EOF,
+            ['assertions' => [PhpUnitTestCaseStaticMethodCallsFixer::SET_SYMFONY]],
+        ];
+
+        yield 'combined Symfony set and custom assertions' => [
+            <<<'EOF'
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testCombined()
+                    {
+                        static::assertResponseIsSuccessful();
+                        static::assertCustomThing(1, 2);
+                        static::assertAnotherCustom('value');
+                        static::assertSame(3, 4);
+                    }
+                }
+                EOF,
+            <<<'EOF'
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testCombined()
+                    {
+                        $this->assertResponseIsSuccessful();
+                        $this->assertCustomThing(1, 2);
+                        $this->assertAnotherCustom('value');
+                        $this->assertSame(3, 4);
+                    }
+                }
+                EOF,
+            ['assertions' => [PhpUnitTestCaseStaticMethodCallsFixer::SET_SYMFONY, 'assertCustomThing', 'assertAnotherCustom']],
+        ];
+
+        yield '@all set includes Symfony assertions' => [
+            <<<'EOF'
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testAll()
+                    {
+                        static::assertResponseIsSuccessful();
+                        static::assertSelectorTextContains('h1', 'Test');
+                        static::assertSame(1, 2);
+                    }
+                }
+                EOF,
+            <<<'EOF'
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testAll()
+                    {
+                        $this->assertResponseIsSuccessful();
+                        $this->assertSelectorTextContains('h1', 'Test');
+                        $this->assertSame(1, 2);
+                    }
+                }
+                EOF,
+            ['assertions' => [PhpUnitTestCaseStaticMethodCallsFixer::SET_ALL]],
+        ];
+
+        yield 'custom assertions with call_type this' => [
+            <<<'EOF'
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testCustomThis()
+                    {
+                        $this->assertCustomThing(1, 2);
+                        $this->assertResponseIsSuccessful();
+                        $this->assertSame(3, 4);
+                    }
+                }
+                EOF,
+            <<<'EOF'
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testCustomThis()
+                    {
+                        static::assertCustomThing(1, 2);
+                        self::assertResponseIsSuccessful();
+                        $this->assertSame(3, 4);
+                    }
+                }
+                EOF,
+            [
+                'call_type' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_THIS,
+                'assertions' => [PhpUnitTestCaseStaticMethodCallsFixer::SET_SYMFONY, 'assertCustomThing'],
+            ],
+        ];
+
+        yield 'custom assertions not recognized without configuration' => [
+            <<<'EOF'
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testNoConfig()
+                    {
+                        $this->assertCustomThing(1, 2);
+                        static::assertSame(3, 4);
+                    }
+                }
+                EOF,
+            <<<'EOF'
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testNoConfig()
+                    {
+                        $this->assertCustomThing(1, 2);
+                        $this->assertSame(3, 4);
+                    }
+                }
+                EOF,
+        ];
+
+        yield 'custom assertion with methods config override' => [
+            <<<'EOF'
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testOverride()
+                    {
+                        static::assertSame(1, 2);
+                        self::assertCustomThing(3, 4);
+                        static::assertResponseIsSuccessful();
+                    }
+                }
+                EOF,
+            <<<'EOF'
+                <?php
+                class MyTest extends \PHPUnit_Framework_TestCase
+                {
+                    public function testOverride()
+                    {
+                        $this->assertSame(1, 2);
+                        $this->assertCustomThing(3, 4);
+                        $this->assertResponseIsSuccessful();
+                    }
+                }
+                EOF,
+            [
+                'assertions' => [PhpUnitTestCaseStaticMethodCallsFixer::SET_SYMFONY, 'assertCustomThing'],
+                'methods' => ['assertCustomThing' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_SELF],
+            ],
         ];
     }
 
