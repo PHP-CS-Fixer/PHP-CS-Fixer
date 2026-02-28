@@ -88,6 +88,7 @@ final class NoTrailingWhitespaceFixer extends AbstractFixer
                 }
 
                 for ($i = 1; $i < $linesSize; ++$i) {
+                    \assert(isset($lines[$i]));
                     $trimmedLine = rtrim($lines[$i], " \t");
                     if ('' !== $trimmedLine) {
                         $lines[$i] = $trimmedLine;

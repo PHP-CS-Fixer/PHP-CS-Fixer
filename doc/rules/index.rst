@@ -898,7 +898,7 @@ Strict
 
 - `declare_strict_types <./strict/declare_strict_types.rst>`_ *(risky, configurable)*
 
-  Force strict types declaration in all files.
+  Force a strict types mode in all files.
 - `strict_comparison <./strict/strict_comparison.rst>`_ *(risky)*
 
   Comparisons should be strict.
