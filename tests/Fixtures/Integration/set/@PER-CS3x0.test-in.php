@@ -24,6 +24,13 @@ class Foo extends Bar implements FooInterfaceA{
         }
 
         $combined = $a.$b;
+        $array =
+            [
+                'foo' => 'bar',
+                'abc'
+                    =>
+                    'edf',
+            ];
 
         try {
             STATIC::baz();
