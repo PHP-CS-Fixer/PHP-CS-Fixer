@@ -73,6 +73,24 @@ final class NoRedundantReadonlyPropertyFixerTest extends AbstractFixerTestCase
                 PHP,
         ];
 
+        yield 'trait with anonymous class' => [
+            <<<'PHP'
+                <?php
+                trait T
+                {
+                    protected string $foo = 'bar';
+
+                    public function setUp(): void
+                    {
+                        $x = new class() extends \stdClass {
+                            public string $foo;
+                        };
+                    }
+                }
+                PHP,
+            null,
+        ];
+
         yield 'promoted properties' => [
             <<<'PHP'
                 <?php
