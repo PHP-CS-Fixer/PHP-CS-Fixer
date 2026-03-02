@@ -1267,11 +1267,54 @@ function foo(&$c) {
 ',
         ];
 
-        yield 'doc comment for the variable' => [
+        yield 'doc comment with @var tag for the variable' => [
             '<?php
 
 function foo() {
     /** @var int[] */
+    $a = doSomething();
+
+    return $a;
+}
+',
+        ];
+
+        yield 'doc comment with @phpstan-var tag for the variable' => [
+            '<?php
+
+function foo() {
+    /** @phpstan-var int[] */
+    $a = doSomething();
+
+    return $a;
+}
+',
+        ];
+
+        yield 'doc comment with @psalm-var tag for the variable' => [
+            '<?php
+
+function foo() {
+    /** @psalm-var int[] */
+    $a = doSomething();
+
+    return $a;
+}
+',
+        ];
+
+        yield 'doc comment without tags for the variable' => [
+            '<?php
+
+function foo() {
+    /** Just saying hello */
+    return doSomething();
+}
+',
+            '<?php
+
+function foo() {
+    /** Just saying hello */
     $a = doSomething();
 
     return $a;

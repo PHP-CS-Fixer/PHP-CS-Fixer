@@ -18,6 +18,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
@@ -279,7 +280,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
             }
 
             // We skip cases where a variable has a doc comment, because removing a variable can break static analysis
-            if ($this->hasDocComment($tokens, $assignVarIndex, $functionOpenIndex)) {
+            if ($this->hasVarDocTag($tokens, $assignVarIndex, $functionOpenIndex)) {
                 continue;
             }
 
@@ -477,11 +478,16 @@ final class ReturnAssignmentFixer extends AbstractFixer
         return $tokens[$index]->isGivenKind(\T_MATCH) ? $index : null;
     }
 
-    private function hasDocComment(Tokens $tokens, int $assignVarIndex, int $functionOpenIndex): bool
+    private function hasVarDocTag(Tokens $tokens, int $assignVarIndex, int $functionOpenIndex): bool
     {
         $docIndex = $tokens->getPrevTokenOfKind($assignVarIndex, [[\T_DOC_COMMENT]]);
+        if (null === $docIndex || $docIndex <= $functionOpenIndex) {
+            return false;
+        }
 
-        return null !== $docIndex && $docIndex > $functionOpenIndex;
+        $docTokenContent = $tokens[$docIndex]->getContent();
+
+        return Preg::match('/@(?:var|phpstan-var|psalm-var)\b/', strtolower($docTokenContent));
     }
 
     private function isUsedInCatchOrFinally(Tokens $tokens, int $returnVarIndex, int $functionOpenIndex, int $functionCloseIndex): bool
