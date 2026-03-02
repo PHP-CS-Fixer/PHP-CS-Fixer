@@ -279,7 +279,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
                 continue;
             }
 
-            // We skip cases where a variable has a doc comment, because removing a variable can break static analysis
+            // We skip cases where a variable has an @var tag, as removing the variable may break static analysis.
             if ($this->hasVarDocTag($tokens, $assignVarIndex, $functionOpenIndex)) {
                 continue;
             }
