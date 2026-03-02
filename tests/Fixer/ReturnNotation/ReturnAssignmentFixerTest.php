@@ -1267,6 +1267,37 @@ function foo(&$c) {
 ',
         ];
 
+        yield 'doc comment for the variable' => [
+            '<?php
+
+function foo() {
+    /** @var int[] */
+    $a = doSomething();
+
+    return $a;
+}
+',
+        ];
+
+        yield 'basic comment for the variable' => [
+            '<?php
+
+function foo() {
+    // some comment
+    return doSomething();
+}
+',
+            '<?php
+
+function foo() {
+    // some comment
+    $a = doSomething();
+
+    return $a;
+}
+',
+        ];
+
         $expected = "<?php\n";
         $input = "<?php\n";
 

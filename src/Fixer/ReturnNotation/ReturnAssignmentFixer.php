@@ -278,6 +278,11 @@ final class ReturnAssignmentFixer extends AbstractFixer
                 continue;
             }
 
+            // We skip cases where a variable has a doc comment, because removing a variable can break static analysis
+            if ($this->hasDocComment($tokens, $assignVarIndex, $functionOpenIndex)) {
+                continue;
+            }
+
             // Check if there is a `catch` or `finally` block between the assignment and the return
             if ($this->isUsedInCatchOrFinally($tokens, $returnVarIndex, $functionOpenIndex, $functionCloseIndex)) {
                 continue;
@@ -470,6 +475,13 @@ final class ReturnAssignmentFixer extends AbstractFixer
         $index = $tokens->getPrevMeaningfulToken($index);
 
         return $tokens[$index]->isGivenKind(\T_MATCH) ? $index : null;
+    }
+
+    private function hasDocComment(Tokens $tokens, int $assignVarIndex, int $functionOpenIndex): bool
+    {
+        $docIndex = $tokens->getPrevTokenOfKind($assignVarIndex, [[\T_DOC_COMMENT]]);
+
+        return null !== $docIndex && $docIndex > $functionOpenIndex;
     }
 
     private function isUsedInCatchOrFinally(Tokens $tokens, int $returnVarIndex, int $functionOpenIndex, int $functionCloseIndex): bool
