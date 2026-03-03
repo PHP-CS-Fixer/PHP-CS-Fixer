@@ -3464,7 +3464,7 @@ function test()
                 <?php
                 echo match ($foo) {
                     0       => 'one two',
-                    1, 2 => 'one two',
+                    1, 2    => 'one two',
                     3       => 'three',
                     default => 'whatever',
                 };

@@ -822,6 +822,10 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                         break;
                     }
 
+                    if ($tokens[$i + 1]->isGivenKind(\T_DOUBLE_ARROW)) {
+                        break;
+                    }
+
                     if ($tokens[$i + 1]->isGivenKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
                         $arrayStartIndex = $tokens[$i + 1]->isGivenKind(\T_ARRAY)
                             ? $tokens->getNextMeaningfulToken($i + 1)
