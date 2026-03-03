@@ -3459,11 +3459,11 @@ function test()
             }',
         ];
 
-        yield 'enum' => [
+        yield 'match' => [
             <<<'PHP'
                 <?php
                 echo match ($foo) {
-                    0       => 'one two',
+                    0       => 'zero',
                     1, 2    => 'one two',
                     3       => 'three',
                     default => 'whatever',
@@ -3472,10 +3472,34 @@ function test()
             <<<'PHP'
                 <?php
                 echo match ($foo) {
-                    0 => 'one two',
+                    0 => 'zero',
                     1, 2 => 'one two',
                     3 => 'three',
                     default => 'whatever',
+                };
+                PHP,
+            ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_BY_SCOPE]],
+        ];
+
+        yield 'match with many values' => [
+            <<<'PHP'
+                <?php
+                echo match ($foo) {
+                    0, 1, 2, 3, 4                          => 'digit',
+                    C1                                     => 'constant C1',
+                    default                                => 'default or 0',
+                    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' => 'letter',
+                    C2                                     => 'constant C2',
+                };
+                PHP,
+            <<<'PHP'
+                <?php
+                echo match ($foo) {
+                    0, 1, 2, 3, 4 => 'digit',
+                    C1 => 'constant C1',
+                    default => 'default or 0',
+                    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' => 'letter',
+                    C2 => 'constant C2',
                 };
                 PHP,
             ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_BY_SCOPE]],
