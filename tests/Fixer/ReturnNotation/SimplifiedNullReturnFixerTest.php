@@ -215,19 +215,6 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
                     public ?string $bar {
                         get {
                             if ($this->bar === 'top secret') {
-                                return;
-                            }
-                            return $this->bar;
-                        }
-                    }
-                }
-                PHP,
-            <<<'PHP'
-                <?php class Foo
-                {
-                    public ?string $bar {
-                        get {
-                            if ($this->bar === 'top secret') {
                                 return null;
                             }
                             return $this->bar;

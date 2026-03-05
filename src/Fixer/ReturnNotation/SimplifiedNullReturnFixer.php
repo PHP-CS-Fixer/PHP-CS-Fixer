@@ -65,8 +65,14 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(\T_RETURN)) {
+        for ($index = $tokens->count() - 1; $index > 0; --$index) {
+            if ($tokens[$index]->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_CLOSE)) {
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PROPERTY_HOOK, $index);
+
+                continue;
+            }
+
+            if (!$tokens[$index]->isGivenKind(\T_RETURN)) {
                 continue;
             }
 
