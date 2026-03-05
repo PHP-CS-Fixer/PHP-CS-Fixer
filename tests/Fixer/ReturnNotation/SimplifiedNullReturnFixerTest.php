@@ -192,4 +192,49 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
             }',
         ];
     }
+
+    /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, 1?: string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield 'nullable property with hook' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public ?string $bar {
+                        get {
+                            if ($this->bar === 'top secret') {
+                                return;
+                            }
+                            return $this->bar;
+                        }
+                    }
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public ?string $bar {
+                        get {
+                            if ($this->bar === 'top secret') {
+                                return null;
+                            }
+                            return $this->bar;
+                        }
+                    }
+                }
+                PHP,
+        ];
+    }
 }
