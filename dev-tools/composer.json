@@ -12,7 +12,7 @@
         "phpstan/phpstan": "^2.1.40",
         "phpstan/phpstan-phpunit": "^2.0.16",
         "phpstan/phpstan-strict-rules": "^2.0.10",
-        "phpstan/phpstan-symfony": "^2.0.14",
+        "phpstan/phpstan-symfony": "^2.0.15",
         "shipmonk/composer-dependency-analyser": "^1.8.4",
         "shipmonk/dead-code-detector": "^0.14.1",
         "shipmonk/phpstan-baseline-per-identifier": "^2.3.0"
