@@ -223,5 +223,48 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
                 }
                 PHP,
         ];
+
+        yield 'nullable property with hook and callable' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public ?string $bar {
+                        get {
+                            $getSecret = function () {
+                                if (random_int(0, 1) === 0) {
+                                    return;
+                                }
+                                return 'top secret';
+                            };
+
+                            if ($getSecret() === null) {
+                                return null;
+                            }
+                            return $this->bar;
+                        }
+                    }
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public ?string $bar {
+                        get {
+                            $getSecret = function () {
+                                if (random_int(0, 1) === 0) {
+                                    return null;
+                                }
+                                return 'top secret';
+                            };
+
+                            if ($getSecret() === null) {
+                                return null;
+                            }
+                            return $this->bar;
+                        }
+                    }
+                }
+                PHP,
+        ];
     }
 }
