@@ -1348,10 +1348,11 @@ class Bar
                 namespace Foo;
                 use function a;
                 use function b;
+                use function c;
                 use function d;
                 $a = a();
                 $b = b(...);
-                $c = \c(...);
+                $c = c(...);
                 $c = d();
                 PHP,
             <<<'PHP'
@@ -1378,7 +1379,7 @@ class Bar
                 use function c;
                 use function d;
                 $a = \a();
-                $b = b(...);
+                $b = \b(...);
                 $c = \c(...);
                 $c = \d();
                 PHP,
