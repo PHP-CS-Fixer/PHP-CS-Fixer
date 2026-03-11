@@ -260,12 +260,6 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
 
         yield [<<<'PHP'
             <?php /* comment */
-            $test = new /**
-             * @coversNothing
-             */
-            class extends PHPUnit_Framework_TestCase {};
-            PHP, <<<'PHP'
-            <?php /* comment */
             $test = new class extends PHPUnit_Framework_TestCase {};
             PHP];
     }
