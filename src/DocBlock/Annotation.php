@@ -50,6 +50,8 @@ final class Annotation implements \Stringable
         'throws',
         'type',
         'var',
+        'phpstan-var',
+        'psalm-var',
     ];
 
     /**

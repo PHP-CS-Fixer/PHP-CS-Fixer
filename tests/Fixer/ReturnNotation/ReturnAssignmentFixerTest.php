@@ -1267,7 +1267,14 @@ function foo(&$c) {
 ',
         ];
 
-        yield 'doc comment with @var tag for the variable' => [
+        yield 'doc comment with @var tag for the variable (without variable name)' => [
+            '<?php
+
+function foo() {
+    /** @var int[] */
+    return doSomething();
+}
+',
             '<?php
 
 function foo() {
@@ -1279,7 +1286,26 @@ function foo() {
 ',
         ];
 
-        yield 'doc comment with @phpstan-var tag for the variable' => [
+        yield 'doc comment with @var tag for the variable (with variable name)' => [
+            '<?php
+
+function foo() {
+    /** @var int[] $a */
+    $a = doSomething();
+
+    return $a;
+}
+',
+        ];
+
+        yield 'doc comment with @phpstan-var tag for the variable (without variable name)' => [
+            '<?php
+
+function foo() {
+    /** @phpstan-var int[] */
+    return doSomething();
+}
+',
             '<?php
 
 function foo() {
@@ -1291,11 +1317,42 @@ function foo() {
 ',
         ];
 
-        yield 'doc comment with @psalm-var tag for the variable' => [
+        yield 'doc comment with @phpstan-var tag for the variable (with variable name)' => [
+            '<?php
+
+function foo() {
+    /** @phpstan-var int[] $a */
+    $a = doSomething();
+
+    return $a;
+}
+',
+        ];
+
+        yield 'doc comment with @psalm-var tag for the variable (without variable name)' => [
             '<?php
 
 function foo() {
     /** @psalm-var int[] */
+    return doSomething();
+}
+',
+            '<?php
+
+function foo() {
+    /** @psalm-var int[] */
+    $a = doSomething();
+
+    return $a;
+}
+',
+        ];
+
+        yield 'doc comment with @psalm-var tag for the variable (with variable name)' => [
+            '<?php
+
+function foo() {
+    /** @psalm-var int[] $a */
     $a = doSomething();
 
     return $a;

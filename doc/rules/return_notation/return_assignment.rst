@@ -22,6 +22,30 @@ Example #1
    +    return 1;
     }
 
+Example #2
+~~~~~~~~~~
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+
+    function foo() {
+        /** @var int[] */
+   -    $a = doSomething();
+   -
+   -    return $a;
+   +    return doSomething();
+    }
+
+    function bar() {
+        /** @var int[] $b */
+        $b = doSomething();
+
+        return $b;
+    }
+
 Rule sets
 ---------
 

@@ -15,10 +15,10 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\ReturnNotation;
 
 use PhpCsFixer\AbstractFixer;
+use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
-use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
@@ -36,7 +36,29 @@ final class ReturnAssignmentFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Local, dynamic and directly referenced variables should not be assigned and directly returned by a function or method.',
-            [new CodeSample("<?php\nfunction a() {\n    \$a = 1;\n    return \$a;\n}\n")],
+            [
+                new CodeSample("<?php\nfunction a() {\n    \$a = 1;\n    return \$a;\n}\n"),
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+
+                        function foo() {
+                            /** @var int[] */
+                            $a = doSomething();
+
+                            return $a;
+                        }
+
+                        function bar() {
+                            /** @var int[] $b */
+                            $b = doSomething();
+
+                            return $b;
+                        }
+
+                        PHP,
+                ),
+            ],
         );
     }
 
@@ -280,7 +302,7 @@ final class ReturnAssignmentFixer extends AbstractFixer
             }
 
             // We skip cases where a variable has an @var tag, as removing the variable may break static analysis.
-            if ($this->hasVarDocTag($tokens, $assignVarIndex, $functionOpenIndex)) {
+            if ($this->hasVarDocTagWithVarName($tokens, $assignVarIndex, $functionOpenIndex)) {
                 continue;
             }
 
@@ -478,16 +500,23 @@ final class ReturnAssignmentFixer extends AbstractFixer
         return $tokens[$index]->isGivenKind(\T_MATCH) ? $index : null;
     }
 
-    private function hasVarDocTag(Tokens $tokens, int $assignVarIndex, int $functionOpenIndex): bool
+    private function hasVarDocTagWithVarName(Tokens $tokens, int $assignVarIndex, int $functionOpenIndex): bool
     {
         $docIndex = $tokens->getPrevTokenOfKind($assignVarIndex, [[\T_DOC_COMMENT]]);
         if (null === $docIndex || $docIndex <= $functionOpenIndex) {
             return false;
         }
 
-        $docTokenContent = $tokens[$docIndex]->getContent();
+        $doc = new DocBlock($tokens[$docIndex]->getContent());
+        $annotations = $doc->getAnnotationsOfType(['var', 'psalm-var', 'phpstan-var']);
 
-        return Preg::match('/@(?:var|phpstan-var|psalm-var)\b/', strtolower($docTokenContent));
+        foreach ($annotations as $annotation) {
+            if (null !== $annotation->getVariableName()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function isUsedInCatchOrFinally(Tokens $tokens, int $returnVarIndex, int $functionOpenIndex, int $functionCloseIndex): bool
