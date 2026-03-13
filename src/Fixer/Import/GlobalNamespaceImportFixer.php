@@ -304,7 +304,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
                 continue;
             }
 
-            if (!$analyzer->isGlobalFunctionCall($tokens, $index)) {
+            if (!$analyzer->isGlobalFunctionUsage($tokens, $index)) {
                 continue;
             }
 
@@ -543,7 +543,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
                 continue;
             }
 
-            if (!$analyzer->isGlobalFunctionCall($tokens, $index)) {
+            if (!$analyzer->isGlobalFunctionUsage($tokens, $index)) {
                 continue;
             }
 
