@@ -360,7 +360,6 @@ final class ReturnAssignmentFixer extends AbstractFixer implements ConfigurableF
                 continue;
             }
 
-            // We skip cases where a variable has a named @var tag, as removing the variable may break static analysis.
             if (
                 $this->configuration['skip_named_var_tags']
                 && $this->hasVarDocTagWithVarName($tokens, $assignVarIndex, $functionOpenIndex)
