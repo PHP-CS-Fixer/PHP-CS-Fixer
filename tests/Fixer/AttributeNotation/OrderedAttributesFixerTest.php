@@ -73,6 +73,22 @@ final class OrderedAttributesFixerTest extends AbstractFixerTestCase
             ],
             'The list includes attributes that are not unique.',
         ];
+
+        yield 'Wildcard in the middle of FQNs' => [
+            [
+                'sort_algorithm' => OrderedAttributesFixer::ORDER_CUSTOM,
+                'order' => ['A\*\Bar'],
+            ],
+            'Wildcards are only allowed at the end of FQNs.',
+        ];
+
+        yield 'Wildcard in the middle and at the end of FQNs' => [
+            [
+                'sort_algorithm' => OrderedAttributesFixer::ORDER_CUSTOM,
+                'order' => ['A\*\Bar\*'],
+            ],
+            'Wildcards are only allowed at the end of FQNs.',
+        ];
     }
 
     /**
@@ -807,6 +823,107 @@ final class OrderedAttributesFixerTest extends AbstractFixerTestCase
             [
                 'sort_algorithm' => OrderedAttributesFixer::ORDER_CUSTOM,
                 'order' => ['Test\A\B\Quux', 'A\B\Bar', 'Test\Corge', 'A\B\Baz', 'A\B\Qux'],
+            ],
+        ];
+
+        yield 'Explicit with secondary sort' => [
+            '<?php
+            namespace Test;
+
+            #[\G\H\I\Garply]
+            #[\G\H\I\Grault]
+            #[\D\E\F\Baz]
+            #[\D\E\F\Qux]
+            #[\A\B\C\Bar]
+            #[\A\B\C\Foo]
+            #[\G\H\I\Corge]
+            #[\G\H\I\Quux]
+            function f() {}
+            ',
+            '<?php
+            namespace Test;
+
+            #[\A\B\C\Foo]
+            #[\A\B\C\Bar]
+            #[\G\H\I\Grault]
+            #[\G\H\I\Garply]
+            #[\D\E\F\Qux]
+            #[\D\E\F\Baz]
+            #[\G\H\I\Quux]
+            #[\G\H\I\Corge]
+            function f() {}
+            ',
+            [
+                'sort_algorithm' => OrderedAttributesFixer::ORDER_CUSTOM,
+                'order' => ['G\H\I\Garply', 'G\H\I\Grault', 'D\E\F\Baz', 'D\E\F\Qux'],
+                'secondary_sort' => true,
+            ],
+        ];
+
+        yield 'Explicit with wildcards and without secondary sort' => [
+            '<?php
+            namespace Test;
+
+            #[\G\H\I\Quux]
+            #[\G\H\I\Corge]
+            #[\D\E\F\Baz]
+            #[\D\E\F\Qux]
+            #[\A\B\C\Foo]
+            #[\A\B\C\Bar]
+            #[\G\H\I\Grault]
+            #[\G\H\I\Garply]
+            function f() {}
+            ',
+            '<?php
+            namespace Test;
+
+            #[\A\B\C\Foo]
+            #[\A\B\C\Bar]
+            #[\G\H\I\Grault]
+            #[\G\H\I\Garply]
+            #[\D\E\F\Qux]
+            #[\D\E\F\Baz]
+            #[\G\H\I\Quux]
+            #[\G\H\I\Corge]
+            function f() {}
+            ',
+            [
+                'sort_algorithm' => OrderedAttributesFixer::ORDER_CUSTOM,
+                'order' => ['*', 'D\E\F\Baz', 'D\E\F\Qux', 'A\B\C\*', 'G\H\I\G*'],
+            ],
+        ];
+
+        yield 'Explicit with wildcards and secondary sort' => [
+            '<?php
+            namespace Test;
+
+            #[\G\H\I\Corge]
+            #[\G\H\I\Quux]
+            #[\D\E\F\Baz]
+            #[\D\E\F\Qux]
+            #[\A\B\C\Bar]
+            #[\A\B\C\Foo]
+            #[\G\H\I\Garply]
+            #[\G\H\I\Grault]
+            function f() {}
+            ',
+            '<?php
+            namespace Test;
+
+            #[\A\B\C\Foo]
+            #[\A\B\C\Bar]
+            #[\G\H\I\Grault]
+            #[\G\H\I\Garply]
+            #[\D\E\F\Qux]
+            #[\D\E\F\Baz]
+            #[\G\H\I\Quux]
+            #[\G\H\I\Corge]
+            function f() {}
+            ',
+            [
+                'sort_algorithm' => OrderedAttributesFixer::ORDER_CUSTOM,
+                'order' => ['*', 'D\E\F\Baz', 'D\E\F\Qux', 'A\B\C\*', 'G\H\I\G*'],
+                'secondary_sort' => true,
             ],
         ];
     }
