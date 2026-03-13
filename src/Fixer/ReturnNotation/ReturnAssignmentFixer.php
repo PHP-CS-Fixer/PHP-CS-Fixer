@@ -362,7 +362,7 @@ final class ReturnAssignmentFixer extends AbstractFixer implements ConfigurableF
 
             if (
                 $this->configuration['skip_named_var_tags']
-                && $this->hasVarDocTagWithVarName($tokens, $assignVarIndex, $functionOpenIndex)
+                && $this->hasNamedVarTag($tokens, $assignVarIndex, $functionOpenIndex)
             ) {
                 continue;
             }
@@ -561,7 +561,7 @@ final class ReturnAssignmentFixer extends AbstractFixer implements ConfigurableF
         return $tokens[$index]->isGivenKind(\T_MATCH) ? $index : null;
     }
 
-    private function hasVarDocTagWithVarName(Tokens $tokens, int $assignVarIndex, int $functionOpenIndex): bool
+    private function hasNamedVarTag(Tokens $tokens, int $assignVarIndex, int $functionOpenIndex): bool
     {
         $docIndex = $tokens->getPrevTokenOfKind($assignVarIndex, [[\T_DOC_COMMENT]]);
         if (null === $docIndex || $docIndex <= $functionOpenIndex) {
