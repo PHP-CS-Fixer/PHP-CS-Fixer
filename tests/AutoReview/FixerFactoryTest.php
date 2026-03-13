@@ -353,6 +353,12 @@ final class FixerFactoryTest extends TestCase
                 'align_multiline_comment',
                 'binary_operator_spaces',
             ],
+            'array_singleline_multiline' => [
+                'array_indentation',
+                'no_trailing_comma_in_singleline',
+                'trailing_comma_in_multiline',
+                'whitespace_after_comma_in_array',
+            ],
             'array_syntax' => [
                 'binary_operator_spaces',
                 'single_space_after_construct',

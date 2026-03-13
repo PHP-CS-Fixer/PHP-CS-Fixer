@@ -1,0 +1,16 @@
+--TEST--
+Integration of fixers: array_singleline_multiline,trailing_comma_in_multiline.
+--RULESET--
+{"array_singleline_multiline": {"threshold": 0}, "trailing_comma_in_multiline": true}
+--EXPECT--
+<?php
+
+$foo = [
+'foo',
+'bar' => 'baz',
+];
+
+--INPUT--
+<?php
+
+$foo = ['foo','bar' => 'baz'];
