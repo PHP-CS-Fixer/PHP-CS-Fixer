@@ -39,19 +39,19 @@ final class Annotation implements \Stringable
         'method',
         'param',
         'param-out',
-        'phpstan-type',
         'phpstan-import-type',
+        'phpstan-type',
+        'phpstan-var',
         'property',
         'property-read',
         'property-write',
-        'psalm-type',
         'psalm-import-type',
+        'psalm-type',
+        'psalm-var',
         'return',
         'throws',
         'type',
         'var',
-        'phpstan-var',
-        'psalm-var',
     ];
 
     /**
