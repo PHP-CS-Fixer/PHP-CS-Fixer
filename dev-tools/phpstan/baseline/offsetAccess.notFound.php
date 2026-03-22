@@ -347,11 +347,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/NoUnneededFinalMethodFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset \'end\' might not exist on array{start: int, visibility: non-empty-string, abstract: bool, static: bool, readonly: bool, type?: string, name?: string, end?: int}.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset string might not exist on array<string, int>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
