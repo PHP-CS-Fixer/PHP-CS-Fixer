@@ -810,6 +810,11 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
 
         /** @var non-empty-string $content */
         $content = $tokens->generatePartialCode($typeStartIndex, $typeEndIndex);
+
+        // if (!str_contains(ltrim($content, '\\'), '\\')) {
+        //     return;
+        // }
+
         $newTokens = $this->determineShortType($content, 'function', $uses, $namespaceName);
 
         if (null === $newTokens) {

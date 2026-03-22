@@ -2936,7 +2936,9 @@ function foo($a) {}',
                 $b = Test::callStaticFunction();
                 $c = namespace\Test\useNamespaceOperator();
                 $d = $a->callMethodWithObjectOperator();
-                $f = \in_array(1, [1, 2]);
+                $e = \in_array(1, [1, 2]);
+                $f = array_map(fn($element) => \strtolower($element), ['ABC', 'CbD']);
+                $g = 'abc'.\strtolower('BBB');
                 PHP,
             null,
             ['import_symbols' => true],
