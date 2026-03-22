@@ -752,10 +752,6 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
      */
     private function fixPhpDocSeeContent(string $content, array $uses, string $namespaceName): string
     {
-        if (str_contains($content, '://')) {
-            return $content;
-        }
-
         if (Preg::match('/^(?<symbol>'.self::REGEX_CLASS.')(?<suffix>::(?:\$\w+|\w+\(\)|\w+))$/', $content, $matches)) {
             return $this->fixPhpDocType($matches['symbol'], $uses, $namespaceName).$matches['suffix'];
         }
