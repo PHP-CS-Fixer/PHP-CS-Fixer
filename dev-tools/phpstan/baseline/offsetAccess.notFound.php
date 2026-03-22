@@ -322,11 +322,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset int<1, max> might not exist on array<int<1, max>, int>.',
-    'count' => 3,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/NoNullPropertyInitializationFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset 1 might not exist on non-empty-list<int<0, max>>.',
     'count' => 3,
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/NoPhp4ConstructorFixer.php',
