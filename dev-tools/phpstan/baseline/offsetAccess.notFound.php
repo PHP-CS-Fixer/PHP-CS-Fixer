@@ -312,19 +312,9 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Basic/NumericLiteralSeparatorFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset int might not exist on non-empty-array<-844|346|347|348|349|350|351|352|353|354|10008, \'__CLASS__\'|\'__DIR__\'|\'__FILE__\'|\'__FUNCTION__\'|\'__LINE__\'|\'__METHOD__\'|\'__NAMESPACE__\'|\'__PROPERTY__\'|\'__TRAIT__\'|\'class\'>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Casing/MagicConstantCasingFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset string might not exist on array<string, string>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset int<1, max> might not exist on array<int<1, max>, int>.',
-    'count' => 3,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/NoNullPropertyInitializationFixer.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Offset 1 might not exist on non-empty-list<int<0, max>>.',
