@@ -3009,10 +3009,12 @@ use Other\PromotedAttr;
 use Other\PromotedAttr2;
 use Other\PropertyAttr;
 use Other\PropertyAttr2;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 #[ClassAttr]
 #[ClassAttr, ClassAttr2]
 #[\AllowDynamicProperties]
+#[DataProvider(\'provideFooCases\')]
 class Foo
 {
     #[PropertyAttr]
@@ -3037,6 +3039,7 @@ namespace Foo\Test;
 #[\Other\ClassAttr]
 #[\Other\ClassAttr, \Other\ClassAttr2]
 #[\AllowDynamicProperties]
+#[\PHPUnit\Framework\Attributes\DataProvider(\'provideFooCases\')]
 class Foo
 {
     #[\Other\PropertyAttr]

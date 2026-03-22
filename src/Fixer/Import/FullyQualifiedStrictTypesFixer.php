@@ -806,6 +806,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
             [\T_DOUBLE_COLON],
             [CT::T_NAMESPACE_OPERATOR],
             [\T_OBJECT_OPERATOR],
+            [FCT::T_ATTRIBUTE],
             [FCT::T_NULLSAFE_OBJECT_OPERATOR],
         ])) {
             return;
