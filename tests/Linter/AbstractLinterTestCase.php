@@ -85,7 +85,7 @@ abstract class AbstractLinterTestCase extends TestCase
     /**
      * This test is documenting flaws in some Linters, exposing false-positives for files wrongly being considers as valid.
      *
-     * @see Schrodinger's cat
+     * @see https://en.wikipedia.org/wiki/Schrödinger%27s_cat
      */
     public function testLintSchrodingersFile(): void
     {
