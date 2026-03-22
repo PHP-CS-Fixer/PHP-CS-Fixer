@@ -2250,6 +2250,7 @@ use function Bar\func2;
  * @see Bam::someMethod()
  * @see Baz::SOME_CONST
  * @see https://github.com/PHP-CS-Fixer/PHP-CS-Fixer
+ * @see Schrodinger\'s cat
  * @see func1()
  * See {@see func2()}
  */
@@ -2274,6 +2275,7 @@ namespace Foo\Bar;
  * @see \Foo\Bar\Bam::someMethod()
  * @see \Foo\Bar\Baz::SOME_CONST
  * @see https://github.com/PHP-CS-Fixer/PHP-CS-Fixer
+ * @see Schrodinger\'s cat
  * @see \Bar\func1()
  * See {@see \Bar\func2()}
  */
