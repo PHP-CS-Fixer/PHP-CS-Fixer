@@ -764,6 +764,10 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
             return $this->fixPhpDocSymbol($matches['symbol'], 'function', $uses, $namespaceName).$matches['suffix'];
         }
 
+        if (!Preg::match('/^'.TypeExpression::REGEX_TYPES.'$/', $content)) {
+            return $content;
+        }
+
         return $this->fixPhpDocType($content, $uses, $namespaceName);
     }
 
