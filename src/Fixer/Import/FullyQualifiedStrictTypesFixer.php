@@ -320,7 +320,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
             $lastUse = null;
 
             foreach ($namespaceUsesAnalyzer->getDeclarationsInNamespace($tokens, $namespace, true) as $use) {
-                if (!$use->isClass()) {
+                if ($use->isConstant()) {
                     continue;
                 }
 
@@ -352,6 +352,8 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
                         if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(\T_STRING)) {
                             $this->fixPrevName($tokens, $index, $uses, $namespaceName);
                         }
+                    } elseif ($token->equals('(')) {
+                        $this->fixFunctionCall($tokens, $index, $uses, $namespaceName);
                     } elseif ($token->isGivenKind(\T_DOUBLE_COLON)) {
                         $this->fixPrevName($tokens, $index, $uses, $namespaceName);
                     } elseif ($token->isGivenKind(\T_FUNCTION)) {
@@ -672,13 +674,17 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
                 return $matches[0];
             }
 
+            if ('see' === $matches[2]) {
+                return $matches[0];
+            }
+
             return $matches[1].$matches[2].$matches[3].$this->fixPhpDocType($matches[4], $uses, $namespaceName);
         }, $phpDocContent);
 
         if (\in_array('see', $allowedTags, true)) {
             $phpDocContentNew = Preg::replaceCallback(
-                '/([*{]\h*)@see(\h+)('.self::REGEX_CLASS.')(::(?:\$\w+|\w+\(\)))(?!(?!\})\S)/',
-                fn ($matches) => $matches[1].'@see'.$matches[2].$this->fixPhpDocType($matches[3], $uses, $namespaceName).$matches[5],
+                '/(?<prefix>[*{]\h*@see\h+)(?<content>[^\s}]+)(?!(?!\})\S)/',
+                fn ($matches) => $matches['prefix'].$this->fixPhpDocSeeContent($matches['content'], $uses, $namespaceName),
                 $phpDocContentNew,
             );
         }
@@ -720,6 +726,96 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
         });
 
         return $typeExpression->toString();
+    }
+
+    /**
+     * @param non-empty-string $symbol
+     * @param _Uses            $uses
+     * @param _ImportType      $importKind
+     */
+    private function fixPhpDocSymbol(string $symbol, string $importKind, array $uses, string $namespaceName): string
+    {
+        $shortTokens = $this->determineShortType($symbol, $importKind, $uses, $namespaceName);
+
+        if (null === $shortTokens) {
+            return $symbol;
+        }
+
+        return implode('', array_map(
+            static fn (Token $token) => $token->getContent(),
+            $shortTokens,
+        ));
+    }
+
+    /**
+     * @param _Uses $uses
+     */
+    private function fixPhpDocSeeContent(string $content, array $uses, string $namespaceName): string
+    {
+        if (str_contains($content, '://')) {
+            return $content;
+        }
+
+        if (Preg::match('/^(?<symbol>'.self::REGEX_CLASS.')(?<suffix>::(?:\$\w+|\w+\(\)|\w+))$/', $content, $matches)) {
+            return $this->fixPhpDocType($matches['symbol'], $uses, $namespaceName).$matches['suffix'];
+        }
+
+        if (Preg::match('/^(?<symbol>'.self::REGEX_CLASS.')(?<suffix>\(\))$/', $content, $matches)) {
+            return $this->fixPhpDocSymbol($matches['symbol'], 'function', $uses, $namespaceName).$matches['suffix'];
+        }
+
+        return $this->fixPhpDocType($content, $uses, $namespaceName);
+    }
+
+    /**
+     * @param _Uses $uses
+     */
+    private function fixFunctionCall(Tokens $tokens, int $openParenthesisIndex, array $uses, string $namespaceName): void
+    {
+        $typeEndIndex = $tokens->getPrevMeaningfulToken($openParenthesisIndex);
+
+        if (null === $typeEndIndex || !$tokens[$typeEndIndex]->isGivenKind(\T_STRING)) {
+            return;
+        }
+
+        $typeStartIndex = $typeEndIndex;
+
+        while (true) {
+            $prevIndex = $tokens->getPrevMeaningfulToken($typeStartIndex);
+
+            if (null === $prevIndex || !$tokens[$prevIndex]->isGivenKind([\T_STRING, \T_NS_SEPARATOR])) {
+                break;
+            }
+
+            $typeStartIndex = $prevIndex;
+        }
+
+        if ($typeStartIndex === $typeEndIndex) {
+            return;
+        }
+
+        $prevIndex = $tokens->getPrevMeaningfulToken($typeStartIndex);
+
+        if (null !== $prevIndex && $tokens[$prevIndex]->equalsAny([
+            [\T_FUNCTION],
+            [\T_NEW],
+            [\T_DOUBLE_COLON],
+            [CT::T_NAMESPACE_OPERATOR],
+            [\T_OBJECT_OPERATOR],
+            [FCT::T_NULLSAFE_OBJECT_OPERATOR],
+        ])) {
+            return;
+        }
+
+        /** @var non-empty-string $content */
+        $content = $tokens->generatePartialCode($typeStartIndex, $typeEndIndex);
+        $newTokens = $this->determineShortType($content, 'function', $uses, $namespaceName);
+
+        if (null === $newTokens) {
+            return;
+        }
+
+        $tokens->overrideRange($typeStartIndex, $typeEndIndex, $newTokens);
     }
 
     /**

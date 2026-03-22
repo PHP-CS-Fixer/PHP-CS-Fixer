@@ -1341,17 +1341,22 @@ class Foo extends \A\A implements \B\A, \C\A
                 EOD,
         ];
 
+        // TODO: Ensure shortening for imported constants
         yield 'import even if partly importable using namespace' => [
             <<<'EOD'
                 <?php
 
                 namespace Ns;
+                use function Bar\Baz\func2;
+                use function Bar\func1;
                 use Ns\A\B;
                 use Ns\A\B\C;
 
                 new A();
                 new B();
                 new C();
+                func1();
+                func2(new A());
                 EOD,
             <<<'EOD'
                 <?php
@@ -1361,6 +1366,8 @@ class Foo extends \A\A implements \B\A, \C\A
                 new \Ns\A();
                 new \Ns\A\B();
                 new \Ns\A\B\C();
+                \Bar\func1();
+                \Bar\Baz\func2(new \Ns\A());
                 EOD,
             ['import_symbols' => true],
         ];
@@ -1523,7 +1530,7 @@ class Foo extends \A\A implements \B\A, \C\A
             ['import_symbols' => true],
         ];
 
-        // TODO: Ensure shortening for imported functions and constants
+        // TODO: Ensure shortening for imported constants
         yield 'Shorten symbol from comma-separated multi-use statement' => [
             <<<'EOD'
                 <?php
@@ -1532,8 +1539,8 @@ class Foo extends \A\A implements \B\A, \C\A
                 use function Bar\func1, Bar\func2;
                 use const Bar\CONST1, Bar\CONST2;
 
-                \Bar\func1(new Service1(\Bar\CONST1));
-                \Bar\func2(new Service2(\Bar\CONST2));
+                func1(new Service1(\Bar\CONST1));
+                func2(new Service2(\Bar\CONST2));
                 EOD,
             <<<'EOD'
                 <?php
@@ -1547,7 +1554,7 @@ class Foo extends \A\A implements \B\A, \C\A
                 EOD,
         ];
 
-        // TODO: Ensure shortening for imported functions and constants
+        // TODO: Ensure shortening for imported constants
         yield 'Shorten symbol from multi-line, comma-separated multi-use statement, with some noise here and there' => [
             <<<'EOD'
                 <?php
@@ -1559,8 +1566,8 @@ class Foo extends \A\A implements \B\A, \C\A
                 use const /* MAKE SOME NOOOOOISE! */ Bar\CONST1,
                     Bar\CONST2; # MAKE SOME NOOOOOISE!
 
-                \Bar\func1(new Service1(\Bar\CONST1));
-                \Bar\func2(new Service2(\Bar\CONST2));
+                func1(new Service1(\Bar\CONST1));
+                func2(new Service2(\Bar\CONST2));
                 EOD,
             <<<'EOD'
                 <?php
@@ -1577,7 +1584,7 @@ class Foo extends \A\A implements \B\A, \C\A
                 EOD,
         ];
 
-        // TODO: Ensure shortening for imported functions and constants
+        // TODO: Ensure shortening for imported constants
         yield 'Shorten symbol from grouped multi-use statement' => [
             <<<'EOD'
                 <?php
@@ -1586,8 +1593,8 @@ class Foo extends \A\A implements \B\A, \C\A
                 use function Bar\{func1, func2};
                 use const Bar\{CONST1, CONST2};
 
-                \Bar\func1(new Service1(\Bar\CONST1));
-                \Bar\func2(new Service2(\Bar\CONST2));
+                func1(new Service1(\Bar\CONST1));
+                func2(new Service2(\Bar\CONST2));
                 EOD,
             <<<'EOD'
                 <?php
@@ -1601,7 +1608,7 @@ class Foo extends \A\A implements \B\A, \C\A
                 EOD,
         ];
 
-        // TODO: Ensure shortening for imported functions and constants
+        // TODO: Ensure shortening for imported constants
         yield 'Shorten symbol from multi-line grouped multi-use statement with some noise here and there' => [
             <<<'EOD'
                 <?php
@@ -1622,8 +1629,8 @@ class Foo extends \A\A implements \B\A, \C\A
                     CONST2 # MAKE SOME NOOOOOISE!
                 };
 
-                \Bar\func1(new Service1(\Bar\CONST1));
-                \Bar\func2(new Service2(\Bar\CONST2));
+                func1(new Service1(\Bar\CONST1));
+                func2(new Service2(\Bar\CONST2));
                 EOD,
             <<<'EOD'
                 <?php
@@ -2173,6 +2180,8 @@ namespace Foo\Bar;
 
 use Foo\Bar\Baz;
 use Foo\Bar\Bam;
+use function Bar\func1;
+use function Bar\func2;
 
 /**
  * @see Baz
@@ -2180,6 +2189,9 @@ use Foo\Bar\Bam;
  * @see Baz::$someProp
  * @see Bam::someMethod()
  * @see Baz::SOME_CONST
+ * @see https://github.com/PHP-CS-Fixer/PHP-CS-Fixer
+ * @see func1()
+ * See {@see func2()}
  */
 class SomeClass
 {
@@ -2197,6 +2209,8 @@ namespace Foo\Bar;
 
 use Foo\Bar\Baz;
 use Foo\Bar\Bam;
+use function Bar\func1;
+use function Bar\func2;
 
 /**
  * @see \Foo\Bar\Baz
@@ -2204,6 +2218,9 @@ use Foo\Bar\Bam;
  * @see \Foo\Bar\Baz::$someProp
  * @see \Foo\Bar\Bam::someMethod()
  * @see \Foo\Bar\Baz::SOME_CONST
+ * @see https://github.com/PHP-CS-Fixer/PHP-CS-Fixer
+ * @see \Bar\func1()
+ * See {@see \Bar\func2()}
  */
 class SomeClass
 {
@@ -2215,6 +2232,60 @@ class SomeClass
     /** @var \Foo\Bar\Bam */
     public $bam;
 }',
+        ];
+
+        yield 'Test class PHPDoc fixes with import symbols' => [
+            '<?php
+
+namespace Foo\Bar;
+use function Bar\func1;
+use function Bar\func2;
+
+/**
+ * @see Baz
+ * @see Bam
+ * @see Baz::$someProp
+ * @see Bam::someMethod()
+ * @see Baz::SOME_CONST
+ * @see https://github.com/PHP-CS-Fixer/PHP-CS-Fixer
+ * @see func1()
+ * See {@see func2()}
+ */
+class SomeClass
+{
+    /**
+     * @var Baz
+     */
+    public $baz;
+
+    /** @var Bam */
+    public $bam;
+}',
+            '<?php
+
+namespace Foo\Bar;
+
+/**
+ * @see \Foo\Bar\Baz
+ * @see \Foo\Bar\Bam
+ * @see \Foo\Bar\Baz::$someProp
+ * @see \Foo\Bar\Bam::someMethod()
+ * @see \Foo\Bar\Baz::SOME_CONST
+ * @see https://github.com/PHP-CS-Fixer/PHP-CS-Fixer
+ * @see \Bar\func1()
+ * See {@see \Bar\func2()}
+ */
+class SomeClass
+{
+    /**
+     * @var \Foo\Bar\Baz
+     */
+    public $baz;
+
+    /** @var \Foo\Bar\Bam */
+    public $bam;
+}',
+            ['import_symbols' => true],
         ];
 
         yield 'Test PHPDoc nullable fixes' => [
@@ -2846,6 +2917,24 @@ function foo($a) {}',
                 echo Bar1\Baz1::$quux1;
                 echo Bar2\Baz2::$quux2;
                 PHP,
+            ['import_symbols' => true],
+        ];
+
+        yield 'edge cases for importing functions' => [
+            <<<'PHP'
+                <?php
+
+                namespace MyProject;
+
+                function functionDeclaration() {}
+
+                $a = new ObjectInit();
+                $b = Test::callStaticFunction();
+                $c = namespace\Test\useNamespaceOperator();
+                $d = $a->callMethodWithObjectOperator();
+                $e = $a?->callMethodWithNullSafeOperator();
+                PHP,
+            null,
             ['import_symbols' => true],
         ];
     }
