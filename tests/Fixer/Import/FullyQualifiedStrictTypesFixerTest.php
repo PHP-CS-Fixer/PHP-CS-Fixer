@@ -2936,7 +2936,6 @@ function foo($a) {}',
                 $b = Test::callStaticFunction();
                 $c = namespace\Test\useNamespaceOperator();
                 $d = $a->callMethodWithObjectOperator();
-                $e = $a?->callMethodWithNullSafeOperator();
                 $f = \in_array(1, [1, 2]);
                 PHP,
             null,
@@ -3140,6 +3139,19 @@ class SomeClass
                     public function f(\Ns2\City $city) {}
                 }
                 EOD,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'edge cases for importing functions' => [
+            <<<'PHP'
+                <?php
+
+                namespace MyProject;
+
+                $a = new SomeClass();
+                $b = $a?->callMethodWithNullSafeOperator();
+                PHP,
             null,
             ['import_symbols' => true],
         ];
