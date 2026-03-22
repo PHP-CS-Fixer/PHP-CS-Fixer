@@ -312,11 +312,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Basic/NumericLiteralSeparatorFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset int might not exist on non-empty-array<-844|346|347|348|349|350|351|352|353|354|10008, \'__CLASS__\'|\'__DIR__\'|\'__FILE__\'|\'__FUNCTION__\'|\'__LINE__\'|\'__METHOD__\'|\'__NAMESPACE__\'|\'__PROPERTY__\'|\'__TRAIT__\'|\'class\'>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Casing/MagicConstantCasingFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset string might not exist on array<string, string>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php',
@@ -350,11 +345,6 @@ $ignoreErrors[] = [
     'rawMessage' => 'Offset \'method_is_constructor\' might not exist on array{classIndex: int, token: PhpCsFixer\\Tokenizer\\Token, type: string, class_is_final: false, method_final_index: int|null, method_is_constructor?: bool, method_is_private: true, method_of_enum: false}.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/NoUnneededFinalMethodFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset \'end\' might not exist on array{start: int, visibility: non-empty-string, abstract: bool, static: bool, readonly: bool, type?: string, name?: string, end?: int}.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Offset string might not exist on array<string, int>.',
