@@ -2937,6 +2937,7 @@ function foo($a) {}',
                 $c = namespace\Test\useNamespaceOperator();
                 $d = $a->callMethodWithObjectOperator();
                 $e = $a?->callMethodWithNullSafeOperator();
+                $f = \in_array(1, [1, 2]);
                 PHP,
             null,
             ['import_symbols' => true],
