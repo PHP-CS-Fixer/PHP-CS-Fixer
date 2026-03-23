@@ -2924,19 +2924,57 @@ function foo($a) {}',
             ['import_symbols' => true],
         ];
 
-        yield 'edge cases for importing functions' => [
+        yield 'skip function declaration' => [
+            <<<'PHP'
+                <?php
+                function functionDeclaration() {}
+                PHP,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'skip object initialization' => [
+            <<<'PHP'
+                <?php
+                $a = new ObjectInit();
+                PHP,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'skip static function call' => [
+            <<<'PHP'
+                <?php
+                $a = Test::callStaticFunction();
+                PHP,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'skip namespace operator usage' => [
+            <<<'PHP'
+                <?php
+                $a = namespace\Test\useNamespaceOperator();
+                PHP,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'skip method invocation using the object operator' => [
+            <<<'PHP'
+                <?php
+                $a = new SomeClass();
+                $b = $a->callMethodWithObjectOperator();
+                PHP,
+            null,
+            ['import_symbols' => true],
+        ];
+
+        yield 'skip global function call in global namespace' => [
             <<<'PHP'
                 <?php
 
-                namespace MyProject;
-
-                function functionDeclaration() {}
-
-                $a = new ObjectInit();
-                $b = Test::callStaticFunction();
-                $c = namespace\Test\useNamespaceOperator();
-                $d = $a->callMethodWithObjectOperator();
-                $e = \in_array(1, [1, 2]);
+                $a = \in_array(1, [1, 2]);
                 PHP,
             null,
             ['import_symbols' => true],
@@ -3143,7 +3181,7 @@ class SomeClass
             ['import_symbols' => true],
         ];
 
-        yield 'edge cases for importing functions' => [
+        yield 'skip method invocation using the nullsafe operator' => [
             <<<'PHP'
                 <?php
 

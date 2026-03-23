@@ -797,13 +797,9 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
         $prevIndex = $tokens->getPrevMeaningfulToken($typeStartIndex);
 
         if (null !== $prevIndex && $tokens[$prevIndex]->equalsAny([
-            [\T_FUNCTION],
             [\T_NEW],
-            [\T_DOUBLE_COLON],
-            [\T_OBJECT_OPERATOR],
             [CT::T_NAMESPACE_OPERATOR],
             [FCT::T_ATTRIBUTE],
-            [FCT::T_NULLSAFE_OBJECT_OPERATOR],
         ])) {
             return;
         }
@@ -811,7 +807,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
         /** @var non-empty-string $content */
         $content = $tokens->generatePartialCode($typeStartIndex, $typeEndIndex);
 
-        if (!str_contains(ltrim($content, '\\'), '\\')) {
+        if (!str_starts_with($content, '\\') || !str_contains(ltrim($content, '\\'), '\\')) {
             return;
         }
 
