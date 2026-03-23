@@ -807,7 +807,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
         /** @var non-empty-string $content */
         $content = $tokens->generatePartialCode($typeStartIndex, $typeEndIndex);
 
-        if (!str_starts_with($content, '\\') || !str_contains(ltrim($content, '\\'), '\\')) {
+        if (!str_contains(ltrim($content, '\\'), '\\')) {
             return;
         }
 
