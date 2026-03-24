@@ -261,6 +261,7 @@ final class EchoTagSyntaxFixerTest extends AbstractFixerTestCase
                 EOT,
             ['format' => 'short', 'ignore_tag_without_closing_tag' => true],
         ];
+
         yield [
             <<<'EOT'
                 <?php echo 1+2; ?>
@@ -278,43 +279,46 @@ final class EchoTagSyntaxFixerTest extends AbstractFixerTestCase
             '<?php /* comment */ echo 12; ?><?php echo 13; ?>',
             ['format' => 'short', 'shorten_tags_without_comments_only' => true],
         ];
+
         yield [
             '<?php /** comment */ echo 12; ?><?= 13; ?>',
             '<?php /** comment */ echo 12; ?><?php echo 13; ?>',
             ['format' => 'short', 'shorten_tags_without_comments_only' => true],
         ];
+
         yield [
             <<<'EOT'
-            '<?php
-            # comment
-            echo 12;
-            ?>
-            <?= 13; ?>',
-EOT,
+                            '<?php
+                            # comment
+                            echo 12;
+                            ?>
+                            <?= 13; ?>',
+                EOT,
             <<<'EOT'
-            '<?php
-            # comment
-            echo 12;
-            ?>
-            <?php echo 13; ?>',
-EOT,
+                            '<?php
+                            # comment
+                            echo 12;
+                            ?>
+                            <?php echo 13; ?>',
+                EOT,
             ['format' => 'short', 'shorten_tags_without_comments_only' => true],
         ];
+
         yield [
             <<<'EOT'
-            '<?php
-            // comment
-            echo 12;
-            ?>
-            <?= 13; ?>',
-EOT,
+                            '<?php
+                            // comment
+                            echo 12;
+                            ?>
+                            <?= 13; ?>',
+                EOT,
             <<<'EOT'
-            '<?php
-            // comment
-            echo 12;
-            ?>
-            <?php echo 13; ?>',
-EOT,
+                            '<?php
+                            // comment
+                            echo 12;
+                            ?>
+                            <?php echo 13; ?>',
+                EOT,
             ['format' => 'short', 'shorten_tags_without_comments_only' => true],
         ];
     }
