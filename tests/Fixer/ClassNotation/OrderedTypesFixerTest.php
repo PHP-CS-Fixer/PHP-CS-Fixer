@@ -526,8 +526,8 @@ try {
         ];
 
         yield [
-            "<?php\nclass Foo\n{\n    public array|string|false \$bar = null;\n}\n",
-            "<?php\nclass Foo\n{\n    public string|false|array \$bar = null;\n}\n",
+            "<?php\nclass Foo\n{\n    public array|string|false \$bar = false;\n}\n",
+            "<?php\nclass Foo\n{\n    public string|false|array \$bar = false;\n}\n",
             ['sort_algorithm' => 'alpha', 'false_adjustment' => 'always_last'],
         ];
 
