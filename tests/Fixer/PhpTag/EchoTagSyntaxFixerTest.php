@@ -193,5 +193,129 @@ final class EchoTagSyntaxFixerTest extends AbstractFixerTestCase
                 PHP,
             ['format' => 'short'],
         ];
+
+        yield [
+            <<<'EOT'
+                <?php echo 1 ?>
+                <?= 2 ?>
+                EOT,
+            <<<'EOT'
+                <?php echo 1 ?>
+                <?php echo 2 ?>
+                EOT,
+            ['format' => 'short', 'ignore_start_of_file' => true],
+        ];
+
+        yield [
+            <<<'EOT'
+                PLAIN TEXT<?= 1 ?>
+                EOT,
+            <<<'EOT'
+                PLAIN TEXT<?php echo 1 ?>
+                EOT,
+            ['format' => 'short', 'ignore_start_of_file' => true],
+        ];
+
+        yield [
+            <<<'EOT'
+                <?php $foo = 1; ?>
+                <?= 1 ?>
+                EOT,
+            <<<'EOT'
+                <?php $foo = 1; ?>
+                <?php echo 1 ?>
+                EOT,
+            ['format' => 'short', 'ignore_start_of_file' => true],
+        ];
+
+        yield [
+            <<<'EOT'
+                <?= 1 ?>
+                <?= 2 ?>
+                EOT,
+            <<<'EOT'
+                <?= 1 ?>
+                <?php echo 2 ?>
+                EOT,
+            ['format' => 'short', 'ignore_start_of_file' => true],
+        ];
+
+        yield [
+            <<<'EOT'
+                PLAIN TEXT<?php echo 1 ?>
+                EOT,
+            <<<'EOT'
+                PLAIN TEXT<?= 1 ?>
+                EOT,
+            ['format' => 'long', 'ignore_start_of_file' => true],
+        ];
+
+        yield [
+            <<<'EOT'
+                <?= 12 + 4; ?>
+                <?php echo 123;
+                EOT,
+            <<<'EOT'
+                <?php echo 12 + 4; ?>
+                <?php echo 123;
+                EOT,
+            ['format' => 'short', 'ignore_tag_without_closing_tag' => true],
+        ];
+        yield [
+            <<<'EOT'
+                <?php echo 1+2; ?>
+                <?= 123;
+                EOT,
+            <<<'EOT'
+                <?= 1+2; ?>
+                <?= 123;
+                EOT,
+            ['format' => 'long', 'ignore_tag_without_closing_tag' => true],
+        ];
+
+        yield [
+            '<?php /* comment */ echo 12; ?><?= 13; ?>',
+            '<?php /* comment */ echo 12; ?><?php echo 13; ?>',
+            ['format' => 'short', 'shorten_tags_without_comments_only' => true],
+        ];
+        yield [
+            '<?php /** comment */ echo 12; ?><?= 13; ?>',
+            '<?php /** comment */ echo 12; ?><?php echo 13; ?>',
+            ['format' => 'short', 'shorten_tags_without_comments_only' => true],
+        ];
+        yield [
+            <<<'EOT'
+            '<?php
+            # comment
+            echo 12;
+            ?>
+            <?= 13; ?>',
+EOT,
+            <<<'EOT'
+            '<?php
+            # comment
+            echo 12;
+            ?>
+            <?php echo 13; ?>',
+EOT,
+            ['format' => 'short', 'shorten_tags_without_comments_only' => true],
+        ];
+        yield [
+            <<<'EOT'
+            '<?php
+            // comment
+            echo 12;
+            ?>
+            <?= 13; ?>',
+EOT,
+            <<<'EOT'
+            '<?php
+            // comment
+            echo 12;
+            ?>
+            <?php echo 13; ?>',
+EOT,
+            ['format' => 'short', 'shorten_tags_without_comments_only' => true],
+        ];
     }
 }
