@@ -855,14 +855,14 @@ try {
 
         foreach (['null', 'false'] as $adjust) {
             yield [
-                "<?php\nclass Foo\n{\n    public array|(At&Bz)|string|{$adjust} \$bar = null;\n}\n",
-                "<?php\nclass Foo\n{\n    public string|(Bz&At)|array|{$adjust} \$bar = null;\n}\n",
+                "<?php\nclass Foo\n{\n    public array|(At&Bz)|string|$adjust \$bar = $adjust;\n}\n",
+                "<?php\nclass Foo\n{\n    public string|(Bz&At)|array|$adjust \$bar = $adjust;\n}\n",
                 ["{$adjust}_adjustment" => 'always_last'],
             ];
 
             yield [
-                "<?php\nclass Foo\n{\n    public array|(At&Bz)|{$adjust}|string \$bar = null;\n}\n",
-                "<?php\nclass Foo\n{\n    public string|(Bz&At)|array|{$adjust} \$bar = null;\n}\n",
+                "<?php\nclass Foo\n{\n    public array|(At&Bz)|$adjust|string \$bar = $adjust;\n}\n",
+                "<?php\nclass Foo\n{\n    public string|(Bz&At)|array|$adjust \$bar = $adjust;\n}\n",
                 ["{$adjust}_adjustment" => 'none'],
             ];
         }
