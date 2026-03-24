@@ -184,7 +184,15 @@ With configuration: ``['format' => 'short', 'ignore_tag_without_closing_tag' => 
 
 .. code-block:: diff
 
-   
+   --- Original
+   +++ New
+   -<?php print '2' . '3'; ?>
+   +<?= '2' . '3'; ?>
+    <?=1?>
+   -<?php /* comment */ echo '2' . '3'; ?>
+   +<?=/* comment */ '2' . '3'; ?>
+    <?php print '2' . '3'; someFunction(); ?>
+    <?php print '2' . '3';
 
 Example #8
 ~~~~~~~~~~
@@ -198,8 +206,7 @@ With configuration: ``['format' => 'short', 'shorten_tags_without_comments_only'
    -<?php print '2' . '3'; ?>
    +<?= '2' . '3'; ?>
     <?=1?>
-   -<?php /* comment */ echo '2' . '3'; ?>
-   +<?=/* comment */ '2' . '3'; ?>
+    <?php /* comment */ echo '2' . '3'; ?>
     <?php print '2' . '3'; someFunction(); ?>
    -<?php print '2' . '3';
    +<?= '2' . '3';
