@@ -29,10 +29,13 @@ Example #1
    +++ New
     <?php
     $foo = [1, 2, 3];
-    $first = $foo[array_key_first($foo)];
-    $last = $foo[array_key_last($foo)];
-    $first = $foo->bar[array_key_first($foo->bar)] ?? null;
+   -$first = $foo[array_key_first($foo)];
+   -$last = $foo[array_key_last($foo)];
+   -$first = $foo->bar[array_key_first($foo->bar)] ?? null;
    -$last = FooClass::CONSTANT[array_key_last(FooClass::CONSTANT)] ?? null;
+   +$first = array_first($foo);
+   +$last = array_last($foo);
+   +$first = array_first($foo->bar) ?? null;
    +$last = array_last(FooClass::CONSTANT) ?? null;
 
 References
