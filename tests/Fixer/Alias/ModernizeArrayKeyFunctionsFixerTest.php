@@ -43,7 +43,7 @@ final class ModernizeArrayKeyFunctionsFixerTest extends AbstractFixerTestCase
     public static function provideFixCases(): iterable
     {
         foreach ([['array_key_last', 'array_last'], ['array_key_first', 'array_first']] as [$keyFunction, $function]) {
-            foreach (['$foo', "\$foo['bar']['baz']", '$foo[$bar]', '$foo->$bar', '$foo->bar->$bar', '$foo->bar->baz', 'MY_CONST', 'Foo::MY_CONST', 'Foo::$bar'] as $expression) {
+            foreach ([['$foo', true], ["\$foo['bar']['baz']", true], ['$foo[$bar]', true], ['$foo->$bar', true], ['$foo->bar->$bar', true], ['$foo->bar->baz', true], ['MY_CONST', false], ['Foo::MY_CONST', false], ['Foo::$bar', true]] as [$expression, $canBeAssigned]) {
                 yield "normal {$keyFunction}, expression {$expression}" => [
                     "<?php echo {$function}({$expression});",
                     "<?php echo {$expression}[{$keyFunction}({$expression})];",
@@ -59,6 +59,9 @@ final class ModernizeArrayKeyFunctionsFixerTest extends AbstractFixerTestCase
                     "<?php \$bar = {$expression}[{$keyFunction}({$expression})];",
                 ];
 
+                if (!$canBeAssigned) {
+                    continue;
+                }
                 // negative tests for left-hand side of assignment
                 yield "{$keyFunction} on left-hand side of assignment, expression {$expression}" => [
                     "<?php {$expression}[{$keyFunction}({$expression})] = 0;",
