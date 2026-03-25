@@ -15,9 +15,10 @@ declare(strict_types=1);
 namespace PhpCsFixer\Fixer\Alias;
 
 use PhpCsFixer\AbstractFixer;
-use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\FixerDefinition\VersionSpecification;
+use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
@@ -35,7 +36,7 @@ final class ModernizeArrayKeyFunctionsFixer extends AbstractFixer
         return new FixerDefinition(
             'Replace `$array[array_key_first($array)]` with `array_first($array)` and `$array[array_key_last($array)]` with `array_last($array)`.',
             [
-                new CodeSample(
+                new VersionSpecificCodeSample(
                     <<<'PHP'
                         <?php
                         $foo = [1, 2, 3];
@@ -45,6 +46,7 @@ final class ModernizeArrayKeyFunctionsFixer extends AbstractFixer
                         $last = FooClass::CONSTANT[array_key_last(FooClass::CONSTANT)] ?? null;
 
                         PHP,
+                    new VersionSpecification(8_05_00),
                 ),
             ],
             null,
