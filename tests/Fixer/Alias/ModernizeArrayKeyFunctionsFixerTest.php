@@ -62,6 +62,7 @@ final class ModernizeArrayKeyFunctionsFixerTest extends AbstractFixerTestCase
                 if (!$canBeAssigned) {
                     continue;
                 }
+
                 // negative tests for left-hand side of assignment
                 yield "{$keyFunction} on left-hand side of assignment, expression {$expression}" => [
                     "<?php {$expression}[{$keyFunction}({$expression})] = 0;",
