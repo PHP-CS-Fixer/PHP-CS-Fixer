@@ -49,6 +49,11 @@ final class ModernizeArrayKeyFunctionsFixerTest extends AbstractFixerTestCase
                     "<?php echo {$expression}[{$keyFunction}({$expression})];",
                 ];
 
+                yield "normal {$keyFunction}, expression {$expression} twice" => [
+                    "<?php \$foo = {$function}({$expression}); \$bar = {$function}({$expression}) ?>",
+                    "<?php \$foo = {$expression}[{$keyFunction}({$expression})]; \$bar = {$expression}[{$keyFunction}({$expression})] ?>",
+                ];
+
                 yield "{$keyFunction} on right-hand side of assignment, expression {$expression}" => [
                     "<?php \$bar = {$function}({$expression});",
                     "<?php \$bar = {$expression}[{$keyFunction}({$expression})];",
