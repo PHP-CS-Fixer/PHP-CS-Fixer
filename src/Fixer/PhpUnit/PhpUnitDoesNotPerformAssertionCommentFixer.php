@@ -81,6 +81,7 @@ final class PhpUnitDoesNotPerformAssertionCommentFixer extends AbstractPhpUnitFi
                 if ($tokens[$index + 1]->isWhitespace()) {
                     ++$index;
                     array_unshift($newTokens, new Token([$tokens[$index]->getId(), $tokens[$index]->getContent()]));
+                    $tokens[$index] = new Token([$tokens[$index]->getId(), "\n".$tokens[$index]->getContent()]);
                 }
                 $changes[$index] = $newTokens;
             }

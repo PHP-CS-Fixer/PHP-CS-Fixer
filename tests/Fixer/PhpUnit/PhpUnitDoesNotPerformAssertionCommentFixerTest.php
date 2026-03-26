@@ -47,12 +47,14 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     public function testFix1(): void
     {
         $this->expectNotToPerformAssertions();
+
         foo();
     }
 
     public function testFix2(): void
     {
         $this->expectNotToPerformAssertions();
+
         foo();
     }
 }',
@@ -97,6 +99,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     public function testFix(): void
     {
         $this->expectNotToPerformAssertions();
+
         foo();
     }
 }',
