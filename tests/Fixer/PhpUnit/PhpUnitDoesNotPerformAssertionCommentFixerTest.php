@@ -44,7 +44,13 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * Function does stuff
      */
-    public function testFix(): void
+    public function testFix1(): void
+    {
+        $this->expectNotToPerformAssertions();
+        foo();
+    }
+
+    public function testFix2(): void
     {
         $this->expectNotToPerformAssertions();
         foo();
@@ -57,7 +63,13 @@ final class MyTest extends \PHPUnit_Framework_TestCase
      * Function does stuff
      * @doesNotPerformAssertions
      */
-    public function testFix(): void
+    public function testFix1(): void
+    {
+        foo();
+    }
+
+    /** @doesNotPerformAssertions */
+    public function testFix2(): void
     {
         foo();
     }
