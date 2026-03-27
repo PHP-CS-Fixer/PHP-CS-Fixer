@@ -864,7 +864,7 @@ Return Notation
 - `no_useless_return <./return_notation/no_useless_return.rst>`_
 
   There should not be an empty ``return`` statement at the end of a function.
-- `return_assignment <./return_notation/return_assignment.rst>`_
+- `return_assignment <./return_notation/return_assignment.rst>`_ *(configurable)*
 
   Local, dynamic and directly referenced variables should not be assigned and directly returned by a function or method.
 - `simplified_null_return <./return_notation/simplified_null_return.rst>`_
