@@ -26,6 +26,7 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Future;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -156,6 +157,8 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        $argumentsAnalyzer = new ArgumentsAnalyzer();
+
         $expectedTokens = [\T_LIST, \T_FUNCTION, CT::T_USE_LAMBDA, \T_FN, \T_CLASS];
 
         $tokenCount = $tokens->count();
@@ -185,7 +188,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                 if ('ensure_single_line_for_single_argument' === $this->configuration['on_multiline']) {
                     $endFunctionIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
 
-                    if (1 === $this->countArguments($tokens, $index, $endFunctionIndex)) {
+                    if (1 === $argumentsAnalyzer->countArguments($tokens, $index, $endFunctionIndex)) {
                         $this->ensureSingleLineForParentheses($tokens, $index, $endFunctionIndex);
                     } else {
                         $this->ensureFunctionFullyMultiline($tokens, $index);
@@ -522,48 +525,6 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
     private function isNewline(Token $token): bool
     {
         return $token->isWhitespace() && str_contains($token->getContent(), "\n");
-    }
-
-    /**
-     * Count the number of arguments in a function call or declaration.
-     */
-    private function countArguments(Tokens $tokens, int $openParenthesis, int $closeParenthesis): int
-    {
-        $nextMeaningful = $tokens->getNextMeaningfulToken($openParenthesis);
-
-        if ($nextMeaningful === $closeParenthesis) {
-            return 0;
-        }
-
-        $count = 1;
-
-        for ($index = $openParenthesis + 1; $index < $closeParenthesis; ++$index) {
-            $token = $tokens[$index];
-
-            if ($token->equals('(')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
-
-                continue;
-            }
-
-            if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
-
-                continue;
-            }
-
-            if ($token->equals('{')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
-
-                continue;
-            }
-
-            if ($token->equals(',')) {
-                ++$count;
-            }
-        }
-
-        return $count;
     }
 
     /**
