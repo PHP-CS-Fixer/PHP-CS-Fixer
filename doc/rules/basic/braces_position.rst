@@ -271,6 +271,10 @@ The rule is part of the following rule sets:
 
   ``['allow_single_line_anonymous_functions' => false, 'allow_single_line_empty_anonymous_classes' => true]``
 
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
+  ``['allow_single_line_anonymous_functions' => true, 'allow_single_line_empty_anonymous_classes' => true]``
+
 - `@PSR2 <./../../ruleSets/PSR2.rst>`_ with config:
 
   ``['allow_single_line_anonymous_functions' => false]``
@@ -278,10 +282,6 @@ The rule is part of the following rule sets:
 - `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
 
   ``['allow_single_line_anonymous_functions' => false, 'allow_single_line_empty_anonymous_classes' => true]``
-
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
-
-  ``['allow_single_line_anonymous_functions' => true, 'allow_single_line_empty_anonymous_classes' => true]``
 
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 

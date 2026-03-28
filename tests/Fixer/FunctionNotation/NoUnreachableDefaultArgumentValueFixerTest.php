@@ -292,6 +292,33 @@ $bar) {}',
      */
     public static function provideFix84Cases(): iterable
     {
+        yield 'property hooks' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public function __construct(
+                        private int $a { set(int $x) { $this->a = $x; } },
+                        private int $b { set(int $x) { $this->b = $x; } },
+                        private int $c { set(int $x) { $this->c = $x; } },
+                        private int $d { set(int $x) { $this->d = $x; } },
+                        private int $e = 3 { set(int $x) { $this->e = $x; } },
+                    ) {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public function __construct(
+                        private int $a { set(int $x) { $this->a = $x; } },
+                        private int $b = 1 { set(int $x) { $this->b = $x; } },
+                        private int $c = 2 { set(int $x) { $this->c = $x; } },
+                        private int $d { set(int $x) { $this->d = $x; } },
+                        private int $e = 3 { set(int $x) { $this->e = $x; } },
+                    ) {}
+                }
+                PHP,
+        ];
+
         yield 'do not crash' => [<<<'PHP'
             <?php class Foo
             {
@@ -317,6 +344,107 @@ $bar) {}',
                 ) {}
             }
             PHP
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix85Cases
+     *
+     * @requires PHP 8.5
+     */
+    public function testFix85(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix85Cases(): iterable
+    {
+        yield 'closure' => [
+            '<?php function foo(Closure $x, int $y) {}',
+            '<?php function foo(Closure $x = static function ($a, $b): void {}, int $y) {}',
+        ];
+
+        yield 'closure with default' => [
+            '<?php function foo(int $x = 1, Closure $y = static function ($a, $b, $c): void {}, int $z = 3) {}',
+            '<?php function foo(int $x = 1, Closure $y = static function ($a, $b = 2, $c): void {}, int $z = 3) {}',
+        ];
+
+        yield 'closures' => [
+            <<<'PHP'
+                <?php function foo(
+                    Closure $a,
+                    Closure $b,
+                    Closure $c,
+                    Closure $d,
+                    Closure $e = static function ($a, $b, $c, $d = 'd'): void {},
+                ) {}
+                PHP,
+            <<<'PHP'
+                <?php function foo(
+                    Closure $a,
+                    Closure $b = static function ($a, $b = 'b', $c, $d = 'd'): void {},
+                    Closure $c = static function ($a, $b = 'b', $c, $d = 'd'): void {},
+                    Closure $d,
+                    Closure $e = static function ($a, $b = 'b', $c, $d = 'd'): void {},
+                ) {}
+                PHP,
+        ];
+
+        yield 'closures for promoted properties' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public function __construct(
+                        private Closure $a,
+                        private Closure $b,
+                        private Closure $c,
+                        private Closure $d,
+                        private Closure $e = static function ($a, $b, $c, $d = 'd'): void {},
+                    ) {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public function __construct(
+                        private Closure $a,
+                        private Closure $b = static function ($a, $b = 'b', $c, $d = 'd'): void {},
+                        private Closure $c = static function ($a, $b = 'b', $c, $d = 'd'): void {},
+                        private Closure $d,
+                        private Closure $e = static function ($a, $b = 'b', $c, $d = 'd'): void {},
+                    ) {}
+                }
+                PHP,
+        ];
+
+        yield 'closure and property hooks' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public function __construct(
+                        private Closure $a { set(Closure $x) { $this->a = $x; } },
+                        private Closure $b { set(Closure $x) { $this->b = $x; } },
+                        private Closure $c { set(Closure $x) { $this->c = $x; } },
+                        private Closure $d { set(Closure $x) { $this->d = $x; } },
+                        private Closure $e = static function ($a, $b): void {} { set(Closure $x) { $this->e = $x; } },
+                    ) {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public function __construct(
+                        private Closure $a { set(Closure $x) { $this->a = $x; } },
+                        private Closure $b = static function ($a = 1, $b): void {} { set(Closure $x) { $this->b = $x; } },
+                        private Closure $c = static function ($a = 2, $b): void {} { set(Closure $x) { $this->c = $x; } },
+                        private Closure $d { set(Closure $x) { $this->d = $x; } },
+                        private Closure $e = static function ($a = 3, $b): void {} { set(Closure $x) { $this->e = $x; } },
+                    ) {}
+                }
+                PHP,
         ];
     }
 }

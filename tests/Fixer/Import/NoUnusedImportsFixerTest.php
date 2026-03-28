@@ -1703,4 +1703,110 @@ const D = new Foo7(1,2);
             ',
         ];
     }
+
+    /**
+     * @requires PHP 8.3
+     *
+     * @dataProvider provideFix83Cases
+     */
+    public function testFix83(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix83Cases(): iterable
+    {
+        yield 'typed class constants' => [
+            <<<'PHP'
+                <?php
+                use Vendor\Type02;
+                use Vendor\Type04;
+                use Vendor\Type06;
+                use Vendor\Type08;
+                use Vendor\Type10;
+                use Vendor\Type12;
+                use Vendor\Type14;
+                use Vendor\Type16;
+                use Vendor\Type18;
+                use Vendor\Type20;
+                use Vendor\Type22;
+                use Vendor\Type24;
+                use Vendor\Type26;
+                use Vendor\Type28;
+                use Vendor\Type30;
+                use Vendor\Type32;
+                use Vendor\Type34;
+                use Vendor\Type36;
+                class C
+                {
+                    public const bool BOOLEAN_TYPE = true;
+                    public const Type02 REGULAR_TYPE = TheParentType::Foo;
+                    public const ?Type04 NULLABLE_TYPE = TheParentType::Foo;
+                    public const Type06|Type08|Type10 UNION_TYPE = TheParentType::Foo;
+                    public const int INTEGER_TYPE = 42;
+                    public const Type12&Type14&Type16 INTERSECTION_TYPE = TheParentType::Foo;
+                    public const Type18|(Type20&Type22) UNION_AND_INTERSECTION_TYPE = TheParentType::Foo;
+                    public const (Type24&Type26)|Type28 INTERSECTION_AND_UNION_TYPE = TheParentType::Foo;
+                    public const string STRING_TYPE = 'Forty two';
+                    public const (Type30&Type32)|(Type34&Type36) INTERSECTION_AND_UNION_AND_INTERSECTION_TYPE = TheParentType::Foo;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                use Vendor\Type01;
+                use Vendor\Type02;
+                use Vendor\Type03;
+                use Vendor\Type04;
+                use Vendor\Type05;
+                use Vendor\Type06;
+                use Vendor\Type07;
+                use Vendor\Type08;
+                use Vendor\Type09;
+                use Vendor\Type10;
+                use Vendor\Type11;
+                use Vendor\Type12;
+                use Vendor\Type13;
+                use Vendor\Type14;
+                use Vendor\Type15;
+                use Vendor\Type16;
+                use Vendor\Type17;
+                use Vendor\Type18;
+                use Vendor\Type19;
+                use Vendor\Type20;
+                use Vendor\Type21;
+                use Vendor\Type22;
+                use Vendor\Type23;
+                use Vendor\Type24;
+                use Vendor\Type25;
+                use Vendor\Type26;
+                use Vendor\Type27;
+                use Vendor\Type28;
+                use Vendor\Type29;
+                use Vendor\Type30;
+                use Vendor\Type31;
+                use Vendor\Type32;
+                use Vendor\Type33;
+                use Vendor\Type34;
+                use Vendor\Type35;
+                use Vendor\Type36;
+                use Vendor\Type37;
+                class C
+                {
+                    public const bool BOOLEAN_TYPE = true;
+                    public const Type02 REGULAR_TYPE = TheParentType::Foo;
+                    public const ?Type04 NULLABLE_TYPE = TheParentType::Foo;
+                    public const Type06|Type08|Type10 UNION_TYPE = TheParentType::Foo;
+                    public const int INTEGER_TYPE = 42;
+                    public const Type12&Type14&Type16 INTERSECTION_TYPE = TheParentType::Foo;
+                    public const Type18|(Type20&Type22) UNION_AND_INTERSECTION_TYPE = TheParentType::Foo;
+                    public const (Type24&Type26)|Type28 INTERSECTION_AND_UNION_TYPE = TheParentType::Foo;
+                    public const string STRING_TYPE = 'Forty two';
+                    public const (Type30&Type32)|(Type34&Type36) INTERSECTION_AND_UNION_AND_INTERSECTION_TYPE = TheParentType::Foo;
+                }
+                PHP,
+        ];
+    }
 }

@@ -121,13 +121,13 @@ The rule is part of the following rule sets:
 
   ``['anonymous_class' => false]``
 
-- `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
-
-  ``['anonymous_class' => true]``
-
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 
   ``['anonymous_class' => false]``
+
+- `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
+
+  ``['anonymous_class' => true]``
 
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 

@@ -291,4 +291,51 @@ $load = function ($path) use ($data) {
 };',
         ];
     }
+
+    /**
+     * @dataProvider provideFix85Cases
+     *
+     * @requires PHP 8.5
+     */
+    public function testFix85(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix85Cases(): iterable
+    {
+        yield 'do not convert closure in attribute' => [
+            <<<'PHP'
+                <?php
+                class Foo {
+                    function f1() {
+                        return fn (int $x): int => 100 - $x;
+                    }
+
+                    #[Bar(callback: static function () { return true; })]
+                    #[Baz(callback: static function (int $i): int { return $i + 100; })]
+                    function f2() {
+                        return static fn (int $x, int $y): int => 2 * $x + 3 * $y;
+                    }
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo {
+                    function f1() {
+                        return function (int $x): int { return 100 - $x; };
+                    }
+
+                    #[Bar(callback: static function () { return true; })]
+                    #[Baz(callback: static function (int $i): int { return $i + 100; })]
+                    function f2() {
+                        return static function (int $x, int $y): int { return 2 * $x + 3 * $y; };
+                    }
+                }
+                PHP,
+        ];
+    }
 }

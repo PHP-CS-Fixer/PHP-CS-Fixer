@@ -39,9 +39,9 @@ The rule is part of the following rule sets:
 - `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_
 - `@PHP8x5Migration <./../../ruleSets/PHP8x5Migration.rst>`_
 - `@PHP85Migration <./../../ruleSets/PHP85Migration.rst>`_ *(deprecated)*
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@PSR2 <./../../ruleSets/PSR2.rst>`_
 - `@PSR12 <./../../ruleSets/PSR12.rst>`_
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
 References

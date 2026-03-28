@@ -141,6 +141,56 @@ final class ArgumentsAnalyzerTest extends TestCase
     }
 
     /**
+     * @param array<int, int> $arguments
+     *
+     * @requires PHP 8.4
+     *
+     * @dataProvider provideArguments84Cases
+     */
+    public function testArguments84(string $code, int $openIndex, int $closeIndex, array $arguments): void
+    {
+        $this->testArguments($code, $openIndex, $closeIndex, $arguments);
+    }
+
+    /**
+     * @return iterable<string, array{string, int, int, array<int, int>}>
+     */
+    public static function provideArguments84Cases(): iterable
+    {
+        yield 'property hooks' => [
+            '<?php class Foo { public function __construct(private int $a { set(int $x) { $this->a = $x; } }, private int $b = 1 { set(int $x) { $this->b = $x; } }) {} }',
+            12,
+            77,
+            [13 => 41, 43 => 76],
+        ];
+    }
+
+    /**
+     * @param array<int, int> $arguments
+     *
+     * @requires PHP 8.5
+     *
+     * @dataProvider provideArguments85Cases
+     */
+    public function testArguments85(string $code, int $openIndex, int $closeIndex, array $arguments): void
+    {
+        $this->testArguments($code, $openIndex, $closeIndex, $arguments);
+    }
+
+    /**
+     * @return iterable<string, array{string, int, int, array<int, int>}>
+     */
+    public static function provideArguments85Cases(): iterable
+    {
+        yield 'closure as default value' => [
+            '<?php function foo(Closure $x = static function ($a, $b): void {}, int $y) {}',
+            4,
+            32,
+            [5 => 26, 28 => 31],
+        ];
+    }
+
+    /**
      * @dataProvider provideArgumentInfoCases
      */
     public function testArgumentInfo(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void
@@ -388,6 +438,30 @@ class Foo
      */
     public static function provideArgumentInfo84Cases(): iterable
     {
+        yield 'property hook without default' => [
+            '<?php class Foo { public function __construct(private int $a { set(int $x) { $this->a = $x; } }) {} }',
+            13,
+            41,
+            new ArgumentAnalysis(
+                '$a',
+                17,
+                null,
+                new TypeAnalysis('int', 15, 15),
+            ),
+        ];
+
+        yield 'property hook with default' => [
+            '<?php class Foo { public function __construct(private int $a = 1 { set(int $x) { $this->a = $x; } }) {} }',
+            13,
+            45,
+            new ArgumentAnalysis(
+                '$a',
+                17,
+                '1',
+                new TypeAnalysis('int', 15, 15),
+            ),
+        ];
+
         yield 'asymmetric visibility public write' => [
             <<<'PHP'
                 <?php
@@ -473,6 +547,18 @@ class Foo
      */
     public static function provideArgumentInfo85Cases(): iterable
     {
+        yield 'closure as default value' => [
+            '<?php function foo(Closure $x = static function ($a, $b): void {}, int $y) {}',
+            5,
+            26,
+            new ArgumentAnalysis(
+                '$x',
+                7,
+                'staticfunction(,):void{}',
+                new TypeAnalysis('Closure', 5, 5),
+            ),
+        ];
+
         yield 'final promoted properties' => [
             '<?php class Foo { public function __construct(
                     public final Bar $x,

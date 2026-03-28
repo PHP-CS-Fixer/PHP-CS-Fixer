@@ -5,5 +5,5 @@ return (new \PhpCsFixer\Config())
         \PhpCsFixer\Finder::create()
             ->in(__DIR__ . '/../../')
     )
-    ->setParallelConfig(new \PhpCsFixer\Runner\Parallel\ParallelConfig(10))
+    ->setParallelConfig(new \PhpCsFixer\Runner\Parallel\ParallelConfig(1))
 ;

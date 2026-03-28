@@ -111,11 +111,11 @@ The rule is part of the following rule sets:
 
   ``['only_dec_inc' => true]``
 
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
 
   ``['only_dec_inc' => true]``
 
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
 References

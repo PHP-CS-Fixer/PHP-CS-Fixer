@@ -135,7 +135,7 @@ final class NoUnneededFinalMethodFixer extends AbstractFixer implements Configur
     }
 
     /**
-     * @return \Generator<array{
+     * @return iterable<array{
      *     classIndex: int,
      *     token: Token,
      *     type: string,
@@ -146,7 +146,7 @@ final class NoUnneededFinalMethodFixer extends AbstractFixer implements Configur
      *     method_of_enum: bool
      * }>
      */
-    private function getMethods(Tokens $tokens): \Generator
+    private function getMethods(Tokens $tokens): iterable
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $modifierKinds = [\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_FINAL, \T_ABSTRACT, \T_STATIC];

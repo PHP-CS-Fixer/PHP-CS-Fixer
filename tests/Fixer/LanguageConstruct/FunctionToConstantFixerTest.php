@@ -303,7 +303,7 @@ get_called_class#1
         ];
 
         yield [
-            ['functions' => [false => 1]],
+            ['functions' => [0 => 1]],
             '[function_to_constant] Invalid configuration: The option "functions" with value array is expected to be of type "string[]", but one of the elements is of type "int".',
         ];
 

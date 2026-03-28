@@ -455,7 +455,7 @@ Function Notation
 - `use_arrow_functions <./function_notation/use_arrow_functions.rst>`_ *(risky)*
 
   Anonymous functions with return as the only statement must use arrow functions.
-- `void_return <./function_notation/void_return.rst>`_ *(risky)*
+- `void_return <./function_notation/void_return.rst>`_ *(risky, configurable)*
 
   Add ``void`` return type to functions with missing or empty return statements, but priority is given to ``@return`` annotations.
 
@@ -895,7 +895,7 @@ Strict
 
 - `declare_strict_types <./strict/declare_strict_types.rst>`_ *(risky, configurable)*
 
-  Force strict types declaration in all files.
+  Force a strict types mode in all files.
 - `strict_comparison <./strict/strict_comparison.rst>`_ *(risky)*
 
   Comparisons should be strict.

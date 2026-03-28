@@ -46,7 +46,7 @@ final class RuleSets
             self::$customRuleSetDefinitions,
         );
 
-        uksort($allRuleSets, static fn (string $x, string $y): int => strnatcmp($x, $y));
+        uksort($allRuleSets, static fn (string $x, string $y): int => strnatcasecmp($x, $y));
 
         return $allRuleSets;
     }
@@ -79,7 +79,7 @@ final class RuleSets
                 self::$builtInSetDefinitions[$set->getName()] = $set;
             }
 
-            uksort(self::$builtInSetDefinitions, static fn (string $x, string $y): int => strnatcmp($x, $y));
+            uksort(self::$builtInSetDefinitions, static fn (string $x, string $y): int => strnatcasecmp($x, $y));
         }
 
         return self::$builtInSetDefinitions;

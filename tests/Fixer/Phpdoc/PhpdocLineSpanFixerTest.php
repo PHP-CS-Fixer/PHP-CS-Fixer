@@ -942,6 +942,26 @@ class Foo
                 }
             ',
         ];
+
+        yield 'It handles unions in properties correctly' => [
+            '<?php
+                class Foo
+                {
+                    /**
+                     * @var string[]|string
+                     */
+                    public array|string $foo;
+                }
+            ',
+            '<?php
+                class Foo
+                {
+                    /** @var string[]|string */
+                    public array|string $foo;
+                }
+            ',
+            ['property' => 'multi'],
+        ];
     }
 
     /**
@@ -1107,6 +1127,96 @@ class Foo
                     public function hello3() {}
                 }
             ',
+        ];
+
+        yield 'It handles enum cases correctly' => [
+            '<?php
+                enum Foo: string
+                {
+                        /**
+                         * 0
+                         */
+                        case B0 = "0";
+
+                        /**
+                         * 1
+                         */
+                        case B1 = "1";
+                }
+            ',
+            '<?php
+                enum Foo: string
+                {
+                        /** 0 */
+                        case B0 = "0";
+
+                        /** 1 */
+                        case B1 = "1";
+                }
+            ',
+        ];
+
+        yield 'It handles enum case with attributes correctly' => [
+            '<?php
+                enum Foo: string
+                {
+                        /**
+                         * 0
+                         */
+                        #[Attribute1]
+                        case B0 = "0";
+
+                        /**
+                         * 1
+                         */
+                        #[Attribute1]
+                        #[Attribute2]
+                        case B1 = "1";
+
+                        /**
+                         * 2
+                         */
+                        #[Attribute1, Attribute2]
+                        case B2 = "2";
+                }
+            ',
+            '<?php
+                enum Foo: string
+                {
+                        /** 0 */
+                        #[Attribute1]
+                        case B0 = "0";
+
+                        /** 1 */
+                        #[Attribute1]
+                        #[Attribute2]
+                        case B1 = "1";
+
+                        /** 2 */
+                        #[Attribute1, Attribute2]
+                        case B2 = "2";
+                }
+            ',
+        ];
+
+        yield 'It handles intersection types in properties correctly' => [
+            '<?php
+                class Foo
+                {
+                    /**
+                     * @var Countable&Traversable
+                     */
+                    public Countable&Traversable $foo;
+                }
+            ',
+            '<?php
+                class Foo
+                {
+                    /** @var Countable&Traversable */
+                    public Countable&Traversable $foo;
+                }
+            ',
+            ['property' => 'multi'],
         ];
     }
 

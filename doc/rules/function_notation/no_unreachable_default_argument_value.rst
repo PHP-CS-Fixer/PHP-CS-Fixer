@@ -49,8 +49,8 @@ The rule is part of the following rule sets:
 - `@PHP8x5Migration:risky <./../../ruleSets/PHP8x5MigrationRisky.rst>`_
 - `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ *(deprecated)*
 - `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_ *(deprecated)*
-- `@PSR12:risky <./../../ruleSets/PSR12Risky.rst>`_
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
+- `@PSR12:risky <./../../ruleSets/PSR12Risky.rst>`_
 - `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_
 
 References

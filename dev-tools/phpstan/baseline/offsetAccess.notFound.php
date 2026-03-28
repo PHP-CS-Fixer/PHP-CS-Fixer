@@ -312,19 +312,9 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Basic/NumericLiteralSeparatorFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset int might not exist on non-empty-array<-844|346|347|348|349|350|351|352|353|354|10008, \'__CLASS__\'|\'__DIR__\'|\'__FILE__\'|\'__FUNCTION__\'|\'__LINE__\'|\'__METHOD__\'|\'__NAMESPACE__\'|\'__PROPERTY__\'|\'__TRAIT__\'|\'class\'>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Casing/MagicConstantCasingFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset string might not exist on array<string, string>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/ClassAttributesSeparationFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset int<1, max> might not exist on array<int<1, max>, int>.',
-    'count' => 3,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/NoNullPropertyInitializationFixer.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Offset 1 might not exist on non-empty-list<int<0, max>>.',
@@ -355,11 +345,6 @@ $ignoreErrors[] = [
     'rawMessage' => 'Offset \'method_is_constructor\' might not exist on array{classIndex: int, token: PhpCsFixer\\Tokenizer\\Token, type: string, class_is_final: false, method_final_index: int|null, method_is_constructor?: bool, method_is_private: true, method_of_enum: false}.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/NoUnneededFinalMethodFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset \'end\' might not exist on array{start: int, visibility: non-empty-string, abstract: bool, static: bool, readonly: bool, type?: string, name?: string, end?: int}.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/OrderedClassElementsFixer.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Offset string might not exist on array<string, int>.',
@@ -537,22 +522,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitDedicateAssertFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset \'expectExceptionMessageRegExp\' might not exist on array<string, string>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitExpectationFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset 2 might not exist on non-empty-list<int<0, max>>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitExpectationFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset int<1, max> might not exist on list<int>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitExpectationFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset string might not exist on array<string, string>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitExpectationFixer.php',
 ];
@@ -813,11 +783,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Offset 0 might not exist on list<string>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Whitespace/NoTrailingWhitespaceFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset int<1, max> might not exist on array<int<0, max>, string>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Whitespace/NoTrailingWhitespaceFixer.php',
 ];

@@ -75,8 +75,6 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
         ],
     ];
 
-    private bool $modernizeStripos = false;
-
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -134,13 +132,6 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
         return true;
     }
 
-    protected function configurePostNormalisation(): void
-    {
-        if (isset($this->configuration['modernize_stripos']) && true === $this->configuration['modernize_stripos']) {
-            $this->modernizeStripos = true;
-        }
-    }
-
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
@@ -157,7 +148,7 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
         $argumentsAnalyzer = new ArgumentsAnalyzer();
 
         $modernizeCandidates = [[\T_STRING, 'strpos']];
-        if ($this->modernizeStripos) {
+        if ($this->configuration['modernize_stripos']) {
             $modernizeCandidates[] = [\T_STRING, 'stripos'];
         }
 

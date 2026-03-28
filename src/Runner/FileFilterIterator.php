@@ -41,15 +41,17 @@ final class FileFilterIterator extends \FilterIterator
     private array $visitedElements = [];
 
     /**
-     * @param \Traversable<\SplFileInfo> $iterator
+     * @param iterable<\SplFileInfo> $iterator
      */
     public function __construct(
-        \Traversable $iterator,
+        iterable $iterator,
         ?EventDispatcherInterface $eventDispatcher,
         CacheManagerInterface $cacheManager
     ) {
         if (!$iterator instanceof \Iterator) {
-            $iterator = new \IteratorIterator($iterator);
+            $iterator = new \IteratorIterator(
+                $iterator instanceof \Traversable ? $iterator : new \ArrayIterator($iterator),
+            );
         }
 
         parent::__construct($iterator);
