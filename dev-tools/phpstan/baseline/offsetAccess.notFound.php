@@ -522,22 +522,7 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitDedicateAssertFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset \'expectExceptionMessageRegExp\' might not exist on array<string, string>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitExpectationFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset 2 might not exist on non-empty-list<int<0, max>>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitExpectationFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset int<1, max> might not exist on list<int>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitExpectationFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset string might not exist on array<string, string>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitExpectationFixer.php',
 ];
