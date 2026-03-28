@@ -340,7 +340,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurableFixerInt
         $type = $tokens[$compareOperatorIndex]->getId();
         $content = $tokens[$compareOperatorIndex]->getContent();
 
-        if (\array_key_exists($type, $this->candidatesMap)) {
+        if (null !== $type && \array_key_exists($type, $this->candidatesMap)) {
             $tokens[$compareOperatorIndex] = clone $this->candidatesMap[$type];
         } elseif (\array_key_exists($content, $this->candidatesMap)) {
             $tokens[$compareOperatorIndex] = clone $this->candidatesMap[$content];
