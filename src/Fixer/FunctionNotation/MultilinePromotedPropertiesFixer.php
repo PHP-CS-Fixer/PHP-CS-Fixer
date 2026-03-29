@@ -139,15 +139,15 @@ final class MultilinePromotedPropertiesFixer extends AbstractFixer implements Co
             $openParenthesisIndex = $tokens->getNextTokenOfKind($index, ['(']);
             $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesisIndex);
 
-            if ($this->shouldBeFixed($tokens, $openParenthesisIndex, $closeParenthesisIndex)) {
-                $this->fixParameters($tokens, $openParenthesisIndex, $closeParenthesisIndex);
-            } elseif ($this->shouldBeUnwrapped($tokens, $openParenthesisIndex, $closeParenthesisIndex)) {
-                $this->unwrapParameters($tokens, $openParenthesisIndex, $closeParenthesisIndex);
+            if ($this->shouldBeMultiline($tokens, $openParenthesisIndex, $closeParenthesisIndex)) {
+                $this->makeMultiline($tokens, $openParenthesisIndex, $closeParenthesisIndex);
+            } elseif ($this->shouldBeSingleline($tokens, $openParenthesisIndex, $closeParenthesisIndex)) {
+                $this->makeSingleline($tokens, $openParenthesisIndex, $closeParenthesisIndex);
             }
         }
     }
 
-    private function shouldBeFixed(Tokens $tokens, int $openParenthesisIndex, int $closeParenthesisIndex): bool
+    private function shouldBeMultiline(Tokens $tokens, int $openParenthesisIndex, int $closeParenthesisIndex): bool
     {
         $promotedParameterFound = false;
         $minimumNumberOfParameters = 0;
@@ -169,7 +169,7 @@ final class MultilinePromotedPropertiesFixer extends AbstractFixer implements Co
         return $promotedParameterFound && $minimumNumberOfParameters >= $this->configuration['minimum_number_of_parameters'];
     }
 
-    private function shouldBeUnwrapped(Tokens $tokens, int $openParenthesisIndex, int $closeParenthesisIndex): bool
+    private function shouldBeSingleline(Tokens $tokens, int $openParenthesisIndex, int $closeParenthesisIndex): bool
     {
         $promotedParameterFound = false;
         $parameterCount = 0;
@@ -205,7 +205,7 @@ final class MultilinePromotedPropertiesFixer extends AbstractFixer implements Co
         return $promotedParameterFound && $isMultiline && $parameterCount < $this->configuration['minimum_number_of_parameters'];
     }
 
-    private function unwrapParameters(Tokens $tokens, int $openParenthesis, int $closeParenthesis): void
+    private function makeSingleline(Tokens $tokens, int $openParenthesis, int $closeParenthesis): void
     {
         for ($index = $closeParenthesis - 1; $index > $openParenthesis; --$index) {
             if (!$tokens[$index]->isWhitespace()) {
@@ -224,7 +224,7 @@ final class MultilinePromotedPropertiesFixer extends AbstractFixer implements Co
         }
     }
 
-    private function fixParameters(Tokens $tokens, int $openParenthesis, int $closeParenthesis): void
+    private function makeMultiline(Tokens $tokens, int $openParenthesis, int $closeParenthesis): void
     {
         $indent = WhitespacesAnalyzer::detectIndent($tokens, $openParenthesis);
 
