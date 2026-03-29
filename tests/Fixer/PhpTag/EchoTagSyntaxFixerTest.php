@@ -181,7 +181,8 @@ final class EchoTagSyntaxFixerTest extends AbstractFixerTestCase
 
         yield [
             <<<'PHP'
-                <?=// comment 'Foo';
+                <?=// comment
+                 'Foo';
                 ?>
                 PHP,
             <<<'PHP'
