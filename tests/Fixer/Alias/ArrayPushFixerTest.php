@@ -274,7 +274,7 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
         yield 'many calls' => [
             <<<'PHP'
                 <?php
-                    array_push($a, 1);
+                    $a[] = 1;
                     array_push($a);
                     $a[] = 2;
                 PHP,
