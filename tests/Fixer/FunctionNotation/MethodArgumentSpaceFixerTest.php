@@ -1202,6 +1202,196 @@ f(1,2,
             ],
         ];
 
+        yield 'ensure_single_line_for_single_argument: collapses single argument' => [
+            <<<'EXPECTED'
+                <?php
+                function foo($a) {
+                    // foo
+                }
+                foo($a);
+                EXPECTED,
+            <<<'INPUT'
+                <?php
+                function foo(
+                    $a
+                ) {
+                    // foo
+                }
+                foo(
+                    $a
+                );
+                INPUT,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: keeps multiple arguments multiline' => [
+            <<<'EXPECTED'
+                <?php
+                function foo(
+                    $a,
+                    $b,
+                    $c
+                ) {
+                    // foo
+                }
+                foo(
+                    $a,
+                    $b,
+                    $c
+                );
+                EXPECTED,
+            <<<'INPUT'
+                <?php
+                function foo(
+                    $a, $b,
+                    $c
+                ) {
+                    // foo
+                }
+                foo(
+                    $a, $b,
+                    $c
+                );
+                INPUT,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: does not affect single-line calls' => [
+            <<<'UNAFFECTED'
+                <?php
+                foo($a);
+                foo($a, $b);
+                UNAFFECTED,
+            null,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: does not affect empty calls' => [
+            <<<'UNAFFECTED'
+                <?php
+                foo();
+                UNAFFECTED,
+            null,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: handles nested call as single argument' => [
+            <<<'EXPECTED'
+                <?php
+                foo(bar($a, $b));
+                EXPECTED,
+            <<<'INPUT'
+                <?php
+                foo(
+                    bar($a, $b)
+                );
+                INPUT,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: handles array as single argument' => [
+            <<<'EXPECTED'
+                <?php
+                foo(['a', 'b', 'c']);
+                EXPECTED,
+            <<<'INPUT'
+                <?php
+                foo(
+                    ['a', 'b', 'c']
+                );
+                INPUT,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: collapses single argument method call' => [
+            <<<'EXPECTED'
+                <?php
+                $foo->bar($baz);
+                EXPECTED,
+            <<<'INPUT'
+                <?php
+                $foo->bar(
+                    $baz
+                );
+                INPUT,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: keeps multiple arguments method call multiline' => [
+            <<<'EXPECTED'
+                <?php
+                $foo->bar(
+                    $baz,
+                    $qux
+                );
+                EXPECTED,
+            <<<'INPUT'
+                <?php
+                $foo->bar(
+                    $baz, $qux
+                );
+                INPUT,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: collapses single argument static method call' => [
+            <<<'EXPECTED'
+                <?php
+                Foo::bar($baz);
+                EXPECTED,
+            <<<'INPUT'
+                <?php
+                Foo::bar(
+                    $baz
+                );
+                INPUT,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: keeps multiple arguments static method call multiline' => [
+            <<<'EXPECTED'
+                <?php
+                Foo::bar(
+                    $baz,
+                    $qux
+                );
+                EXPECTED,
+            <<<'INPUT'
+                <?php
+                Foo::bar(
+                    $baz, $qux
+                );
+                INPUT,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: methods in class' => [
+            <<<'EXPECTED'
+                <?php
+                class Foo {
+                    public function foo1($a) {}
+                    private function foo2(
+                        $a,
+                        $b,
+                        $c
+                    ) {}
+                }
+                EXPECTED,
+            <<<'INPUT'
+                <?php
+                class Foo {
+                    public function foo1(
+                        $a
+                    ) {}
+                    private function foo2(
+                        $a, $b,
+                        $c
+                    ) {}
+                }
+                INPUT,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
         yield 'fix closing parenthesis (without trailing comma)' => [
             '<?php
 if (true) {
