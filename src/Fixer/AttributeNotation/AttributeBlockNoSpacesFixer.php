@@ -64,43 +64,42 @@ class User
         $index = 0;
 
         while (null !== $index = $tokens->getNextTokenOfKind($index, [[\T_ATTRIBUTE]])) {
+            $toDelete = [];
+
             $attributeAnalysis = AttributeAnalyzer::collectOne($tokens, $index);
 
-            $closingBracketIndex = $attributeAnalysis->getClosingBracketIndex();
-            while ($index <= $closingBracketIndex) {
-                $token = $tokens[$index];
+            $index = $attributeAnalysis->getOpeningBracketIndex();
+            $token = $tokens[$index];
+            \assert($token->isGivenKind([\T_ATTRIBUTE]));
 
-                $toDelete = [];
+            $nextTokenIndex = $tokens->getNextMeaningfulToken($index);
+            for ($i = $index + 1; $i < $nextTokenIndex; ++$i) {
+                if (!$tokens[$i]->isWhitespace()) {
+                    $toDelete = [];
 
-                if ($token->isGivenKind([\T_ATTRIBUTE])) {
-                    $nextTokenIndex = $tokens->getNextMeaningfulToken($index);
-                    for ($i = $index + 1; $i < $nextTokenIndex; ++$i) {
-                        if (!$tokens[$i]->isWhitespace()) {
-                            $toDelete = [];
-
-                            break;
-                        }
-                        $toDelete[] = $i;
-                    }
+                    break;
                 }
+                $toDelete[] = $i;
+            }
+            unset($i);
 
-                if ($token->isGivenKind([CT::T_ATTRIBUTE_CLOSE])) {
-                    $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
-                    for ($i = $prevTokenIndex + 1; $i < $index; ++$i) {
-                        if (!$tokens[$i]->isWhitespace()) {
-                            $toDelete = [];
+            $index = $attributeAnalysis->getClosingBracketIndex();
+            $token = $tokens[$index];
+            \assert($token->isGivenKind([CT::T_ATTRIBUTE_CLOSE]));
 
-                            break;
-                        }
-                        $toDelete[] = $i;
-                    }
+            $prevTokenIndex = $tokens->getPrevMeaningfulToken($index);
+            for ($i = $prevTokenIndex + 1; $i < $index; ++$i) {
+                if (!$tokens[$i]->isWhitespace()) {
+                    $toDelete = [];
+
+                    break;
                 }
+                $toDelete[] = $i;
+            }
+            unset($i);
 
-                foreach ($toDelete as $i) {
-                    $tokens->clearAt($i);
-                }
-
-                ++$index;
+            foreach ($toDelete as $i) {
+                $tokens->clearAt($i);
             }
         }
     }
