@@ -168,41 +168,43 @@ try {
      */
     public static function provideFix80Cases(): iterable
     {
-        yield 'sort alpha, null none' => [
-            "<?php\nclass Foo\n{\n    public A|null|Z \$bar;\n}\n",
-            "<?php\nclass Foo\n{\n    public Z|null|A \$bar;\n}\n",
-            ['sort_algorithm' => 'alpha', 'null_adjustment' => 'none'],
-        ];
+        foreach (['null', 'false'] as $adjust) {
+            yield "sort alpha, {$adjust} none" => [
+                "<?php\nclass Foo\n{\n    public A|{$adjust}|Z \$bar;\n}\n",
+                "<?php\nclass Foo\n{\n    public Z|{$adjust}|A \$bar;\n}\n",
+                ['sort_algorithm' => 'alpha', "{$adjust}_adjustment" => 'none'],
+            ];
 
-        yield 'sort alpha, null first' => [
-            "<?php\nclass Foo\n{\n    public null|A|Z \$bar;\n}\n",
-            "<?php\nclass Foo\n{\n    public Z|null|A \$bar;\n}\n",
-            ['sort_algorithm' => 'alpha', 'null_adjustment' => 'always_first'],
-        ];
+            yield "sort alpha, {$adjust} first" => [
+                "<?php\nclass Foo\n{\n    public {$adjust}|A|Z \$bar;\n}\n",
+                "<?php\nclass Foo\n{\n    public Z|{$adjust}|A \$bar;\n}\n",
+                ['sort_algorithm' => 'alpha', "{$adjust}_adjustment" => 'always_first'],
+            ];
 
-        yield 'sort alpha, null last' => [
-            "<?php\nclass Foo\n{\n    public A|Z|null \$bar;\n}\n",
-            "<?php\nclass Foo\n{\n    public Z|null|A \$bar;\n}\n",
-            ['sort_algorithm' => 'alpha', 'null_adjustment' => 'always_last'],
-        ];
+            yield "sort alpha, {$adjust} last" => [
+                "<?php\nclass Foo\n{\n    public A|Z|{$adjust} \$bar;\n}\n",
+                "<?php\nclass Foo\n{\n    public Z|{$adjust}|A \$bar;\n}\n",
+                ['sort_algorithm' => 'alpha', "{$adjust}_adjustment" => 'always_last'],
+            ];
 
-        yield 'sort none, null first' => [
-            "<?php\nclass Foo\n{\n    public null|Z|A \$bar;\n}\n",
-            "<?php\nclass Foo\n{\n    public Z|null|A \$bar;\n}\n",
-            ['sort_algorithm' => 'none', 'null_adjustment' => 'always_first'],
-        ];
+            yield "sort none, {$adjust} first" => [
+                "<?php\nclass Foo\n{\n    public {$adjust}|Z|A \$bar;\n}\n",
+                "<?php\nclass Foo\n{\n    public Z|{$adjust}|A \$bar;\n}\n",
+                ['sort_algorithm' => 'none', "{$adjust}_adjustment" => 'always_first'],
+            ];
 
-        yield 'sort none, null last' => [
-            "<?php\nclass Foo\n{\n    public Z|A|null \$bar;\n}\n",
-            "<?php\nclass Foo\n{\n    public Z|null|A \$bar;\n}\n",
-            ['sort_algorithm' => 'none', 'null_adjustment' => 'always_last'],
-        ];
+            yield "sort none, {$adjust} last" => [
+                "<?php\nclass Foo\n{\n    public Z|A|{$adjust} \$bar;\n}\n",
+                "<?php\nclass Foo\n{\n    public Z|{$adjust}|A \$bar;\n}\n",
+                ['sort_algorithm' => 'none', "{$adjust}_adjustment" => 'always_last'],
+            ];
 
-        yield 'sort none, null none' => [
-            "<?php\nclass Foo\n{\n    public Z|null|A \$bar;\n}\n",
-            null,
-            ['sort_algorithm' => 'none', 'null_adjustment' => 'none'],
-        ];
+            yield "sort none, {$adjust} none" => [
+                "<?php\nclass Foo\n{\n    public Z|{$adjust}|A \$bar;\n}\n",
+                null,
+                ['sort_algorithm' => 'none', "{$adjust}_adjustment" => 'none'],
+            ];
+        }
 
         yield [
             "<?php\nclass Foo\n{\n    public null|int|string \$bar = null;\n}\n",
@@ -524,6 +526,230 @@ try {
         ];
 
         yield [
+            "<?php\nclass Foo\n{\n    public array|string|false \$bar = false;\n}\n",
+            "<?php\nclass Foo\n{\n    public string|false|array \$bar = false;\n}\n",
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'always_last'],
+        ];
+
+        yield [
+            "<?php\nclass Foo\n{\n    public A|B|false \$foo = false;\n}\n",
+            "<?php\nclass Foo\n{\n    public B|A|false \$foo = false;\n}\n",
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'always_last'],
+        ];
+
+        yield [
+            "<?php\nclass Foo\n{\n    public \\A|B|false \$foo = false;\n}\n",
+            "<?php\nclass Foo\n{\n    public B|\\A|false \$foo = false;\n}\n",
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'always_last'],
+        ];
+
+        yield [
+            "<?php\nclass Foo\n{\n    public \\A|\\B|false \$foo = false;\n}\n",
+            "<?php\nclass Foo\n{\n    public \\B|\\A|false \$foo = false;\n}\n",
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'always_last'],
+        ];
+
+        yield [
+            "<?php\nclass Foo\n{\n    public array|string|false/* int */ \$bar = false;\n}\n",
+            "<?php\nclass Foo\n{\n    public string|false|array/* int */ \$bar = false;\n}\n",
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'always_last'],
+        ];
+
+        yield [
+            "<?php\nclass Foo\n{\n    public /* int */A|B|false \$foo = false;\n}\n",
+            "<?php\nclass Foo\n{\n    public /* int */B|A|false \$foo = false;\n}\n",
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'always_last'],
+        ];
+
+        yield [
+            "<?php\nclass Foo\n{\n    public     A|B|false     \$foo = false;\n}\n",
+            "<?php\nclass Foo\n{\n    public     B|A|false     \$foo = false;\n}\n",
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'always_last'],
+        ];
+
+        yield [
+            "<?php\nclass Foo\n{\n    private function bar(array|callable|int|false \$cb) {}\n}\n",
+            "<?php\nclass Foo\n{\n    private function bar(array|int|callable|false \$cb) {}\n}\n",
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'always_last'],
+        ];
+
+        yield [
+            "<?php\nclass Foo\n{\n    private function bar(\$cb): array|callable|int|false {}\n}\n",
+            "<?php\nclass Foo\n{\n    private function bar(\$cb): array|int|callable|false {}\n}\n",
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'always_last'],
+        ];
+
+        yield [
+            "<?php\nclass Foo\n{\n    private function bar(\$cb): static|false {}\n}\n",
+            "<?php\nclass Foo\n{\n    private function bar(\$cb): false|static {}\n}\n",
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'always_last'],
+        ];
+
+        yield [
+            "<?php\nclass Foo\n{\n    public function bar(string|false \$str, array|int|false \$arr) {}\n}\n",
+            "<?php\nclass Foo\n{\n    public function bar(string|false \$str, int|array|false \$arr) {}\n}\n",
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'always_last'],
+        ];
+
+        yield [
+            "<?php\nclass Foo\n{\n    public function bar(\\JsonSerializable|\\Stringable \$obj): array|int {}\n}\n",
+            "<?php\nclass Foo\n{\n    public function bar(\\Stringable|\\JsonSerializable \$obj): int|array {}\n}\n",
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'always_last'],
+        ];
+
+        yield [
+            '<?php function foo(int|string|false $bar): \Stringable|false {}',
+            '<?php function foo(string|int|false $bar): \Stringable|false {}',
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'always_last'],
+        ];
+
+        yield [
+            '<?php fn (\Countable|int|false $number): int|false => $number;',
+            '<?php fn (int|\Countable|false $number): int|false => $number;',
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'always_last'],
+        ];
+
+        yield [
+            "<?php\ntry {\n    foo();\n} catch (\\Error|\\TypeError) {\n}\n",
+            "<?php\ntry {\n    foo();\n} catch (\\TypeError|\\Error) {\n}\n",
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'always_last'],
+        ];
+
+        yield [
+            '<?php
+class Foo
+{
+    public ?string $foo = null;
+    public /* int|string */ $bar;
+    private array|false $baz = false;
+
+    public function baz(): string|false {}
+    protected function bar(string $str, ?array $config = null): callable {}
+}
+
+try {
+    (new Foo)->baz();
+} catch (Exception $e) {
+    return $e;
+}
+',
+            null,
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'always_last'],
+        ];
+
+        yield [
+            "<?php\nclass Foo\n{\n    public array|false|string \$bar = false;\n}\n",
+            "<?php\nclass Foo\n{\n    public string|false|array \$bar = false;\n}\n",
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'none'],
+        ];
+
+        yield [
+            "<?php\nclass Foo\n{\n    public A|B|false \$foo = false;\n}\n",
+            "<?php\nclass Foo\n{\n    public B|A|false \$foo = false;\n}\n",
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'none'],
+        ];
+
+        yield [
+            "<?php\nclass Foo\n{\n    public \\A|B|false \$foo = false;\n}\n",
+            "<?php\nclass Foo\n{\n    public B|\\A|false \$foo = false;\n}\n",
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'none'],
+        ];
+
+        yield [
+            "<?php\nclass Foo\n{\n    public \\A|\\B|false \$foo = false;\n}\n",
+            "<?php\nclass Foo\n{\n    public \\B|\\A|false \$foo = false;\n}\n",
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'none'],
+        ];
+
+        yield [
+            "<?php\nclass Foo\n{\n    public array|false|string/* int */ \$bar = false;\n}\n",
+            "<?php\nclass Foo\n{\n    public string|false|array/* int */ \$bar = false;\n}\n",
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'none'],
+        ];
+
+        yield [
+            "<?php\nclass Foo\n{\n    public /* int */A|B|false \$foo = false;\n}\n",
+            "<?php\nclass Foo\n{\n    public /* int */B|A|false \$foo = false;\n}\n",
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'none'],
+        ];
+
+        yield [
+            "<?php\nclass Foo\n{\n    public     A|B|false     \$foo = false;\n}\n",
+            "<?php\nclass Foo\n{\n    public     B|A|false     \$foo = false;\n}\n",
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'none'],
+        ];
+
+        yield [
+            "<?php\nclass Foo\n{\n    private function bar(array|callable|false|int \$cb) {}\n}\n",
+            "<?php\nclass Foo\n{\n    private function bar(array|int|callable|false \$cb) {}\n}\n",
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'none'],
+        ];
+
+        yield [
+            "<?php\nclass Foo\n{\n    private function bar(\$cb): array|callable|false|int {}\n}\n",
+            "<?php\nclass Foo\n{\n    private function bar(\$cb): array|int|callable|false {}\n}\n",
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'none'],
+        ];
+
+        yield [
+            "<?php\nclass Foo\n{\n    private function bar(\$cb): false|static {}\n}\n",
+            "<?php\nclass Foo\n{\n    private function bar(\$cb): static|false {}\n}\n",
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'none'],
+        ];
+
+        yield [
+            "<?php\nclass Foo\n{\n    public function bar(false|string \$str, array|false|int \$arr) {}\n}\n",
+            "<?php\nclass Foo\n{\n    public function bar(string|false \$str, int|array|false \$arr) {}\n}\n",
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'none'],
+        ];
+
+        yield [
+            "<?php\nclass Foo\n{\n    public function bar(\\JsonSerializable|\\Stringable \$obj): array|int {}\n}\n",
+            "<?php\nclass Foo\n{\n    public function bar(\\Stringable|\\JsonSerializable \$obj): int|array {}\n}\n",
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'none'],
+        ];
+
+        yield [
+            '<?php function foo(false|int|string $bar): false|\Stringable {}',
+            '<?php function foo(string|int|false $bar): \Stringable|false {}',
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'none'],
+        ];
+
+        yield [
+            '<?php fn (\Countable|false|int $number): false|int => $number;',
+            '<?php fn (int|\Countable|false $number): int|false => $number;',
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'none'],
+        ];
+
+        yield [
+            "<?php\ntry {\n    foo();\n} catch (\\Error|\\TypeError) {\n}\n",
+            "<?php\ntry {\n    foo();\n} catch (\\TypeError|\\Error) {\n}\n",
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'none'],
+        ];
+
+        yield [
+            '<?php
+class Foo
+{
+    public ?string $foo = null;
+    public /* int|string */ $bar;
+    private array|false $baz = false;
+
+    public function baz(): false|string {}
+    protected function bar(string $str, ?array $config = null): callable {}
+}
+
+try {
+    (new Foo)->baz();
+} catch (Exception $e) {
+    return $e;
+}
+',
+            null,
+            ['sort_algorithm' => 'alpha', 'false_adjustment' => 'none'],
+        ];
+
+        yield [
             "<?php\nclass Foo\n{\n    public null|int|string \$bar = null;\n}\n",
             "<?php\nclass Foo\n{\n    public string   |   null   |   int \$bar = null;\n}\n",
         ];
@@ -582,17 +808,19 @@ try {
             "<?php\nclass Foo\n{\n    public readonly B|null|A \$bar;\n}\n",
         ];
 
-        yield [
-            "<?php\nclass Foo\n{\n    public readonly A|B|null \$bar;\n}\n",
-            "<?php\nclass Foo\n{\n    public readonly B|null|A \$bar;\n}\n",
-            ['null_adjustment' => 'always_last'],
-        ];
+        foreach (['null', 'false'] as $adjust) {
+            yield [
+                "<?php\nclass Foo\n{\n    public readonly A|B|{$adjust} \$bar;\n}\n",
+                "<?php\nclass Foo\n{\n    public readonly B|{$adjust}|A \$bar;\n}\n",
+                ["{$adjust}_adjustment" => 'always_last'],
+            ];
 
-        yield [
-            "<?php\nclass Foo\n{\n    public readonly A|null|X \$bar;\n}\n",
-            "<?php\nclass Foo\n{\n    public readonly X|A|null \$bar;\n}\n",
-            ['null_adjustment' => 'none'],
-        ];
+            yield [
+                "<?php\nclass Foo\n{\n    public readonly A|{$adjust}|X \$bar;\n}\n",
+                "<?php\nclass Foo\n{\n    public readonly X|A|{$adjust} \$bar;\n}\n",
+                ["{$adjust}_adjustment" => 'none'],
+            ];
+        }
 
         yield [
             "<?php\nclass Foo\n{\n    public B&A \$bar;\n}\n",
@@ -625,17 +853,19 @@ try {
             "<?php\nclass Foo\n{\n    public string|(Bz&At)|array|null \$bar = null;\n}\n",
         ];
 
-        yield [
-            "<?php\nclass Foo\n{\n    public array|(At&Bz)|string|null \$bar = null;\n}\n",
-            "<?php\nclass Foo\n{\n    public string|(Bz&At)|array|null \$bar = null;\n}\n",
-            ['null_adjustment' => 'always_last'],
-        ];
+        foreach (['null', 'false'] as $adjust) {
+            yield [
+                "<?php\nclass Foo\n{\n    public array|(At&Bz)|string|{$adjust} \$bar = {$adjust};\n}\n",
+                "<?php\nclass Foo\n{\n    public string|(Bz&At)|array|{$adjust} \$bar = {$adjust};\n}\n",
+                ["{$adjust}_adjustment" => 'always_last'],
+            ];
 
-        yield [
-            "<?php\nclass Foo\n{\n    public array|(At&Bz)|null|string \$bar = null;\n}\n",
-            "<?php\nclass Foo\n{\n    public string|(Bz&At)|array|null \$bar = null;\n}\n",
-            ['null_adjustment' => 'none'],
-        ];
+            yield [
+                "<?php\nclass Foo\n{\n    public array|(At&Bz)|{$adjust}|string \$bar = {$adjust};\n}\n",
+                "<?php\nclass Foo\n{\n    public string|(Bz&At)|array|{$adjust} \$bar = {$adjust};\n}\n",
+                ["{$adjust}_adjustment" => 'none'],
+            ];
+        }
 
         yield [
             "<?php\nclass Foo\n{\n    public (A&B)|(A&C)|(B&D)|(C&D) \$bar;\n}\n",
