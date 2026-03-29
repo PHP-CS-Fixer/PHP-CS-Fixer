@@ -739,6 +739,19 @@ trait Baz {}
                 'class' => 'single',
             ],
         ];
+
+        yield 'It handles functions correctly' => [
+            '<?php
+            /**
+             * Description of foo function.
+             */
+            function foo(): void {}
+            ',
+            '<?php
+            /** Description of foo function. */
+            function foo(): void {}
+            ',
+        ];
     }
 
     /**

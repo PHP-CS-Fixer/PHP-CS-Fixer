@@ -53,31 +53,25 @@ final class MagicConstantCasingFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound($this->getMagicConstantTokens());
+        static $magicConstantTokenIds = null;
+
+        if (null === $magicConstantTokenIds) {
+            $magicConstantTokenIds = array_keys(self::MAGIC_CONSTANTS);
+        }
+
+        return $tokens->isAnyTokenKindsFound($magicConstantTokenIds);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $magicConstantTokens = $this->getMagicConstantTokens();
-
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind($magicConstantTokens)) {
-                $tokens[$index] = new Token([$token->getId(), self::MAGIC_CONSTANTS[$token->getId()]]);
+            $tokenId = $token->getId();
+
+            if (null === $tokenId || !isset(self::MAGIC_CONSTANTS[$tokenId])) {
+                continue;
             }
+
+            $tokens[$index] = new Token([$tokenId, self::MAGIC_CONSTANTS[$tokenId]]);
         }
-    }
-
-    /**
-     * @return non-empty-list<int>
-     */
-    private function getMagicConstantTokens(): array
-    {
-        static $magicConstantTokens = null;
-
-        if (null === $magicConstantTokens) {
-            $magicConstantTokens = array_keys(self::MAGIC_CONSTANTS);
-        }
-
-        return $magicConstantTokens;
     }
 }
