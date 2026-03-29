@@ -401,7 +401,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
     {
         return (\is_int($this->spacing))
             ? $this->spacing
-            : ($this->spacing[$tag] ?? $this->spacing[self::DEFAULT_SPACING_KEY] ?? self::DEFAULT_SPACING);
+            : ($this->spacing[$tag ?? ''] ?? $this->spacing[self::DEFAULT_SPACING_KEY] ?? self::DEFAULT_SPACING);
     }
 
     /**

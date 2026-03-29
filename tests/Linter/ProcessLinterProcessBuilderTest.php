@@ -63,7 +63,7 @@ final class ProcessLinterProcessBuilderTest extends TestCase
      */
     public static function providePrepareCommandOnPhpOnWindowsCases(): iterable
     {
-        yield 'Linux-like' => ['php', 'foo.php', 'c:\tools\php\php.EXE -l foo.php'];
+        yield 'Linux-like' => ['php', 'foo.php', 'C:\tools\php\php.EXE -l foo.php'];
 
         yield 'Windows-like' => ['C:\Program Files\php\php.exe', 'foo bar\baz.php', '"C:\Program Files\php\php.exe" -l "foo bar\baz.php"'];
     }
