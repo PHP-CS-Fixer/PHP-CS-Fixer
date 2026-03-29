@@ -539,6 +539,7 @@ final class FixerFactoryTest extends TestCase
             ],
             'method_argument_space' => [
                 'array_indentation',
+                'no_trailing_comma_in_singleline',
                 'statement_indentation',
             ],
             'modernize_strpos' => [
