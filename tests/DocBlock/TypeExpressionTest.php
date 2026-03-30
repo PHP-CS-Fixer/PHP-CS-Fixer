@@ -1173,7 +1173,7 @@ final class TypeExpressionTest extends TestCase
 
         self::assertSame(
             \count(array_filter($matches, static fn ($key): bool => \is_string($key), \ARRAY_FILTER_USE_KEY)),
-            \count(array_filter($matches, static fn ($key): bool => \is_int($key), \ARRAY_FILTER_USE_KEY)) - 2,
+            \count(array_filter($matches, static fn ($key): bool => \is_int($key), \ARRAY_FILTER_USE_KEY)) - 1,
             'Regex TypeExpression::REGEX_TYPES has unnamed capturing group.',
         );
     }
