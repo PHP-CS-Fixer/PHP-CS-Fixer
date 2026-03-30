@@ -539,6 +539,7 @@ final class FixerFactoryTest extends TestCase
             ],
             'method_argument_space' => [
                 'array_indentation',
+                'no_trailing_comma_in_singleline',
                 'statement_indentation',
             ],
             'modernize_strpos' => [
@@ -823,14 +824,14 @@ final class FixerFactoryTest extends TestCase
             ],
             'phpdoc_array_type' => [
                 'phpdoc_list_type',
-                'phpdoc_types_no_duplicates',
+                'phpdoc_no_duplicate_types',
                 'phpdoc_types_order',
             ],
             'phpdoc_line_span' => [
                 'no_superfluous_phpdoc_tags',
             ],
             'phpdoc_list_type' => [
-                'phpdoc_types_no_duplicates',
+                'phpdoc_no_duplicate_types',
                 'phpdoc_types_order',
             ],
             'phpdoc_no_access' => [

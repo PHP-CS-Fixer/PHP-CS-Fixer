@@ -270,6 +270,21 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
                 if ($b) {} elseif (foo()) array_push($a, $b);
             ',
         ];
+
+        yield 'many calls' => [
+            <<<'PHP'
+                <?php
+                    $a[] = 1;
+                    array_push($a);
+                    $a[] = 2;
+                PHP,
+            <<<'PHP'
+                <?php
+                    array_push($a, 1);
+                    array_push($a);
+                    array_push($a, 2);
+                PHP,
+        ];
     }
 
     /**
