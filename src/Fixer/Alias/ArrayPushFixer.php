@@ -107,7 +107,7 @@ final class ArrayPushFixer extends AbstractFixer
             $firstArgumentStop = $tokens->getNextMeaningfulToken($firstArgumentStop);
 
             if (!$tokens[$firstArgumentStop]->equals(',')) {
-                return;
+                continue;
             }
 
             // second argument can be about anything but ellipsis, we must make sure there is not
