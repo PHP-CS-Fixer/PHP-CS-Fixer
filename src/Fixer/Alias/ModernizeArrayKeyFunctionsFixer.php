@@ -95,10 +95,7 @@ final class ModernizeArrayKeyFunctionsFixer extends AbstractFixer
             if (!$tokens[$bracketsClose]->equals(']')) {
                 continue;
             }
-            $equals = $tokens->getNextTokenOfKind($bracketsClose, ['=', [\T_AND_EQUAL], [\T_COALESCE_EQUAL], [\T_CONCAT_EQUAL], [\T_DIV_EQUAL], [\T_MINUS_EQUAL], [\T_MOD_EQUAL], [\T_MUL_EQUAL], [\T_OR_EQUAL], [\T_SL_EQUAL], [\T_SR_EQUAL], [\T_XOR_EQUAL]]);
-            $endOfStatement = $tokens->getNextTokenOfKind($bracketsClose, [';', [\T_CLOSE_TAG], ',']);
-            // avoid modifying the left-hand side of assignment operations
-            if (null !== $equals && (null === $endOfStatement || $equals < $endOfStatement)) {
+            if ($this->isUsedForAssignment($tokens, $bracketsClose)) {
                 continue;
             }
 
@@ -151,6 +148,26 @@ final class ModernizeArrayKeyFunctionsFixer extends AbstractFixer
         }
 
         return null;
+    }
+
+    /**
+     * Check whether the detected `array_key_first`/`array_key_last` block is being used as an lvalue (i.e. a value is being assigned to it);
+     * If it is, we can't replace it with `array_first`/`array_last`.
+     */
+    private function isUsedForAssignment(Tokens $tokens, int $index): bool
+    {
+        $incrementTokenBefore = $tokens->getPrevTokenOfKind($index, [[\T_INC], [\T_DEC]]);
+        $endOfPreviousStatement = $tokens->getPrevTokenOfKind($index, [';', [\T_CLOSE_TAG], ',']);
+        if (null !== $incrementTokenBefore && (null === $endOfPreviousStatement || $incrementTokenBefore > $endOfPreviousStatement)) {
+            // The code is something like `++$array[array_key_first($array)];`
+            return true;
+        }
+
+        $equals = $tokens->getNextTokenOfKind($index, ['=', [\T_AND_EQUAL], [\T_COALESCE_EQUAL], [\T_CONCAT_EQUAL], [\T_DIV_EQUAL], [\T_MINUS_EQUAL], [\T_MOD_EQUAL], [\T_MUL_EQUAL], [\T_OR_EQUAL], [\T_SL_EQUAL], [\T_SR_EQUAL], [\T_XOR_EQUAL], [\T_INC], [\T_DEC]]);
+        $endOfStatement = $tokens->getNextTokenOfKind($index, [';', [\T_CLOSE_TAG], ',']);
+
+        // avoid modifying the left-hand side of assignment operations
+        return null !== $equals && (null === $endOfStatement || $equals < $endOfStatement);
     }
 
     /**
