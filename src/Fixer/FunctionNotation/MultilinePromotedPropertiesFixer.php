@@ -90,6 +90,20 @@ final class MultilinePromotedPropertiesFixer extends AbstractFixer implements Co
                     new VersionSpecification(80_000),
                     ['minimum_number_of_parameters' => 3],
                 ),
+                new VersionSpecificCodeSample(
+                    <<<'PHP'
+                        <?php
+                        class Foo {
+                            public function __construct(
+                                private array $a,
+                                private bool $b,
+                            ) {}
+                        }
+
+                        PHP,
+                    new VersionSpecification(80_000),
+                    ['minimum_number_of_parameters' => 3],
+                ),
             ],
         );
     }
