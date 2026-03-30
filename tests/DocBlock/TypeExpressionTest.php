@@ -1167,6 +1167,17 @@ final class TypeExpressionTest extends TestCase
         ];
     }
 
+    public function testTypeRegexDoesNotHaveUnnamedCapturingGroup(): void
+    {
+        Preg::match('~'.TypeExpression::REGEX_TYPES.'~', 'int', $matches);
+
+        self::assertSame(
+            \count(array_filter($matches, static fn ($key): bool => \is_string($key), \ARRAY_FILTER_USE_KEY)),
+            \count(array_filter($matches, static fn ($key): bool => \is_int($key), \ARRAY_FILTER_USE_KEY)) - 2,
+            'Regex TypeExpression::REGEX_TYPES has unnamed capturing group.',
+        );
+    }
+
     private static function makeLongArrayShapeType(): string
     {
         return 'array{'.implode(
