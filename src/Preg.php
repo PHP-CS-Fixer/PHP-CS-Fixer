@@ -46,11 +46,13 @@ final class Preg
     public static function match(string $pattern, string $subject, ?array &$matches = null, int $flags = 0, int $offset = 0): bool
     {
         $result = @preg_match(self::addUtf8Modifier($pattern), $subject, $matches, $flags, $offset);
+        self::assertMatches($pattern, $matches);
         if (false !== $result && \PREG_NO_ERROR === preg_last_error()) {
             return 1 === $result;
         }
 
         $result = @preg_match(self::removeUtf8Modifier($pattern), $subject, $matches, $flags, $offset);
+        self::assertMatches($pattern, $matches);
         if (false !== $result && \PREG_NO_ERROR === preg_last_error()) {
             return 1 === $result;
         }
@@ -90,11 +92,13 @@ final class Preg
     public static function matchAll(string $pattern, string $subject, ?array &$matches = null, int $flags = \PREG_PATTERN_ORDER, int $offset = 0): int
     {
         $result = @preg_match_all(self::addUtf8Modifier($pattern), $subject, $matches, $flags, $offset);
+        self::assertMatches($pattern, $matches);
         if (false !== $result && \PREG_NO_ERROR === preg_last_error()) {
             return $result;
         }
 
         $result = @preg_match_all(self::removeUtf8Modifier($pattern), $subject, $matches, $flags, $offset);
+        self::assertMatches($pattern, $matches);
         if (false !== $result && \PREG_NO_ERROR === preg_last_error()) {
             return $result;
         }
@@ -162,6 +166,32 @@ final class Preg
         }
 
         throw self::newPregException(preg_last_error(), preg_last_error_msg(), __METHOD__, $pattern);
+    }
+
+    /**
+     * @param null|array<array-key, mixed> $matches
+     */
+    private static function assertMatches(string $pattern, ?array $matches): void
+    {
+        if (!filter_var(getenv('PHP_CS_FIXER_TESTS_SYSTEM_UNDER_TEST'), \FILTER_VALIDATE_BOOL)) {
+            return;
+        }
+        if (null === $matches) {
+            return;
+        }
+        if (str_contains($pattern, '(?J)')) {
+            return;
+        }
+        $namedGroupsCount = \count(array_filter($matches, static fn ($key): bool => \is_string($key), \ARRAY_FILTER_USE_KEY));
+        if (0 === $namedGroupsCount) {
+            return;
+        }
+        $notNamedGroupsCount = \count(array_filter($matches, static fn ($key): bool => \is_int($key), \ARRAY_FILTER_USE_KEY));
+        if ($namedGroupsCount === $notNamedGroupsCount - 1) {
+            return;
+        }
+
+        throw new \RuntimeException("Regex {$pattern} has unnamed capturing group.");
     }
 
     private static function addUtf8Modifier(string $pattern): string
