@@ -285,6 +285,10 @@ final class ArrayPushFixerTest extends AbstractFixerTestCase
                     array_push($a, 2);
                 PHP,
         ];
+
+        yield 'expression after call' => [
+            '<?php array_push($a, $b) + 1;',
+        ];
     }
 
     /**
