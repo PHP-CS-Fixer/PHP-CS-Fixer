@@ -206,6 +206,9 @@ final class ModernizeArrayKeyFunctionsFixer extends AbstractFixer
         return false;
     }
 
+    /**
+     * @return Token[]
+     */
     private function buildOutputTokens(Tokens $tokens, string $functionName, int $beginVariable, int $endVariable, ?int $parensOpen, int $parensClose, int $bracketsClose): array
     {
         $resultItems = [];
@@ -221,10 +224,11 @@ final class ModernizeArrayKeyFunctionsFixer extends AbstractFixer
         }
         $resultItems[] = new Token([\T_STRING, $functionName]);
         $resultItems[] = $tokens[$parensOpen];
-        for ($i = $beginVariable; $i <= $endVariable; ++$i) {
-            $resultItems[] = $tokens[$i];
+        for ($indexToAdd = $beginVariable; $indexToAdd <= $endVariable; ++$indexToAdd) {
+            $resultItems[] = $tokens[$indexToAdd];
         }
         $resultItems[] = $tokens[$parensClose];
+
         return $resultItems;
     }
 }
