@@ -207,7 +207,7 @@ final class ModernizeArrayKeyFunctionsFixer extends AbstractFixer
     }
 
     /**
-     * @return Token[]
+     * @return list<Token>
      */
     private function buildOutputTokens(Tokens $tokens, string $functionName, int $beginVariable, int $endVariable, ?int $parensOpen, int $parensClose, int $bracketsClose): array
     {
