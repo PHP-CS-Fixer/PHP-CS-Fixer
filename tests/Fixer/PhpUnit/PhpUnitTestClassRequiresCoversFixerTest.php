@@ -20,6 +20,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
 /**
  * @internal
  *
+ * @covers \PhpCsFixer\Fixer\AbstractPhpUnitFixer
  * @covers \PhpCsFixer\Fixer\DocBlockAnnotationTrait
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitTestClassRequiresCoversFixer
  *
