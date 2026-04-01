@@ -65,13 +65,38 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(\T_RETURN)) {
+        $this->fixRange($tokens, 1, $tokens->count() - 1);
+    }
+
+    private function fixRange(Tokens $tokens, int $startIndex, int $endIndex): void
+    {
+        for ($index = $startIndex; $index < $endIndex; ++$index) {
+            if ($tokens[$index]->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
+                $propertyHookCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PROPERTY_HOOK, $index);
+                $this->scanRange($tokens, $index, $propertyHookCloseIndex);
+                $index = $propertyHookCloseIndex;
+
+                continue;
+            }
+
+            if (!$tokens[$index]->isGivenKind(\T_RETURN)) {
                 continue;
             }
 
             if ($this->needFixing($tokens, $index)) {
                 $this->clear($tokens, $index);
+            }
+        }
+    }
+
+    private function scanRange(Tokens $tokens, int $startIndex, int $endIndex): void
+    {
+        for ($index = $startIndex; $index < $endIndex; ++$index) {
+            if ($tokens[$index]->isGivenKind(\T_FUNCTION)) {
+                $braceOpenIndex = $tokens->getNextTokenOfKind($index, ['{']);
+                $braceCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $braceOpenIndex);
+                $this->fixRange($tokens, $braceOpenIndex, $braceCloseIndex);
+                $index = $braceCloseIndex;
             }
         }
     }
