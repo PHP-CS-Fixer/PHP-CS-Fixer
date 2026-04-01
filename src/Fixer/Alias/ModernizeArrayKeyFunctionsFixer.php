@@ -115,11 +115,7 @@ final class ModernizeArrayKeyFunctionsFixer extends AbstractFixer
             } else {
                 $functionName = 'array_last';
             }
-            $resultItems = [new Token([\T_STRING, $functionName]), $tokens[$parensOpen]];
-            for ($i = $beginVariable; $i <= $endVariable; ++$i) {
-                $resultItems[] = $tokens[$i];
-            }
-            $resultItems[] = $tokens[$parensClose];
+            $resultItems = $this->buildOutputTokens($tokens, $functionName, $beginVariable, $endVariable, $parensOpen, $parensClose, $bracketsClose);
             $tokens->overrideRange($beginVariable, $bracketsClose, $resultItems);
             $index = $parensClose + 1;
         }
@@ -175,6 +171,18 @@ final class ModernizeArrayKeyFunctionsFixer extends AbstractFixer
      */
     private function checkStatementsMatch(Tokens $tokens, ?int $beginA, int $endA, ?int $beginB, int $endB): bool
     {
+        if ($tokens[$beginA]->isGivenKind([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT])) {
+            $beginA = $tokens->getNextMeaningfulToken($beginA);
+        }
+        if ($tokens[$beginB]->isGivenKind([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT])) {
+            $beginB = $tokens->getNextMeaningfulToken($beginB);
+        }
+        if ($tokens[$endA]->isGivenKind([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT])) {
+            $endA = $tokens->getPrevMeaningfulToken($endA);
+        }
+        if ($tokens[$endB]->isGivenKind([\T_WHITESPACE, \T_COMMENT, \T_DOC_COMMENT])) {
+            $endB = $tokens->getPrevMeaningfulToken($endB);
+        }
         while ($beginA <= $endA && $beginB <= $endB) {
             if (!$tokens[$beginA]->equals($tokens[$beginB])) {
                 return false;
@@ -196,5 +204,27 @@ final class ModernizeArrayKeyFunctionsFixer extends AbstractFixer
 
         // this shouldn't happen as we should return out from the loop
         return false;
+    }
+
+    private function buildOutputTokens(Tokens $tokens, string $functionName, int $beginVariable, int $endVariable, ?int $parensOpen, int $parensClose, int $bracketsClose): array
+    {
+        $resultItems = [];
+        for ($i = $endVariable + 1; $i < $bracketsClose; ++$i) {
+            if (!$tokens[$i]->isGivenKind([\T_COMMENT, \T_DOC_COMMENT])) {
+                continue;
+            }
+            $resultItems[] = $tokens[$i];
+            if ($tokens[$i + 1]->isGivenKind(\T_WHITESPACE)) {
+                $resultItems[] = $tokens[$i + 1];
+                ++$i;
+            }
+        }
+        $resultItems[] = new Token([\T_STRING, $functionName]);
+        $resultItems[] = $tokens[$parensOpen];
+        for ($i = $beginVariable; $i <= $endVariable; ++$i) {
+            $resultItems[] = $tokens[$i];
+        }
+        $resultItems[] = $tokens[$parensClose];
+        return $resultItems;
     }
 }

@@ -624,5 +624,73 @@ final class ModernizeArrayKeyFunctionsFixerTest extends AbstractFixerTestCase
             '<?php echo $foo->bar->baz[array_key_first($foo->bar)];',
             null,
         ];
+
+        yield 'array_key_first with lots of /* comments inbetween' => [
+            '<?php /* a *//* d *//* e *//* f *//* g *//* h *//* i *//* j *//* k */array_first($foo/* b */->/* c */$bar)/* l */;',
+            '<?php /* a */$foo/* b */->/* c */$bar/* d */[/* e */array_key_first/* f */(/* g */$foo/* h */->/* i */$bar/* j */)/* k */]/* l */;',
+        ];
+
+        yield 'array_key_first with lots of doc comments inbetween' => [
+            '<?php /** a *//** d *//** e *//** f *//** g *//** h *//** i *//** j *//** k */array_first($foo/** b */->/** c */$bar)/** l */;',
+            '<?php /** a */$foo/** b */->/** c */$bar/** d */[/** e */array_key_first/** f */(/** g */$foo/** h */->/** i */$bar/** j */)/** k */]/** l */;',
+        ];
+
+        yield 'array_key_first with lots of single line comments inbetween' => [
+            '<?php // a
+// d
+// e
+// f
+// g
+// h
+// i
+// j
+// k
+array_first($foo// b
+->// c
+$bar)// l
+;',
+            '<?php // a
+$foo// b
+->// c
+$bar// d
+[// e
+array_key_first// f
+(// g
+$foo// h
+->// i
+$bar// j
+)// k
+]// l
+;',
+        ];
+
+        yield 'array_key_first with lots of hash single line comments inbetween' => [
+            '<?php # a
+# d
+# e
+# f
+# g
+# h
+# i
+# j
+# k
+array_first($foo# b
+-># c
+$bar)# l
+;',
+            '<?php # a
+$foo# b
+-># c
+$bar# d
+[# e
+array_key_first# f
+(# g
+$foo# h
+-># i
+$bar# j
+)# k
+]# l
+;',
+        ];
     }
 }
