@@ -26,6 +26,9 @@ namespace PhpCsFixer;
  */
 final class Preg
 {
+    /** @var array<string, true> */
+    private static array $assertMatchesCache = [];
+
     /**
      * @param array<array-key, mixed>                               $matches
      * @param int-mask<PREG_OFFSET_CAPTURE, PREG_UNMATCHED_AS_NULL> $flags
@@ -47,11 +50,15 @@ final class Preg
     {
         $result = @preg_match(self::addUtf8Modifier($pattern), $subject, $matches, $flags, $offset);
         if (false !== $result && \PREG_NO_ERROR === preg_last_error()) {
+            self::assertMatches($pattern);
+
             return 1 === $result;
         }
 
         $result = @preg_match(self::removeUtf8Modifier($pattern), $subject, $matches, $flags, $offset);
         if (false !== $result && \PREG_NO_ERROR === preg_last_error()) {
+            self::assertMatches($pattern);
+
             return 1 === $result;
         }
 
@@ -91,11 +98,15 @@ final class Preg
     {
         $result = @preg_match_all(self::addUtf8Modifier($pattern), $subject, $matches, $flags, $offset);
         if (false !== $result && \PREG_NO_ERROR === preg_last_error()) {
+            self::assertMatches($pattern);
+
             return $result;
         }
 
         $result = @preg_match_all(self::removeUtf8Modifier($pattern), $subject, $matches, $flags, $offset);
         if (false !== $result && \PREG_NO_ERROR === preg_last_error()) {
+            self::assertMatches($pattern);
+
             return $result;
         }
 
@@ -162,6 +173,53 @@ final class Preg
         }
 
         throw self::newPregException(preg_last_error(), preg_last_error_msg(), __METHOD__, $pattern);
+    }
+
+    private static function assertMatches(string $pattern): void
+    {
+        if (!filter_var(getenv('PHP_CS_FIXER_TESTS_SYSTEM_UNDER_TEST'), \FILTER_VALIDATE_BOOL)) {
+            return;
+        }
+
+        if (isset(self::$assertMatchesCache[$pattern])) {
+            return;
+        }
+
+        if (str_contains($pattern, '(?J)')) {
+            self::$assertMatchesCache[$pattern] = true;
+
+            return;
+        }
+
+        $delimiter = $pattern[0];
+
+        $endDelimiterPosition = strrpos($pattern, $delimiter);
+        \assert(\is_int($endDelimiterPosition));
+
+        $mainPart = substr($pattern, 1, $endDelimiterPosition - 1);
+        $modifiers = substr($pattern, $endDelimiterPosition + 1);
+
+        $testPattern = $delimiter.'(?:'.$mainPart.')?()'.$delimiter.$modifiers;
+        $testMatches = [];
+        @preg_match($testPattern, '', $testMatches);
+
+        $namedGroupsCount = \count(array_filter($testMatches, static fn ($key): bool => \is_string($key), \ARRAY_FILTER_USE_KEY));
+
+        if (0 === $namedGroupsCount) {
+            self::$assertMatchesCache[$pattern] = true;
+
+            return;
+        }
+
+        $notNamedGroupsCount = \count(array_filter($testMatches, static fn ($key): bool => \is_int($key), \ARRAY_FILTER_USE_KEY));
+
+        if ($namedGroupsCount === $notNamedGroupsCount - 2) {
+            self::$assertMatchesCache[$pattern] = true;
+
+            return;
+        }
+
+        throw new \RuntimeException(\sprintf('Regex "%s" has unnamed capturing group.', $pattern));
     }
 
     private static function addUtf8Modifier(string $pattern): string
