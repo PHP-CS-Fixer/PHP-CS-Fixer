@@ -4,6 +4,10 @@ extend-ignore-re = [
     "(feature|minor) #[0-9]+ .+ (.*)",
 ]
 
+extend-ignore-words-re = [
+    "writeable",
+]
+
 [files]
 extend-exclude = [
     "tests/**/*.*",
