@@ -3,7 +3,7 @@ Rule ``php_unit_does_not_perform_assertion_comment``
 ====================================================
 
 Use PHPUnit assertion ``expectNotToPerformAssertion`` instead of
-``@doesNotPerformAssertions`` comment.
+``@doesNotPerformAssertions`` annotation.
 
 Examples
 --------
@@ -18,12 +18,13 @@ Example #1
     <?php
     final class MyTest extends \PHPUnit_Framework_TestCase
     {
-   -    /**
+        /**
    -     * @doesNotPerformAssertions
-   -     */
+         */
         public function testFix(): void
         {
    +        $this->expectNotToPerformAssertions();
+   +
             foo();
         }
     }

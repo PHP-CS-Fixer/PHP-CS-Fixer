@@ -14,22 +14,26 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Fixer\PhpUnit;
 
+use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
+use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PhpUnitDoesNotPerformAssertionCommentFixer extends AbstractPhpUnitFixer
+final class PhpUnitDoesNotPerformAssertionCommentFixer extends AbstractPhpUnitFixer implements WhitespacesAwareFixerInterface
 {
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Use PHPUnit assertion `expectNotToPerformAssertion` instead of `@doesNotPerformAssertions` comment.',
+            'Use PHPUnit assertion `expectNotToPerformAssertion` instead of `@doesNotPerformAssertions` annotation.',
             [
                 new CodeSample(
                     <<<'PHP'
@@ -53,41 +57,76 @@ final class PhpUnitDoesNotPerformAssertionCommentFixer extends AbstractPhpUnitFi
 
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
-        $changes = [];
-        for ($index = $startIndex; $index < $endIndex; ++$index) {
-            $content = $tokens[$index]->getContent();
-            $tokenId = $tokens[$index]->getId();
-            if (\T_DOC_COMMENT === $tokenId && str_contains($content, '* @doesNotPerformAssertions')) {
-                $newString = preg_replace('(\n\s+\* @doesNotPerformAssertions)', '', $content);
-                // Delete comment if empty
-                if (preg_match_all('(/\*\*\s*\*/)', $newString)) {
-                    if ($tokens[$index - 1]->isWhitespace()) {
-                        $tokens->clearAt($index - 1);
-                    }
-                    $tokens->clearAt($index);
-                } else {
-                    $tokens[$index] = new Token([\T_DOC_COMMENT, $newString]);
-                }
-                $index = $tokens->getNextMeaningfulToken($index);
-                // If the next two keywords aren't a function skip it
-                if (\T_FUNCTION !== $tokens[$index]->getId()) {
-                    $index = $tokens->getNextMeaningfulToken($index);
-                    if (\T_FUNCTION !== $tokens[$index]->getId()) {
-                        continue;
-                    }
-                }
-                $index = $tokens->getNextTokenOfKind($index, ['{']);
-                $newTokens = [new Token([\T_VARIABLE, '$this']), new Token([\T_OBJECT_OPERATOR, '->']), new Token([\T_STRING, 'expectNotToPerformAssertions']), new Token('('), new Token(')'), new Token(';')];
-                if ($tokens[$index + 1]->isWhitespace()) {
-                    ++$index;
-                    array_unshift($newTokens, new Token([$tokens[$index]->getId(), $tokens[$index]->getContent()]));
-                    $tokens[$index] = new Token([$tokens[$index]->getId(), "\n".$tokens[$index]->getContent()]);
-                }
-                $changes[$index] = $newTokens;
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $slices = [];
+
+        for ($i = $endIndex - 1; $i > $startIndex; --$i) {
+            if (!$tokens[$i]->isGivenKind(\T_FUNCTION) || $tokensAnalyzer->isLambda($i)) {
+                continue;
             }
+
+            $functionIndex = $i;
+            $docBlockIndex = $i;
+
+            // ignore abstract functions
+            $braceIndex = $tokens->getNextTokenOfKind($functionIndex, [';', '{']);
+            if (!$tokens[$braceIndex]->equals('{')) {
+                continue;
+            }
+
+            do {
+                $docBlockIndex = $tokens->getPrevNonWhitespace($docBlockIndex);
+            } while ($tokens[$docBlockIndex]->isGivenKind([\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_FINAL, \T_ABSTRACT, \T_COMMENT]));
+
+            if (!$tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT)) {
+                continue;
+            }
+
+            $doc = new DocBlock($tokens[$docBlockIndex]->getContent());
+            $found = false;
+
+            foreach ($doc->getAnnotationsOfType([
+                'doesNotPerformAssertions',
+            ]) as $annotation) {
+                $annotation->remove();
+                $found = true;
+            }
+
+            if (!$found) {
+                continue;
+            }
+
+            $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $docBlockIndex);
+
+            $newMethodsCode = '<?php $this->expectNotToPerformAssertions();';
+            if ('}' === $tokens[$braceIndex + 1]->getContent()) {
+            }
+            $newMethods = Tokens::fromCode($newMethodsCode);
+            $newMethods[0] = new Token([
+                \T_WHITESPACE,
+                $this->whitespacesConfig->getLineEnding().$originalIndent.$this->whitespacesConfig->getIndent(),
+            ]);
+
+            // apply changes
+            $docContent = $doc->getContent();
+            if ('' === $docContent) {
+                $docContent = '/** */';
+            }
+            $tokens[$docBlockIndex] = new Token([\T_DOC_COMMENT, $docContent]);
+            $slices[$braceIndex + 1] = $newMethods;
+
+            if ('}' === $tokens[$braceIndex + 1]->getContent()) {
+                continue;
+            }
+
+            $whitespaceIndex = $braceIndex + 1;
+            $tokens[$whitespaceIndex] = new Token([
+                \T_WHITESPACE,
+                $this->whitespacesConfig->getLineEnding().$tokens[$whitespaceIndex]->getContent(),
+            ]);
+
+            $i = $docBlockIndex;
         }
-        if (\count($changes) > 0) {
-            $tokens->insertSlices($changes);
-        }
+        $tokens->insertSlices($slices);
     }
 }

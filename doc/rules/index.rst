@@ -699,7 +699,7 @@ PHPUnit
   PHPUnit assertions like ``assertIsArray`` should be used over ``assertInternalType``.
 - `php_unit_does_not_perform_assertion_comment <./php_unit/php_unit_does_not_perform_assertion_comment.rst>`_
 
-  Use PHPUnit assertion ``expectNotToPerformAssertion`` instead of ``@doesNotPerformAssertions`` comment.
+  Use PHPUnit assertion ``expectNotToPerformAssertion`` instead of ``@doesNotPerformAssertions`` annotation.
 - `php_unit_expectation <./php_unit/php_unit_expectation.rst>`_ *(risky, configurable)*
 
   Usages of ``->setExpectedException*`` methods MUST be replaced by ``->expectException*`` methods.

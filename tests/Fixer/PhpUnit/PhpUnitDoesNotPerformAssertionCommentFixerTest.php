@@ -51,6 +51,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         foo();
     }
 
+    /** */
     public function testFix2(): void
     {
         $this->expectNotToPerformAssertions();
@@ -96,6 +97,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             '<?php
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+    */
     public function testFix(): void
     {
         $this->expectNotToPerformAssertions();
@@ -112,6 +115,60 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     public function testFix(): void
     {
         foo();
+    }
+}',
+        ];
+
+        yield 'empty body' => [
+            '<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    /**
+    */
+    public function testFix(): void
+    {
+        $this->expectNotToPerformAssertions();
+
+    }
+}',
+            '<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    /**
+    * @doesNotPerformAssertions
+    */
+    public function testFix(): void
+    {
+    }
+}',
+        ];
+
+        yield 'complex body' => [
+            '<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    /**
+    */
+    public function testFix(): void
+    {
+        $this->expectNotToPerformAssertions();
+
+        // aaa
+        foo();
+        // bbb
+    }
+}',
+            '<?php
+final class MyTest extends \PHPUnit_Framework_TestCase
+{
+    /**
+    * @doesNotPerformAssertions
+    */
+    public function testFix(): void
+    {
+        // aaa
+        foo();
+        // bbb
     }
 }',
         ];
