@@ -5,6 +5,7 @@ extend-ignore-re = [
 ]
 
 extend-ignore-words-re = [
+    "Writeable",
     "writeable",
 ]
 
