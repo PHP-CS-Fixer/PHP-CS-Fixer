@@ -301,8 +301,8 @@ Exit code of the ``check`` and ``fix`` command is built using following bit flag
 
 *  0 - OK.
 *  1 - General error (or PHP minimal requirement not matched).
-*  4 - Some files have invalid syntax (only in ```check``/``fix --dry-run`` mode).
-*  8 - Some files need fixing (only in ```check``/``fix --dry-run`` mode).
+*  4 - Some files have invalid syntax (only in ``check``/``fix --dry-run`` mode).
+*  8 - Some files need fixing (only in ``check``/``fix --dry-run`` mode).
 * 16 - Configuration error of the application.
 * 32 - Configuration error of a Fixer.
 * 64 - Exception raised within the application.
