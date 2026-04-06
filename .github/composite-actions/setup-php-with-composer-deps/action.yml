@@ -29,7 +29,7 @@ runs:
   using: composite
   steps:
     - name: Resolve PHP tools flag
-      uses: actions/github-script@v7
+      uses: actions/github-script@v8
       id: setup-php-resolve-tools
       with:
         script: |
@@ -37,7 +37,7 @@ runs:
         result-encoding: string
 
     - name: Resolve PHP coverage flag
-      uses: actions/github-script@v7
+      uses: actions/github-script@v8
       id: setup-php-resolve-coverage
       with:
         script: |
