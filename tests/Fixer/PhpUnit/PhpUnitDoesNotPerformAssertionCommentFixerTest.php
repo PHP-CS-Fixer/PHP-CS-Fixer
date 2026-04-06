@@ -98,7 +98,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
     /**
-    */
+     */
     public function testFix(): void
     {
         $this->expectNotToPerformAssertions();
@@ -110,8 +110,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
     /**
-    * @doesNotPerformAssertions
-    */
+     * @doesNotPerformAssertions
+     */
     public function testFix(): void
     {
         foo();
@@ -124,7 +124,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
     /**
-    */
+     */
     public function testFix(): void
     {
         $this->expectNotToPerformAssertions();
@@ -135,8 +135,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
     /**
-    * @doesNotPerformAssertions
-    */
+     * @doesNotPerformAssertions
+     */
     public function testFix(): void
     {
     }
@@ -148,7 +148,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
     /**
-    */
+     */
     public function testFix(): void
     {
         $this->expectNotToPerformAssertions();
@@ -162,8 +162,8 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 final class MyTest extends \PHPUnit_Framework_TestCase
 {
     /**
-    * @doesNotPerformAssertions
-    */
+     * @doesNotPerformAssertions
+     */
     public function testFix(): void
     {
         // aaa
