@@ -800,6 +800,48 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
                 }
                 PHP,
         ];
+
+        yield 'newline after opening brace' => [
+            <<<'PHP'
+                <?php if (true) {
+                }
+                PHP,
+            <<<'PHP'
+                <?php if (true) {}
+                PHP,
+        ];
+
+        yield 'newline before closing comment and parenthesis' => [
+            <<<'PHP'
+                <?php
+                function foo($foo
+                /* comment */) {
+                }
+                PHP,
+            null,
+            ['functions_opening_brace' => 'next_line_unless_newline_at_signature_end'],
+        ];
+
+        yield 'anonymous function' => [
+            <<<'PHP'
+                <?php $f = function() {};
+                PHP,
+            <<<'PHP'
+                <?php $f = function(){};
+                PHP,
+            ['anonymous_functions_opening_brace' => 'same_line', 'allow_single_line_anonymous_functions' => true],
+        ];
+
+        yield 'comment between closing parenthesis and opening brace' => [
+            <<<'PHP'
+                <?php if ($a) { /* comment */
+                }
+                PHP,
+            <<<'PHP'
+                <?php if ($a) /* comment */ {}
+                PHP,
+            ['control_structures_opening_brace' => 'same_line'],
+        ];
     }
 
     /**
