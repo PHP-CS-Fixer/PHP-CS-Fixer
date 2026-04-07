@@ -28,7 +28,9 @@ updates:
       time: '12:30'
       timezone: Europe/Warsaw
   - package-ecosystem: github-actions
-    directory: /
+    directories:
+      - /
+      - /.github/*
     commit-message:
       prefix: deps
     schedule:
