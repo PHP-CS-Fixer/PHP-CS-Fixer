@@ -29,8 +29,8 @@ updates:
       timezone: Europe/Warsaw
   - package-ecosystem: github-actions
     directories:
-      - /
-      - /.github/*
+      - /.github/workflows
+      - /.github/composite-actions/**
     commit-message:
       prefix: deps
     schedule:
