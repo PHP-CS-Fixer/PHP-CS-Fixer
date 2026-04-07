@@ -45,7 +45,7 @@ runs:
           Composer-${{ runner.os }}-
 
     - name: Install dependencies
-      uses: nick-invision/retry@v3
+      uses: nick-invision/retry@v4
       with:
         timeout_minutes: 5
         max_attempts: 5
