@@ -28,7 +28,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PhpUnitDoesNotPerformAssertionCommentFixer extends AbstractPhpUnitFixer implements WhitespacesAwareFixerInterface
+final class PhpUnitDoesNotPerformAssertionAnnotationFixer extends AbstractPhpUnitFixer implements WhitespacesAwareFixerInterface
 {
     public function getDefinition(): FixerDefinitionInterface
     {
@@ -98,14 +98,10 @@ final class PhpUnitDoesNotPerformAssertionCommentFixer extends AbstractPhpUnitFi
 
             $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $docBlockIndex);
 
-            $newMethodsCode = '<?php $this->expectNotToPerformAssertions();';
-            if ('}' === $tokens[$braceIndex + 1]->getContent()) {
-            }
-            $newMethods = Tokens::fromCode($newMethodsCode);
-            $newMethods[0] = new Token([
+            $newMethods = [new Token([
                 \T_WHITESPACE,
                 $this->whitespacesConfig->getLineEnding().$originalIndent.$this->whitespacesConfig->getIndent(),
-            ]);
+            ]), new Token([\T_VARIABLE, '$this']), new Token([\T_OBJECT_OPERATOR, '->']), new Token([\T_STRING, 'expectNotToPerformAssertions']), new Token('('), new Token(')'), new Token(';')];
 
             // apply changes
             $docContent = $doc->getContent();

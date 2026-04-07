@@ -19,13 +19,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
- * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitDoesNotPerformAssertionCommentFixer
+ * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitDoesNotPerformAssertionAnnotationFixer
  *
- * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitDoesNotPerformAssertionCommentFixer>
+ * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitDoesNotPerformAssertionAnnotationFixer>
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PhpUnitDoesNotPerformAssertionCommentFixerTest extends AbstractFixerTestCase
+final class PhpUnitDoesNotPerformAssertionAnnotationFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
