@@ -227,8 +227,8 @@ jobs:
           composer-minimum-stability: ${{ matrix.composer-minimum-stability }}
           composer-flex-with-symfony-version: ${{ matrix.execute-flex-with-symfony-version }}
 
-      - name: Show PHP config
-        run: php -i | grep zend
+      - name: Increase stack size
+        run: ulimit -s 65532
 
       # Execute migration rules before running tests and self-fixing,
       # so we know that our codebase is future-ready.
