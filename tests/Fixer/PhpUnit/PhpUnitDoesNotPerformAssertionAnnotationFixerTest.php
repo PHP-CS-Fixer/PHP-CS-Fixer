@@ -35,6 +35,9 @@ final class PhpUnitDoesNotPerformAssertionAnnotationFixerTest extends AbstractFi
         $this->doTest($expected, $input);
     }
 
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
     public static function provideFixCases(): iterable
     {
         yield 'default fix' => [
