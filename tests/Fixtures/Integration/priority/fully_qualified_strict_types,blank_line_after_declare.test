@@ -1,5 +1,5 @@
 --TEST--
-Integration of fixers: blank_line_after_declare,fully_qualified_strict_types.
+Integration of fixers: fully_qualified_strict_types,blank_line_after_declare.
 --RULESET--
 {"blank_line_after_declare": true, "fully_qualified_strict_types": {"import_symbols": true}}
 --EXPECT--
