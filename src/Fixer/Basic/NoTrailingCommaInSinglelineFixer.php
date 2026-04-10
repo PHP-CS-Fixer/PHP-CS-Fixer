@@ -63,6 +63,16 @@ final class NoTrailingCommaInSinglelineFixer extends AbstractFixer implements Co
             && $tokens->isAnyTokenKindsFound([')', CT::T_ARRAY_SQUARE_BRACE_CLOSE, CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, CT::T_GROUP_IMPORT_BRACE_CLOSE]);
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run after MethodArgumentSpaceFixer.
+     */
+    public function getPriority(): int
+    {
+        return 0;
+    }
+
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         $elements = ['arguments', 'array', 'array_destructuring', 'group_import'];
@@ -123,10 +133,6 @@ final class NoTrailingCommaInSinglelineFixer extends AbstractFixer implements Co
 
         if ($tokens[$openIndex]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
             return \in_array('group_import', $elements, true);
-        }
-
-        if (!$tokens[$openIndex]->equals('(')) {
-            return false;
         }
 
         $beforeOpen = $tokens->getPrevMeaningfulToken($openIndex);
