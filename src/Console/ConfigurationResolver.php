@@ -669,9 +669,7 @@ final class ConfigurationResolver
     private function resolveFormat(): string
     {
         if (null === $this->format) {
-            /**
-             * When an AI agent is running, we ignore the format configuration entirely and use JSON format.
-             */
+            // When an AI agent is running, we ignore the format configuration entirely and use JSON format.
             if (filter_var(getenv('AI_AGENT'), \FILTER_VALIDATE_BOOL)) {
                 $this->format = 'json';
 
@@ -694,7 +692,6 @@ final class ConfigurationResolver
                     $this->format = 'gitlab';
                 }
             }
-
         }
 
         return $this->format;
