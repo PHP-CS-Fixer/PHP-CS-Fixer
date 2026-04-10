@@ -1519,6 +1519,27 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
         yield [
             JsonReporter::class,
+            '@auto',
+            ['AI_AGENT' => 'true'],
+        ];
+
+        yield [
+            TextReporter::class,
+            '@auto',
+            ['AI_AGENT' => ''],
+        ];
+
+        yield [
+            JsonReporter::class,
+            '@auto',
+            [
+                'AI_AGENT' => 'true',
+                'GITLAB_CI' => 'true',
+            ],
+        ];
+
+        yield [
+            JsonReporter::class,
             '@auto,json',
         ];
     }

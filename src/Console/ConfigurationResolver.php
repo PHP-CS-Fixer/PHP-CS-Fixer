@@ -684,6 +684,10 @@ final class ConfigurationResolver
                 if (filter_var(getenv('GITLAB_CI'), \FILTER_VALIDATE_BOOL)) {
                     $this->format = 'gitlab';
                 }
+
+                if (filter_var(getenv('AI_AGENT'), \FILTER_VALIDATE_BOOL)) {
+                    $this->format = 'json';
+                }
             }
         }
 
