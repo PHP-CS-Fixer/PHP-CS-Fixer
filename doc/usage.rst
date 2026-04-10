@@ -63,9 +63,10 @@ The ``--format`` option for the output format. Supported formats are ``@auto`` (
 * ``@auto`` aims to auto-select best reporter for given CI or local execution (resolution into best format is outside of BC promise and is future-ready)
 
   * ``gitlab`` for GitLab
-  * ``json`` for AI agents (via ``AI_AGENT`` environment variable)
 
 * ``@auto,{format}`` takes ``@auto`` under CI, and {format} otherwise
+
+When the ``AI_AGENT`` environment variable is set, the format is unconditionally resolved to ``json``.
 
 NOTE: the output for the following formats are generated in accordance with schemas
 

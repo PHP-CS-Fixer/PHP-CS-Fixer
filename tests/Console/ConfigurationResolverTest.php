@@ -1540,6 +1540,12 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
 
         yield [
             JsonReporter::class,
+            'txt',
+            ['AI_AGENT' => 'true'],
+        ];
+
+        yield [
+            JsonReporter::class,
             '@auto,json',
         ];
     }
