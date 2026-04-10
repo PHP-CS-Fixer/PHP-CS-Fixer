@@ -30,7 +30,7 @@ updates:
     groups:
       all:
         patterns:
-          - "*"
+          - '*'
   - package-ecosystem: github-actions
     directories:
       - /.github/workflows/
@@ -45,4 +45,4 @@ updates:
     groups:
       all:
         patterns:
-          - "*"
+          - '*'
