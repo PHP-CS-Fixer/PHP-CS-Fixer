@@ -669,6 +669,15 @@ final class ConfigurationResolver
     private function resolveFormat(): string
     {
         if (null === $this->format) {
+            /**
+             * When an AI agent is running, we ignore the format configuration entirely and use JSON format.
+             */
+            if (filter_var(getenv('AI_AGENT'), \FILTER_VALIDATE_BOOL)) {
+                $this->format = 'json';
+
+                return $this->format;
+            }
+
             $formatCandidate = $this->options['format'] ?? $this->getConfig()->getFormat();
             $parts = explode(',', $formatCandidate);
 
@@ -686,9 +695,6 @@ final class ConfigurationResolver
                 }
             }
 
-            if (filter_var(getenv('AI_AGENT'), \FILTER_VALIDATE_BOOL)) {
-                $this->format = 'json';
-            }
         }
 
         return $this->format;
