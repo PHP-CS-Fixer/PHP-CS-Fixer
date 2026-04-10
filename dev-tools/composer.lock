@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cbb11f3ad66651a8f5ca87d8bcd4c1cd",
+    "content-hash": "3d63cd8814cc2d30e3d35b641fc7d205",
     "packages": [
         {
             "name": "composer/pcre",
@@ -1015,20 +1015,20 @@
         },
         {
             "name": "shipmonk/dead-code-detector",
-            "version": "0.15.1",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shipmonk-rnd/dead-code-detector.git",
-                "reference": "e0e8d9ec48a60e4db5d54750e45196683e5f0a3c"
+                "reference": "dd909a6e267ae03837f166bc5e9d2f0851b14ff0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shipmonk-rnd/dead-code-detector/zipball/e0e8d9ec48a60e4db5d54750e45196683e5f0a3c",
-                "reference": "e0e8d9ec48a60e4db5d54750e45196683e5f0a3c"
+                "url": "https://api.github.com/repos/shipmonk-rnd/dead-code-detector/zipball/dd909a6e267ae03837f166bc5e9d2f0851b14ff0",
+                "reference": "dd909a6e267ae03837f166bc5e9d2f0851b14ff0"
             },
             "require": {
-                "php": "^7.4 || ^8.0",
-                "phpstan/phpstan": "^2.1.23"
+                "php": "^8.1",
+                "phpstan/phpstan": "^2.1.41"
             },
             "type": "phpstan-extension",
             "extra": {
