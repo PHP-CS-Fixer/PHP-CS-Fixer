@@ -66,6 +66,8 @@ The ``--format`` option for the output format. Supported formats are ``@auto`` (
 
 * ``@auto,{format}`` takes ``@auto`` under CI, and {format} otherwise
 
+When the ``AI_AGENT`` environment variable (or another popular one) is set, the format is unconditionally resolved to the selected best fit for the AI agent (currently ``json``).
+
 NOTE: the output for the following formats are generated in accordance with schemas
 
 * ``checkstyle`` follows the common `"checkstyle" XML schema </doc/schemas/fix/checkstyle.xsd>`_
@@ -297,12 +299,12 @@ NOTE: Execution may be unstable when used.
 Exit code
 ---------
 
-Exit code of the ``fix`` command is built using following bit flags:
+Exit code of the ``check`` and ``fix`` command is built using following bit flags:
 
 *  0 - OK.
 *  1 - General error (or PHP minimal requirement not matched).
-*  4 - Some files have invalid syntax (only in dry-run mode).
-*  8 - Some files need fixing (only in dry-run mode).
+*  4 - Some files have invalid syntax (only in ``check``/``fix --dry-run`` mode).
+*  8 - Some files need fixing (only in ``check``/``fix --dry-run`` mode).
 * 16 - Configuration error of the application.
 * 32 - Configuration error of a Fixer.
 * 64 - Exception raised within the application.
