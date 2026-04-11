@@ -27,9 +27,13 @@ updates:
       day: friday
       time: '12:30'
       timezone: Europe/Warsaw
+    groups:
+      all:
+        patterns:
+          - '*'
   - package-ecosystem: github-actions
     directories:
-      - /.github/workflows
+      - /.github/workflows/
       - /.github/composite-actions/**
     commit-message:
       prefix: deps
@@ -38,3 +42,7 @@ updates:
       day: friday
       time: '12:30'
       timezone: Europe/Warsaw
+    groups:
+      all:
+        patterns:
+          - '*'
