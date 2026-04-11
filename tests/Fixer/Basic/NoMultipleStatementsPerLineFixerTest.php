@@ -88,6 +88,18 @@ final class NoMultipleStatementsPerLineFixerTest extends AbstractFixerTestCase
         yield 'switch alternative syntax' => [
             '<?php switch ($foo): case true: foo(); endswitch;',
         ];
+
+        yield 'with comment and no whitespace' => [
+            <<<'PHP'
+                <?php
+                    foo();/* comment */
+                    bar();
+                PHP,
+            <<<'PHP'
+                <?php
+                    foo();/* comment */bar();
+                PHP,
+        ];
     }
 
     /**

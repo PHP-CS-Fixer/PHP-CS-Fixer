@@ -23,6 +23,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -159,27 +160,29 @@ final class EchoTagSyntaxFixer extends AbstractFixer implements ConfigurableFixe
                 continue;
             }
 
-            $nextMeaningful = $tokens->getNextMeaningfulToken($index);
+            $echoPrintIndex = $tokens->getNextMeaningfulToken($index);
 
-            if (null === $nextMeaningful) {
+            if (null === $echoPrintIndex) {
                 return;
             }
 
-            if (!$tokens[$nextMeaningful]->isGivenKind([\T_ECHO, \T_PRINT])) {
-                $index = $nextMeaningful;
+            if (!$tokens[$echoPrintIndex]->isGivenKind([\T_ECHO, \T_PRINT])) {
+                $index = $echoPrintIndex;
 
                 continue;
             }
 
-            if (true === $this->configuration[self::OPTION_SHORTEN_SIMPLE_STATEMENTS_ONLY] && $this->isComplexCode($tokens, $nextMeaningful + 1)) {
-                $index = $nextMeaningful;
+            if (true === $this->configuration[self::OPTION_SHORTEN_SIMPLE_STATEMENTS_ONLY] && $this->isComplexCode($tokens, $echoPrintIndex + 1)) {
+                $index = $echoPrintIndex;
 
                 continue;
             }
 
-            $newTokens = $this->buildLongToShortTokens($tokens, $index, $nextMeaningful);
-            $tokens->overrideRange($index, $nextMeaningful, $newTokens);
-            $count = $tokens->count();
+            $tokens[$index] = new Token([\T_OPEN_TAG_WITH_ECHO, '<?=']);
+            $tokens->ensureWhitespaceAtIndex($index + 1, 0, '');
+
+            $this->fixWhitespaceBeforeEchoPrint($tokens, $echoPrintIndex);
+            $tokens->clearTokenAndMergeSurroundingWhitespace($echoPrintIndex);
         }
     }
 
@@ -243,34 +246,22 @@ final class EchoTagSyntaxFixer extends AbstractFixer implements ConfigurableFixe
         return false;
     }
 
-    /**
-     * Builds the list of tokens that replace a long echo sequence.
-     *
-     * @return non-empty-list<Token>
-     */
-    private function buildLongToShortTokens(Tokens $tokens, int $openTagIndex, int $echoTagIndex): array
+    private function fixWhitespaceBeforeEchoPrint(Tokens $tokens, int $echoPrintIndex): void
     {
-        $result = [new Token([\T_OPEN_TAG_WITH_ECHO, '<?='])];
+        $whitespaceBeforeEchoPrintIndex = $tokens->getNonEmptySibling($echoPrintIndex, -1);
 
-        $start = $tokens->getNextNonWhitespace($openTagIndex);
-
-        if ($start === $echoTagIndex) {
-            // No non-whitespace tokens between $openTagIndex and $echoTagIndex
-            return $result;
+        if (!$tokens[$whitespaceBeforeEchoPrintIndex]->isWhitespace()) {
+            return;
         }
 
-        // Find the last non-whitespace index before $echoTagIndex
-        $end = $echoTagIndex - 1;
-
-        while ($tokens[$end]->isWhitespace()) {
-            --$end;
+        $prevWhitespaceBeforeEchoPrintIndex = $tokens->getNonEmptySibling($whitespaceBeforeEchoPrintIndex, -1);
+        if (
+            $tokens[$prevWhitespaceBeforeEchoPrintIndex]->isGivenKind(\T_COMMENT)
+            && !Preg::match('/\*\/$/', $tokens[$prevWhitespaceBeforeEchoPrintIndex]->getContent())
+        ) {
+            return;
         }
 
-        // Copy the non-whitespace tokens between $openTagIndex and $echoTagIndex
-        for ($index = $start; $index <= $end; ++$index) {
-            $result[] = clone $tokens[$index];
-        }
-
-        return $result;
+        $tokens->clearAt($whitespaceBeforeEchoPrintIndex);
     }
 }

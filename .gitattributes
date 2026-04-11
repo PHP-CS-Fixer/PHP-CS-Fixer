@@ -2,6 +2,7 @@
 /src/**/Internal/ export-ignore
 /benchmark.sh export-ignore
 /box.json.dist export-ignore
+/composer-dependency-analyser.php export-ignore
 /CHANGELOG.md export-ignore
 /compose.override.dist.yaml export-ignore
 /compose.yaml export-ignore
@@ -12,6 +13,7 @@
 /Dockerfile export-ignore
 /feature-or-bug.rst export-ignore
 /infection.json5.dist export-ignore
+/logo.png export-ignore
 /phpstan.dist.neon export-ignore
 /phpunit.xml.dist export-ignore
 /tests/ export-ignore
