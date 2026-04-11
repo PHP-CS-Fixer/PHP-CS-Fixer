@@ -111,10 +111,6 @@ final class PhpUnitDoesNotPerformAssertionAnnotationFixer extends AbstractPhpUni
             $tokens[$docBlockIndex] = new Token([\T_DOC_COMMENT, $docContent]);
             $slices[$braceIndex + 1] = $newMethods;
 
-            if ('}' === $tokens[$braceIndex + 1]->getContent()) {
-                continue;
-            }
-
             $whitespaceIndex = $braceIndex + 1;
             $tokens[$whitespaceIndex] = new Token([
                 \T_WHITESPACE,
