@@ -60,6 +60,7 @@ final class PhpCsFixerRiskySet extends AbstractRuleSetDefinition
             'strict_comparison' => true,
             'strict_param' => true,
             'yield_from_array_to_yields' => true,
+            'void_return' => true, // override Symfony
         ];
     }
 

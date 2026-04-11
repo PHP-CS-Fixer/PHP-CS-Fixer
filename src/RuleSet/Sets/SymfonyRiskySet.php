@@ -76,6 +76,9 @@ final class SymfonyRiskySet extends AbstractRuleSetDefinition
             'string_length_to_empty' => true,
             'string_line_ending' => true,
             'ternary_to_elvis_operator' => true,
+            'void_return' => [
+                'fix_lambda' => false,
+            ],
         ];
     }
 

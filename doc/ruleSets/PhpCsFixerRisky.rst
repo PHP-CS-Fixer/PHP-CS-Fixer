@@ -46,6 +46,7 @@ Rules
 - `strict_comparison <./../rules/strict/strict_comparison.rst>`_
 - `strict_param <./../rules/strict/strict_param.rst>`_
 - `yield_from_array_to_yields <./../rules/array_notation/yield_from_array_to_yields.rst>`_
+- `void_return <./../rules/function_notation/void_return.rst>`_
 
 Disabled rules
 --------------
