@@ -429,6 +429,7 @@ final class FixerFactoryTest extends TestCase
                 'statement_indentation',
             ],
             'declare_strict_types' => [
+                'blank_line_after_declare',
                 'blank_line_after_opening_tag',
                 'declare_equal_normalize',
                 'header_comment',
@@ -467,6 +468,7 @@ final class FixerFactoryTest extends TestCase
                 'self_static_accessor',
             ],
             'fully_qualified_strict_types' => [
+                'blank_line_after_declare',
                 'no_superfluous_phpdoc_tags',
                 'ordered_attributes',
                 'ordered_imports',
