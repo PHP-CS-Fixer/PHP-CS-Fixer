@@ -34,8 +34,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'help')]
 final class HelpCommand extends BaseHelpCommand
 {
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultName = 'help';
+    public function __construct()
+    {
+        parent::__construct('help');
+    }
 
     /**
      * Formats the description of an option to include its allowed values.

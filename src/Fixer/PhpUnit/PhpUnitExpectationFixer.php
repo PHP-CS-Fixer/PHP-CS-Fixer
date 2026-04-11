@@ -207,6 +207,7 @@ final class PhpUnitExpectationFixer extends AbstractPhpUnitFixer implements Conf
         ];
 
         for ($index = $startIndex; $startIndex < $endIndex; ++$index) {
+            /** @var null|array{Token, Token, Token} $match */
             $match = $tokens->findSequence($oldMethodSequence, $index);
 
             if (null === $match) {
@@ -218,6 +219,7 @@ final class PhpUnitExpectationFixer extends AbstractPhpUnitFixer implements Conf
             if (!isset($this->methodMap[$tokens[$index]->getContent()])) {
                 continue;
             }
+            $newExpectedExceptionName = $this->methodMap[$tokens[$index]->getContent()];
 
             $openIndex = $tokens->getNextTokenOfKind($index, ['(']);
             $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
@@ -230,7 +232,7 @@ final class PhpUnitExpectationFixer extends AbstractPhpUnitFixer implements Conf
             $arguments = $argumentsAnalyzer->getArguments($tokens, $openIndex, $closeIndex);
             $argumentsCnt = \count($arguments);
 
-            $argumentsReplacements = ['expectException', $this->methodMap[$tokens[$index]->getContent()], 'expectExceptionCode'];
+            $argumentsReplacements = ['expectException', $newExpectedExceptionName, 'expectExceptionCode'];
 
             $indent = $this->whitespacesConfig->getLineEnding().WhitespacesAnalyzer::detectIndent($tokens, $thisIndex);
 
@@ -291,7 +293,7 @@ final class PhpUnitExpectationFixer extends AbstractPhpUnitFixer implements Conf
 
             $methodName = 'expectException';
             if ('expectExceptionMessageRegExp' === $tokens[$index]->getContent()) {
-                $methodName = $this->methodMap[$tokens[$index]->getContent()];
+                $methodName = $newExpectedExceptionName;
             }
             $tokens[$index] = new Token([\T_STRING, $methodName]);
         }

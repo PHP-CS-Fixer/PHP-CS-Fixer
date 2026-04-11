@@ -4,6 +4,14 @@ Rule ``phpdoc_types_no_duplicates``
 
 Removes duplicate PHPDoc types.
 
+Warning
+-------
+
+This rule is DEPRECATED and will be removed in the next major version 4.0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You should use ``phpdoc_no_duplicate_types`` instead.
+
 Examples
 --------
 
@@ -19,13 +27,6 @@ Example #1
    - * @param string|string|int $bar
    + * @param string|int $bar
      */
-
-Rule sets
----------
-
-The rule is part of the following rule set:
-
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 
 References
 ----------

@@ -51,12 +51,6 @@ final class WorkerCommand extends Command
     /** @var string Prefix used before JSON-encoded error printed in the worker's process */
     public const ERROR_PREFIX = 'WORKER_ERROR::';
 
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultName = 'worker';
-
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultDescription = 'Internal command for running fixers in parallel';
-
     private ToolInfoInterface $toolInfo;
     private ConfigurationResolver $configurationResolver;
     private ErrorsManager $errorsManager;
@@ -67,7 +61,8 @@ final class WorkerCommand extends Command
 
     public function __construct(ToolInfoInterface $toolInfo)
     {
-        parent::__construct();
+        parent::__construct('worker');
+        $this->setDescription('Internal command for running fixers in parallel');
 
         $this->setHidden(true);
         $this->toolInfo = $toolInfo;

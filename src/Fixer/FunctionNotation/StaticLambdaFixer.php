@@ -32,7 +32,21 @@ final class StaticLambdaFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Lambdas not (indirectly) referencing `$this` must be declared `static`.',
-            [new CodeSample("<?php\n\$a = function () use (\$b)\n{   echo \$b;\n};\n")],
+            [
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        $a = function () {
+                            echo $b;
+                        };
+
+                        $b = (function () {
+                            \assert($this !== null); // approach you can use to instruct PHP CS Fixer to not convert this lambda to static, e.g. when you see "Cannot bind an instance to a static closure" error caused by lambda handling outside of your control
+                        })->bindTo(new stdClass());
+
+                        PHP,
+                ),
+            ],
             null,
             'Risky when using `->bindTo` on lambdas without referencing to `$this`.',
         );
