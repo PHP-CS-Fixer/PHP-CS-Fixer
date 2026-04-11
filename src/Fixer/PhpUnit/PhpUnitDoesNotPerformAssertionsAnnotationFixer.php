@@ -28,7 +28,7 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PhpUnitDoesNotPerformAssertionAnnotationFixer extends AbstractPhpUnitFixer implements WhitespacesAwareFixerInterface
+final class PhpUnitDoesNotPerformAssertionsAnnotationFixer extends AbstractPhpUnitFixer implements WhitespacesAwareFixerInterface
 {
     public function getDefinition(): FixerDefinitionInterface
     {
