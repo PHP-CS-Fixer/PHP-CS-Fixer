@@ -192,4 +192,79 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
             }',
         ];
     }
+
+    /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP 8.4
+     */
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, 1?: string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield 'nullable property with hook' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public ?string $bar {
+                        get {
+                            if ($this->bar === 'top secret') {
+                                return null;
+                            }
+                            return $this->bar;
+                        }
+                    }
+                }
+                PHP,
+        ];
+
+        yield 'nullable property with hook and callable' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public ?string $bar {
+                        get {
+                            $getSecret = function () {
+                                if (random_int(0, 1) === 0) {
+                                    return;
+                                }
+                                return 'top secret';
+                            };
+
+                            if ($getSecret() === null) {
+                                return null;
+                            }
+                            return $this->bar;
+                        }
+                    }
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public ?string $bar {
+                        get {
+                            $getSecret = function () {
+                                if (random_int(0, 1) === 0) {
+                                    return null;
+                                }
+                                return 'top secret';
+                            };
+
+                            if ($getSecret() === null) {
+                                return null;
+                            }
+                            return $this->bar;
+                        }
+                    }
+                }
+                PHP,
+        ];
+    }
 }
