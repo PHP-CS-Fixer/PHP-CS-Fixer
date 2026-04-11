@@ -21,6 +21,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 /**
  * @internal
  *
+ * @covers \PhpCsFixer\Fixer\AbstractPhpUnitFixer
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitDedicateAssertFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitDedicateAssertFixer>

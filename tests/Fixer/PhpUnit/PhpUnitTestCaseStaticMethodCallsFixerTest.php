@@ -86,17 +86,14 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
             ['methods' => ['assertSame' => 123]],
             '[php_unit_test_case_static_method_calls] Invalid configuration: The option "methods" with value array is expected to be of type "string[]", but one of the elements is of type "int".',
         ];
-    }
 
-    public function testWrongConfigTypeForMethodsAndTargetVersion(): void
-    {
-        $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessage('[php_unit_test_case_static_method_calls] Configuration cannot contain method "once" and target "11.0", it is dynamic in that PHPUnit version.');
-
-        $this->fixer->configure([
-            'methods' => ['once' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_SELF],
-            'target' => PhpUnitTargetVersion::VERSION_11_0,
-        ]);
+        yield 'wrong mix of "methods" and "target"' => [
+            [
+                'methods' => ['once' => PhpUnitTestCaseStaticMethodCallsFixer::CALL_TYPE_SELF],
+                'target' => PhpUnitTargetVersion::VERSION_11_0,
+            ],
+            '[php_unit_test_case_static_method_calls] Configuration cannot contain method "once" and target "11.0", it is dynamic in that PHPUnit version.',
+        ];
     }
 
     /**

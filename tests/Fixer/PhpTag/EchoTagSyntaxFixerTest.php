@@ -178,5 +178,20 @@ final class EchoTagSyntaxFixerTest extends AbstractFixerTestCase
                 ];
             }
         }
+
+        yield [
+            <<<'PHP'
+                <?=// comment
+                 'Foo';
+                ?>
+                PHP,
+            <<<'PHP'
+                <?php
+                // comment
+                echo 'Foo';
+                ?>
+                PHP,
+            ['format' => 'short'],
+        ];
     }
 }
