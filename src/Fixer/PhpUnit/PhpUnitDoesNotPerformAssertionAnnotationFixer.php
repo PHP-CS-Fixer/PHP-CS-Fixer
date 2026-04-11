@@ -98,10 +98,18 @@ final class PhpUnitDoesNotPerformAssertionAnnotationFixer extends AbstractPhpUni
 
             $originalIndent = WhitespacesAnalyzer::detectIndent($tokens, $docBlockIndex);
 
-            $newMethods = [new Token([
-                \T_WHITESPACE,
-                $this->whitespacesConfig->getLineEnding().$originalIndent.$this->whitespacesConfig->getIndent(),
-            ]), new Token([\T_VARIABLE, '$this']), new Token([\T_OBJECT_OPERATOR, '->']), new Token([\T_STRING, 'expectNotToPerformAssertions']), new Token('('), new Token(')'), new Token(';')];
+            $newMethods = [
+                new Token([
+                    \T_WHITESPACE,
+                    $this->whitespacesConfig->getLineEnding().$originalIndent.$this->whitespacesConfig->getIndent(),
+                ]),
+                new Token([\T_VARIABLE, '$this']),
+                new Token([\T_OBJECT_OPERATOR, '->']),
+                new Token([\T_STRING, 'expectNotToPerformAssertions']),
+                new Token('('),
+                new Token(')'),
+                new Token(';'),
+            ];
 
             // apply changes
             $docContent = $doc->getContent();
