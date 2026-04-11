@@ -349,6 +349,21 @@ $a = new class{};',
         yield [
             '<?php $object = new /**/ class(){};',
         ];
+
+        yield 'old config' => [
+            '<?php
+                /** @include */
+                final class Foo {}
+            ',
+            '<?php
+                /** @include */
+                class Foo {}
+            ',
+            [
+                'annotation_include' => ['include'],
+                'annotation_exclude' => ['exclude'],
+            ],
+        ];
     }
 
     /**
@@ -398,6 +413,13 @@ $a = new class{};',
             ],
             \sprintf('#^%s$#', preg_quote('[final_internal_class] Configuration cannot contain deprecated option "annotation_exclude" and new option "exclude".', '#')),
             'Option "annotation_exclude" for rule "final_internal_class" is deprecated and will be removed in version 4.0. Use "exclude" to configure PHPDoc annotations tags and attributes.',
+        ];
+
+        yield 'empty value' => [
+            [
+                'include' => [''],
+            ],
+            \sprintf('#^%s$#', preg_quote('[final_internal_class] Invalid configuration: The option "include" with value array is invalid.', '#')),
         ];
     }
 
@@ -604,6 +626,21 @@ final class Foo {}',
 class Foo {}',
             [
                 'include' => ['A', 'C'],
+            ],
+        ];
+
+        yield 'empty include' => [
+            '<?php
+                #[Aa]
+                final class Foo {}
+            ',
+            '<?php
+                #[Aa]
+                class Foo {}
+            ',
+            [
+                'include' => [],
+                'exclude' => ['A', 'Aaa'],
             ],
         ];
     }
