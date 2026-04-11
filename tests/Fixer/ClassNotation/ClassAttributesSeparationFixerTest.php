@@ -1078,6 +1078,18 @@ class ezcReflectionMethod extends ReflectionMethod {
             ['elements' => ['trait_import' => 'none']],
         ];
 
+        yield 'comment after brace, before element' => [
+            '<?php
+class Foo { /* comment */
+
+ public $a;
+ }
+',
+            '<?php
+class Foo { /* comment */ public $a; }
+',
+        ];
+
         yield [
             '<?php
 class Foo
