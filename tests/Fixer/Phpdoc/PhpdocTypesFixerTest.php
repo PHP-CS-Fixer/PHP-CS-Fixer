@@ -368,6 +368,18 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
                 PHP,
         ];
 
+        yield 'exclude resource preserves Resource casing' => [
+            '<?php
+/**
+ * @param Resource $foo
+ *
+ * @return RESOURCE
+ */
+',
+            null,
+            ['exclude' => ['resource']],
+        ];
+
         yield 'multiline array shape' => [
             <<<'PHP'
                  <?php /**
@@ -398,11 +410,32 @@ final class PhpdocTypesFixerTest extends AbstractFixerTestCase
         ];
     }
 
-    public function testInvalidConfiguration(): void
+    /**
+     * @dataProvider provideInvalidConfigurationCases
+     *
+     * @param array<string, mixed> $configuration
+     */
+    public function testInvalidConfiguration(string $expectedMessage, array $configuration): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->expectExceptionMessageMatches('/^\[phpdoc_types\] Invalid configuration: The option "groups" .*\.$/');
+        $this->expectExceptionMessageMatches($expectedMessage);
 
-        $this->fixer->configure(['groups' => ['__TEST__']]); // @phpstan-ignore-line
+        $this->fixer->configure($configuration);
+    }
+
+    /**
+     * @return iterable<string, array{string, array<string, mixed>}>
+     */
+    public static function provideInvalidConfigurationCases(): iterable
+    {
+        yield 'invalid group' => [
+            '/^\[phpdoc_types\] Invalid configuration: The option "groups" .*\.$/',
+            ['groups' => ['__TEST__']],
+        ];
+
+        yield 'invalid exclude type' => [
+            '/^\[phpdoc_types\] Invalid configuration: The option "exclude" .*\.$/',
+            ['exclude' => ['__INVALID__']],
+        ];
     }
 }

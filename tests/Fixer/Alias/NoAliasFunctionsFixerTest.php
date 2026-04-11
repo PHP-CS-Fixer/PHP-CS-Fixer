@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Alias;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\Alias\NoAliasFunctionsFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 
@@ -254,6 +255,14 @@ abstract class A
         yield 'simple 8.1' => [
             '<?php $a = is_double(...);',
         ];
+    }
+
+    public function testInvalidConfiguration(): void
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessage('[no_alias_functions] Invalid configuration: The option "sets" with value array is invalid.');
+
+        $this->fixer->configure(['sets' => ['@foo']]); // @phpstan-ignore-line
     }
 
     /**

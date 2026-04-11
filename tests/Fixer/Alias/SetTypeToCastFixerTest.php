@@ -286,5 +286,9 @@ $foo#5
 )#9
 ;#10',
         ];
+
+        yield 'first argument is complex statement' => [
+            '<?php settype($foo[1], "bar");',
+        ];
     }
 }

@@ -150,7 +150,7 @@ final class NoTrailingCommaInSinglelineFixerTest extends AbstractFixerTestCase
             ['elements' => ['arguments']],
         ];
 
-        yield 'static function call' => [
+        yield 'unset' => [
             '<?php
 unset($foo->bar);
 $b = isset($foo->bar);
@@ -162,7 +162,7 @@ $b = isset($foo->bar,);
             ['elements' => ['arguments']],
         ];
 
-        yield 'unset' => [
+        yield 'static function call' => [
             '<?php A::foo(1);',
             '<?php A::foo(1,);',
             ['elements' => ['arguments']],
