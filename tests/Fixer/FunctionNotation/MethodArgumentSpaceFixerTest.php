@@ -1289,6 +1289,48 @@ f(1,2,
             ['on_multiline' => 'ensure_single_line_for_single_argument'],
         ];
 
+        yield 'ensure_single_line_for_single_argument: does not collapse nested multiline call with multiple arguments' => [
+            <<<'EXPECTED'
+                <?php
+                foo(bar(
+                    $a,
+                    $b
+                ));
+                EXPECTED,
+            <<<'INPUT'
+                <?php
+                foo(
+                    bar(
+                        $a,
+                        $b
+                    )
+                );
+                INPUT,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: does not collapse nested multiline array as single argument' => [
+            <<<'EXPECTED'
+                <?php
+                foo([
+                    'a',
+                    'b',
+                    'c',
+                ]);
+                EXPECTED,
+            <<<'INPUT'
+                <?php
+                foo(
+                    [
+                        'a',
+                        'b',
+                        'c',
+                    ]
+                );
+                INPUT,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
         yield 'ensure_single_line_for_single_argument: handles array as single argument' => [
             <<<'EXPECTED'
                 <?php
