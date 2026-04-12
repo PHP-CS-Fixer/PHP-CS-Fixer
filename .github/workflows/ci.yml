@@ -288,6 +288,22 @@ jobs:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
         run: vendor/bin/paraunit coverage --testsuite unit --pass-through=--exclude-group=covers-nothing --clover=build/logs/clover.xml
 
+      - name: Setup Python (for diff-cover)
+        if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.14'
+
+      - name: Install diff-cover
+        if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
+        run: pip install diff-cover
+
+      - name: Enforce 100% coverage on changed lines
+        if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
+        run: |
+          git fetch origin master
+          diff-cover build/logs/clover.xml --compare-branch=origin/master --fail-under=100
+
       - name: Run mutation tests (Infection)
         # Run only on pull requests because we run mutations tests only for diff between branches
         if: github.event_name == 'pull_request' && matrix.run-mutation-tests == 'yes'
