@@ -310,6 +310,8 @@ jobs:
           codecov_yml_path: dev-tools/codecov.yaml
           disable_search: true
           files: build/logs/clover.xml
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Run PHP CS Fixer
         if: matrix.run-fixer == 'yes'
