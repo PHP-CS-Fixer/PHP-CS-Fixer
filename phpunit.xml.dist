@@ -50,6 +50,11 @@
         <include>
             <directory>./src</directory>
         </include>
+        <exclude>
+            <file>./src/Console/Command/InitCommand.php</file>
+            <file>./src/Documentation/DocumentationTag.php</file>
+            <file>./src/Documentation/DocumentationTagGenerator.php</file>
+        </exclude>
     </source>
 
     <extensions>

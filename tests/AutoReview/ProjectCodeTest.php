@@ -62,6 +62,12 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 final class ProjectCodeTest extends TestCase
 {
+    private const CLASSES_WITHOUT_TESTS = [
+        InitCommand::class,
+        DocumentationTag::class,
+        DocumentationTagGenerator::class,
+    ];
+
     /**
      * @var null|array<string, array{class-string<TestCase>}>
      */
@@ -112,15 +118,9 @@ final class ProjectCodeTest extends TestCase
 
         $testClassName = 'PhpCsFixer\Tests'.substr($className, 10).'Test';
 
-        $exceptions = [
-            InitCommand::class,
-            DocumentationTag::class,
-            DocumentationTagGenerator::class,
-        ];
-
         // we allow exceptions to _not_ follow the rule,
         // but when they are ready to start following it - we shall remove them from exceptions list
-        if (\in_array($className, $exceptions, true)) {
+        if (\in_array($className, self::CLASSES_WITHOUT_TESTS, true)) {
             self::assertFalse(class_exists($testClassName));
 
             return;
@@ -1273,6 +1273,32 @@ final class ProjectCodeTest extends TestCase
         }
 
         yield from self::$testClassCases;
+    }
+
+    public function testClassesWithoutTestsAreExcludedFromCoverage(): void
+    {
+        $phpunitXmlContent = file_get_contents(__DIR__.'/../../phpunit.xml.dist');
+        self::assertIsString($phpunitXmlContent);
+
+        $phpunitXml = simplexml_load_string($phpunitXmlContent);
+        self::assertNotFalse($phpunitXml);
+
+        $shortOpenTag = $phpunitXml->xpath('source/exclude/file');
+        $excludedFiles = $sortedExcludedFiles = array_map(
+            static fn (\SimpleXMLElement $node): string => (string) $node,
+            $shortOpenTag,
+        );
+        sort($sortedExcludedFiles);
+
+        self::assertSame($sortedExcludedFiles, $excludedFiles);
+
+        self::assertSame(
+            array_map(
+                static fn (string $className): string => './src/'.str_replace('\\', '/', substr($className, 11)).'.php',
+                self::CLASSES_WITHOUT_TESTS,
+            ),
+            $excludedFiles,
+        );
     }
 
     /**
