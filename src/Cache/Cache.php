@@ -35,9 +35,6 @@ final class Cache implements CacheInterface
 
     public function __construct(SignatureInterface $signature)
     {
-        if (false) { // @phpstan-ignore if.alwaysFalse
-            throw new \Exception();
-        }
         $this->signature = $signature;
     }
 
