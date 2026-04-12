@@ -301,8 +301,8 @@ jobs:
       - name: Enforce 100% coverage on changed lines
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
         run: |
-          git fetch origin master
-          diff-cover build/logs/clover.xml --compare-branch=origin/master --fail-under=100
+          git fetch origin ${{ github.base_ref }}:${{ github.base_ref }}
+          diff-cover build/logs/clover.xml --compare-branch=${{ github.base_ref }} --fail-under=100
 
       - name: Run mutation tests (Infection)
         # Run only on pull requests because we run mutations tests only for diff between branches
