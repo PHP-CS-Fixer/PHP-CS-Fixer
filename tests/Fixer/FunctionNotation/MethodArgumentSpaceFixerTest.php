@@ -1313,10 +1313,10 @@ f(1,2,
             <<<'EXPECTED'
                 <?php
                 foo([
-                    'a',
-                    'b',
-                    'c',
-                ]);
+                        'a',
+                        'b',
+                        'c',
+                    ]);
                 EXPECTED,
             <<<'INPUT'
                 <?php
