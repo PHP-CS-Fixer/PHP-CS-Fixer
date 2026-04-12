@@ -288,22 +288,6 @@ jobs:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
         run: vendor/bin/paraunit coverage --testsuite unit --pass-through=--exclude-group=covers-nothing --clover=build/logs/clover.xml
 
-      - name: Setup Python (for diff-cover)
-        if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.14'
-
-      - name: Install diff-cover
-        if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
-        run: pip install diff-cover
-
-      - name: Enforce 100% coverage on changed lines
-        if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
-        run: |
-          git fetch origin ${{ github.base_ref }}:${{ github.base_ref }}
-          diff-cover build/logs/clover.xml --compare-branch=${{ github.base_ref }} --fail-under=100
-
       - name: Run mutation tests (Infection)
         # Run only on pull requests because we run mutations tests only for diff between branches
         if: github.event_name == 'pull_request' && matrix.run-mutation-tests == 'yes'
@@ -313,11 +297,14 @@ jobs:
           git fetch origin $GITHUB_BASE_REF
           vendor/bin/infection --threads=max --map-source-class-to-test --git-diff-lines --git-diff-base=origin/$GITHUB_BASE_REF --ignore-msi-with-no-mutations --only-covering-test-cases --logger-github=false
 
-      - name: Upload coverage results to Coveralls
+      - name: Upload coverage results to Codecov
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
-        env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: php vendor/bin/php-coveralls --verbose
+        uses: codecov/codecov-action@v5
+        with:
+          codecov_yml_path: dev-tools/codecov.yaml
+          disable_search: true
+          files: build/logs/clover.xml
+#          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Run PHP CS Fixer
         if: matrix.run-fixer == 'yes'
