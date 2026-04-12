@@ -286,7 +286,7 @@ jobs:
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
-        run: vendor/bin/paraunit coverage --testsuite unit --pass-through=--exclude-group=covers-nothing --clover=build/logs/clover.xml
+        run: vendor/bin/paraunit coverage --testsuite unit --pass-through=--exclude-group=covers-nothing --pass-through=--log-junit=build/logs/junit.xml --clover=build/logs/clover.xml
 
       - name: Run mutation tests (Infection)
         # Run only on pull requests because we run mutations tests only for diff between branches
@@ -310,6 +310,16 @@ jobs:
           codecov_yml_path: dev-tools/codecov.yaml
           disable_search: true
           files: build/logs/clover.xml
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Upload test results to Codecov
+        if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
+        uses: codecov/test-results-action@v1
+        with:
+          codecov_yml_path: dev-tools/codecov.yaml
+          disable_search: true
+          files: build/logs/junit.xml
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
