@@ -3,6 +3,14 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.1
+---------------------
+
+* chore: add tests for `FinalInternalClassFixer` (#9547)
+* chore: cleanup `PhpdocToParamTypeFixer` (#9550)
+* fix: `MethodArgumentSpaceFixer` - Do not collapse nested arguments when using `ensure_single_line_for_single_argument` option for `on_multiline` (#9552)
+* test: fix type after variable name in `@param` in `PhpdocToParamTypeFixerTest` (#9549)
+
 Changelog for v3.95.0
 ---------------------
 

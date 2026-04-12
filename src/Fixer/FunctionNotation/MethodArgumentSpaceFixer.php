@@ -533,6 +533,24 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
     private function ensureSingleLineForParentheses(Tokens $tokens, int $openParenthesis, int $closeParenthesis): void
     {
         for ($index = $closeParenthesis - 1; $index > $openParenthesis; --$index) {
+            if ($tokens[$index]->equals(')')) {
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+
+                continue;
+            }
+
+            if ($tokens[$index]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
+
+                continue;
+            }
+
+            if ($tokens[$index]->equals('}')) {
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+
+                continue;
+            }
+
             if ($tokens[$index]->isWhitespace()) {
                 $previousToken = $tokens[$index - 1];
 
