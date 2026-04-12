@@ -21,6 +21,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @group phpdoc
  *
+ * @covers \PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer
  * @covers \PhpCsFixer\Fixer\FunctionNotation\PhpdocToParamTypeFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\PhpdocToParamTypeFixer>
@@ -725,6 +726,23 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                     '_PhpTokenPrototypePartial' => '_PhpTokenArrayPartial|string',
                 ],
             ],
+        ];
+
+        yield 'global functions with names like magic methods' => [
+            <<<'PHP'
+                <?php
+                /** @param int $x */ function __clone($x) {}
+                /** @param int $x */ function __destruct($x) {}
+                /** @param int $x */ function __serialize(int $x) {}
+                /** @param int $x */ function __sleep(int $x) {}
+                PHP,
+            <<<'PHP'
+                <?php
+                /** @param int $x */ function __clone($x) {}
+                /** @param int $x */ function __destruct($x) {}
+                /** @param int $x */ function __serialize($x) {}
+                /** @param int $x */ function __sleep($x) {}
+                PHP,
         ];
     }
 
