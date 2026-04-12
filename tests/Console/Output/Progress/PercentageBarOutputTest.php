@@ -67,6 +67,30 @@ final class PercentageBarOutputTest extends TestCase
         ];
     }
 
+    public function testPercentageBarProgressOutputOnGitHubActionsWithForcedAnsi(): void
+    {
+        if (!filter_var(getenv('GITHUB_ACTIONS'), \FILTER_VALIDATE_BOOLEAN)) {
+            self::markTestSkipped('This test is only relevant when running in GitHub Actions environment.');
+        }
+
+        $nbFiles = 100;
+
+        // mimic called with --ansi option
+        $output = new BufferedOutput(BufferedOutput::VERBOSITY_NORMAL, true);
+
+        $processOutput = new PercentageBarOutput(new OutputContext($output, 80, $nbFiles));
+
+        for ($i = 0; $i < $nbFiles; ++$i) {
+            $processOutput->onFixerFileProcessed(new FileProcessed(FileProcessed::STATUS_FIXED));
+        }
+
+        self::assertSame(
+            '   0/100 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%'.\PHP_EOL
+            .' 100/100 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%',
+            rtrim($output->fetch()),
+        );
+    }
+
     /**
      * @param list<array{0: FileProcessed::STATUS_*, 1?: int}> $statuses
      * @param \Closure(FileProcessed::STATUS_*): void          $action

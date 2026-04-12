@@ -44,6 +44,12 @@ final class PercentageBarOutput implements ProgressOutputInterface
         $this->progressBar->setProgressCharacter('');
         $this->progressBar->setFormat('normal');
 
+        if (filter_var(getenv('GITHUB_ACTIONS'), \FILTER_VALIDATE_BOOLEAN)) {
+            $this->progressBar->setOverwrite(false);
+            $this->progressBar->minSecondsBetweenRedraws(10);
+            $this->progressBar->maxSecondsBetweenRedraws(30);
+        }
+
         $this->progressBar->start();
     }
 
