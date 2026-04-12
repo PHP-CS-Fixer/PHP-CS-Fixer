@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: no_empty_comment,no_whitespace_in_empty_array.
+--RULESET--
+{"no_empty_comment": true, "no_whitespace_in_empty_array": true}
+--EXPECT--
+<?php
+
+$foo = [];
+
+--INPUT--
+<?php
+
+$foo = [
+    //
+];

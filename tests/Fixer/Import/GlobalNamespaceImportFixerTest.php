@@ -1341,5 +1341,63 @@ class Bar
                 'import_constants' => true,
             ],
         ];
+
+        yield 'import first-class callable' => [
+            <<<'PHP'
+                <?php
+                namespace Foo;
+                use function a;
+                use function b;
+                use function c;
+                use function d;
+                $a = a();
+                $b = b(...);
+                $c = c(...);
+                $c = d();
+                PHP,
+            <<<'PHP'
+                <?php
+                namespace Foo;
+                use function a;
+                use function b;
+                $a = a();
+                $b = b(...);
+                $c = \c(...);
+                $c = \d();
+                PHP,
+            [
+                'import_functions' => true,
+            ],
+        ];
+
+        yield 'fully quantify first-class callable' => [
+            <<<'PHP'
+                <?php
+                namespace Foo;
+                use function a;
+                use function b;
+                use function c;
+                use function d;
+                $a = \a();
+                $b = \b(...);
+                $c = \c(...);
+                $c = \d();
+                PHP,
+            <<<'PHP'
+                <?php
+                namespace Foo;
+                use function a;
+                use function b;
+                use function c;
+                use function d;
+                $a = a();
+                $b = b(...);
+                $c = \c(...);
+                $c = \d();
+                PHP,
+            [
+                'import_functions' => false,
+            ],
+        ];
     }
 }

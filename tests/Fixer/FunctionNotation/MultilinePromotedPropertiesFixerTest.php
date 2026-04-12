@@ -214,6 +214,75 @@ final class MultilinePromotedPropertiesFixerTest extends AbstractFixerTestCase
             ];
         }
 
+        yield 'single parameter unwrapped with minimum 2' => [
+            '<?php class Foo {
+                public function __construct(private int $x) {}
+            }',
+            '<?php class Foo {
+                public function __construct(
+                    private int $x
+                ) {}
+            }',
+            ['minimum_number_of_parameters' => 2],
+        ];
+
+        yield 'single parameter with trailing comma unwrapped with minimum 2' => [
+            '<?php class Foo {
+                public function __construct(private int $x,) {}
+            }',
+            '<?php class Foo {
+                public function __construct(
+                    private int $x,
+                ) {}
+            }',
+            ['minimum_number_of_parameters' => 2],
+        ];
+
+        yield 'single non-promoted parameter not unwrapped with minimum 2' => [
+            '<?php class Foo {
+                public function __construct(
+                    int $x
+                ) {}
+            }',
+            null,
+            ['minimum_number_of_parameters' => 2],
+        ];
+
+        yield 'single parameter with comment not unwrapped with minimum 2' => [
+            '<?php class Foo {
+                public function __construct(
+                    // The name
+                    private string $name,
+                ) {}
+            }',
+            null,
+            ['minimum_number_of_parameters' => 2],
+        ];
+
+        yield 'single parameter with attribute not unwrapped with minimum 2' => [
+            '<?php class Foo {
+                public function __construct(
+                    #[Assert\NotBlank]
+                    private string $name,
+                ) {}
+            }',
+            null,
+            ['minimum_number_of_parameters' => 2],
+        ];
+
+        yield 'two parameters unwrapped with minimum 3' => [
+            '<?php class Foo {
+                public function __construct(private int $x, private int $y) {}
+            }',
+            '<?php class Foo {
+                public function __construct(
+                    private int $x,
+                    private int $y
+                ) {}
+            }',
+            ['minimum_number_of_parameters' => 3],
+        ];
+
         yield 'blank lines removed' => [
             '<?php class Foo {
                 public function __construct(

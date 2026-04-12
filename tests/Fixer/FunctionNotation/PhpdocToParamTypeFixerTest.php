@@ -21,6 +21,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @group phpdoc
  *
+ * @covers \PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer
  * @covers \PhpCsFixer\Fixer\FunctionNotation\PhpdocToParamTypeFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\PhpdocToParamTypeFixer>
@@ -70,7 +71,7 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'invalid - phpdoc param with false class hint' => [
-            '<?php /** @param $foo \Foo\\\Bar */ function my_foo($foo) {}',
+            '<?php /** @param \Foo\\\Bar $foo */ function my_foo($foo) {}',
         ];
 
         yield 'invalid - phpdoc param with false param order' => [
@@ -249,15 +250,11 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'skip resource special type' => [
-            '<?php /** @param $bar resource */ function my_foo($bar) {}',
-        ];
-
-        yield 'skip mixed special type' => [
-            '<?php /** @param $bar mixed */ function my_foo($bar) {}',
+            '<?php /** @param resource $bar */ function my_foo($bar) {}',
         ];
 
         yield 'null alone cannot be a param type' => [
-            '<?php /** @param $bar null */ function my_foo($bar) {}',
+            '<?php /** @param null $bar */ function my_foo($bar) {}',
         ];
 
         yield 'array of types' => [
@@ -730,6 +727,23 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                 ],
             ],
         ];
+
+        yield 'global functions with names like magic methods' => [
+            <<<'PHP'
+                <?php
+                /** @param int $x */ function __clone($x) {}
+                /** @param int $x */ function __destruct($x) {}
+                /** @param int $x */ function __serialize(int $x) {}
+                /** @param int $x */ function __sleep(int $x) {}
+                PHP,
+            <<<'PHP'
+                <?php
+                /** @param int $x */ function __clone($x) {}
+                /** @param int $x */ function __destruct($x) {}
+                /** @param int $x */ function __serialize($x) {}
+                /** @param int $x */ function __sleep($x) {}
+                PHP,
+        ];
     }
 
     /**
@@ -782,6 +796,10 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
 
         yield 'skip primitive or array union types' => [
             '<?php /** @param string|string[] $expected */ function testResolveIntersectionOfPaths($expected) {}',
+        ];
+
+        yield 'skip mixed special type' => [
+            '<?php /** @param mixed $bar */ function my_foo($bar) {}',
         ];
     }
 
@@ -841,6 +859,11 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
         yield 'primitive or array union types' => [
             '<?php /** @param string|string[] $expected */ function testResolveIntersectionOfPaths(string|array $expected) {}',
             '<?php /** @param string|string[] $expected */ function testResolveIntersectionOfPaths($expected) {}',
+        ];
+
+        yield 'mixed type' => [
+            '<?php /** @param mixed $bar */ function my_foo(mixed $bar) {}',
+            '<?php /** @param mixed $bar */ function my_foo($bar) {}',
         ];
     }
 }

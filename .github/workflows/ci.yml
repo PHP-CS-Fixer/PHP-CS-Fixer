@@ -303,6 +303,14 @@ jobs:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: php vendor/bin/php-coveralls --verbose
 
+      - name: Upload coverage results to Codecov
+        if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
+        uses: codecov/codecov-action@v5
+        with:
+          codecov_yml_path: dev-tools/codecov.yaml
+          disable_search: true
+          files: build/logs/clover.xml
+
       - name: Run PHP CS Fixer
         if: matrix.run-fixer == 'yes'
         env:
