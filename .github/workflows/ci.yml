@@ -297,6 +297,12 @@ jobs:
           git fetch origin $GITHUB_BASE_REF
           vendor/bin/infection --threads=max --map-source-class-to-test --git-diff-lines --git-diff-base=origin/$GITHUB_BASE_REF --ignore-msi-with-no-mutations --only-covering-test-cases --logger-github=false
 
+      - name: Upload coverage results to Coveralls
+        if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: php vendor/bin/php-coveralls --verbose
+
       - name: Upload coverage results to Codecov
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
         uses: codecov/codecov-action@v5
@@ -304,7 +310,6 @@ jobs:
           codecov_yml_path: dev-tools/codecov.yaml
           disable_search: true
           files: build/logs/clover.xml
-#          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Run PHP CS Fixer
         if: matrix.run-fixer == 'yes'
