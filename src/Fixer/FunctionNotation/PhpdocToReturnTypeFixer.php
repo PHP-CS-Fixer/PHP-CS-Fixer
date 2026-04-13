@@ -210,13 +210,9 @@ final class PhpdocToReturnTypeFixer extends AbstractPhpdocToTypeDeclarationFixer
             if (null !== $typeInfo) {
                 $returnType = $typeInfo['commonType'];
                 $isNullable = $typeInfo['isNullable'];
-            } elseif (null !== $unionTypes) {
+            } else { // null !== $unionTypes, because of previous 2 ifs
                 $returnType = $unionTypes;
                 $isNullable = false;
-            }
-
-            if (!isset($returnType, $isNullable)) {
-                continue;
             }
 
             if (\in_array($returnType, $typesToExclude, true)) {
