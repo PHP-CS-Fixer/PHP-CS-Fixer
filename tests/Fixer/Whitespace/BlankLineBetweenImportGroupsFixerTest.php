@@ -36,7 +36,7 @@ final class BlankLineBetweenImportGroupsFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<array{string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -531,6 +531,10 @@ namespace Foo;
 use A\B; /* foo */  /* A */ /* B */  # X
 use const C\D; // bar
 ',
+        ];
+
+        yield 'one use statement' => [
+            '<?php use A;',
         ];
     }
 
