@@ -528,10 +528,55 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
     }
 
     /**
+     * Check if the argument content should not be collapsed — either spans multiple lines
+     * outside nested blocks and boundary whitespace, or contains comments or attributes.
+     */
+    private function argumentContentIsMultiline(Tokens $tokens, int $openParenthesis, int $closeParenthesis): bool
+    {
+        for ($index = $openParenthesis + 1; $index < $closeParenthesis; ++$index) {
+            if ($tokens[$index]->isComment()) {
+                return true;
+            }
+
+            if ($index === $openParenthesis + 1 || $index === $closeParenthesis - 1) {
+                continue;
+            }
+
+            if ($tokens[$index]->equals('(')) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+
+                continue;
+            }
+
+            if ($tokens[$index]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
+
+                continue;
+            }
+
+            if ($tokens[$index]->equals('{')) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+
+                continue;
+            }
+
+            if ($this->isNewline($tokens[$index])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Collapse a multiline single-argument call/declaration to a single line.
      */
     private function ensureSingleLineForParentheses(Tokens $tokens, int $openParenthesis, int $closeParenthesis): void
     {
+        if ($this->argumentContentIsMultiline($tokens, $openParenthesis, $closeParenthesis)) {
+            return;
+        }
+
         for ($index = $closeParenthesis - 1; $index > $openParenthesis; --$index) {
             if ($tokens[$index]->equals(')')) {
                 $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
