@@ -1331,6 +1331,240 @@ f(1,2,
             ['on_multiline' => 'ensure_single_line_for_single_argument'],
         ];
 
+        yield 'ensure_single_line_for_single_argument: collapses single-line method chain as single argument' => [
+            <<<'EXPECTED'
+                <?php
+                foo(Foo::bar()->baz($quz));
+                EXPECTED,
+            <<<'INPUT'
+                <?php
+                foo(
+                    Foo::bar()->baz($quz)
+                );
+                INPUT,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: does not collapse multiline method chain as single argument' => [
+            <<<'EXPECTED'
+                <?php
+                foo(
+                    Foo::bar()
+                        ->baz($quz)
+                );
+                EXPECTED,
+            null,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: does not collapse multiline method chain with nested multiline call as single argument' => [
+            <<<'EXPECTED'
+                <?php
+                foo(
+                    Foo::bar()
+                        ->baz($quz)
+                        ->qux(
+                            $foo,
+                            $bar
+                        )
+                );
+                EXPECTED,
+            null,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: collapses single-line string concatenation as single argument' => [
+            <<<'EXPECTED'
+                <?php
+                foo('hello ' . 'world');
+                EXPECTED,
+            <<<'INPUT'
+                <?php
+                foo(
+                    'hello ' . 'world'
+                );
+                INPUT,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: does not collapse multiline string concatenation as single argument' => [
+            <<<'EXPECTED'
+                <?php
+                foo(
+                    'hello '
+                        . 'world'
+                );
+                EXPECTED,
+            null,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: does not collapse when argument has inline block comment before it' => [
+            <<<'EXPECTED'
+                <?php
+                foo(
+                    /* hello */ $a
+                );
+                EXPECTED,
+            null,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: does not collapse when argument has inline block comment after it' => [
+            <<<'EXPECTED'
+                <?php
+                foo(
+                    $a /* hello */
+                );
+                EXPECTED,
+            null,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: does not collapse when argument has block comment on previous line' => [
+            <<<'EXPECTED'
+                <?php
+                foo(
+                    /* hello */
+                    $a
+                );
+                EXPECTED,
+            null,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: does not collapse when argument has docblock on previous line' => [
+            <<<'EXPECTED'
+                <?php
+                foo(
+                    /**
+                     * hello
+                     */
+                    $a
+                );
+                EXPECTED,
+            null,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: does not collapse when argument has trailing double-slash comment' => [
+            <<<'EXPECTED'
+                <?php
+                foo(
+                    $a // hello
+                );
+                EXPECTED,
+            null,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: does not collapse when argument has trailing hash comment' => [
+            <<<'EXPECTED'
+                <?php
+                foo(
+                    $a # hello
+                );
+                EXPECTED,
+            null,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: collapses when parameter has inline attribute' => [
+            <<<'EXPECTED'
+                <?php
+                function foo(#[Attr] $x) {}
+                EXPECTED,
+            <<<'INPUT'
+                <?php
+                function foo(
+                    #[Attr] $x
+                ) {}
+                INPUT,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: collapses single-argument attribute invocation on function' => [
+            <<<'EXPECTED'
+                <?php
+                #[Attr('foo')]
+                function foo() {}
+                EXPECTED,
+            <<<'INPUT'
+                <?php
+                #[Attr(
+                    'foo'
+                )]
+                function foo() {}
+                INPUT,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: collapses single-argument attribute invocation with named argument on function' => [
+            <<<'EXPECTED'
+                <?php
+                #[Attr(value: 'foo')]
+                function foo() {}
+                EXPECTED,
+            <<<'INPUT'
+                <?php
+                #[Attr(
+                    value: 'foo'
+                )]
+                function foo() {}
+                INPUT,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: collapses inner multiline single-argument attribute when parameter has attribute on previous line' => [
+            <<<'EXPECTED'
+                <?php
+                function foo(
+                    #[Attr(value: 'something')]
+                    $x
+                ) {}
+                EXPECTED,
+            <<<'INPUT'
+                <?php
+                function foo(
+                    #[Attr(
+                        value: 'something'
+                    )]
+                    $x
+                ) {}
+                INPUT,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: does not collapse when parameter has attribute on previous line' => [
+            <<<'EXPECTED'
+                <?php
+                function foo(
+                    #[Attr]
+                    $x
+                ) {}
+                EXPECTED,
+            null,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: collapses multiline closure as single argument' => [
+            <<<'EXPECTED'
+                <?php
+                foo(function () {
+                        return true;
+                    });
+                EXPECTED,
+            <<<'INPUT'
+                <?php
+                foo(
+                    function () {
+                        return true;
+                    }
+                );
+                INPUT,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
         yield 'ensure_single_line_for_single_argument: handles array as single argument' => [
             <<<'EXPECTED'
                 <?php
