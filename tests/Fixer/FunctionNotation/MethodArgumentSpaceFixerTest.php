@@ -304,6 +304,84 @@ function foo($foo, #[
     Foo\Buzz(a: \'astral\', b: 1234),
 ] $bar) {}',
         ];
+
+        yield 'ensure_single_line_for_single_argument: collapses when parameter has inline attribute' => [
+            <<<'EXPECTED'
+                <?php
+                function foo(#[Attr] $x) {}
+                EXPECTED,
+            <<<'INPUT'
+                <?php
+                function foo(
+                    #[Attr] $x
+                ) {}
+                INPUT,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: collapses single-argument attribute invocation on function' => [
+            <<<'EXPECTED'
+                <?php
+                #[Attr('foo')]
+                function foo() {}
+                EXPECTED,
+            <<<'INPUT'
+                <?php
+                #[Attr(
+                    'foo'
+                )]
+                function foo() {}
+                INPUT,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: collapses single-argument attribute invocation with named argument on function' => [
+            <<<'EXPECTED'
+                <?php
+                #[Attr(value: 'foo')]
+                function foo() {}
+                EXPECTED,
+            <<<'INPUT'
+                <?php
+                #[Attr(
+                    value: 'foo'
+                )]
+                function foo() {}
+                INPUT,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: collapses inner multiline single-argument attribute when parameter has attribute on previous line' => [
+            <<<'EXPECTED'
+                <?php
+                function foo(
+                    #[Attr(value: 'something')]
+                    $x
+                ) {}
+                EXPECTED,
+            <<<'INPUT'
+                <?php
+                function foo(
+                    #[Attr(
+                        value: 'something'
+                    )]
+                    $x
+                ) {}
+                INPUT,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
+
+        yield 'ensure_single_line_for_single_argument: does not collapse when parameter has attribute on previous line' => [
+            <<<'EXPECTED'
+                <?php
+                function foo(
+                    #[Attr]
+                    $x
+                ) {}
+                EXPECTED,
+            null,
+            ['on_multiline' => 'ensure_single_line_for_single_argument'],
+        ];
     }
 
     /**
@@ -1464,84 +1542,6 @@ f(1,2,
                 foo(
                     $a # hello
                 );
-                EXPECTED,
-            null,
-            ['on_multiline' => 'ensure_single_line_for_single_argument'],
-        ];
-
-        yield 'ensure_single_line_for_single_argument: collapses when parameter has inline attribute' => [
-            <<<'EXPECTED'
-                <?php
-                function foo(#[Attr] $x) {}
-                EXPECTED,
-            <<<'INPUT'
-                <?php
-                function foo(
-                    #[Attr] $x
-                ) {}
-                INPUT,
-            ['on_multiline' => 'ensure_single_line_for_single_argument'],
-        ];
-
-        yield 'ensure_single_line_for_single_argument: collapses single-argument attribute invocation on function' => [
-            <<<'EXPECTED'
-                <?php
-                #[Attr('foo')]
-                function foo() {}
-                EXPECTED,
-            <<<'INPUT'
-                <?php
-                #[Attr(
-                    'foo'
-                )]
-                function foo() {}
-                INPUT,
-            ['on_multiline' => 'ensure_single_line_for_single_argument'],
-        ];
-
-        yield 'ensure_single_line_for_single_argument: collapses single-argument attribute invocation with named argument on function' => [
-            <<<'EXPECTED'
-                <?php
-                #[Attr(value: 'foo')]
-                function foo() {}
-                EXPECTED,
-            <<<'INPUT'
-                <?php
-                #[Attr(
-                    value: 'foo'
-                )]
-                function foo() {}
-                INPUT,
-            ['on_multiline' => 'ensure_single_line_for_single_argument'],
-        ];
-
-        yield 'ensure_single_line_for_single_argument: collapses inner multiline single-argument attribute when parameter has attribute on previous line' => [
-            <<<'EXPECTED'
-                <?php
-                function foo(
-                    #[Attr(value: 'something')]
-                    $x
-                ) {}
-                EXPECTED,
-            <<<'INPUT'
-                <?php
-                function foo(
-                    #[Attr(
-                        value: 'something'
-                    )]
-                    $x
-                ) {}
-                INPUT,
-            ['on_multiline' => 'ensure_single_line_for_single_argument'],
-        ];
-
-        yield 'ensure_single_line_for_single_argument: does not collapse when parameter has attribute on previous line' => [
-            <<<'EXPECTED'
-                <?php
-                function foo(
-                    #[Attr]
-                    $x
-                ) {}
                 EXPECTED,
             null,
             ['on_multiline' => 'ensure_single_line_for_single_argument'],
