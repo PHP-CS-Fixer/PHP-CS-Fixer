@@ -712,6 +712,7 @@ final class FixerFactoryTest extends TestCase
                 'set_type_to_cast',
             ],
             'no_useless_else' => [
+                'blank_line_after_statement',
                 'blank_line_before_statement',
                 'braces',
                 'combine_consecutive_unsets',
