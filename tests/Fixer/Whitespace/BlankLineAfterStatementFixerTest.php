@@ -176,6 +176,52 @@ use Foo\Bar;
 ',
         ];
 
+        yield 'default - trailing inline comment on declare line stays on that line, blank line goes after the comment' => [
+            '<?php
+declare(strict_types=1); // trailing
+
+use Foo\Bar;
+',
+            '<?php
+declare(strict_types=1); // trailing
+use Foo\Bar;
+',
+        ];
+
+        yield 'if - trailing inline comment on closing brace line stays on that line, blank line goes after the comment' => [
+            '<?php
+if (true) {
+    $a = 1;
+} // trailing
+
+$b = 2;
+',
+            '<?php
+if (true) {
+    $a = 1;
+} // trailing
+$b = 2;
+',
+            ['statements' => ['if']],
+        ];
+
+        yield 'if - trailing hash comment on closing brace line stays on that line, blank line goes after the comment' => [
+            '<?php
+if (true) {
+    $a = 1;
+} # trailing
+
+$b = 2;
+',
+            '<?php
+if (true) {
+    $a = 1;
+} # trailing
+$b = 2;
+',
+            ['statements' => ['if']],
+        ];
+
         yield 'default - leading docblock after declare keeps docblock attached to next statement' => [
             '<?php
 declare(strict_types=1);

@@ -233,7 +233,9 @@ final class BlankLineAfterStatementFixer extends AbstractFixer implements Config
                 continue;
             }
 
-            $this->ensureBlankLineAfter($tokens, $endIndex);
+            $insertAfterIndex = $this->skipTrailingInlineComment($tokens, $endIndex);
+
+            $this->ensureBlankLineAfter($tokens, $insertAfterIndex);
         }
     }
 
@@ -332,6 +334,32 @@ final class BlankLineAfterStatementFixer extends AbstractFixer implements Config
         }
 
         return $blockEnd;
+    }
+
+    /**
+     * Advances past any trailing inline comment that sits on the same line as the statement's
+     * closing token, so that the blank line is inserted after the comment rather than between
+     * the closing token and the comment.
+     */
+    private function skipTrailingInlineComment(Tokens $tokens, int $endIndex): int
+    {
+        $whitespaceIndex = $endIndex + 1;
+
+        if (!isset($tokens[$whitespaceIndex]) || !$tokens[$whitespaceIndex]->isWhitespace()) {
+            return $endIndex;
+        }
+
+        if (str_contains($tokens[$whitespaceIndex]->getContent(), "\n")) {
+            return $endIndex;
+        }
+
+        $commentIndex = $whitespaceIndex + 1;
+
+        if (!isset($tokens[$commentIndex]) || !$tokens[$commentIndex]->isComment()) {
+            return $endIndex;
+        }
+
+        return $commentIndex;
     }
 
     private function ensureBlankLineAfter(Tokens $tokens, int $index): void
