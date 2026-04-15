@@ -762,21 +762,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Whitespace/IndentationTypeFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset int might not exist on array<int, callable(int): void>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Whitespace/NoExtraBlankLinesFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset int<1, max> might not exist on list<string>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Whitespace/NoExtraBlankLinesFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset string might not exist on array<string, callable(int): void>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Whitespace/NoExtraBlankLinesFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset 0 might not exist on list<string>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Whitespace/NoTrailingWhitespaceFixer.php',

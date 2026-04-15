@@ -352,6 +352,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
                 continue;
             }
 
+            \assert(isset($this->tokenKindCallbackMap[$token->getId()]));
             \call_user_func_array($this->tokenKindCallbackMap[$token->getId()], [$index]);
 
             return;
@@ -362,6 +363,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
                 continue;
             }
 
+            \assert(isset($this->tokenEqualsMap[$token->getContent()]));
             \call_user_func_array($this->tokenEqualsMap[$token->getContent()], [$index]);
 
             return;
@@ -393,6 +395,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
         $count = \count($parts);
 
         if ($count > $expected) {
+            \assert(isset($parts[$count - 1]));
             $this->tokens[$index] = new Token([\T_WHITESPACE, implode('', \array_slice($parts, 0, $expected)).rtrim($parts[$count - 1], "\r\n")]);
         }
     }
