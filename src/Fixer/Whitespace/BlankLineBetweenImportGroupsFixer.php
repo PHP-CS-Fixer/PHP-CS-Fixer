@@ -134,6 +134,7 @@ final class BlankLineBetweenImportGroupsFixer extends AbstractFixer implements W
         $previousType = null;
 
         for ($i = $usesCount - 1; $i >= 0; --$i) {
+            \assert(isset($uses[$i]));
             $index = $uses[$i];
             $startIndex = $tokens->getNextMeaningfulToken($index + 1);
             $endIndex = $tokens->getNextTokenOfKind($startIndex, [';', [\T_CLOSE_TAG]]);
@@ -181,7 +182,7 @@ final class BlankLineBetweenImportGroupsFixer extends AbstractFixer implements W
             $content = $tokens[$index]->getContent();
 
             if (str_contains($content, "\n")) {
-                return $index;
+                break;
             }
         }
 

@@ -742,11 +742,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Whitespace/ArrayIndentationFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset int<0, max> might not exist on list<int>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Whitespace/BlankLineBetweenImportGroupsFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset 0 might not exist on array{0?: string}.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Whitespace/HeredocIndentationFixer.php',

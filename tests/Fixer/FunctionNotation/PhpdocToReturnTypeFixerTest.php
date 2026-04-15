@@ -21,6 +21,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @group phpdoc
  *
+ * @covers \PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer
  * @covers \PhpCsFixer\Fixer\FunctionNotation\PhpdocToReturnTypeFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\PhpdocToReturnTypeFixer>
@@ -123,17 +124,21 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             '<?php interface Foo { /** @return Bar */ function my_foo(); }',
         ];
 
-        yield 'void return on ^7.1' => [
+        yield 'void return' => [
             '<?php /** @return void */ function my_foo(): void {}',
             '<?php /** @return void */ function my_foo() {}',
         ];
 
-        yield 'iterable return on ^7.1' => [
+        yield 'invalid void return' => [
+            '<?php /** @return null|void */ function my_foo() {}',
+        ];
+
+        yield 'iterable return' => [
             '<?php /** @return iterable */ function my_foo(): iterable {}',
             '<?php /** @return iterable */ function my_foo() {}',
         ];
 
-        yield 'object return on ^7.2' => [
+        yield 'object return' => [
             '<?php /** @return object */ function my_foo(): object {}',
             '<?php /** @return object */ function my_foo() {}',
         ];
@@ -609,10 +614,6 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
 
         yield 'skip mixed special type' => [
             '<?php /** @return mixed */ function my_foo() {}',
-        ];
-
-        yield 'invalid void return on ^7.1' => [
-            '<?php /** @return null|void */ function my_foo() {}',
         ];
 
         yield 'skip union types' => [
