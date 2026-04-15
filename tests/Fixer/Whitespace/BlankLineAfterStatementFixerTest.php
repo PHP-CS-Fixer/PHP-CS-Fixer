@@ -493,6 +493,258 @@ $b = 2;
             ['statements' => ['declare', 'if']],
         ];
 
+        yield 'alternative syntax - if/endif is out of scope and left unchanged' => [
+            '<?php
+if ($a):
+    $b = 1;
+endif;
+$c = 2;
+',
+            null,
+            ['statements' => ['if']],
+        ];
+
+        yield 'alternative syntax - for/endfor is out of scope and left unchanged' => [
+            '<?php
+for ($i = 0; $i < 3; ++$i):
+    $a = $i;
+endfor;
+$b = 2;
+',
+            null,
+            ['statements' => ['for']],
+        ];
+
+        yield 'alternative syntax - foreach/endforeach is out of scope and left unchanged' => [
+            '<?php
+foreach ($arr as $v):
+    $a = $v;
+endforeach;
+$b = 2;
+',
+            null,
+            ['statements' => ['foreach']],
+        ];
+
+        yield 'alternative syntax - while/endwhile is out of scope and left unchanged' => [
+            '<?php
+while ($a):
+    --$a;
+endwhile;
+$b = 2;
+',
+            null,
+            ['statements' => ['while']],
+        ];
+
+        yield 'alternative syntax - switch/endswitch is out of scope and left unchanged' => [
+            '<?php
+switch ($a):
+    case 1:
+        break;
+endswitch;
+$b = 2;
+',
+            null,
+            ['statements' => ['switch']],
+        ];
+
+        yield 'single-statement body - if without braces gets blank line after the terminating semicolon' => [
+            '<?php
+if ($a) $b = 1;
+
+$c = 2;
+',
+            '<?php
+if ($a) $b = 1;
+$c = 2;
+',
+            ['statements' => ['if']],
+        ];
+
+        yield 'single-statement body - if/else without braces walks to end of else body' => [
+            '<?php
+if ($a) $b = 1; else $c = 2;
+
+$d = 3;
+',
+            '<?php
+if ($a) $b = 1; else $c = 2;
+$d = 3;
+',
+            ['statements' => ['if']],
+        ];
+
+        yield 'single-statement body - while without braces' => [
+            '<?php
+while ($a) --$a;
+
+$b = 2;
+',
+            '<?php
+while ($a) --$a;
+$b = 2;
+',
+            ['statements' => ['while']],
+        ];
+
+        yield 'single-statement body - for without braces' => [
+            '<?php
+for ($i = 0; $i < 3; ++$i) $a = $i;
+
+$b = 2;
+',
+            '<?php
+for ($i = 0; $i < 3; ++$i) $a = $i;
+$b = 2;
+',
+            ['statements' => ['for']],
+        ];
+
+        yield 'single-statement body - foreach without braces' => [
+            '<?php
+foreach ($arr as $v) $a = $v;
+
+$b = 2;
+',
+            '<?php
+foreach ($arr as $v) $a = $v;
+$b = 2;
+',
+            ['statements' => ['foreach']],
+        ];
+
+        yield 'empty body - if with empty braces still gets blank line when followed by a statement' => [
+            '<?php
+if (true) {}
+
+$b = 2;
+',
+            '<?php
+if (true) {}
+$b = 2;
+',
+            ['statements' => ['if']],
+        ];
+
+        yield 'empty body - if with empty braces as last statement in function is unchanged' => [
+            '<?php
+function foo() {
+    if (true) {}
+}
+',
+            null,
+            ['statements' => ['if']],
+        ];
+
+        yield 'empty body - try/catch with empty braces' => [
+            '<?php
+try {} catch (\Throwable $t) {}
+
+$b = 2;
+',
+            '<?php
+try {} catch (\Throwable $t) {}
+$b = 2;
+',
+            ['statements' => ['try']],
+        ];
+
+        yield 'empty body - do/while with empty braces' => [
+            '<?php
+do {} while (true);
+
+$b = 2;
+',
+            '<?php
+do {} while (true);
+$b = 2;
+',
+            ['statements' => ['do']],
+        ];
+
+        yield 'nested - try wrapping an if gets blank lines after both when configured for both' => [
+            '<?php
+try {
+    if ($a) {
+        $b = 1;
+    }
+
+    $c = 2;
+} catch (\Throwable $t) {
+    $d = 3;
+}
+
+$e = 4;
+',
+            '<?php
+try {
+    if ($a) {
+        $b = 1;
+    }
+    $c = 2;
+} catch (\Throwable $t) {
+    $d = 3;
+}
+$e = 4;
+',
+            ['statements' => ['if', 'try']],
+        ];
+
+        yield 'nested - if wrapping a try gets blank lines after both when configured for both' => [
+            '<?php
+if ($a) {
+    try {
+        $b = 1;
+    } catch (\Throwable $t) {
+        $c = 2;
+    }
+
+    $d = 3;
+}
+
+$e = 4;
+',
+            '<?php
+if ($a) {
+    try {
+        $b = 1;
+    } catch (\Throwable $t) {
+        $c = 2;
+    }
+    $d = 3;
+}
+$e = 4;
+',
+            ['statements' => ['if', 'try']],
+        ];
+
+        yield 'nested - foreach wrapping a switch' => [
+            '<?php
+foreach ($arr as $v) {
+    switch ($v) {
+        case 1:
+            break;
+    }
+
+    $a = 1;
+}
+
+$b = 2;
+',
+            '<?php
+foreach ($arr as $v) {
+    switch ($v) {
+        case 1:
+            break;
+    }
+    $a = 1;
+}
+$b = 2;
+',
+            ['statements' => ['foreach', 'switch']],
+        ];
+
         yield 'CRLF line endings preserved' => [
             "<?php\r\n\r\ndeclare(strict_types=1);\r\n\r\nuse Foo\\Bar;\r\n",
             "<?php\r\n\r\ndeclare(strict_types=1);\r\nuse Foo\\Bar;\r\n",

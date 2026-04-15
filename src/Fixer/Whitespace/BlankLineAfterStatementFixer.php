@@ -223,6 +223,11 @@ final class BlankLineAfterStatementFixer extends AbstractFixer implements Config
             }
 
             $endIndex = $this->findStatementEnd($tokens, $index);
+
+            if (null === $endIndex) {
+                continue;
+            }
+
             $nextMeaningfulIndex = $tokens->getNextMeaningfulToken($endIndex);
 
             if (null === $nextMeaningfulIndex) {
@@ -253,9 +258,14 @@ final class BlankLineAfterStatementFixer extends AbstractFixer implements Config
     }
 
     /**
+     * Adapted from ErickSkrauch's LineBreakAfterStatementsFixer.
+     *
      * @see https://github.com/erickskrauch/php-cs-fixer-custom-fixers/blob/1.3.1/src/Fixer/Whitespace/LineBreakAfterStatementsFixer.php
+     *
+     * Returns null when the construct uses alternative syntax (e.g. `if: ... endif;`), which is
+     * currently out of scope — the caller should skip such constructs.
      */
-    private function findStatementEnd(Tokens $tokens, int $index): int
+    private function findStatementEnd(Tokens $tokens, int $index): ?int
     {
         $nextIndex = $tokens->getNextMeaningfulToken($index);
 
@@ -277,6 +287,10 @@ final class BlankLineAfterStatementFixer extends AbstractFixer implements Config
         }
 
         $possibleBeginBrace = $tokens[$possibleBeginBraceIndex];
+
+        if ($possibleBeginBrace->equals(':')) {
+            return null;
+        }
 
         if ($possibleBeginBrace->equals(';')) {
             $blockEnd = $possibleBeginBraceIndex;
