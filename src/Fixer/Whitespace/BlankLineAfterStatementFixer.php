@@ -184,7 +184,7 @@ final class BlankLineAfterStatementFixer extends AbstractFixer implements Config
     /**
      * {@inheritdoc}
      *
-     * Must run after NoUselessElseFixer.
+     * Must run after DeclareStrictTypesFixer, FullyQualifiedStrictTypesFixer, NoUselessElseFixer.
      */
     public function getPriority(): int
     {
