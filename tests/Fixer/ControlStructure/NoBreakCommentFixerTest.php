@@ -489,6 +489,16 @@ switch($a) { // pass the `is candidate` check
 
                         return 'Hello World';
                     }
+
+                    /**
+                     * This is yet another case.
+                     */
+                    case YetAnotherCase;
+
+                    /**
+                     * This is one more case.
+                     */
+                    case OneMoreCase;
                 }
                 PHP,
         ];
