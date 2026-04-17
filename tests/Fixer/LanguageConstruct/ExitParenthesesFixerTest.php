@@ -129,11 +129,6 @@ final class ExitParenthesesFixerTest extends AbstractFixerTestCase
             '<?php $x ? exit : null;',
         ];
 
-        yield 'exit inside match arm' => [
-            "<?php match (\$x) {\n    1 => exit(),\n    default => null,\n};",
-            "<?php match (\$x) {\n    1 => exit,\n    default => null,\n};",
-        ];
-
         yield 'exit with comment between keyword and semicolon' => [
             '<?php exit() /* done */ ;',
             '<?php exit /* done */ ;',
@@ -141,6 +136,27 @@ final class ExitParenthesesFixerTest extends AbstractFixerTestCase
 
         yield 'exit with parenthesis on next line already' => [
             "<?php exit\n(0);",
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix80Cases
+     *
+     * @requires PHP 8.0
+     */
+    public function testFix80(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: null|string}>
+     */
+    public static function provideFix80Cases(): iterable
+    {
+        yield 'exit inside match arm' => [
+            "<?php match (\$x) {\n    1 => exit(),\n    default => null,\n};",
+            "<?php match (\$x) {\n    1 => exit,\n    default => null,\n};",
         ];
     }
 }
