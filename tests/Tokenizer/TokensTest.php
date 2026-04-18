@@ -775,7 +775,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP 8.0.0
      *
      * @dataProvider provideFindBlockEnd80Cases
      *
@@ -803,7 +803,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.2
+     * @requires PHP 8.2.0
      *
      * @dataProvider provideFindBlockEnd82Cases
      *
@@ -843,7 +843,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.3
+     * @requires PHP 8.3.0
      *
      * @dataProvider provideFindBlockEnd83Cases
      *
@@ -1943,7 +1943,7 @@ $bar;',
     }
 
     /**
-     * @requires PHP 8.1
+     * @requires PHP 8.1.0
      */
     public function testToJson(): void
     {

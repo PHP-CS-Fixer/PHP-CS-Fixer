@@ -641,7 +641,7 @@ AB# <- this is the name
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP 8.0.0
      *
      * @dataProvider provideFix80Cases
      */
@@ -705,7 +705,7 @@ AB# <- this is the name
     /**
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP 8.1.0
      */
     public function testFix81(string $expected, ?string $input = null): void
     {
@@ -833,7 +833,7 @@ var_dump(Foo::CAT->test());',
     }
 
     /**
-     * @requires PHP 8.2
+     * @requires PHP 8.2.0
      *
      * @dataProvider provideFix82Cases
      */

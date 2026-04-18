@@ -33,7 +33,7 @@ final class FirstClassCallableTransformerTest extends AbstractTransformerTestCas
      *
      * @dataProvider provideProcessCases
      *
-     * @requires PHP 8.1
+     * @requires PHP 8.1.0
      */
     public function testProcess(array $expectedTokens, string $source): void
     {

@@ -228,7 +228,7 @@ endwhile;
     /**
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP 8.0.0
      */
     public function testFix80(string $expected, ?string $input = null): void
     {
@@ -255,7 +255,7 @@ endwhile;
     /**
      * @dataProvider provideFix85Cases
      *
-     * @requires PHP 8.5
+     * @requires PHP 8.5.0
      */
     public function testFix85(string $expected, ?string $input = null): void
     {

@@ -1582,7 +1582,7 @@ function foo() {
     /**
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP 8.0.0
      */
     public function testFix80(string $expected, ?string $input = null): void
     {
@@ -1652,7 +1652,7 @@ function foo() {
     }
 
     /**
-     * @requires PHP 8.3
+     * @requires PHP 8.3.0
      *
      * @dataProvider provideFix83Cases
      */

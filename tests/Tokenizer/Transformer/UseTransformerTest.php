@@ -156,7 +156,7 @@ use C\{D,E,};
     /**
      * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
-     * @requires PHP 8.1
+     * @requires PHP 8.1.0
      *
      * @dataProvider provideProcessPhp81Cases
      */

@@ -23,7 +23,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @covers \PhpCsFixer\Fixer\AttributeNotation\OrderedAttributesFixer
  *
- * @requires PHP 8.0
+ * @requires PHP 8.0.0
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\AttributeNotation\OrderedAttributesFixer>
  *
@@ -816,7 +816,7 @@ final class OrderedAttributesFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP 8.1.0
      */
     public function testFix81(string $expected, ?string $input = null, array $configuration = []): void
     {

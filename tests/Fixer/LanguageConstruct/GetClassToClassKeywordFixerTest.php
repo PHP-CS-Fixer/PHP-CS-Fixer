@@ -21,7 +21,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @covers \PhpCsFixer\Fixer\LanguageConstruct\GetClassToClassKeywordFixer
  *
- * @requires PHP 8.0
+ * @requires PHP 8.0.0
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\GetClassToClassKeywordFixer>
  *

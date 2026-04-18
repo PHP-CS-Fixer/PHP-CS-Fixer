@@ -91,7 +91,7 @@ $foo
     /**
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP 8.0.0
      */
     public function testFix80(string $expected, ?string $input): void
     {
@@ -117,7 +117,7 @@ $foo
     /**
      * @dataProvider provideFix83Cases
      *
-     * @requires PHP 8.3
+     * @requires PHP 8.3.0
      */
     public function testFix83(string $expected, ?string $input): void
     {

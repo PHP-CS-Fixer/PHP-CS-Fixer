@@ -5969,7 +5969,7 @@ break;
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP 8.0.0
      *
      * @dataProvider provideFix80Cases
      */
@@ -5995,7 +5995,7 @@ break;
     }
 
     /**
-     * @requires PHP 8.1
+     * @requires PHP 8.1.0
      *
      * @dataProvider provideFix81Cases
      */

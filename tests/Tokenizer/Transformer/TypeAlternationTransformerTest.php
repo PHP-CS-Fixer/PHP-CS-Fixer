@@ -134,7 +134,7 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideProcess80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP 8.0.0
      */
     public function testProcess80(string $source, array $expectedTokens): void
     {
@@ -428,7 +428,7 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
      *
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP 8.1.0
      */
     public function testFix81(array $expectedTokens, string $source): void
     {
@@ -497,7 +497,7 @@ class Foo
      *
      * @dataProvider provideProcess81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP 8.1.0
      */
     public function testProcess81(string $source, array $expectedTokens): void
     {
@@ -522,7 +522,7 @@ class Foo
      *
      * @dataProvider provideProcess82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP 8.2.0
      */
     public function testProcess82(string $source, array $expectedTokens): void
     {
@@ -612,7 +612,7 @@ class Dnf
      *
      * @dataProvider provideProcess83Cases
      *
-     * @requires PHP 8.3
+     * @requires PHP 8.3.0
      */
     public function testProcess83(string $source, array $expectedTokens): void
     {

@@ -105,7 +105,7 @@ final class NoMultipleStatementsPerLineFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFix84Cases
      *
-     * @requires PHP 8.4
+     * @requires PHP 8.4.0
      */
     public function testFix84(string $expected, ?string $input = null): void
     {

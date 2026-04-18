@@ -139,7 +139,7 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.1
+     * @requires PHP 8.1.0
      */
     public function testEnumIsClassy(): void
     {
@@ -173,7 +173,7 @@ final class TokenTest extends TestCase
     /**
      * @dataProvider provideIsComment81Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP 8.0.0
      */
     public function testIsComment81(Token $token, bool $isComment): void
     {
@@ -215,7 +215,7 @@ final class TokenTest extends TestCase
     /**
      * @dataProvider provideIsObjectOperator80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP 8.0.0
      */
     public function testIsObjectOperator80(Token $token, bool $isObjectOperator): void
     {
@@ -479,7 +479,7 @@ final class TokenTest extends TestCase
      *
      * @dataProvider provideEquals81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP 8.1.0
      */
     public function testEquals81(Token $token, bool $equals, $other): void
     {

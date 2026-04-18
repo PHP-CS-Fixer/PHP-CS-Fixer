@@ -470,7 +470,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP 8.0.0
      *
      * @dataProvider provideFix80Cases
      */

@@ -629,7 +629,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP 8.1.0
      */
     public function testFix81(string $expected, string $input): void
     {
@@ -650,7 +650,7 @@ final class NoEmptyStatementFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFix84Cases
      *
-     * @requires PHP 8.4
+     * @requires PHP 8.4.0
      */
     public function testFix84(string $expected, ?string $input = null): void
     {

@@ -228,7 +228,7 @@ $a = ($b
     /**
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP 8.0.0
      */
     public function testFix80(string $expected, ?string $input = null): void
     {
@@ -259,7 +259,7 @@ class Foo
     /**
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP 8.1.0
      */
     public function testFix81(string $expected, ?string $input = null): void
     {

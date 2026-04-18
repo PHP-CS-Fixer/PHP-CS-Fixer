@@ -1460,13 +1460,13 @@ final class PhpdocOrderByValueFixerTest extends AbstractFixerTestCase
                      * @requires extension redis
                      * @requires function json_decode
                      * @requires OS Linux
-                     * @requires PHP 7.2
+                     * @requires PHP 7.2.0
                      */
                     class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
             '<?php
                     /**
-                     * @requires PHP 7.2
+                     * @requires PHP 7.2.0
                      * @requires function json_decode
                      * @requires extension redis
                      * @requires OS Linux

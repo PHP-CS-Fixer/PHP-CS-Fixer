@@ -334,7 +334,7 @@ DateTime:: # a
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP 8.0.0
      */
     public function testNotFixPHP8(): void
     {

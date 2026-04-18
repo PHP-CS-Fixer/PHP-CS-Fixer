@@ -1519,7 +1519,7 @@ use /**/A\B/**/;
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP 8.0.0
      *
      * @dataProvider provideFix80Cases
      */
@@ -1594,7 +1594,7 @@ function f( #[Target(\'xxx\')] LoggerInterface|null $logger) {}
     }
 
     /**
-     * @requires PHP 8.1
+     * @requires PHP 8.1.0
      *
      * @dataProvider provideFix81Cases
      */
@@ -1705,7 +1705,7 @@ const D = new Foo7(1,2);
     }
 
     /**
-     * @requires PHP 8.3
+     * @requires PHP 8.3.0
      *
      * @dataProvider provideFix83Cases
      */

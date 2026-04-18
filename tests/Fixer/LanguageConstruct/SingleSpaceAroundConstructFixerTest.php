@@ -3237,7 +3237,7 @@ namespace/* comment */ Foo;',
     /**
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP 8.0.0
      */
     public function testFix80(string $expected, string $input): void
     {
@@ -3316,7 +3316,7 @@ class Point {
      *
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP 8.1.0
      */
     public function testFix81(string $expected, string $input, array $configuration = []): void
     {
@@ -3424,7 +3424,7 @@ class    Test {
      *
      * @dataProvider provideFix84Cases
      *
-     * @requires PHP 8.4
+     * @requires PHP 8.4.0
      */
     public function testFix84(string $expected, string $input, array $configuration = []): void
     {

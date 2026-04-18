@@ -328,7 +328,7 @@ A();
      *
      * @dataProvider provideIsGlobalFunctionCallPhp80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP 8.0.0
      */
     public function testIsGlobalFunctionCallPhp80(string $code, array $indices): void
     {
@@ -377,7 +377,7 @@ class Foo {}
      *
      * @dataProvider provideIsGlobalFunctionCallPhp81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP 8.1.0
      */
     public function testIsGlobalFunctionCallPhp81(string $code, array $indices): void
     {
@@ -423,7 +423,7 @@ class(){};
      *
      * @dataProvider provideIsGlobalFunctionCallPhp84Cases
      *
-     * @requires PHP 8.4
+     * @requires PHP 8.4.0
      */
     public function testIsGlobalFunctionCallPhp84(string $code, array $indices): void
     {
@@ -877,7 +877,7 @@ class(){};
      *
      * @param list<int> $sameClassCallIndices
      *
-     * @requires PHP 8.0
+     * @requires PHP 8.0.0
      */
     public function testIsTheSameClassCall80(string $code, array $sameClassCallIndices): void
     {
@@ -906,7 +906,7 @@ class(){};
      *
      * @dataProvider provideFunctionArgumentInfoPhp80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP 8.0.0
      */
     public function testFunctionArgumentInfoPhp80(string $code, int $methodIndex, array $expected): void
     {
@@ -948,7 +948,7 @@ class(){};
      *
      * @dataProvider provideFunctionArgumentInfoPhp84Cases
      *
-     * @requires PHP 8.4
+     * @requires PHP 8.4.0
      */
     public function testFunctionArgumentInfoPhp84(string $code, int $methodIndex, array $expected): void
     {

@@ -214,7 +214,7 @@ $bar) {}',
     /**
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP 8.0.0
      */
     public function testFix80(string $expected, ?string $input = null): void
     {
@@ -260,7 +260,7 @@ $bar) {}',
     /**
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP 8.1.0
      */
     public function testFix81(string $expected, ?string $input = null): void
     {
@@ -280,7 +280,7 @@ $bar) {}',
     /**
      * @dataProvider provideFix84Cases
      *
-     * @requires PHP 8.4
+     * @requires PHP 8.4.0
      */
     public function testFix84(string $expected, ?string $input = null): void
     {
@@ -350,7 +350,7 @@ $bar) {}',
     /**
      * @dataProvider provideFix85Cases
      *
-     * @requires PHP 8.5
+     * @requires PHP 8.5.0
      */
     public function testFix85(string $expected, ?string $input = null): void
     {

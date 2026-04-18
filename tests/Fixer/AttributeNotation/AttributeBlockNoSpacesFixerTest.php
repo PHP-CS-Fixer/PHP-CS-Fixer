@@ -22,7 +22,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
  *
  * @covers \PhpCsFixer\Fixer\AttributeNotation\AttributeBlockNoSpacesFixer
  *
- * @requires PHP 8.0
+ * @requires PHP 8.0.0
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\AttributeNotation\AttributeBlockNoSpacesFixer>
  *

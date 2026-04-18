@@ -45,7 +45,7 @@ final class FCTTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.5
+     * @requires PHP 8.5.0
      */
     public function testHighestSupportedPhpVersionHaveOnlyPositiveValues(): void
     {

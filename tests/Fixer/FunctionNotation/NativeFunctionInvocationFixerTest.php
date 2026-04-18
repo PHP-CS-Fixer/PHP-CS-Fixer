@@ -570,7 +570,7 @@ echo strlen($a);
      *
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP 8.0.0
      */
     public function testFix80(string $expected, ?string $input = null, array $configuration = []): void
     {
@@ -609,7 +609,7 @@ echo strlen($a);
      *
      * @dataProvider provideFix84Cases
      *
-     * @requires PHP 8.4
+     * @requires PHP 8.4.0
      */
     public function testFix84(string $expected, ?string $input = null, array $configuration = []): void
     {

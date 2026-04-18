@@ -24,7 +24,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @internal
  *
- * @requires PHP 8.0
+ * @requires PHP 8.0.0
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\NameQualifiedTransformer
  *
@@ -40,7 +40,7 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideProcessCases
      *
-     * @requires PHP 8.0
+     * @requires PHP 8.0.0
      */
     public function testProcess(array $expected, ?array $input = null): void
     {

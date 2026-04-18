@@ -95,7 +95,7 @@ final class ArgumentsAnalyzerTest extends TestCase
     /**
      * @param array<int, int> $arguments
      *
-     * @requires PHP 8.0
+     * @requires PHP 8.0.0
      *
      * @dataProvider provideArguments80Cases
      */
@@ -123,7 +123,7 @@ final class ArgumentsAnalyzerTest extends TestCase
     /**
      * @param array<int, int> $arguments
      *
-     * @requires PHP 8.1
+     * @requires PHP 8.1.0
      *
      * @dataProvider provideArguments81Cases
      */
@@ -143,7 +143,7 @@ final class ArgumentsAnalyzerTest extends TestCase
     /**
      * @param array<int, int> $arguments
      *
-     * @requires PHP 8.4
+     * @requires PHP 8.4.0
      *
      * @dataProvider provideArguments84Cases
      */
@@ -168,7 +168,7 @@ final class ArgumentsAnalyzerTest extends TestCase
     /**
      * @param array<int, int> $arguments
      *
-     * @requires PHP 8.5
+     * @requires PHP 8.5.0
      *
      * @dataProvider provideArguments85Cases
      */
@@ -335,7 +335,7 @@ final class ArgumentsAnalyzerTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP 8.0.0
      *
      * @dataProvider provideArgumentInfo80Cases
      */
@@ -385,7 +385,7 @@ final class ArgumentsAnalyzerTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.1
+     * @requires PHP 8.1.0
      *
      * @dataProvider provideArgumentInfo81Cases
      */
@@ -424,7 +424,7 @@ class Foo
     }
 
     /**
-     * @requires PHP 8.4
+     * @requires PHP 8.4.0
      *
      * @dataProvider provideArgumentInfo84Cases
      */
@@ -533,7 +533,7 @@ class Foo
     }
 
     /**
-     * @requires PHP 8.5
+     * @requires PHP 8.5.0
      *
      * @dataProvider provideArgumentInfo85Cases
      */

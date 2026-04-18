@@ -154,7 +154,7 @@ final class ProjectCodeTest extends TestCase
      *
      * @param class-string $className
      *
-     * @requires PHP 8.2
+     * @requires PHP 8.2.0
      */
     public function testThatSrcClassesAreReadonlyWhenPossible(string $className): void
     {

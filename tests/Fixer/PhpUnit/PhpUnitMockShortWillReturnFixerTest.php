@@ -294,7 +294,7 @@ class FooTest extends TestCase {
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP 8.0.0
      */
     public function testFix80(): void
     {
@@ -315,7 +315,7 @@ class FooTest extends TestCase {
     }
 
     /**
-     * @requires PHP 8.1
+     * @requires PHP 8.1.0
      */
     public function testFix81(): void
     {

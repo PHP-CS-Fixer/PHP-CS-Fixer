@@ -664,7 +664,7 @@ $a = [11,2,3];
      *
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP 8.0.0
      */
     public function testFix80(string $expected, ?string $input = null, array $configuration = []): void
     {

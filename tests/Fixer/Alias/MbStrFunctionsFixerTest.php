@@ -109,7 +109,7 @@ final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @requires PHP 8.3
+     * @requires PHP 8.3.0
      *
      * @dataProvider provideFix83Cases
      */
@@ -130,7 +130,7 @@ final class MbStrFunctionsFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @requires PHP 8.4
+     * @requires PHP 8.4.0
      *
      * @dataProvider provideFix84Cases
      */

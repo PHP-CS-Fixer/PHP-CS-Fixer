@@ -24,7 +24,7 @@ use PhpCsFixer\Tokenizer\CT;
  *
  * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
  *
- * @requires PHP 8.2
+ * @requires PHP 8.2.0
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
@@ -337,7 +337,7 @@ return new static();
      *
      * @dataProvider provideProcess83Cases
      *
-     * @requires PHP 8.3
+     * @requires PHP 8.3.0
      */
     public function testProcess83(string $source, array $expectedTokens): void
     {
