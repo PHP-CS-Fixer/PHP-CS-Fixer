@@ -90,6 +90,11 @@
             "ergebnis/composer-normalize": true,
             "infection/extension-installer": false
         },
+        "audit": {
+            "ignore": {
+                "PKSA-5jz8-6tcw-pbk4": "To allow installing PHPUnit 9.6 / 10.5 / 11.5 lines (no patched versions available yet)"
+            }
+        },
         "prefer-stable": true,
         "sort-packages": true
     },
