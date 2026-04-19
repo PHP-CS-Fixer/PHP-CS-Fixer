@@ -10,3 +10,5 @@ cd245c59a94e44c47c027da59ee555ec94afe161
 b7294c5125cdf97c08822630473b83663d994279
 # Apply php_unit_attributes (#9578)
 e123e6411cdc1d0ec68b3fb38f3faf1abbc54895
+# Apply `PhpUnitRequiresConstraintFixer` from https://github.com/kubawerlos/php-cs-fixer-custom-fixers (#9581)
+0a637f43509440d130830a4eb85ccb1686a2a2fd
