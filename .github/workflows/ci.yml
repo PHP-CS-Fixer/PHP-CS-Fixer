@@ -305,7 +305,7 @@ jobs:
 
       - name: Upload coverage results to Codecov
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           codecov_yml_path: dev-tools/codecov.yaml
           disable_search: true
