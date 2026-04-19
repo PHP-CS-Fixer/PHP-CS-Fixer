@@ -15,7 +15,11 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\ClassNotation\ModifierKeywordsFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -34,6 +38,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ModifierKeywordsFixer::class)]
 class ModifierKeywordsFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -41,6 +46,7 @@ class ModifierKeywordsFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -645,6 +651,8 @@ AB# <- this is the name
      *
      * @dataProvider provideFix80Cases
      */
+    #[RequiresPhp('>= 8.0')]
+    #[DataProvider('provideFix80Cases')]
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -707,6 +715,8 @@ AB# <- this is the name
      *
      * @requires PHP 8.1.0
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1')]
     public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -837,6 +847,8 @@ var_dump(Foo::CAT->test());',
      *
      * @dataProvider provideFix82Cases
      */
+    #[RequiresPhp('>= 8.2')]
+    #[DataProvider('provideFix82Cases')]
     public function testFix82(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -876,6 +888,8 @@ var_dump(Foo::CAT->test());',
      *
      * @requires PHP >= 8.4
      */
+    #[DataProvider('provideFix84Cases')]
+    #[RequiresPhp('>= 8.4')]
     public function testFix84(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -1025,6 +1039,8 @@ var_dump(Foo::CAT->test());',
      *
      * @requires PHP >= 8.5
      */
+    #[DataProvider('provideFix85Cases')]
+    #[RequiresPhp('>= 8.5')]
     public function testFix85(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -1084,6 +1100,7 @@ var_dump(Foo::CAT->test());',
      *
      * @dataProvider provideInvalidConfigurationCases
      */
+    #[DataProvider('provideInvalidConfigurationCases')]
     public function testInvalidConfiguration(array $config, string $expectedMessage): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);

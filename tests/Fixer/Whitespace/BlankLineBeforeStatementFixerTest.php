@@ -15,8 +15,12 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -32,6 +36,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(BlankLineBeforeStatementFixer::class)]
 final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -39,6 +44,7 @@ final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
      *
      * @param mixed $controlStatement
      */
+    #[DataProvider('provideInvalidConfigurationCases')]
     public function testInvalidConfiguration($controlStatement): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
@@ -75,6 +81,7 @@ final class BlankLineBeforeStatementFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = [], ?WhitespacesFixerConfig $whitespacesConfig = null): void
     {
         $this->fixer->configure($configuration);
@@ -1262,6 +1269,8 @@ class Foo {
      *
      * @requires PHP 8.0.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0')]
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->testFix($expected, $input, ['statements' => ['default']]);
@@ -1294,6 +1303,8 @@ class Foo {
      *
      * @requires PHP 8.1.0
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1')]
     public function testFix81(string $expected, ?string $input = null): void
     {
         $this->testFix($expected, $input, ['statements' => ['case']]);

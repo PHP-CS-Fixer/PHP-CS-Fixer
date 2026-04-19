@@ -15,8 +15,12 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
+use PhpCsFixer\Fixer\Phpdoc\PhpdocAddMissingParamAnnotationFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -31,6 +35,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(PhpdocAddMissingParamAnnotationFixer::class)]
 final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -38,6 +43,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      *
      * @dataProvider provideInvalidConfigurationCases
      */
+    #[DataProvider('provideInvalidConfigurationCases')]
     public function testInvalidConfiguration(array $configuration, string $expectedMessage): void
     {
         $this->expectException(InvalidConfigurationException::class);
@@ -87,6 +93,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = [], ?WhitespacesFixerConfig $whitespacesConfig = null): void
     {
         $this->fixer->configure($configuration);
@@ -501,6 +508,8 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      *
      * @requires PHP 8.0.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0')]
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['only_untyped' => false]);
@@ -542,6 +551,8 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      *
      * @requires PHP 8.1.0
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1')]
     public function testFix81(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['only_untyped' => false]);
@@ -580,6 +591,8 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
      *
      * @requires PHP 8.4.0
      */
+    #[DataProvider('provideFix84Cases')]
+    #[RequiresPhp('>= 8.4')]
     public function testFix84(string $expected, ?string $input = null): void
     {
         $this->testFix($expected, $input, ['only_untyped' => false]);

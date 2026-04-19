@@ -16,6 +16,10 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Transformer\DisjunctiveNormalFormTypeParenthesisTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @covers \PhpCsFixer\Tokenizer\Transformer\DisjunctiveNormalFormTypeParenthesisTransformer
@@ -28,6 +32,8 @@ use PhpCsFixer\Tokenizer\CT;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(DisjunctiveNormalFormTypeParenthesisTransformer::class)]
+#[RequiresPhp('>= 8.2')]
 final class DisjunctiveNormalFormTypeParenthesisTransformerTest extends AbstractTransformerTestCase
 {
     /**
@@ -35,6 +41,7 @@ final class DisjunctiveNormalFormTypeParenthesisTransformerTest extends Abstract
      *
      * @dataProvider provideProcessCases
      */
+    #[DataProvider('provideProcessCases')]
     public function testProcess(string $source, array $expectedTokens): void
     {
         $this->doTest($source, $expectedTokens, [CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE]);
@@ -339,6 +346,8 @@ return new static();
      *
      * @requires PHP 8.3.0
      */
+    #[DataProvider('provideProcess83Cases')]
+    #[RequiresPhp('>= 8.3')]
     public function testProcess83(string $source, array $expectedTokens): void
     {
         $this->doTest($source, $expectedTokens);

@@ -15,8 +15,12 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 
 use PhpCsFixer\AbstractNoUselessElseFixer;
+use PhpCsFixer\Fixer\ControlStructure\NoUselessElseFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -28,11 +32,14 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AbstractNoUselessElseFixer::class)]
+#[CoversClass(NoUselessElseFixer::class)]
 final class NoUselessElseFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -633,6 +640,8 @@ else?><?php echo 5;',
      *
      * @requires PHP 8.0.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0')]
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -676,6 +685,7 @@ else?><?php echo 5;',
      *
      * @dataProvider provideBlockDetectionCases
      */
+    #[DataProvider('provideBlockDetectionCases')]
     public function testBlockDetection(array $expected, string $source, int $index): void
     {
         Tokens::clearCache();
@@ -735,6 +745,7 @@ else?><?php echo 5;',
      *
      * @dataProvider provideIsInConditionWithoutBracesCases
      */
+    #[DataProvider('provideIsInConditionWithoutBracesCases')]
     public function testIsInConditionWithoutBraces(array $indexes, string $input): void
     {
         $tokens = Tokens::fromCode($input);

@@ -26,6 +26,8 @@ use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSetInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -36,6 +38,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FixerFactory::class)]
 final class FixerFactoryTest extends TestCase
 {
     public function testInterfaceIsFluent(): void
@@ -308,6 +311,7 @@ final class FixerFactoryTest extends TestCase
     /**
      * @dataProvider provideConflictingFixersCases
      */
+    #[DataProvider('provideConflictingFixersCases')]
     public function testConflictingFixers(RuleSet $ruleSet): void
     {
         $this->expectException(\UnexpectedValueException::class);
@@ -438,6 +442,7 @@ final class FixerFactoryTest extends TestCase
      *
      * @dataProvider provideConfigureFixerWithNonArrayCases
      */
+    #[DataProvider('provideConfigureFixerWithNonArrayCases')]
     public function testConfigureFixerWithNonArray($value): void
     {
         $factory = new FixerFactory();

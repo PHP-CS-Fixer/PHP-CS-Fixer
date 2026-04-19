@@ -17,6 +17,9 @@ namespace PhpCsFixer\Tests\Tokenizer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\Transformers;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Dave van der Brugge <dmvdbrugge@gmail.com>
@@ -27,6 +30,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Transformers::class)]
 final class TransformersTest extends TestCase
 {
     /**
@@ -34,6 +38,7 @@ final class TransformersTest extends TestCase
      *
      * @dataProvider provideTransformCases
      */
+    #[DataProvider('provideTransformCases')]
     public function testTransform(string $input, array $expectedTokenKinds): void
     {
         $tokens = Tokens::fromCode($input);

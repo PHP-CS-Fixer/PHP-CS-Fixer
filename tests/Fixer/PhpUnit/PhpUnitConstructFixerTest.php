@@ -15,7 +15,11 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitConstructFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -30,6 +34,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(PhpUnitConstructFixer::class)]
 final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -37,6 +42,7 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, ?array $configuration = null): void
     {
         if (null !== $configuration) {
@@ -188,6 +194,8 @@ final class PhpUnitConstructFixerTest extends AbstractFixerTestCase
      *
      * @requires PHP 8.1.0
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1')]
     public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

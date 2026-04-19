@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * @internal
@@ -26,6 +28,9 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversNothing]
+#[Group('covers-nothing')]
+#[Group('auto-review')]
 final class ComposerFileTest extends TestCase
 {
     public function testScriptsHaveDescriptions(): void

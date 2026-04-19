@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Console\Report\ListSetsReport;
 
 use PhpCsFixer\Console\Report\ListSetsReport\ReporterInterface;
 use PhpCsFixer\Console\Report\ListSetsReport\TextReporter;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -26,6 +27,7 @@ use PhpCsFixer\Console\Report\ListSetsReport\TextReporter;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(TextReporter::class)]
 final class TextReporterTest extends AbstractReporterTestCase
 {
     protected function createReporter(): ReporterInterface

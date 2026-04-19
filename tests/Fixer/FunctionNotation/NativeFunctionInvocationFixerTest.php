@@ -17,6 +17,9 @@ namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\FunctionNotation\NativeFunctionInvocationFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -31,6 +34,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NativeFunctionInvocationFixer::class)]
 final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -38,6 +42,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
      *
      * @param array<string, mixed> $configuration
      */
+    #[DataProvider('provideInvalidConfigurationCases')]
     public function testInvalidConfiguration(array $configuration, string $expectedExceptionMessage): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
@@ -112,6 +117,7 @@ final class NativeFunctionInvocationFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -517,6 +523,8 @@ namespace {
      *
      * @requires PHP <8.0
      */
+    #[DataProvider('provideFixPre80Cases')]
+    #[RequiresPhp('<8.0')]
     public function testFixPre80(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -572,6 +580,8 @@ echo strlen($a);
      *
      * @requires PHP 8.0.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0')]
     public function testFix80(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -611,6 +621,8 @@ echo strlen($a);
      *
      * @requires PHP 8.4.0
      */
+    #[DataProvider('provideFix84Cases')]
+    #[RequiresPhp('>= 8.4')]
     public function testFix84(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);

@@ -14,8 +14,12 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
+use PhpCsFixer\Fixer\Whitespace\ArrayIndentationFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -26,11 +30,13 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ArrayIndentationFixer::class)]
 final class ArrayIndentationFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -842,6 +848,7 @@ $foo = [
     /**
      * @dataProvider provideWithWhitespacesConfigCases
      */
+    #[DataProvider('provideWithWhitespacesConfigCases')]
     public function testWithWhitespacesConfig(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t"));
@@ -932,6 +939,8 @@ $foo = [
      *
      * @requires PHP 8.0.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0')]
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -981,6 +990,8 @@ class Foo {
      *
      * @requires PHP 8.5.0
      */
+    #[DataProvider('provideFix85Cases')]
+    #[RequiresPhp('>= 8.5')]
     public function testFix85(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

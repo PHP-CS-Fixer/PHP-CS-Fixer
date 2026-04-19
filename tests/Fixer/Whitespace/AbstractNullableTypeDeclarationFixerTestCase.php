@@ -16,6 +16,8 @@ namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
 use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @template TFixer of AbstractFixer
@@ -33,6 +35,7 @@ abstract class AbstractNullableTypeDeclarationFixerTestCase extends AbstractFixe
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -179,6 +182,8 @@ abstract class AbstractNullableTypeDeclarationFixerTestCase extends AbstractFixe
      *
      * @requires PHP 8.0.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0')]
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

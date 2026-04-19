@@ -14,7 +14,9 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Runner\Parallel;
 
+use PhpCsFixer\Runner\Parallel\ProcessUtils;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
@@ -23,6 +25,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ProcessUtils::class)]
 final class ProcessUtilsTest extends TestCase
 {
     public function testEscapeArgument(): void

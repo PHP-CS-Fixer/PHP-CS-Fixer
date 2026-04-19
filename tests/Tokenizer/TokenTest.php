@@ -18,6 +18,10 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @phpstan-import-type _PhpTokenPrototypePartial from Token
@@ -30,6 +34,7 @@ use PhpCsFixer\Tokenizer\Token;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Token::class)]
 final class TokenTest extends TestCase
 {
     /**
@@ -37,6 +42,7 @@ final class TokenTest extends TestCase
      *
      * @dataProvider provideConstructorValidationCases
      */
+    #[DataProvider('provideConstructorValidationCases')]
     public function testConstructorValidation($input): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -85,6 +91,7 @@ final class TokenTest extends TestCase
     /**
      * @dataProvider provideIsCastCases
      */
+    #[DataProvider('provideIsCastCases')]
     public function testIsCast(Token $token, bool $isCast): void
     {
         self::assertSame($isCast, $token->isCast());
@@ -117,6 +124,7 @@ final class TokenTest extends TestCase
     /**
      * @dataProvider provideIsClassyCases
      */
+    #[DataProvider('provideIsClassyCases')]
     public function testIsClassy(Token $token, bool $isClassy): void
     {
         self::assertSame($isClassy, $token->isClassy());
@@ -141,6 +149,7 @@ final class TokenTest extends TestCase
     /**
      * @requires PHP 8.1.0
      */
+    #[RequiresPhp('>= 8.1')]
     public function testEnumIsClassy(): void
     {
         $enumToken = new Token([\T_ENUM, 'enum', 1]);
@@ -151,6 +160,7 @@ final class TokenTest extends TestCase
     /**
      * @dataProvider provideIsCommentCases
      */
+    #[DataProvider('provideIsCommentCases')]
     public function testIsComment(Token $token, bool $isComment): void
     {
         self::assertSame($isComment, $token->isComment());
@@ -175,6 +185,8 @@ final class TokenTest extends TestCase
      *
      * @requires PHP 8.0.0
      */
+    #[DataProvider('provideIsComment81Cases')]
+    #[RequiresPhp('>= 8.0')]
     public function testIsComment81(Token $token, bool $isComment): void
     {
         self::assertSame($isComment, $token->isComment());
@@ -191,6 +203,7 @@ final class TokenTest extends TestCase
     /**
      * @dataProvider provideIsObjectOperatorCases
      */
+    #[DataProvider('provideIsObjectOperatorCases')]
     public function testIsObjectOperator(Token $token, bool $isObjectOperator): void
     {
         self::assertSame($isObjectOperator, $token->isObjectOperator());
@@ -217,6 +230,8 @@ final class TokenTest extends TestCase
      *
      * @requires PHP 8.0.0
      */
+    #[DataProvider('provideIsObjectOperator80Cases')]
+    #[RequiresPhp('>= 8.0')]
     public function testIsObjectOperator80(Token $token, bool $isObjectOperator): void
     {
         self::assertSame($isObjectOperator, $token->isObjectOperator());
@@ -257,6 +272,7 @@ final class TokenTest extends TestCase
     /**
      * @dataProvider provideIsMagicConstantCases
      */
+    #[DataProvider('provideIsMagicConstantCases')]
     public function testIsMagicConstant(?int $tokenId, string $content, bool $isConstant = true): void
     {
         $token = new Token(
@@ -300,6 +316,7 @@ final class TokenTest extends TestCase
     /**
      * @dataProvider provideIsNativeConstantCases
      */
+    #[DataProvider('provideIsNativeConstantCases')]
     public function testIsNativeConstant(Token $token, bool $isNativeConstant): void
     {
         self::assertSame($isNativeConstant, $token->isNativeConstant());
@@ -328,6 +345,7 @@ final class TokenTest extends TestCase
     /**
      * @dataProvider provideIsWhitespaceCases
      */
+    #[DataProvider('provideIsWhitespaceCases')]
     public function testIsWhitespace(Token $token, bool $isWhitespace, ?string $whitespaces = null): void
     {
         if (null !== $whitespaces) {
@@ -370,6 +388,7 @@ final class TokenTest extends TestCase
      *
      * @dataProvider provideCreatingTokenCases
      */
+    #[DataProvider('provideCreatingTokenCases')]
     public function testCreatingToken($prototype, ?int $expectedId, ?string $expectedContent, ?bool $expectedIsArray, ?string $expectedExceptionClass = null): void
     {
         if (null !== $expectedExceptionClass) {
@@ -411,6 +430,7 @@ final class TokenTest extends TestCase
      *
      * @dataProvider provideEqualsCases
      */
+    #[DataProvider('provideEqualsCases')]
     public function testEquals(Token $token, bool $equals, $other, bool $caseSensitive = true): void
     {
         self::assertSame($equals, $token->equals($other, $caseSensitive));
@@ -481,6 +501,8 @@ final class TokenTest extends TestCase
      *
      * @requires PHP 8.1.0
      */
+    #[DataProvider('provideEquals81Cases')]
+    #[RequiresPhp('>= 8.1')]
     public function testEquals81(Token $token, bool $equals, $other): void
     {
         self::assertSame($equals, $token->equals($other));
@@ -517,6 +539,7 @@ final class TokenTest extends TestCase
      *
      * @dataProvider provideEqualsAnyCases
      */
+    #[DataProvider('provideEqualsAnyCases')]
     public function testEqualsAny(bool $equalsAny, array $other, bool $caseSensitive = true): void
     {
         $token = new Token([\T_FUNCTION, 'function', 1]);
@@ -556,6 +579,8 @@ final class TokenTest extends TestCase
      *
      * @group legacy
      */
+    #[DataProvider('provideIsKeyCaseSensitiveCases')]
+    #[Group('legacy')]
     public function testIsKeyCaseSensitive(bool $isKeyCaseSensitive, $caseSensitive, int $key): void
     {
         $this->expectDeprecation('Method "PhpCsFixer\Tokenizer\Token::isKeyCaseSensitive" is deprecated and will be removed in the next major version.');
@@ -595,6 +620,7 @@ final class TokenTest extends TestCase
     /**
      * @dataProvider provideTokenGetNameForIdCases
      */
+    #[DataProvider('provideTokenGetNameForIdCases')]
     public function testTokenGetNameForId(?string $expected, int $id): void
     {
         self::assertSame($expected, Token::getNameForId($id));
@@ -624,6 +650,7 @@ final class TokenTest extends TestCase
     /**
      * @dataProvider provideGetNameCases
      */
+    #[DataProvider('provideGetNameCases')]
     public function testGetName(Token $token, ?string $expected = null): void
     {
         self::assertSame($expected, $token->getName());
@@ -655,6 +682,7 @@ final class TokenTest extends TestCase
      *
      * @dataProvider provideToArrayCases
      */
+    #[DataProvider('provideToArrayCases')]
     public function testToArray(Token $token, array $expected): void
     {
         self::assertSame($expected, $token->toArray());

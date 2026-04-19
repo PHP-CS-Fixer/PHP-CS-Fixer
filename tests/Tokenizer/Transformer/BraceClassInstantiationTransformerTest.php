@@ -16,6 +16,10 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Transformer\BraceClassInstantiationTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @author Sebastiaans Stok <s.stok@rollerscapes.net>
@@ -29,6 +33,7 @@ use PhpCsFixer\Tokenizer\CT;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(BraceClassInstantiationTransformer::class)]
 final class BraceClassInstantiationTransformerTest extends AbstractTransformerTestCase
 {
     /**
@@ -37,6 +42,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
      *
      * @dataProvider provideProcessCases
      */
+    #[DataProvider('provideProcessCases')]
     public function testProcess(string $source, array $expectedTokens, array $observedKinds = []): void
     {
         $this->doTest(
@@ -396,6 +402,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
      *
      * @requires PHP 8.0.0
      */
+    #[DataProvider('provideProcessPhp80Cases')]
+    #[RequiresPhp('>= 8.0')]
     public function testProcessPhp80(array $expectedTokens, array $observedKinds, string $source): void
     {
         $this->doTest(
@@ -450,6 +458,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
      *
      * @requires PHP 8.1.0
      */
+    #[DataProvider('provideProcessPhp81Cases')]
+    #[RequiresPhp('>= 8.1')]
     public function testProcessPhp81(array $expectedTokens, array $observedKinds, string $source): void
     {
         $this->doTest(
@@ -509,6 +519,8 @@ function test2($param = (new Foo)) {}
      *
      * @requires PHP <8.4
      */
+    #[DataProvider('provideProcessPrePhp84Cases')]
+    #[RequiresPhp('<8.4')]
     public function testProcessPrePhp84(string $source, array $expectedTokens, array $observedKinds = []): void
     {
         $this->doTest(

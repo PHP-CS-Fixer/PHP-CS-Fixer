@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\Console\Report\ListSetsReport;
 use PhpCsFixer\Console\Report\ListSetsReport\JsonReporter;
 use PhpCsFixer\Console\Report\ListSetsReport\ReporterInterface;
 use PhpCsFixer\Tests\Test\Assert\AssertJsonSchemaTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -27,6 +28,7 @@ use PhpCsFixer\Tests\Test\Assert\AssertJsonSchemaTrait;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(JsonReporter::class)]
 final class JsonReporterTest extends AbstractReporterTestCase
 {
     use AssertJsonSchemaTrait;

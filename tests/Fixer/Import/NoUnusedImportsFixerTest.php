@@ -14,7 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Import;
 
+use PhpCsFixer\Fixer\Import\NoUnusedImportsFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -25,11 +29,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NoUnusedImportsFixer::class)]
 final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -1488,6 +1494,7 @@ Bar3:
     /**
      * @requires PHP <8.0
      */
+    #[RequiresPhp('<8.0')]
     public function testFixPre80(): void
     {
         $this->doTest(
@@ -1523,6 +1530,8 @@ use /**/A\B/**/;
      *
      * @dataProvider provideFix80Cases
      */
+    #[RequiresPhp('>= 8.0')]
+    #[DataProvider('provideFix80Cases')]
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -1598,6 +1607,8 @@ function f( #[Target(\'xxx\')] LoggerInterface|null $logger) {}
      *
      * @dataProvider provideFix81Cases
      */
+    #[RequiresPhp('>= 8.1')]
+    #[DataProvider('provideFix81Cases')]
     public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -1709,6 +1720,8 @@ const D = new Foo7(1,2);
      *
      * @dataProvider provideFix83Cases
      */
+    #[RequiresPhp('>= 8.3')]
+    #[DataProvider('provideFix83Cases')]
     public function testFix83(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

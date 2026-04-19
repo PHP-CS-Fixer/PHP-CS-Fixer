@@ -16,6 +16,9 @@ namespace PhpCsFixer\Tests\Fixer\Basic;
 
 use PhpCsFixer\Fixer\Basic\NumericLiteralSeparatorFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -30,6 +33,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NumericLiteralSeparatorFixer::class)]
 final class NumericLiteralSeparatorFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -37,6 +41,7 @@ final class NumericLiteralSeparatorFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, ?array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -133,6 +138,8 @@ final class NumericLiteralSeparatorFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFix81Cases
      */
+    #[RequiresPhp('>= 8.1')]
+    #[DataProvider('provideFix81Cases')]
     public function testFix81(string $expected, ?string $input = null, ?array $configuration = []): void
     {
         $this->fixer->configure($configuration);

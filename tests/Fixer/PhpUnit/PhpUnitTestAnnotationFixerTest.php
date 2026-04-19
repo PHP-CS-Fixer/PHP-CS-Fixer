@@ -14,8 +14,12 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitTestAnnotationFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -30,6 +34,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(PhpUnitTestAnnotationFixer::class)]
 final class PhpUnitTestAnnotationFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -37,6 +42,7 @@ final class PhpUnitTestAnnotationFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -1043,6 +1049,7 @@ class Test extends \PhpUnit\FrameWork\TestCase
      *
      * @dataProvider provideWithWhitespacesConfigCases
      */
+    #[DataProvider('provideWithWhitespacesConfigCases')]
     public function testWithWhitespacesConfig(string $expected, ?string $input = null, array $config = []): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
@@ -1086,6 +1093,8 @@ class Test extends \PhpUnit\FrameWork\TestCase
      *
      * @requires PHP 8.0.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0')]
     public function testFix80(string $expected, string $input, array $configuration): void
     {
         $this->fixer->configure($configuration);

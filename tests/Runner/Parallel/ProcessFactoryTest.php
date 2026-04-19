@@ -23,6 +23,9 @@ use PhpCsFixer\Runner\Parallel\ProcessIdentifier;
 use PhpCsFixer\Runner\RunnerConfig;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
 use React\EventLoop\StreamSelectLoop;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -37,6 +40,7 @@ use Symfony\Component\Console\Input\InputDefinition;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ProcessFactory::class)]
 final class ProcessFactoryTest extends TestCase
 {
     public const IS_WINDOWS = '\\' === \DIRECTORY_SEPARATOR;
@@ -68,6 +72,8 @@ final class ProcessFactoryTest extends TestCase
      *
      * @dataProvider provideCreateCases
      */
+    #[RequiresOperatingSystem('Linux|Darwin')]
+    #[DataProvider('provideCreateCases')]
     public function testCreate(array $input, RunnerConfig $config, string $expectedAdditionalArgs): void
     {
         $factory = new ProcessFactory();
@@ -120,6 +126,7 @@ final class ProcessFactoryTest extends TestCase
      *
      * @dataProvider provideGetCommandArgsCases
      */
+    #[DataProvider('provideGetCommandArgsCases')]
     public function testGetCommandArgs(array $input, RunnerConfig $config, string $expectedAdditionalArgs): void
     {
         $factory = new ProcessFactory();

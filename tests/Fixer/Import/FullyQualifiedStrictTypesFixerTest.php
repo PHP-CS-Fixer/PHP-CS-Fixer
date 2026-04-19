@@ -14,8 +14,12 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Import;
 
+use PhpCsFixer\Fixer\Import\FullyQualifiedStrictTypesFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -30,6 +34,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FullyQualifiedStrictTypesFixer::class)]
 final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -37,6 +42,7 @@ final class FullyQualifiedStrictTypesFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(
         string $expected,
         ?string $input = null,
@@ -2857,6 +2863,8 @@ function foo($a) {}',
      *
      * @dataProvider provideFix80Cases
      */
+    #[RequiresPhp('>= 8.0')]
+    #[DataProvider('provideFix80Cases')]
     public function testFix80(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -2983,6 +2991,8 @@ class Foo
      *
      * @dataProvider provideFix81Cases
      */
+    #[RequiresPhp('>= 8.1')]
+    #[DataProvider('provideFix81Cases')]
     public function testFix81(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -3055,6 +3065,8 @@ class SomeClass
      *
      * @dataProvider provideFix82Cases
      */
+    #[RequiresPhp('>= 8.2')]
+    #[DataProvider('provideFix82Cases')]
     public function testFix82(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);

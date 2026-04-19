@@ -20,6 +20,8 @@ use PhpCsFixer\Console\Report\ListRulesReport\ReporterInterface;
 use PhpCsFixer\Console\Report\ListRulesReport\ReportSummary;
 use PhpCsFixer\Console\Report\ListRulesReport\TextReporter;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -30,6 +32,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ReporterFactory::class)]
 final class ReporterFactoryTest extends TestCase
 {
     public function testRegisterBuiltInReporters(): void
@@ -43,6 +46,7 @@ final class ReporterFactoryTest extends TestCase
     /**
      * @dataProvider provideGetReporterCases
      */
+    #[DataProvider('provideGetReporterCases')]
     public function testGetReporter(string $format, string $expectedClassName): void
     {
         $factory = new ReporterFactory();

@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\Runner\Parallel;
 use PhpCsFixer\Runner\Parallel\ParallelisationException;
 use PhpCsFixer\Runner\Parallel\Process;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use React\EventLoop\StreamSelectLoop;
 
 /**
@@ -26,6 +27,7 @@ use React\EventLoop\StreamSelectLoop;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Process::class)]
 final class ProcessTest extends TestCase
 {
     public function testRequestCantBeInvokedBeforeStart(): void

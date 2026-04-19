@@ -17,6 +17,9 @@ namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\CommentsAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>
@@ -27,6 +30,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(CommentsAnalyzer::class)]
 final class CommentsAnalyzerTest extends TestCase
 {
     public function testWhenNotPointingToComment(): void
@@ -45,6 +49,7 @@ final class CommentsAnalyzerTest extends TestCase
      *
      * @dataProvider provideCommentsCases
      */
+    #[DataProvider('provideCommentsCases')]
     public function testComments(string $code, int $index, array $borders): void
     {
         $tokens = Tokens::fromCode($code);
@@ -170,6 +175,7 @@ $bar;',
     /**
      * @dataProvider provideHeaderCommentCases
      */
+    #[DataProvider('provideHeaderCommentCases')]
     public function testHeaderComment(string $code, int $index): void
     {
         $tokens = Tokens::fromCode($code);
@@ -197,6 +203,7 @@ $bar;',
     /**
      * @dataProvider provideNotHeaderCommentCases
      */
+    #[DataProvider('provideNotHeaderCommentCases')]
     public function testNotHeaderComment(string $code, int $index): void
     {
         $tokens = Tokens::fromCode($code);
@@ -236,6 +243,7 @@ $bar;',
     /**
      * @dataProvider providePhpdocCandidateCases
      */
+    #[DataProvider('providePhpdocCandidateCases')]
     public function testPhpdocCandidate(string $code): void
     {
         $tokens = Tokens::fromCode($code);
@@ -358,6 +366,8 @@ $bar;',
      *
      * @requires PHP 8.4.0
      */
+    #[DataProvider('providePhpdocCandidate84Cases')]
+    #[RequiresPhp('>= 8.4')]
     public function testPhpdocCandidate84(string $code): void
     {
         $this->testPhpdocCandidate($code);
@@ -378,6 +388,7 @@ $bar;',
     /**
      * @dataProvider provideNotPhpdocCandidateCases
      */
+    #[DataProvider('provideNotPhpdocCandidateCases')]
     public function testNotPhpdocCandidate(string $code): void
     {
         $tokens = Tokens::fromCode($code);
@@ -414,6 +425,8 @@ $bar;',
      *
      * @requires PHP 8.0.0
      */
+    #[DataProvider('providePhpdocCandidatePhp80Cases')]
+    #[RequiresPhp('>= 8.0')]
     public function testPhpdocCandidatePhp80(string $code): void
     {
         $this->testPhpdocCandidate($code);
@@ -439,6 +452,8 @@ Class MyAnnotation3 {}',
      *
      * @requires PHP 8.1.0
      */
+    #[DataProvider('providePhpdocCandidatePhp81Cases')]
+    #[RequiresPhp('>= 8.1')]
     public function testPhpdocCandidatePhp81(string $code): void
     {
         $this->testPhpdocCandidate($code);
@@ -497,6 +512,8 @@ enum Foo: int {
      *
      * @requires PHP 8.1.0
      */
+    #[DataProvider('provideNotPhpdocCandidatePhp81Cases')]
+    #[RequiresPhp('>= 8.1')]
     public function testNotPhpdocCandidatePhp81(string $code): void
     {
         $this->testNotPhpdocCandidate($code);
@@ -531,6 +548,7 @@ enum Foo: int {
     /**
      * @dataProvider provideReturnStatementCases
      */
+    #[DataProvider('provideReturnStatementCases')]
     public function testReturnStatement(string $code, bool $expected): void
     {
         $tokens = Tokens::fromCode($code);

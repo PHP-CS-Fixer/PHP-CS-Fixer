@@ -17,6 +17,8 @@ namespace PhpCsFixer\Tests\Runner\Parallel;
 use PhpCsFixer\Runner\Parallel\ParallelisationException;
 use PhpCsFixer\Runner\Parallel\ProcessIdentifier;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -25,6 +27,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ProcessIdentifier::class)]
 final class ProcessIdentifierTest extends TestCase
 {
     public function testCreateIdentifier(): void
@@ -37,6 +40,7 @@ final class ProcessIdentifierTest extends TestCase
     /**
      * @dataProvider provideFromRawCases
      */
+    #[DataProvider('provideFromRawCases')]
     public function testFromRaw(string $rawIdentifier, bool $valid): void
     {
         if (!$valid) {

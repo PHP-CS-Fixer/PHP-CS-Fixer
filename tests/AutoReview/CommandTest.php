@@ -16,6 +16,9 @@ namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Console\Command\Command;
 
 /**
@@ -30,11 +33,15 @@ use Symfony\Component\Console\Command\Command;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversNothing]
+#[Group('auto-review')]
+#[Group('covers-nothing')]
 final class CommandTest extends TestCase
 {
     /**
      * @dataProvider provideCommandHasNameConstCases
      */
+    #[DataProvider('provideCommandHasNameConstCases')]
     public function testCommandHasNameConst(Command $command): void
     {
         self::assertNotNull($command->getName());

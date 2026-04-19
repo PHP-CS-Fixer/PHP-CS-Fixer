@@ -14,7 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitMockShortWillReturnFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -27,11 +31,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(PhpUnitMockShortWillReturnFixer::class)]
 final class PhpUnitMockShortWillReturnFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -296,6 +302,7 @@ class FooTest extends TestCase {
     /**
      * @requires PHP 8.0.0
      */
+    #[RequiresPhp('>= 8.0')]
     public function testFix80(): void
     {
         $this->doTest(
@@ -317,6 +324,7 @@ class FooTest extends TestCase {
     /**
      * @requires PHP 8.1.0
      */
+    #[RequiresPhp('>= 8.1')]
     public function testFix81(): void
     {
         $this->doTest(

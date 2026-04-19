@@ -17,6 +17,8 @@ namespace PhpCsFixer\Tests\FixerConfiguration;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
 use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author ntzm
@@ -27,11 +29,13 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AliasedFixerOption::class)]
 final class AliasedFixerOptionTest extends TestCase
 {
     /**
      * @dataProvider provideGetNameCases
      */
+    #[DataProvider('provideGetNameCases')]
     public function testGetName(string $name): void
     {
         $option = new AliasedFixerOption(new FixerOption($name, 'Bar.'), 'baz');
@@ -52,6 +56,7 @@ final class AliasedFixerOptionTest extends TestCase
     /**
      * @dataProvider provideGetDescriptionCases
      */
+    #[DataProvider('provideGetDescriptionCases')]
     public function testGetDescription(string $description): void
     {
         $option = new AliasedFixerOption(new FixerOption('foo', $description), 'baz');
@@ -72,6 +77,7 @@ final class AliasedFixerOptionTest extends TestCase
     /**
      * @dataProvider provideHasDefaultCases
      */
+    #[DataProvider('provideHasDefaultCases')]
     public function testHasDefault(bool $hasDefault, AliasedFixerOption $input): void
     {
         self::assertSame($hasDefault, $input->hasDefault());
@@ -96,6 +102,7 @@ final class AliasedFixerOptionTest extends TestCase
     /**
      * @dataProvider provideGetDefaultCases
      */
+    #[DataProvider('provideGetDefaultCases')]
     public function testGetDefault(string $default): void
     {
         $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', false, $default), 'baz');
@@ -127,6 +134,7 @@ final class AliasedFixerOptionTest extends TestCase
      *
      * @dataProvider provideGetAllowedTypesCases
      */
+    #[DataProvider('provideGetAllowedTypesCases')]
     public function testGetAllowedTypes(?array $allowedTypes): void
     {
         $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, null, $allowedTypes), 'baz');
@@ -151,6 +159,7 @@ final class AliasedFixerOptionTest extends TestCase
      *
      * @dataProvider provideGetAllowedValuesCases
      */
+    #[DataProvider('provideGetAllowedValuesCases')]
     public function testGetAllowedValues(?array $allowedValues): void
     {
         $option = new AliasedFixerOption(new FixerOption('foo', 'Bar.', true, null, null, $allowedValues), 'baz');
@@ -192,6 +201,7 @@ final class AliasedFixerOptionTest extends TestCase
     /**
      * @dataProvider provideGetAliasCases
      */
+    #[DataProvider('provideGetAliasCases')]
     public function testGetAlias(string $alias): void
     {
         $options = new AliasedFixerOption(new FixerOption('foo', 'Bar', true, null, null, null, null), $alias);

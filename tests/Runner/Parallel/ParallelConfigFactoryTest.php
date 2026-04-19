@@ -19,6 +19,8 @@ use Fidry\CpuCoreCounter\Finder\DummyCpuCoreFinder;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -27,6 +29,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ParallelConfigFactory::class)]
 final class ParallelConfigFactoryTest extends TestCase
 {
     protected function tearDown(): void
@@ -87,6 +90,7 @@ final class ParallelConfigFactoryTest extends TestCase
     /**
      * @requires PHP 8.0.0
      */
+    #[RequiresPhp('>= 8.0')]
     public function testDetectConfigurationWithNamedArgs(): void
     {
         $this->mockCpuCount(7);

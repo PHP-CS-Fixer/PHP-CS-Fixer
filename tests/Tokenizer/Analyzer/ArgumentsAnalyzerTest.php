@@ -19,6 +19,9 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -29,6 +32,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ArgumentsAnalyzer::class)]
 final class ArgumentsAnalyzerTest extends TestCase
 {
     /**
@@ -36,6 +40,7 @@ final class ArgumentsAnalyzerTest extends TestCase
      *
      * @dataProvider provideArgumentsCases
      */
+    #[DataProvider('provideArgumentsCases')]
     public function testArguments(string $code, int $openIndex, int $closeIndex, array $arguments): void
     {
         $tokens = Tokens::fromCode($code);
@@ -99,6 +104,8 @@ final class ArgumentsAnalyzerTest extends TestCase
      *
      * @dataProvider provideArguments80Cases
      */
+    #[RequiresPhp('>= 8.0')]
+    #[DataProvider('provideArguments80Cases')]
     public function testArguments80(string $code, int $openIndex, int $closeIndex, array $arguments): void
     {
         $this->testArguments($code, $openIndex, $closeIndex, $arguments);
@@ -127,6 +134,8 @@ final class ArgumentsAnalyzerTest extends TestCase
      *
      * @dataProvider provideArguments81Cases
      */
+    #[RequiresPhp('>= 8.1')]
+    #[DataProvider('provideArguments81Cases')]
     public function testArguments81(string $code, int $openIndex, int $closeIndex, array $arguments): void
     {
         $this->testArguments($code, $openIndex, $closeIndex, $arguments);
@@ -147,6 +156,8 @@ final class ArgumentsAnalyzerTest extends TestCase
      *
      * @dataProvider provideArguments84Cases
      */
+    #[RequiresPhp('>= 8.4')]
+    #[DataProvider('provideArguments84Cases')]
     public function testArguments84(string $code, int $openIndex, int $closeIndex, array $arguments): void
     {
         $this->testArguments($code, $openIndex, $closeIndex, $arguments);
@@ -172,6 +183,8 @@ final class ArgumentsAnalyzerTest extends TestCase
      *
      * @dataProvider provideArguments85Cases
      */
+    #[RequiresPhp('>= 8.5')]
+    #[DataProvider('provideArguments85Cases')]
     public function testArguments85(string $code, int $openIndex, int $closeIndex, array $arguments): void
     {
         $this->testArguments($code, $openIndex, $closeIndex, $arguments);
@@ -193,6 +206,7 @@ final class ArgumentsAnalyzerTest extends TestCase
     /**
      * @dataProvider provideArgumentInfoCases
      */
+    #[DataProvider('provideArgumentInfoCases')]
     public function testArgumentInfo(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void
     {
         $tokens = Tokens::fromCode($code);
@@ -339,6 +353,8 @@ final class ArgumentsAnalyzerTest extends TestCase
      *
      * @dataProvider provideArgumentInfo80Cases
      */
+    #[RequiresPhp('>= 8.0')]
+    #[DataProvider('provideArgumentInfo80Cases')]
     public function testArgumentInfo80(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void
     {
         $this->testArgumentInfo($code, $openIndex, $closeIndex, $expected);
@@ -389,6 +405,8 @@ final class ArgumentsAnalyzerTest extends TestCase
      *
      * @dataProvider provideArgumentInfo81Cases
      */
+    #[RequiresPhp('>= 8.1')]
+    #[DataProvider('provideArgumentInfo81Cases')]
     public function testArgumentInfo81(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void
     {
         $this->testArgumentInfo($code, $openIndex, $closeIndex, $expected);
@@ -428,6 +446,8 @@ class Foo
      *
      * @dataProvider provideArgumentInfo84Cases
      */
+    #[RequiresPhp('>= 8.4')]
+    #[DataProvider('provideArgumentInfo84Cases')]
     public function testArgumentInfo84(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void
     {
         $this->testArgumentInfo($code, $openIndex, $closeIndex, $expected);
@@ -537,6 +557,8 @@ class Foo
      *
      * @dataProvider provideArgumentInfo85Cases
      */
+    #[RequiresPhp('>= 8.5')]
+    #[DataProvider('provideArgumentInfo85Cases')]
     public function testArgumentInfo85(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void
     {
         $this->testArgumentInfo($code, $openIndex, $closeIndex, $expected);

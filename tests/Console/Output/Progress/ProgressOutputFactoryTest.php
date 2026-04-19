@@ -20,6 +20,8 @@ use PhpCsFixer\Console\Output\Progress\NullOutput;
 use PhpCsFixer\Console\Output\Progress\ProgressOutputFactory;
 use PhpCsFixer\Console\Output\Progress\ProgressOutputType;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Console\Output\NullOutput as SymfonyNullOutput;
 
 /**
@@ -29,6 +31,7 @@ use Symfony\Component\Console\Output\NullOutput as SymfonyNullOutput;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ProgressOutputFactory::class)]
 final class ProgressOutputFactoryTest extends TestCase
 {
     /**
@@ -36,6 +39,7 @@ final class ProgressOutputFactoryTest extends TestCase
      *
      * @param class-string<\Throwable> $expectedOutputClass
      */
+    #[DataProvider('provideValidProcessOutputIsCreatedCases')]
     public function testValidProcessOutputIsCreated(
         string $outputType,
         OutputContext $context,
