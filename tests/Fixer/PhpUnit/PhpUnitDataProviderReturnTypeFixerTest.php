@@ -203,11 +203,11 @@ class FooTest extends TestCase {
     }
 
     /**
-     * @requires PHP <8.0
+     * @requires PHP < 8.0.0
      *
      * @dataProvider provideFixPre80Cases
      */
-    #[RequiresPhp('<8.0')]
+    #[RequiresPhp('< 8.0.0')]
     #[DataProvider('provideFixPre80Cases')]
     public function testFixPre80(string $expected, ?string $input = null): void
     {
@@ -229,11 +229,11 @@ class FooTest extends TestCase {
     }
 
     /**
-     * @requires PHP ^8.0
+     * @requires PHP ^8.0.0
      *
      * @dataProvider provideFix80Cases
      */
-    #[RequiresPhp('^8.0')]
+    #[RequiresPhp('^8.0.0')]
     #[DataProvider('provideFix80Cases')]
     public function testFix80(string $expected, ?string $input = null): void
     {

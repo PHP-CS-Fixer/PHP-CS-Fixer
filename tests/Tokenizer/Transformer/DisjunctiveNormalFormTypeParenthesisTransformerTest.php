@@ -28,12 +28,12 @@ use PHPUnit\Framework\Attributes\RequiresPhp;
  *
  * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
  *
- * @requires PHP 8.2
+ * @requires PHP >= 8.2.0
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 #[CoversClass(DisjunctiveNormalFormTypeParenthesisTransformer::class)]
-#[RequiresPhp('>= 8.2')]
+#[RequiresPhp('>= 8.2.0')]
 final class DisjunctiveNormalFormTypeParenthesisTransformerTest extends AbstractTransformerTestCase
 {
     /**
@@ -344,10 +344,10 @@ return new static();
      *
      * @dataProvider provideProcess83Cases
      *
-     * @requires PHP 8.3
+     * @requires PHP >= 8.3.0
      */
     #[DataProvider('provideProcess83Cases')]
-    #[RequiresPhp('>= 8.3')]
+    #[RequiresPhp('>= 8.3.0')]
     public function testProcess83(string $source, array $expectedTokens): void
     {
         $this->doTest($source, $expectedTokens);

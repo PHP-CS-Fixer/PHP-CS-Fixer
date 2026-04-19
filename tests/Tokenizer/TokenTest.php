@@ -147,9 +147,9 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
-    #[RequiresPhp('>= 8.1')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testEnumIsClassy(): void
     {
         $enumToken = new Token([\T_ENUM, 'enum', 1]);
@@ -183,10 +183,10 @@ final class TokenTest extends TestCase
     /**
      * @dataProvider provideIsComment81Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
     #[DataProvider('provideIsComment81Cases')]
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testIsComment81(Token $token, bool $isComment): void
     {
         self::assertSame($isComment, $token->isComment());
@@ -228,10 +228,10 @@ final class TokenTest extends TestCase
     /**
      * @dataProvider provideIsObjectOperator80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
     #[DataProvider('provideIsObjectOperator80Cases')]
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testIsObjectOperator80(Token $token, bool $isObjectOperator): void
     {
         self::assertSame($isObjectOperator, $token->isObjectOperator());
@@ -499,10 +499,10 @@ final class TokenTest extends TestCase
      *
      * @dataProvider provideEquals81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
     #[DataProvider('provideEquals81Cases')]
-    #[RequiresPhp('>= 8.1')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testEquals81(Token $token, bool $equals, $other): void
     {
         self::assertSame($equals, $token->equals($other));

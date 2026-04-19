@@ -1479,10 +1479,10 @@ class TestClass
     /**
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
     #[DataProvider('provideFix80Cases')]
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testFix80(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
@@ -1557,10 +1557,10 @@ trait TestTrait
      *
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
     #[DataProvider('provideFix81Cases')]
-    #[RequiresPhp('>= 8.1')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testFix81(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -1638,10 +1638,10 @@ class A
     /**
      * @dataProvider provideFix82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      */
     #[DataProvider('provideFix82Cases')]
-    #[RequiresPhp('>= 8.2')]
+    #[RequiresPhp('>= 8.2.0')]
     public function testFix82(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -1663,10 +1663,10 @@ class A
      *
      * @dataProvider provideFix83Cases
      *
-     * @requires PHP 8.3
+     * @requires PHP >= 8.3.0
      */
     #[DataProvider('provideFix83Cases')]
-    #[RequiresPhp('>= 8.3')]
+    #[RequiresPhp('>= 8.3.0')]
     public function testFix83(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -1708,10 +1708,10 @@ class A
      *
      * @dataProvider provideFix84Cases
      *
-     * @requires PHP >= 8.4
+     * @requires PHP >= 8.4.0
      */
     #[DataProvider('provideFix84Cases')]
-    #[RequiresPhp('>= 8.4')]
+    #[RequiresPhp('>= 8.4.0')]
     public function testFix84(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->testFix($expected, $input, $configuration);
@@ -1772,10 +1772,10 @@ class A
      *
      * @dataProvider provideFix85Cases
      *
-     * @requires PHP >= 8.5
+     * @requires PHP >= 8.5.0
      */
     #[DataProvider('provideFix85Cases')]
-    #[RequiresPhp('>= 8.5')]
+    #[RequiresPhp('>= 8.5.0')]
     public function testFix85(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->testFix($expected, $input, $configuration);

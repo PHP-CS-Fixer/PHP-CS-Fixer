@@ -701,10 +701,10 @@ namespace {
      *
      * @dataProvider provideClassyInheritanceInfoPre80Cases
      *
-     * @requires PHP <8.0
+     * @requires PHP < 8.0.0
      */
     #[DataProvider('provideClassyInheritanceInfoPre80Cases')]
-    #[RequiresPhp('<8.0')]
+    #[RequiresPhp('< 8.0.0')]
     public function testClassyInheritanceInfoPre80(string $source, array $expected): void
     {
         $this->doTestClassyInheritanceInfo($source, $expected);
@@ -764,10 +764,10 @@ namespace {
     /**
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
     #[DataProvider('provideFix80Cases')]
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -792,10 +792,10 @@ namespace {
     /**
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
     #[DataProvider('provideFix81Cases')]
-    #[RequiresPhp('>= 8.1')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -825,10 +825,10 @@ namespace {
     /**
      * @dataProvider provideFix82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      */
     #[DataProvider('provideFix82Cases')]
-    #[RequiresPhp('>= 8.2')]
+    #[RequiresPhp('>= 8.2.0')]
     public function testFix82(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
@@ -864,10 +864,10 @@ namespace {
     /**
      * @dataProvider provideFix83Cases
      *
-     * @requires PHP 8.3
+     * @requires PHP >= 8.3.0
      */
     #[DataProvider('provideFix83Cases')]
-    #[RequiresPhp('>= 8.3')]
+    #[RequiresPhp('>= 8.3.0')]
     public function testFix83(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

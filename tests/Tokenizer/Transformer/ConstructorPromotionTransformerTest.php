@@ -39,10 +39,10 @@ final class ConstructorPromotionTransformerTest extends AbstractTransformerTestC
      *
      * @dataProvider provideProcessCases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
     #[DataProvider('provideProcessCases')]
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testProcess(array $expectedTokens, string $source): void
     {
         $this->doTest(
@@ -145,10 +145,10 @@ class Point {
      *
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
     #[DataProvider('provideFix81Cases')]
-    #[RequiresPhp('>= 8.1')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testFix81(array $expectedTokens, string $source): void
     {
         $this->doTest(

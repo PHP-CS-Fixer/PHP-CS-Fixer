@@ -198,9 +198,9 @@ final class DirConstantFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @requires PHP <8.0
+     * @requires PHP < 8.0.0
      */
-    #[RequiresPhp('<8.0')]
+    #[RequiresPhp('< 8.0.0')]
     public function testFixPre80(): void
     {
         $this->doTest(

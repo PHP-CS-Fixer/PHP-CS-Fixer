@@ -39,10 +39,10 @@ final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideProcessCases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
     #[DataProvider('provideProcessCases')]
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testProcess(string $source, array $expectedTokens): void
     {
         $this->doTest($source, $expectedTokens);

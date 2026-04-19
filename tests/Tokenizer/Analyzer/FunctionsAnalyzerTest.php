@@ -307,10 +307,10 @@ A();
      *
      * @dataProvider provideIsGlobalFunctionCallPre80Cases
      *
-     * @requires PHP <8.0
+     * @requires PHP < 8.0.0
      */
     #[DataProvider('provideIsGlobalFunctionCallPre80Cases')]
-    #[RequiresPhp('<8.0')]
+    #[RequiresPhp('< 8.0.0')]
     public function testIsGlobalFunctionCallPre80(string $code, array $indices): void
     {
         $this->testIsGlobalFunctionCall($code, $indices);
@@ -335,10 +335,10 @@ A();
      *
      * @dataProvider provideIsGlobalFunctionCallPhp80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
     #[DataProvider('provideIsGlobalFunctionCallPhp80Cases')]
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testIsGlobalFunctionCallPhp80(string $code, array $indices): void
     {
         $this->testIsGlobalFunctionCall($code, $indices);
@@ -386,10 +386,10 @@ class Foo {}
      *
      * @dataProvider provideIsGlobalFunctionCallPhp81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
     #[DataProvider('provideIsGlobalFunctionCallPhp81Cases')]
-    #[RequiresPhp('>= 8.1')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testIsGlobalFunctionCallPhp81(string $code, array $indices): void
     {
         $this->testIsGlobalFunctionCall($code, $indices);
@@ -434,10 +434,10 @@ class(){};
      *
      * @dataProvider provideIsGlobalFunctionCallPhp84Cases
      *
-     * @requires PHP 8.4
+     * @requires PHP >= 8.4.0
      */
     #[DataProvider('provideIsGlobalFunctionCallPhp84Cases')]
-    #[RequiresPhp('>= 8.4')]
+    #[RequiresPhp('>= 8.4.0')]
     public function testIsGlobalFunctionCallPhp84(string $code, array $indices): void
     {
         $this->testIsGlobalFunctionCall($code, $indices);
@@ -699,10 +699,10 @@ class(){};
      *
      * @dataProvider provideFunctionArgumentInfoPre80Cases
      *
-     * @requires PHP <8.0
+     * @requires PHP < 8.0.0
      */
     #[DataProvider('provideFunctionArgumentInfoPre80Cases')]
-    #[RequiresPhp('<8.0')]
+    #[RequiresPhp('< 8.0.0')]
     public function testFunctionArgumentInfoPre80(string $code, int $methodIndex, array $expected): void
     {
         $this->testFunctionArgumentInfo($code, $methodIndex, $expected);
@@ -780,10 +780,10 @@ class(){};
     /**
      * @dataProvider provideFunctionReturnTypeInfoPre80Cases
      *
-     * @requires PHP <8.0
+     * @requires PHP < 8.0.0
      */
     #[DataProvider('provideFunctionReturnTypeInfoPre80Cases')]
-    #[RequiresPhp('<8.0')]
+    #[RequiresPhp('< 8.0.0')]
     public function testFunctionReturnTypeInfoPre80(string $code, int $methodIndex, ?TypeAnalysis $expected): void
     {
         $this->testFunctionReturnTypeInfo($code, $methodIndex, $expected);
@@ -897,10 +897,10 @@ class(){};
      *
      * @param list<int> $sameClassCallIndices
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
     #[DataProvider('provideIsTheSameClassCall80Cases')]
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testIsTheSameClassCall80(string $code, array $sameClassCallIndices): void
     {
         $this->testIsTheSameClassCall($code, $sameClassCallIndices);
@@ -928,10 +928,10 @@ class(){};
      *
      * @dataProvider provideFunctionArgumentInfoPhp80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
     #[DataProvider('provideFunctionArgumentInfoPhp80Cases')]
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testFunctionArgumentInfoPhp80(string $code, int $methodIndex, array $expected): void
     {
         $this->testFunctionArgumentInfo($code, $methodIndex, $expected);
@@ -972,10 +972,10 @@ class(){};
      *
      * @dataProvider provideFunctionArgumentInfoPhp84Cases
      *
-     * @requires PHP 8.4
+     * @requires PHP >= 8.4.0
      */
     #[DataProvider('provideFunctionArgumentInfoPhp84Cases')]
-    #[RequiresPhp('>= 8.4')]
+    #[RequiresPhp('>= 8.4.0')]
     public function testFunctionArgumentInfoPhp84(string $code, int $methodIndex, array $expected): void
     {
         $this->testFunctionArgumentInfo($code, $methodIndex, $expected);

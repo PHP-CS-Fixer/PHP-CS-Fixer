@@ -165,10 +165,10 @@ final class Foo
     /**
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
     #[DataProvider('provideFix80Cases')]
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -215,10 +215,10 @@ final class Foo2 {
     /**
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
     #[DataProvider('provideFix81Cases')]
-    #[RequiresPhp('>= 8.1')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -341,10 +341,10 @@ echo DocumentStats::DRAFT->getStatusName();
     /**
      * @dataProvider provideFix82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      */
     #[DataProvider('provideFix82Cases')]
-    #[RequiresPhp('>= 8.2')]
+    #[RequiresPhp('>= 8.2.0')]
     public function testFix82(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
@@ -381,10 +381,10 @@ echo DocumentStats::DRAFT->getStatusName();
     /**
      * @dataProvider provideFix84Cases
      *
-     * @requires PHP >= 8.4
+     * @requires PHP >= 8.4.0
      */
     #[DataProvider('provideFix84Cases')]
-    #[RequiresPhp('>= 8.4')]
+    #[RequiresPhp('>= 8.4.0')]
     public function testFix84(string $expected, string $input): void
     {
         $this->doTest($expected, $input);

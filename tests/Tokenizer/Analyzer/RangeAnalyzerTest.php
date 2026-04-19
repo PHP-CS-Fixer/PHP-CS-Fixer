@@ -88,9 +88,9 @@ final class RangeAnalyzerTest extends TestCase
     }
 
     /**
-     * @requires PHP <8.0
+     * @requires PHP < 8.0.0
      */
-    #[RequiresPhp('<8.0')]
+    #[RequiresPhp('< 8.0.0')]
     public function testFixPrePHP8x0(): void
     {
         $code = '<?php

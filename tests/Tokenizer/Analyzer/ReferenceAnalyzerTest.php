@@ -163,10 +163,10 @@ class Foo {
     /**
      * @dataProvider provideNonReferencePre84Cases
      *
-     * @requires PHP <8.4
+     * @requires PHP < 8.4.0
      */
     #[DataProvider('provideNonReferencePre84Cases')]
-    #[RequiresPhp('<8.4')]
+    #[RequiresPhp('< 8.4.0')]
     public function testNonReferencePre84(string $code): void
     {
         $this->doTestCode(false, $code);

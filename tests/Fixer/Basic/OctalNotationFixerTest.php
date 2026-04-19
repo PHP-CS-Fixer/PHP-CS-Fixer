@@ -25,7 +25,7 @@ use PHPUnit\Framework\Attributes\RequiresPhp;
  *
  * @covers \PhpCsFixer\Fixer\Basic\OctalNotationFixer
  *
- * @requires PHP 8.1
+ * @requires PHP >= 8.1.0
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\OctalNotationFixer>
  *
@@ -34,7 +34,7 @@ use PHPUnit\Framework\Attributes\RequiresPhp;
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 #[CoversClass(OctalNotationFixer::class)]
-#[RequiresPhp('>= 8.1')]
+#[RequiresPhp('>= 8.1.0')]
 final class OctalNotationFixerTest extends AbstractFixerTestCase
 {
     /**

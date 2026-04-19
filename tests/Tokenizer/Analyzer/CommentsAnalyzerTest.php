@@ -364,10 +364,10 @@ $bar;',
     /**
      * @dataProvider providePhpdocCandidate84Cases
      *
-     * @requires PHP 8.4
+     * @requires PHP >= 8.4.0
      */
     #[DataProvider('providePhpdocCandidate84Cases')]
-    #[RequiresPhp('>= 8.4')]
+    #[RequiresPhp('>= 8.4.0')]
     public function testPhpdocCandidate84(string $code): void
     {
         $this->testPhpdocCandidate($code);
@@ -423,10 +423,10 @@ $bar;',
     /**
      * @dataProvider providePhpdocCandidatePhp80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
     #[DataProvider('providePhpdocCandidatePhp80Cases')]
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testPhpdocCandidatePhp80(string $code): void
     {
         $this->testPhpdocCandidate($code);
@@ -450,10 +450,10 @@ Class MyAnnotation3 {}',
     /**
      * @dataProvider providePhpdocCandidatePhp81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
     #[DataProvider('providePhpdocCandidatePhp81Cases')]
-    #[RequiresPhp('>= 8.1')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testPhpdocCandidatePhp81(string $code): void
     {
         $this->testPhpdocCandidate($code);
@@ -510,10 +510,10 @@ enum Foo: int {
     /**
      * @dataProvider provideNotPhpdocCandidatePhp81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
     #[DataProvider('provideNotPhpdocCandidatePhp81Cases')]
-    #[RequiresPhp('>= 8.1')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testNotPhpdocCandidatePhp81(string $code): void
     {
         $this->testNotPhpdocCandidate($code);

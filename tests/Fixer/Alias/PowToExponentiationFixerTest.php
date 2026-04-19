@@ -310,10 +310,10 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixPre80Cases
      *
-     * @requires PHP <8.0
+     * @requires PHP < 8.0.0
      */
     #[DataProvider('provideFixPre80Cases')]
-    #[RequiresPhp('<8.0')]
+    #[RequiresPhp('< 8.0.0')]
     public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -331,11 +331,11 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      *
      * @dataProvider provideFix80Cases
      */
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     #[DataProvider('provideFix80Cases')]
     public function testFix80(string $expected, string $input): void
     {

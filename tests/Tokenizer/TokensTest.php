@@ -785,13 +785,13 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      *
      * @dataProvider provideFindBlockEnd80Cases
      *
      * @param Tokens::BLOCK_TYPE_* $type
      */
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     #[DataProvider('provideFindBlockEnd80Cases')]
     public function testFindBlockEnd80(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
@@ -815,13 +815,13 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      *
      * @dataProvider provideFindBlockEnd82Cases
      *
      * @param Tokens::BLOCK_TYPE_* $type
      */
-    #[RequiresPhp('>= 8.2')]
+    #[RequiresPhp('>= 8.2.0')]
     #[DataProvider('provideFindBlockEnd82Cases')]
     public function testFindBlockEnd82(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
@@ -857,13 +857,13 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.3
+     * @requires PHP >= 8.3.0
      *
      * @dataProvider provideFindBlockEnd83Cases
      *
      * @param Tokens::BLOCK_TYPE_* $type
      */
-    #[RequiresPhp('>= 8.3')]
+    #[RequiresPhp('>= 8.3.0')]
     #[DataProvider('provideFindBlockEnd83Cases')]
     public function testFindBlockEnd83(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
@@ -897,10 +897,10 @@ final class TokensTest extends TestCase
      *
      * @dataProvider provideFindBlockEndPre84Cases
      *
-     * @requires PHP <8.4
+     * @requires PHP < 8.4.0
      */
     #[DataProvider('provideFindBlockEndPre84Cases')]
-    #[RequiresPhp('<8.4')]
+    #[RequiresPhp('< 8.4.0')]
     public function testFindBlockEndPre84(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
         self::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
@@ -1970,9 +1970,9 @@ $bar;',
     }
 
     /**
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
-    #[RequiresPhp('>= 8.1')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testToJson(): void
     {
         self::assertSame(

@@ -105,11 +105,11 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @requires PHP <8.0
+     * @requires PHP < 8.0.0
      *
      * @dataProvider provideFixPre80Cases
      */
-    #[RequiresPhp('<8.0')]
+    #[RequiresPhp('< 8.0.0')]
     #[DataProvider('provideFixPre80Cases')]
     public function testFixPre80(string $expected, ?string $input = null): void
     {
@@ -135,11 +135,11 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @requires PHP 8.4
+     * @requires PHP >= 8.4.0
      *
      * @dataProvider provideFix84Cases
      */
-    #[RequiresPhp('>= 8.4')]
+    #[RequiresPhp('>= 8.4.0')]
     #[DataProvider('provideFix84Cases')]
     public function testFix84(string $expected, ?string $input = null): void
     {

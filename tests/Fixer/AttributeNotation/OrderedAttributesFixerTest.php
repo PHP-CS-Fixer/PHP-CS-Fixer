@@ -26,7 +26,7 @@ use PHPUnit\Framework\Attributes\RequiresPhp;
  *
  * @covers \PhpCsFixer\Fixer\AttributeNotation\OrderedAttributesFixer
  *
- * @requires PHP 8.0
+ * @requires PHP >= 8.0.0
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\AttributeNotation\OrderedAttributesFixer>
  *
@@ -37,7 +37,7 @@ use PHPUnit\Framework\Attributes\RequiresPhp;
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 #[CoversClass(OrderedAttributesFixer::class)]
-#[RequiresPhp('>= 8.0')]
+#[RequiresPhp('>= 8.0.0')]
 final class OrderedAttributesFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -823,10 +823,10 @@ final class OrderedAttributesFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
     #[DataProvider('provideFix81Cases')]
-    #[RequiresPhp('>= 8.1')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testFix81(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->testFix($expected, $input, $configuration);

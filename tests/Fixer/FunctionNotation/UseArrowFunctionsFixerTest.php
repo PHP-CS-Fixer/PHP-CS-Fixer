@@ -301,10 +301,10 @@ $load = function ($path) use ($data) {
     /**
      * @dataProvider provideFix85Cases
      *
-     * @requires PHP 8.5
+     * @requires PHP >= 8.5.0
      */
     #[DataProvider('provideFix85Cases')]
-    #[RequiresPhp('>= 8.5')]
+    #[RequiresPhp('>= 8.5.0')]
     public function testFix85(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

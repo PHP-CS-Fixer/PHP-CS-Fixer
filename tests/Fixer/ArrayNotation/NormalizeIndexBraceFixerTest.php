@@ -35,11 +35,11 @@ use PHPUnit\Framework\Attributes\RequiresPhp;
 final class NormalizeIndexBraceFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @requires PHP <8.0
+     * @requires PHP < 8.0.0
      *
      * @dataProvider provideFixCases
      */
-    #[RequiresPhp('<8.0')]
+    #[RequiresPhp('< 8.0.0')]
     #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
@@ -68,11 +68,11 @@ final class NormalizeIndexBraceFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @requires PHP 8.4
+     * @requires PHP >= 8.4.0
      *
      * @dataProvider provideFix84Cases
      */
-    #[RequiresPhp('>= 8.4')]
+    #[RequiresPhp('>= 8.4.0')]
     #[DataProvider('provideFix84Cases')]
     public function testFix84(string $expected, ?string $input = null): void
     {

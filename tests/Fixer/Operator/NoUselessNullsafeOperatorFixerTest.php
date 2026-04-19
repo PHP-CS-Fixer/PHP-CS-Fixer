@@ -23,7 +23,7 @@ use PHPUnit\Framework\Attributes\RequiresPhp;
 /**
  * @internal
  *
- * @requires PHP 8.0
+ * @requires PHP >= 8.0.0
  *
  * @covers \PhpCsFixer\Fixer\Operator\NoUselessNullsafeOperatorFixer
  *
@@ -31,7 +31,7 @@ use PHPUnit\Framework\Attributes\RequiresPhp;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-#[RequiresPhp('>= 8.0')]
+#[RequiresPhp('>= 8.0.0')]
 #[CoversClass(NoUselessNullsafeOperatorFixer::class)]
 final class NoUselessNullsafeOperatorFixerTest extends AbstractFixerTestCase
 {

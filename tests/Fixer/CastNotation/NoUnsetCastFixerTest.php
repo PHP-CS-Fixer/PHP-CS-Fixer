@@ -25,14 +25,14 @@ use PHPUnit\Framework\Attributes\RequiresPhp;
  *
  * @covers \PhpCsFixer\Fixer\CastNotation\NoUnsetCastFixer
  *
- * @requires PHP <8.0
+ * @requires PHP < 8.0.0
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\CastNotation\NoUnsetCastFixer>
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 #[CoversClass(NoUnsetCastFixer::class)]
-#[RequiresPhp('<8.0')]
+#[RequiresPhp('< 8.0.0')]
 final class NoUnsetCastFixerTest extends AbstractFixerTestCase
 {
     /**

@@ -39,10 +39,10 @@ final class AttributeTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideProcessCases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
     #[DataProvider('provideProcessCases')]
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testProcess(string $source, array $expectedTokens): void
     {
         $this->doTest($source, $expectedTokens);
@@ -194,10 +194,10 @@ class User
      *
      * @dataProvider provideProcess85Cases
      *
-     * @requires PHP 8.5
+     * @requires PHP >= 8.5.0
      */
     #[DataProvider('provideProcess85Cases')]
-    #[RequiresPhp('>= 8.5')]
+    #[RequiresPhp('>= 8.5.0')]
     public function testProcess85(string $source, array $expectedTokens): void
     {
         $this->doTest($source, $expectedTokens);
