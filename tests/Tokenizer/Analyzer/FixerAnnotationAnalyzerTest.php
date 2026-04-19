@@ -17,6 +17,8 @@ namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\FixerAnnotationAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -25,6 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FixerAnnotationAnalyzer::class)]
 final class FixerAnnotationAnalyzerTest extends TestCase
 {
     /**
@@ -32,6 +35,7 @@ final class FixerAnnotationAnalyzerTest extends TestCase
      *
      * @param array<string, list<string>> $expectedAnnotations
      */
+    #[DataProvider('provideFindCases')]
     public function testFind(string $source, array $expectedAnnotations, ?string $error = null): void
     {
         $analyzer = new FixerAnnotationAnalyzer();

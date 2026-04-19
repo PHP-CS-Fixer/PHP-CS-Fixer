@@ -14,8 +14,12 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Import;
 
+use PhpCsFixer\Fixer\Import\SingleImportPerStatementFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -30,6 +34,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(SingleImportPerStatementFixer::class)]
 final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -37,6 +42,7 @@ final class SingleImportPerStatementFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = [], ?WhitespacesFixerConfig $whitespacesConfig = null): void
     {
         $this->fixer->configure($configuration);
@@ -340,6 +346,8 @@ use Space\Models\ {
      *
      * @requires PHP <8.0
      */
+    #[DataProvider('provideFixPre80Cases')]
+    #[RequiresPhp('<8.0')]
     public function testFixPre80(string $expected, string $input): void
     {
         $this->doTest($expected, $input);

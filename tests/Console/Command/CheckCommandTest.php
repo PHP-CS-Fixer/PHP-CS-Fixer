@@ -18,6 +18,7 @@ use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\CheckCommand;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -30,6 +31,7 @@ use Symfony\Component\Filesystem\Filesystem;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(CheckCommand::class)]
 final class CheckCommandTest extends TestCase
 {
     /**

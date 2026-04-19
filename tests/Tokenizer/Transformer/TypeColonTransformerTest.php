@@ -16,6 +16,10 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Transformer\TypeColonTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -28,6 +32,7 @@ use PhpCsFixer\Tokenizer\CT;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(TypeColonTransformer::class)]
 final class TypeColonTransformerTest extends AbstractTransformerTestCase
 {
     /**
@@ -35,6 +40,7 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideProcessCases
      */
+    #[DataProvider('provideProcessCases')]
     public function testProcess(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
@@ -123,6 +129,8 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
      *
      * @requires PHP 8.1
      */
+    #[DataProvider('provideProcess81Cases')]
+    #[RequiresPhp('>= 8.1')]
     public function testProcess81(string $source, array $expectedTokens = []): void
     {
         $this->testProcess($source, $expectedTokens);

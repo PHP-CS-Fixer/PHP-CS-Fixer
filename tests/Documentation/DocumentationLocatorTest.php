@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\Documentation;
 use PhpCsFixer\Documentation\DocumentationLocator;
 use PhpCsFixer\Fixer\Casing\ConstantCaseFixer;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
@@ -25,6 +26,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(DocumentationLocator::class)]
 final class DocumentationLocatorTest extends TestCase
 {
     public function testFixersDocumentationDirectoryPath(): void

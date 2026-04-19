@@ -17,6 +17,10 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\Transformer\BraceTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -29,6 +33,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(BraceTransformer::class)]
 final class BraceTransformerTest extends AbstractTransformerTestCase
 {
     /**
@@ -36,6 +41,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideProcessCases
      */
+    #[DataProvider('provideProcessCases')]
     public function testProcess(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
@@ -200,6 +206,8 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
      *
      * @requires PHP 8.0
      */
+    #[DataProvider('provideProcess80Cases')]
+    #[RequiresPhp('>= 8.0')]
     public function testProcess80(string $source, array $expectedTokens = []): void
     {
         $this->testProcess($source, $expectedTokens);
@@ -226,6 +234,8 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
      *
      * @requires PHP <8.4
      */
+    #[DataProvider('providePre84ProcessCases')]
+    #[RequiresPhp('<8.4')]
     public function testPre84Process(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
@@ -324,6 +334,8 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
      *
      * @requires PHP 8.4
      */
+    #[DataProvider('provideStarting84ProcessCases')]
+    #[RequiresPhp('>= 8.4')]
     public function testStarting84Process(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
@@ -532,6 +544,7 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
     /**
      * @dataProvider provideNotDynamicClassConstantFetchCases
      */
+    #[DataProvider('provideNotDynamicClassConstantFetchCases')]
     public function testNotDynamicClassConstantFetch(string $source): void
     {
         Tokens::clearCache();
@@ -580,6 +593,8 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
      *
      * @requires PHP 8.3
      */
+    #[DataProvider('provideDynamicClassConstantFetchCases')]
+    #[RequiresPhp('>= 8.3')]
     public function testDynamicClassConstantFetch(array $expectedTokens, string $source): void
     {
         $this->doTest(
@@ -681,6 +696,8 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
      *
      * @requires PHP ~8.3.0
      */
+    #[DataProvider('provideDynamicClassConstantFetchPhp83Cases')]
+    #[RequiresPhp('~8.3.0')]
     public function testDynamicClassConstantFetchPhp83(array $expectedTokens, string $source): void
     {
         $this->doTest(

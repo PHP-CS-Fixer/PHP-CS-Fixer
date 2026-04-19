@@ -96,6 +96,9 @@ return (new Config())
         'phpdoc_tag_no_named_arguments' => [
             'description' => 'Parameter names are not covered by the backward compatibility promise.',
         ],
+        'php_unit_attributes' => [
+            'keep_annotations' => true, // @TODO v4: remove me and related annotations from tests
+        ],
         'trailing_comma_in_multiline' => [
             'after_heredoc' => true,
             'elements' => [

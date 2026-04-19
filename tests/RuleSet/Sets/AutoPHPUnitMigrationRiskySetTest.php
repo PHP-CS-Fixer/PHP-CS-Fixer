@@ -21,7 +21,10 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
+use PhpCsFixer\RuleSet\Sets\AutoPHPUnitMigrationRiskySet;
 use PhpCsFixer\Tests\Test\TestCaseUtils;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -30,6 +33,7 @@ use PhpCsFixer\Tests\Test\TestCaseUtils;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AutoPHPUnitMigrationRiskySet::class)]
 final class AutoPHPUnitMigrationRiskySetTest extends AbstractSetTestCase
 {
     /**
@@ -49,6 +53,7 @@ final class AutoPHPUnitMigrationRiskySetTest extends AbstractSetTestCase
     /**
      * @dataProvider provideThatSetDoNotUseNewestTargetCases
      */
+    #[DataProvider('provideThatSetDoNotUseNewestTargetCases')]
     public function testThatSetDoNotUseNewestTarget(string $setName): void
     {
         $versionInRuleName = Preg::replace('/^@PHPUnit(\d+)x(\d+)Migration:risky$/', '$1.$2', $setName);
@@ -113,6 +118,7 @@ final class AutoPHPUnitMigrationRiskySetTest extends AbstractSetTestCase
      *
      * @dataProvider provideThatSetDoesNotIncludeProblematicRuleCases
      */
+    #[DataProvider('provideThatSetDoesNotIncludeProblematicRuleCases')]
     public function testThatSetDoesNotIncludeProblematicRule(string $setName): void
     {
         $problematicFixer = new PhpUnitTestCaseStaticMethodCallsFixer();

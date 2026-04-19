@@ -14,7 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ArrayNotation;
 
+use PhpCsFixer\Fixer\ArrayNotation\NormalizeIndexBraceFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -27,6 +31,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NormalizeIndexBraceFixer::class)]
 final class NormalizeIndexBraceFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -34,6 +39,8 @@ final class NormalizeIndexBraceFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[RequiresPhp('<8.0')]
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -65,6 +72,8 @@ final class NormalizeIndexBraceFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFix84Cases
      */
+    #[RequiresPhp('>= 8.4')]
+    #[DataProvider('provideFix84Cases')]
     public function testFix84(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

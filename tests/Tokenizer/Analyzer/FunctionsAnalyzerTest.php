@@ -19,6 +19,9 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @author VeeWee <toonverwerft@gmail.com>
@@ -29,6 +32,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FunctionsAnalyzer::class)]
 final class FunctionsAnalyzerTest extends TestCase
 {
     /**
@@ -36,6 +40,7 @@ final class FunctionsAnalyzerTest extends TestCase
      *
      * @dataProvider provideIsGlobalFunctionCallCases
      */
+    #[DataProvider('provideIsGlobalFunctionCallCases')]
     public function testIsGlobalFunctionCall(string $code, array $expectedIndices): void
     {
         $tokens = Tokens::fromCode($code);
@@ -304,6 +309,8 @@ A();
      *
      * @requires PHP <8.0
      */
+    #[DataProvider('provideIsGlobalFunctionCallPre80Cases')]
+    #[RequiresPhp('<8.0')]
     public function testIsGlobalFunctionCallPre80(string $code, array $indices): void
     {
         $this->testIsGlobalFunctionCall($code, $indices);
@@ -330,6 +337,8 @@ A();
      *
      * @requires PHP 8.0
      */
+    #[DataProvider('provideIsGlobalFunctionCallPhp80Cases')]
+    #[RequiresPhp('>= 8.0')]
     public function testIsGlobalFunctionCallPhp80(string $code, array $indices): void
     {
         $this->testIsGlobalFunctionCall($code, $indices);
@@ -379,6 +388,8 @@ class Foo {}
      *
      * @requires PHP 8.1
      */
+    #[DataProvider('provideIsGlobalFunctionCallPhp81Cases')]
+    #[RequiresPhp('>= 8.1')]
     public function testIsGlobalFunctionCallPhp81(string $code, array $indices): void
     {
         $this->testIsGlobalFunctionCall($code, $indices);
@@ -425,6 +436,8 @@ class(){};
      *
      * @requires PHP 8.4
      */
+    #[DataProvider('provideIsGlobalFunctionCallPhp84Cases')]
+    #[RequiresPhp('>= 8.4')]
     public function testIsGlobalFunctionCallPhp84(string $code, array $indices): void
     {
         $this->testIsGlobalFunctionCall($code, $indices);
@@ -494,6 +507,7 @@ class(){};
      *
      * @dataProvider provideFunctionArgumentInfoCases
      */
+    #[DataProvider('provideFunctionArgumentInfoCases')]
     public function testFunctionArgumentInfo(string $code, int $methodIndex, array $expected): void
     {
         $tokens = Tokens::fromCode($code);
@@ -687,6 +701,8 @@ class(){};
      *
      * @requires PHP <8.0
      */
+    #[DataProvider('provideFunctionArgumentInfoPre80Cases')]
+    #[RequiresPhp('<8.0')]
     public function testFunctionArgumentInfoPre80(string $code, int $methodIndex, array $expected): void
     {
         $this->testFunctionArgumentInfo($code, $methodIndex, $expected);
@@ -727,6 +743,7 @@ class(){};
     /**
      * @dataProvider provideFunctionReturnTypeInfoCases
      */
+    #[DataProvider('provideFunctionReturnTypeInfoCases')]
     public function testFunctionReturnTypeInfo(string $code, int $methodIndex, ?TypeAnalysis $expected): void
     {
         $tokens = Tokens::fromCode($code);
@@ -765,6 +782,8 @@ class(){};
      *
      * @requires PHP <8.0
      */
+    #[DataProvider('provideFunctionReturnTypeInfoPre80Cases')]
+    #[RequiresPhp('<8.0')]
     public function testFunctionReturnTypeInfoPre80(string $code, int $methodIndex, ?TypeAnalysis $expected): void
     {
         $this->testFunctionReturnTypeInfo($code, $methodIndex, $expected);
@@ -796,6 +815,7 @@ class(){};
      *
      * @param list<int> $sameClassCallIndices
      */
+    #[DataProvider('provideIsTheSameClassCallCases')]
     public function testIsTheSameClassCall(string $code, array $sameClassCallIndices): void
     {
         $tokens = Tokens::fromCode($code);
@@ -879,6 +899,8 @@ class(){};
      *
      * @requires PHP 8.0
      */
+    #[DataProvider('provideIsTheSameClassCall80Cases')]
+    #[RequiresPhp('>= 8.0')]
     public function testIsTheSameClassCall80(string $code, array $sameClassCallIndices): void
     {
         $this->testIsTheSameClassCall($code, $sameClassCallIndices);
@@ -908,6 +930,8 @@ class(){};
      *
      * @requires PHP 8.0
      */
+    #[DataProvider('provideFunctionArgumentInfoPhp80Cases')]
+    #[RequiresPhp('>= 8.0')]
     public function testFunctionArgumentInfoPhp80(string $code, int $methodIndex, array $expected): void
     {
         $this->testFunctionArgumentInfo($code, $methodIndex, $expected);
@@ -950,6 +974,8 @@ class(){};
      *
      * @requires PHP 8.4
      */
+    #[DataProvider('provideFunctionArgumentInfoPhp84Cases')]
+    #[RequiresPhp('>= 8.4')]
     public function testFunctionArgumentInfoPhp84(string $code, int $methodIndex, array $expected): void
     {
         $this->testFunctionArgumentInfo($code, $methodIndex, $expected);

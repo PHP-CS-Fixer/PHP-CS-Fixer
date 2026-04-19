@@ -15,7 +15,9 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Console\Internal\Command;
 
 use PhpCsFixer\Console\Internal\Application;
+use PhpCsFixer\Console\Internal\Command\DocumentationCommand;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
@@ -27,6 +29,7 @@ use Symfony\Component\Filesystem\Filesystem;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(DocumentationCommand::class)]
 final class DocumentationCommandTest extends TestCase
 {
     /**

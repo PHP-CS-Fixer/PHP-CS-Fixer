@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\RuleSet\Sets;
 
+use PhpCsFixer\RuleSet\Sets\AutoSet;
+use PHPUnit\Framework\Attributes\CoversClass;
+
 /**
  * @internal
  *
@@ -21,6 +24,7 @@ namespace PhpCsFixer\Tests\RuleSet\Sets;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AutoSet::class)]
 final class AutoSetTest extends AbstractSetTestCase
 {
     public function testCorrectResolutionTowardsOurOwnRepoConfig(): void

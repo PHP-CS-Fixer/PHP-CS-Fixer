@@ -18,6 +18,9 @@ use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\Basic\BracesFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -32,6 +35,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(BracesFixer::class)]
 final class BracesFixerTest extends AbstractFixerTestCase
 {
     private const CONFIGURATION_OOP_POSITION_SAME_LINE = ['position_after_functions_and_oop_constructs' => BracesFixer::LINE_SAME];
@@ -51,6 +55,7 @@ final class BracesFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixControlContinuationBracesCases
      */
+    #[DataProvider('provideFixControlContinuationBracesCases')]
     public function testFixControlContinuationBraces(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -899,6 +904,7 @@ if (true) {
      *
      * @dataProvider provideFixMissingBracesAndIndentCases
      */
+    #[DataProvider('provideFixMissingBracesAndIndentCases')]
     public function testFixMissingBracesAndIndent(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -2846,6 +2852,7 @@ class Foo
      *
      * @dataProvider provideFixClassyBracesCases
      */
+    #[DataProvider('provideFixClassyBracesCases')]
     public function testFixClassyBraces(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -3027,6 +3034,7 @@ function foo()
      *
      * @dataProvider provideFixAnonFunctionInShortArraySyntaxCases
      */
+    #[DataProvider('provideFixAnonFunctionInShortArraySyntaxCases')]
     public function testFixAnonFunctionInShortArraySyntax(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -3146,6 +3154,7 @@ function foo()
      *
      * @dataProvider provideFixCommentBeforeBraceCases
      */
+    #[DataProvider('provideFixCommentBeforeBraceCases')]
     public function testFixCommentBeforeBrace(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -3282,6 +3291,7 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
      *
      * @dataProvider provideFixWhitespaceBeforeBraceCases
      */
+    #[DataProvider('provideFixWhitespaceBeforeBraceCases')]
     public function testFixWhitespaceBeforeBrace(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -3514,6 +3524,7 @@ if ($a) { /* */ /* */ /* */ /* */ /* */
      *
      * @dataProvider provideFixFunctionsCases
      */
+    #[DataProvider('provideFixFunctionsCases')]
     public function testFixFunctions(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -3903,6 +3914,7 @@ class Foo
      *
      * @dataProvider provideFixMultiLineStructuresCases
      */
+    #[DataProvider('provideFixMultiLineStructuresCases')]
     public function testFixMultiLineStructures(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -4014,6 +4026,7 @@ class Foo
      *
      * @dataProvider provideFixSpaceAroundTokenCases
      */
+    #[DataProvider('provideFixSpaceAroundTokenCases')]
     public function testFixSpaceAroundToken(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -4227,6 +4240,7 @@ declare   (   ticks   =   1   )   {
      *
      * @dataProvider provideFinallyCases
      */
+    #[DataProvider('provideFinallyCases')]
     public function testFinally(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -4329,6 +4343,7 @@ declare   (   ticks   =   1   )   {
      *
      * @dataProvider provideFunctionImportCases
      */
+    #[DataProvider('provideFunctionImportCases')]
     public function testFunctionImport(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -4376,6 +4391,7 @@ declare   (   ticks   =   1   )   {
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -5097,6 +5113,7 @@ $foo = new class () extends \Exception { protected $message = "Surprise"; };
      *
      * @dataProvider providePreserveLineAfterControlBraceCases
      */
+    #[DataProvider('providePreserveLineAfterControlBraceCases')]
     public function testPreserveLineAfterControlBrace(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -5243,6 +5260,7 @@ if (true) {
     /**
      * @dataProvider provideFixWithAllowSingleLineClosureCases
      */
+    #[DataProvider('provideFixWithAllowSingleLineClosureCases')]
     public function testFixWithAllowSingleLineClosure(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -5293,6 +5311,7 @@ if (true) {
     /**
      * @dataProvider provideDoWhileLoopInsideAnIfWithoutBracketsCases
      */
+    #[DataProvider('provideDoWhileLoopInsideAnIfWithoutBracketsCases')]
     public function testDoWhileLoopInsideAnIfWithoutBrackets(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -5323,6 +5342,7 @@ if (true)
      *
      * @dataProvider provideMessyWhitespacesCases
      */
+    #[DataProvider('provideMessyWhitespacesCases')]
     public function testMessyWhitespaces(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -5393,6 +5413,7 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
     /**
      * @dataProvider provideNowdocInTemplatesCases
      */
+    #[DataProvider('provideNowdocInTemplatesCases')]
     public function testNowdocInTemplates(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -5453,6 +5474,7 @@ if(true) if(true) echo 1; elseif(true) echo 2; else echo 3;',
     /**
      * @dataProvider provideFixCommentsCases
      */
+    #[DataProvider('provideFixCommentsCases')]
     public function testFixComments(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -5672,6 +5694,7 @@ function example()
     /**
      * @dataProvider provideIndentCommentCases
      */
+    #[DataProvider('provideIndentCommentCases')]
     public function testIndentComment(string $expected, ?string $input, ?WhitespacesFixerConfig $config = null): void
     {
         if (null !== $config) {
@@ -5765,6 +5788,7 @@ return foo($i);
     /**
      * @dataProvider provideFixAlternativeSyntaxCases
      */
+    #[DataProvider('provideFixAlternativeSyntaxCases')]
     public function testFixAlternativeSyntax(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -5973,6 +5997,8 @@ break;
      *
      * @dataProvider provideFix80Cases
      */
+    #[RequiresPhp('>= 8.0')]
+    #[DataProvider('provideFix80Cases')]
     public function testFix80(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
@@ -5999,6 +6025,8 @@ break;
      *
      * @dataProvider provideFix81Cases
      */
+    #[RequiresPhp('>= 8.1')]
+    #[DataProvider('provideFix81Cases')]
     public function testFix81(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
@@ -6047,6 +6075,8 @@ break;
      *
      * @requires PHP <8.4
      */
+    #[DataProvider('provideFixPre84Cases')]
+    #[RequiresPhp('<8.4')]
     public function testFixPre84(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);

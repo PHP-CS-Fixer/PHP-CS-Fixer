@@ -15,7 +15,11 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\LanguageConstruct\SingleSpaceAfterConstructFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -30,6 +34,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(SingleSpaceAfterConstructFixer::class)]
 final class SingleSpaceAfterConstructFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -37,6 +42,7 @@ final class SingleSpaceAfterConstructFixerTest extends AbstractFixerTestCase
      *
      * @param mixed $construct
      */
+    #[DataProvider('provideConfigureRejectsInvalidControlStatementCases')]
     public function testConfigureRejectsInvalidControlStatement($construct): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
@@ -73,6 +79,7 @@ final class SingleSpaceAfterConstructFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixWithAbstractCases
      */
+    #[DataProvider('provideFixWithAbstractCases')]
     public function testFixWithAbstract(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -177,6 +184,7 @@ abstract class Foo
     /**
      * @dataProvider provideFixWithBreakCases
      */
+    #[DataProvider('provideFixWithBreakCases')]
     public function testFixWithBreak(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -233,6 +241,7 @@ abstract class Foo
     /**
      * @dataProvider provideFixWithAsCases
      */
+    #[DataProvider('provideFixWithAsCases')]
     public function testFixWithAs(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -358,6 +367,7 @@ class Foo
     /**
      * @dataProvider provideFixWithCaseCases
      */
+    #[DataProvider('provideFixWithCaseCases')]
     public function testFixWithCase(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -432,6 +442,7 @@ switch ($i) {
     /**
      * @dataProvider provideFixWithCatchCases
      */
+    #[DataProvider('provideFixWithCatchCases')]
     public function testFixWithCatch(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -479,6 +490,7 @@ switch ($i) {
     /**
      * @dataProvider provideFixWithClassCases
      */
+    #[DataProvider('provideFixWithClassCases')]
     public function testFixWithClass(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -556,6 +568,7 @@ Foo {}',
     /**
      * @dataProvider provideFixWithContinueCases
      */
+    #[DataProvider('provideFixWithContinueCases')]
     public function testFixWithContinue(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -607,6 +620,7 @@ Foo {}',
     /**
      * @dataProvider provideFixWithConstCases
      */
+    #[DataProvider('provideFixWithConstCases')]
     public function testFixWithConst(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -697,6 +711,7 @@ const     A = 3 ?>
     /**
      * @dataProvider provideFixWithConstImportCases
      */
+    #[DataProvider('provideFixWithConstImportCases')]
     public function testFixWithConstImport(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -739,6 +754,7 @@ FOO\BAR;',
     /**
      * @dataProvider provideFixWithCloneCases
      */
+    #[DataProvider('provideFixWithCloneCases')]
     public function testFixWithClone(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -781,6 +797,7 @@ $foo;',
     /**
      * @dataProvider provideFixWithDoCases
      */
+    #[DataProvider('provideFixWithDoCases')]
     public function testFixWithDo(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -833,6 +850,7 @@ $foo;',
     /**
      * @dataProvider provideFixWithEchoCases
      */
+    #[DataProvider('provideFixWithEchoCases')]
     public function testFixWithEcho(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -875,6 +893,7 @@ $foo;',
     /**
      * @dataProvider provideFixWithElseCases
      */
+    #[DataProvider('provideFixWithElseCases')]
     public function testFixWithElse(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -917,6 +936,7 @@ $foo;',
     /**
      * @dataProvider provideFixWithElseIfCases
      */
+    #[DataProvider('provideFixWithElseIfCases')]
     public function testFixWithElseIf(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -959,6 +979,7 @@ $foo;',
     /**
      * @dataProvider provideFixWithExtendsCases
      */
+    #[DataProvider('provideFixWithExtendsCases')]
     public function testFixWithExtends(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -1075,6 +1096,7 @@ Bar6, Baz, Qux {}',
     /**
      * @dataProvider provideFixWithFinalCases
      */
+    #[DataProvider('provideFixWithFinalCases')]
     public function testFixWithFinal(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -1179,6 +1201,7 @@ class Foo
     /**
      * @dataProvider provideFixWithFinallyCases
      */
+    #[DataProvider('provideFixWithFinallyCases')]
     public function testFixWithFinally(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -1226,6 +1249,7 @@ class Foo
     /**
      * @dataProvider provideFixWithForCases
      */
+    #[DataProvider('provideFixWithForCases')]
     public function testFixWithFor(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -1273,6 +1297,7 @@ class Foo
     /**
      * @dataProvider provideFixWithForeachCases
      */
+    #[DataProvider('provideFixWithForeachCases')]
     public function testFixWithForeach(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -1320,6 +1345,7 @@ class Foo
     /**
      * @dataProvider provideFixWithFunctionCases
      */
+    #[DataProvider('provideFixWithFunctionCases')]
     public function testFixWithFunction(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -1424,6 +1450,7 @@ class Foo
     /**
      * @dataProvider provideFixWithFunctionImportCases
      */
+    #[DataProvider('provideFixWithFunctionImportCases')]
     public function testFixWithFunctionImport(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -1466,6 +1493,7 @@ Foo\bar;',
     /**
      * @dataProvider provideFixWithGlobalCases
      */
+    #[DataProvider('provideFixWithGlobalCases')]
     public function testFixWithGlobal(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -1513,6 +1541,7 @@ $bar; }',
     /**
      * @dataProvider provideFixWithGotoCases
      */
+    #[DataProvider('provideFixWithGotoCases')]
     public function testFixWithGoto(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -1550,6 +1579,7 @@ foo; foo: echo "Bar";',
     /**
      * @dataProvider provideFixWithIfCases
      */
+    #[DataProvider('provideFixWithIfCases')]
     public function testFixWithIf(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -1592,6 +1622,7 @@ foo; foo: echo "Bar";',
     /**
      * @dataProvider provideFixWithImplementsCases
      */
+    #[DataProvider('provideFixWithImplementsCases')]
     public function testFixWithImplements(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -1664,6 +1695,7 @@ foo; foo: echo "Bar";',
     /**
      * @dataProvider provideFixWithIncludeCases
      */
+    #[DataProvider('provideFixWithIncludeCases')]
     public function testFixWithInclude(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -1706,6 +1738,7 @@ foo; foo: echo "Bar";',
     /**
      * @dataProvider provideFixWithIncludeOnceCases
      */
+    #[DataProvider('provideFixWithIncludeOnceCases')]
     public function testFixWithIncludeOnce(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -1748,6 +1781,7 @@ foo; foo: echo "Bar";',
     /**
      * @dataProvider provideFixWithInstanceofCases
      */
+    #[DataProvider('provideFixWithInstanceofCases')]
     public function testFixWithInstanceof(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -1795,6 +1829,7 @@ foo; foo: echo "Bar";',
     /**
      * @dataProvider provideFixWithInsteadofCases
      */
+    #[DataProvider('provideFixWithInsteadofCases')]
     public function testFixWithInsteadof(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -1893,6 +1928,7 @@ class Talker {
     /**
      * @dataProvider provideFixWithInterfaceCases
      */
+    #[DataProvider('provideFixWithInterfaceCases')]
     public function testFixWithInterface(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -1935,6 +1971,7 @@ Foo {}',
     /**
      * @dataProvider provideFixWithNewCases
      */
+    #[DataProvider('provideFixWithNewCases')]
     public function testFixWithNew(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -1997,6 +2034,7 @@ Bar();',
     /**
      * @dataProvider provideFixWithOpenTagWithEchoCases
      */
+    #[DataProvider('provideFixWithOpenTagWithEchoCases')]
     public function testFixWithOpenTagWithEcho(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -2044,6 +2082,7 @@ $foo ?>',
     /**
      * @dataProvider provideFixWithPrintCases
      */
+    #[DataProvider('provideFixWithPrintCases')]
     public function testFixWithPrint(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -2086,6 +2125,7 @@ $foo ?>',
     /**
      * @dataProvider provideFixWithPrivateCases
      */
+    #[DataProvider('provideFixWithPrivateCases')]
     public function testFixWithPrivate(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -2177,6 +2217,7 @@ CONST BAR = 9000; }',
     /**
      * @dataProvider provideFixWithProtectedCases
      */
+    #[DataProvider('provideFixWithProtectedCases')]
     public function testFixWithProtected(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -2268,6 +2309,7 @@ CONST BAR = 9000; }',
     /**
      * @dataProvider provideFixWithPublicCases
      */
+    #[DataProvider('provideFixWithPublicCases')]
     public function testFixWithPublic(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -2359,6 +2401,7 @@ CONST BAR = 9000; }',
     /**
      * @dataProvider provideFixWithRequireCases
      */
+    #[DataProvider('provideFixWithRequireCases')]
     public function testFixWithRequire(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -2401,6 +2444,7 @@ CONST BAR = 9000; }',
     /**
      * @dataProvider provideFixWithRequireOnceCases
      */
+    #[DataProvider('provideFixWithRequireOnceCases')]
     public function testFixWithRequireOnce(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -2443,6 +2487,7 @@ CONST BAR = 9000; }',
     /**
      * @dataProvider provideFixWithReturnCases
      */
+    #[DataProvider('provideFixWithReturnCases')]
     public function testFixWithReturn(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -2595,6 +2640,7 @@ return
     /**
      * @dataProvider provideFixWithStaticCases
      */
+    #[DataProvider('provideFixWithStaticCases')]
     public function testFixWithStatic(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -2672,6 +2718,7 @@ function bar() {} }',
     /**
      * @dataProvider provideFixWithThrowCases
      */
+    #[DataProvider('provideFixWithThrowCases')]
     public function testFixWithThrow(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -2714,6 +2761,7 @@ new Exception();',
     /**
      * @dataProvider provideFixWithTraitCases
      */
+    #[DataProvider('provideFixWithTraitCases')]
     public function testFixWithTrait(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -2756,6 +2804,7 @@ Foo {}',
     /**
      * @dataProvider provideFixWithTryCases
      */
+    #[DataProvider('provideFixWithTryCases')]
     public function testFixWithTry(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -2803,6 +2852,7 @@ Foo {}',
     /**
      * @dataProvider provideFixWithUseCases
      */
+    #[DataProvider('provideFixWithUseCases')]
     public function testFixWithUse(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -2879,6 +2929,7 @@ function Foo\bar;',
     /**
      * @dataProvider provideFixWithUseLambdaCases
      */
+    #[DataProvider('provideFixWithUseLambdaCases')]
     public function testFixWithUseLambda(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -2926,6 +2977,7 @@ function Foo\bar;',
     /**
      * @dataProvider provideFixWithUseTraitCases
      */
+    #[DataProvider('provideFixWithUseTraitCases')]
     public function testFixWithUseTrait(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -2968,6 +3020,7 @@ Bar; }',
     /**
      * @dataProvider provideFixWithVarCases
      */
+    #[DataProvider('provideFixWithVarCases')]
     public function testFixWithVar(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -3015,6 +3068,7 @@ $bar; }',
     /**
      * @dataProvider provideFixWithWhileCases
      */
+    #[DataProvider('provideFixWithWhileCases')]
     public function testFixWithWhile(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -3062,6 +3116,7 @@ $bar; }',
     /**
      * @dataProvider provideFixWithYieldCases
      */
+    #[DataProvider('provideFixWithYieldCases')]
     public function testFixWithYield(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -3104,6 +3159,7 @@ $bar; }',
     /**
      * @dataProvider provideFixWithYieldFromCases
      */
+    #[DataProvider('provideFixWithYieldFromCases')]
     public function testFixWithYieldFrom(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -3189,6 +3245,7 @@ baz(); }',
     /**
      * @dataProvider provideFixWithPhpOpenCases
      */
+    #[DataProvider('provideFixWithPhpOpenCases')]
     public function testFixWithPhpOpen(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -3238,6 +3295,7 @@ baz(); }',
     /**
      * @dataProvider provideCommentsCases
      */
+    #[DataProvider('provideCommentsCases')]
     public function testComments(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -3295,6 +3353,7 @@ foreach ($fields as [$field/** @var string*/]) {
     /**
      * @dataProvider provideWithNamespaceCases
      */
+    #[DataProvider('provideWithNamespaceCases')]
     public function testWithNamespace(string $expected, ?string $input = null): void
     {
         $this->fixer->configure([
@@ -3370,6 +3429,8 @@ namespace/* comment */ Foo;',
      *
      * @requires PHP 8.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0')]
     public function testFix80(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
@@ -3447,6 +3508,8 @@ class Point {
      *
      * @requires PHP 8.1
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1')]
     public function testFix81(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
@@ -3538,6 +3601,7 @@ class    Test {
     /**
      * @dataProvider provideFixWithSwitchCases
      */
+    #[DataProvider('provideFixWithSwitchCases')]
     public function testFixWithSwitch(string $expected, string $input): void
     {
         $this->fixer->configure([
@@ -3569,6 +3633,7 @@ class    Test {
     /**
      * @dataProvider provideTypeColonCases
      */
+    #[DataProvider('provideTypeColonCases')]
     public function testTypeColon(string $expected, string $input): void
     {
         $this->fixer->configure([
@@ -3616,6 +3681,8 @@ class    Test {
      *
      * @requires PHP 8.1
      */
+    #[DataProvider('provideEnumTypeColonCases')]
+    #[RequiresPhp('>= 8.1')]
     public function testEnumTypeColon(string $expected, string $input): void
     {
         $this->fixer->configure([

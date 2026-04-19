@@ -14,7 +14,13 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\DoctrineAnnotation;
 
+use PhpCsFixer\AbstractDoctrineAnnotationFixer;
+use PhpCsFixer\Doctrine\Annotation\DocLexer;
+use PhpCsFixer\Fixer\DoctrineAnnotation\DoctrineAnnotationArrayAssignmentFixer;
 use PhpCsFixer\Tests\AbstractDoctrineAnnotationFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -29,6 +35,9 @@ use PhpCsFixer\Tests\AbstractDoctrineAnnotationFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AbstractDoctrineAnnotationFixer::class)]
+#[CoversClass(DocLexer::class)]
+#[CoversClass(DoctrineAnnotationArrayAssignmentFixer::class)]
 final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineAnnotationFixerTestCase
 {
     /**
@@ -36,6 +45,7 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -176,6 +186,8 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
      *
      * @requires PHP 8.1
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1')]
     public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -237,6 +249,8 @@ final class DoctrineAnnotationArrayAssignmentFixerTest extends AbstractDoctrineA
      *
      * @requires PHP 8.4
      */
+    #[DataProvider('provideFix84Cases')]
+    #[RequiresPhp('>= 8.4')]
     public function testFix84(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

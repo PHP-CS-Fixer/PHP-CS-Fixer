@@ -19,6 +19,9 @@ use PhpCsFixer\Fixer\ClassNotation\ClassDefinitionFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -32,6 +35,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ClassDefinitionFixer::class)]
 final class ClassDefinitionFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -39,6 +43,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideInvalidConfigurationCases
      */
+    #[DataProvider('provideInvalidConfigurationCases')]
     public function testInvalidConfiguration(array $config, string $exceptionExpression): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
@@ -68,6 +73,7 @@ final class ClassDefinitionFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -501,6 +507,7 @@ $a = new class implements
      *
      * @dataProvider provideClassyDefinitionInfoCases
      */
+    #[DataProvider('provideClassyDefinitionInfoCases')]
     public function testClassyDefinitionInfo(string $source, array $expected): void
     {
         Tokens::clearCache();
@@ -608,6 +615,7 @@ $a = new class implements
      *
      * @dataProvider provideClassyInheritanceInfoCases
      */
+    #[DataProvider('provideClassyInheritanceInfoCases')]
     public function testClassyInheritanceInfo(string $source, array $expected): void
     {
         $this->doTestClassyInheritanceInfo($source, $expected);
@@ -695,6 +703,8 @@ namespace {
      *
      * @requires PHP <8.0
      */
+    #[DataProvider('provideClassyInheritanceInfoPre80Cases')]
+    #[RequiresPhp('<8.0')]
     public function testClassyInheritanceInfoPre80(string $source, array $expected): void
     {
         $this->doTestClassyInheritanceInfo($source, $expected);
@@ -733,6 +743,7 @@ namespace {
     /**
      * @dataProvider provideWithWhitespacesConfigCases
      */
+    #[DataProvider('provideWithWhitespacesConfigCases')]
     public function testWithWhitespacesConfig(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
@@ -755,6 +766,8 @@ namespace {
      *
      * @requires PHP 8.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0')]
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -781,6 +794,8 @@ namespace {
      *
      * @requires PHP 8.1
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1')]
     public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -812,6 +827,8 @@ namespace {
      *
      * @requires PHP 8.2
      */
+    #[DataProvider('provideFix82Cases')]
+    #[RequiresPhp('>= 8.2')]
     public function testFix82(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
@@ -849,6 +866,8 @@ namespace {
      *
      * @requires PHP 8.3
      */
+    #[DataProvider('provideFix83Cases')]
+    #[RequiresPhp('>= 8.3')]
     public function testFix83(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

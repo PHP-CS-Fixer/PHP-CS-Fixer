@@ -18,6 +18,7 @@ use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\Console\Report\FixReport\XmlReporter;
 use PhpCsFixer\PhpunitConstraintXmlMatchesXsd\Constraint\XmlMatchesXsd;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
@@ -30,6 +31,7 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(XmlReporter::class)]
 final class XmlReporterTest extends AbstractReporterTestCase
 {
     private static ?string $xsd = null;

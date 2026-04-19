@@ -16,6 +16,8 @@ namespace PhpCsFixer\Tests\Linter;
 
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\ProcessLinter;
+use PhpCsFixer\Linter\ProcessLintingResult;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -27,6 +29,8 @@ use PhpCsFixer\Linter\ProcessLinter;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ProcessLinter::class)]
+#[CoversClass(ProcessLintingResult::class)]
 final class ProcessLinterTest extends AbstractLinterTestCase
 {
     public function testIsAsync(): void
