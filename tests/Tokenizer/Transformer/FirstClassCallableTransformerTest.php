@@ -38,10 +38,10 @@ final class FirstClassCallableTransformerTest extends AbstractTransformerTestCas
      *
      * @dataProvider provideProcessCases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
     #[DataProvider('provideProcessCases')]
-    #[RequiresPhp('>= 8.1')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testProcess(array $expectedTokens, string $source): void
     {
         $this->doTest($source, $expectedTokens, [CT::T_FIRST_CLASS_CALLABLE]);

@@ -25,7 +25,7 @@ use PHPUnit\Framework\Attributes\RequiresPhp;
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\StringableForToStringFixer
  *
- * @requires PHP 8.0
+ * @requires PHP >= 8.0.0
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\StringableForToStringFixer>
  *
@@ -35,7 +35,7 @@ use PHPUnit\Framework\Attributes\RequiresPhp;
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 #[CoversClass(StringableForToStringFixer::class)]
-#[RequiresPhp('>= 8.0')]
+#[RequiresPhp('>= 8.0.0')]
 final class StringableForToStringFixerTest extends AbstractFixerTestCase
 {
     /**

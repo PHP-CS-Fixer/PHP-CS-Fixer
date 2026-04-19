@@ -194,11 +194,11 @@ final class DataProviderAnalyzerTest extends TestCase
     /**
      * @param list<DataProviderAnalysis> $expected
      *
-     * @requires PHP ^8.0
+     * @requires PHP ^8.0.0
      *
      * @dataProvider provideGettingDataProviders80Cases
      */
-    #[RequiresPhp('^8.0')]
+    #[RequiresPhp('^8.0.0')]
     #[DataProvider('provideGettingDataProviders80Cases')]
     public function testGettingDataProviders80(array $expected, string $code, int $startIndex = 0, ?int $endIndex = null): void
     {

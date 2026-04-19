@@ -204,10 +204,10 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideProcess80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
     #[DataProvider('provideProcess80Cases')]
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testProcess80(string $source, array $expectedTokens = []): void
     {
         $this->testProcess($source, $expectedTokens);
@@ -232,10 +232,10 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider providePre84ProcessCases
      *
-     * @requires PHP <8.4
+     * @requires PHP < 8.4.0
      */
     #[DataProvider('providePre84ProcessCases')]
-    #[RequiresPhp('<8.4')]
+    #[RequiresPhp('< 8.4.0')]
     public function testPre84Process(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
@@ -332,10 +332,10 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideStarting84ProcessCases
      *
-     * @requires PHP 8.4
+     * @requires PHP >= 8.4.0
      */
     #[DataProvider('provideStarting84ProcessCases')]
-    #[RequiresPhp('>= 8.4')]
+    #[RequiresPhp('>= 8.4.0')]
     public function testStarting84Process(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
@@ -591,10 +591,10 @@ final class BraceTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideDynamicClassConstantFetchCases
      *
-     * @requires PHP 8.3
+     * @requires PHP >= 8.3.0
      */
     #[DataProvider('provideDynamicClassConstantFetchCases')]
-    #[RequiresPhp('>= 8.3')]
+    #[RequiresPhp('>= 8.3.0')]
     public function testDynamicClassConstantFetch(array $expectedTokens, string $source): void
     {
         $this->doTest(

@@ -25,7 +25,7 @@ use PHPUnit\Framework\Attributes\RequiresPhp;
  *
  * @covers \PhpCsFixer\Fixer\AttributeNotation\AttributeBlockNoSpacesFixer
  *
- * @requires PHP 8.0
+ * @requires PHP >= 8.0.0
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\AttributeNotation\AttributeBlockNoSpacesFixer>
  *
@@ -34,7 +34,7 @@ use PHPUnit\Framework\Attributes\RequiresPhp;
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 #[CoversClass(AttributeBlockNoSpacesFixer::class)]
-#[RequiresPhp('>= 8.0')]
+#[RequiresPhp('>= 8.0.0')]
 final class AttributeBlockNoSpacesFixerTest extends AbstractFixerTestCase
 {
     /**

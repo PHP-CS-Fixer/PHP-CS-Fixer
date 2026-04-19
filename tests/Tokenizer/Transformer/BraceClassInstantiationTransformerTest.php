@@ -400,10 +400,10 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
      *
      * @dataProvider provideProcessPhp80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
     #[DataProvider('provideProcessPhp80Cases')]
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testProcessPhp80(array $expectedTokens, array $observedKinds, string $source): void
     {
         $this->doTest(
@@ -456,10 +456,10 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
      *
      * @dataProvider provideProcessPhp81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
     #[DataProvider('provideProcessPhp81Cases')]
-    #[RequiresPhp('>= 8.1')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testProcessPhp81(array $expectedTokens, array $observedKinds, string $source): void
     {
         $this->doTest(
@@ -517,10 +517,10 @@ function test2($param = (new Foo)) {}
      *
      * @dataProvider provideProcessPrePhp84Cases
      *
-     * @requires PHP <8.4
+     * @requires PHP < 8.4.0
      */
     #[DataProvider('provideProcessPrePhp84Cases')]
-    #[RequiresPhp('<8.4')]
+    #[RequiresPhp('< 8.4.0')]
     public function testProcessPrePhp84(string $source, array $expectedTokens, array $observedKinds = []): void
     {
         $this->doTest(

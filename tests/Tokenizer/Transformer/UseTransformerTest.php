@@ -162,11 +162,11 @@ use C\{D,E,};
     /**
      * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      *
      * @dataProvider provideProcessPhp81Cases
      */
-    #[RequiresPhp('>= 8.1')]
+    #[RequiresPhp('>= 8.1.0')]
     #[DataProvider('provideProcessPhp81Cases')]
     public function testProcessPhp81(string $source, array $expectedTokens = []): void
     {

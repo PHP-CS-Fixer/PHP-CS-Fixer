@@ -33,11 +33,11 @@ use PHPUnit\Framework\Attributes\RequiresPhp;
 final class CleanNamespaceFixerTest extends AbstractFixerTestCase
 {
     /**
-     * @requires PHP <8.0
+     * @requires PHP < 8.0.0
      *
      * @dataProvider provideFixCases
      */
-    #[RequiresPhp('<8.0')]
+    #[RequiresPhp('< 8.0.0')]
     #[DataProvider('provideFixCases')]
     public function testFix(string $expected, string $input): void
     {

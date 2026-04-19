@@ -35,10 +35,10 @@ final class NoRedundantReadonlyPropertyFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixCases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      */
     #[DataProvider('provideFixCases')]
-    #[RequiresPhp('>= 8.2')]
+    #[RequiresPhp('>= 8.2.0')]
     public function testFix(string $expected, ?string $input): void
     {
         $this->doTest($expected, $input);

@@ -41,10 +41,10 @@ final class NewExpressionParenthesesFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      *
-     * @requires PHP 8.4
+     * @requires PHP >= 8.4.0
      */
     #[DataProvider('provideFixCases')]
-    #[RequiresPhp('>= 8.4')]
+    #[RequiresPhp('>= 8.4.0')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);

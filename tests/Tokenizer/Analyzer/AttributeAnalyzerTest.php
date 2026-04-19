@@ -45,11 +45,11 @@ final class AttributeAnalyzerTest extends TestCase
     }
 
     /**
-     * @requires     PHP 8.0
+     * @requires     PHP >= 8.0.0
      *
      * @dataProvider provideIsAttributeCases
      */
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     #[DataProvider('provideIsAttributeCases')]
     public function testIsAttribute(bool $isInAttribute, string $code): void
     {
@@ -141,13 +141,13 @@ final class AttributeAnalyzerTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      *
      * @dataProvider provideGetAttributeDeclarationsCases
      *
      * @param list<AttributeAnalysis> $expectedAnalyses
      */
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     #[DataProvider('provideGetAttributeDeclarationsCases')]
     public function testGetAttributeDeclarations(string $code, int $startIndex, array $expectedAnalyses): void
     {
@@ -352,13 +352,13 @@ final class AttributeAnalyzerTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      *
      * @dataProvider provideGetAttributeDeclarations81Cases
      *
      * @param list<AttributeAnalysis> $expectedAnalyses
      */
-    #[RequiresPhp('>= 8.1')]
+    #[RequiresPhp('>= 8.1.0')]
     #[DataProvider('provideGetAttributeDeclarations81Cases')]
     public function testGetAttributeDeclarations81(string $code, int $startIndex, array $expectedAnalyses): void
     {

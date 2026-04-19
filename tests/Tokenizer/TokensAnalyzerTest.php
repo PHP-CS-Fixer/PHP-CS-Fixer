@@ -517,10 +517,10 @@ final class TokensAnalyzerTest extends TestCase
      *
      * @dataProvider provideGetClassyElements80Cases
      *
-     * @requires PHP >= 8.0
+     * @requires PHP >= 8.0.0
      */
     #[DataProvider('provideGetClassyElements80Cases')]
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testGetClassyElements80(array $expected, string $source): void
     {
         $this->testGetClassyElements($expected, $source);
@@ -567,10 +567,10 @@ final class TokensAnalyzerTest extends TestCase
      *
      * @dataProvider provideGetClassyElements81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
     #[DataProvider('provideGetClassyElements81Cases')]
-    #[RequiresPhp('>= 8.1')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testGetClassyElements81(array $expected, string $source): void
     {
         $this->testGetClassyElements($expected, $source);
@@ -782,10 +782,10 @@ enum Foo: string
      *
      * @dataProvider provideGetClassyElements82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      */
     #[DataProvider('provideGetClassyElements82Cases')]
-    #[RequiresPhp('>= 8.2')]
+    #[RequiresPhp('>= 8.2.0')]
     public function testGetClassyElements82(array $expected, string $source): void
     {
         $this->testGetClassyElements($expected, $source);
@@ -842,10 +842,10 @@ enum Foo: string
      *
      * @dataProvider provideGetClassyElements84Cases
      *
-     * @requires PHP >= 8.4
+     * @requires PHP >= 8.4.0
      */
     #[DataProvider('provideGetClassyElements84Cases')]
-    #[RequiresPhp('>= 8.4')]
+    #[RequiresPhp('>= 8.4.0')]
     public function testGetClassyElements84(array $expected, string $source): void
     {
         $this->testGetClassyElements($expected, $source);
@@ -880,10 +880,10 @@ enum Foo: string
      *
      * @dataProvider provideGetClassyElements85Cases
      *
-     * @requires PHP 8.5
+     * @requires PHP >= 8.5.0
      */
     #[DataProvider('provideGetClassyElements85Cases')]
-    #[RequiresPhp('>= 8.5')]
+    #[RequiresPhp('>= 8.5.0')]
     public function testGetClassyElements85(array $expected, string $source): void
     {
         $this->testGetClassyElements($expected, $source);
@@ -1003,10 +1003,10 @@ enum Foo: string
      *
      * @dataProvider provideIsAnonymousClass80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
     #[DataProvider('provideIsAnonymousClass80Cases')]
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testIsAnonymousClass80(array $expected, string $source): void
     {
         $this->testIsAnonymousClass($expected, $source);
@@ -1033,10 +1033,10 @@ enum Foo: string
      *
      * @dataProvider provideIsAnonymousClass81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
     #[DataProvider('provideIsAnonymousClass81Cases')]
-    #[RequiresPhp('>= 8.1')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testIsAnonymousClass81(array $expected, string $source): void
     {
         $this->testIsAnonymousClass($expected, $source);
@@ -1058,10 +1058,10 @@ enum Foo: string
      *
      * @dataProvider provideIsAnonymousClass83Cases
      *
-     * @requires PHP 8.3
+     * @requires PHP >= 8.3.0
      */
     #[DataProvider('provideIsAnonymousClass83Cases')]
-    #[RequiresPhp('>= 8.3')]
+    #[RequiresPhp('>= 8.3.0')]
     public function testIsAnonymousClass83(array $expected, string $source): void
     {
         $this->testIsAnonymousClass($expected, $source);
@@ -1217,10 +1217,10 @@ preg_replace_callback(
      *
      * @dataProvider provideIsLambda80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
     #[DataProvider('provideIsLambda80Cases')]
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testIsLambda80(array $expected, string $source): void
     {
         $this->testIsLambda($expected, $source);
@@ -1556,10 +1556,10 @@ abstract class Baz
      *
      * @dataProvider provideIsConstantInvocationPhp80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
     #[DataProvider('provideIsConstantInvocationPhp80Cases')]
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testIsConstantInvocationPhp80(array $expected, string $source): void
     {
         $this->doIsConstantInvocationTest($expected, $source);
@@ -1671,10 +1671,10 @@ function f( #[Target(\'xxx\')] LoggerInterface|null $logger) {}
      *
      * @dataProvider provideIsConstantInvocationPhp81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
     #[DataProvider('provideIsConstantInvocationPhp81Cases')]
-    #[RequiresPhp('>= 8.1')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testIsConstantInvocationPhp81(array $expected, string $source): void
     {
         $this->doIsConstantInvocationTest($expected, $source);
@@ -1729,10 +1729,10 @@ abstract class Baz
      *
      * @dataProvider provideIsConstantInvocationPhp82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      */
     #[DataProvider('provideIsConstantInvocationPhp82Cases')]
-    #[RequiresPhp('>= 8.2')]
+    #[RequiresPhp('>= 8.2.0')]
     public function testIsConstantInvocationPhp82(array $expected, string $source): void
     {
         $this->doIsConstantInvocationTest($expected, $source);
@@ -1767,10 +1767,10 @@ abstract class Baz
      *
      * @dataProvider provideIsConstantInvocationPhp83Cases
      *
-     * @requires PHP 8.3
+     * @requires PHP >= 8.3.0
      */
     #[DataProvider('provideIsConstantInvocationPhp83Cases')]
-    #[RequiresPhp('>= 8.3')]
+    #[RequiresPhp('>= 8.3.0')]
     public function testIsConstantInvocationPhp83(array $expected, string $source): void
     {
         $this->doIsConstantInvocationTest($expected, $source);
@@ -1842,9 +1842,9 @@ abstract class Baz
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testIsConstantInvocationForNullSafeObjectOperator(): void
     {
         $tokens = Tokens::fromCode('<?php $a?->b?->c;');
@@ -1930,10 +1930,10 @@ abstract class Baz
      *
      * @dataProvider provideIsUnarySuccessorOperatorPre84Cases
      *
-     * @requires PHP <8.4
+     * @requires PHP < 8.4.0
      */
     #[DataProvider('provideIsUnarySuccessorOperatorPre84Cases')]
-    #[RequiresPhp('<8.4')]
+    #[RequiresPhp('< 8.4.0')]
     public function testIsUnarySuccessorOperatorPre84(array $expected, string $source): void
     {
         $this->testIsUnarySuccessorOperator($expected, $source);
@@ -2402,10 +2402,10 @@ $b;',
      *
      * @dataProvider provideIsBinaryOperator80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
     #[DataProvider('provideIsBinaryOperator80Cases')]
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testIsBinaryOperator80(array $expected, string $source): void
     {
         $this->testIsBinaryOperator($expected, $source);
@@ -2447,10 +2447,10 @@ $b;',
      *
      * @dataProvider provideIsBinaryOperator81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
     #[DataProvider('provideIsBinaryOperator81Cases')]
-    #[RequiresPhp('>= 8.1')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testIsBinaryOperator81(array $expected, string $source): void
     {
         $this->testIsBinaryOperator($expected, $source);
@@ -2472,10 +2472,10 @@ $b;',
      *
      * @dataProvider provideIsBinaryOperator82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      */
     #[DataProvider('provideIsBinaryOperator82Cases')]
-    #[RequiresPhp('>= 8.2')]
+    #[RequiresPhp('>= 8.2.0')]
     public function testIsBinaryOperator82(array $expected, string $source): void
     {
         $this->testIsBinaryOperator($expected, $source);
@@ -2514,10 +2514,10 @@ $b;',
      *
      * @dataProvider provideIsBinaryOperatorPre84Cases
      *
-     * @requires PHP <8.4
+     * @requires PHP < 8.4.0
      */
     #[DataProvider('provideIsBinaryOperatorPre84Cases')]
-    #[RequiresPhp('<8.4')]
+    #[RequiresPhp('< 8.4.0')]
     public function testIsBinaryOperatorPre84(array $expected, string $source): void
     {
         $this->testIsBinaryOperator($expected, $source);
@@ -2789,10 +2789,10 @@ class TestClass {
      *
      * @param array<int, bool> $expected
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
     #[DataProvider('provideIsEnumCaseCases')]
-    #[RequiresPhp('>= 8.1')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testIsEnumCase(string $source, array $expected): void
     {
         $tokens = Tokens::fromCode($source);
@@ -3217,13 +3217,13 @@ class MyTestWithAnonymousClass extends TestCase
     }
 
     /**
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      *
      * @dataProvider provideGetClassyModifiersOnPhp82Cases
      *
      * @param array<string, null|int> $expectedModifiers
      */
-    #[RequiresPhp('>= 8.2')]
+    #[RequiresPhp('>= 8.2.0')]
     #[DataProvider('provideGetClassyModifiersOnPhp82Cases')]
     public function testGetClassyModifiersOnPhp82(array $expectedModifiers, int $index, string $source): void
     {

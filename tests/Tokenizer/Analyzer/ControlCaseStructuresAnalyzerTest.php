@@ -334,11 +334,11 @@ endswitch ?>',
      * @param array<int, AbstractControlCaseStructuresAnalysis> $expectedAnalyses
      * @param list<int>                                         $types
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      *
      * @dataProvider provideFindControlStructuresPhp81Cases
      */
-    #[RequiresPhp('>= 8.1')]
+    #[RequiresPhp('>= 8.1.0')]
     #[DataProvider('provideFindControlStructuresPhp81Cases')]
     public function testFindControlStructuresPhp81(array $expectedAnalyses, string $source, array $types): void
     {

@@ -190,10 +190,10 @@ final class ClassyAnalyzerTest extends TestCase
      *
      * @dataProvider provideIsClassyInvocation80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
     #[DataProvider('provideIsClassyInvocation80Cases')]
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testIsClassyInvocation80(string $source, array $expected): void
     {
         self::assertClassyInvocation($source, $expected);
@@ -255,10 +255,10 @@ final class ClassyAnalyzerTest extends TestCase
      *
      * @dataProvider provideIsClassyInvocation81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
     #[DataProvider('provideIsClassyInvocation81Cases')]
-    #[RequiresPhp('>= 8.1')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testIsClassyInvocation81(string $source, array $expected): void
     {
         self::assertClassyInvocation($source, $expected);

@@ -144,10 +144,10 @@ final class TypeAnalysisTest extends TestCase
     /**
      * @dataProvider provideIsNullable80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
     #[DataProvider('provideIsNullable80Cases')]
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testIsNullable80(bool $expected, string $input): void
     {
         $this->testIsNullable($expected, $input);
@@ -208,10 +208,10 @@ final class TypeAnalysisTest extends TestCase
     /**
      * @dataProvider provideIsNullable81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
     #[DataProvider('provideIsNullable81Cases')]
-    #[RequiresPhp('>= 8.1')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testIsNullable81(bool $expected, string $input): void
     {
         $this->testIsNullable($expected, $input);
@@ -232,10 +232,10 @@ final class TypeAnalysisTest extends TestCase
     /**
      * @dataProvider provideIsNullable82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      */
     #[DataProvider('provideIsNullable82Cases')]
-    #[RequiresPhp('>= 8.2')]
+    #[RequiresPhp('>= 8.2.0')]
     public function testIsNullable82(bool $expected, string $input): void
     {
         $this->testIsNullable($expected, $input);

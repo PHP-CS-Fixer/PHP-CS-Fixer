@@ -1492,9 +1492,9 @@ Bar3:
     }
 
     /**
-     * @requires PHP <8.0
+     * @requires PHP < 8.0.0
      */
-    #[RequiresPhp('<8.0')]
+    #[RequiresPhp('< 8.0.0')]
     public function testFixPre80(): void
     {
         $this->doTest(
@@ -1526,11 +1526,11 @@ use /**/A\B/**/;
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      *
      * @dataProvider provideFix80Cases
      */
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     #[DataProvider('provideFix80Cases')]
     public function testFix80(string $expected, ?string $input = null): void
     {
@@ -1603,11 +1603,11 @@ function f( #[Target(\'xxx\')] LoggerInterface|null $logger) {}
     }
 
     /**
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      *
      * @dataProvider provideFix81Cases
      */
-    #[RequiresPhp('>= 8.1')]
+    #[RequiresPhp('>= 8.1.0')]
     #[DataProvider('provideFix81Cases')]
     public function testFix81(string $expected, ?string $input = null): void
     {
@@ -1716,11 +1716,11 @@ const D = new Foo7(1,2);
     }
 
     /**
-     * @requires PHP 8.3
+     * @requires PHP >= 8.3.0
      *
      * @dataProvider provideFix83Cases
      */
-    #[RequiresPhp('>= 8.3')]
+    #[RequiresPhp('>= 8.3.0')]
     #[DataProvider('provideFix83Cases')]
     public function testFix83(string $expected, ?string $input = null): void
     {

@@ -100,11 +100,11 @@ final class ArgumentsAnalyzerTest extends TestCase
     /**
      * @param array<int, int> $arguments
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      *
      * @dataProvider provideArguments80Cases
      */
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     #[DataProvider('provideArguments80Cases')]
     public function testArguments80(string $code, int $openIndex, int $closeIndex, array $arguments): void
     {
@@ -130,11 +130,11 @@ final class ArgumentsAnalyzerTest extends TestCase
     /**
      * @param array<int, int> $arguments
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      *
      * @dataProvider provideArguments81Cases
      */
-    #[RequiresPhp('>= 8.1')]
+    #[RequiresPhp('>= 8.1.0')]
     #[DataProvider('provideArguments81Cases')]
     public function testArguments81(string $code, int $openIndex, int $closeIndex, array $arguments): void
     {
@@ -152,11 +152,11 @@ final class ArgumentsAnalyzerTest extends TestCase
     /**
      * @param array<int, int> $arguments
      *
-     * @requires PHP 8.4
+     * @requires PHP >= 8.4.0
      *
      * @dataProvider provideArguments84Cases
      */
-    #[RequiresPhp('>= 8.4')]
+    #[RequiresPhp('>= 8.4.0')]
     #[DataProvider('provideArguments84Cases')]
     public function testArguments84(string $code, int $openIndex, int $closeIndex, array $arguments): void
     {
@@ -179,11 +179,11 @@ final class ArgumentsAnalyzerTest extends TestCase
     /**
      * @param array<int, int> $arguments
      *
-     * @requires PHP 8.5
+     * @requires PHP >= 8.5.0
      *
      * @dataProvider provideArguments85Cases
      */
-    #[RequiresPhp('>= 8.5')]
+    #[RequiresPhp('>= 8.5.0')]
     #[DataProvider('provideArguments85Cases')]
     public function testArguments85(string $code, int $openIndex, int $closeIndex, array $arguments): void
     {
@@ -349,11 +349,11 @@ final class ArgumentsAnalyzerTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      *
      * @dataProvider provideArgumentInfo80Cases
      */
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     #[DataProvider('provideArgumentInfo80Cases')]
     public function testArgumentInfo80(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void
     {
@@ -401,11 +401,11 @@ final class ArgumentsAnalyzerTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      *
      * @dataProvider provideArgumentInfo81Cases
      */
-    #[RequiresPhp('>= 8.1')]
+    #[RequiresPhp('>= 8.1.0')]
     #[DataProvider('provideArgumentInfo81Cases')]
     public function testArgumentInfo81(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void
     {
@@ -442,11 +442,11 @@ class Foo
     }
 
     /**
-     * @requires PHP 8.4
+     * @requires PHP >= 8.4.0
      *
      * @dataProvider provideArgumentInfo84Cases
      */
-    #[RequiresPhp('>= 8.4')]
+    #[RequiresPhp('>= 8.4.0')]
     #[DataProvider('provideArgumentInfo84Cases')]
     public function testArgumentInfo84(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void
     {
@@ -553,11 +553,11 @@ class Foo
     }
 
     /**
-     * @requires PHP 8.5
+     * @requires PHP >= 8.5.0
      *
      * @dataProvider provideArgumentInfo85Cases
      */
-    #[RequiresPhp('>= 8.5')]
+    #[RequiresPhp('>= 8.5.0')]
     #[DataProvider('provideArgumentInfo85Cases')]
     public function testArgumentInfo85(string $code, int $openIndex, int $closeIndex, ArgumentAnalysis $expected): void
     {

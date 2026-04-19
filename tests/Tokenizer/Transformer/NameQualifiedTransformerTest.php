@@ -28,13 +28,13 @@ use PHPUnit\Framework\Attributes\RequiresPhp;
 /**
  * @internal
  *
- * @requires PHP 8.0
+ * @requires PHP >= 8.0.0
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\NameQualifiedTransformer
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-#[RequiresPhp('>= 8.0')]
+#[RequiresPhp('>= 8.0.0')]
 #[CoversClass(NameQualifiedTransformer::class)]
 final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
 {
@@ -46,10 +46,10 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideProcessCases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
     #[DataProvider('provideProcessCases')]
-    #[RequiresPhp('>= 8.0')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testProcess(array $expected, ?array $input = null): void
     {
         $expectedTokens = Tokens::fromArray($expected);
