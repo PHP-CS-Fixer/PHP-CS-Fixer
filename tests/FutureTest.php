@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Future;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -25,6 +27,7 @@ use PhpCsFixer\Future;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Future::class)]
 final class FutureTest extends TestCase
 {
     /**
@@ -49,6 +52,7 @@ final class FutureTest extends TestCase
     /**
      * @group legacy
      */
+    #[Group('legacy')]
     public function testTriggerDeprecationWhenFutureModeIsOff(): void
     {
         putenv('PHP_CS_FIXER_FUTURE_MODE=0');

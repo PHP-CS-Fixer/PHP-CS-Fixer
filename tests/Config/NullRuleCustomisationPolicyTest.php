@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\Config;
 use PhpCsFixer\Config\NullRuleCustomisationPolicy;
 use PhpCsFixer\Config\RuleCustomisationPolicyInterface;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
@@ -25,6 +26,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NullRuleCustomisationPolicy::class)]
 final class NullRuleCustomisationPolicyTest extends TestCase
 {
     public function testImplementsRuleCustomisationPolicyInterface(): void

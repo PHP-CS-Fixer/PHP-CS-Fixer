@@ -22,6 +22,7 @@ use PhpCsFixer\Cache\FileHandlerInterface;
 use PhpCsFixer\Cache\SignatureInterface;
 use PhpCsFixer\Hasher;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -32,6 +33,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FileCacheManager::class)]
 final class FileCacheManagerTest extends TestCase
 {
     public function testIsFinal(): void

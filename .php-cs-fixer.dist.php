@@ -72,6 +72,9 @@ return (new Config())
         'modernize_strpos' => true, // needs PHP 8+ or polyfill
         'native_constant_invocation' => ['strict' => false], // strict:false to not remove `\` on low-end PHP versions for not-yet-known consts
         'numeric_literal_separator' => true,
+        'php_unit_attributes' => [
+            'keep_annotations' => true, // @TODO v4: remove me and related annotations from tests
+        ],
         'phpdoc_order' => [
             'order' => [
                 'type',

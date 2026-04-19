@@ -19,6 +19,9 @@ use PhpCsFixer\ConfigurationException\RequiredFixerConfigurationException;
 use PhpCsFixer\Fixer\Comment\HeaderCommentFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -31,6 +34,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(HeaderCommentFixer::class)]
 final class HeaderCommentFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -38,6 +42,7 @@ final class HeaderCommentFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(
         string $expected,
         ?string $input,
@@ -893,6 +898,8 @@ echo 1;',
      *
      * @requires PHP 8.1
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1')]
     public function testFix81(string $expected, ?string $input, array $configuration): void
     {
         $this->testFix($expected, $input, $configuration);
@@ -930,6 +937,7 @@ enum Foo {}',
      *
      * @dataProvider provideInvalidConfigurationCases
      */
+    #[DataProvider('provideInvalidConfigurationCases')]
     public function testInvalidConfiguration(
         ?array $configuration,
         string $exceptionMessage,

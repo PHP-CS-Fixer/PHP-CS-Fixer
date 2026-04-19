@@ -19,6 +19,7 @@ use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
@@ -27,6 +28,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AbstractFixer::class)]
 final class AbstractFixerTest extends TestCase
 {
     public function testDefaults(): void

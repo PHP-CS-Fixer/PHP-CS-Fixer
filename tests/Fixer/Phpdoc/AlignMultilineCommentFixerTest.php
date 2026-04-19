@@ -15,8 +15,11 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\Phpdoc\AlignMultilineCommentFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -31,6 +34,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AlignMultilineCommentFixer::class)]
 final class AlignMultilineCommentFixerTest extends AbstractFixerTestCase
 {
     public function testInvalidConfiguration(): void
@@ -45,6 +49,7 @@ final class AlignMultilineCommentFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = [], ?WhitespacesFixerConfig $whitespacesConfig = null): void
     {
         $this->fixer->configure($configuration);

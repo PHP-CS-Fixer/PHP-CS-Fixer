@@ -14,7 +14,10 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Operator;
 
+use PhpCsFixer\Fixer\Operator\NoUselessConcatOperatorFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -27,6 +30,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NoUselessConcatOperatorFixer::class)]
 final class NoUselessConcatOperatorFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -34,6 +38,7 @@ final class NoUselessConcatOperatorFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = ['juggle_simple_strings' => true]): void
     {
         $this->fixer->configure($configuration);

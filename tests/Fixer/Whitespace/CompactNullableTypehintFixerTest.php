@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
+use PhpCsFixer\Fixer\Whitespace\CompactNullableTypehintFixer;
+use PHPUnit\Framework\Attributes\CoversClass;
+
 /**
  * @internal
  *
@@ -25,4 +28,5 @@ namespace PhpCsFixer\Tests\Fixer\Whitespace;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(CompactNullableTypehintFixer::class)]
 final class CompactNullableTypehintFixerTest extends AbstractNullableTypeDeclarationFixerTestCase {}

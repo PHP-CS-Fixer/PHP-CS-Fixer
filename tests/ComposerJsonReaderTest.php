@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\ComposerJsonReader;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author ntzm
@@ -25,6 +27,7 @@ use PhpCsFixer\ComposerJsonReader;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ComposerJsonReader::class)]
 final class ComposerJsonReaderTest extends TestCase
 {
     public function testCreateSingleton(): void
@@ -37,6 +40,7 @@ final class ComposerJsonReaderTest extends TestCase
     /**
      * @dataProvider provideGetPhpUnitCases
      */
+    #[DataProvider('provideGetPhpUnitCases')]
     public function testGetPhpUnit(?string $expected, string $inputJson): void
     {
         self::assertJson($inputJson);
@@ -276,6 +280,7 @@ final class ComposerJsonReaderTest extends TestCase
     /**
      * @dataProvider provideGetPhpCases
      */
+    #[DataProvider('provideGetPhpCases')]
     public function testGetPhp(?string $expected, string $inputJson): void
     {
         self::assertJson($inputJson);

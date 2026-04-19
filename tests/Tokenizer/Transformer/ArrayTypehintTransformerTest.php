@@ -16,6 +16,9 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Transformer\ArrayTypehintTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -28,6 +31,7 @@ use PhpCsFixer\Tokenizer\CT;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ArrayTypehintTransformer::class)]
 final class ArrayTypehintTransformerTest extends AbstractTransformerTestCase
 {
     /**
@@ -35,6 +39,7 @@ final class ArrayTypehintTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideProcessCases
      */
+    #[DataProvider('provideProcessCases')]
     public function testProcess(string $source, array $expectedTokens = []): void
     {
         $this->doTest(

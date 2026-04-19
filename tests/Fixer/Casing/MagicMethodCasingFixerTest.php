@@ -16,6 +16,9 @@ namespace PhpCsFixer\Tests\Fixer\Casing;
 
 use PhpCsFixer\Fixer\Casing\MagicMethodCasingFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -26,11 +29,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(MagicMethodCasingFixer::class)]
 final class MagicMethodCasingFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -341,6 +346,7 @@ function __Tostring() {}',
     /**
      * @requires PHP 8.0
      */
+    #[RequiresPhp('>= 8.0')]
     public function testFix80(): void
     {
         $this->doTest(
@@ -354,6 +360,8 @@ function __Tostring() {}',
      *
      * @requires PHP 8.1
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1')]
     public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

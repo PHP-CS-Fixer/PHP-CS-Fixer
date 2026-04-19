@@ -18,6 +18,8 @@ use PhpCsFixer\ComposerJsonReader;
 use PhpCsFixer\Console\WarningsDetector;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfoInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 
 /**
  * @author ntzm
@@ -28,6 +30,7 @@ use PhpCsFixer\ToolInfoInterface;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(WarningsDetector::class)]
 final class WarningsDetectorTest extends TestCase
 {
     public function testDetectOldVendorNotInstalledByComposer(): void
@@ -102,6 +105,7 @@ final class WarningsDetectorTest extends TestCase
      *
      * @runInSeparateProcess
      */
+    #[RunInSeparateProcess]
     public function testDetectHigherPhpVersionWithEqualOrLowerVersion(): void
     {
         $originalDir = getcwd();
@@ -148,6 +152,7 @@ final class WarningsDetectorTest extends TestCase
      *
      * @runInSeparateProcess
      */
+    #[RunInSeparateProcess]
     public function testDetectHigherPhpVersionWithMissingComposerJson(): void
     {
         $originalDir = getcwd();
@@ -182,6 +187,7 @@ final class WarningsDetectorTest extends TestCase
      *
      * @runInSeparateProcess
      */
+    #[RunInSeparateProcess]
     public function testDetectHigherPhpVersionWithNoPhpRequirement(): void
     {
         $originalDir = getcwd();

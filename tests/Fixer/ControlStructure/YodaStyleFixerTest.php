@@ -15,7 +15,11 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\ControlStructure\YodaStyleFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -30,6 +34,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(YodaStyleFixer::class)]
 final class YodaStyleFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -37,6 +42,7 @@ final class YodaStyleFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -137,6 +143,7 @@ while (2 !== $b = array_pop($c));
      *
      * @dataProvider provideInvalidConfigurationCases
      */
+    #[DataProvider('provideInvalidConfigurationCases')]
     public function testInvalidConfiguration(array $config, string $expectedMessage): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
@@ -160,6 +167,8 @@ while (2 !== $b = array_pop($c));
      *
      * @requires PHP <8.0
      */
+    #[DataProvider('provideFixPre81Cases')]
+    #[RequiresPhp('<8.0')]
     public function testFixPre81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -201,6 +210,8 @@ while (2 !== $b = array_pop($c));
      *
      * @requires PHP 8.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0')]
     public function testFix80(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -251,6 +262,8 @@ if ($a = $obj instanceof (foo()) === true) {
      *
      * @requires PHP 8.1
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1')]
     public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

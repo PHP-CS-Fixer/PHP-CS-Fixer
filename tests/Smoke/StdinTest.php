@@ -16,6 +16,10 @@ namespace PhpCsFixer\Tests\Smoke;
 
 use Keradus\CliExecutor\CommandExecutor;
 use PhpCsFixer\Preg;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Large;
+use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -32,6 +36,10 @@ use PhpCsFixer\Preg;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[RequiresOperatingSystem('Linux|Darwin')]
+#[CoversNothing]
+#[Group('covers-nothing')]
+#[Large]
 final class StdinTest extends AbstractSmokeTestCase
 {
     public function testFixingStdin(): void

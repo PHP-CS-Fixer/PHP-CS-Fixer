@@ -20,6 +20,10 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\Transformer\NameQualifiedTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -30,6 +34,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[RequiresPhp('>= 8.0')]
+#[CoversClass(NameQualifiedTransformer::class)]
 final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
 {
     use AssertTokensTrait;
@@ -42,6 +48,8 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
      *
      * @requires PHP 8.0
      */
+    #[DataProvider('provideProcessCases')]
+    #[RequiresPhp('>= 8.0')]
     public function testProcess(array $expected, ?array $input = null): void
     {
         $expectedTokens = Tokens::fromArray($expected);
@@ -163,6 +171,7 @@ final class NameQualifiedTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider providePriorityCases
      */
+    #[DataProvider('providePriorityCases')]
     public function testPriority(array $expected, string $source): void
     {
         // Parse `$source` before tokenizing `$expected`, so source has priority to generate collection

@@ -20,6 +20,8 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @phpstan-import-type _PhpTokenPrototype from Token
@@ -34,6 +36,7 @@ use PhpCsFixer\Utils;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Utils::class)]
 final class UtilsTest extends TestCase
 {
     /**
@@ -41,6 +44,7 @@ final class UtilsTest extends TestCase
      *
      * @dataProvider provideCamelCaseToUnderscoreCases
      */
+    #[DataProvider('provideCamelCaseToUnderscoreCases')]
     public function testCamelCaseToUnderscore(string $expected, ?string $input = null): void
     {
         if (null !== $input) {
@@ -125,6 +129,7 @@ final class UtilsTest extends TestCase
      *
      * @dataProvider provideCalculateTrailingWhitespaceIndentCases
      */
+    #[DataProvider('provideCalculateTrailingWhitespaceIndentCases')]
     public function testCalculateTrailingWhitespaceIndent(string $spaces, $input): void
     {
         $token = new Token($input);
@@ -166,6 +171,7 @@ final class UtilsTest extends TestCase
      *
      * @dataProvider provideStableSortCases
      */
+    #[DataProvider('provideStableSortCases')]
     public function testStableSort(
         array $expected,
         array $elements,
@@ -253,6 +259,7 @@ final class UtilsTest extends TestCase
      *
      * @param list<string> $names
      */
+    #[DataProvider('provideNaturalLanguageJoinCases')]
     public function testNaturalLanguageJoin(string $joined, array $names, string $wrapper = '"', ?string $lastJoin = null): void
     {
         self::assertSame($joined, Utils::naturalLanguageJoin($names, $wrapper, ...null === $lastJoin ? [] : [$lastJoin]));
@@ -366,6 +373,7 @@ final class UtilsTest extends TestCase
      *
      * @dataProvider provideNaturalLanguageJoinWithBackticksCases
      */
+    #[DataProvider('provideNaturalLanguageJoinWithBackticksCases')]
     public function testNaturalLanguageJoinWithBackticks(string $joined, array $names, ?string $lastJoin = null): void
     {
         self::assertSame($joined, Utils::naturalLanguageJoinWithBackticks($names, ...null === $lastJoin ? [] : [$lastJoin]));
@@ -415,6 +423,7 @@ final class UtilsTest extends TestCase
      *
      * @dataProvider provideToStringCases
      */
+    #[DataProvider('provideToStringCases')]
     public function testToString(string $expected, $input): void
     {
         self::assertSame($expected, Utils::toString($input));

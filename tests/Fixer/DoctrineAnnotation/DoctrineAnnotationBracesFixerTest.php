@@ -14,7 +14,13 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\DoctrineAnnotation;
 
+use PhpCsFixer\AbstractDoctrineAnnotationFixer;
+use PhpCsFixer\Doctrine\Annotation\DocLexer;
+use PhpCsFixer\Fixer\DoctrineAnnotation\DoctrineAnnotationBracesFixer;
 use PhpCsFixer\Tests\AbstractDoctrineAnnotationFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -29,6 +35,9 @@ use PhpCsFixer\Tests\AbstractDoctrineAnnotationFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AbstractDoctrineAnnotationFixer::class)]
+#[CoversClass(DocLexer::class)]
+#[CoversClass(DoctrineAnnotationBracesFixer::class)]
 final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotationFixerTestCase
 {
     /**
@@ -36,6 +45,7 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -561,6 +571,8 @@ final class DoctrineAnnotationBracesFixerTest extends AbstractDoctrineAnnotation
      *
      * @requires PHP 8.2
      */
+    #[DataProvider('provideFix82Cases')]
+    #[RequiresPhp('>= 8.2')]
     public function testFix82(string $expected, string $input): void
     {
         $this->doTest($expected, $input);

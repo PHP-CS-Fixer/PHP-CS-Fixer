@@ -17,6 +17,8 @@ namespace PhpCsFixer\Tests\DocBlock;
 use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\DocBlock\Tag;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
@@ -27,11 +29,13 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Tag::class)]
 final class TagTest extends TestCase
 {
     /**
      * @dataProvider provideNameCases
      */
+    #[DataProvider('provideNameCases')]
     public function testName(string $expected, string $new, string $input): void
     {
         $tag = new Tag(new Line($input));
@@ -77,6 +81,7 @@ final class TagTest extends TestCase
     /**
      * @dataProvider provideValidCases
      */
+    #[DataProvider('provideValidCases')]
     public function testValid(bool $expected, string $input): void
     {
         $tag = new Tag(new Line($input));

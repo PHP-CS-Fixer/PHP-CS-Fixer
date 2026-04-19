@@ -16,6 +16,9 @@ namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -31,6 +34,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(TrailingCommaInMultilineFixer::class)]
 final class TrailingCommaInMultilineFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -38,6 +42,7 @@ final class TrailingCommaInMultilineFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -645,6 +650,7 @@ $a = [11,2,3];
     /**
      * @requires PHP <8.0
      */
+    #[RequiresPhp('<8.0')]
     public function testFixPre80(): void
     {
         $this->fixer->configure([
@@ -666,6 +672,8 @@ $a = [11,2,3];
      *
      * @requires PHP 8.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0')]
     public function testFix80(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);

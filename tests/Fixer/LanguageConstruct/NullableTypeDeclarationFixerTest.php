@@ -14,7 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 
+use PhpCsFixer\Fixer\LanguageConstruct\NullableTypeDeclarationFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -29,6 +33,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NullableTypeDeclarationFixer::class)]
 final class NullableTypeDeclarationFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -36,6 +41,8 @@ final class NullableTypeDeclarationFixerTest extends AbstractFixerTestCase
      *
      * @requires PHP 8.0
      */
+    #[DataProvider('provideFixCases')]
+    #[RequiresPhp('>= 8.0')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -111,6 +118,8 @@ class Dto
      *
      * @requires PHP 8.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0')]
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->fixer->configure(['syntax' => 'union']);
@@ -243,6 +252,8 @@ class Foo
      *
      * @requires PHP 8.1
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1')]
     public function testFix81(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -294,6 +305,8 @@ class Qux
      *
      * @requires PHP 8.2
      */
+    #[DataProvider('provideFix82Cases')]
+    #[RequiresPhp('>= 8.2')]
     public function testFix82(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -341,6 +354,8 @@ class Foo
      *
      * @requires PHP 8.4
      */
+    #[DataProvider('provideFix84Cases')]
+    #[RequiresPhp('>= 8.4')]
     public function testFix84(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -436,6 +451,8 @@ class Foo
      *
      * @requires PHP 8.5
      */
+    #[DataProvider('provideFix85Cases')]
+    #[RequiresPhp('>= 8.5')]
     public function testFix85(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);

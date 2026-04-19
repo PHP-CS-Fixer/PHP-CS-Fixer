@@ -14,7 +14,9 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
+use PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
@@ -33,4 +35,5 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @phpstan-ignore class.extendsFinalByPhpDoc,generics.wrongParent
  */
+#[CoversClass(VisibilityRequiredFixer::class)]
 final class VisibilityRequiredFixerTest extends ModifierKeywordsFixerTest {}

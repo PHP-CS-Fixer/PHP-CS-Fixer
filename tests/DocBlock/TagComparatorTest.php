@@ -18,6 +18,9 @@ use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\DocBlock\Tag;
 use PhpCsFixer\DocBlock\TagComparator;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
@@ -29,6 +32,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(TagComparator::class)]
 final class TagComparatorTest extends TestCase
 {
     /**
@@ -36,6 +40,8 @@ final class TagComparatorTest extends TestCase
      *
      * @group legacy
      */
+    #[DataProvider('provideComparatorTogetherCases')]
+    #[Group('legacy')]
     public function testComparatorTogether(string $first, string $second, bool $expected): void
     {
         $tag1 = new Tag(new Line('* @'.$first));
@@ -77,6 +83,8 @@ final class TagComparatorTest extends TestCase
      *
      * @group legacy
      */
+    #[DataProvider('provideComparatorTogetherWithDefinedGroupsCases')]
+    #[Group('legacy')]
     public function testComparatorTogetherWithDefinedGroups(array $groups, string $first, string $second, bool $expected): void
     {
         $tag1 = new Tag(new Line('* @'.$first));

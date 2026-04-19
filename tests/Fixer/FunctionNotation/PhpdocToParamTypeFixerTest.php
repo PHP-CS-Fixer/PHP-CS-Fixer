@@ -14,7 +14,13 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
+use PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer;
+use PhpCsFixer\Fixer\FunctionNotation\PhpdocToParamTypeFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -32,6 +38,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[Group('phpdoc')]
+#[CoversClass(AbstractPhpdocToTypeDeclarationFixer::class)]
+#[CoversClass(PhpdocToParamTypeFixer::class)]
 final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -39,6 +48,7 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -753,6 +763,8 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
      *
      * @requires PHP <8.0
      */
+    #[DataProvider('provideFixPre80Cases')]
+    #[RequiresPhp('<8.0')]
     public function testFixPre80(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -808,6 +820,8 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
      *
      * @requires PHP 8.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0')]
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

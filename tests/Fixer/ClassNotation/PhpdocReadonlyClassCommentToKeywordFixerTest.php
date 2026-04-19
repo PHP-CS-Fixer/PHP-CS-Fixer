@@ -14,7 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
+use PhpCsFixer\Fixer\ClassNotation\PhpdocReadonlyClassCommentToKeywordFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -27,6 +31,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(PhpdocReadonlyClassCommentToKeywordFixer::class)]
 final class PhpdocReadonlyClassCommentToKeywordFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -34,6 +39,8 @@ final class PhpdocReadonlyClassCommentToKeywordFixerTest extends AbstractFixerTe
      *
      * @requires PHP 8.2
      */
+    #[DataProvider('provideFixCases')]
+    #[RequiresPhp('>= 8.2')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

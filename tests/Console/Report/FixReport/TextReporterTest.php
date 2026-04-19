@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Console\Report\FixReport;
 
 use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\Console\Report\FixReport\TextReporter;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
@@ -27,6 +28,7 @@ use PhpCsFixer\Console\Report\FixReport\TextReporter;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(TextReporter::class)]
 final class TextReporterTest extends AbstractReporterTestCase
 {
     protected static function createNoErrorReport(): string

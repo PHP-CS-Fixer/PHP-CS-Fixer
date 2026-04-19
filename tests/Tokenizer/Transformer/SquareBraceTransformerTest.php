@@ -18,6 +18,8 @@ use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -30,6 +32,7 @@ use PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(SquareBraceTransformer::class)]
 final class SquareBraceTransformerTest extends AbstractTransformerTestCase
 {
     /**
@@ -37,6 +40,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideIsShortArrayCases
      */
+    #[DataProvider('provideIsShortArrayCases')]
     public function testIsShortArray(string $source, array $inspectIndexes, bool $expected): void
     {
         $transformer = new SquareBraceTransformer();
@@ -93,6 +97,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideProcessCases
      */
+    #[DataProvider('provideProcessCases')]
     public function testProcess(string $source, array $expectedTokens = []): void
     {
         $this->doTest(

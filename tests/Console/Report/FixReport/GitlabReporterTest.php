@@ -18,6 +18,7 @@ use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Report\FixReport\GitlabReporter;
 use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\Tests\Test\Assert\AssertJsonSchemaTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @author Hans-Christian Otto <c.otto@suora.com>
@@ -28,6 +29,7 @@ use PhpCsFixer\Tests\Test\Assert\AssertJsonSchemaTrait;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(GitlabReporter::class)]
 final class GitlabReporterTest extends AbstractReporterTestCase
 {
     use AssertJsonSchemaTrait;

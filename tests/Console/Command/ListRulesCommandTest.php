@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\Console\Command;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\ListRulesCommand;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -26,6 +27,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ListRulesCommand::class)]
 final class ListRulesCommandTest extends TestCase
 {
     public function testListWithTxtFormat(): void

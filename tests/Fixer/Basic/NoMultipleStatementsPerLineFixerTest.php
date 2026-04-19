@@ -14,7 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Basic;
 
+use PhpCsFixer\Fixer\Basic\NoMultipleStatementsPerLineFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -25,11 +29,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NoMultipleStatementsPerLineFixer::class)]
 final class NoMultipleStatementsPerLineFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -107,6 +113,8 @@ final class NoMultipleStatementsPerLineFixerTest extends AbstractFixerTestCase
      *
      * @requires PHP 8.4
      */
+    #[DataProvider('provideFix84Cases')]
+    #[RequiresPhp('>= 8.4')]
     public function testFix84(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

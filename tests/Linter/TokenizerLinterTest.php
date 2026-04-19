@@ -16,6 +16,8 @@ namespace PhpCsFixer\Tests\Linter;
 
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\TokenizerLinter;
+use PhpCsFixer\Linter\TokenizerLintingResult;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -27,6 +29,8 @@ use PhpCsFixer\Linter\TokenizerLinter;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(TokenizerLinter::class)]
+#[CoversClass(TokenizerLintingResult::class)]
 final class TokenizerLinterTest extends AbstractLinterTestCase
 {
     public function testIsAsync(): void

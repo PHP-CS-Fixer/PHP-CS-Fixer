@@ -14,8 +14,12 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
+use PhpCsFixer\Fixer\Phpdoc\PhpdocTagNoNamedArgumentsFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -28,6 +32,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(PhpdocTagNoNamedArgumentsFixer::class)]
 final class PhpdocTagNoNamedArgumentsFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -35,6 +40,7 @@ final class PhpdocTagNoNamedArgumentsFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = [], ?WhitespacesFixerConfig $whitespacesConfig = null): void
     {
         $this->fixer->configure($configuration);
@@ -229,6 +235,8 @@ final class PhpdocTagNoNamedArgumentsFixerTest extends AbstractFixerTestCase
      *
      * @requires PHP >= 8.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0')]
     public function testFix80(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->testFix($expected, $input, $configuration);
@@ -285,6 +293,8 @@ final class PhpdocTagNoNamedArgumentsFixerTest extends AbstractFixerTestCase
      *
      * @requires PHP >= 8.1
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1')]
     public function testFix81(string $expected, ?string $input = null): void
     {
         $this->testFix($expected, $input);
@@ -342,6 +352,8 @@ final class PhpdocTagNoNamedArgumentsFixerTest extends AbstractFixerTestCase
      *
      * @requires PHP >= 8.2
      */
+    #[DataProvider('provideFix82Cases')]
+    #[RequiresPhp('>= 8.2')]
     public function testFix82(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->testFix($expected, $input, $configuration);
@@ -402,6 +414,8 @@ final class PhpdocTagNoNamedArgumentsFixerTest extends AbstractFixerTestCase
      *
      * @requires PHP ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0
      */
+    #[DataProvider('provideFixPre85Cases')]
+    #[RequiresPhp('~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0')]
     public function testFixPre85(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

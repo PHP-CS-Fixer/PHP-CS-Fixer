@@ -14,7 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
+use PhpCsFixer\Fixer\ClassNotation\SelfStaticAccessorFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -25,11 +29,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(SelfStaticAccessorFixer::class)]
 final class SelfStaticAccessorFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -384,6 +390,8 @@ $b = function() { return static::class; };
      *
      * @requires PHP 8.1
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1')]
     public function testFix81(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
@@ -492,6 +500,8 @@ enum Foo
      *
      * @requires PHP 8.2
      */
+    #[DataProvider('provideFix82Cases')]
+    #[RequiresPhp('>= 8.2')]
     public function testFix82(string $expected, string $input): void
     {
         $this->doTest($expected, $input);

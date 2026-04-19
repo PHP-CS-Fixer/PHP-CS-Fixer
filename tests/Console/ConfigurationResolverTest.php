@@ -44,6 +44,10 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\ToolInfoInterface;
 use PhpCsFixer\Utils;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -56,6 +60,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ConfigurationResolver::class)]
 final class ConfigurationResolverTest extends TestCase
 {
     public function testResolveParallelConfig(): void
@@ -148,6 +153,7 @@ final class ConfigurationResolverTest extends TestCase
     /**
      * @dataProvider provideProgressTypeCases
      */
+    #[DataProvider('provideProgressTypeCases')]
     public function testResolveProgressWithPositiveConfigAndExplicitProgress(string $progressType): void
     {
         $config = new Config();
@@ -165,6 +171,7 @@ final class ConfigurationResolverTest extends TestCase
     /**
      * @dataProvider provideProgressTypeCases
      */
+    #[DataProvider('provideProgressTypeCases')]
     public function testResolveProgressWithNegativeConfigAndExplicitProgress(string $progressType): void
     {
         $config = new Config();
@@ -235,6 +242,7 @@ final class ConfigurationResolverTest extends TestCase
      *
      * @param class-string<ConfigInterface> $expectedClass
      */
+    #[DataProvider('provideResolveConfigFileChooseFileCases')]
     public function testResolveConfigFileChooseFile(string $expectedFile, string $expectedClass, string $path, ?string $cwdPath = null): void
     {
         $resolver = $this->createConfigurationResolver(
@@ -344,6 +352,7 @@ final class ConfigurationResolverTest extends TestCase
      *
      * @dataProvider provideResolvePathCases
      */
+    #[DataProvider('provideResolvePathCases')]
     public function testResolvePath(array $paths, string $cwd, array $expectedPaths): void
     {
         $resolver = $this->createConfigurationResolver(
@@ -390,6 +399,7 @@ final class ConfigurationResolverTest extends TestCase
      *
      * @dataProvider provideRejectInvalidPathCases
      */
+    #[DataProvider('provideRejectInvalidPathCases')]
     public function testRejectInvalidPath(array $paths, string $expectedMessage): void
     {
         $resolver = $this->createConfigurationResolver(
@@ -549,6 +559,7 @@ final class ConfigurationResolverTest extends TestCase
      *
      * @dataProvider provideResolveIntersectionOfPathsCases
      */
+    #[DataProvider('provideResolveIntersectionOfPathsCases')]
     public function testResolveIntersectionOfPaths($expected, ?Finder $configFinder, array $path, string $pathMode, ?string $configOption = null): void
     {
         if ($expected instanceof \Exception) {
@@ -752,6 +763,7 @@ final class ConfigurationResolverTest extends TestCase
      *
      * @dataProvider provideConfigFinderIsOverriddenCases
      */
+    #[DataProvider('provideConfigFinderIsOverriddenCases')]
     public function testConfigFinderIsOverridden(array $options, bool $expectedResult): void
     {
         $resolver = $this->createConfigurationResolver($options);
@@ -857,6 +869,7 @@ final class ConfigurationResolverTest extends TestCase
     /**
      * @dataProvider provideResolveBooleanOptionCases
      */
+    #[DataProvider('provideResolveBooleanOptionCases')]
     public function testResolveUsingCacheWithConfigOption(bool $expected, bool $configValue, ?string $passed): void
     {
         $config = new Config();
@@ -917,6 +930,7 @@ final class ConfigurationResolverTest extends TestCase
     /**
      * @dataProvider provideResolveUsingCacheForRuntimesCases
      */
+    #[DataProvider('provideResolveUsingCacheForRuntimesCases')]
     public function testResolveUsingCacheForRuntimes(bool $cacheAllowed, bool $installedWithComposer, bool $asPhar, bool $inDocker): void
     {
         $config = new Config();
@@ -1063,6 +1077,7 @@ final class ConfigurationResolverTest extends TestCase
     /**
      * @dataProvider provideResolveBooleanOptionCases
      */
+    #[DataProvider('provideResolveBooleanOptionCases')]
     public function testResolveAllowRiskyWithConfigOption(bool $expected, bool $configValue, ?string $passed): void
     {
         $config = new Config();
@@ -1166,6 +1181,7 @@ final class ConfigurationResolverTest extends TestCase
      *
      * @dataProvider provideResolveRenamedRulesWithUnknownRulesCases
      */
+    #[DataProvider('provideResolveRenamedRulesWithUnknownRulesCases')]
     public function testResolveRenamedRulesWithUnknownRules(string $expectedMessage, array $rules): void
     {
         $this->expectException(InvalidConfigurationException::class);
@@ -1279,6 +1295,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
      *
      * @dataProvider provideResolveDifferCases
      */
+    #[DataProvider('provideResolveDifferCases')]
     public function testResolveDiffer(string $expected, $diffConfig): void
     {
         $resolver = $this->createConfigurationResolver([
@@ -1350,6 +1367,8 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
      *
      * @group legacy
      */
+    #[DataProvider('provideDeprecatedFixerConfiguredCases')]
+    #[Group('legacy')]
     public function testDeprecatedFixerConfigured($ruleConfig): void
     {
         $this->expectDeprecation('Rule "Vendor4/foo" is deprecated. Use "testA" and "testB" instead.');
@@ -1395,6 +1414,8 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
      *
      * @param list<string> $successors
      */
+    #[DataProvider('provideDeprecatedRuleSetConfiguredCases')]
+    #[Group('legacy')]
     public function testDeprecatedRuleSetConfigured(string $ruleSet, array $successors): void
     {
         $this->expectDeprecation(\sprintf(
@@ -1430,6 +1451,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
      * @param non-empty-string  $file
      * @param non-empty-string  $expectedPathRelativeToFile
      */
+    #[DataProvider('provideGetDirectoryCases')]
     public function testGetDirectory(?string $cacheFile, string $file, string $expectedPathRelativeToFile): void
     {
         if (null !== $cacheFile) {
@@ -1477,6 +1499,8 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
      *
      * @runInSeparateProcess
      */
+    #[DataProvider('provideGetReporterCases')]
+    #[RunInSeparateProcess]
     public function testGetReporter(string $expectedFormat, string $formatConfig, array $envs = []): void
     {
         foreach ($envs as $env => $val) {
