@@ -952,14 +952,14 @@ enum Foo: string
                     'classIndex' => 1,
                     'type' => 'const',
                 ],
-                27 => [
+                40 => [
                     'classIndex' => 1,
                     'type' => 'method',
                 ],
             ],
             <<<'PHP'
                 <?php class Foo {
-                    const CHECKER = static function (): void {};
+                    const CHECKER = static function (mixed $v): bool { return null === $v; };
 
                     function yes() {}
                 }
