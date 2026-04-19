@@ -69,7 +69,7 @@ final class ListFilesCommandTest extends TestCase
      *
      * Skip test on Windows as `getcwd()` includes the drive letter with a colon `:` which is illegal in filenames.
      */
-    #[RequiresOperatingSystem('Linux|Darwin', ' *')]
+    #[RequiresOperatingSystem('Linux|Darwin')]
     public function testListFilesDoesNotCorruptListWithGetcwdInName(): void
     {
         try {
