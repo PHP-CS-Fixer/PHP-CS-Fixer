@@ -25,20 +25,31 @@ use PHPUnit\Framework\Attributes\RequiresPhp;
  *
  * @covers \PhpCsFixer\Fixer\CastNotation\NoUnsetCastFixer
  *
- * @requires PHP < 8.0.0
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\CastNotation\NoUnsetCastFixer>
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 #[CoversClass(NoUnsetCastFixer::class)]
-#[RequiresPhp('< 8.0.0')]
 final class NoUnsetCastFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @requires PHP >= 8.0.0
+     */
+    #[RequiresPhp('>= 8.0.0')]
+    public function testFix80(): void
+    {
+        // to make sure that fixer is registered and can be tested on dummy file even on PHP version mismatch
+
+        $this->doTest('<?php echo "dummy";');
+    }
+
+    /**
+     * @requires PHP < 8.0.0
+     *
      * @dataProvider provideFixCases
      */
     #[DataProvider('provideFixCases')]
+    #[RequiresPhp('< 8.0.0')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
