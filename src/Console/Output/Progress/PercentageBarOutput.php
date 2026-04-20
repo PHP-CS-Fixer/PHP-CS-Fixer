@@ -44,6 +44,7 @@ final class PercentageBarOutput implements ProgressOutputInterface
         $this->progressBar->setProgressCharacter('');
         $this->progressBar->setFormat('normal');
 
+        // when CI does not offer to overwrite the line, write to new line instead
         if (filter_var(getenv('GITHUB_ACTIONS'), \FILTER_VALIDATE_BOOLEAN)) {
             $this->progressBar->setOverwrite(false);
             $this->progressBar->minSecondsBetweenRedraws(10);
