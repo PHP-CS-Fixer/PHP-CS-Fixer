@@ -20,6 +20,7 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitTestClassRequiresCoversFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\RequiresPhp;
 
@@ -37,7 +38,7 @@ use PHPUnit\Framework\Attributes\RequiresPhp;
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 #[CoversClass(AbstractPhpUnitFixer::class)]
-#[CoversClass(DocBlockAnnotationTrait::class)]
+#[CoversTrait(DocBlockAnnotationTrait::class)]
 #[CoversClass(PhpUnitTestClassRequiresCoversFixer::class)]
 final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCase
 {
