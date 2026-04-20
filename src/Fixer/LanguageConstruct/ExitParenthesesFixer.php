@@ -57,6 +57,12 @@ final class ExitParenthesesFixer extends AbstractFixer
                 continue;
             }
 
+            $prevIndex = $tokens->getPrevMeaningfulToken($index);
+
+            if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind([\T_DOUBLE_COLON, \T_CASE, \T_CONST])) {
+                continue;
+            }
+
             $nextIndex = $tokens->getNextMeaningfulToken($index);
 
             if (null !== $nextIndex && $tokens[$nextIndex]->equals('(')) {

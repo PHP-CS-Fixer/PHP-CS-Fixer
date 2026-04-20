@@ -143,6 +143,22 @@ final class ExitParenthesesFixerTest extends AbstractFixerTestCase
         yield 'exit with parenthesis on next line already' => [
             "<?php exit\n(0);",
         ];
+
+        yield 'class constant named exit is not touched' => [
+            '<?php class Foo { const EXIT = 1; } Foo::EXIT;',
+        ];
+
+        yield 'class constant access to exit is not touched' => [
+            '<?php echo Foo::exit;',
+        ];
+
+        yield 'method named exit on object is not touched' => [
+            '<?php $foo->exit;',
+        ];
+
+        yield 'method call named exit is not touched' => [
+            '<?php $foo->exit();',
+        ];
     }
 
     /**
@@ -165,6 +181,28 @@ final class ExitParenthesesFixerTest extends AbstractFixerTestCase
         yield 'exit inside match arm' => [
             "<?php match (\$x) {\n    1 => exit(),\n    default => null,\n};",
             "<?php match (\$x) {\n    1 => exit,\n    default => null,\n};",
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix81Cases
+     *
+     * @requires PHP >= 8.1.0
+     */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: null|string}>
+     */
+    public static function provideFix81Cases(): iterable
+    {
+        yield 'enum case named exit is not touched' => [
+            '<?php enum E { case EXIT; }',
         ];
     }
 }
