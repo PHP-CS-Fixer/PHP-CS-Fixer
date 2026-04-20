@@ -67,7 +67,9 @@ final class PercentageBarOutputTest extends TestCase
         ];
     }
 
-    public function testPercentageBarProgressOutputOnGitHubActionsWithForcedAnsi(): void
+    // test preventing CLI looking like following (mind the missing line breaks), when CI does not offer line overwrite possibility:
+    //    0/500 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%  10/500 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   2%  50/100 [▓▓░░░░░░░░░░░░░░░░░░░░░░░░░░]  10%
+    public function testPercentageBarProgressOutputOnGitHubActionsDoesNotOverwriteTheLine(): void
     {
         if (!filter_var(getenv('GITHUB_ACTIONS'), \FILTER_VALIDATE_BOOLEAN)) {
             self::markTestSkipped('This test is only relevant when running in GitHub Actions environment.');
@@ -75,8 +77,10 @@ final class PercentageBarOutputTest extends TestCase
 
         $nbFiles = 100;
 
-        // mimic called with --ansi option
-        $output = new BufferedOutput(BufferedOutput::VERBOSITY_NORMAL, true);
+        $output = new BufferedOutput(
+            BufferedOutput::VERBOSITY_NORMAL,
+            true, // mimic called with --ansi option
+        );
 
         $processOutput = new PercentageBarOutput(new OutputContext($output, 80, $nbFiles));
 
