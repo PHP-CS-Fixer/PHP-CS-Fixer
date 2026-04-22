@@ -333,10 +333,13 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
         $splitByDoubleColonCount = \count($splitByDoubleColon);
 
         if (1 === $splitByDoubleColonCount) {
+            // naive guessing if it's a Trait or Class, as we do not have access to codebase to make sure, but it's better than nothing
+            $isTrait = str_ends_with($splitByDoubleColon[0], 'Trait');
+
             return self::createAttributeTokens(
                 $tokens,
                 $index,
-                'CoversClass',
+                $isTrait ? 'CoversTrait' : 'CoversClass',
                 ...self::toClassConstant($splitByDoubleColon[0]),
             );
         }
