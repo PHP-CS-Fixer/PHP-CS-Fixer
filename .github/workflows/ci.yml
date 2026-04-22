@@ -242,21 +242,15 @@ jobs:
 
       - name: Install PHPUnit 12
         if: matrix.run-tests == 'yes' && matrix.install-phpunit-12 == 'yes'
-        env:
-          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
         run: |
           composer require --dev --with-all-dependencies phpunit/phpunit:"^9.6 || ^12.5.23" # mention ^9.6 to keep trace of minimum supported version, needed for utests
-          php php-cs-fixer fix --quiet --rules=php_unit_attributes
 
       - name: Install PHPUnit 13
         if: matrix.run-tests == 'yes' && matrix.install-phpunit-13 == 'yes'
-        env:
-          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
         run: |
           sed -i '/<extensions>/,/<\/extensions>/d' phpunit.xml.dist
           composer remove --dev facile-it/paraunit --no-update
           composer require --dev --with-all-dependencies phpunit/phpunit:"^9.6 || ^13.1.7" # mention ^9.6 to keep trace of minimum supported version, needed for utests
-          php php-cs-fixer fix --quiet --rules=php_unit_attributes
 
       - name: Check configuration for PHPUnit
         if: matrix.php-version != '7.4' && matrix.php-version != '8.0' # These run PHPUnit 9, which does not have the option
