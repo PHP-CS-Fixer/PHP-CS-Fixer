@@ -330,8 +330,29 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
         \assert(isset($matches[1]));
 
         if (str_starts_with($matches[1], '::')) {
-            return self::createAttributeTokens($tokens, $index, 'CoversFunction', self::createEscapedStringToken(substr($matches[1], 2)));
+            return self::createAttributeTokens(
+                $tokens,
+                $index,
+                'CoversFunction',
+                self::createEscapedStringToken(substr($matches[1], 2)),
+            );
         }
+
+        $splitByDoubleColon = explode('::', $matches[1]);
+        if (2 === \count($splitByDoubleColon) && $splitByDoubleColon[0] !== '' and $splitByDoubleColon[1] !== '') {
+            return self::createAttributeTokens(
+                $tokens,
+                $index,
+                'CoversMethod',
+                ...self::toClassConstant($splitByDoubleColon[0]),
+                ...[
+                    new Token(','),
+                    new Token([\T_WHITESPACE, ' ']),
+                    self::fixNameAndCreateEscapedStringToken($splitByDoubleColon[1]),
+                ],
+            );
+        }
+
         if (!str_contains($matches[1], '::')) {
             return self::createAttributeTokens(
                 $tokens,
@@ -341,6 +362,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
             );
         }
 
+        // unexpected format, do not attempt to fix
         return [];
     }
 

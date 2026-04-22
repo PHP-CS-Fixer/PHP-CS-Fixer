@@ -94,7 +94,7 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
         yield 'do not fix when not supported by attributes' => [<<<'PHP'
             <?php
             /**
-             * @covers FooClass::FooMethod
+             * @covers FooClass::
              * @uses ClassName::methodName
              */
             class FooTest extends \PHPUnit\Framework\TestCase {
