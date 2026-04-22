@@ -368,16 +368,16 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
             '@beforeClass',
         );
 
-        yield 'handle CoversClass' => self::createCase(
-            ['class'],
-            '#[CoversClass(\VendorName\ClassName::class)]',
-            '@covers \VendorName\ClassName',
-        );
-
         yield 'handle CoversFunction' => self::createCase(
             ['class'],
             "#[CoversFunction('functionName')]",
             '@covers ::functionName',
+        );
+
+        yield 'handle CoversClass' => self::createCase(
+            ['class'],
+            '#[CoversClass(\VendorName\ClassName::class)]',
+            '@covers \VendorName\ClassName',
         );
 
         yield 'handle CoversNothing' => self::createCase(
