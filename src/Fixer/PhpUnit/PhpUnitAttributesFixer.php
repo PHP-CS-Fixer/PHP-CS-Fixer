@@ -329,17 +329,28 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
         $matches = self::getMatches($annotation);
         \assert(isset($matches[1]));
 
-        if (str_starts_with($matches[1], '::')) {
+        $splitByDoubleColon = explode('::', $matches[1]);
+        $splitByDoubleColonCount = \count($splitByDoubleColon);
+
+        if (1 === $splitByDoubleColonCount) {
+            return self::createAttributeTokens(
+                $tokens,
+                $index,
+                'CoversClass',
+                ...self::toClassConstant($splitByDoubleColon[0]),
+            );
+        }
+
+        if (2 === $splitByDoubleColonCount && '' === $splitByDoubleColon[0]) {
             return self::createAttributeTokens(
                 $tokens,
                 $index,
                 'CoversFunction',
-                self::createEscapedStringToken(substr($matches[1], 2)),
+                self::createEscapedStringToken($splitByDoubleColon[1]),
             );
         }
 
-        $splitByDoubleColon = explode('::', $matches[1]);
-        if (2 === \count($splitByDoubleColon) && $splitByDoubleColon[0] !== '' and $splitByDoubleColon[1] !== '') {
+        if (2 === $splitByDoubleColonCount && '' !== $splitByDoubleColon[0] && '' !== $splitByDoubleColon[1]) {
             return self::createAttributeTokens(
                 $tokens,
                 $index,
@@ -350,15 +361,6 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
                     new Token([\T_WHITESPACE, ' ']),
                     self::fixNameAndCreateEscapedStringToken($splitByDoubleColon[1]),
                 ],
-            );
-        }
-
-        if (!str_contains($matches[1], '::')) {
-            return self::createAttributeTokens(
-                $tokens,
-                $index,
-                'CoversClass',
-                ...self::toClassConstant($matches[1]),
             );
         }
 
