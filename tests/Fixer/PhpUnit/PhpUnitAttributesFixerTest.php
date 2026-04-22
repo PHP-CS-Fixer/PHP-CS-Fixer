@@ -380,6 +380,20 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
             '@covers \VendorName\ClassName',
         );
 
+        // added in PHPUnit 11.1
+        yield 'handle CoversMethod' => self::createCase(
+            ['class'],
+            '#[CoversMethod(\Foo\Bar::class, \'methodName\')]',
+            '@covers \Foo\Bar::methodName',
+        );
+
+        // added in PHPUnit 11.2
+        yield 'handle CoversTrait' => self::createCase(
+            ['class'],
+            '#[CoversTrait(\Foo\BarTrait::class)]',
+            '@covers \Foo\BarTrait',
+        );
+
         yield 'handle CoversNothing' => self::createCase(
             ['class', 'method'],
             '#[CoversNothing]',
