@@ -91,6 +91,19 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
             }
             PHP];
 
+        yield 'do not touch coversDefaultClass' => [<<<'PHP'
+            <?php
+            /**
+             * @coversDefaultClass \Foo
+             */
+            class FooTest extends \PHPUnit\Framework\TestCase {
+                /**
+                 * @covers ::publicMethod
+                 */
+                public function testBar() { self::assertTrue(true); }
+            }
+            PHP];
+
         yield 'do not fix when not supported by attributes' => [<<<'PHP'
             <?php
             /**
