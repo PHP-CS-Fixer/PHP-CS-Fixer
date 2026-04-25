@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\Console\Report\FixReport;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Report\FixReport\GitlabReporter;
 use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
+use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Tests\Test\Assert\AssertJsonSchemaTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 
@@ -33,6 +34,95 @@ use PHPUnit\Framework\Attributes\CoversClass;
 final class GitlabReporterTest extends AbstractReporterTestCase
 {
     use AssertJsonSchemaTrait;
+
+    public function testPerFixerDiffsAreUsedWhenAvailable(): void
+    {
+        $fixerADiff = "--- Original\n+++ New\n@@ -27,7 +27,6 @@\n use App\\W;\n use App\\X;\n use App\\Y;\n-use App\\UnusedImport;\n use App\\Z;\n \n class Sample\n";
+        $fixerBDiff = "--- Original\n+++ New\n@@ -80,5 +80,5 @@\n }\n \n function bbb()\n {\n-    return 1+1;\n+    return 1 + 1;\n }\n";
+
+        $report = $this->reporter->generate(new ReportSummary(
+            [
+                'someFile.php' => [
+                    'appliedFixers' => ['fixer_a', 'fixer_b'],
+                    'diff' => $fixerADiff.$fixerBDiff,
+                    'fixerDiffs' => [
+                        'fixer_a' => $fixerADiff,
+                        'fixer_b' => $fixerBDiff,
+                    ],
+                ],
+            ],
+            10,
+            0,
+            0,
+            false,
+            false,
+            false,
+        ));
+
+        $entries = json_decode($report, true, 512, \JSON_THROW_ON_ERROR);
+        self::assertCount(2, $entries, 'one entry per fixer at its own location');
+
+        self::assertSame('PHP-CS-Fixer.fixer_a', $entries[0]['check_name']);
+        self::assertSame(['begin' => 30, 'end' => 34], $entries[0]['location']['lines']);
+
+        self::assertSame('PHP-CS-Fixer.fixer_b', $entries[1]['check_name']);
+        self::assertSame(['begin' => 84, 'end' => 85], $entries[1]['location']['lines']);
+    }
+
+    public function testKnownFixerUsesDefinitionAndDocumentationInReport(): void
+    {
+        $diff = "--- Original\n+++ New\n@@ -1,2 +1,1 @@\n-foo\n+bar\n";
+        $report = $this->reporter->generate(new ReportSummary(
+            [
+                'file.php' => [
+                    'appliedFixers' => ['no_unused_imports'],
+                    'diff' => $diff,
+                ],
+            ],
+            1,
+            0,
+            0,
+            false,
+            false,
+            false,
+        ));
+        $entries = json_decode($report, true, 512, \JSON_THROW_ON_ERROR);
+        self::assertCount(1, $entries);
+        self::assertStringNotContainsString('(custom rule)', $entries[0]['description']);
+        self::assertStringContainsString('https://cs.symfony.com/doc/rules/', $entries[0]['content']['body']);
+        self::assertStringContainsString('no_unused_imports', $entries[0]['content']['body']);
+    }
+
+    public function testMultipleChunksInSingleFixerDiffEmitOneEntryPerChunk(): void
+    {
+        $multiChunkDiff = "--- Original\n+++ New\n@@ -10,3 +10,2 @@\n keep1\n-removed_a\n keep2\n@@ -50,3 +49,2 @@\n keep3\n-removed_b\n keep4\n";
+
+        $report = $this->reporter->generate(new ReportSummary(
+            [
+                'someFile.php' => [
+                    'appliedFixers' => ['multi_chunk_fixer'],
+                    'diff' => $multiChunkDiff,
+                    'fixerDiffs' => ['multi_chunk_fixer' => $multiChunkDiff],
+                ],
+            ],
+            10,
+            0,
+            0,
+            false,
+            false,
+            false,
+        ));
+
+        $entries = json_decode($report, true, 512, \JSON_THROW_ON_ERROR);
+        self::assertCount(2, $entries);
+        self::assertSame(['begin' => 11, 'end' => 13], $entries[0]['location']['lines']);
+        self::assertSame(['begin' => 51, 'end' => 53], $entries[1]['location']['lines']);
+        self::assertNotSame(
+            $entries[0]['fingerprint'],
+            $entries[1]['fingerprint'],
+            'fingerprints must differ when same fixer reports multiple chunks',
+        );
+    }
 
     protected function createReporter(): ReporterInterface
     {
@@ -61,7 +151,7 @@ final class GitlabReporterTest extends AbstractReporterTestCase
                             "content": {
                                 "body": "{$about}\\nCheck performed with a custom rule."
                             },
-                            "fingerprint": "ad098ea6ea7a28dd85dfcdfc9e2bded0",
+                            "fingerprint": "1a745ca537fc8d1d7a4f332424bc100c",
                             "severity": "minor",
                             "location": {
                                 "path": "someFile.php",
@@ -91,7 +181,7 @@ final class GitlabReporterTest extends AbstractReporterTestCase
                             "content": {
                                 "body": "{$about}\\nCheck performed with a custom rule."
                             },
-                            "fingerprint": "b74e9385c8ae5b1f575c9c8226c7deff",
+                            "fingerprint": "4a6d5ac462516458d5ae8718461dbe0b",
                             "severity": "minor",
                             "location": {
                                 "path": "someFile.php",
@@ -107,7 +197,7 @@ final class GitlabReporterTest extends AbstractReporterTestCase
                             "content": {
                                 "body": "{$about}\\nCheck performed with a custom rule."
                             },
-                            "fingerprint": "acad4672140c737a83c18d1474d84074",
+                            "fingerprint": "41bdef686a7c3912ca9fc00894987b85",
                             "severity": "minor",
                             "location": {
                                 "path": "someFile.php",
@@ -137,7 +227,7 @@ final class GitlabReporterTest extends AbstractReporterTestCase
                             "content": {
                                 "body": "{$about}\\nCheck performed with a custom rule."
                             },
-                            "fingerprint": "b74e9385c8ae5b1f575c9c8226c7deff",
+                            "fingerprint": "4a6d5ac462516458d5ae8718461dbe0b",
                             "severity": "minor",
                             "location": {
                                 "path": "someFile.php",
@@ -153,7 +243,7 @@ final class GitlabReporterTest extends AbstractReporterTestCase
                             "content": {
                                 "body": "{$about}\\nCheck performed with a custom rule."
                             },
-                            "fingerprint": "acad4672140c737a83c18d1474d84074",
+                            "fingerprint": "41bdef686a7c3912ca9fc00894987b85",
                             "severity": "minor",
                             "location": {
                                 "path": "someFile.php",
@@ -169,7 +259,7 @@ final class GitlabReporterTest extends AbstractReporterTestCase
                             "content": {
                                 "body": "{$about}\\nCheck performed with a custom rule."
                             },
-                            "fingerprint": "30e86e533dac0f1b93bbc3a55c6908f8",
+                            "fingerprint": "f0e531c97fedfbd779cb57e610c73648",
                             "severity": "minor",
                             "location": {
                                 "path": "anotherFile.php",
