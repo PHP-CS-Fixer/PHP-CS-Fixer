@@ -69,6 +69,30 @@ final class GitlabReporterTest extends AbstractReporterTestCase
         self::assertSame(['begin' => 84, 'end' => 85], $entries[1]['location']['lines']);
     }
 
+    public function testKnownFixerUsesDefinitionAndDocumentationInReport(): void
+    {
+        $diff = "--- Original\n+++ New\n@@ -1,2 +1,1 @@\n-foo\n+bar\n";
+        $report = $this->reporter->generate(new ReportSummary(
+            [
+                'file.php' => [
+                    'appliedFixers' => ['no_unused_imports'],
+                    'diff' => $diff,
+                ],
+            ],
+            1,
+            0,
+            0,
+            false,
+            false,
+            false,
+        ));
+        $entries = json_decode($report, true, 512, \JSON_THROW_ON_ERROR);
+        self::assertCount(1, $entries);
+        self::assertStringNotContainsString('(custom rule)', $entries[0]['description']);
+        self::assertStringContainsString('https://cs.symfony.com/doc/rules/', $entries[0]['content']['body']);
+        self::assertStringContainsString('no_unused_imports', $entries[0]['content']['body']);
+    }
+
     public function testMultipleChunksInSingleFixerDiffEmitOneEntryPerChunk(): void
     {
         $multiChunkDiff = "--- Original\n+++ New\n@@ -10,3 +10,2 @@\n keep1\n-removed_a\n keep2\n@@ -50,3 +49,2 @@\n keep3\n-removed_b\n keep4\n";
