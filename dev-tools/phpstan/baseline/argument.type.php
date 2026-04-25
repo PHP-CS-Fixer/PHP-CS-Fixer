@@ -12,11 +12,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Console/ConfigurationResolver.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $diffs of static method PhpCsFixer\\Console\\Report\\FixReport\\GitlabReporter::getLines() expects list<SebastianBergmann\\Diff\\Diff>, array<SebastianBergmann\\Diff\\Diff> given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/Report/FixReport/GitlabReporter.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #2 $offset of function substr expects int, int|false given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Documentation/FixerDocumentGenerator.php',
