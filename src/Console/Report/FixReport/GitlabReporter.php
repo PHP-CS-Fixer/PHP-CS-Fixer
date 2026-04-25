@@ -96,6 +96,7 @@ final class GitlabReporter implements ReporterInterface
                 // Fall back to the combined diff when per-fixer attribution is unavailable
                 // (e.g. legacy callers passing the older shape, or `NullDiffer`).
                 $diffToParse = $fixerDiffs[$fixerName] ?? $change['diff'];
+
                 /** @var list<Diff> $parsedDiffs */
                 $parsedDiffs = array_values($this->diffParser->parse($diffToParse));
                 $lineRanges = self::getAllLineRanges($parsedDiffs);
