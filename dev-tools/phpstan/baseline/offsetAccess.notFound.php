@@ -672,11 +672,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/PhpdocNoUselessInheritdocFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset int<1, max> might not exist on array.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/PhpdocSingleLineVarSpacingFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset \'general_phpdoc_tag_rename\' might not exist on non-empty-array<string, PhpCsFixer\\Fixer\\FixerInterface>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/PhpdocTagCasingFixer.php',
