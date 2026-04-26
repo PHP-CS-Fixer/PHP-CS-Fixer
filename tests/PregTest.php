@@ -287,4 +287,33 @@ final class PregTest extends TestCase
         self::assertSame([\chr(224)], $methodMatches);
         self::assertNotSame([\chr(224)], $functionMatches);
     }
+
+    public function testUnnamedCapturingGroup(): void
+    {
+        if (!filter_var(getenv('PHP_CS_FIXER_TESTS_SYSTEM_UNDER_TEST'), \FILTER_VALIDATE_BOOL)) {
+            self::markTestSkipped('This test requires PHP_CS_FIXER_TESTS_SYSTEM_UNDER_TEST=1');
+        }
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Regex "/(?P<foo>a)(b)?/" has unnamed capturing group.');
+
+        $matches = [];
+        Preg::match('/(?P<foo>a)(b)?/', 'a', $matches);
+    }
+
+    public function testNamedOptionalCapturingGroup(): void
+    {
+        $matches = [];
+        $result = Preg::match('/(?P<foo>a)(?P<bar>b)?/', 'a', $matches);
+
+        self::assertTrue($result);
+        self::assertSame(['a', 'foo' => 'a', 1 => 'a'], $matches);
+    }
+
+    public function testNamedGroupsWithPregSetOrder(): void
+    {
+        $matches = [];
+        Preg::matchAll('/(?P<foo>a)/', 'aa', $matches, \PREG_SET_ORDER);
+        self::assertCount(2, $matches);
+    }
 }
