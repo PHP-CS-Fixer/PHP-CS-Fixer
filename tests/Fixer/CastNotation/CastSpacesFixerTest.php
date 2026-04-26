@@ -15,7 +15,11 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\CastNotation;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\CastNotation\CastSpacesFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -28,6 +32,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(CastSpacesFixer::class)]
 final class CastSpacesFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -35,6 +40,7 @@ final class CastSpacesFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideInvalidConfigurationCases
      */
+    #[DataProvider('provideInvalidConfigurationCases')]
     public function testInvalidConfiguration(array $config, string $expectedMessage): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
@@ -64,6 +70,7 @@ final class CastSpacesFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -221,8 +228,10 @@ final class CastSpacesFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFix85Cases
      *
-     * @requires PHP 8.5
+     * @requires PHP >= 8.5.0
      */
+    #[DataProvider('provideFix85Cases')]
+    #[RequiresPhp('>= 8.5.0')]
     public function testFix85(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->testFix($expected, $input, $configuration);

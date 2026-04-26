@@ -16,6 +16,10 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Transformer\FirstClassCallableTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -26,6 +30,7 @@ use PhpCsFixer\Tokenizer\CT;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FirstClassCallableTransformer::class)]
 final class FirstClassCallableTransformerTest extends AbstractTransformerTestCase
 {
     /**
@@ -33,8 +38,10 @@ final class FirstClassCallableTransformerTest extends AbstractTransformerTestCas
      *
      * @dataProvider provideProcessCases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideProcessCases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testProcess(array $expectedTokens, string $source): void
     {
         $this->doTest($source, $expectedTokens, [CT::T_FIRST_CLASS_CALLABLE]);

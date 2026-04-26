@@ -34,6 +34,8 @@ use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Finder\Finder;
@@ -47,6 +49,7 @@ use Symfony\Component\Finder\Finder;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Runner::class)]
 final class RunnerTest extends TestCase
 {
     /**
@@ -198,6 +201,7 @@ final class RunnerTest extends TestCase
      *
      * @dataProvider provideRunnerUsesProperAnalysisModeCases
      */
+    #[DataProvider('provideRunnerUsesProperAnalysisModeCases')]
     public function testRunnerUsesProperAnalysisMode(
         ParallelConfig $parallelConfig,
         array $paths,
@@ -261,6 +265,7 @@ final class RunnerTest extends TestCase
      *
      * @dataProvider provideParallelFixStopsOnFirstViolationIfSuchOptionIsEnabledCases
      */
+    #[DataProvider('provideParallelFixStopsOnFirstViolationIfSuchOptionIsEnabledCases')]
     public function testParallelFixStopsOnFirstViolationIfSuchOptionIsEnabled(bool $stopOnViolation, int $expectedChanges): void
     {
         $errorsManager = new ErrorsManager();
@@ -382,6 +387,7 @@ final class RunnerTest extends TestCase
      *
      * @dataProvider provideRuleCustomisationPolicyCases
      */
+    #[DataProvider('provideRuleCustomisationPolicyCases')]
     public function testRuleCustomisationPolicy(string $path, \Closure $arraySyntaxCustomiser, ?array $expectedErrors, array $expectedFixedFiles): void
     {
         $arraySyntaxFixer = new Fixer\ArrayNotation\ArraySyntaxFixer();
@@ -510,6 +516,7 @@ final class RunnerTest extends TestCase
      *
      * @param array<non-empty-string,_RuleCustomisationPolicyCallback> $customisers
      */
+    #[DataProvider('provideRuleCustomisationPolicyWithWrongCustomisersCases')]
     public function testRuleCustomisationPolicyWithWrongCustomisers(array $customisers, string $error): void
     {
         $policy = new

@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\ToolInfo;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
@@ -24,6 +25,7 @@ use PhpCsFixer\ToolInfo;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ToolInfo::class)]
 final class ToolInfoTest extends TestCase
 {
     public function testGetVersion(): void

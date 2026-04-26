@@ -24,6 +24,9 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\ControlCaseStructuresAnalyzer;
 use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @covers \PhpCsFixer\Tokenizer\Analyzer\ControlCaseStructuresAnalyzer
@@ -32,6 +35,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ControlCaseStructuresAnalyzer::class)]
 final class ControlCaseStructuresAnalyzerTest extends TestCase
 {
     /**
@@ -39,6 +43,7 @@ final class ControlCaseStructuresAnalyzerTest extends TestCase
      *
      * @dataProvider provideFindControlStructuresCases
      */
+    #[DataProvider('provideFindControlStructuresCases')]
     public function testFindControlStructures(array $expectedAnalyses, string $source): void
     {
         $tokens = Tokens::fromCode($source);
@@ -329,10 +334,12 @@ endswitch ?>',
      * @param array<int, AbstractControlCaseStructuresAnalysis> $expectedAnalyses
      * @param list<int>                                         $types
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      *
      * @dataProvider provideFindControlStructuresPhp81Cases
      */
+    #[RequiresPhp('>= 8.1.0')]
+    #[DataProvider('provideFindControlStructuresPhp81Cases')]
     public function testFindControlStructuresPhp81(array $expectedAnalyses, string $source, array $types): void
     {
         $tokens = Tokens::fromCode($source);

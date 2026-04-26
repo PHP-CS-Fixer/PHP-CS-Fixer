@@ -19,6 +19,10 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTestCaseStaticMethodCallsFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Utils;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
+use PHPUnit\Framework\Attributes\RequiresPhpunit;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -34,6 +38,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(PhpUnitTestCaseStaticMethodCallsFixer::class)]
 final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestCase
 {
     public function testFixerContainsAllPhpunitStaticMethodsInItsList(): void
@@ -64,6 +69,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
      *
      * @dataProvider provideInvalidConfigurationCases
      */
+    #[DataProvider('provideInvalidConfigurationCases')]
     public function testInvalidConfiguration(array $configuration, string $expectedExceptionMessage): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
@@ -101,6 +107,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -591,8 +598,10 @@ class MyTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -617,40 +626,45 @@ class MyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @requires PHPUnit ^10.0
+     * @requires PHPUnit ^10.0.0
      */
+    #[RequiresPhpunit('^10.0.0')]
     public function testPHPUnit10(): void
     {
         self::assertPHPUnit(PhpUnitTargetVersion::VERSION_10_0);
     }
 
     /**
-     * @requires PHPUnit ^11.0
+     * @requires PHPUnit ^11.0.0
      */
+    #[RequiresPhpunit('^11.0.0')]
     public function testPHPUnit11(): void
     {
         self::assertPHPUnit(PhpUnitTargetVersion::VERSION_11_0);
     }
 
     /**
-     * @requires PHPUnit ^12.0
+     * @requires PHPUnit ^12.0.0
      */
+    #[RequiresPhpunit('^12.0.0')]
     public function testPHPUnit12(): void
     {
         self::assertPHPUnit(PhpUnitTargetVersion::VERSION_NEWEST);
     }
 
     /**
-     * @requires PHPUnit ^13.0
+     * @requires PHPUnit ^13.0.0
      */
+    #[RequiresPhpunit('^13.0.0')]
     public function testPHPUnit13(): void
     {
         self::assertPHPUnit(PhpUnitTargetVersion::VERSION_NEWEST);
     }
 
     /**
-     * @requires PHPUnit ^14.0
+     * @requires PHPUnit ^14.0.0
      */
+    #[RequiresPhpunit('^14.0.0')]
     public function testPHPUnit14(): void
     {
         self::fail('Hello, please implement me, and add new case for PHPUnit 15.');

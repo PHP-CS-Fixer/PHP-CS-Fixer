@@ -21,6 +21,7 @@ use PhpCsFixer\Linter\TokenizerLinter;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -49,6 +50,7 @@ abstract class AbstractLinterTestCase extends TestCase
      *
      * @dataProvider provideLintFileCases
      */
+    #[DataProvider('provideLintFileCases')]
     public function testLintFile(string $file, ?string $errorMessage = null): void
     {
         if (null !== $errorMessage) {
@@ -112,6 +114,7 @@ abstract class AbstractLinterTestCase extends TestCase
     /**
      * @dataProvider provideLintSourceCases
      */
+    #[DataProvider('provideLintSourceCases')]
     public function testLintSource(string $source, ?string $errorMessage = null): void
     {
         if (null !== $errorMessage) {

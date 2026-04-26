@@ -16,6 +16,10 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Transformer\UseTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -29,6 +33,7 @@ use PhpCsFixer\Tokenizer\CT;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(UseTransformer::class)]
 final class UseTransformerTest extends AbstractTransformerTestCase
 {
     /**
@@ -36,6 +41,7 @@ final class UseTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideProcessCases
      */
+    #[DataProvider('provideProcessCases')]
     public function testProcess(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
@@ -156,10 +162,12 @@ use C\{D,E,};
     /**
      * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      *
      * @dataProvider provideProcessPhp81Cases
      */
+    #[RequiresPhp('>= 8.1.0')]
+    #[DataProvider('provideProcessPhp81Cases')]
     public function testProcessPhp81(string $source, array $expectedTokens = []): void
     {
         $this->doTest($source, $expectedTokens, [CT::T_USE_TRAIT]);

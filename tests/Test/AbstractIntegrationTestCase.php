@@ -30,6 +30,8 @@ use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -134,6 +136,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
      *
      * @group legacy
      */
+    #[DataProvider('provideIntegrationCases')]
+    #[Group('legacy')]
     public function testIntegration(IntegrationCase $case): void
     {
         foreach ($case->getSettings()['deprecations'] as $deprecation) {

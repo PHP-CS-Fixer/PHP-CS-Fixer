@@ -23,6 +23,9 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Utils;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -36,6 +39,10 @@ use Symfony\Component\Console\Tester\CommandTester;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversNothing]
+#[Group('legacy')]
+#[Group('auto-review')]
+#[Group('covers-nothing')]
 final class DescribeCommandTest extends TestCase
 {
     protected function tearDown(): void
@@ -58,6 +65,7 @@ final class DescribeCommandTest extends TestCase
      *
      * @param list<string> $successorsNames
      */
+    #[DataProvider('provideDescribeCommandCases')]
     public function testDescribeCommand(string $fixerName, ?array $successorsNames, ?string $configFile = null): void
     {
         if (null !== $successorsNames) {

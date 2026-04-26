@@ -14,8 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Casing;
 
+use PhpCsFixer\Fixer\Casing\NativeFunctionTypeDeclarationCasingFixer;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -26,6 +29,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NativeFunctionTypeDeclarationCasingFixer::class)]
 final class NativeFunctionTypeDeclarationCasingFixerTest extends AbstractFixerTestCase
 {
     public function testFunctionIsDeprecatedProperly(): void
@@ -42,6 +46,7 @@ final class NativeFunctionTypeDeclarationCasingFixerTest extends AbstractFixerTe
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

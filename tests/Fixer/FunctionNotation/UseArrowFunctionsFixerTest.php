@@ -14,7 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
+use PhpCsFixer\Fixer\FunctionNotation\UseArrowFunctionsFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -27,11 +31,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(UseArrowFunctionsFixer::class)]
 final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -295,8 +301,10 @@ $load = function ($path) use ($data) {
     /**
      * @dataProvider provideFix85Cases
      *
-     * @requires PHP 8.5
+     * @requires PHP >= 8.5.0
      */
+    #[DataProvider('provideFix85Cases')]
+    #[RequiresPhp('>= 8.5.0')]
     public function testFix85(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

@@ -19,6 +19,9 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\Test\IntegrationCaseFactory;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
@@ -33,6 +36,9 @@ use Symfony\Component\Finder\SplFileInfo;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversNothing]
+#[Group('auto-review')]
+#[Group('covers-nothing')]
 final class FixerFactoryTest extends TestCase
 {
     public function testFixersPriorityEdgeFixers(): void
@@ -81,6 +87,7 @@ final class FixerFactoryTest extends TestCase
      *
      * @dataProvider provideFixersPriorityCasesHaveIntegrationTestCases
      */
+    #[DataProvider('provideFixersPriorityCasesHaveIntegrationTestCases')]
     public function testFixersPriorityCasesHaveIntegrationTest(string $fixerName, array $edges): void
     {
         $forPerformanceEdgesOnly = [
@@ -160,6 +167,7 @@ final class FixerFactoryTest extends TestCase
     /**
      * @dataProvider providePriorityIntegrationTestFilesAreListedInPriorityGraphCases
      */
+    #[DataProvider('providePriorityIntegrationTestFilesAreListedInPriorityGraphCases')]
     public function testPriorityIntegrationTestFilesAreListedInPriorityGraph(\SplFileInfo $file): void
     {
         $fileName = $file->getFilename();

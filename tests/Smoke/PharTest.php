@@ -19,6 +19,10 @@ use Keradus\CliExecutor\CommandExecutor;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\DescribeCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Large;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -35,6 +39,10 @@ use Symfony\Component\Console\Tester\CommandTester;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversNothing]
+#[Group('covers-nothing')]
+#[Group('legacy')]
+#[Large]
 final class PharTest extends AbstractSmokeTestCase
 {
     private static string $pharCwd;
@@ -118,6 +126,7 @@ final class PharTest extends AbstractSmokeTestCase
     /**
      * @dataProvider provideReportCases
      */
+    #[DataProvider('provideReportCases')]
     public function testReport(string $usingCache): void
     {
         try {

@@ -16,6 +16,8 @@ namespace PhpCsFixer\Tests\Runner\Parallel;
 
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -24,11 +26,13 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ParallelConfig::class)]
 final class ParallelConfigTest extends TestCase
 {
     /**
      * @dataProvider provideExceptionIsThrownOnNegativeValuesCases
      */
+    #[DataProvider('provideExceptionIsThrownOnNegativeValuesCases')]
     public function testExceptionIsThrownOnNegativeValues(
         int $maxProcesses,
         int $filesPerProcess,

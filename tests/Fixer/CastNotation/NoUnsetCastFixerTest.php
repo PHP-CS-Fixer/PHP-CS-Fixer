@@ -14,24 +14,42 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\CastNotation;
 
+use PhpCsFixer\Fixer\CastNotation\NoUnsetCastFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\CastNotation\NoUnsetCastFixer
  *
- * @requires PHP <8.0
- *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\CastNotation\NoUnsetCastFixer>
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NoUnsetCastFixer::class)]
 final class NoUnsetCastFixerTest extends AbstractFixerTestCase
 {
     /**
+     * @requires PHP >= 8.0.0
+     */
+    #[RequiresPhp('>= 8.0.0')]
+    public function testFix80(): void
+    {
+        // to make sure that fixer is registered and can be tested on dummy file even on PHP version mismatch
+
+        $this->doTest('<?php echo "dummy";');
+    }
+
+    /**
+     * @requires PHP < 8.0.0
+     *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
+    #[RequiresPhp('< 8.0.0')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
