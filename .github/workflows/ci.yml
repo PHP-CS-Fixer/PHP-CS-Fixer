@@ -168,6 +168,7 @@ jobs:
           - operating-system: windows-latest
             php-version: ${{ needs.setup.outputs.PHP_MAX }}
             job-description: tests on Windows
+            composer-flags: --ignore-platform-req=ext-pcntl
             run-tests: 'yes'
 
           - operating-system: macos-latest
