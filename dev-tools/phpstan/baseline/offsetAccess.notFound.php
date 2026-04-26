@@ -2,16 +2,6 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset 1 might not exist on list<int>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/AbstractFopenFlagFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset int might not exist on array<int, int>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/AbstractFopenFlagFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset 1 might not exist on non-empty-list<int<0, max>>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/AbstractFunctionReferenceFixer.php',
