@@ -71,6 +71,34 @@ final class PercentageBarOutputTest extends TestCase
         ];
     }
 
+    // test preventing CLI looking like following (mind the missing line breaks), when CI does not offer line overwrite possibility:
+    //    0/500 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%  10/500 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   2%  50/100 [▓▓░░░░░░░░░░░░░░░░░░░░░░░░░░]  10%
+    public function testPercentageBarProgressOutputOnGitHubActionsDoesNotOverwriteTheLine(): void
+    {
+        if (!filter_var(getenv('GITHUB_ACTIONS'), \FILTER_VALIDATE_BOOLEAN)) {
+            self::markTestSkipped('This test is only relevant when running in GitHub Actions environment.');
+        }
+
+        $nbFiles = 100;
+
+        $output = new BufferedOutput(
+            BufferedOutput::VERBOSITY_NORMAL,
+            true, // mimic called with --ansi option
+        );
+
+        $processOutput = new PercentageBarOutput(new OutputContext($output, 80, $nbFiles));
+
+        for ($i = 0; $i < $nbFiles; ++$i) {
+            $processOutput->onFixerFileProcessed(new FileProcessed(FileProcessed::STATUS_FIXED));
+        }
+
+        self::assertSame(
+            '   0/100 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%'.\PHP_EOL
+            .' 100/100 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%',
+            rtrim($output->fetch()),
+        );
+    }
+
     /**
      * @param list<array{0: FileProcessed::STATUS_*, 1?: int}> $statuses
      * @param \Closure(FileProcessed::STATUS_*): void          $action
