@@ -573,7 +573,7 @@ abstract class AbstractFixerTestCase extends TestCase
     }
 
     /**
-     * @return \ReflectionClass<FixerInterface>
+     * @return \ReflectionClass<TFixer>
      */
     private function getFixerReflection(): \ReflectionClass
     {
