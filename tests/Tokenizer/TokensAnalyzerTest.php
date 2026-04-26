@@ -945,6 +945,26 @@ enum Foo: string
                 }
                 PHP,
         ];
+
+        yield 'closure in const' => [
+            [
+                7 => [
+                    'classIndex' => 1,
+                    'type' => 'const',
+                ],
+                40 => [
+                    'classIndex' => 1,
+                    'type' => 'method',
+                ],
+            ],
+            <<<'PHP'
+                <?php class Foo {
+                    const CHECKER = static function (mixed $v): bool { return null === $v; };
+
+                    function yes() {}
+                }
+                PHP,
+        ];
     }
 
     /**

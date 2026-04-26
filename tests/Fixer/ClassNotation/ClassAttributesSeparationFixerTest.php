@@ -2315,6 +2315,86 @@ enum Cards: string
     }
 
     /**
+     * @dataProvider provideFix85Cases
+     *
+     * @requires PHP 8.5
+     */
+    #[DataProvider('provideFix85Cases')]
+    #[RequiresPhp('>= 8.5')]
+    public function testFix85(string $expected, ?string $input = null): void
+    {
+        $this->testFix($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix85Cases(): iterable
+    {
+        yield 'closure const - adds blank line between two closure consts' => [
+            <<<'PHP'
+                <?php
+                class SomeClass
+                {
+                    public const NULL_CHECKER = static function (mixed $v): bool {
+                        return null === $v;
+                    };
+
+                    public const NOT_NULL_CHECKER = static function (mixed $v): bool {
+                        return null !== $v;
+                    };
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class SomeClass
+                {
+                    public const NULL_CHECKER = static function (mixed $v): bool {
+                        return null === $v;
+                    };
+                    public const NOT_NULL_CHECKER = static function (mixed $v): bool {
+                        return null !== $v;
+                    };
+                }
+                PHP,
+        ];
+
+        yield 'closure const followed by method - does not corrupt the closure value' => [
+            <<<'PHP'
+                <?php
+                class SomeClass
+                {
+                    public const NULL_CHECKER = static function (mixed $v): bool {
+                        return null === $v;
+                    };
+
+                    public function doSomething(): void {}
+                }
+                PHP,
+        ];
+
+        yield 'single-line closure const followed by method' => [
+            <<<'PHP'
+                <?php
+                class SomeClass
+                {
+                    public const IS_NULL = static fn (mixed $v): bool => null === $v;
+
+                    public function doSomething(): void {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class SomeClass
+                {
+                    public const IS_NULL = static fn (mixed $v): bool => null === $v;
+                    public function doSomething(): void {}
+                }
+                PHP,
+        ];
+    }
+
+    /**
      * @dataProvider provideWithWhitespacesConfigCases
      */
     #[DataProvider('provideWithWhitespacesConfigCases')]
