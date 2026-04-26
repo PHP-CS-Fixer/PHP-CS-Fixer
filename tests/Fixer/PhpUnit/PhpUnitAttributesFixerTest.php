@@ -91,10 +91,23 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
             }
             PHP];
 
+        yield 'do not touch coversDefaultClass' => [<<<'PHP'
+            <?php
+            /**
+             * @coversDefaultClass \Foo
+             */
+            class FooTest extends \PHPUnit\Framework\TestCase {
+                /**
+                 * @covers ::publicMethod
+                 */
+                public function testBar() { self::assertTrue(true); }
+            }
+            PHP];
+
         yield 'do not fix when not supported by attributes' => [<<<'PHP'
             <?php
             /**
-             * @covers FooClass::FooMethod
+             * @covers FooClass::
              * @uses ClassName::methodName
              */
             class FooTest extends \PHPUnit\Framework\TestCase {
@@ -368,16 +381,30 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
             '@beforeClass',
         );
 
+        yield 'handle CoversFunction' => self::createCase(
+            ['class'],
+            "#[CoversFunction('functionName')]",
+            '@covers ::functionName',
+        );
+
         yield 'handle CoversClass' => self::createCase(
             ['class'],
             '#[CoversClass(\VendorName\ClassName::class)]',
             '@covers \VendorName\ClassName',
         );
 
-        yield 'handle CoversFunction' => self::createCase(
+        // added in PHPUnit 11.1
+        yield 'handle CoversMethod' => self::createCase(
             ['class'],
-            "#[CoversFunction('functionName')]",
-            '@covers ::functionName',
+            '#[CoversMethod(\Foo\Bar::class, \'methodName\')]',
+            '@covers \Foo\Bar::methodName',
+        );
+
+        // added in PHPUnit 11.2
+        yield 'handle CoversTrait' => self::createCase(
+            ['class'],
+            '#[CoversTrait(\Foo\BarTrait::class)]',
+            '@covers \Foo\BarTrait',
         );
 
         yield 'handle CoversNothing' => self::createCase(

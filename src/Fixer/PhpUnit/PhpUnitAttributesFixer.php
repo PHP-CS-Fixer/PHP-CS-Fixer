@@ -329,18 +329,49 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
         $matches = self::getMatches($annotation);
         \assert(isset($matches[1]));
 
-        if (str_starts_with($matches[1], '::')) {
-            return self::createAttributeTokens($tokens, $index, 'CoversFunction', self::createEscapedStringToken(substr($matches[1], 2)));
-        }
-        if (!str_contains($matches[1], '::')) {
+        $splitByDoubleColon = explode('::', $matches[1]);
+        $splitByDoubleColonCount = \count($splitByDoubleColon);
+        \assert(isset($splitByDoubleColon[0]));
+
+        if (1 === $splitByDoubleColonCount) {
+            // naive guessing if it's a Trait or Class, as we do not have access to codebase to make sure, but it's better than nothing
+            $isTrait = str_ends_with($splitByDoubleColon[0], 'Trait');
+
             return self::createAttributeTokens(
                 $tokens,
                 $index,
-                'CoversClass',
-                ...self::toClassConstant($matches[1]),
+                $isTrait ? 'CoversTrait' : 'CoversClass',
+                ...self::toClassConstant($splitByDoubleColon[0]),
             );
         }
 
+        if (2 === $splitByDoubleColonCount) {
+            \assert(isset($splitByDoubleColon[1]));
+            if ('' === $splitByDoubleColon[0]) {
+                return self::createAttributeTokens(
+                    $tokens,
+                    $index,
+                    'CoversFunction',
+                    self::createEscapedStringToken($splitByDoubleColon[1]),
+                );
+            }
+
+            if ('' !== $splitByDoubleColon[1]) {
+                return self::createAttributeTokens(
+                    $tokens,
+                    $index,
+                    'CoversMethod',
+                    ...self::toClassConstant($splitByDoubleColon[0]),
+                    ...[
+                        new Token(','),
+                        new Token([\T_WHITESPACE, ' ']),
+                        self::fixNameAndCreateEscapedStringToken($splitByDoubleColon[1]),
+                    ],
+                );
+            }
+        }
+
+        // unexpected format, do not attempt to fix
         return [];
     }
 
