@@ -162,6 +162,7 @@ jobs:
           - operating-system: windows-latest
             php-version: ${{ needs.setup.outputs.PHP_MAX }}
             job-description: Fixer on Windows
+            composer-flags: --ignore-platform-req=ext-pcntl
             run-fixer: 'yes'
 
           - operating-system: windows-latest
@@ -251,10 +252,6 @@ jobs:
       - name: Disable time limit for tests under Windows # due to https://github.com/sebastianbergmann/phpunit/issues/5589
         if: matrix.operating-system == 'windows-latest'
         run: (Get-Content phpunit.xml.dist) -replace 'enforceTimeLimit="true"', 'enforceTimeLimit="false"' | Out-File phpunit.xml
-
-      - name: Force Paraunit 2 under Windows
-        if: matrix.operating-system == 'windows-latest'
-        run: composer require --dev facile-it/paraunit:"^2.10.0"
 
       - name: Check configuration for PHPUnit
         if: matrix.php-version != '7.4' && matrix.php-version != '8.0' # These run PHPUnit 9, which does not have the option
