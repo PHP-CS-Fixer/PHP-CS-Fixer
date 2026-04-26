@@ -266,6 +266,7 @@ jobs:
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
           PHP_CS_FIXER_FAST_LINT_TEST_CASES: ${{ matrix.PHP_CS_FIXER_FAST_LINT_TEST_CASES }}
+        shell: bash
         run: |
           if [ -f vendor/bin/paraunit ]; then
             vendor/bin/paraunit run --testsuite unit,integration
