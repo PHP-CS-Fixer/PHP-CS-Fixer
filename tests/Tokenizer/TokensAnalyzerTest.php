@@ -933,13 +933,9 @@ enum Foo: string
         yield 'closures' => [
             [
                 11 => ['classIndex' => 3, 'type' => 'const'],
-                22 => ['classIndex' => 3, 'type' => 'method'],
                 33 => ['classIndex' => 3, 'type' => 'const'],
-                44 => ['classIndex' => 3, 'type' => 'method'],
                 67 => ['classIndex' => 3, 'type' => 'property'],
-                73 => ['classIndex' => 3, 'type' => 'method'],
                 91 => ['classIndex' => 3, 'type' => 'method'],
-                104 => ['classIndex' => 3, 'type' => 'method'],
             ],
             <<<'PHP'
                 <?php final class Foo

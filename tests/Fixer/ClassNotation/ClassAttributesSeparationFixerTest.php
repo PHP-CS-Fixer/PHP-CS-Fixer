@@ -2335,16 +2335,6 @@ enum Cards: string
             <<<'PHP'
                 <?php class SomeClass
                 {
-                    public const \Closure NULL =
-
-                 static function (mixed $v): bool {
-                        return null === $v;
-                    };
-                }
-                PHP,
-            <<<'PHP'
-                <?php class SomeClass
-                {
                     public const \Closure NULL = static function (mixed $v): bool {
                         return null === $v;
                     };
