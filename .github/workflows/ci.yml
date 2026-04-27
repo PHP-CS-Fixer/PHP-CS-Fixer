@@ -221,7 +221,9 @@ jobs:
 
       - name: Remove Paraunit
         if: matrix.DO_NO_USE_PARAUNIT == 'yes'
-        run: composer remove --dev --no-update facile-it/paraunit
+        run: |
+          sed -i '/<extensions>/,/<\/extensions>/d' phpunit.xml.dist
+          composer remove --dev --no-update facile-it/paraunit
 
       - name: Install PHPUnit 12
         if: matrix.run-tests == 'yes' && matrix.install-phpunit-12 == 'yes'
@@ -231,7 +233,6 @@ jobs:
       - name: Install PHPUnit 13
         if: matrix.run-tests == 'yes' && matrix.install-phpunit-13 == 'yes'
         run: |
-          sed -i '/<extensions>/,/<\/extensions>/d' phpunit.xml.dist
           composer require --dev --no-update phpunit/phpunit:"^9.6 || ^13.1.7" # mention ^9.6 to keep trace of minimum supported version, needed for utests
 
       - name: Setup PHP with Composer deps
