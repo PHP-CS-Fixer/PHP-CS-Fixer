@@ -2,16 +2,6 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset 1 might not exist on list<int>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/AbstractFopenFlagFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset int might not exist on array<int, int>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/AbstractFopenFlagFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset 1 might not exist on non-empty-list<int<0, max>>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/AbstractFunctionReferenceFixer.php',
@@ -670,11 +660,6 @@ $ignoreErrors[] = [
     'rawMessage' => 'Offset 2 might not exist on array.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/PhpdocNoUselessInheritdocFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset int<1, max> might not exist on array.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/PhpdocSingleLineVarSpacingFixer.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Offset \'general_phpdoc_tag_rename\' might not exist on non-empty-array<string, PhpCsFixer\\Fixer\\FixerInterface>.',
