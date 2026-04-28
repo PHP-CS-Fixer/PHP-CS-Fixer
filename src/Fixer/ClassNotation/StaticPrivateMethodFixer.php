@@ -255,6 +255,8 @@ final class StaticPrivateMethodFixer extends AbstractFixer
      */
     private function getClassMethods(Tokens $tokens, int $classOpen, int $classClose): iterable
     {
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
         for ($index = $classClose - 1; $index > $classOpen + 1; --$index) {
             if ($tokens[$index]->equals('}')) {
                 $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
@@ -266,14 +268,11 @@ final class StaticPrivateMethodFixer extends AbstractFixer
                 continue;
             }
 
-            $functionKeywordIndex = $index;
-            $prevTokenIndex = $tokens->getPrevMeaningfulToken($functionKeywordIndex);
-            $prevPrevTokenIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
-            if ($tokens[$prevTokenIndex]->isGivenKind(\T_ABSTRACT) || $tokens[$prevPrevTokenIndex]->isGivenKind(\T_ABSTRACT)) {
+            if ($tokensAnalyzer->getMethodAttributes($index)['abstract']) {
                 continue;
             }
 
-            $methodOpen = $tokens->getNextTokenOfKind($functionKeywordIndex, ['{']);
+            $methodOpen = $tokens->getNextTokenOfKind($index, ['{']);
             $methodClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $methodOpen);
 
             yield [$index, $methodOpen, $methodClose];
