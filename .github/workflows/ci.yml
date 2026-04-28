@@ -301,7 +301,7 @@ jobs:
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
         uses: codecov/codecov-action@v6
         with:
-          codecov_yml_path: dev-tools/codecov.yaml
+          codecov_yml_path: .github/.codecov.yml
           disable_search: true
           files: build/logs/clover.xml
         env:
