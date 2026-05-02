@@ -22,7 +22,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
- * @author Sebastiaans Stok <s.stok@rollerscapes.net>
+ * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  *
  * @internal
  *
