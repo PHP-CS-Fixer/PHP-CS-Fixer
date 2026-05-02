@@ -282,6 +282,13 @@ jobs:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
         run: vendor/bin/paraunit coverage --testsuite unit --pass-through=--exclude-group=covers-nothing --clover=build/logs/clover.xml
 
+      - name: Run mutation tests (deps preps)
+        # Run only on pull requests because we run mutations tests only for diff between branches
+        if: github.event_name == 'pull_request' && matrix.run-mutation-tests == 'yes'
+        env:
+          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
+        run: composer install --working-dir=./dev-tools
+
       - name: Run mutation tests (Infection)
         # Run only on pull requests because we run mutations tests only for diff between branches
         if: github.event_name == 'pull_request' && matrix.run-mutation-tests == 'yes'
