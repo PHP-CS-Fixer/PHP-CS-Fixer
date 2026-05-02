@@ -33,8 +33,15 @@ final class TextReporterTest extends AbstractReporterTestCase
 {
     protected static function createNoErrorReport(): string
     {
-        return <<<'TEXT'
-            TEXT;
+        return str_replace(
+            "\n",
+            \PHP_EOL,
+            <<<'TEXT'
+
+                Fixed 0 of 10 files in 0.000 seconds, 0.00 MB memory used
+
+                TEXT,
+        );
     }
 
     protected static function createSimpleReport(): string
@@ -58,6 +65,8 @@ final class TextReporterTest extends AbstractReporterTestCase
                  }
                       ----------- end diff -----------
 
+
+                Fixed 1 of 10 files in 0.000 seconds, 0.00 MB memory used
 
                 TEXT,
         );
@@ -85,6 +94,8 @@ final class TextReporterTest extends AbstractReporterTestCase
                       ----------- end diff -----------
 
 
+                Fixed 1 of 10 files in 0.000 seconds, 0.00 MB memory used
+
                 TEXT,
         );
     }
@@ -96,6 +107,8 @@ final class TextReporterTest extends AbstractReporterTestCase
             \PHP_EOL,
             <<<'TEXT'
                    1) someFile.php (some_fixer_name_here_1, some_fixer_name_here_2)
+
+                Fixed 1 of 10 files in 0.000 seconds, 0.00 MB memory used
 
                 TEXT,
         );
@@ -147,6 +160,19 @@ final class TextReporterTest extends AbstractReporterTestCase
 
 
                 Found 2 of 10 files that can be fixed in 1.234 seconds, 2.50 MB memory used
+
+                TEXT,
+        );
+    }
+
+    protected static function createDryRunWithNoTimeReport(): string
+    {
+        return str_replace(
+            "\n",
+            \PHP_EOL,
+            <<<'TEXT'
+
+                Found 0 of 1 files that can be fixed in 0.000 seconds, 2.50 MB memory used
 
                 TEXT,
         );

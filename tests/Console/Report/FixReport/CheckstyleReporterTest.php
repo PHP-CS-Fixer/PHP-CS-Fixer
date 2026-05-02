@@ -144,6 +144,17 @@ final class CheckstyleReporterTest extends AbstractReporterTestCase
             XML;
     }
 
+    protected static function createDryRunWithNoTimeReport(): string
+    {
+        $about = Application::getAbout();
+
+        // NOTE: checkstyle format does NOT include time or memory
+        return <<<XML
+            <?xml version="1.0" encoding="UTF-8"?>
+            <checkstyle version="{$about}" />
+            XML;
+    }
+
     protected function createReporter(): ReporterInterface
     {
         return new CheckstyleReporter();
