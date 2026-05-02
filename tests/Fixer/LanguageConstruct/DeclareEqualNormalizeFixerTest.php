@@ -15,7 +15,10 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\LanguageConstruct\DeclareEqualNormalizeFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -30,6 +33,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(DeclareEqualNormalizeFixer::class)]
 final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -37,6 +41,7 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input, array $configuration): void
     {
         $this->fixer->configure($configuration);
@@ -123,6 +128,7 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideInvalidConfigurationCases
      */
+    #[DataProvider('provideInvalidConfigurationCases')]
     public function testInvalidConfiguration(array $config, string $expectedMessage): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);

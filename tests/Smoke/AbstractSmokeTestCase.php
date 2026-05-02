@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Smoke;
 
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -27,4 +29,6 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversNothing]
+#[Group('covers-nothing')]
 abstract class AbstractSmokeTestCase extends TestCase {}

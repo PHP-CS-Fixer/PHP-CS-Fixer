@@ -37,6 +37,16 @@ final class FunctionsAnalyzer
      */
     private array $functionsAnalysis = ['tokens' => '', 'imports' => [], 'declarations' => []];
 
+    public function isGlobalFunctionCall(Tokens $tokens, int $index): bool
+    {
+        return $this->isGlobalFunctionCallOrUsage($tokens, $index, true);
+    }
+
+    public function isGlobalFunctionUsage(Tokens $tokens, int $index): bool
+    {
+        return $this->isGlobalFunctionCallOrUsage($tokens, $index, false);
+    }
+
     /**
      * @return array<string, ArgumentAnalysis>
      */
@@ -114,7 +124,7 @@ final class FunctionsAnalyzer
     /**
      * Important: risky because of the limited (file) scope of the tool.
      */
-    public function isGlobalFunctionCall(Tokens $tokens, int $index): bool
+    private function isGlobalFunctionCallOrUsage(Tokens $tokens, int $index, bool $callOnly): bool
     {
         if (!$tokens[$index]->isGivenKind(\T_STRING)) {
             return false;
@@ -138,7 +148,7 @@ final class FunctionsAnalyzer
             return false;
         }
 
-        if ($tokens[$tokens->getNextMeaningfulToken($openParenthesisIndex)]->isGivenKind(CT::T_FIRST_CLASS_CALLABLE)) {
+        if ($callOnly && $tokens[$tokens->getNextMeaningfulToken($openParenthesisIndex)]->isGivenKind(CT::T_FIRST_CLASS_CALLABLE)) {
             return false;
         }
 

@@ -18,6 +18,9 @@ use PhpCsFixer\Cache\CacheManagerInterface;
 use PhpCsFixer\Runner\Event\FileProcessed;
 use PhpCsFixer\Runner\FileFilterIterator;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
@@ -27,11 +30,13 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FileFilterIterator::class)]
 final class FileFilterIteratorTest extends TestCase
 {
     /**
      * @dataProvider provideAcceptCases
      */
+    #[DataProvider('provideAcceptCases')]
     public function testAccept(int $repeat): void
     {
         $file = __FILE__;
@@ -187,6 +192,7 @@ final class FileFilterIteratorTest extends TestCase
     /**
      * @requires OS Linux|Darwin
      */
+    #[RequiresOperatingSystem('Linux|Darwin')]
     public function testFileIsAcceptedAfterFilteredAsSymlink(): void
     {
         $link = __DIR__.'/../Fixtures/Test/FileFilterIteratorTest/FileFilterIteratorTest.php.link';

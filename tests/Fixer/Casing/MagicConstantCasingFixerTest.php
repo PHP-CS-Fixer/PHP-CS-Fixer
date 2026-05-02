@@ -14,7 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Casing;
 
+use PhpCsFixer\Fixer\Casing\MagicConstantCasingFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -27,11 +31,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(MagicConstantCasingFixer::class)]
 final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -99,10 +105,12 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @requires PHP <8.0
+     * @requires PHP < 8.0.0
      *
      * @dataProvider provideFixPre80Cases
      */
+    #[RequiresPhp('< 8.0.0')]
+    #[DataProvider('provideFixPre80Cases')]
     public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -127,10 +135,12 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @requires PHP 8.4
+     * @requires PHP >= 8.4.0
      *
      * @dataProvider provideFix84Cases
      */
+    #[RequiresPhp('>= 8.4.0')]
+    #[DataProvider('provideFix84Cases')]
     public function testFix84(string $expected, ?string $input = null): void
     {
         $this->testFix($expected, $input);

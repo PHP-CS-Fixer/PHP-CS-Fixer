@@ -182,13 +182,9 @@ final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer 
                 if (null !== $typeInfo) {
                     $paramType = $typeInfo['commonType'];
                     $isNullable = $typeInfo['isNullable'];
-                } elseif (null !== $unionTypes) {
+                } else { // null !== $unionTypes, because of previous 2 ifs
                     $paramType = $unionTypes;
                     $isNullable = false;
-                }
-
-                if (!isset($paramType, $isNullable)) {
-                    continue;
                 }
 
                 if (\in_array($paramType, $typesToExclude, true)) {

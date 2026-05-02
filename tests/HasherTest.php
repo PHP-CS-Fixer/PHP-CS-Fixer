@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Hasher;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
@@ -23,6 +24,7 @@ use PhpCsFixer\Hasher;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Hasher::class)]
 final class HasherTest extends TestCase
 {
     public function testCalculate(): void

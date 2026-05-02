@@ -19,6 +19,8 @@ use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\StreamOutput;
 
@@ -29,6 +31,7 @@ use Symfony\Component\Console\Output\StreamOutput;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ErrorOutput::class)]
 final class ErrorOutputTest extends TestCase
 {
     /**
@@ -36,6 +39,7 @@ final class ErrorOutputTest extends TestCase
      *
      * @dataProvider provideErrorOutputCases
      */
+    #[DataProvider('provideErrorOutputCases')]
     public function testErrorOutput(Error $error, int $verbosityLevel, int $lineNumber, int $exceptionLineNumber, string $process): void
     {
         $source = $error->getSource();

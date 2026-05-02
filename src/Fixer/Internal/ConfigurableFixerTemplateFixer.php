@@ -39,7 +39,7 @@ use PhpCsFixer\Fixer\Phpdoc\PhpdocTagTypeFixer;
 use PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
-use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FileSpecificCodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
@@ -96,8 +96,9 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
         return new FixerDefinition(
             'Configurable Fixers must declare Template type.',
             [
-                new CodeSample(
+                new FileSpecificCodeSample(
                     $tokens->generateCode(),
+                    $fileInfo,
                 ),
             ],
             null,
@@ -241,7 +242,8 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
     private function applyFixForSrc(\SplFileInfo $file, Tokens $tokens): void
     {
         if ($file instanceof StdinFileInfo) {
-            $file = $this->getExampleFixerFile();
+            // we do not know the actual path, skip
+            return;
         }
 
         $fixer = $this->getFixerForSrcFile($file);

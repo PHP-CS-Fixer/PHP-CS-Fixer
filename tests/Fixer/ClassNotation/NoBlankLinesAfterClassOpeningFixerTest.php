@@ -14,8 +14,12 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
+use PhpCsFixer\Fixer\ClassNotation\NoBlankLinesAfterClassOpeningFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -28,11 +32,13 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NoBlankLinesAfterClassOpeningFixer::class)]
 final class NoBlankLinesAfterClassOpeningFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -182,6 +188,7 @@ trait Good
     /**
      * @dataProvider provideWithWhitespacesConfigCases
      */
+    #[DataProvider('provideWithWhitespacesConfigCases')]
     public function testWithWhitespacesConfig(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
@@ -208,8 +215,10 @@ trait Good
     /**
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testFix81(string $expected, string $input): void
     {
         $this->doTest($expected, $input);

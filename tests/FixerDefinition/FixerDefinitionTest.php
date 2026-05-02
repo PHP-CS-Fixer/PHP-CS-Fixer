@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\FixerDefinition;
 use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
@@ -25,6 +26,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FixerDefinition::class)]
 final class FixerDefinitionTest extends TestCase
 {
     public function testGetSummary(): void
