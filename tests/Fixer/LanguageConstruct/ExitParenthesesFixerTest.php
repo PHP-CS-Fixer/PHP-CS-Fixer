@@ -152,7 +152,7 @@ final class ExitParenthesesFixerTest extends AbstractFixerTestCase
             '<?php echo Foo::exit;',
         ];
 
-        yield 'method named exit on object is not touched' => [
+        yield 'property named exit on object is not touched' => [
             '<?php $foo->exit;',
         ];
 
