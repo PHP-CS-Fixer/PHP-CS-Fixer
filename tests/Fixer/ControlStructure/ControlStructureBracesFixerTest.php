@@ -178,7 +178,7 @@ final class ControlStructureBracesFixerTest extends AbstractFixerTestCase
             '<?php if ($a) try { foo(); } catch (\Exception $e) { bar(); } finally { baz(); }',
         ];
 
-        yield 'non-braced if with lambda function inside' => [
+        yield 'if with lambda function inside' => [
             '<?php if ($a) { $f = function () { return 1; }; }',
             '<?php if ($a) $f = function () { return 1; };',
         ];
