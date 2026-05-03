@@ -17,11 +17,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/FunctionNotation/ImplodeCallFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Method PhpCsFixer\\Fixer\\Import\\OrderedImportsFixer::getNewOrder() should return array<int, array{namespace: non-empty-string, startIndex: int, endIndex: int, importType: \'class\'|\'const\'|\'function\', group: bool}> but returns array<\'\'|int, array{namespace: non-empty-string, startIndex: int, endIndex: int, importType: \'class\'|\'const\'|\'function\', group: bool}>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Import/OrderedImportsFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Method PhpCsFixer\\Fixer\\Phpdoc\\PhpdocAlignFixer::getMatches() should return array{indent: string|null, tag: string|null, hint: string, var: string|null, static: string, desc?: string|null}|null but returns non-empty-array<string>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/PhpdocAlignFixer.php',

@@ -204,6 +204,20 @@ final class XmlReporterTest extends AbstractReporterTestCase
             XML;
     }
 
+    protected static function createDryRunWithNoTimeReport(): string
+    {
+        $about = Application::getAbout();
+
+        return <<<XML
+            <?xml version="1.0" encoding="UTF-8"?>
+            <report>
+              <about value="{$about}"/>
+              <files />
+              <memory value="2.5" unit="MB"/>
+            </report>
+            XML;
+    }
+
     protected function createReporter(): ReporterInterface
     {
         return new XmlReporter();
