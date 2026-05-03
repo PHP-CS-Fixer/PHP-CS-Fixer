@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\Console\Report\FixReport;
 use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -54,6 +55,7 @@ abstract class AbstractReporterTestCase extends TestCase
     /**
      * @dataProvider provideGenerateCases
      */
+    #[DataProvider('provideGenerateCases')]
     final public function testGenerate(string $expectedReport, ReportSummary $reportSummary): void
     {
         $actualReport = $this->reporter->generate($reportSummary);
@@ -202,6 +204,19 @@ abstract class AbstractReporterTestCase extends TestCase
                 true,
             ),
         ];
+
+        yield 'dry run with no time' => [
+            static::createDryRunWithNoTimeReport(),
+            new ReportSummary(
+                [],
+                1,
+                0,
+                2_621_440, // 2.5 * 1024 * 1024
+                false,
+                true,
+                false,
+            ),
+        ];
     }
 
     abstract protected function createReporter(): ReporterInterface;
@@ -219,6 +234,8 @@ abstract class AbstractReporterTestCase extends TestCase
     abstract protected static function createWithTimeAndMemoryReport(): string;
 
     abstract protected static function createComplexReport(): string;
+
+    abstract protected static function createDryRunWithNoTimeReport(): string;
 
     abstract protected function assertFormat(string $expected, string $input): void;
 }

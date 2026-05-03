@@ -28,6 +28,7 @@ use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
@@ -89,6 +90,20 @@ final class MultilinePromotedPropertiesFixer extends AbstractFixer implements Co
                     new VersionSpecification(80_000),
                     ['minimum_number_of_parameters' => 3],
                 ),
+                new VersionSpecificCodeSample(
+                    <<<'PHP'
+                        <?php
+                        class Foo {
+                            public function __construct(
+                                private array $a,
+                                private bool $b,
+                            ) {}
+                        }
+
+                        PHP,
+                    new VersionSpecification(80_000),
+                    ['minimum_number_of_parameters' => 3],
+                ),
             ],
         );
     }
@@ -138,15 +153,15 @@ final class MultilinePromotedPropertiesFixer extends AbstractFixer implements Co
             $openParenthesisIndex = $tokens->getNextTokenOfKind($index, ['(']);
             $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesisIndex);
 
-            if (!$this->shouldBeFixed($tokens, $openParenthesisIndex, $closeParenthesisIndex)) {
-                continue;
+            if ($this->shouldBeMultiline($tokens, $openParenthesisIndex, $closeParenthesisIndex)) {
+                $this->makeMultiline($tokens, $openParenthesisIndex, $closeParenthesisIndex);
+            } elseif ($this->shouldBeSingleline($tokens, $openParenthesisIndex, $closeParenthesisIndex)) {
+                $this->makeSingleline($tokens, $openParenthesisIndex, $closeParenthesisIndex);
             }
-
-            $this->fixParameters($tokens, $openParenthesisIndex, $closeParenthesisIndex);
         }
     }
 
-    private function shouldBeFixed(Tokens $tokens, int $openParenthesisIndex, int $closeParenthesisIndex): bool
+    private function shouldBeMultiline(Tokens $tokens, int $openParenthesisIndex, int $closeParenthesisIndex): bool
     {
         $promotedParameterFound = false;
         $minimumNumberOfParameters = 0;
@@ -168,7 +183,62 @@ final class MultilinePromotedPropertiesFixer extends AbstractFixer implements Co
         return $promotedParameterFound && $minimumNumberOfParameters >= $this->configuration['minimum_number_of_parameters'];
     }
 
-    private function fixParameters(Tokens $tokens, int $openParenthesis, int $closeParenthesis): void
+    private function shouldBeSingleline(Tokens $tokens, int $openParenthesisIndex, int $closeParenthesisIndex): bool
+    {
+        $promotedParameterFound = false;
+        $parameterCount = 0;
+        $isMultiline = false;
+
+        for ($index = $openParenthesisIndex + 1; $index < $closeParenthesisIndex; ++$index) {
+            if ($tokens[$index]->isGivenKind(\T_VARIABLE)) {
+                ++$parameterCount;
+            }
+
+            if (
+                $tokens[$index]->isGivenKind([
+                    CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE,
+                    CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
+                    CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
+                ])
+            ) {
+                $promotedParameterFound = true;
+            }
+
+            if ($tokens[$index]->isGivenKind([\T_COMMENT, \T_DOC_COMMENT, \T_ATTRIBUTE])) {
+                return false;
+            }
+
+            if (
+                $tokens[$index]->isWhitespace()
+                && str_contains($tokens[$index]->getContent(), "\n")
+            ) {
+                $isMultiline = true;
+            }
+        }
+
+        return $promotedParameterFound && $isMultiline && $parameterCount < $this->configuration['minimum_number_of_parameters'];
+    }
+
+    private function makeSingleline(Tokens $tokens, int $openParenthesis, int $closeParenthesis): void
+    {
+        for ($index = $closeParenthesis - 1; $index > $openParenthesis; --$index) {
+            if (!$tokens[$index]->isWhitespace()) {
+                continue;
+            }
+
+            if (!str_contains($tokens[$index]->getContent(), "\n")) {
+                continue;
+            }
+
+            if ($index === $openParenthesis + 1 || $index === $closeParenthesis - 1) {
+                $tokens->clearAt($index);
+            } else {
+                $tokens[$index] = new Token([\T_WHITESPACE, ' ']);
+            }
+        }
+    }
+
+    private function makeMultiline(Tokens $tokens, int $openParenthesis, int $closeParenthesis): void
     {
         $indent = WhitespacesAnalyzer::detectIndent($tokens, $openParenthesis);
 

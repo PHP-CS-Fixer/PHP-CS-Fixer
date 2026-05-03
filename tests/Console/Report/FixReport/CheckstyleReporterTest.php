@@ -18,6 +18,7 @@ use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Report\FixReport\CheckstyleReporter;
 use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\PhpunitConstraintXmlMatchesXsd\Constraint\XmlMatchesXsd;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
@@ -29,6 +30,7 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(CheckstyleReporter::class)]
 final class CheckstyleReporterTest extends AbstractReporterTestCase
 {
     /**
@@ -139,6 +141,17 @@ final class CheckstyleReporterTest extends AbstractReporterTestCase
                 <error severity="warning" source="PHP-CS-Fixer.another_fixer_name_here" message="Found violation(s) of type: another_fixer_name_here" />
               </file>
             </checkstyle>
+            XML;
+    }
+
+    protected static function createDryRunWithNoTimeReport(): string
+    {
+        $about = Application::getAbout();
+
+        // NOTE: checkstyle format does NOT include time or memory
+        return <<<XML
+            <?xml version="1.0" encoding="UTF-8"?>
+            <checkstyle version="{$about}" />
             XML;
     }
 

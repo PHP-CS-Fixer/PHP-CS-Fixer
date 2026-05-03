@@ -18,6 +18,8 @@ use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\ListFilesCommand;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
@@ -29,6 +31,7 @@ use Symfony\Component\Filesystem\Path;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ListFilesCommand::class)]
 final class ListFilesCommandTest extends TestCase
 {
     private static ?Filesystem $filesystem;
@@ -66,6 +69,7 @@ final class ListFilesCommandTest extends TestCase
      *
      * Skip test on Windows as `getcwd()` includes the drive letter with a colon `:` which is illegal in filenames.
      */
+    #[RequiresOperatingSystem('Linux|Darwin')]
     public function testListFilesDoesNotCorruptListWithGetcwdInName(): void
     {
         try {

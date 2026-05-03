@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Console\Report\ListRulesReport;
 
 use PhpCsFixer\Console\Report\ListRulesReport\JsonReporter;
 use PhpCsFixer\Console\Report\ListRulesReport\ReporterInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -26,6 +27,7 @@ use PhpCsFixer\Console\Report\ListRulesReport\ReporterInterface;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(JsonReporter::class)]
 final class JsonReporterTest extends AbstractReporterTestCase
 {
     protected function createReporter(): ReporterInterface

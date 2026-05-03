@@ -18,6 +18,7 @@ use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\WorkerCommand;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Console\Tester\ApplicationTester;
 
 /**
@@ -27,6 +28,7 @@ use Symfony\Component\Console\Tester\ApplicationTester;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Application::class)]
 final class ApplicationTest extends TestCase
 {
     public function testApplication(): void

@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Tokenizer\Analyzer\Analysis;
 
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\DefaultAnalysis;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\DefaultAnalysis
@@ -24,6 +25,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\DefaultAnalysis;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(DefaultAnalysis::class)]
 final class DefaultAnalysisTest extends TestCase
 {
     public function testDefault(): void

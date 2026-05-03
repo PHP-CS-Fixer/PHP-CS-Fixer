@@ -15,5 +15,5 @@ declare(ticks=1);
 
 final class MyClass
 {
-    function finalMethod(){}
+    function finalMethod(): void{}
 }

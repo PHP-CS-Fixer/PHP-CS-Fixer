@@ -28,6 +28,8 @@ use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleSet;
 use PhpCsFixer\ToolInfo;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
@@ -39,6 +41,7 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Config::class)]
 final class ConfigTest extends TestCase
 {
     public function testFutureMode(): void
@@ -222,6 +225,7 @@ final class ConfigTest extends TestCase
      *
      * @dataProvider provideRegisterCustomFixersCases
      */
+    #[DataProvider('provideRegisterCustomFixersCases')]
     public function testRegisterCustomFixers(array $expected, iterable $suite): void
     {
         $config = new Config();
