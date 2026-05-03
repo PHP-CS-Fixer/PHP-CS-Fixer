@@ -48,6 +48,16 @@ final class ExitParenthesesFixer extends AbstractFixer
         return $tokens->isTokenKindFound(\T_EXIT);
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run after NoUnneededControlParenthesesFixer.
+     */
+    public function getPriority(): int
+    {
+        return 0;
+    }
+
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $slices = [];

@@ -228,7 +228,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     /**
      * {@inheritdoc}
      *
-     * Must run before ConcatSpaceFixer, NewExpressionParenthesesFixer, NoTrailingWhitespaceFixer.
+     * Must run before ConcatSpaceFixer, ExitParenthesesFixer, NewExpressionParenthesesFixer, NoTrailingWhitespaceFixer.
      * Must run after ModernizeTypesCastingFixer, NoAlternativeSyntaxFixer.
      */
     public function getPriority(): int
