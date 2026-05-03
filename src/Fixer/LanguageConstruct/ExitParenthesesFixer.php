@@ -73,6 +73,15 @@ final class ExitParenthesesFixer extends AbstractFixer
                 continue;
             }
 
+            // In `switch ($x) { case exit: ... }` the `exit` keeps `T_EXIT` (unlike enum
+            // `case exit;`, where it is normalized to `T_STRING`). Skip to avoid rewriting
+            // switch case labels that happen to use the `exit` keyword as an expression.
+            $prevIndex = $tokens->getPrevMeaningfulToken($index);
+
+            if (null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(\T_CASE)) {
+                continue;
+            }
+
             $slices[$index + 1] = [new Token('('), new Token(')')];
         }
 

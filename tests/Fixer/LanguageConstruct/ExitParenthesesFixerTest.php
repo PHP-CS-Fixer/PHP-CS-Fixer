@@ -159,6 +159,14 @@ final class ExitParenthesesFixerTest extends AbstractFixerTestCase
         yield 'method call named exit is not touched' => [
             '<?php $foo->exit();',
         ];
+
+        yield 'switch case label exit is not touched' => [
+            '<?php switch ($x) { case exit: break; }',
+        ];
+
+        yield 'switch case label uppercase exit is not touched' => [
+            '<?php switch ($x) { case EXIT: break; }',
+        ];
     }
 
     /**
