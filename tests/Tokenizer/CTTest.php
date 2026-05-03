@@ -16,6 +16,8 @@ namespace PhpCsFixer\Tests\Tokenizer;
 
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\CT;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -26,6 +28,7 @@ use PhpCsFixer\Tokenizer\CT;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(CT::class)]
 final class CTTest extends TestCase
 {
     public function testUniqueValues(): void
@@ -37,6 +40,7 @@ final class CTTest extends TestCase
     /**
      * @dataProvider provideConstantsCases
      */
+    #[DataProvider('provideConstantsCases')]
     public function testHas(string $name, int $value): void
     {
         self::assertTrue(CT::has($value));
@@ -50,6 +54,7 @@ final class CTTest extends TestCase
     /**
      * @dataProvider provideConstantsCases
      */
+    #[DataProvider('provideConstantsCases')]
     public function testGetName(string $name, int $value): void
     {
         self::assertSame('CT::'.$name, CT::getName($value));
@@ -66,6 +71,7 @@ final class CTTest extends TestCase
     /**
      * @dataProvider provideConstantsCases
      */
+    #[DataProvider('provideConstantsCases')]
     public function testConstants(string $name, int $value): void
     {
         self::assertGreaterThan(10_000, $value);

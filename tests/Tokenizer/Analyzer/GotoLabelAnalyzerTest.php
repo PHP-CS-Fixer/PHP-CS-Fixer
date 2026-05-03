@@ -17,6 +17,9 @@ namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\GotoLabelAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -25,6 +28,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(GotoLabelAnalyzer::class)]
 final class GotoLabelAnalyzerTest extends TestCase
 {
     /**
@@ -32,6 +36,7 @@ final class GotoLabelAnalyzerTest extends TestCase
      *
      * @dataProvider provideGotoLabelCases
      */
+    #[DataProvider('provideGotoLabelCases')]
     public function testGotoLabel(string $source, array $expectedTrue): void
     {
         $tokens = Tokens::fromCode($source);
@@ -110,8 +115,10 @@ Bar3:
      *
      * @dataProvider provideGotoLabel80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideGotoLabel80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testGotoLabel80(string $source, array $expectedTrue): void
     {
         $this->testGotoLabel($source, $expectedTrue);

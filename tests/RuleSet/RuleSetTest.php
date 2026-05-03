@@ -25,7 +25,9 @@ use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 
 /**
@@ -39,6 +41,8 @@ use PHPUnit\Framework\Attributes\IgnoreDeprecations;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[Group('legacy')]
+#[CoversClass(RuleSet::class)]
 final class RuleSetTest extends TestCase
 {
     /**
@@ -244,6 +248,7 @@ final class RuleSetTest extends TestCase
      *
      * @dataProvider provideRiskyRulesInSetCases
      */
+    #[DataProvider('provideRiskyRulesInSetCases')]
     public function testRiskyRulesInSet(array $set, bool $safe): void
     {
         /** @TODO 4.0 Remove this expectations */
@@ -327,6 +332,7 @@ final class RuleSetTest extends TestCase
     /**
      * @dataProvider provideDuplicateRuleConfigurationInSetDefinitionsCases
      */
+    #[DataProvider('provideDuplicateRuleConfigurationInSetDefinitionsCases')]
     public function testDuplicateRuleConfigurationInSetDefinitions(RuleSetDefinitionInterface $set): void
     {
         $rules = [];
@@ -383,6 +389,7 @@ final class RuleSetTest extends TestCase
     /**
      * @dataProvider providePhpUnitTargetVersionHasSetCases
      */
+    #[DataProvider('providePhpUnitTargetVersionHasSetCases')]
     public function testPhpUnitTargetVersionHasSet(string $version): void
     {
         self::assertContains(

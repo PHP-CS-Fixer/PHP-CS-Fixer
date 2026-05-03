@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests;
 
 use org\bovigo\vfs\vfsStream;
 use PhpCsFixer\FileReader;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @author ntzm
@@ -26,6 +27,7 @@ use PhpCsFixer\FileReader;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FileReader::class)]
 final class FileReaderTest extends TestCase
 {
     public static function tearDownAfterClass(): void

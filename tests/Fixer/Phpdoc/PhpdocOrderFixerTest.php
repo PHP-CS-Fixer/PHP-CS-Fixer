@@ -15,7 +15,10 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\Phpdoc\PhpdocOrderFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -31,6 +34,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(PhpdocOrderFixer::class)]
 final class PhpdocOrderFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -38,6 +42,7 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
      *
      * @param array<string, mixed> $configuration
      */
+    #[DataProvider('provideInvalidConfigurationCases')]
     public function testInvalidConfiguration(array $configuration, string $expectedExceptionMessage): void
     {
         self::expectException(InvalidFixerConfigurationException::class);
@@ -77,6 +82,7 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);

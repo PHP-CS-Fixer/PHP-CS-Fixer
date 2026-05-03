@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Console;
 
+use Ergebnis\AgentDetector;
 use PhpCsFixer\Cache\CacheManagerInterface;
 use PhpCsFixer\Cache\Directory;
 use PhpCsFixer\Cache\DirectoryInterface;
@@ -669,6 +670,15 @@ final class ConfigurationResolver
     private function resolveFormat(): string
     {
         if (null === $this->format) {
+            $agentDetector = new AgentDetector\Detector();
+
+            // When an AI agent is running, we ignore the format configuration entirely and use JSON format.
+            if ($agentDetector->isAgentPresent(getenv())) {
+                $this->format = 'json';
+
+                return $this->format;
+            }
+
             $formatCandidate = $this->options['format'] ?? $this->getConfig()->getFormat();
             $parts = explode(',', $formatCandidate);
 

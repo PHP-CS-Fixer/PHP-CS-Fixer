@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Tokenizer\Analyzer\Analysis;
 
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @author VeeWee <toonverwerft@gmail.com>
@@ -26,6 +27,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NamespaceUseAnalysis::class)]
 final class NamespaceUseAnalysisTest extends TestCase
 {
     public function testFullName(): void

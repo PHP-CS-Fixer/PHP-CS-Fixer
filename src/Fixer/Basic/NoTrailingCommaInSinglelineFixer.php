@@ -135,10 +135,6 @@ final class NoTrailingCommaInSinglelineFixer extends AbstractFixer implements Co
             return \in_array('group_import', $elements, true);
         }
 
-        if (!$tokens[$openIndex]->equals('(')) {
-            return false;
-        }
-
         $beforeOpen = $tokens->getPrevMeaningfulToken($openIndex);
 
         if ($tokens[$beforeOpen]->isGivenKind(\T_ARRAY)) {

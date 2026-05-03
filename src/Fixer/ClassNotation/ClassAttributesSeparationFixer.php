@@ -201,10 +201,6 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
         foreach ($this->getElementsByClass($tokens) as $class) {
             $elements = $class['elements'];
 
-            if (0 === \count($elements)) {
-                continue;
-            }
-
             if (isset($this->classElementTypes[$elements[0]['type']])) {
                 $this->fixSpaceBelowClassElement($tokens, $class);
             }
@@ -361,10 +357,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
         }
 
         if (self::SPACING_NONE === $spacing) {
-            if (!isset($class['elements'][$elementIndex + 1])) {
-                return 1;
-            }
-
+            \assert(isset($class['elements'][$elementIndex + 1]));
             $aboveElement = $class['elements'][$elementIndex + 1];
 
             if ($aboveElement['type'] !== $type) {
@@ -376,13 +369,10 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
             return $tokens[$aboveElementDocCandidateIndex]->isGivenKind([\T_DOC_COMMENT, CT::T_ATTRIBUTE_CLOSE]) ? 2 : 1;
         }
 
-        if (self::SPACING_ONLY_IF_META === $spacing) {
-            $aboveElementDocCandidateIndex = $tokens->getPrevNonWhitespace($class['elements'][$elementIndex]['start']);
+        // self::SPACING_ONLY_IF_META === $spacing
+        $aboveElementDocCandidateIndex = $tokens->getPrevNonWhitespace($class['elements'][$elementIndex]['start']);
 
-            return $tokens[$aboveElementDocCandidateIndex]->isGivenKind([\T_DOC_COMMENT, CT::T_ATTRIBUTE_CLOSE]) ? 2 : 1;
-        }
-
-        throw new \RuntimeException(\sprintf('Unknown spacing "%s".', $spacing));
+        return $tokens[$aboveElementDocCandidateIndex]->isGivenKind([\T_DOC_COMMENT, CT::T_ATTRIBUTE_CLOSE]) ? 2 : 1;
     }
 
     /**
@@ -434,21 +424,6 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
             ]);
 
             return;
-        }
-
-        // $numbOfWhiteTokens = > 1
-        $toReplaceCount = $lineBreakCount - $reqLineCount;
-
-        for ($i = $startIndex; $i < $endIndex && $toReplaceCount > 0; ++$i) {
-            $tokenLineCount = substr_count($tokens[$i]->getContent(), "\n");
-
-            if ($tokenLineCount > 0) {
-                $tokens[$i] = new Token([
-                    \T_WHITESPACE,
-                    Preg::replace('/\r\n|\n/', '', $tokens[$i]->getContent(), min($toReplaceCount, $tokenLineCount)),
-                ]);
-                $toReplaceCount -= $tokenLineCount;
-            }
         }
     }
 

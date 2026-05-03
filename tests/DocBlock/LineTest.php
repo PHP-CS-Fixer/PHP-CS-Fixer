@@ -17,6 +17,8 @@ namespace PhpCsFixer\Tests\DocBlock;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
@@ -27,6 +29,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Line::class)]
 final class LineTest extends TestCase
 {
     /**
@@ -120,6 +123,7 @@ final class LineTest extends TestCase
     /**
      * @dataProvider provideLinesCases
      */
+    #[DataProvider('provideLinesCases')]
     public function testPosAndContent(int $pos, string $content): void
     {
         $doc = new DocBlock(self::$sample);
@@ -132,6 +136,7 @@ final class LineTest extends TestCase
     /**
      * @dataProvider provideLinesCases
      */
+    #[DataProvider('provideLinesCases')]
     public function testStartOrEndPos(int $pos, string $content): void
     {
         $doc = new DocBlock(self::$sample);
@@ -154,6 +159,7 @@ final class LineTest extends TestCase
     /**
      * @dataProvider provideUsefulCases
      */
+    #[DataProvider('provideUsefulCases')]
     public function testUseful(int $pos, bool $useful): void
     {
         $doc = new DocBlock(self::$sample);
@@ -175,6 +181,7 @@ final class LineTest extends TestCase
     /**
      * @dataProvider provideTagCases
      */
+    #[DataProvider('provideTagCases')]
     public function testTag(int $pos, bool $tag): void
     {
         $doc = new DocBlock(self::$sample);

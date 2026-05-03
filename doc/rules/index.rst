@@ -54,6 +54,9 @@ Array Notation
 - `no_whitespace_before_comma_in_array <./array_notation/no_whitespace_before_comma_in_array.rst>`_ *(configurable)*
 
   In array declaration, there MUST NOT be a whitespace before each comma.
+- `no_whitespace_in_empty_array <./array_notation/no_whitespace_in_empty_array.rst>`_
+
+  Empty arrays should not contain only whitespace.
 - `normalize_index_brace <./array_notation/normalize_index_brace.rst>`_
 
   Array index should always be written by using square braces.
@@ -867,7 +870,7 @@ Return Notation
 - `no_useless_return <./return_notation/no_useless_return.rst>`_
 
   There should not be an empty ``return`` statement at the end of a function.
-- `return_assignment <./return_notation/return_assignment.rst>`_
+- `return_assignment <./return_notation/return_assignment.rst>`_ *(configurable)*
 
   Local, dynamic and directly referenced variables should not be assigned and directly returned by a function or method.
 - `simplified_null_return <./return_notation/simplified_null_return.rst>`_

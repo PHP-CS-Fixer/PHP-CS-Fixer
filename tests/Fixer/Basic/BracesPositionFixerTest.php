@@ -14,7 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Basic;
 
+use PhpCsFixer\Fixer\Basic\BracesPositionFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -27,6 +31,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(BracesPositionFixer::class)]
 final class BracesPositionFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -34,6 +39,7 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -800,13 +806,57 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
                 }
                 PHP,
         ];
+
+        yield 'newline after opening brace' => [
+            <<<'PHP'
+                <?php if (true) {
+                }
+                PHP,
+            <<<'PHP'
+                <?php if (true) {}
+                PHP,
+        ];
+
+        yield 'newline before closing comment and parenthesis' => [
+            <<<'PHP'
+                <?php
+                function foo($foo
+                /* comment */) {
+                }
+                PHP,
+            null,
+            ['functions_opening_brace' => 'next_line_unless_newline_at_signature_end'],
+        ];
+
+        yield 'anonymous function' => [
+            <<<'PHP'
+                <?php $f = function() {};
+                PHP,
+            <<<'PHP'
+                <?php $f = function(){};
+                PHP,
+            ['anonymous_functions_opening_brace' => 'same_line', 'allow_single_line_anonymous_functions' => true],
+        ];
+
+        yield 'comment between closing parenthesis and opening brace' => [
+            <<<'PHP'
+                <?php if ($a) { /* comment */
+                }
+                PHP,
+            <<<'PHP'
+                <?php if ($a) /* comment */ {}
+                PHP,
+            ['control_structures_opening_brace' => 'same_line'],
+        ];
     }
 
     /**
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -873,8 +923,10 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -898,8 +950,10 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFix82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      */
+    #[DataProvider('provideFix82Cases')]
+    #[RequiresPhp('>= 8.2.0')]
     public function testFix82(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -923,8 +977,10 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFix84Cases
      *
-     * @requires PHP 8.4
+     * @requires PHP >= 8.4.0
      */
+    #[DataProvider('provideFix84Cases')]
+    #[RequiresPhp('>= 8.4.0')]
     public function testFix84(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
