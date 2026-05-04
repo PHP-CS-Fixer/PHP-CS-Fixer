@@ -167,14 +167,6 @@ final class ExitParenthesesFixerTest extends AbstractFixerTestCase
         yield 'switch case label uppercase exit is not touched' => [
             '<?php switch ($x) { case EXIT: break; }',
         ];
-
-        yield 'namespace-qualified exit is not touched' => [
-            '<?php \exit;',
-        ];
-
-        yield 'namespace-qualified die is not touched' => [
-            '<?php \die;',
-        ];
     }
 
     /**
@@ -197,6 +189,14 @@ final class ExitParenthesesFixerTest extends AbstractFixerTestCase
         yield 'exit inside match arm' => [
             "<?php match (\$x) {\n    1 => exit(),\n    default => null,\n};",
             "<?php match (\$x) {\n    1 => exit,\n    default => null,\n};",
+        ];
+
+        yield 'namespace-qualified exit is not touched' => [
+            '<?php \exit;',
+        ];
+
+        yield 'namespace-qualified die is not touched' => [
+            '<?php \die;',
         ];
     }
 
