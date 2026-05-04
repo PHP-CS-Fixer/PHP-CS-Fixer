@@ -407,41 +407,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Import/GroupImportFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset int might not exist on array<int, int>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Import/OrderedImportsFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset int<0, max> might not exist on list<PhpCsFixer\\Tokenizer\\Token>.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Fixer/Import/OrderedImportsFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset int<0, max> might not exist on list<int|null>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Import/OrderedImportsFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset int<0, max> might not exist on non-empty-array<int<0, max>, non-empty-list<int>>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Import/OrderedImportsFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset int<0, max> might not exist on non-empty-list<int>.',
-    'count' => 3,
-    'path' => __DIR__ . '/../../../src/Fixer/Import/OrderedImportsFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset int<1, max> might not exist on list<PhpCsFixer\\Tokenizer\\Token>.',
-    'count' => 6,
-    'path' => __DIR__ . '/../../../src/Fixer/Import/OrderedImportsFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset int<1, max> might not exist on non-empty-list<int>.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Fixer/Import/OrderedImportsFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset 0 might not exist on list<non-falsy-string>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Import/SingleImportPerStatementFixer.php',
