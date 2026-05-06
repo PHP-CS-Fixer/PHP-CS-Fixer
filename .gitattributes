@@ -18,6 +18,7 @@
 /phpunit.xml.dist export-ignore
 /tests/ export-ignore
 /UPGRADE-v3.md export-ignore
+/logo.md export-ignore
 
 *       text=auto eol=lf
 *.json  text whitespace=blank-at-eol,blank-at-eof,space-before-tab,tab-in-indent,tabwidth=4
@@ -26,5 +27,4 @@
 *.rst   text whitespace=blank-at-eol,blank-at-eof
 *.yml   text whitespace=blank-at-eol,blank-at-eof,space-before-tab,tab-in-indent,tabwidth=4
 *.png   binary eol=unset
-
 /tests/Fixtures/**/* -text -filter
