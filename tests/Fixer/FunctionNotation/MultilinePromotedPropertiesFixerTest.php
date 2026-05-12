@@ -369,8 +369,7 @@ final class MultilinePromotedPropertiesFixerTest extends AbstractFixerTestCase
                 {
                     public function __construct(
                         public Bar $x = new Bar(),
-                        public Bar $y = new Bar(
-                        )
+                        public Bar $y = new Bar()
                     )
                     {
                     }
