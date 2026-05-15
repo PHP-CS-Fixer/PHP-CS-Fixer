@@ -930,6 +930,26 @@ enum Foo: string
                 PHP,
         ];
 
+        yield 'closures' => [
+            [
+                11 => ['classIndex' => 3, 'type' => 'const'],
+                33 => ['classIndex' => 3, 'type' => 'const'],
+                67 => ['classIndex' => 3, 'type' => 'property'],
+                91 => ['classIndex' => 3, 'type' => 'method'],
+            ],
+            <<<'PHP'
+                <?php final class Foo
+                {
+                    private const \Closure I_AM_EMPTY = static function () {};
+                    private const \Closure I_AM_1 = static function (): int { return 1; };
+                    private \Closure $iAmTwo = static function (): int { return 2; };
+                    function my_array_filter(
+                        Closure $callback = static function ($item) { return !empty($item); },
+                    ) {}
+                }
+                PHP,
+        ];
+
         yield 'closure in attribute' => [
             [
                 46 => [
