@@ -1093,6 +1093,26 @@ var_dump(Foo::CAT->test());',
                 }
                 PHP,
         ];
+
+        yield 'closure in constant' => [
+            <<<'PHP'
+                <?php class SomeClass
+                {
+                    public const \Closure NULL = static function (mixed $v): bool {
+                        return null === $v;
+                    };
+                }
+                PHP,
+        ];
+
+        yield 'closure as default argument' => [
+            <<<'PHP'
+                <?php class SomeClass
+                {
+                    public function foo(callable $callback = static function(): void{}): array {}
+                }
+                PHP,
+        ];
     }
 
     /**
