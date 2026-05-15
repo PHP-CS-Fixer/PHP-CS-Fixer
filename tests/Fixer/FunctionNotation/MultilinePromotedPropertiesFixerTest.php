@@ -345,4 +345,66 @@ final class MultilinePromotedPropertiesFixerTest extends AbstractFixerTestCase
             ['keep_blank_lines' => true],
         ];
     }
+
+    /**
+     * @dataProvider provideFix81Cases
+     *
+     * @requires PHP >= 8.1.0
+     */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
+    public function testFix81(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function provideFix81Cases(): iterable
+    {
+        yield 'new in initializers' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public function __construct(
+                        public Bar $x = new Bar(),
+                        public Bar $y = new Bar()
+                    )
+                    {
+                    }
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public function __construct(public Bar $x = new Bar(), public Bar $y = new Bar())
+                    {
+                    }
+                }
+                PHP,
+        ];
+
+        yield 'new in initializers with trailing comma' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public function __construct(
+                        public Bar $x = new Bar(),
+                        public Bar $y = new Bar(),
+                    )
+                    {
+                    }
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public function __construct(public Bar $x = new Bar(), public Bar $y = new Bar(),)
+                    {
+                    }
+                }
+                PHP,
+        ];
+    }
 }
