@@ -678,6 +678,7 @@ final class FixerFactoryTest extends TestCase
             ],
             'no_superfluous_phpdoc_tags' => [
                 'no_empty_phpdoc',
+                'phpdoc_line_span',
                 'void_return',
             ],
             'no_unneeded_braces' => [
@@ -836,9 +837,6 @@ final class FixerFactoryTest extends TestCase
                 'phpdoc_list_type',
                 'phpdoc_no_duplicate_types',
                 'phpdoc_types_order',
-            ],
-            'phpdoc_line_span' => [
-                'no_superfluous_phpdoc_tags',
             ],
             'phpdoc_list_type' => [
                 'phpdoc_no_duplicate_types',
