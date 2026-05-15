@@ -182,6 +182,11 @@ final class GitlabReporterTest extends AbstractReporterTestCase
             JSON;
     }
 
+    protected static function createDryRunWithNoTimeReport(): string
+    {
+        return '[]';
+    }
+
     protected function assertFormat(string $expected, string $input): void
     {
         self::assertJsonSchema(__DIR__.'/../../../../doc/schemas/fix/codeclimate.json', $input);

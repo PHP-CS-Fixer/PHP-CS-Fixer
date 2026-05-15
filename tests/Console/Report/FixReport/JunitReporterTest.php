@@ -243,6 +243,23 @@ final class JunitReporterTest extends AbstractReporterTestCase
             XML;
     }
 
+    protected static function createDryRunWithNoTimeReport(): string
+    {
+        $about = Application::getAbout();
+
+        return <<<XML
+            <?xml version="1.0" encoding="UTF-8"?>
+            <testsuites>
+              <testsuite name="PHP CS Fixer" tests="1" assertions="1" failures="0" errors="0">
+                <properties>
+                  <property name="about" value="{$about}"/>
+                </properties>
+                <testcase name="All OK" assertions="1"/>
+              </testsuite>
+            </testsuites>
+            XML;
+    }
+
     protected function assertFormat(string $expected, string $input): void
     {
         $formatter = new OutputFormatter();
