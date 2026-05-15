@@ -121,12 +121,12 @@ final class PhpdocLineSpanFixer extends AbstractFixer implements WhitespacesAwar
     /**
      * {@inheritdoc}
      *
-     * Must run before NoSuperfluousPhpdocTagsFixer, PhpdocAlignFixer.
-     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, GeneralPhpdocAnnotationRemoveFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
+     * Must run before PhpdocAlignFixer.
+     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, GeneralPhpdocAnnotationRemoveFixer, NoSuperfluousPhpdocTagsFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority(): int
     {
-        return 7;
+        return 5;
     }
 
     public function isCandidate(Tokens $tokens): bool
