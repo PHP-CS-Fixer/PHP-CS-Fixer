@@ -17,6 +17,8 @@ namespace PhpCsFixer\Tests\Fixer\Alias;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\Alias\NoMixedEchoPrintFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -31,6 +33,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NoMixedEchoPrintFixer::class)]
 final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -38,6 +41,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -347,6 +351,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideInvalidConfigurationCases
      */
+    #[DataProvider('provideInvalidConfigurationCases')]
     public function testInvalidConfiguration(array $wrongConfig, string $expectedMessage): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);

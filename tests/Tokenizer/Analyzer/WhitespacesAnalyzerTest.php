@@ -17,6 +17,8 @@ namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -25,11 +27,13 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(WhitespacesAnalyzer::class)]
 final class WhitespacesAnalyzerTest extends TestCase
 {
     /**
      * @dataProvider provideIndentCases
      */
+    #[DataProvider('provideIndentCases')]
     public function testIndent(string $code, string $indent, int $index): void
     {
         $tokens = Tokens::fromCode($code);

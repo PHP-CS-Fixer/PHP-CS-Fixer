@@ -28,6 +28,8 @@ use PhpCsFixer\Runner\Parallel\ProcessIdentifier;
 use PhpCsFixer\Runner\RunnerConfig;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
 use React\ChildProcess\Process;
 use React\EventLoop\StreamSelectLoop;
 use React\Socket\ConnectionInterface;
@@ -46,6 +48,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(WorkerCommand::class)]
 final class WorkerCommandTest extends TestCase
 {
     public function testMissingIdentifierCausesFailure(): void
@@ -84,6 +87,7 @@ final class WorkerCommandTest extends TestCase
      *
      * @requires OS Linux|Darwin
      */
+    #[RequiresOperatingSystem('Linux|Darwin')]
     public function testWorkerCommunicatesWithTheServer(): void
     {
         $streamSelectLoop = new StreamSelectLoop();

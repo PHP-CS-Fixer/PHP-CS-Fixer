@@ -37,11 +37,11 @@ final class ParseCommand extends Command
     public const FORMAT_DUMP = 'dump';
     public const FORMAT_JSON = 'json';
 
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultName = 'parse';
-
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultDescription = 'Parse file into tokens.';
+    public function __construct()
+    {
+        parent::__construct('parse');
+        $this->setDescription('Parse file into tokens.');
+    }
 
     protected function configure(): void
     {

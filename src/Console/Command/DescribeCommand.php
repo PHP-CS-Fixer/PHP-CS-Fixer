@@ -71,12 +71,6 @@ final class DescribeCommand extends Command
     private const SET_ALIAS_TO_DESCRIBE_CONFIG = '@';
     private const SET_ALIAS_TO_DESCRIBE_RULES_WITHOUT_SET = '@-';
 
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultName = 'describe';
-
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultDescription = 'Describe rule / ruleset.';
-
     /**
      * @var ?list<string>
      */
@@ -91,7 +85,8 @@ final class DescribeCommand extends Command
 
     public function __construct(?FixerFactory $fixerFactory = null)
     {
-        parent::__construct();
+        parent::__construct('describe');
+        $this->setDescription('Describe rule / ruleset.');
 
         if (null === $fixerFactory) {
             $fixerFactory = new FixerFactory();

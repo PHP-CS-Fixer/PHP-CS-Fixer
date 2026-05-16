@@ -174,10 +174,6 @@ final class MbStrFunctionsFixer extends AbstractFixer
             if (!$tokens[$functionIndex]->isGivenKind(CT::T_FUNCTION_IMPORT)) {
                 continue;
             }
-            $useIndex = $tokens->getPrevMeaningfulToken($functionIndex);
-            if (!$tokens[$useIndex]->isGivenKind(\T_USE)) {
-                continue;
-            }
             $tokens[$index] = new Token([\T_STRING, $this->functions[$lowercasedContent]['alternativeName']]);
         }
     }

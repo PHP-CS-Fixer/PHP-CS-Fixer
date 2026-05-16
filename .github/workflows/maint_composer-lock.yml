@@ -1,4 +1,4 @@
-name: Lock cleanup
+name: Maintenance
 
 on:
   push:
@@ -13,10 +13,11 @@ permissions:
 
 jobs:
   automate:
-    name: Automate
+    name: Lock cleanup
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v6

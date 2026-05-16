@@ -37,108 +37,14 @@ final class FunctionsAnalyzer
      */
     private array $functionsAnalysis = ['tokens' => '', 'imports' => [], 'declarations' => []];
 
-    /**
-     * Important: risky because of the limited (file) scope of the tool.
-     */
     public function isGlobalFunctionCall(Tokens $tokens, int $index): bool
     {
-        if (!$tokens[$index]->isGivenKind(\T_STRING)) {
-            return false;
-        }
+        return $this->isGlobalFunctionCallOrUsage($tokens, $index, true);
+    }
 
-        $openParenthesisIndex = $tokens->getNextMeaningfulToken($index);
-
-        if (!$tokens[$openParenthesisIndex]->equals('(')) {
-            return false;
-        }
-
-        $previousIsNamespaceSeparator = false;
-        $prevIndex = $tokens->getPrevMeaningfulToken($index);
-
-        if ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
-            $previousIsNamespaceSeparator = true;
-            $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
-        }
-
-        if ($tokens[$prevIndex]->isGivenKind(self::POSSIBLE_KINDS)) {
-            return false;
-        }
-
-        if ($tokens[$tokens->getNextMeaningfulToken($openParenthesisIndex)]->isGivenKind(CT::T_FIRST_CLASS_CALLABLE)) {
-            return false;
-        }
-
-        if ($previousIsNamespaceSeparator) {
-            return true;
-        }
-
-        $functionName = strtolower($tokens[$index]->getContent());
-
-        if ('set' === $functionName) {
-            if (!$tokens[$prevIndex]->equalsAny([[CT::T_PROPERTY_HOOK_BRACE_OPEN], ';', '}'])) {
-                return true;
-            }
-            $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesisIndex);
-            $afterCloseParenthesisIndex = $tokens->getNextMeaningfulToken($closeParenthesisIndex);
-            if ($tokens[$afterCloseParenthesisIndex]->equalsAny(['{', [\T_DOUBLE_ARROW]])) {
-                return false;
-            }
-        }
-
-        if ($tokens->isChanged() || $tokens->getCodeHash() !== $this->functionsAnalysis['tokens']) {
-            $this->buildFunctionsAnalysis($tokens);
-        }
-
-        // figure out in which namespace we are
-        $scopeStartIndex = 0;
-        $scopeEndIndex = \count($tokens) - 1;
-        $inGlobalNamespace = false;
-
-        foreach ($tokens->getNamespaceDeclarations() as $declaration) {
-            $scopeStartIndex = $declaration->getScopeStartIndex();
-            $scopeEndIndex = $declaration->getScopeEndIndex();
-
-            if ($index >= $scopeStartIndex && $index <= $scopeEndIndex) {
-                $inGlobalNamespace = $declaration->isGlobalNamespace();
-
-                break;
-            }
-        }
-
-        // check if the call is to a function declared in the same namespace as the call is done,
-        // if the call is already in the global namespace than declared functions are in the same
-        // global namespace and don't need checking
-
-        if (!$inGlobalNamespace) {
-            foreach ($this->functionsAnalysis['declarations'] as $functionNameIndex) {
-                if ($functionNameIndex < $scopeStartIndex || $functionNameIndex > $scopeEndIndex) {
-                    continue;
-                }
-
-                if (strtolower($tokens[$functionNameIndex]->getContent()) === $functionName) {
-                    return false;
-                }
-            }
-        }
-
-        foreach ($this->functionsAnalysis['imports'] as $functionUse) {
-            if ($functionUse->getStartIndex() < $scopeStartIndex || $functionUse->getEndIndex() > $scopeEndIndex) {
-                continue;
-            }
-
-            if ($functionName !== strtolower($functionUse->getShortName())) {
-                continue;
-            }
-
-            // global import like `use function \str_repeat;`
-            return $functionUse->getShortName() === ltrim($functionUse->getFullName(), '\\');
-        }
-
-        if (AttributeAnalyzer::isAttribute($tokens, $index)) {
-            return false;
-        }
-
-        return true;
+    public function isGlobalFunctionUsage(Tokens $tokens, int $index): bool
+    {
+        return $this->isGlobalFunctionCallOrUsage($tokens, $index, false);
     }
 
     /**
@@ -213,6 +119,110 @@ final class FunctionsAnalyzer
         }
 
         return $tokens[$tokens->getNextMeaningfulToken($index)]->equals('(');
+    }
+
+    /**
+     * Important: risky because of the limited (file) scope of the tool.
+     */
+    private function isGlobalFunctionCallOrUsage(Tokens $tokens, int $index, bool $callOnly): bool
+    {
+        if (!$tokens[$index]->isGivenKind(\T_STRING)) {
+            return false;
+        }
+
+        $openParenthesisIndex = $tokens->getNextMeaningfulToken($index);
+
+        if (!$tokens[$openParenthesisIndex]->equals('(')) {
+            return false;
+        }
+
+        $previousIsNamespaceSeparator = false;
+        $prevIndex = $tokens->getPrevMeaningfulToken($index);
+
+        if ($tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
+            $previousIsNamespaceSeparator = true;
+            $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
+        }
+
+        if ($tokens[$prevIndex]->isGivenKind(self::POSSIBLE_KINDS)) {
+            return false;
+        }
+
+        if ($callOnly && $tokens[$tokens->getNextMeaningfulToken($openParenthesisIndex)]->isGivenKind(CT::T_FIRST_CLASS_CALLABLE)) {
+            return false;
+        }
+
+        if ($previousIsNamespaceSeparator) {
+            return true;
+        }
+
+        $functionName = strtolower($tokens[$index]->getContent());
+
+        if ('set' === $functionName) {
+            if (!$tokens[$prevIndex]->equalsAny([[CT::T_PROPERTY_HOOK_BRACE_OPEN], ';', '}'])) {
+                return true;
+            }
+            $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesisIndex);
+            $afterCloseParenthesisIndex = $tokens->getNextMeaningfulToken($closeParenthesisIndex);
+            if ($tokens[$afterCloseParenthesisIndex]->equalsAny(['{', [\T_DOUBLE_ARROW]])) {
+                return false;
+            }
+        }
+
+        if ($tokens->isChanged() || $tokens->getCodeHash() !== $this->functionsAnalysis['tokens']) {
+            $this->buildFunctionsAnalysis($tokens);
+        }
+
+        // figure out in which namespace we are
+        $scopeStartIndex = 0;
+        $scopeEndIndex = \count($tokens) - 1;
+        $inGlobalNamespace = false;
+
+        foreach ($tokens->getNamespaceDeclarations() as $declaration) {
+            $scopeStartIndex = $declaration->getScopeStartIndex();
+            $scopeEndIndex = $declaration->getScopeEndIndex();
+
+            if ($index >= $scopeStartIndex && $index <= $scopeEndIndex) {
+                $inGlobalNamespace = $declaration->isGlobalNamespace();
+
+                break;
+            }
+        }
+
+        // check if the call is to a function declared in the same namespace as the call is done,
+        // if the call is already in the global namespace than declared functions are in the same
+        // global namespace and don't need checking
+
+        if (!$inGlobalNamespace) {
+            foreach ($this->functionsAnalysis['declarations'] as $functionNameIndex) {
+                if ($functionNameIndex < $scopeStartIndex || $functionNameIndex > $scopeEndIndex) {
+                    continue;
+                }
+
+                if (strtolower($tokens[$functionNameIndex]->getContent()) === $functionName) {
+                    return false;
+                }
+            }
+        }
+
+        foreach ($this->functionsAnalysis['imports'] as $functionUse) {
+            if ($functionUse->getStartIndex() < $scopeStartIndex || $functionUse->getEndIndex() > $scopeEndIndex) {
+                continue;
+            }
+
+            if ($functionName !== strtolower($functionUse->getShortName())) {
+                continue;
+            }
+
+            // global import like `use function \str_repeat;`
+            return $functionUse->getShortName() === ltrim($functionUse->getFullName(), '\\');
+        }
+
+        if (AttributeAnalyzer::isAttribute($tokens, $index)) {
+            return false;
+        }
+
+        return true;
     }
 
     private function buildFunctionsAnalysis(Tokens $tokens): void

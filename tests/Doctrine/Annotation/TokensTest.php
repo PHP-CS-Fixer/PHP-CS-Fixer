@@ -17,6 +17,8 @@ namespace PhpCsFixer\Tests\Doctrine\Annotation;
 use PhpCsFixer\Doctrine\Annotation\Tokens;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -25,6 +27,7 @@ use PhpCsFixer\Tokenizer\Token;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Tokens::class)]
 final class TokensTest extends TestCase
 {
     public function testCreateFromEmptyPhpdocComment(): void
@@ -41,6 +44,7 @@ final class TokensTest extends TestCase
     /**
      * @dataProvider provideOffSetOtherThanTokenCases
      */
+    #[DataProvider('provideOffSetOtherThanTokenCases')]
     public function testOffSetOtherThanToken(string $message, ?string $wrongType): void
     {
         $docComment = '/** */';

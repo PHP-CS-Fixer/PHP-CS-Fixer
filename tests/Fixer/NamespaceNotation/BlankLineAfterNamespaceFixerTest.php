@@ -14,8 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\NamespaceNotation;
 
+use PhpCsFixer\Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -28,11 +31,13 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(BlankLineAfterNamespaceFixer::class)]
 final class BlankLineAfterNamespaceFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -243,6 +248,7 @@ class X extends Y {}',
     /**
      * @dataProvider provideWithWhitespacesConfigCases
      */
+    #[DataProvider('provideWithWhitespacesConfigCases')]
     public function testWithWhitespacesConfig(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));

@@ -240,7 +240,7 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
             $info = $this->argumentsAnalyzer->getArgumentInfo($tokens, $start, $end);
             $content = $info->getName();
 
-            if (isset($imports[$content])) {
+            if (null !== $content && isset($imports[$content])) {
                 unset($imports[$content]);
 
                 if (0 === \count($imports)) {

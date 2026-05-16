@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\RuleSet\Sets;
 
+use PhpCsFixer\RuleSet\Sets\PHPUnit3x5MigrationRiskySet;
+use PHPUnit\Framework\Attributes\CoversClass;
+
 /**
  * @internal
  *
@@ -21,4 +24,5 @@ namespace PhpCsFixer\Tests\RuleSet\Sets;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(PHPUnit3x5MigrationRiskySet::class)]
 final class PHPUnit3x5MigrationRiskySetTest extends AbstractSetTestCase {}

@@ -20,6 +20,7 @@ Rules
 - `@PER-CS:risky <./PER-CSRisky.rst>`_
 - `@Symfony:risky <./SymfonyRisky.rst>`_
 - `comment_to_phpdoc <./../rules/comment/comment_to_phpdoc.rst>`_
+- `declare_strict_types <./../rules/strict/declare_strict_types.rst>`_
 - `final_internal_class <./../rules/class_notation/final_internal_class.rst>`_
 - `native_constant_invocation <./../rules/constant_notation/native_constant_invocation.rst>`_ with config:
 
@@ -44,6 +45,7 @@ Rules
 
 - `strict_comparison <./../rules/strict/strict_comparison.rst>`_
 - `strict_param <./../rules/strict/strict_param.rst>`_
+- `void_return <./../rules/function_notation/void_return.rst>`_
 - `yield_from_array_to_yields <./../rules/array_notation/yield_from_array_to_yields.rst>`_
 
 Disabled rules

@@ -77,20 +77,12 @@ final class ArrayPushFixer extends AbstractFixer
             }
 
             // figure out where the arguments list opens
-
             $openBraceIndex = $tokens->getNextMeaningfulToken($callIndex);
-            $blockType = Tokens::detectBlockType($tokens[$openBraceIndex]);
-
-            if (null === $blockType || Tokens::BLOCK_TYPE_PARENTHESIS_BRACE !== $blockType['type']) {
-                continue;
-            }
 
             // figure out where the arguments list closes
-
             $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex);
 
             // meaningful after `)` must be `;`, `? >` or nothing
-
             $afterCloseBraceIndex = $tokens->getNextMeaningfulToken($closeBraceIndex);
 
             if (null !== $afterCloseBraceIndex && !$tokens[$afterCloseBraceIndex]->equalsAny([';', [\T_CLOSE_TAG]])) {
@@ -107,7 +99,7 @@ final class ArrayPushFixer extends AbstractFixer
             $firstArgumentStop = $tokens->getNextMeaningfulToken($firstArgumentStop);
 
             if (!$tokens[$firstArgumentStop]->equals(',')) {
-                return;
+                continue;
             }
 
             // second argument can be about anything but ellipsis, we must make sure there is not

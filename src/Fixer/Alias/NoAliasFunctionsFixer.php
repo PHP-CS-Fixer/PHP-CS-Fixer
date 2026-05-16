@@ -253,9 +253,7 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableF
                 break;
             }
 
-            if (!isset(self::SETS[$set])) {
-                throw new \LogicException(\sprintf('Set %s passed option validation, but not part of ::SETS.', $set));
-            }
+            \assert(isset(self::SETS[$set]));
 
             $this->aliases = array_merge($this->aliases, self::SETS[$set]);
         }

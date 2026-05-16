@@ -19,6 +19,8 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespaceUsesAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author VeeWee <toonverwerft@gmail.com>
@@ -29,6 +31,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NamespaceUsesAnalyzer::class)]
 final class NamespaceUsesAnalyzerTest extends TestCase
 {
     /**
@@ -36,6 +39,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
      *
      * @dataProvider provideUsesFromTokensCases
      */
+    #[DataProvider('provideUsesFromTokensCases')]
     public function testUsesFromTokens(string $code, array $expected, bool $allowMulti = false): void
     {
         $tokens = Tokens::fromCode($code);
@@ -552,6 +556,7 @@ final class NamespaceUsesAnalyzerTest extends TestCase
      *
      * @dataProvider provideGetDeclarationsInNamespaceCases
      */
+    #[DataProvider('provideGetDeclarationsInNamespaceCases')]
     public function testGetDeclarationsInNamespace(string $code, NamespaceAnalysis $namespace, array $expected): void
     {
         $tokens = Tokens::fromCode($code);

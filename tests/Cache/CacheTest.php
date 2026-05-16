@@ -22,6 +22,8 @@ use PhpCsFixer\Config;
 use PhpCsFixer\Hasher;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -32,6 +34,7 @@ use PhpCsFixer\ToolInfo;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Cache::class)]
 final class CacheTest extends TestCase
 {
     public function testIsFinal(): void
@@ -113,6 +116,7 @@ final class CacheTest extends TestCase
      *
      * @dataProvider provideFromJsonThrowsInvalidArgumentExceptionIfJsonIsMissingKeyCases
      */
+    #[DataProvider('provideFromJsonThrowsInvalidArgumentExceptionIfJsonIsMissingKeyCases')]
     public function testFromJsonThrowsInvalidArgumentExceptionIfJsonIsMissingKey(array $data): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -150,6 +154,7 @@ final class CacheTest extends TestCase
     /**
      * @dataProvider provideCanConvertToAndFromJsonCases
      */
+    #[DataProvider('provideCanConvertToAndFromJsonCases')]
     public function testCanConvertToAndFromJson(SignatureInterface $signature): void
     {
         $cache = new Cache($signature);

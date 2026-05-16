@@ -828,12 +828,15 @@ final class TokensAnalyzer
             }
 
             if ($token->isGivenKind(\T_FUNCTION)) {
+                $functionNameIndex = $this->tokens->getNextMeaningfulToken($index);
+                if ($this->tokens[$functionNameIndex]->equals('(')) {
+                    continue;
+                }
                 $elements[$index] = [
                     'classIndex' => $classIndex,
                     'token' => $token,
                     'type' => 'method',
                 ];
-                $functionNameIndex = $this->tokens->getNextMeaningfulToken($index);
                 if ('__construct' === $this->tokens[$functionNameIndex]->getContent()) {
                     $openParenthesis = $this->tokens->getNextMeaningfulToken($functionNameIndex);
                     $closeParenthesis = $this->tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis);

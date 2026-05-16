@@ -18,6 +18,7 @@ use PhpCsFixer\Console\Report\FixReport\ReporterFactory;
 use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
@@ -28,6 +29,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ReporterFactory::class)]
 final class ReporterFactoryTest extends TestCase
 {
     public function testInterfaceIsFluent(): void

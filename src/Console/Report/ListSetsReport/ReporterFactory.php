@@ -30,6 +30,9 @@ final class ReporterFactory
      */
     private array $reporters = [];
 
+    /**
+     * @return $this
+     */
     public function registerBuiltInReporters(): self
     {
         /** @var null|list<class-string<ReporterInterface>> $builtInReporters */
@@ -59,6 +62,9 @@ final class ReporterFactory
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function registerReporter(ReporterInterface $reporter): self
     {
         $format = $reporter->getFormat();

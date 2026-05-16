@@ -17,6 +17,8 @@ namespace PhpCsFixer\Tests\DocBlock;
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\DocBlock\ShortDescription;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -25,11 +27,13 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ShortDescription::class)]
 final class ShortDescriptionTest extends TestCase
 {
     /**
      * @dataProvider provideGetEndCases
      */
+    #[DataProvider('provideGetEndCases')]
     public function testGetEnd(?int $expected, string $input): void
     {
         $doc = new DocBlock($input);

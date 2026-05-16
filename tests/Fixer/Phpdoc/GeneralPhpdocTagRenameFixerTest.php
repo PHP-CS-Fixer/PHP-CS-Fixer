@@ -15,7 +15,10 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocTagRenameFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -28,6 +31,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(GeneralPhpdocTagRenameFixer::class)]
 final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -35,6 +39,7 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -260,6 +265,7 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideInvalidConfigurationCases
      */
+    #[DataProvider('provideInvalidConfigurationCases')]
     public function testInvalidConfiguration(array $config, string $message): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);

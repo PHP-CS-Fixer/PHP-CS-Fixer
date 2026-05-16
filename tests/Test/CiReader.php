@@ -59,11 +59,11 @@ final class CiReader
         return $phpVersions; // @phpstan-ignore return.type (we know it's a list of parsed strings)
     }
 
-    public static function getPhpVersionUsedByCiForDeployments(): string
+    public static function getPhpVersionUsedByCiForReleasableChecks(): string
     {
         $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/ci.yml');
 
-        $version = $yaml['jobs']['deployment']['env']['php-version'];
+        $version = $yaml['jobs']['releasable']['env']['php-version'];
 
         return \is_string($version) ? $version : \sprintf('%.1f', $version);
     }

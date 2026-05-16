@@ -18,6 +18,8 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\FullyQualifiedNameAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -26,6 +28,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FullyQualifiedNameAnalyzer::class)]
 final class FullyQualifiedNameAnalyzerTest extends TestCase
 {
     /**
@@ -33,6 +36,7 @@ final class FullyQualifiedNameAnalyzerTest extends TestCase
      *
      * @param NamespaceUseAnalysis::TYPE_* $importType
      */
+    #[DataProvider('provideGetFullyQualifiedNameCases')]
     public function testGetFullyQualifiedName(string $fullyQualifiedName, string $code, string $name, int $indexInNamespace, int $importType): void
     {
         $analyzer = new FullyQualifiedNameAnalyzer(Tokens::fromCode($code));

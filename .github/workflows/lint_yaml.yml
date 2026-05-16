@@ -1,4 +1,4 @@
-name: YAML Validation
+name: Lint
 
 on:
   pull_request:
@@ -16,13 +16,11 @@ permissions:
   contents: read # to fetch code (actions/checkout)
 
 jobs:
-  validate-yaml:
-    name: Validate YAML
+  lint-yaml:
+    name: YAML
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-
       - name: Run yamllint
         run: git ls-files --cached -z -- '*.y*ml' | xargs --null -- yamllint

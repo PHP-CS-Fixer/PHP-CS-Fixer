@@ -54,6 +54,9 @@ Array Notation
 - `no_whitespace_before_comma_in_array <./array_notation/no_whitespace_before_comma_in_array.rst>`_ *(configurable)*
 
   In array declaration, there MUST NOT be a whitespace before each comma.
+- `no_whitespace_in_empty_array <./array_notation/no_whitespace_in_empty_array.rst>`_
+
+  Empty arrays should not contain only whitespace.
 - `normalize_index_brace <./array_notation/normalize_index_brace.rst>`_
 
   Array index should always be written by using square braces.
@@ -791,6 +794,9 @@ PHPDoc
 - `phpdoc_no_alias_tag <./phpdoc/phpdoc_no_alias_tag.rst>`_ *(configurable)*
 
   No alias PHPDoc tags should be used.
+- `phpdoc_no_duplicate_types <./phpdoc/phpdoc_no_duplicate_types.rst>`_
+
+  Removes duplicate PHPDoc types.
 - `phpdoc_no_empty_return <./phpdoc/phpdoc_no_empty_return.rst>`_
 
   ``@return void`` and ``@return null`` annotations must be removed from PHPDoc.
@@ -845,7 +851,7 @@ PHPDoc
 - `phpdoc_types <./phpdoc/phpdoc_types.rst>`_ *(configurable)*
 
   The correct case must be used for standard PHP types in PHPDoc.
-- `phpdoc_types_no_duplicates <./phpdoc/phpdoc_types_no_duplicates.rst>`_
+- `phpdoc_types_no_duplicates <./phpdoc/phpdoc_types_no_duplicates.rst>`_ *(deprecated)*
 
   Removes duplicate PHPDoc types.
 - `phpdoc_types_order <./phpdoc/phpdoc_types_order.rst>`_ *(configurable)*
@@ -864,7 +870,7 @@ Return Notation
 - `no_useless_return <./return_notation/no_useless_return.rst>`_
 
   There should not be an empty ``return`` statement at the end of a function.
-- `return_assignment <./return_notation/return_assignment.rst>`_
+- `return_assignment <./return_notation/return_assignment.rst>`_ *(configurable)*
 
   Local, dynamic and directly referenced variables should not be assigned and directly returned by a function or method.
 - `simplified_null_return <./return_notation/simplified_null_return.rst>`_
@@ -895,7 +901,7 @@ Strict
 
 - `declare_strict_types <./strict/declare_strict_types.rst>`_ *(risky, configurable)*
 
-  Force strict types declaration in all files.
+  Force a strict types mode in all files.
 - `strict_comparison <./strict/strict_comparison.rst>`_ *(risky)*
 
   Comparisons should be strict.

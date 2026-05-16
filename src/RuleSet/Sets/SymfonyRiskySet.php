@@ -30,6 +30,9 @@ final class SymfonyRiskySet extends AbstractRuleSetDefinition
             '@PSR12:risky' => true,
             'array_push' => true,
             'combine_nested_dirname' => true,
+            'declare_strict_types' => [
+                'strategy' => 'remove',
+            ],
             'dir_constant' => true,
             'ereg_to_preg' => true,
             'error_suppression' => true,
@@ -73,6 +76,9 @@ final class SymfonyRiskySet extends AbstractRuleSetDefinition
             'string_length_to_empty' => true,
             'string_line_ending' => true,
             'ternary_to_elvis_operator' => true,
+            'void_return' => [
+                'fix_lambda' => false,
+            ],
         ];
     }
 

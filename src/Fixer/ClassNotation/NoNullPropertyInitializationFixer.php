@@ -80,6 +80,8 @@ final class NoNullPropertyInitializationFixer extends AbstractFixer
                 continue;
             }
 
+            \assert(isset($inClass[$classLevel]));
+
             if ($tokens[$index]->equals('{')) {
                 ++$inClass[$classLevel];
 

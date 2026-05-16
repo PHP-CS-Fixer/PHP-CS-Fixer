@@ -20,6 +20,9 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @phpstan-import-type _PhpTokenPrototypePartial from Token
@@ -32,6 +35,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Tokens::class)]
 final class TokensTest extends TestCase
 {
     use AssertTokensTrait;
@@ -59,6 +63,7 @@ final class TokensTest extends TestCase
      *
      * @dataProvider provideFindSequenceCases
      */
+    #[DataProvider('provideFindSequenceCases')]
     public function testFindSequence(
         string $source,
         ?array $expected,
@@ -305,6 +310,7 @@ final class TokensTest extends TestCase
      *
      * @dataProvider provideFindSequenceExceptionCases
      */
+    #[DataProvider('provideFindSequenceExceptionCases')]
     public function testFindSequenceException(string $message, array $sequence): void
     {
         $tokens = Tokens::fromCode('<?php $x = 1;');
@@ -376,6 +382,7 @@ final class TokensTest extends TestCase
     /**
      * @dataProvider provideMonolithicPhpDetectionCases
      */
+    #[DataProvider('provideMonolithicPhpDetectionCases')]
     public function testMonolithicPhpDetection(bool $isMonolithic, string $source): void
     {
         $tokens = Tokens::fromCode($source);
@@ -561,6 +568,7 @@ final class TokensTest extends TestCase
      *
      * @dataProvider provideClearTokenAndMergeSurroundingWhitespaceCases
      */
+    #[DataProvider('provideClearTokenAndMergeSurroundingWhitespaceCases')]
     public function testClearTokenAndMergeSurroundingWhitespace(string $source, array $indexes, array $expected): void
     {
         $this->doTestClearTokens($source, $indexes, $expected);
@@ -669,6 +677,7 @@ final class TokensTest extends TestCase
      *
      * @dataProvider provideTokenOfKindSiblingCases
      */
+    #[DataProvider('provideTokenOfKindSiblingCases')]
     public function testTokenOfKindSibling(
         ?int $expectedIndex,
         int $direction,
@@ -737,6 +746,7 @@ final class TokensTest extends TestCase
      *
      * @param Tokens::BLOCK_TYPE_* $type
      */
+    #[DataProvider('provideFindBlockEndCases')]
     public function testFindBlockEnd(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
         self::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
@@ -775,12 +785,14 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      *
      * @dataProvider provideFindBlockEnd80Cases
      *
      * @param Tokens::BLOCK_TYPE_* $type
      */
+    #[RequiresPhp('>= 8.0.0')]
+    #[DataProvider('provideFindBlockEnd80Cases')]
     public function testFindBlockEnd80(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
         self::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
@@ -803,12 +815,14 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      *
      * @dataProvider provideFindBlockEnd82Cases
      *
      * @param Tokens::BLOCK_TYPE_* $type
      */
+    #[RequiresPhp('>= 8.2.0')]
+    #[DataProvider('provideFindBlockEnd82Cases')]
     public function testFindBlockEnd82(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
         self::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
@@ -843,12 +857,14 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.3
+     * @requires PHP >= 8.3.0
      *
      * @dataProvider provideFindBlockEnd83Cases
      *
      * @param Tokens::BLOCK_TYPE_* $type
      */
+    #[RequiresPhp('>= 8.3.0')]
+    #[DataProvider('provideFindBlockEnd83Cases')]
     public function testFindBlockEnd83(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
         self::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
@@ -881,8 +897,10 @@ final class TokensTest extends TestCase
      *
      * @dataProvider provideFindBlockEndPre84Cases
      *
-     * @requires PHP <8.4
+     * @requires PHP < 8.4.0
      */
+    #[DataProvider('provideFindBlockEndPre84Cases')]
+    #[RequiresPhp('< 8.4.0')]
     public function testFindBlockEndPre84(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
         self::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
@@ -992,6 +1010,7 @@ final class TokensTest extends TestCase
     /**
      * @dataProvider provideIsEmptyCases
      */
+    #[DataProvider('provideIsEmptyCases')]
     public function testIsEmpty(Token $token, bool $isEmpty): void
     {
         $tokens = Tokens::fromArray([$token]);
@@ -1033,6 +1052,7 @@ final class TokensTest extends TestCase
     /**
      * @dataProvider provideEnsureWhitespaceAtIndexCases
      */
+    #[DataProvider('provideEnsureWhitespaceAtIndexCases')]
     public function testEnsureWhitespaceAtIndex(string $expected, string $input, int $index, int $offset, string $whiteSpace): void
     {
         $tokens = Tokens::fromCode($input);
@@ -1209,6 +1229,7 @@ echo $a;',
     /**
      * @dataProvider provideRemoveLeadingWhitespaceCases
      */
+    #[DataProvider('provideRemoveLeadingWhitespaceCases')]
     public function testRemoveLeadingWhitespace(int $index, ?string $whitespaces, string $expected, ?string $input = null): void
     {
         Tokens::clearCache();
@@ -1283,6 +1304,7 @@ echo $a;',
     /**
      * @dataProvider provideRemoveTrailingWhitespaceCases
      */
+    #[DataProvider('provideRemoveTrailingWhitespaceCases')]
     public function testRemoveTrailingWhitespace(int $index, ?string $whitespaces, string $expected, ?string $input = null): void
     {
         Tokens::clearCache();
@@ -1378,6 +1400,7 @@ $bar;',
      *
      * @dataProvider provideDetectBlockTypeCases
      */
+    #[DataProvider('provideDetectBlockTypeCases')]
     public function testDetectBlockType(?array $expected, string $code, int $index): void
     {
         $tokens = Tokens::fromCode($code);
@@ -1438,6 +1461,7 @@ $bar;',
      *
      * @dataProvider provideOverrideRangeCases
      */
+    #[DataProvider('provideOverrideRangeCases')]
     public function testOverrideRange(array $expected, string $code, int $indexStart, int $indexEnd, array $items): void
     {
         $tokens = Tokens::fromCode($code);
@@ -1563,6 +1587,7 @@ $bar;',
      *
      * @dataProvider provideGetMeaningfulTokenSiblingCases
      */
+    #[DataProvider('provideGetMeaningfulTokenSiblingCases')]
     public function testGetMeaningfulTokenSibling(?int $expectIndex, int $index, int $direction, string $source): void
     {
         Tokens::clearCache();
@@ -1604,6 +1629,7 @@ $bar;',
      *
      * @param list<Token> $slices
      */
+    #[DataProvider('provideInsertSlicesAtMultiplePlacesCases')]
     public function testInsertSlicesAtMultiplePlaces(string $expected, array $slices): void
     {
         $input = <<<'EOF'
@@ -1677,6 +1703,7 @@ $bar;',
      *
      * @dataProvider provideInsertSlicesCases
      */
+    #[DataProvider('provideInsertSlicesCases')]
     public function testInsertSlices(Tokens $expected, Tokens $tokens, array $slices): void
     {
         $tokens->insertSlices($slices);
@@ -1943,8 +1970,9 @@ $bar;',
     }
 
     /**
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[RequiresPhp('>= 8.1.0')]
     public function testToJson(): void
     {
         self::assertSame(

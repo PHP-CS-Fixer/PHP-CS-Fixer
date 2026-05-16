@@ -19,6 +19,8 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\Test\CiReader;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use Symfony\Component\Yaml\Yaml;
 
@@ -34,6 +36,9 @@ use Symfony\Component\Yaml\Yaml;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversNothing]
+#[Group('auto-review')]
+#[Group('covers-nothing')]
 final class CiConfigurationTest extends TestCase
 {
     public function testThatPhpVersionEnvsAreSetProperly(): void
@@ -69,7 +74,7 @@ final class CiConfigurationTest extends TestCase
 
     public function testDeploymentJobRunOnLatestStablePhpThatIsSupportedByTool(): void
     {
-        $ciVersionsForDeployment = CiReader::getPhpVersionUsedByCiForDeployments();
+        $ciVersionsForDeployment = CiReader::getPhpVersionUsedByCiForReleasableChecks();
         $ciVersions = CiReader::getAllPhpVersionsUsedByCiForTests();
         $expectedPhp = $this->getMaxPhpVersionFromEntryFile();
 
@@ -146,7 +151,7 @@ final class CiConfigurationTest extends TestCase
     public function testPhpVersionInAddMilestoneWorkflow(): void
     {
         $expectedPhpVersion = $this->getMaxPhpVersionFromEntryFile();
-        $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/add-milestone.yml');
+        $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/maint_add-milestone.yml');
 
         foreach ($yaml['jobs'] as $job) {
             if (str_contains($job['if'] ?? '', "'topic/PHP{$expectedPhpVersion}'")) {
@@ -165,7 +170,7 @@ final class CiConfigurationTest extends TestCase
         $yaml = Yaml::parseFile(__DIR__.'/../../.github/workflows/sca.yml');
 
         self::assertSame(
-            $yaml['jobs']['everything_else']['env']['php-version'],
+            $yaml['jobs']['checks']['env']['php-version'],
             $expectedPhpVersion,
         );
     }
