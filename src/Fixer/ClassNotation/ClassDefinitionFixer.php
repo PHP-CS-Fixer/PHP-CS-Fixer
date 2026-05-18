@@ -237,7 +237,13 @@ final class ClassDefinitionFixer extends AbstractFixer implements ConfigurableFi
         }
 
         if ($classDefInfo['anonymousClass'] && false === $this->configuration['inline_constructor_arguments']) {
-            if (!$tokens[$end]->equals(')')) { // anonymous class with `extends` and/or `implements`
+            // Walk back over the `extends X` / `implements Y` clauses until we reach
+            // either the closing `)` of the constructor or the `class` keyword. A single
+            // `getPrevMeaningfulToken()` call is not enough when both `extends` and
+            // `implements` are present, since it would stop on the extended class name
+            // and let the subsequent `makeClassyDefinitionSingleLine()` call collapse
+            // the constructor argument list. See #9539.
+            while (!$tokens[$end]->equals(')') && !$tokens[$end]->isGivenKind(\T_CLASS)) {
                 $start = $tokens->getPrevMeaningfulToken($end);
                 $this->makeClassyDefinitionSingleLine($tokens, $start, $end);
                 $end = $start;
