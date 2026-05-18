@@ -352,11 +352,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../tests/Test/AbstractFixerTestCase.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 of function sprintf is expected to be string by placeholder #1 ("%%s"), false given.',
-    'count' => 5,
-    'path' => __DIR__ . '/../../../tests/Test/AbstractIntegrationCaseFactory.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #2 of function sprintf is expected to be int by placeholder #1 ("%%d"), string given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../tests/Test/AbstractTransformerTestCase.php',
