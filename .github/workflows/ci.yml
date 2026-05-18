@@ -135,13 +135,13 @@ jobs:
             PHP_CS_FIXER_FAST_LINT_TEST_CASES: 0 # run full linting on highest supported PHP version to be sure that all cases are valid
 
           - operating-system: ubuntu-24.04
-            php-version: 8.6snapshot # replace with PHP 8.6 when dev version is released
+            php-version: '8.6'
             job-description: Fixer
             run-fixer: 'yes'
             allow-to-fail: 'yes' # currently not compatible
 
           - operating-system: ubuntu-24.04
-            php-version: 8.6snapshot # replace with PHP 8.6 when dev version is released
+            php-version: '8.6'
             job-description: tests
             run-tests: 'yes'
             allow-to-fail: 'yes' # currently not compatible
