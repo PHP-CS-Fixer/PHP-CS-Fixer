@@ -14,7 +14,10 @@ declare(strict_types=1);
 
 namespace PhpCsFixer;
 
+use PhpCsFixer\Config\RuleCustomisationPolicyAwareConfigInterface;
+use PhpCsFixer\Config\RuleCustomisationPolicyInterface;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
@@ -22,8 +25,12 @@ use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Katsuhiro Ogawa <ko.fivestar@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ *
+ * @api-extendable
  */
-class Config implements ConfigInterface, ParallelAwareConfigInterface
+class Config implements ConfigInterface, ParallelAwareConfigInterface, UnsupportedPhpVersionAllowedConfigInterface, CustomRulesetsAwareConfigInterface, RuleCustomisationPolicyAwareConfigInterface
 {
     /**
      * @var non-empty-string
@@ -36,11 +43,16 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
     private array $customFixers = [];
 
     /**
+     * @var array<string, RuleSetDefinitionInterface>
+     */
+    private array $customRuleSets = [];
+
+    /**
      * @var null|iterable<\SplFileInfo>
      */
     private ?iterable $finder = null;
 
-    private string $format = 'txt';
+    private string $format;
 
     private bool $hideProgress = false;
 
@@ -60,10 +72,7 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
 
     private ParallelConfig $parallelConfig;
 
-    /**
-     * @var null|string
-     */
-    private $phpExecutable;
+    private ?string $phpExecutable = null;
 
     /**
      * @TODO: 4.0 - update to @PER
@@ -74,22 +83,20 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
 
     private bool $usingCache = true;
 
+    private bool $isUnsupportedPhpVersionAllowed = false;
+
+    private ?RuleCustomisationPolicyInterface $ruleCustomisationPolicy = null;
+
     public function __construct(string $name = 'default')
     {
-        // @TODO 4.0 cleanup
-        if (Utils::isFutureModeEnabled()) {
-            $this->name = $name.' (future mode)';
-            $this->rules = ['@PER-CS' => true];
-        } else {
-            $this->name = $name;
-            $this->rules = ['@PSR12' => true];
-        }
+        $this->name = $name.(Future::isFutureModeEnabled() ? ' (future mode)' : '');
+        $this->rules = Future::getV4OrV3(['@PER-CS' => true], ['@PSR12' => true]); // @TODO 4.0 | 3.x switch to '@auto' for v4
+        $this->format = Future::getV4OrV3('@auto', 'txt');
+        $this->parallelConfig = ParallelConfigFactory::detect();
 
         // @TODO 4.0 cleanup
-        if (Utils::isFutureModeEnabled() || filter_var(getenv('PHP_CS_FIXER_PARALLEL'), FILTER_VALIDATE_BOOL)) {
-            $this->parallelConfig = ParallelConfigFactory::detect();
-        } else {
-            $this->parallelConfig = ParallelConfigFactory::sequential();
+        if (false !== getenv('PHP_CS_FIXER_IGNORE_ENV')) {
+            $this->isUnsupportedPhpVersionAllowed = filter_var(getenv('PHP_CS_FIXER_IGNORE_ENV'), \FILTER_VALIDATE_BOOL);
         }
     }
 
@@ -106,8 +113,13 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
         return $this->customFixers;
     }
 
+    public function getCustomRuleSets(): array
+    {
+        return array_values($this->customRuleSets);
+    }
+
     /**
-     * @return Finder
+     * @return iterable<\SplFileInfo>
      */
     public function getFinder(): iterable
     {
@@ -166,10 +178,32 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
         return $this->usingCache;
     }
 
+    public function getUnsupportedPhpVersionAllowed(): bool
+    {
+        return $this->isUnsupportedPhpVersionAllowed;
+    }
+
+    public function getRuleCustomisationPolicy(): ?RuleCustomisationPolicyInterface
+    {
+        return $this->ruleCustomisationPolicy;
+    }
+
     public function registerCustomFixers(iterable $fixers): ConfigInterface
     {
         foreach ($fixers as $fixer) {
             $this->addCustomFixer($fixer);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param list<RuleSetDefinitionInterface> $ruleSets
+     */
+    public function registerCustomRuleSets(array $ruleSets): ConfigInterface
+    {
+        foreach ($ruleSets as $ruleset) {
+            $this->customRuleSets[$ruleset->getName()] = $ruleset;
         }
 
         return $this;
@@ -257,6 +291,25 @@ class Config implements ConfigInterface, ParallelAwareConfigInterface
     public function setUsingCache(bool $usingCache): ConfigInterface
     {
         $this->usingCache = $usingCache;
+
+        return $this;
+    }
+
+    public function setUnsupportedPhpVersionAllowed(bool $isUnsupportedPhpVersionAllowed): ConfigInterface
+    {
+        $this->isUnsupportedPhpVersionAllowed = $isUnsupportedPhpVersionAllowed;
+
+        return $this;
+    }
+
+    public function setRuleCustomisationPolicy(?RuleCustomisationPolicyInterface $ruleCustomisationPolicy): ConfigInterface
+    {
+        // explicitly prevent policy with no proper version defined
+        if (null !== $ruleCustomisationPolicy && '' === $ruleCustomisationPolicy->getPolicyVersionForCache()) {
+            throw new \InvalidArgumentException('The Rule Customisation Policy version cannot be an empty string.');
+        }
+
+        $this->ruleCustomisationPolicy = $ruleCustomisationPolicy;
 
         return $this;
     }

@@ -17,19 +17,24 @@ namespace PhpCsFixer\Tests\Doctrine\Annotation;
 use PhpCsFixer\Doctrine\Annotation\Tokens;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Doctrine\Annotation\Tokens
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Tokens::class)]
 final class TokensTest extends TestCase
 {
     public function testCreateFromEmptyPhpdocComment(): void
     {
         $docComment = '/** */';
 
-        $token = new Token([T_DOC_COMMENT, $docComment]);
+        $token = new Token([\T_DOC_COMMENT, $docComment]);
         $tokens = Tokens::createFromDocComment($token);
 
         self::assertCount(1, $tokens);
@@ -39,11 +44,12 @@ final class TokensTest extends TestCase
     /**
      * @dataProvider provideOffSetOtherThanTokenCases
      */
+    #[DataProvider('provideOffSetOtherThanTokenCases')]
     public function testOffSetOtherThanToken(string $message, ?string $wrongType): void
     {
         $docComment = '/** */';
 
-        $token = new Token([T_DOC_COMMENT, $docComment]);
+        $token = new Token([\T_DOC_COMMENT, $docComment]);
         $tokens = Tokens::createFromDocComment($token);
 
         $this->expectException(\InvalidArgumentException::class);
@@ -54,7 +60,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, null|string}>
+     * @return iterable<int, array{string, null|string}>
      */
     public static function provideOffSetOtherThanTokenCases(): iterable
     {

@@ -17,6 +17,8 @@ namespace PhpCsFixer\Tests\Doctrine\Annotation;
 use PhpCsFixer\Doctrine\Annotation\DocLexer;
 use PhpCsFixer\Doctrine\Annotation\Token;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -24,7 +26,10 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Doctrine\Annotation\Token
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Token::class)]
 final class TokenTest extends TestCase
 {
     public function testDefaults(): void
@@ -69,6 +74,7 @@ final class TokenTest extends TestCase
      *
      * @param int|list<int> $types
      */
+    #[DataProvider('provideIsTypeReturnsTrueCases')]
     public function testIsTypeReturnsTrue(int $type, $types): void
     {
         $token = new Token();
@@ -78,6 +84,9 @@ final class TokenTest extends TestCase
         self::assertTrue($token->isType($types));
     }
 
+    /**
+     * @return iterable<string, array{int, int|list<int>}>
+     */
     public static function provideIsTypeReturnsTrueCases(): iterable
     {
         yield 'same-value' => [
@@ -99,6 +108,7 @@ final class TokenTest extends TestCase
      *
      * @param int|list<int> $types
      */
+    #[DataProvider('provideIsTypeReturnsFalseCases')]
     public function testIsTypeReturnsFalse(int $type, $types): void
     {
         $token = new Token();
@@ -108,6 +118,9 @@ final class TokenTest extends TestCase
         self::assertFalse($token->isType($types));
     }
 
+    /**
+     * @return iterable<string, array{int, int|list<int>}>
+     */
     public static function provideIsTypeReturnsFalseCases(): iterable
     {
         yield 'different-value' => [

@@ -19,6 +19,8 @@ use PhpCsFixer\Linter\CachingLinter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingResultInterface;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author ntzm
@@ -26,12 +28,16 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Linter\CachingLinter
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(CachingLinter::class)]
 final class CachingLinterTest extends TestCase
 {
     /**
      * @dataProvider provideIsAsyncCases
      */
+    #[DataProvider('provideIsAsyncCases')]
     public function testIsAsync(bool $isAsync): void
     {
         $sublinter = $this->createLinterDouble($isAsync, [], []);
@@ -42,7 +48,7 @@ final class CachingLinterTest extends TestCase
     }
 
     /**
-     * @return iterable<array{bool}>
+     * @return iterable<int, array{bool}>
      */
     public static function provideIsAsyncCases(): iterable
     {

@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tokenizer\Transformer;
 
 use PhpCsFixer\Tokenizer\AbstractTransformer;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -28,11 +29,14 @@ use PhpCsFixer\Tokenizer\Tokens;
  * - in `$foo->{$bar}` into CT::T_DYNAMIC_PROP_BRACE_OPEN and CT::T_DYNAMIC_PROP_BRACE_CLOSE,
  * - in `${$foo}` into CT::T_DYNAMIC_VAR_BRACE_OPEN and CT::T_DYNAMIC_VAR_BRACE_CLOSE,
  * - in `$array{$index}` into CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN and CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
- * - in `use some\a\{ClassA, ClassB, ClassC as C}` into CT::T_GROUP_IMPORT_BRACE_OPEN, CT::T_GROUP_IMPORT_BRACE_CLOSE.
+ * - in `use some\a\{ClassA, ClassB, ClassC as C}` into CT::T_GROUP_IMPORT_BRACE_OPEN, CT::T_GROUP_IMPORT_BRACE_CLOSE,
+ * - in `class PropertyHooks { public string $bar _{_ set(string $value) { } _}_` into CT::T_PROPERTY_HOOK_BRACE_OPEN, CT::T_PROPERTY_HOOK_BRACE_CLOSE.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class BraceTransformer extends AbstractTransformer
 {
@@ -43,13 +47,14 @@ final class BraceTransformer extends AbstractTransformer
 
     public function process(Tokens $tokens, Token $token, int $index): void
     {
-        $this->transformIntoCurlyCloseBrace($tokens, $token, $index);
-        $this->transformIntoDollarCloseBrace($tokens, $token, $index);
-        $this->transformIntoDynamicPropBraces($tokens, $token, $index);
-        $this->transformIntoDynamicVarBraces($tokens, $token, $index);
-        $this->transformIntoCurlyIndexBraces($tokens, $token, $index);
-        $this->transformIntoGroupUseBraces($tokens, $token, $index);
-        $this->transformIntoDynamicClassConstantFetchBraces($tokens, $token, $index);
+        $this->transformIntoCurlyCloseBrace($tokens, $index);
+        $this->transformIntoDollarCloseBrace($tokens, $index);
+        $this->transformIntoDynamicPropBraces($tokens, $index);
+        $this->transformIntoDynamicVarBraces($tokens, $index);
+        $this->transformIntoPropertyHookBraces($tokens, $index);
+        $this->transformIntoCurlyIndexBraces($tokens, $index);
+        $this->transformIntoGroupUseBraces($tokens, $index);
+        $this->transformIntoDynamicClassConstantFetchBraces($tokens, $index);
     }
 
     public function getCustomTokens(): array
@@ -67,6 +72,8 @@ final class BraceTransformer extends AbstractTransformer
             CT::T_GROUP_IMPORT_BRACE_CLOSE,
             CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
             CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
+            CT::T_PROPERTY_HOOK_BRACE_OPEN,
+            CT::T_PROPERTY_HOOK_BRACE_CLOSE,
         ];
     }
 
@@ -75,9 +82,11 @@ final class BraceTransformer extends AbstractTransformer
      *
      * This should be done at very beginning of curly braces transformations.
      */
-    private function transformIntoCurlyCloseBrace(Tokens $tokens, Token $token, int $index): void
+    private function transformIntoCurlyCloseBrace(Tokens $tokens, int $index): void
     {
-        if (!$token->isGivenKind(T_CURLY_OPEN)) {
+        $token = $tokens[$index];
+
+        if (!$token->isGivenKind(\T_CURLY_OPEN)) {
             return;
         }
 
@@ -86,7 +95,7 @@ final class BraceTransformer extends AbstractTransformer
         do {
             ++$index;
 
-            if ($tokens[$index]->equals('{') || $tokens[$index]->isGivenKind(T_CURLY_OPEN)) { // we count all kind of {
+            if ($tokens[$index]->equals('{') || $tokens[$index]->isGivenKind(\T_CURLY_OPEN)) { // we count all kind of {
                 ++$level;
             } elseif ($tokens[$index]->equals('}')) { // we count all kind of }
                 --$level;
@@ -96,16 +105,20 @@ final class BraceTransformer extends AbstractTransformer
         $tokens[$index] = new Token([CT::T_CURLY_CLOSE, '}']);
     }
 
-    private function transformIntoDollarCloseBrace(Tokens $tokens, Token $token, int $index): void
+    private function transformIntoDollarCloseBrace(Tokens $tokens, int $index): void
     {
-        if ($token->isGivenKind(T_DOLLAR_OPEN_CURLY_BRACES)) {
+        $token = $tokens[$index];
+
+        if ($token->isGivenKind(\T_DOLLAR_OPEN_CURLY_BRACES)) {
             $nextIndex = $tokens->getNextTokenOfKind($index, ['}']);
             $tokens[$nextIndex] = new Token([CT::T_DOLLAR_CLOSE_CURLY_BRACES, '}']);
         }
     }
 
-    private function transformIntoDynamicPropBraces(Tokens $tokens, Token $token, int $index): void
+    private function transformIntoDynamicPropBraces(Tokens $tokens, int $index): void
     {
+        $token = $tokens[$index];
+
         if (!$token->isObjectOperator()) {
             return;
         }
@@ -121,8 +134,10 @@ final class BraceTransformer extends AbstractTransformer
         $tokens[$closeIndex] = new Token([CT::T_DYNAMIC_PROP_BRACE_CLOSE, '}']);
     }
 
-    private function transformIntoDynamicVarBraces(Tokens $tokens, Token $token, int $index): void
+    private function transformIntoDynamicVarBraces(Tokens $tokens, int $index): void
     {
+        $token = $tokens[$index];
+
         if (!$token->equals('$')) {
             return;
         }
@@ -145,8 +160,66 @@ final class BraceTransformer extends AbstractTransformer
         $tokens[$closeIndex] = new Token([CT::T_DYNAMIC_VAR_BRACE_CLOSE, '}']);
     }
 
-    private function transformIntoCurlyIndexBraces(Tokens $tokens, Token $token, int $index): void
+    private function transformIntoPropertyHookBraces(Tokens $tokens, int $index): void
     {
+        if (\PHP_VERSION_ID < 8_04_00) {
+            return; // @TODO: drop condition when PHP 8.4+ is required or majority of the users are using 8.4+
+        }
+
+        $token = $tokens[$index];
+
+        if (!$token->equals('{')) {
+            return;
+        }
+
+        $nextIndex = $tokens->getNextMeaningfulToken($index);
+
+        // skip attributes
+        while ($tokens[$nextIndex]->isGivenKind(FCT::T_ATTRIBUTE)) {
+            $nextIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $nextIndex);
+            $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
+        }
+
+        if (!$tokens[$nextIndex]->equalsAny([
+            [\T_STRING, 'get'],
+            [\T_STRING, 'set'],
+        ], false)) {
+            return;
+        }
+
+        $nextNextIndex = $tokens->getNextMeaningfulToken($nextIndex);
+
+        if (!$tokens[$nextNextIndex]->equalsAny(['(', '{', ';', [\T_DOUBLE_ARROW]])) {
+            return;
+        }
+
+        if ($tokens[$nextNextIndex]->equals('(')) {
+            $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextNextIndex);
+            $afterCloseParenthesisIndex = $tokens->getNextMeaningfulToken($closeParenthesisIndex);
+            if (!$tokens[$afterCloseParenthesisIndex]->equalsAny(['{', [\T_DOUBLE_ARROW]])) {
+                return;
+            }
+        }
+
+        $closeIndex = $this->naivelyFindCurlyBlockEnd($tokens, $index);
+
+        $tokens[$index] = new Token([CT::T_PROPERTY_HOOK_BRACE_OPEN, '{']);
+        $tokens[$closeIndex] = new Token([CT::T_PROPERTY_HOOK_BRACE_CLOSE, '}']);
+    }
+
+    private function transformIntoCurlyIndexBraces(Tokens $tokens, int $index): void
+    {
+        // Support for fetching array index with braces syntax (`$arr{$index}`)
+        // was deprecated in 7.4 and removed in 8.0. However, the PHP's behaviour
+        // differs between 8.0-8.3 (fatal error in runtime) and 8.4 (parse error).
+        //
+        // @TODO Do not replace `CT::T_ARRAY_INDEX_CURLY_BRACE_*` for 8.0-8.3, as further optimization
+        if (\PHP_VERSION_ID >= 8_04_00) {
+            return;
+        }
+
+        $token = $tokens[$index];
+
         if (!$token->equals('{')) {
             return;
         }
@@ -154,8 +227,8 @@ final class BraceTransformer extends AbstractTransformer
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
         if (!$tokens[$prevIndex]->equalsAny([
-            [T_STRING],
-            [T_VARIABLE],
+            [\T_STRING],
+            [\T_VARIABLE],
             [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
             ']',
             ')',
@@ -164,7 +237,7 @@ final class BraceTransformer extends AbstractTransformer
         }
 
         if (
-            $tokens[$prevIndex]->isGivenKind(T_STRING)
+            $tokens[$prevIndex]->isGivenKind(\T_STRING)
             && !$tokens[$tokens->getPrevMeaningfulToken($prevIndex)]->isObjectOperator()
         ) {
             return;
@@ -173,8 +246,8 @@ final class BraceTransformer extends AbstractTransformer
         if (
             $tokens[$prevIndex]->equals(')')
             && !$tokens[$tokens->getPrevMeaningfulToken(
-                $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $prevIndex)
-            )]->isGivenKind(T_ARRAY)
+                $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $prevIndex),
+            )]->isGivenKind(\T_ARRAY)
         ) {
             return;
         }
@@ -185,15 +258,17 @@ final class BraceTransformer extends AbstractTransformer
         $tokens[$closeIndex] = new Token([CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE, '}']);
     }
 
-    private function transformIntoGroupUseBraces(Tokens $tokens, Token $token, int $index): void
+    private function transformIntoGroupUseBraces(Tokens $tokens, int $index): void
     {
+        $token = $tokens[$index];
+
         if (!$token->equals('{')) {
             return;
         }
 
         $prevIndex = $tokens->getPrevMeaningfulToken($index);
 
-        if (!$tokens[$prevIndex]->isGivenKind(T_NS_SEPARATOR)) {
+        if (!$tokens[$prevIndex]->isGivenKind(\T_NS_SEPARATOR)) {
             return;
         }
 
@@ -203,11 +278,13 @@ final class BraceTransformer extends AbstractTransformer
         $tokens[$closeIndex] = new Token([CT::T_GROUP_IMPORT_BRACE_CLOSE, '}']);
     }
 
-    private function transformIntoDynamicClassConstantFetchBraces(Tokens $tokens, Token $token, int $index): void
+    private function transformIntoDynamicClassConstantFetchBraces(Tokens $tokens, int $index): void
     {
         if (\PHP_VERSION_ID < 8_03_00) {
             return; // @TODO: drop condition when PHP 8.3+ is required or majority of the users are using 8.3+
         }
+
+        $token = $tokens[$index];
 
         if (!$token->equals('{')) {
             return;
@@ -215,7 +292,7 @@ final class BraceTransformer extends AbstractTransformer
 
         $prevMeaningfulTokenIndex = $tokens->getPrevMeaningfulToken($index);
 
-        while (!$tokens[$prevMeaningfulTokenIndex]->isGivenKind(T_DOUBLE_COLON)) {
+        while (!$tokens[$prevMeaningfulTokenIndex]->isGivenKind(\T_DOUBLE_COLON)) {
             if (!$tokens[$prevMeaningfulTokenIndex]->equals(')')) {
                 return;
             }
@@ -234,7 +311,7 @@ final class BraceTransformer extends AbstractTransformer
         $closeIndex = $this->naivelyFindCurlyBlockEnd($tokens, $index);
         $nextMeaningfulTokenIndexAfterCloseIndex = $tokens->getNextMeaningfulToken($closeIndex);
 
-        if (!$tokens[$nextMeaningfulTokenIndexAfterCloseIndex]->equalsAny([';', [T_CLOSE_TAG], [T_DOUBLE_COLON]])) {
+        if (!$tokens[$nextMeaningfulTokenIndexAfterCloseIndex]->equalsAny([';', [\T_CLOSE_TAG], [\T_DOUBLE_COLON]])) {
             return;
         }
 

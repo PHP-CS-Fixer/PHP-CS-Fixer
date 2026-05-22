@@ -16,34 +16,45 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Transformer\BraceClassInstantiationTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
- * @author Sebastiaans Stok <s.stok@rollerscapes.net>
+ * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  *
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\BraceClassInstantiationTransformer
  *
- * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
- * @phpstan-import-type _TransformerTestObservedKindsOrPrototypes from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestObservedKinds from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(BraceClassInstantiationTransformer::class)]
 final class BraceClassInstantiationTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param _TransformerTestExpectedTokens            $expectedTokens
-     * @param _TransformerTestObservedKindsOrPrototypes $observedKinds
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
+     * @param _TransformerTestObservedKinds           $observedKinds
      *
      * @dataProvider provideProcessCases
      */
+    #[DataProvider('provideProcessCases')]
     public function testProcess(string $source, array $expectedTokens, array $observedKinds = []): void
     {
         $this->doTest(
             $source,
             $expectedTokens,
-            $observedKinds
+            $observedKinds,
         );
     }
 
+    /**
+     * @return iterable<int, array{string, _TransformerTestExpectedKindsUnderIndex, _TransformerTestExpectedKindsUnderIndex}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield [
@@ -384,22 +395,27 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     }
 
     /**
-     * @param _TransformerTestExpectedTokens            $expectedTokens
-     * @param _TransformerTestObservedKindsOrPrototypes $observedKinds
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
+     * @param _TransformerTestObservedKinds           $observedKinds
      *
      * @dataProvider provideProcessPhp80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideProcessPhp80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testProcessPhp80(array $expectedTokens, array $observedKinds, string $source): void
     {
         $this->doTest(
             $source,
             $expectedTokens,
-            $observedKinds
+            $observedKinds,
         );
     }
 
+    /**
+     * @return iterable<int, array{_TransformerTestExpectedKindsUnderIndex, _TransformerTestExpectedKindsUnderIndex, string}>
+     */
     public static function provideProcessPhp80Cases(): iterable
     {
         yield [
@@ -435,22 +451,27 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     }
 
     /**
-     * @param _TransformerTestExpectedTokens            $expectedTokens
-     * @param _TransformerTestObservedKindsOrPrototypes $observedKinds
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
+     * @param _TransformerTestObservedKinds           $observedKinds
      *
      * @dataProvider provideProcessPhp81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideProcessPhp81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testProcessPhp81(array $expectedTokens, array $observedKinds, string $source): void
     {
         $this->doTest(
             $source,
             $expectedTokens,
-            $observedKinds
+            $observedKinds,
         );
     }
 
+    /**
+     * @return iterable<int, array{_TransformerTestExpectedKindsUnderIndex, _TransformerTestExpectedKindsUnderIndex, string}>
+     */
     public static function provideProcessPhp81Cases(): iterable
     {
         yield [
@@ -491,24 +512,26 @@ function test2($param = (new Foo)) {}
     }
 
     /**
-     * @param _TransformerTestExpectedTokens            $expectedTokens
-     * @param _TransformerTestObservedKindsOrPrototypes $observedKinds
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
+     * @param _TransformerTestObservedKinds           $observedKinds
      *
      * @dataProvider provideProcessPrePhp84Cases
      *
-     * @requires PHP <8.4
+     * @requires PHP < 8.4.0
      */
+    #[DataProvider('provideProcessPrePhp84Cases')]
+    #[RequiresPhp('< 8.4.0')]
     public function testProcessPrePhp84(string $source, array $expectedTokens, array $observedKinds = []): void
     {
         $this->doTest(
             $source,
             $expectedTokens,
-            $observedKinds
+            $observedKinds,
         );
     }
 
     /**
-     * @return iterable<array{string, _TransformerTestExpectedTokens, _TransformerTestObservedKindsOrPrototypes}>
+     * @return iterable<int, array{string, _TransformerTestExpectedKindsUnderIndex, _TransformerTestObservedKinds}>
      */
     public static function provideProcessPrePhp84Cases(): iterable
     {

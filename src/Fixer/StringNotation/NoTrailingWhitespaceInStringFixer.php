@@ -24,12 +24,14 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Gregor Harlan
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoTrailingWhitespaceInStringFixer extends AbstractFixer
 {
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE, T_INLINE_HTML]);
+        return $tokens->isAnyTokenKindsFound([\T_CONSTANT_ENCAPSED_STRING, \T_ENCAPSED_AND_WHITESPACE, \T_INLINE_HTML]);
     }
 
     public function isRisky(): bool
@@ -40,28 +42,27 @@ final class NoTrailingWhitespaceInStringFixer extends AbstractFixer
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'There must be no trailing whitespace in strings.',
+            'There must be no trailing whitespace at the end of lines in strings.',
             [
                 new CodeSample(
-                    "<?php \$a = '  \n    foo \n';\n"
+                    "<?php \$a = '  \n    foo \n';\n",
                 ),
             ],
             null,
-            'Changing the whitespaces in strings might affect string comparisons and outputs.'
+            'Changing the whitespaces in strings might affect string comparisons and outputs.',
         );
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1, $last = true; $index >= 0; --$index, $last = false) {
-            /** @var Token $token */
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind([T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE, T_INLINE_HTML])) {
+            if (!$token->isGivenKind([\T_CONSTANT_ENCAPSED_STRING, \T_ENCAPSED_AND_WHITESPACE, \T_INLINE_HTML])) {
                 continue;
             }
 
-            $isInlineHtml = $token->isGivenKind(T_INLINE_HTML);
+            $isInlineHtml = $token->isGivenKind(\T_INLINE_HTML);
             $regex = $isInlineHtml && $last ? '/\h+(?=\R|$)/' : '/\h+(?=\R)/';
             $content = Preg::replace($regex, '', $token->getContent());
 
@@ -77,8 +78,8 @@ final class NoTrailingWhitespaceInStringFixer extends AbstractFixer
 
             $prev = $index - 1;
 
-            if ($tokens[$prev]->equals([T_CLOSE_TAG, '?>']) && Preg::match('/^\R/', $content, $match)) {
-                $tokens[$prev] = new Token([T_CLOSE_TAG, $tokens[$prev]->getContent().$match[0]]);
+            if ($tokens[$prev]->equals([\T_CLOSE_TAG, '?>']) && Preg::match('/^\R/', $content, $match)) {
+                $tokens[$prev] = new Token([\T_CLOSE_TAG, $tokens[$prev]->getContent().$match[0]]);
                 $content = substr($content, \strlen($match[0]));
                 $content = false === $content ? '' : $content; // @phpstan-ignore-line due to https://github.com/phpstan/phpstan/issues/1215 , awaiting PHP8 as min requirement of Fixer
             }

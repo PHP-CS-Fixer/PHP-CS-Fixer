@@ -14,29 +14,36 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Operator;
 
+use PhpCsFixer\Fixer\Operator\LogicalOperatorsFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
- * @author Haralan Dobrev <hkdobrev@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Operator\LogicalOperatorsFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Operator\LogicalOperatorsFixer>
+ *
+ * @author Haralan Dobrev <hkdobrev@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(LogicalOperatorsFixer::class)]
 final class LogicalOperatorsFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFixCases(): iterable
     {

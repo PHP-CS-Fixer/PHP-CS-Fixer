@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: new_with_parentheses,new_expression_parentheses.
+--RULESET--
+{"new_with_parentheses": true, "new_expression_parentheses": true}
+--REQUIREMENTS--
+{"php": 80400}
+--EXPECT--
+<?php
+new Foo()->bar;
+
+--INPUT--
+<?php
+(new Foo)->bar;

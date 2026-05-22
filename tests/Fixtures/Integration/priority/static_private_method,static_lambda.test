@@ -1,0 +1,39 @@
+--TEST--
+Integration of fixers: static_private_method,static_lambda.
+--RULESET--
+{"static_private_method": true, "static_lambda": true}
+--EXPECT--
+<?php
+
+class Foo
+{
+    public function bar()
+    {
+        return static function() {
+            return self::baz();
+        };
+    }
+
+    private static function baz()
+    {
+        return 1;
+    }
+}
+
+--INPUT--
+<?php
+
+class Foo
+{
+    public function bar()
+    {
+        return function() {
+            return $this->baz();
+        };
+    }
+
+    private function baz()
+    {
+        return 1;
+    }
+}

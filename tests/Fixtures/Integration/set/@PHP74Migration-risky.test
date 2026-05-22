@@ -1,6 +1,0 @@
---TEST--
-Integration of @PHP74Migration:risky.
---RULESET--
-{"@PHP74Migration:risky": true}
---REQUIREMENTS--
-{"php": 70400}

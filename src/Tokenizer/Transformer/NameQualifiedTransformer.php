@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tokenizer\Transformer;
 
 use PhpCsFixer\Tokenizer\AbstractTransformer;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Processor\ImportProcessor;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -23,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * Transform NAME_QUALIFIED, T_NAME_FULLY_QUALIFIED and T_NAME_RELATIVE into T_NAMESPACE T_NS_SEPARATOR T_STRING.
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NameQualifiedTransformer extends AbstractTransformer
 {
@@ -38,9 +41,9 @@ final class NameQualifiedTransformer extends AbstractTransformer
 
     public function process(Tokens $tokens, Token $token, int $index): void
     {
-        if ($token->isGivenKind([T_NAME_QUALIFIED, T_NAME_FULLY_QUALIFIED])) {
+        if ($token->isGivenKind([FCT::T_NAME_QUALIFIED, FCT::T_NAME_FULLY_QUALIFIED])) {
             $this->transformQualified($tokens, $token, $index);
-        } elseif ($token->isGivenKind(T_NAME_RELATIVE)) {
+        } elseif ($token->isGivenKind(FCT::T_NAME_RELATIVE)) {
             $this->transformRelative($tokens, $token, $index);
         }
     }
@@ -60,7 +63,7 @@ final class NameQualifiedTransformer extends AbstractTransformer
     private function transformRelative(Tokens $tokens, Token $token, int $index): void
     {
         $newTokens = ImportProcessor::tokenizeName($token->getContent());
-        $newTokens[0] = new Token([T_NAMESPACE, 'namespace']);
+        $newTokens[0] = new Token([\T_NAMESPACE, 'namespace']);
 
         $tokens->overrideRange($index, $index, $newTokens);
     }

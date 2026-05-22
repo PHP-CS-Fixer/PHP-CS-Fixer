@@ -4,6 +4,15 @@ Rule ``doctrine_annotation_braces``
 
 Doctrine annotations without arguments must use the configured syntax.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``ignored_tags``,
+``syntax``.
+
 Configuration
 -------------
 

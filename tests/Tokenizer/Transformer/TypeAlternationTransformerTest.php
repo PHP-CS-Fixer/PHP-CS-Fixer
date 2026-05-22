@@ -15,7 +15,12 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
+use PhpCsFixer\Tokenizer\AbstractTypeTransformer;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Transformer\TypeAlternationTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -25,15 +30,20 @@ use PhpCsFixer\Tokenizer\CT;
  * @covers \PhpCsFixer\Tokenizer\AbstractTypeTransformer
  * @covers \PhpCsFixer\Tokenizer\Transformer\TypeAlternationTransformer
  *
- * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AbstractTypeTransformer::class)]
+#[CoversClass(TypeAlternationTransformer::class)]
 final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
+    #[DataProvider('provideProcessCases')]
     public function testProcess(string $source, array $expectedTokens): void
     {
         $this->doTest(
@@ -41,10 +51,13 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
             $expectedTokens,
             [
                 CT::T_TYPE_ALTERNATION,
-            ]
+            ],
         );
     }
 
+    /**
+     * @return iterable<string, array{string, _TransformerTestExpectedKindsUnderIndex}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield 'no namespace' => [
@@ -125,17 +138,22 @@ final class TypeAlternationTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcess80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideProcess80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testProcess80(string $source, array $expectedTokens): void
     {
         $this->doTest($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<array{string, _TransformerTestExpectedKindsUnderIndex}>
+     */
     public static function provideProcess80Cases(): iterable
     {
         yield 'arrow function' => [
@@ -416,12 +434,14 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
     }
 
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testFix81(array $expectedTokens, string $source): void
     {
         $this->doTest(
@@ -429,10 +449,13 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
             $expectedTokens,
             [
                 CT::T_TYPE_ALTERNATION,
-            ]
+            ],
         );
     }
 
+    /**
+     * @return iterable<string, array{_TransformerTestExpectedKindsUnderIndex, string}>
+     */
     public static function provideFix81Cases(): iterable
     {
         yield 'readonly' => [
@@ -482,17 +505,22 @@ class Foo
     }
 
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcess81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideProcess81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testProcess81(string $source, array $expectedTokens): void
     {
         $this->doTest($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<string, array{string, _TransformerTestExpectedKindsUnderIndex}>
+     */
     public static function provideProcess81Cases(): iterable
     {
         yield 'arrow function with intersection' => [
@@ -504,17 +532,22 @@ class Foo
     }
 
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcess82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      */
+    #[DataProvider('provideProcess82Cases')]
+    #[RequiresPhp('>= 8.2.0')]
     public function testProcess82(string $source, array $expectedTokens): void
     {
         $this->doTest($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<string, array{string, _TransformerTestExpectedKindsUnderIndex}>
+     */
     public static function provideProcess82Cases(): iterable
     {
         yield 'disjunctive normal form types parameter' => [
@@ -591,17 +624,22 @@ class Dnf
     }
 
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcess83Cases
      *
-     * @requires PHP 8.3
+     * @requires PHP >= 8.3.0
      */
+    #[DataProvider('provideProcess83Cases')]
+    #[RequiresPhp('>= 8.3.0')]
     public function testProcess83(string $source, array $expectedTokens): void
     {
         $this->doTest($source, $expectedTokens);
     }
 
+    /**
+     * @return iterable<string, array{string, _TransformerTestExpectedKindsUnderIndex}>
+     */
     public static function provideProcess83Cases(): iterable
     {
         yield 'typed const alternate types' => [

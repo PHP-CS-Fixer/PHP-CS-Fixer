@@ -20,6 +20,8 @@ use Composer\Semver\VersionParser;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NewVersionChecker implements NewVersionCheckerInterface
 {
@@ -30,7 +32,7 @@ final class NewVersionChecker implements NewVersionCheckerInterface
     /**
      * @var null|list<string>
      */
-    private $availableVersions;
+    private ?array $availableVersions = null;
 
     public function __construct(GithubClientInterface $githubClient)
     {

@@ -5,6 +5,14 @@ Rule ``phpdoc_scalar``
 Scalar types should always be written in the same form. ``int`` not ``integer``,
 ``bool`` not ``boolean``, ``float`` not ``real`` or ``double``.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``types``.
+
 Configuration
 -------------
 
@@ -13,9 +21,11 @@ Configuration
 
 A list of types to fix.
 
-Allowed values: a subset of ``['boolean', 'callback', 'double', 'integer', 'real', 'str']``
+Allowed values: a subset of ``['boolean', 'callback', 'double', 'integer', 'never-return', 'never-returns', 'no-return', 'real', 'str']``
 
 Default value: ``['boolean', 'callback', 'double', 'integer', 'real', 'str']``
+
+Default value (future-mode): ``['boolean', 'callback', 'double', 'integer', 'never-return', 'never-returns', 'no-return', 'real', 'str']``
 
 Examples
 --------
@@ -72,8 +82,13 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
-- `@Symfony <./../../ruleSets/Symfony.rst>`_
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
+  ``['types' => ['boolean', 'callback', 'double', 'integer', 'never-return', 'never-returns', 'no-return', 'real', 'str']]``
+
+- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
+  ``['types' => ['boolean', 'callback', 'double', 'integer', 'never-return', 'never-returns', 'no-return', 'real', 'str']]``
 
 References
 ----------

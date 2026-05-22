@@ -21,17 +21,23 @@ use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\RuleSet\Sets\PERSet;
 use PhpCsFixer\RuleSet\Sets\SymfonySet;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Documentation\RuleSetDocumentationGenerator
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(RuleSetDocumentationGenerator::class)]
 final class RuleSetDocumentationGeneratorTest extends TestCase
 {
     /**
      * @dataProvider provideGenerateRuleSetsDocumentationCases
      */
+    #[DataProvider('provideGenerateRuleSetsDocumentationCases')]
     public function testGenerateRuleSetsDocumentation(string $ruleSetName): void
     {
         $locator = new DocumentationLocator();
@@ -48,7 +54,7 @@ final class RuleSetDocumentationGeneratorTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideGenerateRuleSetsDocumentationCases(): iterable
     {

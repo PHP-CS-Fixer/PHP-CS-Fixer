@@ -17,7 +17,11 @@ namespace PhpCsFixer\DocBlock;
 /**
  * This class represents a short description (aka summary) of a docblock.
  *
+ * @readonly
+ *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ShortDescription
 {

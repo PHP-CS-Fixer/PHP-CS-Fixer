@@ -18,6 +18,8 @@ use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -26,8 +28,11 @@ use PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer;
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer
  *
- * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(SquareBraceTransformer::class)]
 final class SquareBraceTransformerTest extends AbstractTransformerTestCase
 {
     /**
@@ -35,12 +40,10 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideIsShortArrayCases
      */
+    #[DataProvider('provideIsShortArrayCases')]
     public function testIsShortArray(string $source, array $inspectIndexes, bool $expected): void
     {
         $transformer = new SquareBraceTransformer();
-        $reflection = new \ReflectionObject($transformer);
-        $method = $reflection->getMethod('isShortArray');
-        $method->setAccessible(true);
 
         $tokens = Tokens::fromCode($source);
         foreach ($inspectIndexes as $index) {
@@ -49,9 +52,9 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
 
         foreach ($tokens as $index => $token) {
             if (\in_array($index, $inspectIndexes, true)) {
-                self::assertSame('[', $tokens[$index]->getContent(), \sprintf('Token @ index %d must have content \']\'', $index));
+                self::assertSame('[', $token->getContent(), \sprintf('Token @ index %d must have content \']\'', $index));
                 $exp = $expected;
-            } elseif ('[' === $tokens[$index]->getContent()) {
+            } elseif ('[' === $token->getContent()) {
                 $exp = !$expected;
             } else {
                 continue;
@@ -59,12 +62,15 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
 
             self::assertSame(
                 $expected,
-                $method->invoke($transformer, $tokens, $index),
-                \sprintf('Excepted token "%s" @ index %d %sto be detected as short array.', $tokens[$index]->toJson(), $index, $exp ? '' : 'not ')
+                \Closure::bind(static fn (SquareBraceTransformer $transformer): bool => $transformer->isShortArray($tokens, $index), null, SquareBraceTransformer::class)($transformer),
+                \sprintf('Excepted token "%s" @ index %d %sto be detected as short array.', $token->toJson(), $index, $exp ? '' : 'not '),
             );
         }
     }
 
+    /**
+     * @return iterable<int, array{string, list<int>, bool}>
+     */
     public static function provideIsShortArrayCases(): iterable
     {
         yield ['<?php $a=[];', [3], false];
@@ -87,10 +93,11 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
+    #[DataProvider('provideProcessCases')]
     public function testProcess(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
@@ -101,10 +108,13 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
                 CT::T_ARRAY_SQUARE_BRACE_CLOSE,
                 CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
                 CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-            ]
+            ],
         );
     }
 
+    /**
+     * @return iterable<array{0: string, 1?: _TransformerTestExpectedKindsUnderIndex}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield 'Array offset only.' => [
@@ -404,27 +414,7 @@ class Test
                 18 => CT::T_ARRAY_SQUARE_BRACE_CLOSE,
             ],
         ];
-    }
 
-    /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
-     *
-     * @dataProvider provideProcess72Cases
-     */
-    public function testProcess72(string $source, array $expectedTokens): void
-    {
-        $this->doTest(
-            $source,
-            $expectedTokens,
-            [
-                CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-                CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-            ]
-        );
-    }
-
-    public static function provideProcess72Cases(): iterable
-    {
         yield [
             '<?php [&$a, $b] = $a;',
             [

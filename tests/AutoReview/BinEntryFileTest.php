@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * @author Victor Bocharsky <bocharsky.bw@gmail.com>
@@ -25,7 +27,12 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @group auto-review
  * @group covers-nothing
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversNothing]
+#[Group('auto-review')]
+#[Group('covers-nothing')]
 final class BinEntryFileTest extends TestCase
 {
     public function testSupportedPhpVersions(): void
@@ -44,7 +51,7 @@ final class BinEntryFileTest extends TestCase
 
         self::assertEqualsCanonicalizing([
             '    if (\PHP_VERSION_ID === (int) \'80000\') { // TODO use 8_00_00 once only PHP 7.4+ is supported by this entry file'."\n",
-            '    if (\PHP_VERSION_ID < (int) \'70400\' || \PHP_VERSION_ID >= (int) \'80400\') {'."\n",
+            '    if (\PHP_VERSION_ID < (int) \'70400\') {'."\n",
         ], $phpVersionIdLines, 'Seems supported PHP versions changed in "./php-cs-fixer" - edit the README.md (and this test file) to match them!');
     }
 }

@@ -7,8 +7,8 @@ Converts simple usages of ``array_push($x, $y);`` to ``$x[] = $y;``.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when the function ``array_push`` is overridden.
 

@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Vladimir Reznichenko <kalessil@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DirConstantFixer extends AbstractFunctionReferenceFixer
 {
@@ -32,13 +34,13 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
             'Replaces `dirname(__FILE__)` expression with equivalent `__DIR__` constant.',
             [new CodeSample("<?php\n\$a = dirname(__FILE__);\n")],
             null,
-            'Risky when the function `dirname` is overridden.'
+            'Risky when the function `dirname` is overridden.',
         );
     }
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAllTokenKindsFound([T_STRING, T_FILE]);
+        return $tokens->isAllTokenKindsFound([\T_STRING, \T_FILE]);
     }
 
     /**
@@ -78,14 +80,14 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
 
             $fileCandidateRight = $tokens[$fileCandidateRightIndex];
 
-            if (!$fileCandidateRight->isGivenKind(T_FILE)) {
+            if (!$fileCandidateRight->isGivenKind(\T_FILE)) {
                 continue;
             }
 
             $fileCandidateLeftIndex = $tokens->getNextMeaningfulToken($openParenthesis);
             $fileCandidateLeft = $tokens[$fileCandidateLeftIndex];
 
-            if (!$fileCandidateLeft->isGivenKind(T_FILE)) {
+            if (!$fileCandidateLeft->isGivenKind(\T_FILE)) {
                 continue;
             }
 
@@ -93,7 +95,7 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
             $namespaceCandidateIndex = $tokens->getPrevMeaningfulToken($functionNameIndex);
             $namespaceCandidate = $tokens[$namespaceCandidateIndex];
 
-            if ($namespaceCandidate->isGivenKind(T_NS_SEPARATOR)) {
+            if ($namespaceCandidate->isGivenKind(\T_NS_SEPARATOR)) {
                 $tokens->removeTrailingWhitespace($namespaceCandidateIndex);
                 $tokens->clearAt($namespaceCandidateIndex);
             }
@@ -122,7 +124,7 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
             $tokens->clearTokenAndMergeSurroundingWhitespace($openParenthesis);
 
             // replace constant and remove function name
-            $tokens[$fileCandidateLeftIndex] = new Token([T_DIR, '__DIR__']);
+            $tokens[$fileCandidateLeftIndex] = new Token([\T_DIR, '__DIR__']);
             $tokens->clearTokenAndMergeSurroundingWhitespace($functionNameIndex);
         } while (null !== $currIndex);
     }

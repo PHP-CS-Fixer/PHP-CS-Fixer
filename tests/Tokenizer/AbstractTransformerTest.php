@@ -16,12 +16,17 @@ namespace PhpCsFixer\Tests\Tokenizer;
 
 use PhpCsFixer\Tests\Fixtures\Test\AbstractTransformerTest\FooTransformer;
 use PhpCsFixer\Tests\TestCase;
+use PhpCsFixer\Tokenizer\AbstractTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\AbstractTransformer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AbstractTransformer::class)]
 final class AbstractTransformerTest extends TestCase
 {
     public function testNameAndPriorityDefault(): void

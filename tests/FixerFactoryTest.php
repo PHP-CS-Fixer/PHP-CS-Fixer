@@ -26,6 +26,8 @@ use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSetInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -33,7 +35,10 @@ use PhpCsFixer\WhitespacesFixerConfig;
  * @internal
  *
  * @covers \PhpCsFixer\FixerFactory
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FixerFactory::class)]
 final class FixerFactoryTest extends TestCase
 {
     public function testInterfaceIsFluent(): void
@@ -44,14 +49,14 @@ final class FixerFactoryTest extends TestCase
         self::assertSame($factory, $testInstance);
 
         $testInstance = $factory->registerCustomFixers(
-            [$this->createFixerDouble('Foo/f1'), $this->createFixerDouble('Foo/f2')]
+            [$this->createFixerDouble('Foo/f1'), $this->createFixerDouble('Foo/f2')],
         );
 
         self::assertSame($factory, $testInstance);
 
         $testInstance = $factory->registerFixer(
             $this->createFixerDouble('f3'),
-            false
+            false,
         );
 
         self::assertSame($factory, $testInstance);
@@ -83,7 +88,7 @@ final class FixerFactoryTest extends TestCase
         };
 
         $testInstance = $factory->useRuleSet(
-            $ruleSet
+            $ruleSet,
         );
 
         self::assertSame($factory, $testInstance);
@@ -107,14 +112,14 @@ final class FixerFactoryTest extends TestCase
                     && $class->implementsInterface(FixerInterface::class)
                     && !$class->implementsInterface(InternalFixerInterface::class)
                     && str_starts_with($class->getNamespaceName(), 'PhpCsFixer\Fixer\\');
-            }
+            },
         );
 
         sort($fixerClasses);
 
         $fixers = array_map(
             static fn (FixerInterface $fixer): string => \get_class($fixer),
-            $factory->getFixers()
+            $factory->getFixers(),
         );
 
         sort($fixers);
@@ -243,6 +248,7 @@ final class FixerFactoryTest extends TestCase
                     throw new \InvalidArgumentException(\sprintf('Rule "%s" is not in the set.', $rule));
                 }
 
+                // @phpstan-ignore-next-line offsetAccess.notFound The offset existence was check in the `if` above
                 if (true === $this->getRules()[$rule]) {
                     return null;
                 }
@@ -305,6 +311,7 @@ final class FixerFactoryTest extends TestCase
     /**
      * @dataProvider provideConflictingFixersCases
      */
+    #[DataProvider('provideConflictingFixersCases')]
     public function testConflictingFixers(RuleSet $ruleSet): void
     {
         $this->expectException(\UnexpectedValueException::class);
@@ -316,7 +323,7 @@ final class FixerFactoryTest extends TestCase
     }
 
     /**
-     * @return iterable<array{RuleSet}>
+     * @return iterable<int, array{RuleSet}>
      */
     public static function provideConflictingFixersCases(): iterable
     {
@@ -328,24 +335,19 @@ final class FixerFactoryTest extends TestCase
     public function testNoDoubleConflictReporting(): void
     {
         $factory = new FixerFactory();
-        $method = new \ReflectionMethod($factory, 'generateConflictMessage');
-        $method->setAccessible(true);
         self::assertSame(
             'Rule contains conflicting fixers:
 - "a" with "b"
 - "c" with "d", "e" and "f"
 - "d" with "g" and "h"
 - "e" with "a"',
-            $method->invoke(
-                $factory,
-                [
-                    'a' => ['b'],
-                    'b' => ['a'],
-                    'c' => ['d', 'e', 'f'],
-                    'd' => ['c', 'g', 'h'],
-                    'e' => ['a'],
-                ]
-            )
+            \Closure::bind(static fn (FixerFactory $factory): string => $factory->generateConflictMessage([
+                'a' => ['b'],
+                'b' => ['a'],
+                'c' => ['d', 'e', 'f'],
+                'd' => ['c', 'g', 'h'],
+                'e' => ['a'],
+            ]), null, FixerFactory::class)($factory),
         );
     }
 
@@ -440,6 +442,7 @@ final class FixerFactoryTest extends TestCase
      *
      * @dataProvider provideConfigureFixerWithNonArrayCases
      */
+    #[DataProvider('provideConfigureFixerWithNonArrayCases')]
     public function testConfigureFixerWithNonArray($value): void
     {
         $factory = new FixerFactory();
@@ -496,7 +499,7 @@ final class FixerFactoryTest extends TestCase
         $this->expectException(InvalidFixerConfigurationException::class);
 
         $this->expectExceptionMessage(
-            '[foo] Rule must be enabled (true), disabled (false) or configured (non-empty, assoc array). Other values are not allowed.'
+            '[foo] Rule must be enabled (true), disabled (false) or configured (non-empty, assoc array). Other values are not allowed.',
         );
 
         $factory->useRuleSet(new RuleSet([
@@ -505,7 +508,7 @@ final class FixerFactoryTest extends TestCase
     }
 
     /**
-     * @return iterable<array{float|int|\stdClass|string}>
+     * @return iterable<int, array{float|int|\stdClass|string}>
      */
     public static function provideConfigureFixerWithNonArrayCases(): iterable
     {

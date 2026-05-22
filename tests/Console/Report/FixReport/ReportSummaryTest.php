@@ -16,12 +16,16 @@ namespace PhpCsFixer\Tests\Console\Report\FixReport;
 
 use PhpCsFixer\Console\Report\FixReport\ReportSummary;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Console\Report\FixReport\ReportSummary
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ReportSummary::class)]
 final class ReportSummaryTest extends TestCase
 {
     public function testReportSummary(): void
@@ -46,7 +50,7 @@ final class ReportSummaryTest extends TestCase
             $memory,
             $addAppliedFixers,
             $isDryRun,
-            $isDecoratedOutput
+            $isDecoratedOutput,
         );
 
         self::assertSame($changed, $reportSummary->getChanged());

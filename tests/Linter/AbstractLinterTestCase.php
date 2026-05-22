@@ -14,16 +14,21 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Linter;
 
+use PhpCsFixer\Linter\Linter;
 use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingException;
+use PhpCsFixer\Linter\TokenizerLinter;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractLinterTestCase extends TestCase
 {
@@ -34,7 +39,7 @@ abstract class AbstractLinterTestCase extends TestCase
         $linter = $this->createLinter();
 
         $tokens = Tokens::fromCode("<?php \n#EOF\n");
-        $tokens->insertAt(1, new Token([T_NS_SEPARATOR, '\\']));
+        $tokens->insertAt(1, new Token([\T_NS_SEPARATOR, '\\']));
 
         $this->expectException(LintingException::class);
         $linter->lintSource($tokens->generateCode())->check();
@@ -45,6 +50,7 @@ abstract class AbstractLinterTestCase extends TestCase
      *
      * @dataProvider provideLintFileCases
      */
+    #[DataProvider('provideLintFileCases')]
     public function testLintFile(string $file, ?string $errorMessage = null): void
     {
         if (null !== $errorMessage) {
@@ -59,7 +65,7 @@ abstract class AbstractLinterTestCase extends TestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideLintFileCases(): iterable
     {
@@ -69,18 +75,46 @@ abstract class AbstractLinterTestCase extends TestCase
 
         yield [
             __DIR__.'/../Fixtures/Linter/invalid.php',
-            \sprintf('Parse error: syntax error, unexpected %s on line 5.', PHP_MAJOR_VERSION >= 8 ? 'token "echo"' : '\'echo\' (T_ECHO)'),
+            \sprintf('Parse error: syntax error, unexpected %s on line 5.', \PHP_MAJOR_VERSION >= 8 ? 'token "echo"' : '\'echo\' (T_ECHO)'),
         ];
 
         yield [
-            __DIR__.'/../Fixtures/Linter/multiple.php',
+            __DIR__.'/../Fixtures/Linter/invalid-multiple.php',
             'Fatal error: Multiple access type modifiers are not allowed on line 4.',
         ];
     }
 
     /**
+     * This test is documenting flaws in some Linters, exposing false-positives for files wrongly being considers as valid.
+     *
+     * @see Schrodinger's cat
+     */
+    public function testLintSchrodingersFile(): void
+    {
+        $file = __DIR__.'/../Fixtures/Linter/schrodingers-validity.php';
+
+        $linter = $this->createLinter();
+
+        // Ideally this array shall be empty.
+        // We accept this imperfection for actual Fixer execution, while avoiding using those Linters for tests.
+        $notDetectingInvaldidSyntax = [
+            Linter::class,
+            TokenizerLinter::class,
+        ];
+
+        if (!\in_array(\get_class($linter), $notDetectingInvaldidSyntax, true)) {
+            $this->expectException(LintingException::class);
+        } else {
+            $this->expectNotToPerformAssertions();
+        }
+
+        $linter->lintFile($file)->check();
+    }
+
+    /**
      * @dataProvider provideLintSourceCases
      */
+    #[DataProvider('provideLintSourceCases')]
     public function testLintSource(string $source, ?string $errorMessage = null): void
     {
         if (null !== $errorMessage) {
@@ -95,7 +129,7 @@ abstract class AbstractLinterTestCase extends TestCase
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideLintSourceCases(): iterable
     {
@@ -110,7 +144,7 @@ abstract class AbstractLinterTestCase extends TestCase
                     print "line 4";
                     echo echo;
                 ',
-            \sprintf('Parse error: syntax error, unexpected %s on line 5.', PHP_MAJOR_VERSION >= 8 ? 'token "echo"' : '\'echo\' (T_ECHO)'),
+            \sprintf('Parse error: syntax error, unexpected %s on line 5.', \PHP_MAJOR_VERSION >= 8 ? 'token "echo"' : '\'echo\' (T_ECHO)'),
         ];
     }
 

@@ -19,7 +19,11 @@ namespace PhpCsFixer\Error;
  *
  * @author Andreas Möller <am@localheinz.com>
  *
+ * @readonly
+ *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class Error implements \JsonSerializable
 {
@@ -50,13 +54,13 @@ final class Error implements \JsonSerializable
      */
     private array $appliedFixers;
 
-    private ?string $diff;
+    private string $diff;
 
     /**
      * @param self::TYPE_* $type
      * @param list<string> $appliedFixers
      */
-    public function __construct(int $type, string $filePath, ?\Throwable $source = null, array $appliedFixers = [], ?string $diff = null)
+    public function __construct(int $type, string $filePath, ?\Throwable $source = null, array $appliedFixers = [], string $diff = '')
     {
         $this->type = $type;
         $this->filePath = $filePath;
@@ -88,7 +92,7 @@ final class Error implements \JsonSerializable
         return $this->appliedFixers;
     }
 
-    public function getDiff(): ?string
+    public function getDiff(): string
     {
         return $this->diff;
     }

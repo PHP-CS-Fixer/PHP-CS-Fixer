@@ -25,34 +25,33 @@ use PhpCsFixer\Tokenizer\Tokens;
  * Fixer for rules defined in PSR2 ¶2.5.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class LowercaseKeywordsFixer extends AbstractFixer
 {
-    /**
-     * @var list<int>
-     */
-    private static array $excludedTokens = [T_HALT_COMPILER];
-
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'PHP keywords MUST be in lower case.',
             [
                 new CodeSample(
-                    '<?php
-    FOREACH($a AS $B) {
-        TRY {
-            NEW $C($a, ISSET($B));
-            WHILE($B) {
-                INCLUDE "test.php";
-            }
-        } CATCH(\Exception $e) {
-            EXIT(1);
-        }
-    }
-'
+                    <<<'PHP'
+                        <?php
+                            FOREACH($a AS $B) {
+                                TRY {
+                                    NEW $C($a, ISSET($B));
+                                    WHILE($B) {
+                                        INCLUDE "test.php";
+                                    }
+                                } CATCH(\Exception $e) {
+                                    EXIT(1);
+                                }
+                            }
+
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 
@@ -64,7 +63,7 @@ final class LowercaseKeywordsFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if ($token->isKeyword() && !$token->isGivenKind(self::$excludedTokens)) {
+            if ($token->isKeyword() && !$token->isGivenKind(\T_HALT_COMPILER)) {
                 $tokens[$index] = new Token([$token->getId(), strtolower($token->getContent())]);
             }
         }

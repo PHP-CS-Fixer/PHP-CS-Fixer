@@ -16,6 +16,10 @@ namespace PhpCsFixer\Tests\Smoke;
 
 use Keradus\CliExecutor\CommandExecutor;
 use PhpCsFixer\Preg;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Large;
+use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -29,7 +33,13 @@ use PhpCsFixer\Preg;
  * @group covers-nothing
  *
  * @large
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[RequiresOperatingSystem('Linux|Darwin')]
+#[CoversNothing]
+#[Group('covers-nothing')]
+#[Large]
 final class StdinTest extends AbstractSmokeTestCase
 {
     public function testFixingStdin(): void
@@ -45,9 +55,9 @@ final class StdinTest extends AbstractSmokeTestCase
         self::assertSame($fileResult->getCode(), $stdinResult->getCode());
 
         $expectedError = str_replace(
-            'Paths from configuration file have been overridden by paths provided as command arguments.'."\n",
+            'Paths from configuration have been overridden by paths provided as command arguments.'."\n",
             '',
-            $fileResult->getError()
+            $fileResult->getError(),
         );
 
         self::assertSame($expectedError, $stdinResult->getError());
@@ -62,21 +72,21 @@ final class StdinTest extends AbstractSmokeTestCase
         $fileResult = Preg::replace(
             '#/?'.preg_quote($inputFile, '#').'#',
             'php://stdin',
-            $fileResult
+            $fileResult,
         );
 
         self::assertSame(
             $fileResult,
-            $this->unifyFooter($stdinResult->getOutput())
+            $this->unifyFooter($stdinResult->getOutput()),
         );
     }
 
     private function unifyFooter(string $output): string
     {
-        return preg_replace(
+        return Preg::replace(
             '/Found \d+ of \d+ files that can be fixed in \d+\.\d+ seconds, \d+\.\d+ MB memory used/',
             'Footer',
-            $output
+            $output,
         );
     }
 }

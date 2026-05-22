@@ -1,0 +1,6 @@
+--TEST--
+Integration of @PHP8x3Migration.
+--RULESET--
+{"@PHP8x3Migration": true}
+--REQUIREMENTS--
+{"php": 80300}

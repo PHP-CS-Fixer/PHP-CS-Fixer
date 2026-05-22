@@ -14,31 +14,45 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
+use PhpCsFixer\Fixer\AbstractPhpUnitFixer;
+use PhpCsFixer\Fixer\DocBlockAnnotationTrait;
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitTestClassRequiresCoversFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\AbstractPhpUnitFixer
+ * @covers \PhpCsFixer\Fixer\DocBlockAnnotationTrait
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitTestClassRequiresCoversFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitTestClassRequiresCoversFixer>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AbstractPhpUnitFixer::class)]
+#[CoversTrait(DocBlockAnnotationTrait::class)]
+#[CoversClass(PhpUnitTestClassRequiresCoversFixer::class)]
 final class PhpUnitTestClassRequiresCoversFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -254,11 +268,17 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
             '<?php /* comment */class FooTest extends \PHPUnit_Framework_TestCase {}
                 ',
         ];
+
+        yield [<<<'PHP'
+            <?php /* comment */
+            $test = new class extends PHPUnit_Framework_TestCase {};
+            PHP];
     }
 
     /**
      * @dataProvider provideWithWhitespacesConfigCases
      */
+    #[DataProvider('provideWithWhitespacesConfigCases')]
     public function testWithWhitespacesConfig(string $expected, ?string $input = null): void
     {
         $expected = str_replace(['    ', "\n"], ["\t", "\r\n"], $expected);
@@ -272,7 +292,7 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideWithWhitespacesConfigCases(): iterable
     {
@@ -294,15 +314,17 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
     /**
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<string, array{0: string, 1?: string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -484,13 +506,24 @@ class FooTest extends \PHPUnit_Framework_TestCase {}
                 class FooTest extends \PHPUnit_Framework_TestCase {}
                 PHP,
         ];
+
+        yield 'already with attribute CoversTrait' => [
+            <<<'PHP'
+                <?php
+                use PHPUnit\Framework\Attributes\CoversTrait;
+                #[CoversTrait('Bar')]
+                class FooTest extends \PHPUnit_Framework_TestCase {}
+                PHP,
+        ];
     }
 
     /**
      * @dataProvider provideFix82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      */
+    #[DataProvider('provideFix82Cases')]
+    #[RequiresPhp('>= 8.2.0')]
     public function testFix82(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

@@ -16,6 +16,9 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Transformer\ArrayTypehintTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -24,27 +27,34 @@ use PhpCsFixer\Tokenizer\CT;
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\ArrayTypehintTransformer
  *
- * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ArrayTypehintTransformer::class)]
 final class ArrayTypehintTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
+    #[DataProvider('provideProcessCases')]
     public function testProcess(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
             $source,
             $expectedTokens,
             [
-                T_ARRAY,
+                \T_ARRAY,
                 CT::T_ARRAY_TYPEHINT,
-            ]
+            ],
         );
     }
 
+    /**
+     * @return iterable<int, array{string, _TransformerTestExpectedKindsUnderIndex}>
+     */
     public static function provideProcessCases(): iterable
     {
         yield [
@@ -54,7 +64,7 @@ function foo (array /** @type array */ $bar)
 {
 }',
             [
-                5 => T_ARRAY,
+                5 => \T_ARRAY,
                 22 => CT::T_ARRAY_TYPEHINT,
             ],
         ];
@@ -64,7 +74,7 @@ function foo (array /** @type array */ $bar)
 $a = array(1, 2, 3);
 $fn = fn(array /** @type array */ $bar) => null;',
             [
-                5 => T_ARRAY,
+                5 => \T_ARRAY,
                 23 => CT::T_ARRAY_TYPEHINT,
             ],
         ];

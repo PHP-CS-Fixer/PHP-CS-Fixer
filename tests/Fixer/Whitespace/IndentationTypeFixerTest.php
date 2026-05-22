@@ -14,30 +14,38 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
+use PhpCsFixer\Fixer\Whitespace\IndentationTypeFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Whitespace\IndentationTypeFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\IndentationTypeFixer>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(IndentationTypeFixer::class)]
 final class IndentationTypeFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
-    public function testFix(string $expected, ?string $input = null): void
+    #[DataProvider('provideFixCases')]
+    public function testFix(string $expected, ?string $input = null, ?WhitespacesFixerConfig $whitespacesConfig = null): void
     {
+        $this->fixer->setWhitespacesConfig($whitespacesConfig ?? new WhitespacesFixerConfig());
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: null|string, 2?: WhitespacesFixerConfig}>
      */
     public static function provideFixCases(): iterable
     {
@@ -222,22 +230,72 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
         yield [
             "<?php\necho 1;\n?>\r\n\t\$a = ellow;",
         ];
+
+        foreach (self::getFixCases() as $name => $case) {
+            yield 'tabs - '.$name => [...$case, new WhitespacesFixerConfig("\t", "\r\n")];
+
+            if ('mix indentation' === $name) {
+                continue;
+            }
+
+            yield 'spaces - '.$name => [$case[1], $case[0], new WhitespacesFixerConfig('    ', "\r\n")];
+        }
+
+        yield [
+            '<?php
+if (true) {
+  if (true) {
+    (new stdClass())->foo(
+      "text",
+      "text2"
+    );
+  }
+}',
+            null,
+            new WhitespacesFixerConfig('  '),
+        ];
+
+        yield [
+            "<?php
+if (true) {
+  if (true) {
+    (new stdClass())->foo(
+      'text',
+      'text2'
+    );
+  }
+}",
+            "<?php
+if (true) {
+  if (true) {
+\t(new stdClass())->foo(
+\t  'text',
+\t  'text2'
+\t);
+  }
+}",
+            new WhitespacesFixerConfig('  '),
+        ];
+
+        yield [
+            '<?php
+    /*
+     * Foo
+     */
+',
+            "<?php
+\t/*
+\t * Foo
+\t */
+",
+            new WhitespacesFixerConfig('  '),
+        ];
     }
 
     /**
-     * @dataProvider provideMessyWhitespacesCases
+     * @return iterable<array{string, string}>
      */
-    public function testMessyWhitespaces(string $expected, ?string $input = null): void
-    {
-        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
-
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<int|string, array{string, string}>
-     */
-    public static function provideMessyWhitespacesCases(): iterable
+    private static function getFixCases(): iterable
     {
         yield [
             "<?php
@@ -279,7 +337,7 @@ final class IndentationTypeFixerTest extends AbstractFixerTestCase
 \t     */",
         ];
 
-        yield [
+        yield 'do not touch whitespace that is not indentation' => [
             "<?php
 function myFunction() {
 \t\$foo        = 1;
@@ -295,89 +353,5 @@ function myFunction() {
     $middleVar  = 1;
 }',
         ];
-    }
-
-    /**
-     * @dataProvider provideMessyWhitespacesReversedCases
-     */
-    public function testMessyWhitespacesReversed(string $expected, ?string $input = null): void
-    {
-        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig('    ', "\r\n"));
-
-        $this->doTest($input, $expected);
-    }
-
-    /**
-     * @return iterable<array{string, string}>
-     */
-    public static function provideMessyWhitespacesReversedCases(): iterable
-    {
-        foreach (self::provideMessyWhitespacesCases() as $name => $case) {
-            if ('mix indentation' === $name) {
-                continue;
-            }
-
-            yield $name => $case;
-        }
-    }
-
-    /**
-     * @dataProvider provideDoubleSpaceIndentCases
-     */
-    public function testDoubleSpaceIndent(string $expected, ?string $input = null): void
-    {
-        $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig('  '));
-
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<array{0: string, 1?: string}>
-     */
-    public static function provideDoubleSpaceIndentCases(): iterable
-    {
-        yield ['<?php
-if (true) {
-  if (true) {
-    (new stdClass())->foo(
-      "text",
-      "text2"
-    );
-  }
-}'];
-
-        yield [
-            "<?php
-if (true) {
-  if (true) {
-    (new stdClass())->foo(
-      'text',
-      'text2'
-    );
-  }
-}",
-            "<?php
-if (true) {
-  if (true) {
-\t(new stdClass())->foo(
-\t  'text',
-\t  'text2'
-\t);
-  }
-}",
-        ];
-
-        yield [
-            '<?php
-    /*
-     * Foo
-     */
-',
-
-            "<?php
-\t/*
-\t * Foo
-\t */
-", ];
     }
 }

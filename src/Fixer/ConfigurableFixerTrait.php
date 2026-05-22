@@ -21,29 +21,30 @@ use PhpCsFixer\Console\Application;
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
 use PhpCsFixer\FixerConfiguration\InvalidOptionsForEnvException;
-use PhpCsFixer\Utils;
+use PhpCsFixer\Future;
 use Symfony\Component\OptionsResolver\Exception\ExceptionInterface;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @template TFixerInputConfig of array<string, mixed>
  * @template TFixerComputedConfig of array<string, mixed>
+ *
+ * @phpstan-require-implements ConfigurableFixerInterface<TFixerInputConfig, TFixerComputedConfig>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 trait ConfigurableFixerTrait
 {
     /**
      * @var null|TFixerComputedConfig
      */
-    protected $configuration;
+    protected ?array $configuration = null;
 
-    /**
-     * @var null|FixerConfigurationResolverInterface
-     */
-    private $configurationDefinition;
+    private ?FixerConfigurationResolverInterface $configurationDefinition = null;
 
     /**
      * @param TFixerInputConfig $configuration
@@ -59,12 +60,12 @@ trait ConfigurableFixerTrait
 
             $name = $option->getName();
             if (\array_key_exists($name, $configuration)) {
-                Utils::triggerDeprecation(new \InvalidArgumentException(\sprintf(
+                Future::triggerDeprecation(new \InvalidArgumentException(\sprintf(
                     'Option "%s" for rule "%s" is deprecated and will be removed in version %d.0. %s',
                     $name,
                     $this->getName(),
                     Application::getMajorVersion() + 1,
-                    str_replace('`', '"', $option->getDeprecationMessage())
+                    str_replace('`', '"', $option->getDeprecationMessage()),
                 )));
             }
         }
@@ -75,19 +76,19 @@ trait ConfigurableFixerTrait
             throw new RequiredFixerConfigurationException(
                 $this->getName(),
                 \sprintf('Missing required configuration: %s', $exception->getMessage()),
-                $exception
+                $exception,
             );
         } catch (InvalidOptionsForEnvException $exception) {
             throw new InvalidForEnvFixerConfigurationException(
                 $this->getName(),
                 \sprintf('Invalid configuration for env: %s', $exception->getMessage()),
-                $exception
+                $exception,
             );
         } catch (ExceptionInterface $exception) {
             throw new InvalidFixerConfigurationException(
                 $this->getName(),
                 \sprintf('Invalid configuration: %s', $exception->getMessage()),
-                $exception
+                $exception,
             );
         }
 

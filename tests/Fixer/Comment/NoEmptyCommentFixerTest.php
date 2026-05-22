@@ -14,8 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Comment;
 
+use PhpCsFixer\Fixer\Comment\NoEmptyCommentFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -23,19 +26,23 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @covers \PhpCsFixer\Fixer\Comment\NoEmptyCommentFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Comment\NoEmptyCommentFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NoEmptyCommentFixer::class)]
 final class NoEmptyCommentFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -266,16 +273,14 @@ echo 1;
      *
      * @dataProvider provideGetCommentBlockCases
      */
+    #[DataProvider('provideGetCommentBlockCases')]
     public function testGetCommentBlock(string $source, int $startIndex, int $endIndex, bool $isEmpty): void
     {
         Tokens::clearCache();
         $tokens = Tokens::fromCode($source);
         self::assertTrue($tokens[$startIndex]->isComment(), \sprintf('Misconfiguration of test, expected comment token at index "%d".', $startIndex));
 
-        $method = new \ReflectionMethod($this->fixer, 'getCommentBlock');
-        $method->setAccessible(true);
-
-        $foundInfo = $method->invoke($this->fixer, $tokens, $startIndex);
+        $foundInfo = \Closure::bind(static fn (NoEmptyCommentFixer $fixer): array => $fixer->getCommentBlock($tokens, $startIndex), null, NoEmptyCommentFixer::class)($this->fixer);
 
         self::assertSame($startIndex, $foundInfo['blockStart'], 'Find start index of block failed.');
         self::assertSame($endIndex, $foundInfo['blockEnd'], 'Find end index of block failed.');
@@ -283,7 +288,7 @@ echo 1;
     }
 
     /**
-     * @return iterable<array{string, int, int, bool}>
+     * @return iterable<int, array{string, int, int, bool}>
      */
     public static function provideGetCommentBlockCases(): iterable
     {

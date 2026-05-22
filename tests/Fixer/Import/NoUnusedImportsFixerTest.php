@@ -14,7 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Import;
 
+use PhpCsFixer\Fixer\Import\NoUnusedImportsFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -22,19 +26,23 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\Import\NoUnusedImportsFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Import\NoUnusedImportsFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NoUnusedImportsFixer::class)]
 final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -323,7 +331,6 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
                 $c = new D();
                 $e = new BarE();
                 EOF,
-
             <<<'EOF'
                 <?php
 
@@ -632,7 +639,6 @@ final class NoUnusedImportsFixerTest extends AbstractFixerTestCase
                 <?php
 
                 EOF,
-
             <<<'EOF'
                 <?php
                 use Bar\Finder;
@@ -980,7 +986,7 @@ $b = $a-->ABC::Test;
         ];
 
         yield 'constants_in_the_global_namespace_should_not_be_removed' => [
-            $expected = <<<'EOF'
+            <<<'EOF'
                 <?php
 
                 namespace Foo;
@@ -1459,11 +1465,36 @@ Bar3:
             "<?php \n",
             "<?php \nuse A\\{B, C};     \t\t",
         ];
+
+        yield 'imported class name with underscore before or after it in PHPDoc' => [
+            <<<'PHP'
+                <?php
+                /** @var _UnusedImport1 */
+                $foo = 1;
+                /** @var UnusedImport2_ */
+                $bar = 2;
+                /** @var _UnusedImport3_ */
+                $baz = 3;
+                PHP,
+            <<<'PHP'
+                <?php
+                use Vendor\UnusedImport1;
+                use Vendor\UnusedImport2;
+                use Vendor\UnusedImport3;
+                /** @var _UnusedImport1 */
+                $foo = 1;
+                /** @var UnusedImport2_ */
+                $bar = 2;
+                /** @var _UnusedImport3_ */
+                $baz = 3;
+                PHP,
+        ];
     }
 
     /**
-     * @requires PHP <8.0
+     * @requires PHP < 8.0.0
      */
+    #[RequiresPhp('< 8.0.0')]
     public function testFixPre80(): void
     {
         $this->doTest(
@@ -1490,22 +1521,24 @@ Exception# 3
 use /**/A\B/**/;
   echo 1;
   new B();
-'
+',
         );
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      *
      * @dataProvider provideFix80Cases
      */
+    #[RequiresPhp('>= 8.0.0')]
+    #[DataProvider('provideFix80Cases')]
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -1570,17 +1603,19 @@ function f( #[Target(\'xxx\')] LoggerInterface|null $logger) {}
     }
 
     /**
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      *
      * @dataProvider provideFix81Cases
      */
+    #[RequiresPhp('>= 8.1.0')]
+    #[DataProvider('provideFix81Cases')]
     public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<int|string, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFix81Cases(): iterable
     {
@@ -1677,6 +1712,114 @@ const D = new Foo7(1,2);
                    public function t(Class1 | Class2 ...$fields) {}
                 }
             ',
+        ];
+    }
+
+    /**
+     * @requires PHP >= 8.3.0
+     *
+     * @dataProvider provideFix83Cases
+     */
+    #[RequiresPhp('>= 8.3.0')]
+    #[DataProvider('provideFix83Cases')]
+    public function testFix83(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix83Cases(): iterable
+    {
+        yield 'typed class constants' => [
+            <<<'PHP'
+                <?php
+                use Vendor\Type02;
+                use Vendor\Type04;
+                use Vendor\Type06;
+                use Vendor\Type08;
+                use Vendor\Type10;
+                use Vendor\Type12;
+                use Vendor\Type14;
+                use Vendor\Type16;
+                use Vendor\Type18;
+                use Vendor\Type20;
+                use Vendor\Type22;
+                use Vendor\Type24;
+                use Vendor\Type26;
+                use Vendor\Type28;
+                use Vendor\Type30;
+                use Vendor\Type32;
+                use Vendor\Type34;
+                use Vendor\Type36;
+                class C
+                {
+                    public const bool BOOLEAN_TYPE = true;
+                    public const Type02 REGULAR_TYPE = TheParentType::Foo;
+                    public const ?Type04 NULLABLE_TYPE = TheParentType::Foo;
+                    public const Type06|Type08|Type10 UNION_TYPE = TheParentType::Foo;
+                    public const int INTEGER_TYPE = 42;
+                    public const Type12&Type14&Type16 INTERSECTION_TYPE = TheParentType::Foo;
+                    public const Type18|(Type20&Type22) UNION_AND_INTERSECTION_TYPE = TheParentType::Foo;
+                    public const (Type24&Type26)|Type28 INTERSECTION_AND_UNION_TYPE = TheParentType::Foo;
+                    public const string STRING_TYPE = 'Forty two';
+                    public const (Type30&Type32)|(Type34&Type36) INTERSECTION_AND_UNION_AND_INTERSECTION_TYPE = TheParentType::Foo;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                use Vendor\Type01;
+                use Vendor\Type02;
+                use Vendor\Type03;
+                use Vendor\Type04;
+                use Vendor\Type05;
+                use Vendor\Type06;
+                use Vendor\Type07;
+                use Vendor\Type08;
+                use Vendor\Type09;
+                use Vendor\Type10;
+                use Vendor\Type11;
+                use Vendor\Type12;
+                use Vendor\Type13;
+                use Vendor\Type14;
+                use Vendor\Type15;
+                use Vendor\Type16;
+                use Vendor\Type17;
+                use Vendor\Type18;
+                use Vendor\Type19;
+                use Vendor\Type20;
+                use Vendor\Type21;
+                use Vendor\Type22;
+                use Vendor\Type23;
+                use Vendor\Type24;
+                use Vendor\Type25;
+                use Vendor\Type26;
+                use Vendor\Type27;
+                use Vendor\Type28;
+                use Vendor\Type29;
+                use Vendor\Type30;
+                use Vendor\Type31;
+                use Vendor\Type32;
+                use Vendor\Type33;
+                use Vendor\Type34;
+                use Vendor\Type35;
+                use Vendor\Type36;
+                use Vendor\Type37;
+                class C
+                {
+                    public const bool BOOLEAN_TYPE = true;
+                    public const Type02 REGULAR_TYPE = TheParentType::Foo;
+                    public const ?Type04 NULLABLE_TYPE = TheParentType::Foo;
+                    public const Type06|Type08|Type10 UNION_TYPE = TheParentType::Foo;
+                    public const int INTEGER_TYPE = 42;
+                    public const Type12&Type14&Type16 INTERSECTION_TYPE = TheParentType::Foo;
+                    public const Type18|(Type20&Type22) UNION_AND_INTERSECTION_TYPE = TheParentType::Foo;
+                    public const (Type24&Type26)|Type28 INTERSECTION_AND_UNION_TYPE = TheParentType::Foo;
+                    public const string STRING_TYPE = 'Forty two';
+                    public const (Type30&Type32)|(Type34&Type36) INTERSECTION_AND_UNION_AND_INTERSECTION_TYPE = TheParentType::Foo;
+                }
+                PHP,
         ];
     }
 }

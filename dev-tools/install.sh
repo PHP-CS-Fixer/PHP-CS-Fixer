@@ -19,27 +19,24 @@ cd "$(dirname "$0")"
 
 mkdir -p bin
 
-VERSION_CB="2.24.1"
-VERSION_SC="stable"
+VERSION_CB="v2.26.7"
+VERSION_SC="v0.11.0"
+
+OS_KERNEL=$(uname -s | tr '[:upper:]' '[:lower:]')
 
 echo λλλ checkbashisms
 if [ ! -x bin/checkbashisms ]; then
-    wget -qO- "https://deb.debian.org/debian/pool/main/d/devscripts/devscripts_${VERSION_CB}.tar.xz" \
-        | tar -xJv -O "devscripts-${VERSION_CB}/scripts/checkbashisms.pl" \
-        > bin/checkbashisms
+    wget -q "https://salsa.debian.org/debian/devscripts/-/raw/${VERSION_CB}/scripts/checkbashisms.pl" \
+        --output-document=bin/checkbashisms
     chmod u+x bin/checkbashisms
 fi
 bin/checkbashisms --version
 
 echo λλλ shellcheck
 if [ ! -x bin/shellcheck ]; then
-    wget -qO- "https://github.com/koalaman/shellcheck/releases/download/${VERSION_SC}/shellcheck-${VERSION_SC}.linux.x86_64.tar.xz" \
+    wget -qO- "https://github.com/koalaman/shellcheck/releases/download/${VERSION_SC}/shellcheck-${VERSION_SC}.${OS_KERNEL}.x86_64.tar.xz" \
         | tar -xJv -O shellcheck-${VERSION_SC}/shellcheck \
         > bin/shellcheck
     chmod u+x bin/shellcheck
 fi
 bin/shellcheck --version
-
-echo λλλ composer packages
-composer install -v
-composer info -D | sort

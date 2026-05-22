@@ -20,6 +20,8 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerConfiguration\FixerOptionSorter;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
@@ -31,7 +33,11 @@ use Symfony\Component\OptionsResolver\Options;
  * @group legacy
  *
  * @covers \PhpCsFixer\FixerConfiguration\FixerConfigurationResolver
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[Group('legacy')]
+#[CoversClass(FixerConfigurationResolver::class)]
 final class FixerConfigurationResolverTest extends TestCase
 {
     public function testWithoutOptions(): void
@@ -86,7 +92,7 @@ final class FixerConfigurationResolverTest extends TestCase
         ]);
         self::assertSame(
             ['foo' => 'bar'],
-            $configuration->resolve(['foo' => 'bar'])
+            $configuration->resolve(['foo' => 'bar']),
         );
     }
 
@@ -108,7 +114,7 @@ final class FixerConfigurationResolverTest extends TestCase
 
         self::assertSame(
             ['foo' => 'baz'],
-            $configuration->resolve([])
+            $configuration->resolve([]),
         );
     }
 
@@ -120,7 +126,7 @@ final class FixerConfigurationResolverTest extends TestCase
 
         self::assertSame(
             ['foo' => 1],
-            $configuration->resolve(['foo' => 1])
+            $configuration->resolve(['foo' => 1]),
         );
 
         $this->expectException(InvalidOptionsException::class);
@@ -135,7 +141,7 @@ final class FixerConfigurationResolverTest extends TestCase
 
         self::assertSame(
             ['foo' => true],
-            $configuration->resolve(['foo' => true])
+            $configuration->resolve(['foo' => true]),
         );
 
         $this->expectException(InvalidOptionsException::class);
@@ -150,7 +156,7 @@ final class FixerConfigurationResolverTest extends TestCase
 
         self::assertSame(
             ['foo' => ['bar']],
-            $configuration->resolve(['foo' => ['bar']])
+            $configuration->resolve(['foo' => ['bar']]),
         );
 
         $this->expectException(InvalidOptionsException::class);
@@ -175,7 +181,7 @@ final class FixerConfigurationResolverTest extends TestCase
 
         self::assertSame(
             ['foo' => 1],
-            $configuration->resolve(['foo' => '1'])
+            $configuration->resolve(['foo' => '1']),
         );
 
         $exception = new InvalidOptionsException('');

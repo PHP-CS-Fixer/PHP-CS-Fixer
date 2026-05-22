@@ -5,6 +5,14 @@ Rule ``single_line_comment_style``
 Single-line comments and multi-line comments with only one line of actual
 content should use the ``//`` syntax.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``comment_types``.
+
 Configuration
 -------------
 
@@ -91,7 +99,6 @@ The rule is part of the following rule sets:
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
   ``['comment_types' => ['hash']]``
-
 
 References
 ----------

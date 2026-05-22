@@ -14,52 +14,37 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Whitespace;
 
+use PhpCsFixer\Fixer\Whitespace\NoSpacesInsideParenthesisFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
- * @author Marc Aubé
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Whitespace\NoSpacesInsideParenthesisFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Whitespace\NoSpacesInsideParenthesisFixer>
+ *
+ * @author Marc Aubé
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NoSpacesInsideParenthesisFixer::class)]
 final class NoSpacesInsideParenthesisFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
-    public function testLeaveNewLinesAlone(): void
-    {
-        $expected = <<<'EOF'
-            <?php
-
-            class Foo
-            {
-                private function bar()
-                {
-                    if (foo(
-                        'foo' ,
-                        'bar'    ,
-                        [1, 2, 3],
-                        'baz' // a comment just to mix things up
-                    )) {
-                        return 1;
-                    };
-                }
-            }
-            EOF;
-        $this->doTest($expected);
-    }
-
     /**
-     * @return iterable<array{0: string, 1?: string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -140,18 +125,43 @@ $a = $b->test(  // do not remove space
         ];
     }
 
+    public function testLeaveNewLinesAlone(): void
+    {
+        $expected = <<<'EOF'
+            <?php
+
+            class Foo
+            {
+                private function bar()
+                {
+                    if (foo(
+                        'foo' ,
+                        'bar'    ,
+                        [1, 2, 3],
+                        'baz' // a comment just to mix things up
+                    )) {
+                        return 1;
+                    };
+                }
+            }
+            EOF;
+        $this->doTest($expected);
+    }
+
     /**
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testFix80(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<array{string, string}>
+     * @return iterable<int, array{string, string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -164,8 +174,10 @@ $a = $b->test(  // do not remove space
     /**
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testFix81(string $expected, string $input): void
     {
         $this->doTest($expected, $input);

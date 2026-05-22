@@ -4,6 +4,14 @@ Rule ``empty_loop_body``
 
 Empty loop-body must be in configured style.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``style``.
+
 Configuration
 -------------
 
@@ -52,7 +60,6 @@ The rule is part of the following rule sets:
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
   ``['style' => 'braces']``
-
 
 References
 ----------

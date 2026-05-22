@@ -17,6 +17,9 @@ namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\CommentsAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>
@@ -24,7 +27,10 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\CommentsAnalyzer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(CommentsAnalyzer::class)]
 final class CommentsAnalyzerTest extends TestCase
 {
     public function testWhenNotPointingToComment(): void
@@ -43,6 +49,7 @@ final class CommentsAnalyzerTest extends TestCase
      *
      * @dataProvider provideCommentsCases
      */
+    #[DataProvider('provideCommentsCases')]
     public function testComments(string $code, int $index, array $borders): void
     {
         $tokens = Tokens::fromCode($code);
@@ -52,6 +59,9 @@ final class CommentsAnalyzerTest extends TestCase
         self::assertFalse($analyzer->isHeaderComment($tokens, $index));
     }
 
+    /**
+     * @return iterable<string, array{string, int, list<int>}>
+     */
     public static function provideCommentsCases(): iterable
     {
         yield 'discover all 4 comments for the 1st comment with slash' => [
@@ -165,6 +175,7 @@ $bar;',
     /**
      * @dataProvider provideHeaderCommentCases
      */
+    #[DataProvider('provideHeaderCommentCases')]
     public function testHeaderComment(string $code, int $index): void
     {
         $tokens = Tokens::fromCode($code);
@@ -174,7 +185,7 @@ $bar;',
     }
 
     /**
-     * @return iterable<array{string, int}>
+     * @return iterable<int, array{string, int}>
      */
     public static function provideHeaderCommentCases(): iterable
     {
@@ -192,6 +203,7 @@ $bar;',
     /**
      * @dataProvider provideNotHeaderCommentCases
      */
+    #[DataProvider('provideNotHeaderCommentCases')]
     public function testNotHeaderComment(string $code, int $index): void
     {
         $tokens = Tokens::fromCode($code);
@@ -201,7 +213,7 @@ $bar;',
     }
 
     /**
-     * @return iterable<array{string, int}>
+     * @return iterable<int, array{string, int}>
      */
     public static function provideNotHeaderCommentCases(): iterable
     {
@@ -231,17 +243,18 @@ $bar;',
     /**
      * @dataProvider providePhpdocCandidateCases
      */
+    #[DataProvider('providePhpdocCandidateCases')]
     public function testPhpdocCandidate(string $code): void
     {
         $tokens = Tokens::fromCode($code);
-        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
+        $index = $tokens->getNextTokenOfKind(0, [[\T_COMMENT], [\T_DOC_COMMENT]]);
         $analyzer = new CommentsAnalyzer();
 
         self::assertTrue($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function providePhpdocCandidateCases(): iterable
     {
@@ -320,22 +333,73 @@ $bar;',
         yield ['<?php /* Before anonymous function */ fn($x) => $x + 1;'];
 
         yield ['<?php /* @var int $x */ [$x] = [2];'];
+
+        yield ['<?php /* @var string $x */ $x ??= $y;'];
+
+        yield ['<?php /* @var string $x */ $x .= $y;'];
+
+        yield ['<?php /* @var int $x */ $x &= 1;'];
+
+        yield ['<?php /* @var int $x */ $x |= 1;'];
+
+        yield ['<?php /* @var int $x */ $x ^= 1;'];
+
+        yield ['<?php /* @var int $x */ $x >>= 1;'];
+
+        yield ['<?php /* @var int $x */ $x <<= 1;'];
+
+        yield ['<?php /* @var float $x */ $x += 10;'];
+
+        yield ['<?php /* @var float $x */ $x -= 10;'];
+
+        yield ['<?php /* @var float $x */ $x *= 10;'];
+
+        yield ['<?php /* @var float $x */ $x /= 10;'];
+
+        yield ['<?php /* @var float $x */ $x %= 10;'];
+
+        yield ['<?php /* @var float $x */ $x **= 10;'];
+    }
+
+    /**
+     * @dataProvider providePhpdocCandidate84Cases
+     *
+     * @requires PHP >= 8.4.0
+     */
+    #[DataProvider('providePhpdocCandidate84Cases')]
+    #[RequiresPhp('>= 8.4.0')]
+    public function testPhpdocCandidate84(string $code): void
+    {
+        $this->testPhpdocCandidate($code);
+    }
+
+    /**
+     * @return iterable<int, array{string}>
+     */
+    public static function providePhpdocCandidate84Cases(): iterable
+    {
+        yield ['<?php class Foo { /* comment */ public(set) int $i; }'];
+
+        yield ['<?php class Foo { /* comment */ protected(set) int $i; }'];
+
+        yield ['<?php class Foo { /* comment */ private(set) int $i; }'];
     }
 
     /**
      * @dataProvider provideNotPhpdocCandidateCases
      */
+    #[DataProvider('provideNotPhpdocCandidateCases')]
     public function testNotPhpdocCandidate(string $code): void
     {
         $tokens = Tokens::fromCode($code);
-        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
+        $index = $tokens->getNextTokenOfKind(0, [[\T_COMMENT], [\T_DOC_COMMENT]]);
         $analyzer = new CommentsAnalyzer();
 
         self::assertFalse($analyzer->isBeforeStructuralElement($tokens, $index));
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideNotPhpdocCandidateCases(): iterable
     {
@@ -359,8 +423,10 @@ $bar;',
     /**
      * @dataProvider providePhpdocCandidatePhp80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('providePhpdocCandidatePhp80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testPhpdocCandidatePhp80(string $code): void
     {
         $this->testPhpdocCandidate($code);
@@ -384,8 +450,10 @@ Class MyAnnotation3 {}',
     /**
      * @dataProvider providePhpdocCandidatePhp81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('providePhpdocCandidatePhp81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testPhpdocCandidatePhp81(string $code): void
     {
         $this->testPhpdocCandidate($code);
@@ -442,8 +510,10 @@ enum Foo: int {
     /**
      * @dataProvider provideNotPhpdocCandidatePhp81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideNotPhpdocCandidatePhp81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testNotPhpdocCandidatePhp81(string $code): void
     {
         $this->testNotPhpdocCandidate($code);
@@ -478,10 +548,11 @@ enum Foo: int {
     /**
      * @dataProvider provideReturnStatementCases
      */
+    #[DataProvider('provideReturnStatementCases')]
     public function testReturnStatement(string $code, bool $expected): void
     {
         $tokens = Tokens::fromCode($code);
-        $index = $tokens->getNextTokenOfKind(0, [[T_COMMENT], [T_DOC_COMMENT]]);
+        $index = $tokens->getNextTokenOfKind(0, [[\T_COMMENT], [\T_DOC_COMMENT]]);
         $analyzer = new CommentsAnalyzer();
 
         self::assertSame($expected, $analyzer->isBeforeReturn($tokens, $index));

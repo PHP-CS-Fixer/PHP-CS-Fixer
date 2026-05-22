@@ -23,6 +23,9 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class OctalNotationFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
@@ -32,21 +35,21 @@ final class OctalNotationFixer extends AbstractFixer
             [
                 new VersionSpecificCodeSample(
                     "<?php \$foo = 0123;\n",
-                    new VersionSpecification(8_01_00)
+                    new VersionSpecification(8_01_00),
                 ),
-            ]
+            ],
         );
     }
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return \PHP_VERSION_ID >= 8_01_00 && $tokens->isTokenKindFound(T_LNUMBER);
+        return \PHP_VERSION_ID >= 8_01_00 && $tokens->isTokenKindFound(\T_LNUMBER);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_LNUMBER)) {
+            if (!$token->isGivenKind(\T_LNUMBER)) {
                 continue;
             }
 
@@ -58,7 +61,7 @@ final class OctalNotationFixer extends AbstractFixer
                 continue;
             }
 
-            $tokens[$index] = new Token([T_LNUMBER, $newContent]);
+            $tokens[$index] = new Token([\T_LNUMBER, $newContent]);
         }
     }
 }

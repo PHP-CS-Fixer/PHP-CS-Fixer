@@ -17,6 +17,9 @@ namespace PhpCsFixer\Tests\AutoReview;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\TransformerInterface;
 use PhpCsFixer\Tokenizer\Transformers;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * @author Dave van der Brugge <dmvdbrugge@gmail.com>
@@ -27,51 +30,29 @@ use PhpCsFixer\Tokenizer\Transformers;
  *
  * @group auto-review
  * @group covers-nothing
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversNothing]
+#[Group('auto-review')]
+#[Group('covers-nothing')]
 final class TransformerTest extends TestCase
 {
     /**
      * @dataProvider provideTransformerPriorityCases
      */
+    #[DataProvider('provideTransformerPriorityCases')]
     public function testTransformerPriority(TransformerInterface $first, TransformerInterface $second): void
     {
         self::assertLessThan(
             $first->getPriority(),
             $second->getPriority(),
-            \sprintf('"%s" should have less priority than "%s"', \get_class($second), \get_class($first))
+            \sprintf('"%s" should have less priority than "%s"', \get_class($second), \get_class($first)),
         );
     }
 
     /**
-     * @dataProvider provideTransformerPriorityIsListedCases
-     */
-    public function testTransformerPriorityIsListed(TransformerInterface $transformer): void
-    {
-        $priority = $transformer->getPriority();
-
-        if (0 === $priority) {
-            $this->expectNotToPerformAssertions();
-
-            return;
-        }
-
-        $name = $transformer->getName();
-
-        foreach (self::provideTransformerPriorityCases() as $pair) {
-            [$first, $second] = $pair;
-
-            if ($name === $first->getName() || $name === $second->getName()) {
-                $this->addToAssertionCount(1);
-
-                return;
-            }
-        }
-
-        self::fail(\sprintf('Transformer "%s" has priority %d but is not in priority test list.', $name, $priority));
-    }
-
-    /**
-     * @return iterable<array{TransformerInterface, TransformerInterface}>
+     * @return iterable<int, array{TransformerInterface, TransformerInterface}>
      */
     public static function provideTransformerPriorityCases(): iterable
     {
@@ -80,6 +61,23 @@ final class TransformerTest extends TestCase
         foreach (self::provideTransformerPriorityIsListedCases() as [$transformer]) {
             $transformers[$transformer->getName()] = $transformer;
         }
+
+        \assert(\array_key_exists('array_typehint', $transformers));
+        \assert(\array_key_exists('attribute', $transformers));
+        \assert(\array_key_exists('brace', $transformers));
+        \assert(\array_key_exists('brace_class_instantiation', $transformers));
+        \assert(\array_key_exists('disjunctive_normal_form_type_parenthesis', $transformers));
+        \assert(\array_key_exists('import', $transformers));
+        \assert(\array_key_exists('name_qualified', $transformers));
+        \assert(\array_key_exists('named_argument', $transformers));
+        \assert(\array_key_exists('namespace_operator', $transformers));
+        \assert(\array_key_exists('nullable_type', $transformers));
+        \assert(\array_key_exists('return_ref', $transformers));
+        \assert(\array_key_exists('square_brace', $transformers));
+        \assert(\array_key_exists('type_alternation', $transformers));
+        \assert(\array_key_exists('type_colon', $transformers));
+        \assert(\array_key_exists('type_intersection', $transformers));
+        \assert(\array_key_exists('use', $transformers));
 
         yield [$transformers['attribute'], $transformers['brace']];
 
@@ -117,19 +115,44 @@ final class TransformerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{TransformerInterface}>
+     * @dataProvider provideTransformerPriorityIsListedCases
+     */
+    #[DataProvider('provideTransformerPriorityIsListedCases')]
+    public function testTransformerPriorityIsListed(TransformerInterface $transformer): void
+    {
+        $priority = $transformer->getPriority();
+
+        if (0 === $priority) {
+            $this->expectNotToPerformAssertions();
+
+            return;
+        }
+
+        $name = $transformer->getName();
+
+        foreach (self::provideTransformerPriorityCases() as $pair) {
+            [$first, $second] = $pair;
+
+            if ($name === $first->getName() || $name === $second->getName()) {
+                $this->addToAssertionCount(1);
+
+                return;
+            }
+        }
+
+        self::fail(\sprintf('Transformer "%s" has priority %d but is not in priority test list.', $name, $priority));
+    }
+
+    /**
+     * @return iterable<int, array{TransformerInterface}>
      */
     public static function provideTransformerPriorityIsListedCases(): iterable
     {
         static $transformersArray = null;
 
         if (null === $transformersArray) {
-            $transformers = Transformers::createSingleton();
-            $reflection = new \ReflectionObject($transformers);
-            $builtInTransformers = $reflection->getMethod('findBuiltInTransformers');
-            $builtInTransformers->setAccessible(true);
             $transformersArray = [];
-            foreach ($builtInTransformers->invoke($transformers) as $transformer) {
+            foreach (\Closure::bind(static fn (Transformers $transformers): iterable => $transformers->findBuiltInTransformers(), null, Transformers::class)(Transformers::createSingleton()) as $transformer) {
                 $transformersArray[] = [$transformer];
             }
         }

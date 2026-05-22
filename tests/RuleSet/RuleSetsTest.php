@@ -16,10 +16,15 @@ namespace PhpCsFixer\Tests\RuleSet;
 
 use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
+use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSet;
 use PhpCsFixer\RuleSet\RuleSets;
+use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleSet;
+use PhpCsFixer\Tests\Test\CiReader;
 use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -27,20 +32,36 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\RuleSet\RuleSets
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(RuleSets::class)]
 final class RuleSetsTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Since we register custom rule sets statically, we need to clear custom rule sets between runs.
+        // We don't need to clear the built-in rule sets, because they don't change between runs.
+        \Closure::bind(
+            static function (): void { RuleSets::$customRuleSetDefinitions = []; },
+            null,
+            RuleSets::class,
+        )();
+    }
+
     public function testGetSetDefinitionNames(): void
     {
         self::assertSame(
             array_keys(RuleSets::getSetDefinitions()),
-            RuleSets::getSetDefinitionNames()
+            RuleSets::getSetDefinitionNames(),
         );
     }
 
     public function testGetSetDefinitions(): void
     {
-        $sets = RuleSets::getSetDefinitions();
+        $sets = RuleSets::getBuiltInSetDefinitions();
 
         foreach ($sets as $name => $set) {
             self::assertIsString($name);
@@ -59,37 +80,80 @@ final class RuleSetsTest extends TestCase
         RuleSets::getSetDefinition($name);
     }
 
+    public function testThatPhpMigrationSetsAreDefinedForEachSupportedPhpVersion(): void
+    {
+        $supportedPhpVersions = CiReader::getAllPhpVersionsUsedByCiForTests();
+
+        $sets = RuleSets::getSetDefinitions();
+        self::assertNotEmpty($supportedPhpVersions);
+        foreach ($supportedPhpVersions as $version) {
+            foreach (['', ':risky'] as $suffix) {
+                $setName = \sprintf('@PHP%sMigration%s', str_replace('.', 'x', $version), $suffix);
+                // var_dump($setName);
+                self::assertArrayHasKey($setName, $sets, \sprintf('Set "%s" is not defined.', $setName));
+            }
+        }
+    }
+
     /**
      * @dataProvider provideSetDefinitionNameCases
      */
+    #[DataProvider('provideSetDefinitionNameCases')]
     public function testHasIntegrationTest(string $setDefinitionName): void
     {
+        /** @TODO v4 remove deprecated sets */
         $setsWithoutTests = [
-            '@PER',
-            '@PER:risky',
-            '@PER-CS',
             '@PER-CS:risky',
-            '@PHP56Migration',
-            '@PHP56Migration:risky',
-            '@PHP70Migration',
-            '@PHP70Migration:risky',
-            '@PHP71Migration',
-            '@PHP71Migration:risky',
-            '@PHP73Migration',
-            '@PHP80Migration',
-            '@PhpCsFixer',
+            '@PER-CS',
+            '@PER-CS1.0:risky',
+            '@PER-CS1.0',
+            '@PER-CS2.0:risky',
+            '@PER-CS2.0',
+            '@PER-CS3.0:risky',
+            '@PER-CS3.0',
+            '@PER:risky',
+            '@PER',
+            '@PHP5x6Migration:risky',
+            '@PHP5x6Migration',
+            '@PHP7x0Migration:risky',
+            '@PHP7x0Migration',
+            '@PHP7x1Migration:risky',
+            '@PHP7x1Migration',
+            '@PHP7x3Migration',
+            '@PHP8x0Migration',
             '@PhpCsFixer:risky',
-            '@PHPUnit48Migration',
-            '@PHPUnit55Migration:risky',
-            '@PHPUnit75Migration:risky',
-            '@PHPUnit84Migration:risky',
-            '@PHPUnit91Migration:risky',
-            '@PHPUnit100Migration:risky',
+            '@PhpCsFixer',
+            '@PHPUnit10x0Migration:risky',
+            '@PHPUnit11x0Migration:risky',
+            '@PHPUnit4x8Migration',
+            '@PHPUnit5x5Migration:risky',
+            '@PHPUnit7x5Migration:risky',
+            '@PHPUnit8x4Migration:risky',
+            '@PHPUnit9x1Migration:risky',
             '@PSR1',
         ];
 
         if (\in_array($setDefinitionName, $setsWithoutTests, true)) {
             self::markTestIncomplete(\sprintf('Set "%s" has no integration test.', $setDefinitionName));
+        }
+
+        // @TODO v4: remove me @MARKER_deprecated_migration_ruleset
+        if (Preg::match('/^@PHP(Unit)?\d+Migration(:risky)?$/', $setDefinitionName)) {
+            self::markTestSkipped(\sprintf('Set "%s" is deprecated and will be removed in next MAJOR.', $setDefinitionName));
+        }
+
+        if (str_starts_with($setDefinitionName, '@auto')) {
+            self::markTestSkipped(\sprintf('Set "%s" is automatic and it\'s definition depends on individual project.', $setDefinitionName));
+        }
+
+        \assert(\array_key_exists($setDefinitionName, RuleSets::getSetDefinitions()));
+        $setDefinition = RuleSets::getSetDefinitions()[$setDefinitionName]->getRules();
+
+        if (1 === \count($setDefinition)
+            && str_starts_with($setDefinitionName, '@PHP')
+            && str_starts_with(array_key_first($setDefinition), '@PHP')
+        ) {
+            self::markTestSkipped(\sprintf('Set "%s" only includes previous, no own rules to test.', $setDefinitionName));
         }
 
         $setDefinitionFileNamePrefix = str_replace(':', '-', $setDefinitionName);
@@ -107,13 +171,14 @@ Integration of %s.
 ';
         self::assertStringStartsWith(
             \sprintf($template, $setDefinitionName, $setDefinitionName),
-            file_get_contents($file)
+            (string) file_get_contents($file),
         );
     }
 
     /**
      * @dataProvider provideSetDefinitionNameCases
      */
+    #[DataProvider('provideSetDefinitionNameCases')]
     public function testBuildInSetDefinitionNames(string $setName): void
     {
         self::assertStringStartsWith('@', $setName);
@@ -122,29 +187,22 @@ Integration of %s.
     /**
      * @dataProvider provideSetDefinitionNameCases
      */
+    #[DataProvider('provideSetDefinitionNameCases')]
     public function testSetDefinitionsAreSorted(string $setDefinitionName): void
     {
+        \assert(\array_key_exists($setDefinitionName, RuleSets::getSetDefinitions()));
         $setDefinition = RuleSets::getSetDefinitions()[$setDefinitionName]->getRules();
         $sortedSetDefinition = $setDefinition;
         $this->sort($sortedSetDefinition);
 
         self::assertSame($sortedSetDefinition, $setDefinition, \sprintf(
             'Failed to assert that the set definition for "%s" is sorted by key.',
-            $setDefinitionName
+            $setDefinitionName,
         ));
     }
 
-    public function testSetDefinitionsItselfIsSorted(): void
-    {
-        $setDefinition = array_keys(RuleSets::getSetDefinitions());
-        $sortedSetDefinition = $setDefinition;
-        natsort($sortedSetDefinition);
-
-        self::assertSame($sortedSetDefinition, $setDefinition);
-    }
-
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function provideSetDefinitionNameCases(): iterable
     {
@@ -153,9 +211,19 @@ Integration of %s.
         return array_map(static fn (string $setDefinitionName): array => [$setDefinitionName], $setDefinitionNames);
     }
 
+    public function testSetDefinitionsItselfIsSorted(): void
+    {
+        $setDefinition = array_keys(RuleSets::getSetDefinitions());
+        $sortedSetDefinition = $setDefinition;
+        natcasesort($sortedSetDefinition);
+
+        self::assertSame($sortedSetDefinition, $setDefinition);
+    }
+
     /**
      * @dataProvider providePHPUnitMigrationTargetVersionsCases
      */
+    #[DataProvider('providePHPUnitMigrationTargetVersionsCases')]
     public function testPHPUnitMigrationTargetVersions(string $setName): void
     {
         $ruleSet = new RuleSet([$setName => true]);
@@ -175,20 +243,34 @@ Integration of %s.
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<int, array{string}>
      */
     public static function providePHPUnitMigrationTargetVersionsCases(): iterable
     {
         $setDefinitionNames = RuleSets::getSetDefinitionNames();
 
-        $setDefinitionPHPUnitMigrationNames = array_filter($setDefinitionNames, static fn (string $setDefinitionName): bool => 1 === preg_match('/^@PHPUnit\d+Migration:risky$/', $setDefinitionName));
+        $setDefinitionPHPUnitMigrationNames = array_filter($setDefinitionNames, static fn (string $setDefinitionName): bool => Preg::match('/^@PHPUnit\d+Migration:risky$/', $setDefinitionName));
 
         return array_map(static fn (string $setDefinitionName): array => [$setDefinitionName], $setDefinitionPHPUnitMigrationNames);
     }
 
+    public function testRegisteringRulesetMultipleTimesCausesAnException(): void
+    {
+        RuleSets::registerCustomRuleSet(new ExampleRuleSet());
+        self::expectException(\InvalidArgumentException::class);
+        RuleSets::registerCustomRuleSet(new ExampleRuleSet());
+    }
+
+    public function testCanReadCustomRegisteredRuleSet(): void
+    {
+        RuleSets::registerCustomRuleSet(new ExampleRuleSet());
+        $set = RuleSets::getSetDefinition('@Vendor/RuleSet');
+        self::assertSame('@Vendor/RuleSet', $set->getName());
+    }
+
     private static function assertPHPUnitVersionIsLargestAllowed(string $setName, string $ruleName, string $actualTargetVersion): void
     {
-        $maximumVersionForRuleset = preg_replace('/^@PHPUnit(\d+)(\d)Migration:risky$/', '$1.$2', $setName);
+        $maximumVersionForRuleset = Preg::replace('/^@PHPUnit(\d+)(\d)Migration:risky$/', '$1.$2', $setName);
 
         $fixer = TestCaseUtils::getFixerByName($ruleName);
 
@@ -196,12 +278,12 @@ Integration of %s.
 
         foreach ($fixer->getConfigurationDefinition()->getOptions() as $option) {
             if ('target' === $option->getName()) {
-                /** @var list<PhpUnitTargetVersion::VERSION_*> */
+                /** @var non-empty-list<PhpUnitTargetVersion::VERSION_*> */
                 $allowedValues = $option->getAllowedValues();
 
                 $allowedVersionsForFixer = array_diff(
                     $allowedValues,
-                    [PhpUnitTargetVersion::VERSION_NEWEST]
+                    [PhpUnitTargetVersion::VERSION_NEWEST],
                 );
 
                 break;
@@ -215,7 +297,7 @@ Integration of %s.
         /** @var list<PhpUnitTargetVersion::VERSION_*> */
         $allowedVersionsForRuleset = array_filter(
             $allowedVersionsForFixer,
-            static fn (string $version): bool => version_compare($maximumVersionForRuleset, $version) >= 0
+            static fn (string $version): bool => version_compare($maximumVersionForRuleset, $version) >= 0,
         );
 
         self::assertTrue(\in_array($actualTargetVersion, $allowedVersionsForRuleset, true), \sprintf(
@@ -223,7 +305,7 @@ Integration of %s.
             $fixer->getName(),
             $setName,
             $actualTargetVersion,
-            implode('", "', $allowedVersionsForRuleset)
+            implode('", "', $allowedVersionsForRuleset),
         ));
 
         rsort($allowedVersionsForRuleset);
@@ -234,7 +316,7 @@ Integration of %s.
             $fixer->getName(),
             $setName,
             $actualTargetVersion,
-            $maximumAllowedVersionForRuleset
+            $maximumAllowedVersionForRuleset,
         ));
     }
 
@@ -255,7 +337,7 @@ Integration of %s.
      */
     private function doSort(array &$data, string $path): void
     {
-        if ('ordered_imports.imports_order' === $path) { // order matters
+        if (\in_array($path, ['ordered_imports.imports_order', 'phpdoc_order.order'], true)) { // order matters
             return;
         }
 
@@ -271,7 +353,7 @@ Integration of %s.
             if (\is_array($value)) {
                 $this->doSort(
                     $data[$key],
-                    $path.('' !== $path ? '.' : '').$key
+                    $path.('' !== $path ? '.' : '').$key,
                 );
             }
         }

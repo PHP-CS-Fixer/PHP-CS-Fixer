@@ -4,6 +4,14 @@ Rule ``phpdoc_tag_casing``
 
 Fixes casing of PHPDoc tags.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``tags``.
+
 Configuration
 -------------
 
@@ -49,6 +57,7 @@ With configuration: ``['tags' => ['foo']]``.
    - * @Foo
    + * @foo
      */
+
 References
 ----------
 

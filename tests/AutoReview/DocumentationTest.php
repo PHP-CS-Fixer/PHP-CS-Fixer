@@ -20,8 +20,12 @@ use PhpCsFixer\Documentation\FixerDocumentGenerator;
 use PhpCsFixer\Documentation\RuleSetDocumentationGenerator;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
+use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -31,17 +35,23 @@ use Symfony\Component\Finder\Finder;
  *
  * @group legacy
  * @group auto-review
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversNothing]
+#[Group('legacy')]
+#[Group('auto-review')]
 final class DocumentationTest extends TestCase
 {
     /**
      * @dataProvider provideFixerDocumentationFileIsUpToDateCases
      */
+    #[DataProvider('provideFixerDocumentationFileIsUpToDateCases')]
     public function testFixerDocumentationFileIsUpToDate(FixerInterface $fixer): void
     {
-        // @TODO 4.0 Remove this expectations
-        $this->expectDeprecation('Rule set "@PER" is deprecated. Use "@PER-CS" instead.');
-        $this->expectDeprecation('Rule set "@PER:risky" is deprecated. Use "@PER-CS:risky" instead.');
+        if ('ordered_imports' === $fixer->getName()) {
+            $this->expectDeprecation('[ordered_imports] Option "sort_algorithm:length" is deprecated and will be removed in version 4.0.');
+        }
         if ('nullable_type_declaration_for_default_null_value' === $fixer->getName()) {
             $this->expectDeprecation('Option "use_nullable_type_declaration" for rule "nullable_type_declaration_for_default_null_value" is deprecated and will be removed in version 4.0. Behaviour will follow default one.');
         }
@@ -55,8 +65,9 @@ final class DocumentationTest extends TestCase
 
         $expected = $generator->generateFixerDocumentation($fixer);
         $actual = file_get_contents($path);
+        self::assertIsString($actual);
 
-        $expected = preg_replace_callback(
+        $expected = Preg::replaceCallback(
             '/
                 # an example
                 (?<before>
@@ -79,18 +90,20 @@ final class DocumentationTest extends TestCase
                 )
             /x',
             static function (array $matches) use ($actual): string {
+                /** @var array{before: string, after: string} $matches */
                 $before = preg_quote($matches['before'], '/');
                 $after = preg_quote($matches['after'], '/');
 
                 $replacement = '[UNAVAILABLE EXAMPLE DIFF]';
 
-                if (1 === preg_match("/{$before}(\\.\\. code-block:: diff.*?){$after}/s", $actual, $actualMatches)) {
+                if (Preg::match("/{$before}(\\.\\. code-block:: diff.*?){$after}/s", $actual, $actualMatches)) {
+                    \assert(\array_key_exists(1, $actualMatches));
                     $replacement = $actualMatches[1];
                 }
 
-                return $matches[1].$replacement.$matches[2];
+                return $matches['before'].$replacement.$matches['after'];
             },
-            $expected
+            $expected,
         );
 
         self::assertSame($expected, $actual);
@@ -113,7 +126,7 @@ final class DocumentationTest extends TestCase
 
         self::assertFileEqualsString(
             $generator->generateFixersDocumentationIndex(self::getFixers()),
-            $locator->getFixersDocumentationIndexFilePath()
+            $locator->getFixersDocumentationIndexFilePath(),
         );
     }
 
@@ -123,7 +136,7 @@ final class DocumentationTest extends TestCase
 
         self::assertCount(
             \count(self::getFixers()) + 1,
-            (new Finder())->files()->in($generator->getFixersDocumentationDirectoryPath())
+            (new Finder())->files()->in($generator->getFixersDocumentationDirectoryPath()),
         );
     }
 
@@ -135,14 +148,14 @@ final class DocumentationTest extends TestCase
         $fixers = self::getFixers();
         $paths = [];
 
-        foreach (RuleSets::getSetDefinitions() as $name => $definition) {
+        foreach (RuleSets::getBuiltInSetDefinitions() as $name => $definition) {
             $path = $locator->getRuleSetsDocumentationFilePath($name);
             $paths[$path] = $definition;
 
             self::assertFileEqualsString(
                 $generator->generateRuleSetsDocumentation($definition, $fixers),
                 $path,
-                \sprintf('RuleSet documentation is generated (please see CONTRIBUTING.md), file "%s".', $path)
+                \sprintf('RuleSet documentation is generated (please see CONTRIBUTING.md), file "%s".', $path),
             );
         }
 
@@ -151,7 +164,7 @@ final class DocumentationTest extends TestCase
         self::assertFileEqualsString(
             $generator->generateRuleSetsDocumentationIndex($paths),
             $indexFilePath,
-            \sprintf('RuleSet documentation is generated (please CONTRIBUTING.md), file "%s".', $indexFilePath)
+            \sprintf('RuleSet documentation is generated (please CONTRIBUTING.md), file "%s".', $indexFilePath),
         );
     }
 
@@ -160,26 +173,45 @@ final class DocumentationTest extends TestCase
         $generator = new DocumentationLocator();
 
         self::assertCount(
-            \count(RuleSets::getSetDefinitions()) + 1,
-            (new Finder())->files()->in($generator->getRuleSetsDocumentationDirectoryPath())
+            \count(RuleSets::getBuiltInSetDefinitions()) + 1,
+            (new Finder())->files()->in($generator->getRuleSetsDocumentationDirectoryPath()),
         );
     }
 
     public function testInstallationDocHasCorrectMinimumVersion(): void
     {
-        $composerJsonContent = file_get_contents(__DIR__.'/../../composer.json');
-        $composerJson = json_decode($composerJsonContent, true, 512, JSON_THROW_ON_ERROR);
+        $composerJsonContent = (string) file_get_contents(__DIR__.'/../../composer.json');
+        $composerJson = json_decode($composerJsonContent, true, 512, \JSON_THROW_ON_ERROR);
         $phpVersion = $composerJson['require']['php'];
-        $minimumVersion = ltrim(substr($phpVersion, 0, strpos($phpVersion, ' ')), '^');
+        $minimumVersion = ltrim(substr($phpVersion, 0, (int) strpos($phpVersion, ' ')), '^');
 
         $minimumVersionInformation = \sprintf('PHP needs to be a minimum version of PHP %s.', $minimumVersion);
         $installationDocPath = realpath(__DIR__.'/../../doc/installation.rst');
+        self::assertIsString($installationDocPath);
 
         self::assertStringContainsString(
             $minimumVersionInformation,
-            file_get_contents($installationDocPath),
-            \sprintf('Files %s needs to contain information "%s"', $installationDocPath, $minimumVersionInformation)
+            (string) file_get_contents($installationDocPath),
+            \sprintf('Files %s needs to contain information "%s"', $installationDocPath, $minimumVersionInformation),
         );
+    }
+
+    public function testCiIntegrationSampleMatches(): void
+    {
+        $locator = new DocumentationLocator();
+        $usage = $locator->getUsageFilePath();
+        self::assertFileExists($usage);
+
+        $usage = file_get_contents($usage);
+        self::assertIsString($usage);
+
+        $expectedCiIntegrationContent = file_get_contents(__DIR__.'/../../doc/examples/ci-integration.sh');
+        self::assertIsString($expectedCiIntegrationContent);
+
+        $expectedCiIntegrationContent = trim(str_replace(['#!/bin/sh', 'set -eu'], ['', ''], $expectedCiIntegrationContent));
+        $expectedCiIntegrationContent = '    '.implode("\n    ", explode("\n", $expectedCiIntegrationContent));
+
+        self::assertStringContainsString($expectedCiIntegrationContent, $usage);
     }
 
     public function testAllReportFormatsAreInUsageDoc(): void
@@ -204,7 +236,7 @@ final class DocumentationTest extends TestCase
         }
 
         $lastFormat = array_pop($formats);
-        $expectedContent = 'Supported formats are ``txt`` (default one), ';
+        $expectedContent = 'Supported formats are ``@auto`` (default one on v4+), ``txt`` (default one on v3), ';
 
         foreach ($formats as $format) {
             $expectedContent .= '``'.$format.'``, ';

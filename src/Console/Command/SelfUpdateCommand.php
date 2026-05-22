@@ -33,13 +33,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-#[AsCommand(name: 'self-update')]
+#[AsCommand(name: 'self-update', description: 'Update php-cs-fixer.phar to the latest stable version.')]
 final class SelfUpdateCommand extends Command
 {
-    /** @var string */
-    protected static $defaultName = 'self-update';
-
     private NewVersionCheckerInterface $versionChecker;
 
     private ToolInfoInterface $toolInfo;
@@ -51,11 +50,29 @@ final class SelfUpdateCommand extends Command
         ToolInfoInterface $toolInfo,
         PharCheckerInterface $pharChecker
     ) {
-        parent::__construct();
+        parent::__construct('self-update');
+        $this->setDescription('Update php-cs-fixer.phar to the latest stable version.');
 
         $this->versionChecker = $versionChecker;
         $this->toolInfo = $toolInfo;
         $this->pharChecker = $pharChecker;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Override here to only generate the help copy when used.
+     */
+    public function getHelp(): string
+    {
+        return <<<'EOT'
+            The <info>%command.name%</info> command replace your php-cs-fixer.phar by the
+            latest version released on:
+            <comment>https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases</comment>
+
+            <info>$ php php-cs-fixer.phar %command.name%</info>
+
+            EOT;
     }
 
     protected function configure(): void
@@ -65,18 +82,7 @@ final class SelfUpdateCommand extends Command
             ->setDefinition(
                 [
                     new InputOption('--force', '-f', InputOption::VALUE_NONE, 'Force update to next major version if available.'),
-                ]
-            )
-            ->setDescription('Update php-cs-fixer.phar to the latest stable version.')
-            ->setHelp(
-                <<<'EOT'
-                    The <info>%command.name%</info> command replace your php-cs-fixer.phar by the
-                    latest version released on:
-                    <comment>https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases</comment>
-
-                    <info>$ php php-cs-fixer.phar %command.name%</info>
-
-                    EOT
+                ],
             )
         ;
     }
@@ -104,7 +110,7 @@ final class SelfUpdateCommand extends Command
         } catch (\Exception $exception) {
             $output->writeln(\sprintf(
                 '<error>Unable to determine newest version: %s</error>',
-                $exception->getMessage()
+                $exception->getMessage(),
             ));
 
             return 1;

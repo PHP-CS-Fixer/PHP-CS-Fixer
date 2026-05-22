@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\FixerNameValidator;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -22,12 +24,16 @@ use PhpCsFixer\FixerNameValidator;
  * @internal
  *
  * @covers \PhpCsFixer\FixerNameValidator
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FixerNameValidator::class)]
 final class FixerNameValidatorTest extends TestCase
 {
     /**
      * @dataProvider provideIsValidCases
      */
+    #[DataProvider('provideIsValidCases')]
     public function testIsValid(string $name, bool $isCustom, bool $isValid): void
     {
         $validator = new FixerNameValidator();
@@ -36,7 +42,7 @@ final class FixerNameValidatorTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, bool, bool}>
+     * @return iterable<int, array{string, bool, bool}>
      */
     public static function provideIsValidCases(): iterable
     {

@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Differ;
 
 use PhpCsFixer\Differ\NullDiffer;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -22,7 +23,10 @@ use PhpCsFixer\Differ\NullDiffer;
  * @internal
  *
  * @covers \PhpCsFixer\Differ\NullDiffer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NullDiffer::class)]
 final class NullDifferTest extends AbstractDifferTestCase
 {
     public function testDiffReturnsEmptyString(): void

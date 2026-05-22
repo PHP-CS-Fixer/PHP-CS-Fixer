@@ -17,17 +17,23 @@ namespace PhpCsFixer\Tests\Runner;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\RunnerConfig;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Runner\RunnerConfig
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(RunnerConfig::class)]
 final class RunnerConfigTest extends TestCase
 {
     /**
      * @dataProvider provideGettersReturnCorrectDataCases
      */
+    #[DataProvider('provideGettersReturnCorrectDataCases')]
     public function testGettersReturnCorrectData(
         bool $isDryRun,
         bool $stopOnViolation,
@@ -43,7 +49,7 @@ final class RunnerConfigTest extends TestCase
     }
 
     /**
-     * @return iterable<array{0: bool, 1: bool, 2: ParallelConfig, 3?: null|string}>
+     * @return iterable<string, array{0: bool, 1: bool, 2: ParallelConfig, 3?: null|string}>
      */
     public static function provideGettersReturnCorrectDataCases(): iterable
     {

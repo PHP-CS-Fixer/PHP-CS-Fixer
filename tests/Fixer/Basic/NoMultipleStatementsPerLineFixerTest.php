@@ -14,7 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Basic;
 
+use PhpCsFixer\Fixer\Basic\NoMultipleStatementsPerLineFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -22,12 +26,16 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\Basic\NoMultipleStatementsPerLineFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\NoMultipleStatementsPerLineFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NoMultipleStatementsPerLineFixer::class)]
 final class NoMultipleStatementsPerLineFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -85,6 +93,45 @@ final class NoMultipleStatementsPerLineFixerTest extends AbstractFixerTestCase
 
         yield 'switch alternative syntax' => [
             '<?php switch ($foo): case true: foo(); endswitch;',
+        ];
+
+        yield 'with comment and no whitespace' => [
+            <<<'PHP'
+                <?php
+                    foo();/* comment */
+                    bar();
+                PHP,
+            <<<'PHP'
+                <?php
+                    foo();/* comment */bar();
+                PHP,
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP >= 8.4.0
+     */
+    #[DataProvider('provideFix84Cases')]
+    #[RequiresPhp('>= 8.4.0')]
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, 1?: string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield "don't touch property hooks" => [
+            '<?php interface I {
+    public string $readable { get; }
+    public string $writeable { set; }
+    public string $both { get; set; }
+    public string $differentCasing { GET; Set; }
+}',
         ];
     }
 }

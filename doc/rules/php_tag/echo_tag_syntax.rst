@@ -5,6 +5,15 @@ Rule ``echo_tag_syntax``
 Replaces short-echo ``<?=`` with long format ``<?php echo``/``<?php print``
 syntax, or vice-versa.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``format``,
+``long_function``, ``shorten_simple_statements_only``.
+
 Configuration
 -------------
 

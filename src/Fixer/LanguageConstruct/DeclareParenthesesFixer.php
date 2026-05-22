@@ -20,19 +20,22 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class DeclareParenthesesFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'There must not be spaces around `declare` statement parentheses.',
-            [new CodeSample("<?php declare ( strict_types=1 );\n")]
+            [new CodeSample("<?php declare ( strict_types=1 );\n")],
         );
     }
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_DECLARE);
+        return $tokens->isTokenKindFound(\T_DECLARE);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -40,7 +43,7 @@ final class DeclareParenthesesFixer extends AbstractFixer
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             $token = $tokens[$index];
 
-            if (!$token->isGivenKind(T_DECLARE)) {
+            if (!$token->isGivenKind(\T_DECLARE)) {
                 continue;
             }
 

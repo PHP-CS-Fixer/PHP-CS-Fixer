@@ -17,6 +17,9 @@ namespace PhpCsFixer\Tests\Tokenizer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -25,8 +28,13 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *
  * @internal
  *
+ * @phpstan-import-type _ClassyElementType from \PhpCsFixer\Tokenizer\TokensAnalyzer
+ *
  * @covers \PhpCsFixer\Tokenizer\TokensAnalyzer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(TokensAnalyzer::class)]
 final class TokensAnalyzerTest extends TestCase
 {
     /**
@@ -34,6 +42,7 @@ final class TokensAnalyzerTest extends TestCase
      *
      * @dataProvider provideGetClassyElementsCases
      */
+    #[DataProvider('provideGetClassyElementsCases')]
     public function testGetClassyElements(array $expectedElements, string $source): void
     {
         $tokens = Tokens::fromCode($source);
@@ -43,17 +52,20 @@ final class TokensAnalyzerTest extends TestCase
             static function (array &$element, int $index) use ($tokens): void {
                 $element['token'] = $tokens[$index];
                 ksort($element);
-            }
+            },
         );
 
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         self::assertSame(
             $expectedElements,
-            $tokensAnalyzer->getClassyElements()
+            $tokensAnalyzer->getClassyElements(),
         );
     }
 
+    /**
+     * @return iterable<array{array<int, array{classIndex: int, type: string}>, string}>
+     */
     public static function provideGetClassyElementsCases(): iterable
     {
         yield 'trait import' => [
@@ -190,6 +202,63 @@ final class TokensAnalyzerTest extends TestCase
 
                 PHP,
         ];
+
+        yield [
+            [
+                11 => [
+                    'classIndex' => 1,
+                    'type' => 'property',
+                ],
+                23 => [
+                    'classIndex' => 1,
+                    'type' => 'property',
+                ],
+                31 => [
+                    'classIndex' => 1,
+                    'type' => 'property',
+                ],
+                44 => [
+                    'classIndex' => 1,
+                    'type' => 'property',
+                ],
+                51 => [
+                    'classIndex' => 1,
+                    'type' => 'property',
+                ],
+                54 => [
+                    'classIndex' => 1,
+                    'type' => 'property',
+                ],
+                61 => [
+                    'classIndex' => 1,
+                    'type' => 'property',
+                ],
+                69 => [
+                    'classIndex' => 1,
+                    'type' => 'property',
+                ],
+            ],
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public int $bar = 3;
+
+                    protected ?string $baz;
+
+                    private ?string $bazNull = null;
+
+                    public static iterable $staticProp;
+
+                    public float $x, $y;
+
+                    var bool $flag1;
+
+                    var ?bool $flag2;
+                }
+
+                PHP,
+        ];
     }
 
     public function testGetClassyElementsWithNullableProperties(): void
@@ -232,7 +301,7 @@ final class TokensAnalyzerTest extends TestCase
                     'type' => 'property',
                 ],
             ],
-            $elements
+            $elements,
         );
     }
 
@@ -296,7 +365,7 @@ final class TokensAnalyzerTest extends TestCase
                     'type' => 'method', // C
                 ],
             ],
-            $elements
+            $elements,
         );
     }
 
@@ -439,46 +508,58 @@ final class TokensAnalyzerTest extends TestCase
                     'type' => 'method',
                 ],
             ],
-            $elements
+            $elements,
         );
     }
 
-    public function testGetClassyElements74(): void
+    /**
+     * @param array<int, array{classIndex: int, type: string}> $expected
+     *
+     * @dataProvider provideGetClassyElements80Cases
+     *
+     * @requires PHP >= 8.0.0
+     */
+    #[DataProvider('provideGetClassyElements80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
+    public function testGetClassyElements80(array $expected, string $source): void
     {
-        $source = <<<'PHP'
-            <?php
-            class Foo
-            {
-                public int $bar = 3;
+        $this->testGetClassyElements($expected, $source);
+    }
 
-                protected ?string $baz;
-
-                private ?string $bazNull = null;
-
-                public static iterable $staticProp;
-
-                public float $x, $y;
-
-                var bool $flag1;
-
-                var ?bool $flag2;
-            }
-
-            PHP;
-        $tokens = Tokens::fromCode($source);
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $elements = $tokensAnalyzer->getClassyElements();
-        $expected = [];
-
-        foreach ([11, 23, 31, 44, 51, 54, 61, 69] as $index) {
-            $expected[$index] = [
-                'classIndex' => 1,
-                'token' => $tokens[$index],
-                'type' => 'property',
-            ];
-        }
-
-        self::assertSame($expected, $elements);
+    /**
+     * @return iterable<string, array{array<int, array{classIndex: int, type: string}>, string}>
+     */
+    public static function provideGetClassyElements80Cases(): iterable
+    {
+        yield 'promoted properties' => [
+            [
+                9 => [
+                    'classIndex' => 1,
+                    'type' => 'method',
+                ],
+                18 => [
+                    'classIndex' => 1,
+                    'type' => 'promoted_property',
+                ],
+                26 => [
+                    'classIndex' => 1,
+                    'type' => 'promoted_property',
+                ],
+                37 => [
+                    'classIndex' => 1,
+                    'type' => 'promoted_property',
+                ],
+            ],
+            <<<'PHP'
+                <?php class Foo {
+                    public function __construct(
+                        public bool $b,
+                        protected ?int $i,
+                        private bool|int|string $x,
+                    ) {}
+                }
+                PHP,
+        ];
     }
 
     /**
@@ -486,25 +567,18 @@ final class TokensAnalyzerTest extends TestCase
      *
      * @dataProvider provideGetClassyElements81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideGetClassyElements81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testGetClassyElements81(array $expected, string $source): void
     {
-        $tokens = Tokens::fromCode($source);
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $elements = $tokensAnalyzer->getClassyElements();
-
-        array_walk(
-            $expected,
-            static function (array &$element, int $index) use ($tokens): void {
-                $element['token'] = $tokens[$index];
-                ksort($element);
-            }
-        );
-
-        self::assertSame($expected, $elements);
+        $this->testGetClassyElements($expected, $source);
     }
 
+    /**
+     * @return iterable<array{array<int, array{classIndex: int, type: string}>, string}>
+     */
     public static function provideGetClassyElements81Cases(): iterable
     {
         yield [
@@ -665,6 +739,42 @@ enum Foo: string
 }
             ',
         ];
+
+        yield 'readonly promoted property' => [
+            [
+                9 => [
+                    'classIndex' => 1,
+                    'type' => 'method',
+                ],
+                19 => [
+                    'classIndex' => 1,
+                    'type' => 'promoted_property',
+                ],
+            ],
+            <<<'PHP'
+                <?php class Foo {
+                    public function __construct(public readonly bool $b) {}
+                }
+                PHP,
+        ];
+
+        yield 'promoted property without visibility' => [
+            [
+                9 => [
+                    'classIndex' => 1,
+                    'type' => 'method',
+                ],
+                17 => [
+                    'classIndex' => 1,
+                    'type' => 'promoted_property',
+                ],
+            ],
+            <<<'PHP'
+                <?php class Foo {
+                    public function __construct(readonly bool $b) {}
+                }
+                PHP,
+        ];
     }
 
     /**
@@ -672,25 +782,18 @@ enum Foo: string
      *
      * @dataProvider provideGetClassyElements82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      */
+    #[DataProvider('provideGetClassyElements82Cases')]
+    #[RequiresPhp('>= 8.2.0')]
     public function testGetClassyElements82(array $expected, string $source): void
     {
-        $tokens = Tokens::fromCode($source);
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $elements = $tokensAnalyzer->getClassyElements();
-
-        array_walk(
-            $expected,
-            static function (array &$element, int $index) use ($tokens): void {
-                $element['token'] = $tokens[$index];
-                ksort($element);
-            },
-        );
-
-        self::assertSame($expected, $elements);
+        $this->testGetClassyElements($expected, $source);
     }
 
+    /**
+     * @return iterable<string, array{array<int, array{classIndex: int, type: string}>, string}>
+     */
     public static function provideGetClassyElements82Cases(): iterable
     {
         yield 'constant in trait' => [
@@ -713,6 +816,155 @@ enum Foo: string
                 }
                 PHP,
         ];
+
+        yield 'readonly class' => [
+            [
+                11 => [
+                    'classIndex' => 3,
+                    'type' => 'method',
+                ],
+                22 => [
+                    'classIndex' => 3,
+                    'type' => 'method',
+                ],
+            ],
+            <<<'PHP'
+                <?php readonly class Foo {
+                    public function __construct() {}
+                    public function process(object $event): void {}
+                }
+                PHP,
+        ];
+    }
+
+    /**
+     * @param array<int, array{classIndex: int, type: string}> $expected
+     *
+     * @dataProvider provideGetClassyElements84Cases
+     *
+     * @requires PHP >= 8.4.0
+     */
+    #[DataProvider('provideGetClassyElements84Cases')]
+    #[RequiresPhp('>= 8.4.0')]
+    public function testGetClassyElements84(array $expected, string $source): void
+    {
+        $this->testGetClassyElements($expected, $source);
+    }
+
+    /**
+     * @return iterable<string, array{array<int, array{classIndex: int, type: _ClassyElementType}>, string}>
+     */
+    public static function provideGetClassyElements84Cases(): iterable
+    {
+        yield 'property hooks' => [
+            [
+                11 => [
+                    'classIndex' => 1,
+                    'type' => 'property',
+                ],
+            ],
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    protected int $bar {
+                        set => $this->bar = $value;
+                    }
+                }
+                PHP,
+        ];
+    }
+
+    /**
+     * @param array<int, array{classIndex: int, type: _ClassyElementType}> $expected
+     *
+     * @dataProvider provideGetClassyElements85Cases
+     *
+     * @requires PHP >= 8.5.0
+     */
+    #[DataProvider('provideGetClassyElements85Cases')]
+    #[RequiresPhp('>= 8.5.0')]
+    public function testGetClassyElements85(array $expected, string $source): void
+    {
+        $this->testGetClassyElements($expected, $source);
+    }
+
+    /**
+     * @return iterable<string, array{array<int, array{classIndex: int, type: _ClassyElementType}>, string}>
+     */
+    public static function provideGetClassyElements85Cases(): iterable
+    {
+        yield 'final promoted property' => [
+            [
+                9 => [
+                    'classIndex' => 1,
+                    'type' => 'method',
+                ],
+                19 => [
+                    'classIndex' => 1,
+                    'type' => 'promoted_property',
+                ],
+            ],
+            <<<'PHP'
+                <?php class Foo {
+                    public function __construct(public final bool $b) {}
+                }
+                PHP,
+        ];
+
+        yield 'promoted property without visibility' => [
+            [
+                9 => [
+                    'classIndex' => 1,
+                    'type' => 'method',
+                ],
+                17 => [
+                    'classIndex' => 1,
+                    'type' => 'promoted_property',
+                ],
+            ],
+            <<<'PHP'
+                <?php class Foo {
+                    public function __construct(final bool $b) {}
+                }
+                PHP,
+        ];
+
+        yield 'closures' => [
+            [
+                11 => ['classIndex' => 3, 'type' => 'const'],
+                33 => ['classIndex' => 3, 'type' => 'const'],
+                67 => ['classIndex' => 3, 'type' => 'property'],
+                91 => ['classIndex' => 3, 'type' => 'method'],
+            ],
+            <<<'PHP'
+                <?php final class Foo
+                {
+                    private const \Closure I_AM_EMPTY = static function () {};
+                    private const \Closure I_AM_1 = static function (): int { return 1; };
+                    private \Closure $iAmTwo = static function (): int { return 2; };
+                    function my_array_filter(
+                        Closure $callback = static function ($item) { return !empty($item); },
+                    ) {}
+                }
+                PHP,
+        ];
+
+        yield 'closure in attribute' => [
+            [
+                46 => [
+                    'classIndex' => 1,
+                    'type' => 'method',
+                ],
+            ],
+            <<<'PHP'
+                <?php class Foo {
+                    #[WithRegularAttribute(static function (): void {})]
+                    #[WithNamedAttribute(foo: static function (): void {})]
+                    function yes() {}
+                }
+                PHP,
+        ];
     }
 
     /**
@@ -720,6 +972,7 @@ enum Foo: string
      *
      * @dataProvider provideIsAnonymousClassCases
      */
+    #[DataProvider('provideIsAnonymousClassCases')]
     public function testIsAnonymousClass(array $expected, string $source): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
@@ -730,7 +983,7 @@ enum Foo: string
     }
 
     /**
-     * @return iterable<array{array<int, bool>, string}>
+     * @return iterable<int, array{array<int, bool>, string}>
      */
     public static function provideIsAnonymousClassCases(): iterable
     {
@@ -770,15 +1023,17 @@ enum Foo: string
      *
      * @dataProvider provideIsAnonymousClass80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideIsAnonymousClass80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testIsAnonymousClass80(array $expected, string $source): void
     {
         $this->testIsAnonymousClass($expected, $source);
     }
 
     /**
-     * @return iterable<array{array<int, bool>, string}>
+     * @return iterable<int, array{array<int, bool>, string}>
      */
     public static function provideIsAnonymousClass80Cases(): iterable
     {
@@ -798,15 +1053,17 @@ enum Foo: string
      *
      * @dataProvider provideIsAnonymousClass81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideIsAnonymousClass81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testIsAnonymousClass81(array $expected, string $source): void
     {
         $this->testIsAnonymousClass($expected, $source);
     }
 
     /**
-     * @return iterable<array{array<int, bool>, string}>
+     * @return iterable<int, array{array<int, bool>, string}>
      */
     public static function provideIsAnonymousClass81Cases(): iterable
     {
@@ -821,15 +1078,17 @@ enum Foo: string
      *
      * @dataProvider provideIsAnonymousClass83Cases
      *
-     * @requires PHP 8.3
+     * @requires PHP >= 8.3.0
      */
+    #[DataProvider('provideIsAnonymousClass83Cases')]
+    #[RequiresPhp('>= 8.3.0')]
     public function testIsAnonymousClass83(array $expected, string $source): void
     {
         $this->testIsAnonymousClass($expected, $source);
     }
 
     /**
-     * @return iterable<array{array<int, bool>, string}>
+     * @return iterable<string, array{array<int, bool>, string}>
      */
     public static function provideIsAnonymousClass83Cases(): iterable
     {
@@ -854,6 +1113,7 @@ enum Foo: string
      *
      * @dataProvider provideIsLambdaCases
      */
+    #[DataProvider('provideIsLambdaCases')]
     public function testIsLambda(array $expected, string $source): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
@@ -863,6 +1123,9 @@ enum Foo: string
         }
     }
 
+    /**
+     * @return iterable<int, array{array<int, bool>, string}>
+     */
     public static function provideIsLambdaCases(): iterable
     {
         yield [
@@ -974,13 +1237,18 @@ preg_replace_callback(
      *
      * @dataProvider provideIsLambda80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideIsLambda80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testIsLambda80(array $expected, string $source): void
     {
         $this->testIsLambda($expected, $source);
     }
 
+    /**
+     * @return iterable<int, array{array<int, bool>, string}>
+     */
     public static function provideIsLambda80Cases(): iterable
     {
         yield [
@@ -1031,11 +1299,15 @@ $a(1,2);',
      *
      * @dataProvider provideIsConstantInvocationCases
      */
+    #[DataProvider('provideIsConstantInvocationCases')]
     public function testIsConstantInvocation(array $expected, string $source): void
     {
         $this->doIsConstantInvocationTest($expected, $source);
     }
 
+    /**
+     * @return iterable<array{array<int, bool>, string}>
+     */
     public static function provideIsConstantInvocationCases(): iterable
     {
         yield [
@@ -1304,13 +1576,18 @@ abstract class Baz
      *
      * @dataProvider provideIsConstantInvocationPhp80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideIsConstantInvocationPhp80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testIsConstantInvocationPhp80(array $expected, string $source): void
     {
         $this->doIsConstantInvocationTest($expected, $source);
     }
 
+    /**
+     * @return iterable<array{array<int, bool>, string}>
+     */
     public static function provideIsConstantInvocationPhp80Cases(): iterable
     {
         yield 'abstract method return alternation' => [
@@ -1414,13 +1691,18 @@ function f( #[Target(\'xxx\')] LoggerInterface|null $logger) {}
      *
      * @dataProvider provideIsConstantInvocationPhp81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideIsConstantInvocationPhp81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testIsConstantInvocationPhp81(array $expected, string $source): void
     {
         $this->doIsConstantInvocationTest($expected, $source);
     }
 
+    /**
+     * @return iterable<array{array<int, bool>, string}>
+     */
     public static function provideIsConstantInvocationPhp81Cases(): iterable
     {
         yield [
@@ -1467,15 +1749,17 @@ abstract class Baz
      *
      * @dataProvider provideIsConstantInvocationPhp82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      */
+    #[DataProvider('provideIsConstantInvocationPhp82Cases')]
+    #[RequiresPhp('>= 8.2.0')]
     public function testIsConstantInvocationPhp82(array $expected, string $source): void
     {
         $this->doIsConstantInvocationTest($expected, $source);
     }
 
     /**
-     * @return iterable<array{array<int, bool>, string}>
+     * @return iterable<int, array{array<int, bool>, string}>
      */
     public static function provideIsConstantInvocationPhp82Cases(): iterable
     {
@@ -1503,15 +1787,17 @@ abstract class Baz
      *
      * @dataProvider provideIsConstantInvocationPhp83Cases
      *
-     * @requires PHP 8.3
+     * @requires PHP >= 8.3.0
      */
+    #[DataProvider('provideIsConstantInvocationPhp83Cases')]
+    #[RequiresPhp('>= 8.3.0')]
     public function testIsConstantInvocationPhp83(array $expected, string $source): void
     {
         $this->doIsConstantInvocationTest($expected, $source);
     }
 
     /**
-     * @return iterable<array{array<int, bool>, string}>
+     * @return iterable<int, array{array<int, bool>, string}>
      */
     public static function provideIsConstantInvocationPhp83Cases(): iterable
     {
@@ -1576,15 +1862,16 @@ abstract class Baz
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[RequiresPhp('>= 8.0.0')]
     public function testIsConstantInvocationForNullSafeObjectOperator(): void
     {
         $tokens = Tokens::fromCode('<?php $a?->b?->c;');
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_STRING)) {
+            if (!$token->isGivenKind(\T_STRING)) {
                 continue;
             }
 
@@ -1597,6 +1884,7 @@ abstract class Baz
      *
      * @dataProvider provideIsUnarySuccessorOperatorCases
      */
+    #[DataProvider('provideIsUnarySuccessorOperatorCases')]
     public function testIsUnarySuccessorOperator(array $expected, string $source): void
     {
         $tokensAnalyzer = new TokensAnalyzer(Tokens::fromCode($source));
@@ -1611,6 +1899,9 @@ abstract class Baz
         }
     }
 
+    /**
+     * @return iterable<array{array<int, bool>, string}>
+     */
     public static function provideIsUnarySuccessorOperatorCases(): iterable
     {
         yield [
@@ -1659,15 +1950,17 @@ abstract class Baz
      *
      * @dataProvider provideIsUnarySuccessorOperatorPre84Cases
      *
-     * @requires PHP <8.4
+     * @requires PHP < 8.4.0
      */
+    #[DataProvider('provideIsUnarySuccessorOperatorPre84Cases')]
+    #[RequiresPhp('< 8.4.0')]
     public function testIsUnarySuccessorOperatorPre84(array $expected, string $source): void
     {
         $this->testIsUnarySuccessorOperator($expected, $source);
     }
 
     /**
-     * @return iterable<array{array<int, bool>, string}>
+     * @return iterable<string, array{array<int, bool>, string}>
      */
     public static function provideIsUnarySuccessorOperatorPre84Cases(): iterable
     {
@@ -1682,6 +1975,7 @@ abstract class Baz
      *
      * @dataProvider provideIsUnaryPredecessorOperatorCases
      */
+    #[DataProvider('provideIsUnaryPredecessorOperatorCases')]
     public function testIsUnaryPredecessorOperator(array $expected, string $source): void
     {
         $tokens = Tokens::fromCode($source);
@@ -1693,22 +1987,25 @@ abstract class Baz
             self::assertSame(
                 $expect,
                 $tokensAnalyzer->isUnaryPredecessorOperator($index),
-                \sprintf('Expected %sunary predecessor operator, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
+                \sprintf('Expected %sunary predecessor operator, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true)),
             );
 
             if ($expect) {
                 self::assertFalse(
                     $tokensAnalyzer->isUnarySuccessorOperator($index),
-                    \sprintf('Expected no unary successor operator, got @ %d "%s".', $index, var_export($token, true))
+                    \sprintf('Expected no unary successor operator, got @ %d "%s".', $index, var_export($token, true)),
                 );
                 self::assertFalse(
                     $tokensAnalyzer->isBinaryOperator($index),
-                    \sprintf('Expected no binary operator, got @ %d "%s".', $index, var_export($token, true))
+                    \sprintf('Expected no binary operator, got @ %d "%s".', $index, var_export($token, true)),
                 );
             }
         }
     }
 
+    /**
+     * @return iterable<int, array{list<int>, string}>
+     */
     public static function provideIsUnaryPredecessorOperatorCases(): iterable
     {
         yield [
@@ -1807,6 +2104,7 @@ abstract class Baz
      *
      * @dataProvider provideIsBinaryOperatorCases
      */
+    #[DataProvider('provideIsBinaryOperatorCases')]
     public function testIsBinaryOperator(array $expected, string $source): void
     {
         $tokens = Tokens::fromCode($source);
@@ -1818,22 +2116,25 @@ abstract class Baz
             self::assertSame(
                 $expect,
                 $tokensAnalyzer->isBinaryOperator($index),
-                \sprintf('Expected %sbinary operator, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
+                \sprintf('Expected %sbinary operator, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true)),
             );
 
             if ($expect) {
                 self::assertFalse(
                     $tokensAnalyzer->isUnarySuccessorOperator($index),
-                    \sprintf('Expected no unary successor operator, got @ %d "%s".', $index, var_export($token, true))
+                    \sprintf('Expected no unary successor operator, got @ %d "%s".', $index, var_export($token, true)),
                 );
                 self::assertFalse(
                     $tokensAnalyzer->isUnaryPredecessorOperator($index),
-                    \sprintf('Expected no unary predecessor operator, got @ %d "%s".', $index, var_export($token, true))
+                    \sprintf('Expected no unary predecessor operator, got @ %d "%s".', $index, var_export($token, true)),
                 );
             }
         }
     }
 
+    /**
+     * @return iterable<int, array{array<int, bool|int>, string}>
+     */
     public static function provideIsBinaryOperatorCases(): iterable
     {
         yield [
@@ -2008,18 +2309,35 @@ $b;',
 
     /**
      * @dataProvider provideIsArrayCases
+     *
+     * @param array<int,bool> $tokenIndices in the form: index => isArrayMultiLine
      */
-    public function testIsArray(string $source, int $tokenIndex, bool $isMultiLineArray = false): void
+    #[DataProvider('provideIsArrayCases')]
+    public function testIsArray(string $source, array $tokenIndices): void
     {
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
-        self::assertTrue($tokensAnalyzer->isArray($tokenIndex), 'Expected to be an array.');
-        self::assertSame($isMultiLineArray, $tokensAnalyzer->isArrayMultiLine($tokenIndex), \sprintf('Expected %sto be a multiline array', $isMultiLineArray ? '' : 'not '));
+        foreach ($tokens as $index => $token) {
+            $isArray = \array_key_exists($index, $tokenIndices);
+
+            self::assertSame(
+                $isArray,
+                $tokensAnalyzer->isArray($index),
+                \sprintf('Expected %sarray, got @ %d "%s".', $isArray ? '' : 'no ', $index, var_export($token, true)),
+            );
+            if (\array_key_exists($index, $tokenIndices)) {
+                self::assertSame(
+                    $tokenIndices[$index],
+                    $tokensAnalyzer->isArrayMultiLine($index),
+                    \sprintf('Expected %sto be a multiline array', $tokenIndices[$index] ? '' : 'not '),
+                );
+            }
+        }
     }
 
     /**
-     * @return iterable<array{0: string, 1: int, 2?: bool}>
+     * @return iterable<int, array{string, array<int, bool>}>
      */
     public static function provideIsArrayCases(): iterable
     {
@@ -2027,14 +2345,14 @@ $b;',
             '<?php
                     array("a" => 1);
                 ',
-            2,
+            [2 => false],
         ];
 
         yield [
             '<?php
                     ["a" => 2];
                 ',
-            2, false,
+            [2 => false],
         ];
 
         yield [
@@ -2043,7 +2361,7 @@ $b;',
                         "a" => 3
                     );
                 ',
-            2, true,
+            [2 => true],
         ];
 
         yield [
@@ -2052,7 +2370,7 @@ $b;',
                         "a" => 4
                     ];
                 ',
-            2, true,
+            [2 => true],
         ];
 
         yield [
@@ -2062,7 +2380,7 @@ $b;',
 8 => new \Exception(\'Hello\')
                     );
                 ',
-            2, true,
+            [2 => true, 9 => false],
         ];
 
         yield [
@@ -2073,44 +2391,20 @@ $b;',
 12 => new \Exception(\'Hello\')
                     );
                 ',
-            2, true,
+            [2 => true, 9 => false],
         ];
 
         // Windows/Max EOL testing
         yield [
             "<?php\r\narray('a' => 13);\r\n",
-            1,
+            [1 => false],
         ];
 
         yield [
             "<?php\r\n   array(\r\n       'a' => 14,\r\n       'b' =>  15\r\n   );\r\n",
-            2, true,
+            [2 => true],
         ];
-    }
 
-    /**
-     * @param list<int> $tokenIndexes
-     *
-     * @dataProvider provideIsArray71Cases
-     */
-    public function testIsArray71(string $source, array $tokenIndexes): void
-    {
-        $tokens = Tokens::fromCode($source);
-        $tokensAnalyzer = new TokensAnalyzer($tokens);
-
-        foreach ($tokens as $index => $token) {
-            $expect = \in_array($index, $tokenIndexes, true);
-
-            self::assertSame(
-                $expect,
-                $tokensAnalyzer->isArray($index),
-                \sprintf('Expected %sarray, got @ %d "%s".', $expect ? '' : 'no ', $index, var_export($token, true))
-            );
-        }
-    }
-
-    public static function provideIsArray71Cases(): iterable
-    {
         yield [
             '<?php
                     [$a] = $z;
@@ -2119,7 +2413,7 @@ $b;',
                     [[$a, $b], [$c, $d]] = $d;
                     $array = []; $d = array();
                 ',
-            [76, 84],
+            [76 => false, 84 => false],
         ];
     }
 
@@ -2128,13 +2422,18 @@ $b;',
      *
      * @dataProvider provideIsBinaryOperator80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideIsBinaryOperator80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testIsBinaryOperator80(array $expected, string $source): void
     {
         $this->testIsBinaryOperator($expected, $source);
     }
 
+    /**
+     * @return iterable<int, array{list<int>, string}>
+     */
     public static function provideIsBinaryOperator80Cases(): iterable
     {
         yield [
@@ -2168,13 +2467,18 @@ $b;',
      *
      * @dataProvider provideIsBinaryOperator81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideIsBinaryOperator81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testIsBinaryOperator81(array $expected, string $source): void
     {
         $this->testIsBinaryOperator($expected, $source);
     }
 
+    /**
+     * @return iterable<string, array{list<int>, string}>
+     */
     public static function provideIsBinaryOperator81Cases(): iterable
     {
         yield 'type intersection' => [
@@ -2188,13 +2492,18 @@ $b;',
      *
      * @dataProvider provideIsBinaryOperator82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      */
+    #[DataProvider('provideIsBinaryOperator82Cases')]
+    #[RequiresPhp('>= 8.2.0')]
     public function testIsBinaryOperator82(array $expected, string $source): void
     {
         $this->testIsBinaryOperator($expected, $source);
     }
 
+    /**
+     * @return iterable<array{list<int>, string}>
+     */
     public static function provideIsBinaryOperator82Cases(): iterable
     {
         yield [
@@ -2225,15 +2534,17 @@ $b;',
      *
      * @dataProvider provideIsBinaryOperatorPre84Cases
      *
-     * @requires PHP <8.4
+     * @requires PHP < 8.4.0
      */
+    #[DataProvider('provideIsBinaryOperatorPre84Cases')]
+    #[RequiresPhp('< 8.4.0')]
     public function testIsBinaryOperatorPre84(array $expected, string $source): void
     {
         $this->testIsBinaryOperator($expected, $source);
     }
 
     /**
-     * @return iterable<array{list<int>, string}>
+     * @return iterable<int, array{list<int>, string}>
      */
     public static function provideIsBinaryOperatorPre84Cases(): iterable
     {
@@ -2246,6 +2557,7 @@ $b;',
     /**
      * @dataProvider provideArrayExceptionsCases
      */
+    #[DataProvider('provideArrayExceptionsCases')]
     public function testIsNotArray(string $source, int $tokenIndex): void
     {
         $tokens = Tokens::fromCode($source);
@@ -2257,6 +2569,7 @@ $b;',
     /**
      * @dataProvider provideArrayExceptionsCases
      */
+    #[DataProvider('provideArrayExceptionsCases')]
     public function testIsMultiLineArrayException(string $source, int $tokenIndex): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -2267,7 +2580,7 @@ $b;',
     }
 
     /**
-     * @return iterable<array{string, int}>
+     * @return iterable<int, array{string, int}>
      */
     public static function provideArrayExceptionsCases(): iterable
     {
@@ -2292,6 +2605,7 @@ $b;',
     /**
      * @dataProvider provideIsBlockMultilineCases
      */
+    #[DataProvider('provideIsBlockMultilineCases')]
     public function testIsBlockMultiline(bool $isBlockMultiline, string $source, int $tokenIndex): void
     {
         $tokens = Tokens::fromCode($source);
@@ -2301,7 +2615,7 @@ $b;',
     }
 
     /**
-     * @return iterable<array{bool, string, int}>
+     * @return iterable<int, array{bool, string, int}>
      */
     public static function provideIsBlockMultilineCases(): iterable
     {
@@ -2342,6 +2656,7 @@ $b;',
      *
      * @dataProvider provideGetFunctionPropertiesCases
      */
+    #[DataProvider('provideGetFunctionPropertiesCases')]
     public function testGetFunctionProperties(string $source, int $index, array $expected): void
     {
         $tokens = Tokens::fromCode($source);
@@ -2351,6 +2666,9 @@ $b;',
         self::assertSame($expected, $attributes);
     }
 
+    /**
+     * @return iterable<int, array{string, int, array{visibility: ?int, static: bool, abstract: bool, final: bool}}>
+     */
     public static function provideGetFunctionPropertiesCases(): iterable
     {
         $defaultAttributes = [
@@ -2371,15 +2689,15 @@ class TestClass {
         $cases = [];
 
         $attributes = $defaultAttributes;
-        $attributes['visibility'] = T_PRIVATE;
+        $attributes['visibility'] = \T_PRIVATE;
         $cases[] = [\sprintf($template, 'private'), 10, $attributes];
 
         $attributes = $defaultAttributes;
-        $attributes['visibility'] = T_PUBLIC;
+        $attributes['visibility'] = \T_PUBLIC;
         $cases[] = [\sprintf($template, 'public'), 10, $attributes];
 
         $attributes = $defaultAttributes;
-        $attributes['visibility'] = T_PROTECTED;
+        $attributes['visibility'] = \T_PROTECTED;
         $cases[] = [\sprintf($template, 'protected'), 10, $attributes];
 
         $attributes = $defaultAttributes;
@@ -2388,7 +2706,7 @@ class TestClass {
         $cases[] = [\sprintf($template, 'static'), 10, $attributes];
 
         $attributes = $defaultAttributes;
-        $attributes['visibility'] = T_PUBLIC;
+        $attributes['visibility'] = \T_PUBLIC;
         $attributes['static'] = true;
         $attributes['final'] = true;
         $cases[] = [\sprintf($template, 'final public static'), 14, $attributes];
@@ -2399,7 +2717,7 @@ class TestClass {
         $cases[] = [\sprintf($template, 'abstract'), 10, $attributes];
 
         $attributes = $defaultAttributes;
-        $attributes['visibility'] = T_PUBLIC;
+        $attributes['visibility'] = \T_PUBLIC;
         $attributes['abstract'] = true;
         $cases[] = [\sprintf($template, 'abstract public'), 12, $attributes];
 
@@ -2411,46 +2729,45 @@ class TestClass {
 
     public function testIsWhilePartOfDoWhile(): void
     {
-        $source =
-<<<'SRC'
-    <?php
-    // `not do`
-    while(false) {
-    }
-    while (false);
-    while (false)?>
-    <?php
+        $source = <<<'SRC'
+            <?php
+            // `not do`
+            while(false) {
+            }
+            while (false);
+            while (false)?>
+            <?php
 
-    if(false){
-    }while(false);
+            if(false){
+            }while(false);
 
-    if(false){
-    }while(false)?><?php
-    while(false){}while(false){}
+            if(false){
+            }while(false)?><?php
+            while(false){}while(false){}
 
-    while ($i <= 10):
-        echo $i;
-        $i++;
-    endwhile;
+            while ($i <= 10):
+                echo $i;
+                $i++;
+            endwhile;
 
-    ?>
-    <?php while(false): ?>
+            ?>
+            <?php while(false): ?>
 
-    <?php endwhile ?>
+            <?php endwhile ?>
 
-    <?php
-    // `do`
-    do{
-    } while(false);
+            <?php
+            // `do`
+            do{
+            } while(false);
 
-    do{
-    } while(false)?>
-    <?php
-    if (false){}do{}while(false);
+            do{
+            } while(false)?>
+            <?php
+            if (false){}do{}while(false);
 
-    // `not do`, `do`
-    if(false){}while(false){}do{}while(false);
-    SRC;
+            // `not do`, `do`
+            if(false){}while(false){}do{}while(false);
+            SRC;
 
         $expected = [
             3 => false,
@@ -2473,7 +2790,7 @@ class TestClass {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_WHILE)) {
+            if (!$token->isGivenKind(\T_WHILE)) {
                 continue;
             }
 
@@ -2482,7 +2799,7 @@ class TestClass {
             self::assertSame(
                 $isExpected,
                 $tokensAnalyzer->isWhilePartOfDoWhile($index),
-                \sprintf('Expected token at index "%d" to be detected as %sa "do-while"-loop.', $index, true === $isExpected ? '' : 'not ')
+                \sprintf('Expected token at index "%d" to be detected as %sa "do-while"-loop.', $index, true === $isExpected ? '' : 'not '),
             );
         }
     }
@@ -2492,15 +2809,17 @@ class TestClass {
      *
      * @param array<int, bool> $expected
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideIsEnumCaseCases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testIsEnumCase(string $source, array $expected): void
     {
         $tokens = Tokens::fromCode($source);
         $tokensAnalyzer = new TokensAnalyzer($tokens);
 
         foreach ($tokens as $index => $token) {
-            if (!$token->isGivenKind(T_CASE)) {
+            if (!$token->isGivenKind(\T_CASE)) {
                 try {
                     $tokensAnalyzer->isEnumCase($index);
                     self::fail('TokensAnalyzer::isEnumCase() did not throw LogicException.');
@@ -2512,10 +2831,14 @@ class TestClass {
                 continue;
             }
 
+            \assert(\array_key_exists($index, $expected));
             self::assertSame($expected[$index], $tokensAnalyzer->isEnumCase($index));
         }
     }
 
+    /**
+     * @return iterable<string, array{string, array<int, bool>}>
+     */
     public static function provideIsEnumCaseCases(): iterable
     {
         yield 'switch only' => [
@@ -2631,6 +2954,7 @@ enum Suit: string
      *
      * @dataProvider provideGetImportUseIndexesCases
      */
+    #[DataProvider('provideGetImportUseIndexesCases')]
     public function testGetImportUseIndexes(array $expected, string $input, bool $perNamespace = false): void
     {
         $tokens = Tokens::fromCode($input);
@@ -2639,6 +2963,9 @@ enum Suit: string
         self::assertSame($expected, $tokensAnalyzer->getImportUseIndexes($perNamespace));
     }
 
+    /**
+     * @return iterable<int, array{0: array<int, list<int>>|list<int>, 1: string, 2?: bool}>
+     */
     public static function provideGetImportUseIndexesCases(): iterable
     {
         yield [
@@ -2821,6 +3148,7 @@ class MyTestWithAnonymousClass extends TestCase
     /**
      * @dataProvider provideIsSuperGlobalCases
      */
+    #[DataProvider('provideIsSuperGlobalCases')]
     public function testIsSuperGlobal(bool $expected, string $source, int $index): void
     {
         $tokens = Tokens::fromCode($source);
@@ -2830,7 +3158,7 @@ class MyTestWithAnonymousClass extends TestCase
     }
 
     /**
-     * @return iterable<array{bool, string, int}>
+     * @return iterable<int, array{bool, string, int}>
      */
     public static function provideIsSuperGlobalCases(): iterable
     {
@@ -2881,6 +3209,7 @@ class MyTestWithAnonymousClass extends TestCase
      *
      * @param array<string, null|int> $expectedModifiers
      */
+    #[DataProvider('provideGetClassyModifiersCases')]
     public function testGetClassyModifiers(array $expectedModifiers, int $index, string $source): void
     {
         $tokens = Tokens::fromCode($source);
@@ -2889,6 +3218,9 @@ class MyTestWithAnonymousClass extends TestCase
         self::assertSame($expectedModifiers, $tokensAnalyzer->getClassyModifiers($index));
     }
 
+    /**
+     * @return iterable<string, array{array<string, null|int>, int, string}>
+     */
     public static function provideGetClassyModifiersCases(): iterable
     {
         yield 'final' => [
@@ -2905,17 +3237,22 @@ class MyTestWithAnonymousClass extends TestCase
     }
 
     /**
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      *
      * @dataProvider provideGetClassyModifiersOnPhp82Cases
      *
      * @param array<string, null|int> $expectedModifiers
      */
+    #[RequiresPhp('>= 8.2.0')]
+    #[DataProvider('provideGetClassyModifiersOnPhp82Cases')]
     public function testGetClassyModifiersOnPhp82(array $expectedModifiers, int $index, string $source): void
     {
         $this->testGetClassyModifiers($expectedModifiers, $index, $source);
     }
 
+    /**
+     * @return iterable<string, array{array<string, null|int>, int, string}>
+     */
     public static function provideGetClassyModifiersOnPhp82Cases(): iterable
     {
         yield 'readonly' => [
@@ -2976,6 +3313,7 @@ class MyTestWithAnonymousClass extends TestCase
      *
      * @param array<int, int> $expectations
      */
+    #[DataProvider('provideGetLastTokenIndexOfArrowFunctionCases')]
     public function testGetLastTokenIndexOfArrowFunction(array $expectations, string $source): void
     {
         $tokens = Tokens::fromCode($source);
@@ -2990,6 +3328,9 @@ class MyTestWithAnonymousClass extends TestCase
         self::assertSame($expectations, $indices);
     }
 
+    /**
+     * @return iterable<string, array{array<int, int>, string}>
+     */
     public static function provideGetLastTokenIndexOfArrowFunctionCases(): iterable
     {
         yield 'simple cases' => [
@@ -3126,9 +3467,9 @@ class MyTestWithAnonymousClass extends TestCase
         $tokens = Tokens::fromCode($source);
 
         self::assertCount(
-            $tokens->countTokenKind(T_STRING),
+            $tokens->countTokenKind(\T_STRING),
             $expected,
-            'All T_STRING tokens must be tested'
+            'All T_STRING tokens must be tested',
         );
 
         $tokensAnalyzer = new TokensAnalyzer($tokens);
@@ -3137,7 +3478,7 @@ class MyTestWithAnonymousClass extends TestCase
             self::assertSame(
                 $expectedValue,
                 $tokensAnalyzer->isConstantInvocation($index),
-                \sprintf('Token at index '.$index.' should match the expected value (%s).', $expectedValue ? 'true' : 'false')
+                \sprintf('Token at index '.$index.' should match the expected value (%s).', $expectedValue ? 'true' : 'false'),
             );
         }
     }

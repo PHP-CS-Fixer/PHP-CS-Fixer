@@ -19,7 +19,11 @@ use PhpCsFixer\Differ\DiffConsoleFormatter;
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
  *
+ * @readonly
+ *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TextReporter implements ReporterInterface
 {
@@ -45,7 +49,7 @@ final class TextReporter implements ReporterInterface
             }
 
             $output .= $this->getDiff($reportSummary->isDecoratedOutput(), $fixResult['diff']);
-            $output .= PHP_EOL;
+            $output .= \PHP_EOL;
         }
 
         return $output.$this->getFooter(
@@ -53,7 +57,7 @@ final class TextReporter implements ReporterInterface
             $identifiedFiles,
             $reportSummary->getFilesCount(),
             $reportSummary->getMemory(),
-            $reportSummary->isDryRun()
+            $reportSummary->isDryRun(),
         );
     }
 
@@ -64,7 +68,7 @@ final class TextReporter implements ReporterInterface
     {
         return \sprintf(
             $isDecoratedOutput ? ' (<comment>%s</comment>)' : ' (%s)',
-            implode(', ', $appliedFixers)
+            implode(', ', $appliedFixers),
         );
     }
 
@@ -76,27 +80,23 @@ final class TextReporter implements ReporterInterface
 
         $diffFormatter = new DiffConsoleFormatter($isDecoratedOutput, \sprintf(
             '<comment>      ---------- begin diff ----------</comment>%s%%s%s<comment>      ----------- end diff -----------</comment>',
-            PHP_EOL,
-            PHP_EOL
+            \PHP_EOL,
+            \PHP_EOL,
         ));
 
-        return PHP_EOL.$diffFormatter->format($diff).PHP_EOL;
+        return \PHP_EOL.$diffFormatter->format($diff).\PHP_EOL;
     }
 
     private function getFooter(int $time, int $identifiedFiles, int $files, int $memory, bool $isDryRun): string
     {
-        if (0 === $time || 0 === $memory) {
-            return '';
-        }
-
-        return PHP_EOL.\sprintf(
-            '%s %d of %d %s in %.3f seconds, %.2f MB memory used'.PHP_EOL,
+        return \PHP_EOL.\sprintf(
+            '%s %d of %d %s in %.3f seconds, %.2f MB memory used'.\PHP_EOL,
             $isDryRun ? 'Found' : 'Fixed',
             $identifiedFiles,
             $files,
             $isDryRun ? 'files that can be fixed' : 'files',
             $time / 1_000,
-            $memory / 1_024 / 1_024
+            $memory / 1_024 / 1_024,
         );
     }
 }

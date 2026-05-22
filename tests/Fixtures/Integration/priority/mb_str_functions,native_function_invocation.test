@@ -1,0 +1,11 @@
+--TEST--
+Integration of fixers: mb_str_functions,native_function_invocation.
+--RULESET--
+{"mb_str_functions": true, "native_function_invocation": {"strict": true}}
+--EXPECT--
+<?php
+mb_strlen('foo');
+
+--INPUT--
+<?php
+\strlen('foo');

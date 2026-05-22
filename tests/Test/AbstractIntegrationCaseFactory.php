@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Test;
 
+use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSet;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -21,13 +22,15 @@ use Symfony\Component\Finder\SplFileInfo;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryInterface
 {
     public function create(SplFileInfo $file): IntegrationCase
     {
         try {
-            if (!preg_match(
+            if (!Preg::match(
                 '/^
                             --TEST--           \r?\n(?<title>          .*?)
                        \s   --RULESET--        \r?\n(?<ruleset>        .*?)
@@ -38,7 +41,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
                     (?:\s   --INPUT--          \r?\n(?<input>          .*))?
                 $/sx',
                 $file->getContents(),
-                $match
+                $match,
             )) {
                 throw new \InvalidArgumentException('File format is invalid.');
             }
@@ -51,7 +54,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
                     'expect' => null,
                     'input' => null,
                 ],
-                $match
+                $match,
             );
 
             return new IntegrationCase(
@@ -62,13 +65,13 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
                 $this->determineConfig($file, $match['config']),
                 $this->determineRuleset($file, $match['ruleset']),
                 $this->determineExpectedCode($file, $match['expect']),
-                $this->determineInputCode($file, $match['input'])
+                $this->determineInputCode($file, $match['input']),
             );
         } catch (\InvalidArgumentException $e) {
             throw new \InvalidArgumentException(
                 \sprintf('%s Test file: "%s".', $e->getMessage(), $file->getPathname()),
                 $e->getCode(),
-                $e
+                $e,
             );
         }
     }
@@ -80,6 +83,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
      */
     protected function determineConfig(SplFileInfo $file, ?string $config): array
     {
+        /** @var array{indent: non-empty-string, lineEnding: non-empty-string} $parsed */
         $parsed = $this->parseJson($config, [
             'indent' => '    ',
             'lineEnding' => "\n",
@@ -88,14 +92,14 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
         if (!\is_string($parsed['indent']) || '' === $parsed['indent']) {
             throw new \InvalidArgumentException(\sprintf(
                 'Expected string value for "indent", got "%s".',
-                \is_object($parsed['indent']) ? \get_class($parsed['indent']) : \gettype($parsed['indent']).'#'.$parsed['indent']
+                \is_object($parsed['indent']) ? \get_class($parsed['indent']) : \gettype($parsed['indent']).'#'.$parsed['indent'],
             ));
         }
 
         if (!\is_string($parsed['lineEnding']) || '' === $parsed['lineEnding']) {
             throw new \InvalidArgumentException(\sprintf(
                 'Expected string value for "lineEnding", got "%s".',
-                \is_object($parsed['lineEnding']) ? \get_class($parsed['lineEnding']) : \gettype($parsed['lineEnding']).'#'.$parsed['lineEnding']
+                \is_object($parsed['lineEnding']) ? \get_class($parsed['lineEnding']) : \gettype($parsed['lineEnding']).'#'.$parsed['lineEnding'],
             ));
         }
 
@@ -109,9 +113,10 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
      */
     protected function determineRequirements(SplFileInfo $file, ?string $config): array
     {
+        /** @var array{php: int, "php<": int, os: list<string>} $parsed */
         $parsed = $this->parseJson($config, [
             'php' => \PHP_VERSION_ID,
-            'php<' => PHP_INT_MAX,
+            'php<' => \PHP_INT_MAX,
             'os' => ['Linux', 'Darwin', 'Windows'],
         ]);
 
@@ -162,6 +167,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
      */
     protected function determineSettings(SplFileInfo $file, ?string $config): array
     {
+        /** @var array{checkPriority: bool, deprecations: list<string>} $parsed */
         $parsed = $this->parseJson($config, [
             'checkPriority' => true,
             'deprecations' => [],
@@ -170,14 +176,14 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
         if (!\is_bool($parsed['checkPriority'])) {
             throw new \InvalidArgumentException(\sprintf(
                 'Expected bool value for "checkPriority", got "%s".',
-                \is_object($parsed['checkPriority']) ? \get_class($parsed['checkPriority']) : \gettype($parsed['checkPriority']).'#'.$parsed['checkPriority']
+                \is_object($parsed['checkPriority']) ? \get_class($parsed['checkPriority']) : \gettype($parsed['checkPriority']).'#'.$parsed['checkPriority'],
             ));
         }
 
         if (!\is_array($parsed['deprecations'])) {
             throw new \InvalidArgumentException(\sprintf(
                 'Expected array value for "deprecations", got "%s".',
-                \is_object($parsed['deprecations']) ? \get_class($parsed['deprecations']) : \gettype($parsed['deprecations']).'#'.$parsed['deprecations']
+                \is_object($parsed['deprecations']) ? \get_class($parsed['deprecations']) : \gettype($parsed['deprecations']).'#'.$parsed['deprecations'],
             ));
         }
 
@@ -186,7 +192,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
                 throw new \InvalidArgumentException(\sprintf(
                     'Expected only string value for "deprecations", got "%s" @ index %d.',
                     \is_object($deprecation) ? \get_class($deprecation) : \gettype($deprecation).'#'.$deprecation,
-                    $index
+                    $index,
                 ));
             }
         }
@@ -235,7 +241,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
         if ((null === $encoded || '' === $encoded) && null !== $template) {
             $decoded = [];
         } else {
-            $decoded = json_decode($encoded, true, 512, JSON_THROW_ON_ERROR);
+            $decoded = json_decode($encoded, true, 512, \JSON_THROW_ON_ERROR);
         }
 
         if (null !== $template) {

@@ -18,6 +18,7 @@ use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Report\FixReport\JunitReporter;
 use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\PhpunitConstraintXmlMatchesXsd\Constraint\XmlMatchesXsd;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
@@ -27,17 +28,18 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Report\FixReport\JunitReporter
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(JunitReporter::class)]
 final class JunitReporterTest extends AbstractReporterTestCase
 {
     /**
      * JUnit XML schema from Jenkins.
      *
-     * @var null|string
-     *
      * @see https://github.com/jenkinsci/xunit-plugin/blob/master/src/main/resources/org/jenkinsci/plugins/xunit/types/model/xsd/junit-10.xsd
      */
-    private static $xsd;
+    private static ?string $xsd = null;
 
     public static function setUpBeforeClass(): void
     {
@@ -236,6 +238,23 @@ final class JunitReporterTest extends AbstractReporterTestCase
 
             another diff here ;)</failure>
                 </testcase>
+              </testsuite>
+            </testsuites>
+            XML;
+    }
+
+    protected static function createDryRunWithNoTimeReport(): string
+    {
+        $about = Application::getAbout();
+
+        return <<<XML
+            <?xml version="1.0" encoding="UTF-8"?>
+            <testsuites>
+              <testsuite name="PHP CS Fixer" tests="1" assertions="1" failures="0" errors="0">
+                <properties>
+                  <property name="about" value="{$about}"/>
+                </properties>
+                <testcase name="All OK" assertions="1"/>
               </testsuite>
             </testsuites>
             XML;

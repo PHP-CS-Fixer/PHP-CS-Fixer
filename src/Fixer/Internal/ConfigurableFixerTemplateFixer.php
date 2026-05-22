@@ -19,6 +19,7 @@ use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer;
 use PhpCsFixer\Console\Command\HelpCommand;
 use PhpCsFixer\DocBlock\DocBlock;
+use PhpCsFixer\Doctrine\Annotation\Tokens as DoctrineAnnotationTokens;
 use PhpCsFixer\Fixer\AttributeNotation\OrderedAttributesFixer;
 use PhpCsFixer\Fixer\Casing\ConstantCaseFixer;
 use PhpCsFixer\Fixer\ClassNotation\FinalInternalClassFixer;
@@ -27,6 +28,7 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\Fixer\ControlStructure\NoBreakCommentFixer;
 use PhpCsFixer\Fixer\ControlStructure\TrailingCommaInMultilineFixer;
 use PhpCsFixer\Fixer\FixerInterface;
+use PhpCsFixer\Fixer\Import\OrderedImportsFixer;
 use PhpCsFixer\Fixer\InternalFixerInterface;
 use PhpCsFixer\Fixer\NamespaceNotation\BlankLinesBeforeNamespaceFixer;
 use PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer;
@@ -34,9 +36,10 @@ use PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocTagRenameFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocOrderByValueFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocReturnSelfReferenceFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocTagTypeFixer;
-use PhpCsFixer\Fixer\WhitespacesAwareFixerInterface;
+use PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
-use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
+use PhpCsFixer\FixerDefinition\FileSpecificCodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
@@ -48,6 +51,7 @@ use PhpCsFixer\Tests\AbstractProxyFixerTest;
 use PhpCsFixer\Tests\Fixer\Whitespace\AbstractNullableTypeDeclarationFixerTestCase;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
@@ -58,9 +62,13 @@ use PhpCsFixer\Utils;
  * @internal
  *
  * @warning Does not support PHPUnit attributes
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class ConfigurableFixerTemplateFixer extends AbstractFixer implements InternalFixerInterface, WhitespacesAwareFixerInterface
+final class ConfigurableFixerTemplateFixer extends AbstractFixer implements InternalFixerInterface
 {
+    private const MODIFIERS = [\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_FINAL, \T_ABSTRACT, \T_COMMENT, FCT::T_ATTRIBUTE, FCT::T_READONLY];
+
     public function getName(): string
     {
         return 'PhpCsFixerInternal/'.parent::getName();
@@ -88,18 +96,19 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
         return new FixerDefinition(
             'Configurable Fixers must declare Template type.',
             [
-                new CodeSample(
-                    $tokens->generateCode()
+                new FileSpecificCodeSample(
+                    $tokens->generateCode(),
+                    $fileInfo,
                 ),
             ],
             null,
-            'This rule auto-adjust @implements and @phpstan-type, which heavily change information for SCA.'
+            'This rule auto-adjust @implements and @phpstan-type, which heavily change information for SCA.',
         );
     }
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_CLASS);
+        return $tokens->isTokenKindFound(\T_CLASS);
     }
 
     public function isRisky(): bool
@@ -119,14 +128,14 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
             return;
         }
 
-        $classIndex = $tokens->getNextTokenOfKind(0, [[T_CLASS]]);
+        $classIndex = $tokens->getNextTokenOfKind(0, [[\T_CLASS]]);
 
         $docBlockIndex = $this->getDocBlockIndex($tokens, $classIndex);
-        if (!$this->isPHPDoc($tokens, $docBlockIndex)) {
+        if (!$tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT)) {
             $docBlockIndex = $tokens->getNextMeaningfulToken($docBlockIndex);
             $tokens->insertAt($docBlockIndex, [
-                new Token([T_DOC_COMMENT, "/**\n */"]),
-                new Token([T_WHITESPACE, "\n"]),
+                new Token([\T_DOC_COMMENT, "/**\n */"]),
+                new Token([\T_WHITESPACE, "\n"]),
             ]);
         }
 
@@ -141,11 +150,11 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
 
                 return trim(array_pop($parts));
             },
-            $doc->getAnnotationsOfType(['covers'])
+            $doc->getAnnotationsOfType(['covers']),
         );
         $covers = array_filter(
             $covers,
-            static fn ($className): bool => !str_contains($className, '\Abstract') && str_ends_with($className, 'Fixer')
+            static fn (string $className): bool => !str_contains($className, '\Abstract') && str_ends_with($className, 'Fixer'),
         );
 
         if (1 !== \count($covers)) {
@@ -223,17 +232,18 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                 ''
                 .(!$expectedAnnotationPresent ? ' * @'.$expectedAnnotation."\n" : '')
                 .(!$expectedTypeImportPresent ? ' * @'.$expectedTypeImport."\n" : '')
-                .$lastLine->getContent()
+                .$lastLine->getContent(),
             );
         }
 
-        $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $doc->getContent()]);
+        $tokens[$docBlockIndex] = new Token([\T_DOC_COMMENT, $doc->getContent()]);
     }
 
     private function applyFixForSrc(\SplFileInfo $file, Tokens $tokens): void
     {
         if ($file instanceof StdinFileInfo) {
-            $file = $this->getExampleFixerFile();
+            // we do not know the actual path, skip
+            return;
         }
 
         $fixer = $this->getFixerForSrcFile($file);
@@ -248,6 +258,7 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
         $configurationDefinition = $fixer->getConfigurationDefinition();
         foreach ($configurationDefinition->getOptions() as $option) {
             $optionName = $option->getName();
+            $optionExistsAfterNormalization = true;
             $allowed = HelpCommand::getDisplayableAllowedValues($option);
             $allowedAfterNormalization = null;
 
@@ -259,11 +270,11 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                             ', ',
                             array_map(
                                 static fn ($value): string => \sprintf("'%s'?: '%s'", $value, strtolower($value)),
-                                $allowed[0]->getAllowedValues()
-                            )
+                                $allowed[0]->getAllowedValues(),
+                            ),
                         )
                         .'}';
-                } elseif ($fixer instanceof HeaderCommentFixer && 'header' === $optionName) {
+                } elseif ($fixer instanceof HeaderCommentFixer && \in_array($optionName, ['header', 'validator'], true)) {
                     // nothing to do
                 } elseif ($fixer instanceof BlankLinesBeforeNamespaceFixer && \in_array($optionName, ['min_line_breaks', 'max_line_breaks'], true)) {
                     // nothing to do
@@ -283,8 +294,12 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                     $allowedAfterNormalization = 'array<string, string>';
                 } elseif ($fixer instanceof PhpdocTagTypeFixer && 'tags' === $optionName) {
                     // nothing to do
+                } elseif ($fixer instanceof OrderedImportsFixer && 'sort_algorithm' === $optionName) {
+                    // nothing to do
+                } elseif ($fixer instanceof DeclareStrictTypesFixer && 'preserve_existing_declaration' === $optionName) {
+                    $optionExistsAfterNormalization = false;
                 } else {
-                    throw new \LogicException(\sprintf('How to handle normalized types of "%s.%s"? Explicit instructions needed!', $fixer->getName(), $optionName));
+                    throw new \LogicException(\sprintf('How to handle normalized types of "%s.%s" [`%s`]? Explicit instructions needed!', $fixer->getName(), $optionName, \get_class($fixer)));
                 }
             }
 
@@ -294,13 +309,13 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                     static fn ($value): string => $value instanceof AllowedValueSubset
                         ? \sprintf('list<%s>', implode('|', array_map(static fn ($val) => "'".$val."'", $value->getAllowedValues())))
                         : Utils::toString($value),
-                    $allowed
+                    $allowed,
                 );
             } else {
                 // $allowed will be allowed types
                 $allowed = array_map(
                     static fn ($value): string => Utils::convertArrayTypeToList($value),
-                    $option->getAllowedTypes()
+                    $option->getAllowedTypes(),
                 );
             }
 
@@ -309,37 +324,37 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
 
             if ('array' === $allowed) {
                 $default = $option->getDefault();
-                $getTypes = static function ($values): array {
-                    return array_unique(array_map(
-                        static fn ($val) => \gettype($val),
-                        $values
-                    ));
-                };
+                $getTypes = static fn ($values): array => array_unique(array_map(
+                    static fn ($val) => \gettype($val),
+                    $values,
+                ));
                 $defaultKeyTypes = $getTypes(array_keys($default));
                 $defaultValueTypes = $getTypes(array_values($default));
                 $allowed = \sprintf(
                     'array<%s, %s>',
                     [] !== $defaultKeyTypes ? implode('|', $defaultKeyTypes) : 'array-key',
-                    [] !== $defaultValueTypes ? implode('|', $defaultValueTypes) : 'mixed'
+                    [] !== $defaultValueTypes ? implode('|', $defaultValueTypes) : 'mixed',
                 );
             }
 
             $optionTypeInput[] = \sprintf('%s%s: %s', $optionName, $option->hasDefault() ? '?' : '', $allowed);
-            $optionTypeComputed[] = \sprintf('%s: %s', $optionName, $allowedAfterNormalization ?? $allowed);
+            if (true === $optionExistsAfterNormalization) {
+                $optionTypeComputed[] = \sprintf('%s: %s', $optionName, $allowedAfterNormalization ?? $allowed);
+            }
         }
 
-        $expectedTemplateTypeInputAnnotation = \sprintf("phpstan-type _AutogeneratedInputConfiguration array{\n *  %s\n * }", implode(",\n *  ", $optionTypeInput));
-        $expectedTemplateTypeComputedAnnotation = \sprintf("phpstan-type _AutogeneratedComputedConfiguration array{\n *  %s\n * }", implode(",\n *  ", $optionTypeComputed));
+        $expectedTemplateTypeInputAnnotation = \sprintf("phpstan-type _AutogeneratedInputConfiguration array{\n *  %s,\n * }", implode(",\n *  ", $optionTypeInput));
+        $expectedTemplateTypeComputedAnnotation = \sprintf("phpstan-type _AutogeneratedComputedConfiguration array{\n *  %s,\n * }", implode(",\n *  ", $optionTypeComputed));
         $expectedImplementsWithTypesAnnotation = 'implements ConfigurableFixerInterface<_AutogeneratedInputConfiguration, _AutogeneratedComputedConfiguration>';
 
-        $classIndex = $tokens->getNextTokenOfKind(0, [[T_CLASS]]);
+        $classIndex = $tokens->getNextTokenOfKind(0, [[\T_CLASS]]);
 
         $docBlockIndex = $this->getDocBlockIndex($tokens, $classIndex);
-        if (!$this->isPHPDoc($tokens, $docBlockIndex)) {
+        if (!$tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT)) {
             $docBlockIndex = $tokens->getNextMeaningfulToken($docBlockIndex);
             $tokens->insertAt($docBlockIndex, [
-                new Token([T_DOC_COMMENT, "/**\n */"]),
-                new Token([T_WHITESPACE, "\n"]),
+                new Token([\T_DOC_COMMENT, "/**\n */"]),
+                new Token([\T_WHITESPACE, "\n"]),
             ]);
         }
 
@@ -414,39 +429,24 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                 .(!$templateTypeInputPresent ? ' * @'.$expectedTemplateTypeInputAnnotation."\n" : '')
                 .(!$templateTypeComputedPresent ? ' * @'.$expectedTemplateTypeComputedAnnotation."\n" : '')
                 .(!$implementsWithTypesPresent ? ' * @'.$expectedImplementsWithTypesAnnotation."\n" : '')
-                .$lastLine->getContent()
+                .$lastLine->getContent(),
             );
         }
 
-        $tokens[$docBlockIndex] = new Token([T_DOC_COMMENT, $doc->getContent()]);
+        $tokens[$docBlockIndex] = new Token([\T_DOC_COMMENT, $doc->getContent()]);
     }
 
     private function getDocBlockIndex(Tokens $tokens, int $index): int
     {
-        $modifiers = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_FINAL, T_ABSTRACT, T_COMMENT];
-
-        if (\defined('T_ATTRIBUTE')) { // @TODO: drop condition when PHP 8.0+ is required
-            $modifiers[] = T_ATTRIBUTE;
-        }
-
-        if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.2+ is required
-            $modifiers[] = T_READONLY;
-        }
-
         do {
             $index = $tokens->getPrevNonWhitespace($index);
 
             if ($tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
-                $index = $tokens->getPrevTokenOfKind($index, [[T_ATTRIBUTE]]);
+                $index = $tokens->getPrevTokenOfKind($index, [[\T_ATTRIBUTE]]);
             }
-        } while ($tokens[$index]->isGivenKind($modifiers));
+        } while ($tokens[$index]->isGivenKind(self::MODIFIERS));
 
         return $index;
-    }
-
-    private function isPHPDoc(Tokens $tokens, int $index): bool
-    {
-        return $tokens[$index]->isGivenKind(T_DOC_COMMENT);
     }
 
     private function getExampleFixerFile(): \SplFileInfo
@@ -525,7 +525,7 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                 }
             };
         } elseif (AbstractDoctrineAnnotationFixer::class === $className) {
-            return new class extends AbstractPhpdocToTypeDeclarationFixer {
+            return new class extends AbstractDoctrineAnnotationFixer {
                 protected function isSkippedType(string $type): bool
                 {
                     throw new \LogicException('Not implemented.');
@@ -549,6 +549,21 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                 public function isCandidate(Tokens $tokens): bool
                 {
                     throw new \LogicException('Not implemented.');
+                }
+
+                public function configure(array $configuration): void
+                {
+                    // void
+                }
+
+                protected function fixAnnotations(DoctrineAnnotationTokens $doctrineAnnotationTokens): void
+                {
+                    throw new \LogicException('Not implemented.');
+                }
+
+                public function getConfigurationDefinition(): FixerConfigurationResolverInterface
+                {
+                    return $this->createConfigurationDefinition();
                 }
             };
         }

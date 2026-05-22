@@ -17,6 +17,8 @@ namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\BlocksAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>
@@ -24,12 +26,16 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\BlocksAnalyzer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(BlocksAnalyzer::class)]
 final class BlocksAnalyzerTest extends TestCase
 {
     /**
      * @dataProvider provideBlocksCases
      */
+    #[DataProvider('provideBlocksCases')]
     public function testBlocks(string $code, int $openIndex, int $closeIndex): void
     {
         $tokens = Tokens::fromCode($code);
@@ -39,7 +45,7 @@ final class BlocksAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, int, int}>
+     * @return iterable<int, array{string, int, int}>
      */
     public static function provideBlocksCases(): iterable
     {
@@ -73,6 +79,7 @@ final class BlocksAnalyzerTest extends TestCase
     /**
      * @dataProvider provideNonBlocksCases
      */
+    #[DataProvider('provideNonBlocksCases')]
     public function testNonBlocks(string $code, int $openIndex, int $closeIndex): void
     {
         $tokens = Tokens::fromCode($code);
@@ -82,7 +89,7 @@ final class BlocksAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, int, int}>
+     * @return iterable<int, array{string, int, int}>
      */
     public static function provideNonBlocksCases(): iterable
     {
@@ -100,6 +107,7 @@ final class BlocksAnalyzerTest extends TestCase
     /**
      * @dataProvider provideInvalidIndexCases
      */
+    #[DataProvider('provideInvalidIndexCases')]
     public function testInvalidIndex(string $code, int $openIndex, int $closeIndex): void
     {
         $tokens = Tokens::fromCode($code);
@@ -111,7 +119,7 @@ final class BlocksAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<array{string, int, int}>
+     * @return iterable<int, array{string, int, int}>
      */
     public static function provideInvalidIndexCases(): iterable
     {

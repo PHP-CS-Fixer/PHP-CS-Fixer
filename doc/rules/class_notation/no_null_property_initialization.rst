@@ -2,7 +2,7 @@
 Rule ``no_null_property_initialization``
 ========================================
 
-Properties MUST not be explicitly initialized with ``null`` except when they
+Properties MUST not be explicitly initialised with ``null`` except when they
 have a type declaration (PHP 7.4).
 
 Examples
@@ -17,8 +17,10 @@ Example #1
    +++ New
     <?php
     class Foo {
-   -    public $foo = null;
-   +    public $foo;
+   -    public $bar = null;
+   +    public $bar;
+        public ?string $baz = null;
+        public ?string $baux;
     }
 
 Example #2

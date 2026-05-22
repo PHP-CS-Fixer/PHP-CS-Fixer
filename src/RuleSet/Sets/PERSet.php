@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
-use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\AbstractRuleSetDefinition;
+use PhpCsFixer\RuleSet\DeprecatedRuleSetDefinitionInterface;
 
 /**
  * @internal
@@ -25,8 +25,10 @@ use PhpCsFixer\RuleSet\DeprecatedRuleSetDescriptionInterface;
  * @TODO 4.0 remove me
  *
  * Last updated to PER Coding Style v2.0.
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PERSet extends AbstractRuleSetDescription implements DeprecatedRuleSetDescriptionInterface
+final class PERSet extends AbstractRuleSetDefinition implements DeprecatedRuleSetDefinitionInterface
 {
     public function getRules(): array
     {
@@ -37,7 +39,7 @@ final class PERSet extends AbstractRuleSetDescription implements DeprecatedRuleS
 
     public function getDescription(): string
     {
-        return 'Alias for the newest PER-CS rules. It is recommended you use ``@PER-CS2.0`` instead if you want to stick with stable ruleset.';
+        return 'Alias for the newest ``PER-CS`` rules. It is recommended you use ``@PER-CS3.0`` instead if you want to stick with stable ruleset.';
     }
 
     public function getSuccessorsNames(): array

@@ -19,6 +19,9 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\ArgumentAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\TypeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @author VeeWee <toonverwerft@gmail.com>
@@ -26,17 +29,39 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\FunctionsAnalyzer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FunctionsAnalyzer::class)]
 final class FunctionsAnalyzerTest extends TestCase
 {
     /**
-     * @param list<int> $indices
+     * @param list<int> $expectedIndices
      *
      * @dataProvider provideIsGlobalFunctionCallCases
      */
-    public function testIsGlobalFunctionCall(string $code, array $indices): void
+    #[DataProvider('provideIsGlobalFunctionCallCases')]
+    public function testIsGlobalFunctionCall(string $code, array $expectedIndices): void
     {
-        self::assertIsGlobalFunctionCall($indices, $code);
+        $tokens = Tokens::fromCode($code);
+        $analyzer = new FunctionsAnalyzer();
+
+        $calculatedIndices = [];
+        foreach ($tokens as $index => $token) {
+            if ($analyzer->isGlobalFunctionCall($tokens, $index)) {
+                $calculatedIndices[] = $index;
+            }
+        }
+
+        self::assertSame(
+            $expectedIndices,
+            $calculatedIndices,
+            \sprintf(
+                'Global function calls found at positions: [%s], expected at [%s].',
+                implode(', ', $calculatedIndices),
+                implode(', ', $expectedIndices),
+            ),
+        );
     }
 
     /**
@@ -259,6 +284,22 @@ A();
             '<?php foo("bar"); class A { function Foo(){ foo(); } }',
             [1, 20],
         ];
+
+        yield 'functions that can be confused with a property hook' => [
+            <<<'PHP'
+                <?php
+                $array = [
+                    1 => 2,
+                    set() => 3,
+                    $foo . set() => 3,
+                ];
+                $x = set(set(), set());
+                set();
+                if (true) { set(); }
+                set();
+                PHP,
+            [14, 27, 43, 45, 50, 56, 69, 76],
+        ];
     }
 
     /**
@@ -266,15 +307,17 @@ A();
      *
      * @dataProvider provideIsGlobalFunctionCallPre80Cases
      *
-     * @requires PHP <8.0
+     * @requires PHP < 8.0.0
      */
+    #[DataProvider('provideIsGlobalFunctionCallPre80Cases')]
+    #[RequiresPhp('< 8.0.0')]
     public function testIsGlobalFunctionCallPre80(string $code, array $indices): void
     {
-        self::assertIsGlobalFunctionCall($indices, $code);
+        $this->testIsGlobalFunctionCall($code, $indices);
     }
 
     /**
-     * @return iterable<array{string, list<int>}>
+     * @return iterable<int, array{string, list<int>}>
      */
     public static function provideIsGlobalFunctionCallPre80Cases(): iterable
     {
@@ -292,13 +335,18 @@ A();
      *
      * @dataProvider provideIsGlobalFunctionCallPhp80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideIsGlobalFunctionCallPhp80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testIsGlobalFunctionCallPhp80(string $code, array $indices): void
     {
-        self::assertIsGlobalFunctionCall($indices, $code);
+        $this->testIsGlobalFunctionCall($code, $indices);
     }
 
+    /**
+     * @return iterable<int, array{string, list<int>}>
+     */
     public static function provideIsGlobalFunctionCallPhp80Cases(): iterable
     {
         yield [
@@ -338,17 +386,21 @@ class Foo {}
      *
      * @dataProvider provideIsGlobalFunctionCallPhp81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
-    public function testIsGlobalFunctionCallPhp81(array $indices, string $code): void
+    #[DataProvider('provideIsGlobalFunctionCallPhp81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
+    public function testIsGlobalFunctionCallPhp81(string $code, array $indices): void
     {
-        self::assertIsGlobalFunctionCall($indices, $code);
+        $this->testIsGlobalFunctionCall($code, $indices);
     }
 
+    /**
+     * @return iterable<array{string, list<int>}>
+     */
     public static function provideIsGlobalFunctionCallPhp81Cases(): iterable
     {
         yield 'first class callable cases' => [
-            [],
             '<?php
 strlen(...);
 \strlen(...);
@@ -368,11 +420,85 @@ $b = new class(){};
 $a = new #[foo]
 class(){};
 ',
+            [],
         ];
 
         yield [
-            [1, 20],
             '<?php foo("bar"); enum A { function Foo(){ foo(); } }',
+            [1, 20],
+        ];
+    }
+
+    /**
+     * @param list<int> $indices
+     *
+     * @dataProvider provideIsGlobalFunctionCallPhp84Cases
+     *
+     * @requires PHP >= 8.4.0
+     */
+    #[DataProvider('provideIsGlobalFunctionCallPhp84Cases')]
+    #[RequiresPhp('>= 8.4.0')]
+    public function testIsGlobalFunctionCallPhp84(string $code, array $indices): void
+    {
+        $this->testIsGlobalFunctionCall($code, $indices);
+    }
+
+    /**
+     * @return iterable<string, array{string, list<int>}>
+     */
+    public static function provideIsGlobalFunctionCallPhp84Cases(): iterable
+    {
+        yield 'property hooks' => [
+            <<<'PHP'
+                <?php
+                class GetFirst
+                {
+                    public string $bothWithDoubleArrow = '' {
+                        get => '';
+                        set(string $x) => $x;
+                    }
+                    public string $getWithDoubleArrow = '' {
+                        get => '';
+                        set(string $x) { ''; }
+                    }
+                    public string $setWithDoubleArrow = '' {
+                        get { ''; }
+                        set(string $x) => $x;
+                    }
+                    public string $bothWithBraces = '' {
+                        get { ''; }
+                        set(string $x) { ''; }
+                    }
+                    public string $setUppercase = '' {
+                        get { ''; }
+                        SET(string $x) { ''; }
+                    }
+                }
+                class SetFirst
+                {
+                    public string $bothWithDoubleArrow = '' {
+                        set(string $x) => $x;
+                        get => '';
+                    }
+                    public string $getWithDoubleArrow = '' {
+                        set(string $x) { ''; }
+                        get => '';
+                    }
+                    public string $setWithDoubleArrow = '' {
+                        set(string $x) => $x;
+                        get { ''; }
+                    }
+                    public string $bothWithBraces = '' {
+                        set(string $x) { ''; }
+                        get { ''; }
+                    }
+                    public string $setUppercase = '' {
+                        SET(string $x) { ''; }
+                        get { ''; }
+                    }
+                }
+                PHP,
+            [],
         ];
     }
 
@@ -381,6 +507,7 @@ class(){};
      *
      * @dataProvider provideFunctionArgumentInfoCases
      */
+    #[DataProvider('provideFunctionArgumentInfoCases')]
     public function testFunctionArgumentInfo(string $code, int $methodIndex, array $expected): void
     {
         $tokens = Tokens::fromCode($code);
@@ -390,7 +517,7 @@ class(){};
     }
 
     /**
-     * @return iterable<array{string, int, array<string, ArgumentAnalysis>}>
+     * @return iterable<int, array{string, int, array<string, ArgumentAnalysis>}>
      */
     public static function provideFunctionArgumentInfoCases(): iterable
     {
@@ -401,7 +528,7 @@ class(){};
                 '$a',
                 3,
                 null,
-                null
+                null,
             ),
         ]];
 
@@ -410,13 +537,13 @@ class(){};
                 '$a',
                 3,
                 null,
-                null
+                null,
             ),
             '$b' => new ArgumentAnalysis(
                 '$b',
                 6,
                 null,
-                null
+                null,
             ),
         ]];
 
@@ -425,19 +552,19 @@ class(){};
                 '$a',
                 3,
                 null,
-                null
+                null,
             ),
             '$b' => new ArgumentAnalysis(
                 '$b',
                 6,
                 'array(1,2)',
-                null
+                null,
             ),
             '$c' => new ArgumentAnalysis(
                 '$c',
                 18,
                 '3',
-                null
+                null,
             ),
         ]];
 
@@ -449,8 +576,8 @@ class(){};
                 new TypeAnalysis(
                     'array',
                     3,
-                    3
-                )
+                    3,
+                ),
             ),
         ]];
 
@@ -462,8 +589,8 @@ class(){};
                 new TypeAnalysis(
                     'array',
                     3,
-                    3
-                )
+                    3,
+                ),
             ),
         ]];
 
@@ -475,8 +602,8 @@ class(){};
                 new TypeAnalysis(
                     '\Foo\Bar',
                     3,
-                    6
-                )
+                    6,
+                ),
             ),
         ]];
 
@@ -487,7 +614,7 @@ class(){};
                 '$a',
                 3,
                 null,
-                null
+                null,
             ),
         ]];
 
@@ -496,13 +623,13 @@ class(){};
                 '$a',
                 3,
                 null,
-                null
+                null,
             ),
             '$b' => new ArgumentAnalysis(
                 '$b',
                 6,
                 null,
-                null
+                null,
             ),
         ]];
 
@@ -511,19 +638,19 @@ class(){};
                 '$a',
                 3,
                 null,
-                null
+                null,
             ),
             '$b' => new ArgumentAnalysis(
                 '$b',
                 6,
                 'array(1,2)',
-                null
+                null,
             ),
             '$c' => new ArgumentAnalysis(
                 '$c',
                 18,
                 '3',
-                null
+                null,
             ),
         ]];
 
@@ -535,8 +662,8 @@ class(){};
                 new TypeAnalysis(
                     'array',
                     3,
-                    3
-                )
+                    3,
+                ),
             ),
         ]];
 
@@ -548,8 +675,8 @@ class(){};
                 new TypeAnalysis(
                     'array',
                     3,
-                    3
-                )
+                    3,
+                ),
             ),
         ]];
 
@@ -561,8 +688,8 @@ class(){};
                 new TypeAnalysis(
                     '\Foo\Bar',
                     3,
-                    6
-                )
+                    6,
+                ),
             ),
         ]];
     }
@@ -572,15 +699,17 @@ class(){};
      *
      * @dataProvider provideFunctionArgumentInfoPre80Cases
      *
-     * @requires PHP <8.0
+     * @requires PHP < 8.0.0
      */
+    #[DataProvider('provideFunctionArgumentInfoPre80Cases')]
+    #[RequiresPhp('< 8.0.0')]
     public function testFunctionArgumentInfoPre80(string $code, int $methodIndex, array $expected): void
     {
         $this->testFunctionArgumentInfo($code, $methodIndex, $expected);
     }
 
     /**
-     * @return iterable<array{string, int, array<string, ArgumentAnalysis>}>
+     * @return iterable<int, array{string, int, array<string, ArgumentAnalysis>}>
      */
     public static function provideFunctionArgumentInfoPre80Cases(): iterable
     {
@@ -592,8 +721,8 @@ class(){};
                 new TypeAnalysis(
                     '\Foo\Bar',
                     3,
-                    7
-                )
+                    7,
+                ),
             ),
         ]];
 
@@ -605,8 +734,8 @@ class(){};
                 new TypeAnalysis(
                     '\Foo\Bar',
                     3,
-                    7
-                )
+                    7,
+                ),
             ),
         ]];
     }
@@ -614,6 +743,7 @@ class(){};
     /**
      * @dataProvider provideFunctionReturnTypeInfoCases
      */
+    #[DataProvider('provideFunctionReturnTypeInfoCases')]
     public function testFunctionReturnTypeInfo(string $code, int $methodIndex, ?TypeAnalysis $expected): void
     {
         $tokens = Tokens::fromCode($code);
@@ -624,7 +754,7 @@ class(){};
     }
 
     /**
-     * @return iterable<array{string, int, null|TypeAnalysis}>
+     * @return iterable<int, array{string, int, null|TypeAnalysis}>
      */
     public static function provideFunctionReturnTypeInfoCases(): iterable
     {
@@ -650,15 +780,17 @@ class(){};
     /**
      * @dataProvider provideFunctionReturnTypeInfoPre80Cases
      *
-     * @requires PHP <8.0
+     * @requires PHP < 8.0.0
      */
+    #[DataProvider('provideFunctionReturnTypeInfoPre80Cases')]
+    #[RequiresPhp('< 8.0.0')]
     public function testFunctionReturnTypeInfoPre80(string $code, int $methodIndex, ?TypeAnalysis $expected): void
     {
         $this->testFunctionReturnTypeInfo($code, $methodIndex, $expected);
     }
 
     /**
-     * @return iterable<array{string, int, null|TypeAnalysis}>
+     * @return iterable<int, array{string, int, null|TypeAnalysis}>
      */
     public static function provideFunctionReturnTypeInfoPre80Cases(): iterable
     {
@@ -683,6 +815,7 @@ class(){};
      *
      * @param list<int> $sameClassCallIndices
      */
+    #[DataProvider('provideIsTheSameClassCallCases')]
     public function testIsTheSameClassCall(string $code, array $sameClassCallIndices): void
     {
         $tokens = Tokens::fromCode($code);
@@ -692,13 +825,13 @@ class(){};
             self::assertSame(
                 \in_array($index, $sameClassCallIndices, true),
                 $analyzer->isTheSameClassCall($tokens, $index),
-                \sprintf('Index %d failed check.', $index)
+                \sprintf('Index %d failed check.', $index),
             );
         }
     }
 
     /**
-     * @return iterable<array{string, list<int>}>
+     * @return iterable<int, array{string, list<int>}>
      */
     public static function provideIsTheSameClassCallCases(): iterable
     {
@@ -764,15 +897,17 @@ class(){};
      *
      * @param list<int> $sameClassCallIndices
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideIsTheSameClassCall80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testIsTheSameClassCall80(string $code, array $sameClassCallIndices): void
     {
         $this->testIsTheSameClassCall($code, $sameClassCallIndices);
     }
 
     /**
-     * @return iterable<array{string, list<int>}>
+     * @return iterable<int, array{string, list<int>}>
      */
     public static function provideIsTheSameClassCall80Cases(): iterable
     {
@@ -793,13 +928,18 @@ class(){};
      *
      * @dataProvider provideFunctionArgumentInfoPhp80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideFunctionArgumentInfoPhp80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testFunctionArgumentInfoPhp80(string $code, int $methodIndex, array $expected): void
     {
         $this->testFunctionArgumentInfo($code, $methodIndex, $expected);
     }
 
+    /**
+     * @return iterable<int, array{string, int, array<string, ArgumentAnalysis>}>
+     */
     public static function provideFunctionArgumentInfoPhp80Cases(): iterable
     {
         yield ['<?php function($aa,){};', 1, [
@@ -807,7 +947,7 @@ class(){};
                 '$aa',
                 3,
                 null,
-                null
+                null,
             ),
         ]];
 
@@ -816,40 +956,80 @@ class(){};
                 '$a',
                 3,
                 null,
-                null
+                null,
             ),
             '$bc' => new ArgumentAnalysis(
                 '$bc',
                 6,
                 null,
-                null
+                null,
             ),
         ]];
     }
 
     /**
-     * @param list<int> $expectedIndices
+     * @param array<string, ArgumentAnalysis> $expected
+     *
+     * @dataProvider provideFunctionArgumentInfoPhp84Cases
+     *
+     * @requires PHP >= 8.4.0
      */
-    private static function assertIsGlobalFunctionCall(array $expectedIndices, string $code): void
+    #[DataProvider('provideFunctionArgumentInfoPhp84Cases')]
+    #[RequiresPhp('>= 8.4.0')]
+    public function testFunctionArgumentInfoPhp84(string $code, int $methodIndex, array $expected): void
     {
-        $tokens = Tokens::fromCode($code);
-        $analyzer = new FunctionsAnalyzer();
-        $actualIndices = [];
+        $this->testFunctionArgumentInfo($code, $methodIndex, $expected);
+    }
 
-        foreach ($tokens as $index => $token) {
-            if ($analyzer->isGlobalFunctionCall($tokens, $index)) {
-                $actualIndices[] = $index;
-            }
-        }
-
-        self::assertSame(
-            $expectedIndices,
-            $actualIndices,
-            \sprintf(
-                'Global function calls found at positions: [%s], expected at [%s].',
-                implode(', ', $actualIndices),
-                implode(', ', $expectedIndices)
-            )
-        );
+    /**
+     * @return iterable<string, array{string, int, array<string, ArgumentAnalysis>}>
+     */
+    public static function provideFunctionArgumentInfoPhp84Cases(): iterable
+    {
+        yield 'asymmetric visibility' => [
+            <<<'PHP'
+                <?php
+                class Foo {
+                    public function __construct(
+                        public public(set) bool $b,
+                        public protected(set) int|null $i,
+                        protected private(set) ?string $s,
+                    ) {}
+                }
+                PHP,
+            9,
+            [
+                '$b' => new ArgumentAnalysis(
+                    '$b',
+                    20,
+                    null,
+                    new TypeAnalysis(
+                        'bool',
+                        18,
+                        18,
+                    ),
+                ),
+                '$i' => new ArgumentAnalysis(
+                    '$i',
+                    31,
+                    null,
+                    new TypeAnalysis(
+                        'int|null',
+                        27,
+                        29,
+                    ),
+                ),
+                '$s' => new ArgumentAnalysis(
+                    '$s',
+                    41,
+                    null,
+                    new TypeAnalysis(
+                        '?string',
+                        38,
+                        39,
+                    ),
+                ),
+            ],
+        ];
     }
 }

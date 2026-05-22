@@ -20,6 +20,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 interface FixerInterface
 {
@@ -37,7 +39,7 @@ interface FixerInterface
     /**
      * Check if fixer is risky or not.
      *
-     * Risky fixer could change code behavior!
+     * Risky fixer could change code behaviour!
      */
     public function isRisky(): bool;
 

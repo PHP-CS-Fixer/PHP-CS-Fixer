@@ -14,7 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\CastNotation;
 
+use PhpCsFixer\Fixer\CastNotation\LowercaseCastFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -22,19 +26,23 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\CastNotation\LowercaseCastFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\CastNotation\LowercaseCastFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(LowercaseCastFixer::class)]
 final class LowercaseCastFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     * @return iterable<int, array{0: non-empty-string, 1?: non-empty-string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -48,41 +56,23 @@ final class LowercaseCastFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixPre80Cases
      *
-     * @requires PHP <8.0
+     * @requires PHP < 8.0.0
      */
+    #[DataProvider('provideFixPre80Cases')]
+    #[RequiresPhp('< 8.0.0')]
     public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
+     * @return iterable<int, array{0: non-empty-string, 1?: non-empty-string}>
      */
     public static function provideFixPre80Cases(): iterable
     {
         yield from self::createCasesFor('unset');
-    }
 
-    /**
-     * @dataProvider provideFix74DeprecatedCases
-     *
-     * @group legacy
-     *
-     * @requires PHP <8.0
-     */
-    public function testFix74Deprecated(string $expected, ?string $input = null): void
-    {
-        $this->expectDeprecation('The (real) cast is deprecated, use (float) instead');
-
-        $this->doTest($expected, $input);
-    }
-
-    /**
-     * @return iterable<array{0: non-empty-string, 1?: non-empty-string}>
-     */
-    public static function provideFix74DeprecatedCases(): iterable
-    {
-        return self::createCasesFor('real');
+        yield from self::createCasesFor('real');
     }
 
     /**

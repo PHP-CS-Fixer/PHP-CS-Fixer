@@ -23,6 +23,8 @@ use PhpCsFixer\Utils;
  * @author Michael Vorisek <https://github.com/mvorisek>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TypeExpression
 {
@@ -52,23 +54,36 @@ final class TypeExpression
      * - and https://github.com/phpstan/phpdoc-parser/blob/1.26.0/src/Parser/PhpDocParser.php parser impl.
      */
     private const REGEX_TYPE = '(?<type>(?x) # single type
+            (?:co(?:ntra)?variant\h+)?
             (?<nullable>\??\h*)
             (?:
                 (?<array_shape>
                     (?<array_shape_name>(?i)(?:array|list|object)(?-i))
-                    (?<array_shape_start>\h*\{\h*)
+                    (?<array_shape_start>\h*\{[\h\v*]*)
                     (?<array_shape_inners>
                         (?<array_shape_inner>
                             (?<array_shape_inner_key>(?:(?&constant)|(?&identifier)|(?&name))\h*\??\h*:\h*|)
                             (?<array_shape_inner_value>(?&types_inner))
                         )
                         (?:
-                            \h*,\h*
+                            \h*,[\h\v*]*
                             (?&array_shape_inner)
                         )*+
-                        (?:\h*,\h*)?
+                        (?:\h*,|(?!(?&array_shape_unsealed_variadic)))
                     |)
-                    \h*\}
+                    (?<array_shape_unsealed> # unsealed array shape, e.g. `...`. `...<string>`
+                        (?<array_shape_unsealed_variadic>\h*\.\.\.)
+                        (?<array_shape_unsealed_type>
+                            (?<array_shape_unsealed_type_start>\h*<\h*)
+                            (?<array_shape_unsealed_type_a>(?&types_inner))
+                            (?:
+                                (?<array_shape_unsealed_type_comma>\h*,\h*)
+                                (?<array_shape_unsealed_type_b>(?&array_shape_unsealed_type_a))
+                            |)
+                            \h*>
+                        |)
+                    |)
+                    [\h\v*]*\}
                 )
                 |
                 (?<callable> # callable syntax, e.g. `callable(string, int...): bool`, `\Closure<T>(T, int): T`
@@ -110,7 +125,7 @@ final class TypeExpression
                             \h*,\h*
                             (?&callable_argument)
                         )*+
-                        (?:\h*,\h*)?
+                        (?:\h*,)?
                     |)
                     \h*\)
                     (?:
@@ -121,16 +136,16 @@ final class TypeExpression
                 |
                 (?<generic> # generic syntax, e.g.: `array<int, \Foo\Bar>`
                     (?<generic_name>(?&name))
-                    (?<generic_start>\h*<\h*)
+                    (?<generic_start>\h*<[\h\v*]*)
                     (?<generic_types>
                         (?&types_inner)
                         (?:
-                            \h*,\h*
+                            \h*,[\h\v*]*
                             (?&types_inner)
                         )*+
-                        (?:\h*,\h*)?
+                        (?:\h*,)?
                     )
-                    \h*>
+                    [\h\v*]*>
                 )
                 |
                 (?<class_constant> # class constants with optional wildcard, e.g.: `Foo::*`, `Foo::CONST_A`, `FOO::CONST_*`
@@ -208,6 +223,17 @@ final class TypeExpression
                 ))
             |)
         )';
+
+    private const ALIASES = [
+        'boolean' => 'bool',
+        'callback' => 'callable',
+        'double' => 'float',
+        'false' => 'bool',
+        'integer' => 'int',
+        'list' => 'array',
+        'real' => 'float',
+        'true' => 'bool',
+    ];
 
     private string $value;
 
@@ -303,7 +329,7 @@ final class TypeExpression
                     $value,
                     $inner->value,
                     $startIndexOrig + $startIndexOffset,
-                    \strlen($innerValueOrig)
+                    \strlen($innerValueOrig),
                 );
 
                 $startIndexOffset += \strlen($inner->value) - \strlen($innerValueOrig);
@@ -337,31 +363,62 @@ final class TypeExpression
     public function sortTypes(\Closure $compareCallback): self
     {
         return $this->mapTypes(function (self $type) use ($compareCallback): self {
-            if ($type->isCompositeType) {
-                $innerTypeExpressions = Utils::stableSort(
-                    $type->innerTypeExpressions,
-                    static fn (array $v): self => $v['expression'],
-                    $compareCallback,
+            if (!$type->isCompositeType) {
+                return $type;
+            }
+
+            $innerTypeExpressions = Utils::stableSort(
+                $type->innerTypeExpressions,
+                static fn (array $v): self => $v['expression'],
+                $compareCallback,
+            );
+
+            if ($innerTypeExpressions !== $type->innerTypeExpressions) {
+                $value = implode(
+                    $type->getTypesGlue(),
+                    array_map(static fn (array $v): string => $v['expression']->toString(), $innerTypeExpressions),
                 );
 
-                if ($innerTypeExpressions !== $type->innerTypeExpressions) {
-                    $value = implode(
-                        $type->getTypesGlue(),
-                        array_map(static fn (array $v): string => $v['expression']->toString(), $innerTypeExpressions)
-                    );
-
-                    return $this->inner($value);
-                }
+                return $this->inner($value);
             }
 
             return $type;
         });
     }
 
+    public function removeDuplicateTypes(): self
+    {
+        return $this->mapTypes(function (self $type): self {
+            if (!$type->isCompositeType) {
+                return $type;
+            }
+
+            $seenNormalized = [];
+            $uniqueTypeExpressions = [];
+
+            foreach ($type->innerTypeExpressions as $innerType) {
+                $normalized = $innerType['expression']
+                    ->sortTypes(static fn (self $a, self $b): int => $a->toString() <=> $b->toString())
+                    ->toString()
+                ;
+
+                if (!\in_array($normalized, $seenNormalized, true)) {
+                    $seenNormalized[] = $normalized;
+                    $uniqueTypeExpressions[] = $innerType['expression'];
+                }
+            }
+
+            $value = implode(
+                $type->getTypesGlue(),
+                array_map(static fn (self $expr): string => $expr->toString(), $uniqueTypeExpressions),
+            );
+
+            return $this->inner($value);
+        });
+    }
+
     public function getCommonType(): ?string
     {
-        $aliases = $this->getAliases();
-
         $mainType = null;
 
         foreach ($this->getTypes() as $type) {
@@ -379,8 +436,8 @@ final class TypeExpression
                 $type = $matches[1];
             }
 
-            if (isset($aliases[$type])) {
-                $type = $aliases[$type];
+            if (isset(self::ALIASES[$type])) {
+                $type = self::ALIASES[$type];
             }
 
             if (null === $mainType || $type === $mainType) {
@@ -421,8 +478,8 @@ final class TypeExpression
                 '{\G'.self::REGEX_TYPE.'(?<glue_raw>\h*(?<glue>[|&])\h*(?!$)|$)}',
                 $this->value,
                 $matches,
-                PREG_OFFSET_CAPTURE,
-                $index
+                \PREG_OFFSET_CAPTURE,
+                $index,
             );
 
             if ([] === $matches) {
@@ -482,6 +539,7 @@ final class TypeExpression
                             $innerValue .= $innerValues[$i]['next_glue_raw'];
 
                             ++$i;
+                            \assert(isset($innerValues[$i])); // for PHPStan
                         }
 
                         $this->innerTypeExpressions[] = [
@@ -515,7 +573,7 @@ final class TypeExpression
 
             $this->parseCommaSeparatedInnerTypes(
                 \strlen($matches['generic_name'][0]) + \strlen($matches['generic_start'][0]),
-                $matches['generic_types'][0]
+                $matches['generic_types'][0],
             );
         } elseif ('' !== ($matches['callable'][0] ?? '') && 0 === $matches['callable'][1]) {
             $this->innerTypeExpressions[] = [
@@ -526,14 +584,14 @@ final class TypeExpression
             $this->parseCallableTemplateInnerTypes(
                 \strlen($matches['callable_name'][0])
                     + \strlen($matches['callable_template_start'][0]),
-                $matches['callable_template_inners'][0]
+                $matches['callable_template_inners'][0],
             );
 
             $this->parseCallableArgumentTypes(
                 \strlen($matches['callable_name'][0])
                     + \strlen($matches['callable_template'][0])
                     + \strlen($matches['callable_start'][0]),
-                $matches['callable_arguments'][0]
+                $matches['callable_arguments'][0],
             );
 
             if ('' !== ($matches['callable_return'][0] ?? '')) {
@@ -548,10 +606,33 @@ final class TypeExpression
                 'expression' => $this->inner($matches['array_shape_name'][0]),
             ];
 
+            $nextIndex = \strlen($matches['array_shape_name'][0]) + \strlen($matches['array_shape_start'][0]);
+
             $this->parseArrayShapeInnerTypes(
-                \strlen($matches['array_shape_name'][0]) + \strlen($matches['array_shape_start'][0]),
-                $matches['array_shape_inners'][0]
+                $nextIndex,
+                $matches['array_shape_inners'][0],
             );
+
+            if ('' !== ($matches['array_shape_unsealed_type'][0] ?? '')) {
+                $nextIndex += \strlen($matches['array_shape_inners'][0])
+                    + \strlen($matches['array_shape_unsealed_variadic'][0])
+                    + \strlen($matches['array_shape_unsealed_type_start'][0]);
+
+                $this->innerTypeExpressions[] = [
+                    'start_index' => $nextIndex,
+                    'expression' => $this->inner($matches['array_shape_unsealed_type_a'][0]),
+                ];
+
+                if ('' !== ($matches['array_shape_unsealed_type_b'][0] ?? '')) {
+                    $nextIndex += \strlen($matches['array_shape_unsealed_type_a'][0])
+                        + \strlen($matches['array_shape_unsealed_type_comma'][0]);
+
+                    $this->innerTypeExpressions[] = [
+                        'start_index' => $nextIndex,
+                        'expression' => $this->inner($matches['array_shape_unsealed_type_b'][0]),
+                    ];
+                }
+            }
         } elseif ('' !== ($matches['parenthesized'][0] ?? '') && 0 === $matches['parenthesized'][1]) {
             $index = \strlen($matches['parenthesized_start'][0]);
 
@@ -602,11 +683,11 @@ final class TypeExpression
         $index = 0;
         while (\strlen($value) !== $index) {
             Preg::match(
-                '{\G'.self::REGEX_TYPES.'(?:\h*,\h*|$)}',
+                '{\G'.self::REGEX_TYPES.'(?:\h*,[\h\v*]*|$)}',
                 $value,
                 $matches,
                 0,
-                $index
+                $index,
             );
 
             $this->innerTypeExpressions[] = [
@@ -627,7 +708,7 @@ final class TypeExpression
                 $value,
                 $prematches,
                 0,
-                $index
+                $index,
             );
             $consumedValue = $prematches['_callable_template_inner'];
             $consumedValueLength = \strlen($consumedValue);
@@ -638,7 +719,7 @@ final class TypeExpression
                 '{^'.self::REGEX_TYPES.'$}',
                 $addedPrefix.$consumedValue.'>(): void',
                 $matches,
-                PREG_OFFSET_CAPTURE
+                \PREG_OFFSET_CAPTURE,
             );
 
             if ('' !== $matches['callable_template_inner_b'][0]) {
@@ -670,7 +751,7 @@ final class TypeExpression
                 $value,
                 $prematches,
                 0,
-                $index
+                $index,
             );
             $consumedValue = $prematches['_callable_argument'];
             $consumedValueLength = \strlen($consumedValue);
@@ -681,7 +762,7 @@ final class TypeExpression
                 '{^'.self::REGEX_TYPES.'$}',
                 $addedPrefix.$consumedValue.'): void',
                 $matches,
-                PREG_OFFSET_CAPTURE
+                \PREG_OFFSET_CAPTURE,
             );
 
             $this->innerTypeExpressions[] = [
@@ -698,11 +779,11 @@ final class TypeExpression
         $index = 0;
         while (\strlen($value) !== $index) {
             Preg::match(
-                '{\G(?:(?=1)0'.self::REGEX_TYPES.'|(?<_array_shape_inner>(?&array_shape_inner))(?:\h*,\h*|$))}',
+                '{\G(?:(?=1)0'.self::REGEX_TYPES.'|(?<_array_shape_inner>(?&array_shape_inner))(?:\h*,[\h\v*]*|$))}',
                 $value,
                 $prematches,
                 0,
-                $index
+                $index,
             );
             $consumedValue = $prematches['_array_shape_inner'];
             $consumedValueLength = \strlen($consumedValue);
@@ -713,7 +794,7 @@ final class TypeExpression
                 '{^'.self::REGEX_TYPES.'$}',
                 $addedPrefix.$consumedValue.'}',
                 $matches,
-                PREG_OFFSET_CAPTURE
+                \PREG_OFFSET_CAPTURE,
             );
 
             $this->innerTypeExpressions[] = [
@@ -752,10 +833,8 @@ final class TypeExpression
 
     private function normalize(string $type): string
     {
-        $aliases = $this->getAliases();
-
-        if (isset($aliases[$type])) {
-            return $aliases[$type];
+        if (isset(self::ALIASES[$type])) {
+            return self::ALIASES[$type];
         }
 
         if (\in_array($type, [
@@ -801,22 +880,5 @@ final class TypeExpression
         }
 
         return "{$this->namespace->getFullName()}\\{$type}";
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    private function getAliases(): array
-    {
-        return [
-            'boolean' => 'bool',
-            'callback' => 'callable',
-            'double' => 'float',
-            'false' => 'bool',
-            'integer' => 'int',
-            'list' => 'array',
-            'real' => 'float',
-            'true' => 'bool',
-        ];
     }
 }
