@@ -112,7 +112,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 $tokens[$index] = new Token([T_STRING, 'createMock']);
             } elseif ($tokens[$index]->equals([T_STRING, 'getMock'], false)) {
                 $openingParenthesis = $tokens->getNextMeaningfulToken($index);
-                $closingParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openingParenthesis);
+                $closingParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingParenthesis);
 
                 $argumentsCount = $argumentsAnalyzer->countArguments($tokens, $openingParenthesis, $closingParenthesis);
 

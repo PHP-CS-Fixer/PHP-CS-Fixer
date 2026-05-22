@@ -85,7 +85,7 @@ final class GetClassToClassKeywordFixer extends AbstractFixer
             }
 
             $braceOpenIndex = $tokens->getNextMeaningfulToken($index);
-            $braceCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $braceOpenIndex);
+            $braceCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $braceOpenIndex);
 
             if ($braceCloseIndex === $tokens->getNextMeaningfulToken($braceOpenIndex)) {
                 continue; // get_class with no arguments

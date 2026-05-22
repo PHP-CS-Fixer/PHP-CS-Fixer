@@ -61,7 +61,7 @@ final class TypeColonTransformer extends AbstractTransformer
             return;
         }
 
-        $startIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $endIndex);
+        $startIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $endIndex);
         $prevIndex = $tokens->getPrevMeaningfulToken($startIndex);
         $prevToken = $tokens[$prevIndex];
 

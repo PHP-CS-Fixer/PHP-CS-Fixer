@@ -49,7 +49,7 @@ final class AlternativeSyntaxAnalyzer
             return false;
         }
 
-        $openParenthesisIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $prevIndex);
+        $openParenthesisIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $prevIndex);
         $beforeOpenParenthesisIndex = $tokens->getPrevMeaningfulToken($openParenthesisIndex);
 
         return $tokens[$beforeOpenParenthesisIndex]->isGivenKind([
@@ -112,7 +112,7 @@ final class AlternativeSyntaxAnalyzer
 
         if ($tokens[$index]->equals('(')) {
             $index = $tokens->getNextMeaningfulToken(
-                $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index)
+                $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index)
             );
         }
 

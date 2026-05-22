@@ -74,7 +74,7 @@ function example($foo = "two words", $bar) {}
             }
 
             $startIndex = $tokens->getNextTokenOfKind($i, ['(']);
-            $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $startIndex);
+            $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
 
             $this->fixFunctionDefinition($tokens, $startIndex, $i);
         }

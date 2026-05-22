@@ -111,7 +111,7 @@ final class DateTimeCreateFromFormatCallFixer extends AbstractFixer
                 }
 
                 $openIndex = $tokens->getNextTokenOfKind($functionNameIndex, ['(']);
-                $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openIndex);
+                $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
 
                 $argumentIndex = $this->getFirstArgumentTokenIndex($tokens, $argumentsAnalyzer->getArguments($tokens, $openIndex, $closeIndex));
 
