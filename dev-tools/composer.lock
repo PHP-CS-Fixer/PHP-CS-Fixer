@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f6b7d620ae72b0fe7099b6bce2e743f9",
+    "content-hash": "a49585bec5be9543b56e9da66d1adf54",
     "packages": [
         {
             "name": "composer/pcre",
@@ -810,6 +810,41 @@
             "description": "PHPStan - PHP Static Analysis Tool"
         },
         {
+            "name": "phpstan/phpstan-deprecation-rules",
+            "version": "2.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/phpstan-deprecation-rules.git",
+                "reference": "6b5571001a7f04fa0422254c30a0017ec2f2cacc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpstan-deprecation-rules/zipball/6b5571001a7f04fa0422254c30a0017ec2f2cacc",
+                "reference": "6b5571001a7f04fa0422254c30a0017ec2f2cacc"
+            },
+            "require": {
+                "php": "^7.4 || ^8.0",
+                "phpstan/phpstan": "^2.1.39"
+            },
+            "type": "phpstan-extension",
+            "extra": {
+                "phpstan": {
+                    "includes": [
+                        "rules.neon"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PHPStan\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "PHPStan rules for detecting usage of deprecated classes, methods, properties, constants and traits."
+        },
+        {
             "name": "phpstan/phpstan-phpunit",
             "version": "2.0.16",
             "source": {
@@ -1015,16 +1050,16 @@
         },
         {
             "name": "shipmonk/dead-code-detector",
-            "version": "1.1.2",
+            "version": "1.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shipmonk-rnd/dead-code-detector.git",
-                "reference": "fe2b701dd51ae4659e409417831c0b7122457b90"
+                "reference": "30d1d4a05bf1afef2abfa325fc949e6c8d2c55ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shipmonk-rnd/dead-code-detector/zipball/fe2b701dd51ae4659e409417831c0b7122457b90",
-                "reference": "fe2b701dd51ae4659e409417831c0b7122457b90"
+                "url": "https://api.github.com/repos/shipmonk-rnd/dead-code-detector/zipball/30d1d4a05bf1afef2abfa325fc949e6c8d2c55ad",
+                "reference": "30d1d4a05bf1afef2abfa325fc949e6c8d2c55ad"
             },
             "require": {
                 "php": "^8.1",
