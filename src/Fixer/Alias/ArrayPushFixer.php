@@ -80,7 +80,7 @@ final class ArrayPushFixer extends AbstractFixer
             $openBraceIndex = $tokens->getNextMeaningfulToken($callIndex);
 
             // figure out where the arguments list closes
-            $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex);
+            $closeBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openBraceIndex);
 
             // meaningful after `)` must be `;`, `? >` or nothing
             $afterCloseBraceIndex = $tokens->getNextMeaningfulToken($closeBraceIndex);

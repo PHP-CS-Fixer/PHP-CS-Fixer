@@ -651,7 +651,7 @@ final class TokensAnalyzer
             return false;
         }
 
-        $startIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $endIndex);
+        $startIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_BRACE, $endIndex);
         $beforeStartIndex = $tokens->getPrevMeaningfulToken($startIndex);
 
         return $tokens[$beforeStartIndex]->isGivenKind(\T_DO);
@@ -839,7 +839,7 @@ final class TokensAnalyzer
                 ];
                 if ('__construct' === $this->tokens[$functionNameIndex]->getContent()) {
                     $openParenthesis = $this->tokens->getNextMeaningfulToken($functionNameIndex);
-                    $closeParenthesis = $this->tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis);
+                    $closeParenthesis = $this->tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openParenthesis);
                     foreach ($this->tokens->findGivenKind([CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE, FCT::T_READONLY, \T_FINAL], $openParenthesis, $closeParenthesis) as $kindElements) {
                         foreach (array_keys($kindElements) as $promotedPropertyModifierIndex) {
                             /** @var int $promotedPropertyVariableIndex */

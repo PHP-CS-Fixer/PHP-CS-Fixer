@@ -624,7 +624,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         $nextIndex = $tokens->getNextTokenOfKind($index, [';', '{']);
 
         return $tokens[$nextIndex]->equals('{')
-            ? $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nextIndex)
+            ? $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $nextIndex)
             : $nextIndex;
     }
 }

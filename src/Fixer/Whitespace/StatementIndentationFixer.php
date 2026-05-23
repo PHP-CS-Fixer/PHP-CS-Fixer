@@ -257,9 +257,9 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 } elseif ($token->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                     $endIndex = $tokens->getNextTokenOfKind($index, [[CT::T_GROUP_IMPORT_BRACE_CLOSE]]);
                 } elseif ($token->equals('{')) {
-                    $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                    $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
                 } elseif ($token->equals('(')) {
-                    $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                    $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
                 } elseif ($token->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
                     $endIndex = $tokens->getNextTokenOfKind($index, [[CT::T_PROPERTY_HOOK_BRACE_CLOSE]]);
                 } else {
@@ -306,7 +306,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 $token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)
                 || ($token->equals('(') && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind(\T_ARRAY))
             ) {
-                $blockType = $token->equals('(') ? Tokens::BLOCK_TYPE_PARENTHESIS_BRACE : Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE;
+                $blockType = $token->equals('(') ? Tokens::BLOCK_TYPE_PARENTHESIS : Tokens::BLOCK_TYPE_ARRAY_BRACKET;
 
                 $scopes[] = [
                     'type' => 'statement',
@@ -330,14 +330,14 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                     $endToken = $tokens[$endIndex];
 
                     if ($endToken->equals('(')) {
-                        $closingParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $endIndex);
+                        $closingParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $endIndex);
                         $endIndex = $closingParenthesisIndex;
 
                         continue;
                     }
 
                     if ($endToken->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
-                        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $endIndex);
+                        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $endIndex);
 
                         continue;
                     }
@@ -393,7 +393,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
 
                 for ($max = \count($tokens); $endIndex < $max; ++$endIndex) {
                     if ($tokens[$endIndex]->equals('(')) {
-                        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $endIndex);
+                        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $endIndex);
 
                         continue;
                     }
@@ -618,11 +618,11 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
 
             if ($searchEndToken->equalsAny(['(', '{', [CT::T_ARRAY_SQUARE_BRACE_OPEN]])) {
                 if ($searchEndToken->equals('(')) {
-                    $blockType = Tokens::BLOCK_TYPE_PARENTHESIS_BRACE;
+                    $blockType = Tokens::BLOCK_TYPE_PARENTHESIS;
                 } elseif ($searchEndToken->equals('{')) {
-                    $blockType = Tokens::BLOCK_TYPE_CURLY_BRACE;
+                    $blockType = Tokens::BLOCK_TYPE_BRACE;
                 } else {
-                    $blockType = Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE;
+                    $blockType = Tokens::BLOCK_TYPE_ARRAY_BRACKET;
                 }
 
                 $searchEndIndex = $tokens->findBlockEnd($blockType, $searchEndIndex);
@@ -680,7 +680,7 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
             if ($tokens[$index]->isGivenKind(\T_SWITCH)) {
                 $braceIndex = $tokens->getNextMeaningfulToken(
                     $tokens->findBlockEnd(
-                        Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
+                        Tokens::BLOCK_TYPE_PARENTHESIS,
                         $tokens->getNextMeaningfulToken($index),
                     ),
                 );
@@ -688,14 +688,14 @@ final class StatementIndentationFixer extends AbstractFixer implements Configura
                 if ($tokens[$braceIndex]->equals(':')) {
                     $index = $this->alternativeSyntaxAnalyzer->findAlternativeSyntaxBlockEnd($tokens, $index);
                 } else {
-                    $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $braceIndex);
+                    $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $braceIndex);
                 }
 
                 continue;
             }
 
             if ($tokens[$index]->equals('{')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
 
                 continue;
             }

@@ -170,7 +170,7 @@ final class ProtectedToPrivateFixer extends AbstractFixer
         }
 
         $classOpenIndex = $tokens->getNextTokenOfKind($classNameIndex, ['{']);
-        $classCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpenIndex);
+        $classCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $classOpenIndex);
         $useIndex = $tokens->getNextTokenOfKind($classOpenIndex, [[CT::T_USE_TRAIT]]);
 
         return null === $useIndex || $useIndex > $classCloseIndex;

@@ -217,7 +217,7 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
             if ($token->isGivenKind(self::SYMBOL_KINDS)) {
                 $currentSymbol = $tokens[$tokens->getNextMeaningfulToken($index)]->getContent();
                 $currentSymbolEndIndex = $tokens->findBlockEnd(
-                    Tokens::BLOCK_TYPE_CURLY_BRACE,
+                    Tokens::BLOCK_TYPE_BRACE,
                     $tokens->getNextTokenOfKind($index, ['{']),
                 );
 
@@ -371,7 +371,7 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
         $docBlock = new DocBlock($content);
 
         $openingParenthesisIndex = $tokens->getNextTokenOfKind($element['index'], ['(']);
-        $closingParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingParenthesisIndex);
+        $closingParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openingParenthesisIndex);
 
         $argumentsInfo = $this->getArgumentsInfo(
             $tokens,

@@ -119,13 +119,13 @@ final class NewExpressionParenthesesFixer extends AbstractFixer implements Confi
                 $nextIndex = $tokens->getNextMeaningfulToken($classStartIndex);
 
                 if ($tokens[$nextIndex]->equals('(')) {
-                    $nextIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextIndex);
+                    $nextIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $nextIndex);
                 } else {
                     $nextIndex = $classStartIndex;
                 }
 
                 $bodyStartIndex = $tokens->getNextTokenOfKind($nextIndex, ['{']);
-                $bodyEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $bodyStartIndex);
+                $bodyEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $bodyStartIndex);
 
                 if ($useParentheses) {
                     $this->ensureWrappedInParentheses($tokens, $index, $bodyEndIndex);
@@ -151,7 +151,7 @@ final class NewExpressionParenthesesFixer extends AbstractFixer implements Confi
                 continue;
             }
 
-            $argsEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextIndex);
+            $argsEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $nextIndex);
 
             if ($useParentheses) {
                 $this->ensureWrappedInParentheses($tokens, $index, $argsEndIndex);
@@ -205,7 +205,7 @@ final class NewExpressionParenthesesFixer extends AbstractFixer implements Confi
     {
         // (expression) class name
         if ($tokens[$index]->equals('(')) {
-            return $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+            return $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
         }
 
         // regular class name or $variable class name

@@ -49,7 +49,7 @@ final class AttributeTransformer extends AbstractTransformer
             ++$index;
 
             if ($tokens[$index]->equals('(')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index) + 1;
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index) + 1;
             }
         } while (!$tokens[$index]->equals(']'));
 

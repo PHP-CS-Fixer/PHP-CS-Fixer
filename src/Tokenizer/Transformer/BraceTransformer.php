@@ -194,7 +194,7 @@ final class BraceTransformer extends AbstractTransformer
         }
 
         if ($tokens[$nextNextIndex]->equals('(')) {
-            $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextNextIndex);
+            $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $nextNextIndex);
             $afterCloseParenthesisIndex = $tokens->getNextMeaningfulToken($closeParenthesisIndex);
             if (!$tokens[$afterCloseParenthesisIndex]->equalsAny(['{', [\T_DOUBLE_ARROW]])) {
                 return;
@@ -246,7 +246,7 @@ final class BraceTransformer extends AbstractTransformer
         if (
             $tokens[$prevIndex]->equals(')')
             && !$tokens[$tokens->getPrevMeaningfulToken(
-                $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $prevIndex),
+                $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $prevIndex),
             )]->isGivenKind(\T_ARRAY)
         ) {
             return;
@@ -297,14 +297,14 @@ final class BraceTransformer extends AbstractTransformer
                 return;
             }
 
-            $prevMeaningfulTokenIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $prevMeaningfulTokenIndex);
+            $prevMeaningfulTokenIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $prevMeaningfulTokenIndex);
             $prevMeaningfulTokenIndex = $tokens->getPrevMeaningfulToken($prevMeaningfulTokenIndex);
 
             if (!$tokens[$prevMeaningfulTokenIndex]->equals('}')) {
                 return;
             }
 
-            $prevMeaningfulTokenIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $prevMeaningfulTokenIndex);
+            $prevMeaningfulTokenIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_BRACE, $prevMeaningfulTokenIndex);
             $prevMeaningfulTokenIndex = $tokens->getPrevMeaningfulToken($prevMeaningfulTokenIndex);
         }
 
@@ -320,7 +320,7 @@ final class BraceTransformer extends AbstractTransformer
     }
 
     /**
-     * We do not want to rely on `$tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index)` here,
+     * We do not want to rely on `$tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index)` here,
      * as it relies on block types that are assuming that `}` tokens are already transformed to Custom Tokens that are allowing to distinguish different block types.
      * As we are just about to transform `{` and `}` into Custom Tokens by this transformer, thus we need to compare those tokens manually by content without using `Tokens::findBlockEnd`.
      */

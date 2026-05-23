@@ -73,7 +73,7 @@ final class SquareBraceTransformer extends AbstractTransformer
 
     private function transformIntoArraySquareBrace(Tokens $tokens, int $index): void
     {
-        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_BRACKET, $index);
 
         $tokens[$index] = new Token([CT::T_ARRAY_SQUARE_BRACE_OPEN, '[']);
         $tokens[$endIndex] = new Token([CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']']);
@@ -81,7 +81,7 @@ final class SquareBraceTransformer extends AbstractTransformer
 
     private function transformIntoDestructuringSquareBrace(Tokens $tokens, int $index): void
     {
-        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_BRACKET, $index);
 
         $tokens[$index] = new Token([CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '[']);
         $tokens[$endIndex] = new Token([CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']']);
@@ -91,7 +91,7 @@ final class SquareBraceTransformer extends AbstractTransformer
 
         while ($index < $endIndex) {
             if ($tokens[$index]->equals('[') && $tokens[$previousMeaningfulIndex]->equalsAny([[CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN], ','])) {
-                $tokens[$tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index)] = new Token([CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']']);
+                $tokens[$tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_BRACKET, $index)] = new Token([CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']']);
                 $tokens[$index] = new Token([CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '[']);
             }
 

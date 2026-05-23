@@ -54,19 +54,19 @@ use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 class Tokens extends \SplFixedArray
 {
     /** @deprecated use BLOCK_TYPE_PARENTHESIS instead */
-    public const BLOCK_TYPE_PARENTHESIS_BRACE = self::BLOCK_TYPE_PARENTHESIS;
+    public const BLOCK_TYPE_PARENTHESIS_BRACE = self::BLOCK_TYPE_PARENTHESIS; // @phpstan-ignore shipmonk.deadConstant
     public const BLOCK_TYPE_PARENTHESIS = 1;
 
     /** @deprecated use BLOCK_TYPE_BRACE instead */
-    public const BLOCK_TYPE_CURLY_BRACE = self::BLOCK_TYPE_BRACE;
+    public const BLOCK_TYPE_CURLY_BRACE = self::BLOCK_TYPE_BRACE; // @phpstan-ignore shipmonk.deadConstant
     public const BLOCK_TYPE_BRACE = 2;
 
     /** @deprecated use BLOCK_TYPE_INDEX_BRACKET instead */
-    public const BLOCK_TYPE_INDEX_SQUARE_BRACE = self::BLOCK_TYPE_INDEX_BRACKET;
+    public const BLOCK_TYPE_INDEX_SQUARE_BRACE = self::BLOCK_TYPE_INDEX_BRACKET; // @phpstan-ignore shipmonk.deadConstant
     public const BLOCK_TYPE_INDEX_BRACKET = 3;
 
     /** @deprecated use BLOCK_TYPE_ARRAY_BRACKET instead */
-    public const BLOCK_TYPE_ARRAY_SQUARE_BRACE = self::BLOCK_TYPE_ARRAY_BRACKET;
+    public const BLOCK_TYPE_ARRAY_SQUARE_BRACE = self::BLOCK_TYPE_ARRAY_BRACKET; // @phpstan-ignore shipmonk.deadConstant
     public const BLOCK_TYPE_ARRAY_BRACKET = 4;
 
     public const BLOCK_TYPE_DYNAMIC_PROP_BRACE = 5;
@@ -74,17 +74,17 @@ class Tokens extends \SplFixedArray
     public const BLOCK_TYPE_DYNAMIC_VAR_BRACE = 6;
 
     /** @deprecated use BLOCK_TYPE_INDEX_BRACE instead */
-    public const BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE = self::BLOCK_TYPE_INDEX_BRACE;
+    public const BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE = self::BLOCK_TYPE_INDEX_BRACE; // @phpstan-ignore shipmonk.deadConstant
     public const BLOCK_TYPE_INDEX_BRACE = 7;
 
     public const BLOCK_TYPE_GROUP_IMPORT_BRACE = 8;
 
     /** @deprecated use BLOCK_TYPE_DESTRUCTURING_BRACKET instead */
-    public const BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE = self::BLOCK_TYPE_DESTRUCTURING_BRACKET;
+    public const BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE = self::BLOCK_TYPE_DESTRUCTURING_BRACKET; // @phpstan-ignore shipmonk.deadConstant
     public const BLOCK_TYPE_DESTRUCTURING_BRACKET = 9;
 
     /** @deprecated use BLOCK_TYPE_CLASS_INSTANTIATION_PARENTHESIS instead */
-    public const BLOCK_TYPE_BRACE_CLASS_INSTANTIATION = self::BLOCK_TYPE_CLASS_INSTANTIATION_PARENTHESIS;
+    public const BLOCK_TYPE_BRACE_CLASS_INSTANTIATION = self::BLOCK_TYPE_CLASS_INSTANTIATION_PARENTHESIS; // @phpstan-ignore shipmonk.deadConstant
     public const BLOCK_TYPE_CLASS_INSTANTIATION_PARENTHESIS = 10;
 
     public const BLOCK_TYPE_ATTRIBUTE = 11;
