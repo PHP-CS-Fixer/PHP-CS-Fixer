@@ -878,7 +878,7 @@ final class TokensTest extends TestCase
         yield 'simple dynamic class constant fetch' => [
             7,
             '<?php echo Foo::{$bar};',
-            Tokens::BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE,
+            Tokens::BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_BRACE,
             5,
         ];
 
@@ -886,7 +886,7 @@ final class TokensTest extends TestCase
             yield 'chained dynamic class constant fetch: '.$startEnd[0] => [
                 $startEnd[1],
                 "<?php echo Foo::{'BAR'}::{'BLA'}::{static_method}(1,2) ?>",
-                Tokens::BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE,
+                Tokens::BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_BRACE,
                 $startEnd[0],
             ];
         }
