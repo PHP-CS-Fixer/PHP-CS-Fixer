@@ -274,6 +274,7 @@ class Tokens extends \SplFixedArray
      */
     public static function getBlockEdgeDefinitions(): array
     {
+        // @FRS TODO sprawdzic spojnosc na koniec
         return [
             self::BLOCK_TYPE_BRACE => [
                 'start' => '{',
