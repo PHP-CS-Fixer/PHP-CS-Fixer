@@ -275,7 +275,7 @@ final class BracesPositionFixer extends AbstractFixer implements ConfigurableFix
                 if ($tokens[$nextMeaningfulIndex]->equals('=')) {
                     $nextMeaningfulIndex = $tokens->getNextMeaningfulToken($nextMeaningfulIndex);
 
-                    if ($tokens[$nextMeaningfulIndex]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+                    if ($tokens[$nextMeaningfulIndex]->isGivenKind(CT::T_ARRAY_BRACKET_OPEN)) {
                         $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $nextMeaningfulIndex);
                     } elseif ($tokens[$nextMeaningfulIndex]->isGivenKind(\T_ARRAY)) {
                         $nextMeaningfulIndex = $tokens->getNextMeaningfulToken($nextMeaningfulIndex);

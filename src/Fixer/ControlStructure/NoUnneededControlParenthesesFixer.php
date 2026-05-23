@@ -238,7 +238,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound(['(', CT::T_BRACE_CLASS_INSTANTIATION_OPEN]);
+        return $tokens->isAnyTokenKindsFound(['(', CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -248,7 +248,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
         foreach ($tokens as $openIndex => $token) {
             if ($token->equals('(')) {
                 $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openIndex);
-            } elseif ($token->isGivenKind(CT::T_BRACE_CLASS_INSTANTIATION_OPEN)) {
+            } elseif ($token->isGivenKind(CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN)) {
                 $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CLASS_INSTANTIATION_PARENTHESIS, $openIndex);
             } else {
                 continue;
@@ -595,7 +595,7 @@ final class NoUnneededControlParenthesesFixer extends AbstractFixer implements C
     {
         $token = $tokens[$index];
 
-        return $token->isObjectOperator() || $token->equals('[') || $token->isGivenKind(CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN);
+        return $token->isObjectOperator() || $token->equals('[') || $token->isGivenKind(CT::T_ARRAY_INDEX_BRACE_OPEN);
     }
 
     private function getAfterAccess(Tokens $tokens, int $index): int

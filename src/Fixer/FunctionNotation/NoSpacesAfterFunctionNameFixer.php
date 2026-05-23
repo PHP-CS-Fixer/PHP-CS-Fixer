@@ -116,7 +116,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
                 ')',
                 ']',
                 [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
-                [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
+                [CT::T_ARRAY_INDEX_BRACE_CLOSE],
             ])) {
                 $block = Tokens::detectBlockType($tokens[$lastTokenIndex]);
                 if (

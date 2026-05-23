@@ -60,13 +60,13 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer implements Configura
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound(['[', CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN]);
+        return $tokens->isAnyTokenKindsFound(['[', CT::T_ARRAY_INDEX_BRACE_OPEN]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->equalsAny(['[', [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN]])) {
+            if (!$token->equalsAny(['[', [CT::T_ARRAY_INDEX_BRACE_OPEN]])) {
                 continue;
             }
 

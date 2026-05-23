@@ -153,7 +153,7 @@ final class TokensAnalyzer
      */
     public function isArray(int $index): bool
     {
-        return $this->tokens[$index]->isGivenKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
+        return $this->tokens[$index]->isGivenKind([\T_ARRAY, CT::T_ARRAY_BRACKET_OPEN]);
     }
 
     /**
@@ -496,7 +496,7 @@ final class TokensAnalyzer
             ']',
             [\T_STRING],
             [\T_VARIABLE],
-            [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
+            [CT::T_ARRAY_INDEX_BRACE_CLOSE],
             [CT::T_DYNAMIC_PROP_BRACE_CLOSE],
             [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
         ]);
@@ -533,8 +533,8 @@ final class TokensAnalyzer
             ')',
             '"',
             '`',
-            [CT::T_ARRAY_SQUARE_BRACE_CLOSE],
-            [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
+            [CT::T_ARRAY_BRACKET_CLOSE],
+            [CT::T_ARRAY_INDEX_BRACE_CLOSE],
             [CT::T_DYNAMIC_PROP_BRACE_CLOSE],
             [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
             [\T_CLASS_C],

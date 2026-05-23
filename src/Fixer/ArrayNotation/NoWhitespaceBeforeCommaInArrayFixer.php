@@ -70,13 +70,13 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer implements
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
+        return $tokens->isAnyTokenKindsFound([\T_ARRAY, CT::T_ARRAY_BRACKET_OPEN]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
-            if ($tokens[$index]->isGivenKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+            if ($tokens[$index]->isGivenKind([\T_ARRAY, CT::T_ARRAY_BRACKET_OPEN])) {
                 $this->fixSpacing($index, $tokens);
             }
         }
@@ -97,7 +97,7 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer implements
      */
     private function fixSpacing(int $index, Tokens $tokens): void
     {
-        if ($tokens[$index]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+        if ($tokens[$index]->isGivenKind(CT::T_ARRAY_BRACKET_OPEN)) {
             $startIndex = $index;
             $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $startIndex);
         } else {
@@ -131,7 +131,7 @@ final class NoWhitespaceBeforeCommaInArrayFixer extends AbstractFixer implements
         if ($tokens[$index]->equals(')')) {
             $startIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
             $startIndex = $tokens->getPrevMeaningfulToken($startIndex);
-            if (!$tokens[$startIndex]->isGivenKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+            if (!$tokens[$startIndex]->isGivenKind([\T_ARRAY, CT::T_ARRAY_BRACKET_OPEN])) {
                 return $startIndex;
             }
         }

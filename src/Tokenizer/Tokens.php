@@ -289,8 +289,8 @@ class Tokens extends \SplFixedArray
                 'end' => ']',
             ],
             self::BLOCK_TYPE_ARRAY_BRACKET => [
-                'start' => [CT::T_ARRAY_SQUARE_BRACE_OPEN, '['],
-                'end' => [CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']'],
+                'start' => [CT::T_ARRAY_BRACKET_OPEN, '['],
+                'end' => [CT::T_ARRAY_BRACKET_CLOSE, ']'],
             ],
             self::BLOCK_TYPE_DYNAMIC_PROP_BRACE => [
                 'start' => [CT::T_DYNAMIC_PROP_BRACE_OPEN, '{'],
@@ -301,28 +301,28 @@ class Tokens extends \SplFixedArray
                 'end' => [CT::T_DYNAMIC_VAR_BRACE_CLOSE, '}'],
             ],
             self::BLOCK_TYPE_INDEX_BRACE => [
-                'start' => [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN, '{'],
-                'end' => [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE, '}'],
+                'start' => [CT::T_ARRAY_INDEX_BRACE_OPEN, '{'],
+                'end' => [CT::T_ARRAY_INDEX_BRACE_CLOSE, '}'],
             ],
             self::BLOCK_TYPE_GROUP_IMPORT_BRACE => [
                 'start' => [CT::T_GROUP_IMPORT_BRACE_OPEN, '{'],
                 'end' => [CT::T_GROUP_IMPORT_BRACE_CLOSE, '}'],
             ],
             self::BLOCK_TYPE_DESTRUCTURING_BRACKET => [
-                'start' => [CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '['],
-                'end' => [CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']'],
+                'start' => [CT::T_DESTRUCTURING_BRACKET_OPEN, '['],
+                'end' => [CT::T_DESTRUCTURING_BRACKET_CLOSE, ']'],
             ],
             self::BLOCK_TYPE_CLASS_INSTANTIATION_PARENTHESIS => [
-                'start' => [CT::T_BRACE_CLASS_INSTANTIATION_OPEN, '('],
-                'end' => [CT::T_BRACE_CLASS_INSTANTIATION_CLOSE, ')'],
+                'start' => [CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN, '('],
+                'end' => [CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE, ')'],
             ],
             self::BLOCK_TYPE_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS => [
                 'start' => [CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, '('],
                 'end' => [CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE, ')'],
             ],
             self::BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_BRACE => [
-                'start' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN, '{'],
-                'end' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE, '}'],
+                'start' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_BRACE_OPEN, '{'],
+                'end' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_BRACE_CLOSE, '}'],
             ],
             self::BLOCK_TYPE_COMPLEX_STRING_VARIABLE => [
                 'start' => [\T_DOLLAR_OPEN_CURLY_BRACES, '${'],

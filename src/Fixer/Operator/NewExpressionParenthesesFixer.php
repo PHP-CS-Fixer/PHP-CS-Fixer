@@ -166,8 +166,8 @@ final class NewExpressionParenthesesFixer extends AbstractFixer implements Confi
         $prevIndex = $tokens->getPrevMeaningfulToken($exprStartIndex);
         $nextIndex = $tokens->getNextMeaningfulToken($exprEndIndex);
 
-        if ($tokens[$prevIndex]->isGivenKind(CT::T_BRACE_CLASS_INSTANTIATION_OPEN)
-            && $tokens[$nextIndex]->isGivenKind(CT::T_BRACE_CLASS_INSTANTIATION_CLOSE)
+        if ($tokens[$prevIndex]->isGivenKind(CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN)
+            && $tokens[$nextIndex]->isGivenKind(CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE)
         ) {
             return;
         }
@@ -176,8 +176,8 @@ final class NewExpressionParenthesesFixer extends AbstractFixer implements Confi
             return;
         }
 
-        $tokens->insertAt($exprStartIndex, [new Token([CT::T_BRACE_CLASS_INSTANTIATION_OPEN, '('])]);
-        $tokens->insertAt($exprEndIndex + 2, [new Token([CT::T_BRACE_CLASS_INSTANTIATION_CLOSE, ')'])]);
+        $tokens->insertAt($exprStartIndex, [new Token([CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN, '('])]);
+        $tokens->insertAt($exprEndIndex + 2, [new Token([CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE, ')'])]);
     }
 
     private function ensureNotWrappedInParentheses(Tokens $tokens, int $exprStartIndex, int $exprEndIndex): void
@@ -185,8 +185,8 @@ final class NewExpressionParenthesesFixer extends AbstractFixer implements Confi
         $prevIndex = $tokens->getPrevMeaningfulToken($exprStartIndex);
         $nextIndex = $tokens->getNextMeaningfulToken($exprEndIndex);
 
-        if (!$tokens[$prevIndex]->isGivenKind(CT::T_BRACE_CLASS_INSTANTIATION_OPEN)
-            || !$tokens[$nextIndex]->isGivenKind(CT::T_BRACE_CLASS_INSTANTIATION_CLOSE)
+        if (!$tokens[$prevIndex]->isGivenKind(CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN)
+            || !$tokens[$nextIndex]->isGivenKind(CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE)
         ) {
             return;
         }

@@ -271,7 +271,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                 continue;
             }
 
-            if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
+            if ($token->isGivenKind(CT::T_ARRAY_BRACKET_CLOSE)) {
                 $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $index);
 
                 continue;
@@ -384,7 +384,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
             }
 
             // skip nested arrays
-            if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
+            if ($token->isGivenKind(CT::T_ARRAY_BRACKET_CLOSE)) {
                 $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $index);
 
                 continue;
@@ -548,7 +548,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                 continue;
             }
 
-            if ($tokens[$index]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+            if ($tokens[$index]->isGivenKind(CT::T_ARRAY_BRACKET_OPEN)) {
                 $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $index);
 
                 continue;
@@ -584,7 +584,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                 continue;
             }
 
-            if ($tokens[$index]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
+            if ($tokens[$index]->isGivenKind(CT::T_ARRAY_BRACKET_CLOSE)) {
                 $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $index);
 
                 continue;

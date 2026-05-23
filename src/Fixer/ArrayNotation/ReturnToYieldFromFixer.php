@@ -48,7 +48,7 @@ final class ReturnToYieldFromFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAllTokenKindsFound([\T_FUNCTION, \T_RETURN]) && $tokens->isAnyTokenKindsFound([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
+        return $tokens->isAllTokenKindsFound([\T_FUNCTION, \T_RETURN]) && $tokens->isAnyTokenKindsFound([\T_ARRAY, CT::T_ARRAY_BRACKET_OPEN]);
     }
 
     /**
@@ -76,11 +76,11 @@ final class ReturnToYieldFromFixer extends AbstractFixer
     private function shouldBeFixed(Tokens $tokens, int $returnIndex): bool
     {
         $arrayStartIndex = $tokens->getNextMeaningfulToken($returnIndex);
-        if (!$tokens[$arrayStartIndex]->isGivenKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+        if (!$tokens[$arrayStartIndex]->isGivenKind([\T_ARRAY, CT::T_ARRAY_BRACKET_OPEN])) {
             return false;
         }
 
-        if ($tokens[$arrayStartIndex]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+        if ($tokens[$arrayStartIndex]->isGivenKind(CT::T_ARRAY_BRACKET_OPEN)) {
             $arrayEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $arrayStartIndex);
         } else {
             $arrayOpenParenthesisIndex = $tokens->getNextTokenOfKind($arrayStartIndex, ['(']);

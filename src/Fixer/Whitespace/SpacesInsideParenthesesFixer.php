@@ -111,14 +111,14 @@ final class SpacesInsideParenthesesFixer extends AbstractFixer implements Config
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound(['(', CT::T_BRACE_CLASS_INSTANTIATION_OPEN]);
+        return $tokens->isAnyTokenKindsFound(['(', CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         if ('none' === $this->configuration['space']) {
             foreach ($tokens as $index => $token) {
-                if (!$token->equalsAny(['(', [CT::T_BRACE_CLASS_INSTANTIATION_OPEN]])) {
+                if (!$token->equalsAny(['(', [CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN]])) {
                     continue;
                 }
 
@@ -146,7 +146,7 @@ final class SpacesInsideParenthesesFixer extends AbstractFixer implements Config
 
         if ('single' === $this->configuration['space']) {
             foreach ($tokens as $index => $token) {
-                if (!$token->equalsAny(['(', [CT::T_BRACE_CLASS_INSTANTIATION_OPEN]])) {
+                if (!$token->equalsAny(['(', [CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN]])) {
                     continue;
                 }
 

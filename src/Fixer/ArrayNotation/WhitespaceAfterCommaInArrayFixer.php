@@ -60,7 +60,7 @@ final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer implements Co
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
+        return $tokens->isAnyTokenKindsFound([\T_ARRAY, CT::T_ARRAY_BRACKET_OPEN]);
     }
 
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
@@ -78,11 +78,11 @@ final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer implements Co
         $tokensToInsert = [];
 
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if (!$tokens[$index]->isGivenKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+            if (!$tokens[$index]->isGivenKind([\T_ARRAY, CT::T_ARRAY_BRACKET_OPEN])) {
                 continue;
             }
 
-            if ($tokens[$index]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+            if ($tokens[$index]->isGivenKind(CT::T_ARRAY_BRACKET_OPEN)) {
                 $startIndex = $index;
                 $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $startIndex);
             } else {
@@ -127,7 +127,7 @@ final class WhitespaceAfterCommaInArrayFixer extends AbstractFixer implements Co
         if ($tokens[$index]->equals(')')) {
             $startIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
             $startIndex = $tokens->getPrevMeaningfulToken($startIndex);
-            if (!$tokens[$startIndex]->isGivenKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+            if (!$tokens[$startIndex]->isGivenKind([\T_ARRAY, CT::T_ARRAY_BRACKET_OPEN])) {
                 return $startIndex;
             }
         }

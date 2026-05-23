@@ -713,7 +713,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                 continue;
             }
 
-            if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+            if ($token->isGivenKind(CT::T_ARRAY_BRACKET_OPEN)) {
                 $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $index);
                 $this->injectAlignmentPlaceholders($tokens, $index + 1, $until - 1, $tokenContent);
                 $index = $until;
@@ -773,7 +773,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                 continue;
             }
 
-            if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+            if ($token->isGivenKind(CT::T_ARRAY_BRACKET_OPEN)) {
                 $yieldFoundSinceLastPlaceholder = false;
                 $from = $index;
                 $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $from);
@@ -826,7 +826,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                         break;
                     }
 
-                    if ($tokens[$i + 1]->isGivenKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+                    if ($tokens[$i + 1]->isGivenKind([\T_ARRAY, CT::T_ARRAY_BRACKET_OPEN])) {
                         $arrayStartIndex = $tokens[$i + 1]->isGivenKind(\T_ARRAY)
                             ? $tokens->getNextMeaningfulToken($i + 1)
                             : $i + 1;

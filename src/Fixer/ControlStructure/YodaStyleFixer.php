@@ -435,7 +435,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurableFixerInt
     private function isListStatement(Tokens $tokens, int $index, int $end): bool
     {
         for ($i = $index; $i <= $end; ++$i) {
-            if ($tokens[$i]->isGivenKind([\T_LIST, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE])) {
+            if ($tokens[$i]->isGivenKind([\T_LIST, CT::T_DESTRUCTURING_BRACKET_OPEN, CT::T_DESTRUCTURING_BRACKET_CLOSE])) {
                 return true;
             }
         }
@@ -572,7 +572,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurableFixerInt
                 return $current->isGivenKind($expectString ? \T_STRING : \T_VARIABLE);
             }
 
-            if ($current->isGivenKind([\T_LIST, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE])) {
+            if ($current->isGivenKind([\T_LIST, CT::T_DESTRUCTURING_BRACKET_OPEN, CT::T_DESTRUCTURING_BRACKET_CLOSE])) {
                 return false;
             }
 
@@ -611,7 +611,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurableFixerInt
             // $a[...], a[...] (as in $c->a[$b]), $a{...} or a{...} (as in $c->a{$b})
             if (
                 $current->isGivenKind($expectString ? \T_STRING : \T_VARIABLE)
-                && $next->equalsAny(['[', [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN, '{']])
+                && $next->equalsAny(['[', [CT::T_ARRAY_INDEX_BRACE_OPEN, '{']])
             ) {
                 $index = $tokens->findBlockEnd(
                     $next->equals('[') ? Tokens::BLOCK_TYPE_INDEX_BRACKET : Tokens::BLOCK_TYPE_INDEX_BRACE,
@@ -624,7 +624,7 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurableFixerInt
 
                 $index = $tokens->getNextMeaningfulToken($index);
 
-                if (!$tokens[$index]->equalsAny(['[', [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN, '{']]) && !$tokens[$index]->isObjectOperator()) {
+                if (!$tokens[$index]->equalsAny(['[', [CT::T_ARRAY_INDEX_BRACE_OPEN, '{']]) && !$tokens[$index]->isObjectOperator()) {
                     return false;
                 }
 
@@ -682,14 +682,14 @@ final class YodaStyleFixer extends AbstractFixer implements ConfigurableFixerInt
             }
 
             if ($expectArrayOnly) {
-                if ($token->equalsAny(['(', ')', [CT::T_ARRAY_SQUARE_BRACE_CLOSE]])) {
+                if ($token->equalsAny(['(', ')', [CT::T_ARRAY_BRACKET_CLOSE]])) {
                     continue;
                 }
 
                 return false;
             }
 
-            if ($token->isGivenKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+            if ($token->isGivenKind([\T_ARRAY, CT::T_ARRAY_BRACKET_OPEN])) {
                 $expectArrayOnly = true;
 
                 continue;

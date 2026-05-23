@@ -142,7 +142,7 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
 
             $arrayStartIndex = $tokens->getNextMeaningfulToken($index);
 
-            if (!$tokens[$arrayStartIndex]->isGivenKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+            if (!$tokens[$arrayStartIndex]->isGivenKind([\T_ARRAY, CT::T_ARRAY_BRACKET_OPEN])) {
                 continue;
             }
 

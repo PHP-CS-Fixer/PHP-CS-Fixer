@@ -1842,9 +1842,9 @@ $bar;',
             new Token([\T_VARIABLE, '$a']),
             new Token('='),
             new Token([\T_WHITESPACE, ' ']),
-            new Token([CT::T_ARRAY_SQUARE_BRACE_OPEN, '[']),
+            new Token([CT::T_ARRAY_BRACKET_OPEN, '[']),
             new Token([\T_WHITESPACE, ' ']),
-            new Token([CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']']),
+            new Token([CT::T_ARRAY_BRACKET_CLOSE, ']']),
             new Token(';'),
         ]);
 
@@ -1852,9 +1852,9 @@ $bar;',
         self::assertSame(4, $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_BRACKET, 6));
 
         $tokens->overrideRange(3, 6, [
-            new Token([CT::T_ARRAY_SQUARE_BRACE_OPEN, '[']),
+            new Token([CT::T_ARRAY_BRACKET_OPEN, '[']),
             $tokens[4],
-            new Token([CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']']),
+            new Token([CT::T_ARRAY_BRACKET_CLOSE, ']']),
             $tokens[6],
         ]);
 
@@ -2035,11 +2035,11 @@ $bar;',
             new Token([\T_WHITESPACE, ' ']),
             new Token('='),
             new Token([\T_WHITESPACE, ' ']),
-            new Token([CT::T_ARRAY_SQUARE_BRACE_OPEN, '[']),
+            new Token([CT::T_ARRAY_BRACKET_OPEN, '[']),
             new Token([\T_WHITESPACE, ' ']),
             new Token([\T_COMMENT, '/* foo */']),
             new Token([\T_WHITESPACE, ' ']),
-            new Token([CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']']),
+            new Token([CT::T_ARRAY_BRACKET_CLOSE, ']']),
             new Token(';'),
             new Token([\T_WHITESPACE, "\n"]),
         ]);

@@ -143,7 +143,7 @@ final class ArrayPushFixer extends AbstractFixer
             '$',
             '[',
             '(',
-            [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN],
+            [CT::T_ARRAY_INDEX_BRACE_OPEN],
             [CT::T_DYNAMIC_PROP_BRACE_OPEN],
             [CT::T_DYNAMIC_VAR_BRACE_OPEN],
             [CT::T_NAMESPACE_OPERATOR],

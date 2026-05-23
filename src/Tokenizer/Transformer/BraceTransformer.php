@@ -28,7 +28,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  * - closing `}` for T_DOLLAR_OPEN_CURLY_BRACES into CT::T_DOLLAR_CLOSE_CURLY_BRACES,
  * - in `$foo->{$bar}` into CT::T_DYNAMIC_PROP_BRACE_OPEN and CT::T_DYNAMIC_PROP_BRACE_CLOSE,
  * - in `${$foo}` into CT::T_DYNAMIC_VAR_BRACE_OPEN and CT::T_DYNAMIC_VAR_BRACE_CLOSE,
- * - in `$array{$index}` into CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN and CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
+ * - in `$array{$index}` into CT::T_ARRAY_INDEX_BRACE_OPEN and CT::T_ARRAY_INDEX_BRACE_CLOSE,
  * - in `use some\a\{ClassA, ClassB, ClassC as C}` into CT::T_GROUP_IMPORT_BRACE_OPEN, CT::T_GROUP_IMPORT_BRACE_CLOSE,
  * - in `class PropertyHooks { public string $bar _{_ set(string $value) { } _}_` into CT::T_PROPERTY_HOOK_BRACE_OPEN, CT::T_PROPERTY_HOOK_BRACE_CLOSE.
  *
@@ -66,12 +66,12 @@ final class BraceTransformer extends AbstractTransformer
             CT::T_DYNAMIC_PROP_BRACE_CLOSE,
             CT::T_DYNAMIC_VAR_BRACE_OPEN,
             CT::T_DYNAMIC_VAR_BRACE_CLOSE,
-            CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN,
-            CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
+            CT::T_ARRAY_INDEX_BRACE_OPEN,
+            CT::T_ARRAY_INDEX_BRACE_CLOSE,
             CT::T_GROUP_IMPORT_BRACE_OPEN,
             CT::T_GROUP_IMPORT_BRACE_CLOSE,
-            CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN,
-            CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE,
+            CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_BRACE_OPEN,
+            CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_BRACE_CLOSE,
             CT::T_PROPERTY_HOOK_BRACE_OPEN,
             CT::T_PROPERTY_HOOK_BRACE_CLOSE,
         ];
@@ -229,7 +229,7 @@ final class BraceTransformer extends AbstractTransformer
         if (!$tokens[$prevIndex]->equalsAny([
             [\T_STRING],
             [\T_VARIABLE],
-            [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
+            [CT::T_ARRAY_INDEX_BRACE_CLOSE],
             ']',
             ')',
         ])) {
@@ -254,8 +254,8 @@ final class BraceTransformer extends AbstractTransformer
 
         $closeIndex = $this->naivelyFindCurlyBlockEnd($tokens, $index);
 
-        $tokens[$index] = new Token([CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN, '{']);
-        $tokens[$closeIndex] = new Token([CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE, '}']);
+        $tokens[$index] = new Token([CT::T_ARRAY_INDEX_BRACE_OPEN, '{']);
+        $tokens[$closeIndex] = new Token([CT::T_ARRAY_INDEX_BRACE_CLOSE, '}']);
     }
 
     private function transformIntoGroupUseBraces(Tokens $tokens, int $index): void
@@ -315,8 +315,8 @@ final class BraceTransformer extends AbstractTransformer
             return;
         }
 
-        $tokens[$index] = new Token([CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN, '{']);
-        $tokens[$closeIndex] = new Token([CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE, '}']);
+        $tokens[$index] = new Token([CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_BRACE_OPEN, '{']);
+        $tokens[$closeIndex] = new Token([CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_BRACE_CLOSE, '}']);
     }
 
     /**

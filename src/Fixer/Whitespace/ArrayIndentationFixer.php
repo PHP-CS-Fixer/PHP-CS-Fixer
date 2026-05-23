@@ -44,7 +44,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([\T_ARRAY, \T_LIST, CT::T_ARRAY_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN]);
+        return $tokens->isAnyTokenKindsFound([\T_ARRAY, \T_LIST, CT::T_ARRAY_BRACKET_OPEN, CT::T_DESTRUCTURING_BRACKET_OPEN]);
     }
 
     /**
@@ -73,7 +73,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
             }
 
             if (
-                $token->isGivenKind([CT::T_ARRAY_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN])
+                $token->isGivenKind([CT::T_ARRAY_BRACKET_OPEN, CT::T_DESTRUCTURING_BRACKET_OPEN])
                 || ($token->equals('(') && $tokens[$tokens->getPrevMeaningfulToken($index)]->isGivenKind([\T_ARRAY, \T_LIST]))
             ) {
                 $blockType = Tokens::detectBlockType($token);
@@ -177,7 +177,7 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
             $searchEndToken = $tokens[$searchEndIndex];
 
             if ($searchEndToken->equalsAny(['(', '{'])
-                || $searchEndToken->isGivenKind([CT::T_ARRAY_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN])
+                || $searchEndToken->isGivenKind([CT::T_ARRAY_BRACKET_OPEN, CT::T_DESTRUCTURING_BRACKET_OPEN])
             ) {
                 $type = Tokens::detectBlockType($searchEndToken);
                 $searchEndIndex = $tokens->findBlockEnd(

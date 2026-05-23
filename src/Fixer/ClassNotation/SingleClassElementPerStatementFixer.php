@@ -187,7 +187,7 @@ final class SingleClassElementPerStatementFixer extends AbstractFixer implements
                 continue;
             }
 
-            if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
+            if ($token->isGivenKind(CT::T_ARRAY_BRACKET_CLOSE)) {
                 $i = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $i);
 
                 continue;
