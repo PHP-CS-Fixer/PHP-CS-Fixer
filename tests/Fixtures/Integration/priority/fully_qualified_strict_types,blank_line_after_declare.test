@@ -1,0 +1,23 @@
+--TEST--
+Integration of fixers: fully_qualified_strict_types,blank_line_after_declare.
+--RULESET--
+{"blank_line_after_declare": true, "fully_qualified_strict_types": {"import_symbols": true}}
+--EXPECT--
+<?php
+
+declare(strict_types=1);
+
+use App\Providers\AppServiceProvider;
+
+return [
+    AppServiceProvider::class,
+];
+
+--INPUT--
+<?php
+
+declare(strict_types=1);
+
+return [
+    App\Providers\AppServiceProvider::class,
+];
