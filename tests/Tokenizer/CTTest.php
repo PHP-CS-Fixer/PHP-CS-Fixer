@@ -126,7 +126,7 @@ final class CTTest extends TestCase
                 static function (string $name): bool {
                     $reflection = new \ReflectionClassConstant(CT::class, $name);
 
-                    return !$reflection->isDeprecated() && !str_contains(false !== $reflection->getDocComment() ? $reflection->getDocComment() : '', '@deprecated');
+                    return !str_contains(false !== $reflection->getDocComment() ? $reflection->getDocComment() : '', '@deprecated');
                 },
                 \ARRAY_FILTER_USE_KEY,
             );
