@@ -34,7 +34,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
             'Use `null` coalescing operator `??` where possible.',
             [
                 new CodeSample(
-                    "<?php\n\$sample = isset(\$a) ? \$a : \$b;\n",
+                    "<?php\n\$sample = isset(\$a) ? \$a : \$b;\n\$sample = (isset(\$a)) ? \$a : \$b;\n",
                 ),
             ],
         );
@@ -78,7 +78,26 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
         $startBraceIndex = $tokens->getNextTokenOfKind($index, ['(']);
         $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startBraceIndex);
 
-        $ternaryQuestionMarkIndex = $tokens->getNextMeaningfulToken($endBraceIndex);
+        // Track outer parentheses wrapping the `isset(...)` expression
+        $outerParenStart = null;
+        $outerParenEnd = null;
+
+        $candidatePrev = $prevTokenIndex;
+        $candidateNext = $tokens->getNextMeaningfulToken($endBraceIndex);
+
+        if (null !== $candidateNext && $tokens[$candidatePrev]->equals('(') && $tokens[$candidateNext]->equals(')')) {
+            $outerParenStart = $candidatePrev;
+            $outerParenEnd = $candidateNext;
+
+            // Check the token before the outer opening parenthesis for higher precedence operators
+            $beforeOuterParen = $tokens->getPrevMeaningfulToken($outerParenStart);
+
+            if (null !== $beforeOuterParen && $this->isHigherPrecedenceAssociativityOperator($tokens[$beforeOuterParen])) {
+                return;
+            }
+        }
+
+        $ternaryQuestionMarkIndex = $tokens->getNextMeaningfulToken(null !== $outerParenEnd ? $outerParenEnd : $endBraceIndex);
 
         if (!$tokens[$ternaryQuestionMarkIndex]->equals('?')) {
             return; // we are not in a ternary operator
@@ -125,7 +144,9 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
         }
 
         $tokens[$ternaryColonIndex] = new Token([\T_COALESCE, '??']);
-        $tokens->overrideRange($index, $ternaryFirstOperandIndex - 1, $comments);
+
+        $clearStart = null !== $outerParenStart ? $outerParenStart : $index;
+        $tokens->overrideRange($clearStart, $ternaryFirstOperandIndex - 1, $comments);
     }
 
     /**
