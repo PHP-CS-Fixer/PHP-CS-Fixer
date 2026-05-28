@@ -24,6 +24,9 @@ use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class LambdaNotUsedImportFixer extends AbstractFixer
 {
     private ArgumentsAnalyzer $argumentsAnalyzer;
@@ -36,7 +39,7 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Lambda must not import variables it doesn\'t use.',
-            [new CodeSample("<?php\n\$foo = function() use (\$bar) {};\n")]
+            [new CodeSample("<?php\n\$foo = function() use (\$bar) {};\n")],
         );
     }
 
@@ -237,7 +240,7 @@ final class LambdaNotUsedImportFixer extends AbstractFixer
             $info = $this->argumentsAnalyzer->getArgumentInfo($tokens, $start, $end);
             $content = $info->getName();
 
-            if (isset($imports[$content])) {
+            if (null !== $content && isset($imports[$content])) {
                 unset($imports[$content]);
 
                 if (0 === \count($imports)) {

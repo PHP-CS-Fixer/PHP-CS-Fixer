@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * Fixer for part of rule defined in PSR5 ¶7.22.
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
 {
@@ -31,7 +33,7 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Single line `@var` PHPDoc should have proper spacing.',
-            [new CodeSample("<?php /**@var   MyClass   \$a   */\n\$a = test();\n")]
+            [new CodeSample("<?php /**@var   MyClass   \$a   */\n\$a = test();\n")],
         );
     }
 
@@ -75,6 +77,7 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
                 $content = '/** @var';
 
                 for ($i = 1, $m = \count($matches); $i < $m; ++$i) {
+                    \assert(isset($matches[$i]));
                     if ('' !== $matches[$i]) {
                         $content .= ' '.$matches[$i];
                     }
@@ -82,7 +85,7 @@ final class PhpdocSingleLineVarSpacingFixer extends AbstractFixer
 
                 return rtrim($content).' */';
             },
-            $content
+            $content,
         );
     }
 }

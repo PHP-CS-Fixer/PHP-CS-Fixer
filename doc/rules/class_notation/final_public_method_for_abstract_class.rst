@@ -13,8 +13,8 @@ override a method, use the Template method pattern.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when overriding ``public`` methods of ``abstract`` classes.
 

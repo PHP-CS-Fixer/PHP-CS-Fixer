@@ -23,15 +23,32 @@ use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class StaticLambdaFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Lambdas not (indirectly) referencing `$this` must be declared `static`.',
-            [new CodeSample("<?php\n\$a = function () use (\$b)\n{   echo \$b;\n};\n")],
+            [
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        $a = function () {
+                            echo $b;
+                        };
+
+                        $b = (function () {
+                            \assert($this !== null); // approach you can use to instruct PHP CS Fixer to not convert this lambda to static, e.g. when you see "Cannot bind an instance to a static closure" error caused by lambda handling outside of your control
+                        })->bindTo(new stdClass());
+
+                        PHP,
+                ),
+            ],
             null,
-            'Risky when using `->bindTo` on lambdas without referencing to `$this`.'
+            'Risky when using `->bindTo` on lambdas without referencing to `$this`.',
         );
     }
 
@@ -94,7 +111,7 @@ final class StaticLambdaFixer extends AbstractFixer
                 [
                     new Token([\T_STATIC, 'static']),
                     new Token([\T_WHITESPACE, ' ']),
-                ]
+                ],
             );
 
             $index -= 4; // fixed after a lambda, closes candidate is at least 4 tokens before that
@@ -112,7 +129,7 @@ final class StaticLambdaFixer extends AbstractFixer
             }
 
             if ($tokens[$i]->isGivenKind([
-                \T_INCLUDE,                    // loading additional symbols we cannot analyze here
+                \T_INCLUDE,                    // loading additional symbols we cannot analyse here
                 \T_INCLUDE_ONCE,               // "
                 \T_REQUIRE,                    // "
                 \T_REQUIRE_ONCE,               // "
@@ -124,6 +141,14 @@ final class StaticLambdaFixer extends AbstractFixer
 
             if ($tokens[$i]->isClassy()) {
                 $openBraceIndex = $tokens->getNextTokenOfKind($i, ['{']);
+                $i = $tokens->getNextMeaningfulToken($i);
+                if ($i <= $openBraceIndex && $this->hasPossibleReferenceToThis(
+                    $tokens,
+                    $i,
+                    $openBraceIndex,
+                )) {
+                    return true;
+                }
                 $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openBraceIndex);
 
                 continue;

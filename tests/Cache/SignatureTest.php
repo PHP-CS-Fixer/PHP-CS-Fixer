@@ -17,6 +17,8 @@ namespace PhpCsFixer\Tests\Cache;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\Cache\SignatureInterface;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -24,7 +26,10 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Cache\Signature
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Signature::class)]
 final class SignatureTest extends TestCase
 {
     public function testIsFinal(): void
@@ -48,19 +53,22 @@ final class SignatureTest extends TestCase
         $indent = '    ';
         $lineEnding = \PHP_EOL;
         $rules = ['foo' => true, 'bar' => false];
+        $ruleCustomisationPolicyVersion = '123';
 
-        $signature = new Signature($php, $version, $indent, $lineEnding, $rules);
+        $signature = new Signature($php, $version, $indent, $lineEnding, $rules, $ruleCustomisationPolicyVersion);
 
         self::assertSame($php, $signature->getPhpVersion());
         self::assertSame($version, $signature->getFixerVersion());
         self::assertSame($indent, $signature->getIndent());
         self::assertSame($lineEnding, $signature->getLineEnding());
         self::assertSame($rules, $signature->getRules());
+        self::assertSame($ruleCustomisationPolicyVersion, $signature->getRuleCustomisationPolicyVersion());
     }
 
     /**
      * @dataProvider provideEqualsReturnsFalseIfValuesAreNotIdenticalCases
      */
+    #[DataProvider('provideEqualsReturnsFalseIfValuesAreNotIdenticalCases')]
     public function testEqualsReturnsFalseIfValuesAreNotIdentical(Signature $signature, Signature $anotherSignature): void
     {
         self::assertFalse($signature->equals($anotherSignature));
@@ -76,32 +84,38 @@ final class SignatureTest extends TestCase
         $indent = '    ';
         $lineEnding = "\n";
         $rules = ['foo' => true, 'bar' => false];
+        $ruleCustomisationPolicyVersion = '1';
 
-        $base = new Signature($php, $version, $indent, $lineEnding, $rules);
+        $base = new Signature($php, $version, $indent, $lineEnding, $rules, $ruleCustomisationPolicyVersion);
 
         yield 'php' => [
             $base,
-            new Signature('50400', $version, $indent, $lineEnding, $rules),
+            new Signature('50400', $version, $indent, $lineEnding, $rules, $ruleCustomisationPolicyVersion),
         ];
 
         yield 'version' => [
             $base,
-            new Signature($php, '2.12', $indent, $lineEnding, $rules),
+            new Signature($php, '2.12', $indent, $lineEnding, $rules, $ruleCustomisationPolicyVersion),
         ];
 
         yield 'indent' => [
             $base,
-            new Signature($php, $version, "\t", $lineEnding, $rules),
+            new Signature($php, $version, "\t", $lineEnding, $rules, $ruleCustomisationPolicyVersion),
         ];
 
         yield 'lineEnding' => [
             $base,
-            new Signature($php, $version, $indent, "\r\n", $rules),
+            new Signature($php, $version, $indent, "\r\n", $rules, $ruleCustomisationPolicyVersion),
         ];
 
         yield 'rules' => [
             $base,
-            new Signature($php, $version, $indent, $lineEnding, ['foo' => false]),
+            new Signature($php, $version, $indent, $lineEnding, ['foo' => false], $ruleCustomisationPolicyVersion),
+        ];
+
+        yield 'ruleCustomisationPolicyVersion' => [
+            $base,
+            new Signature($php, $version, $indent, $lineEnding, $rules, '2'),
         ];
     }
 
@@ -112,9 +126,10 @@ final class SignatureTest extends TestCase
         $indent = '    ';
         $lineEnding = \PHP_EOL;
         $rules = ['foo' => true, 'bar' => false];
+        $ruleCustomisationPolicyVersion = '1.2.3';
 
-        $signature = new Signature($php, $version, $indent, $lineEnding, $rules);
-        $anotherSignature = new Signature($php, $version, $indent, $lineEnding, $rules);
+        $signature = new Signature($php, $version, $indent, $lineEnding, $rules, $ruleCustomisationPolicyVersion);
+        $anotherSignature = new Signature($php, $version, $indent, $lineEnding, $rules, $ruleCustomisationPolicyVersion);
 
         self::assertTrue($signature->equals($anotherSignature));
     }

@@ -4,6 +4,14 @@ Rule ``phpdoc_inline_tag_normalizer``
 
 Fixes PHPDoc inline tags.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``tags``.
+
 Configuration
 -------------
 

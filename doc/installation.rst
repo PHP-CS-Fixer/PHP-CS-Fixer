@@ -87,7 +87,7 @@ To integrate PHP CS Fixer as check into Gitlab-CI, you can use a configuration l
     php-cs-fixer:
       image: ghcr.io/php-cs-fixer/php-cs-fixer:${FIXER_VERSION:-3-php8.3}
       script:
-        php-cs-fixer check # --format gitlab ## specify format if not using PHP_CS_FIXER_FUTURE_MODE or v4+
+        php-cs-fixer check # --format=gitlab ## specify format if not using PHP_CS_FIXER_FUTURE_MODE or v4+
         # use `check .` if your repository not having paths configured in .php-cs-fixer[.dist].php
 
 Homebrew (globally)

@@ -22,6 +22,8 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
  * @template TFixerComputedConfig of array<string, mixed>
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 interface ConfigurableFixerInterface extends FixerInterface
 {
@@ -33,7 +35,7 @@ interface ConfigurableFixerInterface extends FixerInterface
      * (or reset configuration from previously configured back to default one).
      *
      * Some fixers may have no configuration, then - simply don't implement this interface.
-     * Other ones may have configuration that will change behavior of fixer,
+     * Other ones may have configuration that will change behaviour of fixer,
      * eg `php_unit_strict` fixer allows to configure which methods should be fixed.
      * Finally, some fixers need configuration to work, eg `header_comment`.
      *

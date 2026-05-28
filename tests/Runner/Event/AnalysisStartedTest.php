@@ -16,12 +16,16 @@ namespace PhpCsFixer\Tests\Runner\Event;
 
 use PhpCsFixer\Runner\Event\AnalysisStarted;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @covers \PhpCsFixer\Runner\Event\AnalysisStarted
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AnalysisStarted::class)]
 final class AnalysisStartedTest extends TestCase
 {
     public function testAnalysisStartedEvent(): void

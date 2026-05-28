@@ -18,6 +18,9 @@ declare(ticks=1);
  */
 class FooBar
 {
+    /**
+     * @var int
+     */
     public const SOME_CONST = 42;
 
     private $fooBar;

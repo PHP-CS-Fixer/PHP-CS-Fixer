@@ -22,6 +22,8 @@ use Symfony\Component\Finder\Finder;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class Transformers
 {
@@ -93,7 +95,7 @@ final class Transformers
     }
 
     /**
-     * @return \Generator<TransformerInterface>
+     * @return iterable<TransformerInterface>
      */
     private function findBuiltInTransformers(): iterable
     {

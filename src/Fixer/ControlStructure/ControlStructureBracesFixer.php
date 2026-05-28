@@ -22,6 +22,9 @@ use PhpCsFixer\Tokenizer\Analyzer\AlternativeSyntaxAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class ControlStructureBracesFixer extends AbstractFixer
 {
     private const CONTROL_TOKENS = [
@@ -39,11 +42,23 @@ final class ControlStructureBracesFixer extends AbstractFixer
         \T_SWITCH,
     ];
 
+    private const CONTROL_CONTINUATION_TOKENS = [
+        \T_IF => [\T_ELSE, \T_ELSEIF],
+        \T_DO => [\T_WHILE],
+        \T_TRY => [\T_CATCH, \T_FINALLY],
+    ];
+
+    private const FINAL_CONTROL_CONTINUATION_TOKENS = [
+        \T_IF => [\T_ELSE],
+        \T_DO => [],
+        \T_TRY => [\T_FINALLY],
+    ];
+
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'The body of each control structure MUST be enclosed within braces.',
-            [new CodeSample("<?php\nif (foo()) echo 'Hello!';\n")]
+            [new CodeSample("<?php\nif (foo()) echo 'Hello!';\n")],
         );
     }
 
@@ -93,7 +108,7 @@ final class ControlStructureBracesFixer extends AbstractFixer
             if ($tokenAfterParenthesis->isGivenKind([\T_IF, \T_FOR, \T_FOREACH, \T_SWITCH, \T_WHILE])) {
                 $tokenAfterParenthesisBlockEnd = $tokens->findBlockEnd( // go to ')'
                     Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
-                    $tokens->getNextMeaningfulToken($nextAfterParenthesisEndIndex)
+                    $tokens->getNextMeaningfulToken($nextAfterParenthesisEndIndex),
                 );
 
                 if ($tokens[$tokens->getNextMeaningfulToken($tokenAfterParenthesisBlockEnd)]->equals(':')) {
@@ -144,9 +159,7 @@ final class ControlStructureBracesFixer extends AbstractFixer
     private function findStatementEnd(Tokens $tokens, int $parenthesisEndIndex): int
     {
         $nextIndex = $tokens->getNextMeaningfulToken($parenthesisEndIndex);
-        if (null === $nextIndex) {
-            return $parenthesisEndIndex;
-        }
+        \assert(\is_int($nextIndex));
 
         $nextToken = $tokens[$nextIndex];
 
@@ -164,12 +177,14 @@ final class ControlStructureBracesFixer extends AbstractFixer
 
                 while (true) {
                     $nextIndex = $tokens->getNextMeaningfulToken($endIndex);
-                    if (null !== $nextIndex && $tokens[$nextIndex]->isGivenKind($this->getControlContinuationTokensForOpeningToken($openingTokenKind))) {
+                    \assert(isset(self::CONTROL_CONTINUATION_TOKENS[$openingTokenKind]));
+                    if (null !== $nextIndex && $tokens[$nextIndex]->isGivenKind(self::CONTROL_CONTINUATION_TOKENS[$openingTokenKind])) {
                         $parenthesisEndIndex = $this->findParenthesisEnd($tokens, $nextIndex);
 
                         $endIndex = $this->findStatementEnd($tokens, $parenthesisEndIndex);
 
-                        if ($tokens[$nextIndex]->isGivenKind($this->getFinalControlContinuationTokensForOpeningToken($openingTokenKind))) {
+                        \assert(isset(self::FINAL_CONTROL_CONTINUATION_TOKENS[$openingTokenKind]));
+                        if ($tokens[$nextIndex]->isGivenKind(self::FINAL_CONTROL_CONTINUATION_TOKENS[$openingTokenKind])) {
                             return $endIndex;
                         }
                     } else {
@@ -201,47 +216,5 @@ final class ControlStructureBracesFixer extends AbstractFixer
                 return $tokens->getPrevNonWhitespace($index);
             }
         }
-    }
-
-    /**
-     * @return list<int>
-     */
-    private function getControlContinuationTokensForOpeningToken(int $openingTokenKind): array
-    {
-        if (\T_IF === $openingTokenKind) {
-            return [
-                \T_ELSE,
-                \T_ELSEIF,
-            ];
-        }
-
-        if (\T_DO === $openingTokenKind) {
-            return [\T_WHILE];
-        }
-
-        if (\T_TRY === $openingTokenKind) {
-            return [
-                \T_CATCH,
-                \T_FINALLY,
-            ];
-        }
-
-        return [];
-    }
-
-    /**
-     * @return list<int>
-     */
-    private function getFinalControlContinuationTokensForOpeningToken(int $openingTokenKind): array
-    {
-        if (\T_IF === $openingTokenKind) {
-            return [\T_ELSE];
-        }
-
-        if (\T_TRY === $openingTokenKind) {
-            return [\T_FINALLY];
-        }
-
-        return [];
     }
 }

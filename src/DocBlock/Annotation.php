@@ -23,27 +23,31 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
  *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class Annotation
+final class Annotation implements \Stringable
 {
     /**
      * All the annotation tag names with types.
      *
-     * @var list<string>
+     * @var non-empty-list<string>
      */
-    private const TAGS = [
+    public const TAGS_WITH_TYPES = [
         'extends',
         'implements',
         'method',
         'param',
         'param-out',
-        'phpstan-type',
         'phpstan-import-type',
+        'phpstan-type',
+        'phpstan-var',
         'property',
         'property-read',
         'property-write',
-        'psalm-type',
         'psalm-import-type',
+        'psalm-type',
+        'psalm-var',
         'return',
         'throws',
         'type',
@@ -119,11 +123,15 @@ final class Annotation
     /**
      * Get all the annotation tag names with types.
      *
-     * @return list<string>
+     * @return non-empty-list<string>
+     *
+     * @deprecated Use `Annotation::TAGS_WITH_TYPES` constant instead
+     *
+     * @TODO 4.0 remove me
      */
     public static function getTagsWithTypes(): array
     {
-        return self::TAGS;
+        return self::TAGS_WITH_TYPES;
     }
 
     /**
@@ -176,7 +184,7 @@ final class Annotation
             '/@%s\s+(%s\s*)?(&\s*)?(\.{3}\s*)?(?<variable>\$%s)(?:.*|$)/',
             $this->tag->getName(),
             $type,
-            TypeExpression::REGEX_IDENTIFIER
+            TypeExpression::REGEX_IDENTIFIER,
         );
 
         if (Preg::match($regex, $this->getContent(), $matches)) {
@@ -217,7 +225,7 @@ final class Annotation
             // Fallback to union type is provided for backward compatibility (previously glue was set to `|` by default even when type was not composite)
             // @TODO Better handling for cases where type is fixed (original type is not composite, but was made composite during fix)
             $this->getTypeExpression()->getTypesGlue() ?? '|',
-            $types
+            $types,
         );
 
         if ($origTypesContent === $newTypesContent) {
@@ -298,7 +306,7 @@ final class Annotation
 
     public function supportTypes(): bool
     {
-        return \in_array($this->getTag()->getName(), self::TAGS, true);
+        return \in_array($this->getTag()->getName(), self::TAGS_WITH_TYPES, true);
     }
 
     /**
@@ -318,7 +326,7 @@ final class Annotation
             if (Preg::match(
                 '{^(?:\h*\*|/\*\*)[\h*]*@'.$name.'\h+'.TypeExpression::REGEX_TYPES.'(?:(?:[*\h\v]|\&?[\.\$\s]).*)?\r?$}is',
                 $this->getContent(),
-                $matches
+                $matches,
             )) {
                 \assert(isset($matches['types']));
                 $this->typesContent = $matches['types'];

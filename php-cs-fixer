@@ -13,6 +13,8 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+namespace PhpCsFixer;
+
 use Composer\XdebugHandler\XdebugHandler;
 use PhpCsFixer\Console\Application;
 
@@ -20,7 +22,7 @@ error_reporting(\E_ALL & ~\E_DEPRECATED & ~\E_USER_DEPRECATED);
 
 set_error_handler(static function (int $severity, string $message, string $file, int $line): bool {
     if (0 !== ($severity & error_reporting())) {
-        throw new ErrorException($message, 0, $severity, $file, $line);
+        throw new \ErrorException($message, 0, $severity, $file, $line);
     }
 
     return true;
@@ -51,8 +53,8 @@ set_error_handler(static function (int $severity, string $message, string $file,
     }
 
     foreach (['json', 'tokenizer'] as $extension) {
-        if (!extension_loaded($extension)) {
-            fwrite(\STDERR, sprintf("PHP extension ext-%s is missing from your system. Install or enable it.\n", $extension));
+        if (!\extension_loaded($extension)) {
+            fwrite(\STDERR, \sprintf("PHP extension ext-%s is missing from your system. Install or enable it.\n", $extension));
 
             if (filter_var(getenv('PHP_CS_FIXER_IGNORE_ENV'), \FILTER_VALIDATE_BOOLEAN)) {
                 fwrite(\STDERR, "Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Execution may be unstable.\n");
@@ -69,13 +71,13 @@ set_error_handler(static function (int $severity, string $message, string $file,
     if (class_exists('Phar')) {
         // Maybe this file is used as phar-stub? Let's try!
         try {
-            Phar::mapPhar('php-cs-fixer.phar');
+            \Phar::mapPhar('php-cs-fixer.phar');
 
             /** @phpstan-ignore requireOnce.fileNotFound */
             require_once 'phar://php-cs-fixer.phar/vendor/autoload.php';
 
             $require = false;
-        } catch (PharException $e) {
+        } catch (\PharException $e) {
         }
     }
 
@@ -92,7 +94,7 @@ set_error_handler(static function (int $severity, string $message, string $file,
         }
 
         if (null === $file) {
-            throw new RuntimeException('Unable to locate autoload.php file.');
+            throw new \RuntimeException('Unable to locate autoload.php file.');
         }
 
         require_once $file;

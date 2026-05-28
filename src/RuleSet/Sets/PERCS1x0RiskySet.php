@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
+use PhpCsFixer\RuleSet\AbstractRuleSetDefinition;
 
 /**
  * @internal
@@ -22,12 +22,14 @@ use PhpCsFixer\RuleSet\AbstractRuleSetDescription;
  * PER Coding Style v1.0.
  *
  * @see https://github.com/php-fig/per-coding-style/blob/1.0.0/spec.md
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PERCS1x0RiskySet extends AbstractRuleSetDescription
+final class PERCS1x0RiskySet extends AbstractRuleSetDefinition
 {
     public function getName(): string
     {
-        return '@PER-CS1.0:risky';
+        return '@PER-CS1x0:risky';
     }
 
     public function getRules(): array

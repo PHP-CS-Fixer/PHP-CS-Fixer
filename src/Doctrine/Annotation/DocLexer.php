@@ -30,6 +30,8 @@ use PhpCsFixer\Preg;
  * copies or substantial portions of the Software.
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DocLexer
 {
@@ -50,6 +52,14 @@ final class DocLexer
     public const T_OPEN_PARENTHESIS = 109;
     public const T_COLON = 112;
     public const T_MINUS = 113;
+
+    private const CATCHABLE_PATTERNS = [
+        '[a-z_\\\][a-z0-9_\:\\\]*[a-z_][a-z0-9_]*',
+        '(?:[+-]?[0-9]+(?:[\.][0-9]+)*)(?:[eE][+-]?[0-9]+)?',
+        '"(?:""|[^"])*+"',
+    ];
+
+    private const NON_CATCHABLE_PATTERNS = ['\s+', '\*+', '(.)'];
 
     /** @var array<string, self::T_*> */
     private array $noCase = [
@@ -89,31 +99,7 @@ final class DocLexer
 
     public function peek(): ?Token
     {
-        if (isset($this->tokens[$this->position + $this->peek])) {
-            return $this->tokens[$this->position + $this->peek++];
-        }
-
-        return null;
-    }
-
-    /**
-     * @return list<string>
-     */
-    private function getCatchablePatterns(): array
-    {
-        return [
-            '[a-z_\\\][a-z0-9_\:\\\]*[a-z_][a-z0-9_]*',
-            '(?:[+-]?[0-9]+(?:[\.][0-9]+)*)(?:[eE][+-]?[0-9]+)?',
-            '"(?:""|[^"])*+"',
-        ];
-    }
-
-    /**
-     * @return list<string>
-     */
-    private function getNonCatchablePatterns(): array
-    {
-        return ['\s+', '\*+', '(.)'];
+        return $this->tokens[$this->position + $this->peek++] ?? null;
     }
 
     /**
@@ -138,7 +124,7 @@ final class DocLexer
         }
 
         if (is_numeric($value)) {
-            return str_contains($value, '.') || false !== stripos($value, 'e')
+            return str_contains($value, '.') || str_contains(strtolower($value), 'e')
                 ? self::T_FLOAT : self::T_INTEGER;
         }
 
@@ -149,9 +135,9 @@ final class DocLexer
     {
         $this->regex ??= \sprintf(
             '/(%s)|%s/%s',
-            implode(')|(', $this->getCatchablePatterns()),
-            implode('|', $this->getNonCatchablePatterns()),
-            'iu'
+            implode(')|(', self::CATCHABLE_PATTERNS),
+            implode('|', self::NON_CATCHABLE_PATTERNS),
+            'iu',
         );
 
         $flags = \PREG_SPLIT_NO_EMPTY | \PREG_SPLIT_DELIM_CAPTURE | \PREG_SPLIT_OFFSET_CAPTURE;

@@ -14,7 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
+use PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderReturnTypeFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -22,12 +26,16 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderReturnTypeFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpUnit\PhpUnitDataProviderReturnTypeFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(PhpUnitDataProviderReturnTypeFixer::class)]
 final class PhpUnitDataProviderReturnTypeFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -195,10 +203,12 @@ class FooTest extends TestCase {
     }
 
     /**
-     * @requires PHP <8.0
+     * @requires PHP < 8.0.0
      *
      * @dataProvider provideFixPre80Cases
      */
+    #[RequiresPhp('< 8.0.0')]
+    #[DataProvider('provideFixPre80Cases')]
     public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -219,10 +229,12 @@ class FooTest extends TestCase {
     }
 
     /**
-     * @requires PHP ^8.0
+     * @requires PHP ^8.0.0
      *
      * @dataProvider provideFix80Cases
      */
+    #[RequiresPhp('^8.0.0')]
+    #[DataProvider('provideFix80Cases')]
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -339,9 +351,9 @@ class FooTest extends TestCase {
                         public function notProvider(): array {}
                     }
                     PHP,
-                $type
+                $type,
             ),
-            $types
+            $types,
         );
     }
 }

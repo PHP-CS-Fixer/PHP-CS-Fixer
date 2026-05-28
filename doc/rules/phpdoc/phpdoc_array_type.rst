@@ -7,8 +7,8 @@ PHPDoc ``array<T>`` type must be used instead of ``T[]``.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when using ``T[]`` in union types.
 

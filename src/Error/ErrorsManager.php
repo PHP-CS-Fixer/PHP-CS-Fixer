@@ -20,6 +20,8 @@ namespace PhpCsFixer\Error;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ErrorsManager
 {
@@ -56,6 +58,14 @@ final class ErrorsManager
     public function getLintErrors(): array
     {
         return array_values(array_filter($this->errors, static fn (Error $error): bool => Error::TYPE_LINT === $error->getType()));
+    }
+
+    /**
+     * @return list<Error>
+     */
+    public function getAllErrors(): array
+    {
+        return $this->errors;
     }
 
     /**

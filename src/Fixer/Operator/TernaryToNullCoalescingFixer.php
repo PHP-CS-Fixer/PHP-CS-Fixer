@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TernaryToNullCoalescingFixer extends AbstractFixer
 {
@@ -32,9 +34,9 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
             'Use `null` coalescing operator `??` where possible.',
             [
                 new CodeSample(
-                    "<?php\n\$sample = isset(\$a) ? \$a : \$b;\n"
+                    "<?php\n\$sample = isset(\$a) ? \$a : \$b;\n",
                 ),
-            ]
+            ],
         );
     }
 

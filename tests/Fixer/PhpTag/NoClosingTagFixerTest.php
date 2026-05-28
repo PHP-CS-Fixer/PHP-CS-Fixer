@@ -14,7 +14,10 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\PhpTag;
 
+use PhpCsFixer\Fixer\PhpTag\NoClosingTagFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -22,12 +25,16 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\PhpTag\NoClosingTagFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\PhpTag\NoClosingTagFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NoClosingTagFixer::class)]
 final class NoClosingTagFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -149,6 +156,7 @@ if (true) {
     /**
      * @dataProvider provideWithShortOpenTagCases
      */
+    #[DataProvider('provideWithShortOpenTagCases')]
     public function testWithShortOpenTag(string $expected, ?string $input = null): void
     {
         if ('1' !== \ini_get('short_open_tag')) {

@@ -16,20 +16,26 @@ namespace PhpCsFixer\Tests\FixerConfiguration;
 
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\FixerConfiguration\AllowedValueSubset
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AllowedValueSubset::class)]
 final class AllowedValueSubsetTest extends TestCase
 {
     /**
-     * @param list<string> $expected
-     * @param list<string> $input
+     * @param non-empty-list<string> $expected
+     * @param non-empty-list<string> $input
      *
      * @dataProvider provideGetAllowedValuesAreSortedCases
      */
+    #[DataProvider('provideGetAllowedValuesAreSortedCases')]
     public function testGetAllowedValuesAreSorted(array $expected, array $input): void
     {
         $subset = new AllowedValueSubset($input);
@@ -58,6 +64,7 @@ final class AllowedValueSubsetTest extends TestCase
      *
      * @dataProvider provideInvokeCases
      */
+    #[DataProvider('provideInvokeCases')]
     public function testInvoke($inputValue, bool $expectedResult): void
     {
         $subset = new AllowedValueSubset(['foo', 'bar']);

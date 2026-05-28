@@ -19,12 +19,17 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @covers \PhpCsFixer\DocBlock\TypeExpression
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(TypeExpression::class)]
 final class TypeExpressionTest extends TestCase
 {
     /**
@@ -33,6 +38,8 @@ final class TypeExpressionTest extends TestCase
      * @dataProvider provideGetConstTypesCases
      * @dataProvider provideGetTypesCases
      */
+    #[DataProvider('provideGetConstTypesCases')]
+    #[DataProvider('provideGetTypesCases')]
     public function testGetTypes(string $typesExpression, ?array $expectedTypes = null): void
     {
         if (null === $expectedTypes) {
@@ -46,12 +53,12 @@ final class TypeExpressionTest extends TestCase
         $unionExpression = $this->parseTypeExpression(
             $unionTestNs.'\A|'.$typesExpression.'|'.$unionTestNs.'\Z',
             null,
-            []
+            [],
         );
         if (!$expression->isCompositeType() || $expression->isUnionType()) {
             self::assertSame(
                 [$unionTestNs.'\A', ...$expectedTypes, $unionTestNs.'\Z'],
-                [...$unionExpression->getTypes()]
+                [...$unionExpression->getTypes()],
             );
         }
     }
@@ -325,14 +332,23 @@ final class TypeExpressionTest extends TestCase
 
         yield ['string'.str_repeat('[]', 128)];
 
-        yield [str_repeat('array<', 116).'string'.str_repeat('>', 116)];
+        yield [str_repeat('array<', 32).'string'.str_repeat('>', 32)];
 
         yield [self::makeLongArrayShapeType()];
+
+        yield ['Foo<int, covariant Bar>'];
+
+        yield ['Foo<contravariant int, Bar>'];
+
+        yield ['Foo<Bar<contravariant Baz>>'];
+
+        yield ['Foo<int>|covariant Bar', ['Foo<int>', 'covariant Bar']];
     }
 
     /**
      * @dataProvider provideParseInvalidExceptionCases
      */
+    #[DataProvider('provideParseInvalidExceptionCases')]
     public function testParseInvalidException(string $value): void
     {
         $this->expectException(\Exception::class);
@@ -492,6 +508,7 @@ final class TypeExpressionTest extends TestCase
     /**
      * @dataProvider provideGetTypesGlueCases
      */
+    #[DataProvider('provideGetTypesGlueCases')]
     public function testGetTypesGlue(?string $expectedTypesGlue, string $typesExpression): void
     {
         $expression = new TypeExpression($typesExpression, null, []);
@@ -513,6 +530,7 @@ final class TypeExpressionTest extends TestCase
     /**
      * @dataProvider provideIsCompositeTypeCases
      */
+    #[DataProvider('provideIsCompositeTypeCases')]
     public function testIsCompositeType(bool $expectedIsCompositeType, string $typeExpression): void
     {
         $expression = new TypeExpression($typeExpression, null, []);
@@ -539,6 +557,7 @@ final class TypeExpressionTest extends TestCase
     /**
      * @dataProvider provideIsUnionTypeCases
      */
+    #[DataProvider('provideIsUnionTypeCases')]
     public function testIsUnionType(bool $expectedIsUnionType, string $typeExpression): void
     {
         $expression = new TypeExpression($typeExpression, null, []);
@@ -571,6 +590,7 @@ final class TypeExpressionTest extends TestCase
     /**
      * @dataProvider provideIsIntersectionTypeCases
      */
+    #[DataProvider('provideIsIntersectionTypeCases')]
     public function testIsIntersectionType(bool $expectedIsIntersectionType, string $typeExpression): void
     {
         $expression = new TypeExpression($typeExpression, null, []);
@@ -599,6 +619,7 @@ final class TypeExpressionTest extends TestCase
      *
      * @dataProvider provideGetCommonTypeCases
      */
+    #[DataProvider('provideGetCommonTypeCases')]
     public function testGetCommonType(string $typesExpression, ?string $expectedCommonType, ?NamespaceAnalysis $namespace = null, array $namespaceUses = []): void
     {
         $expression = new TypeExpression($typesExpression, $namespace, $namespaceUses);
@@ -740,6 +761,7 @@ final class TypeExpressionTest extends TestCase
     /**
      * @dataProvider provideAllowsNullCases
      */
+    #[DataProvider('provideAllowsNullCases')]
     public function testAllowsNull(string $typesExpression, bool $expectNullAllowed): void
     {
         $expression = new TypeExpression($typesExpression, null, []);
@@ -871,6 +893,7 @@ final class TypeExpressionTest extends TestCase
     /**
      * @dataProvider provideSortTypesCases
      */
+    #[DataProvider('provideSortTypesCases')]
     public function testSortTypes(string $typesExpression, string $expectResult): void
     {
         $sortCaseFx = static fn (TypeExpression $a, TypeExpression $b): int => strcasecmp($a->toString(), $b->toString());
@@ -1157,6 +1180,17 @@ final class TypeExpressionTest extends TestCase
         ];
     }
 
+    public function testTypeRegexDoesNotHaveUnnamedCapturingGroup(): void
+    {
+        Preg::match('~'.TypeExpression::REGEX_TYPES.'~', 'int', $matches);
+
+        self::assertSame(
+            \count(array_filter($matches, static fn ($key): bool => \is_string($key), \ARRAY_FILTER_USE_KEY)),
+            \count(array_filter($matches, static fn ($key): bool => \is_int($key), \ARRAY_FILTER_USE_KEY)) - 1,
+            'Regex TypeExpression::REGEX_TYPES has unnamed capturing group.',
+        );
+    }
+
     private static function makeLongArrayShapeType(): string
     {
         return 'array{'.implode(
@@ -1182,7 +1216,7 @@ final class TypeExpressionTest extends TestCase
             $innerExpressionStr = $innerExpression->toString();
             self::assertSame(
                 $innerExpressionStr,
-                substr($typeExpression->toString(), $innerStartIndex, \strlen($innerExpressionStr))
+                substr($typeExpression->toString(), $innerStartIndex, \strlen($innerExpressionStr)),
             );
 
             $res[] = [$innerStartIndex, $innerExpressionStr];

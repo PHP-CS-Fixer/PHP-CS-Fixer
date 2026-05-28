@@ -15,12 +15,16 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Differ;
 
 use PhpCsFixer\Differ\FullDiffer;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Differ\FullDiffer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FullDiffer::class)]
 final class FullDifferTest extends AbstractDifferTestCase
 {
     public function testDiffReturnsDiff(): void

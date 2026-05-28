@@ -18,6 +18,7 @@ use PhpCsFixer\AbstractDoctrineAnnotationFixer;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -25,6 +26,8 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @template TFixer of AbstractDoctrineAnnotationFixer
  *
  * @extends AbstractFixerTestCase<TFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTestCase
 {
@@ -33,6 +36,7 @@ abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTest
      *
      * @dataProvider provideConfigureWithInvalidConfigurationCases
      */
+    #[DataProvider('provideConfigureWithInvalidConfigurationCases')]
     public function testConfigureWithInvalidConfiguration(array $configuration): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);

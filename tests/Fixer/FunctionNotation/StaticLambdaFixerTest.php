@@ -14,7 +14,10 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
+use PhpCsFixer\Fixer\FunctionNotation\StaticLambdaFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -22,12 +25,16 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\FunctionNotation\StaticLambdaFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\StaticLambdaFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(StaticLambdaFixer::class)]
 final class StaticLambdaFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -261,6 +268,20 @@ final class StaticLambdaFixerTest extends AbstractFixerTestCase
                             $a = function () {
                                 $a = [0 => \'this\'];
                                 var_dump(${$a[0]});
+                            };
+                        }
+                    }
+                ',
+        ];
+
+        yield [
+            '<?php
+                    class N
+                    {
+                        public function O()
+                        {
+                            $a = function () {
+                                return new class($this) {};
                             };
                         }
                     }

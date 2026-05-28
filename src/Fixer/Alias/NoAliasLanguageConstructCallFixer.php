@@ -21,6 +21,9 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class NoAliasLanguageConstructCallFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
@@ -29,11 +32,13 @@ final class NoAliasLanguageConstructCallFixer extends AbstractFixer
             'Master language constructs shall be used instead of aliases.',
             [
                 new CodeSample(
-                    '<?php
-die;
-'
+                    <<<'PHP'
+                        <?php
+                        die;
+
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

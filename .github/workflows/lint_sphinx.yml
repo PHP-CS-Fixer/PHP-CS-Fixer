@@ -1,0 +1,39 @@
+name: Lint
+
+on:
+  pull_request:
+    paths:
+      - '**/*.rst'
+  push:
+    branches:
+      - master
+    paths:
+      - '**/*.rst'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-sphinx:
+    name: Sphinx
+    runs-on: ubuntu-slim
+    timeout-minutes: 1
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Cache pip
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-sphinx-lint
+      - name: Install sphinx-lint
+        run: |
+          pip install --user sphinx-lint
+      - name: Check Sphinx document sources
+        run: |
+          git ls-files --cached -z -- '*.rst' \
+            | xargs --null -- python -m sphinxlint --enable all --disable trailing-whitespace --max-line-length 2000

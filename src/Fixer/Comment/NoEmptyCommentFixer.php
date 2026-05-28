@@ -21,6 +21,9 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class NoEmptyCommentFixer extends AbstractFixer
 {
     private const TYPE_HASH = 1;
@@ -32,7 +35,7 @@ final class NoEmptyCommentFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before NoExtraBlankLinesFixer, NoTrailingWhitespaceFixer, NoWhitespaceInBlankLineFixer.
+     * Must run before NoExtraBlankLinesFixer, NoTrailingWhitespaceFixer, NoWhitespaceInBlankLineFixer, NoWhitespaceInEmptyArrayFixer.
      * Must run after PhpdocToCommentFixer.
      */
     public function getPriority(): int
@@ -44,7 +47,7 @@ final class NoEmptyCommentFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'There should not be any empty comments.',
-            [new CodeSample("<?php\n//\n#\n/* */\n")]
+            [new CodeSample("<?php\n//\n#\n/* */\n")],
         );
     }
 

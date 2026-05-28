@@ -23,6 +23,8 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
  * @readonly
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DiffConsoleFormatter
 {
@@ -67,7 +69,7 @@ final class DiffConsoleFormatter
                                 },
                                 $line,
                                 1,
-                                $count
+                                $count,
                             );
 
                             if (0 === $count) {
@@ -77,9 +79,9 @@ final class DiffConsoleFormatter
 
                         return \sprintf($lineTemplate, $line);
                     },
-                    Preg::split('#\R#u', $diff)
-                )
-            )
+                    Preg::split('#\R#u', $diff),
+                ),
+            ),
         );
     }
 }

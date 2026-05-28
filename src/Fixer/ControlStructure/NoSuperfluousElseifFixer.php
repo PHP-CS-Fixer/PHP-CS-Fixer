@@ -22,6 +22,9 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class NoSuperfluousElseifFixer extends AbstractNoUselessElseFixer
 {
     public function isCandidate(Tokens $tokens): bool
@@ -35,7 +38,7 @@ final class NoSuperfluousElseifFixer extends AbstractNoUselessElseFixer
             'Replaces superfluous `elseif` with `if`.',
             [
                 new CodeSample("<?php\nif (\$a) {\n    return 1;\n} elseif (\$b) {\n    return 2;\n}\n"),
-            ]
+            ],
         );
     }
 

@@ -18,12 +18,17 @@ use PhpCsFixer\Console\Command\HelpCommand;
 use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Console\Command\HelpCommand
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(HelpCommand::class)]
 final class HelpCommandTest extends TestCase
 {
     /**
@@ -31,6 +36,7 @@ final class HelpCommandTest extends TestCase
      *
      * @dataProvider provideGetDescriptionWithAllowedValuesCases
      */
+    #[DataProvider('provideGetDescriptionWithAllowedValuesCases')]
     public function testGetDescriptionWithAllowedValues(string $expected, string $description, array $allowedValues): void
     {
         self::assertSame($expected, HelpCommand::getDescriptionWithAllowedValues($description, $allowedValues));
@@ -59,6 +65,7 @@ final class HelpCommandTest extends TestCase
      *
      * @dataProvider provideGetDisplayableAllowedValuesCases
      */
+    #[DataProvider('provideGetDisplayableAllowedValuesCases')]
     public function testGetDisplayableAllowedValues($expected, FixerOptionInterface $input): void
     {
         self::assertSame($expected, HelpCommand::getDisplayableAllowedValues($input));

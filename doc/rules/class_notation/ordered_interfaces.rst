@@ -4,6 +4,15 @@ Rule ``ordered_interfaces``
 
 Orders the interfaces in an ``implements`` or ``interface extends`` clause.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``case_sensitive``,
+``direction``, ``order``.
+
 Configuration
 -------------
 

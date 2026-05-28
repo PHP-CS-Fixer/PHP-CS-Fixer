@@ -4,6 +4,14 @@ Rule ``phpdoc_no_alias_tag``
 
 No alias PHPDoc tags should be used.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``replacements``.
+
 Configuration
 -------------
 
@@ -15,6 +23,8 @@ Mapping between replaced annotations with new ones.
 Allowed types: ``array<string, string>``
 
 Default value: ``['property-read' => 'property', 'property-write' => 'property', 'type' => 'var', 'link' => 'see']``
+
+Default value (future-mode): ``['const' => 'var', 'property-read' => 'property', 'property-write' => 'property', 'type' => 'var', 'link' => 'see']``
 
 Examples
 --------
@@ -67,8 +77,13 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
-- `@Symfony <./../../ruleSets/Symfony.rst>`_
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
+  ``['replacements' => ['const' => 'var', 'link' => 'see', 'property-read' => 'property', 'property-write' => 'property', 'type' => 'var']]``
+
+- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
+  ``['replacements' => ['const' => 'var', 'link' => 'see', 'property-read' => 'property', 'property-write' => 'property', 'type' => 'var']]``
 
 References
 ----------

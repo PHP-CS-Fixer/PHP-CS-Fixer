@@ -7,8 +7,8 @@ Properties should be set to ``null`` instead of using ``unset``.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when relying on attributes to be removed using ``unset`` rather than be
 set to ``null``. Changing variables to ``null`` instead of unsetting means these

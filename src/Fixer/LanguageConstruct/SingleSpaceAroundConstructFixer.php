@@ -46,6 +46,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Andreas Möller <am@localheinz.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SingleSpaceAroundConstructFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -161,16 +163,20 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
             'Ensures a single space after language constructs.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-throw  new  \Exception();
-'
+                        throw  new  \Exception();
+
+                        PHP,
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-function foo() { yield  from  baz(); }
-',
+                        function foo() { yield  from  baz(); }
+
+                        PHP,
                     [
                         'constructs_contain_a_single_space' => [
                             'yield_from',
@@ -178,14 +184,16 @@ function foo() { yield  from  baz(); }
                         'constructs_followed_by_a_single_space' => [
                             'yield_from',
                         ],
-                    ]
+                    ],
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-$foo = function& ()use($bar) {
-};
-',
+                        $foo = function& ()use($bar) {
+                        };
+
+                        PHP,
                     [
                         'constructs_preceded_by_a_single_space' => [
                             'use_lambda',
@@ -193,31 +201,35 @@ $foo = function& ()use($bar) {
                         'constructs_followed_by_a_single_space' => [
                             'use_lambda',
                         ],
-                    ]
+                    ],
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-echo  "Hello!";
-',
+                        echo  "Hello!";
+
+                        PHP,
                     [
                         'constructs_followed_by_a_single_space' => [
                             'echo',
                         ],
-                    ]
+                    ],
                 ),
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-yield  from  baz();
-',
+                        yield  from  baz();
+
+                        PHP,
                     [
                         'constructs_followed_by_a_single_space' => [
                             'yield_from',
                         ],
-                    ]
+                    ],
                 ),
-            ]
+            ],
         );
     }
 
@@ -291,7 +303,7 @@ yield  from  baz();
                     $tokens[$index] = new Token([\T_YIELD_FROM, Preg::replace(
                         '/\s+/',
                         ' ',
-                        $token->getContent()
+                        $token->getContent(),
                     )]);
                 }
             }

@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Kuba Werłos <werlos@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class CommentsAnalyzer
 {
@@ -195,6 +197,12 @@ final class CommentsAnalyzer
 
         if ($token->isClassy() || $token->isGivenKind(self::SKIP_TYPES)) {
             return true;
+        }
+
+        if ($token->isGivenKind(\T_STRING)) {
+            $content = strtolower($token->getContent());
+
+            return 'get' === $content || 'set' === $content;
         }
 
         if ($token->isGivenKind(\T_CASE)) {

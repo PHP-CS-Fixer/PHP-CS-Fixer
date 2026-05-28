@@ -29,6 +29,8 @@ use React\Stream\WritableStreamInterface;
  * @author Greg Korba <greg@codito.dev>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class Process
 {
@@ -69,6 +71,14 @@ final class Process
      */
     public function start(callable $onData, callable $onError, callable $onExit): void
     {
+        $sysTempDir = sys_get_temp_dir();
+        if (!is_writable($sysTempDir)) {
+            throw new ParallelisationException(\sprintf(
+                'Failed creating temp file as sys_get_temp_dir="%s" is not writable.',
+                $sysTempDir,
+            ));
+        }
+
         $stdOut = tmpfile();
         if (false === $stdOut) {
             throw new ParallelisationException('Failed creating temp file for stdOut.');
@@ -123,7 +133,7 @@ final class Process
 
         if (null === $this->in) {
             throw new ParallelisationException(
-                'Process not connected with parallelisation operator, ensure `bindConnection()` was called'
+                'Process not connected with parallelisation operator, ensure `bindConnection()` was called',
             );
         }
 
@@ -133,8 +143,8 @@ final class Process
                 new \Exception(
                     \sprintf(
                         'Child process timed out after %d seconds. Try making it longer using `ParallelConfig`.',
-                        $this->timeoutSeconds
-                    )
+                        $this->timeoutSeconds,
+                    ),
                 )
             );
         });

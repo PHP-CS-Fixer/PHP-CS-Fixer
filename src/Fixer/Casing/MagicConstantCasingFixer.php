@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author ntzm
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class MagicConstantCasingFixer extends AbstractFixer
 {
@@ -45,37 +47,31 @@ final class MagicConstantCasingFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Magic constants should be referred to using the correct casing.',
-            [new CodeSample("<?php\necho __dir__;\n")]
+            [new CodeSample("<?php\necho __dir__;\n")],
         );
     }
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound($this->getMagicConstantTokens());
+        static $magicConstantTokenIds = null;
+
+        if (null === $magicConstantTokenIds) {
+            $magicConstantTokenIds = array_keys(self::MAGIC_CONSTANTS);
+        }
+
+        return $tokens->isAnyTokenKindsFound($magicConstantTokenIds);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $magicConstantTokens = $this->getMagicConstantTokens();
-
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind($magicConstantTokens)) {
-                $tokens[$index] = new Token([$token->getId(), self::MAGIC_CONSTANTS[$token->getId()]]);
+            $tokenId = $token->getId();
+
+            if (null === $tokenId || !isset(self::MAGIC_CONSTANTS[$tokenId])) {
+                continue;
             }
+
+            $tokens[$index] = new Token([$tokenId, self::MAGIC_CONSTANTS[$tokenId]]);
         }
-    }
-
-    /**
-     * @return list<int>
-     */
-    private function getMagicConstantTokens(): array
-    {
-        static $magicConstantTokens = null;
-
-        if (null === $magicConstantTokens) {
-            $magicConstantTokens = array_keys(self::MAGIC_CONSTANTS);
-        }
-
-        return $magicConstantTokens;
     }
 }

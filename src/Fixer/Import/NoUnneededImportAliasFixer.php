@@ -21,13 +21,16 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class NoUnneededImportAliasFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Imports should not be aliased as the same name.',
-            [new CodeSample("<?php\nuse A\\B\\Foo as Foo;\n")]
+            [new CodeSample("<?php\nuse A\\B\\Foo as Foo;\n")],
         );
     }
 

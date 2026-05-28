@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class StrictParamFixer extends AbstractFixer
 {
@@ -34,7 +36,7 @@ final class StrictParamFixer extends AbstractFixer
             'Functions should be used with `$strict` param set to `true`.',
             [new CodeSample("<?php\n\$a = array_keys(\$b);\n\$a = array_search(\$b, \$c);\n\$a = base64_decode(\$b);\n\$a = in_array(\$b, \$c);\n\$a = mb_detect_encoding(\$b, \$c);\n")],
             'The functions "array_keys", "array_search", "base64_decode", "in_array" and "mb_detect_encoding" should be used with $strict param.',
-            'Risky when the fixed function is overridden or if the code relies on non-strict usage.'
+            'Risky when the fixed function is overridden or if the code relies on non-strict usage.',
         );
     }
 

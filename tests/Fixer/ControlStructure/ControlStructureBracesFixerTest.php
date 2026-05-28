@@ -14,7 +14,10 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 
+use PhpCsFixer\Fixer\ControlStructure\ControlStructureBracesFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -22,12 +25,16 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\ControlStructure\ControlStructureBracesFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\ControlStructureBracesFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ControlStructureBracesFixer::class)]
 final class ControlStructureBracesFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -159,6 +166,26 @@ final class ControlStructureBracesFixerTest extends AbstractFixerTestCase
 
         yield 'declare followed by closing tag' => [
             '<?php declare(strict_types=1) ?>',
+        ];
+
+        yield 'if with do-while inside' => [
+            '<?php if ($a) { do { foo(); } while ($b); }',
+            '<?php if ($a) do foo(); while ($b);',
+        ];
+
+        yield 'if with try-catch-finally inside' => [
+            '<?php if ($a) { try { foo(); } catch (\Exception $e) { bar(); } finally { baz(); } }',
+            '<?php if ($a) try { foo(); } catch (\Exception $e) { bar(); } finally { baz(); }',
+        ];
+
+        yield 'if with lambda function inside' => [
+            '<?php if ($a) { $f = function () { return 1; }; }',
+            '<?php if ($a) $f = function () { return 1; };',
+        ];
+
+        yield 'if with echo having closing tag and no semicolon' => [
+            '<?php if ($a) { echo 1; } ?>',
+            '<?php if ($a) echo 1 ?>',
         ];
     }
 }

@@ -4,6 +4,14 @@ Rule ``no_unneeded_control_parentheses``
 
 Removes unneeded parentheses around control statements.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``statements``.
+
 Configuration
 -------------
 
@@ -75,7 +83,7 @@ The rule is part of the following rule sets:
 
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
-  ``['statements' => ['break', 'clone', 'continue', 'echo_print', 'others', 'return', 'switch_case', 'yield', 'yield_from']]``
+  ``['statements' => ['break', 'clone', 'continue', 'echo_print', 'negative_instanceof', 'others', 'return', 'switch_case', 'yield', 'yield_from']]``
 
 References
 ----------

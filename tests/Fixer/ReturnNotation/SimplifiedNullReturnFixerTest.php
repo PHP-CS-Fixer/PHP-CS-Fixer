@@ -14,7 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ReturnNotation;
 
+use PhpCsFixer\Fixer\ReturnNotation\SimplifiedNullReturnFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -24,12 +28,16 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ReturnNotation\SimplifiedNullReturnFixer>
  *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(SimplifiedNullReturnFixer::class)]
 final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -149,10 +157,12 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      *
      * @dataProvider provideFix80Cases
      */
+    #[RequiresPhp('>= 8.0.0')]
+    #[DataProvider('provideFix80Cases')]
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -188,6 +198,83 @@ final class SimplifiedNullReturnFixerTest extends AbstractFixerTestCase
                 if (true) { return null; }
                 return [];
             }',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP >= 8.4.0
+     */
+    #[DataProvider('provideFix84Cases')]
+    #[RequiresPhp('>= 8.4.0')]
+    public function testFix84(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, 1?: string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield 'nullable property with hook' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public ?string $bar {
+                        get {
+                            if ($this->bar === 'top secret') {
+                                return null;
+                            }
+                            return $this->bar;
+                        }
+                    }
+                }
+                PHP,
+        ];
+
+        yield 'nullable property with hook and callable' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public ?string $bar {
+                        get {
+                            $getSecret = function () {
+                                if (random_int(0, 1) === 0) {
+                                    return;
+                                }
+                                return 'top secret';
+                            };
+
+                            if ($getSecret() === null) {
+                                return null;
+                            }
+                            return $this->bar;
+                        }
+                    }
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public ?string $bar {
+                        get {
+                            $getSecret = function () {
+                                if (random_int(0, 1) === 0) {
+                                    return null;
+                                }
+                                return 'top secret';
+                            };
+
+                            if ($getSecret() === null) {
+                                return null;
+                            }
+                            return $this->bar;
+                        }
+                    }
+                }
+                PHP,
         ];
     }
 }

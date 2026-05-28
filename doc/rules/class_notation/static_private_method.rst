@@ -7,8 +7,8 @@ Converts private methods to ``static`` where possible.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when the method: contains dynamic generated calls to the instance, is
 dynamically referenced, is referenced inside a Trait the class uses.

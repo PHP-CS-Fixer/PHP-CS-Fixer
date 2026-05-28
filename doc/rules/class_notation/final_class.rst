@@ -20,8 +20,8 @@ pattern. If these rules are too strict for you, you can use
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when subclassing non-abstract classes.
 

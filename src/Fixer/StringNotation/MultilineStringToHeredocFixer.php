@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Michael Vorisek <https://github.com/mvorisek>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class MultilineStringToHeredocFixer extends AbstractFixer
 {
@@ -37,16 +39,16 @@ final class MultilineStringToHeredocFixer extends AbstractFixer
                         <?php
                         $a = 'line1
                         line2';
-                        EOD."\n"
+                        EOD."\n",
                 ),
                 new CodeSample(
                     <<<'EOD'
                         <?php
                         $a = "line1
                         {$obj->getName()}";
-                        EOD."\n"
+                        EOD."\n",
                 ),
-            ]
+            ],
         );
     }
 

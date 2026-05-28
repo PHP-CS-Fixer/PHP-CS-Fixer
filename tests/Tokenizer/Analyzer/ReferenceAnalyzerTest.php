@@ -17,6 +17,9 @@ namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\ReferenceAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>
@@ -24,7 +27,10 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @covers \PhpCsFixer\Tokenizer\Analyzer\ReferenceAnalyzer
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ReferenceAnalyzer::class)]
 final class ReferenceAnalyzerTest extends TestCase
 {
     public function testNonAmpersand(): void
@@ -47,6 +53,7 @@ final class ReferenceAnalyzerTest extends TestCase
     /**
      * @dataProvider provideReferenceCases
      */
+    #[DataProvider('provideReferenceCases')]
     public function testReference(string $code): void
     {
         $this->doTestCode(true, $code);
@@ -97,6 +104,7 @@ class Foo {
     /**
      * @dataProvider provideNonReferenceCases
      */
+    #[DataProvider('provideNonReferenceCases')]
     public function testNonReference(string $code): void
     {
         $this->doTestCode(false, $code);
@@ -155,8 +163,10 @@ class Foo {
     /**
      * @dataProvider provideNonReferencePre84Cases
      *
-     * @requires PHP <8.4
+     * @requires PHP < 8.4.0
      */
+    #[DataProvider('provideNonReferencePre84Cases')]
+    #[RequiresPhp('< 8.4.0')]
     public function testNonReferencePre84(string $code): void
     {
         $this->doTestCode(false, $code);

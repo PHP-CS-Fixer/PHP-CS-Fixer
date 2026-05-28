@@ -1,0 +1,34 @@
+name: Maintenance
+
+on:
+  issues:
+    types: [labeled]
+  pull_request_target:
+    types: [labeled]
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  add-to-milestone-8x5:
+    name: Add milestone PHP 8.5
+    runs-on: ubuntu-slim
+    if: ${{ github.event.label.name == 'topic/PHP8.5' }}
+    env:
+      PR_URL: ${{github.event.pull_request.html_url}}
+      GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+    steps:
+      - run: gh pr edit "$PR_URL" --milestone 'PHP 8.5 initial compatibility'
+
+  add-to-milestone-8x6:
+    name: Add milestone PHP 8.6
+    runs-on: ubuntu-slim
+    if: ${{ github.event.label.name == 'topic/PHP8.6' }}
+    env:
+      PR_URL: ${{github.event.pull_request.html_url}}
+      GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+    steps:
+      - run: gh pr edit "$PR_URL" --milestone 'PHP 8.6 initial compatibility'

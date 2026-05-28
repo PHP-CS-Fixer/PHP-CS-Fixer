@@ -5,13 +5,18 @@ Rule ``fopen_flags``
 The flags in ``fopen`` calls must omit ``t``, and ``b`` must be omitted or
 included consistently.
 
-Warning
--------
+Warnings
+--------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when the function ``fopen`` is overridden.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``b_mode``.
 
 Configuration
 -------------

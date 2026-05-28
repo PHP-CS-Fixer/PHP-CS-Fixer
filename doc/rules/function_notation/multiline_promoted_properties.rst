@@ -4,6 +4,25 @@ Rule ``multiline_promoted_properties``
 
 Promoted properties must be on separate lines.
 
+Warnings
+--------
+
+This rule is EXPERIMENTAL
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Rule is not covered with backward compatibility promise and may produce unstable
+or unexpected results, use it at your own risk. Rule's behaviour may be changed
+at any point, including rule's name; its options' names, availability and
+allowed values; its default configuration. Rule may be even removed without
+prior notice. Feel free to provide feedback and help with determining final
+state of the rule.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``keep_blank_lines``,
+``minimum_number_of_parameters``.
+
 Configuration
 -------------
 
@@ -67,6 +86,24 @@ With configuration: ``['minimum_number_of_parameters' => 3]``.
     }
     class Bar {
         public function __construct(private array $x) {}
+    }
+
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['minimum_number_of_parameters' => 3]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    class Foo {
+   -    public function __construct(
+   -        private array $a,
+   -        private bool $b,
+   -    ) {}
+   +    public function __construct(private array $a, private bool $b,) {}
     }
 
 References

@@ -14,9 +14,15 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\RuleSet\Sets;
 
+use PhpCsFixer\RuleSet\Sets\PERCS3x0Set;
+use PHPUnit\Framework\Attributes\CoversClass;
+
 /**
  * @internal
  *
  * @covers \PhpCsFixer\RuleSet\Sets\PERCS3x0Set
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(PERCS3x0Set::class)]
 final class PERCS3x0SetTest extends AbstractSetTestCase {}

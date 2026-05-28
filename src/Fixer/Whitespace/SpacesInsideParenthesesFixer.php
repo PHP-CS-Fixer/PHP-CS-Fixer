@@ -41,6 +41,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Marc Aubé
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SpacesInsideParenthesesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -52,27 +54,47 @@ final class SpacesInsideParenthesesFixer extends AbstractFixer implements Config
         return new FixerDefinition(
             'Parentheses must be declared using the configured whitespace.',
             [
-                new CodeSample("<?php\nif ( \$a ) {\n    foo( );\n}\n"),
                 new CodeSample(
-                    "<?php
-function foo( \$bar, \$baz )
-{
-}\n",
-                    ['space' => 'none']
+                    <<<'PHP'
+                        <?php
+                        if ( $a ) {
+                            foo( );
+                        }
+
+                        PHP,
                 ),
                 new CodeSample(
-                    "<?php\nif (\$a) {\n    foo( );\n}\n",
-                    ['space' => 'single']
+                    <<<'PHP'
+                        <?php
+                        function foo( $bar, $baz )
+                        {
+                        }
+
+                        PHP,
+                    ['space' => 'none'],
                 ),
                 new CodeSample(
-                    "<?php
-function foo(\$bar, \$baz)
-{
-}\n",
-                    ['space' => 'single']
+                    <<<'PHP'
+                        <?php
+                        if ($a) {
+                            foo( );
+                        }
+
+                        PHP,
+                    ['space' => 'single'],
+                ),
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        function foo($bar, $baz)
+                        {
+                        }
+
+                        PHP,
+                    ['space' => 'single'],
                 ),
             ],
-            'By default there are not any additional spaces inside parentheses, however with `space=single` configuration option whitespace inside parentheses will be unified to single space.'
+            'By default there are not any additional spaces inside parentheses, however with `space=single` configuration option whitespace inside parentheses will be unified to single space.',
         );
     }
 

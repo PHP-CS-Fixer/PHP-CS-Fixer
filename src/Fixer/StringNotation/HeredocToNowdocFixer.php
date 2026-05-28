@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Gregor Harlan <gharlan@web.de>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class HeredocToNowdocFixer extends AbstractFixer
 {
@@ -38,9 +40,9 @@ final class HeredocToNowdocFixer extends AbstractFixer
                         Foo
                         TEST;
 
-                        EOF
+                        EOF,
                 ),
-            ]
+            ],
         );
     }
 

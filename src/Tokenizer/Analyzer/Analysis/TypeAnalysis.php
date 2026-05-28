@@ -18,6 +18,8 @@ namespace PhpCsFixer\Tokenizer\Analyzer\Analysis;
  * @readonly
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TypeAnalysis
 {
@@ -26,7 +28,7 @@ final class TypeAnalysis
      *
      * More info:
      *
-     * @var list<string>
+     * @var non-empty-list<string>
      *
      * @see https://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration.types
      * @see https://php.net/manual/en/reserved.other-reserved-words.php

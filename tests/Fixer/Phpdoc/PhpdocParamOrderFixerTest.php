@@ -14,7 +14,10 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
+use PhpCsFixer\Fixer\Phpdoc\PhpdocParamOrderFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -24,12 +27,16 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocParamOrderFixer>
  *
  * @author Jonathan Gruber <gruberjonathan@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(PhpdocParamOrderFixer::class)]
 final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -965,6 +972,31 @@ final class PhpdocParamOrderFixerTest extends AbstractFixerTestCase
                     public function m(array $a, $b, bool $c) {}
                 }
                 EOT,
+        ];
+
+        yield 'call-site generic variance' => [
+            <<<'PHP'
+                <?php
+                /**
+                 * @param Foo $a
+                 * @param Bar<covariant A, covariant B> $b
+                 * @param Foo $c
+                 * @param Bar<contravariant C, contravariant D> $d
+                 * @param Foo $e
+                 */
+                function f($a, $b, $c, $d, $e) {}
+                PHP,
+            <<<'PHP'
+                <?php
+                /**
+                 * @param Bar<contravariant C, contravariant D> $d
+                 * @param Bar<covariant A, covariant B> $b
+                 * @param Foo $e
+                 * @param Foo $a
+                 * @param Foo $c
+                 */
+                function f($a, $b, $c, $d, $e) {}
+                PHP,
         ];
     }
 }

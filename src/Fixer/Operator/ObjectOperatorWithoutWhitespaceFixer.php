@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 /**
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ObjectOperatorWithoutWhitespaceFixer extends AbstractFixer
 {
@@ -31,7 +33,7 @@ final class ObjectOperatorWithoutWhitespaceFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'There should not be space before or after object operators `->` and `?->`.',
-            [new CodeSample("<?php \$a  ->  b;\n")]
+            [new CodeSample("<?php \$a  ->  b;\n")],
         );
     }
 

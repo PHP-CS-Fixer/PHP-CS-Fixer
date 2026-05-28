@@ -66,6 +66,8 @@ The ``--format`` option for the output format. Supported formats are ``@auto`` (
 
 * ``@auto,{format}`` takes ``@auto`` under CI, and {format} otherwise
 
+When the ``AI_AGENT`` environment variable (or another popular one) is set, the format is unconditionally resolved to the selected best fit for the AI agent (currently ``json``).
+
 NOTE: the output for the following formats are generated in accordance with schemas
 
 * ``checkstyle`` follows the common `"checkstyle" XML schema </doc/schemas/fix/checkstyle.xsd>`_
@@ -84,39 +86,23 @@ NOTE: if there is an error like "errors reported during linting after fixing", y
 * ``-vv``: very verbose
 * ``-vvv``: debug
 
-The ``--rules`` option limits the rules to apply to the
-project:
+The ``--rules`` option allows to explicitly select rules to use, overriding the default PSR-12 or your own project config:
 
 .. code-block:: console
 
-    php php-cs-fixer.phar fix /path/to/project --rules=@PSR12
+    php php-cs-fixer.phar fix . --rules=line_ending,full_opening_tag,indentation_type
 
-By default the ``PSR12`` rules are used. If the ``--rules`` option is used rules from config files are ignored.
-
-The ``--rules`` option lets you choose the exact rules to apply (the rule names must be separated by a comma):
+You can also exclude the rules you don't want by placing a dash in front of the rule name, like ``-name_of_fixer``.
 
 .. code-block:: console
 
-    php php-cs-fixer.phar fix /path/to/dir --rules=line_ending,full_opening_tag,indentation_type
+    php php-cs-fixer.phar fix . --rules=@Symfony,-@PSR1,-blank_line_before_statement,strict_comparison
 
-You can also exclude the rules you don't want by placing a dash in front of the rule name, if this is more convenient,
-using ``-name_of_fixer``:
-
-.. code-block:: console
-
-    php php-cs-fixer.phar fix /path/to/dir --rules=-full_opening_tag,-indentation_type
-
-When using combinations of exact and exclude rules, applying exact rules along with above excluded results:
+Complete configuration for rules can be supplied using a ``json`` formatted string as well.
 
 .. code-block:: console
 
-    php php-cs-fixer.phar fix /path/to/project --rules=@Symfony,-@PSR1,-blank_line_before_statement,strict_comparison
-
-Complete configuration for rules can be supplied using a ``json`` formatted string.
-
-.. code-block:: console
-
-    php php-cs-fixer.phar fix /path/to/project --rules='{"concat_space": {"spacing": "none"}}'
+    php php-cs-fixer.phar fix . --rules='{"concat_space": {"spacing": "none"}}'
 
 The ``--dry-run`` flag will run the fixer without making changes to your files (implicitly set when you use ``check`` command).
 
@@ -194,7 +180,7 @@ Note: You need to pass the config to the ``fix`` command, in order to make it wo
 
 .. code-block:: console
 
-    php php-cs-fixer.phar list-files --config=.php-cs-fixer.dist.php | xargs -n 50 -P 8 php php-cs-fixer.phar fix --config=.php-cs-fixer.dist.php --path-mode intersection -v
+    php php-cs-fixer.phar list-files --config=.php-cs-fixer.dist.php | xargs -n 50 -P 8 php php-cs-fixer.phar fix --config=.php-cs-fixer.dist.php --path-mode=intersection -v
 
 * ``-n`` defines how many files a single subprocess process
 * ``-P`` defines how many subprocesses the shell is allowed to spawn for parallel processing (usually similar to the number of CPUs your system has)
@@ -214,6 +200,24 @@ To visualize all the rules that belong to a ruleset:
 .. code-block:: console
 
     php php-cs-fixer.phar describe @PSR2
+
+The ``--expand`` option can be used to show all rules when describing a ruleset, including nested rulesets:
+
+.. code-block:: console
+
+    php php-cs-fixer.phar describe @PSR2 --expand
+
+You can also use the special ``@`` alias to describe the configuration currently in use:
+
+.. code-block:: console
+
+    php php-cs-fixer.phar describe @
+
+The ``--config`` option can be used to specify which config file to load:
+
+.. code-block:: console
+
+    php php-cs-fixer.phar describe @ --config=.php-cs-fixer.dist.php
 
 Command-line completion
 -----------------------
@@ -268,7 +272,7 @@ Then, add the following command to your CI:
     '
     CHANGED_FILES=$(git diff --name-only --diff-filter=ACMRTUXB "${COMMIT_RANGE}")
     if ! echo "${CHANGED_FILES}" | grep -qE "^(\\.php-cs-fixer(\\.dist)?\\.php|composer\\.lock)$"; then EXTRA_ARGS=$(printf -- '--path-mode=intersection\n--\n%s' "${CHANGED_FILES}"); else EXTRA_ARGS=''; fi
-    vendor/bin/php-cs-fixer check --config=.php-cs-fixer.dist.php -v --stop-on-violation --using-cache=no ${EXTRA_ARGS}
+    vendor/bin/php-cs-fixer check --config=.php-cs-fixer.dist.php -v --show-progress=dots --stop-on-violation --using-cache=no ${EXTRA_ARGS}
 
 Where ``$COMMIT_RANGE`` is your range of commits, e.g. ``${{github.event.before}}...${{github.event.after}}`` or ``HEAD~..HEAD``.
 
@@ -295,12 +299,12 @@ NOTE: Execution may be unstable when used.
 Exit code
 ---------
 
-Exit code of the ``fix`` command is built using following bit flags:
+Exit code of the ``check`` and ``fix`` command is built using following bit flags:
 
 *  0 - OK.
 *  1 - General error (or PHP minimal requirement not matched).
-*  4 - Some files have invalid syntax (only in dry-run mode).
-*  8 - Some files need fixing (only in dry-run mode).
+*  4 - Some files have invalid syntax (only in ``check``/``fix --dry-run`` mode).
+*  8 - Some files need fixing (only in ``check``/``fix --dry-run`` mode).
 * 16 - Configuration error of the application.
 * 32 - Configuration error of a Fixer.
 * 64 - Exception raised within the application.

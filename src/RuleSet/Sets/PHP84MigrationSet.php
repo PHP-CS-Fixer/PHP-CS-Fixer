@@ -14,19 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\RuleSet\AbstractMigrationSetDescription;
+use PhpCsFixer\RuleSet\AbstractMajorMinorDeprecationSetDefinition;
 
 /**
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-final class PHP84MigrationSet extends AbstractMigrationSetDescription
-{
-    public function getRules(): array
-    {
-        return [
-            '@PHP83Migration' => true,
-            'new_expression_parentheses' => true,
-            'nullable_type_declaration_for_default_null_value' => true,
-        ];
-    }
-}
+final class PHP84MigrationSet extends AbstractMajorMinorDeprecationSetDefinition {}

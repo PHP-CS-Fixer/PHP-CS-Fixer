@@ -19,12 +19,18 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AttributeAnalyzer::class)]
 final class AttributeAnalyzerTest extends TestCase
 {
     /**
@@ -39,10 +45,12 @@ final class AttributeAnalyzerTest extends TestCase
     }
 
     /**
-     * @requires     PHP 8.0
+     * @requires     PHP >= 8.0.0
      *
      * @dataProvider provideIsAttributeCases
      */
+    #[RequiresPhp('>= 8.0.0')]
+    #[DataProvider('provideIsAttributeCases')]
     public function testIsAttribute(bool $isInAttribute, string $code): void
     {
         $tokens = Tokens::fromCode($code);
@@ -133,12 +141,14 @@ final class AttributeAnalyzerTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      *
      * @dataProvider provideGetAttributeDeclarationsCases
      *
      * @param list<AttributeAnalysis> $expectedAnalyses
      */
+    #[RequiresPhp('>= 8.0.0')]
+    #[DataProvider('provideGetAttributeDeclarationsCases')]
     public function testGetAttributeDeclarations(string $code, int $startIndex, array $expectedAnalyses): void
     {
         $tokens = Tokens::fromCode($code);
@@ -342,12 +352,14 @@ final class AttributeAnalyzerTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      *
      * @dataProvider provideGetAttributeDeclarations81Cases
      *
      * @param list<AttributeAnalysis> $expectedAnalyses
      */
+    #[RequiresPhp('>= 8.1.0')]
+    #[DataProvider('provideGetAttributeDeclarations81Cases')]
     public function testGetAttributeDeclarations81(string $code, int $startIndex, array $expectedAnalyses): void
     {
         $this->testGetAttributeDeclarations($code, $startIndex, $expectedAnalyses);

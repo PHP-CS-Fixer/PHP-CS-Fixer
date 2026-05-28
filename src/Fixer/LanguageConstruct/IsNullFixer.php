@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Vladimir Reznichenko <kalessil@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class IsNullFixer extends AbstractFixer
 {
@@ -35,7 +37,7 @@ final class IsNullFixer extends AbstractFixer
                 new CodeSample("<?php\n\$a = is_null(\$b);\n"),
             ],
             null,
-            'Risky when the function `is_null` is overridden.'
+            'Risky when the function `is_null` is overridden.',
         );
     }
 

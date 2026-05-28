@@ -1,4 +1,0 @@
---TEST--
-Integration of @PHP54Migration.
---RULESET--
-{"@PHP54Migration": true}

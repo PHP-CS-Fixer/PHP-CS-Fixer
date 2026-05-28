@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocTrimFixer extends AbstractFixer
 {
@@ -31,15 +33,21 @@ final class PhpdocTrimFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'PHPDoc should start and end with content, excluding the very first and last line of the docblocks.',
-            [new CodeSample('<?php
-/**
- *
- * Foo must be final class.
- *
- *
- */
-final class Foo {}
-')]
+            [
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        /**
+                         *
+                         * Foo must be final class.
+                         *
+                         *
+                         */
+                        final class Foo {}
+
+                        PHP,
+                ),
+            ],
         );
     }
 
@@ -90,7 +98,7 @@ final class Foo {}
                 (\R\h*(?:\*\h*)?\S) # first line with useful content
             ~x',
             '$1$2',
-            $content
+            $content,
         );
     }
 
@@ -109,7 +117,7 @@ final class Foo {}
                 (\R\h*\*/$)            # DocComment end
             ~xu',
             '$1$2',
-            $content
+            $content,
         );
     }
 }

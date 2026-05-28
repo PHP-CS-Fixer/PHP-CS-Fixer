@@ -18,6 +18,8 @@ namespace PhpCsFixer\FixerConfiguration;
  * @author ntzm
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class AliasedFixerOptionBuilder
 {
@@ -72,7 +74,7 @@ final class AliasedFixerOptionBuilder
     {
         return new AliasedFixerOption(
             $this->optionBuilder->getOption(),
-            $this->alias
+            $this->alias,
         );
     }
 }

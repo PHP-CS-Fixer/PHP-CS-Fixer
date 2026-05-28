@@ -5,13 +5,18 @@ Rule ``no_unneeded_curly_braces``
 Removes unneeded curly braces that are superfluous and aren't part of a control
 structure's body.
 
-Warning
--------
+Warnings
+--------
 
-This rule is deprecated and will be removed in the next major version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is DEPRECATED and will be removed in the next major version 4.0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You should use ``no_unneeded_braces`` instead.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``namespaces``.
 
 Configuration
 -------------

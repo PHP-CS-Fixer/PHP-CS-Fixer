@@ -25,6 +25,7 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Future;
 use PhpCsFixer\Preg;
 
 /**
@@ -41,6 +42,8 @@ use PhpCsFixer\Preg;
  *
  * @author Graham Campbell <hello@gjcampbell.co.uk>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocNoAliasTagFixer extends AbstractProxyFixer implements ConfigurableFixerInterface
 {
@@ -53,33 +56,37 @@ final class PhpdocNoAliasTagFixer extends AbstractProxyFixer implements Configur
             'No alias PHPDoc tags should be used.',
             [
                 new CodeSample(
-                    '<?php
-/**
- * @property string $foo
- * @property-read string $bar
- *
- * @link baz
- */
-final class Example
-{
-}
-'
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @property string $foo
+                         * @property-read string $bar
+                         *
+                         * @link baz
+                         */
+                        final class Example
+                        {
+                        }
+
+                        PHP,
                 ),
                 new CodeSample(
-                    '<?php
-/**
- * @property string $foo
- * @property-read string $bar
- *
- * @link baz
- */
-final class Example
-{
-}
-',
-                    ['replacements' => ['link' => 'website']]
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @property string $foo
+                         * @property-read string $bar
+                         *
+                         * @link baz
+                         */
+                        final class Example
+                        {
+                        }
+
+                        PHP,
+                    ['replacements' => ['link' => 'website']],
                 ),
-            ]
+            ],
         );
     }
 
@@ -110,7 +117,7 @@ final class Example
             throw new InvalidFixerConfigurationException(
                 $this->getName(),
                 Preg::replace('/^\[.+?\] /', '', $exception->getMessage()),
-                $exception
+                $exception,
             );
         }
     }
@@ -120,12 +127,15 @@ final class Example
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('replacements', 'Mapping between replaced annotations with new ones.'))
                 ->setAllowedTypes(['array<string, string>'])
-                ->setDefault([
-                    'property-read' => 'property',
-                    'property-write' => 'property',
-                    'type' => 'var',
-                    'link' => 'see',
-                ])
+                ->setDefault(
+                    Future::getV4OrV3(['const' => 'var'], [])
+                    + [
+                        'property-read' => 'property',
+                        'property-write' => 'property',
+                        'type' => 'var',
+                        'link' => 'see',
+                    ],
+                )
                 ->getOption(),
         ]);
     }

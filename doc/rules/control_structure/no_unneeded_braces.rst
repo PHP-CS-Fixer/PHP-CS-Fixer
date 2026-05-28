@@ -5,6 +5,14 @@ Rule ``no_unneeded_braces``
 Removes unneeded braces that are superfluous and aren't part of a control
 structure's body.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``namespaces``.
+
 Configuration
 -------------
 

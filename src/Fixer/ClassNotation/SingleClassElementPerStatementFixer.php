@@ -45,6 +45,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *
  * @author Javier Spagnoletti <phansys@gmail.com>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SingleClassElementPerStatementFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -72,25 +74,29 @@ final class SingleClassElementPerStatementFixer extends AbstractFixer implements
             'There MUST NOT be more than one property or constant declared per statement.',
             [
                 new CodeSample(
-                    '<?php
-final class Example
-{
-    const FOO_1 = 1, FOO_2 = 2;
-    private static $bar1 = array(1,2,3), $bar2 = [1,2,3];
-}
-'
+                    <<<'PHP'
+                        <?php
+                        final class Example
+                        {
+                            const FOO_1 = 1, FOO_2 = 2;
+                            private static $bar1 = array(1,2,3), $bar2 = [1,2,3];
+                        }
+
+                        PHP,
                 ),
                 new CodeSample(
-                    '<?php
-final class Example
-{
-    const FOO_1 = 1, FOO_2 = 2;
-    private static $bar1 = array(1,2,3), $bar2 = [1,2,3];
-}
-',
-                    ['elements' => ['property']]
+                    <<<'PHP'
+                        <?php
+                        final class Example
+                        {
+                            const FOO_1 = 1, FOO_2 = 2;
+                            private static $bar1 = array(1,2,3), $bar2 = [1,2,3];
+                        }
+
+                        PHP,
+                    ['elements' => ['property']],
                 ),
-            ]
+            ],
         );
     }
 
@@ -155,7 +161,7 @@ final class Example
             $tokens,
             $type,
             $tokens->getNextMeaningfulToken($start),
-            $tokens->getNextTokenOfKind($index, [';'])
+            $tokens->getNextTokenOfKind($index, [';']),
         );
     }
 

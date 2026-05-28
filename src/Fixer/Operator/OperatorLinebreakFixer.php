@@ -47,6 +47,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @phpstan-import-type _PhpTokenPrototypePartial from Token
  *
  * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class OperatorLinebreakFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -68,30 +70,36 @@ final class OperatorLinebreakFixer extends AbstractFixer implements Configurable
             'Operators - when multiline - must always be at the beginning or at the end of the line.',
             [
                 new CodeSample(
-                    '<?php
-$a = $b ||
-    $c;
-$d = $e +
-    $f;
-',
+                    <<<'PHP'
+                        <?php
+                        $a = $b ||
+                            $c;
+                        $d = $e +
+                            $f;
+
+                        PHP,
                 ),
                 new CodeSample(
-                    '<?php
-$a = $b ||
-    $c;
-$d = $e +
-    $f;
-',
-                    ['only_booleans' => true]
+                    <<<'PHP'
+                        <?php
+                        $a = $b ||
+                            $c;
+                        $d = $e +
+                            $f;
+
+                        PHP,
+                    ['only_booleans' => true],
                 ),
                 new CodeSample(
-                    '<?php
-$a = $b
-    || $c;
-$d = $e
-    + $f;
-',
-                    ['position' => 'end']
+                    <<<'PHP'
+                        <?php
+                        $a = $b
+                            || $c;
+                        $d = $e
+                            + $f;
+
+                        PHP,
+                    ['position' => 'end'],
                 ),
             ],
         );
@@ -271,7 +279,7 @@ $d = $e
 
                 return $clone;
             },
-            $indices
+            $indices,
         );
     }
 
@@ -287,7 +295,7 @@ $d = $e
     }
 
     /**
-     * @return list<_PhpTokenPrototypePartial>
+     * @return non-empty-list<_PhpTokenPrototypePartial>
      */
     private static function getNonBooleanOperators(): array
     {

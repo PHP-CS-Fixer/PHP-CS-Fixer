@@ -26,6 +26,8 @@ namespace PhpCsFixer\Tokenizer;
  * @TODO PHP 8.5+, when mentioned PHP version is required, remove the related consts
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FCT
 {

@@ -47,6 +47,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Marvin Heilemann <marvin.heilemann+github@googlemail.com>
  * @author Greg Korba <greg@codito.dev>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NumericLiteralSeparatorFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -92,9 +94,9 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
                 ),
                 new CodeSample(
                     "<?php \$var = 24_40_21;\n",
-                    ['override_existing' => true]
+                    ['override_existing' => true],
                 ),
-            ]
+            ],
         );
     }
 
@@ -108,14 +110,14 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder(
                 'override_existing',
-                'Whether literals already containing underscores should be reformatted.'
+                'Whether literals already containing underscores should be reformatted.',
             ))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
             (new FixerOptionBuilder(
                 'strategy',
-                'Whether numeric literal should be separated by underscores or not.'
+                'Whether numeric literal should be separated by underscores or not.',
             ))
                 ->setAllowedValues([self::STRATEGY_USE_SEPARATOR, self::STRATEGY_NO_SEPARATOR])
                 ->setDefault(self::STRATEGY_USE_SEPARATOR)
@@ -181,7 +183,7 @@ final class NumericLiteralSeparatorFixer extends AbstractFixer implements Config
         // All other types
 
         /** If its a negative value we need an offset */
-        $negativeOffset = static fn ($v) => str_contains($v, '-') ? 1 : 0;
+        $negativeOffset = static fn (string $v): int => str_contains($v, '-') ? 1 : 0;
 
         Preg::matchAll('/([0-9-_]+)?((\.)([0-9_]*))?((e)([0-9-_]+))?/i', $value, $result);
 

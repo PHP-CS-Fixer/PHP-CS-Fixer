@@ -16,12 +16,17 @@ namespace PhpCsFixer\Tests\Tokenizer;
 
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\FCT;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\FCT
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FCT::class)]
 final class FCTTest extends TestCase
 {
     public function testConstantsHaveUniqueValues(): void
@@ -43,8 +48,9 @@ final class FCTTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.5
+     * @requires PHP >= 8.5.0
      */
+    #[RequiresPhp('>= 8.5.0')]
     public function testHighestSupportedPhpVersionHaveOnlyPositiveValues(): void
     {
         foreach ((new \ReflectionClass(FCT::class))->getReflectionConstants() as $constant) {
@@ -53,8 +59,9 @@ final class FCTTest extends TestCase
     }
 
     /**
-     * @requires PHP < 8.0
+     * @requires PHP < 8.0.0
      */
+    #[RequiresPhp('< 8.0.0')]
     public function testLowestSupportedPhpVersionHaveOnlyNegativeValues(): void
     {
         foreach ((new \ReflectionClass(FCT::class))->getReflectionConstants() as $constant) {

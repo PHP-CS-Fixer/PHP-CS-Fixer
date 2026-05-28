@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Roland Franssen <franssen.roland@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpUnitFqcnAnnotationFixer extends AbstractPhpUnitFixer
 {
@@ -31,22 +33,26 @@ final class PhpUnitFqcnAnnotationFixer extends AbstractPhpUnitFixer
     {
         return new FixerDefinition(
             'PHPUnit annotations should be a FQCNs including a root namespace.',
-            [new CodeSample(
-                '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    /**
-     * @expectedException InvalidArgumentException
-     * @covers Project\NameSpace\Something
-     * @coversDefaultClass Project\Default
-     * @uses Project\Test\Util
-     */
-    public function testSomeTest()
-    {
-    }
-}
-'
-            )]
+            [
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        final class MyTest extends \PHPUnit_Framework_TestCase
+                        {
+                            /**
+                             * @expectedException InvalidArgumentException
+                             * @covers Project\NameSpace\Something
+                             * @coversDefaultClass Project\Default
+                             * @uses Project\Test\Util
+                             */
+                            public function testSomeTest()
+                            {
+                            }
+                        }
+
+                        PHP,
+                ),
+            ],
         );
     }
 
@@ -78,7 +84,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 $tokens[$index] = new Token([\T_DOC_COMMENT, Preg::replace(
                     '~^(\s*\*\s*@(?:expectedException|covers|coversDefaultClass|uses)\h+)(?!(?:self|static)::)(\w.*)$~m',
                     '$1\\\$2',
-                    $tokens[$index]->getContent()
+                    $tokens[$index]->getContent(),
                 )]);
             }
         }

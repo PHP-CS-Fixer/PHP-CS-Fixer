@@ -21,6 +21,9 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class ShortScalarCastFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
@@ -31,7 +34,7 @@ final class ShortScalarCastFixer extends AbstractFixer
                 new CodeSample(
                     "<?php\n\$a = (boolean) \$b;\n\$a = (integer) \$b;\n\$a = (double) \$b;\n\n\$a = (binary) \$b;\n",
                 ),
-            ]
+            ],
         );
     }
 

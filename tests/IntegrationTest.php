@@ -18,6 +18,8 @@ use PhpCsFixer\Tests\Test\AbstractIntegrationTestCase;
 use PhpCsFixer\Tests\Test\IntegrationCase;
 use PhpCsFixer\Tests\Test\IntegrationCaseFactoryInterface;
 use PhpCsFixer\Tests\Test\InternalIntegrationCaseFactory;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Test that parses and runs the fixture '*.test' files found in '/Fixtures/Integration'.
@@ -27,7 +29,11 @@ use PhpCsFixer\Tests\Test\InternalIntegrationCaseFactory;
  * @coversNothing
  *
  * @group covers-nothing
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversNothing]
+#[Group('covers-nothing')]
 final class IntegrationTest extends AbstractIntegrationTestCase
 {
     protected static function getFixturesDir(): string
@@ -63,7 +69,7 @@ final class IntegrationTest extends AbstractIntegrationTestCase
                     'Test "%s" in "%s" is expected to be priority check, but fixers applied in reversed order made the same changes.',
                     $case->getTitle(),
                     $case->getFileName(),
-                )
+                ),
             );
         }
     }

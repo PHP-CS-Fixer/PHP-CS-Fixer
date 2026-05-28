@@ -22,13 +22,16 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class NoEmptyPhpdocFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'There should not be empty PHPDoc blocks.',
-            [new CodeSample("<?php /**  */\n")]
+            [new CodeSample("<?php /**  */\n")],
         );
     }
 

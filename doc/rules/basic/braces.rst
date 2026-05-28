@@ -5,16 +5,25 @@ Rule ``braces``
 The body of each structure MUST be enclosed by braces. Braces should be properly
 placed. Body of braces should be properly indented.
 
-Warning
--------
+Warnings
+--------
 
-This rule is deprecated and will be removed in the next major version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is DEPRECATED and will be removed in the next major version 4.0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You should use ``single_space_around_construct``, ``control_structure_braces``,
 ``control_structure_continuation_position``, ``declare_parentheses``,
 ``no_multiple_statements_per_line``, ``braces_position``,
 ``statement_indentation`` and ``no_extra_blank_lines`` instead.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options:
+``allow_single_line_anonymous_class_with_empty_body``,
+``allow_single_line_closure``, ``position_after_anonymous_constructs``,
+``position_after_control_structures``,
+``position_after_functions_and_oop_constructs``.
 
 Configuration
 -------------

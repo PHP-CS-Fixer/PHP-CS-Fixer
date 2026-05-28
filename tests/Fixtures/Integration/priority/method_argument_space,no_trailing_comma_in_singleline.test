@@ -1,0 +1,13 @@
+--TEST--
+Integration of fixers: method_argument_space,no_trailing_comma_in_singleline.
+--RULESET--
+{"method_argument_space": {"on_multiline": "ensure_single_line"}, "no_trailing_comma_in_singleline": true}
+--EXPECT--
+<?php
+foo($a);
+
+--INPUT--
+<?php
+foo(
+    $a,
+);

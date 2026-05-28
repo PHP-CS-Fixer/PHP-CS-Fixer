@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class BacktickToShellExecFixer extends AbstractFixer
 {
@@ -43,10 +45,10 @@ final class BacktickToShellExecFixer extends AbstractFixer
                         $plain = `ls -lah`;
                         $withVar = `ls -lah $var1 ${var2} {$var3} {$var4[0]} {$var5->call()}`;
 
-                        EOT
+                        EOT,
                 ),
             ],
-            'Conversion is done only when it is non risky, so when special chars like single-quotes, double-quotes and backticks are not used inside the command.'
+            'Conversion is done only when it is non risky, so when special chars like single-quotes, double-quotes and backticks are not used inside the command.',
         );
     }
 

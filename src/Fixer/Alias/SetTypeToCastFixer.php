@@ -22,6 +22,9 @@ use PhpCsFixer\Tokenizer\Analyzer\ArgumentsAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class SetTypeToCastFixer extends AbstractFunctionReferenceFixer
 {
     public function getDefinition(): FixerDefinitionInterface
@@ -30,15 +33,17 @@ final class SetTypeToCastFixer extends AbstractFunctionReferenceFixer
             'Cast shall be used, not `settype`.',
             [
                 new CodeSample(
-                    '<?php
-settype($foo, "integer");
-settype($bar, "string");
-settype($bar, "null");
-'
+                    <<<'PHP'
+                        <?php
+                        settype($foo, "integer");
+                        settype($bar, "string");
+                        settype($bar, "null");
+
+                        PHP,
                 ),
             ],
             null,
-            'Risky when the `settype` function is overridden or when used as the 2nd or 3rd expression in a `for` loop .'
+            'Risky when the `settype` function is overridden or when used as the 2nd or 3rd expression in a `for` loop .',
         );
     }
 
@@ -143,7 +148,7 @@ settype($bar, "null");
                 $firstArgumentStart,
                 $commaIndex,
                 $secondArgumentStart,
-                $candidate[2]
+                $candidate[2],
             );
 
             if ('null' === $type) {
@@ -213,7 +218,7 @@ settype($bar, "null");
                 $castToken,
                 new Token([\T_WHITESPACE, ' ']),
                 clone $argumentToken,
-            ]
+            ],
         );
 
         $tokens->removeTrailingWhitespace($functionNameIndex + 6); // 6 = number of inserted tokens -1 for offset correction
@@ -232,7 +237,7 @@ settype($bar, "null");
                 new Token('='),
                 new Token([\T_WHITESPACE, ' ']),
                 new Token([\T_STRING, 'null']),
-            ]
+            ],
         );
 
         $tokens->removeTrailingWhitespace($functionNameIndex + 4); // 4 = number of inserted tokens -1 for offset correction

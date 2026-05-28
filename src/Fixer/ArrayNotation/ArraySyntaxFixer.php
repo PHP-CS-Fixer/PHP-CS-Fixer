@@ -40,6 +40,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Gregor Harlan <gharlan@web.de>
  * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -57,20 +59,20 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
             'PHP arrays should be declared using the configured syntax.',
             [
                 new CodeSample(
-                    "<?php\narray(1,2);\n"
+                    "<?php\narray(1,2);\n",
                 ),
                 new CodeSample(
                     "<?php\n[1,2];\n",
-                    ['syntax' => 'long']
+                    ['syntax' => 'long'],
                 ),
-            ]
+            ],
         );
     }
 
     /**
      * {@inheritdoc}
      *
-     * Must run before BinaryOperatorSpacesFixer, SingleSpaceAfterConstructFixer, SingleSpaceAroundConstructFixer, TernaryOperatorSpacesFixer.
+     * Must run before BinaryOperatorSpacesFixer, NoWhitespaceInEmptyArrayFixer, SingleSpaceAfterConstructFixer, SingleSpaceAroundConstructFixer, TernaryOperatorSpacesFixer.
      */
     public function getPriority(): int
     {

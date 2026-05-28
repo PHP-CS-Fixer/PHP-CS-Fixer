@@ -21,13 +21,16 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class NoUnsetCastFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Variables must be set `null` instead of using `(unset)` casting.',
-            [new CodeSample("<?php\n\$a = (unset) \$b;\n")]
+            [new CodeSample("<?php\n\$a = (unset) \$b;\n")],
         );
     }
 

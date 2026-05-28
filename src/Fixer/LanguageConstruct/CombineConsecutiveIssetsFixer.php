@@ -21,13 +21,16 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class CombineConsecutiveIssetsFixer extends AbstractFixer
 {
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
             'Using `isset($var) &&` multiple times should be done in one call.',
-            [new CodeSample("<?php\n\$a = isset(\$a) && isset(\$b);\n")]
+            [new CodeSample("<?php\n\$a = isset(\$a) && isset(\$b);\n")],
         );
     }
 
@@ -58,7 +61,7 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
 
             $issetInfo = $this->getIssetInfo($tokens, $index);
             $issetCloseBraceIndex = end($issetInfo); // ')' token
-            $insertLocation = prev($issetInfo) + 1; // one index after the previous meaningful of ')'
+            $insertLocation = (int) prev($issetInfo) + 1; // one index after the previous meaningful of ')'
 
             $booleanAndTokenIndex = $tokens->getNextMeaningfulToken($issetCloseBraceIndex);
 
@@ -116,7 +119,7 @@ final class CombineConsecutiveIssetsFixer extends AbstractFixer
     /**
      * @param int $index of T_ISSET
      *
-     * @return list<int> indices of meaningful tokens belonging to the isset statement
+     * @return non-empty-list<int> indices of meaningful tokens belonging to the isset statement
      */
     private function getIssetInfo(Tokens $tokens, int $index): array
     {

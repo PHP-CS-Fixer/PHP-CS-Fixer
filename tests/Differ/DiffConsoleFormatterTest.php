@@ -16,25 +16,31 @@ namespace PhpCsFixer\Tests\Differ;
 
 use PhpCsFixer\Differ\DiffConsoleFormatter;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Differ\DiffConsoleFormatter
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(DiffConsoleFormatter::class)]
 final class DiffConsoleFormatterTest extends TestCase
 {
     /**
      * @dataProvider provideDiffConsoleFormatterCases
      */
+    #[DataProvider('provideDiffConsoleFormatterCases')]
     public function testDiffConsoleFormatter(string $expected, bool $isDecoratedOutput, string $template, string $diff, string $lineTemplate): void
     {
         $diffFormatter = new DiffConsoleFormatter($isDecoratedOutput, $template);
 
         self::assertSame(
             str_replace(\PHP_EOL, "\n", $expected),
-            str_replace(\PHP_EOL, "\n", $diffFormatter->format($diff, $lineTemplate))
+            str_replace(\PHP_EOL, "\n", $diffFormatter->format($diff, $lineTemplate)),
         );
     }
 
@@ -57,13 +63,13 @@ final class DiffConsoleFormatterTest extends TestCase
                 OutputFormatter::escape('@@ -12,51 +12,151 @@'),
                 OutputFormatter::escape('-/**\\'),
                 OutputFormatter::escape('+/*\\'),
-                OutputFormatter::escape('+A')
+                OutputFormatter::escape('+A'),
             ),
             true,
             \sprintf(
                 '<comment>   ---------- begin diff ----------</comment>%s%%s%s<comment>   ----------- end diff -----------</comment>',
                 \PHP_EOL,
-                \PHP_EOL
+                \PHP_EOL,
             ),
             '
 @@ -12,51 +12,151 @@

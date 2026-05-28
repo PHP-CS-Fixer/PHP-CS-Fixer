@@ -19,3 +19,5 @@ bin/checkbashisms $SHELL_SCRIPTS
 
 # shellcheck disable=SC2086
 bin/shellcheck $SHELL_SCRIPTS
+
+printf '\033[0;32mNo shell script issues detected\033[0m\n'

@@ -8,8 +8,8 @@ by its shorter equivalent such as ``->willReturn(...)``.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when PHPUnit classes are overridden or not accessible, or when project has
 PHPUnit incompatibilities.

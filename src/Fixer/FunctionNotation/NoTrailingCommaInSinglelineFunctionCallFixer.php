@@ -23,6 +23,8 @@ use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 
 /**
  * @deprecated
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoTrailingCommaInSinglelineFunctionCallFixer extends AbstractProxyFixer implements DeprecatedFixerInterface
 {
@@ -30,7 +32,7 @@ final class NoTrailingCommaInSinglelineFunctionCallFixer extends AbstractProxyFi
     {
         return new FixerDefinition(
             'When making a method or function call on a single line there MUST NOT be a trailing comma after the last argument.',
-            [new CodeSample("<?php\nfoo(\$a,);\n")]
+            [new CodeSample("<?php\nfoo(\$a,);\n")],
         );
     }
 

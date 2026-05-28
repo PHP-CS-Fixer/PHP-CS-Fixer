@@ -16,6 +16,9 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Transformer\ReturnRefTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -25,7 +28,10 @@ use PhpCsFixer\Tokenizer\CT;
  * @covers \PhpCsFixer\Tokenizer\Transformer\ReturnRefTransformer
  *
  * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ReturnRefTransformer::class)]
 final class ReturnRefTransformerTest extends AbstractTransformerTestCase
 {
     /**
@@ -33,6 +39,7 @@ final class ReturnRefTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideProcessCases
      */
+    #[DataProvider('provideProcessCases')]
     public function testProcess(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
@@ -40,7 +47,7 @@ final class ReturnRefTransformerTest extends AbstractTransformerTestCase
             $expectedTokens,
             [
                 CT::T_RETURN_REF,
-            ]
+            ],
         );
     }
 

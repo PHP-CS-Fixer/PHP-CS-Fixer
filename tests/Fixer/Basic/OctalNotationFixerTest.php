@@ -14,24 +14,33 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Basic;
 
+use PhpCsFixer\Fixer\Basic\OctalNotationFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Basic\OctalNotationFixer
  *
- * @requires PHP 8.1
+ * @requires PHP >= 8.1.0
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\OctalNotationFixer>
  *
  * @author SpacePossum
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(OctalNotationFixer::class)]
+#[RequiresPhp('>= 8.1.0')]
 final class OctalNotationFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

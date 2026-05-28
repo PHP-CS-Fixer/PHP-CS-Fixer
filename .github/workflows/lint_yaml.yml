@@ -1,0 +1,26 @@
+name: Lint
+
+on:
+  pull_request:
+    paths:
+      - '**.yml'
+      - '**.yaml'
+  push:
+    branches:
+      - master
+    paths:
+      - '**.yml'
+      - '**.yaml'
+
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
+jobs:
+  lint-yaml:
+    name: YAML
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Run yamllint
+        run: git ls-files --cached -z -- '*.y*ml' | xargs --null -- yamllint

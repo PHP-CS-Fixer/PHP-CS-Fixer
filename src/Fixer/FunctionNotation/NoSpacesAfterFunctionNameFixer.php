@@ -26,6 +26,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @author Varga Bence <vbence@czentral.org>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
 {
@@ -53,7 +55,7 @@ final class NoSpacesAfterFunctionNameFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'When making a method or function call, there MUST NOT be a space between the method or function name and the opening parenthesis.',
-            [new CodeSample("<?php\nstrlen ('Hello World!');\nfoo (test (3));\nexit  (1);\n\$func ();\n")]
+            [new CodeSample("<?php\nstrlen ('Hello World!');\nfoo (test (3));\nexit  (1);\n\$func ();\n")],
         );
     }
 

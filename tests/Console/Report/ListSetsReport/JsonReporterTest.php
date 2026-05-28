@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\Console\Report\ListSetsReport;
 use PhpCsFixer\Console\Report\ListSetsReport\JsonReporter;
 use PhpCsFixer\Console\Report\ListSetsReport\ReporterInterface;
 use PhpCsFixer\Tests\Test\Assert\AssertJsonSchemaTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -24,7 +25,10 @@ use PhpCsFixer\Tests\Test\Assert\AssertJsonSchemaTrait;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Report\ListSetsReport\JsonReporter
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(JsonReporter::class)]
 final class JsonReporterTest extends AbstractReporterTestCase
 {
     use AssertJsonSchemaTrait;
@@ -50,12 +54,12 @@ final class JsonReporterTest extends AbstractReporterTestCase
         return '{
     "sets": {
         "@PhpCsFixer": {
-            "description": "Rule set as used by the PHP CS Fixer development team, highly opinionated.",
+            "description": "Rules recommended by ``PHP CS Fixer`` team, highly opinionated. Extends ``@PER-CS`` and ``@Symfony``.",
             "isRisky": false,
             "name": "@PhpCsFixer"
         },
         "@Symfony:risky": {
-            "description": "Rules that follow the official `Symfony Coding Standards <https:\/\/symfony.com\/doc\/current\/contributing\/code\/standards.html>`_.",
+            "description": "Rules that follow the official `Symfony Coding Standards <https://symfony.com/doc/current/contributing/code/standards.html>`_. Extends ``@PER-CS:risky``.",
             "isRisky": true,
             "name": "@Symfony:risky"
         }

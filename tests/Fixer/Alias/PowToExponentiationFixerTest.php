@@ -14,7 +14,12 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Alias;
 
+use PhpCsFixer\AbstractFunctionReferenceFixer;
+use PhpCsFixer\Fixer\Alias\PowToExponentiationFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -23,12 +28,17 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\Alias\PowToExponentiationFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Alias\PowToExponentiationFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AbstractFunctionReferenceFixer::class)]
+#[CoversClass(PowToExponentiationFixer::class)]
 final class PowToExponentiationFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -300,8 +310,10 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixPre80Cases
      *
-     * @requires PHP <8.0
+     * @requires PHP < 8.0.0
      */
+    #[DataProvider('provideFixPre80Cases')]
+    #[RequiresPhp('< 8.0.0')]
     public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -319,10 +331,12 @@ final class PowToExponentiationFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      *
      * @dataProvider provideFix80Cases
      */
+    #[RequiresPhp('>= 8.0.0')]
+    #[DataProvider('provideFix80Cases')]
     public function testFix80(string $expected, string $input): void
     {
         $this->doTest($expected, $input);

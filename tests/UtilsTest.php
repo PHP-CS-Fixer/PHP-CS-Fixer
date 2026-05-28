@@ -20,6 +20,8 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @phpstan-import-type _PhpTokenPrototype from Token
@@ -31,31 +33,18 @@ use PhpCsFixer\Utils;
  * @internal
  *
  * @covers \PhpCsFixer\Utils
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Utils::class)]
 final class UtilsTest extends TestCase
 {
-    /**
-     * @var null|false|string
-     */
-    private $originalValueOfFutureMode;
-
-    protected function setUp(): void
-    {
-        $this->originalValueOfFutureMode = getenv('PHP_CS_FIXER_FUTURE_MODE');
-    }
-
-    protected function tearDown(): void
-    {
-        putenv("PHP_CS_FIXER_FUTURE_MODE={$this->originalValueOfFutureMode}");
-
-        parent::tearDown();
-    }
-
     /**
      * @param string $expected Camel case string
      *
      * @dataProvider provideCamelCaseToUnderscoreCases
      */
+    #[DataProvider('provideCamelCaseToUnderscoreCases')]
     public function testCamelCaseToUnderscore(string $expected, ?string $input = null): void
     {
         if (null !== $input) {
@@ -140,6 +129,7 @@ final class UtilsTest extends TestCase
      *
      * @dataProvider provideCalculateTrailingWhitespaceIndentCases
      */
+    #[DataProvider('provideCalculateTrailingWhitespaceIndentCases')]
     public function testCalculateTrailingWhitespaceIndent(string $spaces, $input): void
     {
         $token = new Token($input);
@@ -181,6 +171,7 @@ final class UtilsTest extends TestCase
      *
      * @dataProvider provideStableSortCases
      */
+    #[DataProvider('provideStableSortCases')]
     public function testStableSort(
         array $expected,
         array $elements,
@@ -189,7 +180,7 @@ final class UtilsTest extends TestCase
     ): void {
         self::assertSame(
             $expected,
-            Utils::stableSort($elements, $getComparableValueCallback, $compareValuesCallback)
+            Utils::stableSort($elements, $getComparableValueCallback, $compareValuesCallback),
         );
     }
 
@@ -243,7 +234,7 @@ final class UtilsTest extends TestCase
                 $fixers[1],
                 $fixers[3],
             ],
-            Utils::sortFixers($fixers)
+            Utils::sortFixers($fixers),
         );
     }
 
@@ -268,6 +259,7 @@ final class UtilsTest extends TestCase
      *
      * @param list<string> $names
      */
+    #[DataProvider('provideNaturalLanguageJoinCases')]
     public function testNaturalLanguageJoin(string $joined, array $names, string $wrapper = '"', ?string $lastJoin = null): void
     {
         self::assertSame($joined, Utils::naturalLanguageJoin($names, $wrapper, ...null === $lastJoin ? [] : [$lastJoin]));
@@ -381,6 +373,7 @@ final class UtilsTest extends TestCase
      *
      * @dataProvider provideNaturalLanguageJoinWithBackticksCases
      */
+    #[DataProvider('provideNaturalLanguageJoinWithBackticksCases')]
     public function testNaturalLanguageJoinWithBackticks(string $joined, array $names, ?string $lastJoin = null): void
     {
         self::assertSame($joined, Utils::naturalLanguageJoinWithBackticks($names, ...null === $lastJoin ? [] : [$lastJoin]));
@@ -426,46 +419,11 @@ final class UtilsTest extends TestCase
     }
 
     /**
-     * @group legacy
-     */
-    public function testTriggerDeprecationWhenFutureModeIsOff(): void
-    {
-        putenv('PHP_CS_FIXER_FUTURE_MODE=0');
-
-        $message = __METHOD__.'::The message';
-        $this->expectDeprecation($message);
-
-        Utils::triggerDeprecation(new \DomainException($message));
-
-        $triggered = Utils::getTriggeredDeprecations();
-        self::assertContains($message, $triggered);
-    }
-
-    public function testTriggerDeprecationWhenFutureModeIsOn(): void
-    {
-        putenv('PHP_CS_FIXER_FUTURE_MODE=1');
-
-        $message = __METHOD__.'::The message';
-        $exception = new \DomainException($message);
-        $futureModeException = null;
-
-        try {
-            Utils::triggerDeprecation($exception);
-        } catch (\Exception $futureModeException) {
-        }
-
-        self::assertInstanceOf(\RuntimeException::class, $futureModeException);
-        self::assertSame($exception, $futureModeException->getPrevious());
-
-        $triggered = Utils::getTriggeredDeprecations();
-        self::assertNotContains($message, $triggered);
-    }
-
-    /**
      * @param mixed $input
      *
      * @dataProvider provideToStringCases
      */
+    #[DataProvider('provideToStringCases')]
     public function testToString(string $expected, $input): void
     {
         self::assertSame($expected, Utils::toString($input));

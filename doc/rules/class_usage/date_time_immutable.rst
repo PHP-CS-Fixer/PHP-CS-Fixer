@@ -7,8 +7,8 @@ Class ``DateTimeImmutable`` should be used instead of ``DateTime``.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when the code relies on modifying ``DateTime`` objects or if any of the
 ``date_create*`` functions are overridden.

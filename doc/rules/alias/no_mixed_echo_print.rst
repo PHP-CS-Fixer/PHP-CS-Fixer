@@ -4,6 +4,14 @@ Rule ``no_mixed_echo_print``
 
 Either language construct ``print`` or ``echo`` should be used.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``use``.
+
 Configuration
 -------------
 

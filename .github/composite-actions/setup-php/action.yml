@@ -23,4 +23,4 @@ runs:
         coverage: ${{ inputs.coverage }}
         tools: composer, ${{ inputs.tools }}
         extensions: none, ctype, curl, dom, iconv, json, mbstring, opcache, openssl, simplexml, tokenizer, xml, xmlwriter, zip
-        ini-values: zend.assertions=1
+        ini-values: display_errors=On, display_startup_errors=On, error_reporting=-1, zend.assertions=1

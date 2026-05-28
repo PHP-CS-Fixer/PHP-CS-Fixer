@@ -4,13 +4,23 @@ Rule ``curly_braces_position``
 
 Curly braces must be placed as configured.
 
-Warning
--------
+Warnings
+--------
 
-This rule is deprecated and will be removed in the next major version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is DEPRECATED and will be removed in the next major version 4.0
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You should use ``braces_position`` instead.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options:
+``allow_single_line_anonymous_functions``,
+``allow_single_line_empty_anonymous_classes``,
+``anonymous_classes_opening_brace``, ``anonymous_functions_opening_brace``,
+``classes_opening_brace``, ``control_structures_opening_brace``,
+``functions_opening_brace``.
 
 Configuration
 -------------
@@ -23,6 +33,8 @@ Allow anonymous functions to have opening and closing braces on the same line.
 Allowed types: ``bool``
 
 Default value: ``true``
+
+Default value (future-mode): ``false``
 
 ``allow_single_line_empty_anonymous_classes``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

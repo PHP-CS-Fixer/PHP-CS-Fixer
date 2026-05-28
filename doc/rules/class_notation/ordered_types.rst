@@ -4,6 +4,15 @@ Rule ``ordered_types``
 
 Sort union types and intersection types using configured order.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``case_sensitive``,
+``null_adjustment``, ``sort_algorithm``.
+
 Configuration
 -------------
 
@@ -24,6 +33,8 @@ Forces the position of ``null`` (overrides ``sort_algorithm``).
 Allowed values: ``'always_first'``, ``'always_last'`` and ``'none'``
 
 Default value: ``'always_first'``
+
+Default value (future-mode): ``'always_last'``
 
 ``sort_algorithm``
 ~~~~~~~~~~~~~~~~~~
@@ -112,7 +123,7 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PER <./../../ruleSets/PER.rst>`_ with config:
+- `@PER <./../../ruleSets/PER.rst>`_ *(deprecated)* with config:
 
   ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``
 
@@ -120,11 +131,18 @@ The rule is part of the following rule sets:
 
   ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``
 
-- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ with config:
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ *(deprecated)* with config:
 
   ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``
 
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+- `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_ with config:
+
+  ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``
+
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
+  ``['null_adjustment' => 'always_last']``
+
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
   ``['null_adjustment' => 'always_last', 'sort_algorithm' => 'none']``

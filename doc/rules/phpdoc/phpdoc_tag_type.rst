@@ -4,6 +4,14 @@ Rule ``phpdoc_tag_type``
 
 Forces PHPDoc tags to be either regular annotations or inline.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``tags``.
+
 Configuration
 -------------
 

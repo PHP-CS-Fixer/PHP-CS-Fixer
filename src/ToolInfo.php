@@ -22,6 +22,8 @@ use PhpCsFixer\Console\Application;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ToolInfo implements ToolInfoInterface
 {
@@ -109,7 +111,7 @@ final class ToolInfo implements ToolInfoInterface
     {
         return \sprintf(
             'https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases/download/%s/php-cs-fixer.phar',
-            $version
+            $version,
         );
     }
 

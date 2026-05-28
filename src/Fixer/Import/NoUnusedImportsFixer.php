@@ -31,6 +31,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoUnusedImportsFixer extends AbstractFixer
 {
@@ -40,7 +42,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Unused `use` statements must be removed.',
-            [new CodeSample("<?php\nuse \\DateTime;\nuse \\Exception;\n\nnew DateTime();\n")]
+            [new CodeSample("<?php\nuse \\DateTime;\nuse \\Exception;\n\nnew DateTime();\n")],
         );
     }
 
@@ -135,9 +137,13 @@ final class NoUnusedImportsFixer extends AbstractFixer
                 }
 
                 if (
-                    $prevMeaningfulToken->isGivenKind([\T_NS_SEPARATOR, \T_FUNCTION, \T_CONST, \T_DOUBLE_COLON])
+                    $prevMeaningfulToken->isGivenKind([\T_NS_SEPARATOR, \T_FUNCTION, \T_DOUBLE_COLON])
                     || $prevMeaningfulToken->isObjectOperator()
                 ) {
+                    continue;
+                }
+
+                if ($prevMeaningfulToken->isGivenKind(\T_CONST) && $tokens[$tokens->getNextMeaningfulToken($index)]->equals('=')) {
                     continue;
                 }
 
@@ -171,7 +177,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
             if ($token->isComment()
                 && Preg::match(
                     '/(?<![[:alnum:]\$_])(?<!\\\)'.$import->getShortName().'(?![[:alnum:]_])/i',
-                    $token->getContent()
+                    $token->getContent(),
                 )
             ) {
                 return true;
@@ -262,12 +268,12 @@ final class NoUnusedImportsFixer extends AbstractFixer
         $hasNonEmptyTokenBefore = $this->scanForNonEmptyTokensUntilNewLineFound(
             $tokens,
             $afterChunkIndex,
-            -1
+            -1,
         );
         $hasNonEmptyTokenAfter = $this->scanForNonEmptyTokensUntilNewLineFound(
             $tokens,
             $afterChunkIndex,
-            1
+            1,
         );
 
         // We don't want to merge consequent new lines with indentation (leading to e.g. `\n    \n    `),
@@ -344,7 +350,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
                 "#^\r\n|^\n#",
                 '',
                 ltrim($nextToken->getContent(), " \t"),
-                1
+                1,
             );
 
             $tokens->ensureWhitespaceAtIndex($nextIndex, 0, $content);
@@ -367,7 +373,7 @@ final class NoUnusedImportsFixer extends AbstractFixer
         // We're only interested in ending brace if its index is between start and end of the import statement.
         $endingBraceIndex = $tokens->getPrevTokenOfKind(
             $useDeclaration->getEndIndex(),
-            [[CT::T_GROUP_IMPORT_BRACE_CLOSE]]
+            [[CT::T_GROUP_IMPORT_BRACE_CLOSE]],
         );
 
         if ($endingBraceIndex > $useDeclaration->getStartIndex()) {
@@ -397,12 +403,12 @@ final class NoUnusedImportsFixer extends AbstractFixer
         $hasNonEmptyTokenBefore = $this->scanForNonEmptyTokensUntilNewLineFound(
             $tokens,
             $useAnalysis->getChunkStartIndex(),
-            -1
+            -1,
         );
         $hasNonEmptyTokenAfter = $this->scanForNonEmptyTokensUntilNewLineFound(
             $tokens,
             $useAnalysis->getChunkEndIndex(),
-            1
+            1,
         );
 
         if (

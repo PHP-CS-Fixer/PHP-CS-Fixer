@@ -19,7 +19,11 @@ use Keradus\CliExecutor\CommandExecutor;
 use Keradus\CliExecutor\ScriptExecutor;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Preg;
-use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Large;
+use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -33,7 +37,13 @@ use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
  * @group covers-nothing
  *
  * @large
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[RequiresOperatingSystem('Linux|Darwin')]
+#[CoversNothing]
+#[Group('covers-nothing')]
+#[Large]
 final class CiIntegrationTest extends AbstractSmokeTestCase
 {
     public static string $fixtureDir;
@@ -96,6 +106,7 @@ final class CiIntegrationTest extends AbstractSmokeTestCase
      *
      * @dataProvider provideIntegrationCases
      */
+    #[DataProvider('provideIntegrationCases')]
     public function testIntegration(
         string $branchName,
         array $caseCommands,
@@ -107,10 +118,10 @@ final class CiIntegrationTest extends AbstractSmokeTestCase
             [
                 "git checkout -b {$branchName} -q",
             ],
-            $caseCommands
+            $caseCommands,
         ));
 
-        $integrationScript = explode("\n", str_replace('vendor/bin/', './../../../', (string) file_get_contents(__DIR__.'/../../ci-integration.sh')));
+        $integrationScript = explode("\n", str_replace('vendor/bin/', './../../../', (string) file_get_contents(__DIR__.'/../../doc/examples/ci-integration.sh')));
 
         self::assertArrayHasKey(3, $integrationScript);
         self::assertArrayHasKey(4, $integrationScript);
@@ -165,6 +176,9 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
         $optionalXdebugWarning = 'You are running PHP CS Fixer with xdebug enabled. This has a major impact on runtime performance.
 ';
 
+        $optionalComposerWarning = 'Unable to determine minimum PHP version supported by your project from composer.json: Failed to read file "composer.json".
+';
+
         $optionalWarningsHelp = 'If you need help while solving warnings, ask at https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/discussions/, we will help you!
 
 ';
@@ -180,21 +194,19 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
             ? 'PHP CS Fixer '.preg_quote(Application::VERSION, '/').' '.preg_quote(Application::VERSION_CODENAME, '/')." by Fabien Potencier, Dariusz Ruminski and contributors.\nPHP runtime: ".\PHP_VERSION
             : 'PHP CS Fixer '.preg_quote(Application::VERSION, '/')." by Fabien Potencier, Dariusz Ruminski and contributors.\nPHP runtime: ".\PHP_VERSION;
 
-        $availableMaxProcesses = ParallelConfigFactory::detect()->getMaxProcesses();
-
         $pattern = \sprintf(
-            '/^(?:%s)?(?:%s)?(?:%s)?(?:%s)?%s\n%s\n%s\n%s\n([\.S]{%d})%s\n%s$/',
+            '/^(?:%s)?(?:%s)?(?:%s)?(?:%s)?(?:%s)?%s\n%s\n%s\n([\.S]{%d})%s\n%s$/',
             preg_quote($optionalDeprecatedVersionWarning, '/'),
             preg_quote($optionalIncompatibilityWarning, '/'),
             preg_quote($optionalXdebugWarning, '/'),
+            preg_quote($optionalComposerWarning, '/'),
             preg_quote($optionalWarningsHelp, '/'),
             $aboutSubpattern,
-            'Running analysis on \d+ core(?: sequentially|s with \d+ files? per process)+\.',
-            $availableMaxProcesses > 1 ? preg_quote('You can enable parallel runner and speed up the analysis! Please see https://cs.symfony.com/doc/usage.html for more information.', '/') : '',
             preg_quote('Loaded config default from ".php-cs-fixer.dist.php".', '/'),
+            'Running analysis on \d+ core(?: sequentially|s with \d+ files? per process)+\.',
             \strlen($expectedResult3FilesDots),
             preg_quote($expectedResult3FilesPercentage, '/'),
-            preg_quote('Legend: .-no changes, F-fixed, S-skipped (cached or empty file), M-skipped (non-monolithic), I-invalid file syntax (file ignored), E-error', '/')
+            preg_quote('Legend: .-no changes, F-fixed, S-skipped (cached or empty file), M-skipped (non-monolithic), I-invalid file syntax (file ignored), E-error', '/'),
         );
 
         self::assertMatchesRegularExpression($pattern, $result3->getError());
@@ -207,7 +219,7 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
 
         self::assertMatchesRegularExpression(
             '/^\s*Found \d+ of \d+ files that can be fixed in \d+\.\d+ seconds, \d+\.\d+ MB memory used\s*$/',
-            $result3->getOutput()
+            $result3->getOutput(),
         );
     }
 
@@ -306,8 +318,8 @@ Ignoring environment requirements because `PHP_CS_FIXER_IGNORE_ENV` is set. Exec
     public function testWithUsingNonExistingFile(): void
     {
         $output = ScriptExecutor::create(
-            ['php php-cs-fixer check --config=tests/Fixtures/.php-cs-fixer.append-non-existing-file.php --show-progress=dots'],
-            __DIR__.'/../..'
+            ['php php-cs-fixer check --config=tests/Fixtures/.php-cs-fixer.append-non-existing-file.php --show-progress=dots --no-interaction'],
+            __DIR__.'/../..',
         )->getResult();
 
         self::assertSame(0, $output->getCode());

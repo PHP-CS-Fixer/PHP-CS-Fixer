@@ -23,6 +23,8 @@ use React\Socket\ServerInterface;
  * @author Greg Korba <greg@codito.dev>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ProcessPool
 {

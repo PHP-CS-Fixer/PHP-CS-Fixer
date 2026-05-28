@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SingleLineThrowFixer extends AbstractFixer
 {
@@ -37,7 +39,7 @@ final class SingleLineThrowFixer extends AbstractFixer
             'Throwing exception must be done in single line.',
             [
                 new CodeSample("<?php\nthrow new Exception(\n    'Error.',\n    500\n);\n"),
-            ]
+            ],
         );
     }
 

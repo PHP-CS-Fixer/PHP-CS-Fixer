@@ -24,19 +24,17 @@ use Symfony\Component\Console\Input\InputOption;
  * @author Greg Korba <greg@codito.dev>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 #[AsCommand(name: 'check', description: 'Checks if configured files/directories comply with configured rules.')]
 final class CheckCommand extends FixCommand
 {
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultName = 'check'; // @phpstan-ignore property.parentPropertyFinalByPhpDoc
-
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultDescription = 'Checks if configured files/directories comply with configured rules.'; // @phpstan-ignore property.parentPropertyFinalByPhpDoc
-
     public function __construct(ToolInfoInterface $toolInfo)
     {
         parent::__construct($toolInfo);
+        $this->setName('check');
+        $this->setDescription('Checks if configured files/directories comply with configured rules.');
     }
 
     public function getHelp(): string
@@ -52,7 +50,7 @@ final class CheckCommand extends FixCommand
             ...array_values($this->getDefinition()->getArguments()),
             ...array_values(array_filter(
                 $this->getDefinition()->getOptions(),
-                static fn (InputOption $option): bool => 'dry-run' !== $option->getName()
+                static fn (InputOption $option): bool => 'dry-run' !== $option->getName(),
             )),
         ]);
     }

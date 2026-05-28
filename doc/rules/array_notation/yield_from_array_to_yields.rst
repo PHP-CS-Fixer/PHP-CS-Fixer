@@ -13,8 +13,8 @@ dimension.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 The rule is risky in case of ``yield from`` being used multiple times within
 single function scope, while using list-alike data sources (e.g. ``function

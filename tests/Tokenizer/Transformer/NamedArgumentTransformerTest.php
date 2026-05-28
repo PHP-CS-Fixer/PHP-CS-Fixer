@@ -17,6 +17,10 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\Transformer\NamedArgumentTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -24,7 +28,10 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @covers \PhpCsFixer\Tokenizer\Transformer\NamedArgumentTransformer
  *
  * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NamedArgumentTransformer::class)]
 final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
 {
     /**
@@ -32,8 +39,10 @@ final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideProcessCases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideProcessCases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testProcess(string $source, array $expectedTokens): void
     {
         $this->doTest($source, $expectedTokens);
@@ -95,6 +104,7 @@ final class NamedArgumentTransformerTest extends AbstractTransformerTestCase
     /**
      * @dataProvider provideDoNotChangeCases
      */
+    #[DataProvider('provideDoNotChangeCases')]
     public function testDoNotChange(string $source): void
     {
         self::assertNotChange($source);

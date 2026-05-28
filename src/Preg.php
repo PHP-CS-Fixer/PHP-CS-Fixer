@@ -21,6 +21,8 @@ namespace PhpCsFixer;
  * @author Kuba Werłos <werlos@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class Preg
 {
@@ -205,12 +207,12 @@ final class Preg
         $message = \sprintf(
             '(code: %d) %s',
             $code,
-            preg_replace('~preg_[a-z_]+[()]{2}: ~', '', $errorMessage)
+            preg_replace('~preg_[a-z_]+[()]{2}: ~', '', $errorMessage),
         );
 
         return new PregException(
             \sprintf('%s(): Invalid PCRE pattern "%s": %s (version: %s)', $method, $pattern, $message, \PCRE_VERSION),
-            $code
+            $code,
         );
     }
 }

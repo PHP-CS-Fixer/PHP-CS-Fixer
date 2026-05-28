@@ -36,9 +36,10 @@ use PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocTagRenameFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocOrderByValueFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocReturnSelfReferenceFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocTagTypeFixer;
+use PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\FixerConfigurationResolverInterface;
-use PhpCsFixer\FixerDefinition\CodeSample;
+use PhpCsFixer\FixerDefinition\FileSpecificCodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
@@ -61,6 +62,8 @@ use PhpCsFixer\Utils;
  * @internal
  *
  * @warning Does not support PHPUnit attributes
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ConfigurableFixerTemplateFixer extends AbstractFixer implements InternalFixerInterface
 {
@@ -93,12 +96,13 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
         return new FixerDefinition(
             'Configurable Fixers must declare Template type.',
             [
-                new CodeSample(
-                    $tokens->generateCode()
+                new FileSpecificCodeSample(
+                    $tokens->generateCode(),
+                    $fileInfo,
                 ),
             ],
             null,
-            'This rule auto-adjust @implements and @phpstan-type, which heavily change information for SCA.'
+            'This rule auto-adjust @implements and @phpstan-type, which heavily change information for SCA.',
         );
     }
 
@@ -127,7 +131,7 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
         $classIndex = $tokens->getNextTokenOfKind(0, [[\T_CLASS]]);
 
         $docBlockIndex = $this->getDocBlockIndex($tokens, $classIndex);
-        if (!$this->isPHPDoc($tokens, $docBlockIndex)) {
+        if (!$tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT)) {
             $docBlockIndex = $tokens->getNextMeaningfulToken($docBlockIndex);
             $tokens->insertAt($docBlockIndex, [
                 new Token([\T_DOC_COMMENT, "/**\n */"]),
@@ -146,11 +150,11 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
 
                 return trim(array_pop($parts));
             },
-            $doc->getAnnotationsOfType(['covers'])
+            $doc->getAnnotationsOfType(['covers']),
         );
         $covers = array_filter(
             $covers,
-            static fn ($className): bool => !str_contains($className, '\Abstract') && str_ends_with($className, 'Fixer')
+            static fn (string $className): bool => !str_contains($className, '\Abstract') && str_ends_with($className, 'Fixer'),
         );
 
         if (1 !== \count($covers)) {
@@ -228,7 +232,7 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                 ''
                 .(!$expectedAnnotationPresent ? ' * @'.$expectedAnnotation."\n" : '')
                 .(!$expectedTypeImportPresent ? ' * @'.$expectedTypeImport."\n" : '')
-                .$lastLine->getContent()
+                .$lastLine->getContent(),
             );
         }
 
@@ -238,7 +242,8 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
     private function applyFixForSrc(\SplFileInfo $file, Tokens $tokens): void
     {
         if ($file instanceof StdinFileInfo) {
-            $file = $this->getExampleFixerFile();
+            // we do not know the actual path, skip
+            return;
         }
 
         $fixer = $this->getFixerForSrcFile($file);
@@ -253,6 +258,7 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
         $configurationDefinition = $fixer->getConfigurationDefinition();
         foreach ($configurationDefinition->getOptions() as $option) {
             $optionName = $option->getName();
+            $optionExistsAfterNormalization = true;
             $allowed = HelpCommand::getDisplayableAllowedValues($option);
             $allowedAfterNormalization = null;
 
@@ -264,8 +270,8 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                             ', ',
                             array_map(
                                 static fn ($value): string => \sprintf("'%s'?: '%s'", $value, strtolower($value)),
-                                $allowed[0]->getAllowedValues()
-                            )
+                                $allowed[0]->getAllowedValues(),
+                            ),
                         )
                         .'}';
                 } elseif ($fixer instanceof HeaderCommentFixer && \in_array($optionName, ['header', 'validator'], true)) {
@@ -290,8 +296,10 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                     // nothing to do
                 } elseif ($fixer instanceof OrderedImportsFixer && 'sort_algorithm' === $optionName) {
                     // nothing to do
+                } elseif ($fixer instanceof DeclareStrictTypesFixer && 'preserve_existing_declaration' === $optionName) {
+                    $optionExistsAfterNormalization = false;
                 } else {
-                    throw new \LogicException(\sprintf('How to handle normalized types of "%s.%s"? Explicit instructions needed!', $fixer->getName(), $optionName));
+                    throw new \LogicException(\sprintf('How to handle normalized types of "%s.%s" [`%s`]? Explicit instructions needed!', $fixer->getName(), $optionName, \get_class($fixer)));
                 }
             }
 
@@ -301,13 +309,13 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                     static fn ($value): string => $value instanceof AllowedValueSubset
                         ? \sprintf('list<%s>', implode('|', array_map(static fn ($val) => "'".$val."'", $value->getAllowedValues())))
                         : Utils::toString($value),
-                    $allowed
+                    $allowed,
                 );
             } else {
                 // $allowed will be allowed types
                 $allowed = array_map(
                     static fn ($value): string => Utils::convertArrayTypeToList($value),
-                    $option->getAllowedTypes()
+                    $option->getAllowedTypes(),
                 );
             }
 
@@ -318,19 +326,21 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                 $default = $option->getDefault();
                 $getTypes = static fn ($values): array => array_unique(array_map(
                     static fn ($val) => \gettype($val),
-                    $values
+                    $values,
                 ));
                 $defaultKeyTypes = $getTypes(array_keys($default));
                 $defaultValueTypes = $getTypes(array_values($default));
                 $allowed = \sprintf(
                     'array<%s, %s>',
                     [] !== $defaultKeyTypes ? implode('|', $defaultKeyTypes) : 'array-key',
-                    [] !== $defaultValueTypes ? implode('|', $defaultValueTypes) : 'mixed'
+                    [] !== $defaultValueTypes ? implode('|', $defaultValueTypes) : 'mixed',
                 );
             }
 
             $optionTypeInput[] = \sprintf('%s%s: %s', $optionName, $option->hasDefault() ? '?' : '', $allowed);
-            $optionTypeComputed[] = \sprintf('%s: %s', $optionName, $allowedAfterNormalization ?? $allowed);
+            if (true === $optionExistsAfterNormalization) {
+                $optionTypeComputed[] = \sprintf('%s: %s', $optionName, $allowedAfterNormalization ?? $allowed);
+            }
         }
 
         $expectedTemplateTypeInputAnnotation = \sprintf("phpstan-type _AutogeneratedInputConfiguration array{\n *  %s,\n * }", implode(",\n *  ", $optionTypeInput));
@@ -340,7 +350,7 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
         $classIndex = $tokens->getNextTokenOfKind(0, [[\T_CLASS]]);
 
         $docBlockIndex = $this->getDocBlockIndex($tokens, $classIndex);
-        if (!$this->isPHPDoc($tokens, $docBlockIndex)) {
+        if (!$tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT)) {
             $docBlockIndex = $tokens->getNextMeaningfulToken($docBlockIndex);
             $tokens->insertAt($docBlockIndex, [
                 new Token([\T_DOC_COMMENT, "/**\n */"]),
@@ -419,7 +429,7 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
                 .(!$templateTypeInputPresent ? ' * @'.$expectedTemplateTypeInputAnnotation."\n" : '')
                 .(!$templateTypeComputedPresent ? ' * @'.$expectedTemplateTypeComputedAnnotation."\n" : '')
                 .(!$implementsWithTypesPresent ? ' * @'.$expectedImplementsWithTypesAnnotation."\n" : '')
-                .$lastLine->getContent()
+                .$lastLine->getContent(),
             );
         }
 
@@ -437,11 +447,6 @@ final class ConfigurableFixerTemplateFixer extends AbstractFixer implements Inte
         } while ($tokens[$index]->isGivenKind(self::MODIFIERS));
 
         return $index;
-    }
-
-    private function isPHPDoc(Tokens $tokens, int $index): bool
-    {
-        return $tokens[$index]->isGivenKind(\T_DOC_COMMENT);
     }
 
     private function getExampleFixerFile(): \SplFileInfo

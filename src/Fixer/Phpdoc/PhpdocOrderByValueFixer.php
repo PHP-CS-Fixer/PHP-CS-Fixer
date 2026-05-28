@@ -42,6 +42,8 @@ use Symfony\Component\OptionsResolver\Options;
  *
  * @author Filippo Tessarotto <zoeslam@gmail.com>
  * @author Andreas Möller <am@localheinz.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpdocOrderByValueFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -54,31 +56,35 @@ final class PhpdocOrderByValueFixer extends AbstractFixer implements Configurabl
             'Order PHPDoc tags by value.',
             [
                 new CodeSample(
-                    '<?php
-/**
- * @covers Foo
- * @covers Bar
- */
-final class MyTest extends \PHPUnit_Framework_TestCase
-{}
-'
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @covers Foo
+                         * @covers Bar
+                         */
+                        final class MyTest extends \PHPUnit_Framework_TestCase
+                        {}
+
+                        PHP,
                 ),
                 new CodeSample(
-                    '<?php
-/**
- * @author Bob
- * @author Alice
- */
-final class MyTest extends \PHPUnit_Framework_TestCase
-{}
-',
+                    <<<'PHP'
+                        <?php
+                        /**
+                         * @author Bob
+                         * @author Alice
+                         */
+                        final class MyTest extends \PHPUnit_Framework_TestCase
+                        {}
+
+                        PHP,
                     [
                         'annotations' => [
                             'author',
                         ],
-                    ]
+                    ],
                 ),
-            ]
+            ],
         );
     }
 
@@ -109,7 +115,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 $findPattern = \sprintf(
                     '/@%s\s.+@%s\s/s',
                     $type,
-                    $type
+                    $type,
                 );
 
                 if (
@@ -127,7 +133,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 if (\in_array($type, ['property', 'property-read', 'property-write'], true)) {
                     $replacePattern = \sprintf(
                         '/(?s)\*\s*@%s\s+(?P<optionalTypes>.+\s+)?\$(?P<comparableContent>\S+).*/',
-                        $type
+                        $type,
                     );
 
                     $replacement = '\2';
@@ -137,7 +143,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 } else {
                     $replacePattern = \sprintf(
                         '/\*\s*@%s\s+(?P<comparableContent>.+)/',
-                        $typeLowerCase
+                        $typeLowerCase,
                     );
 
                     $replacement = '\1';
@@ -149,7 +155,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                     $comparableContent = Preg::replace(
                         $replacePattern,
                         $replacement,
-                        strtolower(trim($rawContent))
+                        strtolower(trim($rawContent)),
                     );
 
                     $annotationMap[$comparableContent] = $rawContent;
@@ -170,7 +176,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                         $lines,
                         $annotation->getStart(),
                         $annotation->getEnd() - $annotation->getStart() + 1,
-                        array_pop($orderedAnnotationMap)
+                        array_pop($orderedAnnotationMap),
                     );
                 }
 

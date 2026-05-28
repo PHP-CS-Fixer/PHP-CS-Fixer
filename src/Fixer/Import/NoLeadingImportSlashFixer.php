@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoLeadingImportSlashFixer extends AbstractFixer
 {
@@ -32,7 +34,7 @@ final class NoLeadingImportSlashFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Remove leading slashes in `use` clauses.',
-            [new CodeSample("<?php\nnamespace Foo;\nuse \\Bar;\n")]
+            [new CodeSample("<?php\nnamespace Foo;\nuse \\Bar;\n")],
         );
     }
 

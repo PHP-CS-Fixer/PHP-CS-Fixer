@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tokenizer;
 
-use PhpCsFixer\Utils;
+use PhpCsFixer\Future;
 
 /**
  * Representation of single token.
@@ -30,6 +30,8 @@ use PhpCsFixer\Utils;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @readonly
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class Token
 {
@@ -57,14 +59,14 @@ final class Token
             if (!\is_int($token[0])) {
                 throw new \InvalidArgumentException(\sprintf(
                     'Id must be an int, got "%s".',
-                    get_debug_type($token[0])
+                    get_debug_type($token[0]),
                 ));
             }
 
             if (!\is_string($token[1])) {
                 throw new \InvalidArgumentException(\sprintf(
                     'Content must be a string, got "%s".',
-                    get_debug_type($token[1])
+                    get_debug_type($token[1]),
                 ));
             }
 
@@ -85,7 +87,7 @@ final class Token
     }
 
     /**
-     * @return list<int>
+     * @return non-empty-list<int>
      */
     public static function getCastTokenKinds(): array
     {
@@ -95,7 +97,7 @@ final class Token
     /**
      * Get classy tokens kinds: T_ENUM, T_CLASS, T_INTERFACE and T_TRAIT.
      *
-     * @return list<int>
+     * @return non-empty-list<int>
      */
     public static function getClassyTokenKinds(): array
     {
@@ -105,7 +107,7 @@ final class Token
     /**
      * Get object operator tokens kinds: T_OBJECT_OPERATOR and (if available) T_NULLSAFE_OBJECT_OPERATOR.
      *
-     * @return list<int>
+     * @return non-empty-list<int>
      */
     public static function getObjectOperatorKinds(): array
     {
@@ -202,9 +204,9 @@ final class Token
      */
     public static function isKeyCaseSensitive($caseSensitive, int $key): bool
     {
-        Utils::triggerDeprecation(new \InvalidArgumentException(\sprintf(
+        Future::triggerDeprecation(new \InvalidArgumentException(\sprintf(
             'Method "%s" is deprecated and will be removed in the next major version.',
-            __METHOD__
+            __METHOD__,
         )));
 
         if (\is_array($caseSensitive)) {
@@ -288,7 +290,7 @@ final class Token
     /**
      * Generate array containing all keywords that exists in PHP version in use.
      *
-     * @return list<int>
+     * @return non-empty-list<int>
      */
     public static function getKeywords(): array
     {
@@ -331,7 +333,7 @@ final class Token
     /**
      * Generate array containing all predefined constants that exists in PHP version in use.
      *
-     * @return array<int, int>
+     * @return non-empty-array<int, int>
      *
      * @see https://php.net/manual/en/language.constants.predefined.php
      */
@@ -491,27 +493,23 @@ final class Token
      */
     public function toJson(): string
     {
-        $jsonResult = json_encode($this->toArray(), \JSON_PRETTY_PRINT | \JSON_NUMERIC_CHECK);
-
-        if (\JSON_ERROR_NONE !== json_last_error()) {
-            $jsonResult = json_encode(
+        try {
+            return json_encode($this->toArray(), \JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT | \JSON_NUMERIC_CHECK);
+        } catch (\JsonException $e) {
+            return json_encode(
                 [
                     'errorDescription' => 'Cannot encode Tokens to JSON.',
-                    'rawErrorMessage' => json_last_error_msg(),
+                    'rawErrorMessage' => $e->getMessage(),
                 ],
-                \JSON_PRETTY_PRINT | \JSON_NUMERIC_CHECK
+                \JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT | \JSON_NUMERIC_CHECK,
             );
         }
-
-        \assert(false !== $jsonResult);
-
-        return $jsonResult;
     }
 
     /**
-     * @param list<string> $tokenNames
+     * @param non-empty-list<string> $tokenNames
      *
-     * @return array<int, int>
+     * @return non-empty-array<int, int>
      */
     private static function getTokenKindsForNames(array $tokenNames): array
     {

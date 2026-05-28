@@ -15,8 +15,12 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 
 use PhpCsFixer\AbstractNoUselessElseFixer;
+use PhpCsFixer\Fixer\ControlStructure\NoUselessElseFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -25,12 +29,17 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @covers \PhpCsFixer\Fixer\ControlStructure\NoUselessElseFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\NoUselessElseFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AbstractNoUselessElseFixer::class)]
+#[CoversClass(NoUselessElseFixer::class)]
 final class NoUselessElseFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -167,7 +176,7 @@ else?><?php echo 5;',
                         }
                     }
                 }
-            '
+            ',
         );
 
         yield from self::generateCases('<?php
@@ -259,7 +268,7 @@ else?><?php echo 5;',
                     }
                 }
             }
-        '
+        ',
         );
 
         yield [
@@ -602,20 +611,44 @@ else?><?php echo 5;',
         yield from self::generateConditionsWithoutBracesCase('throw new class extends Exception{};');
 
         yield from self::generateConditionsWithoutBracesCase('throw new class ($a, 9) extends Exception{ public function z($a, $b){ echo 7;} };');
+
+        yield [
+            '<?php if ($a) {return null;}   return function () {}; ',
+            '<?php if ($a) {return null;} else { return function () {}; }',
+        ];
+
+        yield [
+            '<?php if ($a) {return null;}   return new class {}; ',
+            '<?php if ($a) {return null;} else { return new class {}; }',
+        ];
+
+        yield [
+            '<?php if ($a) {return;} else { foo(); function bar() {} }',
+        ];
+
+        yield [
+            '<?php if ($a) {return;} else { abstract class Foo {} }',
+        ];
+
+        yield [
+            '<?php if ($a) {return;} else { interface Foo {} }',
+        ];
     }
 
     /**
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
-    public function testFix80(string $expected): void
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
+    public function testFix80(string $expected, ?string $input = null): void
     {
-        $this->doTest($expected);
+        $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<array{string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -652,6 +685,7 @@ else?><?php echo 5;',
      *
      * @dataProvider provideBlockDetectionCases
      */
+    #[DataProvider('provideBlockDetectionCases')]
     public function testBlockDetection(array $expected, string $source, int $index): void
     {
         Tokens::clearCache();
@@ -711,6 +745,7 @@ else?><?php echo 5;',
      *
      * @dataProvider provideIsInConditionWithoutBracesCases
      */
+    #[DataProvider('provideIsInConditionWithoutBracesCases')]
     public function testIsInConditionWithoutBraces(array $indexes, string $input): void
     {
         $tokens = Tokens::fromCode($input);
@@ -719,7 +754,7 @@ else?><?php echo 5;',
             self::assertSame(
                 $expected,
                 \Closure::bind(static fn (AbstractNoUselessElseFixer $fixer): bool => $fixer->isInConditionWithoutBraces($tokens, $index, 0), null, AbstractNoUselessElseFixer::class)($this->fixer),
-                \sprintf('Failed in condition without braces check for index %d', $index)
+                \sprintf('Failed in condition without braces check for index %d', $index),
             );
         }
     }

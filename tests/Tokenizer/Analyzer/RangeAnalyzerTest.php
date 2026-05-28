@@ -17,12 +17,18 @@ namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\RangeAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\RangeAnalyzer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(RangeAnalyzer::class)]
 final class RangeAnalyzerTest extends TestCase
 {
     /**
@@ -31,6 +37,7 @@ final class RangeAnalyzerTest extends TestCase
      *
      * @dataProvider provideRangeEqualsRangeCases
      */
+    #[DataProvider('provideRangeEqualsRangeCases')]
     public function testRangeEqualsRange(bool $expected, string $code, array $range1, array $range2): void
     {
         $tokens = Tokens::fromCode($code);
@@ -81,9 +88,10 @@ final class RangeAnalyzerTest extends TestCase
     }
 
     /**
-     * @requires PHP <8.0
+     * @requires PHP < 8.0.0
      */
-    public function testFixPrePHP80(): void
+    #[RequiresPhp('< 8.0.0')]
+    public function testFixPrePHP8x0(): void
     {
         $code = '<?php
             $a = [1,2,3];

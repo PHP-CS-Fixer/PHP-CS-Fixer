@@ -18,6 +18,8 @@ use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -27,7 +29,10 @@ use PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer;
  * @covers \PhpCsFixer\Tokenizer\Transformer\SquareBraceTransformer
  *
  * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(SquareBraceTransformer::class)]
 final class SquareBraceTransformerTest extends AbstractTransformerTestCase
 {
     /**
@@ -35,6 +40,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideIsShortArrayCases
      */
+    #[DataProvider('provideIsShortArrayCases')]
     public function testIsShortArray(string $source, array $inspectIndexes, bool $expected): void
     {
         $transformer = new SquareBraceTransformer();
@@ -57,7 +63,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
             self::assertSame(
                 $expected,
                 \Closure::bind(static fn (SquareBraceTransformer $transformer): bool => $transformer->isShortArray($tokens, $index), null, SquareBraceTransformer::class)($transformer),
-                \sprintf('Excepted token "%s" @ index %d %sto be detected as short array.', $token->toJson(), $index, $exp ? '' : 'not ')
+                \sprintf('Excepted token "%s" @ index %d %sto be detected as short array.', $token->toJson(), $index, $exp ? '' : 'not '),
             );
         }
     }
@@ -91,6 +97,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideProcessCases
      */
+    #[DataProvider('provideProcessCases')]
     public function testProcess(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
@@ -101,7 +108,7 @@ final class SquareBraceTransformerTest extends AbstractTransformerTestCase
                 CT::T_ARRAY_SQUARE_BRACE_CLOSE,
                 CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
                 CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
-            ]
+            ],
         );
     }
 

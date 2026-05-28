@@ -17,6 +17,10 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\Transformer\ConstructorPromotionTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -24,7 +28,10 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @covers \PhpCsFixer\Tokenizer\Transformer\ConstructorPromotionTransformer
  *
  * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ConstructorPromotionTransformer::class)]
 final class ConstructorPromotionTransformerTest extends AbstractTransformerTestCase
 {
     /**
@@ -32,8 +39,10 @@ final class ConstructorPromotionTransformerTest extends AbstractTransformerTestC
      *
      * @dataProvider provideProcessCases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideProcessCases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testProcess(array $expectedTokens, string $source): void
     {
         $this->doTest(
@@ -43,7 +52,7 @@ final class ConstructorPromotionTransformerTest extends AbstractTransformerTestC
                 CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
                 CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
                 CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE,
-            ]
+            ],
         );
     }
 
@@ -136,8 +145,10 @@ class Point {
      *
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testFix81(array $expectedTokens, string $source): void
     {
         $this->doTest(
@@ -145,7 +156,7 @@ class Point {
             $expectedTokens,
             [
                 CT::T_TYPE_ALTERNATION,
-            ]
+            ],
         );
     }
 

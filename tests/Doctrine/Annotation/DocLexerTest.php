@@ -17,12 +17,16 @@ namespace PhpCsFixer\Tests\Doctrine\Annotation;
 use PhpCsFixer\Doctrine\Annotation\DocLexer;
 use PhpCsFixer\Doctrine\Annotation\Token;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Doctrine\Annotation\DocLexer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(DocLexer::class)]
 final class DocLexerTest extends TestCase
 {
     public function testCreateFromEmptyPhpdocComment(): void

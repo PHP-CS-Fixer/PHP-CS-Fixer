@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Jared Henderson <jared@netrivet.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TrimArraySpacesFixer extends AbstractFixer
 {
@@ -30,7 +32,7 @@ final class TrimArraySpacesFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Arrays should be formatted like function/method arguments, without leading or trailing single line space.',
-            [new CodeSample("<?php\n\$sample = array( );\n\$sample = array( 'a', 'b' );\n")]
+            [new CodeSample("<?php\n\$sample = array( );\n\$sample = array( 'a', 'b' );\n")],
         );
     }
 

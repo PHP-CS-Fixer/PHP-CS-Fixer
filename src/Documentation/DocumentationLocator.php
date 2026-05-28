@@ -22,6 +22,8 @@ use PhpCsFixer\Utils;
  * @readonly
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class DocumentationLocator
 {
@@ -47,7 +49,7 @@ final class DocumentationLocator
         return $this->getFixersDocumentationDirectoryPath().'/'.Preg::replaceCallback(
             '/^.*\\\(.+)\\\(.+)Fixer$/',
             static fn (array $matches): string => Utils::camelCaseToUnderscore($matches[1]).'/'.Utils::camelCaseToUnderscore($matches[2]),
-            \get_class($fixer)
+            \get_class($fixer),
         ).'.rst';
     }
 
@@ -56,7 +58,7 @@ final class DocumentationLocator
         return Preg::replace(
             '#^'.preg_quote($this->getFixersDocumentationDirectoryPath(), '#').'/#',
             '',
-            $this->getFixerDocumentationFilePath($fixer)
+            $this->getFixerDocumentationFilePath($fixer),
         );
     }
 

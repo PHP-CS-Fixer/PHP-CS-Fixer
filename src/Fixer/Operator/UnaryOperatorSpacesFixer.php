@@ -38,6 +38,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
  *
  * @author Gregor Harlan <gharlan@web.de>
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class UnaryOperatorSpacesFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
@@ -51,18 +53,22 @@ final class UnaryOperatorSpacesFixer extends AbstractFixer implements Configurab
             [
                 new CodeSample("<?php\n\$sample ++;\n-- \$sample;\n\$sample = ! ! \$a;\n\$sample = ~  \$c;\nfunction & foo(){}\n"),
                 new CodeSample(
-                    '<?php
-function foo($a, ...   $b) { return (--   $a) * ($b   ++);}
-',
-                    ['only_dec_inc' => false]
+                    <<<'PHP'
+                        <?php
+                        function foo($a, ...   $b) { return (--   $a) * ($b   ++);}
+
+                        PHP,
+                    ['only_dec_inc' => false],
                 ),
                 new CodeSample(
-                    '<?php
-function foo($a, ...   $b) { return (--   $a) * ($b   ++);}
-',
-                    ['only_dec_inc' => true]
+                    <<<'PHP'
+                        <?php
+                        function foo($a, ...   $b) { return (--   $a) * ($b   ++);}
+
+                        PHP,
+                    ['only_dec_inc' => true],
                 ),
-            ]
+            ],
         );
     }
 

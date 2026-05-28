@@ -20,6 +20,9 @@ class FooBar
 {
 
 
+    /**
+     * @const int
+     */
     const SOME_CONST = 42;
 
     private $fooBar;

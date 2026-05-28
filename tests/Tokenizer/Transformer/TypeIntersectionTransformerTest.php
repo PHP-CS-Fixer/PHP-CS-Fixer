@@ -17,6 +17,10 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\FCT;
+use PhpCsFixer\Tokenizer\Transformer\TypeIntersectionTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -24,7 +28,10 @@ use PhpCsFixer\Tokenizer\FCT;
  * @covers \PhpCsFixer\Tokenizer\Transformer\TypeIntersectionTransformer
  *
  * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(TypeIntersectionTransformer::class)]
 final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
 {
     /**
@@ -32,8 +39,10 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideProcessCases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideProcessCases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testProcess(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
@@ -41,7 +50,7 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
             $expectedTokens,
             [
                 CT::T_TYPE_INTERSECTION,
-            ]
+            ],
         );
     }
 
@@ -387,8 +396,10 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
      *
      * @dataProvider provideProcess81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideProcess81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testProcess81(string $source, array $expectedTokens): void
     {
         $this->doTest($source, $expectedTokens);
@@ -426,8 +437,10 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
      *
      * @dataProvider provideProcess82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      */
+    #[DataProvider('provideProcess82Cases')]
+    #[RequiresPhp('>= 8.2.0')]
     public function testProcess82(string $source, array $expectedTokens): void
     {
         $this->doTest($source, $expectedTokens);
@@ -540,8 +553,10 @@ class Dnf
      *
      * @dataProvider provideProcess83Cases
      *
-     * @requires PHP 8.3
+     * @requires PHP >= 8.3.0
      */
+    #[DataProvider('provideProcess83Cases')]
+    #[RequiresPhp('>= 8.3.0')]
     public function testProcess83(string $source, array $expectedTokens): void
     {
         $this->doTest($source, $expectedTokens);
