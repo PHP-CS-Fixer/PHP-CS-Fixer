@@ -162,7 +162,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
                 new CodeSample($code, ['align' => self::ALIGN_LEFT, 'spacing' => 2]),
                 new CodeSample($code, ['align' => self::ALIGN_LEFT, 'spacing' => ['param' => 2]]),
                 new CodeSample($code, ['align' => self::ALIGN_LEFT_MULTILINE]),
-                new CodeSample($code, ['align' => self::ALIGN_LEFT_MULTILINE, 'spacing' => ['_multiline' => 4]]),
+                new CodeSample($code, ['align' => self::ALIGN_LEFT_MULTILINE, 'spacing' => ['_multiline' => 2]]),
             ],
         );
     }

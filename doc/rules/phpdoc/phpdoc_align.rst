@@ -247,7 +247,7 @@ With configuration: ``['align' => 'left_multiline']``.
 Example #7
 ~~~~~~~~~~
 
-With configuration: ``['align' => 'left_multiline', 'spacing' => ['_multiline' => 4]]``.
+With configuration: ``['align' => 'left_multiline', 'spacing' => ['_multiline' => 2]]``.
 
 .. code-block:: diff
 
@@ -271,7 +271,7 @@ With configuration: ``['align' => 'left_multiline', 'spacing' => ['_multiline' =
    - * @throws Foo            description foo
    - *             description foo
    + * @throws Foo description foo
-   + *     description foo
+   + *   description foo
      *
      */
 
