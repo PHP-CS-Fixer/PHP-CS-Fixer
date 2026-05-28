@@ -254,6 +254,12 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFixer implement
         for ($index = $start; $index <= $end; ++$index) {
             $token = $tokens[$index];
 
+            if ($token->isGivenKind(FCT::T_ATTRIBUTE)) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
+
+                continue;
+            }
+
             if (
                 $token->isComment()
                 || $token->isWhitespace()
