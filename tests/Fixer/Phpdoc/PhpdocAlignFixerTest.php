@@ -1535,12 +1535,13 @@ function foo($typeless): void {}',
      *
      */
 ',
+            [
+                'align' => PhpdocAlignFixer::ALIGN_LEFT,
+                'spacing' => ['_default' => 2, 'return' => 4],
+            ],
         ];
 
         yield 'left align with multiline' => [
-            [
-                'align' => PhpdocAlignFixer::ALIGN_LEFT_MULTILINE,
-            ],
             '<?php
     /**
      * @property string $bar
@@ -1591,12 +1592,12 @@ function foo($typeless): void {}',
      *
      */
 ',
-        ];
-
-        yield 'left align with multiline and inline' => [
             [
                 'align' => PhpdocAlignFixer::ALIGN_LEFT_MULTILINE,
             ],
+        ];
+
+        yield 'left align with multiline and inline' => [
             '<?php
     /**
      * @property string $bar Foo-Bar lorem ipsum
@@ -1635,13 +1636,12 @@ function foo($typeless): void {}',
      *
      */
 ',
+            [
+                'align' => PhpdocAlignFixer::ALIGN_LEFT_MULTILINE,
+            ],
         ];
 
         yield 'left align with multiline and custom multiline spacing' => [
-            [
-                'align' => PhpdocAlignFixer::ALIGN_LEFT_MULTILINE,
-                'spacing' => ['_multiline' => 2],
-            ],
             '<?php
     /**
      * @property string $bar Foo-Bar lorem ipsum
@@ -1680,13 +1680,13 @@ function foo($typeless): void {}',
      *
      */
 ',
+            [
+                'align' => PhpdocAlignFixer::ALIGN_LEFT_MULTILINE,
+                'spacing' => ['_multiline' => 2],
+            ],
         ];
 
         yield 'left align with multiline and 0 multiline spacing' => [
-            [
-                'align' => PhpdocAlignFixer::ALIGN_LEFT_MULTILINE,
-                'spacing' => ['_multiline' => 0],
-            ],
             '<?php
     /**
      * @property string $bar Foo-Bar lorem ipsum
@@ -1726,8 +1726,8 @@ function foo($typeless): void {}',
      */
 ',
             [
-                'align' => PhpdocAlignFixer::ALIGN_LEFT,
-                'spacing' => ['_default' => 2, 'return' => 4],
+                'align' => PhpdocAlignFixer::ALIGN_LEFT_MULTILINE,
+                'spacing' => ['_multiline' => 0],
             ],
         ];
 
