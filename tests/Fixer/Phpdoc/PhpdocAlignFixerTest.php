@@ -1815,5 +1815,13 @@ function foo($typeless): void {}',
             ],
             'The option "spacing" is invalid. All spacings must be greater than zero.',
         ];
+
+        yield 'negativeMultiline' => [
+            [
+                'align' => PhpdocAlignFixer::ALIGN_LEFT_MULTILINE,
+                'spacing' => ['_multiline' => -1],
+            ],
+            'The option "spacing" is invalid. Minimum _multiline spacing must be zero.',
+        ];
     }
 }
