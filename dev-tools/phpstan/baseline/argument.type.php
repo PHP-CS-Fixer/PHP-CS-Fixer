@@ -112,11 +112,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/RuleSet/RuleSet.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $analysis of static method PhpCsFixer\\Tokenizer\\Analyzer\\ControlCaseStructuresAnalyzer::buildControlCaseStructureAnalysis() expects array{kind: int, index: int, open: int, end: int, cases: list<array{index: int, open: int}>, default: array{index: int, open: int}|null}, non-empty-array<literal-string&non-falsy-string, mixed> given.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $name of static method PhpCsFixer\\Tokenizer\\Processor\\ImportProcessor::tokenizeName() expects non-empty-string, string given.',
     'count' => 2,
     'path' => __DIR__ . '/../../../src/Tokenizer/Transformer/NameQualifiedTransformer.php',
