@@ -147,7 +147,7 @@ final class MagicConstantCasingFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int, array{string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFix84Cases(): iterable
     {

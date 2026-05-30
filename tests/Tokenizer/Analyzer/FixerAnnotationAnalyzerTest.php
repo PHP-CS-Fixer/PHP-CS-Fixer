@@ -51,7 +51,7 @@ final class FixerAnnotationAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{string, array<string, list<string>>, 3?: string}>
+     * @return iterable<string, array{string, array<string, list<string>>, 2?: string}>
      */
     public static function provideFindCases(): iterable
     {
