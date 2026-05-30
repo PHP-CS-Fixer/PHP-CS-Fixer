@@ -727,56 +727,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Runner/Runner.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset \'alternative_syntax\' might not exist on array<literal-string&non-falsy-string, mixed>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset \'alternative_syntax\' might not exist on non-empty-array<literal-string&non-falsy-string, mixed>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset \'brace_count\' might not exist on array<literal-string&non-falsy-string, mixed>.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset \'brace_count\' might not exist on non-empty-array<literal-string&non-falsy-string, mixed>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset \'default\' might not exist on array<literal-string&non-falsy-string, mixed>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset \'index\' might not exist on non-empty-array<literal-string&non-falsy-string, mixed>.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset \'kind\' might not exist on array<literal-string&non-falsy-string, mixed>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset \'kind\' might not exist on non-empty-array<literal-string&non-falsy-string, mixed>.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset int<-1, max> might not exist on list<array<literal-string&non-falsy-string, mixed>>.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset int<0, max> might not exist on list<array<literal-string&non-falsy-string, mixed>>.',
-    'count' => 3,
-    'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset 1 might not exist on list<string>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Tokenizer/Tokens.php',
