@@ -102,16 +102,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/NoBlankLinesAfterPhpdocFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $str of function preg_quote expects string, int|string given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Whitespace/ArrayIndentationFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $parentScopeEndIndex of method PhpCsFixer\\Fixer\\Whitespace\\ArrayIndentationFixer::findExpressionEndIndex() expects int, int|string given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Whitespace/ArrayIndentationFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $code of static method PhpCsFixer\\Hasher::calculate() expects string, string|false given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Linter/CachingLinter.php',
