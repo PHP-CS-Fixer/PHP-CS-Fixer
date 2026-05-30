@@ -662,33 +662,8 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/StringNotation/ExplicitStringVariableFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset \'end_index\' might not exist on non-empty-array<literal-string&non-falsy-string, int|string>.',
-    'count' => 4,
-    'path' => __DIR__ . '/../../../src/Fixer/Whitespace/ArrayIndentationFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset \'initial_indent\' might not exist on non-empty-array<literal-string&non-falsy-string, int|string>.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Fixer/Whitespace/ArrayIndentationFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset \'new_indent\' might not exist on non-empty-array<literal-string&non-falsy-string, int|string>.',
+    'rawMessage' => 'Offset int might not exist on non-empty-list<array{type: \'array\', end_index: int, initial_indent: string}|array{type: \'expression\', end_index: int, initial_indent: string, new_indent: string}>.',
     'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Whitespace/ArrayIndentationFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset \'type\' might not exist on non-empty-array<literal-string&non-falsy-string, int|string>.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Fixer/Whitespace/ArrayIndentationFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset int might not exist on non-empty-list<non-empty-array<literal-string&non-falsy-string, int|string>>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Whitespace/ArrayIndentationFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset int<0, max> might not exist on non-empty-list<non-empty-array<literal-string&non-falsy-string, int|string>>.',
-    'count' => 3,
     'path' => __DIR__ . '/../../../src/Fixer/Whitespace/ArrayIndentationFixer.php',
 ];
 $ignoreErrors[] = [
