@@ -61,6 +61,8 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $lastIndent = '';
+
+        /** @var list<array{type: 'array', end_index: int, initial_indent: string}|array{type: 'expression', end_index: int, initial_indent: string, new_indent: string}> $scopes */
         $scopes = [];
         $previousLineInitialIndent = '';
         $previousLineNewIndent = '';
@@ -95,6 +97,8 @@ final class ArrayIndentationFixer extends AbstractFixer implements WhitespacesAw
             if (null === $currentScope) {
                 continue;
             }
+
+            \assert(isset($scopes[$currentScope]));
 
             if ($token->isWhitespace()) {
                 if (!Preg::match('/\R/', $token->getContent())) {

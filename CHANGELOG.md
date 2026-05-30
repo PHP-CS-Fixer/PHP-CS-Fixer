@@ -3,6 +3,20 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.3
+---------------------
+
+* fix: `MultilinePromotedPropertiesFixer` - fix for `new` in initializers (#9619)
+* fix: `PhpdocLineSpanFixer` - run after `NoSuperfluousPhpdocTagsFixer` (#9615)
+* CI: add generic phpstan/phpstan-deprecation-rules, so usage of old deprecated constants is detected (#9636)
+* CI: replace PHP `8.6snapshot` with `nightly` in matrix (#9628)
+* deps: bump crate-ci/typos from 1.46.0 to 1.46.1 in /.github/workflows in the all group across 1 directory (#9624)
+* deps: bump crate-ci/typos from 1.46.1 to 1.46.2 in /.github/workflows in the all group across 1 directory (#9631)
+* deps: bump ergebnis/composer-normalize from 2.51.0 to 2.52.0 in /dev-tools (#9627)
+* deps: bump the phpstan group in /dev-tools with 2 updates (#9626)
+* deps: upgrade misc deps (#9621)
+* refactor: AttributeBlockNoSpacesFixer - no need for loop when we already know bracket indices (#9446)
+
 Changelog for v3.95.2
 ---------------------
 
