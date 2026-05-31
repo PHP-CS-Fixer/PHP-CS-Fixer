@@ -207,7 +207,7 @@ final class ControlCaseStructuresAnalyzer
 
     /**
      * @param array{
-     *     kind: null|int,
+     *     kind: int,
      *     index: int,
      *     brace_count: int,
      *     cases: list<array{index: int, open: int}>,
