@@ -248,7 +248,7 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableF
 
         foreach ($this->configuration['sets'] as $set) {
             if ('@all' === $set) {
-                $this->aliases = array_merge(...array_values(self::SETS));
+                $this->aliases = self::mergeSets(self::SETS);
 
                 break;
             }
@@ -336,5 +336,15 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableF
                 ->setDefault(['@internal', '@IMAP', '@pg'])
                 ->getOption(),
         ]);
+    }
+
+    /**
+     * @param array<string, array<string, array{string, int}|string>> $sets
+     *
+     * @return array<string, array{string, int}|string>
+     */
+    private static function mergeSets(array $sets): array
+    {
+        return array_merge(...array_values($sets));
     }
 }
