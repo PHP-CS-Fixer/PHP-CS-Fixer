@@ -517,16 +517,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset 1 might not exist on non-empty-list<array{int, string}>.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitTestCaseStaticMethodCallsFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Offset string might not exist on non-empty-array<string, non-empty-list<array{int, string}>>.',
-    'count' => 3,
-    'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitTestCaseStaticMethodCallsFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset mixed might not exist on non-empty-array<string, string>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/GeneralPhpdocTagRenameFixer.php',
