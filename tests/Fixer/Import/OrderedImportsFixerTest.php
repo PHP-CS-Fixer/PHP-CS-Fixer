@@ -2062,7 +2062,7 @@ B#
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage($expectedMessage);
 
-        $this->fixer->configure($wrongConfig);
+        $this->fixer->configure($wrongConfig); // @phpstan-ignore argument.type
     }
 
     /**

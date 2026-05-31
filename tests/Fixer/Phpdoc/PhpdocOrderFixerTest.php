@@ -48,7 +48,7 @@ final class PhpdocOrderFixerTest extends AbstractFixerTestCase
         self::expectException(InvalidFixerConfigurationException::class);
         self::expectExceptionMessage($expectedExceptionMessage);
 
-        $this->fixer->configure($configuration);
+        $this->fixer->configure($configuration); // @phpstan-ignore argument.type
     }
 
     /**
