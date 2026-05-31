@@ -134,7 +134,7 @@ final class DeclareEqualNormalizeFixerTest extends AbstractFixerTestCase
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage(\sprintf('[declare_equal_normalize] Invalid configuration: %s', $expectedMessage));
 
-        $this->fixer->configure($config);
+        $this->fixer->configure($config); // @phpstan-ignore argument.type
     }
 
     /**

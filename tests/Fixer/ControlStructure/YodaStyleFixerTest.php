@@ -149,7 +149,7 @@ while (2 !== $b = array_pop($c));
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches("#^\\[{$this->fixer->getName()}\\] {$expectedMessage}$#");
 
-        $this->fixer->configure($config);
+        $this->fixer->configure($config); // @phpstan-ignore argument.type
     }
 
     /**
