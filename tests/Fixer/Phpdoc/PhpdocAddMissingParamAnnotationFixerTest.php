@@ -49,7 +49,7 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
         $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessageMatches($expectedMessage);
 
-        $this->fixer->configure($configuration);
+        $this->fixer->configure($configuration); // @phpstan-ignore argument.type
     }
 
     /**

@@ -357,7 +357,7 @@ final class NoMixedEchoPrintFixerTest extends AbstractFixerTestCase
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches($expectedMessage);
 
-        $this->fixer->configure($wrongConfig);
+        $this->fixer->configure($wrongConfig); // @phpstan-ignore argument.type
     }
 
     /**

@@ -115,7 +115,7 @@ final class BlankLinesBeforeNamespaceFixerTest extends AbstractFixerTestCase
     public function testInvalidConfiguration(array $configuration): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
-        $this->fixer->configure($configuration);
+        $this->fixer->configure($configuration); // @phpstan-ignore argument.type
     }
 
     /**
