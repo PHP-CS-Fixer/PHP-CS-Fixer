@@ -352,11 +352,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../tests/Tokenizer/TokensAnalyzerTest.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $sequence of method PhpCsFixer\\Tests\\Tokenizer\\TokensTest::testFindSequenceException() expects non-empty-list<array{0: int, 1?: string}|PhpCsFixer\\Tokenizer\\Token|string>, array{} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Tokenizer/TokensTest.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #6 $caseSensitive of method PhpCsFixer\\Tests\\Tokenizer\\TokensTest::testFindSequence() expects bool|list<bool>, array{1: false} given.',
     'count' => 2,
     'path' => __DIR__ . '/../../../tests/Tokenizer/TokensTest.php',

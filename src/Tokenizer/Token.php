@@ -22,8 +22,8 @@ use PhpCsFixer\Future;
  * Also, this class exposes PHPStan types. (hint: string in those types shall ideally not be empty - yet we are not there yet).
  *
  * @phpstan-type _PhpTokenKind int|string
- * @phpstan-type _PhpTokenArray array{0: int, 1: string}
- * @phpstan-type _PhpTokenArrayPartial array{0: int, 1?: string}
+ * @phpstan-type _PhpTokenArray array{0: int, 1: string, 2?: int}
+ * @phpstan-type _PhpTokenArrayPartial array{0: int, 1?: string, 2?: int}
  * @phpstan-type _PhpTokenPrototype _PhpTokenArray|string
  * @phpstan-type _PhpTokenPrototypePartial _PhpTokenArrayPartial|string
  *
