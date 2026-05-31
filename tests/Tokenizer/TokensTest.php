@@ -306,7 +306,7 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @param non-empty-list<_PhpTokenPrototypePartial|Token> $sequence sequence of token prototypes
+     * @param list<_PhpTokenPrototypePartial|Token> $sequence sequence of token prototypes
      *
      * @dataProvider provideFindSequenceExceptionCases
      */
@@ -318,7 +318,7 @@ final class TokensTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage($message);
 
-        $tokens->findSequence($sequence);
+        $tokens->findSequence($sequence); // @phpstan-ignore argument.type
     }
 
     /**
