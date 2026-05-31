@@ -356,9 +356,9 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
     }
 
     /**
-     * @param _DocumentElement&array{type: 'function'} $element
-     * @param null|non-empty-string                    $namespace
-     * @param array<string, string>                    $shortNames
+     * @param _DocumentElement&array{type: 'function', ...} $element
+     * @param null|non-empty-string                         $namespace
+     * @param array<string, string>                         $shortNames
      */
     private function fixFunctionDocComment(
         string $content,
@@ -413,9 +413,9 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
     }
 
     /**
-     * @param _DocumentElement&array{type: 'property'} $element
-     * @param null|non-empty-string                    $namespace
-     * @param array<string, string>                    $shortNames
+     * @param _DocumentElement&array{type: 'property', ...} $element
+     * @param null|non-empty-string                         $namespace
+     * @param array<string, string>                         $shortNames
      */
     private function fixPropertyDocComment(
         string $content,
@@ -443,7 +443,7 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
     }
 
     /**
-     * @param _DocumentElement&array{type: 'classy'} $element
+     * @param _DocumentElement&array{type: 'classy', ...} $element
      */
     private function fixClassDocComment(string $content, array $element): string
     {
