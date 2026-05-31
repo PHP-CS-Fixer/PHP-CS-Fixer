@@ -305,8 +305,18 @@ final class TokensTest extends TestCase
         ];
     }
 
+    public function testFindSequenceWithEmptyInputException(): void
+    {
+        $tokens = Tokens::fromCode('<?php $x = 1;');
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid sequence.');
+
+        $tokens->findSequence([]); // @phpstan-ignore-line argument.type Explicitly test input valid for PHP typing system but against PHPStan
+    }
+
     /**
-     * @param list<_PhpTokenPrototypePartial|Token> $sequence sequence of token prototypes
+     * @param non-empty-list<_PhpTokenPrototypePartial|Token> $sequence sequence of token prototypes
      *
      * @dataProvider provideFindSequenceExceptionCases
      */
@@ -318,7 +328,7 @@ final class TokensTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage($message);
 
-        $tokens->findSequence($sequence); // @phpstan-ignore argument.type
+        $tokens->findSequence($sequence);
     }
 
     /**
@@ -327,8 +337,6 @@ final class TokensTest extends TestCase
     public static function provideFindSequenceExceptionCases(): iterable
     {
         $emptyToken = new Token('');
-
-        yield ['Invalid sequence.', []];
 
         yield [
             'Non-meaningful token at position: "0".',
