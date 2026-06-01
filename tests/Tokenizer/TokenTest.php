@@ -426,18 +426,18 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @param _PhpTokenPrototypePartial|array{int, string, string}|Token $other
+     * @param _PhpTokenPrototypePartial|Token $other
      *
      * @dataProvider provideEqualsCases
      */
     #[DataProvider('provideEqualsCases')]
     public function testEquals(Token $token, bool $equals, $other, bool $caseSensitive = true): void
     {
-        self::assertSame($equals, $token->equals($other, $caseSensitive)); // @phpstan-ignore argument.type
+        self::assertSame($equals, $token->equals($other, $caseSensitive));
     }
 
     /**
-     * @return iterable<int, array{0: Token, 1: bool, 2: _PhpTokenPrototypePartial|array{int, string, string}|Token, 3?: bool}>
+     * @return iterable<int, array{0: Token, 1: bool, 2: _PhpTokenPrototypePartial|Token, 3?: bool}>
      */
     public static function provideEqualsCases(): iterable
     {
@@ -487,9 +487,6 @@ final class TokenTest extends TestCase
         yield [$function, false, new Token([\T_FUNCTION, 'Function'])];
 
         yield [$function, true, new Token([\T_FUNCTION, 'Function']), false];
-
-        // if it is an array any additional field is checked too
-        yield [$function, false, [\T_FUNCTION, 'function', 'unexpected']];
 
         yield [new Token('&'), true, '&'];
     }
