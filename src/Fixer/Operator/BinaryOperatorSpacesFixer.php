@@ -838,6 +838,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                         }
                         $i = $arrayEndIndex;
                         $index = $i;
+
                         continue;
                     }
 
