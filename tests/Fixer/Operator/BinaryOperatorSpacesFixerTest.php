@@ -3426,6 +3426,78 @@ function test()
                 ],
             ],
         ];
+
+        yield 'do not align separate nested arrays' => [
+            '<?php
+                [
+                    [1 =>   "foo"],
+                    [2    => "foo"],
+                    [3 => "foo"],
+                ];
+                ',
+            '<?php
+                [
+                    [1 =>   "foo"],
+                    [2    =>"foo"],
+                    [3=>"foo"],
+                ];
+                ',
+            ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE]],
+        ];
+
+        yield 'do not align separate nested arrays with align_single_space_minimal' => [
+            '<?php
+                $g = [
+                    ["aa" => "a"],
+                    ["bbb" => "b"],
+                    ["cccc" => "c"],
+                ];
+            ',
+            '<?php
+                $g = [
+                    ["aa" =>     "a"],
+                    ["bbb" =>  "b"],
+                    ["cccc" => "c"],
+                ];
+            ',
+            ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+        ];
+
+        yield 'do not align separate nested arrays with non-array values in array' => [
+            '<?php
+                [
+                    "and",
+                    ["key" => false],
+                    ["long_key" => false],
+                ];
+                ',
+            '<?php
+                [
+                    "and",
+                    ["key"    => false],
+                    ["long_key" => false],
+                ];
+                ',
+            ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+        ];
+
+        yield 'do not align separate nested arrays in function call' => [
+            '<?php
+                $g = array_replace(
+                    ["aa" => "a"],
+                    ["bbb" => "b"],
+                    ["cccc" => "c"],
+                );
+            ',
+            '<?php
+                $g = array_replace(
+                    ["aa" =>     "a"],
+                    ["bbb" =>  "b"],
+                    ["cccc" => "c"],
+                );
+            ',
+            ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL]],
+        ];
     }
 
     /**
