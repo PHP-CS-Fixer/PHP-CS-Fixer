@@ -37,7 +37,8 @@ final class WorkerException extends \RuntimeException
      *     file: string,
      *     line: int,
      *     code: int,
-     *     trace: string
+     *     trace: string,
+     *     ...
      * } $data
      */
     public static function fromRaw(array $data): self

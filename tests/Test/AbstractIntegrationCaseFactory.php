@@ -163,7 +163,7 @@ abstract class AbstractIntegrationCaseFactory implements IntegrationCaseFactoryI
     /**
      * Parses the '--SETTINGS--' block of a '.test' file and determines settings.
      *
-     * @return array{checkPriority: bool, deprecations: list<string>}
+     * @return array{checkPriority: bool, deprecations: list<string>, isExplicitPriorityCheck?: bool}
      */
     protected function determineSettings(SplFileInfo $file, ?string $config): array
     {

@@ -67,6 +67,8 @@ final class ControlCaseStructuresAnalyzer
          *     cases: list<array{index: int, open: int}>,
          *     default: null|array{index: int, open: int},
          *     alternative_syntax: bool,
+         *     open?: int,
+         *     end?: int,
          * }> $stack
          */
         $stack = [];
@@ -109,6 +111,8 @@ final class ControlCaseStructuresAnalyzer
                 continue;
             }
 
+            \assert(isset($stack[$depth]));
+
             if ($token->equals('{')) {
                 ++$stack[$depth]['brace_count'];
 
@@ -125,6 +129,8 @@ final class ControlCaseStructuresAnalyzer
 
                     if ($isTypeOfInterest) {
                         $stack[$depth]['end'] = $index;
+
+                        \assert(isset($stack[$depth]['open']));
 
                         yield $stack[$depth]['index'] => self::buildControlCaseStructureAnalysis($stack[$depth]);
                     }
@@ -162,6 +168,8 @@ final class ControlCaseStructuresAnalyzer
                 if ($isTypeOfInterest) {
                     $stack[$depth]['end'] = $index;
 
+                    \assert(isset($stack[$depth]['open']));
+
                     yield $stack[$depth]['index'] => self::buildControlCaseStructureAnalysis($stack[$depth]);
                 }
 
@@ -182,8 +190,12 @@ final class ControlCaseStructuresAnalyzer
             }
 
             if ($token->isGivenKind(\T_CASE)) {
+                \assert(isset($stack[$depth]['kind']));
+
                 $stack[$depth]['cases'][] = ['index' => $index, 'open' => self::findCaseOpen($tokens, $stack[$depth]['kind'], $index)];
             } elseif ($token->isGivenKind(\T_DEFAULT)) {
+                \assert(isset($stack[$depth]['kind']));
+
                 if (null !== $stack[$depth]['default']) {
                     throw new \RuntimeException('Analysis multiple "default" found.');
                 }
@@ -197,10 +209,12 @@ final class ControlCaseStructuresAnalyzer
      * @param array{
      *     kind: int,
      *     index: int,
-     *     open: int,
-     *     end: int,
+     *     brace_count: int,
      *     cases: list<array{index: int, open: int}>,
      *     default: null|array{index: int, open: int},
+     *     alternative_syntax: bool,
+     *     open: int,
+     *     end: int,
      * } $analysis
      */
     private static function buildControlCaseStructureAnalysis(array $analysis): AbstractControlCaseStructuresAnalysis

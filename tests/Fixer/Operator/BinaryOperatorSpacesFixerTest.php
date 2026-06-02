@@ -50,7 +50,7 @@ final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches($exceptionExpression);
 
-        $this->fixer->configure($config);
+        $this->fixer->configure($config); // @phpstan-ignore argument.type
     }
 
     /**

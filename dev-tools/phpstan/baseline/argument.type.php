@@ -102,16 +102,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/NoBlankLinesAfterPhpdocFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $str of function preg_quote expects string, int|string given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Whitespace/ArrayIndentationFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $parentScopeEndIndex of method PhpCsFixer\\Fixer\\Whitespace\\ArrayIndentationFixer::findExpressionEndIndex() expects int, int|string given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Whitespace/ArrayIndentationFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $code of static method PhpCsFixer\\Hasher::calculate() expects string, string|false given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Linter/CachingLinter.php',
@@ -120,11 +110,6 @@ $ignoreErrors[] = [
     'rawMessage' => 'Parameter #2 ...$values of function sprintf expects bool|float|int|string|null, array<string, mixed>|bool given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/RuleSet/RuleSet.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $analysis of static method PhpCsFixer\\Tokenizer\\Analyzer\\ControlCaseStructuresAnalyzer::buildControlCaseStructureAnalysis() expects array{kind: int, index: int, open: int, end: int, cases: list<array{index: int, open: int}>, default: array{index: int, open: int}|null}, non-empty-array<literal-string&non-falsy-string, mixed> given.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $name of static method PhpCsFixer\\Tokenizer\\Processor\\ImportProcessor::tokenizeName() expects non-empty-string, string given.',
@@ -365,11 +350,6 @@ $ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $expected of method PhpCsFixer\\Tests\\Tokenizer\\TokensAnalyzerTest::testIsBinaryOperator() expects list<int>, array{0: 3, 5: false} given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../tests/Tokenizer/TokensAnalyzerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $sequence of method PhpCsFixer\\Tests\\Tokenizer\\TokensTest::testFindSequenceException() expects non-empty-list<array{0: int, 1?: string}|PhpCsFixer\\Tokenizer\\Token|string>, array{} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Tokenizer/TokensTest.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Parameter #6 $caseSensitive of method PhpCsFixer\\Tests\\Tokenizer\\TokensTest::testFindSequence() expects bool|list<bool>, array{1: false} given.',
