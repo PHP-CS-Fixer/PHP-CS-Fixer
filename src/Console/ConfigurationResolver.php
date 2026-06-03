@@ -673,7 +673,7 @@ final class ConfigurationResolver
             $agentDetector = new AgentDetector\Detector();
 
             // When an AI agent is running, we ignore the format configuration entirely and use JSON format.
-            if ($agentDetector->isAgentPresent(getenv())) {
+            if ($agentDetector->isAgentPresent(array_fill_keys(array_keys(getenv()), ''))) {
                 $this->format = 'json';
 
                 return $this->format;
