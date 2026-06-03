@@ -142,16 +142,16 @@ final class YieldFromArrayToYieldsFixer extends AbstractFixer
 
             $arrayStartIndex = $tokens->getNextMeaningfulToken($index);
 
-            if (!$tokens[$arrayStartIndex]->isGivenKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+            if (!$tokens[$arrayStartIndex]->isGivenKind([\T_ARRAY, CT::T_ARRAY_BRACKET_OPEN])) {
                 continue;
             }
 
             if ($tokens[$arrayStartIndex]->isGivenKind(\T_ARRAY)) {
                 $startIndex = $tokens->getNextTokenOfKind($arrayStartIndex, ['(']);
-                $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
+                $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $startIndex);
             } else {
                 $startIndex = $arrayStartIndex;
-                $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $startIndex);
+                $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $startIndex);
             }
 
             // is there empty "yield from []" ?

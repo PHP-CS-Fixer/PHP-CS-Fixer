@@ -115,7 +115,7 @@ final class PhpUnitMockFixer extends AbstractPhpUnitFixer implements Configurabl
                 $tokens[$index] = new Token([\T_STRING, 'createMock']);
             } elseif ($tokens[$index]->equals([\T_STRING, 'getMock'], false)) {
                 $openingParenthesis = $tokens->getNextMeaningfulToken($index);
-                $closingParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingParenthesis);
+                $closingParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openingParenthesis);
 
                 $argumentsCount = $argumentsAnalyzer->countArguments($tokens, $openingParenthesis, $closingParenthesis);
 

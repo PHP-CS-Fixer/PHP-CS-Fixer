@@ -218,7 +218,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
 
             if ($token->isClassy()) {
                 $index = $tokens->getNextTokenOfKind($index, ['{']);
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
 
                 continue;
             }
@@ -651,7 +651,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
 
             if ($token->isClassy()) {
                 $classStart = $tokens->getNextTokenOfKind($index, ['{']);
-                $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classStart);
+                $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $classStart);
 
                 for ($index = $classStart; $index <= $classEnd; ++$index) {
                     if (!$tokens[$index]->isGivenKind(\T_FUNCTION)) {
@@ -666,7 +666,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
                         continue;
                     }
 
-                    $methodEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $methodStart);
+                    $methodEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $methodStart);
 
                     foreach ($this->findFunctionDeclarations($tokens, $methodStart, $methodEnd) as $function) {
                         yield $function;

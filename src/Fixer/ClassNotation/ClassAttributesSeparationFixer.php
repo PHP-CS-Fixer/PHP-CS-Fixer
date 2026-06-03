@@ -479,7 +479,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
 
                 $classIndex = $element['classIndex'];
                 $classOpen = $tokens->getNextTokenOfKind($classIndex, ['{']);
-                $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
+                $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $classOpen);
                 $class = [
                     'index' => $element['classIndex'],
                     'open' => $classOpen,
@@ -532,7 +532,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
             if (true === $attributes['abstract']) {
                 $elementEndIndex = $tokens->getNextTokenOfKind($elementIndex, [';']);
             } else {
-                $elementEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $tokens->getNextTokenOfKind($elementIndex, ['{']));
+                $elementEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $tokens->getNextTokenOfKind($elementIndex, ['{']));
             }
         } elseif ('trait_import' === $elementType) {
             $elementEndIndex = $elementIndex;
@@ -542,7 +542,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
             } while ($tokens[$elementEndIndex]->isGivenKind([\T_STRING, \T_NS_SEPARATOR]) || $tokens[$elementEndIndex]->equals(','));
 
             if (!$tokens[$elementEndIndex]->equals(';')) {
-                $elementEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $tokens->getNextTokenOfKind($elementIndex, ['{']));
+                $elementEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $tokens->getNextTokenOfKind($elementIndex, ['{']));
             }
         } else { // 'const', 'property', enum-'case', or 'method' of an interface
             $elementEndIndex = $tokens->getNextTokenOfKind($elementIndex, [';', '{']);

@@ -502,12 +502,12 @@ Custom values:
         $index = $tokens->getNextTokenOfKind($index, ['(', '{', ';', [CT::T_PROPERTY_HOOK_BRACE_OPEN]]);
 
         if ($tokens[$index]->equals('(')) {
-            $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+            $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
             $index = $tokens->getNextTokenOfKind($index, ['{', ';']);
         }
 
         if ($tokens[$index]->equals('{')) {
-            $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+            $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
         }
 
         if ($tokens[$index]->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
