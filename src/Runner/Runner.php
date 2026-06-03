@@ -24,6 +24,7 @@ use PhpCsFixer\Config\NullRuleCustomisationPolicy;
 use PhpCsFixer\Config\RuleCustomisationPolicyInterface;
 use PhpCsFixer\Console\Command\WorkerCommand;
 use PhpCsFixer\Differ\DifferInterface;
+use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Error\ErrorsManager;
 use PhpCsFixer\Error\SourceExceptionFactory;
@@ -55,7 +56,7 @@ use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * @phpstan-type _RunResult array<string, array{appliedFixers: list<string>, diff: string}>
+ * @phpstan-type _RunResult array<string, array{appliedFixers: list<string>, diff: string, fixerDiffs?: array<string, string>}>
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  * @author Greg Korba <greg@codito.dev>
@@ -545,7 +546,7 @@ final class Runner
     }
 
     /**
-     * @return null|array{appliedFixers: list<string>, diff: string}
+     * @return null|array{appliedFixers: list<string>, diff: string, fixerDiffs?: array<string, string>}
      */
     private function fixFile(\SplFileInfo $file, LintingResultInterface $lintingResult): ?array
     {
@@ -586,6 +587,13 @@ final class Runner
         $new = $old;
 
         $appliedFixers = [];
+        // Per-fixer diff capture is gated on having a real differ. With NullDiffer
+        // we skip the snapshots entirely so no overhead is incurred.
+        $capturePerFixerDiffs = !$this->differ instanceof NullDiffer;
+        $beforeFixerCode = $capturePerFixerDiffs ? $old : '';
+
+        /** @var array<string, string> */
+        $fixerDiffs = [];
 
         $ruleCustomisers = $this->ruleCustomisationPolicy->getRuleCustomisers(); // were already validated
 
@@ -652,7 +660,16 @@ final class Runner
                 if ($tokens->isChanged()) {
                     $tokens->clearEmptyTokens();
                     $tokens->clearChanged();
-                    $appliedFixers[] = $fixer->getName();
+                    $fixerName = $fixer->getName();
+                    $appliedFixers[] = $fixerName;
+                    if ($capturePerFixerDiffs) {
+                        $afterFixerCode = $tokens->generateCode();
+                        $fixerDiff = $this->differ->diff($beforeFixerCode, $afterFixerCode, $file);
+                        // Multiple passes of the same fixer (or the same fixer reverting
+                        // and re-applying a change) concatenate so no information is lost.
+                        $fixerDiffs[$fixerName] = ($fixerDiffs[$fixerName] ?? '').$fixerDiff;
+                        $beforeFixerCode = $afterFixerCode;
+                    }
                     if (filter_var(getenv('PHP_CS_FIXER_DEBUG'), \FILTER_VALIDATE_BOOL)) {
                         try {
                             $this->linter->lintSource($tokens->generateCode())->check();
@@ -694,6 +711,10 @@ final class Runner
                 'appliedFixers' => $appliedFixers,
                 'diff' => $this->differ->diff($old, $new, $file),
             ];
+
+            if ($capturePerFixerDiffs && [] !== $fixerDiffs) {
+                $fixInfo['fixerDiffs'] = $fixerDiffs;
+            }
 
             try {
                 $this->linter->lintSource($new)->check();

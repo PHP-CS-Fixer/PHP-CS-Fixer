@@ -74,34 +74,49 @@ final class GitlabReporter implements ReporterInterface
 
         $report = [];
         foreach ($reportSummary->getChanged() as $fileName => $change) {
+            $fixerDiffs = $change['fixerDiffs'] ?? null;
+
             foreach ($change['appliedFixers'] as $fixerName) {
                 $fixer = $this->fixers[$fixerName] ?? null;
+                $description = null !== $fixer
+                    ? $fixer->getDefinition()->getSummary()
+                    : 'PHP-CS-Fixer.'.$fixerName.' (custom rule)';
+                $body = \sprintf(
+                    "%s\n%s",
+                    $about,
+                    null !== $fixer
+                        ? \sprintf(
+                            'Check [docs](https://cs.symfony.com/doc/rules/%s.html) for more information.',
+                            substr($this->documentationLocator->getFixerDocumentationFileRelativePath($fixer), 0, -4), // -4 to drop `.rst`
+                        )
+                        : 'Check performed with a custom rule.',
+                );
 
-                $report[] = [
-                    'check_name' => 'PHP-CS-Fixer.'.$fixerName,
-                    'description' => null !== $fixer
-                        ? $fixer->getDefinition()->getSummary()
-                        : 'PHP-CS-Fixer.'.$fixerName.' (custom rule)',
-                    'content' => [
-                        'body' => \sprintf(
-                            "%s\n%s",
-                            $about,
-                            null !== $fixer
-                                ? \sprintf(
-                                    'Check [docs](https://cs.symfony.com/doc/rules/%s.html) for more information.',
-                                    substr($this->documentationLocator->getFixerDocumentationFileRelativePath($fixer), 0, -4), // -4 to drop `.rst`
-                                )
-                                : 'Check performed with a custom rule.',
-                        ),
-                    ],
-                    'categories' => ['Style'],
-                    'fingerprint' => md5($fileName.$fixerName),
-                    'severity' => 'minor',
-                    'location' => [
-                        'path' => $fileName,
-                        'lines' => self::getLines($this->diffParser->parse($change['diff'])),
-                    ],
-                ];
+                // Prefer per-fixer diff (one entry per chunk inside that fixer's diff).
+                // Fall back to the combined diff when per-fixer attribution is unavailable
+                // (e.g. legacy callers passing the older shape, or `NullDiffer`).
+                $diffToParse = $fixerDiffs[$fixerName] ?? $change['diff'];
+
+                /** @var list<Diff> $parsedDiffs */
+                $parsedDiffs = array_values($this->diffParser->parse($diffToParse));
+                $lineRanges = self::getAllLineRanges($parsedDiffs);
+
+                foreach ($lineRanges as $lines) {
+                    $report[] = [
+                        'check_name' => 'PHP-CS-Fixer.'.$fixerName,
+                        'description' => $description,
+                        'content' => ['body' => $body],
+                        'categories' => ['Style'],
+                        // Include line range in the fingerprint so multiple chunks for the
+                        // same fixer × file remain distinguishable to consumers.
+                        'fingerprint' => md5($fileName.$fixerName.$lines['begin'].'-'.$lines['end']),
+                        'severity' => 'minor',
+                        'location' => [
+                            'path' => $fileName,
+                            'lines' => $lines,
+                        ],
+                    ];
+                }
             }
         }
 
@@ -111,23 +126,26 @@ final class GitlabReporter implements ReporterInterface
     }
 
     /**
+     * Returns one `{begin, end}` range per chunk across all parsed diffs.
+     * Falls back to a single `{begin: 0, end: 0}` when there are no chunks at all
+     * (preserves the original behaviour for empty diffs / `NullDiffer`).
+     *
      * @param list<Diff> $diffs
      *
-     * @return array{begin: int, end: int}
+     * @return non-empty-list<array{begin: int, end: int}>
      */
-    private static function getLines(array $diffs): array
+    private static function getAllLineRanges(array $diffs): array
     {
-        if (isset($diffs[0])) {
-            $firstDiff = $diffs[0];
+        $ranges = [];
 
-            $firstChunk = \Closure::bind(static fn (Diff $diff) => array_shift($diff->chunks), null, $firstDiff)($firstDiff);
-
-            if ($firstChunk instanceof Chunk) {
-                return self::getBeginEndForDiffChunk($firstChunk);
+        foreach ($diffs as $diff) {
+            $chunks = \Closure::bind(static fn (Diff $diff): array => $diff->chunks, null, $diff)($diff);
+            foreach ($chunks as $chunk) {
+                $ranges[] = self::getBeginEndForDiffChunk($chunk);
             }
         }
 
-        return ['begin' => 0, 'end' => 0];
+        return [] !== $ranges ? $ranges : [['begin' => 0, 'end' => 0]];
     }
 
     /**
