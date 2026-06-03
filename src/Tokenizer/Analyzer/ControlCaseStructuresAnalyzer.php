@@ -91,13 +91,13 @@ final class ControlCaseStructuresAnalyzer
 
                 if ($token->isGivenKind(\T_SWITCH)) {
                     $index = $tokens->getNextMeaningfulToken($index);
-                    $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                    $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
 
                     $stack[$depth]['open'] = $tokens->getNextMeaningfulToken($index);
                     $stack[$depth]['alternative_syntax'] = $tokens[$stack[$depth]['open']]->equals(':');
                 } elseif ($token->isGivenKind(FCT::T_MATCH)) {
                     $index = $tokens->getNextMeaningfulToken($index);
-                    $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                    $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
 
                     $stack[$depth]['open'] = $tokens->getNextMeaningfulToken($index);
                 } elseif ($token->isGivenKind(FCT::T_ENUM)) {
