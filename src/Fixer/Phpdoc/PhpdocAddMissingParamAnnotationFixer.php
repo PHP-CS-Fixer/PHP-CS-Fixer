@@ -160,7 +160,7 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFixer implement
             }
 
             $openIndex = $tokens->getNextTokenOfKind($index, ['(']);
-            $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+            $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openIndex);
 
             $arguments = [];
 

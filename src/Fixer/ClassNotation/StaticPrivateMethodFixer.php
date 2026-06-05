@@ -106,7 +106,7 @@ final class StaticPrivateMethodFixer extends AbstractFixer
                 }
 
                 $classOpen = $tokens->getNextTokenOfKind($index, ['{']);
-                $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
+                $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $classOpen);
 
                 $anythingChanged |= $this->fixClass($tokens, $tokensAnalyzer, $classOpen, $classClose);
             }
@@ -134,7 +134,7 @@ final class StaticPrivateMethodFixer extends AbstractFixer
             return false;
         }
 
-        $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
+        $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $classOpen);
         foreach ($this->getClassMethods($tokens, $classOpen, $classClose) as $methodData) {
             [, $methodOpen, $methodClose] = $methodData;
 
@@ -168,7 +168,7 @@ final class StaticPrivateMethodFixer extends AbstractFixer
         for ($index = $methodOpen + 1; $index < $methodClose - 1; ++$index) {
             if ($tokens[$index]->isGivenKind(\T_CLASS) && $tokensAnalyzer->isAnonymousClass($index)) {
                 $anonymousClassOpen = $tokens->getNextTokenOfKind($index, ['{']);
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $anonymousClassOpen);
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $anonymousClassOpen);
 
                 continue;
             }
@@ -208,7 +208,7 @@ final class StaticPrivateMethodFixer extends AbstractFixer
             if ($tokens[$index]->isGivenKind(\T_FUNCTION)) {
                 $prevIndex = $tokens->getPrevMeaningfulToken($index);
                 $closureStart = $tokens->getNextTokenOfKind($index, ['{']);
-                $closureEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $closureStart);
+                $closureEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $closureStart);
                 if (!$tokens[$prevIndex]->isGivenKind(\T_STATIC)) {
                     $this->fixReferencesInFunction($tokens, $tokensAnalyzer, $closureStart, $closureEnd, $fixedMethods);
                 }
@@ -220,7 +220,7 @@ final class StaticPrivateMethodFixer extends AbstractFixer
 
             if ($tokens[$index]->isGivenKind(\T_CLASS) && $tokensAnalyzer->isAnonymousClass($index)) {
                 $anonymousClassOpen = $tokens->getNextTokenOfKind($index, ['{']);
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $anonymousClassOpen);
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $anonymousClassOpen);
 
                 continue;
             }
@@ -258,7 +258,7 @@ final class StaticPrivateMethodFixer extends AbstractFixer
         $methods = [];
         for ($index = $classClose - 1; $index > $classOpen + 1; --$index) {
             if ($tokens[$index]->equals('}')) {
-                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_BRACE, $index);
 
                 continue;
             }
@@ -275,7 +275,7 @@ final class StaticPrivateMethodFixer extends AbstractFixer
             }
 
             $methodOpen = $tokens->getNextTokenOfKind($functionKeywordIndex, ['{']);
-            $methodClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $methodOpen);
+            $methodClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $methodOpen);
 
             $methods[] = [$functionKeywordIndex, $methodOpen, $methodClose];
         }

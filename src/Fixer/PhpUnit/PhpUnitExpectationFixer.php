@@ -222,7 +222,7 @@ final class PhpUnitExpectationFixer extends AbstractPhpUnitFixer implements Conf
             $newExpectedExceptionName = $this->methodMap[$tokens[$index]->getContent()];
 
             $openIndex = $tokens->getNextTokenOfKind($index, ['(']);
-            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openIndex);
             $commaIndex = $tokens->getPrevMeaningfulToken($closeIndex);
             if ($tokens[$commaIndex]->equals(',')) {
                 $tokens->removeTrailingWhitespace($commaIndex);

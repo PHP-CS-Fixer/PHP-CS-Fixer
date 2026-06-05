@@ -83,7 +83,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
                 'index' => $index,
                 'loweredName' => $loweredContent,
                 'openBraceIndex' => $openBraceIndex,
-                'closeBraceIndex' => $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex),
+                'closeBraceIndex' => $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openBraceIndex),
             ];
         }
     }

@@ -3,6 +3,24 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.4
+---------------------
+
+* chore: improve `ArrayIndentationFixer` (#9643)
+* chore: improve `ClassDefinitionFixer` (#9645)
+* chore: improve `ControlCaseStructuresAnalyzer` (#9644)
+* chore: improve `NoAliasFunctionsFixer` (#9647)
+* chore: improve `NoSuperfluousPhpdocTagsFixer` (#9646)
+* chore: improve `PhpUnitTestCaseStaticMethodCallsFixer` (#9649)
+* chore: improve `Token` (#9650)
+* chore: improve `WorkerException` (#9648)
+* chore: minor updates around PHPStan (#9651)
+* deps: bump crate-ci/typos from 1.46.2 to 1.47.0 in /.github/workflows in the all group across 1 directory (#9639)
+* deps: bump PHPStan to 2.2.1 (#9635)
+* deps: minor upgrades of dev-tools (#9653)
+* fix: Address credential exposure concern related to using `ergebnis/agent-detector` for detecting the presence of an AI agent (#9656)
+* test: improve data providers return types (#9642)
+
 Changelog for v3.95.3
 ---------------------
 
