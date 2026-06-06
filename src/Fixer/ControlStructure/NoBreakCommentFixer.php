@@ -247,6 +247,7 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
 
         if ($nbNewlines > 1) {
             Preg::match('/^(.*?)(\R\h*)$/s', $newlineToken->getContent(), $matches);
+            \assert(isset($matches[1], $matches[2]));
 
             $indent = WhitespacesAnalyzer::detectIndent($tokens, $newlinePosition - 1);
             $tokens[$newlinePosition] = new Token([$newlineToken->getId(), $matches[1].$lineEnding.$indent]);
