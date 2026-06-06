@@ -29,6 +29,7 @@ use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 
@@ -129,12 +130,14 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        $analyzer = new TokensAnalyzer($tokens);
+
         for ($index = \count($tokens) - 1; $index >= 0; --$index) {
             if ($tokens[$index]->isGivenKind(\T_DEFAULT)) {
                 if ($tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind(\T_DOUBLE_ARROW)) {
                     continue; // this is "default" from "match"
                 }
-            } elseif (!$tokens[$index]->isGivenKind(\T_CASE)) {
+            } elseif (!$tokens[$index]->isGivenKind(\T_CASE) || $analyzer->isEnumCase($index)) {
                 continue;
             }
 
