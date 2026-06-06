@@ -83,6 +83,7 @@ final class PhpdocArrayTypeFixer extends AbstractPhpdocTypesFixer
         return $prefix.Preg::replaceCallback(
             '/^(.+?)((?:\h*\[\h*\])+)$/',
             static function (array $matches): string {
+                \assert(isset($matches[1], $matches[2]));
                 $type = $matches[1];
                 $level = substr_count($matches[2], '[');
                 if (str_starts_with($type, '(') && str_ends_with($type, ')')) {

@@ -102,6 +102,7 @@ final class SelfUpdateCommand extends Command
 
         $currentVersion = $this->getApplication()->getVersion();
         Preg::match('/^v?(?<major>\d+)\./', $currentVersion, $matches);
+        \assert(isset($matches['major']));
         $currentMajor = (int) $matches['major'];
 
         try {
@@ -142,6 +143,7 @@ final class SelfUpdateCommand extends Command
             $remoteTag = $latestVersionOfCurrentMajor;
         }
 
+        \assert(isset($_SERVER['argv']));
         $localFilename = $_SERVER['argv'][0];
         $realPath = realpath($localFilename);
         if (false !== $realPath) {
