@@ -138,6 +138,7 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
                 }
 
                 $slices[$ifIndex] = $newTokens;
+                $tokens->clearAt($ifIndex);
             }
         }
 
