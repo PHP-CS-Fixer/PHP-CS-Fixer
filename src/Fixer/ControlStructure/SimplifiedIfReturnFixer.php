@@ -141,7 +141,7 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
             }
         }
 
-        if ($slices !== []) {
+        if ([] !== $slices) {
             $tokens->insertSlices($slices);
         }
     }
