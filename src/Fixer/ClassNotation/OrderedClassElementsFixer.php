@@ -560,6 +560,7 @@ Custom values:
                 $position = $this->typePosition[$type];
 
                 if ('phpunit' === $type) {
+                    \assert(\in_array($element['name'], ['setupbeforeclass', 'dosetupbeforeclass', 'teardownafterclass', 'doteardownafterclass', 'setup', 'dosetup', 'assertpreconditions', 'assertpostconditions', 'teardown', 'doteardown'], true));
                     $position += [
                         'setupbeforeclass' => 1,
                         'dosetupbeforeclass' => 2,
@@ -595,6 +596,8 @@ Custom values:
                 $type .= '_readonly';
             }
         }
+
+        \assert(isset($this->typePosition[$type]));
 
         return $this->typePosition[$type];
     }

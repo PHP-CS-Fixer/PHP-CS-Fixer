@@ -239,6 +239,7 @@ final class PhpUnitExpectationFixer extends AbstractPhpUnitFixer implements Conf
             $isMultilineWhitespace = false;
 
             for ($cnt = $argumentsCnt - 1; $cnt >= 1; --$cnt) {
+                \assert(isset(array_keys($arguments)[$cnt]));
                 $argStart = array_keys($arguments)[$cnt];
                 $argBefore = $tokens->getPrevMeaningfulToken($argStart);
 

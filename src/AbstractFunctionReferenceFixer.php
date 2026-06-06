@@ -62,6 +62,7 @@ abstract class AbstractFunctionReferenceFixer extends AbstractFixer
         }
 
         // translate results for humans
+        \assert(isset(array_keys($matches)[1]));
         [$functionName, $openParenthesis] = array_keys($matches);
 
         if (!$this->functionsAnalyzer->isGlobalFunctionCall($tokens, $functionName)) {

@@ -102,6 +102,7 @@ final class EregToPregFixer extends AbstractFixer
                 // 1 => parenthesis "("
                 // 2 => quoted string passed as 1st parameter
                 $match = array_keys($match);
+                \assert(isset($match[2]));
 
                 // advance tokenizer cursor
                 $currIndex = $match[2];

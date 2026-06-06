@@ -934,7 +934,9 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                 if (self::ALIGN !== $alignStrategy) {
                     // move placeholders to match strategy
                     foreach ($group as $index) {
+                        \assert(isset($lines[$index]));
                         $currentPosition = strpos($lines[$index], $placeholder);
+                        \assert(false !== $currentPosition);
                         $before = substr($lines[$index], 0, $currentPosition);
 
                         if (
@@ -959,10 +961,12 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
 
                 $rightmostSymbol = 0;
                 foreach ($group as $index) {
+                    \assert(isset($lines[$index]));
                     $rightmostSymbol = max($rightmostSymbol, $this->getSubstringWidth($lines[$index], $placeholder));
                 }
 
                 foreach ($group as $index) {
+                    \assert(isset($lines[$index]));
                     $line = $lines[$index];
                     $currentSymbol = $this->getSubstringWidth($line, $placeholder);
                     $delta = abs($rightmostSymbol - $currentSymbol);

@@ -350,6 +350,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
     {
         \assert(isset($class['elements'][$elementIndex]));
         $type = $class['elements'][$elementIndex]['type'];
+        \assert(isset($this->classElementTypes[$type]));
         $spacing = $this->classElementTypes[$type];
 
         if (self::SPACING_ONE === $spacing) {
