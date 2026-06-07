@@ -1,0 +1,68 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+        "tool": {
+            "type": "string"
+        },
+        "version": {
+            "type": "string"
+        },
+        "command": {
+            "type": "string"
+        },
+        "result": {
+            "type": "string",
+            "enum": [
+                "OK",
+                "violations"
+            ]
+        },
+        "files_processed": {
+            "type": "number"
+        },
+        "files_with_violations_count": {
+            "type": "number"
+        },
+        "files_with_violations": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "type": "object",
+                "properties": {
+                    "file": {
+                        "type": "string"
+                    },
+                    "applied_fixers": {
+                        "type": "array",
+                        "uniqueItems": true,
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": [
+                    "file",
+                    "applied_fixers"
+                ]
+            }
+        },
+        "duration_s": {
+            "type": "number"
+        },
+        "memory_mb": {
+            "type": "number"
+        }
+    },
+    "required": [
+        "tool",
+        "version",
+        "command",
+        "result",
+        "files_processed",
+        "files_with_violations_count",
+        "files_with_violations",
+        "duration_s",
+        "memory_mb"
+    ]
+}
