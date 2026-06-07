@@ -115,6 +115,7 @@ final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixe
             );
 
             for ($i = 1, $max = \count($parts) - 1; $i < $max; $i += 2) {
+                \assert(isset($parts[$i]));
                 if (!Preg::match(self::TAG_REGEX, $parts[$i], $matches)) {
                     continue;
                 }
@@ -202,6 +203,8 @@ final class PhpdocTagTypeFixer extends AbstractFixer implements ConfigurableFixe
      */
     private function tagIsSurroundedByText(array $parts, int $index): bool
     {
+        \assert(isset($parts[$index - 1], $parts[$index + 1]));
+
         return
             Preg::match('/(^|\R)\h*[^@\s]\N*/', $this->cleanComment($parts[$index - 1]))
             || Preg::match('/^.*?\R\s*[^@\s]/', $this->cleanComment($parts[$index + 1]));

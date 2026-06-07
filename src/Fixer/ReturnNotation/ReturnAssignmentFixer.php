@@ -299,6 +299,7 @@ final class ReturnAssignmentFixer extends AbstractFixer implements ConfigurableF
 
         // fix the candidates in reverse order when applicable
         for ($i = \count($candidates) - 1; $i >= 0; --$i) {
+            \assert(isset($candidates[$i]));
             $index = $candidates[$i];
 
             // Check if returning only a variable (i.e. not the result of an expression, function call etc.)

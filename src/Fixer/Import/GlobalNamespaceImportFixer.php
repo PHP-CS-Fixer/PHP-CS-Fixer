@@ -176,6 +176,7 @@ final class GlobalNamespaceImportFixer extends AbstractFixer implements Configur
                 $useDeclaration = end($useDeclarations);
                 $atIndex = $useDeclaration->getEndIndex() + 1;
             } else {
+                \assert(isset($tokens->getNamespaceDeclarations()[0]));
                 $namespace = $tokens->getNamespaceDeclarations()[0];
                 $atIndex = $namespace->getEndIndex() + 1;
             }

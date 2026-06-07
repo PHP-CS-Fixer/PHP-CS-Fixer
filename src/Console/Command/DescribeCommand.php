@@ -525,8 +525,10 @@ final class DescribeCommand extends Command
             \assert(isset($rules[$rule]));
             $config = $rules[$rule];
             if (str_starts_with($rule, '@')) {
+                \assert(isset($ruleSetDefinitions[$rule]));
                 $child = $this->createTreeNode($ruleSetDefinitions[$rule], $ruleSetDefinitions, $fixers);
             } else {
+                \assert(isset($fixers[$rule]));
                 $fixer = $fixers[$rule];
                 $tags = DocumentationTagGenerator::analyseRule($fixer);
                 $extra = [] !== $tags

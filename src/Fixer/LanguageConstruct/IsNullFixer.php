@@ -77,6 +77,7 @@ final class IsNullFixer extends AbstractFixer
 
             // 0 and 1 accordingly are "is_null", "(" tokens
             $matches = array_keys($matches);
+            \assert(isset($matches[1]));
 
             // move the cursor just after the sequence
             [$isNullIndex, $currIndex] = $matches;

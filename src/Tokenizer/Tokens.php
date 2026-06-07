@@ -1457,10 +1457,14 @@ class Tokens extends \SplFixedArray
         }
 
         if ($findEnd && isset($this->blockStartCache[$searchIndex])) {
+            \assert($this->blockStartCache[$searchIndex] >= 0);
+
             return $this->blockStartCache[$searchIndex];
         }
 
         if (!$findEnd && isset($this->blockEndCache[$searchIndex])) {
+            \assert($this->blockEndCache[$searchIndex] >= 0);
+
             return $this->blockEndCache[$searchIndex];
         }
 
@@ -1504,6 +1508,8 @@ class Tokens extends \SplFixedArray
             throw new \UnexpectedValueException(\sprintf('Missing block "%s".', $findEnd ? 'end' : 'start'));
         }
 
+        \assert($index >= 0 && $startIndex >= 0);
+
         if ($startIndex < $index) {
             $this->blockStartCache[$startIndex] = $index;
             $this->blockEndCache[$index] = $startIndex;
@@ -1533,6 +1539,8 @@ class Tokens extends \SplFixedArray
         if (!self::hasCache($key)) {
             throw new \OutOfBoundsException(\sprintf('Unknown cache key: "%s".', $key));
         }
+
+        \assert(isset(self::$cache[$key]));
 
         return self::$cache[$key];
     }
