@@ -62,11 +62,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/Import/FullyQualifiedStrictTypesFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset 0 might not exist on list<PhpCsFixer\\Tokenizer\\Analyzer\\Analysis\\NamespaceUseAnalysis>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Import/GroupImportFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset 0 might not exist on list<non-falsy-string>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Import/SingleImportPerStatementFixer.php',
