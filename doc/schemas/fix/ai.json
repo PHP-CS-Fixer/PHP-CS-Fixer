@@ -24,7 +24,7 @@
         "files_with_violations_count": {
             "type": "number"
         },
-        "files_with_violations": {
+        "violations": {
             "type": "array",
             "uniqueItems": true,
             "items": {
@@ -61,7 +61,7 @@
         "result",
         "files_processed",
         "files_with_violations_count",
-        "files_with_violations",
+        "violations",
         "duration_s",
         "memory_mb"
     ]

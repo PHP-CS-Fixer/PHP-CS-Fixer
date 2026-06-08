@@ -52,7 +52,7 @@ final class AiReporter implements ReporterInterface
             'result' => [] === $jsonFiles ? 'OK' : 'violations',
             'files_processed' => $reportSummary->getFilesCount(),
             'files_with_violations_count' => \count($jsonFiles),
-            'files_with_violations' => $jsonFiles,
+            'violations' => $jsonFiles,
             'duration_s' => round($reportSummary->getTime() / 1_000, 3),
             'memory_mb' => round($reportSummary->getMemory() / 1_024 / 1_024, 3),
         ];

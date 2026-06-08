@@ -52,7 +52,7 @@ final class AiReporterTest extends AbstractReporterTestCase
                 "result": "violations",
                 "files_processed": 10,
                 "files_with_violations_count": 1,
-                "files_with_violations": [
+                "violations": [
                     {
                         "file": "someFile.php",
                         "applied_fixers": ["some_fixer_name_here"]
@@ -81,7 +81,7 @@ final class AiReporterTest extends AbstractReporterTestCase
                 "result": "violations",
                 "files_processed": 10,
                 "files_with_violations_count": 1,
-                "files_with_violations": [
+                "violations": [
                     {
                         "file": "someFile.php",
                         "applied_fixers": ["some_fixer_name_here"]
@@ -107,7 +107,7 @@ final class AiReporterTest extends AbstractReporterTestCase
                 "result": "violations",
                 "files_processed": 10,
                 "files_with_violations_count": 1,
-                "files_with_violations": [
+                "violations": [
                     {
                         "file": "someFile.php",
                         "applied_fixers": ["some_fixer_name_here_1", "some_fixer_name_here_2"]
@@ -136,7 +136,7 @@ final class AiReporterTest extends AbstractReporterTestCase
                 "result": "violations",
                 "files_processed": 10,
                 "files_with_violations_count": 1,
-                "files_with_violations": [
+                "violations": [
                     {
                         "file": "someFile.php",
                         "applied_fixers": ["some_fixer_name_here"]
@@ -162,7 +162,7 @@ final class AiReporterTest extends AbstractReporterTestCase
                 "result": "violations",
                 "files_processed": 10,
                 "files_with_violations_count": 2,
-                "files_with_violations": [
+                "violations": [
                     {
                         "file": "someFile.php",
                         "applied_fixers": ["some_fixer_name_here_1", "some_fixer_name_here_2"]
@@ -192,7 +192,7 @@ final class AiReporterTest extends AbstractReporterTestCase
                 "result": "OK",
                 "files_processed": 1,
                 "files_with_violations_count": 0,
-                "files_with_violations": [],
+                "violations": [],
                 "duration_s": 0,
                 "memory_mb": 2.5
             }
@@ -223,7 +223,7 @@ final class AiReporterTest extends AbstractReporterTestCase
                 "result": "OK",
                 "files_processed": 10,
                 "files_with_violations_count": 0,
-                "files_with_violations": [],
+                "violations": [],
                 "duration_s": 0,
                 "memory_mb": 0
             }
