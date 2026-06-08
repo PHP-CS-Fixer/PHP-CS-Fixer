@@ -21,7 +21,7 @@
         "files_processed": {
             "type": "number"
         },
-        "files_with_violations_count": {
+        "files_with_violations": {
             "type": "number"
         },
         "violations": {
@@ -60,7 +60,7 @@
         "command",
         "result",
         "files_processed",
-        "files_with_violations_count",
+        "files_with_violations",
         "violations",
         "duration_s",
         "memory_mb"
