@@ -312,7 +312,7 @@ final class ConfigurationResolverTest extends TestCase
     public function testResolveConfigFileChooseFileWithInvalidFormat(): void
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessageMatches('/^The format "xls" is not defined, supported are "checkstyle", "gitlab", "json", "json_v4", "junit", "txt" and "xml"\.$/');
+        $this->expectExceptionMessageMatches('/^The format "xls" is not defined, supported are "ai", "checkstyle", "gitlab", "json", "json_v4", "junit", "txt" and "xml"\.$/');
 
         $dirBase = self::getFixtureDir();
 
@@ -1525,7 +1525,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         ];
 
         yield [
-            JsonReporter::class,
+            CheckstyleReporter::class,
             'checkstyle',
             ['AI_AGENT' => 'true'],
         ];
@@ -1536,7 +1536,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         ];
 
         yield [
-            JsonReporter::class,
+            TextReporter::class,
             'txt',
             ['AI_AGENT' => 'true'],
         ];
@@ -1563,7 +1563,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         ];
 
         yield [
-            JsonReporter::class,
+            GitlabReporter::class,
             '@auto',
             [
                 'AI_AGENT' => 'true',
