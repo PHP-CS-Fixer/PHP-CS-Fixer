@@ -51,8 +51,8 @@ final class JsonV4ReporterTest extends AbstractReporterTestCase
                 "command": "fix",
                 "result": "violations",
                 "files_processed": 10,
-                "files_with_violations_count": 1,
-                "files_with_violations": [
+                "files_with_violations": 1,
+                "violations": [
                     {
                         "file": "someFile.php",
                         "diff": "{$diff}"
@@ -80,8 +80,8 @@ final class JsonV4ReporterTest extends AbstractReporterTestCase
                 "command": "fix",
                 "result": "violations",
                 "files_processed": 10,
-                "files_with_violations_count": 1,
-                "files_with_violations": [
+                "files_with_violations": 1,
+                "violations": [
                     {
                         "file": "someFile.php",
                         "diff": "{$diff}"
@@ -106,8 +106,8 @@ final class JsonV4ReporterTest extends AbstractReporterTestCase
                 "command": "fix",
                 "result": "violations",
                 "files_processed": 10,
-                "files_with_violations_count": 1,
-                "files_with_violations": [
+                "files_with_violations": 1,
+                "violations": [
                     {
                         "file": "someFile.php",
                         "applied_fixers": ["some_fixer_name_here_1", "some_fixer_name_here_2"]
@@ -135,8 +135,8 @@ final class JsonV4ReporterTest extends AbstractReporterTestCase
                 "command": "fix",
                 "result": "violations",
                 "files_processed": 10,
-                "files_with_violations_count": 1,
-                "files_with_violations": [
+                "files_with_violations": 1,
+                "violations": [
                     {
                         "file": "someFile.php",
                         "diff": "{$diff}"
@@ -161,8 +161,8 @@ final class JsonV4ReporterTest extends AbstractReporterTestCase
                 "command": "check",
                 "result": "violations",
                 "files_processed": 10,
-                "files_with_violations_count": 2,
-                "files_with_violations": [
+                "files_with_violations": 2,
+                "violations": [
                     {
                         "file": "someFile.php",
                         "applied_fixers": ["some_fixer_name_here_1", "some_fixer_name_here_2"],
@@ -193,8 +193,8 @@ final class JsonV4ReporterTest extends AbstractReporterTestCase
                 "command": "check",
                 "result": "OK",
                 "files_processed": 1,
-                "files_with_violations_count": 0,
-                "files_with_violations": [],
+                "files_with_violations": 0,
+                "violations": [],
                 "duration_s": 0,
                 "memory_mb": 2.5
             }
@@ -224,8 +224,8 @@ final class JsonV4ReporterTest extends AbstractReporterTestCase
                 "command": "fix",
                 "result": "OK",
                 "files_processed": 10,
-                "files_with_violations_count": 0,
-                "files_with_violations": [],
+                "files_with_violations": 0,
+                "violations": [],
                 "duration_s": 0,
                 "memory_mb": 0
             }
