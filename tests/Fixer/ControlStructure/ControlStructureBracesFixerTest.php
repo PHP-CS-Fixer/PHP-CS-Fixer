@@ -167,5 +167,25 @@ final class ControlStructureBracesFixerTest extends AbstractFixerTestCase
         yield 'declare followed by closing tag' => [
             '<?php declare(strict_types=1) ?>',
         ];
+
+        yield 'if with do-while inside' => [
+            '<?php if ($a) { do { foo(); } while ($b); }',
+            '<?php if ($a) do foo(); while ($b);',
+        ];
+
+        yield 'if with try-catch-finally inside' => [
+            '<?php if ($a) { try { foo(); } catch (\Exception $e) { bar(); } finally { baz(); } }',
+            '<?php if ($a) try { foo(); } catch (\Exception $e) { bar(); } finally { baz(); }',
+        ];
+
+        yield 'if with lambda function inside' => [
+            '<?php if ($a) { $f = function () { return 1; }; }',
+            '<?php if ($a) $f = function () { return 1; };',
+        ];
+
+        yield 'if with echo having closing tag and no semicolon' => [
+            '<?php if ($a) { echo 1; } ?>',
+            '<?php if ($a) echo 1 ?>',
+        ];
     }
 }

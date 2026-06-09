@@ -93,6 +93,7 @@ final class RuleSetDocumentationGenerator
                 foreach ($rules as $rule => $config) {
                     if (str_starts_with($rule, '@')) {
                         $ruleSetPath = $this->locator->getRuleSetsDocumentationFilePath($rule);
+                        \assert(false !== strrpos($ruleSetPath, '/'));
                         $ruleSetPath = substr($ruleSetPath, strrpos($ruleSetPath, '/'));
 
                         $doc .= "\n- `{$rule} <.{$ruleSetPath}>`_";
@@ -143,6 +144,7 @@ final class RuleSetDocumentationGenerator
             RST;
 
         foreach ($setDefinitions as $path => $definition) {
+            \assert(false !== strrpos($path, '/'));
             $path = substr($path, strrpos($path, '/'));
 
             $attributes = [];

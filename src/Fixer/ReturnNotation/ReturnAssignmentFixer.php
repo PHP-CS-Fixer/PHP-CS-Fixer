@@ -149,7 +149,7 @@ final class ReturnAssignmentFixer extends AbstractFixer implements ConfigurableF
                 continue;
             }
 
-            $functionCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $functionOpenIndex);
+            $functionCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $functionOpenIndex);
             $totalTokensAdded = 0;
 
             do {
@@ -220,7 +220,7 @@ final class ReturnAssignmentFixer extends AbstractFixer implements ConfigurableF
                     continue;
                 }
 
-                $nestedFunctionCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nestedFunctionOpenIndex);
+                $nestedFunctionCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $nestedFunctionOpenIndex);
 
                 $tokensAdded = $this->fixFunction(
                     $tokens,
@@ -299,6 +299,7 @@ final class ReturnAssignmentFixer extends AbstractFixer implements ConfigurableF
 
         // fix the candidates in reverse order when applicable
         for ($i = \count($candidates) - 1; $i >= 0; --$i) {
+            \assert(isset($candidates[$i]));
             $index = $candidates[$i];
 
             // Check if returning only a variable (i.e. not the result of an expression, function call etc.)
@@ -326,7 +327,7 @@ final class ReturnAssignmentFixer extends AbstractFixer implements ConfigurableF
                     break;
                 }
 
-                $assignVarEndIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $prevMeaningful);
+                $assignVarEndIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $prevMeaningful);
             }
 
             $assignVarOperatorIndex = $tokens->getPrevTokenOfKind(
@@ -468,7 +469,7 @@ final class ReturnAssignmentFixer extends AbstractFixer implements ConfigurableF
      */
     private function isCloseBracePartOfDefinition(Tokens $tokens, int $index): ?int
     {
-        $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+        $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_BRACE, $index);
         $candidateIndex = $this->isOpenBraceOfLambda($tokens, $index);
 
         if (null !== $candidateIndex) {
@@ -492,7 +493,7 @@ final class ReturnAssignmentFixer extends AbstractFixer implements ConfigurableF
         } while ($tokens[$index]->equalsAny([',', [\T_STRING], [\T_IMPLEMENTS], [\T_EXTENDS], [\T_NS_SEPARATOR]]));
 
         if ($tokens[$index]->equals(')')) { // skip constructor braces and content within
-            $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+            $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
             $index = $tokens->getPrevMeaningfulToken($index);
         }
 
@@ -516,12 +517,12 @@ final class ReturnAssignmentFixer extends AbstractFixer implements ConfigurableF
             return null;
         }
 
-        $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+        $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
         $index = $tokens->getPrevMeaningfulToken($index);
 
         if ($tokens[$index]->isGivenKind(CT::T_USE_LAMBDA)) {
             $index = $tokens->getPrevTokenOfKind($index, [')']);
-            $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+            $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
             $index = $tokens->getPrevMeaningfulToken($index);
         }
 
@@ -555,7 +556,7 @@ final class ReturnAssignmentFixer extends AbstractFixer implements ConfigurableF
             return null;
         }
 
-        $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+        $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
         $index = $tokens->getPrevMeaningfulToken($index);
 
         return $tokens[$index]->isGivenKind(\T_MATCH) ? $index : null;
@@ -588,7 +589,7 @@ final class ReturnAssignmentFixer extends AbstractFixer implements ConfigurableF
             return false;
         }
         $tryOpenIndex = $tokens->getNextTokenOfKind($tryIndex, ['{']);
-        $tryCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $tryOpenIndex);
+        $tryCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $tryOpenIndex);
 
         // Find catch or finally
         $nextIndex = $tokens->getNextMeaningfulToken($tryCloseIndex);
@@ -599,7 +600,7 @@ final class ReturnAssignmentFixer extends AbstractFixer implements ConfigurableF
         // Find catches
         while ($tokens[$nextIndex]->isGivenKind(\T_CATCH)) {
             $catchOpenIndex = $tokens->getNextTokenOfKind($nextIndex, ['{']);
-            $catchCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $catchOpenIndex);
+            $catchCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $catchOpenIndex);
 
             if ($catchCloseIndex >= $functionCloseIndex) {
                 return false;
@@ -625,7 +626,7 @@ final class ReturnAssignmentFixer extends AbstractFixer implements ConfigurableF
             return false;
         }
         $finallyOpenIndex = $tokens->getNextTokenOfKind($finallyIndex, ['{']);
-        $finallyCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $finallyOpenIndex);
+        $finallyCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $finallyOpenIndex);
         $varIndex = $tokens->getNextTokenOfKind($finallyOpenIndex, [$tokens[$returnVarIndex]]);
         // Check if the variable is used in the finally block
         if (null !== $varIndex && $varIndex < $finallyCloseIndex) {

@@ -2315,6 +2315,35 @@ enum Cards: string
     }
 
     /**
+     * @dataProvider provideFix85Cases
+     *
+     * @requires PHP >= 8.5.0
+     */
+    #[DataProvider('provideFix85Cases')]
+    #[RequiresPhp('>= 8.5.0')]
+    public function testFix85(string $expected, ?string $input = null): void
+    {
+        $this->testFix($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix85Cases(): iterable
+    {
+        yield 'closure in constant' => [
+            <<<'PHP'
+                <?php class SomeClass
+                {
+                    public const \Closure NULL = static function (mixed $v): bool {
+                        return null === $v;
+                    };
+                }
+                PHP,
+        ];
+    }
+
+    /**
      * @dataProvider provideWithWhitespacesConfigCases
      */
     #[DataProvider('provideWithWhitespacesConfigCases')]

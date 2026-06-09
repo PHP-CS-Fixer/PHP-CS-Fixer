@@ -133,6 +133,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
     {
         // find the argument separator ',' directly after the last token of the first argument;
         // replace it with T_POW '**'
+        \assert(false !== reset($arguments));
         $tokens[$tokens->getNextTokenOfKind(reset($arguments), [','])] = new Token([\T_POW, '**']);
 
         // clean up the function call tokens prt. I

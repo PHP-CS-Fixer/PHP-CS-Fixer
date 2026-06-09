@@ -151,7 +151,7 @@ final class MultilinePromotedPropertiesFixer extends AbstractFixer implements Co
             }
 
             $openParenthesisIndex = $tokens->getNextTokenOfKind($index, ['(']);
-            $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesisIndex);
+            $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openParenthesisIndex);
 
             if ($this->shouldBeMultiline($tokens, $openParenthesisIndex, $closeParenthesisIndex)) {
                 $this->makeMultiline($tokens, $openParenthesisIndex, $closeParenthesisIndex);
@@ -249,7 +249,9 @@ final class MultilinePromotedPropertiesFixer extends AbstractFixer implements Co
         );
 
         $index = $tokens->getPrevMeaningfulToken($closeParenthesis);
-        \assert(\is_int($index));
+        if (!$tokens[$index]->equals(',')) {
+            $index = $closeParenthesis;
+        }
 
         while ($index > $openParenthesis) {
             $index = $tokens->getPrevMeaningfulToken($index);

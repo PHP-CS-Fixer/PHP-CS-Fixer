@@ -47,7 +47,7 @@ final class FullyQualifiedNameAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{string, string, string, int}>
+     * @return iterable<string, array{string, string, string, int, NamespaceUseAnalysis::TYPE_*}>
      */
     public static function provideGetFullyQualifiedNameCases(): iterable
     {

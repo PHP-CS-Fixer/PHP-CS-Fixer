@@ -89,10 +89,6 @@ final class TextReporter implements ReporterInterface
 
     private function getFooter(int $time, int $identifiedFiles, int $files, int $memory, bool $isDryRun): string
     {
-        if (0 === $time || 0 === $memory) {
-            return '';
-        }
-
         return \PHP_EOL.\sprintf(
             '%s %d of %d %s in %.3f seconds, %.2f MB memory used'.\PHP_EOL,
             $isDryRun ? 'Found' : 'Fixed',

@@ -135,13 +135,13 @@ jobs:
             PHP_CS_FIXER_FAST_LINT_TEST_CASES: 0 # run full linting on highest supported PHP version to be sure that all cases are valid
 
           - operating-system: ubuntu-24.04
-            php-version: 8.6snapshot # replace with PHP 8.6 when dev version is released
+            php-version: nightly
             job-description: Fixer
             run-fixer: 'yes'
             allow-to-fail: 'yes' # currently not compatible
 
           - operating-system: ubuntu-24.04
-            php-version: 8.6snapshot # replace with PHP 8.6 when dev version is released
+            php-version: nightly
             job-description: tests
             run-tests: 'yes'
             allow-to-fail: 'yes' # currently not compatible
@@ -220,14 +220,14 @@ jobs:
       - name: Install PHPUnit 12
         if: matrix.run-tests == 'yes' && matrix.install-phpunit-12 == 'yes'
         run: |
-          composer require --dev --no-update phpunit/phpunit:"^9.6 || ^12.5.23" # mention ^9.6 to keep trace of minimum supported version, needed for utests
+          composer require --dev --no-update phpunit/phpunit:"^9.6 || ^12.5.25" # mention ^9.6 to keep trace of minimum supported version, needed for utests
 
       - name: Install PHPUnit 13
         if: matrix.run-tests == 'yes' && matrix.install-phpunit-13 == 'yes'
         run: |
           sed -i '/<extensions>/,/<\/extensions>/d' phpunit.xml.dist
           composer remove --dev --no-update facile-it/paraunit
-          composer require --dev --no-update phpunit/phpunit:"^9.6 || ^13.1.7" # mention ^9.6 to keep trace of minimum supported version, needed for utests
+          composer require --dev --no-update phpunit/phpunit:"^9.6 || ^13.1.10" # mention ^9.6 to keep trace of minimum supported version, needed for utests
 
       - name: Setup PHP with Composer deps
         uses: ./.github/composite-actions/setup-php-with-composer-deps
@@ -281,6 +281,13 @@ jobs:
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
         run: vendor/bin/paraunit coverage --testsuite unit --pass-through=--exclude-group=covers-nothing --clover=build/logs/clover.xml
+
+      - name: Run mutation tests (deps preps)
+        # Run only on pull requests because we run mutations tests only for diff between branches
+        if: github.event_name == 'pull_request' && matrix.run-mutation-tests == 'yes'
+        env:
+          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
+        run: composer install --working-dir=./dev-tools
 
       - name: Run mutation tests (Infection)
         # Run only on pull requests because we run mutations tests only for diff between branches

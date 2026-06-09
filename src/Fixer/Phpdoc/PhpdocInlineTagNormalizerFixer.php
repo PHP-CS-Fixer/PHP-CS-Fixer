@@ -96,6 +96,7 @@ final class PhpdocInlineTagNormalizerFixer extends AbstractFixer implements Conf
                     implode('|', array_map(static fn (string $tag): string => preg_quote($tag, '/'), $this->configuration['tags'])),
                 ),
                 static function (array $matches): string {
+                    \assert(isset($matches[1], $matches[2]));
                     $doc = trim($matches[2]);
 
                     if ('' === $doc) {

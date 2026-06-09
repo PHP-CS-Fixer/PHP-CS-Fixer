@@ -155,6 +155,23 @@ final class JsonReporterTest extends AbstractReporterTestCase
             JSON;
     }
 
+    protected static function createDryRunWithNoTimeReport(): string
+    {
+        $about = Application::getAbout();
+
+        return <<<JSON
+            {
+                "about": "{$about}",
+                "files": [
+                ],
+                "time": {
+                    "total": 0
+                },
+                "memory": 2.5
+            }
+            JSON;
+    }
+
     protected function createReporter(): ReporterInterface
     {
         return new JsonReporter();

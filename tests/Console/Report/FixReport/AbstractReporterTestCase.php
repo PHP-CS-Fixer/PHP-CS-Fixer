@@ -204,6 +204,19 @@ abstract class AbstractReporterTestCase extends TestCase
                 true,
             ),
         ];
+
+        yield 'dry run with no time' => [
+            static::createDryRunWithNoTimeReport(),
+            new ReportSummary(
+                [],
+                1,
+                0,
+                2_621_440, // 2.5 * 1024 * 1024
+                false,
+                true,
+                false,
+            ),
+        ];
     }
 
     abstract protected function createReporter(): ReporterInterface;
@@ -221,6 +234,8 @@ abstract class AbstractReporterTestCase extends TestCase
     abstract protected static function createWithTimeAndMemoryReport(): string;
 
     abstract protected static function createComplexReport(): string;
+
+    abstract protected static function createDryRunWithNoTimeReport(): string;
 
     abstract protected function assertFormat(string $expected, string $input): void;
 }

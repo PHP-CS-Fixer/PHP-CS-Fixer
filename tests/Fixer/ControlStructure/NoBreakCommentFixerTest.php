@@ -176,7 +176,7 @@ switch ($foo) {
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches($expectedExceptionMessage);
 
-        $this->fixer->configure($configuration);
+        $this->fixer->configure($configuration); // @phpstan-ignore argument.type
     }
 
     /**

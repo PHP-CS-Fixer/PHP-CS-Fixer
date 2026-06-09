@@ -94,7 +94,7 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
         for ($index = $startIndex; $index < $endIndex; ++$index) {
             if ($tokens[$index]->isGivenKind(\T_FUNCTION)) {
                 $braceOpenIndex = $tokens->getNextTokenOfKind($index, ['{']);
-                $braceCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $braceOpenIndex);
+                $braceCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $braceOpenIndex);
                 $this->fixRange($tokens, $braceOpenIndex, $braceCloseIndex);
                 $index = $braceCloseIndex;
             }
@@ -151,7 +151,7 @@ final class SimplifiedNullReturnFixer extends AbstractFixer
                 return false;
             }
             $openingCurlyBraceIndex = $tokens->getNextTokenOfKind($functionIndex, ['{']);
-            $closingCurlyBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openingCurlyBraceIndex);
+            $closingCurlyBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $openingCurlyBraceIndex);
         } while ($closingCurlyBraceIndex < $returnIndex);
 
         $possibleVoidIndex = $tokens->getPrevMeaningfulToken($openingCurlyBraceIndex);
