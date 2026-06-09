@@ -670,15 +670,6 @@ final class ConfigurationResolver
     private function resolveFormat(): string
     {
         if (null === $this->format) {
-            $agentDetector = new AgentDetector\Detector();
-
-            // When an AI agent is running, we ignore the format configuration entirely and use JSON format.
-            if ($agentDetector->isAgentPresent(array_fill_keys(array_keys(getenv()), ''))) {
-                $this->format = 'json';
-
-                return $this->format;
-            }
-
             $formatCandidate = $this->options['format'] ?? $this->getConfig()->getFormat();
             $parts = explode(',', $formatCandidate);
 
@@ -689,11 +680,21 @@ final class ConfigurationResolver
             $this->format = $parts[0];
 
             if ('@auto' === $this->format) {
-                $this->format = $parts[1] ?? 'txt';
-
                 if (filter_var(getenv('GITLAB_CI'), \FILTER_VALIDATE_BOOL)) {
                     $this->format = 'gitlab';
+
+                    return $this->format;
                 }
+
+                $agentDetector = new AgentDetector\Detector();
+
+                if ($agentDetector->isAgentPresent(array_fill_keys(array_keys(getenv()), ''))) {
+                    $this->format = 'json';
+
+                    return $this->format;
+                }
+
+                $this->format = $parts[1] ?? 'txt';
             }
         }
 

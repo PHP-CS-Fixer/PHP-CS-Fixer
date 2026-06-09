@@ -65,7 +65,7 @@ Changelog for v3.95.2
 * chore: cleanup `OrderedImportsFixer` (#9603)
 * chore: cleanup `PhpdocSingleLineVarSpacingFixer` (#9591)
 * chore: cleanup `PhpdocToReturnTypeFixer` (#9558)
-* chore: CS - apply `PhpUnitRequiresConstraintFixer` from https://github.com/kubawerlos/php-cs-fixer-custom-fixers (#9581)
+* chore: CS - apply `PhpUnitRequiresConstraintFixer` from `https://github.com/kubawerlos/php-cs-fixer-custom-fixers` (#9581)
 * chore: CS - apply `php_unit_attributes` rule (#9578)
 * chore: ensure consistent `@author` name per email (#9606)
 * chore: fix wrong test Attribute (#9586)
