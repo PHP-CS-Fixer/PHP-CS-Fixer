@@ -91,6 +91,7 @@ final class ImplodeCallFixer extends AbstractFixer
             }
 
             if (2 === \count($argumentsIndices)) {
+                \assert(isset(array_keys($argumentsIndices)[0], array_keys($argumentsIndices)[1]));
                 [$firstArgumentIndex, $secondArgumentIndex] = array_keys($argumentsIndices);
 
                 // If the first argument is string we have nothing to do
@@ -103,6 +104,7 @@ final class ImplodeCallFixer extends AbstractFixer
                 }
 
                 // collect tokens from first argument
+                \assert(isset($argumentsIndices[key($argumentsIndices)]));
                 $firstArgumentEndIndex = $argumentsIndices[key($argumentsIndices)];
                 $newSecondArgumentTokens = [];
                 for ($i = array_key_first($argumentsIndices); $i <= $firstArgumentEndIndex; ++$i) {
@@ -128,7 +130,7 @@ final class ImplodeCallFixer extends AbstractFixer
         $argumentsAnalyzer = new ArgumentsAnalyzer();
 
         $openParenthesis = $tokens->getNextTokenOfKind($functionNameIndex, ['(']);
-        $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis);
+        $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openParenthesis);
 
         $indices = [];
 

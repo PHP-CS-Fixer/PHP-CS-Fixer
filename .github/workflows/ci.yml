@@ -135,13 +135,13 @@ jobs:
             PHP_CS_FIXER_FAST_LINT_TEST_CASES: 0 # run full linting on highest supported PHP version to be sure that all cases are valid
 
           - operating-system: ubuntu-24.04
-            php-version: 8.6snapshot # replace with PHP 8.6 when dev version is released
+            php-version: nightly
             job-description: Fixer
             run-fixer: 'yes'
             allow-to-fail: 'yes' # currently not compatible
 
           - operating-system: ubuntu-24.04
-            php-version: 8.6snapshot # replace with PHP 8.6 when dev version is released
+            php-version: nightly
             job-description: tests
             run-tests: 'yes'
             allow-to-fail: 'yes' # currently not compatible
@@ -216,7 +216,7 @@ jobs:
         run: |
           sed -i '/<extensions>/,/<\/extensions>/d' phpunit.xml.dist
           composer remove --dev --no-update facile-it/paraunit
-          composer require --dev --no-update phpunit/phpunit:"^9.6 || ^13.1.8" # mention ^9.6 to keep trace of minimum supported version, needed for utests
+          composer require --dev --no-update phpunit/phpunit:"^9.6 || ^13.1.10" # mention ^9.6 to keep trace of minimum supported version, needed for utests
 
       - name: Setup PHP with Composer deps
         uses: ./.github/composite-actions/setup-php-with-composer-deps

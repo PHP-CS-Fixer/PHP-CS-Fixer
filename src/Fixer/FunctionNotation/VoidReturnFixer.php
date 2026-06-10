@@ -176,7 +176,7 @@ final class VoidReturnFixer extends AbstractFixer implements ConfigurableFixerIn
                 continue;
             }
 
-            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $startIndex);
+            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $startIndex);
 
             if ($this->hasVoidReturn($tokens, $startIndex, $endIndex)) {
                 $this->fixFunctionDefinition($tokens, $startIndex);
@@ -245,7 +245,7 @@ final class VoidReturnFixer extends AbstractFixer implements ConfigurableFixerIn
                 || ($tokens[$i]->isGivenKind(\T_FUNCTION) && $this->tokensAnalyzer->isLambda($i))
             ) {
                 $i = $tokens->getNextTokenOfKind($i, ['{']);
-                $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $i);
+                $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $i);
 
                 continue;
             }

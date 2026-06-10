@@ -1,12 +1,13 @@
 --TEST--
-Integration of fixers: phpdoc_line_span,no_superfluous_phpdoc_tags.
+Integration of fixers: no_superfluous_phpdoc_tags,phpdoc_line_span with default config.
 --RULESET--
-{"phpdoc_line_span": true, "no_superfluous_phpdoc_tags": true}
+{"no_superfluous_phpdoc_tags": true, "phpdoc_line_span": true}
 --EXPECT--
 <?php
 class Foo
 {
     /**
+     *
      */
     function bar() : string
     {

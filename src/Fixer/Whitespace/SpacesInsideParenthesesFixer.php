@@ -111,14 +111,14 @@ final class SpacesInsideParenthesesFixer extends AbstractFixer implements Config
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound(['(', CT::T_BRACE_CLASS_INSTANTIATION_OPEN]);
+        return $tokens->isAnyTokenKindsFound(['(', CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         if ('none' === $this->configuration['space']) {
             foreach ($tokens as $index => $token) {
-                if (!$token->equalsAny(['(', [CT::T_BRACE_CLASS_INSTANTIATION_OPEN]])) {
+                if (!$token->equalsAny(['(', [CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN]])) {
                     continue;
                 }
 
@@ -146,7 +146,7 @@ final class SpacesInsideParenthesesFixer extends AbstractFixer implements Config
 
         if ('single' === $this->configuration['space']) {
             foreach ($tokens as $index => $token) {
-                if (!$token->equalsAny(['(', [CT::T_BRACE_CLASS_INSTANTIATION_OPEN]])) {
+                if (!$token->equalsAny(['(', [CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN]])) {
                     continue;
                 }
 
@@ -172,7 +172,7 @@ final class SpacesInsideParenthesesFixer extends AbstractFixer implements Config
 
                 if ($afterParenthesisToken->isGivenKind(CT::T_USE_LAMBDA)) {
                     $useStartParenthesisIndex = $tokens->getNextTokenOfKind($afterParenthesisIndex, ['(']);
-                    $useEndParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $useStartParenthesisIndex);
+                    $useEndParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $useStartParenthesisIndex);
 
                     // add single-line edge whitespaces inside use parentheses
                     $this->fixParenthesisInnerEdge($tokens, $useStartParenthesisIndex, $useEndParenthesisIndex);

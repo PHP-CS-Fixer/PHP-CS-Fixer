@@ -77,6 +77,7 @@ final class IsNullFixer extends AbstractFixer
 
             // 0 and 1 accordingly are "is_null", "(" tokens
             $matches = array_keys($matches);
+            \assert(isset($matches[1]));
 
             // move the cursor just after the sequence
             [$isNullIndex, $currIndex] = $matches;
@@ -113,7 +114,7 @@ final class IsNullFixer extends AbstractFixer
             }
 
             // before getting rind of `()` around a parameter, ensure it's not assignment/ternary invariant
-            $referenceEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $matches[1]);
+            $referenceEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $matches[1]);
             $isContainingDangerousConstructs = false;
 
             for ($paramTokenIndex = $matches[1]; $paramTokenIndex <= $referenceEnd; ++$paramTokenIndex) {

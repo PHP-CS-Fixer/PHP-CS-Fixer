@@ -296,7 +296,7 @@ get_called_class#1
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
 
-        $this->fixer->configure($config);
+        $this->fixer->configure($config); // @phpstan-ignore argument.type
     }
 
     /**

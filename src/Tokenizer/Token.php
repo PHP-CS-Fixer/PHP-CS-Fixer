@@ -22,8 +22,8 @@ use PhpCsFixer\Future;
  * Also, this class exposes PHPStan types. (hint: string in those types shall ideally not be empty - yet we are not there yet).
  *
  * @phpstan-type _PhpTokenKind int|string
- * @phpstan-type _PhpTokenArray array{0: int, 1: string}
- * @phpstan-type _PhpTokenArrayPartial array{0: int, 1?: string}
+ * @phpstan-type _PhpTokenArray array{0: int, 1: string, 2?: int}
+ * @phpstan-type _PhpTokenArrayPartial array{0: int, 1?: string, 2?: int}
  * @phpstan-type _PhpTokenPrototype _PhpTokenArray|string
  * @phpstan-type _PhpTokenPrototypePartial _PhpTokenArrayPartial|string
  *
@@ -69,6 +69,8 @@ final class Token
                     get_debug_type($token[1]),
                 ));
             }
+
+            \assert(!isset($token[2]) || \is_int($token[2])); // only assertion as we do not use the value anywhere
 
             if ('' === $token[1]) {
                 throw new \InvalidArgumentException('Cannot set empty content for id-based Token.');
@@ -168,6 +170,8 @@ final class Token
                 return false;
             }
         }
+
+        \assert(!isset($otherPrototype[2]) || \is_int($otherPrototype[2])); // only assertion as we do not use the value anywhere
 
         // detect unknown keys
         unset($otherPrototype[0], $otherPrototype[1]);

@@ -284,11 +284,11 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
         }
 
         if (\in_array('curly_brace_block', $tokensConfiguration, true)) {
-            $this->tokenEqualsMap['{'] = [$this, 'fixStructureOpenCloseIfMultiLine']; // i.e. not: CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN
+            $this->tokenEqualsMap['{'] = [$this, 'fixStructureOpenCloseIfMultiLine']; // i.e. not: CT::T_ARRAY_INDEX_BRACE_OPEN
         }
 
         if (\in_array('parenthesis_brace_block', $tokensConfiguration, true)) {
-            $this->tokenEqualsMap['('] = [$this, 'fixStructureOpenCloseIfMultiLine']; // i.e. not: CT::T_BRACE_CLASS_INSTANTIATION_OPEN
+            $this->tokenEqualsMap['('] = [$this, 'fixStructureOpenCloseIfMultiLine']; // i.e. not: CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN
         }
 
         // Each item requires explicit array-like callable, otherwise PHPStan will complain about unused private methods.
@@ -300,7 +300,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
             'default' => [\T_DEFAULT, [$this, 'fixAfterToken']],
             'extra' => [\T_WHITESPACE, [$this, 'removeMultipleBlankLines']],
             'return' => [\T_RETURN, [$this, 'fixAfterToken']],
-            'square_brace_block' => [CT::T_ARRAY_SQUARE_BRACE_OPEN, [$this, 'fixStructureOpenCloseIfMultiLine']],
+            'square_brace_block' => [CT::T_ARRAY_BRACKET_OPEN, [$this, 'fixStructureOpenCloseIfMultiLine']],
             'switch' => [\T_SWITCH, [$this, 'fixAfterToken']],
             'throw' => [\T_THROW, [$this, 'fixAfterThrowToken']],
             'use' => [\T_USE, [$this, 'removeBetweenUse']],
@@ -411,7 +411,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
                 return;
             }
 
-            if ($this->tokens[$i]->isGivenKind([CT::T_ARRAY_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN])) {
+            if ($this->tokens[$i]->isGivenKind([CT::T_ARRAY_BRACKET_OPEN, CT::T_DESTRUCTURING_BRACKET_OPEN])) {
                 return;
             }
 

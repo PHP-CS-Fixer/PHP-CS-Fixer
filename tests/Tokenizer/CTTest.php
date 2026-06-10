@@ -33,7 +33,7 @@ final class CTTest extends TestCase
 {
     public function testUniqueValues(): void
     {
-        $constants = self::getConstants();
+        $constants = self::getNonDeprecatedConstants();
         self::assertSame($constants, array_unique($constants), 'Values of CT::T_* constants must be unique.');
     }
 
@@ -52,12 +52,22 @@ final class CTTest extends TestCase
     }
 
     /**
-     * @dataProvider provideConstantsCases
+     * @dataProvider provideGetNameCases
      */
-    #[DataProvider('provideConstantsCases')]
+    #[DataProvider('provideGetNameCases')]
     public function testGetName(string $name, int $value): void
     {
         self::assertSame('CT::'.$name, CT::getName($value));
+    }
+
+    /**
+     * @return iterable<int, array{string, int}>
+     */
+    public static function provideGetNameCases(): iterable
+    {
+        foreach (self::getNonDeprecatedConstants() as $name => $value) {
+            yield [$name, $value];
+        }
     }
 
     public function testGetNameNotExists(): void
@@ -98,6 +108,28 @@ final class CTTest extends TestCase
         if (null === $constants) {
             $reflection = new \ReflectionClass(CT::class);
             $constants = $reflection->getConstants();
+        }
+
+        return $constants;
+    }
+
+    /**
+     * @return array<string, int>
+     */
+    private static function getNonDeprecatedConstants(): array
+    {
+        static $constants;
+
+        if (null === $constants) {
+            $constants = array_filter(
+                self::getConstants(),
+                static function (string $name): bool {
+                    $reflection = new \ReflectionClassConstant(CT::class, $name);
+
+                    return !str_contains(false !== $reflection->getDocComment() ? $reflection->getDocComment() : '', '@deprecated');
+                },
+                \ARRAY_FILTER_USE_KEY,
+            );
         }
 
         return $constants;

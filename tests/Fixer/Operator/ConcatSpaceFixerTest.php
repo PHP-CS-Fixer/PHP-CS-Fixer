@@ -47,7 +47,7 @@ final class ConcatSpaceFixerTest extends AbstractFixerTestCase
         self::expectException(InvalidFixerConfigurationException::class);
         self::expectExceptionMessageMatches($exceptionExpression);
 
-        $this->fixer->configure($configuration);
+        $this->fixer->configure($configuration); // @phpstan-ignore argument.type
     }
 
     /**

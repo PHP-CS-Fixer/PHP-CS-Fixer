@@ -176,8 +176,8 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
     /**
      * {@inheritdoc}
      *
-     * Must run before NoEmptyPhpdocFixer, PhpdocAlignFixer, VoidReturnFixer.
-     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, FullyQualifiedStrictTypesFixer, PhpdocAddMissingParamAnnotationFixer, PhpdocIndentFixer, PhpdocLineSpanFixer, PhpdocReturnSelfReferenceFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocToParamTypeFixer, PhpdocToPropertyTypeFixer, PhpdocToReturnTypeFixer, PhpdocTypesFixer.
+     * Must run before NoEmptyPhpdocFixer, PhpdocAlignFixer, PhpdocLineSpanFixer, VoidReturnFixer.
+     * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, FullyQualifiedStrictTypesFixer, PhpdocAddMissingParamAnnotationFixer, PhpdocIndentFixer, PhpdocReturnSelfReferenceFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocToParamTypeFixer, PhpdocToPropertyTypeFixer, PhpdocToReturnTypeFixer, PhpdocTypesFixer.
      */
     public function getPriority(): int
     {
@@ -217,7 +217,7 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
             if ($token->isGivenKind(self::SYMBOL_KINDS)) {
                 $currentSymbol = $tokens[$tokens->getNextMeaningfulToken($index)]->getContent();
                 $currentSymbolEndIndex = $tokens->findBlockEnd(
-                    Tokens::BLOCK_TYPE_CURLY_BRACE,
+                    Tokens::BLOCK_TYPE_BRACE,
                     $tokens->getNextTokenOfKind($index, ['{']),
                 );
 
@@ -356,9 +356,9 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
     }
 
     /**
-     * @param _DocumentElement&array{type: 'function'} $element
-     * @param null|non-empty-string                    $namespace
-     * @param array<string, string>                    $shortNames
+     * @param _DocumentElement&array{type: 'function', ...} $element
+     * @param null|non-empty-string                         $namespace
+     * @param array<string, string>                         $shortNames
      */
     private function fixFunctionDocComment(
         string $content,
@@ -371,7 +371,7 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
         $docBlock = new DocBlock($content);
 
         $openingParenthesisIndex = $tokens->getNextTokenOfKind($element['index'], ['(']);
-        $closingParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingParenthesisIndex);
+        $closingParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openingParenthesisIndex);
 
         $argumentsInfo = $this->getArgumentsInfo(
             $tokens,
@@ -413,9 +413,9 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
     }
 
     /**
-     * @param _DocumentElement&array{type: 'property'} $element
-     * @param null|non-empty-string                    $namespace
-     * @param array<string, string>                    $shortNames
+     * @param _DocumentElement&array{type: 'property', ...} $element
+     * @param null|non-empty-string                         $namespace
+     * @param array<string, string>                         $shortNames
      */
     private function fixPropertyDocComment(
         string $content,
@@ -443,7 +443,7 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
     }
 
     /**
-     * @param _DocumentElement&array{type: 'classy'} $element
+     * @param _DocumentElement&array{type: 'classy', ...} $element
      */
     private function fixClassDocComment(string $content, array $element): string
     {

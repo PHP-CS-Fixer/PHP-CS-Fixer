@@ -42,7 +42,7 @@ final class ArraySyntaxFixerTest extends AbstractFixerTestCase
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches('#^\[array_syntax\] Invalid configuration: The option "a" does not exist\. Defined options are: "syntax"\.$#');
 
-        $this->fixer->configure(['a' => 1]);
+        $this->fixer->configure(['a' => 1]); // @phpstan-ignore argument.type
     }
 
     /**

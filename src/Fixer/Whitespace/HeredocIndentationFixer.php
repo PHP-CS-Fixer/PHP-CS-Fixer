@@ -131,6 +131,7 @@ final class HeredocIndentationFixer extends AbstractFixer implements Configurabl
         }
 
         Preg::match('/^\h*/', $tokens[$end]->getContent(), $matches);
+        \assert(isset($matches[0]));
         $currentIndent = $matches[0];
         $currentIndentLength = \strlen($currentIndent);
 

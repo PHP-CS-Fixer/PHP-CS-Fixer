@@ -954,7 +954,7 @@ enum Foo {}',
     }
 
     /**
-     * @return iterable<int, array{null|array<array-key, mixed>, string}>
+     * @return iterable<int, array{null|array<array-key, mixed>, string, 2?: class-string<InvalidFixerConfigurationException>}>
      */
     public static function provideInvalidConfigurationCases(): iterable
     {
