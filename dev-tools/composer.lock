@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ba7c60d7538dbcd08f7af247315eb62b",
+    "content-hash": "0305086a6cd8ef166bae6c9fa7ad4b61",
     "packages": [
         {
             "name": "composer/pcre",
@@ -1050,16 +1050,16 @@
         },
         {
             "name": "shipmonk/dead-code-detector",
-            "version": "1.1.3",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shipmonk-rnd/dead-code-detector.git",
-                "reference": "30d1d4a05bf1afef2abfa325fc949e6c8d2c55ad"
+                "reference": "d4ebbe1e471ac4633f8ec34ddb261db34ba53830"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shipmonk-rnd/dead-code-detector/zipball/30d1d4a05bf1afef2abfa325fc949e6c8d2c55ad",
-                "reference": "30d1d4a05bf1afef2abfa325fc949e6c8d2c55ad"
+                "url": "https://api.github.com/repos/shipmonk-rnd/dead-code-detector/zipball/d4ebbe1e471ac4633f8ec34ddb261db34ba53830",
+                "reference": "d4ebbe1e471ac4633f8ec34ddb261db34ba53830"
             },
             "require": {
                 "php": "^8.1",
