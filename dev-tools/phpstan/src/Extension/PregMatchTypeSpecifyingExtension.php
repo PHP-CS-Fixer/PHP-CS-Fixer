@@ -57,13 +57,33 @@ final class PregMatchTypeSpecifyingExtension implements StaticMethodTypeSpecifyi
     {
         $args = $node->getArgs();
         $patternArg = $args[0] ?? null;
+        $subjectArg = $args[1] ?? null;
         $matchesArg = $args[2] ?? null;
         $flagsArg = $args[3] ?? null;
 
+        $subjectTypes = new SpecifiedTypes();
+        if ($patternArg === null) {
+            return $subjectTypes;
+        }
+
         if (
-            null === $patternArg || null === $matchesArg
+            $subjectArg !== null
+            && $context->true()
+            && $scope->getType($subjectArg->value)->isString()->yes()
         ) {
-            return new SpecifiedTypes();
+            $subjectType = $this->regexShapeMatcher->matchSubjectExpr($patternArg->value, $scope);
+            if ($subjectType !== null) {
+                $subjectTypes = $this->typeSpecifier->create(
+                    $subjectArg->value,
+                    $subjectType,
+                    $context,
+                    $scope,
+                )->setRootExpr($node);
+            }
+        }
+
+        if (null === $matchesArg) {
+            return $subjectTypes;
         }
 
         $flagsType = null;
@@ -82,7 +102,7 @@ final class PregMatchTypeSpecifyingExtension implements StaticMethodTypeSpecifyi
         );
 
         if (null === $matchedType) {
-            return new SpecifiedTypes();
+            return $subjectTypes;
         }
 
         $overwrite = false;
@@ -101,6 +121,6 @@ final class PregMatchTypeSpecifyingExtension implements StaticMethodTypeSpecifyi
             $types = $types->setAlwaysOverwriteTypes();
         }
 
-        return $types;
+        return $subjectTypes->unionWith($types);
     }
 }
