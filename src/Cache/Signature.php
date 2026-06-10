@@ -105,7 +105,7 @@ final class Signature implements SignatureInterface
                 $item = base64_encode($item);
             } elseif (\is_object($item)) {
                 if ($item instanceof \JsonSerializable) {
-                    $item = json_encode($item, \JSON_THROW_ON_ERROR);
+                    $item = get_class($item) . '#' . json_encode($item, \JSON_THROW_ON_ERROR);
                 } else {
                     Future::triggerDeprecation(new \InvalidArgumentException(\sprintf(
                         'Can not serialize cache signature, unhandled object under "%s" key: "%s" - implement "%s".',
