@@ -3,6 +3,23 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.5
+---------------------
+
+* chore: Cleanup `assert()` and add more precise `Preg::matchAll()` return type (#9667)
+* chore: cleanup `GroupImportFixer` (#9671)
+* chore: improve `TypeExpression` (#9665)
+* chore: please markdown-lint (#9659)
+* chore: use more `assert` calls (#9666)
+* deps: Allow installation of `sebastian/diff:^9.0` (#9663)
+* deps: bump crate-ci/typos from 1.47.0 to 1.47.2 in /.github/workflows in the all group across 1 directory (#9662)
+* docs/refactor: clarify bracket types naming (#5915)
+* fix: Add support for `phpunit/phpunit:^13.2` in `PhpUnitTestCaseStaticMethodCallsFixer` (#9664)
+* fix: Use `AgentDetector` to detect presence of AI agent only when `@auto` format has been selected (#9658)
+* fix: `PhpdocAddMissingParamAnnotationFixer` - skip attribute tokens when extracting parameter type (#9634)
+* fix: `StaticPrivateMethodFixer` - fix for private constructor and abstract static method (#9598)
+* refactor: `simplified_if_return` - applyFix to use slices for token insertion (#9670)
+
 Changelog for v3.95.4
 ---------------------
 
@@ -65,7 +82,7 @@ Changelog for v3.95.2
 * chore: cleanup `OrderedImportsFixer` (#9603)
 * chore: cleanup `PhpdocSingleLineVarSpacingFixer` (#9591)
 * chore: cleanup `PhpdocToReturnTypeFixer` (#9558)
-* chore: CS - apply `PhpUnitRequiresConstraintFixer` from https://github.com/kubawerlos/php-cs-fixer-custom-fixers (#9581)
+* chore: CS - apply `PhpUnitRequiresConstraintFixer` from `https://github.com/kubawerlos/php-cs-fixer-custom-fixers` (#9581)
 * chore: CS - apply `php_unit_attributes` rule (#9578)
 * chore: ensure consistent `@author` name per email (#9606)
 * chore: fix wrong test Attribute (#9586)

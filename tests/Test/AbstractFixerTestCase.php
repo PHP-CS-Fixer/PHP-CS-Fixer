@@ -189,7 +189,7 @@ abstract class AbstractFixerTestCase extends TestCase
             }
 
             if ($this->fixer instanceof ConfigurableFixerInterface) {
-                // always re-configure as the fixer might have been configured with diff. configuration form previous sample
+                // always re-configure as the fixer might have been configured with diff. configuration from previous sample
                 $this->fixer->configure($config ?? []);
             }
 

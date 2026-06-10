@@ -101,11 +101,14 @@ final class SelfUpdateCommand extends Command
         }
 
         $currentVersion = $this->getApplication()->getVersion();
-        Preg::match('/^v?(?<major>\d+)\./', $currentVersion, $matches);
-        \assert(isset($matches['major']));
-        $currentMajor = (int) $matches['major'];
 
         try {
+            if (Preg::match('/^v?(?<major>\d+)\./', $currentVersion, $matches)) {
+                $currentMajor = (int) $matches['major'];
+            } else {
+                throw new \Exception('Unable to determine major version.');
+            }
+
             $latestVersion = $this->versionChecker->getLatestVersion();
             $latestVersionOfCurrentMajor = $this->versionChecker->getLatestVersionOfMajor($currentMajor);
         } catch (\Exception $exception) {
