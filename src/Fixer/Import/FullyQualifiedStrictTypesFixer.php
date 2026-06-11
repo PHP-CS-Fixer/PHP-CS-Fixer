@@ -704,7 +704,6 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
                 return $type;
             }
 
-            /** @var non-empty-string $currentTypeValue */
             $shortTokens = $this->determineShortType($currentTypeValue, 'class', $uses, $namespaceName);
 
             if (null === $shortTokens) {
