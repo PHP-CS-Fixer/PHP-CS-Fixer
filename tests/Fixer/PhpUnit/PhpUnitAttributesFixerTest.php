@@ -613,7 +613,7 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
 
         yield 'handle RequiresPhpunit with less than' => self::createCase(
             ['class', 'method'],
-            "#[RequiresPhpunit('<', '>= 13.0.0')]",
+            "#[RequiresPhpunit('< 13.0.0')]",
             '@requires PHPUnit < 13.0.0',
         );
 
