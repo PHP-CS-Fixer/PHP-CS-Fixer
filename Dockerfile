@@ -4,7 +4,7 @@ ARG ALPINE_VERSION=3.23
 FROM alpine:3.23 AS sphinx-lint
 
 RUN apk add python3 py3-pip git \
-    && pip install --break-system-packages sphinx-lint
+    && PIP_ROOT_USER_ACTION=ignore pip install --break-system-packages sphinx-lint
 
 # This must be the same AS in CI's job, but `--null` must be changed to `-0` (Alpine)
 CMD git ls-files --cached -z -- '*.rst' \
