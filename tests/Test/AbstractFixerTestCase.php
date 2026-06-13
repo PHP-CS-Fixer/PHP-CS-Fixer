@@ -333,6 +333,7 @@ abstract class AbstractFixerTestCase extends TestCase
                 'PhpCsFixerInternal/configurable_fixer_template',
                 'blank_line_after_namespace',
                 'blank_line_after_opening_tag',
+                'blank_line_after_statement',
                 'blank_line_before_statement',
                 'class_attributes_separation',
                 'date_time_immutable',
