@@ -225,8 +225,6 @@ jobs:
       - name: Install PHPUnit 13
         if: matrix.run-tests == 'yes' && matrix.install-phpunit-13 == 'yes'
         run: |
-          sed -i '/<extensions>/,/<\/extensions>/d' phpunit.xml.dist
-          composer remove --dev --no-update facile-it/paraunit
           composer require --dev --no-update phpunit/phpunit:"^9.6 || ^13.1.10" # mention ^9.6 to keep trace of minimum supported version, needed for utests
 
       - name: Setup PHP with Composer deps
