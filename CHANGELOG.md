@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.7
+---------------------
+
+* fix: `ClassReferenceNameCasingFixer` - do not change case of typed class constant names (#9686)
+
 Changelog for v3.95.6
 ---------------------
 
