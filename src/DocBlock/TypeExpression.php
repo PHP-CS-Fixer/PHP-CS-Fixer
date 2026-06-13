@@ -211,7 +211,7 @@ final class TypeExpression
                 )
             )
             (?<array> # array, e.g.: `string[]`, `array<int, string>[][]`
-                (\h*\[\h*\])*
+                (?:\h*\[\h*\])*
             )
             (?:(?=1)0
                 (?<types_inner>(?>

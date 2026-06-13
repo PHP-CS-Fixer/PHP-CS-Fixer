@@ -181,7 +181,7 @@ final class Annotation implements \Stringable
     {
         $type = preg_quote($this->getTypesContent() ?? '', '/');
         $regex = \sprintf(
-            '/@%s\s+(%s\s*)?(&\s*)?(\.{3}\s*)?(?<variable>\$%s)(?:.*|$)/',
+            '/@%s\s+(?:%s\s*)?(?:&\s*)?(?:\.{3}\s*)?(?<variable>\$%s)(?:.*|$)/',
             $this->tag->getName(),
             $type,
             TypeExpression::REGEX_IDENTIFIER,
