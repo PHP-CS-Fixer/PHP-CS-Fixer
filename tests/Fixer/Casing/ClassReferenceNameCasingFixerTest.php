@@ -135,7 +135,6 @@ final class ClassReferenceNameCasingFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
-            '<?php class Foo { const FIRST = 1, Exception = 2, Error = 3; }',
             '<?php class Foo { const FIRST = 1, EXCEPTION = 2, ERROR = 3; }',
         ];
 
@@ -345,29 +344,20 @@ use Sonata\\Exporter\\Writer\\EXCEPTION;
             '<?php
                 class MessageType
                 {
-                    public const string Error = "ERROR";
-                }
-            ',
-            '<?php
-                class MessageType
-                {
                     public const string ERROR = "ERROR";
                 }
             ',
         ];
 
         yield 'nullable typed constant name matching internal class' => [
-            '<?php class Foo { public const ?int Exception = null; }',
             '<?php class Foo { public const ?int EXCEPTION = null; }',
         ];
 
         yield 'typed constant name matching internal class in multiple declaration' => [
-            '<?php class Foo { const string FIRST = "a", Error = "b"; }',
             '<?php class Foo { const string FIRST = "a", ERROR = "b"; }',
         ];
 
         yield 'class-typed constant name matching internal class' => [
-            '<?php class Foo { public const Bar Error = Bar::X; }',
             '<?php class Foo { public const Bar ERROR = Bar::X; }',
         ];
     }
