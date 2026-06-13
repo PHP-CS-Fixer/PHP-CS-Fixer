@@ -75,6 +75,11 @@ interface ConfigInterface
     public function getName(): string;
 
     /**
+     * Get configured Composer config path, if any.
+     */
+    public function getComposerPath(): string;
+
+    /**
      * Get configured PHP executable, if any.
      *
      * @deprecated
@@ -152,6 +157,13 @@ interface ConfigInterface
      * @return $this
      */
     public function setLineEnding(string $lineEnding): self;
+
+    /**
+     * Set path to the Composer config.
+     *
+     * @return $this
+     */
+    public function setComposerPath(string $composerPath): self;
 
     /**
      * Set PHP executable.
