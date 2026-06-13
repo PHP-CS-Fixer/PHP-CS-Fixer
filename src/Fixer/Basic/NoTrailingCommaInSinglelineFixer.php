@@ -73,6 +73,16 @@ final class NoTrailingCommaInSinglelineFixer extends AbstractFixer implements Co
         return 0;
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run after ArraySinglelineMultilineFixer.
+     */
+    public function getPriority(): int
+    {
+        return 0;
+    }
+
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         $elements = ['arguments', 'array', 'array_destructuring', 'group_import'];

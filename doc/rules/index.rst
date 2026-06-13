@@ -42,6 +42,9 @@ Alias
 Array Notation
 --------------
 
+- `array_singleline_multiline <./array_notation/array_singleline_multiline.rst>`_ *(configurable)*
+
+  Arrays must be either singleline or multiline based on a configured length threshold. Arrays containing comments shall be left unchanged.
 - `array_syntax <./array_notation/array_syntax.rst>`_ *(configurable)*
 
   PHP arrays should be declared using the configured syntax.
