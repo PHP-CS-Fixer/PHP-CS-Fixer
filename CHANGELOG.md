@@ -3,6 +3,20 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.6
+---------------------
+
+* chore: Docker - ignore root-user warning for pip (#9682)
+* chore: fix typo in comment about fixer configuration (#9675)
+* chore: narrow `Preg::match`/`Preg::matchAll` subject string type when match is truthy (#9668)
+* deps: bump alpine from 3.23 to 3.24 in the all group (#9679)
+* deps: bump codecov/codecov-action from 6 to 7 in /.github/workflows in the all group across 1 directory (#9681)
+* deps: bump shipmonk/dead-code-detector from 1.1.3 to 1.2.0 in /dev-tools in the shipmonk group across 1 directory (#9661)
+* deps: update dev-deps (#9683)
+* deps: upgrade deep-deps for dev-tools (#9677)
+* fix: `PhpUnitAttributesFixer` - correctly handle `@requires` PHPUnit with space-separated version constraint (#9684)
+* UX: Cache - explicit deprecation for usage of non-handled objects in rules configuration, as they silently fail now; add support for JsonSerializable config values (#9678)
+
 Changelog for v3.95.5
 ---------------------
 
