@@ -135,6 +135,11 @@ final class ClassReferenceNameCasingFixerTest extends AbstractFixerTestCase
         ];
 
         yield [
+            '<?php class Foo { const FIRST = 1, Exception = 2, Error = 3; }',
+            '<?php class Foo { const FIRST = 1, EXCEPTION = 2, ERROR = 3; }',
+        ];
+
+        yield [
             '<?php $a = Foo::exception;',
         ];
 
@@ -316,6 +321,54 @@ use Sonata\\Exporter\\Writer\\EXCEPTION;
         yield 'multiple type catch without variable 3' => [
             '<?php try { foo(); } catch(\InvalidArgumentException|\LogicException) {}',
             '<?php try { foo(); } catch(\INVALIDARGUMENTEXCEPTION|\logicexception) {}',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix83Cases
+     *
+     * @requires PHP >= 8.3.0
+     */
+    #[DataProvider('provideFix83Cases')]
+    #[RequiresPhp('>= 8.3.0')]
+    public function testFix83(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix83Cases(): iterable
+    {
+        yield 'typed constant name matching internal class' => [
+            '<?php
+                class MessageType
+                {
+                    public const string Error = "ERROR";
+                }
+            ',
+            '<?php
+                class MessageType
+                {
+                    public const string ERROR = "ERROR";
+                }
+            ',
+        ];
+
+        yield 'nullable typed constant name matching internal class' => [
+            '<?php class Foo { public const ?int Exception = null; }',
+            '<?php class Foo { public const ?int EXCEPTION = null; }',
+        ];
+
+        yield 'typed constant name matching internal class in multiple declaration' => [
+            '<?php class Foo { const string FIRST = "a", Error = "b"; }',
+            '<?php class Foo { const string FIRST = "a", ERROR = "b"; }',
+        ];
+
+        yield 'class-typed constant name matching internal class' => [
+            '<?php class Foo { public const Bar Error = Bar::X; }',
+            '<?php class Foo { public const Bar ERROR = Bar::X; }',
         ];
     }
 }
