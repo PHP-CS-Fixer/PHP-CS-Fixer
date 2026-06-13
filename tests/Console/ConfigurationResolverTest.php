@@ -312,7 +312,7 @@ final class ConfigurationResolverTest extends TestCase
     public function testResolveConfigFileChooseFileWithInvalidFormat(): void
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessageMatches('/^The format "xls" is not defined, supported are "checkstyle", "gitlab", "json", "junit", "txt" and "xml"\.$/');
+        $this->expectExceptionMessageMatches('/^The format "xls" is not defined, supported are "checkstyle", "gitlab", "json", "json_v4", "junit", "txt" and "xml"\.$/');
 
         $dirBase = self::getFixtureDir();
 
