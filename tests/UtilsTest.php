@@ -229,10 +229,10 @@ final class UtilsTest extends TestCase
 
         self::assertSame(
             [
-                $fixers[2],
-                $fixers[0],
-                $fixers[1],
-                $fixers[3],
+                $fixers[2], // f4
+                $fixers[0], // f1
+                $fixers[1], // f2
+                $fixers[3], // f3
             ],
             Utils::sortFixers($fixers),
         );
