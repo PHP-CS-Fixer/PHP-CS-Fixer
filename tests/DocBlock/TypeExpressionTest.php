@@ -829,7 +829,7 @@ final class TypeExpressionTest extends TestCase
         self::assertSame([
             'Foo',
             'Bar',
-            \Closure::class,
+            '\'.\Closure::class,
             'X',
             'Y',
             'Z',
