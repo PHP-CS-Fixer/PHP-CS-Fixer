@@ -20,7 +20,6 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\DataProviderAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
 use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Tokens;
-use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>
@@ -149,7 +148,8 @@ final class DataProviderAnalyzer
             NamespaceUseAnalysis::TYPE_CLASS,
         );
 
-        if (DataProvider::class !== $fullyQualifiedName) {
+        // note: do not apply `DataProvider::class` here, as it would confuse `composer-dependency-analyser` to have PHPUnit as non-dev dependency
+        if ('PHPUnit\Framework\Attributes\DataProvider' !== $fullyQualifiedName) {
             return null;
         }
 

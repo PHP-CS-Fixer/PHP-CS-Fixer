@@ -705,7 +705,7 @@ final class TypeExpressionTest extends TestCase
 
         yield ['iterable<int, string>', 'iterable'];
 
-        yield ['\Traversable<string>', '\'.\Traversable::class];
+        yield ['\Traversable<string>', '\\'.\Traversable::class];
 
         yield ['Traversable<int, string>', \Traversable::class];
 
@@ -829,7 +829,7 @@ final class TypeExpressionTest extends TestCase
         self::assertSame([
             'Foo',
             'Bar',
-            '\'.\Closure::class,
+            '\\'.\Closure::class,
             'X',
             'Y',
             'Z',
@@ -875,7 +875,7 @@ final class TypeExpressionTest extends TestCase
         self::assertSame([
             'Foo',
             'Bar',
-            \Closure::class,
+            '\\'.\Closure::class,
             'X',
             'Y',
             'Z',
