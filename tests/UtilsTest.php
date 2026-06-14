@@ -222,17 +222,17 @@ final class UtilsTest extends TestCase
     {
         $fixers = [
             $this->createFixerDouble('f1', 0),
-            $this->createFixerDouble('f2', -10),
+            $this->createFixerDouble('fy', -10),
             $this->createFixerDouble('f3', 10),
-            $this->createFixerDouble('f4', -10),
+            $this->createFixerDouble('fx', -10),
         ];
 
         self::assertSame(
             [
-                $fixers[2], // f4
+                $fixers[2], // f3
                 $fixers[0], // f1
-                $fixers[1], // f2
-                $fixers[3], // f3
+                $fixers[3], // fx
+                $fixers[1], // fy
             ],
             Utils::sortFixers($fixers),
         );
