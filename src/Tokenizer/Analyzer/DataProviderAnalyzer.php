@@ -148,7 +148,7 @@ final class DataProviderAnalyzer
             NamespaceUseAnalysis::TYPE_CLASS,
         );
 
-        if ('PHPUnit\Framework\Attributes\DataProvider' !== $fullyQualifiedName) {
+        if (\PHPUnit\Framework\Attributes\DataProvider::class !== $fullyQualifiedName) {
             return null;
         }
 

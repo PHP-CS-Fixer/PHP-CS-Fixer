@@ -264,7 +264,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
                     return true;
                 }
 
-                if ('PHPUnit\Framework\Attributes\TestWithJson' === $insertedClassName && 'PHPUnit\Framework\Attributes\TestWith' === $className) {
+                if (\PHPUnit\Framework\Attributes\TestWithJson::class === $insertedClassName && \PHPUnit\Framework\Attributes\TestWith::class === $className) {
                     return true;
                 }
             }
