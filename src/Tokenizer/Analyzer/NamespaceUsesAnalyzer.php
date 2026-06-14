@@ -71,13 +71,12 @@ final class NamespaceUsesAnalyzer
         foreach ($useIndices as $index) {
             $endIndex = $tokens->getNextTokenOfKind($index, [';', [\T_CLOSE_TAG]]);
 
-            $declarations = $this->parseDeclarations($index, $endIndex, $tokens);
-            if (false === $allowMultiUses) {
-                $declarations = array_filter($declarations, static fn (NamespaceUseAnalysis $declaration) => !$declaration->isInMulti());
-            }
+            foreach ($this->parseDeclarations($index, $endIndex, $tokens) as $declaration) {
+                if (!$allowMultiUses && $declaration->isInMulti()) {
+                    continue;
+                }
 
-            if ([] !== $declarations) {
-                $uses = array_merge($uses, $declarations);
+                $uses[] = $declaration;
             }
         }
 
@@ -196,13 +195,13 @@ final class NamespaceUsesAnalyzer
                 $fullName .= $token->getContent();
             } elseif ($token->isGivenKind(\T_AS)) {
                 $aliased = true;
-            } elseif ($token->equalsAny([
-                ',',
-                ';',
-                [CT::T_GROUP_IMPORT_BRACE_OPEN],
-                [CT::T_GROUP_IMPORT_BRACE_CLOSE],
-                [\T_CLOSE_TAG],
-            ])) {
+            } elseif (
+                $token->equals(',')
+                || $token->equals(';')
+                || $token->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)
+                || $token->isGivenKind(CT::T_GROUP_IMPORT_BRACE_CLOSE)
+                || $token->isGivenKind(\T_CLOSE_TAG)
+            ) {
                 break;
             }
 
