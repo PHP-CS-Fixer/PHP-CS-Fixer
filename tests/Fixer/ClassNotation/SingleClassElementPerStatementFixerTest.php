@@ -976,6 +976,24 @@ enum Foo: string {
 
 var_dump(Foo::A.Foo::B);",
         ];
+
+        yield [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    final const A = 1;
+                    B = 2;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    final const A = 1, B = 2;
+                }
+                PHP,
+        ];
     }
 
     /**
@@ -1034,6 +1052,20 @@ var_dump(Foo::A.Foo::B);",
                     public public(set) int $a, $b;
                     public protected(set) int $c, $d;
                     public private(set) int $e, $f;
+                }
+                PHP,
+        ];
+
+        yield 'final property' => [
+            <<<'PHP'
+                <?php class Foo {
+                    final public int $a = 1;
+                    $b = 2;
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo {
+                    final public int $a = 1, $b = 2;
                 }
                 PHP,
         ];
