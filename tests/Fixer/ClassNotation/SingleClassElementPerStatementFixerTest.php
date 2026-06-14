@@ -983,7 +983,7 @@ var_dump(Foo::A.Foo::B);",
                 class Foo
                 {
                     final const A = 1;
-                    B = 2;
+                    final const B = 2;
                 }
                 PHP,
             <<<'PHP'
@@ -1060,7 +1060,7 @@ var_dump(Foo::A.Foo::B);",
             <<<'PHP'
                 <?php class Foo {
                     final public int $a = 1;
-                    $b = 2;
+                    final public int $b = 2;
                 }
                 PHP,
             <<<'PHP'
