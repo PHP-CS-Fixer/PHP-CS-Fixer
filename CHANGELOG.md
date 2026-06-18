@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.8
+---------------------
+
+* fix: `SingleClassElementPerStatementFixer` - do not drop modifiers when splitting `final` constants/properties (#9687)
+
 Changelog for v3.95.7
 ---------------------
 
