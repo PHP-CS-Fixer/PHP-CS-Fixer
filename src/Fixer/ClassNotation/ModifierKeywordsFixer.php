@@ -213,8 +213,36 @@ final class ModifierKeywordsFixer extends AbstractFixer implements ConfigurableF
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
+        $elements = $tokensAnalyzer->getClassyElements();
 
-        foreach (array_reverse($tokensAnalyzer->getClassyElements(), true) as $index => $element) {
+        foreach ($elements as $index => $element) {
+            if ('method' !== $element['type'] || !$this->isConstructMethod($tokens, $index)) {
+                continue;
+            }
+
+            $openParenthesis = $tokens->getNextTokenOfKind($index, ['(']);
+            $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openParenthesis);
+
+            foreach ($tokens->findGivenKind([FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET], $openParenthesis, $closeParenthesis) as $kindElements) {
+                foreach (array_keys($kindElements) as $visibilitySetIndex) {
+                    $promotedPropertyVariableIndex = $tokens->getNextTokenOfKind($visibilitySetIndex, [[\T_VARIABLE]]);
+
+                    if (!\is_int($promotedPropertyVariableIndex) || isset($elements[$promotedPropertyVariableIndex])) {
+                        continue;
+                    }
+
+                    $elements[$promotedPropertyVariableIndex] = [
+                        'classIndex' => $element['classIndex'],
+                        'token' => $tokens[$promotedPropertyVariableIndex],
+                        'type' => 'promoted_property',
+                    ];
+                }
+            }
+        }
+
+        ksort($elements);
+
+        foreach (array_reverse($elements, true) as $index => $element) {
             if (!\in_array($element['type'], $this->elements, true)) {
                 continue;
             }
@@ -297,6 +325,13 @@ final class ModifierKeywordsFixer extends AbstractFixer implements ConfigurableF
 
             $this->moveTokenAndEnsureSingleSpaceFollows($tokens, $abstractFinalIndex, $index);
         }
+    }
+
+    private function isConstructMethod(Tokens $tokens, int $index): bool
+    {
+        $functionNameIndex = $tokens->getNextMeaningfulToken($index);
+
+        return $tokens[$functionNameIndex]->isGivenKind(\T_STRING) && '__construct' === strtolower($tokens[$functionNameIndex]->getContent());
     }
 
     private function isKeywordPlacedProperly(Tokens $tokens, int $keywordIndex, int $comparedIndex): bool

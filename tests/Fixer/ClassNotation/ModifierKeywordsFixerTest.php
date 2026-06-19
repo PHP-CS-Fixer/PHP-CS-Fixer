@@ -1032,6 +1032,25 @@ var_dump(Foo::CAT->test());',
                 }
                 PHP,
         ];
+
+        yield 'promoted property with only set-visibility' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public function __construct(
+                        public private(set) array $bar = [],
+                    ) {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public function __construct(
+                        private(set) array $bar = [],
+                    ) {}
+                }
+                PHP,
+        ];
     }
 
     /**
