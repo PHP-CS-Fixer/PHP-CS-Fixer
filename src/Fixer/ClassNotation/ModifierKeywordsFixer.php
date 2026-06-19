@@ -223,11 +223,11 @@ final class ModifierKeywordsFixer extends AbstractFixer implements ConfigurableF
             $openParenthesis = $tokens->getNextTokenOfKind($index, ['(']);
             $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openParenthesis);
 
-            foreach ($tokens->findGivenKind([FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET], $openParenthesis, $closeParenthesis) as $kindElements) {
-                foreach (array_keys($kindElements) as $visibilitySetIndex) {
-                    $promotedPropertyVariableIndex = $tokens->getNextTokenOfKind($visibilitySetIndex, [[\T_VARIABLE]]);
+            foreach ($tokens->findGivenKind([FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET], $openParenthesis, $closeParenthesis) as $visibilitySetTokens) {
+                foreach ($visibilitySetTokens as $visibilitySetIndex => $visibilitySetToken) {
+                    $promotedPropertyVariableIndex = $this->findPromotedPropertyVariableIndex($tokens, $visibilitySetIndex, $closeParenthesis);
 
-                    if (!\is_int($promotedPropertyVariableIndex) || isset($elements[$promotedPropertyVariableIndex])) {
+                    if (null === $promotedPropertyVariableIndex || isset($elements[$promotedPropertyVariableIndex])) {
                         continue;
                     }
 
@@ -332,6 +332,25 @@ final class ModifierKeywordsFixer extends AbstractFixer implements ConfigurableF
         $functionNameIndex = $tokens->getNextMeaningfulToken($index);
 
         return $tokens[$functionNameIndex]->isGivenKind(\T_STRING) && '__construct' === strtolower($tokens[$functionNameIndex]->getContent());
+    }
+
+    private function findPromotedPropertyVariableIndex(Tokens $tokens, int $visibilitySetIndex, int $closeParenthesis): ?int
+    {
+        $index = $visibilitySetIndex;
+
+        while (null !== $index && $index < $closeParenthesis) {
+            $index = $tokens->getNextMeaningfulToken($index);
+
+            if (null === $index || $index > $closeParenthesis || $tokens[$index]->equalsAny(['=', ','])) {
+                return null;
+            }
+
+            if ($tokens[$index]->isGivenKind(\T_VARIABLE)) {
+                return $index;
+            }
+        }
+
+        return null;
     }
 
     private function isKeywordPlacedProperly(Tokens $tokens, int $keywordIndex, int $comparedIndex): bool
