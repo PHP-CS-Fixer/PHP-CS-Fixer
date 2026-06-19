@@ -3,6 +3,12 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.9
+---------------------
+
+* chore: apply `class_keyword` (#9689)
+* refactor: change Fixers execution order to always-deterministic (#9690)
+
 Changelog for v3.95.8
 ---------------------
 
