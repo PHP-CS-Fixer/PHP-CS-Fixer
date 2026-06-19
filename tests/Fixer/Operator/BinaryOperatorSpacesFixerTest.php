@@ -3584,6 +3584,24 @@ function test()
                 PHP,
             ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_BY_SCOPE]],
         ];
+
+        yield 'match on array literals' => [
+            <<<'PHP'
+                <?php
+                echo match ($foo) {
+                    [false, true]  => 'partial',
+                    [false, false] => 'wrong',
+                };
+                PHP,
+            <<<'PHP'
+                <?php
+                echo match ($foo) {
+                    [false, true] => 'partial',
+                    [false, false] => 'wrong',
+                };
+                PHP,
+            ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_BY_SCOPE]],
+        ];
     }
 
     /**
