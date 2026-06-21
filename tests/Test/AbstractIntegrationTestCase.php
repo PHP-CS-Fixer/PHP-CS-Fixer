@@ -362,9 +362,17 @@ abstract class AbstractIntegrationTestCase extends TestCase
     private static function createFixers(IntegrationCase $case): array
     {
         $config = $case->getConfig();
+        $customFixers = [];
+
+        if (isset($config['customFixers'])) {
+            foreach ($config['customFixers'] as $className) {
+                $customFixers[] = new $className();
+            }
+        }
 
         return (new FixerFactory())
             ->registerBuiltInFixers()
+            ->registerCustomFixers($customFixers)
             ->useRuleSet($case->getRuleset())
             ->setWhitespacesConfig(
                 new WhitespacesFixerConfig($config['indent'], $config['lineEnding']),
