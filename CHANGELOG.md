@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.10
+----------------------
+
+* fix: `TokensAnalyzer` - handle `T_PUBLIC_SET`, `T_PROTECTED_SET`, `T_PRIVATE_SET`  (#9696)
+
 Changelog for v3.95.9
 ---------------------
 
