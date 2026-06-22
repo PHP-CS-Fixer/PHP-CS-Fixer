@@ -280,7 +280,7 @@ final class RuleSetTest extends TestCase
             ],
         ];
 
-        yield 'same rule configure three times with different approaches for names, with leading backslash in raw string\'s FQCN' => [
+        yield 'same rule configured three times with different approaches for names, with leading backslash in raw string\'s FQCN' => [
             [
                 '\PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer' => true,
                 'array_syntax' => ['syntax' => 'long'],
@@ -293,7 +293,7 @@ final class RuleSetTest extends TestCase
 
         // This one is weird, because you would expect that `array_syntax` is enabled,
         // but seems like PHP reduces the array and keeps only first (not last!) entry with FQCN as a key.
-        yield 'same rule configure three times with different approaches for names, with weird behaviour for array canonicalising' => [
+        yield 'same rule configured three times with different approaches for names, with weird behaviour for array canonicalising' => [
             [
                 // @phpstan-ignore array.duplicateKey (we explicitly test this particular behaviour with same key defined twice)
                 'PhpCsFixer\Fixer\ArrayNotation\ArraySyntaxFixer' => true,
