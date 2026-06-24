@@ -2906,7 +2906,7 @@ enum Foo
             ],
         ];
 
-        yield 'pure enum with switch' => [
+        yield 'pure enum with switch in between enum-cases' => [
             '<?php
 enum Foo
 {
@@ -2921,6 +2921,17 @@ enum Foo
                 return strtolower($instance->name);
         }
     }
+
+    public static function getUpperName(self $instance): string
+    {
+        switch ($instance->name) {
+            case \'One\':
+            case \'Two\':
+                return strtoupper($instance->name);
+        }
+    }
+
+    case Three;
 }
 ',
             [
@@ -2928,6 +2939,9 @@ enum Foo
                 12 => true,
                 45 => false,
                 50 => false,
+                97 => false,
+                102 => false,
+                121 => true,
             ],
         ];
 
