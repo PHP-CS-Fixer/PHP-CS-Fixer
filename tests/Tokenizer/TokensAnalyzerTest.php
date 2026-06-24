@@ -2863,8 +2863,8 @@ class TestClass {
                 continue;
             }
 
-            \assert(\array_key_exists($index, $expected));
-            self::assertSame($expected[$index], $tokensAnalyzer->isEnumCase($index));
+            self::assertArrayHasKey($index, $expected);
+            self::assertSame($expected[$index], $tokensAnalyzer->isEnumCase($index), sprintf('Expecting TokensAnalyzer::isEnumCase(%d)=%s.', $index, $expected[$index] ? 'true' : 'false'));
         }
     }
 
