@@ -677,9 +677,20 @@ final class TokensAnalyzer
             return false;
         }
 
-        $prevIndex = $tokens->getPrevTokenOfKind($caseIndex, [[\T_ENUM], [\T_SWITCH]]);
+        $prevIndex = $caseIndex;
 
-        return null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(\T_ENUM);
+        // get the T_ENUM or T_SWITCH that is matching the T_CASE, detecting and skiping the {...} blocks in between, as they may have nested switch-case
+        do {
+            $prevIndex = $tokens->getPrevTokenOfKind($prevIndex, ['}', [\T_ENUM], [\T_SWITCH]]);
+
+            if ($tokens[$prevIndex]->equals('}')) {
+                $prevIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_BRACE, $prevIndex);
+            } else {
+                break;
+            }
+        } while (true);
+
+        return $tokens[$prevIndex]->isGivenKind(\T_ENUM);
     }
 
     public function isSuperGlobal(int $index): bool
