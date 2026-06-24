@@ -682,6 +682,7 @@ final class TokensAnalyzer
         // get the T_ENUM or T_SWITCH that is matching the T_CASE, detecting and skipping the {...} blocks in between, as they may have nested switch-case
         while (true) {
             $prevIndex = $tokens->getPrevTokenOfKind($prevIndex, ['}', [\T_ENUM], [\T_SWITCH]]);
+            \assert(null !== $prevIndex);
 
             if ($tokens[$prevIndex]->equals('}')) {
                 $prevIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_BRACE, $prevIndex);
