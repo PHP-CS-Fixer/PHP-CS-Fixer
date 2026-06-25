@@ -12,6 +12,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Config;
 use PhpCsFixer\Future;
 
@@ -40,7 +41,7 @@ $typesMap = [
     'T' => 'mixed',
     'TFixerInputConfig' => 'array',
     'TFixerComputedConfig' => 'array',
-    'TFixer' => '\PhpCsFixer\AbstractFixer',
+    'TFixer' => AbstractFixer::class,
     '_PhpTokenKind' => 'int|string',
     '_PhpTokenArray' => 'array{0: int, 1: string}',
     '_PhpTokenArrayPartial' => 'array{0: int, 1?: string}',
