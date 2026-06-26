@@ -3,6 +3,15 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.11
+----------------------
+
+* fix: `NoBreakCommentFixer` - handle enum cases, `TokensAnalyzer::isEnumCase` - fix handling nested switch-cases (#9565)
+* deps: bump actions/checkout from 6 to 7 in /.github/workflows in the all group across 1 directory (#9694)
+* deps: bump dev deps (#9702)
+* deps: bump phpstan/phpstan-symfony from 2.0.19 to 2.0.20 in /dev-tools in the phpstan group (#9693)
+* test: use correct test precondition failure mode in PharTest (#9700)
+
 Changelog for v3.95.10
 ----------------------
 
