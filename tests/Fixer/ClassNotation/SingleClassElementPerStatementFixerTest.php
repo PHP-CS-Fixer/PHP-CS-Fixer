@@ -1060,8 +1060,8 @@ var_dump(Foo::A.Foo::B);",
                 class Foo
                 {
                     public const string A = "a";
-                    public const B = "b";
-                    public const C = "c";
+                    public const string B = "b";
+                    public const string C = "c";
                 }
                 PHP,
             <<<'PHP'
@@ -1079,7 +1079,7 @@ var_dump(Foo::A.Foo::B);",
                 class Foo
                 {
                     protected const int|string A = 1;
-                    protected const B = 2;
+                    protected const int|string B = 2;
                 }
                 PHP,
             <<<'PHP'
@@ -1097,7 +1097,7 @@ var_dump(Foo::A.Foo::B);",
                 class Foo
                 {
                     const ?int A = null;
-                    const B = null;
+                    const ?int B = null;
                 }
                 PHP,
             <<<'PHP'
@@ -1115,7 +1115,7 @@ var_dump(Foo::A.Foo::B);",
                 class Foo
                 {
                     public const Bar&\Stringable A = X;
-                    public const B = Y;
+                    public const Bar&\Stringable B = Y;
                 }
                 PHP,
             <<<'PHP'
@@ -1133,7 +1133,7 @@ var_dump(Foo::A.Foo::B);",
                 class Foo
                 {
                     final public const string A = "a";
-                    final public const B = "b";
+                    final public const string B = "b";
                 }
                 PHP,
             <<<'PHP'

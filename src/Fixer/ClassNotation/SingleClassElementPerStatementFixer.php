@@ -208,7 +208,9 @@ final class SingleClassElementPerStatementFixer extends AbstractFixer implements
             }
 
             // collect modifiers
-            $sequence = $this->getModifiersSequences($tokens, $type, $startIndex, $endIndex);
+            $sequence = 'const' === $type
+                ? $this->getConstantModifiersSequence($tokens, $startIndex)
+                : $this->getPropertyModifiersSequence($tokens, $startIndex, $endIndex);
             $tokens->insertAt($i + 2, $sequence);
         }
     }
@@ -216,13 +218,31 @@ final class SingleClassElementPerStatementFixer extends AbstractFixer implements
     /**
      * @return list<Token>
      */
-    private function getModifiersSequences(Tokens $tokens, string $type, int $startIndex, int $endIndex): array
+    private function getConstantModifiersSequence(Tokens $tokens, int $startIndex): array
     {
-        if ('property' === $type) {
-            $tokenKinds = [\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_FINAL, \T_STATIC, \T_VAR, \T_STRING, \T_NS_SEPARATOR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET];
-        } else {
-            $tokenKinds = [\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_FINAL, \T_CONST];
+        $assignmentIndex = $tokens->getNextTokenOfKind($startIndex, ['=']);
+        \assert(\is_int($assignmentIndex));
+
+        $nameIndex = $tokens->getPrevMeaningfulToken($assignmentIndex);
+        \assert(\is_int($nameIndex));
+
+        $sequence = [];
+
+        for ($i = $startIndex; $i < $nameIndex; ++$i) {
+            if (!$tokens[$i]->isComment()) {
+                $sequence[] = clone $tokens[$i];
+            }
         }
+
+        return $sequence;
+    }
+
+    /**
+     * @return list<Token>
+     */
+    private function getPropertyModifiersSequence(Tokens $tokens, int $startIndex, int $endIndex): array
+    {
+        $tokenKinds = [\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_FINAL, \T_STATIC, \T_VAR, \T_STRING, \T_NS_SEPARATOR, CT::T_NULLABLE_TYPE, CT::T_ARRAY_TYPEHINT, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, FCT::T_READONLY, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET];
 
         $sequence = [];
 
