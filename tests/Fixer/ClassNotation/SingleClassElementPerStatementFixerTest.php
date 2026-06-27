@@ -659,6 +659,24 @@ echo Foo::A, Foo::B;
 ',
         ];
 
+        yield 'const with a comment before the name' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    const/* comment */ A = 1;
+                    const B = 2;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    const/* comment */ A = 1, B = 2;
+                }
+                PHP,
+        ];
+
         yield [
             '<?php
                     class Token {
@@ -1016,6 +1034,115 @@ var_dump(Foo::A.Foo::B);",
         yield [
             '<?php trait Foo { public const Bar = 1; public const Baz = 1; }',
             '<?php trait Foo { public const Bar = 1, Baz = 1; }',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix83Cases
+     *
+     * @requires PHP >= 8.3.0
+     */
+    #[DataProvider('provideFix83Cases')]
+    #[RequiresPhp('>= 8.3.0')]
+    public function testFix83(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, 1?: string}>
+     */
+    public static function provideFix83Cases(): iterable
+    {
+        yield 'typed constants' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public const string A = "a";
+                    public const B = "b";
+                    public const C = "c";
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public const string A = "a", B = "b", C = "c";
+                }
+                PHP,
+        ];
+
+        yield 'typed constant with union type' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    protected const int|string A = 1;
+                    protected const B = 2;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    protected const int|string A = 1, B = 2;
+                }
+                PHP,
+        ];
+
+        yield 'typed constant with nullable type' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    const ?int A = null;
+                    const B = null;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    const ?int A = null, B = null;
+                }
+                PHP,
+        ];
+
+        yield 'typed constant with intersection type' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public const Bar&\Stringable A = X;
+                    public const B = Y;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public const Bar&\Stringable A = X, B = Y;
+                }
+                PHP,
+        ];
+
+        yield 'final typed constant' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    final public const string A = "a";
+                    final public const B = "b";
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    final public const string A = "a", B = "b";
+                }
+                PHP,
         ];
     }
 
