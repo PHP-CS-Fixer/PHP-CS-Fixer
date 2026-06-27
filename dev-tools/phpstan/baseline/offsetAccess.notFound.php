@@ -27,11 +27,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Documentation/DocumentationLocator.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset (int|string) might not exist on array<string, PhpCsFixer\\Fixer\\FixerInterface>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Documentation/RuleSetDocumentationGenerator.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset int might not exist on non-empty-array<int, int>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Alias/SetTypeToCastFixer.php',
