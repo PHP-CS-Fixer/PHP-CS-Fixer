@@ -1368,20 +1368,20 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
      */
     #[DataProvider('provideDeprecatedFixerConfiguredCases')]
     #[Group('legacy')]
-    public function testDeprecatedFixerConfigured($ruleConfig): void
+    public function testDeprecatedFixerConfigured($ruleConfig, bool $useFqcnAsRuleName = false): void
     {
         $this->expectDeprecation('Rule "Vendor4/foo" is deprecated. Use "testA" and "testB" instead.');
         $fixer = $this->createDeprecatedFixerDouble();
         $config = new Config();
         $config->registerCustomFixers([$fixer]);
-        $config->setRules([$fixer->getName() => $ruleConfig]);
+        $config->setRules([($useFqcnAsRuleName ? \get_class($fixer) : $fixer->getName()) => $ruleConfig]);
 
         $resolver = $this->createConfigurationResolver([], $config);
         $resolver->getFixers();
     }
 
     /**
-     * @return iterable<int, array{array<string, mixed>|bool}>
+     * @return iterable<array{0: array<string, mixed>|bool, 1?: bool}>
      */
     public static function provideDeprecatedFixerConfiguredCases(): iterable
     {
@@ -1390,6 +1390,8 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         yield [['foo' => true]];
 
         yield [false];
+
+        yield 'by FQCN as rule name' => [true, true];
     }
 
     public function testItCanRegisterCustomRuleSets(): void

@@ -891,7 +891,7 @@ final class ConfigurationResolver
 
         foreach ($this->createFixerFactory()->getFixers() as $fixer) {
             $fixerName = $fixer->getName();
-            if (isset($rules[$fixerName]) && $fixer instanceof DeprecatedFixerInterface) {
+            if ((isset($rules[$fixerName]) || isset($rules[\get_class($fixer)])) && $fixer instanceof DeprecatedFixerInterface) {
                 $successors = $fixer->getSuccessorsNames();
                 $messageEnd = [] === $successors
                     ? \sprintf(' and will be removed in version %d.0.', Application::getMajorVersion() + 1)
