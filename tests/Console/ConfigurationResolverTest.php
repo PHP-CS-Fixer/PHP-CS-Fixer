@@ -1525,7 +1525,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         ];
 
         yield [
-            JsonReporter::class,
+            CheckstyleReporter::class,
             'checkstyle',
             ['AI_AGENT' => 'true'],
         ];
@@ -1536,7 +1536,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         ];
 
         yield [
-            JsonReporter::class,
+            TextReporter::class,
             'txt',
             ['AI_AGENT' => 'true'],
         ];
@@ -1563,7 +1563,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         ];
 
         yield [
-            JsonReporter::class,
+            GitlabReporter::class,
             '@auto',
             [
                 'AI_AGENT' => 'true',

@@ -160,7 +160,7 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFixer implement
             }
 
             $openIndex = $tokens->getNextTokenOfKind($index, ['(']);
-            $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+            $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openIndex);
 
             $arguments = [];
 
@@ -196,7 +196,9 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFixer implement
             $lines = $doc->getLines();
             $linesCount = \count($lines);
 
+            \assert(isset($lines[$linesCount - 1]));
             Preg::match('/^(\s*).*$/', $lines[$linesCount - 1]->getContent(), $matches);
+            \assert(isset($matches[1]));
             $indent = $matches[1];
 
             $newLines = [];
@@ -253,6 +255,12 @@ final class PhpdocAddMissingParamAnnotationFixer extends AbstractFixer implement
 
         for ($index = $start; $index <= $end; ++$index) {
             $token = $tokens[$index];
+
+            if ($token->isGivenKind(FCT::T_ATTRIBUTE)) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
+
+                continue;
+            }
 
             if (
                 $token->isComment()

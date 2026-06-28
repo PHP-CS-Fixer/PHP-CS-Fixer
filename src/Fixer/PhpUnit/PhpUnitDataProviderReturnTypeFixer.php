@@ -94,7 +94,7 @@ final class PhpUnitDataProviderReturnTypeFixer extends AbstractPhpUnitFixer
 
             if (null === $typeAnalysis) {
                 $argumentsStart = $tokens->getNextTokenOfKind($dataProviderAnalysis->getNameIndex(), ['(']);
-                $argumentsEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $argumentsStart);
+                $argumentsEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $argumentsStart);
 
                 $tokens->insertAt(
                     $argumentsEnd + 1,

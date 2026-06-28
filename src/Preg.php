@@ -85,6 +85,8 @@ final class Preg
      *     )
      * ) $matches
      *
+     * @return 0|positive-int
+     *
      * @throws PregException
      */
     public static function matchAll(string $pattern, string $subject, ?array &$matches = null, int $flags = \PREG_PATTERN_ORDER, int $offset = 0): int

@@ -17,26 +17,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Console/Report/FixReport/GitlabReporter.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $offset of function substr expects int, int|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Documentation/FixerDocumentGenerator.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $subject of function str_replace expects array<string>|string, string|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Documentation/FixerDocumentGenerator.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $offset of function substr expects int, int|false given.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Documentation/RuleSetDocumentationGenerator.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $index of method PhpCsFixer\\Tokenizer\\Tokens::getNextTokenOfKind() expects int, int|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Alias/PowToExponentiationFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $slices of method PhpCsFixer\\Tokenizer\\Tokens::insertSlices() expects array<int, list<PhpCsFixer\\Tokenizer\\Token>|PhpCsFixer\\Tokenizer\\Token|PhpCsFixer\\Tokenizer\\Tokens>, array<\'\'|int, array{PhpCsFixer\\Tokenizer\\Token, PhpCsFixer\\Tokenizer\\Token}|PhpCsFixer\\Tokenizer\\Token> given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ArrayNotation/YieldFromArrayToYieldsFixer.php',
@@ -62,44 +42,19 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/ControlStructure/YodaStyleFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $length of function substr expects int|null, int|false given.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Fixer/Import/FullyQualifiedStrictTypesFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #2 $offset of function substr expects int, int|false given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Import/NoUnusedImportsFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $offset of function substr expects int, int<0, max>|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Operator/BinaryOperatorSpacesFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $length of function substr expects int|null, int<0, max>|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Operator/BinaryOperatorSpacesFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $name of static method PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitAttributesFixer::toClassConstant() expects non-empty-string, string given.',
-    'count' => 5,
+    'count' => 4,
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitAttributesFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $length of function substr expects int|null, int<0, max>|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitNoExpectationAnnotationFixer.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $lines of method PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitTestAnnotationFixer::splitUpDocBlock() expects non-empty-list<PhpCsFixer\\DocBlock\\Line>, list<PhpCsFixer\\DocBlock\\Line> given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $offset of function substr expects int, int|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/NoBlankLinesAfterPhpdocFixer.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $code of static method PhpCsFixer\\Hasher::calculate() expects string, string|false given.',
@@ -110,11 +65,6 @@ $ignoreErrors[] = [
     'rawMessage' => 'Parameter #2 ...$values of function sprintf expects bool|float|int|string|null, array<string, mixed>|bool given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/RuleSet/RuleSet.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $name of static method PhpCsFixer\\Tokenizer\\Processor\\ImportProcessor::tokenizeName() expects non-empty-string, string given.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Tokenizer/Transformer/NameQualifiedTransformer.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $json of function json_decode expects string, string|false given.',

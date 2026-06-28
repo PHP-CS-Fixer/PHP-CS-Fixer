@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup PHP
         uses: ./.github/composite-actions/setup-php
@@ -210,7 +210,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Remove Infection requirement if not needed
         # TODO: Fix it properly. It somehow stopped working on MacOS (Composer not available)
@@ -306,7 +306,7 @@ jobs:
 
       - name: Upload coverage results to Codecov
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
-        uses: codecov/codecov-action@v6
+        uses: codecov/codecov-action@v7
         with:
           codecov_yml_path: .github/.codecov.yml
           disable_search: true
@@ -347,7 +347,7 @@ jobs:
           fi
 
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup PHP with Composer deps
         uses: ./.github/composite-actions/setup-php-with-composer-deps
@@ -356,7 +356,7 @@ jobs:
           php: ${{ env.php-version }}
 
       - name: Cache dev-tools
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: dev-tools/bin/
           key: Build-${{ hashFiles('dev-tools/build.sh') }}

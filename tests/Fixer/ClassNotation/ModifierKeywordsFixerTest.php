@@ -1014,6 +1014,27 @@ var_dump(Foo::CAT->test());',
                 PHP,
         ];
 
+        yield 'asymmetric visibility with regular and readonly' => [
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public function __construct(
+                        public private(set) array $bare = [],
+                        public private(set) readonly array $withReadonly = [],
+                    ) {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo
+                {
+                    public function __construct(
+                        private(set) array $bare = [],
+                        private(set) readonly array $withReadonly = [],
+                    ) {}
+                }
+                PHP,
+        ];
+
         yield 'promoted property with visibility, set-visibility and reference' => [
             <<<'PHP'
                 <?php class Foo

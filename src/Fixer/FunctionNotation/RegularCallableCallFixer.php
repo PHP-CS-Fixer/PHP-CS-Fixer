@@ -97,7 +97,7 @@ final class RegularCallableCallFixer extends AbstractFixer
             }
 
             $openParenthesis = $tokens->getNextMeaningfulToken($index);
-            $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis);
+            $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openParenthesis);
             $arguments = $argumentsAnalyzer->getArguments($tokens, $openParenthesis, $closeParenthesis);
 
             if (1 > \count($arguments)) {
@@ -147,7 +147,7 @@ final class RegularCallableCallFixer extends AbstractFixer
             )
         ) {
             $firstArgEndIndex = $tokens->findBlockEnd(
-                Tokens::BLOCK_TYPE_CURLY_BRACE,
+                Tokens::BLOCK_TYPE_BRACE,
                 $tokens->getNextTokenOfKind($firstArgIndex, ['{']),
             );
 
@@ -184,7 +184,7 @@ final class RegularCallableCallFixer extends AbstractFixer
 
                 $blockType = Tokens::detectBlockType($newCallTokens[$newCallIndex]);
 
-                if (null !== $blockType && (Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE === $blockType['type'] || Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE === $blockType['type'])) {
+                if (null !== $blockType && (Tokens::BLOCK_TYPE_INDEX_BRACE === $blockType['type'] || Tokens::BLOCK_TYPE_INDEX_BRACKET === $blockType['type'])) {
                     $newCallIndex = $newCallTokens->findBlockStart($blockType['type'], $newCallIndex);
 
                     continue;
