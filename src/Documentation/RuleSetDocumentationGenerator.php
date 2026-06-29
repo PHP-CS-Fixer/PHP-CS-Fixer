@@ -108,7 +108,7 @@ final class RuleSetDocumentationGenerator
                             $this->locator->getFixerDocumentationFilePath($fixerNames[$rule]),
                         );
 
-                        $doc .= "\n- `{$fixerNames[$rule]->getName()} <{$path}>`_";
+                        $doc .= "\n- `{$rule} <{$path}>`_";
                     }
 
                     if (!\is_bool($config)) {
