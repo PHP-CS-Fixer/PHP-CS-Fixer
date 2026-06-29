@@ -3440,31 +3440,6 @@ function test()
                                 'message'   => 'x',
                             ],
                             [
-                                'attribute'              => 1,
-                                'message'                => 'x',
-                            ],
-                            [
-                                'attribute' => 1,
-                                'message'   => 'x',
-                            ],
-                        ],
-                    ];
-                    yield 'bbbbbbbbbbbbbbbbbbbbbbbbbbbb' => [];
-                    yield 'cccccccccccccccccccccccccccc' => [];
-                }
-                PHP,
-            <<<'PHP'
-                <?php
-
-                function provide()
-                {
-                    yield 'aaa' => [
-                        [
-                            [
-                                'attribute' => 1,
-                                'message'   => 'x',
-                            ],
-                            [
                                 'attribute' => 1,
                                 'message'   => 'x',
                             ],
@@ -3478,6 +3453,7 @@ function test()
                     yield 'cccccccccccccccccccccccccccc' => [];
                 }
                 PHP,
+            null,
             ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL_BY_SCOPE]],
         ];
     }
