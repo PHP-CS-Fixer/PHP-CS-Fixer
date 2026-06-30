@@ -152,14 +152,6 @@ final class MultilineArrayFixer extends AbstractFixer implements ConfigurableFix
                 continue;
             }
 
-            if ($token->equals('(')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
-            } elseif ($token->isGivenKind(CT::T_ARRAY_BRACKET_OPEN)) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $index);
-            } elseif ($token->equals('{')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
-            }
-
             $hasContent = true;
 
             if ($token->equals(',')) {
@@ -170,6 +162,14 @@ final class MultilineArrayFixer extends AbstractFixer implements ConfigurableFix
             }
 
             $lastMeaningfulIsComma = false;
+
+            if ($token->equals('(')) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
+            } elseif ($token->isGivenKind(CT::T_ARRAY_BRACKET_OPEN)) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $index);
+            } elseif ($token->equals('{')) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
+            }
         }
 
         if (!$hasContent) {
