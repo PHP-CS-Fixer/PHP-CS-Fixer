@@ -342,7 +342,7 @@ final class BracesPositionFixer extends AbstractFixer implements ConfigurableFix
                 if (!$tokens[$prevIndex]->equalsAny(['}', ';', [CT::T_ATTRIBUTE_CLOSE], [CT::T_PROPERTY_HOOK_BRACE_OPEN]])) {
                     continue;
                 }
-                $allowSingleLine = true === $this->configuration['allow_single_line_anonymous_functions'];
+                $allowSingleLine = true;
                 $positionOption = 'property_hook_accessors_opening_brace';
             } else {
                 continue;
@@ -388,20 +388,22 @@ final class BracesPositionFixer extends AbstractFixer implements ConfigurableFix
             if (self::NEXT_LINE_UNLESS_NEWLINE_AT_SIGNATURE_END === $this->configuration[$positionOption]) {
                 $whitespace = $this->whitespacesConfig->getLineEnding().$this->getLineIndentation($tokens, $index);
 
-                $previousTokenIndex = $openBraceIndex;
-                do {
-                    $previousTokenIndex = $tokens->getPrevMeaningfulToken($previousTokenIndex);
-                } while ($tokens[$previousTokenIndex]->isGivenKind([CT::T_TYPE_COLON, CT::T_NULLABLE_TYPE, \T_STRING, \T_NS_SEPARATOR, CT::T_ARRAY_TYPEHINT, \T_STATIC, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, \T_CALLABLE, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE]));
+                if ('property_hooks_opening_brace' !== $positionOption) {
+                    $previousTokenIndex = $openBraceIndex;
+                    do {
+                        $previousTokenIndex = $tokens->getPrevMeaningfulToken($previousTokenIndex);
+                    } while ($tokens[$previousTokenIndex]->isGivenKind([CT::T_TYPE_COLON, CT::T_NULLABLE_TYPE, \T_STRING, \T_NS_SEPARATOR, CT::T_ARRAY_TYPEHINT, \T_STATIC, CT::T_TYPE_ALTERNATION, CT::T_TYPE_INTERSECTION, \T_CALLABLE, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE]));
 
-                if ($tokens[$previousTokenIndex]->equals(')')) {
-                    if ($tokens[--$previousTokenIndex]->isComment()) {
-                        --$previousTokenIndex;
-                    }
-                    if (
-                        $tokens[$previousTokenIndex]->isWhitespace()
-                        && Preg::match('/\R/', $tokens[$previousTokenIndex]->getContent())
-                    ) {
-                        $whitespace = ' ';
+                    if ($tokens[$previousTokenIndex]->equals(')')) {
+                        if ($tokens[--$previousTokenIndex]->isComment()) {
+                            --$previousTokenIndex;
+                        }
+                        if (
+                            $tokens[$previousTokenIndex]->isWhitespace()
+                            && Preg::match('/\R/', $tokens[$previousTokenIndex]->getContent())
+                        ) {
+                            $whitespace = ' ';
+                        }
                     }
                 }
             }
