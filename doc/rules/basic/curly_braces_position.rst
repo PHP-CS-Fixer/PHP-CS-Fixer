@@ -20,8 +20,8 @@ You can configure this rule using the following options:
 ``allow_single_line_empty_anonymous_classes``,
 ``anonymous_classes_opening_brace``, ``anonymous_functions_opening_brace``,
 ``classes_opening_brace``, ``control_structures_opening_brace``,
-``functions_opening_brace``, ``property_hook_accessors_opening_brace``,
-``property_hooks_opening_brace``.
+``functions_opening_brace``, ``property_hook_body_opening_brace``,
+``property_hook_list_opening_brace``.
 
 Configuration
 -------------
@@ -91,19 +91,19 @@ Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line
 
 Default value: ``'next_line_unless_newline_at_signature_end'``
 
-``property_hook_accessors_opening_brace``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``property_hook_body_opening_brace``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The position of the opening brace of property hook accessors‘ (get/set) body.
+The position of the opening brace of property hook accessor (get/set) bodies.
 
 Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
 
 Default value: ``'same_line'``
 
-``property_hooks_opening_brace``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``property_hook_list_opening_brace``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The position of the opening brace of property hooks‘ body.
+The position of the opening brace of property hooks‘ accessor list.
 
 Allowed values: ``'next_line_unless_newline_at_signature_end'`` and ``'same_line'``
 
@@ -261,7 +261,7 @@ With configuration: ``['allow_single_line_anonymous_functions' => true]``.
 Example #9
 ~~~~~~~~~~
 
-With configuration: ``['property_hooks_opening_brace' => 'next_line_unless_newline_at_signature_end', 'property_hook_accessors_opening_brace' => 'next_line_unless_newline_at_signature_end']``.
+With configuration: ``['property_hook_list_opening_brace' => 'next_line_unless_newline_at_signature_end', 'property_hook_body_opening_brace' => 'next_line_unless_newline_at_signature_end']``.
 
 .. code-block:: diff
 
