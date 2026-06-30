@@ -1189,6 +1189,31 @@ final class BracesPositionFixerTest extends AbstractFixerTestCase
             ['property_hooks_opening_brace' => 'next_line_unless_newline_at_signature_end'],
         ];
 
+        yield 'outer hook brace moves to next line even with parenthesized default value' => [
+            <<<'PHP'
+                <?php class C
+                {
+                    public array $i = array(
+                        1,
+                    )
+                    {
+                        get => $this->i;
+                    }
+                }
+                PHP,
+            <<<'PHP'
+                <?php class C
+                {
+                    public array $i = array(
+                        1,
+                    ) {
+                        get => $this->i;
+                    }
+                }
+                PHP,
+            ['property_hooks_opening_brace' => 'next_line_unless_newline_at_signature_end'],
+        ];
+
         yield 'property_hook_accessors_opening_brace = next_line_unless_newline_at_signature_end pushes inner braces down' => [
             <<<'PHP'
                 <?php class C
