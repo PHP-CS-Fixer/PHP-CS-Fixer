@@ -167,11 +167,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/RuleSet/RuleSet.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Offset 0 might not exist on list<non-empty-string>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Runner/Runner.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Offset 1 might not exist on list<string>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Tokenizer/Tokens.php',
