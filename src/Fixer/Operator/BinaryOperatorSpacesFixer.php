@@ -816,7 +816,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
 
             if ($token->equals(',')) {
                 for ($i = $index; $i < $endAt - 1; ++$i) {
-                    if (str_contains($tokens[$i - 1]->getContent(), "\n")) {
+                    if (str_contains($tokens[$i]->getContent(), "\n")) {
                         $newLineFoundSinceLastPlaceholder = true;
 
                         break;
@@ -836,6 +836,10 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                         if ($tokens->isPartialCodeMultiline($arrayStartIndex, $arrayEndIndex)) {
                             break;
                         }
+                        $i = $arrayEndIndex;
+                        $index = $i;
+
+                        continue;
                     }
 
                     ++$index;
