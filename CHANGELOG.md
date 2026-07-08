@@ -3,6 +3,18 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.12
+----------------------
+
+* fix: `BinaryOperatorSpacesFixer` - do not align nested array in yield with following yields (#9708)
+* chore: cleanup `RuleSetDocumentationGenerator` (#9705)
+* chore: unblock self-approval (#9699)
+* deps: bump crate-ci/typos from 1.47.2 to 1.48.0 in /.github/workflows in the all group across 1 directory (#9712)
+* deps: bump shipmonk/dead-code-detector from 1.2.1 to 1.3.0 in /dev-tools in the shipmonk group across 1 directory (#9711)
+* deps: bump the all group across 2 directories with 1 update (#9704)
+* deps: bump the phpstan group in /dev-tools with 2 updates (#9710)
+* deps: PHPUnit - PHP 8.6 compat changes (#9714)
+
 Changelog for v3.95.11
 ----------------------
 
