@@ -284,23 +284,7 @@ final class A
             '<?php class Foo { public function f(Bar|C\Foo|Baz $b) {} }',
         ];
 
-        yield 'replace constant with same name as class in the middle of a static access chain' => [
-            <<<'PHP'
-                <?php
-                class Foo {
-                    public static function create(): self {
-                        return new self();
-                    }
-                }
-                class Bar {
-                    const Baz = 'Foo';
-                }
-                class Baz {
-                    public static function f(): object {
-                        return Bar::self::create();
-                    }
-                }
-                PHP,
+        yield 'do not replace constant with same name as class in the middle of a static access chain' => [
             <<<'PHP'
                 <?php
                 class Foo {
