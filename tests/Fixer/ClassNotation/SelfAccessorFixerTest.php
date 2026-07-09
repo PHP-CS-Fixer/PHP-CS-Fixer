@@ -244,7 +244,7 @@ final class A
     }
 
     /**
-     * @return iterable<int, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFix80Cases(): iterable
     {
@@ -282,6 +282,41 @@ final class A
 
         yield [
             '<?php class Foo { public function f(Bar|C\Foo|Baz $b) {} }',
+        ];
+
+        yield 'replace constant with same name as class in the middle of a static access chain' => [
+            <<<'PHP'
+                <?php
+                class Foo {
+                    public static function create(): self {
+                        return new self();
+                    }
+                }
+                class Bar {
+                    const Baz = 'Foo';
+                }
+                class Baz {
+                    public static function f(): object {
+                        return Bar::self::create();
+                    }
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo {
+                    public static function create(): self {
+                        return new self();
+                    }
+                }
+                class Bar {
+                    const Baz = 'Foo';
+                }
+                class Baz {
+                    public static function f(): object {
+                        return Bar::Baz::create();
+                    }
+                }
+                PHP,
         ];
     }
 
