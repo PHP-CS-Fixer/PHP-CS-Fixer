@@ -3,6 +3,12 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.13
+----------------------
+
+* fix: `SelfAccessorFixer` - do not replace constant with same name as class in the middle of a static access chain (#9716)
+* fix: `SingleClassElementPerStatementFixer` - do not drop type of typed constants (#9706)
+
 Changelog for v3.95.12
 ----------------------
 
