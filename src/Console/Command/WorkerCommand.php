@@ -108,8 +108,8 @@ final class WorkerCommand extends Command
         $tcpConnector = new TcpConnector($loop);
         $tcpConnector
             ->connect(\sprintf('127.0.0.1:%d', $port))
+            // @codeCoverageIgnoreStart
             ->then(
-                /** @codeCoverageIgnore */
                 function (ConnectionInterface $connection) use ($loop, $runner, $identifier): void {
                     $out = new Encoder($connection, \JSON_INVALID_UTF8_IGNORE);
                     $in = new Decoder($connection, true, 512, \JSON_INVALID_UTF8_IGNORE);
@@ -192,6 +192,7 @@ final class WorkerCommand extends Command
                     $errorOutput->writeln($error->getMessage());
                 },
             )
+            // @codeCoverageIgnoreEnd
         ;
 
         $loop->run();
