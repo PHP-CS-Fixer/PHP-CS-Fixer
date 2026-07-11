@@ -345,13 +345,13 @@ echo DocumentStats::DRAFT->getStatusName();
      */
     #[DataProvider('provideFix82Cases')]
     #[RequiresPhp('>= 8.2.0')]
-    public function testFix82(string $expected, ?string $input = null): void
+    public function testFix82(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<string, array{0: string, 1?: string}>
+     * @return iterable<string, array{string, string}>
      */
     public static function provideFix82Cases(): iterable
     {
@@ -378,6 +378,10 @@ echo DocumentStats::DRAFT->getStatusName();
         ];
 
         yield 'property with DNF type' => [
+            '<?php
+            final class Foo {
+                private (Bar&Baz)|Qux $x;
+            }',
             '<?php
             final class Foo {
                 protected (Bar&Baz)|Qux $x;
