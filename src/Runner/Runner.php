@@ -489,6 +489,7 @@ final class Runner
 
                 // [REACT] Handle worker's shutdown
                 static function ($exitCode, string $output) use ($processPool, $identifier): void {
+                    // @codeCoverageIgnoreStart
                     $processPool->endProcessIfKnown($identifier);
 
                     if (0 === $exitCode || null === $exitCode) {
@@ -506,6 +507,7 @@ final class Runner
                             json_decode($matches[1][0], true, 512, \JSON_THROW_ON_ERROR),
                         );
                     }
+                    // @codeCoverageIgnoreEnd
                 },
             );
         }
