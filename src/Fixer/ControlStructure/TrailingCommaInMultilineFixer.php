@@ -236,6 +236,7 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
         if (
             $startIndex !== $beforeEndIndex && !$beforeEndToken->equals(',')
             && (true === $this->configuration['after_heredoc'] || !$beforeEndToken->isGivenKind(\T_END_HEREDOC))
+            && !$beforeEndToken->isGivenKind(CT::T_FIRST_CLASS_CALLABLE)
         ) {
             $tokens->insertAt($beforeEndIndex + 1, new Token(','));
 
