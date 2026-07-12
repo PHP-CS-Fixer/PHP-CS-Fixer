@@ -552,7 +552,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
                 $elementEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PROPERTY_HOOK, $elementEndIndex);
             }
         } else { // 'const', enum-'case', 'promoted_property', or 'method' of an interface
-            $elementEndIndex = $tokens->getNextTokenOfKind($elementIndex, [';']);
+            $elementEndIndex = $tokens->getNextTokenOfKind($elementIndex, [';', '{']);
         }
 
         $singleLineElement = true;

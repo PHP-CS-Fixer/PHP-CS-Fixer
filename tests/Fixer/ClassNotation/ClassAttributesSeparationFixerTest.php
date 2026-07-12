@@ -2037,6 +2037,26 @@ class Foo
 }',
             ['elements' => ['property' => 'none']],
         ];
+
+        yield 'promoted property as last class element' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public int $a = 1;
+
+                    public function __construct(public int $x) {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public int $a = 1;
+                    public function __construct(public int $x) {}
+                }
+                PHP,
+        ];
     }
 
     /**
