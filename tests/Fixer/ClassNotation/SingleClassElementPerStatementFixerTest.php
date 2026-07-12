@@ -1027,7 +1027,7 @@ var_dump(Foo::A.Foo::B);",
     }
 
     /**
-     * @return iterable<int|string, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideFix82Cases(): iterable
     {
@@ -1042,10 +1042,10 @@ var_dump(Foo::A.Foo::B);",
                 class C
                 {
                     public (Foo&Bar)|Baz $a;
-                    public $b;
+                    public (Foo&Bar)|Baz $b;
 
                     public Foo|(Bar&Baz) $c;
-                    public Foo|$d;
+                    public Foo|(Bar&Baz) $d;
                 }
                 PHP,
             <<<'PHP'
