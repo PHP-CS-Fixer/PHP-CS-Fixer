@@ -162,41 +162,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../tests/Fixer/AttributeNotation/GeneralAttributeRemoveFixerTest.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $expected of method PhpCsFixer\\Tests\\Fixer\\ClassNotation\\ClassDefinitionFixerTest::testClassyInheritanceInfo() expects array{start: int, classy: int, open: int, extends: array{start: int, count: int, multiLine: bool}|false, implements: array{start: int, count: int, multiLine: bool}|false, anonymousClass: bool, final: int|false, abstract: int|false, ...}, array{start: 12, count: 1, multiLine: true} given.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../tests/Fixer/ClassNotation/ClassDefinitionFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $expected of method PhpCsFixer\\Tests\\Fixer\\ClassNotation\\ClassDefinitionFixerTest::testClassyInheritanceInfo() expects array{start: int, classy: int, open: int, extends: array{start: int, count: int, multiLine: bool}|false, implements: array{start: int, count: int, multiLine: bool}|false, anonymousClass: bool, final: int|false, abstract: int|false, ...}, array{start: 16, count: 2, multiLine: false} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/ClassNotation/ClassDefinitionFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $expected of method PhpCsFixer\\Tests\\Fixer\\ClassNotation\\ClassDefinitionFixerTest::testClassyInheritanceInfo() expects array{start: int, classy: int, open: int, extends: array{start: int, count: int, multiLine: bool}|false, implements: array{start: int, count: int, multiLine: bool}|false, anonymousClass: bool, final: int|false, abstract: int|false, ...}, array{start: 36, count: 2, multiLine: false} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/ClassNotation/ClassDefinitionFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $expected of method PhpCsFixer\\Tests\\Fixer\\ClassNotation\\ClassDefinitionFixerTest::testClassyInheritanceInfo() expects array{start: int, classy: int, open: int, extends: array{start: int, count: int, multiLine: bool}|false, implements: array{start: int, count: int, multiLine: bool}|false, anonymousClass: bool, final: int|false, abstract: int|false, ...}, array{start: 5, count: 1, multiLine: false} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/ClassNotation/ClassDefinitionFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $expected of method PhpCsFixer\\Tests\\Fixer\\ClassNotation\\ClassDefinitionFixerTest::testClassyInheritanceInfo() expects array{start: int, classy: int, open: int, extends: array{start: int, count: int, multiLine: bool}|false, implements: array{start: int, count: int, multiLine: bool}|false, anonymousClass: bool, final: int|false, abstract: int|false, ...}, array{start: 5, count: 2, multiLine: true} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/ClassNotation/ClassDefinitionFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $expected of method PhpCsFixer\\Tests\\Fixer\\ClassNotation\\ClassDefinitionFixerTest::testClassyInheritanceInfo() expects array{start: int, classy: int, open: int, extends: array{start: int, count: int, multiLine: bool}|false, implements: array{start: int, count: int, multiLine: bool}|false, anonymousClass: bool, final: int|false, abstract: int|false, ...}, array{start: 5, count: 3, multiLine: false} given.',
-    'count' => 3,
-    'path' => __DIR__ . '/../../../tests/Fixer/ClassNotation/ClassDefinitionFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $expected of method PhpCsFixer\\Tests\\Fixer\\ClassNotation\\ClassDefinitionFixerTest::testClassyInheritanceInfoPre80() expects array{start: int, classy: int, open: int, extends: array{start: int, count: int, multiLine: bool}|false, implements: array{start: int, count: int, multiLine: bool}|false, anonymousClass: bool, final: int|false, abstract: int|false, ...}, array{start: 36, count: 2, multiLine: true} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/ClassNotation/ClassDefinitionFixerTest.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $configuration of method PhpCsFixer\\Tests\\Fixer\\Comment\\HeaderCommentFixerTest::testInvalidConfiguration() expects array{comment_type?: \'comment\'|\'PHPDoc\', header: string, location?: \'after_declare_strict\'|\'after_open\', separate?: \'both\'|\'bottom\'|\'none\'|\'top\', validator?: string|null}|null, array{header: \'\', comment_type: \'foo\'} given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../tests/Fixer/Comment/HeaderCommentFixerTest.php',
