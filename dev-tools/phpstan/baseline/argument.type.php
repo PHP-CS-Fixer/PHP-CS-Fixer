@@ -107,16 +107,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../tests/Cache/FileHandlerTest.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $expected of method PhpCsFixer\\Tests\\Console\\ConfigurationResolverTest::testResolveIntersectionOfPaths() expects Exception|list<string>, array<string> given.',
-    'count' => 10,
-    'path' => __DIR__ . '/../../../tests/Console/ConfigurationResolverTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $expectedClass of method PhpCsFixer\\Tests\\Console\\ConfigurationResolverTest::testResolveConfigFileChooseFile() expects class-string<PhpCsFixer\\ConfigInterface>, string given.',
-    'count' => 5,
-    'path' => __DIR__ . '/../../../tests/Console/ConfigurationResolverTest.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #2 of function sprintf is expected to be string by placeholder #1 ("%%s"), class-string<Throwable>|false given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../tests/Console/Output/ErrorOutputTest.php',
