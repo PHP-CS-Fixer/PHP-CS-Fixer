@@ -117,51 +117,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../tests/Console/Output/Progress/ProgressOutputFactoryTest.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $configuration of method PhpCsFixer\\Tests\\Fixer\\AttributeNotation\\GeneralAttributeRemoveFixerTest::testFix() expects array{attributes?: list<class-string>}, array{attributes: array{\'A\\\\B\\\\Bar\', \'Test\\\\AB\\\\Baz\', \'A\\\\B\\\\Quux\', \'A\\\\B\\\\Baz\', \'A\\\\B\\\\Foo\', \'\\\\AB\\\\Baz\'}} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/AttributeNotation/GeneralAttributeRemoveFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $configuration of method PhpCsFixer\\Tests\\Fixer\\AttributeNotation\\GeneralAttributeRemoveFixerTest::testFix() expects array{attributes?: list<class-string>}, array{attributes: array{\'A\\\\B\\\\Bar\', \'Test\\\\A\\\\B\\\\Quux\'}} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/AttributeNotation/GeneralAttributeRemoveFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $configuration of method PhpCsFixer\\Tests\\Fixer\\AttributeNotation\\GeneralAttributeRemoveFixerTest::testFix() expects array{attributes?: list<class-string>}, array{attributes: array{\'A\\\\B\\\\Foo\', \'Test\\\\A\\\\B\\\\Quux\', \'A\\\\B\\\\Baz\'}} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/AttributeNotation/GeneralAttributeRemoveFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $configuration of method PhpCsFixer\\Tests\\Fixer\\AttributeNotation\\GeneralAttributeRemoveFixerTest::testFix() expects array{attributes?: list<class-string>}, array{attributes: array{\'A\\\\B\\\\Foo\', \'Test\\\\Corge\'}} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/AttributeNotation/GeneralAttributeRemoveFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $configuration of method PhpCsFixer\\Tests\\Fixer\\AttributeNotation\\GeneralAttributeRemoveFixerTest::testFix() expects array{attributes?: list<class-string>}, array{attributes: array{\'A\\\\B\\\\Foo\', \'\\\\A\\\\B\\\\Qux\', \'A\\\\B\\\\Baz\', \'Test\\\\A\\\\B\\\\Quux\', \'A\\\\B\\\\Bar\', \'Test\\\\Corge\'}} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/AttributeNotation/GeneralAttributeRemoveFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $configuration of method PhpCsFixer\\Tests\\Fixer\\AttributeNotation\\GeneralAttributeRemoveFixerTest::testFix() expects array{attributes?: list<class-string>}, array{attributes: array{\'A\\\\B\\\\Foo\', \'\\\\A\\\\B\\\\Qux\'}} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/AttributeNotation/GeneralAttributeRemoveFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $configuration of method PhpCsFixer\\Tests\\Fixer\\AttributeNotation\\GeneralAttributeRemoveFixerTest::testFix() expects array{attributes?: list<class-string>}, array{attributes: array{\'Test\\\\A\\\\B\\\\Quux\', \'A\\\\B\\\\Bar\', \'Test\\\\Corge\', \'A\\\\B\\\\Baz\', \'A\\\\B\\\\Foo\', \'\\\\A\\\\B\\\\Qux\'}} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/AttributeNotation/GeneralAttributeRemoveFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $configuration of method PhpCsFixer\\Tests\\Fixer\\AttributeNotation\\GeneralAttributeRemoveFixerTest::testFix() expects array{attributes?: list<class-string>}, array{attributes: array{\'Test\\\\Corge\', \'\\\\A\\\\B\\\\Qux\'}} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/AttributeNotation/GeneralAttributeRemoveFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $configuration of method PhpCsFixer\\Tests\\Fixer\\AttributeNotation\\GeneralAttributeRemoveFixerTest::testFix() expects array{attributes?: list<class-string>}, array{attributes: array{\'\\\\A\\\\B\\\\Qux\', \'\\\\Corge\', \'A\\\\B\\\\Bar\'}} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/AttributeNotation/GeneralAttributeRemoveFixerTest.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $configuration of method PhpCsFixer\\Tests\\Fixer\\Comment\\HeaderCommentFixerTest::testInvalidConfiguration() expects array{comment_type?: \'comment\'|\'PHPDoc\', header: string, location?: \'after_declare_strict\'|\'after_open\', separate?: \'both\'|\'bottom\'|\'none\'|\'top\', validator?: string|null}|null, array{header: \'\', comment_type: \'foo\'} given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../tests/Fixer/Comment/HeaderCommentFixerTest.php',
