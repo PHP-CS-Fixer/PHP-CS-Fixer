@@ -121,6 +121,8 @@ final class Runner
 
     private RuleCustomisationPolicyInterface $ruleCustomisationPolicy;
 
+    private PerformanceProfiler $profiler;
+
     /**
      * @param null|\Traversable<array-key, \SplFileInfo> $fileIterator
      * @param list<FixerInterface>                       $fixers
@@ -168,6 +170,7 @@ final class Runner
         $this->input = $input;
         $this->configFile = $configFile;
         $this->ruleCustomisationPolicy = $ruleCustomisationPolicy ?? new NullRuleCustomisationPolicy();
+        $this->profiler = new PerformanceProfiler();
     }
 
     /**
@@ -176,6 +179,14 @@ final class Runner
     public function getWorkersMemoryUsage(): int
     {
         return array_sum($this->workersMemoryUsageByProcess);
+    }
+
+    /**
+     * Get the performance profiler instance.
+     */
+    public function getProfiler(): PerformanceProfiler
+    {
+        return $this->profiler;
     }
 
     /**
@@ -209,7 +220,7 @@ final class Runner
                 Rule Customisation Policy contains customisers for rules that are not in the current set of enabled rules:
                 %s
 
-                Please check your configuration to ensure that these rules are included, or update your Rule Customisation Policy if they have been replaced by other rules in the version of PHP CS Fixer you are using.
+                Please check your configuration to ensure that these rules are included, or update your Rule Customisation Policy if they have been replaced by other rules in the version of PHP C[...]
                 EOT,
         );
 
@@ -552,8 +563,11 @@ final class Runner
         $filePathname = $file->getPathname();
 
         try {
+            $this->profiler->startStage('linting_before');
             $lintingResult->check();
+            $this->profiler->stopStage('linting_before');
         } catch (LintingException $e) {
+            $this->profiler->stopStage('linting_before');
             $this->dispatchEvent(
                 FileProcessed::NAME,
                 new FileProcessed(FileProcessed::STATUS_INVALID),
@@ -564,9 +578,13 @@ final class Runner
             return null;
         }
 
+        $this->profiler->startStage('file_reading');
         $old = FileReader::createSingleton()->read($file->getRealPath());
+        $this->profiler->stopStage('file_reading');
 
+        $this->profiler->startStage('token_parsing');
         $tokens = Tokens::fromCode($old);
+        $this->profiler->stopStage('token_parsing');
 
         if (
             Future::isFutureModeEnabled() // @TODO 4.0 drop this line
@@ -590,9 +608,12 @@ final class Runner
         $ruleCustomisers = $this->ruleCustomisationPolicy->getRuleCustomisers(); // were already validated
 
         try {
+            $this->profiler->startStage('annotation_analysis');
             $fixerAnnotationAnalysis = (new FixerAnnotationAnalyzer())->find($tokens);
             $rulesIgnoredByAnnotations = $fixerAnnotationAnalysis['php-cs-fixer-ignore'] ?? [];
+            $this->profiler->stopStage('annotation_analysis');
         } catch (\RuntimeException $e) {
+            $this->profiler->stopStage('annotation_analysis');
             throw new \RuntimeException(
                 \sprintf(
                     'Error while analysing file "%s": %s',
@@ -610,11 +631,12 @@ final class Runner
                 @php-cs-fixer-ignore annotation(s) used for rules that are not in the current set of enabled rules:
                 %s
 
-                Please check your annotation(s) usage in {$filePathname} to ensure that these rules are included, or update your annotation(s) usage if they have been replaced by other rules in the version of PHP CS Fixer you are using.
+                Please check your annotation(s) usage in {$filePathname} to ensure that these rules are included, or update your annotation(s) usage if they have been replaced by other rules in t[...]
                 EOT,
         );
 
         try {
+            $this->profiler->startStage('fixers_application');
             foreach ($this->fixers as $fixer) {
                 if (\in_array($fixer->getName(), $rulesIgnoredByAnnotations, true)) {
                     continue;
@@ -647,7 +669,9 @@ final class Runner
                     continue;
                 }
 
+                $this->profiler->startFixerStage($fixer->getName());
                 $fixer->fix($file, $tokens);
+                $this->profiler->stopFixerStage($fixer->getName());
 
                 if ($tokens->isChanged()) {
                     $tokens->clearEmptyTokens();
@@ -655,8 +679,11 @@ final class Runner
                     $appliedFixers[] = $fixer->getName();
                     if (filter_var(getenv('PHP_CS_FIXER_DEBUG'), \FILTER_VALIDATE_BOOL)) {
                         try {
+                            $this->profiler->startStage('debug_linting');
                             $this->linter->lintSource($tokens->generateCode())->check();
+                            $this->profiler->stopStage('debug_linting');
                         } catch (LintingException $e) {
+                            $this->profiler->stopStage('debug_linting');
                             $this->dispatchEvent(FileProcessed::NAME, new FileProcessed(FileProcessed::STATUS_LINT));
 
                             $this->errorsManager->report(new Error(Error::TYPE_LINT, $filePathname, $e, [$fixer->getName()], $this->differ->diff($old, $tokens->generateCode(), $file)));
@@ -666,13 +693,16 @@ final class Runner
                     }
                 }
             }
+            $this->profiler->stopStage('fixers_application');
         } catch (\ParseError $e) {
+            $this->profiler->stopStage('fixers_application');
             $this->dispatchEvent(FileProcessed::NAME, new FileProcessed(FileProcessed::STATUS_LINT));
 
             $this->errorsManager->report(new Error(Error::TYPE_LINT, $filePathname, $e));
 
             return null;
         } catch (\Throwable $e) {
+            $this->profiler->stopStage('fixers_application');
             $this->processException($filePathname, $e);
 
             return null;
@@ -681,8 +711,10 @@ final class Runner
         $fixInfo = null;
 
         if ([] !== $appliedFixers) {
+            $this->profiler->startStage('code_generation');
             $new = $tokens->generateCode();
             $newHash = $tokens->getCodeHash();
+            $this->profiler->stopStage('code_generation');
         }
 
         // We need to check if content was changed and then applied changes.
@@ -690,14 +722,19 @@ final class Runner
         // work of other and both of them will mark collection as changed.
         // Therefore we need to check if code hashes changed.
         if ($oldHash !== $newHash) {
+            $this->profiler->startStage('diff_generation');
             $fixInfo = [
                 'appliedFixers' => $appliedFixers,
                 'diff' => $this->differ->diff($old, $new, $file),
             ];
+            $this->profiler->stopStage('diff_generation');
 
             try {
+                $this->profiler->startStage('final_linting');
                 $this->linter->lintSource($new)->check();
+                $this->profiler->stopStage('final_linting');
             } catch (LintingException $e) {
+                $this->profiler->stopStage('final_linting');
                 $this->dispatchEvent(FileProcessed::NAME, new FileProcessed(FileProcessed::STATUS_LINT));
 
                 $this->errorsManager->report(new Error(Error::TYPE_LINT, $filePathname, $e, $fixInfo['appliedFixers'], $fixInfo['diff']));
@@ -706,6 +743,7 @@ final class Runner
             }
 
             if (!$this->isDryRun) {
+                $this->profiler->startStage('file_writing');
                 $fileRealPath = $file->getRealPath();
 
                 if (!file_exists($fileRealPath)) {
@@ -745,6 +783,7 @@ final class Runner
                         $fileRealPath,
                     );
                 }
+                $this->profiler->stopStage('file_writing');
             }
         }
 
