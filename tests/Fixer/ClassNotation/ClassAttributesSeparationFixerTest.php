@@ -2312,6 +2312,13 @@ enum Cards: string
                 }
                 PHP,
         ];
+
+        yield 'hooked property as last element before class closing brace' => [
+            <<<'PHP'
+                <?php class Foo {
+                    public string $bar { get => 'x'; }}
+                PHP,
+        ];
     }
 
     /**
