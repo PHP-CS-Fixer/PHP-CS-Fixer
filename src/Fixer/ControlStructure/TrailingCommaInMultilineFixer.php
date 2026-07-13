@@ -234,9 +234,9 @@ final class TrailingCommaInMultilineFixer extends AbstractFixer implements Confi
 
         // if there is some item between braces then add `,` after it
         if (
-            $startIndex !== $beforeEndIndex && !$beforeEndToken->equals(',')
+            $startIndex !== $beforeEndIndex
+            && !$beforeEndToken->equalsAny([',', [CT::T_FIRST_CLASS_CALLABLE]])
             && (true === $this->configuration['after_heredoc'] || !$beforeEndToken->isGivenKind(\T_END_HEREDOC))
-            && !$beforeEndToken->isGivenKind(CT::T_FIRST_CLASS_CALLABLE)
         ) {
             $tokens->insertAt($beforeEndIndex + 1, new Token(','));
 
