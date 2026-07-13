@@ -117,36 +117,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../tests/Console/Output/Progress/ProgressOutputFactoryTest.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $configuration of method PhpCsFixer\\Tests\\Fixer\\Comment\\HeaderCommentFixerTest::testInvalidConfiguration() expects array{comment_type?: \'comment\'|\'PHPDoc\', header: string, location?: \'after_declare_strict\'|\'after_open\', separate?: \'both\'|\'bottom\'|\'none\'|\'top\', validator?: string|null}|null, array{header: \'\', comment_type: \'foo\'} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/Comment/HeaderCommentFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $configuration of method PhpCsFixer\\Tests\\Fixer\\Comment\\HeaderCommentFixerTest::testInvalidConfiguration() expects array{comment_type?: \'comment\'|\'PHPDoc\', header: string, location?: \'after_declare_strict\'|\'after_open\', separate?: \'both\'|\'bottom\'|\'none\'|\'top\', validator?: string|null}|null, array{header: \'\', comment_type: stdClass} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/Comment/HeaderCommentFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $configuration of method PhpCsFixer\\Tests\\Fixer\\Comment\\HeaderCommentFixerTest::testInvalidConfiguration() expects array{comment_type?: \'comment\'|\'PHPDoc\', header: string, location?: \'after_declare_strict\'|\'after_open\', separate?: \'both\'|\'bottom\'|\'none\'|\'top\', validator?: string|null}|null, array{header: \'\', location: stdClass} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/Comment/HeaderCommentFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $configuration of method PhpCsFixer\\Tests\\Fixer\\Comment\\HeaderCommentFixerTest::testInvalidConfiguration() expects array{comment_type?: \'comment\'|\'PHPDoc\', header: string, location?: \'after_declare_strict\'|\'after_open\', separate?: \'both\'|\'bottom\'|\'none\'|\'top\', validator?: string|null}|null, array{header: \'\', separate: stdClass} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/Comment/HeaderCommentFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $configuration of method PhpCsFixer\\Tests\\Fixer\\Comment\\HeaderCommentFixerTest::testInvalidConfiguration() expects array{comment_type?: \'comment\'|\'PHPDoc\', header: string, location?: \'after_declare_strict\'|\'after_open\', separate?: \'both\'|\'bottom\'|\'none\'|\'top\', validator?: string|null}|null, array{header: 1} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/Comment/HeaderCommentFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $configuration of method PhpCsFixer\\Tests\\Fixer\\Comment\\HeaderCommentFixerTest::testInvalidConfiguration() expects array{comment_type?: \'comment\'|\'PHPDoc\', header: string, location?: \'after_declare_strict\'|\'after_open\', separate?: \'both\'|\'bottom\'|\'none\'|\'top\', validator?: string|null}|null, array{} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/Comment/HeaderCommentFixerTest.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $minimum of method PhpCsFixer\\Tests\\FixerDefinition\\VersionSpecificationTest::testConstructorRejectsInvalidValues() expects int<1, max>|null, -1 given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../tests/FixerDefinition/VersionSpecificationTest.php',
