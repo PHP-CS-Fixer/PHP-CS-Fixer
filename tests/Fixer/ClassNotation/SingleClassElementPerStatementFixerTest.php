@@ -1027,13 +1027,36 @@ var_dump(Foo::A.Foo::B);",
     }
 
     /**
-     * @return iterable<int, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideFix82Cases(): iterable
     {
         yield [
             '<?php trait Foo { public const Bar = 1; public const Baz = 1; }',
             '<?php trait Foo { public const Bar = 1, Baz = 1; }',
+        ];
+
+        yield 'properties with DNF type' => [
+            <<<'PHP'
+                <?php
+                class C
+                {
+                    public (Foo&Bar)|Baz $a;
+                    public (Foo&Bar)|Baz $b;
+
+                    public Foo|(Bar&Baz) $c;
+                    public Foo|(Bar&Baz) $d;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class C
+                {
+                    public (Foo&Bar)|Baz $a, $b;
+
+                    public Foo|(Bar&Baz) $c, $d;
+                }
+                PHP,
         ];
     }
 
