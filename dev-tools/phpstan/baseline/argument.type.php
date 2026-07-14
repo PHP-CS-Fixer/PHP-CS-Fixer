@@ -82,26 +82,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../tests/AutoReview/CiConfigurationTest.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $testClassName of method PhpCsFixer\\Tests\\AutoReview\\ProjectCodeTest::testDataFromDataProviders() expects class-string<PhpCsFixer\\Tests\\TestCase>, class-string given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/AutoReview/ProjectCodeTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $testClassName of method PhpCsFixer\\Tests\\AutoReview\\ProjectCodeTest::testDataProvidersAreNonPhpVersionConditional() expects class-string<PhpCsFixer\\Tests\\TestCase>, class-string given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/AutoReview/ProjectCodeTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $testClassName of method PhpCsFixer\\Tests\\AutoReview\\ProjectCodeTest::testThatTestDataProvidersAreUsed() expects class-string<PhpCsFixer\\Tests\\TestCase>, class-string given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/AutoReview/ProjectCodeTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $dataProviderName of method PhpCsFixer\\Tests\\AutoReview\\ProjectCodeTest::testDataProvidersAreNonPhpVersionConditional() expects non-empty-string, string given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/AutoReview/ProjectCodeTest.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #2 of function sprintf is expected to be string by placeholder #1 ("%%s"), string|false given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../tests/Cache/FileHandlerTest.php',
