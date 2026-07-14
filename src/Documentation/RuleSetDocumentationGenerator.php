@@ -98,6 +98,7 @@ final class RuleSetDocumentationGenerator
 
                         $doc .= "\n- `{$rule} <.{$ruleSetPath}>`_";
                     } else {
+                        \assert(isset($fixerNames[$rule]));
                         $path = Preg::replace(
                             '#^'.preg_quote($this->locator->getFixersDocumentationDirectoryPath(), '#').'/#',
                             './../rules/',

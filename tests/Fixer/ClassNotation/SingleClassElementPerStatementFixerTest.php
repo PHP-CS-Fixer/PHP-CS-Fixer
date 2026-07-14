@@ -659,6 +659,24 @@ echo Foo::A, Foo::B;
 ',
         ];
 
+        yield 'const with a comment before the name' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    const/* comment */ A = 1;
+                    const B = 2;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    const/* comment */ A = 1, B = 2;
+                }
+                PHP,
+        ];
+
         yield [
             '<?php
                     class Token {
@@ -1009,13 +1027,145 @@ var_dump(Foo::A.Foo::B);",
     }
 
     /**
-     * @return iterable<int, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideFix82Cases(): iterable
     {
         yield [
             '<?php trait Foo { public const Bar = 1; public const Baz = 1; }',
             '<?php trait Foo { public const Bar = 1, Baz = 1; }',
+        ];
+
+        yield 'properties with DNF type' => [
+            <<<'PHP'
+                <?php
+                class C
+                {
+                    public (Foo&Bar)|Baz $a;
+                    public (Foo&Bar)|Baz $b;
+
+                    public Foo|(Bar&Baz) $c;
+                    public Foo|(Bar&Baz) $d;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class C
+                {
+                    public (Foo&Bar)|Baz $a, $b;
+
+                    public Foo|(Bar&Baz) $c, $d;
+                }
+                PHP,
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix83Cases
+     *
+     * @requires PHP >= 8.3.0
+     */
+    #[DataProvider('provideFix83Cases')]
+    #[RequiresPhp('>= 8.3.0')]
+    public function testFix83(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, 1?: string}>
+     */
+    public static function provideFix83Cases(): iterable
+    {
+        yield 'typed constants' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public const string A = "a";
+                    public const string B = "b";
+                    public const string C = "c";
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public const string A = "a", B = "b", C = "c";
+                }
+                PHP,
+        ];
+
+        yield 'typed constant with union type' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    protected const int|string A = 1;
+                    protected const int|string B = 2;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    protected const int|string A = 1, B = 2;
+                }
+                PHP,
+        ];
+
+        yield 'typed constant with nullable type' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    const ?int A = null;
+                    const ?int B = null;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    const ?int A = null, B = null;
+                }
+                PHP,
+        ];
+
+        yield 'typed constant with intersection type' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public const Bar&\Stringable A = X;
+                    public const Bar&\Stringable B = Y;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public const Bar&\Stringable A = X, B = Y;
+                }
+                PHP,
+        ];
+
+        yield 'final typed constant' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    final public const string A = "a";
+                    final public const string B = "b";
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    final public const string A = "a", B = "b";
+                }
+                PHP,
         ];
     }
 

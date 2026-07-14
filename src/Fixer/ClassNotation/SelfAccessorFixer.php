@@ -163,7 +163,7 @@ final class SelfAccessorFixer extends AbstractFixer
                 }
                 $prevToken = $tokens[$tokens->getPrevMeaningfulToken($classStartIndex)];
             }
-            if ($prevToken->isGivenKind(\T_STRING) || $prevToken->isObjectOperator()) {
+            if ($prevToken->isGivenKind([\T_STRING, \T_PAAMAYIM_NEKUDOTAYIM]) || $prevToken->isObjectOperator()) {
                 continue;
             }
 
