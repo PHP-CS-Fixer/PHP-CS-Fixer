@@ -175,7 +175,7 @@ final class AttributeAnalyzer
 
             // Find closing parentheses, we need to do this in case there's a comma inside the parentheses
             if ($tokens[$index]->equals('(')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
                 $index = $tokens->getNextTokenOfKind($index, [',', [CT::T_ATTRIBUTE_CLOSE]]);
             }
 

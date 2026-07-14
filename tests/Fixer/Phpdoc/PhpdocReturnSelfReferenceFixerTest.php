@@ -194,7 +194,7 @@ class F
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches(\sprintf('/^\[phpdoc_return_self_reference\] %s$/', preg_quote($message, '/')));
 
-        $this->fixer->configure($configuration);
+        $this->fixer->configure($configuration); // @phpstan-ignore argument.type
     }
 
     /**

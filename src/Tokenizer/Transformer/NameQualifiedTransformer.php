@@ -55,6 +55,7 @@ final class NameQualifiedTransformer extends AbstractTransformer
 
     private function transformQualified(Tokens $tokens, Token $token, int $index): void
     {
+        \assert('' !== $token->getContent());
         $newTokens = ImportProcessor::tokenizeName($token->getContent());
 
         $tokens->overrideRange($index, $index, $newTokens);
@@ -62,6 +63,7 @@ final class NameQualifiedTransformer extends AbstractTransformer
 
     private function transformRelative(Tokens $tokens, Token $token, int $index): void
     {
+        \assert('' !== $token->getContent());
         $newTokens = ImportProcessor::tokenizeName($token->getContent());
         $newTokens[0] = new Token([\T_NAMESPACE, 'namespace']);
 

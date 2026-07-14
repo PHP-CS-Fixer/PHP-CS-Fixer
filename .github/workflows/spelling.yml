@@ -13,10 +13,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Check typos
-        uses: crate-ci/typos@v1.46.1
+        uses: crate-ci/typos@v1.48.0
         with:
           config: ./dev-tools/typos.toml
 

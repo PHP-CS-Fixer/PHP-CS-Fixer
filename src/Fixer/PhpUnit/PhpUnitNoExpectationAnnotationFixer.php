@@ -236,6 +236,7 @@ final class PhpUnitNoExpectationAnnotationFixer extends AbstractPhpUnitFixer imp
             return '';
         }
 
+        \assert(isset($matches[1]));
         $content = Preg::replace('/\*+\/$/', '', $matches[1]);
 
         if (Preg::match('/\R/u', $content)) {
@@ -253,9 +254,11 @@ final class PhpUnitNoExpectationAnnotationFixer extends AbstractPhpUnitFixer imp
     private function annotationsToParamList(array $annotations): array
     {
         $params = [];
+        \assert(isset($annotations['expectedException']));
         $exceptionClass = ltrim($annotations['expectedException'], '\\');
 
         if (str_contains($exceptionClass, '*')) {
+            \assert(\is_int(strpos($exceptionClass, '*')));
             $exceptionClass = substr($exceptionClass, 0, strpos($exceptionClass, '*'));
         }
 

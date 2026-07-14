@@ -17,26 +17,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Console/Report/FixReport/GitlabReporter.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $offset of function substr expects int, int|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Documentation/FixerDocumentGenerator.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $subject of function str_replace expects array<string>|string, string|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Documentation/FixerDocumentGenerator.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $offset of function substr expects int, int|false given.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Documentation/RuleSetDocumentationGenerator.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $index of method PhpCsFixer\\Tokenizer\\Tokens::getNextTokenOfKind() expects int, int|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Alias/PowToExponentiationFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $slices of method PhpCsFixer\\Tokenizer\\Tokens::insertSlices() expects array<int, list<PhpCsFixer\\Tokenizer\\Token>|PhpCsFixer\\Tokenizer\\Token|PhpCsFixer\\Tokenizer\\Tokens>, array<\'\'|int, array{PhpCsFixer\\Tokenizer\\Token, PhpCsFixer\\Tokenizer\\Token}|PhpCsFixer\\Tokenizer\\Token> given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ArrayNotation/YieldFromArrayToYieldsFixer.php',
@@ -62,54 +42,19 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/ControlStructure/YodaStyleFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $length of function substr expects int|null, int|false given.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Fixer/Import/FullyQualifiedStrictTypesFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #2 $offset of function substr expects int, int|false given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Import/NoUnusedImportsFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $offset of function substr expects int, int<0, max>|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Operator/BinaryOperatorSpacesFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $length of function substr expects int|null, int<0, max>|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Operator/BinaryOperatorSpacesFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $name of static method PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitAttributesFixer::toClassConstant() expects non-empty-string, string given.',
-    'count' => 5,
+    'count' => 4,
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitAttributesFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $length of function substr expects int|null, int<0, max>|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitNoExpectationAnnotationFixer.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $lines of method PhpCsFixer\\Fixer\\PhpUnit\\PhpUnitTestAnnotationFixer::splitUpDocBlock() expects non-empty-list<PhpCsFixer\\DocBlock\\Line>, list<PhpCsFixer\\DocBlock\\Line> given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/PhpUnit/PhpUnitTestAnnotationFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $offset of function substr expects int, int|false given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/NoBlankLinesAfterPhpdocFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $str of function preg_quote expects string, int|string given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Whitespace/ArrayIndentationFixer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $parentScopeEndIndex of method PhpCsFixer\\Fixer\\Whitespace\\ArrayIndentationFixer::findExpressionEndIndex() expects int, int|string given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Whitespace/ArrayIndentationFixer.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $code of static method PhpCsFixer\\Hasher::calculate() expects string, string|false given.',
@@ -120,16 +65,6 @@ $ignoreErrors[] = [
     'rawMessage' => 'Parameter #2 ...$values of function sprintf expects bool|float|int|string|null, array<string, mixed>|bool given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/RuleSet/RuleSet.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $analysis of static method PhpCsFixer\\Tokenizer\\Analyzer\\ControlCaseStructuresAnalyzer::buildControlCaseStructureAnalysis() expects array{kind: int, index: int, open: int, end: int, cases: list<array{index: int, open: int}>, default: array{index: int, open: int}|null}, non-empty-array<literal-string&non-falsy-string, mixed> given.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Tokenizer/Analyzer/ControlCaseStructuresAnalyzer.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $name of static method PhpCsFixer\\Tokenizer\\Processor\\ImportProcessor::tokenizeName() expects non-empty-string, string given.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../src/Tokenizer/Transformer/NameQualifiedTransformer.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $json of function json_decode expects string, string|false given.',
@@ -172,16 +107,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../tests/Cache/FileHandlerTest.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $expected of method PhpCsFixer\\Tests\\Console\\ConfigurationResolverTest::testResolveIntersectionOfPaths() expects Exception|list<string>, array<string> given.',
-    'count' => 10,
-    'path' => __DIR__ . '/../../../tests/Console/ConfigurationResolverTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $expectedClass of method PhpCsFixer\\Tests\\Console\\ConfigurationResolverTest::testResolveConfigFileChooseFile() expects class-string<PhpCsFixer\\ConfigInterface>, string given.',
-    'count' => 5,
-    'path' => __DIR__ . '/../../../tests/Console/ConfigurationResolverTest.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #2 of function sprintf is expected to be string by placeholder #1 ("%%s"), class-string<Throwable>|false given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../tests/Console/Output/ErrorOutputTest.php',
@@ -190,116 +115,6 @@ $ignoreErrors[] = [
     'rawMessage' => 'Parameter #3 $expectedOutputClass of method PhpCsFixer\\Tests\\Console\\Output\\Progress\\ProgressOutputFactoryTest::testValidProcessOutputIsCreated() expects class-string<Throwable>, string given.',
     'count' => 4,
     'path' => __DIR__ . '/../../../tests/Console/Output/Progress/ProgressOutputFactoryTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $configuration of method PhpCsFixer\\Tests\\Fixer\\AttributeNotation\\GeneralAttributeRemoveFixerTest::testFix() expects array{attributes?: list<class-string>}, array{attributes: array{\'A\\\\B\\\\Bar\', \'Test\\\\AB\\\\Baz\', \'A\\\\B\\\\Quux\', \'A\\\\B\\\\Baz\', \'A\\\\B\\\\Foo\', \'\\\\AB\\\\Baz\'}} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/AttributeNotation/GeneralAttributeRemoveFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $configuration of method PhpCsFixer\\Tests\\Fixer\\AttributeNotation\\GeneralAttributeRemoveFixerTest::testFix() expects array{attributes?: list<class-string>}, array{attributes: array{\'A\\\\B\\\\Bar\', \'Test\\\\A\\\\B\\\\Quux\'}} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/AttributeNotation/GeneralAttributeRemoveFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $configuration of method PhpCsFixer\\Tests\\Fixer\\AttributeNotation\\GeneralAttributeRemoveFixerTest::testFix() expects array{attributes?: list<class-string>}, array{attributes: array{\'A\\\\B\\\\Foo\', \'Test\\\\A\\\\B\\\\Quux\', \'A\\\\B\\\\Baz\'}} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/AttributeNotation/GeneralAttributeRemoveFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $configuration of method PhpCsFixer\\Tests\\Fixer\\AttributeNotation\\GeneralAttributeRemoveFixerTest::testFix() expects array{attributes?: list<class-string>}, array{attributes: array{\'A\\\\B\\\\Foo\', \'Test\\\\Corge\'}} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/AttributeNotation/GeneralAttributeRemoveFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $configuration of method PhpCsFixer\\Tests\\Fixer\\AttributeNotation\\GeneralAttributeRemoveFixerTest::testFix() expects array{attributes?: list<class-string>}, array{attributes: array{\'A\\\\B\\\\Foo\', \'\\\\A\\\\B\\\\Qux\', \'A\\\\B\\\\Baz\', \'Test\\\\A\\\\B\\\\Quux\', \'A\\\\B\\\\Bar\', \'Test\\\\Corge\'}} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/AttributeNotation/GeneralAttributeRemoveFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $configuration of method PhpCsFixer\\Tests\\Fixer\\AttributeNotation\\GeneralAttributeRemoveFixerTest::testFix() expects array{attributes?: list<class-string>}, array{attributes: array{\'A\\\\B\\\\Foo\', \'\\\\A\\\\B\\\\Qux\'}} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/AttributeNotation/GeneralAttributeRemoveFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $configuration of method PhpCsFixer\\Tests\\Fixer\\AttributeNotation\\GeneralAttributeRemoveFixerTest::testFix() expects array{attributes?: list<class-string>}, array{attributes: array{\'Test\\\\A\\\\B\\\\Quux\', \'A\\\\B\\\\Bar\', \'Test\\\\Corge\', \'A\\\\B\\\\Baz\', \'A\\\\B\\\\Foo\', \'\\\\A\\\\B\\\\Qux\'}} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/AttributeNotation/GeneralAttributeRemoveFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $configuration of method PhpCsFixer\\Tests\\Fixer\\AttributeNotation\\GeneralAttributeRemoveFixerTest::testFix() expects array{attributes?: list<class-string>}, array{attributes: array{\'Test\\\\Corge\', \'\\\\A\\\\B\\\\Qux\'}} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/AttributeNotation/GeneralAttributeRemoveFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #3 $configuration of method PhpCsFixer\\Tests\\Fixer\\AttributeNotation\\GeneralAttributeRemoveFixerTest::testFix() expects array{attributes?: list<class-string>}, array{attributes: array{\'\\\\A\\\\B\\\\Qux\', \'\\\\Corge\', \'A\\\\B\\\\Bar\'}} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/AttributeNotation/GeneralAttributeRemoveFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $expected of method PhpCsFixer\\Tests\\Fixer\\ClassNotation\\ClassDefinitionFixerTest::testClassyInheritanceInfo() expects array{start: int, classy: int, open: int, extends: array{start: int, count: int, multiLine: bool}|false, implements: array{start: int, count: int, multiLine: bool}|false, anonymousClass: bool, final: int|false, abstract: int|false, ...}, array{start: 12, count: 1, multiLine: true} given.',
-    'count' => 2,
-    'path' => __DIR__ . '/../../../tests/Fixer/ClassNotation/ClassDefinitionFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $expected of method PhpCsFixer\\Tests\\Fixer\\ClassNotation\\ClassDefinitionFixerTest::testClassyInheritanceInfo() expects array{start: int, classy: int, open: int, extends: array{start: int, count: int, multiLine: bool}|false, implements: array{start: int, count: int, multiLine: bool}|false, anonymousClass: bool, final: int|false, abstract: int|false, ...}, array{start: 16, count: 2, multiLine: false} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/ClassNotation/ClassDefinitionFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $expected of method PhpCsFixer\\Tests\\Fixer\\ClassNotation\\ClassDefinitionFixerTest::testClassyInheritanceInfo() expects array{start: int, classy: int, open: int, extends: array{start: int, count: int, multiLine: bool}|false, implements: array{start: int, count: int, multiLine: bool}|false, anonymousClass: bool, final: int|false, abstract: int|false, ...}, array{start: 36, count: 2, multiLine: false} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/ClassNotation/ClassDefinitionFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $expected of method PhpCsFixer\\Tests\\Fixer\\ClassNotation\\ClassDefinitionFixerTest::testClassyInheritanceInfo() expects array{start: int, classy: int, open: int, extends: array{start: int, count: int, multiLine: bool}|false, implements: array{start: int, count: int, multiLine: bool}|false, anonymousClass: bool, final: int|false, abstract: int|false, ...}, array{start: 5, count: 1, multiLine: false} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/ClassNotation/ClassDefinitionFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $expected of method PhpCsFixer\\Tests\\Fixer\\ClassNotation\\ClassDefinitionFixerTest::testClassyInheritanceInfo() expects array{start: int, classy: int, open: int, extends: array{start: int, count: int, multiLine: bool}|false, implements: array{start: int, count: int, multiLine: bool}|false, anonymousClass: bool, final: int|false, abstract: int|false, ...}, array{start: 5, count: 2, multiLine: true} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/ClassNotation/ClassDefinitionFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $expected of method PhpCsFixer\\Tests\\Fixer\\ClassNotation\\ClassDefinitionFixerTest::testClassyInheritanceInfo() expects array{start: int, classy: int, open: int, extends: array{start: int, count: int, multiLine: bool}|false, implements: array{start: int, count: int, multiLine: bool}|false, anonymousClass: bool, final: int|false, abstract: int|false, ...}, array{start: 5, count: 3, multiLine: false} given.',
-    'count' => 3,
-    'path' => __DIR__ . '/../../../tests/Fixer/ClassNotation/ClassDefinitionFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $expected of method PhpCsFixer\\Tests\\Fixer\\ClassNotation\\ClassDefinitionFixerTest::testClassyInheritanceInfoPre80() expects array{start: int, classy: int, open: int, extends: array{start: int, count: int, multiLine: bool}|false, implements: array{start: int, count: int, multiLine: bool}|false, anonymousClass: bool, final: int|false, abstract: int|false, ...}, array{start: 36, count: 2, multiLine: true} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/ClassNotation/ClassDefinitionFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $configuration of method PhpCsFixer\\Tests\\Fixer\\Comment\\HeaderCommentFixerTest::testInvalidConfiguration() expects array{comment_type?: \'comment\'|\'PHPDoc\', header: string, location?: \'after_declare_strict\'|\'after_open\', separate?: \'both\'|\'bottom\'|\'none\'|\'top\', validator?: string|null}|null, array{header: \'\', comment_type: \'foo\'} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/Comment/HeaderCommentFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $configuration of method PhpCsFixer\\Tests\\Fixer\\Comment\\HeaderCommentFixerTest::testInvalidConfiguration() expects array{comment_type?: \'comment\'|\'PHPDoc\', header: string, location?: \'after_declare_strict\'|\'after_open\', separate?: \'both\'|\'bottom\'|\'none\'|\'top\', validator?: string|null}|null, array{header: \'\', comment_type: stdClass} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/Comment/HeaderCommentFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $configuration of method PhpCsFixer\\Tests\\Fixer\\Comment\\HeaderCommentFixerTest::testInvalidConfiguration() expects array{comment_type?: \'comment\'|\'PHPDoc\', header: string, location?: \'after_declare_strict\'|\'after_open\', separate?: \'both\'|\'bottom\'|\'none\'|\'top\', validator?: string|null}|null, array{header: \'\', location: stdClass} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/Comment/HeaderCommentFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $configuration of method PhpCsFixer\\Tests\\Fixer\\Comment\\HeaderCommentFixerTest::testInvalidConfiguration() expects array{comment_type?: \'comment\'|\'PHPDoc\', header: string, location?: \'after_declare_strict\'|\'after_open\', separate?: \'both\'|\'bottom\'|\'none\'|\'top\', validator?: string|null}|null, array{header: \'\', separate: stdClass} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/Comment/HeaderCommentFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $configuration of method PhpCsFixer\\Tests\\Fixer\\Comment\\HeaderCommentFixerTest::testInvalidConfiguration() expects array{comment_type?: \'comment\'|\'PHPDoc\', header: string, location?: \'after_declare_strict\'|\'after_open\', separate?: \'both\'|\'bottom\'|\'none\'|\'top\', validator?: string|null}|null, array{header: 1} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/Comment/HeaderCommentFixerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $configuration of method PhpCsFixer\\Tests\\Fixer\\Comment\\HeaderCommentFixerTest::testInvalidConfiguration() expects array{comment_type?: \'comment\'|\'PHPDoc\', header: string, location?: \'after_declare_strict\'|\'after_open\', separate?: \'both\'|\'bottom\'|\'none\'|\'top\', validator?: string|null}|null, array{} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Fixer/Comment/HeaderCommentFixerTest.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $minimum of method PhpCsFixer\\Tests\\FixerDefinition\\VersionSpecificationTest::testConstructorRejectsInvalidValues() expects int<1, max>|null, -1 given.',
@@ -365,11 +180,6 @@ $ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $expected of method PhpCsFixer\\Tests\\Tokenizer\\TokensAnalyzerTest::testIsBinaryOperator() expects list<int>, array{0: 3, 5: false} given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../tests/Tokenizer/TokensAnalyzerTest.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Parameter #2 $sequence of method PhpCsFixer\\Tests\\Tokenizer\\TokensTest::testFindSequenceException() expects non-empty-list<array{0: int, 1?: string}|PhpCsFixer\\Tokenizer\\Token|string>, array{} given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../tests/Tokenizer/TokensTest.php',
 ];
 $ignoreErrors[] = [
     'rawMessage' => 'Parameter #6 $caseSensitive of method PhpCsFixer\\Tests\\Tokenizer\\TokensTest::testFindSequence() expects bool|list<bool>, array{1: false} given.',

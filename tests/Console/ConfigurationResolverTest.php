@@ -239,8 +239,6 @@ final class ConfigurationResolverTest extends TestCase
 
     /**
      * @dataProvider provideResolveConfigFileChooseFileCases
-     *
-     * @param class-string<ConfigInterface> $expectedClass
      */
     #[DataProvider('provideResolveConfigFileChooseFileCases')]
     public function testResolveConfigFileChooseFile(string $expectedFile, string $expectedClass, string $path, ?string $cwdPath = null): void
@@ -252,6 +250,7 @@ final class ConfigurationResolverTest extends TestCase
         );
 
         self::assertSame($expectedFile, $resolver->getConfigFile());
+        self::assertTrue(is_a($expectedClass, ConfigInterface::class, true));
         self::assertInstanceOf($expectedClass, $resolver->getConfig());
     }
 
@@ -593,15 +592,15 @@ final class ConfigurationResolverTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{0: array<array-key, string>|\Exception, 1: null|Finder, 2: list<string>, 3: string, 4?: string}>
+     * @return iterable<string, array{0: \Exception|list<string>, 1: null|Finder, 2: list<string>, 3: string, 4?: string}>
      */
     public static function provideResolveIntersectionOfPathsCases(): iterable
     {
         $dir = __DIR__.'/../Fixtures/ConfigurationResolverPathsIntersection';
-        $cb = static fn (array $items): array => array_map(
+        $cb = static fn (array $items): array => array_values(array_map(
             static fn (string $item): string => (string) realpath($dir.'/'.$item),
             $items,
-        );
+        ));
 
         yield 'no path at all' => [
             new \LogicException(),
@@ -1525,7 +1524,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         ];
 
         yield [
-            JsonReporter::class,
+            CheckstyleReporter::class,
             'checkstyle',
             ['AI_AGENT' => 'true'],
         ];
@@ -1536,7 +1535,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         ];
 
         yield [
-            JsonReporter::class,
+            TextReporter::class,
             'txt',
             ['AI_AGENT' => 'true'],
         ];
@@ -1563,7 +1562,7 @@ For more info about updating see: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/b
         ];
 
         yield [
-            JsonReporter::class,
+            GitlabReporter::class,
             '@auto',
             [
                 'AI_AGENT' => 'true',
