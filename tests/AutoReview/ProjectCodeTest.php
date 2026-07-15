@@ -80,7 +80,7 @@ final class ProjectCodeTest extends TestCase
     private static ?array $srcClassCases = null;
 
     /**
-     * @var null|array<string, array{class-string, string}>
+     * @var null|array<string, array{class-string<TestCase>, non-empty-string}>
      */
     private static ?array $dataProviderMethodCases = null;
 
@@ -225,7 +225,7 @@ final class ProjectCodeTest extends TestCase
         if (null !== $constructorSequence) {
             $tokens = clone $tokens;
             $openIndex = $tokens->getNextTokenOfKind(array_key_last($constructorSequence), ['{']);
-            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openIndex);
+            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $openIndex);
             $tokens->overrideRange($openIndex + 1, $closeIndex - 1, []);
         }
 
@@ -803,7 +803,7 @@ final class ProjectCodeTest extends TestCase
 
         $methodIndex = array_key_first($dataProviderElements);
         $startIndex = $tokens->getNextTokenOfKind($methodIndex, ['{']);
-        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $startIndex);
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $startIndex);
 
         $versionTokens = array_filter($tokens->findGivenKind(\T_STRING, $startIndex, $endIndex), static fn (Token $v): bool => $v->equalsAny([
             [\T_STRING, 'PHP_VERSION_ID'],
@@ -926,7 +926,7 @@ final class ProjectCodeTest extends TestCase
             throw new \UnexpectedValueException('Classy without {} - braces.');
         }
 
-        $classyEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nextTokenOfKind);
+        $classyEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $nextTokenOfKind);
 
         self::assertNull($tokens->getNextMeaningfulToken($classyEndIndex), \sprintf('File for "%s" should only contains a single classy.', $className));
     }
@@ -1096,7 +1096,7 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{string, string}>
+     * @return iterable<string, array{class-string<TestCase>, non-empty-string}>
      */
     public static function provideDataProviderMethodCases(): iterable
     {
@@ -1143,7 +1143,7 @@ final class ProjectCodeTest extends TestCase
 
         $methodIndex = array_key_first($methodElements);
         $startIndex = $tokens->getNextTokenOfKind($methodIndex, ['{']);
-        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $startIndex);
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $startIndex);
 
         $callTheParent = $tokens->findSequence([
             [\T_STRING, 'parent'],

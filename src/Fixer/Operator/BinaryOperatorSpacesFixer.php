@@ -678,7 +678,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                 $index = $tokens->getNextTokenOfKind($index, ['{', ';', '(']);
                 // We don't align `=` on multi-line definition of function parameters with default values
                 if ($tokens[$index]->equals('(')) {
-                    $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                    $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
 
                     continue;
                 }
@@ -692,7 +692,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
             }
 
             if ($token->equals('{')) {
-                $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
                 $this->injectAlignmentPlaceholders($tokens, $index + 1, $until - 1, $tokenContent);
                 $index = $until;
 
@@ -700,7 +700,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
             }
 
             if ($token->equals('(')) {
-                $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
                 $this->injectAlignmentPlaceholders($tokens, $index + 1, $until - 1, $tokenContent);
                 $index = $until;
 
@@ -708,13 +708,13 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
             }
 
             if ($token->equals('[')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_BRACKET, $index);
 
                 continue;
             }
 
-            if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
-                $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
+            if ($token->isGivenKind(CT::T_ARRAY_BRACKET_OPEN)) {
+                $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $index);
                 $this->injectAlignmentPlaceholders($tokens, $index + 1, $until - 1, $tokenContent);
                 $index = $until;
 
@@ -765,7 +765,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
             if ($token->isGivenKind(\T_ARRAY)) { // don't use "$tokens->isArray()" here, short arrays are handled in the next case
                 $yieldFoundSinceLastPlaceholder = false;
                 $from = $tokens->getNextMeaningfulToken($index);
-                $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $from);
+                $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $from);
                 $index = $until;
 
                 $this->injectArrayAlignmentPlaceholders($tokens, $from + 1, $until - 1);
@@ -773,10 +773,10 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                 continue;
             }
 
-            if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+            if ($token->isGivenKind(CT::T_ARRAY_BRACKET_OPEN)) {
                 $yieldFoundSinceLastPlaceholder = false;
                 $from = $index;
-                $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $from);
+                $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $from);
                 $index = $until;
 
                 $this->injectArrayAlignmentPlaceholders($tokens, $from + 1, $until - 1);
@@ -788,8 +788,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
             // there is also no need to analyse the second arrow of a line
             if ($token->isGivenKind(\T_DOUBLE_ARROW) && $newLineFoundSinceLastPlaceholder) {
                 if ($yieldFoundSinceLastPlaceholder) {
-                    ++$this->deepestLevel;
-                    ++$this->currentLevel;
+                    $this->currentLevel = ++$this->deepestLevel;
                 }
                 $tokenContent = \sprintf(self::ALIGN_PLACEHOLDER, $this->currentLevel).$token->getContent();
 
@@ -826,7 +825,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                         break;
                     }
 
-                    if ($tokens[$i + 1]->isGivenKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN])) {
+                    if ($tokens[$i + 1]->isGivenKind([\T_ARRAY, CT::T_ARRAY_BRACKET_OPEN])) {
                         $arrayStartIndex = $tokens[$i + 1]->isGivenKind(\T_ARRAY)
                             ? $tokens->getNextMeaningfulToken($i + 1)
                             : $i + 1;
@@ -843,7 +842,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
             }
 
             if ($token->equals('{')) {
-                $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
                 $this->injectArrayAlignmentPlaceholders($tokens, $index + 1, $until - 1);
                 $index = $until;
 
@@ -851,7 +850,7 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
             }
 
             if ($token->equals('(')) {
-                $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                $until = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
                 $this->injectArrayAlignmentPlaceholders($tokens, $index + 1, $until - 1);
                 $index = $until;
 
@@ -934,7 +933,9 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                 if (self::ALIGN !== $alignStrategy) {
                     // move placeholders to match strategy
                     foreach ($group as $index) {
+                        \assert(isset($lines[$index]));
                         $currentPosition = strpos($lines[$index], $placeholder);
+                        \assert(false !== $currentPosition);
                         $before = substr($lines[$index], 0, $currentPosition);
 
                         if (
@@ -959,10 +960,12 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
 
                 $rightmostSymbol = 0;
                 foreach ($group as $index) {
+                    \assert(isset($lines[$index]));
                     $rightmostSymbol = max($rightmostSymbol, $this->getSubstringWidth($lines[$index], $placeholder));
                 }
 
                 foreach ($group as $index) {
+                    \assert(isset($lines[$index]));
                     $line = $lines[$index];
                     $currentSymbol = $this->getSubstringWidth($line, $placeholder);
                     $delta = abs($rightmostSymbol - $currentSymbol);

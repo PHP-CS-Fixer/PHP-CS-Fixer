@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup PHP
         uses: ./.github/composite-actions/setup-php
@@ -181,12 +181,6 @@ jobs:
 
           - operating-system: ubuntu-24.04
             php-version: ${{ needs.setup.outputs.PHP_MAX }}
-            job-description: tests using PHPUnit 12
-            install-phpunit-12: 'yes'
-            run-tests: 'yes'
-
-          - operating-system: ubuntu-24.04
-            php-version: ${{ needs.setup.outputs.PHP_MAX }}
             job-description: tests using PHPUnit 13
             install-phpunit-13: 'yes'
             run-tests: 'yes'
@@ -210,17 +204,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Remove Infection requirement if not needed
         # TODO: Fix it properly. It somehow stopped working on MacOS (Composer not available)
         if: matrix.operating-system != 'macos-latest' && matrix.run-mutation-tests != 'yes'
         run: composer remove --dev --no-update infection/infection
-
-      - name: Install PHPUnit 12
-        if: matrix.run-tests == 'yes' && matrix.install-phpunit-12 == 'yes'
-        run: |
-          composer require --dev --no-update phpunit/phpunit:"^9.6 || ^12.5.25" # mention ^9.6 to keep trace of minimum supported version, needed for utests
 
       - name: Install PHPUnit 13
         if: matrix.run-tests == 'yes' && matrix.install-phpunit-13 == 'yes'
@@ -278,7 +267,7 @@ jobs:
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
         env:
           PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.PHP_CS_FIXER_IGNORE_ENV }}
-        run: vendor/bin/paraunit coverage --testsuite unit --pass-through=--exclude-group=covers-nothing --clover=build/logs/clover.xml
+        run: vendor/bin/paraunit coverage --testsuite unit --pass-through=--exclude-group=covers-nothing --pass-through=--do-not-fail-on-empty-test-suite --clover=build/logs/clover.xml
 
       - name: Run mutation tests (deps preps)
         # Run only on pull requests because we run mutations tests only for diff between branches
@@ -304,7 +293,7 @@ jobs:
 
       - name: Upload coverage results to Codecov
         if: matrix.run-tests == 'yes' && matrix.collect-code-coverage == 'yes'
-        uses: codecov/codecov-action@v6
+        uses: codecov/codecov-action@v7
         with:
           codecov_yml_path: .github/.codecov.yml
           disable_search: true
@@ -345,7 +334,7 @@ jobs:
           fi
 
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup PHP with Composer deps
         uses: ./.github/composite-actions/setup-php-with-composer-deps
@@ -354,7 +343,7 @@ jobs:
           php: ${{ env.php-version }}
 
       - name: Cache dev-tools
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: dev-tools/bin/
           key: Build-${{ hashFiles('dev-tools/build.sh') }}

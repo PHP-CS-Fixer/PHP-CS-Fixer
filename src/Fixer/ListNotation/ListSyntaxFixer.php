@@ -79,7 +79,7 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurableFixerIn
 
     protected function configurePostNormalisation(): void
     {
-        $this->candidateTokenKind = 'long' === $this->configuration['syntax'] ? CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN : \T_LIST;
+        $this->candidateTokenKind = 'long' === $this->configuration['syntax'] ? CT::T_DESTRUCTURING_BRACKET_OPEN : \T_LIST;
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
@@ -108,10 +108,10 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurableFixerIn
     private function fixToLongSyntax(Tokens $tokens, int $index): void
     {
         $closeIndex = $tokens->getNextTokenOfKind($index, [
-            [CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE],
-            '[', // [CT::T_ARRAY_SQUARE_BRACE_OPEN],
+            [CT::T_DESTRUCTURING_BRACKET_CLOSE],
+            '[', // [CT::T_ARRAY_BRACKET_OPEN],
         ]);
-        if (!$tokens[$closeIndex]->isGivenKind(CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE)) {
+        if (!$tokens[$closeIndex]->isGivenKind(CT::T_DESTRUCTURING_BRACKET_CLOSE)) {
             return;
         }
 
@@ -123,10 +123,10 @@ final class ListSyntaxFixer extends AbstractFixer implements ConfigurableFixerIn
     private function fixToShortSyntax(Tokens $tokens, int $index): void
     {
         $openIndex = $tokens->getNextTokenOfKind($index, ['(']);
-        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openIndex);
 
-        $tokens[$openIndex] = new Token([CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '[']);
-        $tokens[$closeIndex] = new Token([CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']']);
+        $tokens[$openIndex] = new Token([CT::T_DESTRUCTURING_BRACKET_OPEN, '[']);
+        $tokens[$closeIndex] = new Token([CT::T_DESTRUCTURING_BRACKET_CLOSE, ']']);
 
         $tokens->clearTokenAndMergeSurroundingWhitespace($index);
     }

@@ -44,6 +44,8 @@ final class NewVersionChecker implements NewVersionCheckerInterface
     {
         $this->retrieveAvailableVersions();
 
+        \assert(isset($this->availableVersions[0]));
+
         return $this->availableVersions[0];
     }
 

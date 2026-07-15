@@ -227,7 +227,7 @@ final class GroupImportFixer extends AbstractFixer implements ConfigurableFixerI
     }
 
     /**
-     * @param list<NamespaceUseAnalysis> $statements
+     * @param non-empty-list<NamespaceUseAnalysis> $statements
      */
     private function addGroupUseStatements(array $statements, Tokens $tokens): void
     {

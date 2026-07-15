@@ -29,6 +29,7 @@ use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\TokensAnalyzer;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 
@@ -129,12 +130,17 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        $analyzer = new TokensAnalyzer($tokens);
+
         for ($index = \count($tokens) - 1; $index >= 0; --$index) {
             if ($tokens[$index]->isGivenKind(\T_DEFAULT)) {
                 if ($tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind(\T_DOUBLE_ARROW)) {
                     continue; // this is "default" from "match"
                 }
-            } elseif (!$tokens[$index]->isGivenKind(\T_CASE)) {
+            } elseif (
+                !$tokens[$index]->isGivenKind(\T_CASE)
+                || $analyzer->isEnumCase($index)
+            ) {
                 continue;
             }
 
@@ -247,6 +253,7 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
 
         if ($nbNewlines > 1) {
             Preg::match('/^(.*?)(\R\h*)$/s', $newlineToken->getContent(), $matches);
+            \assert(isset($matches[1], $matches[2]));
 
             $indent = WhitespacesAnalyzer::detectIndent($tokens, $newlinePosition - 1);
             $tokens[$newlinePosition] = new Token([$newlineToken->getId(), $matches[1].$lineEnding.$indent]);
@@ -322,7 +329,7 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
 
         if ($initialToken->isGivenKind(self::STRUCTURE_KINDS)) {
             $position = $tokens->findBlockEnd(
-                Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
+                Tokens::BLOCK_TYPE_PARENTHESIS,
                 $tokens->getNextTokenOfKind($position, ['(']),
             );
         } elseif ($initialToken->isGivenKind(\T_CLASS)) {
@@ -330,7 +337,7 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
 
             if ('(' === $tokens[$openParenthesisPosition]->getContent()) {
                 $position = $tokens->findBlockEnd(
-                    Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
+                    Tokens::BLOCK_TYPE_PARENTHESIS,
                     $openParenthesisPosition,
                 );
             }
@@ -346,11 +353,11 @@ final class NoBreakCommentFixer extends AbstractFixer implements ConfigurableFix
             return $tokens->getNextTokenOfKind($position, [';']);
         }
 
-        $position = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $position);
+        $position = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $position);
 
         if ($initialToken->isGivenKind(\T_DO)) {
             $position = $tokens->findBlockEnd(
-                Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
+                Tokens::BLOCK_TYPE_PARENTHESIS,
                 $tokens->getNextTokenOfKind($position, ['(']),
             );
 
