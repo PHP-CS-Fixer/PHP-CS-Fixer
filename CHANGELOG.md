@@ -3,6 +3,11 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.15
+----------------------
+
+* fix: self-update - fix "Access Denied" error when running on Windows (#9731)
+
 Changelog for v3.95.14
 ----------------------
 
