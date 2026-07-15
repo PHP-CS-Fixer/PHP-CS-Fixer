@@ -184,7 +184,6 @@ jobs:
             job-description: tests using PHPUnit 13
             install-phpunit-13: 'yes'
             run-tests: 'yes'
-            AVOID_PARAUNIT: 'yes'
 
           - operating-system: ubuntu-24.04
             php-version: ${{ needs.setup.outputs.PHP_MAX }}
