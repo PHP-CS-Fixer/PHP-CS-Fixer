@@ -3,6 +3,23 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.14
+----------------------
+
+* fix: `ClassAttributesSeparationFixer` - handle property with hooks as last class element (#9724)
+* fix: `SingleClassElementPerStatementFixer` - do not break PHP syntax when splitting properties with disjunctive normal form type (#9723)
+* fix: `TrailingCommaInMultilineFixer` - do not add trailing comma after first-class callable (#9722)
+* chore: add code coverage ignore annotations to parallel runner and worker (#9721)
+* chore: cleanup `FunctionToConstantFixer` (#9719)
+* test: HeaderCommentFixerTest - improve invalid configuration types (#9728)
+* test: `ClassDefinitionFixerTest` - improve PHPDocs (#9726)
+* test: `ConfigurationResolverTest` - fix types (#9725)
+* test: `GeneralAttributeRemoveFixerTest` - improve data provider types (#9727)
+* test: `ProjectCodeTest` - improve PHPDocs (#9730)
+* deps: allow to run PHPUnit v12 directly for project, without future-ready CI workarounds (#9580)
+* deps: bump shipmonk/dead-code-detector from 1.3.0 to 1.3.1 in /dev-tools in the shipmonk group across 1 directory (#9718)
+* deps: bump the phpstan group in /dev-tools with 2 updates (#9717)
+
 Changelog for v3.95.13
 ----------------------
 
