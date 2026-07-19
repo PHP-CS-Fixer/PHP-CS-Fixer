@@ -19,19 +19,25 @@ use PhpCsFixer\Tokenizer\Processor\ImportProcessor;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Processor\ImportProcessor
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ImportProcessor::class)]
 final class ImportProcessorTest extends TestCase
 {
     /**
-     * @param class-string $symbol
+     * @param non-empty-string $symbol
      *
      * @dataProvider provideTokenizeNameCases
      */
+    #[DataProvider('provideTokenizeNameCases')]
     public function testTokenizeName(string $symbol): void
     {
         self::assertSame(
@@ -40,9 +46,9 @@ final class ImportProcessorTest extends TestCase
                 '',
                 array_map(
                     static fn (Token $token): string => $token->getContent(),
-                    ImportProcessor::tokenizeName($symbol)
-                )
-            )
+                    ImportProcessor::tokenizeName($symbol),
+                ),
+            ),
         );
     }
 
@@ -68,13 +74,14 @@ final class ImportProcessorTest extends TestCase
 
     /**
      * @param array{
-     *      const?: array<int|string, class-string>,
-     *      class?: array<int|string, class-string>,
-     *      function?: array<int|string, class-string>
+     *      const?: array<int|string, non-empty-string>,
+     *      class?: array<int|string, non-empty-string>,
+     *      function?: array<int|string, non-empty-string>
      *  } $imports
      *
      * @dataProvider provideInsertImportsCases
      */
+    #[DataProvider('provideInsertImportsCases')]
     public function testInsertImports(string $expected, string $input, array $imports, int $atIndex): void
     {
         $processor = new ImportProcessor(new WhitespacesFixerConfig());

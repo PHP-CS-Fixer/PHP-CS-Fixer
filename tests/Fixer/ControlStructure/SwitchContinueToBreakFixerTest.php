@@ -14,7 +14,10 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 
+use PhpCsFixer\Fixer\ControlStructure\SwitchContinueToBreakFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -22,12 +25,16 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\ControlStructure\SwitchContinueToBreakFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ControlStructure\SwitchContinueToBreakFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(SwitchContinueToBreakFixer::class)]
 final class SwitchContinueToBreakFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

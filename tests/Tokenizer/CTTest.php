@@ -16,6 +16,8 @@ namespace PhpCsFixer\Tests\Tokenizer;
 
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\CT;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -23,18 +25,22 @@ use PhpCsFixer\Tokenizer\CT;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\CT
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(CT::class)]
 final class CTTest extends TestCase
 {
     public function testUniqueValues(): void
     {
-        $constants = self::getConstants();
-        self::assertSame($constants, array_flip(array_flip($constants)), 'Values of CT::T_* constants must be unique.');
+        $constants = self::getNonDeprecatedConstants();
+        self::assertSame($constants, array_unique($constants), 'Values of CT::T_* constants must be unique.');
     }
 
     /**
      * @dataProvider provideConstantsCases
      */
+    #[DataProvider('provideConstantsCases')]
     public function testHas(string $name, int $value): void
     {
         self::assertTrue(CT::has($value));
@@ -46,11 +52,22 @@ final class CTTest extends TestCase
     }
 
     /**
-     * @dataProvider provideConstantsCases
+     * @dataProvider provideGetNameCases
      */
+    #[DataProvider('provideGetNameCases')]
     public function testGetName(string $name, int $value): void
     {
         self::assertSame('CT::'.$name, CT::getName($value));
+    }
+
+    /**
+     * @return iterable<int, array{string, int}>
+     */
+    public static function provideGetNameCases(): iterable
+    {
+        foreach (self::getNonDeprecatedConstants() as $name => $value) {
+            yield [$name, $value];
+        }
     }
 
     public function testGetNameNotExists(): void
@@ -64,6 +81,7 @@ final class CTTest extends TestCase
     /**
      * @dataProvider provideConstantsCases
      */
+    #[DataProvider('provideConstantsCases')]
     public function testConstants(string $name, int $value): void
     {
         self::assertGreaterThan(10_000, $value);
@@ -90,6 +108,28 @@ final class CTTest extends TestCase
         if (null === $constants) {
             $reflection = new \ReflectionClass(CT::class);
             $constants = $reflection->getConstants();
+        }
+
+        return $constants;
+    }
+
+    /**
+     * @return array<string, int>
+     */
+    private static function getNonDeprecatedConstants(): array
+    {
+        static $constants;
+
+        if (null === $constants) {
+            $constants = array_filter(
+                self::getConstants(),
+                static function (string $name): bool {
+                    $reflection = new \ReflectionClassConstant(CT::class, $name);
+
+                    return !str_contains(false !== $reflection->getDocComment() ? $reflection->getDocComment() : '', '@deprecated');
+                },
+                \ARRAY_FILTER_USE_KEY,
+            );
         }
 
         return $constants;

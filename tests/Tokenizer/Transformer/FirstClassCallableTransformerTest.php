@@ -16,30 +16,39 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Transformer\FirstClassCallableTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\FirstClassCallableTransformer
  *
- * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FirstClassCallableTransformer::class)]
 final class FirstClassCallableTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcessCases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideProcessCases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testProcess(array $expectedTokens, string $source): void
     {
         $this->doTest($source, $expectedTokens, [CT::T_FIRST_CLASS_CALLABLE]);
     }
 
     /**
-     * @return iterable<string, array{_TransformerTestExpectedTokens, string}>
+     * @return iterable<string, array{_TransformerTestExpectedKindsUnderIndex, string}>
      */
     public static function provideProcessCases(): iterable
     {

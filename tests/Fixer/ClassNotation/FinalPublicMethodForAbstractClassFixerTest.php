@@ -14,17 +14,24 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
+use PhpCsFixer\Fixer\ClassNotation\FinalPublicMethodForAbstractClassFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
- * @author Filippo Tessarotto <zoeslam@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\FinalPublicMethodForAbstractClassFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\FinalPublicMethodForAbstractClassFixer>
+ *
+ * @author Filippo Tessarotto <zoeslam@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FinalPublicMethodForAbstractClassFixer::class)]
 final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -33,6 +40,7 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -116,7 +124,7 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
         yield 'anonymous-class' => [
             \sprintf(
                 '<?php abstract class MyClass { private function test() { $a = new class { %s }; } }',
-                self::getClassElementStubs()
+                self::getClassElementStubs(),
             ),
         ];
 
@@ -132,8 +140,10 @@ final class FinalPublicMethodForAbstractClassFixerTest extends AbstractFixerTest
     /**
      * @dataProvider provideFix82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      */
+    #[DataProvider('provideFix82Cases')]
+    #[RequiresPhp('>= 8.2.0')]
     public function testFix82(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

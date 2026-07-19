@@ -11,11 +11,10 @@ Integration of fixers: fully_qualified_strict_types /w leading_backslash_in_glob
 /**
  * @param \DateTime $dateTime
  * @param int       $v
- *
- * @phpstan-param positive-int $v
- *
  * @param \'GET\'|\'POST\' $method
  * @param \Closure $fx
+ *
+ * @phpstan-param positive-int $v
  *
  * @psalm-param \Closure(): (callable(): \Closure) $fx
  *
@@ -27,6 +26,9 @@ try {
     fx();
 } catch (\Exception $e) {
 }
+
+/** @param int<min, max> $v */
+function intMinMax($v) {}
 
 --INPUT--
 <?php
@@ -45,3 +47,6 @@ function foo($dateTime, $v, $method, $fx) {
 
 try { fx(); } catch (Exception $e) {
 }
+
+/** @param int<min, max> $v */
+function intMinMax ($v) {}

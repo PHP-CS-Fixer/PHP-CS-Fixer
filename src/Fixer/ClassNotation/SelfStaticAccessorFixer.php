@@ -20,12 +20,18 @@ use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
+ */
 final class SelfStaticAccessorFixer extends AbstractFixer
 {
+    private const CLASSY_TYPES = [\T_CLASS, FCT::T_ENUM];
+    private const CLASSY_TOKENS_OF_INTEREST = [[\T_CLASS], [FCT::T_ENUM]];
     private TokensAnalyzer $tokensAnalyzer;
 
     public function getDefinition(): FixerDefinitionInterface
@@ -34,84 +40,88 @@ final class SelfStaticAccessorFixer extends AbstractFixer
             'Inside an enum or `final`/anonymous class, `self` should be preferred over `static`.',
             [
                 new CodeSample(
-                    '<?php
-final class Sample
-{
-    private static $A = 1;
+                    <<<'PHP'
+                        <?php
+                        final class Sample
+                        {
+                            private static $A = 1;
 
-    public function getBar()
-    {
-        return static::class.static::test().static::$A;
-    }
+                            public function getBar()
+                            {
+                                return static::class.static::test().static::$A;
+                            }
 
-    private static function test()
-    {
-        return \'test\';
-    }
-}
-'
+                            private static function test()
+                            {
+                                return 'test';
+                            }
+                        }
+
+                        PHP,
                 ),
                 new CodeSample(
-                    '<?php
-final class Foo
-{
-    public function bar()
-    {
-        return new static();
-    }
-}
-'
+                    <<<'PHP'
+                        <?php
+                        final class Foo
+                        {
+                            public function bar()
+                            {
+                                return new static();
+                            }
+                        }
+
+                        PHP,
                 ),
                 new CodeSample(
-                    '<?php
-final class Foo
-{
-    public function isBar()
-    {
-        return $foo instanceof static;
-    }
-}
-'
+                    <<<'PHP'
+                        <?php
+                        final class Foo
+                        {
+                            public function isBar()
+                            {
+                                return $foo instanceof static;
+                            }
+                        }
+
+                        PHP,
                 ),
                 new CodeSample(
-                    '<?php
-$a = new class() {
-    public function getBar()
-    {
-        return static::class;
-    }
-};
-'
+                    <<<'PHP'
+                        <?php
+                        $a = new class() {
+                            public function getBar()
+                            {
+                                return static::class;
+                            }
+                        };
+
+                        PHP,
                 ),
                 new VersionSpecificCodeSample(
-                    '<?php
-enum Foo
-{
-    public const A = 123;
+                    <<<'PHP'
+                        <?php
+                        enum Foo
+                        {
+                            public const A = 123;
 
-    public static function bar(): void
-    {
-        echo static::A;
-    }
-}
-',
-                    new VersionSpecification(8_01_00)
+                            public static function bar(): void
+                            {
+                                echo static::A;
+                            }
+                        }
+
+                        PHP,
+                    new VersionSpecification(8_01_00),
                 ),
-            ]
+            ],
         );
     }
 
     public function isCandidate(Tokens $tokens): bool
     {
-        $classyTypes = [T_CLASS];
-
-        if (\defined('T_ENUM')) { // @TODO: drop condition when PHP 8.1+ is required
-            $classyTypes[] = T_ENUM;
-        }
-
-        return $tokens->isTokenKindFound(T_STATIC)
-            && $tokens->isAnyTokenKindsFound($classyTypes)
-            && $tokens->isAnyTokenKindsFound([T_DOUBLE_COLON, T_NEW, T_INSTANCEOF]);
+        return $tokens->isTokenKindFound(\T_STATIC)
+            && $tokens->isAnyTokenKindsFound(self::CLASSY_TYPES)
+            && $tokens->isAnyTokenKindsFound([\T_DOUBLE_COLON, \T_NEW, \T_INSTANCEOF]);
     }
 
     /**
@@ -126,17 +136,11 @@ enum Foo
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $classyTokensOfInterest = [[T_CLASS]];
-
-        if (\defined('T_ENUM')) {
-            $classyTokensOfInterest[] = [T_ENUM]; // @TODO drop condition when PHP 8.1+ is required
-        }
-
         $this->tokensAnalyzer = new TokensAnalyzer($tokens);
-        $classyIndex = $tokens->getNextTokenOfKind(0, $classyTokensOfInterest);
+        $classyIndex = $tokens->getNextTokenOfKind(0, self::CLASSY_TOKENS_OF_INTEREST);
 
         while (null !== $classyIndex) {
-            if ($tokens[$classyIndex]->isGivenKind(T_CLASS)) {
+            if ($tokens[$classyIndex]->isGivenKind(\T_CLASS)) {
                 $modifiers = $this->tokensAnalyzer->getClassyModifiers($classyIndex);
 
                 if (
@@ -149,7 +153,7 @@ enum Foo
                 $classyIndex = $this->fixClassy($tokens, $classyIndex);
             }
 
-            $classyIndex = $tokens->getNextTokenOfKind($classyIndex, $classyTokensOfInterest);
+            $classyIndex = $tokens->getNextTokenOfKind($classyIndex, self::CLASSY_TOKENS_OF_INTEREST);
         }
     }
 
@@ -173,7 +177,7 @@ enum Foo
                 continue;
             }
 
-            if ($tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if ($tokens[$index]->isGivenKind(\T_FUNCTION)) {
                 // do not fix inside lambda
                 if ($this->tokensAnalyzer->isLambda($index)) {
                     // figure out where the lambda starts
@@ -181,7 +185,7 @@ enum Foo
                     $openCount = 1;
 
                     do {
-                        $index = $tokens->getNextTokenOfKind($index, ['}', '{', [T_CLASS]]);
+                        $index = $tokens->getNextTokenOfKind($index, ['}', '{', [\T_CLASS]]);
                         if ($tokens[$index]->equals('}')) {
                             --$openCount;
                         } elseif ($tokens[$index]->equals('{')) {
@@ -195,28 +199,28 @@ enum Foo
                 continue;
             }
 
-            if ($tokens[$index]->isGivenKind([T_NEW, T_INSTANCEOF])) {
+            if ($tokens[$index]->isGivenKind([\T_NEW, \T_INSTANCEOF])) {
                 $index = $tokens->getNextMeaningfulToken($index);
 
-                if ($tokens[$index]->isGivenKind(T_STATIC)) {
-                    $tokens[$index] = new Token([T_STRING, 'self']);
+                if ($tokens[$index]->isGivenKind(\T_STATIC)) {
+                    $tokens[$index] = new Token([\T_STRING, 'self']);
                 }
 
                 continue;
             }
 
-            if (!$tokens[$index]->isGivenKind(T_STATIC)) {
+            if (!$tokens[$index]->isGivenKind(\T_STATIC)) {
                 continue;
             }
 
             $staticIndex = $index;
             $index = $tokens->getNextMeaningfulToken($index);
 
-            if (!$tokens[$index]->isGivenKind(T_DOUBLE_COLON)) {
+            if (!$tokens[$index]->isGivenKind(\T_DOUBLE_COLON)) {
                 continue;
             }
 
-            $tokens[$staticIndex] = new Token([T_STRING, 'self']);
+            $tokens[$staticIndex] = new Token([\T_STRING, 'self']);
         }
 
         return $index;

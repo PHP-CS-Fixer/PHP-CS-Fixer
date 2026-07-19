@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Gert de Pagter
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpUnitSetUpTearDownVisibilityFixer extends AbstractPhpUnitFixer
 {
@@ -33,26 +35,28 @@ final class PhpUnitSetUpTearDownVisibilityFixer extends AbstractPhpUnitFixer
             'Changes the visibility of the `setUp()` and `tearDown()` functions of PHPUnit to `protected`, to match the PHPUnit TestCase.',
             [
                 new CodeSample(
-                    '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    private $hello;
-    public function setUp()
-    {
-        $this->hello = "hello";
-    }
+                    <<<'PHP'
+                        <?php
+                        final class MyTest extends \PHPUnit_Framework_TestCase
+                        {
+                            private $hello;
+                            public function setUp()
+                            {
+                                $this->hello = "hello";
+                            }
 
-    public function tearDown()
-    {
-        $this->hello = null;
-    }
-}
-'
+                            public function tearDown()
+                            {
+                                $this->hello = null;
+                            }
+                        }
+
+                        PHP,
                 ),
             ],
             null,
             'This fixer may change functions named `setUp()` or `tearDown()` outside of PHPUnit tests, '
-            .'when a class is wrongly seen as a PHPUnit test.'
+            .'when a class is wrongly seen as a PHPUnit test.',
         );
     }
 
@@ -74,12 +78,12 @@ final class MyTest extends \PHPUnit_Framework_TestCase
             }
 
             if ($tokens[$index]->equals('{')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
 
                 continue;
             }
 
-            if (!$tokens[$index]->isGivenKind(T_FUNCTION)) {
+            if (!$tokens[$index]->isGivenKind(\T_FUNCTION)) {
                 continue;
             }
 
@@ -94,15 +98,15 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
             $visibility = $tokensAnalyzer->getMethodAttributes($index)['visibility'];
 
-            if (T_PUBLIC === $visibility) {
-                $visibilityIndex = $tokens->getPrevTokenOfKind($index, [[T_PUBLIC]]);
-                $tokens[$visibilityIndex] = new Token([T_PROTECTED, 'protected']);
+            if (\T_PUBLIC === $visibility) {
+                $visibilityIndex = $tokens->getPrevTokenOfKind($index, [[\T_PUBLIC]]);
+                $tokens[$visibilityIndex] = new Token([\T_PROTECTED, 'protected']);
 
                 continue;
             }
 
             if (null === $visibility) {
-                $slicesToInsert[$index] = [new Token([T_PROTECTED, 'protected']), new Token([T_WHITESPACE, ' '])];
+                $slicesToInsert[$index] = [new Token([\T_PROTECTED, 'protected']), new Token([\T_WHITESPACE, ' '])];
             }
         }
 

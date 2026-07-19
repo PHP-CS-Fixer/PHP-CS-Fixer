@@ -16,6 +16,10 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Transformer\NullableTypeTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -24,15 +28,19 @@ use PhpCsFixer\Tokenizer\CT;
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\NullableTypeTransformer
  *
- * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NullableTypeTransformer::class)]
 final class NullableTypeTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
+    #[DataProvider('provideProcessCases')]
     public function testProcess(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
@@ -40,12 +48,12 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
             $expectedTokens,
             [
                 CT::T_NULLABLE_TYPE,
-            ]
+            ],
         );
     }
 
     /**
-     * @return iterable<int, array{0: string, 1?: _TransformerTestExpectedTokens}>
+     * @return iterable<int, array{0: string, 1?: _TransformerTestExpectedKindsUnderIndex}>
      */
     public static function provideProcessCases(): iterable
     {
@@ -70,6 +78,7 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
                     $a = 1 ? "aaa" : "bbb";
                     $b = 1 ? fnc() : [];
                     $c = 1 ?: [];
+                    $a instanceof static ? "aaa" : "bbb";
                 ',
         ];
 
@@ -127,19 +136,21 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcess80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideProcess80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testProcess80(array $expectedTokens, string $source): void
     {
         $this->testProcess($source, $expectedTokens);
     }
 
     /**
-     * @return iterable<int, array{_TransformerTestExpectedTokens, string}>
+     * @return iterable<int, array{_TransformerTestExpectedKindsUnderIndex, string}>
      */
     public static function provideProcess80Cases(): iterable
     {
@@ -173,19 +184,21 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcess81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideProcess81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testProcess81(array $expectedTokens, string $source): void
     {
         $this->testProcess($source, $expectedTokens);
     }
 
     /**
-     * @return iterable<int, array{_TransformerTestExpectedTokens, string}>
+     * @return iterable<int, array{_TransformerTestExpectedKindsUnderIndex, string}>
      */
     public static function provideProcess81Cases(): iterable
     {
@@ -210,19 +223,21 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcess83Cases
      *
-     * @requires PHP 8.3
+     * @requires PHP >= 8.3.0
      */
+    #[DataProvider('provideProcess83Cases')]
+    #[RequiresPhp('>= 8.3.0')]
     public function testProcess83(array $expectedTokens, string $source): void
     {
         $this->testProcess($source, $expectedTokens);
     }
 
     /**
-     * @return iterable<string, array{_TransformerTestExpectedTokens, string}>
+     * @return iterable<string, array{_TransformerTestExpectedKindsUnderIndex, string}>
      */
     public static function provideProcess83Cases(): iterable
     {
@@ -236,6 +251,88 @@ final class NullableTypeTransformerTest extends AbstractTransformerTestCase
                     public const ?string FOO = null;
                 }
             ',
+        ];
+    }
+
+    /**
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
+     *
+     * @dataProvider provideProcess84Cases
+     *
+     * @requires PHP >= 8.4.0
+     */
+    #[DataProvider('provideProcess84Cases')]
+    #[RequiresPhp('>= 8.4.0')]
+    public function testProcess84(array $expectedTokens, string $source): void
+    {
+        $this->testProcess($source, $expectedTokens);
+    }
+
+    /**
+     * @return iterable<string, array{_TransformerTestExpectedKindsUnderIndex, string}>
+     */
+    public static function provideProcess84Cases(): iterable
+    {
+        yield 'asymmetric visibility' => [
+            [
+                18 => CT::T_NULLABLE_TYPE,
+                28 => CT::T_NULLABLE_TYPE,
+                38 => CT::T_NULLABLE_TYPE,
+            ],
+            <<<'PHP'
+                <?php
+                class Foo {
+                    public function __construct(
+                        public public(set) ?Bar $x,
+                        public protected(set) ?Bar $y,
+                        public private(set) ?Bar $z,
+                    ) {}
+                }
+                PHP,
+        ];
+
+        yield 'abstract properties' => [
+            [
+                13 => CT::T_NULLABLE_TYPE,
+                29 => CT::T_NULLABLE_TYPE,
+                45 => CT::T_NULLABLE_TYPE,
+                61 => CT::T_NULLABLE_TYPE,
+                77 => CT::T_NULLABLE_TYPE,
+                93 => CT::T_NULLABLE_TYPE,
+            ],
+            <<<'PHP'
+                <?php
+                abstract class Foo {
+                    abstract public ?bool $b1 { set; }
+                    public abstract ?bool $b2 { set; }
+                    abstract protected ?int $i1 { set; }
+                    protected abstract ?int $i2 { set; }
+                    abstract private ?string $s1 { set; }
+                    private abstract ?string $s2 { set; }
+                }
+                PHP,
+        ];
+
+        yield 'final properties' => [
+            [
+                11 => CT::T_NULLABLE_TYPE,
+                31 => CT::T_NULLABLE_TYPE,
+                51 => CT::T_NULLABLE_TYPE,
+                71 => CT::T_NULLABLE_TYPE,
+                91 => CT::T_NULLABLE_TYPE,
+                111 => CT::T_NULLABLE_TYPE,
+            ],
+            <<<'PHP'
+                <?php
+                class Foo {
+                    final public ?bool $b1 { get => 0; }
+                    public final ?bool $b2 { get => 0; }
+                    final protected ?int $i1 { get => 0; }
+                    protected final ?int $i2 { get => 0; }
+                    final private ?string $s1 { get => 0; }
+                    private final ?string $s2 { get => 0; }
+                }
+                PHP,
         ];
     }
 }

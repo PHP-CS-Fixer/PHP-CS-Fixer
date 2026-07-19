@@ -7,8 +7,8 @@ PHPDoc ``list`` type must be used instead of ``array`` without a key.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when ``array`` key should be present, but is missing.
 
@@ -29,6 +29,7 @@ Example #1
    + * @param list<int> $x
    + * @param list<list<string>> $y
      */
+
 References
 ----------
 

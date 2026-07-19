@@ -13,7 +13,8 @@ custom patterns.
 Element types: ``['use_trait', 'public', 'protected', 'private', 'case',
 'constant', 'constant_public', 'constant_protected', 'constant_private',
 'property', 'property_static', 'property_public', 'property_protected',
-'property_private', 'property_public_readonly', 'property_protected_readonly',
+'property_private', 'property_public_abstract', 'property_public_readonly',
+'property_protected_abstract', 'property_protected_readonly',
 'property_private_readonly', 'property_public_static',
 'property_protected_static', 'property_private_static', 'method',
 'method_abstract', 'method_static', 'method_public', 'method_protected',
@@ -28,6 +29,15 @@ Custom values:
 
 - ``method:*``: specify a single method name (e.g. ``method:__invoke``) to set
 the order of that specific method.
+
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``case_sensitive``,
+``order``, ``sort_algorithm``.
 
 Configuration
 -------------
@@ -173,7 +183,7 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PER <./../../ruleSets/PER.rst>`_ with config:
+- `@PER <./../../ruleSets/PER.rst>`_ *(deprecated)* with config:
 
   ``['order' => ['use_trait']]``
 
@@ -181,23 +191,38 @@ The rule is part of the following rule sets:
 
   ``['order' => ['use_trait']]``
 
-- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ with config:
+- `@PER-CS1.0 <./../../ruleSets/PER-CS1.0.rst>`_ *(deprecated)* with config:
 
   ``['order' => ['use_trait']]``
 
-- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ with config:
+- `@PER-CS1x0 <./../../ruleSets/PER-CS1x0.rst>`_ with config:
 
   ``['order' => ['use_trait']]``
 
-- `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
+- `@PER-CS2.0 <./../../ruleSets/PER-CS2.0.rst>`_ *(deprecated)* with config:
+
+  ``['order' => ['use_trait']]``
+
+- `@PER-CS2x0 <./../../ruleSets/PER-CS2x0.rst>`_ with config:
+
+  ``['order' => ['use_trait']]``
+
+- `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ *(deprecated)* with config:
+
+  ``['order' => ['use_trait']]``
+
+- `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_ with config:
 
   ``['order' => ['use_trait']]``
 
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
-- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+- `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
 
   ``['order' => ['use_trait']]``
 
+- `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
+
+  ``['order' => ['use_trait']]``
 
 References
 ----------

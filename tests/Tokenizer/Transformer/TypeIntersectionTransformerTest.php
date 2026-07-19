@@ -16,23 +16,33 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
+use PhpCsFixer\Tokenizer\Transformer\TypeIntersectionTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\TypeIntersectionTransformer
  *
- * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(TypeIntersectionTransformer::class)]
 final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcessCases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideProcessCases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testProcess(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
@@ -40,12 +50,12 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
             $expectedTokens,
             [
                 CT::T_TYPE_INTERSECTION,
-            ]
+            ],
         );
     }
 
     /**
-     * @return iterable<array{0: string, 1?: _TransformerTestExpectedTokens}>
+     * @return iterable<array{0: string, 1?: _TransformerTestExpectedKindsUnderIndex}>
      */
     public static function provideProcessCases(): iterable
     {
@@ -67,29 +77,6 @@ final class TypeIntersectionTransformerTest extends AbstractTransformerTestCase
                 const B1 = D::X & C;
             ',
         ];
-
-        if (\defined('T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG')) { // @TODO: drop condition when PHP 8.1+ is required
-            yield 'ensure T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG is not modified' => [
-                '<?php $a = $b&$c;',
-                [
-                    6 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
-                ],
-            ];
-
-            yield 'do not fix, close/open' => [
-                '<?php fn() => 0 ?><?php $a = FOO|BAR|BAZ&$x;',
-                [
-                    20 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
-                ],
-            ];
-
-            yield 'do not fix, foreach' => [
-                '<?php while(foo()){} $a = FOO|BAR|BAZ&$x;',
-                [
-                    19 => T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
-                ],
-            ];
-        }
 
         yield 'arrow function' => [
             '<?php $a = fn(int&null $item): int&null => $item * 2;',
@@ -405,19 +392,62 @@ function f( #[Target(\'a\')] #[Target(\'b\')] #[Target(\'c\')] #[Target(\'d\')] 
     }
 
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
+     *
+     * @dataProvider provideProcess81Cases
+     *
+     * @requires PHP >= 8.1.0
+     */
+    #[DataProvider('provideProcess81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
+    public function testProcess81(string $source, array $expectedTokens): void
+    {
+        $this->doTest($source, $expectedTokens);
+    }
+
+    /**
+     * @return iterable<string, array{string, _TransformerTestExpectedKindsUnderIndex}>
+     */
+    public static function provideProcess81Cases(): iterable
+    {
+        yield 'ensure T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG is not modified' => [
+            '<?php $a = $b&$c;',
+            [
+                6 => FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
+            ],
+        ];
+
+        yield 'do not fix, close/open' => [
+            '<?php fn() => 0 ?><?php $a = FOO|BAR|BAZ&$x;',
+            [
+                20 => FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
+            ],
+        ];
+
+        yield 'do not fix, foreach' => [
+            '<?php while(foo()){} $a = FOO|BAR|BAZ&$x;',
+            [
+                19 => FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG,
+            ],
+        ];
+    }
+
+    /**
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcess82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      */
+    #[DataProvider('provideProcess82Cases')]
+    #[RequiresPhp('>= 8.2.0')]
     public function testProcess82(string $source, array $expectedTokens): void
     {
         $this->doTest($source, $expectedTokens);
     }
 
     /**
-     * @return iterable<string, array{string, _TransformerTestExpectedTokens}>
+     * @return iterable<string, array{string, _TransformerTestExpectedKindsUnderIndex}>
      */
     public static function provideProcess82Cases(): iterable
     {
@@ -519,19 +549,21 @@ class Dnf
     }
 
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcess83Cases
      *
-     * @requires PHP 8.3
+     * @requires PHP >= 8.3.0
      */
+    #[DataProvider('provideProcess83Cases')]
+    #[RequiresPhp('>= 8.3.0')]
     public function testProcess83(string $source, array $expectedTokens): void
     {
         $this->doTest($source, $expectedTokens);
     }
 
     /**
-     * @return iterable<string, array{string, _TransformerTestExpectedTokens}>
+     * @return iterable<string, array{string, _TransformerTestExpectedKindsUnderIndex}>
      */
     public static function provideProcess83Cases(): iterable
     {

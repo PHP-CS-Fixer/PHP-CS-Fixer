@@ -18,13 +18,18 @@ use PhpCsFixer\Console\Output\OutputContext;
 use PhpCsFixer\Console\Output\Progress\PercentageBarOutput;
 use PhpCsFixer\Runner\Event\FileProcessed;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Console\Output\Progress\PercentageBarOutput
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(PercentageBarOutput::class)]
 final class PercentageBarOutputTest extends TestCase
 {
     /**
@@ -32,6 +37,7 @@ final class PercentageBarOutputTest extends TestCase
      *
      * @dataProvider providePercentageBarProgressOutputCases
      */
+    #[DataProvider('providePercentageBarProgressOutputCases')]
     public function testPercentageBarProgressOutput(array $statuses, string $expectedOutput, int $width): void
     {
         $nbFiles = 0;
@@ -59,7 +65,7 @@ final class PercentageBarOutputTest extends TestCase
             [
                 [FileProcessed::STATUS_NO_CHANGES, 100],
             ],
-            '   0/100 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%'.PHP_EOL
+            '   0/100 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%'.\PHP_EOL
             .' 100/100 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%',
             80,
         ];

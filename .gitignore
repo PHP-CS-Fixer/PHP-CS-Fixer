@@ -1,5 +1,7 @@
 /.env
+/.php-cs-fixer.cache
 /.php-cs-fixer.php
+/**/xdebug.log
 /box.json
 /compose.override.yaml
 /composer.lock
@@ -15,5 +17,3 @@
 /phpstan.neon
 /phpunit.xml
 /vendor/
-
-xdebug.log

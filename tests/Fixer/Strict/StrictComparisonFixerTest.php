@@ -14,22 +14,29 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Strict;
 
+use PhpCsFixer\Fixer\Strict\StrictComparisonFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Strict\StrictComparisonFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Strict\StrictComparisonFixer>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(StrictComparisonFixer::class)]
 final class StrictComparisonFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

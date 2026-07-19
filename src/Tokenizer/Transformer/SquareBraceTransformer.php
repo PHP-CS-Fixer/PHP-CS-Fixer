@@ -23,12 +23,14 @@ use PhpCsFixer\Tokenizer\Tokens;
  * Transform discriminate overloaded square braces tokens.
  *
  * Performed transformations:
- * - in `[1, 2, 3]` into CT::T_ARRAY_SQUARE_BRACE_OPEN and CT::T_ARRAY_SQUARE_BRACE_CLOSE,
- * - in `[$a, &$b, [$c]] = array(1, 2, array(3))` into CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN and CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE.
+ * - in `[1, 2, 3]` into CT::T_ARRAY_BRACKET_OPEN and CT::T_ARRAY_BRACKET_CLOSE,
+ * - in `[$a, &$b, [$c]] = array(1, 2, array(3))` into CT::T_DESTRUCTURING_BRACKET_OPEN and CT::T_DESTRUCTURING_BRACKET_CLOSE.
  *
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class SquareBraceTransformer extends AbstractTransformer
 {
@@ -62,35 +64,35 @@ final class SquareBraceTransformer extends AbstractTransformer
     public function getCustomTokens(): array
     {
         return [
-            CT::T_ARRAY_SQUARE_BRACE_OPEN,
-            CT::T_ARRAY_SQUARE_BRACE_CLOSE,
-            CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-            CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE,
+            CT::T_ARRAY_BRACKET_OPEN,
+            CT::T_ARRAY_BRACKET_CLOSE,
+            CT::T_DESTRUCTURING_BRACKET_OPEN,
+            CT::T_DESTRUCTURING_BRACKET_CLOSE,
         ];
     }
 
     private function transformIntoArraySquareBrace(Tokens $tokens, int $index): void
     {
-        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_BRACKET, $index);
 
-        $tokens[$index] = new Token([CT::T_ARRAY_SQUARE_BRACE_OPEN, '[']);
-        $tokens[$endIndex] = new Token([CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']']);
+        $tokens[$index] = new Token([CT::T_ARRAY_BRACKET_OPEN, '[']);
+        $tokens[$endIndex] = new Token([CT::T_ARRAY_BRACKET_CLOSE, ']']);
     }
 
     private function transformIntoDestructuringSquareBrace(Tokens $tokens, int $index): void
     {
-        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_BRACKET, $index);
 
-        $tokens[$index] = new Token([CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '[']);
-        $tokens[$endIndex] = new Token([CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']']);
+        $tokens[$index] = new Token([CT::T_DESTRUCTURING_BRACKET_OPEN, '[']);
+        $tokens[$endIndex] = new Token([CT::T_DESTRUCTURING_BRACKET_CLOSE, ']']);
 
         $previousMeaningfulIndex = $index;
         $index = $tokens->getNextMeaningfulToken($index);
 
         while ($index < $endIndex) {
-            if ($tokens[$index]->equals('[') && $tokens[$previousMeaningfulIndex]->equalsAny([[CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN], ','])) {
-                $tokens[$tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index)] = new Token([CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']']);
-                $tokens[$index] = new Token([CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '[']);
+            if ($tokens[$index]->equals('[') && $tokens[$previousMeaningfulIndex]->equalsAny([[CT::T_DESTRUCTURING_BRACKET_OPEN], ','])) {
+                $tokens[$tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_BRACKET, $index)] = new Token([CT::T_DESTRUCTURING_BRACKET_CLOSE, ']']);
+                $tokens[$index] = new Token([CT::T_DESTRUCTURING_BRACKET_OPEN, '[']);
             }
 
             $previousMeaningfulIndex = $index;
@@ -107,23 +109,21 @@ final class SquareBraceTransformer extends AbstractTransformer
             return false;
         }
 
-        static $disallowedPrevTokens = [
+        $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
+        if ($prevToken->equalsAny([
             ')',
             ']',
             '}',
             '"',
-            [T_CONSTANT_ENCAPSED_STRING],
-            [T_STRING],
-            [T_STRING_VARNAME],
-            [T_VARIABLE],
-            [CT::T_ARRAY_SQUARE_BRACE_CLOSE],
+            [\T_CONSTANT_ENCAPSED_STRING],
+            [\T_STRING],
+            [\T_STRING_VARNAME],
+            [\T_VARIABLE],
+            [CT::T_ARRAY_BRACKET_CLOSE],
             [CT::T_DYNAMIC_PROP_BRACE_CLOSE],
             [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
-            [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
-        ];
-
-        $prevToken = $tokens[$tokens->getPrevMeaningfulToken($index)];
-        if ($prevToken->equalsAny($disallowedPrevTokens)) {
+            [CT::T_ARRAY_INDEX_BRACE_CLOSE],
+        ])) {
             return false;
         }
 
@@ -141,38 +141,36 @@ final class SquareBraceTransformer extends AbstractTransformer
             return false;
         }
 
-        static $disallowedPrevTokens = [
+        $prevIndex = $tokens->getPrevMeaningfulToken($index);
+        $prevToken = $tokens[$prevIndex];
+        if ($prevToken->equalsAny([
             ')',
             ']',
             '"',
-            [T_CONSTANT_ENCAPSED_STRING],
-            [T_STRING],
-            [T_STRING_VARNAME],
-            [T_VARIABLE],
-            [CT::T_ARRAY_SQUARE_BRACE_CLOSE],
+            [\T_CONSTANT_ENCAPSED_STRING],
+            [\T_STRING],
+            [\T_STRING_VARNAME],
+            [\T_VARIABLE],
+            [CT::T_ARRAY_BRACKET_CLOSE],
             [CT::T_DYNAMIC_PROP_BRACE_CLOSE],
             [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
-            [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
-        ];
-
-        $prevIndex = $tokens->getPrevMeaningfulToken($index);
-        $prevToken = $tokens[$prevIndex];
-        if ($prevToken->equalsAny($disallowedPrevTokens)) {
+            [CT::T_ARRAY_INDEX_BRACE_CLOSE],
+        ])) {
             return false;
         }
 
-        if ($prevToken->isGivenKind(T_AS)) {
+        if ($prevToken->isGivenKind(\T_AS)) {
             return true;
         }
 
-        if ($prevToken->isGivenKind(T_DOUBLE_ARROW)) {
+        if ($prevToken->isGivenKind(\T_DOUBLE_ARROW)) {
             $variableIndex = $tokens->getPrevMeaningfulToken($prevIndex);
-            if (!$tokens[$variableIndex]->isGivenKind(T_VARIABLE)) {
+            if (!$tokens[$variableIndex]->isGivenKind(\T_VARIABLE)) {
                 return false;
             }
 
             $prevVariableIndex = $tokens->getPrevMeaningfulToken($variableIndex);
-            if ($tokens[$prevVariableIndex]->isGivenKind(T_AS)) {
+            if ($tokens[$prevVariableIndex]->isGivenKind(\T_AS)) {
                 return true;
             }
         }

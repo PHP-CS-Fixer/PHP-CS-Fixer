@@ -4,6 +4,14 @@ Rule ``general_attribute_remove``
 
 Removes configured attributes by their respective FQN.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``attributes``.
+
 Configuration
 -------------
 
@@ -47,6 +55,7 @@ With configuration: ``['attributes' => ['\\A\\B\\Foo', 'A\\B\\Bar']]``.
    -#[\A\B\Foo]
    -#[BarAlias]
     function foo() {}
+
 References
 ----------
 

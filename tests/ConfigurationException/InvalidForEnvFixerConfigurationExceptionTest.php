@@ -17,12 +17,16 @@ namespace PhpCsFixer\Tests\ConfigurationException;
 use PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException;
 use PhpCsFixer\Console\Command\FixCommandExitStatusCalculator;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\ConfigurationException\InvalidForEnvFixerConfigurationException
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(InvalidForEnvFixerConfigurationException::class)]
 final class InvalidForEnvFixerConfigurationExceptionTest extends TestCase
 {
     public function testDefaults(): void
@@ -32,7 +36,7 @@ final class InvalidForEnvFixerConfigurationExceptionTest extends TestCase
 
         $exception = new InvalidForEnvFixerConfigurationException(
             $fixerName,
-            $message
+            $message,
         );
 
         self::assertSame(\sprintf('[%s] %s', $fixerName, $message), $exception->getMessage());

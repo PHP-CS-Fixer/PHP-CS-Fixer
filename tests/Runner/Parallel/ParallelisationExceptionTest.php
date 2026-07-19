@@ -17,12 +17,16 @@ namespace PhpCsFixer\Tests\Runner\Parallel;
 use PhpCsFixer\Runner\Parallel\ParallelisationException;
 use PhpCsFixer\Runner\Parallel\ProcessIdentifier;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Runner\Parallel\ParallelisationException
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ParallelisationException::class)]
 final class ParallelisationExceptionTest extends TestCase
 {
     public function testCreateForUnknownIdentifier(): void

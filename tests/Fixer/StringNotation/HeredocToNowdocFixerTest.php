@@ -14,22 +14,29 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\StringNotation;
 
+use PhpCsFixer\Fixer\StringNotation\HeredocToNowdocFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
- * @author Gregor Harlan <gharlan@web.de>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\StringNotation\HeredocToNowdocFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\HeredocToNowdocFixer>
+ *
+ * @author Gregor Harlan <gharlan@web.de>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(HeredocToNowdocFixer::class)]
 final class HeredocToNowdocFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

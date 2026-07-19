@@ -4,6 +4,15 @@ Rule ``numeric_literal_separator``
 
 Adds separators to numeric literals of any kind.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``override_existing``,
+``strategy``.
+
 Configuration
 -------------
 
@@ -90,6 +99,7 @@ With configuration: ``['override_existing' => true]``.
    +++ New
    -<?php $var = 24_40_21;
    +<?php $var = 244_021;
+
 References
 ----------
 

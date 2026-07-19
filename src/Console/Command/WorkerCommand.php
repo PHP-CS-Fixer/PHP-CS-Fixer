@@ -42,16 +42,14 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @author Greg Korba <greg@codito.dev>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 #[AsCommand(name: 'worker', description: 'Internal command for running fixers in parallel', hidden: true)]
 final class WorkerCommand extends Command
 {
     /** @var string Prefix used before JSON-encoded error printed in the worker's process */
     public const ERROR_PREFIX = 'WORKER_ERROR::';
-
-    protected static $defaultName = 'worker';
-
-    protected static $defaultDescription = 'Internal command for running fixers in parallel';
 
     private ToolInfoInterface $toolInfo;
     private ConfigurationResolver $configurationResolver;
@@ -63,7 +61,8 @@ final class WorkerCommand extends Command
 
     public function __construct(ToolInfoInterface $toolInfo)
     {
-        parent::__construct();
+        parent::__construct('worker');
+        $this->setDescription('Internal command for running fixers in parallel');
 
         $this->setHidden(true);
         $this->toolInfo = $toolInfo;
@@ -77,15 +76,15 @@ final class WorkerCommand extends Command
             [
                 new InputOption('port', null, InputOption::VALUE_REQUIRED, 'Specifies parallelisation server\'s port.'),
                 new InputOption('identifier', null, InputOption::VALUE_REQUIRED, 'Specifies parallelisation process\' identifier.'),
-                new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, 'Are risky fixers allowed (can be `yes` or `no`).'),
+                new InputOption('allow-risky', '', InputOption::VALUE_REQUIRED, HelpCommand::getDescriptionWithAllowedValues('Are risky fixers allowed (%s).', ConfigurationResolver::BOOL_VALUES), null, ConfigurationResolver::BOOL_VALUES),
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a config file.'),
                 new InputOption('dry-run', '', InputOption::VALUE_NONE, 'Only shows which files would have been modified.'),
                 new InputOption('rules', '', InputOption::VALUE_REQUIRED, 'List of rules that should be run against configured paths.'),
-                new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, 'Should cache be used (can be `yes` or `no`).'),
+                new InputOption('using-cache', '', InputOption::VALUE_REQUIRED, HelpCommand::getDescriptionWithAllowedValues('Should cache be used (%s).', ConfigurationResolver::BOOL_VALUES), null, ConfigurationResolver::BOOL_VALUES),
                 new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file.'),
                 new InputOption('diff', '', InputOption::VALUE_NONE, 'Prints diff for each file.'),
                 new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
-            ]
+            ],
         );
     }
 
@@ -109,12 +108,11 @@ final class WorkerCommand extends Command
         $tcpConnector = new TcpConnector($loop);
         $tcpConnector
             ->connect(\sprintf('127.0.0.1:%d', $port))
+            // @codeCoverageIgnoreStart
             ->then(
-                /** @codeCoverageIgnore */
                 function (ConnectionInterface $connection) use ($loop, $runner, $identifier): void {
-                    $jsonInvalidUtf8Ignore = \defined('JSON_INVALID_UTF8_IGNORE') ? JSON_INVALID_UTF8_IGNORE : 0;
-                    $out = new Encoder($connection, $jsonInvalidUtf8Ignore);
-                    $in = new Decoder($connection, true, 512, $jsonInvalidUtf8Ignore);
+                    $out = new Encoder($connection, \JSON_INVALID_UTF8_IGNORE);
+                    $in = new Decoder($connection, true, 512, \JSON_INVALID_UTF8_IGNORE);
 
                     // [REACT] Initialise connection with the parallelisation operator
                     $out->write(['action' => ParallelAction::WORKER_HELLO, 'identifier' => $identifier]);
@@ -135,10 +133,14 @@ final class WorkerCommand extends Command
 
                     // [REACT] Listen for messages from the parallelisation operator (analysis requests)
                     $in->on('data', function (array $json) use ($loop, $runner, $out): void {
-                        $action = $json['action'] ?? null;
+                        \assert(isset($json['action']));
+
+                        $action = $json['action'];
 
                         // Parallelisation operator does not have more to do, let's close the connection
                         if (ParallelAction::RUNNER_THANK_YOU === $action) {
+                            // no payload to assert on
+
                             $loop->stop();
 
                             return;
@@ -148,6 +150,10 @@ final class WorkerCommand extends Command
                             // At this point we only expect analysis requests, if any other action happen, we need to fix the code.
                             throw new \LogicException(\sprintf('Unexpected action ParallelAction::%s.', $action));
                         }
+
+                        \assert(isset(
+                            $json['files'],
+                        ));
 
                         /** @var iterable<int, string> $files */
                         $files = $json['files'];
@@ -168,11 +174,12 @@ final class WorkerCommand extends Command
 
                             $out->write([
                                 'action' => ParallelAction::WORKER_RESULT,
+                                'errors' => $this->errorsManager->forPath($path),
                                 'file' => $path,
                                 'fileHash' => $this->events[0]->getFileHash(),
-                                'status' => $this->events[0]->getStatus(),
                                 'fixInfo' => array_pop($analysisResult),
-                                'errors' => $this->errorsManager->forPath($path),
+                                'memoryUsage' => memory_get_peak_usage(true),
+                                'status' => $this->events[0]->getStatus(),
                             ]);
                         }
 
@@ -183,8 +190,9 @@ final class WorkerCommand extends Command
                 static function (\Throwable $error) use ($errorOutput): void {
                     // @TODO Verify onRejected behaviour → https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/7777#discussion_r1590399285
                     $errorOutput->writeln($error->getMessage());
-                }
+                },
             )
+            // @codeCoverageIgnoreEnd
         ;
 
         $loop->run();
@@ -197,7 +205,7 @@ final class WorkerCommand extends Command
         $passedConfig = $input->getOption('config');
         $passedRules = $input->getOption('rules');
 
-        if (null !== $passedConfig && null !== $passedRules) {
+        if (null !== $passedConfig && ConfigurationResolver::IGNORE_CONFIG_FILE !== $passedConfig && null !== $passedRules) {
             throw new \RuntimeException('Passing both `--config` and `--rules` options is not allowed');
         }
 
@@ -220,8 +228,8 @@ final class WorkerCommand extends Command
                 'diff' => $input->getOption('diff'),
                 'stop-on-violation' => $input->getOption('stop-on-violation'),
             ],
-            getcwd(), // @phpstan-ignore-line
-            $this->toolInfo
+            getcwd(), // @phpstan-ignore argument.type
+            $this->toolInfo,
         );
 
         return new Runner(
@@ -237,7 +245,8 @@ final class WorkerCommand extends Command
             $this->configurationResolver->shouldStopOnViolation(),
             ParallelConfigFactory::sequential(), // IMPORTANT! Worker must run in sequential mode.
             null,
-            $this->configurationResolver->getConfigFile()
+            $this->configurationResolver->getConfigFile(),
+            $this->configurationResolver->getRuleCustomisationPolicy(),
         );
     }
 }

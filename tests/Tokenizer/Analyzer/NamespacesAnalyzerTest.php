@@ -18,6 +18,8 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author VeeWee <toonverwerft@gmail.com>
@@ -25,7 +27,10 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NamespacesAnalyzer::class)]
 final class NamespacesAnalyzerTest extends TestCase
 {
     /**
@@ -33,6 +38,7 @@ final class NamespacesAnalyzerTest extends TestCase
      *
      * @dataProvider provideNamespacesCases
      */
+    #[DataProvider('provideNamespacesCases')]
     public function testNamespaces(string $code, array $expected): void
     {
         $tokens = Tokens::fromCode($code);
@@ -40,7 +46,7 @@ final class NamespacesAnalyzerTest extends TestCase
 
         self::assertSame(
             serialize($expected),
-            serialize($analyzer->getDeclarations($tokens))
+            serialize($analyzer->getDeclarations($tokens)),
         );
     }
 
@@ -56,7 +62,7 @@ final class NamespacesAnalyzerTest extends TestCase
                 0,
                 0,
                 0,
-                1
+                1,
             ),
         ]];
 
@@ -67,7 +73,7 @@ final class NamespacesAnalyzerTest extends TestCase
                 1,
                 6,
                 1,
-                6
+                6,
             ),
         ]];
 
@@ -78,7 +84,7 @@ final class NamespacesAnalyzerTest extends TestCase
                 1,
                 6,
                 1,
-                7
+                7,
             ),
             new NamespaceAnalysis(
                 'Foo\Baz',
@@ -86,7 +92,7 @@ final class NamespacesAnalyzerTest extends TestCase
                 10,
                 16,
                 10,
-                17
+                17,
             ),
         ]];
 
@@ -103,7 +109,7 @@ final class NamespacesAnalyzerTest extends TestCase
                     1,
                     1,
                     1,
-                    5
+                    5,
                 ),
             ],
         ];
@@ -117,6 +123,7 @@ final class NamespacesAnalyzerTest extends TestCase
     /**
      * @dataProvider provideGetNamespaceAtCases
      */
+    #[DataProvider('provideGetNamespaceAtCases')]
     public function testGetNamespaceAt(string $code, int $index, NamespaceAnalysis $expected): void
     {
         $tokens = Tokens::fromCode($code);
@@ -124,7 +131,7 @@ final class NamespacesAnalyzerTest extends TestCase
 
         self::assertSame(
             serialize($expected),
-            serialize($analyzer->getNamespaceAt($tokens, $index))
+            serialize($analyzer->getNamespaceAt($tokens, $index)),
         );
     }
 
@@ -142,7 +149,7 @@ final class NamespacesAnalyzerTest extends TestCase
                 0,
                 0,
                 0,
-                1
+                1,
             ),
         ];
 
@@ -155,7 +162,7 @@ final class NamespacesAnalyzerTest extends TestCase
                 1,
                 6,
                 1,
-                6
+                6,
             ),
         ];
 
@@ -168,7 +175,7 @@ final class NamespacesAnalyzerTest extends TestCase
                 1,
                 6,
                 1,
-                7
+                7,
             ),
         ];
 
@@ -181,7 +188,7 @@ final class NamespacesAnalyzerTest extends TestCase
                 10,
                 16,
                 10,
-                17
+                17,
             ),
         ];
     }

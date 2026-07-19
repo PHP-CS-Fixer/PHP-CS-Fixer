@@ -14,9 +14,15 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\RuleSet\Sets;
 
+use PhpCsFixer\RuleSet\Sets\PERCS2x0RiskySet;
+use PHPUnit\Framework\Attributes\CoversClass;
+
 /**
  * @internal
  *
  * @covers \PhpCsFixer\RuleSet\Sets\PERCS2x0RiskySet
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(PERCS2x0RiskySet::class)]
 final class PERCS2x0RiskySetTest extends AbstractSetTestCase {}

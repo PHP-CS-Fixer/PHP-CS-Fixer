@@ -14,22 +14,30 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
+use PhpCsFixer\Fixer\ClassNotation\ProtectedToPrivateFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
- * @author Filippo Tessarotto <zoeslam@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ClassNotation\ProtectedToPrivateFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ClassNotation\ProtectedToPrivateFixer>
+ *
+ * @author Filippo Tessarotto <zoeslam@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ProtectedToPrivateFixer::class)]
 final class ProtectedToPrivateFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -157,19 +165,21 @@ final class Foo
     /**
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<int, array{string, string}>
+     * @return iterable<string, array{0: string, 1?: string}>
      */
     public static function provideFix80Cases(): iterable
     {
-        yield [
+        yield 'type union' => [
             '<?php
 final class Foo2 {
     private int|float $a;
@@ -181,13 +191,34 @@ final class Foo2 {
 }
 ',
         ];
+
+        yield 'promoted properties' => [
+            <<<'PHP'
+                <?php final class Foo {
+                    public function __construct(
+                        private null|Bar $x,
+                        private ?Bar $u,
+                    ) {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php final class Foo {
+                    public function __construct(
+                        protected null|Bar $x,
+                        protected ?Bar $u,
+                    ) {}
+                }
+                PHP,
+        ];
     }
 
     /**
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -310,8 +341,10 @@ echo DocumentStats::DRAFT->getStatusName();
     /**
      * @dataProvider provideFix82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      */
+    #[DataProvider('provideFix82Cases')]
+    #[RequiresPhp('>= 8.2.0')]
     public function testFix82(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
@@ -341,6 +374,50 @@ echo DocumentStats::DRAFT->getStatusName();
             '<?php
             readonly final class Foo {
                 protected function noop(): void{}
+            }',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix84Cases
+     *
+     * @requires PHP >= 8.4.0
+     */
+    #[DataProvider('provideFix84Cases')]
+    #[RequiresPhp('>= 8.4.0')]
+    public function testFix84(string $expected, string $input): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function provideFix84Cases(): iterable
+    {
+        yield 'asymmetric visibility with only set visibility' => [
+            '<?php
+            final class Foo {
+                private(set) int $a;
+            }',
+            '<?php
+            final class Foo {
+                protected(set) int $a;
+            }',
+        ];
+
+        yield 'asymmetric visibility with both visibilities' => [
+            '<?php
+            final class Foo {
+                public private(set) int $a;
+                private private(set) int $b;
+                private private(set) int $c;
+            }',
+            '<?php
+            final class Foo {
+                public protected(set) int $a;
+                protected protected(set) int $b;
+                protected private(set) int $c;
             }',
         ];
     }

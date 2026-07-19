@@ -17,12 +17,17 @@ namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\SwitchAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\SwitchAnalyzer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(SwitchAnalyzer::class)]
 final class SwitchAnalyzerTest extends TestCase
 {
     /**
@@ -30,6 +35,7 @@ final class SwitchAnalyzerTest extends TestCase
      *
      * @dataProvider provideColonCases
      */
+    #[DataProvider('provideColonCases')]
     public function testColon(string $code, array $indices): void
     {
         $tokens = Tokens::fromCode($code);
@@ -38,7 +44,7 @@ final class SwitchAnalyzerTest extends TestCase
             self::assertSame(
                 \in_array($index, $indices, true),
                 SwitchAnalyzer::belongsToSwitch($tokens, $index),
-                \sprintf('Index %d failed check.', $index)
+                \sprintf('Index %d failed check.', $index),
             );
         }
     }
@@ -104,7 +110,7 @@ final class SwitchAnalyzerTest extends TestCase
 
         self::assertSame(
             $tokensWithEmpty->count(),
-            $tokensWithoutEmpty->count() + 1
+            $tokensWithoutEmpty->count() + 1,
         );
 
         self::assertTrue(SwitchAnalyzer::belongsToSwitch($tokensWithEmpty, 12));

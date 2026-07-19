@@ -4,13 +4,18 @@ Rule ``php_unit_strict``
 
 PHPUnit methods like ``assertSame`` should be used instead of ``assertEquals``.
 
-Warning
--------
+Warnings
+--------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when any of the functions are overridden or when testing object equality.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``assertions``.
 
 Configuration
 -------------

@@ -17,30 +17,39 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\Transformer\AttributeTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\AttributeTransformer
  *
- * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AttributeTransformer::class)]
 final class AttributeTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcessCases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideProcessCases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testProcess(string $source, array $expectedTokens): void
     {
         $this->doTest($source, $expectedTokens);
     }
 
     /**
-     * @return iterable<int, array{string, _TransformerTestExpectedTokens}>
+     * @return iterable<int, array{string, _TransformerTestExpectedKindsUnderIndex}>
      */
     public static function provideProcessCases(): iterable
     {
@@ -181,8 +190,44 @@ class User
     }
 
     /**
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
+     *
+     * @dataProvider provideProcess85Cases
+     *
+     * @requires PHP >= 8.5.0
+     */
+    #[DataProvider('provideProcess85Cases')]
+    #[RequiresPhp('>= 8.5.0')]
+    public function testProcess85(string $source, array $expectedTokens): void
+    {
+        $this->doTest($source, $expectedTokens);
+    }
+
+    /**
+     * @return iterable<int, array{string, _TransformerTestExpectedKindsUnderIndex}>
+     */
+    public static function provideProcess85Cases(): iterable
+    {
+        yield [
+            <<<'PHP'
+                <?php
+                #[Foo([static function (#[SensitiveParameter] $a) {
+                    return [fn (#[Bar([1, 2])] $b) => [$b[1]]];
+                }])]
+                class Baz {}
+                PHP,
+            [
+                12 => CT::T_ATTRIBUTE_CLOSE,
+                35 => CT::T_ATTRIBUTE_CLOSE,
+                54 => CT::T_ATTRIBUTE_CLOSE,
+            ],
+        ];
+    }
+
+    /**
      * @dataProvider provideNotChangeCases
      */
+    #[DataProvider('provideNotChangeCases')]
     public function testNotChange(string $source): void
     {
         Tokens::clearCache();

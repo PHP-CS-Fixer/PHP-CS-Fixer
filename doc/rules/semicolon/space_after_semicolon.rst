@@ -4,6 +4,15 @@ Rule ``space_after_semicolon``
 
 Fix whitespace after a semicolon.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option:
+``remove_in_empty_for_expressions``.
+
 Configuration
 -------------
 
@@ -29,13 +38,13 @@ Example #1
    --- Original
    +++ New
     <?php
-   -                        sample();     $test = 1;
-   -                        sample();$test = 2;
-   -                        for ( ;;++$sample) {
-   +                        sample(); $test = 1;
-   +                        sample(); $test = 2;
-   +                        for ( ; ; ++$sample) {
-                            }
+   -sample();     $test = 1;
+   -sample();$test = 2;
+   -for ( ;;++$sample) {
+   +sample(); $test = 1;
+   +sample(); $test = 2;
+   +for ( ; ; ++$sample) {
+    }
 
 Example #2
 ~~~~~~~~~~
@@ -63,7 +72,6 @@ The rule is part of the following rule sets:
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
   ``['remove_in_empty_for_expressions' => true]``
-
 
 References
 ----------

@@ -19,13 +19,15 @@ use PhpCsFixer\Fixer\ConfigurableFixerInterface;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
 
 /**
- * @author ntzm
- *
  * @internal
  *
  * @template TFixer of AbstractFixer
  *
  * @extends AbstractFixerTestCase<TFixer>
+ *
+ * @author ntzm
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractFixerWithAliasedOptionsTestCase extends AbstractFixerTestCase
 {

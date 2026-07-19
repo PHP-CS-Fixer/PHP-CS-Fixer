@@ -18,11 +18,13 @@ use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingResultInterface;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @extends \IteratorIterator<mixed, \SplFileInfo, \Traversable<\SplFileInfo>>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class LintingFileIterator extends \IteratorIterator implements LintingResultAwareFileIteratorInterface
 {
@@ -31,9 +33,9 @@ final class LintingFileIterator extends \IteratorIterator implements LintingResu
     private LinterInterface $linter;
 
     /**
-     * @param \Iterator<mixed, \SplFileInfo> $iterator
+     * @param \Traversable<mixed, \SplFileInfo> $iterator
      */
-    public function __construct(\Iterator $iterator, LinterInterface $linter)
+    public function __construct(\Traversable $iterator, LinterInterface $linter)
     {
         parent::__construct($iterator);
 

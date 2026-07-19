@@ -8,8 +8,8 @@ PHPUnit to ``protected``, to match the PHPUnit TestCase.
 Warning
 -------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 This fixer may change functions named ``setUp()`` or ``tearDown()`` outside of
 PHPUnit tests, when a class is wrongly seen as a PHPUnit test.

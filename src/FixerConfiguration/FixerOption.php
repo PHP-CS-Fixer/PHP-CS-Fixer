@@ -16,6 +16,8 @@ namespace PhpCsFixer\FixerConfiguration;
 
 /**
  * @readonly
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FixerOption implements FixerOptionInterface
 {
@@ -61,11 +63,10 @@ final class FixerOption implements FixerOptionInterface
         }
 
         if (null !== $allowedValues) {
-            foreach ($allowedValues as &$allowedValue) {
-                if ($allowedValue instanceof \Closure) {
-                    $allowedValue = $this->unbind($allowedValue);
-                }
-            }
+            $allowedValues = array_map(
+                fn ($allowedValue) => $allowedValue instanceof \Closure ? $this->unbind($allowedValue) : $allowedValue,
+                $allowedValues,
+            );
         }
 
         $this->name = $name;

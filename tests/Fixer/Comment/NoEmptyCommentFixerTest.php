@@ -17,6 +17,8 @@ namespace PhpCsFixer\Tests\Fixer\Comment;
 use PhpCsFixer\Fixer\Comment\NoEmptyCommentFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -24,12 +26,16 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @covers \PhpCsFixer\Fixer\Comment\NoEmptyCommentFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Comment\NoEmptyCommentFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NoEmptyCommentFixer::class)]
 final class NoEmptyCommentFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -267,6 +273,7 @@ echo 1;
      *
      * @dataProvider provideGetCommentBlockCases
      */
+    #[DataProvider('provideGetCommentBlockCases')]
     public function testGetCommentBlock(string $source, int $startIndex, int $endIndex, bool $isEmpty): void
     {
         Tokens::clearCache();

@@ -21,6 +21,8 @@ namespace PhpCsFixer;
  * @author Kuba Werłos <werlos@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class Preg
 {
@@ -44,12 +46,12 @@ final class Preg
     public static function match(string $pattern, string $subject, ?array &$matches = null, int $flags = 0, int $offset = 0): bool
     {
         $result = @preg_match(self::addUtf8Modifier($pattern), $subject, $matches, $flags, $offset);
-        if (false !== $result && PREG_NO_ERROR === preg_last_error()) {
+        if (false !== $result && \PREG_NO_ERROR === preg_last_error()) {
             return 1 === $result;
         }
 
         $result = @preg_match(self::removeUtf8Modifier($pattern), $subject, $matches, $flags, $offset);
-        if (false !== $result && PREG_NO_ERROR === preg_last_error()) {
+        if (false !== $result && \PREG_NO_ERROR === preg_last_error()) {
             return 1 === $result;
         }
 
@@ -83,17 +85,19 @@ final class Preg
      *     )
      * ) $matches
      *
+     * @return 0|positive-int
+     *
      * @throws PregException
      */
-    public static function matchAll(string $pattern, string $subject, ?array &$matches = null, int $flags = PREG_PATTERN_ORDER, int $offset = 0): int
+    public static function matchAll(string $pattern, string $subject, ?array &$matches = null, int $flags = \PREG_PATTERN_ORDER, int $offset = 0): int
     {
         $result = @preg_match_all(self::addUtf8Modifier($pattern), $subject, $matches, $flags, $offset);
-        if (false !== $result && PREG_NO_ERROR === preg_last_error()) {
+        if (false !== $result && \PREG_NO_ERROR === preg_last_error()) {
             return $result;
         }
 
         $result = @preg_match_all(self::removeUtf8Modifier($pattern), $subject, $matches, $flags, $offset);
-        if (false !== $result && PREG_NO_ERROR === preg_last_error()) {
+        if (false !== $result && \PREG_NO_ERROR === preg_last_error()) {
             return $result;
         }
 
@@ -110,12 +114,12 @@ final class Preg
     public static function replace(string $pattern, string $replacement, string $subject, int $limit = -1, ?int &$count = null): string
     {
         $result = @preg_replace(self::addUtf8Modifier($pattern), $replacement, $subject, $limit, $count);
-        if (null !== $result && PREG_NO_ERROR === preg_last_error()) {
+        if (null !== $result && \PREG_NO_ERROR === preg_last_error()) {
             return $result;
         }
 
         $result = @preg_replace(self::removeUtf8Modifier($pattern), $replacement, $subject, $limit, $count);
-        if (null !== $result && PREG_NO_ERROR === preg_last_error()) {
+        if (null !== $result && \PREG_NO_ERROR === preg_last_error()) {
             return $result;
         }
 
@@ -130,12 +134,12 @@ final class Preg
     public static function replaceCallback(string $pattern, callable $callback, string $subject, int $limit = -1, ?int &$count = null): string
     {
         $result = @preg_replace_callback(self::addUtf8Modifier($pattern), $callback, $subject, $limit, $count);
-        if (null !== $result && PREG_NO_ERROR === preg_last_error()) {
+        if (null !== $result && \PREG_NO_ERROR === preg_last_error()) {
             return $result;
         }
 
         $result = @preg_replace_callback(self::removeUtf8Modifier($pattern), $callback, $subject, $limit, $count);
-        if (null !== $result && PREG_NO_ERROR === preg_last_error()) {
+        if (null !== $result && \PREG_NO_ERROR === preg_last_error()) {
             return $result;
         }
 
@@ -143,19 +147,19 @@ final class Preg
     }
 
     /**
-     * @return list<string>
+     * @return ($flags is PREG_SPLIT_OFFSET_CAPTURE ? list<array{string, int<0, max>}> : list<string>)
      *
      * @throws PregException
      */
     public static function split(string $pattern, string $subject, int $limit = -1, int $flags = 0): array
     {
         $result = @preg_split(self::addUtf8Modifier($pattern), $subject, $limit, $flags);
-        if (false !== $result && PREG_NO_ERROR === preg_last_error()) {
+        if (false !== $result && \PREG_NO_ERROR === preg_last_error()) {
             return $result;
         }
 
         $result = @preg_split(self::removeUtf8Modifier($pattern), $subject, $limit, $flags);
-        if (false !== $result && PREG_NO_ERROR === preg_last_error()) {
+        if (false !== $result && \PREG_NO_ERROR === preg_last_error()) {
             return $result;
         }
 
@@ -176,6 +180,7 @@ final class Preg
         $delimiter = $pattern[0];
 
         $endDelimiterPosition = strrpos($pattern, $delimiter);
+        \assert(\is_int($endDelimiterPosition));
 
         return substr($pattern, 0, $endDelimiterPosition).str_replace('u', '', substr($pattern, $endDelimiterPosition));
     }
@@ -204,12 +209,12 @@ final class Preg
         $message = \sprintf(
             '(code: %d) %s',
             $code,
-            preg_replace('~preg_[a-z_]+[()]{2}: ~', '', $errorMessage)
+            preg_replace('~preg_[a-z_]+[()]{2}: ~', '', $errorMessage),
         );
 
         return new PregException(
-            \sprintf('%s(): Invalid PCRE pattern "%s": %s (version: %s)', $method, $pattern, $message, PCRE_VERSION),
-            $code
+            \sprintf('%s(): Invalid PCRE pattern "%s": %s (version: %s)', $method, $pattern, $message, \PCRE_VERSION),
+            $code,
         );
     }
 }

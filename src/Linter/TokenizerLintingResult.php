@@ -20,6 +20,8 @@ namespace PhpCsFixer\Linter;
  * @readonly
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TokenizerLintingResult implements LintingResultInterface
 {
@@ -36,7 +38,7 @@ final class TokenizerLintingResult implements LintingResultInterface
             throw new LintingException(
                 \sprintf('%s: %s on line %d.', $this->getMessagePrefix(), $this->error->getMessage(), $this->error->getLine()),
                 $this->error->getCode(),
-                $this->error
+                $this->error,
             );
         }
     }

@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tokenizer\Analyzer;
 
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -23,16 +24,41 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Kuba Werłos <werlos@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class CommentsAnalyzer
 {
     private const TYPE_HASH = 1;
     private const TYPE_DOUBLE_SLASH = 2;
     private const TYPE_SLASH_ASTERISK = 3;
+    private const SKIP_TYPES = [
+        \T_PRIVATE,
+        \T_PROTECTED,
+        \T_PUBLIC,
+        \T_VAR,
+        \T_FUNCTION,
+        \T_FN,
+        \T_ABSTRACT,
+        \T_CONST,
+        \T_NAMESPACE,
+        \T_REQUIRE,
+        \T_REQUIRE_ONCE,
+        \T_INCLUDE,
+        \T_INCLUDE_ONCE,
+        \T_FINAL,
+        CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
+        CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
+        CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE,
+        FCT::T_READONLY,
+        FCT::T_PUBLIC_SET,
+        FCT::T_PROTECTED_SET,
+        FCT::T_PRIVATE_SET,
+    ];
 
     public function isHeaderComment(Tokens $tokens, int $index): bool
     {
-        if (!$tokens[$index]->isGivenKind([T_COMMENT, T_DOC_COMMENT])) {
+        if (!$tokens[$index]->isGivenKind([\T_COMMENT, \T_DOC_COMMENT])) {
             throw new \InvalidArgumentException('Given index must point to a comment.');
         }
 
@@ -48,16 +74,16 @@ final class CommentsAnalyzer
                 return false;
             }
 
-            $braceOpenIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $braceCloseIndex);
+            $braceOpenIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $braceCloseIndex);
             $declareIndex = $tokens->getPrevMeaningfulToken($braceOpenIndex);
-            if (!$tokens[$declareIndex]->isGivenKind(T_DECLARE)) {
+            if (!$tokens[$declareIndex]->isGivenKind(\T_DECLARE)) {
                 return false;
             }
 
             $prevIndex = $tokens->getPrevNonWhitespace($declareIndex);
         }
 
-        return $tokens[$prevIndex]->isGivenKind(T_OPEN_TAG);
+        return $tokens[$prevIndex]->isGivenKind(\T_OPEN_TAG);
     }
 
     /**
@@ -69,7 +95,7 @@ final class CommentsAnalyzer
     {
         $token = $tokens[$index];
 
-        if (!$token->isGivenKind([T_COMMENT, T_DOC_COMMENT])) {
+        if (!$token->isGivenKind([\T_COMMENT, \T_DOC_COMMENT])) {
             throw new \InvalidArgumentException('Given index must point to a comment.');
         }
 
@@ -107,7 +133,7 @@ final class CommentsAnalyzer
      */
     public function isBeforeReturn(Tokens $tokens, int $index): bool
     {
-        if (!$tokens[$index]->isGivenKind([T_COMMENT, T_DOC_COMMENT])) {
+        if (!$tokens[$index]->isGivenKind([\T_COMMENT, \T_DOC_COMMENT])) {
             throw new \InvalidArgumentException('Given index must point to a comment.');
         }
 
@@ -117,7 +143,7 @@ final class CommentsAnalyzer
             return false;
         }
 
-        return $tokens[$nextIndex]->isGivenKind(T_RETURN);
+        return $tokens[$nextIndex]->isGivenKind(\T_RETURN);
     }
 
     /**
@@ -129,7 +155,7 @@ final class CommentsAnalyzer
      */
     public function getCommentBlockIndices(Tokens $tokens, int $index): array
     {
-        if (!$tokens[$index]->isGivenKind(T_COMMENT)) {
+        if (!$tokens[$index]->isGivenKind(\T_COMMENT)) {
             throw new \InvalidArgumentException('Given index must point to a comment.');
         }
 
@@ -167,48 +193,26 @@ final class CommentsAnalyzer
      */
     private function isStructuralElement(Tokens $tokens, int $index): bool
     {
-        static $skip;
-
-        if (null === $skip) {
-            $skip = [
-                T_PRIVATE,
-                T_PROTECTED,
-                T_PUBLIC,
-                T_VAR,
-                T_FUNCTION,
-                T_FN,
-                T_ABSTRACT,
-                T_CONST,
-                T_NAMESPACE,
-                T_REQUIRE,
-                T_REQUIRE_ONCE,
-                T_INCLUDE,
-                T_INCLUDE_ONCE,
-                T_FINAL,
-                CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC,
-                CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED,
-                CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE,
-            ];
-
-            if (\defined('T_READONLY')) { // @TODO: drop condition when PHP 8.1+ is required
-                $skip[] = T_READONLY;
-            }
-        }
-
         $token = $tokens[$index];
 
-        if ($token->isClassy() || $token->isGivenKind($skip)) {
+        if ($token->isClassy() || $token->isGivenKind(self::SKIP_TYPES)) {
             return true;
         }
 
-        if ($token->isGivenKind(T_CASE) && \defined('T_ENUM')) {
-            $caseParent = $tokens->getPrevTokenOfKind($index, [[T_ENUM], [T_SWITCH]]);
+        if ($token->isGivenKind(\T_STRING)) {
+            $content = strtolower($token->getContent());
 
-            return $tokens[$caseParent]->isGivenKind([T_ENUM]);
+            return 'get' === $content || 'set' === $content;
         }
 
-        if ($token->isGivenKind(T_STATIC)) {
-            return !$tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind(T_DOUBLE_COLON);
+        if ($token->isGivenKind(\T_CASE)) {
+            $enumParent = $tokens->getPrevTokenOfKind($index, [[FCT::T_ENUM], [\T_SWITCH]]);
+
+            return $tokens[$enumParent]->isGivenKind(FCT::T_ENUM);
+        }
+
+        if ($token->isGivenKind(\T_STATIC)) {
+            return !$tokens[$tokens->getNextMeaningfulToken($index)]->isGivenKind(\T_DOUBLE_COLON);
         }
 
         return false;
@@ -222,27 +226,25 @@ final class CommentsAnalyzer
      */
     private function isValidControl(Tokens $tokens, Token $docsToken, int $controlIndex): bool
     {
-        static $controlStructures = [
-            T_FOR,
-            T_FOREACH,
-            T_IF,
-            T_SWITCH,
-            T_WHILE,
-        ];
-
-        if (!$tokens[$controlIndex]->isGivenKind($controlStructures)) {
+        if (!$tokens[$controlIndex]->isGivenKind([
+            \T_FOR,
+            \T_FOREACH,
+            \T_IF,
+            \T_SWITCH,
+            \T_WHILE,
+        ])) {
             return false;
         }
 
         $openParenthesisIndex = $tokens->getNextMeaningfulToken($controlIndex);
-        $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesisIndex);
+        $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openParenthesisIndex);
         $docsContent = $docsToken->getContent();
 
         for ($index = $openParenthesisIndex + 1; $index < $closeParenthesisIndex; ++$index) {
             $token = $tokens[$index];
 
             if (
-                $token->isGivenKind(T_VARIABLE)
+                $token->isGivenKind(\T_VARIABLE)
                 && str_contains($docsContent, $token->getContent())
             ) {
                 return true;
@@ -260,19 +262,17 @@ final class CommentsAnalyzer
      */
     private function isValidVariableAssignment(Tokens $tokens, Token $docsToken, int $languageConstructIndex): bool
     {
-        static $languageStructures = [
-            T_LIST,
-            T_PRINT,
-            T_ECHO,
-            CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
-        ];
-
-        if (!$tokens[$languageConstructIndex]->isGivenKind($languageStructures)) {
+        if (!$tokens[$languageConstructIndex]->isGivenKind([
+            \T_LIST,
+            \T_PRINT,
+            \T_ECHO,
+            CT::T_DESTRUCTURING_BRACKET_OPEN,
+        ])) {
             return false;
         }
 
-        $endKind = $tokens[$languageConstructIndex]->isGivenKind(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN)
-            ? [CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE]
+        $endKind = $tokens[$languageConstructIndex]->isGivenKind(CT::T_DESTRUCTURING_BRACKET_OPEN)
+            ? [CT::T_DESTRUCTURING_BRACKET_CLOSE]
             : ')';
 
         $endIndex = $tokens->getNextTokenOfKind($languageConstructIndex, [$endKind]);
@@ -282,7 +282,7 @@ final class CommentsAnalyzer
         for ($index = $languageConstructIndex + 1; $index < $endIndex; ++$index) {
             $token = $tokens[$index];
 
-            if ($token->isGivenKind(T_VARIABLE) && str_contains($docsContent, $token->getContent())) {
+            if ($token->isGivenKind(\T_VARIABLE) && str_contains($docsContent, $token->getContent())) {
                 return true;
             }
         }
@@ -297,33 +297,31 @@ final class CommentsAnalyzer
      */
     private function isValidVariable(Tokens $tokens, int $index): bool
     {
-        static $assignmentTypes = [
-            '=',
-            // arithmetic assignments
-            [T_PLUS_EQUAL, '+='],
-            [T_MINUS_EQUAL, '-='],
-            [T_MUL_EQUAL, '*='],
-            [T_DIV_EQUAL, '/='],
-            [T_MOD_EQUAL, '%='],
-            [T_POW_EQUAL, '**='],
-            // bitwise assignments
-            [T_AND_EQUAL, '&='],
-            [T_OR_EQUAL, '|='],
-            [T_XOR_EQUAL, '^='],
-            [T_SL_EQUAL, '<<='],
-            [T_SR_EQUAL, '>>='],
-            // other assignments
-            [T_COALESCE_EQUAL, '??='],
-            [T_CONCAT_EQUAL, '.='],
-        ];
-
-        if (!$tokens[$index]->isGivenKind(T_VARIABLE)) {
+        if (!$tokens[$index]->isGivenKind(\T_VARIABLE)) {
             return false;
         }
 
         $nextIndex = $tokens->getNextMeaningfulToken($index);
 
-        return $tokens[$nextIndex]->equalsAny($assignmentTypes);
+        return $tokens[$nextIndex]->equalsAny([
+            '=',
+            // arithmetic assignments
+            [\T_PLUS_EQUAL, '+='],
+            [\T_MINUS_EQUAL, '-='],
+            [\T_MUL_EQUAL, '*='],
+            [\T_DIV_EQUAL, '/='],
+            [\T_MOD_EQUAL, '%='],
+            [\T_POW_EQUAL, '**='],
+            // bitwise assignments
+            [\T_AND_EQUAL, '&='],
+            [\T_OR_EQUAL, '|='],
+            [\T_XOR_EQUAL, '^='],
+            [\T_SL_EQUAL, '<<='],
+            [\T_SR_EQUAL, '>>='],
+            // other assignments
+            [\T_COALESCE_EQUAL, '??='],
+            [\T_CONCAT_EQUAL, '.='],
+        ]);
     }
 
     private function getCommentType(string $content): int
@@ -356,12 +354,9 @@ final class CommentsAnalyzer
         do {
             $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
 
-            // @TODO: drop condition when PHP 8.0+ is required
-            if (\defined('T_ATTRIBUTE')) {
-                while (null !== $nextIndex && $tokens[$nextIndex]->isGivenKind(T_ATTRIBUTE)) {
-                    $nextIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $nextIndex);
-                    $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
-                }
+            while (null !== $nextIndex && $tokens[$nextIndex]->isGivenKind(FCT::T_ATTRIBUTE)) {
+                $nextIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $nextIndex);
+                $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
             }
         } while (null !== $nextIndex && $tokens[$nextIndex]->equals('('));
 

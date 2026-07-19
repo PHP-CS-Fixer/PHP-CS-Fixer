@@ -14,7 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
+use PhpCsFixer\AbstractFopenFlagFixer;
+use PhpCsFixer\Fixer\FunctionNotation\FopenFlagOrderFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -23,12 +27,17 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\FunctionNotation\FopenFlagOrderFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\FopenFlagOrderFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AbstractFopenFlagFixer::class)]
+#[CoversClass(FopenFlagOrderFixer::class)]
 final class FopenFlagOrderFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

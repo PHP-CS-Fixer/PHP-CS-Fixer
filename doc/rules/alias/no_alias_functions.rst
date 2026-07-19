@@ -4,13 +4,18 @@ Rule ``no_alias_functions``
 
 Master functions shall be used instead of aliases.
 
-Warning
--------
+Warnings
+--------
 
-Using this rule is risky
-~~~~~~~~~~~~~~~~~~~~~~~~
+This rule is RISKY
+~~~~~~~~~~~~~~~~~~
 
 Risky when any of the alias functions are overridden.
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``sets``.
 
 Configuration
 -------------
@@ -116,12 +121,37 @@ Rule sets
 
 The rule is part of the following rule sets:
 
-- `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_
-- `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ with config:
+- `@PHP7x4Migration:risky <./../../ruleSets/PHP7x4MigrationRisky.rst>`_
+- `@PHP8x0Migration:risky <./../../ruleSets/PHP8x0MigrationRisky.rst>`_ with config:
 
   ``['sets' => ['@all']]``
 
-- `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_ with config:
+- `@PHP8x1Migration:risky <./../../ruleSets/PHP8x1MigrationRisky.rst>`_ with config:
+
+  ``['sets' => ['@all']]``
+
+- `@PHP8x2Migration:risky <./../../ruleSets/PHP8x2MigrationRisky.rst>`_ with config:
+
+  ``['sets' => ['@all']]``
+
+- `@PHP8x3Migration:risky <./../../ruleSets/PHP8x3MigrationRisky.rst>`_ with config:
+
+  ``['sets' => ['@all']]``
+
+- `@PHP8x4Migration:risky <./../../ruleSets/PHP8x4MigrationRisky.rst>`_ with config:
+
+  ``['sets' => ['@all']]``
+
+- `@PHP8x5Migration:risky <./../../ruleSets/PHP8x5MigrationRisky.rst>`_ with config:
+
+  ``['sets' => ['@all']]``
+
+- `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_ *(deprecated)*
+- `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ *(deprecated)* with config:
+
+  ``['sets' => ['@all']]``
+
+- `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_ *(deprecated)* with config:
 
   ``['sets' => ['@all']]``
 

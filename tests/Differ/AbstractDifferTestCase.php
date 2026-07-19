@@ -15,25 +15,28 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Differ;
 
 use PhpCsFixer\Differ\DifferInterface;
+use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\TestCase;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractDifferTestCase extends TestCase
 {
     final public function testIsDiffer(): void
     {
-        $className = preg_replace(
+        $className = Preg::replace(
             '/Test$/',
             '',
             str_replace(
                 'PhpCsFixer\Tests\Differ\\',
                 'PhpCsFixer\Differ\\',
-                static::class
-            )
+                static::class,
+            ),
         );
 
         $differ = new $className();

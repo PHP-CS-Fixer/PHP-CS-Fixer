@@ -14,23 +14,33 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 
+use PhpCsFixer\AbstractFunctionReferenceFixer;
+use PhpCsFixer\Fixer\LanguageConstruct\DirConstantFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
- * @author Vladimir Reznichenko <kalessil@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\AbstractFunctionReferenceFixer
  * @covers \PhpCsFixer\Fixer\LanguageConstruct\DirConstantFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\LanguageConstruct\DirConstantFixer>
+ *
+ * @author Vladimir Reznichenko <kalessil@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AbstractFunctionReferenceFixer::class)]
+#[CoversClass(DirConstantFixer::class)]
 final class DirConstantFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -188,8 +198,9 @@ final class DirConstantFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @requires PHP <8.0
+     * @requires PHP < 8.0.0
      */
+    #[RequiresPhp('< 8.0.0')]
     public function testFixPre80(): void
     {
         $this->doTest(
@@ -209,7 +220,7 @@ dirname# B
 __FILE__# D
 )# E
 ;# F
-'
+',
         );
     }
 }

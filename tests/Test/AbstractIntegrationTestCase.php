@@ -30,10 +30,11 @@ use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * Integration test base class.
@@ -75,6 +76,8 @@ use Symfony\Component\Finder\SplFileInfo;
  *     By default test is run on all supported operating systems.
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 abstract class AbstractIntegrationTestCase extends TestCase
 {
@@ -133,6 +136,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
      *
      * @group legacy
      */
+    #[DataProvider('provideIntegrationCases')]
+    #[Group('legacy')]
     public function testIntegration(IntegrationCase $case): void
     {
         foreach ($case->getSettings()['deprecations'] as $deprecation) {
@@ -151,8 +156,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
                 $case->getConfig(),
                 $case->getRuleset(),
                 $case->getExpectedCode(),
-                null
-            )
+                null,
+            ),
         );
     }
 
@@ -165,20 +170,20 @@ abstract class AbstractIntegrationTestCase extends TestCase
     {
         $dir = static::getFixturesDir();
         $fixturesDir = realpath($dir);
+        \assert(\is_string($fixturesDir));
 
         if (!is_dir($fixturesDir)) {
-            throw new \UnexpectedValueException(\sprintf('Given fixture dir "%s" is not a directory.', \is_string($fixturesDir) ? $fixturesDir : $dir));
+            throw new \UnexpectedValueException(\sprintf('Given fixture dir "%s" is not a directory.', $fixturesDir));
         }
 
         $factory = static::createIntegrationCaseFactory();
 
-        /** @var SplFileInfo $file */
         foreach (Finder::create()->files()->in($fixturesDir) as $file) {
             if ('test' !== $file->getExtension()) {
                 continue;
             }
 
-            $relativePath = substr($file->getPathname(), \strlen(realpath(__DIR__.'/../../')) + 1);
+            $relativePath = substr($file->getPathname(), \strlen((string) realpath(__DIR__.'/../../')) + 1);
 
             yield $relativePath => [$factory->create($file)];
         }
@@ -224,14 +229,14 @@ abstract class AbstractIntegrationTestCase extends TestCase
             self::markTestSkipped(\sprintf('PHP lower than %d is required for "%s", current "%d".', $phpUpperLimit, $case->getFileName(), \PHP_VERSION_ID));
         }
 
-        if (!\in_array(PHP_OS_FAMILY, $case->getRequirement('os'), true)) {
+        if (!\in_array(\PHP_OS_FAMILY, $case->getRequirement('os'), true)) {
             self::markTestSkipped(
                 \sprintf(
                     'Unsupported OS (%s) for "%s", allowed are: %s.',
-                    PHP_OS,
+                    \PHP_OS,
                     $case->getFileName(),
-                    implode(', ', $case->getRequirement('os'))
-                )
+                    implode(', ', $case->getRequirement('os')),
+                ),
             );
         }
 
@@ -256,7 +261,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
             $errorsManager,
             $this->linter,
             false,
-            new NullCacheManager()
+            new NullCacheManager(),
         );
 
         Tokens::clearCache();
@@ -282,15 +287,18 @@ abstract class AbstractIntegrationTestCase extends TestCase
                     $case->getTitle(),
                     $case->getFileName(),
                     null === $changed ? '[None]' : implode(',', $changed['appliedFixers']),
-                    null === $changed ? '[None]' : $changed['diff']
-                )
+                    null === $changed ? '[None]' : $changed['diff'],
+                ),
             );
 
             return;
         }
 
         self::assertNotEmpty($changed, \sprintf('Expected changes made to test "%s" in "%s".', $case->getTitle(), $case->getFileName()));
+
         $fixedInputCode = file_get_contents($tmpFile);
+        self::assertIsString($fixedInputCode);
+
         self::assertThat(
             $fixedInputCode,
             new IsIdenticalString($expected),
@@ -298,8 +306,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
                 "Expected changes do not match result for \"%s\" in \"%s\".\nFixers applied:\n%s.",
                 $case->getTitle(),
                 $case->getFileName(),
-                implode(',', $changed['appliedFixers'])
-            )
+                implode(',', $changed['appliedFixers']),
+            ),
         );
 
         if (1 < \count($fixers)) {
@@ -316,12 +324,14 @@ abstract class AbstractIntegrationTestCase extends TestCase
                 $errorsManager,
                 $this->linter,
                 false,
-                new NullCacheManager()
+                new NullCacheManager(),
             );
 
             Tokens::clearCache();
             $runner->fix();
+
             $fixedInputCodeWithReversedFixers = file_get_contents($tmpFile);
+            self::assertIsString($fixedInputCodeWithReversedFixers);
 
             static::assertRevertedOrderFixing($case, $fixedInputCode, $fixedInputCodeWithReversedFixers);
         }
@@ -336,12 +346,12 @@ abstract class AbstractIntegrationTestCase extends TestCase
                 1,
                 \count(array_unique(array_map(
                     static fn (FixerInterface $fixer): int => $fixer->getPriority(),
-                    self::createFixers($case)
+                    self::createFixers($case),
                 ))),
                 \sprintf(
                     'Rules priorities are not differential enough. If rules would be used in reverse order then final output would be different than the expected one. For that, different priorities must be set up for used rules to ensure stable order of them. In "%s".',
-                    $case->getFileName()
-                )
+                    $case->getFileName(),
+                ),
             );
         }
     }
@@ -357,7 +367,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
             ->registerBuiltInFixers()
             ->useRuleSet($case->getRuleset())
             ->setWhitespacesConfig(
-                new WhitespacesFixerConfig($config['indent'], $config['lineEnding'])
+                new WhitespacesFixerConfig($config['indent'], $config['lineEnding']),
             )
             ->getFixers()
         ;
@@ -377,7 +387,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
                 null === $source ? '' : $source->getMessage(),
                 $error->getDiff(),
                 implode(', ', $error->getAppliedFixers()),
-                $source->getTraceAsString()
+                $source->getTraceAsString(),
             );
         }
 
@@ -390,7 +400,9 @@ abstract class AbstractIntegrationTestCase extends TestCase
 
         if (null === $linter) {
             $linter = new CachingLinter(
-                getenv('FAST_LINT_TEST_CASES') ? new Linter() : new ProcessLinter()
+                filter_var(getenv('PHP_CS_FIXER_FAST_LINT_TEST_CASES'), \FILTER_VALIDATE_BOOLEAN)
+                    ? new Linter()
+                    : new ProcessLinter(),
             );
         }
 

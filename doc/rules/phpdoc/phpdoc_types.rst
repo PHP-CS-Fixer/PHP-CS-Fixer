@@ -4,8 +4,26 @@ Rule ``phpdoc_types``
 
 The correct case must be used for standard PHP types in PHPDoc.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``exclude``,
+``groups``.
+
 Configuration
 -------------
+
+``exclude``
+~~~~~~~~~~~
+
+List of types to exclude from fixing, regardless of groups.
+
+Allowed values: a subset of ``['$this', 'array', 'bool', 'boolean', 'callable', 'double', 'false', 'float', 'int', 'integer', 'iterable', 'mixed', 'null', 'object', 'parent', 'resource', 'scalar', 'self', 'static', 'string', 'true', 'void']``
+
+Default value: ``[]``
 
 ``groups``
 ~~~~~~~~~~
@@ -52,6 +70,23 @@ With configuration: ``['groups' => ['simple', 'alias']]``.
    + * @param bool $foo
      *
      * @return MIXED
+     */
+
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['exclude' => ['resource']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    /**
+     * @param Resource $foo
+     *
+   - * @return VOID
+   + * @return void
      */
 
 Rule sets

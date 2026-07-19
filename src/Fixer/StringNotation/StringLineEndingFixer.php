@@ -27,12 +27,14 @@ use PhpCsFixer\Tokenizer\Tokens;
  * Fixes the line endings in multi-line strings.
  *
  * @author Ilija Tovilo <ilija.tovilo@me.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class StringLineEndingFixer extends AbstractFixer implements WhitespacesAwareFixerInterface
 {
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE, T_INLINE_HTML]);
+        return $tokens->isAnyTokenKindsFound([\T_CONSTANT_ENCAPSED_STRING, \T_ENCAPSED_AND_WHITESPACE, \T_INLINE_HTML]);
     }
 
     public function isRisky(): bool
@@ -46,11 +48,11 @@ final class StringLineEndingFixer extends AbstractFixer implements WhitespacesAw
             'All multi-line strings must use correct line ending.',
             [
                 new CodeSample(
-                    "<?php \$a = 'my\r\nmulti\nline\r\nstring';\r\n"
+                    "<?php \$a = 'my\r\nmulti\nline\r\nstring';\r\n",
                 ),
             ],
             null,
-            'Changing the line endings of multi-line strings might affect string comparisons and outputs.'
+            'Changing the line endings of multi-line strings might affect string comparisons and outputs.',
         );
     }
 
@@ -59,7 +61,7 @@ final class StringLineEndingFixer extends AbstractFixer implements WhitespacesAw
         $ending = $this->whitespacesConfig->getLineEnding();
 
         foreach ($tokens as $tokenIndex => $token) {
-            if (!$token->isGivenKind([T_CONSTANT_ENCAPSED_STRING, T_ENCAPSED_AND_WHITESPACE, T_INLINE_HTML])) {
+            if (!$token->isGivenKind([\T_CONSTANT_ENCAPSED_STRING, \T_ENCAPSED_AND_WHITESPACE, \T_INLINE_HTML])) {
                 continue;
             }
 
@@ -68,7 +70,7 @@ final class StringLineEndingFixer extends AbstractFixer implements WhitespacesAw
                 Preg::replace(
                     '#\R#u',
                     $ending,
-                    $token->getContent()
+                    $token->getContent(),
                 ),
             ]);
         }

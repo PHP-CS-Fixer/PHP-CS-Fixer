@@ -17,12 +17,18 @@ namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Tokenizer\Analyzer\ClassyAnalyzer
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ClassyAnalyzer::class)]
 final class ClassyAnalyzerTest extends TestCase
 {
     /**
@@ -30,6 +36,7 @@ final class ClassyAnalyzerTest extends TestCase
      *
      * @dataProvider provideIsClassyInvocationCases
      */
+    #[DataProvider('provideIsClassyInvocationCases')]
     public function testIsClassyInvocation(string $source, array $expected): void
     {
         self::assertClassyInvocation($source, $expected);
@@ -183,8 +190,10 @@ final class ClassyAnalyzerTest extends TestCase
      *
      * @dataProvider provideIsClassyInvocation80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideIsClassyInvocation80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testIsClassyInvocation80(string $source, array $expected): void
     {
         self::assertClassyInvocation($source, $expected);
@@ -246,8 +255,10 @@ final class ClassyAnalyzerTest extends TestCase
      *
      * @dataProvider provideIsClassyInvocation81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideIsClassyInvocation81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testIsClassyInvocation81(string $source, array $expected): void
     {
         self::assertClassyInvocation($source, $expected);

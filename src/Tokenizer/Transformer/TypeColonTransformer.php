@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tokenizer\Transformer;
 
 use PhpCsFixer\Tokenizer\AbstractTransformer;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 
@@ -25,6 +26,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TypeColonTransformer extends AbstractTransformer
 {
@@ -48,10 +51,7 @@ final class TypeColonTransformer extends AbstractTransformer
 
         $endIndex = $tokens->getPrevMeaningfulToken($index);
 
-        if (
-            \defined('T_ENUM') // @TODO: drop condition when PHP 8.1+ is required
-            && $tokens[$tokens->getPrevMeaningfulToken($endIndex)]->isGivenKind(T_ENUM)
-        ) {
+        if ($tokens[$tokens->getPrevMeaningfulToken($endIndex)]->isGivenKind(FCT::T_ENUM)) {
             $tokens[$index] = new Token([CT::T_TYPE_COLON, ':']);
 
             return;
@@ -61,17 +61,17 @@ final class TypeColonTransformer extends AbstractTransformer
             return;
         }
 
-        $startIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $endIndex);
+        $startIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $endIndex);
         $prevIndex = $tokens->getPrevMeaningfulToken($startIndex);
         $prevToken = $tokens[$prevIndex];
 
         // if this could be a function name we need to take one more step
-        if ($prevToken->isGivenKind(T_STRING)) {
+        if ($prevToken->isGivenKind(\T_STRING)) {
             $prevIndex = $tokens->getPrevMeaningfulToken($prevIndex);
             $prevToken = $tokens[$prevIndex];
         }
 
-        if ($prevToken->isGivenKind([T_FUNCTION, CT::T_RETURN_REF, CT::T_USE_LAMBDA, T_FN])) {
+        if ($prevToken->isGivenKind([\T_FUNCTION, CT::T_RETURN_REF, CT::T_USE_LAMBDA, \T_FN])) {
             $tokens[$index] = new Token([CT::T_TYPE_COLON, ':']);
         }
     }

@@ -20,6 +20,8 @@ use Fidry\CpuCoreCounter\Finder\FinderRegistry;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ParallelConfigFactory
 {
@@ -55,7 +57,7 @@ final class ParallelConfigFactory
         return new ParallelConfig(
             $available->availableCpus,
             $filesPerProcess ?? ParallelConfig::DEFAULT_FILES_PER_PROCESS,
-            $processTimeout ?? ParallelConfig::DEFAULT_PROCESS_TIMEOUT
+            $processTimeout ?? ParallelConfig::DEFAULT_PROCESS_TIMEOUT,
         );
     }
 }

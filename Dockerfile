@@ -1,10 +1,10 @@
-ARG PHP_VERSION=8.4
-ARG ALPINE_VERSION=3.21
+ARG PHP_VERSION=8.5
+ARG ALPINE_VERSION=3.24
 
-FROM alpine:3.21.3 AS sphinx-lint
+FROM alpine:3.24 AS sphinx-lint
 
 RUN apk add python3 py3-pip git \
-    && pip install --break-system-packages sphinx-lint
+    && PIP_ROOT_USER_ACTION=ignore pip install --break-system-packages sphinx-lint
 
 # This must be the same AS in CI's job, but `--null` must be changed to `-0` (Alpine)
 CMD git ls-files --cached -z -- '*.rst' \
@@ -52,7 +52,7 @@ RUN if [ ! -z "$DOCKER_GROUP_ID" ] && [ ! getent group "${DOCKER_GROUP_ID}" > /d
     fi \
     && apk add git \
     && sync \
-    && install-php-extensions pcov xdebug-${PHP_XDEBUG_VERSION} \
+    && if [ ! -z "$PHP_XDEBUG_VERSION" ] ; then install-php-extensions pcov xdebug-${PHP_XDEBUG_VERSION}; fi \
     && curl --location --output /usr/local/bin/xdebug https://github.com/julienfalque/xdebug/releases/download/v2.0.0/xdebug \
     && chmod +x /usr/local/bin/xdebug
 

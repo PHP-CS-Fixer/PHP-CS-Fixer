@@ -21,10 +21,14 @@ use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOptionInterface;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\RuleSet\RuleSet;
-use PhpCsFixer\RuleSet\RuleSetDescriptionInterface;
+use PhpCsFixer\RuleSet\RuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -34,7 +38,11 @@ use PhpCsFixer\Tests\TestCase;
  * @group legacy
  *
  * @covers \PhpCsFixer\RuleSet\RuleSet
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[Group('legacy')]
+#[CoversClass(RuleSet::class)]
 final class RuleSetTest extends TestCase
 {
     /**
@@ -52,6 +60,8 @@ final class RuleSetTest extends TestCase
      *
      * @dataProvider provideAllRulesFromSetsCases
      */
+    #[DataProvider('provideAllRulesFromSetsCases')]
+    #[IgnoreDeprecations]
     public function testIfAllRulesInSetsExists(string $setName, string $ruleName, $ruleConfig): void
     {
         $factory = new FixerFactory();
@@ -69,6 +79,7 @@ final class RuleSetTest extends TestCase
             return; // rule doesn't need configuration.
         }
 
+        \assert(\array_key_exists($ruleName, $fixers));
         $fixer = $fixers[$ruleName];
         self::assertInstanceOf(ConfigurableFixerInterface::class, $fixer, \sprintf('RuleSet "%s" contains configuration for rule "%s" which cannot be configured.', $setName, $ruleName));
 
@@ -84,11 +95,21 @@ final class RuleSetTest extends TestCase
      *
      * @dataProvider provideAllRulesFromSetsCases
      */
+    #[DataProvider('provideAllRulesFromSetsCases')]
+    #[IgnoreDeprecations]
     public function testThatDefaultConfigIsNotPassed(string $setName, string $ruleName, $ruleConfig): void
     {
         $fixer = TestCaseUtils::getFixerByName($ruleName);
 
         if (!$fixer instanceof ConfigurableFixerInterface || \is_bool($ruleConfig)) {
+            $this->expectNotToPerformAssertions();
+
+            return;
+        }
+
+        if (\in_array($ruleName, [
+            'type_declaration_spaces', // @TODO v4: default value for this rule will changed, remove it when they are changed
+        ], true)) {
             $this->expectNotToPerformAssertions();
 
             return;
@@ -107,14 +128,18 @@ final class RuleSetTest extends TestCase
         self::assertNotSame(
             $this->sortNestedArray($defaultConfig, $ruleName),
             $this->sortNestedArray($ruleConfig, $ruleName),
-            \sprintf('Rule "%s" (in RuleSet "%s") has default config passed.', $ruleName, $setName)
+            \sprintf('Rule "%s" (in RuleSet "%s") has default config passed.', $ruleName, $setName),
         );
     }
 
     /**
+     * @param array<string, mixed>|true $ruleConfig
+     *
      * @dataProvider provideAllRulesFromSetsCases
      */
-    public function testThatThereIsNoDeprecatedFixerInRuleSet(string $setName, string $ruleName): void
+    #[DataProvider('provideAllRulesFromSetsCases')]
+    #[IgnoreDeprecations]
+    public function testThatThereIsNoDeprecatedFixerInRuleSet(string $setName, string $ruleName, $ruleConfig): void
     {
         $fixer = TestCaseUtils::getFixerByName($ruleName);
 
@@ -180,7 +205,7 @@ final class RuleSetTest extends TestCase
                 'line_ending' => true,
                 'strict_comparison' => true,
             ],
-            $ruleSet->getRules()
+            $ruleSet->getRules(),
         );
     }
 
@@ -197,7 +222,7 @@ final class RuleSetTest extends TestCase
                 'strict_comparison' => true,
                 'ternary_to_null_coalescing' => true,
             ],
-            $ruleSet->getRules()
+            $ruleSet->getRules(),
         );
     }
 
@@ -214,7 +239,7 @@ final class RuleSetTest extends TestCase
                 'strict_comparison' => true,
                 'ternary_to_null_coalescing' => true,
             ],
-            $ruleSet->getRules()
+            $ruleSet->getRules(),
         );
     }
 
@@ -223,6 +248,7 @@ final class RuleSetTest extends TestCase
      *
      * @dataProvider provideRiskyRulesInSetCases
      */
+    #[DataProvider('provideRiskyRulesInSetCases')]
     public function testRiskyRulesInSet(array $set, bool $safe): void
     {
         /** @TODO 4.0 Remove this expectations */
@@ -257,8 +283,8 @@ final class RuleSetTest extends TestCase
             \sprintf(
                 'Set should only contain %s fixers, got: \'%s\'.',
                 $safe ? 'safe' : 'risky',
-                implode('\', \'', $fixerNames)
-            )
+                implode('\', \'', $fixerNames),
+            ),
         );
     }
 
@@ -289,7 +315,7 @@ final class RuleSetTest extends TestCase
         $this->expectExceptionMessageMatches('#^Nested rule set "@PSR1" configuration must be a boolean\.$#');
 
         new RuleSet(
-            ['@PSR1' => ['@PSR2' => 'no']]
+            ['@PSR1' => ['@PSR2' => 'no']],
         );
     }
 
@@ -306,7 +332,8 @@ final class RuleSetTest extends TestCase
     /**
      * @dataProvider provideDuplicateRuleConfigurationInSetDefinitionsCases
      */
-    public function testDuplicateRuleConfigurationInSetDefinitions(RuleSetDescriptionInterface $set): void
+    #[DataProvider('provideDuplicateRuleConfigurationInSetDefinitionsCases')]
+    public function testDuplicateRuleConfigurationInSetDefinitions(RuleSetDefinitionInterface $set): void
     {
         $rules = [];
         $setRules = [];
@@ -350,11 +377,11 @@ final class RuleSetTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{RuleSetDescriptionInterface}>
+     * @return iterable<string, array{RuleSetDefinitionInterface}>
      */
     public static function provideDuplicateRuleConfigurationInSetDefinitionsCases(): iterable
     {
-        foreach (RuleSets::getSetDefinitions() as $name => $set) {
+        foreach (RuleSets::getBuiltInSetDefinitions() as $name => $set) {
             yield $name => [$set];
         }
     }
@@ -362,12 +389,13 @@ final class RuleSetTest extends TestCase
     /**
      * @dataProvider providePhpUnitTargetVersionHasSetCases
      */
+    #[DataProvider('providePhpUnitTargetVersionHasSetCases')]
     public function testPhpUnitTargetVersionHasSet(string $version): void
     {
         self::assertContains(
-            \sprintf('@PHPUnit%sMigration:risky', str_replace('.', '', $version)),
+            \sprintf('@PHPUnit%sMigration:risky', str_replace('.', 'x', $version)),
             RuleSets::getSetDefinitionNames(),
-            \sprintf('PHPUnit target version %s is missing its set in %s.', $version, RuleSet::class)
+            \sprintf('PHPUnit target version %s is missing its set in %s.', $version, RuleSet::class),
         );
     }
 
@@ -440,7 +468,7 @@ final class RuleSetTest extends TestCase
             if (\is_array($value)) {
                 $this->doSort(
                     $data[$key],
-                    $path.('' !== $path ? '.' : '').$key
+                    $path.('' !== $path ? '.' : '').$key,
                 );
             }
         }

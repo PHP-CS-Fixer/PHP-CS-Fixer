@@ -16,12 +16,16 @@ namespace PhpCsFixer\Tests\Documentation;
 
 use PhpCsFixer\Documentation\RstUtils;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Documentation\RstUtils
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(RstUtils::class)]
 final class RstUtilsTest extends TestCase
 {
     public function testToRst(): void

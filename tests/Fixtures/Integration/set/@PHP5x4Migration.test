@@ -1,0 +1,4 @@
+--TEST--
+Integration of @PHP5x4Migration.
+--RULESET--
+{"@PHP5x4Migration": true}

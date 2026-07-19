@@ -14,22 +14,29 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\StringNotation;
 
+use PhpCsFixer\Fixer\StringNotation\NoTrailingWhitespaceInStringFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
- * @author Gregor Harlan
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\StringNotation\NoTrailingWhitespaceInStringFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\NoTrailingWhitespaceInStringFixer>
+ *
+ * @author Gregor Harlan
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NoTrailingWhitespaceInStringFixer::class)]
 final class NoTrailingWhitespaceInStringFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

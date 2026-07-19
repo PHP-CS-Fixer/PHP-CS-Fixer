@@ -14,23 +14,30 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Import;
 
+use PhpCsFixer\Fixer\Import\SingleLineAfterImportsFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
- * @author Ceeram <ceeram@cakephp.org>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Import\SingleLineAfterImportsFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Import\SingleLineAfterImportsFixer>
+ *
+ * @author Ceeram <ceeram@cakephp.org>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(SingleLineAfterImportsFixer::class)]
 final class SingleLineAfterImportsFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -512,6 +519,7 @@ use some\a\ClassA; use function some\a\fn_a; use const some\c;
     /**
      * @dataProvider provideWithWhitespacesConfigCases
      */
+    #[DataProvider('provideWithWhitespacesConfigCases')]
     public function testWithWhitespacesConfig(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));

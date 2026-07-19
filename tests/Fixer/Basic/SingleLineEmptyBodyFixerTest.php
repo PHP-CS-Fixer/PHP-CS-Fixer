@@ -14,7 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Basic;
 
+use PhpCsFixer\Fixer\Basic\SingleLineEmptyBodyFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -22,12 +26,16 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\Basic\SingleLineEmptyBodyFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Basic\SingleLineEmptyBodyFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(SingleLineEmptyBodyFixer::class)]
 final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -265,10 +273,12 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      *
      * @dataProvider provideFix80Cases
      */
+    #[RequiresPhp('>= 8.0.0')]
+    #[DataProvider('provideFix80Cases')]
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -318,8 +328,10 @@ final class SingleLineEmptyBodyFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

@@ -15,7 +15,7 @@ composer info -D | sort
 # install box/phar
 mkdir -p dev-tools/bin
 if [ ! -x dev-tools/bin/box ]; then
-    wget -O dev-tools/bin/box "https://github.com/box-project/box/releases/download/4.6.2/box.phar"
+    wget -O dev-tools/bin/box "https://github.com/box-project/box/releases/download/4.6.7/box.phar"
     chmod +x dev-tools/bin/box
 fi
 dev-tools/bin/box --version
@@ -26,3 +26,5 @@ dev-tools/bin/box compile
 # revert changes to composer
 git checkout composer.json
 composer update --optimize-autoloader --no-interaction --no-progress --no-scripts -q
+
+printf '\033[0;32mBuild completed\033[0m\n'

@@ -14,7 +14,10 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
+use PhpCsFixer\Fixer\Phpdoc\PhpdocNoUselessInheritdocFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -22,12 +25,16 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocNoUselessInheritdocFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocNoUselessInheritdocFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(PhpdocNoUselessInheritdocFixer::class)]
 final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -274,26 +281,6 @@ final class PhpdocNoUselessInheritdocFixerTest extends AbstractFixerTestCase
                     use T;
 
                     /** @inheritdoc */
-                    public function importFromTrait()
-                    {
-                    }
-                }
-                ',
-            '<?php
-                class B
-                {
-                    /** @inheritDoc */
-                    public function falseImportFromTrait()
-                    {
-                    }
-                }
-
-                /** @inheritDoc */
-                class A
-                {
-                    use T;
-
-                    /** @inheritDoc */
                     public function importFromTrait()
                     {
                     }

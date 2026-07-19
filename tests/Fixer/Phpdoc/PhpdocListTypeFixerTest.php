@@ -14,7 +14,10 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
+use PhpCsFixer\Fixer\Phpdoc\PhpdocListTypeFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -22,12 +25,16 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocListTypeFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocListTypeFixer>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(PhpdocListTypeFixer::class)]
 final class PhpdocListTypeFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -95,6 +102,23 @@ final class PhpdocListTypeFixerTest extends AbstractFixerTestCase
         yield [
             '<?php /** @var list<int<1, 10>> */',
             '<?php /** @var array<int<1, 10>> */',
+        ];
+
+        yield [<<<'EOD'
+            <?php
+            /** @var list<Foo> */
+            /** @var \SplFixedArray<Foo> */
+            /** @var \KůňArray<Foo> */
+            /** @var \My_Array<Foo> */
+            /** @var \My2Array<Foo> */
+            EOD, <<<'EOD'
+            <?php
+            /** @var array<Foo> */
+            /** @var \SplFixedArray<Foo> */
+            /** @var \KůňArray<Foo> */
+            /** @var \My_Array<Foo> */
+            /** @var \My2Array<Foo> */
+            EOD,
         ];
     }
 }

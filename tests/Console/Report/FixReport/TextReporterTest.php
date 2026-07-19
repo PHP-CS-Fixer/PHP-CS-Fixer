@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Console\Report\FixReport;
 
 use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\Console\Report\FixReport\TextReporter;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @author Boris Gorbylev <ekho@ekho.name>
@@ -24,20 +25,30 @@ use PhpCsFixer\Console\Report\FixReport\TextReporter;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Report\FixReport\TextReporter
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(TextReporter::class)]
 final class TextReporterTest extends AbstractReporterTestCase
 {
     protected static function createNoErrorReport(): string
     {
-        return <<<'TEXT'
-            TEXT;
+        return str_replace(
+            "\n",
+            \PHP_EOL,
+            <<<'TEXT'
+
+                Fixed 0 of 10 files in 0.000 seconds, 0.00 MB memory used
+
+                TEXT,
+        );
     }
 
     protected static function createSimpleReport(): string
     {
         return str_replace(
             "\n",
-            PHP_EOL,
+            \PHP_EOL,
             <<<'TEXT'
                    1) someFile.php
                       ---------- begin diff ----------
@@ -55,7 +66,9 @@ final class TextReporterTest extends AbstractReporterTestCase
                       ----------- end diff -----------
 
 
-                TEXT
+                Fixed 1 of 10 files in 0.000 seconds, 0.00 MB memory used
+
+                TEXT,
         );
     }
 
@@ -63,7 +76,7 @@ final class TextReporterTest extends AbstractReporterTestCase
     {
         return str_replace(
             "\n",
-            PHP_EOL,
+            \PHP_EOL,
             <<<'TEXT'
                    1) someFile.php
                       ---------- begin diff ----------
@@ -81,7 +94,9 @@ final class TextReporterTest extends AbstractReporterTestCase
                       ----------- end diff -----------
 
 
-                TEXT
+                Fixed 1 of 10 files in 0.000 seconds, 0.00 MB memory used
+
+                TEXT,
         );
     }
 
@@ -89,11 +104,13 @@ final class TextReporterTest extends AbstractReporterTestCase
     {
         return str_replace(
             "\n",
-            PHP_EOL,
+            \PHP_EOL,
             <<<'TEXT'
                    1) someFile.php (some_fixer_name_here_1, some_fixer_name_here_2)
 
-                TEXT
+                Fixed 1 of 10 files in 0.000 seconds, 0.00 MB memory used
+
+                TEXT,
         );
     }
 
@@ -101,7 +118,7 @@ final class TextReporterTest extends AbstractReporterTestCase
     {
         return str_replace(
             "\n",
-            PHP_EOL,
+            \PHP_EOL,
             <<<'TEXT'
                    1) someFile.php
                       ---------- begin diff ----------
@@ -121,7 +138,7 @@ final class TextReporterTest extends AbstractReporterTestCase
 
                 Fixed 1 of 10 files in 1.234 seconds, 2.50 MB memory used
 
-                TEXT
+                TEXT,
         );
     }
 
@@ -129,7 +146,7 @@ final class TextReporterTest extends AbstractReporterTestCase
     {
         return str_replace(
             "\n",
-            PHP_EOL,
+            \PHP_EOL,
             <<<'TEXT'
                    1) someFile.php (<comment>some_fixer_name_here_1, some_fixer_name_here_2</comment>)
                 <comment>      ---------- begin diff ----------</comment>
@@ -144,7 +161,20 @@ final class TextReporterTest extends AbstractReporterTestCase
 
                 Found 2 of 10 files that can be fixed in 1.234 seconds, 2.50 MB memory used
 
-                TEXT
+                TEXT,
+        );
+    }
+
+    protected static function createDryRunWithNoTimeReport(): string
+    {
+        return str_replace(
+            "\n",
+            \PHP_EOL,
+            <<<'TEXT'
+
+                Found 0 of 1 files that can be fixed in 0.000 seconds, 2.50 MB memory used
+
+                TEXT,
         );
     }
 

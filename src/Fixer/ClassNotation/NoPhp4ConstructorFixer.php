@@ -23,7 +23,11 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
+ * @phpstan-import-type _PhpTokenPrototypePartial from Token
+ *
  * @author Matteo Beccati <matteo@beccati.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class NoPhp4ConstructorFixer extends AbstractFixer
 {
@@ -32,17 +36,21 @@ final class NoPhp4ConstructorFixer extends AbstractFixer
         return new FixerDefinition(
             'Convert PHP4-style constructors to `__construct`.',
             [
-                new CodeSample('<?php
-class Foo
-{
-    public function Foo($bar)
-    {
-    }
-}
-'),
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        class Foo
+                        {
+                            public function Foo($bar)
+                            {
+                            }
+                        }
+
+                        PHP,
+                ),
             ],
             null,
-            'Risky when old style constructor being fixed is overridden or overrides parent one.'
+            'Risky when old style constructor being fixed is overridden or overrides parent one.',
         );
     }
 
@@ -58,7 +66,7 @@ class Foo
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_CLASS);
+        return $tokens->isTokenKindFound(\T_CLASS);
     }
 
     public function isRisky(): bool
@@ -69,10 +77,11 @@ class Foo
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
-        $classes = array_keys($tokens->findGivenKind(T_CLASS));
+        $classes = array_keys($tokens->findGivenKind(\T_CLASS));
         $numClasses = \count($classes);
 
         for ($i = 0; $i < $numClasses; ++$i) {
+            \assert(isset($classes[$i]));
             $index = $classes[$i];
 
             // is it an anonymous class definition?
@@ -81,7 +90,7 @@ class Foo
             }
 
             // is it inside a namespace?
-            $nspIndex = $tokens->getPrevTokenOfKind($index, [[T_NAMESPACE, 'namespace']]);
+            $nspIndex = $tokens->getPrevTokenOfKind($index, [[\T_NAMESPACE, 'namespace']]);
 
             if (null !== $nspIndex) {
                 $nspIndex = $tokens->getNextMeaningfulToken($nspIndex);
@@ -97,11 +106,12 @@ class Foo
                     }
 
                     // the index points to the { of a block-namespace
-                    $nspEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nspIndex);
+                    $nspEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $nspIndex);
 
                     if ($index < $nspEnd) {
                         // the class is inside a block namespace, skip other classes that might be in it
                         for ($j = $i + 1; $j < $numClasses; ++$j) {
+                            \assert(isset($classes[$j]));
                             if ($classes[$j] < $nspEnd) {
                                 ++$i;
                             }
@@ -116,7 +126,7 @@ class Foo
             $classNameIndex = $tokens->getNextMeaningfulToken($index);
             $className = $tokens[$classNameIndex]->getContent();
             $classStart = $tokens->getNextTokenOfKind($classNameIndex, ['{']);
-            $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classStart);
+            $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $classStart);
 
             $this->fixConstructor($tokens, $className, $classStart, $classEnd);
             $this->fixParent($tokens, $classStart, $classEnd);
@@ -139,7 +149,7 @@ class Foo
             return; // no PHP4-constructor!
         }
 
-        if (isset($php4['modifiers'][T_ABSTRACT]) || isset($php4['modifiers'][T_STATIC])) {
+        if (isset($php4['modifiers'][\T_ABSTRACT]) || isset($php4['modifiers'][\T_STATIC])) {
             return; // PHP4 constructor can't be abstract or static
         }
 
@@ -147,7 +157,7 @@ class Foo
 
         if (null === $php5) {
             // no PHP5-constructor, we can rename the old one to __construct
-            $tokens[$php4['nameIndex']] = new Token([T_STRING, '__construct']);
+            $tokens[$php4['nameIndex']] = new Token([\T_STRING, '__construct']);
 
             // in some (rare) cases we might have just created an infinite recursion issue
             $this->fixInfiniteRecursion($tokens, $php4['bodyIndex'], $php4['endIndex']);
@@ -180,7 +190,7 @@ class Foo
                 }
 
                 // rename the PHP4 one to __construct
-                $tokens[$php4['nameIndex']] = new Token([T_STRING, '__construct']);
+                $tokens[$php4['nameIndex']] = new Token([\T_STRING, '__construct']);
 
                 return;
             }
@@ -197,53 +207,55 @@ class Foo
     private function fixParent(Tokens $tokens, int $classStart, int $classEnd): void
     {
         // check calls to the parent constructor
-        foreach ($tokens->findGivenKind(T_EXTENDS) as $index => $token) {
+        foreach ($tokens->findGivenKind(\T_EXTENDS) as $index => $token) {
             $parentIndex = $tokens->getNextMeaningfulToken($index);
             $parentClass = $tokens[$parentIndex]->getContent();
 
             // using parent::ParentClassName() or ParentClassName::ParentClassName()
             $parentSeq = $tokens->findSequence([
-                [T_STRING],
-                [T_DOUBLE_COLON],
-                [T_STRING, $parentClass],
+                [\T_STRING],
+                [\T_DOUBLE_COLON],
+                [\T_STRING, $parentClass],
                 '(',
             ], $classStart, $classEnd, [2 => false]);
 
             if (null !== $parentSeq) {
                 // we only need indices
                 $parentSeq = array_keys($parentSeq);
+                \assert(isset($parentSeq[2]));
 
                 // match either of the possibilities
-                if ($tokens[$parentSeq[0]]->equalsAny([[T_STRING, 'parent'], [T_STRING, $parentClass]], false)) {
+                if ($tokens[$parentSeq[0]]->equalsAny([[\T_STRING, 'parent'], [\T_STRING, $parentClass]], false)) {
                     // replace with parent::__construct
-                    $tokens[$parentSeq[0]] = new Token([T_STRING, 'parent']);
-                    $tokens[$parentSeq[2]] = new Token([T_STRING, '__construct']);
+                    $tokens[$parentSeq[0]] = new Token([\T_STRING, 'parent']);
+                    $tokens[$parentSeq[2]] = new Token([\T_STRING, '__construct']);
                 }
             }
 
             foreach (Token::getObjectOperatorKinds() as $objectOperatorKind) {
                 // using $this->ParentClassName()
                 $parentSeq = $tokens->findSequence([
-                    [T_VARIABLE, '$this'],
+                    [\T_VARIABLE, '$this'],
                     [$objectOperatorKind],
-                    [T_STRING, $parentClass],
+                    [\T_STRING, $parentClass],
                     '(',
                 ], $classStart, $classEnd, [2 => false]);
 
                 if (null !== $parentSeq) {
                     // we only need indices
                     $parentSeq = array_keys($parentSeq);
+                    \assert(isset($parentSeq[1], $parentSeq[2]));
 
                     // replace call with parent::__construct()
                     $tokens[$parentSeq[0]] = new Token([
-                        T_STRING,
+                        \T_STRING,
                         'parent',
                     ]);
                     $tokens[$parentSeq[1]] = new Token([
-                        T_DOUBLE_COLON,
+                        \T_DOUBLE_COLON,
                         '::',
                     ]);
-                    $tokens[$parentSeq[2]] = new Token([T_STRING, '__construct']);
+                    $tokens[$parentSeq[2]] = new Token([\T_STRING, '__construct']);
                 }
             }
         }
@@ -261,9 +273,9 @@ class Foo
     {
         foreach (Token::getObjectOperatorKinds() as $objectOperatorKind) {
             $seq = [
-                [T_VARIABLE, '$this'],
+                [\T_VARIABLE, '$this'],
                 [$objectOperatorKind],
-                [T_STRING, '__construct'],
+                [\T_STRING, '__construct'],
             ];
 
             while (true) {
@@ -274,9 +286,10 @@ class Foo
                 }
 
                 $callSeq = array_keys($callSeq);
+                \assert(isset($callSeq[1]));
 
-                $tokens[$callSeq[0]] = new Token([T_STRING, 'parent']);
-                $tokens[$callSeq[1]] = new Token([T_DOUBLE_COLON, '::']);
+                $tokens[$callSeq[0]] = new Token([\T_STRING, 'parent']);
+                $tokens[$callSeq[1]] = new Token([\T_DOUBLE_COLON, '::']);
             }
         }
     }
@@ -290,7 +303,7 @@ class Foo
      * @param int    $startIndex function/method start index
      * @param int    $bodyIndex  function/method body index
      *
-     * @return array{list<list<array{int, string}|int|string>>, array{3: false}}
+     * @return array{non-empty-list<non-empty-list<_PhpTokenPrototypePartial>>, array{3: false}}
      */
     private function getWrapperMethodSequence(Tokens $tokens, string $method, int $startIndex, int $bodyIndex): array
     {
@@ -300,9 +313,9 @@ class Foo
             // initialise sequence as { $this->{$method}(
             $seq = [
                 '{',
-                [T_VARIABLE, '$this'],
+                [\T_VARIABLE, '$this'],
                 [$objectOperatorKind],
-                [T_STRING, $method],
+                [\T_STRING, $method],
                 '(',
             ];
 
@@ -311,7 +324,7 @@ class Foo
 
             while (true) {
                 // find the next variable name
-                $index = $tokens->getNextTokenOfKind($index, [[T_VARIABLE]]);
+                $index = $tokens->getNextTokenOfKind($index, [[\T_VARIABLE]]);
 
                 if (null === $index || $index >= $bodyIndex) {
                     // we've reached the body already
@@ -324,7 +337,7 @@ class Foo
                 }
 
                 // append variable name to the sequence
-                $seq[] = [T_VARIABLE, $tokens[$index]->getContent()];
+                $seq[] = [\T_VARIABLE, $tokens[$index]->getContent()];
             }
 
             // almost done, close the sequence with ); }
@@ -364,8 +377,8 @@ class Foo
     private function findFunction(Tokens $tokens, string $name, int $startIndex, int $endIndex): ?array
     {
         $function = $tokens->findSequence([
-            [T_FUNCTION],
-            [T_STRING, $name],
+            [\T_FUNCTION],
+            [\T_STRING, $name],
             '(',
         ], $startIndex, $endIndex, false);
 
@@ -375,9 +388,10 @@ class Foo
 
         // keep only the indices
         $function = array_keys($function);
+        \assert(isset($function[1], $function[2]));
 
         // find previous block, saving method modifiers for later use
-        $possibleModifiers = [T_PUBLIC, T_PROTECTED, T_PRIVATE, T_STATIC, T_ABSTRACT, T_FINAL];
+        $possibleModifiers = [\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_STATIC, \T_ABSTRACT, \T_FINAL];
         $modifiers = [];
 
         $prevBlock = $tokens->getPrevMeaningfulToken($function[0]);
@@ -387,14 +401,14 @@ class Foo
             $prevBlock = $tokens->getPrevMeaningfulToken($prevBlock);
         }
 
-        if (isset($modifiers[T_ABSTRACT])) {
+        if (isset($modifiers[\T_ABSTRACT])) {
             // abstract methods have no body
             $bodyStart = null;
             $funcEnd = $tokens->getNextTokenOfKind($function[2], [';']);
         } else {
             // find method body start and the end of the function definition
             $bodyStart = $tokens->getNextTokenOfKind($function[2], ['{']);
-            $funcEnd = null !== $bodyStart ? $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $bodyStart) : null;
+            $funcEnd = null !== $bodyStart ? $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $bodyStart) : null;
         }
 
         return [

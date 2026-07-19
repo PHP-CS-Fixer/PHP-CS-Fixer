@@ -14,29 +14,37 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
+use PhpCsFixer\Fixer\FunctionNotation\UseArrowFunctionsFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
- * @author Gregor Harlan
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\FunctionNotation\UseArrowFunctionsFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\UseArrowFunctionsFixer>
+ *
+ * @author Gregor Harlan
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(UseArrowFunctionsFixer::class)]
 final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<int, array{0: string, 1?: string}>
+     * @return iterable<array{0: string, 1?: string}>
      */
     public static function provideFixCases(): iterable
     {
@@ -225,6 +233,116 @@ final class UseArrowFunctionsFixerTest extends AbstractFixerTestCase
                         CONST_B,
                     ];
                 };
+                PHP,
+        ];
+
+        yield [
+            '<?php
+            foo(
+                fn () => 42
+                        '.'
+            );',
+            '<?php
+            foo(
+                function () {
+                    return 42
+                        ;
+                }
+            );',
+        ];
+
+        yield 'do not convert when closure with use() includes external file' => [
+            '<?php
+$load = \Closure::bind(static function ($path, $env) use ($container, $loader, $resource, $type) {
+    return include $path;
+}, null, null);',
+        ];
+
+        yield 'do not convert when closure with use() includes_once external file' => [
+            '<?php
+$load = function ($path) use ($config) {
+    return include_once $path;
+};',
+        ];
+
+        yield 'do not convert when closure with use() requires external file' => [
+            '<?php
+$load = function ($path) use ($data) {
+    return require $path;
+};',
+        ];
+
+        yield 'do not convert when closure with use() requires_once external file' => [
+            '<?php
+$load = function ($path) use ($settings) {
+    return require_once $path;
+};',
+        ];
+
+        yield 'convert when closure without use() includes external file' => [
+            '<?php
+$load = fn ($path) => include $path;',
+            '<?php
+$load = function ($path) {
+    return include $path;
+};',
+        ];
+
+        yield 'convert when closure with use() does not include external file' => [
+            '<?php
+$load = fn ($path) => $data[$path];',
+            '<?php
+$load = function ($path) use ($data) {
+    return $data[$path];
+};',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix85Cases
+     *
+     * @requires PHP >= 8.5.0
+     */
+    #[DataProvider('provideFix85Cases')]
+    #[RequiresPhp('>= 8.5.0')]
+    public function testFix85(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix85Cases(): iterable
+    {
+        yield 'do not convert closure in attribute' => [
+            <<<'PHP'
+                <?php
+                class Foo {
+                    function f1() {
+                        return fn (int $x): int => 100 - $x;
+                    }
+
+                    #[Bar(callback: static function () { return true; })]
+                    #[Baz(callback: static function (int $i): int { return $i + 100; })]
+                    function f2() {
+                        return static fn (int $x, int $y): int => 2 * $x + 3 * $y;
+                    }
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo {
+                    function f1() {
+                        return function (int $x): int { return 100 - $x; };
+                    }
+
+                    #[Bar(callback: static function () { return true; })]
+                    #[Baz(callback: static function (int $i): int { return $i + 100; })]
+                    function f2() {
+                        return static function (int $x, int $y): int { return 2 * $x + 3 * $y; };
+                    }
+                }
                 PHP,
         ];
     }

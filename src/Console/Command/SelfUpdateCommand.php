@@ -33,12 +33,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
-#[AsCommand(name: 'self-update')]
+#[AsCommand(name: 'self-update', description: 'Update php-cs-fixer.phar to the latest stable version.')]
 final class SelfUpdateCommand extends Command
 {
-    protected static $defaultName = 'self-update';
-
     private NewVersionCheckerInterface $versionChecker;
 
     private ToolInfoInterface $toolInfo;
@@ -50,11 +50,29 @@ final class SelfUpdateCommand extends Command
         ToolInfoInterface $toolInfo,
         PharCheckerInterface $pharChecker
     ) {
-        parent::__construct();
+        parent::__construct('self-update');
+        $this->setDescription('Update php-cs-fixer.phar to the latest stable version.');
 
         $this->versionChecker = $versionChecker;
         $this->toolInfo = $toolInfo;
         $this->pharChecker = $pharChecker;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Override here to only generate the help copy when used.
+     */
+    public function getHelp(): string
+    {
+        return <<<'EOT'
+            The <info>%command.name%</info> command replace your php-cs-fixer.phar by the
+            latest version released on:
+            <comment>https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases</comment>
+
+            <info>$ php php-cs-fixer.phar %command.name%</info>
+
+            EOT;
     }
 
     protected function configure(): void
@@ -64,18 +82,7 @@ final class SelfUpdateCommand extends Command
             ->setDefinition(
                 [
                     new InputOption('--force', '-f', InputOption::VALUE_NONE, 'Force update to next major version if available.'),
-                ]
-            )
-            ->setDescription('Update php-cs-fixer.phar to the latest stable version.')
-            ->setHelp(
-                <<<'EOT'
-                    The <info>%command.name%</info> command replace your php-cs-fixer.phar by the
-                    latest version released on:
-                    <comment>https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases</comment>
-
-                    <info>$ php php-cs-fixer.phar %command.name%</info>
-
-                    EOT
+                ],
             )
         ;
     }
@@ -94,16 +101,20 @@ final class SelfUpdateCommand extends Command
         }
 
         $currentVersion = $this->getApplication()->getVersion();
-        Preg::match('/^v?(?<major>\d+)\./', $currentVersion, $matches);
-        $currentMajor = (int) $matches['major'];
 
         try {
+            if (Preg::match('/^v?(?<major>\d+)\./', $currentVersion, $matches)) {
+                $currentMajor = (int) $matches['major'];
+            } else {
+                throw new \Exception('Unable to determine major version.');
+            }
+
             $latestVersion = $this->versionChecker->getLatestVersion();
             $latestVersionOfCurrentMajor = $this->versionChecker->getLatestVersionOfMajor($currentMajor);
         } catch (\Exception $exception) {
             $output->writeln(\sprintf(
                 '<error>Unable to determine newest version: %s</error>',
-                $exception->getMessage()
+                $exception->getMessage(),
             ));
 
             return 1;
@@ -135,6 +146,7 @@ final class SelfUpdateCommand extends Command
             $remoteTag = $latestVersionOfCurrentMajor;
         }
 
+        \assert(isset($_SERVER['argv']));
         $localFilename = $_SERVER['argv'][0];
         $realPath = realpath($localFilename);
         if (false !== $realPath) {
@@ -167,7 +179,13 @@ final class SelfUpdateCommand extends Command
             return 1;
         }
 
-        rename($tempFilename, $localFilename);
+        if ('\\' === \DIRECTORY_SEPARATOR) {
+            // On Windows rename() fails to overwrite the .phar file being executed, so we need to copy() and unlink() instead.
+            copy($tempFilename, $localFilename);
+            @unlink($tempFilename);
+        } else {
+            rename($tempFilename, $localFilename);
+        }
 
         $output->writeln(\sprintf('<info>PHP CS Fixer updated</info> (<comment>%s</comment> -> <comment>%s</comment>)', $currentVersion, $remoteTag));
 

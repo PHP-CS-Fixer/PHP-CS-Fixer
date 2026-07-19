@@ -14,22 +14,29 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
+use PhpCsFixer\Fixer\Phpdoc\PhpdocAnnotationWithoutDotFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\Phpdoc\PhpdocAnnotationWithoutDotFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\Phpdoc\PhpdocAnnotationWithoutDotFixer>
+ *
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(PhpdocAnnotationWithoutDotFixer::class)]
 final class PhpdocAnnotationWithoutDotFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -234,6 +241,28 @@ function foo ($bar) {}
  */
 function foo ($bar) {}
 ',
+        ];
+
+        yield [
+            '<?php
+    /**
+     * @param Url $url URL is not lowercased
+     */',
+            '<?php
+    /**
+     * @param Url $url URL is not lowercased.
+     */',
+        ];
+
+        yield [
+            '<?php
+    /**
+     * @param Url URL is not lowercased and note that name of param is ommited
+     */',
+            '<?php
+    /**
+     * @param Url URL is not lowercased and note that name of param is ommited.
+     */',
         ];
     }
 }

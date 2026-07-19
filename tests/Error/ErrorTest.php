@@ -16,12 +16,16 @@ namespace PhpCsFixer\Tests\Error;
 
 use PhpCsFixer\Error\Error;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
  *
  * @covers \PhpCsFixer\Error\Error
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Error::class)]
 final class ErrorTest extends TestCase
 {
     public function testConstructorSetsValues(): void
@@ -31,14 +35,14 @@ final class ErrorTest extends TestCase
 
         $error = new Error(
             $type,
-            $filePath
+            $filePath,
         );
 
         self::assertSame($type, $error->getType());
         self::assertSame($filePath, $error->getFilePath());
         self::assertNull($error->getSource());
         self::assertSame([], $error->getAppliedFixers());
-        self::assertNull($error->getDiff());
+        self::assertSame('', $error->getDiff());
     }
 
     public function testConstructorSetsValues2(): void
@@ -54,7 +58,7 @@ final class ErrorTest extends TestCase
             $filePath,
             $source,
             $appliedFixers,
-            $diff
+            $diff,
         );
 
         self::assertSame($type, $error->getType());
@@ -77,7 +81,7 @@ final class ErrorTest extends TestCase
             $filePath,
             $source,
             $appliedFixers,
-            $diff
+            $diff,
         );
         $serialisedError = $error->jsonSerialize();
 

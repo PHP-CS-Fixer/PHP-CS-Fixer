@@ -14,23 +14,30 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\StringNotation;
 
+use PhpCsFixer\Fixer\StringNotation\StringLineEndingFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
- * @author Ilija Tovilo <ilija.tovilo@me.com>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\StringNotation\StringLineEndingFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\StringNotation\StringLineEndingFixer>
+ *
+ * @author Ilija Tovilo <ilija.tovilo@me.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(StringLineEndingFixer::class)]
 final class StringLineEndingFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -124,7 +131,7 @@ final class StringLineEndingFixerTest extends AbstractFixerTestCase
 
         $this->doTest(
             "<?php \$a = 'my\r\nmulti\r\nline\r\nstring';",
-            "<?php \$a = 'my\nmulti\nline\nstring';"
+            "<?php \$a = 'my\nmulti\nline\nstring';",
         );
     }
 }

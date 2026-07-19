@@ -18,6 +18,8 @@ use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\ListFilesCommand;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
@@ -26,19 +28,26 @@ use Symfony\Component\Filesystem\Path;
  * @internal
  *
  * @covers \PhpCsFixer\Console\Command\ListFilesCommand
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ListFilesCommand::class)]
 final class ListFilesCommandTest extends TestCase
 {
     private static ?Filesystem $filesystem;
 
     public static function setUpBeforeClass(): void
     {
+        parent::setUpBeforeClass();
+
         self::$filesystem = new Filesystem();
     }
 
     public static function tearDownAfterClass(): void
     {
         self::$filesystem = null;
+
+        parent::tearDownAfterClass();
     }
 
     public function testListWithConfig(): void
@@ -52,7 +61,7 @@ final class ListFilesCommandTest extends TestCase
         $expectedPath = str_replace('/', \DIRECTORY_SEPARATOR, $expectedPath);
 
         self::assertSame(0, $commandTester->getStatusCode());
-        self::assertSame(escapeshellarg($expectedPath).PHP_EOL, $commandTester->getDisplay());
+        self::assertSame(escapeshellarg($expectedPath).\PHP_EOL, $commandTester->getDisplay());
     }
 
     /**
@@ -60,22 +69,24 @@ final class ListFilesCommandTest extends TestCase
      *
      * Skip test on Windows as `getcwd()` includes the drive letter with a colon `:` which is illegal in filenames.
      */
+    #[RequiresOperatingSystem('Linux|Darwin')]
     public function testListFilesDoesNotCorruptListWithGetcwdInName(): void
     {
         try {
             $tmpDir = __DIR__.'/../../Fixtures/ListFilesTest/using-getcwd';
-            $tmpFile = $tmpDir.'/'.ltrim(getcwd(), '/').'-out.php';
+            $tmpFile = $tmpDir.'/'.ltrim((string) getcwd(), '/').'-out.php';
             self::$filesystem->dumpFile($tmpFile, '<?php function a() {  }');
 
             $tmpFile = realpath($tmpFile);
+            self::assertIsString($tmpFile);
             self::assertFileExists($tmpFile);
 
             $commandTester = $this->doTestExecute([
                 '--config' => __DIR__.'/../../Fixtures/ListFilesTest/.php-cs-fixer.using-getcwd.php',
             ]);
-            $expectedPath = str_replace('/', \DIRECTORY_SEPARATOR, './'.Path::makeRelative($tmpFile, getcwd()));
+            $expectedPath = str_replace('/', \DIRECTORY_SEPARATOR, './'.Path::makeRelative($tmpFile, (string) getcwd()));
             self::assertSame(0, $commandTester->getStatusCode());
-            self::assertSame(escapeshellarg($expectedPath).PHP_EOL, $commandTester->getDisplay());
+            self::assertSame(escapeshellarg($expectedPath).\PHP_EOL, $commandTester->getDisplay());
         } finally {
             self::$filesystem->remove($tmpDir);
         }

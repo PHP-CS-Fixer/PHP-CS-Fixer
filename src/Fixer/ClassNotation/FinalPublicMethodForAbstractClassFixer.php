@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Filippo Tessarotto <zoeslam@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class FinalPublicMethodForAbstractClassFixer extends AbstractFixer
 {
@@ -53,25 +55,27 @@ final class FinalPublicMethodForAbstractClassFixer extends AbstractFixer
             'All `public` methods of `abstract` classes should be `final`.',
             [
                 new CodeSample(
-                    '<?php
+                    <<<'PHP'
+                        <?php
 
-abstract class AbstractMachine
-{
-    public function start()
-    {}
-}
-'
+                        abstract class AbstractMachine
+                        {
+                            public function start()
+                            {}
+                        }
+
+                        PHP,
                 ),
             ],
             'Enforce API encapsulation in an inheritance architecture. '
             .'If you want to override a method, use the Template method pattern.',
-            'Risky when overriding `public` methods of `abstract` classes.'
+            'Risky when overriding `public` methods of `abstract` classes.',
         );
     }
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAllTokenKindsFound([T_ABSTRACT, T_PUBLIC, T_FUNCTION]);
+        return $tokens->isAllTokenKindsFound([\T_ABSTRACT, \T_PUBLIC, \T_FUNCTION]);
     }
 
     public function isRisky(): bool
@@ -81,16 +85,16 @@ abstract class AbstractMachine
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $abstracts = array_keys($tokens->findGivenKind(T_ABSTRACT));
+        $abstracts = array_keys($tokens->findGivenKind(\T_ABSTRACT));
 
         foreach (array_reverse($abstracts) as $abstractIndex) {
-            $classIndex = $tokens->getNextTokenOfKind($abstractIndex, [[T_CLASS], [T_FUNCTION]]);
-            if (!$tokens[$classIndex]->isGivenKind(T_CLASS)) {
+            $classIndex = $tokens->getNextTokenOfKind($abstractIndex, [[\T_CLASS], [\T_FUNCTION]]);
+            if (!$tokens[$classIndex]->isGivenKind(\T_CLASS)) {
                 continue;
             }
 
             $classOpen = $tokens->getNextTokenOfKind($classIndex, ['{']);
-            $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
+            $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $classOpen);
 
             $this->fixClass($tokens, $classOpen, $classClose);
         }
@@ -101,26 +105,26 @@ abstract class AbstractMachine
         for ($index = $classCloseIndex - 1; $index > $classOpenIndex; --$index) {
             // skip method contents
             if ($tokens[$index]->equals('}')) {
-                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_BRACE, $index);
 
                 continue;
             }
 
             // skip non public methods
-            if (!$tokens[$index]->isGivenKind(T_PUBLIC)) {
+            if (!$tokens[$index]->isGivenKind(\T_PUBLIC)) {
                 continue;
             }
 
             $nextIndex = $tokens->getNextMeaningfulToken($index);
             $nextToken = $tokens[$nextIndex];
 
-            if ($nextToken->isGivenKind(T_STATIC)) {
+            if ($nextToken->isGivenKind(\T_STATIC)) {
                 $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
                 $nextToken = $tokens[$nextIndex];
             }
 
             // skip uses, attributes, constants etc
-            if (!$nextToken->isGivenKind(T_FUNCTION)) {
+            if (!$nextToken->isGivenKind(\T_FUNCTION)) {
                 continue;
             }
 
@@ -135,14 +139,14 @@ abstract class AbstractMachine
             $prevIndex = $tokens->getPrevMeaningfulToken($index);
             $prevToken = $tokens[$prevIndex];
 
-            if ($prevToken->isGivenKind(T_STATIC)) {
+            if ($prevToken->isGivenKind(\T_STATIC)) {
                 $index = $prevIndex;
                 $prevIndex = $tokens->getPrevMeaningfulToken($index);
                 $prevToken = $tokens[$prevIndex];
             }
 
             // skip abstract or already final methods
-            if ($prevToken->isGivenKind([T_ABSTRACT, T_FINAL])) {
+            if ($prevToken->isGivenKind([\T_ABSTRACT, \T_FINAL])) {
                 $index = $prevIndex;
 
                 continue;
@@ -151,9 +155,9 @@ abstract class AbstractMachine
             $tokens->insertAt(
                 $index,
                 [
-                    new Token([T_FINAL, 'final']),
-                    new Token([T_WHITESPACE, ' ']),
-                ]
+                    new Token([\T_FINAL, 'final']),
+                    new Token([\T_WHITESPACE, ' ']),
+                ],
             );
         }
     }

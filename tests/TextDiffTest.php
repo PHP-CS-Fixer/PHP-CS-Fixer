@@ -15,8 +15,12 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Console\Command\FixCommand;
+use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Console\Report\FixReport\ReporterFactory;
 use PhpCsFixer\ToolInfo;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -26,12 +30,17 @@ use Symfony\Component\Console\Tester\CommandTester;
  * @coversNothing
  *
  * @group covers-nothing
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversNothing]
+#[Group('covers-nothing')]
 final class TextDiffTest extends TestCase
 {
     /**
      * @dataProvider provideDiffReportingDecoratedCases
      */
+    #[DataProvider('provideDiffReportingDecoratedCases')]
     public function testDiffReportingDecorated(string $expected, string $format, bool $isDecorated): void
     {
         $command = new FixCommand(new ToolInfo());
@@ -44,11 +53,13 @@ final class TextDiffTest extends TestCase
                 '--format' => $format,
                 '--rules' => 'cast_spaces',
                 '--using-cache' => 'no',
+                '--config' => ConfigurationResolver::IGNORE_CONFIG_FILE,
             ],
             [
                 'decorated' => $isDecorated,
+                'interactive' => false,
                 'verbosity' => OutputInterface::VERBOSITY_NORMAL,
-            ]
+            ],
         );
 
         if ($isDecorated !== $commandTester->getOutput()->isDecorated()) {
@@ -81,7 +92,7 @@ final class TextDiffTest extends TestCase
             yield [$expected, $format, false];
         }
 
-        $expected = substr(json_encode($expected, JSON_THROW_ON_ERROR), 1, -1);
+        $expected = substr(json_encode($expected, \JSON_THROW_ON_ERROR), 1, -1);
 
         yield [$expected, 'json', true];
 
@@ -99,7 +110,7 @@ final class TextDiffTest extends TestCase
 
         self::assertSame(
             ['checkstyle', 'gitlab', 'json', 'junit', 'txt', 'xml'],
-            $formats
+            $formats,
         );
     }
 }

@@ -4,6 +4,14 @@ Rule ``empty_loop_condition``
 
 Empty loop-condition must be in configured style.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``style``.
+
 Configuration
 -------------
 

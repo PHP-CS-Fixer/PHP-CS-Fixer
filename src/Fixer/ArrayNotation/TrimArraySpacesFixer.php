@@ -23,6 +23,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Jared Henderson <jared@netrivet.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class TrimArraySpacesFixer extends AbstractFixer
 {
@@ -30,19 +32,19 @@ final class TrimArraySpacesFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Arrays should be formatted like function/method arguments, without leading or trailing single line space.',
-            [new CodeSample("<?php\n\$sample = array( );\n\$sample = array( 'a', 'b' );\n")]
+            [new CodeSample("<?php\n\$sample = array( );\n\$sample = array( 'a', 'b' );\n")],
         );
     }
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN]);
+        return $tokens->isAnyTokenKindsFound([\T_ARRAY, CT::T_ARRAY_BRACKET_OPEN, CT::T_DESTRUCTURING_BRACKET_OPEN]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = 0, $c = $tokens->count(); $index < $c; ++$index) {
-            if ($tokens[$index]->isGivenKind([T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN])) {
+            if ($tokens[$index]->isGivenKind([\T_ARRAY, CT::T_ARRAY_BRACKET_OPEN, CT::T_DESTRUCTURING_BRACKET_OPEN])) {
                 self::fixArray($tokens, $index);
             }
         }
@@ -55,13 +57,13 @@ final class TrimArraySpacesFixer extends AbstractFixer
     {
         $startIndex = $index;
 
-        if ($tokens[$startIndex]->isGivenKind(T_ARRAY)) {
+        if ($tokens[$startIndex]->isGivenKind(\T_ARRAY)) {
             $startIndex = $tokens->getNextMeaningfulToken($startIndex);
-            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
-        } elseif ($tokens[$startIndex]->isGivenKind(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN)) {
-            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE, $startIndex);
+            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $startIndex);
+        } elseif ($tokens[$startIndex]->isGivenKind(CT::T_DESTRUCTURING_BRACKET_OPEN)) {
+            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_DESTRUCTURING_BRACKET, $startIndex);
         } else {
-            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $startIndex);
+            $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $startIndex);
         }
 
         $nextIndex = $startIndex + 1;

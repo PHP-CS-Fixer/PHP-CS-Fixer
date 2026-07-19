@@ -25,6 +25,8 @@ use PhpCsFixer\Tokenizer\Tokens;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ImplodeCallFixer extends AbstractFixer
 {
@@ -37,7 +39,7 @@ final class ImplodeCallFixer extends AbstractFixer
                 new CodeSample("<?php\nimplode(\$pieces);\n"),
             ],
             null,
-            'Risky when the function `implode` is overridden.'
+            'Risky when the function `implode` is overridden.',
         );
     }
 
@@ -48,7 +50,7 @@ final class ImplodeCallFixer extends AbstractFixer
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(T_STRING);
+        return $tokens->isTokenKindFound(\T_STRING);
     }
 
     /**
@@ -67,7 +69,7 @@ final class ImplodeCallFixer extends AbstractFixer
         $functionsAnalyzer = new FunctionsAnalyzer();
 
         for ($index = \count($tokens) - 1; $index > 0; --$index) {
-            if (!$tokens[$index]->equals([T_STRING, 'implode'], false)) {
+            if (!$tokens[$index]->equals([\T_STRING, 'implode'], false)) {
                 continue;
             }
 
@@ -80,27 +82,29 @@ final class ImplodeCallFixer extends AbstractFixer
             if (1 === \count($argumentsIndices)) {
                 $firstArgumentIndex = array_key_first($argumentsIndices);
                 $tokens->insertAt($firstArgumentIndex, [
-                    new Token([T_CONSTANT_ENCAPSED_STRING, "''"]),
+                    new Token([\T_CONSTANT_ENCAPSED_STRING, "''"]),
                     new Token(','),
-                    new Token([T_WHITESPACE, ' ']),
+                    new Token([\T_WHITESPACE, ' ']),
                 ]);
 
                 continue;
             }
 
             if (2 === \count($argumentsIndices)) {
+                \assert(isset(array_keys($argumentsIndices)[0], array_keys($argumentsIndices)[1]));
                 [$firstArgumentIndex, $secondArgumentIndex] = array_keys($argumentsIndices);
 
                 // If the first argument is string we have nothing to do
-                if ($tokens[$firstArgumentIndex]->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
+                if ($tokens[$firstArgumentIndex]->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
                     continue;
                 }
                 // If the second argument is not string we cannot make a swap
-                if (!$tokens[$secondArgumentIndex]->isGivenKind(T_CONSTANT_ENCAPSED_STRING)) {
+                if (!$tokens[$secondArgumentIndex]->isGivenKind(\T_CONSTANT_ENCAPSED_STRING)) {
                     continue;
                 }
 
                 // collect tokens from first argument
+                \assert(isset($argumentsIndices[key($argumentsIndices)]));
                 $firstArgumentEndIndex = $argumentsIndices[key($argumentsIndices)];
                 $newSecondArgumentTokens = [];
                 for ($i = array_key_first($argumentsIndices); $i <= $firstArgumentEndIndex; ++$i) {
@@ -126,7 +130,7 @@ final class ImplodeCallFixer extends AbstractFixer
         $argumentsAnalyzer = new ArgumentsAnalyzer();
 
         $openParenthesis = $tokens->getNextTokenOfKind($functionNameIndex, ['(']);
-        $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis);
+        $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openParenthesis);
 
         $indices = [];
 

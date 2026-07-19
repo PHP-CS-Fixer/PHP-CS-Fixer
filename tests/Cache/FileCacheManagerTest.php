@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Cache;
 
-use PhpCsFixer\AccessibleObject\AccessibleObject;
 use PhpCsFixer\Cache\CacheInterface;
 use PhpCsFixer\Cache\CacheManagerInterface;
 use PhpCsFixer\Cache\DirectoryInterface;
@@ -23,6 +22,7 @@ use PhpCsFixer\Cache\FileHandlerInterface;
 use PhpCsFixer\Cache\SignatureInterface;
 use PhpCsFixer\Hasher;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -30,7 +30,10 @@ use PhpCsFixer\Tests\TestCase;
  * @internal
  *
  * @covers \PhpCsFixer\Cache\FileCacheManager
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FileCacheManager::class)]
 final class FileCacheManagerTest extends TestCase
 {
     public function testIsFinal(): void
@@ -55,7 +58,7 @@ final class FileCacheManagerTest extends TestCase
         $manager = new FileCacheManager($handler, $signature);
         unset($manager);
 
-        self::assertSame(1, AccessibleObject::create($handler)->writeCallCount);
+        self::assertWriteCallCount(1, $handler);
     }
 
     public function testCreatesCacheIfCachedSignatureIsDifferent(): void
@@ -68,7 +71,7 @@ final class FileCacheManagerTest extends TestCase
         $manager = new FileCacheManager($handler, $signature);
         unset($manager);
 
-        self::assertSame(1, AccessibleObject::create($handler)->writeCallCount);
+        self::assertWriteCallCount(1, $handler);
     }
 
     public function testUsesCacheIfCachedSignatureIsEqualAndNoFileWasUpdated(): void
@@ -81,7 +84,7 @@ final class FileCacheManagerTest extends TestCase
         $manager = new FileCacheManager($handler, $signature);
         unset($manager);
 
-        self::assertSame(0, AccessibleObject::create($handler)->writeCallCount);
+        self::assertWriteCallCount(0, $handler);
     }
 
     public function testNeedFixingReturnsTrueIfCacheHasNoHash(): void
@@ -163,7 +166,7 @@ final class FileCacheManagerTest extends TestCase
 
         self::assertTrue($cache->has($file));
         self::assertSame(Hasher::calculate($fileContent), $cache->get($file));
-        self::assertSame(1, AccessibleObject::create($handler)->writeCallCount);
+        self::assertWriteCallCount(1, $handler);
     }
 
     public function testSetFileSetsHashOfFileContentDuringDryRunIfCacheHasNoHash(): void
@@ -232,6 +235,18 @@ final class FileCacheManagerTest extends TestCase
         self::assertSame(Hasher::calculate($fileContent), $cache->get($relativePathToFile));
     }
 
+    private static function assertWriteCallCount(int $writeCallCount, FileHandlerInterface $handler): void
+    {
+        self::assertSame(
+            $writeCallCount,
+            \Closure::bind(
+                static fn ($handler): int => $handler->writeCallCount,
+                null,
+                \get_class($handler),
+            )($handler),
+        );
+    }
+
     private function getFile(): string
     {
         return __DIR__.'/../Fixtures/.php_cs.empty-cache';
@@ -289,6 +304,11 @@ final class FileCacheManagerTest extends TestCase
                 throw new \LogicException('Not implemented.');
             }
 
+            public function getRuleCustomisationPolicyVersion(): string
+            {
+                throw new \LogicException('Not implemented.');
+            }
+
             public function equals(SignatureInterface $signature): bool
             {
                 return $this->isEqual;
@@ -328,6 +348,8 @@ final class FileCacheManagerTest extends TestCase
 
             public function get(string $file): string
             {
+                \assert(\array_key_exists($file, $this->fileMap));
+
                 return $this->fileMap[$file];
             }
 

@@ -4,6 +4,15 @@ Rule ``header_comment``
 
 Add, replace or remove header comment.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``comment_type``,
+``header``, ``location``, ``separate``, ``validator``.
+
 Configuration
 -------------
 
@@ -156,6 +165,7 @@ With configuration: ``['header' => '']``.
     namespace A\B;
 
     echo 1;
+
 References
 ----------
 

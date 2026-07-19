@@ -4,6 +4,15 @@ Rule ``ordered_interfaces``
 
 Orders the interfaces in an ``implements`` or ``interface extends`` clause.
 
+Warning
+-------
+
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following options: ``case_sensitive``,
+``direction``, ``order``.
+
 Configuration
 -------------
 
@@ -138,6 +147,7 @@ With configuration: ``['order' => 'alpha', 'case_sensitive' => true]``.
 
    -interface ExampleB extends Casesensitivea, CaseSensitiveA, CasesensitiveA {}
    +interface ExampleB extends CaseSensitiveA, CasesensitiveA, Casesensitivea {}
+
 References
 ----------
 

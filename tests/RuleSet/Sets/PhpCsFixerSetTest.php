@@ -14,9 +14,15 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\RuleSet\Sets;
 
+use PhpCsFixer\RuleSet\Sets\PhpCsFixerSet;
+use PHPUnit\Framework\Attributes\CoversClass;
+
 /**
  * @internal
  *
  * @covers \PhpCsFixer\RuleSet\Sets\PhpCsFixerSet
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(PhpCsFixerSet::class)]
 final class PhpCsFixerSetTest extends AbstractSetTestCase {}

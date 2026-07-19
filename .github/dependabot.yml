@@ -8,13 +8,16 @@ updates:
     schedule:
       interval: weekly
       day: friday
-      time: 12:30
+      time: '12:30'
       timezone: Europe/Warsaw
     versioning-strategy: increase
     groups:
       phpstan:
         patterns:
           - phpstan/*
+      shipmonk:
+        patterns:
+          - shipmonk/*
   - package-ecosystem: docker
     directory: /
     commit-message:
@@ -22,14 +25,24 @@ updates:
     schedule:
       interval: weekly
       day: friday
-      time: 12:30
+      time: '12:30'
       timezone: Europe/Warsaw
+    groups:
+      all:
+        patterns:
+          - '*'
   - package-ecosystem: github-actions
-    directory: /
+    directories:
+      - /.github/workflows/
+      - /.github/composite-actions/**
     commit-message:
       prefix: deps
     schedule:
       interval: weekly
       day: friday
-      time: 12:30
+      time: '12:30'
       timezone: Europe/Warsaw
+    groups:
+      all:
+        patterns:
+          - '*'

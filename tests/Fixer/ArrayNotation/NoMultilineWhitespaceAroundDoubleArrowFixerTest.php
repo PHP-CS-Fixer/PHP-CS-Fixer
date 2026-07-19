@@ -14,24 +14,31 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ArrayNotation;
 
+use PhpCsFixer\Fixer\ArrayNotation\NoMultilineWhitespaceAroundDoubleArrowFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
- * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
- * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
- * @author Graham Campbell <hello@gjcampbell.co.uk>
- *
  * @internal
  *
  * @covers \PhpCsFixer\Fixer\ArrayNotation\NoMultilineWhitespaceAroundDoubleArrowFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\ArrayNotation\NoMultilineWhitespaceAroundDoubleArrowFixer>
+ *
+ * @author Carlos Cirello <carlos.cirello.nl@gmail.com>
+ * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ * @author Graham Campbell <hello@gjcampbell.co.uk>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NoMultilineWhitespaceAroundDoubleArrowFixer::class)]
 final class NoMultilineWhitespaceAroundDoubleArrowFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

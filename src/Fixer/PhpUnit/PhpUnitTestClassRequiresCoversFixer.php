@@ -24,6 +24,8 @@ use PhpCsFixer\Tokenizer\TokensAnalyzer;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class PhpUnitTestClassRequiresCoversFixer extends AbstractPhpUnitFixer implements WhitespacesAwareFixerInterface
 {
@@ -33,17 +35,19 @@ final class PhpUnitTestClassRequiresCoversFixer extends AbstractPhpUnitFixer imp
             'Adds a default `@coversNothing` annotation to PHPUnit test classes that have no `@covers*` annotation.',
             [
                 new CodeSample(
-                    '<?php
-final class MyTest extends \PHPUnit_Framework_TestCase
-{
-    public function testSomeTest()
-    {
-        $this->assertSame(a(), b());
-    }
-}
-'
+                    <<<'PHP'
+                        <?php
+                        final class MyTest extends \PHPUnit_Framework_TestCase
+                        {
+                            public function testSomeTest()
+                            {
+                                $this->assertSame(a(), b());
+                            }
+                        }
+
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 
@@ -59,9 +63,14 @@ final class MyTest extends \PHPUnit_Framework_TestCase
 
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
-        $classIndex = $tokens->getPrevTokenOfKind($startIndex, [[T_CLASS]]);
+        $classIndex = $tokens->getPrevTokenOfKind($startIndex, [[\T_CLASS]]);
 
         $tokensAnalyzer = new TokensAnalyzer($tokens);
+
+        if ($tokensAnalyzer->isAnonymousClass($classIndex)) {
+            return;
+        }
+
         $modifiers = $tokensAnalyzer->getClassyModifiers($classIndex);
 
         if (isset($modifiers['abstract'])) {
@@ -82,6 +91,7 @@ final class MyTest extends \PHPUnit_Framework_TestCase
                 'phpunit\framework\attributes\coversnothing',
                 'phpunit\framework\attributes\coversmethod',
                 'phpunit\framework\attributes\coversfunction',
+                'phpunit\framework\attributes\coverstrait',
             ],
         );
     }

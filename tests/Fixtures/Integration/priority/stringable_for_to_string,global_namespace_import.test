@@ -1,0 +1,22 @@
+--TEST--
+Integration of fixers: stringable_for_to_string,global_namespace_import.
+--RULESET--
+{ "stringable_for_to_string": true, "global_namespace_import": true }
+--REQUIREMENTS--
+{ "php": 80000 }
+--EXPECT--
+<?php
+namespace Foo;
+use Stringable;
+class Bar implements Stringable
+{
+    public function __toString() { return "Foo"; }
+}
+
+--INPUT--
+<?php
+namespace Foo;
+class Bar
+{
+    public function __toString() { return "Foo"; }
+}

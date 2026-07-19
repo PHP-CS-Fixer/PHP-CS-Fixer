@@ -21,6 +21,8 @@ use PhpCsFixer\Tokenizer\Tokens;
  * @author Kuba Werłos <werlos@gmail.com>
  *
  * @internal
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
 final class ReferenceAnalyzer
 {
@@ -36,14 +38,14 @@ final class ReferenceAnalyzer
 
         /** @var int $index */
         $index = $tokens->getPrevMeaningfulToken($index);
-        if ($tokens[$index]->equalsAny(['=', [T_AS], [T_CALLABLE], [T_DOUBLE_ARROW], [CT::T_ARRAY_TYPEHINT]])) {
+        if ($tokens[$index]->equalsAny(['=', [\T_AS], [\T_CALLABLE], [\T_DOUBLE_ARROW], [CT::T_ARRAY_TYPEHINT]])) {
             return true;
         }
 
-        if ($tokens[$index]->isGivenKind(T_STRING)) {
+        if ($tokens[$index]->isGivenKind(\T_STRING)) {
             $index = $tokens->getPrevMeaningfulToken($index);
         }
 
-        return $tokens[$index]->equalsAny(['(', ',', [T_NS_SEPARATOR], [CT::T_NULLABLE_TYPE]]);
+        return $tokens[$index]->equalsAny(['(', ',', [\T_NS_SEPARATOR], [CT::T_NULLABLE_TYPE]]);
     }
 }

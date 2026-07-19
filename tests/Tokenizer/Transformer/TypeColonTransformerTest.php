@@ -16,6 +16,10 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Transformer\TypeColonTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -24,15 +28,19 @@ use PhpCsFixer\Tokenizer\CT;
  *
  * @covers \PhpCsFixer\Tokenizer\Transformer\TypeColonTransformer
  *
- * @phpstan-import-type _TransformerTestExpectedTokens from AbstractTransformerTestCase
+ * @phpstan-import-type _TransformerTestExpectedKindsUnderIndex from AbstractTransformerTestCase
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(TypeColonTransformer::class)]
 final class TypeColonTransformerTest extends AbstractTransformerTestCase
 {
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcessCases
      */
+    #[DataProvider('provideProcessCases')]
     public function testProcess(string $source, array $expectedTokens = []): void
     {
         $this->doTest(
@@ -40,12 +48,12 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
             $expectedTokens,
             [
                 CT::T_TYPE_COLON,
-            ]
+            ],
         );
     }
 
     /**
-     * @return iterable<int, array{0: string, 1?: _TransformerTestExpectedTokens}>
+     * @return iterable<int, array{0: string, 1?: _TransformerTestExpectedKindsUnderIndex}>
      */
     public static function provideProcessCases(): iterable
     {
@@ -115,19 +123,21 @@ final class TypeColonTransformerTest extends AbstractTransformerTestCase
     }
 
     /**
-     * @param _TransformerTestExpectedTokens $expectedTokens
+     * @param _TransformerTestExpectedKindsUnderIndex $expectedTokens
      *
      * @dataProvider provideProcess81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideProcess81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testProcess81(string $source, array $expectedTokens = []): void
     {
         $this->testProcess($source, $expectedTokens);
     }
 
     /**
-     * @return iterable<int, array{string, _TransformerTestExpectedTokens}>
+     * @return iterable<int, array{string, _TransformerTestExpectedKindsUnderIndex}>
      */
     public static function provideProcess81Cases(): iterable
     {
