@@ -98,7 +98,7 @@ final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imple
                             ->method(3);
 
                         PHP,
-                    ['strategy' => self::STRATEGY_NEWLINE_FOR_CHAINED_METHOD_CALLS]
+                    ['strategy' => self::STRATEGY_NEWLINE_FOR_CHAINED_METHOD_CALLS],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -187,7 +187,7 @@ final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imple
                         self::STRATEGY_NEWLINE_FOR_CHAINED_CALLS,
                         self::STRATEGY_NEWLINE_FOR_CHAINED_METHOD_CALLS,
                     ],
-                    true
+                    true,
                 )
                 && null !== $indent
             ) {
@@ -316,10 +316,10 @@ final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imple
         // Ignore the current positioning of the semicolon
         $index = $tokens->getPrevMeaningfulToken($index);
 
-        $statementBreakTokens = [';', '{', '}', [T_OPEN_TAG], [T_OPEN_TAG_WITH_ECHO], [T_ELSE]];
+        $statementBreakTokens = [';', '{', '}', [\T_OPEN_TAG], [\T_OPEN_TAG_WITH_ECHO], [\T_ELSE]];
 
         if (\defined('T_ATTRIBUTE')) { // @TODO: drop condition when PHP 8.0+ is required
-            $statementBreakTokens[] = [T_ATTRIBUTE];
+            $statementBreakTokens[] = [\T_ATTRIBUTE];
             $statementBreakTokens[] = [CT::T_ATTRIBUTE_CLOSE];
         }
 
@@ -345,11 +345,11 @@ final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imple
             }
 
             if ($tokens[$prevIndex]->equals(':')) {
-                $caseIndex = $tokens->getPrevTokenOfKind($prevIndex, array_merge($statementBreakTokens, [[T_CASE], [T_DEFAULT]]));
+                $caseIndex = $tokens->getPrevTokenOfKind($prevIndex, array_merge($statementBreakTokens, [[\T_CASE], [\T_DEFAULT]]));
 
                 if (
-                    $tokens[$caseIndex]->isGivenKind(T_CASE)
-                    || $tokens[$caseIndex]->isGivenKind(T_DEFAULT)
+                    $tokens[$caseIndex]->isGivenKind(\T_CASE)
+                    || $tokens[$caseIndex]->isGivenKind(\T_DEFAULT)
                 ) {
                     break;
                 }
@@ -357,12 +357,12 @@ final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imple
 
             if (
                 $tokens[$prevIndex]->equals('(')
-                && $tokens[$tokens->getPrevMeaningfulToken($prevIndex)]->isGivenKind(T_FOR)
+                && $tokens[$tokens->getPrevMeaningfulToken($prevIndex)]->isGivenKind(\T_FOR)
             ) {
                 break;
             }
 
-            $isMultilineCall = $isMultilineCall || $tokens->isPartialCodeMultiline($prevIndex, $index, [T_WHITESPACE]);
+            $isMultilineCall = $isMultilineCall || $tokens->isPartialCodeMultiline($prevIndex, $index, [\T_WHITESPACE]);
 
             $index = $prevIndex;
         }
