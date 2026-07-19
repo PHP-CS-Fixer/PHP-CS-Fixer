@@ -26,11 +26,12 @@ use PhpCsFixer\FixerConfiguration\FixerOptionBuilder;
 use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
+use PhpCsFixer\Future;
 use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
-use PhpCsFixer\Utils;
 use Symfony\Component\OptionsResolver\Options;
 
 /**
@@ -106,6 +107,7 @@ final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imple
                         return
                             is_empty($_GET)
                             || is_empty($_POST);
+
                         PHP,
                     ['strategy' => self::STRATEGY_NEWLINE_FOR_CHAINED_CALLS],
                 ),
@@ -142,7 +144,7 @@ final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imple
                 ->setDefault(self::STRATEGY_NO_MULTI_LINE)
                 ->setNormalizer(static function (Options $options, ?string $value) use ($fixerName): ?string {
                     if (self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS === $value) {
-                        Utils::triggerDeprecation(new InvalidFixerConfigurationException($fixerName, \sprintf(
+                        Future::triggerDeprecation(new InvalidFixerConfigurationException($fixerName, \sprintf(
                             'Option "strategy:%s" is deprecated and will be removed in version %d.0.',
                             self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS,
                             Application::getMajorVersion() + 1,
@@ -160,7 +162,10 @@ final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imple
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
         for ($index = 0, $count = \count($tokens); $index < $count; ++$index) {
-            if ($tokens[$index]->isGivenKind(\T_CONST)) {
+            if (
+                $tokens[$index]->isGivenKind(\T_CONST)
+                && self::STRATEGY_NEWLINE_FOR_CHAINED_CALLS !== $this->configuration['strategy']
+            ) {
                 $index = $tokens->getNextTokenOfKind($index, [';']);
 
                 continue;
@@ -316,12 +321,7 @@ final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imple
         // Ignore the current positioning of the semicolon
         $index = $tokens->getPrevMeaningfulToken($index);
 
-        $statementBreakTokens = [';', '{', '}', [\T_OPEN_TAG], [\T_OPEN_TAG_WITH_ECHO], [\T_ELSE]];
-
-        if (\defined('T_ATTRIBUTE')) { // @TODO: drop condition when PHP 8.0+ is required
-            $statementBreakTokens[] = [\T_ATTRIBUTE];
-            $statementBreakTokens[] = [CT::T_ATTRIBUTE_CLOSE];
-        }
+        $statementBreakTokens = [';', '{', '}', [\T_OPEN_TAG], [\T_OPEN_TAG_WITH_ECHO], [\T_ELSE], [FCT::T_ATTRIBUTE], [CT::T_ATTRIBUTE_CLOSE]];
 
         while (true) {
             if (null === $index) {
