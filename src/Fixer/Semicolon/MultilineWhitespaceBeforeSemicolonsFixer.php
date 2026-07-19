@@ -72,7 +72,7 @@ final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imple
     /**
      * @internal
      *
-     * @deprecated
+     * @TODO 4.0 remove me, deprecated alias of `STRATEGY_NEWLINE_FOR_CHAINED_CALLS`
      */
     public const STRATEGY_NEW_LINE_FOR_CHAINED_CALLS = 'new_line_for_chained_calls';
 
