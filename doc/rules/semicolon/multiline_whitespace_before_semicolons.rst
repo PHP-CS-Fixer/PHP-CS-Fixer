@@ -71,11 +71,11 @@ With configuration: ``['strategy' => 'newline_for_chained_calls']``.
    --- Original
    +++ New
     <?php
-                    return
-                        is_empty($_GET)
-   -                    || is_empty($_POST);
-   +                    || is_empty($_POST)
-   +                ;
+    return
+        is_empty($_GET)
+   -    || is_empty($_POST);
+   +    || is_empty($_POST)
+   +;
 
 Rule sets
 ---------
