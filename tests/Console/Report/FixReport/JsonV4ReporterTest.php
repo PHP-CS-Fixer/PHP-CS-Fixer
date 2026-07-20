@@ -234,7 +234,7 @@ final class JsonV4ReporterTest extends AbstractReporterTestCase
 
     protected function assertFormat(string $expected, string $input): void
     {
-        self::assertJsonSchema(__DIR__.'/../../../../doc/schemas/fix/json_v4.json', $input);
+        self::assertJsonSchema(__DIR__.'/../../../../doc/schemas/fix/json.json', $input);
         self::assertJsonStringEqualsJsonString($expected, $input);
     }
 }

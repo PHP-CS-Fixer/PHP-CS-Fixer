@@ -74,7 +74,7 @@ NOTE: the output for the following formats are generated in accordance with sche
 * ``checkstyle`` follows the common `"checkstyle" XML schema </doc/schemas/fix/checkstyle.xsd>`_
 * ``gitlab`` follows the `codeclimate JSON schema </doc/schemas/fix/codeclimate.json>`_
 * ``json`` follows the `own JSON schema </doc/schemas/fix/schema.json>`_
-* ``json_v4`` follows the `own JSON schema </doc/schemas/fix/json_v4.json>`_
+* ``json_v4`` follows the `own JSON schema </doc/schemas/fix/json.json>`_
 * ``junit`` follows the `JUnit XML schema from Jenkins </doc/schemas/fix/junit-10.xsd>`_
 * ``xml`` follows the `own XML schema </doc/schemas/fix/xml.xsd>`_
 
