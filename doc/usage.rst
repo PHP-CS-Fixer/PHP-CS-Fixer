@@ -58,7 +58,7 @@ which will use the intersection of the paths from the config file and from the a
 
     php php-cs-fixer.phar fix --path-mode=intersection /path/to/dir
 
-The ``--format`` option for the output format. Supported formats are ``@auto`` (default one on v4+), ``txt`` (default one on v3), ``checkstyle``, ``gitlab``, ``json``, ``junit`` and ``xml``.
+The ``--format`` option for the output format. Supported formats are ``@auto`` (default one on v4+), ``txt`` (default one on v3), ``checkstyle``, ``gitlab``, ``json``, ``json_v4``, ``junit`` and ``xml``.
 
 * ``@auto`` aims to auto-select best reporter for given CI or local execution (resolution into best format is outside of BC promise and is future-ready)
 
@@ -74,6 +74,7 @@ NOTE: the output for the following formats are generated in accordance with sche
 * ``checkstyle`` follows the common `"checkstyle" XML schema </doc/schemas/fix/checkstyle.xsd>`_
 * ``gitlab`` follows the `codeclimate JSON schema </doc/schemas/fix/codeclimate.json>`_
 * ``json`` follows the `own JSON schema </doc/schemas/fix/schema.json>`_
+* ``json_v4`` follows the `own JSON schema </doc/schemas/fix/json_v4.json>`_
 * ``junit`` follows the `JUnit XML schema from Jenkins </doc/schemas/fix/junit-10.xsd>`_
 * ``xml`` follows the `own XML schema </doc/schemas/fix/xml.xsd>`_
 
