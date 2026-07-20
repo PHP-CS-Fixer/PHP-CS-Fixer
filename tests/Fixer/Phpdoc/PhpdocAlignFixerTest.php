@@ -177,7 +177,7 @@ final class PhpdocAlignFixerTest extends AbstractFixerTestCase
      * @param    string          $format
      * @param    int             $code       An HTTP response status code
      *                                       See constants
-     * @param    bool            $debug
+     * @param    bool            $dry
      * @param    bool            $debug      See constants
      *                                       See constants
      * @param    mixed           &$reference A parameter passed by reference
@@ -194,7 +194,7 @@ final class PhpdocAlignFixerTest extends AbstractFixerTestCase
      * @param string      $format
      * @param  int  $code       An HTTP response status code
      *                              See constants
-     * @param    bool         $debug
+     * @param    bool         $dry
      * @param    bool         $debug See constants
      * See constants
      * @param  mixed    &$reference     A parameter passed by reference
@@ -215,7 +215,7 @@ final class PhpdocAlignFixerTest extends AbstractFixerTestCase
      * @param string $format
      * @param int $code An HTTP response status code
      *                  See constants
-     * @param bool $debug
+     * @param bool $dry
      * @param bool $debug See constants
      *                    See constants
      * @param mixed &$reference A parameter passed by reference
@@ -232,7 +232,7 @@ final class PhpdocAlignFixerTest extends AbstractFixerTestCase
      * @param string      $format
      * @param  int  $code       An HTTP response status code
      *                              See constants
-     * @param    bool         $debug
+     * @param    bool         $dry
      * @param    bool         $debug See constants
      * See constants
      * @param  mixed    &$reference     A parameter passed by reference
@@ -253,7 +253,7 @@ final class PhpdocAlignFixerTest extends AbstractFixerTestCase
      * @param string          $format
      * @param int             $code       An HTTP response status code
      *                                    See constants
-     * @param bool            $debug
+     * @param bool            $dry
      * @param bool            $debug      See constants
      *                                    See constants
      * @param mixed           &$reference A parameter passed by reference
@@ -271,7 +271,7 @@ final class PhpdocAlignFixerTest extends AbstractFixerTestCase
      * @param string      $format
      * @param  int  $code       An HTTP response status code
      *                              See constants
-     * @param    bool         $debug
+     * @param    bool         $dry
      * @param    bool         $debug See constants
      * See constants
      * @param  mixed    &$reference     A parameter passed by reference
@@ -293,7 +293,7 @@ final class PhpdocAlignFixerTest extends AbstractFixerTestCase
      * @param string $format
      * @param int $code An HTTP response status code
      *                  See constants
-     * @param bool $debug
+     * @param bool $dry
      * @param bool $debug See constants
      *                    See constants
      * @param mixed &$reference A parameter passed by reference
@@ -311,7 +311,7 @@ final class PhpdocAlignFixerTest extends AbstractFixerTestCase
      * @param string      $format
      * @param  int  $code       An HTTP response status code
      *                              See constants
-     * @param    bool         $debug
+     * @param    bool         $dry
      * @param    bool         $debug See constants
      * See constants
      * @param  mixed    &$reference     A parameter passed by reference
@@ -1372,7 +1372,7 @@ function foo($typeless): void {}',
      * @param  string  $format
      * @param  int  $code  An HTTP response status code
      *                     See constants
-     * @param  bool  $debug
+     * @param  bool  $dry
      * @param  bool  $debug  See constants
      *                       See constants
      * @param  mixed  &$reference  A parameter passed by reference
@@ -1390,7 +1390,7 @@ function foo($typeless): void {}',
      * @param string      $format
      * @param  int  $code       An HTTP response status code
      *                              See constants
-     * @param    bool         $debug
+     * @param    bool         $dry
      * @param    bool         $debug See constants
      * See constants
      * @param  mixed    &$reference     A parameter passed by reference
@@ -1415,7 +1415,7 @@ function foo($typeless): void {}',
      * @param  string           $format
      * @param  int              $code        An HTTP response status code
      *                                       See constants
-     * @param  bool             $debug
+     * @param  bool             $dry
      * @param  bool             $debug       See constants
      *                                       See constants
      * @param  mixed            &$reference  A parameter passed by reference
@@ -1434,7 +1434,7 @@ function foo($typeless): void {}',
      * @param string      $format
      * @param  int  $code       An HTTP response status code
      *                              See constants
-     * @param    bool         $debug
+     * @param    bool         $dry
      * @param    bool         $debug See constants
      * See constants
      * @param  mixed    &$reference     A parameter passed by reference
@@ -1460,7 +1460,7 @@ function foo($typeless): void {}',
      * @param  string  $format
      * @param  int  $code  An HTTP response status code
      *                     See constants
-     * @param  bool  $debug
+     * @param  bool  $dry
      * @param  bool  $debug  See constants
      *                       See constants
      * @param  mixed  &$reference  A parameter passed by reference
@@ -1478,7 +1478,7 @@ function foo($typeless): void {}',
      * @param string      $format
      * @param  int  $code       An HTTP response status code
      *                              See constants
-     * @param    bool         $debug
+     * @param    bool         $dry
      * @param    bool         $debug See constants
      * See constants
      * @param  mixed    &$reference     A parameter passed by reference
@@ -1504,7 +1504,7 @@ function foo($typeless): void {}',
      * @param  string  $format
      * @param  int  $code  An HTTP response status code
      *                     See constants
-     * @param  bool  $debug
+     * @param  bool  $dry
      * @param  bool  $debug  See constants
      *                       See constants
      * @param  mixed  &$reference  A parameter passed by reference
@@ -1523,7 +1523,7 @@ function foo($typeless): void {}',
      * @param string      $format
      * @param  int  $code       An HTTP response status code
      *                              See constants
-     * @param    bool         $debug
+     * @param    bool         $dry
      * @param    bool         $debug See constants
      * See constants
      * @param  mixed    &$reference     A parameter passed by reference
@@ -1538,6 +1538,196 @@ function foo($typeless): void {}',
             [
                 'align' => PhpdocAlignFixer::ALIGN_LEFT,
                 'spacing' => ['_default' => 2, 'return' => 4],
+            ],
+        ];
+
+        yield 'left align with multiline' => [
+            '<?php
+    /**
+     * @property string $bar
+     *     Foo-Bar lorem ipsum
+     * @param EngineInterface $templating
+     * @param string $format
+     * @param int $code
+     *     An HTTP response status code
+     *     See constants
+     * @param bool $dry
+     * @param bool $debug
+     *     See constants
+     *     See constants
+     * @param mixed &$reference
+     *     A parameter passed by reference
+     *
+     * @return Foo
+     *     description foo
+     *
+     * @throws Foo
+     *     description foo
+     *     description foo
+     *
+     */
+',
+            '<?php
+    /**
+     * @property string $bar
+     * Foo-Bar lorem ipsum
+     * @param  EngineInterface $templating
+     * @param string      $format
+     * @param  int  $code
+     *    An HTTP response status code
+     *                              See constants
+     * @param    bool         $dry
+     * @param    bool         $debug
+     * See constants
+     * See constants
+     * @param  mixed    &$reference
+     * A parameter passed by reference
+     *
+     * @return Foo
+     * description foo
+     *
+     * @throws Foo
+     *             description foo
+     *             description foo
+     *
+     */
+',
+            [
+                'align' => PhpdocAlignFixer::ALIGN_LEFT_MULTILINE,
+            ],
+        ];
+
+        yield 'left align with multiline and inline' => [
+            '<?php
+    /**
+     * @property string $bar Foo-Bar lorem ipsum
+     * @param EngineInterface $templating
+     * @param string $format
+     * @param int $code An HTTP response status code
+     *     See constants
+     * @param bool $dry
+     * @param bool $debug See constants
+     *     See constants
+     * @param mixed &$reference A parameter passed by reference
+     *
+     * @return Foo description foo
+     *
+     * @throws Foo description foo
+     *     description foo
+     *
+     */
+',
+            '<?php
+    /**
+     * @property string $bar                    Foo-Bar lorem ipsum
+     * @param  EngineInterface $templating
+     * @param string      $format
+     * @param  int  $code       An HTTP response status code
+     *                              See constants
+     * @param    bool         $dry
+     * @param    bool         $debug See constants
+     * See constants
+     * @param  mixed    &$reference     A parameter passed by reference
+     *
+     * @return Foo description foo
+     *
+     * @throws Foo             description foo
+     *             description foo
+     *
+     */
+',
+            [
+                'align' => PhpdocAlignFixer::ALIGN_LEFT_MULTILINE,
+            ],
+        ];
+
+        yield 'left align with multiline and custom multiline spacing' => [
+            '<?php
+    /**
+     * @property string $bar Foo-Bar lorem ipsum
+     * @param EngineInterface $templating
+     * @param string $format
+     * @param int $code An HTTP response status code
+     *   See constants
+     * @param bool $dry
+     * @param bool $debug See constants
+     *   See constants
+     * @param mixed &$reference A parameter passed by reference
+     *
+     * @return Foo description foo
+     *
+     * @throws Foo description foo
+     *   description foo
+     *
+     */
+',
+            '<?php
+    /**
+     * @property string $bar                    Foo-Bar lorem ipsum
+     * @param  EngineInterface $templating
+     * @param string      $format
+     * @param  int  $code       An HTTP response status code
+     *                              See constants
+     * @param    bool         $dry
+     * @param    bool         $debug See constants
+     * See constants
+     * @param  mixed    &$reference     A parameter passed by reference
+     *
+     * @return Foo description foo
+     *
+     * @throws Foo             description foo
+     *             description foo
+     *
+     */
+',
+            [
+                'align' => PhpdocAlignFixer::ALIGN_LEFT_MULTILINE,
+                'spacing' => ['_multiline' => 2],
+            ],
+        ];
+
+        yield 'left align with multiline and 0 multiline spacing' => [
+            '<?php
+    /**
+     * @property string $bar Foo-Bar lorem ipsum
+     * @param EngineInterface $templating
+     * @param string $format
+     * @param int $code An HTTP response status code
+     * See constants
+     * @param bool $dry
+     * @param bool $debug See constants
+     * See constants
+     * @param mixed &$reference A parameter passed by reference
+     *
+     * @return Foo description foo
+     *
+     * @throws Foo description foo
+     * description foo
+     *
+     */
+',
+            '<?php
+    /**
+     * @property string $bar                    Foo-Bar lorem ipsum
+     * @param  EngineInterface $templating
+     * @param string      $format
+     * @param  int  $code       An HTTP response status code
+     *                              See constants
+     * @param    bool         $dry
+     * @param    bool         $debug See constants
+     * See constants
+     * @param  mixed    &$reference     A parameter passed by reference
+     *
+     * @return Foo description foo
+     *
+     * @throws Foo             description foo
+     *             description foo
+     *
+     */
+',
+            [
+                'align' => PhpdocAlignFixer::ALIGN_LEFT_MULTILINE,
+                'spacing' => ['_multiline' => 0],
             ],
         ];
 
@@ -1624,6 +1814,14 @@ function foo($typeless): void {}',
                 'spacing' => ['return' => 2, 'param' => -1],
             ],
             'The option "spacing" is invalid. All spacings must be greater than zero.',
+        ];
+
+        yield 'negativeMultiline' => [
+            [
+                'align' => PhpdocAlignFixer::ALIGN_LEFT_MULTILINE,
+                'spacing' => ['_multiline' => -1],
+            ],
+            'The option "spacing" is invalid. Minimum _multiline spacing must be zero.',
         ];
     }
 }
