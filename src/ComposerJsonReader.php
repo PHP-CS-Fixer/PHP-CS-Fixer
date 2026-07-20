@@ -26,8 +26,6 @@ use Symfony\Component\Filesystem\Exception\IOException;
  */
 final class ComposerJsonReader
 {
-    private const COMPOSER_FILENAME = 'composer.json';
-
     private bool $isProcessed = false;
 
     private ?string $php = null;
@@ -35,6 +33,13 @@ final class ComposerJsonReader
     private ?string $phpUnit = null;
 
     private static ?self $singleton = null;
+
+    private static ?ConfigInterface $config = null;
+
+    public static function setConfig(ConfigInterface $config): void
+    {
+        self::$config = $config;
+    }
 
     public static function createSingleton(): self
     {
@@ -65,13 +70,15 @@ final class ComposerJsonReader
             return;
         }
 
-        if (!file_exists(self::COMPOSER_FILENAME)) {
-            throw new IOException(\sprintf('Failed to read file "%s".', self::COMPOSER_FILENAME));
+        $composerFilename = (self::$config ?? new Config())->getComposerPath();
+
+        if (!file_exists($composerFilename)) {
+            throw new IOException(\sprintf('Failed to read file "%s".', $composerFilename));
         }
 
-        $readResult = file_get_contents(self::COMPOSER_FILENAME);
+        $readResult = file_get_contents($composerFilename);
         if (false === $readResult) {
-            throw new IOException(\sprintf('Failed to read file "%s".', self::COMPOSER_FILENAME));
+            throw new IOException(\sprintf('Failed to read file "%s".', $composerFilename));
         }
 
         $this->processJson($readResult);

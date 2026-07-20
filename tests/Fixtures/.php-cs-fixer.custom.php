@@ -90,6 +90,14 @@ final class CustomConfig implements ConfigInterface, UnsupportedPhpVersionAllowe
     /**
      * {@inheritdoc}
      */
+    public function getComposerPath(): string
+    {
+        return 'composer.json';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPhpExecutable(): ?string
     {
         return null;
@@ -131,6 +139,14 @@ final class CustomConfig implements ConfigInterface, UnsupportedPhpVersionAllowe
      * {@inheritdoc}
      */
     public function setCacheFile(string $cacheFile): ConfigInterface
+    {
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setComposerPath(string $composerPath): ConfigInterface
     {
         return $this;
     }
