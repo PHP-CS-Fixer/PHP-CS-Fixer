@@ -68,7 +68,7 @@ set_error_handler(static function (int $severity, string $message, string $file,
 // load dependencies
 (static function (): void {
     $require = true;
-    if (class_exists('Phar')) {
+    if (class_exists(\Phar::class)) {
         // Maybe this file is used as phar-stub? Let's try!
         try {
             \Phar::mapPhar('php-cs-fixer.phar');

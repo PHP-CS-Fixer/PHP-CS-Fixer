@@ -251,11 +251,12 @@ final class StaticPrivateMethodFixer extends AbstractFixer
     }
 
     /**
-     * @return list<array{int, int, int}>
+     * @return iterable<array{int, int, int}>
      */
-    private function getClassMethods(Tokens $tokens, int $classOpen, int $classClose): array
+    private function getClassMethods(Tokens $tokens, int $classOpen, int $classClose): iterable
     {
-        $methods = [];
+        $tokensAnalyzer = new TokensAnalyzer($tokens);
+
         for ($index = $classClose - 1; $index > $classOpen + 1; --$index) {
             if ($tokens[$index]->equals('}')) {
                 $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_BRACE, $index);
@@ -267,19 +268,14 @@ final class StaticPrivateMethodFixer extends AbstractFixer
                 continue;
             }
 
-            $functionKeywordIndex = $index;
-            $prevTokenIndex = $tokens->getPrevMeaningfulToken($functionKeywordIndex);
-            $prevPrevTokenIndex = $tokens->getPrevMeaningfulToken($prevTokenIndex);
-            if ($tokens[$prevTokenIndex]->isGivenKind(\T_ABSTRACT) || $tokens[$prevPrevTokenIndex]->isGivenKind(\T_ABSTRACT)) {
+            if ($tokensAnalyzer->getMethodAttributes($index)['abstract']) {
                 continue;
             }
 
-            $methodOpen = $tokens->getNextTokenOfKind($functionKeywordIndex, ['{']);
+            $methodOpen = $tokens->getNextTokenOfKind($index, ['{']);
             $methodClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $methodOpen);
 
-            $methods[] = [$functionKeywordIndex, $methodOpen, $methodClose];
+            yield [$index, $methodOpen, $methodClose];
         }
-
-        return $methods;
     }
 }

@@ -539,6 +539,18 @@ final class StaticPrivateMethodFixerTest extends AbstractFixerTestCase
                 }
                 PHP,
         ];
+
+        yield 'private constructor and abstract method' => [
+            <<<'PHP'
+                <?php
+                abstract class AbstractClass
+                {
+                    private function __construct() {}
+                    abstract protected static function abstractFunction();
+                }
+
+                PHP,
+        ];
     }
 
     private static function generate50Samples(bool $fixed): string
