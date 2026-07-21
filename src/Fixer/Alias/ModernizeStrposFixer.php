@@ -147,9 +147,10 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
         $functionsAnalyzer = new FunctionsAnalyzer();
         $argumentsAnalyzer = new ArgumentsAnalyzer();
 
-        $modernizeCandidates = [[\T_STRING, 'strpos']];
+        $modernizeCandidates = [[\T_STRING, 'strpos'], [\T_STRING, 'mb_strpos']];
         if ($this->configuration['modernize_stripos']) {
             $modernizeCandidates[] = [\T_STRING, 'stripos'];
+            $modernizeCandidates[] = [\T_STRING, 'mb_stripos'];
         }
 
         for ($index = \count($tokens) - 1; $index > 0; --$index) {
@@ -175,7 +176,7 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
             }
 
             if (null !== $compareTokens) {
-                $isCaseInsensitive = $tokens[$index]->equals([\T_STRING, 'stripos'], false);
+                $isCaseInsensitive = $tokens[$index]->equalsAny([[\T_STRING, 'stripos'], [\T_STRING, 'mb_stripos']], false);
                 $this->fixCall($tokens, $index, $compareTokens, $isCaseInsensitive);
             }
         }
