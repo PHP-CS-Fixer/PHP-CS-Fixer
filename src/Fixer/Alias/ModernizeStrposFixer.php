@@ -87,6 +87,10 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
                         if (strpos($haystack, $needle) !== 0) {}
                         if (strpos($haystack, $needle) !== false) {}
                         if (strpos($haystack, $needle) === false) {}
+                        if (mb_strpos($haystack, $needle) === 0) {}
+                        if (mb_strpos($haystack, $needle) !== 0) {}
+                        if (mb_strpos($haystack, $needle) !== false) {}
+                        if (mb_strpos($haystack, $needle) === false) {}
 
                         PHP,
                 ),
@@ -101,6 +105,14 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
                         if (stripos($haystack, $needle) !== 0) {}
                         if (stripos($haystack, $needle) !== false) {}
                         if (stripos($haystack, $needle) === false) {}
+                        if (mb_strpos($haystack, $needle) === 0) {}
+                        if (mb_strpos($haystack, $needle) !== 0) {}
+                        if (mb_strpos($haystack, $needle) !== false) {}
+                        if (mb_strpos($haystack, $needle) === false) {}
+                        if (mb_stripos($haystack, $needle) === 0) {}
+                        if (mb_stripos($haystack, $needle) !== 0) {}
+                        if (mb_stripos($haystack, $needle) !== false) {}
+                        if (mb_stripos($haystack, $needle) === false) {}
 
                         PHP,
                     ['modernize_stripos' => true],

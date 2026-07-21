@@ -50,6 +50,14 @@ Example #1
    -if (strpos($haystack, $needle) !== 0) {}
    -if (strpos($haystack, $needle) !== false) {}
    -if (strpos($haystack, $needle) === false) {}
+   -if (mb_strpos($haystack, $needle) === 0) {}
+   -if (mb_strpos($haystack, $needle) !== 0) {}
+   -if (mb_strpos($haystack, $needle) !== false) {}
+   -if (mb_strpos($haystack, $needle) === false) {}
+   +if (str_starts_with($haystack, $needle)  ) {}
+   +if (!str_starts_with($haystack, $needle)  ) {}
+   +if (str_contains($haystack, $needle)  ) {}
+   +if (!str_contains($haystack, $needle)  ) {}
    +if (str_starts_with($haystack, $needle)  ) {}
    +if (!str_starts_with($haystack, $needle)  ) {}
    +if (str_contains($haystack, $needle)  ) {}
@@ -73,6 +81,22 @@ With configuration: ``['modernize_stripos' => true]``.
    -if (stripos($haystack, $needle) !== 0) {}
    -if (stripos($haystack, $needle) !== false) {}
    -if (stripos($haystack, $needle) === false) {}
+   -if (mb_strpos($haystack, $needle) === 0) {}
+   -if (mb_strpos($haystack, $needle) !== 0) {}
+   -if (mb_strpos($haystack, $needle) !== false) {}
+   -if (mb_strpos($haystack, $needle) === false) {}
+   -if (mb_stripos($haystack, $needle) === 0) {}
+   -if (mb_stripos($haystack, $needle) !== 0) {}
+   -if (mb_stripos($haystack, $needle) !== false) {}
+   -if (mb_stripos($haystack, $needle) === false) {}
+   +if (str_starts_with($haystack, $needle)  ) {}
+   +if (!str_starts_with($haystack, $needle)  ) {}
+   +if (str_contains($haystack, $needle)  ) {}
+   +if (!str_contains($haystack, $needle)  ) {}
+   +if (str_starts_with(strtolower($haystack), strtolower($needle))  ) {}
+   +if (!str_starts_with(strtolower($haystack), strtolower($needle))  ) {}
+   +if (str_contains(strtolower($haystack), strtolower($needle))  ) {}
+   +if (!str_contains(strtolower($haystack), strtolower($needle))  ) {}
    +if (str_starts_with($haystack, $needle)  ) {}
    +if (!str_starts_with($haystack, $needle)  ) {}
    +if (str_contains($haystack, $needle)  ) {}
