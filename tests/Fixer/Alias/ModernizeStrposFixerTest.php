@@ -109,9 +109,20 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
             '<?php if (strpos($haystack3, $needle) === 0) {}',
         ];
 
+        yield 'case mb_strpos to str_starts_with' => [
+            '<?php if (str_starts_with($haystack, $needle)  ) {}',
+            '<?php if (mb_strpos($haystack, $needle) === 0) {}',
+        ];
+
         yield [
             '<?php if (str_starts_with(strtolower($haystack3), strtolower($needle))  ) {}',
             '<?php if (stripos($haystack3, $needle) === 0) {}',
+            ['modernize_stripos' => true],
+        ];
+
+        yield 'case mb_stripos to str_starts_with and strtolower' => [
+            '<?php if (str_starts_with(strtolower($haystack), strtolower($needle))  ) {}',
+            '<?php if (mb_stripos($haystack, $needle) === 0) {}',
             ['modernize_stripos' => true],
         ];
 
@@ -153,9 +164,20 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
             '<?php if (strpos($haystack6, $needle) !== 0) {}',
         ];
 
+        yield 'case mb_strpos to not str_starts_with' => [
+            '<?php if (!str_starts_with($haystack6, $needle)  ) {}',
+            '<?php if (mb_strpos($haystack6, $needle) !== 0) {}',
+        ];
+
         yield [
             '<?php if (!str_starts_with(strtolower($haystack6), strtolower($needle))  ) {}',
             '<?php if (stripos($haystack6, $needle) !== 0) {}',
+            ['modernize_stripos' => true],
+        ];
+
+        yield 'case mb_stripos to not str_starts_with and strtolower' => [
+            '<?php if (!str_starts_with(strtolower($haystack6), strtolower($needle))  ) {}',
+            '<?php if (mb_stripos($haystack6, $needle) !== 0) {}',
             ['modernize_stripos' => true],
         ];
 
@@ -186,9 +208,20 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
             '<?php if (strpos($haystack7, $needle) !== FALSE) {}',
         ];
 
+        yield 'mb_strpos to str_contains and casing operand' => [
+            '<?php if (str_contains($haystack7, $needle)  ) {}',
+            '<?php if (mb_strpos($haystack7, $needle) !== FALSE) {}',
+        ];
+
         yield 'case insensitive casing operand' => [
             '<?php if (str_contains(strtolower($haystack7), strtolower($needle))  ) {}',
             '<?php if (stripos($haystack7, $needle) !== FALSE) {}',
+            ['modernize_stripos' => true],
+        ];
+
+        yield 'mb_stripos to str_contains, strtolower and casing operand' => [
+            '<?php if (str_contains(strtolower($haystack7), strtolower($needle))  ) {}',
+            '<?php if (mb_stripos($haystack7, $needle) !== FALSE) {}',
             ['modernize_stripos' => true],
         ];
 
@@ -197,9 +230,20 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
             '<?php if (strpos($haystack8, $needle) === false) {}',
         ];
 
+        yield 'mb_strpos to not str_contains' => [
+            '<?php if (!str_contains($haystack8, $needle)  ) {}',
+            '<?php if (mb_strpos($haystack8, $needle) === false) {}',
+        ];
+
         yield [
             '<?php if (!str_contains(strtolower($haystack8), strtolower($needle))  ) {}',
             '<?php if (stripos($haystack8, $needle) === false) {}',
+            ['modernize_stripos' => true],
+        ];
+
+        yield 'mb_stripos to not str_contains and strtolower' => [
+            '<?php if (!str_contains(strtolower($haystack8), strtolower($needle))  ) {}',
+            '<?php if (mb_stripos($haystack8, $needle) === false) {}',
             ['modernize_stripos' => true],
         ];
 
