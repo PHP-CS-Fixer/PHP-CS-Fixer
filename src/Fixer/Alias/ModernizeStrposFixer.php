@@ -87,6 +87,10 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
                         if (strpos($haystack, $needle) !== 0) {}
                         if (strpos($haystack, $needle) !== false) {}
                         if (strpos($haystack, $needle) === false) {}
+                        if (mb_strpos($haystack, $needle) === 0) {}
+                        if (mb_strpos($haystack, $needle) !== 0) {}
+                        if (mb_strpos($haystack, $needle) !== false) {}
+                        if (mb_strpos($haystack, $needle) === false) {}
 
                         PHP,
                 ),
@@ -101,6 +105,14 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
                         if (stripos($haystack, $needle) !== 0) {}
                         if (stripos($haystack, $needle) !== false) {}
                         if (stripos($haystack, $needle) === false) {}
+                        if (mb_strpos($haystack, $needle) === 0) {}
+                        if (mb_strpos($haystack, $needle) !== 0) {}
+                        if (mb_strpos($haystack, $needle) !== false) {}
+                        if (mb_strpos($haystack, $needle) === false) {}
+                        if (mb_stripos($haystack, $needle) === 0) {}
+                        if (mb_stripos($haystack, $needle) !== 0) {}
+                        if (mb_stripos($haystack, $needle) !== false) {}
+                        if (mb_stripos($haystack, $needle) === false) {}
 
                         PHP,
                     ['modernize_stripos' => true],
@@ -147,9 +159,10 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
         $functionsAnalyzer = new FunctionsAnalyzer();
         $argumentsAnalyzer = new ArgumentsAnalyzer();
 
-        $modernizeCandidates = [[\T_STRING, 'strpos']];
+        $modernizeCandidates = [[\T_STRING, 'strpos'], [\T_STRING, 'mb_strpos']];
         if ($this->configuration['modernize_stripos']) {
             $modernizeCandidates[] = [\T_STRING, 'stripos'];
+            $modernizeCandidates[] = [\T_STRING, 'mb_stripos'];
         }
 
         for ($index = \count($tokens) - 1; $index > 0; --$index) {
@@ -175,7 +188,7 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
             }
 
             if (null !== $compareTokens) {
-                $isCaseInsensitive = $tokens[$index]->equals([\T_STRING, 'stripos'], false);
+                $isCaseInsensitive = $tokens[$index]->equalsAny([[\T_STRING, 'stripos'], [\T_STRING, 'mb_stripos']], false);
                 $this->fixCall($tokens, $index, $compareTokens, $isCaseInsensitive);
             }
         }
