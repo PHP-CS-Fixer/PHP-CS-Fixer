@@ -919,7 +919,9 @@ class Tokens extends \SplFixedArray
             if ('' === $token->getContent()) {
                 throw new \InvalidArgumentException(\sprintf('Non-meaningful (empty) token at position: "%s".', $key));
             }
+        }
 
+        foreach ($sequence as $token) {
             if (!$this->isTokenKindFound($this->extractTokenKind($token))) {
                 return null;
             }
