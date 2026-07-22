@@ -359,7 +359,7 @@ abstract class AbstractIntegrationTestCase extends TestCase
     /**
      * @return list<FixerInterface>
      */
-    private static function createFixers(IntegrationCase $case): array
+    protected static function createFixers(IntegrationCase $case): array
     {
         $config = $case->getConfig();
 
