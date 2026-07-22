@@ -919,9 +919,7 @@ class Tokens extends \SplFixedArray
             if ('' === $token->getContent()) {
                 throw new \InvalidArgumentException(\sprintf('Non-meaningful (empty) token at position: "%s".', $key));
             }
-        }
 
-        foreach ($sequence as $token) {
             if (!$this->isTokenKindFound($this->extractTokenKind($token))) {
                 return null;
             }
@@ -935,17 +933,35 @@ class Tokens extends \SplFixedArray
         unset($sequence[$firstKey]);
 
         // begin searching for the first token in the sequence (start included)
-        $index = $start - 1;
-        while ($index <= $end) {
-            $index = $this->getNextTokenOfKind($index, [$firstToken], $firstCs);
+        for ($index = $start; $index <= $end; ++$index) {
+            $current = $this[$index];
 
-            // ensure we found a match and didn't get past the end index
-            if (null === $index || $index > $end) {
-                return null;
+            if ($firstToken instanceof Token) {
+                if (!$current->equals($firstToken, $firstCs)) {
+                    continue;
+                }
+            } elseif (\is_string($firstToken)) {
+                if ($current->getContent() !== $firstToken) {
+                    continue;
+                }
+            } else {
+                if ($current->getId() !== $firstToken[0]) {
+                    continue;
+                }
+
+                if (isset($firstToken[1])) {
+                    if ($firstCs) {
+                        if ($current->getContent() !== $firstToken[1]) {
+                            continue;
+                        }
+                    } elseif (0 !== strcasecmp($current->getContent(), $firstToken[1])) {
+                        continue;
+                    }
+                }
             }
 
             // initialise the result array with the current index
-            $result = [$index => $this[$index]];
+            $result = [$index => $current];
 
             // advance cursor to the current position
             $currIdx = $index;
@@ -956,16 +972,44 @@ class Tokens extends \SplFixedArray
 
                 // ensure we didn't go too far
                 if (null === $currIdx || $currIdx > $end) {
-                    return null;
-                }
-
-                if (!$this[$currIdx]->equals($token, self::isKeyCaseSensitive($caseSensitive, $key))) {
-                    // not a match, restart the outer loop
                     continue 2;
                 }
 
+                $current = $this[$currIdx];
+
+                if ($token instanceof Token) {
+                    if (!$current->equals($token, self::isKeyCaseSensitive($caseSensitive, $key))) {
+                        // not a match, restart the outer loop
+                        continue 2;
+                    }
+                } elseif (\is_string($token)) {
+                    if ($current->getContent() !== $token) {
+                        // not a match, restart the outer loop
+                        continue 2;
+                    }
+                } else {
+                    if ($current->getId() !== $token[0]) {
+                        // not a match, restart the outer loop
+                        continue 2;
+                    }
+
+                    if (isset($token[1])) {
+                        $cs = self::isKeyCaseSensitive($caseSensitive, $key);
+
+                        if ($cs) {
+                            if ($current->getContent() !== $token[1]) {
+                                // not a match, restart the outer loop
+                                continue 2;
+                            }
+                        } elseif (0 !== strcasecmp($current->getContent(), $token[1])) {
+                            // not a match, restart the outer loop
+                            continue 2;
+                        }
+                    }
+                }
+
                 // append index to the result array
-                $result[$currIdx] = $this[$currIdx];
+                $result[$currIdx] = $current;
             }
 
             // do we have a complete match?
