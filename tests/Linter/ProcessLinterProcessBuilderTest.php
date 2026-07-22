@@ -16,6 +16,9 @@ namespace PhpCsFixer\Tests\Linter;
 
 use PhpCsFixer\Linter\ProcessLinterProcessBuilder;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -26,6 +29,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ProcessLinterProcessBuilder::class)]
 final class ProcessLinterProcessBuilderTest extends TestCase
 {
     /**
@@ -33,6 +37,8 @@ final class ProcessLinterProcessBuilderTest extends TestCase
      *
      * @requires OS Linux|Darwin
      */
+    #[DataProvider('providePrepareCommandOnPhpOnLinuxOrMacCases')]
+    #[RequiresOperatingSystem('Linux|Darwin')]
     public function testPrepareCommandOnPhpOnLinuxOrMac(string $executable, string $file, string $expected): void
     {
         $this->testPrepareCommand($executable, $file, $expected);
@@ -53,6 +59,8 @@ final class ProcessLinterProcessBuilderTest extends TestCase
      *
      * @requires OS ^Win
      */
+    #[DataProvider('providePrepareCommandOnPhpOnWindowsCases')]
+    #[RequiresOperatingSystem('^Win')]
     public function testPrepareCommandOnPhpOnWindows(string $executable, string $file, string $expected): void
     {
         $this->testPrepareCommand($executable, $file, $expected);

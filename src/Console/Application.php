@@ -20,6 +20,7 @@ use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\Command\HelpCommand;
 use PhpCsFixer\Console\Command\InitCommand;
 use PhpCsFixer\Console\Command\ListFilesCommand;
+use PhpCsFixer\Console\Command\ListRulesCommand;
 use PhpCsFixer\Console\Command\ListSetsCommand;
 use PhpCsFixer\Console\Command\SelfUpdateCommand;
 use PhpCsFixer\Console\Command\WorkerCommand;
@@ -50,8 +51,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class Application extends BaseApplication
 {
     public const NAME = 'PHP CS Fixer';
-    public const VERSION = '3.94.3-DEV';
-    public const VERSION_CODENAME = '7th Gear';
+    public const VERSION = '3.95.16-DEV';
+    public const VERSION_CODENAME = 'Adalbertus';
 
     /**
      * @readonly
@@ -72,6 +73,7 @@ final class Application extends BaseApplication
         $this->add(new FixCommand($this->toolInfo));
         $this->add(new InitCommand());
         $this->add(new ListFilesCommand($this->toolInfo));
+        $this->add(new ListRulesCommand());
         $this->add(new ListSetsCommand());
         $this->add(new SelfUpdateCommand(
             new NewVersionChecker(new GithubClient()),

@@ -24,6 +24,8 @@ use PhpCsFixer\Fixer\LanguageConstruct\ClassKeywordFixer;
 use PhpCsFixer\Fixer\Strict\StrictParamFixer;
 use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -32,11 +34,13 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FixerDocumentGenerator::class)]
 final class FixerDocumentGeneratorTest extends TestCase
 {
     /**
      * @dataProvider provideGenerateRuleSetsDocumentationCases
      */
+    #[DataProvider('provideGenerateRuleSetsDocumentationCases')]
     public function testGenerateRuleSetsDocumentation(FixerInterface $fixer): void
     {
         $locator = new DocumentationLocator();

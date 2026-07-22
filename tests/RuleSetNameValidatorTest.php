@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\RuleSetNameValidator;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -23,11 +25,13 @@ use PhpCsFixer\RuleSetNameValidator;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversNothing]
 final class RuleSetNameValidatorTest extends TestCase
 {
     /**
      * @dataProvider provideValidNamesCases
      */
+    #[DataProvider('provideValidNamesCases')]
     public function testValidNames(string $name, bool $isCustom): void
     {
         self::assertTrue(RuleSetNameValidator::isValid($name, $isCustom));
@@ -70,6 +74,7 @@ final class RuleSetNameValidatorTest extends TestCase
     /**
      * @dataProvider provideInvalidNamesCases
      */
+    #[DataProvider('provideInvalidNamesCases')]
     public function testInvalidNames(string $name, bool $isCustom): void
     {
         self::assertFalse(RuleSetNameValidator::isValid($name, $isCustom));

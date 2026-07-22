@@ -17,6 +17,8 @@ namespace PhpCsFixer\Tests\Fixer\Alias;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\Alias\ModernizeStrposFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -31,6 +33,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ModernizeStrposFixer::class)]
 final class ModernizeStrposFixerTest extends AbstractFixerTestCase
 {
     public function testConfigure(): void
@@ -48,7 +51,7 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage('[modernize_strpos] Invalid configuration: The option "invalid" does not exist. Defined options are: "modernize_stripos".');
 
-        $this->fixer->configure(['invalid' => true]);
+        $this->fixer->configure(['invalid' => true]); // @phpstan-ignore argument.type
     }
 
     /**
@@ -56,6 +59,7 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);

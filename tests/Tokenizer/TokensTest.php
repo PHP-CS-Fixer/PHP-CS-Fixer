@@ -20,6 +20,9 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @phpstan-import-type _PhpTokenPrototypePartial from Token
@@ -32,6 +35,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Tokens::class)]
 final class TokensTest extends TestCase
 {
     use AssertTokensTrait;
@@ -59,6 +63,7 @@ final class TokensTest extends TestCase
      *
      * @dataProvider provideFindSequenceCases
      */
+    #[DataProvider('provideFindSequenceCases')]
     public function testFindSequence(
         string $source,
         ?array $expected,
@@ -300,11 +305,22 @@ final class TokensTest extends TestCase
         ];
     }
 
+    public function testFindSequenceWithEmptyInputException(): void
+    {
+        $tokens = Tokens::fromCode('<?php $x = 1;');
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid sequence.');
+
+        $tokens->findSequence([]); // @phpstan-ignore-line argument.type Explicitly test input valid for PHP typing system but against PHPStan
+    }
+
     /**
      * @param non-empty-list<_PhpTokenPrototypePartial|Token> $sequence sequence of token prototypes
      *
      * @dataProvider provideFindSequenceExceptionCases
      */
+    #[DataProvider('provideFindSequenceExceptionCases')]
     public function testFindSequenceException(string $message, array $sequence): void
     {
         $tokens = Tokens::fromCode('<?php $x = 1;');
@@ -321,8 +337,6 @@ final class TokensTest extends TestCase
     public static function provideFindSequenceExceptionCases(): iterable
     {
         $emptyToken = new Token('');
-
-        yield ['Invalid sequence.', []];
 
         yield [
             'Non-meaningful token at position: "0".',
@@ -376,6 +390,7 @@ final class TokensTest extends TestCase
     /**
      * @dataProvider provideMonolithicPhpDetectionCases
      */
+    #[DataProvider('provideMonolithicPhpDetectionCases')]
     public function testMonolithicPhpDetection(bool $isMonolithic, string $source): void
     {
         $tokens = Tokens::fromCode($source);
@@ -561,6 +576,7 @@ final class TokensTest extends TestCase
      *
      * @dataProvider provideClearTokenAndMergeSurroundingWhitespaceCases
      */
+    #[DataProvider('provideClearTokenAndMergeSurroundingWhitespaceCases')]
     public function testClearTokenAndMergeSurroundingWhitespace(string $source, array $indexes, array $expected): void
     {
         $this->doTestClearTokens($source, $indexes, $expected);
@@ -669,6 +685,7 @@ final class TokensTest extends TestCase
      *
      * @dataProvider provideTokenOfKindSiblingCases
      */
+    #[DataProvider('provideTokenOfKindSiblingCases')]
     public function testTokenOfKindSibling(
         ?int $expectedIndex,
         int $direction,
@@ -737,6 +754,7 @@ final class TokensTest extends TestCase
      *
      * @param Tokens::BLOCK_TYPE_* $type
      */
+    #[DataProvider('provideFindBlockEndCases')]
     public function testFindBlockEnd(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
         self::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
@@ -749,38 +767,40 @@ final class TokensTest extends TestCase
     {
         yield [4, '<?php ${$bar};', Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE, 2];
 
-        yield [4, '<?php test(1);', Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2];
+        yield [4, '<?php test(1);', Tokens::BLOCK_TYPE_PARENTHESIS, 2];
 
-        yield [4, '<?php $a[1];', Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, 2];
+        yield [4, '<?php $a[1];', Tokens::BLOCK_TYPE_INDEX_BRACKET, 2];
 
-        yield [6, '<?php [1, "foo"];', Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 1];
+        yield [6, '<?php [1, "foo"];', Tokens::BLOCK_TYPE_ARRAY_BRACKET, 1];
 
         yield [5, '<?php $foo->{$bar};', Tokens::BLOCK_TYPE_DYNAMIC_PROP_BRACE, 3];
 
-        yield [4, '<?php list($a) = $b;', Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2];
+        yield [4, '<?php list($a) = $b;', Tokens::BLOCK_TYPE_PARENTHESIS, 2];
 
-        yield [6, '<?php if($a){}?>', Tokens::BLOCK_TYPE_CURLY_BRACE, 5];
+        yield [6, '<?php if($a){}?>', Tokens::BLOCK_TYPE_BRACE, 5];
 
-        yield [11, '<?php $foo = (new Foo());', Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION, 5];
+        yield [11, '<?php $foo = (new Foo());', Tokens::BLOCK_TYPE_CLASS_INSTANTIATION_PARENTHESIS, 5];
 
         yield [10, '<?php $object->{"set_{$name}"}(42);', Tokens::BLOCK_TYPE_DYNAMIC_PROP_BRACE, 3];
 
-        yield [19, '<?php $foo = (new class () implements Foo {});', Tokens::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION, 5];
+        yield [19, '<?php $foo = (new class () implements Foo {});', Tokens::BLOCK_TYPE_CLASS_INSTANTIATION_PARENTHESIS, 5];
 
         yield [10, '<?php use a\{ClassA, ClassB};', Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, 5];
 
-        yield [3, '<?php [$a] = $array;', Tokens::BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE, 1];
+        yield [3, '<?php [$a] = $array;', Tokens::BLOCK_TYPE_DESTRUCTURING_BRACKET, 1];
 
         yield [8, '<?php "start__${array[key]}__end";', Tokens::BLOCK_TYPE_COMPLEX_STRING_VARIABLE, 3];
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      *
      * @dataProvider provideFindBlockEnd80Cases
      *
      * @param Tokens::BLOCK_TYPE_* $type
      */
+    #[RequiresPhp('>= 8.0.0')]
+    #[DataProvider('provideFindBlockEnd80Cases')]
     public function testFindBlockEnd80(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
         self::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
@@ -803,12 +823,14 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      *
      * @dataProvider provideFindBlockEnd82Cases
      *
      * @param Tokens::BLOCK_TYPE_* $type
      */
+    #[RequiresPhp('>= 8.2.0')]
+    #[DataProvider('provideFindBlockEnd82Cases')]
     public function testFindBlockEnd82(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
         self::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
@@ -843,12 +865,14 @@ final class TokensTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.3
+     * @requires PHP >= 8.3.0
      *
      * @dataProvider provideFindBlockEnd83Cases
      *
      * @param Tokens::BLOCK_TYPE_* $type
      */
+    #[RequiresPhp('>= 8.3.0')]
+    #[DataProvider('provideFindBlockEnd83Cases')]
     public function testFindBlockEnd83(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
         self::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
@@ -862,7 +886,7 @@ final class TokensTest extends TestCase
         yield 'simple dynamic class constant fetch' => [
             7,
             '<?php echo Foo::{$bar};',
-            Tokens::BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE,
+            Tokens::BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_BRACE,
             5,
         ];
 
@@ -870,7 +894,7 @@ final class TokensTest extends TestCase
             yield 'chained dynamic class constant fetch: '.$startEnd[0] => [
                 $startEnd[1],
                 "<?php echo Foo::{'BAR'}::{'BLA'}::{static_method}(1,2) ?>",
-                Tokens::BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE,
+                Tokens::BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_BRACE,
                 $startEnd[0],
             ];
         }
@@ -881,8 +905,10 @@ final class TokensTest extends TestCase
      *
      * @dataProvider provideFindBlockEndPre84Cases
      *
-     * @requires PHP <8.4
+     * @requires PHP < 8.4.0
      */
+    #[DataProvider('provideFindBlockEndPre84Cases')]
+    #[RequiresPhp('< 8.4.0')]
     public function testFindBlockEndPre84(int $expectedIndex, string $source, int $type, int $searchIndex): void
     {
         self::assertFindBlockEnd($expectedIndex, $source, $type, $searchIndex);
@@ -893,7 +919,7 @@ final class TokensTest extends TestCase
      */
     public static function provideFindBlockEndPre84Cases(): iterable
     {
-        yield [4, '<?php $a{1};', Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE, 2];
+        yield [4, '<?php $a{1};', Tokens::BLOCK_TYPE_INDEX_BRACE, 2];
     }
 
     public function testFindBlockEndInvalidType(): void
@@ -924,12 +950,12 @@ final class TokensTest extends TestCase
         Tokens::clearCache();
         $tokens = Tokens::fromCode('<?php foo(1, 2);');
 
-        self::assertSame(7, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2));
+        self::assertSame(7, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, 2));
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('/^Invalid param \$startIndex - not a proper block "start"\.$/');
 
-        $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 7);
+        $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, 7);
     }
 
     public function testFindBlockStartEdgeCalledMultipleTimes(): void
@@ -937,12 +963,12 @@ final class TokensTest extends TestCase
         Tokens::clearCache();
         $tokens = Tokens::fromCode('<?php foo(1, 2);');
 
-        self::assertSame(2, $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 7));
+        self::assertSame(2, $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, 7));
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('/^Invalid param \$startIndex - not a proper block "end"\.$/');
 
-        $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, 2);
+        $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, 2);
     }
 
     public function testEmptyTokens(): void
@@ -992,6 +1018,7 @@ final class TokensTest extends TestCase
     /**
      * @dataProvider provideIsEmptyCases
      */
+    #[DataProvider('provideIsEmptyCases')]
     public function testIsEmpty(Token $token, bool $isEmpty): void
     {
         $tokens = Tokens::fromArray([$token]);
@@ -1033,6 +1060,7 @@ final class TokensTest extends TestCase
     /**
      * @dataProvider provideEnsureWhitespaceAtIndexCases
      */
+    #[DataProvider('provideEnsureWhitespaceAtIndexCases')]
     public function testEnsureWhitespaceAtIndex(string $expected, string $input, int $index, int $offset, string $whiteSpace): void
     {
         $tokens = Tokens::fromCode($input);
@@ -1209,6 +1237,7 @@ echo $a;',
     /**
      * @dataProvider provideRemoveLeadingWhitespaceCases
      */
+    #[DataProvider('provideRemoveLeadingWhitespaceCases')]
     public function testRemoveLeadingWhitespace(int $index, ?string $whitespaces, string $expected, ?string $input = null): void
     {
         Tokens::clearCache();
@@ -1283,6 +1312,7 @@ echo $a;',
     /**
      * @dataProvider provideRemoveTrailingWhitespaceCases
      */
+    #[DataProvider('provideRemoveTrailingWhitespaceCases')]
     public function testRemoveTrailingWhitespace(int $index, ?string $whitespaces, string $expected, ?string $input = null): void
     {
         Tokens::clearCache();
@@ -1378,6 +1408,7 @@ $bar;',
      *
      * @dataProvider provideDetectBlockTypeCases
      */
+    #[DataProvider('provideDetectBlockTypeCases')]
     public function testDetectBlockType(?array $expected, string $code, int $index): void
     {
         $tokens = Tokens::fromCode($code);
@@ -1391,7 +1422,7 @@ $bar;',
     {
         yield [
             [
-                'type' => Tokens::BLOCK_TYPE_CURLY_BRACE,
+                'type' => Tokens::BLOCK_TYPE_BRACE,
                 'isStart' => true,
             ],
             '<?php { echo 1; }',
@@ -1438,6 +1469,7 @@ $bar;',
      *
      * @dataProvider provideOverrideRangeCases
      */
+    #[DataProvider('provideOverrideRangeCases')]
     public function testOverrideRange(array $expected, string $code, int $indexStart, int $indexEnd, array $items): void
     {
         $tokens = Tokens::fromCode($code);
@@ -1563,6 +1595,7 @@ $bar;',
      *
      * @dataProvider provideGetMeaningfulTokenSiblingCases
      */
+    #[DataProvider('provideGetMeaningfulTokenSiblingCases')]
     public function testGetMeaningfulTokenSibling(?int $expectIndex, int $index, int $direction, string $source): void
     {
         Tokens::clearCache();
@@ -1604,6 +1637,7 @@ $bar;',
      *
      * @param list<Token> $slices
      */
+    #[DataProvider('provideInsertSlicesAtMultiplePlacesCases')]
     public function testInsertSlicesAtMultiplePlaces(string $expected, array $slices): void
     {
         $input = <<<'EOF'
@@ -1677,6 +1711,7 @@ $bar;',
      *
      * @dataProvider provideInsertSlicesCases
      */
+    #[DataProvider('provideInsertSlicesCases')]
     public function testInsertSlices(Tokens $expected, Tokens $tokens, array $slices): void
     {
         $tokens->insertSlices($slices);
@@ -1796,7 +1831,7 @@ $bar;',
     {
         $tokens = $this->getBlockEdgeCachingTestTokens();
 
-        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, 5);
         self::assertSame(9, $endIndex);
 
         $tokens->offsetSet(5, new Token('('));
@@ -1805,7 +1840,7 @@ $bar;',
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid param $startIndex - not a proper block "start".');
 
-        $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+        $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, 5);
     }
 
     public function testBlockEdgeCachingOffsetSetPruneEvenIfTokenEquals(): void
@@ -1815,42 +1850,42 @@ $bar;',
             new Token([\T_VARIABLE, '$a']),
             new Token('='),
             new Token([\T_WHITESPACE, ' ']),
-            new Token([CT::T_ARRAY_SQUARE_BRACE_OPEN, '[']),
+            new Token([CT::T_ARRAY_BRACKET_OPEN, '[']),
             new Token([\T_WHITESPACE, ' ']),
-            new Token([CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']']),
+            new Token([CT::T_ARRAY_BRACKET_CLOSE, ']']),
             new Token(';'),
         ]);
 
-        self::assertSame(6, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 4));
-        self::assertSame(4, $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 6));
+        self::assertSame(6, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, 4));
+        self::assertSame(4, $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_BRACKET, 6));
 
         $tokens->overrideRange(3, 6, [
-            new Token([CT::T_ARRAY_SQUARE_BRACE_OPEN, '[']),
+            new Token([CT::T_ARRAY_BRACKET_OPEN, '[']),
             $tokens[4],
-            new Token([CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']']),
+            new Token([CT::T_ARRAY_BRACKET_CLOSE, ']']),
             $tokens[6],
         ]);
 
-        self::assertSame(5, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 4));
-        self::assertSame(4, $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5));
+        self::assertSame(5, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, 4));
+        self::assertSame(4, $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_BRACKET, 5));
 
-        self::assertSame(6, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 3));
-        self::assertSame(3, $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 6));
+        self::assertSame(6, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, 3));
+        self::assertSame(3, $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_BRACKET, 6));
     }
 
     public function testBlockEdgeCachingClearAt(): void
     {
         $tokens = $this->getBlockEdgeCachingTestTokens();
 
-        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, 5);
         self::assertSame(9, $endIndex);
 
         $tokens->clearAt(7); // note: offsetUnset doesn't work here
-        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, 5);
         self::assertSame(9, $endIndex);
 
         $tokens->clearEmptyTokens();
-        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, 5);
         self::assertSame(8, $endIndex);
     }
 
@@ -1858,12 +1893,12 @@ $bar;',
     {
         $tokens = $this->getBlockEdgeCachingTestTokens();
 
-        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, 5);
         self::assertSame(9, $endIndex);
 
         $tokens->insertSlices([6 => [new Token([\T_COMMENT, '/* A */'])], new Token([\T_COMMENT, '/* B */'])]);
 
-        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, 5);
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, 5);
         self::assertSame(11, $endIndex);
     }
 
@@ -1943,8 +1978,9 @@ $bar;',
     }
 
     /**
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[RequiresPhp('>= 8.1.0')]
     public function testToJson(): void
     {
         self::assertSame(
@@ -2007,11 +2043,11 @@ $bar;',
             new Token([\T_WHITESPACE, ' ']),
             new Token('='),
             new Token([\T_WHITESPACE, ' ']),
-            new Token([CT::T_ARRAY_SQUARE_BRACE_OPEN, '[']),
+            new Token([CT::T_ARRAY_BRACKET_OPEN, '[']),
             new Token([\T_WHITESPACE, ' ']),
             new Token([\T_COMMENT, '/* foo */']),
             new Token([\T_WHITESPACE, ' ']),
-            new Token([CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']']),
+            new Token([CT::T_ARRAY_BRACKET_CLOSE, ']']),
             new Token(';'),
             new Token([\T_WHITESPACE, "\n"]),
         ]);

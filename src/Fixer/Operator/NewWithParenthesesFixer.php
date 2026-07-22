@@ -88,10 +88,10 @@ final class NewWithParenthesesFixer extends AbstractFixer implements Configurabl
         [\T_DOUBLE_ARROW],
         [\T_POW],
         [\T_SPACESHIP],
-        [CT::T_ARRAY_SQUARE_BRACE_OPEN],
-        [CT::T_ARRAY_SQUARE_BRACE_CLOSE],
-        [CT::T_BRACE_CLASS_INSTANTIATION_OPEN],
-        [CT::T_BRACE_CLASS_INSTANTIATION_CLOSE],
+        [CT::T_ARRAY_BRACKET_OPEN],
+        [CT::T_ARRAY_BRACKET_CLOSE],
+        [CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN],
+        [CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE],
         [FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG],
         [FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG],
     ];
@@ -172,7 +172,7 @@ final class NewWithParenthesesFixer extends AbstractFixer implements Configurabl
 
             // entrance into array index syntax - need to look for exit
 
-            while ($tokens[$nextIndex]->equals('[') || $tokens[$nextIndex]->isGivenKind(CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN)) {
+            while ($tokens[$nextIndex]->equals('[') || $tokens[$nextIndex]->isGivenKind(CT::T_ARRAY_INDEX_BRACE_OPEN)) {
                 $nextIndex = $tokens->findBlockEnd(Tokens::detectBlockType($tokens[$nextIndex])['type'], $nextIndex);
                 $nextIndex = $tokens->getNextMeaningfulToken($nextIndex);
             }

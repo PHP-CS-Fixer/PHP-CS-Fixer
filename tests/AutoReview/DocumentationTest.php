@@ -23,6 +23,9 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -35,11 +38,15 @@ use Symfony\Component\Finder\Finder;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversNothing]
+#[Group('legacy')]
+#[Group('auto-review')]
 final class DocumentationTest extends TestCase
 {
     /**
      * @dataProvider provideFixerDocumentationFileIsUpToDateCases
      */
+    #[DataProvider('provideFixerDocumentationFileIsUpToDateCases')]
     public function testFixerDocumentationFileIsUpToDate(FixerInterface $fixer): void
     {
         if ('ordered_imports' === $fixer->getName()) {

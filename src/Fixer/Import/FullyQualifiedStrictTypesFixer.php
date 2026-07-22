@@ -526,6 +526,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
             }
 
             if ($i > 0) {
+                \assert(false !== strrpos($tmp, '\\'));
                 $tmp = substr($tmp, 0, strrpos($tmp, '\\'));
             }
         }
@@ -607,6 +608,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
                         break;
                     }
 
+                    \assert(false !== strrpos($symbol, '\\'));
                     $symbol = substr($symbol, 0, strrpos($symbol, '\\'));
                 }
             }
@@ -708,7 +710,6 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
                 return $type;
             }
 
-            /** @var non-empty-string $currentTypeValue */
             $shortTokens = $this->determineShortType($currentTypeValue, 'class', $uses, $namespaceName);
 
             if (null === $shortTokens) {

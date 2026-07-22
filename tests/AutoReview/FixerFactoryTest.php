@@ -19,6 +19,9 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\Test\IntegrationCaseFactory;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
@@ -33,6 +36,9 @@ use Symfony\Component\Finder\SplFileInfo;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversNothing]
+#[Group('auto-review')]
+#[Group('covers-nothing')]
 final class FixerFactoryTest extends TestCase
 {
     public function testFixersPriorityEdgeFixers(): void
@@ -81,6 +87,7 @@ final class FixerFactoryTest extends TestCase
      *
      * @dataProvider provideFixersPriorityCasesHaveIntegrationTestCases
      */
+    #[DataProvider('provideFixersPriorityCasesHaveIntegrationTestCases')]
     public function testFixersPriorityCasesHaveIntegrationTest(string $fixerName, array $edges): void
     {
         $forPerformanceEdgesOnly = [
@@ -160,6 +167,7 @@ final class FixerFactoryTest extends TestCase
     /**
      * @dataProvider providePriorityIntegrationTestFilesAreListedInPriorityGraphCases
      */
+    #[DataProvider('providePriorityIntegrationTestFilesAreListedInPriorityGraphCases')]
     public function testPriorityIntegrationTestFilesAreListedInPriorityGraph(\SplFileInfo $file): void
     {
         $fileName = $file->getFilename();
@@ -355,6 +363,7 @@ final class FixerFactoryTest extends TestCase
             ],
             'array_syntax' => [
                 'binary_operator_spaces',
+                'no_whitespace_in_empty_array',
                 'single_space_after_construct',
                 'single_space_around_construct',
                 'ternary_operator_spaces',
@@ -539,6 +548,7 @@ final class FixerFactoryTest extends TestCase
             ],
             'method_argument_space' => [
                 'array_indentation',
+                'no_trailing_comma_in_singleline',
                 'statement_indentation',
             ],
             'modernize_strpos' => [
@@ -609,6 +619,7 @@ final class FixerFactoryTest extends TestCase
                 'no_extra_blank_lines',
                 'no_trailing_whitespace',
                 'no_whitespace_in_blank_line',
+                'no_whitespace_in_empty_array',
             ],
             'no_empty_phpdoc' => [
                 'no_extra_blank_lines',
@@ -667,6 +678,7 @@ final class FixerFactoryTest extends TestCase
             ],
             'no_superfluous_phpdoc_tags' => [
                 'no_empty_phpdoc',
+                'phpdoc_line_span',
                 'void_return',
             ],
             'no_unneeded_braces' => [
@@ -823,14 +835,11 @@ final class FixerFactoryTest extends TestCase
             ],
             'phpdoc_array_type' => [
                 'phpdoc_list_type',
-                'phpdoc_types_no_duplicates',
+                'phpdoc_no_duplicate_types',
                 'phpdoc_types_order',
             ],
-            'phpdoc_line_span' => [
-                'no_superfluous_phpdoc_tags',
-            ],
             'phpdoc_list_type' => [
-                'phpdoc_types_no_duplicates',
+                'phpdoc_no_duplicate_types',
                 'phpdoc_types_order',
             ],
             'phpdoc_no_access' => [

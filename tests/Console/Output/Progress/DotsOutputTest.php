@@ -18,6 +18,8 @@ use PhpCsFixer\Console\Output\OutputContext;
 use PhpCsFixer\Console\Output\Progress\DotsOutput;
 use PhpCsFixer\Runner\Event\FileProcessed;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
@@ -27,6 +29,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(DotsOutput::class)]
 final class DotsOutputTest extends TestCase
 {
     /**
@@ -34,6 +37,7 @@ final class DotsOutputTest extends TestCase
      *
      * @dataProvider provideDotsProgressOutputCases
      */
+    #[DataProvider('provideDotsProgressOutputCases')]
     public function testDotsProgressOutput(array $statuses, string $expectedOutput, int $width): void
     {
         $nbFiles = 0;

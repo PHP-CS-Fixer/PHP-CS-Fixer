@@ -67,7 +67,7 @@ final class MagicConstantCasingFixer extends AbstractFixer
         foreach ($tokens as $index => $token) {
             $tokenId = $token->getId();
 
-            if (!isset(self::MAGIC_CONSTANTS[$tokenId])) {
+            if (null === $tokenId || !isset(self::MAGIC_CONSTANTS[$tokenId])) {
                 continue;
             }
 

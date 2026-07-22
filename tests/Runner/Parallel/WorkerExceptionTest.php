@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Runner\Parallel;
 
 use PhpCsFixer\Runner\Parallel\WorkerException;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @covers \PhpCsFixer\Runner\Parallel\WorkerException
@@ -24,6 +25,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(WorkerException::class)]
 final class WorkerExceptionTest extends TestCase
 {
     public function testFromRaw(): void

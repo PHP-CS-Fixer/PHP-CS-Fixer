@@ -15,8 +15,12 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\ControlStructure\NoBreakCommentFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -29,6 +33,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NoBreakCommentFixer::class)]
 final class NoBreakCommentFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -36,6 +41,7 @@ final class NoBreakCommentFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = [], ?WhitespacesFixerConfig $whitespacesConfig = null): void
     {
         $this->fixer->configure($configuration);
@@ -164,12 +170,13 @@ switch ($foo) {
      *
      * @dataProvider provideInvalidConfigurationCases
      */
+    #[DataProvider('provideInvalidConfigurationCases')]
     public function testInvalidConfiguration(array $configuration, string $expectedExceptionMessage): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches($expectedExceptionMessage);
 
-        $this->fixer->configure($configuration);
+        $this->fixer->configure($configuration); // @phpstan-ignore argument.type
     }
 
     /**
@@ -201,8 +208,10 @@ switch ($foo) {
     /**
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -301,8 +310,10 @@ switch ($foo) {
     /**
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -452,6 +463,53 @@ switch($a) { // pass the `is candidate` check
                         }
 
                     }
+                }
+                PHP,
+        ];
+
+        yield 'enum with documented cases and switch' => [
+            <<<'PHP'
+                <?php
+
+                enum MyEnumWithSwitch
+                {
+                    /**
+                     * This is the first case.
+                     */
+                    case OneCase;
+
+                    /**
+                     * This is the second case.
+                     */
+                    case SecondCase;
+
+                    /**
+                     * This is another case.
+                     */
+                    case AnotherCase;
+
+                    public function doSomething(): string
+                    {
+                        switch ($this) {
+                            case self::OneCase:
+                                break;
+
+                            default:
+                                break;
+                        }
+
+                        return 'Hello World';
+                    }
+
+                    /**
+                     * This is yet another case.
+                     */
+                    case YetAnotherCase;
+
+                    /**
+                     * This is one more case.
+                     */
+                    case OneMoreCase;
                 }
                 PHP,
         ];

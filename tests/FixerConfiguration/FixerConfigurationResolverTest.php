@@ -20,6 +20,8 @@ use PhpCsFixer\FixerConfiguration\FixerConfigurationResolver;
 use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerConfiguration\FixerOptionSorter;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
@@ -34,6 +36,8 @@ use Symfony\Component\OptionsResolver\Options;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[Group('legacy')]
+#[CoversClass(FixerConfigurationResolver::class)]
 final class FixerConfigurationResolverTest extends TestCase
 {
     public function testWithoutOptions(): void

@@ -17,6 +17,9 @@ namespace PhpCsFixer\Tests\Fixer\Operator;
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -33,6 +36,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(BinaryOperatorSpacesFixer::class)]
 final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -40,12 +44,13 @@ final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideInvalidConfigurationCases
      */
+    #[DataProvider('provideInvalidConfigurationCases')]
     public function testInvalidConfiguration(array $config, string $exceptionExpression): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches($exceptionExpression);
 
-        $this->fixer->configure($config);
+        $this->fixer->configure($config); // @phpstan-ignore argument.type
     }
 
     /**
@@ -79,6 +84,7 @@ final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -3420,6 +3426,36 @@ function test()
                 ],
             ],
         ];
+
+        yield 'do not align nested array in yield with following yields' => [
+            <<<'PHP'
+                <?php
+
+                function provide()
+                {
+                    yield 'aaa' => [
+                        [
+                            [
+                                'attribute' => 1,
+                                'message'   => 'x',
+                            ],
+                            [
+                                'attribute' => 1,
+                                'message'   => 'x',
+                            ],
+                            [
+                                'attribute' => 1,
+                                'message'   => 'x',
+                            ],
+                        ],
+                    ];
+                    yield 'bbbbbbbbbbbbbbbbbbbbbbbbbbbb' => [];
+                    yield 'cccccccccccccccccccccccccccc' => [];
+                }
+                PHP,
+            null,
+            ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL_BY_SCOPE]],
+        ];
     }
 
     /**
@@ -3427,8 +3463,10 @@ function test()
      *
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testFix80(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -3507,8 +3545,9 @@ function test()
     }
 
     /**
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[RequiresPhp('>= 8.1.0')]
     public function testFix81(): void
     {
         $this->doTest(

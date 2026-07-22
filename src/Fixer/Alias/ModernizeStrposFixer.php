@@ -160,7 +160,7 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
 
             // assert called with 2 arguments
             $openIndex = $tokens->getNextMeaningfulToken($index);
-            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openIndex);
             $arguments = $argumentsAnalyzer->getArguments($tokens, $openIndex, $closeIndex);
 
             if (2 !== \count($arguments)) {
@@ -227,13 +227,12 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
         $shouldAddNamespace = $tokens[$functionIndex - 1]->isGivenKind(\T_NS_SEPARATOR);
 
         $openIndex = $tokens->getNextMeaningfulToken($functionIndex);
-        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openIndex);
         $arguments = $argumentsAnalyzer->getArguments($tokens, $openIndex, $closeIndex);
 
         $firstArgumentIndexStart = array_key_first($arguments);
-        if (!isset($arguments[$firstArgumentIndexStart])) {
-            return;
-        }
+        \assert(isset($arguments[$firstArgumentIndexStart]));
+
         $firstArgumentIndexEnd = $arguments[$firstArgumentIndexStart] + 3 + ($shouldAddNamespace ? 1 : 0);
 
         $isSecondArgumentTokenWhiteSpace = $tokens[array_key_last($arguments)]->isGivenKind(\T_WHITESPACE);
@@ -245,9 +244,6 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
         }
 
         $secondArgumentIndexStart += 3 + ($shouldAddNamespace ? 1 : 0);
-        if (!isset($arguments[array_key_last($arguments)])) {
-            return;
-        }
         $secondArgumentIndexEnd = $arguments[array_key_last($arguments)] + 6 + ($shouldAddNamespace ? 1 : 0) + ($isSecondArgumentTokenWhiteSpace ? 1 : 0);
 
         if ($shouldAddNamespace) {
@@ -285,10 +281,7 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
         }
 
         $operandIndex = $tokens->getMeaningfulTokenSibling($operatorIndex, $direction);
-
-        if (null === $operandIndex) {
-            return null;
-        }
+        \assert(\is_int($operandIndex));
 
         $operand = $tokens[$operandIndex];
 

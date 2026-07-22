@@ -16,9 +16,13 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\CT;
+use PhpCsFixer\Tokenizer\Transformer\BraceClassInstantiationTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
- * @author Sebastiaans Stok <s.stok@rollerscapes.net>
+ * @author Sebastiaan Stok <s.stok@rollerscapes.net>
  *
  * @internal
  *
@@ -29,6 +33,7 @@ use PhpCsFixer\Tokenizer\CT;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(BraceClassInstantiationTransformer::class)]
 final class BraceClassInstantiationTransformerTest extends AbstractTransformerTestCase
 {
     /**
@@ -37,6 +42,7 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
      *
      * @dataProvider provideProcessCases
      */
+    #[DataProvider('provideProcessCases')]
     public function testProcess(string $source, array $expectedTokens, array $observedKinds = []): void
     {
         $this->doTest(
@@ -54,24 +60,24 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         yield [
             '<?php echo (new Process())->getOutput();',
             [
-                3 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                9 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                3 => CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                9 => CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
             [
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
         ];
 
         yield [
             '<?php echo (new Process())::getOutput();',
             [
-                3 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                9 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                3 => CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                9 => CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
             [
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
         ];
 
@@ -90,8 +96,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
             [
                 '(',
                 ')',
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
         ];
 
@@ -108,8 +114,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
             [
                 '(',
                 ')',
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
         ];
 
@@ -126,8 +132,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
             [
                 '(',
                 ')',
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
         ];
 
@@ -144,32 +150,32 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
             [
                 '(',
                 ')',
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
         ];
 
         yield [
             '<?php if ($foo){}(new Foo)->foo();',
             [
-                8 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                12 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                8 => CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                12 => CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
             [
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
         ];
 
         yield [
             '<?php echo (((new \stdClass()))->a);',
             [
-                5 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                12 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                5 => CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                12 => CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
             [
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
         ];
 
@@ -184,8 +190,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
             [
                 '(',
                 ')',
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
         ];
 
@@ -208,8 +214,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
             [
                 '(',
                 ')',
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
         ];
 
@@ -224,8 +230,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
             [
                 '(',
                 ')',
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
         ];
 
@@ -240,8 +246,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
             [
                 '(',
                 ')',
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
         ];
 
@@ -256,8 +262,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
             [
                 '(',
                 ')',
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
         ];
 
@@ -272,8 +278,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
             [
                 '(',
                 ')',
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
         ];
 
@@ -288,8 +294,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
             [
                 '(',
                 ')',
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
         ];
 
@@ -326,12 +332,12 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
         yield [
             '<?php $foo = (new class(new \stdClass()) {});',
             [
-                5 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                20 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                5 => CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                20 => CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
             [
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
         ];
 
@@ -344,8 +350,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
             [
                 '(',
                 ')',
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
         ];
 
@@ -362,18 +368,18 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
             [
                 '(',
                 ')',
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
         ];
 
         yield [
             '<?php $result = (new Invokable())(new Argument1());',
             [
-                5 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                5 => CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
                 9 => '(',
                 10 => ')',
-                11 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                11 => CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
                 12 => '(',
                 16 => '(',
                 17 => ')',
@@ -382,8 +388,8 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
             [
                 '(',
                 ')',
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
         ];
     }
@@ -394,8 +400,10 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
      *
      * @dataProvider provideProcessPhp80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideProcessPhp80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testProcessPhp80(array $expectedTokens, array $observedKinds, string $source): void
     {
         $this->doTest(
@@ -412,30 +420,30 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     {
         yield [
             [
-                5 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
+                5 => CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
                 8 => '(',
                 10 => '(',
                 11 => ')',
                 12 => ')',
-                13 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                13 => CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
             [
                 '(',
                 ')',
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
             '<?php $a = (new (foo()));',
         ];
 
         yield [
             [
-                5 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                15 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                5 => CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                15 => CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
             [
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
             '<?php $a = (new #[Foo]
                 class{}) ?>',
@@ -448,8 +456,10 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
      *
      * @dataProvider provideProcessPhp81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideProcessPhp81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testProcessPhp81(array $expectedTokens, array $observedKinds, string $source): void
     {
         $this->doTest(
@@ -466,18 +476,18 @@ final class BraceClassInstantiationTransformerTest extends AbstractTransformerTe
     {
         yield [
             [
-                20 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                24 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                43 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                47 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                54 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                64 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
-                107 => CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                111 => CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                20 => CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                24 => CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
+                43 => CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                47 => CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
+                54 => CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                64 => CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
+                107 => CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                111 => CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
             [
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
             '<?php
 class Test {
@@ -507,8 +517,10 @@ function test2($param = (new Foo)) {}
      *
      * @dataProvider provideProcessPrePhp84Cases
      *
-     * @requires PHP <8.4
+     * @requires PHP < 8.4.0
      */
+    #[DataProvider('provideProcessPrePhp84Cases')]
+    #[RequiresPhp('< 8.4.0')]
     public function testProcessPrePhp84(string $source, array $expectedTokens, array $observedKinds = []): void
     {
         $this->doTest(
@@ -536,8 +548,8 @@ function test2($param = (new Foo)) {}
             [
                 '(',
                 ')',
-                CT::T_BRACE_CLASS_INSTANTIATION_OPEN,
-                CT::T_BRACE_CLASS_INSTANTIATION_CLOSE,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN,
+                CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE,
             ],
         ];
     }

@@ -14,13 +14,20 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
+use PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer;
+use PhpCsFixer\Fixer\FunctionNotation\PhpdocToReturnTypeFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
  *
  * @group phpdoc
  *
+ * @covers \PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer
  * @covers \PhpCsFixer\Fixer\FunctionNotation\PhpdocToReturnTypeFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\PhpdocToReturnTypeFixer>
@@ -31,6 +38,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[Group('phpdoc')]
+#[CoversClass(AbstractPhpdocToTypeDeclarationFixer::class)]
+#[CoversClass(PhpdocToReturnTypeFixer::class)]
 final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -38,6 +48,7 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -123,17 +134,21 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             '<?php interface Foo { /** @return Bar */ function my_foo(); }',
         ];
 
-        yield 'void return on ^7.1' => [
+        yield 'void return' => [
             '<?php /** @return void */ function my_foo(): void {}',
             '<?php /** @return void */ function my_foo() {}',
         ];
 
-        yield 'iterable return on ^7.1' => [
+        yield 'invalid void return' => [
+            '<?php /** @return null|void */ function my_foo() {}',
+        ];
+
+        yield 'iterable return' => [
             '<?php /** @return iterable */ function my_foo(): iterable {}',
             '<?php /** @return iterable */ function my_foo() {}',
         ];
 
-        yield 'object return on ^7.2' => [
+        yield 'object return' => [
             '<?php /** @return object */ function my_foo(): object {}',
             '<?php /** @return object */ function my_foo() {}',
         ];
@@ -582,8 +597,10 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixPre80Cases
      *
-     * @requires PHP <8.0
+     * @requires PHP < 8.0.0
      */
+    #[DataProvider('provideFixPre80Cases')]
+    #[RequiresPhp('< 8.0.0')]
     public function testFixPre80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -611,10 +628,6 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
             '<?php /** @return mixed */ function my_foo() {}',
         ];
 
-        yield 'invalid void return on ^7.1' => [
-            '<?php /** @return null|void */ function my_foo() {}',
-        ];
-
         yield 'skip union types' => [
             '<?php /** @return Foo|Bar */ function my_foo() {}',
         ];
@@ -631,8 +644,10 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -712,8 +727,10 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFixPre81Cases
      *
-     * @requires PHP <8.1
+     * @requires PHP < 8.1.0
      */
+    #[DataProvider('provideFixPre81Cases')]
+    #[RequiresPhp('< 8.1.0')]
     public function testFixPre81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -732,8 +749,10 @@ final class PhpdocToReturnTypeFixerTest extends AbstractFixerTestCase
     /**
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);

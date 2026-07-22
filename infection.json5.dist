@@ -1,6 +1,10 @@
 {
     "$schema": "vendor/infection/infection/resources/schema.json",
     "testFrameworkOptions": "--testsuite=unit",
+    "staticAnalysisTool": "phpstan",
+    "phpStan": {
+        "customPath": "dev-tools/vendor/bin/phpstan"
+    },
     "source": {
         "directories": [
             "src"

@@ -18,6 +18,7 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\CaseAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\DefaultAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>
@@ -28,6 +29,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\SwitchAnalysis;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(SwitchAnalysis::class)]
 final class SwitchAnalysisTest extends TestCase
 {
     public function testSwitchAnalysis(): void

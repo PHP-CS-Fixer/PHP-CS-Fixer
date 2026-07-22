@@ -37,13 +37,23 @@ final class FunctionsAnalyzer
      */
     private array $functionsAnalysis = ['tokens' => '', 'imports' => [], 'declarations' => []];
 
+    public function isGlobalFunctionCall(Tokens $tokens, int $index): bool
+    {
+        return $this->isGlobalFunctionCallOrUsage($tokens, $index, true);
+    }
+
+    public function isGlobalFunctionUsage(Tokens $tokens, int $index): bool
+    {
+        return $this->isGlobalFunctionCallOrUsage($tokens, $index, false);
+    }
+
     /**
      * @return array<string, ArgumentAnalysis>
      */
     public function getFunctionArguments(Tokens $tokens, int $functionIndex): array
     {
         $argumentsStart = $tokens->getNextTokenOfKind($functionIndex, ['(']);
-        $argumentsEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $argumentsStart);
+        $argumentsEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $argumentsStart);
         $argumentAnalyzer = new ArgumentsAnalyzer();
         $arguments = [];
 
@@ -58,7 +68,7 @@ final class FunctionsAnalyzer
     public function getFunctionReturnType(Tokens $tokens, int $methodIndex): ?TypeAnalysis
     {
         $argumentsStart = $tokens->getNextTokenOfKind($methodIndex, ['(']);
-        $argumentsEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $argumentsStart);
+        $argumentsEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $argumentsStart);
         $typeColonIndex = $tokens->getNextMeaningfulToken($argumentsEnd);
 
         if (!$tokens[$typeColonIndex]->isGivenKind(CT::T_TYPE_COLON)) {
@@ -114,7 +124,7 @@ final class FunctionsAnalyzer
     /**
      * Important: risky because of the limited (file) scope of the tool.
      */
-    public function isGlobalFunctionCall(Tokens $tokens, int $index): bool
+    private function isGlobalFunctionCallOrUsage(Tokens $tokens, int $index, bool $callOnly): bool
     {
         if (!$tokens[$index]->isGivenKind(\T_STRING)) {
             return false;
@@ -138,7 +148,7 @@ final class FunctionsAnalyzer
             return false;
         }
 
-        if ($tokens[$tokens->getNextMeaningfulToken($openParenthesisIndex)]->isGivenKind(CT::T_FIRST_CLASS_CALLABLE)) {
+        if ($callOnly && $tokens[$tokens->getNextMeaningfulToken($openParenthesisIndex)]->isGivenKind(CT::T_FIRST_CLASS_CALLABLE)) {
             return false;
         }
 
@@ -152,7 +162,7 @@ final class FunctionsAnalyzer
             if (!$tokens[$prevIndex]->equalsAny([[CT::T_PROPERTY_HOOK_BRACE_OPEN], ';', '}'])) {
                 return true;
             }
-            $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesisIndex);
+            $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openParenthesisIndex);
             $afterCloseParenthesisIndex = $tokens->getNextMeaningfulToken($closeParenthesisIndex);
             if ($tokens[$afterCloseParenthesisIndex]->equalsAny(['{', [\T_DOUBLE_ARROW]])) {
                 return false;
@@ -234,11 +244,11 @@ final class FunctionsAnalyzer
                     $i = $tokens->getNextTokenOfKind($i, ['(', '{']);
 
                     if ($tokens[$i]->equals('(')) { // anonymous class
-                        $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $i);
+                        $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $i);
                         $i = $tokens->getNextTokenOfKind($i, ['{']);
                     }
 
-                    $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $i);
+                    $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $i);
 
                     continue;
                 }

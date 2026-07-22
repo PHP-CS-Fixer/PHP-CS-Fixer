@@ -20,6 +20,8 @@ use PhpCsFixer\DocBlock\Line;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
@@ -31,6 +33,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\NamespaceUseAnalysis;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Annotation::class)]
 final class AnnotationTest extends TestCase
 {
     /**
@@ -90,6 +93,7 @@ final class AnnotationTest extends TestCase
     /**
      * @dataProvider provideGetContentCases
      */
+    #[DataProvider('provideGetContentCases')]
     public function testGetContent(int $index, string $content): void
     {
         $doc = new DocBlock(self::SAMPLE);
@@ -112,6 +116,7 @@ final class AnnotationTest extends TestCase
     /**
      * @dataProvider provideStartCases
      */
+    #[DataProvider('provideStartCases')]
     public function testStart(int $index, int $start): void
     {
         $doc = new DocBlock(self::SAMPLE);
@@ -133,6 +138,7 @@ final class AnnotationTest extends TestCase
     /**
      * @dataProvider provideEndCases
      */
+    #[DataProvider('provideEndCases')]
     public function testEnd(int $index, int $end): void
     {
         $doc = new DocBlock(self::SAMPLE);
@@ -154,6 +160,7 @@ final class AnnotationTest extends TestCase
     /**
      * @dataProvider provideGetTagCases
      */
+    #[DataProvider('provideGetTagCases')]
     public function testGetTag(int $index, string $tag): void
     {
         $doc = new DocBlock(self::SAMPLE);
@@ -175,6 +182,7 @@ final class AnnotationTest extends TestCase
     /**
      * @dataProvider provideRemoveCases
      */
+    #[DataProvider('provideRemoveCases')]
     public function testRemove(int $index, int $start, int $end): void
     {
         $doc = new DocBlock(self::SAMPLE);
@@ -199,6 +207,7 @@ final class AnnotationTest extends TestCase
     /**
      * @dataProvider provideRemoveEdgeCasesCases
      */
+    #[DataProvider('provideRemoveEdgeCasesCases')]
     public function testRemoveEdgeCases(string $expected, string $input): void
     {
         $doc = new DocBlock($input);
@@ -256,6 +265,7 @@ final class AnnotationTest extends TestCase
      *
      * @dataProvider provideTypeParsingCases
      */
+    #[DataProvider('provideTypeParsingCases')]
     public function testTypeParsing(array $expected, string $input): void
     {
         $tag = new Annotation([new Line($input)]);
@@ -530,6 +540,7 @@ final class AnnotationTest extends TestCase
      *
      * @dataProvider provideTypesCases
      */
+    #[DataProvider('provideTypesCases')]
     public function testTypes(array $expected, array $new, string $input, string $output): void
     {
         $line = new Line($input);
@@ -569,6 +580,7 @@ final class AnnotationTest extends TestCase
      *
      * @dataProvider provideNormalizedTypesCases
      */
+    #[DataProvider('provideNormalizedTypesCases')]
     public function testNormalizedTypes(array $expected, string $input): void
     {
         $line = new Line($input);
@@ -644,6 +656,7 @@ final class AnnotationTest extends TestCase
      *
      * @dataProvider provideGetTypeExpressionCases
      */
+    #[DataProvider('provideGetTypeExpressionCases')]
     public function testGetTypeExpression(string $line, ?NamespaceAnalysis $namespace, array $namespaceUses, ?string $expectedCommonType): void
     {
         $annotation = new Annotation([new Line($line)], $namespace, $namespaceUses);
@@ -670,6 +683,7 @@ final class AnnotationTest extends TestCase
     /**
      * @dataProvider provideGetVariableNameCases
      */
+    #[DataProvider('provideGetVariableNameCases')]
     public function testGetVariableName(string $line, ?string $expectedVariableName): void
     {
         $annotation = new Annotation([new Line($line)]);
