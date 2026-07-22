@@ -106,7 +106,7 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
             $firstCandidateIndex = $tokens->getNextMeaningfulToken($endParenthesisIndex);
 
             foreach ($this->sequences as $sequenceSpec) {
-                $sequenceFound = $this->findSequence($sequenceSpec['sequence'], $firstCandidateIndex, $tokens);
+                $sequenceFound = $tokens->findSequence($sequenceSpec['sequence'], $firstCandidateIndex);
 
                 if (null === $sequenceFound) {
                     continue;
@@ -145,58 +145,5 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
         if ([] !== $slices) {
             $tokens->insertSlices($slices);
         }
-    }
-
-    /**
-     * Find a sequence of meaningful tokens and returns the array of their locations.
-     *
-     * @param non-empty-list<_PhpTokenPrototypePartial|Token> $sequence an array of token (kinds)
-     * @param int                                             $start    start index
-     * @param Tokens                                          $tokens   tokens object
-     *
-     * @return null|non-empty-array<int, Token> an array containing the tokens matching the sequence elements, indexed by their position
-     */
-    private function findSequence(array $sequence, int $start, Tokens $tokens): ?array
-    {
-        $count = \count($tokens);
-
-        for ($i = $start; $i < $count; ++$i) {
-            $current = $i;
-            $matched = [];
-
-            foreach ($sequence as $expected) {
-                if (null === $current) {
-                    continue 2;
-                }
-
-                $token = $tokens[$current];
-
-                if ($expected instanceof Token) {
-                    if (!$token->equals($expected)) {
-                        continue 2;
-                    }
-                } elseif (\is_string($expected)) {
-                    if ($token->getContent() !== $expected) {
-                        continue 2;
-                    }
-                } else {
-                    if ($token->getId() !== $expected[0]) {
-                        continue 2;
-                    }
-
-                    if (isset($expected[1]) && $token->getContent() !== $expected[1]) {
-                        continue 2;
-                    }
-                }
-
-                $matched[$current] = $token;
-
-                $current = $tokens->getNextMeaningfulToken($current);
-            }
-
-            return $matched;
-        }
-
-        return null;
     }
 }
