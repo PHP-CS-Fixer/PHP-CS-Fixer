@@ -56,7 +56,7 @@
         "php-coveralls/php-coveralls": "^2.9.1",
         "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.8",
         "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.8",
-        "phpunit/phpunit": "^9.6.35 || ^10.5.64 || ^11.5.56",
+        "phpunit/phpunit": "^9.6.35 || ^10.5.64 || ^11.5.56 || ^12.5.31",
         "symfony/polyfill-php85": "^1.38",
         "symfony/var-dumper": "^5.4.48 || ^6.4.36 || ^7.4.8 || ^8.1.0",
         "symfony/yaml": "^5.4.53 || ^6.4.41 || ^7.4.13 || ^8.1.0"
@@ -163,7 +163,7 @@
         ],
         "test:coverage": [
             "Composer\\Config::disableProcessTimeout",
-            "@composer show facile-it/paraunit ^2 && (paraunit coverage --testsuite unit --pass-through=--exclude-group=covers-nothing) || (paraunit coverage --testsuite unit --exclude-group covers-nothing)"
+            "@composer show facile-it/paraunit ^2 && (paraunit coverage --testsuite unit --pass-through=--exclude-group=covers-nothing --pass-through=--do-not-fail-on-empty-test-suite) || (paraunit coverage --testsuite unit --exclude-group covers-nothing)"
         ],
         "test:integration": [
             "Composer\\Config::disableProcessTimeout",

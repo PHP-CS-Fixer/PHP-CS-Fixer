@@ -201,6 +201,12 @@ $a =
             '<?php \get_class();',
         ];
 
+        yield 'get_class left unchanged when neither "get_class" nor "get_class_this" is configured' => [
+            '<?php echo get_class();',
+            null,
+            ['functions' => ['phpversion']],
+        ];
+
         yield [
             '<?php class A { function B(){ echo static::class; }}',
             '<?php class A { function B(){ echo get_called_class(); }}',
