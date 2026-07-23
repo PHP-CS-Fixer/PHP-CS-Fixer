@@ -938,29 +938,9 @@ class Tokens extends \SplFixedArray
         for ($index = $start; $index <= $end; ++$index) {
             $current = $this[$index];
 
-            if ($firstToken instanceof Token) {
                 if (!$current->equals($firstToken, $firstCs)) {
                     continue;
                 }
-            } elseif (\is_string($firstToken)) {
-                if ($current->getContent() !== $firstToken) {
-                    continue;
-                }
-            } else {
-                if ($current->getId() !== $firstToken[0]) {
-                    continue;
-                }
-
-                if (isset($firstToken[1])) {
-                    if ($firstCs) {
-                        if ($current->getContent() !== $firstToken[1]) {
-                            continue;
-                        }
-                    } elseif (0 !== strcasecmp($current->getContent(), $firstToken[1])) {
-                        continue;
-                    }
-                }
-            }
 
             // initialise the result array with the current index
             $result = [$index => $current];
@@ -979,36 +959,10 @@ class Tokens extends \SplFixedArray
 
                 $current = $this[$currIdx];
 
-                if ($token instanceof Token) {
                     if (!$current->equals($token, self::isKeyCaseSensitive($caseSensitive, $key))) {
                         // not a match, restart the outer loop
                         continue 2;
                     }
-                } elseif (\is_string($token)) {
-                    if ($current->getContent() !== $token) {
-                        // not a match, restart the outer loop
-                        continue 2;
-                    }
-                } else {
-                    if ($current->getId() !== $token[0]) {
-                        // not a match, restart the outer loop
-                        continue 2;
-                    }
-
-                    if (isset($token[1])) {
-                        $cs = self::isKeyCaseSensitive($caseSensitive, $key);
-
-                        if ($cs) {
-                            if ($current->getContent() !== $token[1]) {
-                                // not a match, restart the outer loop
-                                continue 2;
-                            }
-                        } elseif (0 !== strcasecmp($current->getContent(), $token[1])) {
-                            // not a match, restart the outer loop
-                            continue 2;
-                        }
-                    }
-                }
 
                 // append index to the result array
                 $result[$currIdx] = $current;
