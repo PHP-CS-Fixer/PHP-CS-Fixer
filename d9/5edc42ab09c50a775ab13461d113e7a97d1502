@@ -1,0 +1,14 @@
+tests/TextDiffTest.php
+  h_44235ea8856697 112
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "d95edc42ab09c50a775ab13461d113e7a97d1502",
+  "prompts": {},
+  "humans": {
+    "h_44235ea8856697": {
+      "author": "Dariusz Ruminski <dariusz.ruminski@gmail.com>"
+    }
+  }
+}
