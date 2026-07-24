@@ -938,9 +938,9 @@ class Tokens extends \SplFixedArray
         for ($index = $start; $index <= $end; ++$index) {
             $current = $this[$index];
 
-                if (!$current->equals($firstToken, $firstCs)) {
-                    continue;
-                }
+            if (!$current->equals($firstToken, $firstCs)) {
+                continue;
+            }
 
             // initialise the result array with the current index
             $result = [$index => $current];
@@ -959,10 +959,10 @@ class Tokens extends \SplFixedArray
 
                 $current = $this[$currIdx];
 
-                    if (!$current->equals($token, self::isKeyCaseSensitive($caseSensitive, $key))) {
-                        // not a match, restart the outer loop
-                        continue 2;
-                    }
+                if (!$current->equals($token, self::isKeyCaseSensitive($caseSensitive, $key))) {
+                    // not a match, restart the outer loop
+                    continue 2;
+                }
 
                 // append index to the result array
                 $result[$currIdx] = $current;
