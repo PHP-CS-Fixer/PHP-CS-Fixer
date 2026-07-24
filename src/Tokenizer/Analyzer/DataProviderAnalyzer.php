@@ -148,6 +148,7 @@ final class DataProviderAnalyzer
             NamespaceUseAnalysis::TYPE_CLASS,
         );
 
+        // note: do not apply `DataProvider::class` here, as it would confuse `composer-dependency-analyser` to have PHPUnit as non-dev dependency
         if ('PHPUnit\Framework\Attributes\DataProvider' !== $fullyQualifiedName) {
             return null;
         }

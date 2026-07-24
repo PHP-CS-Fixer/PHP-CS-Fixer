@@ -30,6 +30,8 @@ use PhpCsFixer\Runner\Runner;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -134,6 +136,8 @@ abstract class AbstractIntegrationTestCase extends TestCase
      *
      * @group legacy
      */
+    #[DataProvider('provideIntegrationCases')]
+    #[Group('legacy')]
     public function testIntegration(IntegrationCase $case): void
     {
         foreach ($case->getSettings()['deprecations'] as $deprecation) {
@@ -353,14 +357,23 @@ abstract class AbstractIntegrationTestCase extends TestCase
     }
 
     /**
+     * Potential entry point to register custom fixers for integration tests, if needed.
+     */
+    protected static function createFixerFactory(): FixerFactory
+    {
+        return (new FixerFactory())
+            ->registerBuiltInFixers()
+        ;
+    }
+
+    /**
      * @return list<FixerInterface>
      */
     private static function createFixers(IntegrationCase $case): array
     {
         $config = $case->getConfig();
 
-        return (new FixerFactory())
-            ->registerBuiltInFixers()
+        return static::createFixerFactory()
             ->useRuleSet($case->getRuleset())
             ->setWhitespacesConfig(
                 new WhitespacesFixerConfig($config['indent'], $config['lineEnding']),

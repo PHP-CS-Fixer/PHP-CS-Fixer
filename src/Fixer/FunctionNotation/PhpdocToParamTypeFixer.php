@@ -182,13 +182,9 @@ final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer 
                 if (null !== $typeInfo) {
                     $paramType = $typeInfo['commonType'];
                     $isNullable = $typeInfo['isNullable'];
-                } elseif (null !== $unionTypes) {
+                } else { // null !== $unionTypes, because of previous 2 ifs
                     $paramType = $unionTypes;
                     $isNullable = false;
-                }
-
-                if (!isset($paramType, $isNullable)) {
-                    continue;
                 }
 
                 if (\in_array($paramType, $typesToExclude, true)) {
@@ -239,7 +235,7 @@ final class PhpdocToParamTypeFixer extends AbstractPhpdocToTypeDeclarationFixer 
 
     private function findCorrectVariable(Tokens $tokens, int $startIndex, Annotation $paramTypeAnnotation): ?int
     {
-        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startIndex);
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $startIndex);
 
         for ($index = $startIndex + 1; $index < $endIndex; ++$index) {
             if (!$tokens[$index]->isGivenKind(\T_VARIABLE)) {

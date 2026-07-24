@@ -19,6 +19,8 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\Test\CiReader;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use Symfony\Component\Yaml\Yaml;
 
@@ -34,6 +36,9 @@ use Symfony\Component\Yaml\Yaml;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversNothing]
+#[Group('auto-review')]
+#[Group('covers-nothing')]
 final class CiConfigurationTest extends TestCase
 {
     public function testThatPhpVersionEnvsAreSetProperly(): void

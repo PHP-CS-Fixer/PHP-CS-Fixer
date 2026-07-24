@@ -20,6 +20,8 @@ use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Utils;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @phpstan-import-type _PhpTokenPrototype from Token
@@ -34,6 +36,7 @@ use PhpCsFixer\Utils;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Utils::class)]
 final class UtilsTest extends TestCase
 {
     /**
@@ -41,6 +44,7 @@ final class UtilsTest extends TestCase
      *
      * @dataProvider provideCamelCaseToUnderscoreCases
      */
+    #[DataProvider('provideCamelCaseToUnderscoreCases')]
     public function testCamelCaseToUnderscore(string $expected, ?string $input = null): void
     {
         if (null !== $input) {
@@ -125,6 +129,7 @@ final class UtilsTest extends TestCase
      *
      * @dataProvider provideCalculateTrailingWhitespaceIndentCases
      */
+    #[DataProvider('provideCalculateTrailingWhitespaceIndentCases')]
     public function testCalculateTrailingWhitespaceIndent(string $spaces, $input): void
     {
         $token = new Token($input);
@@ -166,6 +171,7 @@ final class UtilsTest extends TestCase
      *
      * @dataProvider provideStableSortCases
      */
+    #[DataProvider('provideStableSortCases')]
     public function testStableSort(
         array $expected,
         array $elements,
@@ -215,20 +221,27 @@ final class UtilsTest extends TestCase
     public function testSortFixers(): void
     {
         $fixers = [
-            $this->createFixerDouble('f1', 0),
-            $this->createFixerDouble('f2', -10),
+            $this->createFixerDouble('f1_a', 0),
+            $this->createFixerDouble('F1_b', 0),
+            $this->createFixerDouble('f1_c', 0),
+            $this->createFixerDouble('fy', -10),
             $this->createFixerDouble('f3', 10),
-            $this->createFixerDouble('f4', -10),
+            $this->createFixerDouble('fx', -10),
         ];
 
         self::assertSame(
             [
-                $fixers[2],
-                $fixers[0],
-                $fixers[1],
-                $fixers[3],
+                'f3',
+                'F1_b',
+                'f1_a',
+                'f1_c',
+                'fx',
+                'fy',
             ],
-            Utils::sortFixers($fixers),
+            array_map(
+                static fn (FixerInterface $fixer): string => $fixer->getName(),
+                Utils::sortFixers($fixers),
+            ),
         );
     }
 
@@ -253,6 +266,7 @@ final class UtilsTest extends TestCase
      *
      * @param list<string> $names
      */
+    #[DataProvider('provideNaturalLanguageJoinCases')]
     public function testNaturalLanguageJoin(string $joined, array $names, string $wrapper = '"', ?string $lastJoin = null): void
     {
         self::assertSame($joined, Utils::naturalLanguageJoin($names, $wrapper, ...null === $lastJoin ? [] : [$lastJoin]));
@@ -366,6 +380,7 @@ final class UtilsTest extends TestCase
      *
      * @dataProvider provideNaturalLanguageJoinWithBackticksCases
      */
+    #[DataProvider('provideNaturalLanguageJoinWithBackticksCases')]
     public function testNaturalLanguageJoinWithBackticks(string $joined, array $names, ?string $lastJoin = null): void
     {
         self::assertSame($joined, Utils::naturalLanguageJoinWithBackticks($names, ...null === $lastJoin ? [] : [$lastJoin]));
@@ -415,6 +430,7 @@ final class UtilsTest extends TestCase
      *
      * @dataProvider provideToStringCases
      */
+    #[DataProvider('provideToStringCases')]
     public function testToString(string $expected, $input): void
     {
         self::assertSame($expected, Utils::toString($input));

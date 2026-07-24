@@ -30,15 +30,11 @@ use Symfony\Component\Console\Input\InputOption;
 #[AsCommand(name: 'check', description: 'Checks if configured files/directories comply with configured rules.')]
 final class CheckCommand extends FixCommand
 {
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultName = 'check'; // @phpstan-ignore property.parentPropertyFinalByPhpDoc
-
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultDescription = 'Checks if configured files/directories comply with configured rules.'; // @phpstan-ignore property.parentPropertyFinalByPhpDoc
-
     public function __construct(ToolInfoInterface $toolInfo)
     {
         parent::__construct($toolInfo);
+        $this->setName('check');
+        $this->setDescription('Checks if configured files/directories comply with configured rules.');
     }
 
     public function getHelp(): string

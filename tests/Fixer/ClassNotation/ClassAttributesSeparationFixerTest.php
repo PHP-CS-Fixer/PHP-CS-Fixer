@@ -19,6 +19,9 @@ use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -31,6 +34,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ClassAttributesSeparationFixer::class)]
 final class ClassAttributesSeparationFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -38,6 +42,7 @@ final class ClassAttributesSeparationFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -1078,6 +1083,18 @@ class ezcReflectionMethod extends ReflectionMethod {
             ['elements' => ['trait_import' => 'none']],
         ];
 
+        yield 'comment after brace, before element' => [
+            '<?php
+class Foo { /* comment */
+
+ public $a;
+ }
+',
+            '<?php
+class Foo { /* comment */ public $a; }
+',
+        ];
+
         yield [
             '<?php
 class Foo
@@ -1794,8 +1811,10 @@ class Foo
      *
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testFix80(string $expected, ?string $input, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -2018,6 +2037,26 @@ class Foo
 }',
             ['elements' => ['property' => 'none']],
         ];
+
+        yield 'promoted property as last class element' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public int $a = 1;
+
+                    public function __construct(public int $x) {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public int $a = 1;
+                    public function __construct(public int $x) {}
+                }
+                PHP,
+        ];
     }
 
     /**
@@ -2025,8 +2064,10 @@ class Foo
      *
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testFix81(string $expected, ?string $input, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -2203,8 +2244,10 @@ enum Cards: string
     /**
      * @dataProvider provideFix82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      */
+    #[DataProvider('provideFix82Cases')]
+    #[RequiresPhp('>= 8.2.0')]
     public function testFix82(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -2241,8 +2284,10 @@ enum Cards: string
     /**
      * @dataProvider provideFix84Cases
      *
-     * @requires PHP 8.4
+     * @requires PHP >= 8.4.0
      */
+    #[DataProvider('provideFix84Cases')]
+    #[RequiresPhp('>= 8.4.0')]
     public function testFix84(string $expected, ?string $input = null): void
     {
         $this->testFix($expected, $input);
@@ -2287,11 +2332,53 @@ enum Cards: string
                 }
                 PHP,
         ];
+
+        yield 'hooked property as last element before class closing brace' => [
+            <<<'PHP'
+                <?php class Foo {
+                    public string $bar { get => 'x'; }
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo {
+                    public string $bar { get => 'x'; }}
+                PHP,
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix85Cases
+     *
+     * @requires PHP >= 8.5.0
+     */
+    #[DataProvider('provideFix85Cases')]
+    #[RequiresPhp('>= 8.5.0')]
+    public function testFix85(string $expected, ?string $input = null): void
+    {
+        $this->testFix($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix85Cases(): iterable
+    {
+        yield 'closure in constant' => [
+            <<<'PHP'
+                <?php class SomeClass
+                {
+                    public const \Closure NULL = static function (mixed $v): bool {
+                        return null === $v;
+                    };
+                }
+                PHP,
+        ];
     }
 
     /**
      * @dataProvider provideWithWhitespacesConfigCases
      */
+    #[DataProvider('provideWithWhitespacesConfigCases')]
     public function testWithWhitespacesConfig(string $expected, ?string $input = null): void
     {
         $this->fixer->setWhitespacesConfig(new WhitespacesFixerConfig("\t", "\r\n"));
@@ -2320,6 +2407,7 @@ enum Cards: string
      *
      * @dataProvider provideInvalidConfigurationCases
      */
+    #[DataProvider('provideInvalidConfigurationCases')]
     public function testInvalidConfiguration(array $elements): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
@@ -2341,6 +2429,7 @@ enum Cards: string
     /**
      * @dataProvider provideCommentBlockStartDetectionCases
      */
+    #[DataProvider('provideCommentBlockStartDetectionCases')]
     public function testCommentBlockStartDetection(int $expected, string $code, int $index): void
     {
         Tokens::clearCache();

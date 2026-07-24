@@ -17,6 +17,8 @@ namespace PhpCsFixer\Tests\Tokenizer\Analyzer;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\AlternativeSyntaxAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -25,6 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AlternativeSyntaxAnalyzer::class)]
 final class AlternativeSyntaxAnalyzerTest extends TestCase
 {
     /**
@@ -32,6 +35,7 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
      *
      * @dataProvider provideBelongsToAlternativeSyntaxCases
      */
+    #[DataProvider('provideBelongsToAlternativeSyntaxCases')]
     public function testBelongsToAlternativeSyntax(array $expectedPositives, string $source): void
     {
         $tokens = Tokens::fromCode($source);
@@ -94,6 +98,7 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
     /**
      * @dataProvider provideItFindsTheEndOfAnAlternativeSyntaxBlockCases
      */
+    #[DataProvider('provideItFindsTheEndOfAnAlternativeSyntaxBlockCases')]
     public function testItFindsTheEndOfAnAlternativeSyntaxBlock(string $code, int $startIndex, int $expectedResult): void
     {
         $analyzer = new AlternativeSyntaxAnalyzer();
@@ -191,6 +196,7 @@ final class AlternativeSyntaxAnalyzerTest extends TestCase
     /**
      * @dataProvider provideItThrowsOnInvalidAlternativeSyntaxBlockStartIndexCases
      */
+    #[DataProvider('provideItThrowsOnInvalidAlternativeSyntaxBlockStartIndexCases')]
     public function testItThrowsOnInvalidAlternativeSyntaxBlockStartIndex(string $code, int $startIndex, string $expectedMessage): void
     {
         $tokens = Tokens::fromCode($code);

@@ -17,6 +17,8 @@ namespace PhpCsFixer\Tests;
 use PhpCsFixer\AbstractFunctionReferenceFixer;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -25,6 +27,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AbstractFunctionReferenceFixer::class)]
 final class AbstractFunctionReferenceFixerTest extends TestCase
 {
     /**
@@ -32,6 +35,7 @@ final class AbstractFunctionReferenceFixerTest extends TestCase
      *
      * @dataProvider provideAbstractFunctionReferenceFixerCases
      */
+    #[DataProvider('provideAbstractFunctionReferenceFixerCases')]
     public function testAbstractFunctionReferenceFixer(
         ?array $expected,
         string $source,

@@ -17,6 +17,11 @@ namespace PhpCsFixer\Tests;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PhpCsFixer\FileRemoval;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Depends;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 
 /**
  * @author ntzm
@@ -27,6 +32,7 @@ use PhpCsFixer\FileRemoval;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FileRemoval::class)]
 final class FileRemovalTest extends TestCase
 {
     /**
@@ -133,6 +139,9 @@ final class FileRemovalTest extends TestCase
      *
      * @doesNotPerformAssertions
      */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    #[DoesNotPerformAssertions]
     public function testShutdownRemovesObservedFilesSetup(): void
     {
         self::$removeFilesOnTearDown = false;
@@ -151,6 +160,7 @@ final class FileRemovalTest extends TestCase
     /**
      * @depends testShutdownRemovesObservedFilesSetup
      */
+    #[Depends('testShutdownRemovesObservedFilesSetup')]
     public function testShutdownRemovesObservedFiles(): void
     {
         self::assertFileDoesNotExist(sys_get_temp_dir().'/cs_fixer_foo.php');

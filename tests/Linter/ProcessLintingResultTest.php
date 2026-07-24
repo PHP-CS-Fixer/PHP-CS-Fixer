@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\Linter;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\ProcessLintingResult;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Process\Process;
 
 /**
@@ -26,6 +27,7 @@ use Symfony\Component\Process\Process;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ProcessLintingResult::class)]
 final class ProcessLintingResultTest extends TestCase
 {
     public function testCheckOK(): void

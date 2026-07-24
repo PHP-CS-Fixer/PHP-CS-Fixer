@@ -4,3 +4,5 @@ Ensuring Performance is not an issue - string with concatenation of a lot of var
 {
     "braces_position": true
 }
+--REQUIREMENTS--
+{"os":["Linux","Windows"]}

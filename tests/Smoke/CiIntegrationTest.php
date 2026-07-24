@@ -19,6 +19,11 @@ use Keradus\CliExecutor\CommandExecutor;
 use Keradus\CliExecutor\ScriptExecutor;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Preg;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Large;
+use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -35,6 +40,10 @@ use PhpCsFixer\Preg;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[RequiresOperatingSystem('Linux|Darwin')]
+#[CoversNothing]
+#[Group('covers-nothing')]
+#[Large]
 final class CiIntegrationTest extends AbstractSmokeTestCase
 {
     public static string $fixtureDir;
@@ -97,6 +106,7 @@ final class CiIntegrationTest extends AbstractSmokeTestCase
      *
      * @dataProvider provideIntegrationCases
      */
+    #[DataProvider('provideIntegrationCases')]
     public function testIntegration(
         string $branchName,
         array $caseCommands,

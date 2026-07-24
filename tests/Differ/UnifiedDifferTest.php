@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Differ;
 
 use PhpCsFixer\Differ\UnifiedDiffer;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
@@ -23,6 +24,7 @@ use PhpCsFixer\Differ\UnifiedDiffer;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(UnifiedDiffer::class)]
 final class UnifiedDifferTest extends AbstractDifferTestCase
 {
     public function testDiffReturnsDiff(): void

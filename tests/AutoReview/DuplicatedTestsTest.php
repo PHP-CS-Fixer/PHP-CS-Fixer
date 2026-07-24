@@ -16,6 +16,9 @@ namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * @internal
@@ -27,6 +30,9 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversNothing]
+#[Group('auto-review')]
+#[Group('covers-nothing')]
 final class DuplicatedTestsTest extends TestCase
 {
     /**
@@ -34,6 +40,7 @@ final class DuplicatedTestsTest extends TestCase
      *
      * @param class-string $className
      */
+    #[DataProviderExternal(ProjectCodeTest::class, 'provideTestClassCases')]
     public function testThatTestMethodsAreNotDuplicatedBasedOnContent(string $className): void
     {
         $alreadyFoundMethods = [];
@@ -85,6 +92,7 @@ final class DuplicatedTestsTest extends TestCase
      *
      * @param class-string $className
      */
+    #[DataProviderExternal(ProjectCodeTest::class, 'provideTestClassCases')]
     public function testThatTestMethodsAreNotDuplicatedBasedOnName(string $className): void
     {
         $alreadyFoundMethods = [];

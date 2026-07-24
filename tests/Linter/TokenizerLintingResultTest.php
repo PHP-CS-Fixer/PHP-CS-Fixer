@@ -17,6 +17,8 @@ namespace PhpCsFixer\Tests\Linter;
 use PhpCsFixer\Linter\LintingException;
 use PhpCsFixer\Linter\TokenizerLintingResult;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 
 /**
  * @internal
@@ -25,11 +27,13 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(TokenizerLintingResult::class)]
 final class TokenizerLintingResultTest extends TestCase
 {
     /**
      * @doesNotPerformAssertions
      */
+    #[DoesNotPerformAssertions]
     public function testTokenizerLintingResultOK(): void
     {
         $result = new TokenizerLintingResult();

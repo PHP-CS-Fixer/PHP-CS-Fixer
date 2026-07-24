@@ -16,6 +16,8 @@ namespace PhpCsFixer\Tests\Console\Command;
 
 use PhpCsFixer\Console\Command\FixCommandExitStatusCalculator;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -27,11 +29,13 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FixCommandExitStatusCalculator::class)]
 final class FixCommandExitStatusCalculatorTest extends TestCase
 {
     /**
      * @dataProvider provideCalculateCases
      */
+    #[DataProvider('provideCalculateCases')]
     public function testCalculate(
         int $expected,
         bool $isDryRun,

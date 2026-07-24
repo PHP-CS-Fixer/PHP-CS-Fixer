@@ -248,14 +248,12 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableF
 
         foreach ($this->configuration['sets'] as $set) {
             if ('@all' === $set) {
-                $this->aliases = array_merge(...array_values(self::SETS));
+                $this->aliases = self::mergeSets(self::SETS);
 
                 break;
             }
 
-            if (!isset(self::SETS[$set])) {
-                throw new \LogicException(\sprintf('Set %s passed option validation, but not part of ::SETS.', $set));
-            }
+            \assert(isset(self::SETS[$set]));
 
             $this->aliases = array_merge($this->aliases, self::SETS[$set]);
         }
@@ -288,7 +286,7 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableF
             if (\is_array($this->aliases[$tokenContent])) {
                 [$alias, $numberOfArguments] = $this->aliases[$tokenContent];
 
-                $count = $argumentsAnalyzer->countArguments($tokens, $openParenthesis, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis));
+                $count = $argumentsAnalyzer->countArguments($tokens, $openParenthesis, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openParenthesis));
 
                 if ($numberOfArguments !== $count) {
                     continue;
@@ -338,5 +336,15 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableF
                 ->setDefault(['@internal', '@IMAP', '@pg'])
                 ->getOption(),
         ]);
+    }
+
+    /**
+     * @param array<string, array<string, array{string, int}|string>> $sets
+     *
+     * @return array<string, array{string, int}|string>
+     */
+    private static function mergeSets(array $sets): array
+    {
+        return array_merge(...array_values($sets));
     }
 }

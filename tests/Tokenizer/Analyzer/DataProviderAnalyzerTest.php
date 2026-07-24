@@ -18,6 +18,9 @@ use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\DataProviderAnalysis;
 use PhpCsFixer\Tokenizer\Analyzer\DataProviderAnalyzer;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -26,6 +29,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(DataProviderAnalyzer::class)]
 final class DataProviderAnalyzerTest extends TestCase
 {
     /**
@@ -33,6 +37,7 @@ final class DataProviderAnalyzerTest extends TestCase
      *
      * @dataProvider provideGettingDataProvidersCases
      */
+    #[DataProvider('provideGettingDataProvidersCases')]
     public function testGettingDataProviders(array $expected, string $code, int $startIndex = 0, ?int $endIndex = null): void
     {
         $tokens = Tokens::fromCode($code);
@@ -189,10 +194,12 @@ final class DataProviderAnalyzerTest extends TestCase
     /**
      * @param list<DataProviderAnalysis> $expected
      *
-     * @requires PHP ^8.0
+     * @requires PHP ^8.0.0
      *
      * @dataProvider provideGettingDataProviders80Cases
      */
+    #[RequiresPhp('^8.0.0')]
+    #[DataProvider('provideGettingDataProviders80Cases')]
     public function testGettingDataProviders80(array $expected, string $code, int $startIndex = 0, ?int $endIndex = null): void
     {
         $this->testGettingDataProviders($expected, $code, $startIndex, $endIndex);

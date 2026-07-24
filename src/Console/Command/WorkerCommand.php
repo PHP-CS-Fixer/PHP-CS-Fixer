@@ -51,12 +51,6 @@ final class WorkerCommand extends Command
     /** @var string Prefix used before JSON-encoded error printed in the worker's process */
     public const ERROR_PREFIX = 'WORKER_ERROR::';
 
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultName = 'worker';
-
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultDescription = 'Internal command for running fixers in parallel';
-
     private ToolInfoInterface $toolInfo;
     private ConfigurationResolver $configurationResolver;
     private ErrorsManager $errorsManager;
@@ -67,7 +61,8 @@ final class WorkerCommand extends Command
 
     public function __construct(ToolInfoInterface $toolInfo)
     {
-        parent::__construct();
+        parent::__construct('worker');
+        $this->setDescription('Internal command for running fixers in parallel');
 
         $this->setHidden(true);
         $this->toolInfo = $toolInfo;
@@ -113,8 +108,8 @@ final class WorkerCommand extends Command
         $tcpConnector = new TcpConnector($loop);
         $tcpConnector
             ->connect(\sprintf('127.0.0.1:%d', $port))
+            // @codeCoverageIgnoreStart
             ->then(
-                /** @codeCoverageIgnore */
                 function (ConnectionInterface $connection) use ($loop, $runner, $identifier): void {
                     $out = new Encoder($connection, \JSON_INVALID_UTF8_IGNORE);
                     $in = new Decoder($connection, true, 512, \JSON_INVALID_UTF8_IGNORE);
@@ -197,6 +192,7 @@ final class WorkerCommand extends Command
                     $errorOutput->writeln($error->getMessage());
                 },
             )
+            // @codeCoverageIgnoreEnd
         ;
 
         $loop->run();

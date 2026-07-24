@@ -156,7 +156,7 @@ final class MbStrFunctionsFixer extends AbstractFixer
             // is it a global function call?
             if ($functionsAnalyzer->isGlobalFunctionCall($tokens, $index)) {
                 $openParenthesis = $tokens->getNextMeaningfulToken($index);
-                $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis);
+                $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openParenthesis);
                 $numberOfArguments = $argumentsAnalyzer->countArguments($tokens, $openParenthesis, $closeParenthesis);
                 if (!\in_array($numberOfArguments, $this->functions[$lowercasedContent]['argumentCount'], true)) {
                     continue;
@@ -172,10 +172,6 @@ final class MbStrFunctionsFixer extends AbstractFixer
                 $functionIndex = $tokens->getPrevMeaningfulToken($functionIndex);
             }
             if (!$tokens[$functionIndex]->isGivenKind(CT::T_FUNCTION_IMPORT)) {
-                continue;
-            }
-            $useIndex = $tokens->getPrevMeaningfulToken($functionIndex);
-            if (!$tokens[$useIndex]->isGivenKind(\T_USE)) {
                 continue;
             }
             $tokens[$index] = new Token([\T_STRING, $this->functions[$lowercasedContent]['alternativeName']]);

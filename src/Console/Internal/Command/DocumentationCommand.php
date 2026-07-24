@@ -34,17 +34,12 @@ use Symfony\Component\Finder\Finder;
 #[AsCommand(name: 'documentation', description: 'Dumps the documentation of the project into its "/doc" directory.')]
 final class DocumentationCommand extends Command
 {
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultName = 'documentation';
-
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultDescription = 'Dumps the documentation of the project into its "/doc" directory.';
-
     private Filesystem $filesystem;
 
     public function __construct(Filesystem $filesystem)
     {
-        parent::__construct();
+        parent::__construct('documentation');
+        $this->setDescription('Dumps the documentation of the project into its "/doc" directory.');
         $this->filesystem = $filesystem;
     }
 

@@ -17,6 +17,7 @@ namespace PhpCsFixer\Tests\Console\Report\ListSetsReport;
 use PhpCsFixer\Console\Report\ListSetsReport\ReportSummary;
 use PhpCsFixer\RuleSet\Sets\PhpCsFixerSet;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -27,6 +28,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ReportSummary::class)]
 final class ReportSummaryTest extends TestCase
 {
     public function testReportSummary(): void

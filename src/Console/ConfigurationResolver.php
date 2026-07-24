@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Console;
 
+use Ergebnis\AgentDetector;
 use PhpCsFixer\Cache\CacheManagerInterface;
 use PhpCsFixer\Cache\Directory;
 use PhpCsFixer\Cache\DirectoryInterface;
@@ -679,11 +680,21 @@ final class ConfigurationResolver
             $this->format = $parts[0];
 
             if ('@auto' === $this->format) {
-                $this->format = $parts[1] ?? 'txt';
-
                 if (filter_var(getenv('GITLAB_CI'), \FILTER_VALIDATE_BOOL)) {
                     $this->format = 'gitlab';
+
+                    return $this->format;
                 }
+
+                $agentDetector = new AgentDetector\Detector();
+
+                if ($agentDetector->isAgentPresent(array_fill_keys(array_keys(getenv()), ''))) {
+                    $this->format = 'json';
+
+                    return $this->format;
+                }
+
+                $this->format = $parts[1] ?? 'txt';
             }
         }
 

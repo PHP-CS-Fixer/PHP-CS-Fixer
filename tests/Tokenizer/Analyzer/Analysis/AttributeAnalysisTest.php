@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Tokenizer\Analyzer\Analysis;
 
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis
@@ -24,6 +25,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\AttributeAnalysis;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AttributeAnalysis::class)]
 final class AttributeAnalysisTest extends TestCase
 {
     public function testAttribute(): void

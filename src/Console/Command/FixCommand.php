@@ -61,12 +61,6 @@ use Symfony\Component\Stopwatch\Stopwatch;
 #[AsCommand(name: 'fix', description: 'Fixes a directory or a file.')]
 /* final */ class FixCommand extends Command
 {
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultName = 'fix';
-
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultDescription = 'Fixes a directory or a file.';
-
     private EventDispatcherInterface $eventDispatcher;
 
     private ErrorsManager $errorsManager;
@@ -81,7 +75,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
     public function __construct(ToolInfoInterface $toolInfo)
     {
-        parent::__construct();
+        parent::__construct('fix');
+        $this->setDescription('Fixes a directory or a file.');
 
         $this->eventDispatcher = new EventDispatcher();
         $this->errorsManager = new ErrorsManager();

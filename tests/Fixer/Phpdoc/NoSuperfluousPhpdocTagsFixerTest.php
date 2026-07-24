@@ -14,7 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Phpdoc;
 
+use PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -27,6 +31,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NoSuperfluousPhpdocTagsFixer::class)]
 final class NoSuperfluousPhpdocTagsFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -34,6 +39,7 @@ final class NoSuperfluousPhpdocTagsFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -2637,6 +2643,48 @@ static fn ($foo): int => 1;',
             ['allow_hidden_params' => true],
         ];
 
+        yield '@param for multiple hidden parameter with option disabled' => [
+            <<<'EOD'
+                <?php
+                /**
+                 */
+                function foo(array $bundleConfig/* , string $bundleDir1 = null, string $bundleDir2 = null, mixed $bundleDir3 = null */) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * @param array   $bundleConfig
+                 * @param ?string $bundleDir1
+                 * @param ?string $bundleDir2
+                 * @param mixed $bundleDir3
+                 */
+                function foo(array $bundleConfig/* , string $bundleDir1 = null, string $bundleDir2 = null, mixed $bundleDir3 = null */) {}
+                EOD,
+            ['allow_hidden_params' => false],
+        ];
+
+        yield '@param for multiple hidden parameter with option enabled' => [
+            <<<'EOD'
+                <?php
+                /**
+                 * @param ?string $bundleDir1
+                 * @param ?string $bundleDir2
+                 */
+                function foo(array $bundleConfig/* , string $bundleDir1 = null, string $bundleDir2 = null, mixed $bundleDir3 = null */) {}
+                EOD,
+            <<<'EOD'
+                <?php
+                /**
+                 * @param array   $bundleConfig
+                 * @param ?string $bundleDir1
+                 * @param ?string $bundleDir2
+                 * @param mixed $bundleDir3
+                 */
+                function foo(array $bundleConfig/* , string $bundleDir1 = null, string $bundleDir2 = null, mixed $bundleDir3 = null */) {}
+                EOD,
+            ['allow_hidden_params' => true],
+        ];
+
         yield '@param without space between variable name and description' => [
             <<<'EOD'
                 <?php
@@ -2695,8 +2743,10 @@ static fn ($foo): int => 1;',
      *
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testFix80(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -3040,8 +3090,10 @@ class Foo {
      *
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testFix81(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -3203,8 +3255,10 @@ enum Foo {
      *
      * @dataProvider provideFix82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      */
+    #[DataProvider('provideFix82Cases')]
+    #[RequiresPhp('>= 8.2.0')]
     public function testFix82(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -3233,8 +3287,10 @@ class Foo {
     /**
      * @dataProvider provideFix84Cases
      *
-     * @requires PHP 8.4
+     * @requires PHP >= 8.4.0
      */
+    #[DataProvider('provideFix84Cases')]
+    #[RequiresPhp('>= 8.4.0')]
     public function testFix84(string $expected, ?string $input = null): void
     {
         $this->testFix($expected, $input);

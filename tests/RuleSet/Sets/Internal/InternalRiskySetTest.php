@@ -14,7 +14,9 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\RuleSet\Sets\Internal;
 
+use PhpCsFixer\RuleSet\Sets\Internal\InternalRiskySet;
 use PhpCsFixer\Tests\RuleSet\Sets\AbstractSetTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
@@ -23,6 +25,7 @@ use PhpCsFixer\Tests\RuleSet\Sets\AbstractSetTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(InternalRiskySet::class)]
 final class InternalRiskySetTest extends AbstractSetTestCase
 {
     public function testSet(): void

@@ -59,6 +59,7 @@ final class PhpCsFixerRiskySet extends AbstractRuleSetDefinition
             'php_unit_test_case_static_method_calls' => ['call_type' => 'self'],
             'strict_comparison' => true,
             'strict_param' => true,
+            'void_return' => true, // override Symfony
             'yield_from_array_to_yields' => true,
         ];
     }

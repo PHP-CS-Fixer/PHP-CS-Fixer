@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Tokenizer\Analyzer\Analysis;
 
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\DataProviderAnalysis;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\DataProviderAnalysis
@@ -24,6 +25,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\DataProviderAnalysis;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(DataProviderAnalysis::class)]
 final class DataProviderAnalysisTest extends TestCase
 {
     public function testDataProviderAnalysis(): void

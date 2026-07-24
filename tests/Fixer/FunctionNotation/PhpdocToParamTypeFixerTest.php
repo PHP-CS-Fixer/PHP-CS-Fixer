@@ -14,13 +14,20 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
+use PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer;
+use PhpCsFixer\Fixer\FunctionNotation\PhpdocToParamTypeFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
  *
  * @group phpdoc
  *
+ * @covers \PhpCsFixer\AbstractPhpdocToTypeDeclarationFixer
  * @covers \PhpCsFixer\Fixer\FunctionNotation\PhpdocToParamTypeFixer
  *
  * @extends AbstractFixerTestCase<\PhpCsFixer\Fixer\FunctionNotation\PhpdocToParamTypeFixer>
@@ -31,6 +38,9 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[Group('phpdoc')]
+#[CoversClass(AbstractPhpdocToTypeDeclarationFixer::class)]
+#[CoversClass(PhpdocToParamTypeFixer::class)]
 final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -38,6 +48,7 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -70,7 +81,7 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'invalid - phpdoc param with false class hint' => [
-            '<?php /** @param $foo \Foo\\\Bar */ function my_foo($foo) {}',
+            '<?php /** @param \Foo\\\Bar $foo */ function my_foo($foo) {}',
         ];
 
         yield 'invalid - phpdoc param with false param order' => [
@@ -249,15 +260,11 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
         ];
 
         yield 'skip resource special type' => [
-            '<?php /** @param $bar resource */ function my_foo($bar) {}',
-        ];
-
-        yield 'skip mixed special type' => [
-            '<?php /** @param $bar mixed */ function my_foo($bar) {}',
+            '<?php /** @param resource $bar */ function my_foo($bar) {}',
         ];
 
         yield 'null alone cannot be a param type' => [
-            '<?php /** @param $bar null */ function my_foo($bar) {}',
+            '<?php /** @param null $bar */ function my_foo($bar) {}',
         ];
 
         yield 'array of types' => [
@@ -730,6 +737,23 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
                 ],
             ],
         ];
+
+        yield 'global functions with names like magic methods' => [
+            <<<'PHP'
+                <?php
+                /** @param int $x */ function __clone($x) {}
+                /** @param int $x */ function __destruct($x) {}
+                /** @param int $x */ function __serialize(int $x) {}
+                /** @param int $x */ function __sleep(int $x) {}
+                PHP,
+            <<<'PHP'
+                <?php
+                /** @param int $x */ function __clone($x) {}
+                /** @param int $x */ function __destruct($x) {}
+                /** @param int $x */ function __serialize($x) {}
+                /** @param int $x */ function __sleep($x) {}
+                PHP,
+        ];
     }
 
     /**
@@ -737,8 +761,10 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixPre80Cases
      *
-     * @requires PHP <8.0
+     * @requires PHP < 8.0.0
      */
+    #[DataProvider('provideFixPre80Cases')]
+    #[RequiresPhp('< 8.0.0')]
     public function testFixPre80(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -783,13 +809,19 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
         yield 'skip primitive or array union types' => [
             '<?php /** @param string|string[] $expected */ function testResolveIntersectionOfPaths($expected) {}',
         ];
+
+        yield 'skip mixed special type' => [
+            '<?php /** @param mixed $bar */ function my_foo($bar) {}',
+        ];
     }
 
     /**
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -841,6 +873,11 @@ final class PhpdocToParamTypeFixerTest extends AbstractFixerTestCase
         yield 'primitive or array union types' => [
             '<?php /** @param string|string[] $expected */ function testResolveIntersectionOfPaths(string|array $expected) {}',
             '<?php /** @param string|string[] $expected */ function testResolveIntersectionOfPaths($expected) {}',
+        ];
+
+        yield 'mixed type' => [
+            '<?php /** @param mixed $bar */ function my_foo(mixed $bar) {}',
+            '<?php /** @param mixed $bar */ function my_foo($bar) {}',
         ];
     }
 }

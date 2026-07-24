@@ -18,6 +18,8 @@ use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
 use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -26,6 +28,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(DeprecatedFixerOption::class)]
 final class DeprecatedFixerOptionTest extends TestCase
 {
     public function testGetName(): void
@@ -51,6 +54,7 @@ final class DeprecatedFixerOptionTest extends TestCase
     /**
      * @dataProvider provideHasDefaultCases
      */
+    #[DataProvider('provideHasDefaultCases')]
     public function testHasDefault(bool $isRequired): void
     {
         $option = new DeprecatedFixerOption(
@@ -76,6 +80,7 @@ final class DeprecatedFixerOptionTest extends TestCase
      *
      * @dataProvider provideGetDefaultCases
      */
+    #[DataProvider('provideGetDefaultCases')]
     public function testGetDefault($default): void
     {
         $option = new DeprecatedFixerOption(

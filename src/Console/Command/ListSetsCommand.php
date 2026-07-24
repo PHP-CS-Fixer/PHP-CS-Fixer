@@ -38,11 +38,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'list-sets', description: 'List all available RuleSets.')]
 final class ListSetsCommand extends Command
 {
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultName = 'list-sets';
-
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultDescription = 'List all available RuleSets.';
+    public function __construct()
+    {
+        parent::__construct('list-sets');
+        $this->setDescription('List all available RuleSets.');
+    }
 
     protected function configure(): void
     {

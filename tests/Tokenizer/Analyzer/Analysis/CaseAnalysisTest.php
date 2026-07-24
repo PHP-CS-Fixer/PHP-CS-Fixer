@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Tokenizer\Analyzer\Analysis;
 
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Analyzer\Analysis\CaseAnalysis;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @covers \PhpCsFixer\Tokenizer\Analyzer\Analysis\CaseAnalysis
@@ -24,6 +25,7 @@ use PhpCsFixer\Tokenizer\Analyzer\Analysis\CaseAnalysis;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(CaseAnalysis::class)]
 final class CaseAnalysisTest extends TestCase
 {
     public function testCase(): void

@@ -23,10 +23,14 @@ Example #1
    --- Original
    +++ New
     <?php
-   -$a = function () use ($b)
-   +$a = static function () use ($b)
-    {   echo $b;
+   -$a = function () {
+   +$a = static function () {
+        echo $b;
     };
+
+    $b = (function () {
+        \assert($this !== null); // approach you can use to instruct PHP CS Fixer to not convert this lambda to static, e.g. when you see "Cannot bind an instance to a static closure" error caused by lambda handling outside of your control
+    })->bindTo(new stdClass());
 
 Rule sets
 ---------

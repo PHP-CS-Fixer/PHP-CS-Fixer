@@ -47,7 +47,7 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
         '[',
         '{',
         '}',
-        [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN],
+        [CT::T_ARRAY_INDEX_BRACE_OPEN],
         [\T_AND_EQUAL],    // &=
         [\T_CONCAT_EQUAL], // .=
         [\T_DIV_EQUAL],    // /=

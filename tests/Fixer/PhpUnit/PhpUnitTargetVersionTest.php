@@ -16,6 +16,8 @@ namespace PhpCsFixer\Tests\Fixer\PhpUnit;
 
 use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -26,6 +28,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(PhpUnitTargetVersion::class)]
 final class PhpUnitTargetVersionTest extends TestCase
 {
     /**
@@ -33,6 +36,7 @@ final class PhpUnitTargetVersionTest extends TestCase
      *
      * @param null|class-string<\Throwable> $exception
      */
+    #[DataProvider('provideFulfillsCases')]
     public function testFulfills(bool $expected, string $candidate, string $target, ?string $exception = null): void
     {
         if (null !== $exception) {

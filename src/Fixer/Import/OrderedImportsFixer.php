@@ -246,10 +246,6 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
         foreach (array_reverse($namespacesImports) as $usesPerNamespaceIndices) {
             $count = \count($usesPerNamespaceIndices);
 
-            if (0 === $count) {
-                continue; // nothing to sort
-            }
-
             if (1 === $count) {
                 $this->setNewOrder($tokens, $this->getNewOrder($usesPerNamespaceIndices, $tokens));
 
@@ -261,6 +257,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
 
             // if there's some logic between two `use` statements, sort only imports grouped before that logic
             for ($index = 0; $index < $count - 1; ++$index) {
+                \assert(isset($usesPerNamespaceIndices[$index]));
                 $nextGroupUse = $tokens->getNextTokenOfKind($usesPerNamespaceIndices[$index], [';', [\T_CLOSE_TAG]]);
 
                 if ($tokens[$nextGroupUse]->isGivenKind(\T_CLOSE_TAG)) {
@@ -269,6 +266,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
 
                 $nextGroupUse = $tokens->getNextMeaningfulToken($nextGroupUse);
 
+                \assert(isset($usesPerNamespaceIndices[$index + 1]));
                 if ($nextGroupUse !== $usesPerNamespaceIndices[$index + 1]) {
                     $groupUses[++$groupUsesOffset] = [];
                 }
@@ -277,6 +275,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
             }
 
             for ($index = $groupUsesOffset; $index >= 0; --$index) {
+                \assert(isset($groupUses[$index]));
                 $this->setNewOrder($tokens, $this->getNewOrder($groupUses[$index], $tokens));
             }
         }
@@ -399,9 +398,12 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
         $usesCount = \count($uses);
 
         for ($i = 0; $i < $usesCount; ++$i) {
+            \assert(isset($uses[$i]));
             $index = $uses[$i];
 
             $startIndex = $tokens->getTokenNotOfKindsSibling($index + 1, 1, [\T_WHITESPACE]);
+            \assert(\is_int($startIndex));
+
             $endIndex = $tokens->getNextTokenOfKind($startIndex, [';', [\T_CLOSE_TAG]]);
             $previous = $tokens->getPrevMeaningfulToken($endIndex);
 
@@ -430,6 +432,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
                         $namespaceTokensCount = \count($namespaceTokens) - 1;
                         $namespace = '';
                         for ($k = 0; $k < $namespaceTokensCount; ++$k) {
+                            \assert(isset($namespaceTokens[$k]));
                             if ($namespaceTokens[$k]->isGivenKind(CT::T_GROUP_IMPORT_BRACE_OPEN)) {
                                 $namespace .= '{';
 
@@ -450,6 +453,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
                             $comment = '';
                             $namespacePart = '';
                             for ($k2 = $k1;; ++$k2) {
+                                \assert(isset($namespaceTokens[$k2]));
                                 if ($namespaceTokens[$k2]->equalsAny([',', [CT::T_GROUP_IMPORT_BRACE_CLOSE]])) {
                                     break;
                                 }
@@ -504,6 +508,8 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
                         $namespace = Tokens::fromArray($namespaceTokens)->generateCode();
                     }
 
+                    \assert('' !== $namespace);
+
                     $indices[$startIndex] = [
                         'namespace' => $namespace,
                         'startIndex' => $startIndex,
@@ -520,6 +526,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
 
                     $namespaceTokens = [];
                     $nextPartIndex = $tokens->getTokenNotOfKindSibling($index, 1, [',', [\T_WHITESPACE]]);
+                    \assert(\is_int($nextPartIndex));
                     $startIndex = $nextPartIndex;
                     $index = $nextPartIndex;
 
@@ -567,7 +574,9 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
 
         // Loop through the index but use original index order
         foreach ($indices as $v) {
-            $usesOrder[$originalIndices[++$index]] = $v;
+            ++$index;
+            \assert(isset($originalIndices[$index]));
+            $usesOrder[$originalIndices[$index]] = $v;
         }
 
         return $usesOrder;
@@ -621,6 +630,7 @@ final class OrderedImportsFixer extends AbstractFixer implements ConfigurableFix
             $declarationTokens->clearAt(\count($declarationTokens) - 1); // clear `;`
             $declarationTokens->clearEmptyTokens();
 
+            \assert(isset($mapStartToEnd[$index]));
             $tokens->overrideRange($index, $mapStartToEnd[$index], $declarationTokens);
 
             if ($use['group']) {

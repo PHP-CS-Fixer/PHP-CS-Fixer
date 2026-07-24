@@ -16,6 +16,8 @@ namespace PhpCsFixer\Tests\FixerDefinition;
 
 use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -26,6 +28,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(VersionSpecification::class)]
 final class VersionSpecificationTest extends TestCase
 {
     public function testConstructorRequiresEitherMinimumOrMaximum(): void
@@ -41,6 +44,7 @@ final class VersionSpecificationTest extends TestCase
      * @param null|int<1, max> $minimum
      * @param null|int<1, max> $maximum
      */
+    #[DataProvider('provideConstructorRejectsInvalidValuesCases')]
     public function testConstructorRejectsInvalidValues(?int $minimum = null, ?int $maximum = null): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -73,6 +77,7 @@ final class VersionSpecificationTest extends TestCase
      * @param null|int<1, max> $minimum
      * @param null|int<1, max> $maximum
      */
+    #[DataProvider('provideIsSatisfiedByReturnsTrueCases')]
     public function testIsSatisfiedByReturnsTrue(?int $minimum, ?int $maximum, int $actual): void
     {
         $versionSpecification = new VersionSpecification(
@@ -103,6 +108,7 @@ final class VersionSpecificationTest extends TestCase
      * @param null|int<1, max> $minimum
      * @param null|int<1, max> $maximum
      */
+    #[DataProvider('provideIsSatisfiedByReturnsFalseCases')]
     public function testIsSatisfiedByReturnsFalse(?int $minimum, ?int $maximum, int $actual): void
     {
         $versionSpecification = new VersionSpecification(

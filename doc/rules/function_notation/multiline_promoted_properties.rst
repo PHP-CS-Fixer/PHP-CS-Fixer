@@ -88,6 +88,24 @@ With configuration: ``['minimum_number_of_parameters' => 3]``.
         public function __construct(private array $x) {}
     }
 
+Example #3
+~~~~~~~~~~
+
+With configuration: ``['minimum_number_of_parameters' => 3]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    class Foo {
+   -    public function __construct(
+   -        private array $a,
+   -        private bool $b,
+   -    ) {}
+   +    public function __construct(private array $a, private bool $b,) {}
+    }
+
 References
 ----------
 

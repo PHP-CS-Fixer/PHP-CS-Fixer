@@ -284,11 +284,11 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
         }
 
         if (\in_array('curly_brace_block', $tokensConfiguration, true)) {
-            $this->tokenEqualsMap['{'] = [$this, 'fixStructureOpenCloseIfMultiLine']; // i.e. not: CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN
+            $this->tokenEqualsMap['{'] = [$this, 'fixStructureOpenCloseIfMultiLine']; // i.e. not: CT::T_ARRAY_INDEX_BRACE_OPEN
         }
 
         if (\in_array('parenthesis_brace_block', $tokensConfiguration, true)) {
-            $this->tokenEqualsMap['('] = [$this, 'fixStructureOpenCloseIfMultiLine']; // i.e. not: CT::T_BRACE_CLASS_INSTANTIATION_OPEN
+            $this->tokenEqualsMap['('] = [$this, 'fixStructureOpenCloseIfMultiLine']; // i.e. not: CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN
         }
 
         // Each item requires explicit array-like callable, otherwise PHPStan will complain about unused private methods.
@@ -300,7 +300,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
             'default' => [\T_DEFAULT, [$this, 'fixAfterToken']],
             'extra' => [\T_WHITESPACE, [$this, 'removeMultipleBlankLines']],
             'return' => [\T_RETURN, [$this, 'fixAfterToken']],
-            'square_brace_block' => [CT::T_ARRAY_SQUARE_BRACE_OPEN, [$this, 'fixStructureOpenCloseIfMultiLine']],
+            'square_brace_block' => [CT::T_ARRAY_BRACKET_OPEN, [$this, 'fixStructureOpenCloseIfMultiLine']],
             'switch' => [\T_SWITCH, [$this, 'fixAfterToken']],
             'throw' => [\T_THROW, [$this, 'fixAfterThrowToken']],
             'use' => [\T_USE, [$this, 'removeBetweenUse']],
@@ -352,6 +352,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
                 continue;
             }
 
+            \assert(isset($this->tokenKindCallbackMap[$token->getId()]));
             \call_user_func_array($this->tokenKindCallbackMap[$token->getId()], [$index]);
 
             return;
@@ -362,6 +363,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
                 continue;
             }
 
+            \assert(isset($this->tokenEqualsMap[$token->getContent()]));
             \call_user_func_array($this->tokenEqualsMap[$token->getContent()], [$index]);
 
             return;
@@ -393,6 +395,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
         $count = \count($parts);
 
         if ($count > $expected) {
+            \assert(isset($parts[$count - 1]));
             $this->tokens[$index] = new Token([\T_WHITESPACE, implode('', \array_slice($parts, 0, $expected)).rtrim($parts[$count - 1], "\r\n")]);
         }
     }
@@ -408,7 +411,7 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
                 return;
             }
 
-            if ($this->tokens[$i]->isGivenKind([CT::T_ARRAY_SQUARE_BRACE_OPEN, CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN])) {
+            if ($this->tokens[$i]->isGivenKind([CT::T_ARRAY_BRACKET_OPEN, CT::T_DESTRUCTURING_BRACKET_OPEN])) {
                 return;
             }
 

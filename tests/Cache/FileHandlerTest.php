@@ -20,6 +20,7 @@ use PhpCsFixer\Cache\FileHandler;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\Cache\SignatureInterface;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Filesystem\Exception\IOException;
 
 /**
@@ -31,6 +32,7 @@ use Symfony\Component\Filesystem\Exception\IOException;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FileHandler::class)]
 final class FileHandlerTest extends TestCase
 {
     protected function tearDown(): void

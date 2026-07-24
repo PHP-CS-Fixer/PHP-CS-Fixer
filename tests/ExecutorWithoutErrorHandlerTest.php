@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\ExecutorWithoutErrorHandler;
 use PhpCsFixer\ExecutorWithoutErrorHandlerException;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
@@ -24,6 +25,7 @@ use PhpCsFixer\ExecutorWithoutErrorHandlerException;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ExecutorWithoutErrorHandler::class)]
 final class ExecutorWithoutErrorHandlerTest extends TestCase
 {
     public function testWithError(): void

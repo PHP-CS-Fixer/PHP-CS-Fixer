@@ -43,11 +43,11 @@ final class InitCommand extends Command
 {
     private const FIXER_FILENAME = '.php-cs-fixer.dist.php';
 
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultName = 'init';
-
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultDescription = 'Create config file.';
+    public function __construct()
+    {
+        parent::__construct('init');
+        $this->setDescription('Create config file.');
+    }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

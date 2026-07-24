@@ -59,7 +59,7 @@ Default value: ``false``
 
 Defines how to handle function arguments lists that contain newlines.
 
-Allowed values: ``'ensure_fully_multiline'``, ``'ensure_single_line'`` and ``'ignore'``
+Allowed values: ``'ensure_fully_multiline'``, ``'ensure_single_line'``, ``'ensure_single_line_for_single_argument'`` and ``'ignore'``
 
 Default value: ``'ensure_fully_multiline'``
 
@@ -275,6 +275,29 @@ With configuration: ``['on_multiline' => 'ensure_fully_multiline', 'attribute_pl
    +sample(1, 2);
 
 Example #11
+~~~~~~~~~~~
+
+With configuration: ``['on_multiline' => 'ensure_single_line_for_single_argument']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -function sample(
+   -    $a
+   -) {}
+   -sample(
+   -    1
+   -);
+   +function sample($a) {}
+   +sample(1);
+    sample(
+        1,
+        2
+    );
+
+Example #12
 ~~~~~~~~~~~
 
 With configuration: ``['after_heredoc' => true]``.

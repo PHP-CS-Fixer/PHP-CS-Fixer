@@ -66,6 +66,11 @@ final class PhpUnitTestClassRequiresCoversFixer extends AbstractPhpUnitFixer imp
         $classIndex = $tokens->getPrevTokenOfKind($startIndex, [[\T_CLASS]]);
 
         $tokensAnalyzer = new TokensAnalyzer($tokens);
+
+        if ($tokensAnalyzer->isAnonymousClass($classIndex)) {
+            return;
+        }
+
         $modifiers = $tokensAnalyzer->getClassyModifiers($classIndex);
 
         if (isset($modifiers['abstract'])) {

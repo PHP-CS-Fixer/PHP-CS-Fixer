@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Console\SelfUpdate;
 
 use PhpCsFixer\Console\SelfUpdate\GithubClient;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
@@ -24,6 +25,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(GithubClient::class)]
 final class GithubClientTest extends TestCase
 {
     public function testGettingTags(): void

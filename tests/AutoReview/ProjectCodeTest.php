@@ -45,6 +45,10 @@ use PhpCsFixer\Tokenizer\FCT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\Tokenizer\TokensAnalyzer;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -60,6 +64,9 @@ use Symfony\Component\Finder\SplFileInfo;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversNothing]
+#[Group('auto-review')]
+#[Group('covers-nothing')]
 final class ProjectCodeTest extends TestCase
 {
     /**
@@ -73,7 +80,7 @@ final class ProjectCodeTest extends TestCase
     private static ?array $srcClassCases = null;
 
     /**
-     * @var null|array<string, array{class-string, string}>
+     * @var null|array<string, array{class-string<TestCase>, non-empty-string}>
      */
     private static ?array $dataProviderMethodCases = null;
 
@@ -99,6 +106,7 @@ final class ProjectCodeTest extends TestCase
     /**
      * @dataProvider provideThatSrcClassHaveTestClassCases
      */
+    #[DataProvider('provideThatSrcClassHaveTestClassCases')]
     public function testThatSrcClassHaveTestClass(string $className): void
     {
         \assert(class_exists($className));
@@ -154,8 +162,10 @@ final class ProjectCodeTest extends TestCase
      *
      * @param class-string $className
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      */
+    #[DataProvider('provideSrcClassCases')]
+    #[RequiresPhp('>= 8.2.0')]
     public function testThatSrcClassesAreReadonlyWhenPossible(string $className): void
     {
         $rc = new \ReflectionClass($className);
@@ -215,7 +225,7 @@ final class ProjectCodeTest extends TestCase
         if (null !== $constructorSequence) {
             $tokens = clone $tokens;
             $openIndex = $tokens->getNextTokenOfKind(array_key_last($constructorSequence), ['{']);
-            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openIndex);
+            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $openIndex);
             $tokens->overrideRange($openIndex + 1, $closeIndex - 1, []);
         }
 
@@ -243,6 +253,7 @@ final class ProjectCodeTest extends TestCase
      *
      * @param class-string $className
      */
+    #[DataProvider('provideThatSrcClassesNotAbuseInterfacesCases')]
     public function testThatSrcClassesNotAbuseInterfaces(string $className): void
     {
         $rc = new \ReflectionClass($className);
@@ -340,6 +351,7 @@ final class ProjectCodeTest extends TestCase
      *
      * @param class-string $className
      */
+    #[DataProvider('provideSrcClassCases')]
     public function testThatSrcClassesNotExposeProperties(string $className): void
     {
         if (\in_array($className, [
@@ -400,6 +412,7 @@ final class ProjectCodeTest extends TestCase
     /**
      * @dataProvider provideTestClassCases
      */
+    #[DataProvider('provideTestClassCases')]
     public function testThatTestClassExtendsPhpCsFixerTestCaseClass(string $className): void
     {
         self::assertTrue(is_subclass_of($className, TestCase::class), \sprintf('Expected test class "%s" to be a subclass of "%s".', $className, TestCase::class));
@@ -410,6 +423,7 @@ final class ProjectCodeTest extends TestCase
      *
      * @param class-string<TestCase> $testClassName
      */
+    #[DataProvider('provideTestClassCases')]
     public function testThatTestClassesAreTraitOrAbstractOrFinal(string $testClassName): void
     {
         $rc = new \ReflectionClass($testClassName);
@@ -430,6 +444,7 @@ final class ProjectCodeTest extends TestCase
      *
      * @param class-string<TestCase> $testClassName
      */
+    #[DataProvider('provideTestClassCases')]
     public function testThatTestClassesAreInternal(string $testClassName): void
     {
         $rc = new \ReflectionClass($testClassName);
@@ -446,6 +461,7 @@ final class ProjectCodeTest extends TestCase
      *
      * @param class-string<TestCase> $testClassName
      */
+    #[DataProvider('provideTestClassCases')]
     public function testThatTestClassesPublicMethodsAreCorrectlyNamed(string $testClassName): void
     {
         $reflectionClass = new \ReflectionClass($testClassName);
@@ -475,6 +491,7 @@ final class ProjectCodeTest extends TestCase
      *
      * @param class-string<TestCase> $testClassName
      */
+    #[DataProvider('provideDataProviderMethodCases')]
     public function testThatTestDataProvidersAreUsed(string $testClassName, string $dataProviderName): void
     {
         $usedDataProviderMethodNames = [];
@@ -493,6 +510,7 @@ final class ProjectCodeTest extends TestCase
     /**
      * @dataProvider provideDataProviderMethodCases
      */
+    #[DataProvider('provideDataProviderMethodCases')]
     public function testThatTestDataProvidersAreCorrectlyNamed(string $testClassName, string $dataProviderName): void
     {
         self::assertMatchesRegularExpression('/^provide[A-Z]\S+Cases$/', $dataProviderName, \sprintf(
@@ -507,6 +525,7 @@ final class ProjectCodeTest extends TestCase
      *
      * @param class-string<TestCase> $testClassName
      */
+    #[DataProvider('provideTestClassCases')]
     public function testThatTestClassCoversAreCorrect(string $testClassName): void
     {
         $reflectionClass = new \ReflectionClass($testClassName);
@@ -549,6 +568,8 @@ final class ProjectCodeTest extends TestCase
      *
      * @param class-string $className
      */
+    #[DataProvider('provideSrcClassCases')]
+    #[DataProvider('provideTestClassCases')]
     public function testThereIsNoUsageOfDefined(string $className): void
     {
         if (\in_array($className, [
@@ -574,6 +595,8 @@ final class ProjectCodeTest extends TestCase
      *
      * @param class-string $className
      */
+    #[DataProvider('provideSrcClassCases')]
+    #[DataProvider('provideTestClassCases')]
     public function testThereIsNoUsageOfExtract(string $className): void
     {
         $calledFunctions = $this->extractFunctionNamesCalledInClass($className);
@@ -588,6 +611,8 @@ final class ProjectCodeTest extends TestCase
      *
      * @param class-string $className
      */
+    #[DataProvider('provideSrcClassCases')]
+    #[DataProvider('provideTestClassCases')]
     public function testThereIsNoUsageOfJsonLastError(string $className): void
     {
         $calledFunctions = $this->extractFunctionNamesCalledInClass($className);
@@ -602,6 +627,7 @@ final class ProjectCodeTest extends TestCase
      *
      * @param class-string $className
      */
+    #[DataProvider('provideThereIsNoPregFunctionUsedDirectlyCases')]
     public function testThereIsNoPregFunctionUsedDirectly(string $className): void
     {
         if (\in_array($className, [
@@ -651,6 +677,7 @@ final class ProjectCodeTest extends TestCase
      *
      * @param class-string $className
      */
+    #[DataProvider('provideTestClassCases')]
     public function testThereIsNoUsageOfSetAccessible(string $className): void
     {
         $calledFunctions = $this->extractFunctionNamesCalledInClass($className);
@@ -664,6 +691,7 @@ final class ProjectCodeTest extends TestCase
      *
      * @param class-string<TestCase> $className
      */
+    #[DataProvider('provideTestClassCases')]
     public function testNoPHPUnitMockUsed(string $className): void
     {
         $calledFunctions = $this->extractFunctionNamesCalledInClass($className);
@@ -687,6 +715,7 @@ final class ProjectCodeTest extends TestCase
      *
      * @param class-string<TestCase> $testClassName
      */
+    #[DataProvider('provideTestClassCases')]
     public function testExpectedInputOrder(string $testClassName): void
     {
         $reflectionClass = new \ReflectionClass($testClassName);
@@ -756,6 +785,7 @@ final class ProjectCodeTest extends TestCase
      * @param class-string<TestCase> $testClassName
      * @param non-empty-string       $dataProviderName
      */
+    #[DataProvider('provideDataProviderMethodCases')]
     public function testDataProvidersAreNonPhpVersionConditional(string $testClassName, string $dataProviderName): void
     {
         $tokens = $this->createTokensForClass($testClassName);
@@ -773,7 +803,7 @@ final class ProjectCodeTest extends TestCase
 
         $methodIndex = array_key_first($dataProviderElements);
         $startIndex = $tokens->getNextTokenOfKind($methodIndex, ['{']);
-        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $startIndex);
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $startIndex);
 
         $versionTokens = array_filter($tokens->findGivenKind(\T_STRING, $startIndex, $endIndex), static fn (Token $v): bool => $v->equalsAny([
             [\T_STRING, 'PHP_VERSION_ID'],
@@ -797,6 +827,7 @@ final class ProjectCodeTest extends TestCase
     /**
      * @dataProvider provideDataProviderMethodCases
      */
+    #[DataProvider('provideDataProviderMethodCases')]
     public function testDataProvidersDeclaredReturnType(string $testClassName, string $dataProviderName): void
     {
         $dataProvider = new \ReflectionMethod($testClassName, $dataProviderName);
@@ -830,6 +861,8 @@ final class ProjectCodeTest extends TestCase
      *
      * @param class-string $className
      */
+    #[DataProvider('provideSrcClassCases')]
+    #[DataProvider('provideTestClassCases')]
     public function testAllCodeContainSingleClassy(string $className): void
     {
         // @TODO v4 remove me @MARKER_deprecated_DeprecatedRuleSetDescriptionInterface
@@ -893,7 +926,7 @@ final class ProjectCodeTest extends TestCase
             throw new \UnexpectedValueException('Classy without {} - braces.');
         }
 
-        $classyEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nextTokenOfKind);
+        $classyEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $nextTokenOfKind);
 
         self::assertNull($tokens->getNextMeaningfulToken($classyEndIndex), \sprintf('File for "%s" should only contains a single classy.', $className));
     }
@@ -903,6 +936,7 @@ final class ProjectCodeTest extends TestCase
      *
      * @param class-string $className
      */
+    #[DataProvider('provideSrcClassCases')]
     public function testInheritdocIsNotAbused(string $className): void
     {
         $rc = new \ReflectionClass($className);
@@ -980,6 +1014,7 @@ final class ProjectCodeTest extends TestCase
      *
      * @param class-string<TestCase> $testClassName
      */
+    #[DataProvider('provideDataProviderMethodCases')]
     public function testDataFromDataProviders(string $testClassName, string $dataProviderName): void
     {
         $exceptionsForDuplicatesCheck = [ // should only shrink
@@ -1061,7 +1096,7 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{string, string}>
+     * @return iterable<string, array{class-string<TestCase>, non-empty-string}>
      */
     public static function provideDataProviderMethodCases(): iterable
     {
@@ -1090,6 +1125,7 @@ final class ProjectCodeTest extends TestCase
      *
      * @dataProvider providePhpUnitInheritedMethodsCallsParentCases
      */
+    #[DataProvider('providePhpUnitInheritedMethodsCallsParentCases')]
     public function testPhpUnitInheritedMethodsCallsParent(string $className, string $methodName): void
     {
         $tokens = $this->createTokensForClass($className);
@@ -1107,7 +1143,7 @@ final class ProjectCodeTest extends TestCase
 
         $methodIndex = array_key_first($methodElements);
         $startIndex = $tokens->getNextTokenOfKind($methodIndex, ['{']);
-        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $startIndex);
+        $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $startIndex);
 
         $callTheParent = $tokens->findSequence([
             [\T_STRING, 'parent'],
@@ -1164,6 +1200,7 @@ final class ProjectCodeTest extends TestCase
      *
      * @param class-string $className
      */
+    #[DataProvider('providePhpUnitFixerExtendsAbstractPhpUnitFixerCases')]
     public function testPhpUnitFixerExtendsAbstractPhpUnitFixer(string $className): void
     {
         $reflection = new \ReflectionClass($className);
@@ -1203,6 +1240,8 @@ final class ProjectCodeTest extends TestCase
      *
      * @param class-string $name
      */
+    #[DataProvider('provideSrcClassCases')]
+    #[DataProvider('provideTestClassCases')]
     public function testConsistentClassyNaming(string $name): void
     {
         $reflection = new \ReflectionClass($name);
@@ -1223,6 +1262,8 @@ final class ProjectCodeTest extends TestCase
      *
      * @param class-string $className
      */
+    #[DataProvider('provideSrcClassCases')]
+    #[DataProvider('provideTestClassCases')]
     public function testConstantsAreInUpperCase(string $className): void
     {
         $rc = new \ReflectionClass($className);

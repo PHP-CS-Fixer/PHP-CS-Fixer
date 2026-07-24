@@ -19,6 +19,8 @@ use PhpCsFixer\Tokenizer\Processor\ImportProcessor;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
 use PhpCsFixer\WhitespacesFixerConfig;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -27,6 +29,7 @@ use PhpCsFixer\WhitespacesFixerConfig;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ImportProcessor::class)]
 final class ImportProcessorTest extends TestCase
 {
     /**
@@ -34,6 +37,7 @@ final class ImportProcessorTest extends TestCase
      *
      * @dataProvider provideTokenizeNameCases
      */
+    #[DataProvider('provideTokenizeNameCases')]
     public function testTokenizeName(string $symbol): void
     {
         self::assertSame(
@@ -77,6 +81,7 @@ final class ImportProcessorTest extends TestCase
      *
      * @dataProvider provideInsertImportsCases
      */
+    #[DataProvider('provideInsertImportsCases')]
     public function testInsertImports(string $expected, string $input, array $imports, int $atIndex): void
     {
         $processor = new ImportProcessor(new WhitespacesFixerConfig());

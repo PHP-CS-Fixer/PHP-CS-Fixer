@@ -30,11 +30,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'decode-id', description: 'Get symbolic name of token id.')]
 final class DecodeIdCommand extends Command
 {
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultName = 'decode-id';
-
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultDescription = 'Get symbolic name of token id.';
+    public function __construct()
+    {
+        parent::__construct('decode-id');
+        $this->setDescription('Get symbolic name of token id.');
+    }
 
     protected function configure(): void
     {

@@ -153,7 +153,7 @@ final class TokensAnalyzer
      */
     public function isArray(int $index): bool
     {
-        return $this->tokens[$index]->isGivenKind([\T_ARRAY, CT::T_ARRAY_SQUARE_BRACE_OPEN]);
+        return $this->tokens[$index]->isGivenKind([\T_ARRAY, CT::T_ARRAY_BRACKET_OPEN]);
     }
 
     /**
@@ -496,7 +496,7 @@ final class TokensAnalyzer
             ']',
             [\T_STRING],
             [\T_VARIABLE],
-            [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
+            [CT::T_ARRAY_INDEX_BRACE_CLOSE],
             [CT::T_DYNAMIC_PROP_BRACE_CLOSE],
             [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
         ]);
@@ -533,8 +533,8 @@ final class TokensAnalyzer
             ')',
             '"',
             '`',
-            [CT::T_ARRAY_SQUARE_BRACE_CLOSE],
-            [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE],
+            [CT::T_ARRAY_BRACKET_CLOSE],
+            [CT::T_ARRAY_INDEX_BRACE_CLOSE],
             [CT::T_DYNAMIC_PROP_BRACE_CLOSE],
             [CT::T_DYNAMIC_VAR_BRACE_CLOSE],
             [\T_CLASS_C],
@@ -651,7 +651,7 @@ final class TokensAnalyzer
             return false;
         }
 
-        $startIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $endIndex);
+        $startIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_BRACE, $endIndex);
         $beforeStartIndex = $tokens->getPrevMeaningfulToken($startIndex);
 
         return $tokens[$beforeStartIndex]->isGivenKind(\T_DO);
@@ -677,9 +677,21 @@ final class TokensAnalyzer
             return false;
         }
 
-        $prevIndex = $tokens->getPrevTokenOfKind($caseIndex, [[\T_ENUM], [\T_SWITCH]]);
+        $prevIndex = $caseIndex;
 
-        return null !== $prevIndex && $tokens[$prevIndex]->isGivenKind(\T_ENUM);
+        // get the T_ENUM or T_SWITCH that is matching the T_CASE, detecting and skipping the {...} blocks in between, as they may have nested switch-case
+        while (true) {
+            $prevIndex = $tokens->getPrevTokenOfKind($prevIndex, ['}', [\T_ENUM], [\T_SWITCH]]);
+            \assert(null !== $prevIndex);
+
+            if ($tokens[$prevIndex]->equals('}')) {
+                $prevIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_BRACE, $prevIndex);
+            } else {
+                break;
+            }
+        }
+
+        return $tokens[$prevIndex]->isGivenKind(\T_ENUM);
     }
 
     public function isSuperGlobal(int $index): bool
@@ -828,16 +840,19 @@ final class TokensAnalyzer
             }
 
             if ($token->isGivenKind(\T_FUNCTION)) {
+                $functionNameIndex = $this->tokens->getNextMeaningfulToken($index);
+                if ($this->tokens[$functionNameIndex]->equals('(')) {
+                    continue;
+                }
                 $elements[$index] = [
                     'classIndex' => $classIndex,
                     'token' => $token,
                     'type' => 'method',
                 ];
-                $functionNameIndex = $this->tokens->getNextMeaningfulToken($index);
                 if ('__construct' === $this->tokens[$functionNameIndex]->getContent()) {
                     $openParenthesis = $this->tokens->getNextMeaningfulToken($functionNameIndex);
-                    $closeParenthesis = $this->tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis);
-                    foreach ($this->tokens->findGivenKind([CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE, FCT::T_READONLY, \T_FINAL], $openParenthesis, $closeParenthesis) as $kindElements) {
+                    $closeParenthesis = $this->tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openParenthesis);
+                    foreach ($this->tokens->findGivenKind([CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PUBLIC, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PROTECTED, CT::T_CONSTRUCTOR_PROPERTY_PROMOTION_PRIVATE, FCT::T_PRIVATE_SET, FCT::T_PROTECTED_SET, FCT::T_PUBLIC_SET, FCT::T_READONLY, \T_FINAL], $openParenthesis, $closeParenthesis) as $kindElements) {
                         foreach (array_keys($kindElements) as $promotedPropertyModifierIndex) {
                             /** @var int $promotedPropertyVariableIndex */
                             $promotedPropertyVariableIndex = $this->tokens->getNextTokenOfKind($promotedPropertyModifierIndex, [[\T_VARIABLE]]);

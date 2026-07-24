@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\Runner\Event;
 
 use PhpCsFixer\Runner\Event\FileProcessed;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
@@ -24,6 +25,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FileProcessed::class)]
 final class FileProcessedTest extends TestCase
 {
     public function testFileProcessedEvent(): void

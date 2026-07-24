@@ -23,6 +23,8 @@ use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleSet;
 use PhpCsFixer\Tests\Test\CiReader;
 use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -33,6 +35,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(RuleSets::class)]
 final class RuleSetsTest extends TestCase
 {
     protected function setUp(): void
@@ -95,6 +98,7 @@ final class RuleSetsTest extends TestCase
     /**
      * @dataProvider provideSetDefinitionNameCases
      */
+    #[DataProvider('provideSetDefinitionNameCases')]
     public function testHasIntegrationTest(string $setDefinitionName): void
     {
         /** @TODO v4 remove deprecated sets */
@@ -174,6 +178,7 @@ Integration of %s.
     /**
      * @dataProvider provideSetDefinitionNameCases
      */
+    #[DataProvider('provideSetDefinitionNameCases')]
     public function testBuildInSetDefinitionNames(string $setName): void
     {
         self::assertStringStartsWith('@', $setName);
@@ -182,6 +187,7 @@ Integration of %s.
     /**
      * @dataProvider provideSetDefinitionNameCases
      */
+    #[DataProvider('provideSetDefinitionNameCases')]
     public function testSetDefinitionsAreSorted(string $setDefinitionName): void
     {
         \assert(\array_key_exists($setDefinitionName, RuleSets::getSetDefinitions()));
@@ -217,6 +223,7 @@ Integration of %s.
     /**
      * @dataProvider providePHPUnitMigrationTargetVersionsCases
      */
+    #[DataProvider('providePHPUnitMigrationTargetVersionsCases')]
     public function testPHPUnitMigrationTargetVersions(string $setName): void
     {
         $ruleSet = new RuleSet([$setName => true]);

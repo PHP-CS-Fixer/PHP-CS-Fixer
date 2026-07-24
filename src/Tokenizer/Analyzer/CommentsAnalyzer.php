@@ -74,7 +74,7 @@ final class CommentsAnalyzer
                 return false;
             }
 
-            $braceOpenIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $braceCloseIndex);
+            $braceOpenIndex = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $braceCloseIndex);
             $declareIndex = $tokens->getPrevMeaningfulToken($braceOpenIndex);
             if (!$tokens[$declareIndex]->isGivenKind(\T_DECLARE)) {
                 return false;
@@ -237,7 +237,7 @@ final class CommentsAnalyzer
         }
 
         $openParenthesisIndex = $tokens->getNextMeaningfulToken($controlIndex);
-        $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesisIndex);
+        $closeParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openParenthesisIndex);
         $docsContent = $docsToken->getContent();
 
         for ($index = $openParenthesisIndex + 1; $index < $closeParenthesisIndex; ++$index) {
@@ -266,13 +266,13 @@ final class CommentsAnalyzer
             \T_LIST,
             \T_PRINT,
             \T_ECHO,
-            CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN,
+            CT::T_DESTRUCTURING_BRACKET_OPEN,
         ])) {
             return false;
         }
 
-        $endKind = $tokens[$languageConstructIndex]->isGivenKind(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN)
-            ? [CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE]
+        $endKind = $tokens[$languageConstructIndex]->isGivenKind(CT::T_DESTRUCTURING_BRACKET_OPEN)
+            ? [CT::T_DESTRUCTURING_BRACKET_CLOSE]
             : ')';
 
         $endIndex = $tokens->getNextTokenOfKind($languageConstructIndex, [$endKind]);

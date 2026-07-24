@@ -17,6 +17,8 @@ namespace PhpCsFixer\Tests\Cache;
 use PhpCsFixer\Cache\Signature;
 use PhpCsFixer\Cache\SignatureInterface;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -27,6 +29,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Signature::class)]
 final class SignatureTest extends TestCase
 {
     public function testIsFinal(): void
@@ -65,6 +68,7 @@ final class SignatureTest extends TestCase
     /**
      * @dataProvider provideEqualsReturnsFalseIfValuesAreNotIdenticalCases
      */
+    #[DataProvider('provideEqualsReturnsFalseIfValuesAreNotIdenticalCases')]
     public function testEqualsReturnsFalseIfValuesAreNotIdentical(Signature $signature, Signature $anotherSignature): void
     {
         self::assertFalse($signature->equals($anotherSignature));

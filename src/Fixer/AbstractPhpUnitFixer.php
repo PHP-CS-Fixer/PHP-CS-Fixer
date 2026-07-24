@@ -61,10 +61,6 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
         for ($index = $endIndex; $index > $startIndex; --$index) {
             $index = $tokens->getPrevTokenOfKind($index, [[\T_STRING]]);
 
-            if (null === $index) {
-                return;
-            }
-
             // test if "assert" something call
             $loweredContent = strtolower($tokens[$index]->getContent());
 
@@ -87,7 +83,7 @@ abstract class AbstractPhpUnitFixer extends AbstractFixer
                 'index' => $index,
                 'loweredName' => $loweredContent,
                 'openBraceIndex' => $openBraceIndex,
-                'closeBraceIndex' => $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openBraceIndex),
+                'closeBraceIndex' => $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openBraceIndex),
             ];
         }
     }

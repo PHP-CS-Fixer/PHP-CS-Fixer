@@ -17,6 +17,9 @@ namespace PhpCsFixer\Tests\AutoReview;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\TransformerInterface;
 use PhpCsFixer\Tokenizer\Transformers;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * @author Dave van der Brugge <dmvdbrugge@gmail.com>
@@ -30,11 +33,15 @@ use PhpCsFixer\Tokenizer\Transformers;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversNothing]
+#[Group('auto-review')]
+#[Group('covers-nothing')]
 final class TransformerTest extends TestCase
 {
     /**
      * @dataProvider provideTransformerPriorityCases
      */
+    #[DataProvider('provideTransformerPriorityCases')]
     public function testTransformerPriority(TransformerInterface $first, TransformerInterface $second): void
     {
         self::assertLessThan(
@@ -110,6 +117,7 @@ final class TransformerTest extends TestCase
     /**
      * @dataProvider provideTransformerPriorityIsListedCases
      */
+    #[DataProvider('provideTransformerPriorityIsListedCases')]
     public function testTransformerPriorityIsListed(TransformerInterface $transformer): void
     {
         $priority = $transformer->getPriority();

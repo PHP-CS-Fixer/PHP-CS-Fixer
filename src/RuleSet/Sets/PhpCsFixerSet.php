@@ -91,6 +91,7 @@ final class PhpCsFixerSet extends AbstractRuleSetDefinition
                 'allow_mixed' => true, // @TODO revalidate to keep `true` or unify into `false`
                 'remove_inheritdoc' => true,
             ],
+            'no_whitespace_in_empty_array' => true,
             'operator_linebreak' => true,
             'ordered_class_elements' => true,
             'ordered_types' => [
@@ -100,9 +101,9 @@ final class PhpCsFixerSet extends AbstractRuleSetDefinition
             'php_unit_internal_class' => true,
             'php_unit_test_class_requires_covers' => true,
             'phpdoc_add_missing_param_annotation' => true,
+            'phpdoc_no_duplicate_types' => true,
             'phpdoc_no_empty_return' => true,
             'phpdoc_order_by_value' => true,
-            'phpdoc_types_no_duplicates' => true,
             'phpdoc_types_order' => true,
             'return_assignment' => true,
             'self_static_accessor' => true,

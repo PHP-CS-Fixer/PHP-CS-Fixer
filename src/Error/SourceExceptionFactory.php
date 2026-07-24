@@ -52,13 +52,13 @@ final class SourceExceptionFactory
                 $propertyReflection = $exceptionReflection->getProperty($property);
 
                 if (\PHP_VERSION_ID < 8_01_00) {
-                    $propertyReflection->setAccessible(true);
+                    $propertyReflection->setAccessible(true); // @phpstan-ignore method.deprecated
                 }
 
                 $propertyReflection->setValue($exception, $error[$property]);
 
                 if (\PHP_VERSION_ID < 8_01_00) {
-                    $propertyReflection->setAccessible(false);
+                    $propertyReflection->setAccessible(false); // @phpstan-ignore method.deprecated
                 }
             }
         } catch (\Throwable $reflectionException) {
