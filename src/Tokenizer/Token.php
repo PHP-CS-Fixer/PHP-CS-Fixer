@@ -134,6 +134,9 @@ final class Token
         }
 
         if ($other instanceof self) {
+            // We access the private properties of $other directly to save function call overhead.
+            // This is only possible because $other is of the same class as `self`.Collapse comment
+
             if ($this->isArray !== $other->isArray) {
                 return false;
             }
