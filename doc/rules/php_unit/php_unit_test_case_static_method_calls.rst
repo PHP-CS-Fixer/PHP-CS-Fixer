@@ -17,11 +17,21 @@ PHPUnit incompatibilities.
 This rule is CONFIGURABLE
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can configure this rule using the following options: ``call_type``,
-``methods``, ``target``.
+You can configure this rule using the following options: ``assertions``,
+``call_type``, ``methods``, ``target``.
 
 Configuration
 -------------
+
+``assertions``
+~~~~~~~~~~~~~~
+
+List of custom assertion method names or sets (``@Symfony``, ``@all``) to be
+recognized by the fixer.
+
+Allowed types: ``list<string>``
+
+Default value: ``[]``
 
 ``call_type``
 ~~~~~~~~~~~~~
@@ -126,6 +136,67 @@ With configuration: ``['methods' => ['assertTrue' => 'this']]``.
    +        static::assertSame(1, 2);
    +        static::assertSame(1, 2);
    +        $this->assertTrue(false);
+        }
+    }
+
+Example #4
+~~~~~~~~~~
+
+With configuration: ``['assertions' => ['assertCustomThing']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        public function testMe()
+        {
+   -        $this->assertCustomThing(1, 2);
+   +        static::assertCustomThing(1, 2);
+            $this->assertResponseIsSuccessful();
+        }
+    }
+
+Example #5
+~~~~~~~~~~
+
+With configuration: ``['assertions' => ['@Symfony']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        public function testMe()
+        {
+            $this->assertCustomThing(1, 2);
+   -        $this->assertResponseIsSuccessful();
+   +        static::assertResponseIsSuccessful();
+        }
+    }
+
+Example #6
+~~~~~~~~~~
+
+With configuration: ``['assertions' => ['@Symfony', 'assertCustomThing']]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    final class MyTest extends \PHPUnit_Framework_TestCase
+    {
+        public function testMe()
+        {
+   -        $this->assertCustomThing(1, 2);
+   -        $this->assertResponseIsSuccessful();
+   +        static::assertCustomThing(1, 2);
+   +        static::assertResponseIsSuccessful();
         }
     }
 
