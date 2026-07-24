@@ -1,0 +1,17 @@
+--TEST--
+Integration of fixers: array_singleline_multiline,whitespace_after_comma_in_array.
+--RULESET--
+{"array_singleline_multiline": {"threshold": 50}, "whitespace_after_comma_in_array": true}
+--EXPECT--
+<?php
+
+$foo = ['foo', 'bar' => 'baz', 2];
+
+--INPUT--
+<?php
+
+$foo = [
+'foo',
+'bar' => 'baz',
+2
+];
