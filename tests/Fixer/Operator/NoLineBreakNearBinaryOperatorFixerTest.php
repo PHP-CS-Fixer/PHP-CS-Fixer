@@ -418,5 +418,20 @@ final class NoLineBreakNearBinaryOperatorFixerTest extends AbstractFixerTestCase
                 ],
             ],
         ];
+
+        yield 'skip explicitly disabled operator' => [
+            '<?php
+                $foo
+                    =
+                    $bar;
+            ',
+            null,
+            [
+                'default_strategy' => NoLineBreakNearBinaryOperatorFixer::AROUND,
+                'operators' => [
+                    '=' => null,
+                ],
+            ],
+        ];
     }
 }
