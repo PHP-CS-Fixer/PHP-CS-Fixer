@@ -3,6 +3,12 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.17
+----------------------
+
+* perf: `Token::equals()` - Avoid building intermediary arrays (#9739)
+* perf: `Tokens::findSequence()` - improve looping logic (#9737)
+
 Changelog for v3.95.16
 ----------------------
 
