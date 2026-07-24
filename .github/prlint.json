@@ -1,8 +1,8 @@
 {
     "title": [
         {
-            "pattern": "^(chore|CI|depr|deps|docs|DX|feat|fix|refactor|test|UX)(\\([\\-.@:`a-zA-Z0-9]+\\))?!?:\\s{1}\\S.+\\S$",
-            "message": "PR title does not meet requirement, use Conventional Commits format using one of these categories: feat, fix, chore, CI, docs, DX, refactor, test"
+            "pattern": "^(chore|CI|depr|deps|docs|DX|feat|fix|perf|refactor|test|UX)(\\([\\-.@:`a-zA-Z0-9]+\\))?!?:\\s{1}\\S.+\\S$",
+            "message": "PR title does not meet requirement, use Conventional Commits format using one of these categories: chore, CI, depr, deps, docs, DX, feat, fix, perf, refactor, test, UX"
         },
         {
             "pattern": "((?<=`)@\\S*`)|(^[^@]*$)",
