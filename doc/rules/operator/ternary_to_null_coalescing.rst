@@ -16,6 +16,8 @@ Example #1
    +++ New
     <?php
    -$sample = isset($a) ? $a : $b;
+   -$sample = (isset($a)) ? $a : $b;
+   +$sample = $a ?? $b;
    +$sample = $a ?? $b;
 
 Rule sets
