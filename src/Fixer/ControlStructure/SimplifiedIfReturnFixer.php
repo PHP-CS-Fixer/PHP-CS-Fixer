@@ -30,40 +30,6 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class SimplifiedIfReturnFixer extends AbstractFixer
 {
-    /**
-     * @var list<array{isNegative: bool, sequence: non-empty-list<_PhpTokenPrototypePartial>}>
-     */
-    private array $sequences = [
-        [
-            'isNegative' => false,
-            'sequence' => [
-                '{', [\T_RETURN], [\T_STRING, 'true'], ';', '}',
-                [\T_RETURN], [\T_STRING, 'false'], ';',
-            ],
-        ],
-        [
-            'isNegative' => true,
-            'sequence' => [
-                '{', [\T_RETURN], [\T_STRING, 'false'], ';', '}',
-                [\T_RETURN], [\T_STRING, 'true'], ';',
-            ],
-        ],
-        [
-            'isNegative' => false,
-            'sequence' => [
-                [\T_RETURN], [\T_STRING, 'true'], ';',
-                [\T_RETURN], [\T_STRING, 'false'], ';',
-            ],
-        ],
-        [
-            'isNegative' => true,
-            'sequence' => [
-                [\T_RETURN], [\T_STRING, 'false'], ';',
-                [\T_RETURN], [\T_STRING, 'true'], ';',
-            ],
-        ],
-    ];
-
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -93,7 +59,9 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
         $slices = [];
 
         for ($ifIndex = $tokens->count() - 1; 0 <= $ifIndex; --$ifIndex) {
-            if (!$tokens[$ifIndex]->isGivenKind([\T_IF, \T_ELSEIF])) {
+            $id = $tokens[$ifIndex]->getId();
+
+            if (\T_IF !== $id && \T_ELSEIF !== $id) {
                 continue;
             }
 
@@ -105,45 +73,127 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
             $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $startParenthesisIndex);
             $firstCandidateIndex = $tokens->getNextMeaningfulToken($endParenthesisIndex);
 
-            foreach ($this->sequences as $sequenceSpec) {
-                $sequenceFound = $tokens->findSequence($sequenceSpec['sequence'], $firstCandidateIndex);
+            $match = $this->matchReturnSequence($tokens, $firstCandidateIndex);
 
-                if (null === $sequenceFound) {
-                    continue;
-                }
-
-                $firstSequenceIndex = array_key_first($sequenceFound);
-
-                if ($firstSequenceIndex !== $firstCandidateIndex) {
-                    continue;
-                }
-
-                $indicesToClear = array_keys($sequenceFound);
-                array_pop($indicesToClear); // Preserve last semicolon
-                rsort($indicesToClear);
-
-                foreach ($indicesToClear as $index) {
-                    $tokens->clearTokenAndMergeSurroundingWhitespace($index);
-                }
-
-                $newTokens = [
-                    new Token([\T_RETURN, 'return']),
-                    new Token([\T_WHITESPACE, ' ']),
-                ];
-
-                if ($sequenceSpec['isNegative']) {
-                    $newTokens[] = new Token('!');
-                } else {
-                    $newTokens[] = new Token([\T_BOOL_CAST, '(bool)']);
-                }
-
-                $slices[$ifIndex] = $newTokens;
-                $tokens->clearAt($ifIndex);
+            if (null === $match) {
+                continue;
             }
+
+            if ($match['indices'][0] !== $firstCandidateIndex) {
+                continue;
+            }
+
+            $indicesToClear = $match['indices'];
+            array_pop($indicesToClear); // Preserve last semicolon
+            rsort($indicesToClear);
+
+            foreach ($indicesToClear as $index) {
+                $tokens->clearTokenAndMergeSurroundingWhitespace($index);
+            }
+
+            $newTokens = [
+                new Token([\T_RETURN, 'return']),
+                new Token([\T_WHITESPACE, ' ']),
+            ];
+
+            $newTokens[] = $match['isNegative']
+                ? new Token('!')
+                : new Token([\T_BOOL_CAST, '(bool)']);
+
+            $slices[$ifIndex] = $newTokens;
+            $tokens->clearAt($ifIndex);
         }
 
         if ([] !== $slices) {
             $tokens->insertSlices($slices);
         }
+    }
+
+    /**
+     * @return null|array{isNegative: bool, indices: list{0: int, 1: int, 2: int, 3: int, 4: int, 5: int, 6?: int, 7?: int}}
+     */
+    private function matchReturnSequence(Tokens $tokens, int $start): ?array
+    {
+        $count = $tokens->count();
+
+        for ($return = $start; $return < $count; ++$return) {
+            // much faster to check the token type directly than via Token::isGivenKind().
+            if (\T_RETURN !== $tokens[$return]->getId()) {
+                continue;
+            }
+
+            $bool1 = $tokens->getNextMeaningfulToken($return);
+            if (null === $bool1 || \T_STRING !== $tokens[$bool1]->getId()) {
+                continue;
+            }
+
+            $value1 = $tokens[$bool1]->getContent();
+            if ('true' !== $value1 && 'false' !== $value1) {
+                continue;
+            }
+
+            $semi1 = $tokens->getNextMeaningfulToken($bool1);
+            if (null === $semi1 || ';' !== $tokens[$semi1]->getContent()) {
+                continue;
+            }
+
+            $indices = [];
+
+            $prev = $tokens->getPrevMeaningfulToken($return);
+            if (null !== $prev && $tokens[$prev]->equals('{')) {
+                $indices[] = $prev;
+            }
+
+            $indices[] = $return;
+            $indices[] = $bool1;
+            $indices[] = $semi1;
+
+            $next = $tokens->getNextMeaningfulToken($semi1);
+            if (null === $next) {
+                continue;
+            }
+
+            if ($tokens[$next]->equals('}')) {
+                $indices[] = $next;
+
+                $next = $tokens->getNextMeaningfulToken($next);
+                if (null === $next) {
+                    continue;
+                }
+            }
+
+            if (\T_RETURN !== $tokens[$next]->getId()) {
+                continue;
+            }
+
+            $indices[] = $next;
+
+            $bool2 = $tokens->getNextMeaningfulToken($next);
+            if (null === $bool2 || \T_STRING !== $tokens[$bool2]->getId()) {
+                continue;
+            }
+
+            $value2 = $tokens[$bool2]->getContent();
+
+            if (('true' !== $value2 && 'false' !== $value2) || $value1 === $value2) {
+                continue;
+            }
+
+            $indices[] = $bool2;
+
+            $semi2 = $tokens->getNextMeaningfulToken($bool2);
+            if (null === $semi2 || ';' !== $tokens[$semi2]->getContent()) {
+                continue;
+            }
+
+            $indices[] = $semi2;
+
+            return [
+                'isNegative' => 'false' === $value1,
+                'indices' => $indices,
+            ];
+        }
+
+        return null;
     }
 }
