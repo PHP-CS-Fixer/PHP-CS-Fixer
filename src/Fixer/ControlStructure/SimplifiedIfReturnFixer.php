@@ -62,6 +62,7 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
         for ($ifIndex = $tokens->count() - 1; 0 <= $ifIndex; --$ifIndex) {
             $id = $tokens[$ifIndex]->getId();
 
+            // much faster to check the token type directly than via Token::isGivenKind().
             if (\T_IF !== $id && \T_ELSEIF !== $id) {
                 continue;
             }
@@ -118,8 +119,15 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
         $count = $tokens->count();
 
         for ($return = $start; $return < $count; ++$return) {
-            // much faster to check the token type directly than via Token::isGivenKind().
-            if (\T_RETURN !== $tokens[$return]->getId()) {
+            $id = $tokens[$return]->getId();
+
+            // Avoid scanning past another conditional because a valid
+            // continuation of the original pattern is no longer possible.
+            if (\T_IF === $id || \T_ELSEIF === $id) {
+                break;
+            }
+
+            if (\T_RETURN !== $id) {
                 continue;
             }
 
