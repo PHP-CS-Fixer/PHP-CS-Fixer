@@ -1,7 +1,7 @@
 --TEST--
-Integration of fixers: php_unit_data_provider_return_type,return_type_declaration.
+Integration of fixers: php_unit_data_provider_return_type,colon_space.
 --RULESET--
-{"php_unit_data_provider_return_type": true, "return_type_declaration": {"space_before": "one"}}
+{"php_unit_data_provider_return_type": true, "colon_space": {"space_before_return_type": "one"}}
 --EXPECT--
 <?php
 class FooTest extends TestCase {

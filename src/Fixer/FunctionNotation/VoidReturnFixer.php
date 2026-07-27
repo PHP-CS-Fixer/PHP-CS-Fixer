@@ -97,7 +97,7 @@ final class VoidReturnFixer extends AbstractFixer implements ConfigurableFixerIn
     /**
      * {@inheritdoc}
      *
-     * Must run before PhpdocNoEmptyReturnFixer, ReturnTypeDeclarationFixer.
+     * Must run before ColonSpaceFixer, PhpdocNoEmptyReturnFixer.
      * Must run after NoSuperfluousPhpdocTagsFixer, SimplifiedNullReturnFixer.
      */
     public function getPriority(): int
