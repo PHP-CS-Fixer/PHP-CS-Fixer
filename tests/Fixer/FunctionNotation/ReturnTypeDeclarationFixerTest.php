@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\FunctionNotation;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FunctionNotation\ReturnTypeDeclarationFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -37,6 +38,17 @@ use PHPUnit\Framework\Attributes\RequiresPhp;
 #[CoversClass(ReturnTypeDeclarationFixer::class)]
 final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
 {
+    public function testFunctionIsDeprecatedProperly(): void
+    {
+        $fixer = $this->fixer;
+
+        self::assertInstanceOf(DeprecatedFixerInterface::class, $fixer);
+        self::assertSame(
+            ['colon_space'],
+            $fixer->getSuccessorsNames(),
+        );
+    }
+
     public function testInvalidConfiguration(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
