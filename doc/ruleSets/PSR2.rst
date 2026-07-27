@@ -14,6 +14,7 @@ Rules
   ``['allow_single_line_anonymous_functions' => false]``
 
 - `class_definition <./../rules/class_notation/class_definition.rst>`_
+- `colon_space <./../rules/whitespace/colon_space.rst>`_
 - `constant_case <./../rules/casing/constant_case.rst>`_
 - `control_structure_braces <./../rules/control_structure/control_structure_braces.rst>`_
 - `control_structure_continuation_position <./../rules/control_structure/control_structure_continuation_position.rst>`_
@@ -54,4 +55,3 @@ Rules
 - `spaces_inside_parentheses <./../rules/whitespace/spaces_inside_parentheses.rst>`_
 - `statement_indentation <./../rules/whitespace/statement_indentation.rst>`_
 - `switch_case_semicolon_to_colon <./../rules/control_structure/switch_case_semicolon_to_colon.rst>`_
-- `switch_case_space <./../rules/control_structure/switch_case_space.rst>`_
