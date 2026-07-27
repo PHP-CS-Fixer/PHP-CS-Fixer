@@ -12,11 +12,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Console/ConfigurationResolver.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Parameter #1 $diffs of static method PhpCsFixer\\Console\\Report\\FixReport\\GitlabReporter::getLines() expects list<SebastianBergmann\\Diff\\Diff>, array<SebastianBergmann\\Diff\\Diff> given.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Console/Report/FixReport/GitlabReporter.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Parameter #1 $slices of method PhpCsFixer\\Tokenizer\\Tokens::insertSlices() expects array<int, list<PhpCsFixer\\Tokenizer\\Token>|PhpCsFixer\\Tokenizer\\Token|PhpCsFixer\\Tokenizer\\Tokens>, array<\'\'|int, array{PhpCsFixer\\Tokenizer\\Token, PhpCsFixer\\Tokenizer\\Token}|PhpCsFixer\\Tokenizer\\Token> given.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ArrayNotation/YieldFromArrayToYieldsFixer.php',
