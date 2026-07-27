@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\ControlStructure;
 
 use PhpCsFixer\Fixer\ControlStructure\SwitchCaseSpaceFixer;
+use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -34,6 +35,17 @@ use PHPUnit\Framework\Attributes\RequiresPhp;
 #[CoversClass(SwitchCaseSpaceFixer::class)]
 final class SwitchCaseSpaceFixerTest extends AbstractFixerTestCase
 {
+    public function testFunctionIsDeprecatedProperly(): void
+    {
+        $fixer = $this->fixer;
+
+        self::assertInstanceOf(DeprecatedFixerInterface::class, $fixer);
+        self::assertSame(
+            ['colon_space'],
+            $fixer->getSuccessorsNames(),
+        );
+    }
+
     /**
      * @dataProvider provideFixCases
      */
