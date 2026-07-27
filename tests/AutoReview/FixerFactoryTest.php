@@ -304,6 +304,7 @@ final class FixerFactoryTest extends TestCase
     {
         $knownIssues = [ // should only shrink
             'no_trailing_comma_in_singleline_function_call' => true, // had prio case but no longer, left prio the same for BC reasons, rule has been deprecated
+            'return_type_declaration' => true, // had prio case but no longer, left prio the same for BC reasons, rule has been deprecated in favour of `colon_space`
             'simple_to_complex_string_variable' => true, // had prio case but no longer, left prio the same for BC reasons
             'visibility_required' => true, // deprecated, legacy name of `ModifierKeywordsFixer`
         ];
@@ -788,8 +789,8 @@ final class FixerFactoryTest extends TestCase
                 'no_blank_lines_after_class_opening',
             ],
             'php_unit_data_provider_return_type' => [
+                'colon_space',
                 'return_to_yield_from',
-                'return_type_declaration',
             ],
             'php_unit_dedicate_assert' => [
                 'no_unused_imports',
@@ -895,10 +896,10 @@ final class FixerFactoryTest extends TestCase
                 'no_superfluous_phpdoc_tags',
             ],
             'phpdoc_to_return_type' => [
+                'colon_space',
                 'fully_qualified_strict_types',
                 'no_superfluous_phpdoc_tags',
                 'return_to_yield_from',
-                'return_type_declaration',
             ],
             'phpdoc_types' => [
                 'phpdoc_to_return_type',
@@ -1019,8 +1020,8 @@ final class FixerFactoryTest extends TestCase
                 'function_declaration',
             ],
             'void_return' => [
+                'colon_space',
                 'phpdoc_no_empty_return',
-                'return_type_declaration',
             ],
             'yield_from_array_to_yields' => [
                 'blank_line_before_statement',

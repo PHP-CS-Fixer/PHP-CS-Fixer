@@ -1,0 +1,15 @@
+--TEST--
+Integration of fixers: phpdoc_to_return_type,colon_space.
+--RULESET--
+{"colon_space": {"space_before_return_type": "one"}, "phpdoc_to_return_type": true}
+--EXPECT--
+<?php
+/** @return Bar */
+function my_foo() : Bar
+{}
+
+--INPUT--
+<?php
+/** @return Bar */
+function my_foo()
+{}
