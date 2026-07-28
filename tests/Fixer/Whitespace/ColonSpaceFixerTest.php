@@ -207,6 +207,15 @@ string {}',
         yield [
             '<?php
                 switch ($a) {
+                    case 1;
+                    default;
+                }
+                ',
+        ];
+
+        yield [
+            '<?php
+                switch ($a) {
                     case "prod":
                         break;
                 }
@@ -645,6 +654,20 @@ string {}',
                 foo(
                     bar   :    \'baz\',
                     qux /* corge */ :3,
+                );
+            ',
+        ];
+
+        yield [
+            '<?php
+                foo(
+                    bar: \'baz\',
+                );
+            ',
+            '<?php
+                foo(
+                    bar :
+                        \'baz\',
                 );
             ',
         ];
