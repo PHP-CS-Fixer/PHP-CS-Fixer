@@ -139,7 +139,6 @@ final class GeneralAttributeRemoveFixerTest extends AbstractFixerTestCase
                 use A\B\Bar as BarAlias;
                 use A\B as AB;
 
-                #[\A\B\Quux(prop1: [1, 2, 4], prop2: true, prop3: \'foo bar\')]
                 function f() {}
             }
 
