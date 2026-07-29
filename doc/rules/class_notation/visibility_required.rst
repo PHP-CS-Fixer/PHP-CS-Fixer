@@ -21,7 +21,7 @@ This rule is CONFIGURABLE
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can configure this rule using the following options: ``elements``,
-``omit_public_visibility_set_visibility_present``.
+``general_visibility_when_set_visibility_present``.
 
 Configuration
 -------------
@@ -35,15 +35,16 @@ Allowed values: a subset of ``['const', 'method', 'property']``
 
 Default value: ``['const', 'method', 'property']``
 
-``omit_public_visibility_set_visibility_present``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``general_visibility_when_set_visibility_present``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Whether the general public visibility modifier should be omitted, if a
-set-visibility is specified.
+How to handle the general visibility modifier of a property that also declares a
+set-visibility modifier: ``require`` to always declare it, ``omit`` to drop the
+redundant ``public``, ``keep`` to leave it as it is.
 
-Allowed types: ``bool``
+Allowed values: ``'keep'``, ``'omit'`` and ``'require'``
 
-Default value: ``false``
+Default value: ``'require'``
 
 Examples
 --------
@@ -165,7 +166,7 @@ Example #3
 Example #4
 ~~~~~~~~~~
 
-With configuration: ``['omit_public_visibility_set_visibility_present' => true]``.
+With configuration: ``['general_visibility_when_set_visibility_present' => 'omit']``.
 
 .. code-block:: diff
 
