@@ -102,11 +102,11 @@ final class FinalInternalClassFixer extends AbstractFixer implements Configurabl
                     [
                         'include' => ['@Custom'],
                         'exclude' => ['@not-fix'],
-                    ]
+                    ],
                 ),
             ],
             null,
-            'Changing classes to `final` might cause code execution to break.'
+            'Changing classes to `final` might cause code execution to break.',
         );
     }
 

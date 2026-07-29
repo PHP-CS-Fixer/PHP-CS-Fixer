@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Cache;
 
+use PhpCsFixer\Config\NullRuleCustomisationPolicy;
 use PhpCsFixer\Utils;
 
 /**
@@ -49,11 +50,7 @@ final class Cache implements CacheInterface
 
     public function get(string $file): ?string
     {
-        if (!$this->has($file)) {
-            return null;
-        }
-
-        return $this->hashes[$file];
+        return $this->hashes[$file] ?? null;
     }
 
     public function set(string $file, string $hash): void
@@ -76,14 +73,15 @@ final class Cache implements CacheInterface
                     'indent' => $this->getSignature()->getIndent(),
                     'lineEnding' => $this->getSignature()->getLineEnding(),
                     'rules' => $this->getSignature()->getRules(),
+                    'ruleCustomisationPolicyVersion' => $this->getSignature()->getRuleCustomisationPolicyVersion(),
                     'hashes' => $this->hashes,
                 ],
-                \JSON_THROW_ON_ERROR
+                \JSON_THROW_ON_ERROR,
             );
         } catch (\JsonException $e) {
             throw new \UnexpectedValueException(\sprintf(
                 'Cannot encode cache signature to JSON, error: "%s". If you have non-UTF8 chars in your signature, like in license for `header_comment`, consider enabling `ext-mbstring` or install `symfony/polyfill-mbstring`.',
-                $e->getMessage()
+                $e->getMessage(),
             ));
         }
     }
@@ -99,7 +97,7 @@ final class Cache implements CacheInterface
             throw new \InvalidArgumentException(\sprintf(
                 'Value needs to be a valid JSON string, got "%s", error: "%s".',
                 $json,
-                $e->getMessage()
+                $e->getMessage(),
             ));
         }
 
@@ -109,6 +107,7 @@ final class Cache implements CacheInterface
             'indent',
             'lineEnding',
             'rules',
+            // 'ruleCustomisationPolicyVersion', // @TODO v4: require me
             'hashes',
         ];
 
@@ -117,7 +116,7 @@ final class Cache implements CacheInterface
         if (\count($missingKeys) > 0) {
             throw new \InvalidArgumentException(\sprintf(
                 'JSON data is missing keys %s',
-                Utils::naturalLanguageJoin(array_keys($missingKeys))
+                Utils::naturalLanguageJoin(array_keys($missingKeys)),
             ));
         }
 
@@ -126,7 +125,8 @@ final class Cache implements CacheInterface
             $data['version'],
             $data['indent'],
             $data['lineEnding'],
-            $data['rules']
+            $data['rules'],
+            $data['ruleCustomisationPolicyVersion'] ?? NullRuleCustomisationPolicy::VERSION_FOR_CACHE,
         );
 
         $cache = new self($signature);

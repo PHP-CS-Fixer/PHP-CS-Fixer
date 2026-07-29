@@ -51,9 +51,9 @@ final class ClassKeywordRemoveFixer extends AbstractFixer implements DeprecatedF
 
                         $className = Baz::class;
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 
@@ -113,7 +113,7 @@ final class ClassKeywordRemoveFixer extends AbstractFixer implements DeprecatedF
                 $groupEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_GROUP_IMPORT_BRACE, $index);
                 $groupImports = array_map(
                     static fn (string $import): string => trim($import),
-                    explode(',', $tokens->generatePartialCode($index + 1, $groupEndIndex - 1))
+                    explode(',', $tokens->generatePartialCode($index + 1, $groupEndIndex - 1)),
                 );
                 foreach ($groupImports as $groupImport) {
                     $groupImportParts = array_map(static fn (string $import): string => trim($import), explode(' as ', $groupImport));
@@ -174,7 +174,7 @@ final class ClassKeywordRemoveFixer extends AbstractFixer implements DeprecatedF
             $tokens[$classBeginIndex]->isGivenKind(\T_NS_SEPARATOR)
                 ? $tokens->getNextMeaningfulToken($classBeginIndex)
                 : $classBeginIndex,
-            $classEndIndex
+            $classEndIndex,
         );
 
         $classImport = false;
@@ -231,7 +231,7 @@ final class ClassKeywordRemoveFixer extends AbstractFixer implements DeprecatedF
 
         return implode('\\', array_merge(
             \array_slice($classImportArray, 0, $classImportLength - $classStringLength + 1),
-            $classStringArray
+            $classStringArray,
         ));
     }
 }

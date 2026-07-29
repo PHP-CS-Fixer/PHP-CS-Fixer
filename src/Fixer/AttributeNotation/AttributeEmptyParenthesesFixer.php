@@ -55,9 +55,9 @@ final class AttributeEmptyParenthesesFixer extends AbstractFixer implements Conf
                 new CodeSample("<?php\n\n#[Foo()]\nclass Sample1 {}\n\n#[Bar(), Baz()]\nclass Sample2 {}\n"),
                 new CodeSample(
                     "<?php\n\n#[Foo]\nclass Sample1 {}\n\n#[Bar, Baz]\nclass Sample2 {}\n",
-                    ['use_parentheses' => true]
+                    ['use_parentheses' => true],
                 ),
-            ]
+            ],
         );
     }
 
@@ -96,7 +96,7 @@ final class AttributeEmptyParenthesesFixer extends AbstractFixer implements Conf
 
                 // Find closing parentheses, we need to do this in case there's a comma inside the parentheses
                 if ($tokens[$nextIndex]->equals('(')) {
-                    $nextIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextIndex);
+                    $nextIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $nextIndex);
                     $nextIndex = $tokens->getNextTokenOfKind($nextIndex, [',', [CT::T_ATTRIBUTE_CLOSE]]);
                 }
 
@@ -116,7 +116,7 @@ final class AttributeEmptyParenthesesFixer extends AbstractFixer implements Conf
 
         $tokens->insertAt(
             $tokens->getPrevMeaningfulToken($index) + 1,
-            [new Token('('), new Token(')')]
+            [new Token('('), new Token(')')],
         );
     }
 

@@ -18,3 +18,4 @@ Rules
 -----
 
 - `@PHP8x4Migration:risky <./PHP8x4MigrationRisky.rst>`_
+- `modern_serialization_methods <./../rules/class_notation/modern_serialization_methods.rst>`_

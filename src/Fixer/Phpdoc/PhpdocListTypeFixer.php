@@ -49,18 +49,18 @@ final class PhpdocListTypeFixer extends AbstractPhpdocTypesFixer
                          * @param array<array<string>> $y
                          */
 
-                        PHP
+                        PHP,
                 ),
             ],
             null,
-            'Risky when `array` key should be present, but is missing.'
+            'Risky when `array` key should be present, but is missing.',
         );
     }
 
     /**
      * {@inheritdoc}
      *
-     * Must run before PhpdocAlignFixer, PhpdocTypesOrderFixer.
+     * Must run before PhpdocAlignFixer, PhpdocNoDuplicateTypesFixer, PhpdocTypesOrderFixer.
      * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocArrayTypeFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority(): int

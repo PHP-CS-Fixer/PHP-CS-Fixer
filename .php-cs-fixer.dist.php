@@ -16,7 +16,6 @@ use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 use PhpCsFixer\Fixer\Internal\ConfigurableFixerTemplateFixer;
 use PhpCsFixer\RuleSet\Sets\Internal\InternalRiskySet;
-use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
 if (
     filter_var(getenv('PHP_CS_FIXER_TESTS_SYSTEM_UNDER_TEST'), \FILTER_VALIDATE_BOOL)
@@ -41,23 +40,25 @@ $fileHeaderParts = [
 ];
 
 return (new Config())
-    ->setParallelConfig(ParallelConfigFactory::detect()) // @TODO 4.0 no need to call this manually
     ->setUnsupportedPhpVersionAllowed(true)
     ->setRiskyAllowed(true)
-    ->registerCustomRuleSets(class_exists(InternalRiskySet::class) ? [
+    ->registerCustomRuleSets([
         new InternalRiskySet(), // available only on repo level, not exposed to external installations or phar build
-    ] : [])
-    ->registerCustomFixers(class_exists(ConfigurableFixerTemplateFixer::class) ? [
-        new ConfigurableFixerTemplateFixer(),  // @TODO shall be registered while registering the Set with it
-    ] : [])
+    ])
+    ->registerCustomFixers([
+        new ConfigurableFixerTemplateFixer(), // @TODO shall be registered while registering the Set with it
+    ])
     ->setRules([
         '@auto' => true,
         '@auto:risky' => true,
         '@PhpCsFixer' => true,
         '@PhpCsFixer:risky' => true,
-    ] + (class_exists(InternalRiskySet::class) ? [
         '@self/internal' => true, // internal rule set, shall not be used outside of main repo
-    ] : []) + [
+        'final_internal_class' => [
+            'include' => [],
+            'exclude' => ['final', 'api-extendable'],
+            'consider_absent_docblock_as_internal_class' => true,
+        ],
         'header_comment' => [
             'header' => implode('', $fileHeaderParts),
             'validator' => implode('', [
@@ -95,13 +96,25 @@ return (new Config())
         'phpdoc_tag_no_named_arguments' => [
             'description' => 'Parameter names are not covered by the backward compatibility promise.',
         ],
+        'php_unit_attributes' => [
+            'keep_annotations' => true, // @TODO v4: remove me and related annotations from tests
+        ],
+        'trailing_comma_in_multiline' => [
+            'after_heredoc' => true,
+            'elements' => [
+                'arguments',
+                'array_destructuring',
+                'arrays',
+                // 'match', // @TODO PHP 8.0: enable me
+                // 'parameters', // @TODO PHP 8.0: enable me
+            ],
+        ],
     ])
     ->setFinder(
         (new Finder())
-            ->ignoreDotFiles(false)
-            ->ignoreVCSIgnored(true)
-            ->exclude(['dev-tools/phpstan', 'tests/Fixtures'])
             ->in(__DIR__)
             ->append([__DIR__.'/php-cs-fixer'])
+            ->exclude(['dev-tools/phpstan', 'tests/Fixtures'])
+            ->ignoreDotFiles(false), // @TODO v4 line no longer needed
     )
 ;

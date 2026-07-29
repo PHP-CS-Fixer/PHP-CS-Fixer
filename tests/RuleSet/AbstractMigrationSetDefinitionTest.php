@@ -16,6 +16,7 @@ namespace PhpCsFixer\Tests\RuleSet;
 
 use PhpCsFixer\RuleSet\AbstractMigrationSetDefinition;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
@@ -24,6 +25,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AbstractMigrationSetDefinition::class)]
 final class AbstractMigrationSetDefinitionTest extends TestCase
 {
     public function testGetDescriptionForPhpMigrationSet(): void
@@ -68,7 +70,7 @@ final class AbstractMigrationSetDefinitionTest extends TestCase
         $set = new class extends AbstractMigrationSetDefinition {
             public function getName(): string
             {
-                return '@PHPUnit30Migration';
+                return '@PHPUnit3x0Migration';
             }
 
             public function getRules(): array

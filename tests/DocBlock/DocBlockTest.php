@@ -16,6 +16,8 @@ namespace PhpCsFixer\Tests\DocBlock;
 
 use PhpCsFixer\DocBlock\DocBlock;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Graham Campbell <hello@gjcampbell.co.uk>
@@ -26,6 +28,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(DocBlock::class)]
 final class DocBlockTest extends TestCase
 {
     /**
@@ -156,6 +159,7 @@ final class DocBlockTest extends TestCase
     /**
      * @dataProvider provideMakeMultiLineCases
      */
+    #[DataProvider('provideMakeMultiLineCases')]
     public function testMakeMultiLine(string $inputDocBlock, ?string $outputDocBlock = null, string $indent = '', string $newLine = "\n"): void
     {
         $doc = new DocBlock($inputDocBlock);
@@ -207,6 +211,7 @@ final class DocBlockTest extends TestCase
     /**
      * @dataProvider provideMakeSingleLineCases
      */
+    #[DataProvider('provideMakeSingleLineCases')]
     public function testMakeSingleLine(string $inputDocBlock, ?string $outputDocBlock = null): void
     {
         $doc = new DocBlock($inputDocBlock);

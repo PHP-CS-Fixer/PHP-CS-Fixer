@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\FixerDefinition;
 
 /**
- * @author Andreas Moeller <am@localheinz.com>
+ * @author Andreas Möller <am@localheinz.com>
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */

@@ -34,6 +34,8 @@ Allowed values: ``'always_first'``, ``'always_last'`` and ``'none'``
 
 Default value: ``'always_first'``
 
+Default value (future-mode): ``'always_last'``
+
 ``sort_algorithm``
 ~~~~~~~~~~~~~~~~~~
 

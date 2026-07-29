@@ -42,7 +42,7 @@ final class ProcessFactory
         return new Process(
             implode(' ', $commandArgs),
             $loop,
-            $runnerConfig->getParallelConfig()->getProcessTimeout()
+            $runnerConfig->getParallelConfig()->getProcessTimeout(),
         );
     }
 

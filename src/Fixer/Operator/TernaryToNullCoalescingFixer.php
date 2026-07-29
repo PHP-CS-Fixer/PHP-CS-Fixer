@@ -34,9 +34,9 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
             'Use `null` coalescing operator `??` where possible.',
             [
                 new CodeSample(
-                    "<?php\n\$sample = isset(\$a) ? \$a : \$b;\n"
+                    "<?php\n\$sample = isset(\$a) ? \$a : \$b;\n",
                 ),
-            ]
+            ],
         );
     }
 
@@ -76,7 +76,7 @@ final class TernaryToNullCoalescingFixer extends AbstractFixer
         }
 
         $startBraceIndex = $tokens->getNextTokenOfKind($index, ['(']);
-        $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startBraceIndex);
+        $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $startBraceIndex);
 
         $ternaryQuestionMarkIndex = $tokens->getNextMeaningfulToken($endBraceIndex);
 

@@ -19,6 +19,10 @@ use Keradus\CliExecutor\CommandExecutor;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\DescribeCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Large;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -35,6 +39,10 @@ use Symfony\Component\Console\Tester\CommandTester;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversNothing]
+#[Group('covers-nothing')]
+#[Group('legacy')]
+#[Large]
 final class PharTest extends AbstractSmokeTestCase
 {
     private static string $pharCwd;
@@ -49,7 +57,7 @@ final class PharTest extends AbstractSmokeTestCase
         self::$pharName = 'php-cs-fixer.phar';
 
         if (!file_exists(self::$pharCwd.'/'.self::$pharName)) {
-            self::fail('No phar file available.');
+            throw new \RuntimeException('No phar file available.');
         }
     }
 
@@ -60,7 +68,7 @@ final class PharTest extends AbstractSmokeTestCase
 
         self::assertMatchesRegularExpression(
             \sprintf("/^PHP CS Fixer (?<version>%s)(?<git_sha> \\([a-z0-9]+\\))?(?<codename> %s){%d}(?<by> by .*)\nPHP runtime: (?<php_version>\\d\\.\\d+\\..*)$/", Application::VERSION, Application::VERSION_CODENAME, $shouldExpectCodename),
-            self::executePharCommand('--version')->getOutput()
+            self::executePharCommand('--version')->getOutput(),
         );
     }
 
@@ -80,7 +88,7 @@ final class PharTest extends AbstractSmokeTestCase
 
         self::assertSame(
             $commandTester->getDisplay(),
-            self::executePharCommand('describe header_comment --config=-')->getOutput()
+            self::executePharCommand('describe header_comment --config=-')->getOutput(),
         );
     }
 
@@ -92,7 +100,7 @@ final class PharTest extends AbstractSmokeTestCase
         self::assertSame(0, $command->getCode());
         self::assertMatchesRegularExpression(
             '/Running analysis on 1 core sequentially/',
-            $command->getOutput()
+            $command->getOutput(),
         );
     }
 
@@ -103,7 +111,7 @@ final class PharTest extends AbstractSmokeTestCase
         self::assertSame(0, $command->getCode());
         self::assertMatchesRegularExpression(
             '/Running analysis on [0-9]+ cores with [0-9]+ files per process/',
-            $command->getOutput()
+            $command->getOutput(),
         );
     }
 
@@ -111,13 +119,14 @@ final class PharTest extends AbstractSmokeTestCase
     {
         self::assertSame(
             0,
-            self::executePharCommand('fix --help')->getCode()
+            self::executePharCommand('fix --help')->getCode(),
         );
     }
 
     /**
      * @dataProvider provideReportCases
      */
+    #[DataProvider('provideReportCases')]
     public function testReport(string $usingCache): void
     {
         try {

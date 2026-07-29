@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\WordMatcher;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -25,6 +27,7 @@ use PhpCsFixer\WordMatcher;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(WordMatcher::class)]
 final class WordMatcherTest extends TestCase
 {
     /**
@@ -32,6 +35,7 @@ final class WordMatcherTest extends TestCase
      *
      * @dataProvider provideMatchCases
      */
+    #[DataProvider('provideMatchCases')]
     public function testMatch(?string $expected, string $needle, array $candidates): void
     {
         $matcher = new WordMatcher($candidates);

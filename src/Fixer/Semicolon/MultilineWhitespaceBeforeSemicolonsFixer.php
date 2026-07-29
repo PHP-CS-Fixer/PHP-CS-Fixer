@@ -71,7 +71,7 @@ final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imple
                                 ;
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -81,9 +81,9 @@ final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imple
                             ->method(3);
 
                         PHP,
-                    ['strategy' => self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS]
+                    ['strategy' => self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS],
                 ),
-            ]
+            ],
         );
     }
 
@@ -108,7 +108,7 @@ final class MultilineWhitespaceBeforeSemicolonsFixer extends AbstractFixer imple
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder(
                 'strategy',
-                'Forbid multi-line whitespace or move the semicolon to the new line for chained calls.'
+                'Forbid multi-line whitespace or move the semicolon to the new line for chained calls.',
             ))
                 ->setAllowedValues([self::STRATEGY_NO_MULTI_LINE, self::STRATEGY_NEW_LINE_FOR_CHAINED_CALLS])
                 ->setDefault(self::STRATEGY_NO_MULTI_LINE)

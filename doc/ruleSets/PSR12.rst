@@ -17,7 +17,7 @@ Rules
 - `blank_lines_before_namespace <./../rules/namespace_notation/blank_lines_before_namespace.rst>`_
 - `braces_position <./../rules/basic/braces_position.rst>`_ with config:
 
-  ``['allow_single_line_empty_anonymous_classes' => true]``
+  ``['allow_single_line_anonymous_functions' => false, 'allow_single_line_empty_anonymous_classes' => true]``
 
 - `class_definition <./../rules/class_notation/class_definition.rst>`_ with config:
 

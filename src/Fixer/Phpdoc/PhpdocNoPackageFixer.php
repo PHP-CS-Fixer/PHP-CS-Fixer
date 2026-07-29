@@ -44,9 +44,9 @@ final class PhpdocNoPackageFixer extends AbstractProxyFixer
                         {
                         }
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

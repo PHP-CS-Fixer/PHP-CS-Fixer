@@ -33,7 +33,7 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
             'String tests for empty must be done against `\'\'`, not with `strlen`.',
             [new CodeSample("<?php \$a = 0 === strlen(\$b) || \\STRLEN(\$c) < 1;\n")],
             null,
-            'Risky when `strlen` is overridden, when called using a `stringable` object, also no longer triggers warning when called using non-string(able).'
+            'Risky when `strlen` is overridden, when called using a `stringable` object, also no longer triggers warning when called using non-string(able).',
         );
     }
 
@@ -300,7 +300,10 @@ final class StringLengthToEmptyFixer extends AbstractFunctionReferenceFixer
         return false;
     }
 
-    private function findStrLengthCalls(Tokens $tokens): \Generator
+    /**
+     * @return iterable<array{int, int, int}>
+     */
+    private function findStrLengthCalls(Tokens $tokens): iterable
     {
         $candidates = [];
         $count = \count($tokens);

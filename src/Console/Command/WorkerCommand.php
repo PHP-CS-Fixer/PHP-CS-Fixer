@@ -51,12 +51,6 @@ final class WorkerCommand extends Command
     /** @var string Prefix used before JSON-encoded error printed in the worker's process */
     public const ERROR_PREFIX = 'WORKER_ERROR::';
 
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultName = 'worker';
-
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultDescription = 'Internal command for running fixers in parallel';
-
     private ToolInfoInterface $toolInfo;
     private ConfigurationResolver $configurationResolver;
     private ErrorsManager $errorsManager;
@@ -67,7 +61,8 @@ final class WorkerCommand extends Command
 
     public function __construct(ToolInfoInterface $toolInfo)
     {
-        parent::__construct();
+        parent::__construct('worker');
+        $this->setDescription('Internal command for running fixers in parallel');
 
         $this->setHidden(true);
         $this->toolInfo = $toolInfo;
@@ -89,7 +84,7 @@ final class WorkerCommand extends Command
                 new InputOption('cache-file', '', InputOption::VALUE_REQUIRED, 'The path to the cache file.'),
                 new InputOption('diff', '', InputOption::VALUE_NONE, 'Prints diff for each file.'),
                 new InputOption('stop-on-violation', '', InputOption::VALUE_NONE, 'Stop execution on first violation.'),
-            ]
+            ],
         );
     }
 
@@ -113,8 +108,8 @@ final class WorkerCommand extends Command
         $tcpConnector = new TcpConnector($loop);
         $tcpConnector
             ->connect(\sprintf('127.0.0.1:%d', $port))
+            // @codeCoverageIgnoreStart
             ->then(
-                /** @codeCoverageIgnore */
                 function (ConnectionInterface $connection) use ($loop, $runner, $identifier): void {
                     $out = new Encoder($connection, \JSON_INVALID_UTF8_IGNORE);
                     $in = new Decoder($connection, true, 512, \JSON_INVALID_UTF8_IGNORE);
@@ -138,10 +133,14 @@ final class WorkerCommand extends Command
 
                     // [REACT] Listen for messages from the parallelisation operator (analysis requests)
                     $in->on('data', function (array $json) use ($loop, $runner, $out): void {
-                        $action = $json['action'] ?? null;
+                        \assert(isset($json['action']));
+
+                        $action = $json['action'];
 
                         // Parallelisation operator does not have more to do, let's close the connection
                         if (ParallelAction::RUNNER_THANK_YOU === $action) {
+                            // no payload to assert on
+
                             $loop->stop();
 
                             return;
@@ -151,6 +150,10 @@ final class WorkerCommand extends Command
                             // At this point we only expect analysis requests, if any other action happen, we need to fix the code.
                             throw new \LogicException(\sprintf('Unexpected action ParallelAction::%s.', $action));
                         }
+
+                        \assert(isset(
+                            $json['files'],
+                        ));
 
                         /** @var iterable<int, string> $files */
                         $files = $json['files'];
@@ -171,11 +174,12 @@ final class WorkerCommand extends Command
 
                             $out->write([
                                 'action' => ParallelAction::WORKER_RESULT,
+                                'errors' => $this->errorsManager->forPath($path),
                                 'file' => $path,
                                 'fileHash' => $this->events[0]->getFileHash(),
-                                'status' => $this->events[0]->getStatus(),
                                 'fixInfo' => array_pop($analysisResult),
-                                'errors' => $this->errorsManager->forPath($path),
+                                'memoryUsage' => memory_get_peak_usage(true),
+                                'status' => $this->events[0]->getStatus(),
                             ]);
                         }
 
@@ -186,8 +190,9 @@ final class WorkerCommand extends Command
                 static function (\Throwable $error) use ($errorOutput): void {
                     // @TODO Verify onRejected behaviour → https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/pull/7777#discussion_r1590399285
                     $errorOutput->writeln($error->getMessage());
-                }
+                },
             )
+            // @codeCoverageIgnoreEnd
         ;
 
         $loop->run();
@@ -224,7 +229,7 @@ final class WorkerCommand extends Command
                 'stop-on-violation' => $input->getOption('stop-on-violation'),
             ],
             getcwd(), // @phpstan-ignore argument.type
-            $this->toolInfo
+            $this->toolInfo,
         );
 
         return new Runner(
@@ -240,7 +245,8 @@ final class WorkerCommand extends Command
             $this->configurationResolver->shouldStopOnViolation(),
             ParallelConfigFactory::sequential(), // IMPORTANT! Worker must run in sequential mode.
             null,
-            $this->configurationResolver->getConfigFile()
+            $this->configurationResolver->getConfigFile(),
+            $this->configurationResolver->getRuleCustomisationPolicy(),
         );
     }
 }

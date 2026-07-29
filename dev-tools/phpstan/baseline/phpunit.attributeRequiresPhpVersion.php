@@ -2,9 +2,9 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
-    'rawMessage' => 'Variable $innerValues might not be defined.',
+    'rawMessage' => 'Version requirement is incomplete.',
     'count' => 1,
-    'path' => __DIR__ . '/../../../src/DocBlock/TypeExpression.php',
+    'path' => __DIR__ . '/../../../tests/Fixer/Phpdoc/PhpdocTagNoNamedArgumentsFixerTest.php',
 ];
 
 return ['parameters' => ['ignoreErrors' => $ignoreErrors]];

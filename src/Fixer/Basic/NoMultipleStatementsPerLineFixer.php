@@ -37,7 +37,7 @@ final class NoMultipleStatementsPerLineFixer extends AbstractFixer implements Wh
     {
         return new FixerDefinition(
             'There must not be more than one statement per line.',
-            [new CodeSample("<?php\nfoo(); bar();\n")]
+            [new CodeSample("<?php\nfoo(); bar();\n")],
         );
     }
 
@@ -62,8 +62,8 @@ final class NoMultipleStatementsPerLineFixer extends AbstractFixer implements Wh
         for ($index = 1, $max = \count($tokens) - 1; $index < $max; ++$index) {
             if ($tokens[$index]->isGivenKind(\T_FOR)) {
                 $index = $tokens->findBlockEnd(
-                    Tokens::BLOCK_TYPE_PARENTHESIS_BRACE,
-                    $tokens->getNextTokenOfKind($index, ['('])
+                    Tokens::BLOCK_TYPE_PARENTHESIS,
+                    $tokens->getNextTokenOfKind($index, ['(']),
                 );
 
                 continue;
@@ -72,7 +72,7 @@ final class NoMultipleStatementsPerLineFixer extends AbstractFixer implements Wh
             if ($tokens[$index]->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
                 $index = $tokens->findBlockEnd(
                     Tokens::BLOCK_TYPE_PROPERTY_HOOK,
-                    $index
+                    $index,
                 );
 
                 continue;

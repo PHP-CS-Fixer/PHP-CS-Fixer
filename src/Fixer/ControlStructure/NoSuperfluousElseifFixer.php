@@ -38,7 +38,7 @@ final class NoSuperfluousElseifFixer extends AbstractNoUselessElseFixer
             'Replaces superfluous `elseif` with `if`.',
             [
                 new CodeSample("<?php\nif (\$a) {\n    return 1;\n} elseif (\$b) {\n    return 2;\n}\n"),
-            ]
+            ],
         );
     }
 

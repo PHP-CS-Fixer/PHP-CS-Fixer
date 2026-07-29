@@ -40,7 +40,7 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
             'Code MUST use configured indentation type.',
             [
                 new CodeSample("<?php\n\nif (true) {\n\techo 'Hello!';\n}\n"),
-            ]
+            ],
         );
     }
 
@@ -111,13 +111,14 @@ final class IndentationTypeFixer extends AbstractFixer implements WhitespacesAwa
         $newContent = Preg::replaceCallback(
             '/(\R)(\h+)/', // find indent
             function (array $matches) use ($indent): string {
+                \assert(isset($matches[1], $matches[2]));
                 // normalize mixed indent
                 $content = Preg::replace('/(?:(?<! ) {1,3})?\t/', '    ', $matches[2]);
 
                 // change indent to expected one
                 return $matches[1].$this->getExpectedIndent($content, $indent);
             },
-            $content
+            $content,
         );
 
         if ($previousTokenHasTrailingLinebreak) {

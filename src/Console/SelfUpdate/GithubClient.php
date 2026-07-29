@@ -39,7 +39,7 @@ final class GithubClient implements GithubClientInterface
                 'http' => [
                     'header' => 'User-Agent: PHP-CS-Fixer/PHP-CS-Fixer',
                 ],
-            ])
+            ]),
         );
 
         if (false === $result) {
@@ -66,7 +66,7 @@ final class GithubClient implements GithubClientInterface
 
         return array_map(
             static fn (array $tagData): string => $tagData['name'],
-            $result
+            $result,
         );
     }
 }

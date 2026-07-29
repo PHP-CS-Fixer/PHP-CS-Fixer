@@ -54,6 +54,9 @@ Array Notation
 - `no_whitespace_before_comma_in_array <./array_notation/no_whitespace_before_comma_in_array.rst>`_ *(configurable)*
 
   In array declaration, there MUST NOT be a whitespace before each comma.
+- `no_whitespace_in_empty_array <./array_notation/no_whitespace_in_empty_array.rst>`_
+
+  Empty arrays should not contain only whitespace.
 - `normalize_index_brace <./array_notation/normalize_index_brace.rst>`_
 
   Array index should always be written by using square braces.
@@ -73,6 +76,9 @@ Array Notation
 Attribute Notation
 ------------------
 
+- `attribute_block_no_spaces <./attribute_notation/attribute_block_no_spaces.rst>`_
+
+  Remove spaces before and after the attributes block.
 - `attribute_empty_parentheses <./attribute_notation/attribute_empty_parentheses.rst>`_ *(configurable)*
 
   PHP attributes declared without arguments must (not) be followed by empty parentheses.
@@ -194,6 +200,9 @@ Class Notation
 - `final_public_method_for_abstract_class <./class_notation/final_public_method_for_abstract_class.rst>`_ *(risky)*
 
   All ``public`` methods of ``abstract`` classes should be ``final``.
+- `modern_serialization_methods <./class_notation/modern_serialization_methods.rst>`_ *(risky)*
+
+  Use new serialization methods ``__serialize`` and ``__unserialize`` instead of deprecated ones ``__sleep`` and ``__wakeup``.
 - `modifier_keywords <./class_notation/modifier_keywords.rst>`_ *(configurable)*
 
   Classes, constants, properties, and methods MUST have visibility declared, and keyword modifiers MUST be in the following order: inheritance modifier (``abstract`` or ``final``), visibility modifier (``public``, ``protected``, or ``private``), set-visibility modifier (``public(set)``, ``protected(set)``, or ``private(set)``), scope modifier (``static``), mutation modifier (``readonly``), type declaration, name.
@@ -206,6 +215,9 @@ Class Notation
 - `no_php4_constructor <./class_notation/no_php4_constructor.rst>`_ *(risky)*
 
   Convert PHP4-style constructors to ``__construct``.
+- `no_redundant_readonly_property <./class_notation/no_redundant_readonly_property.rst>`_
+
+  Removes redundant readonly from properties in readonly classes.
 - `no_unneeded_final_method <./class_notation/no_unneeded_final_method.rst>`_ *(risky, configurable)*
 
   Removes ``final`` from methods where possible.
@@ -446,7 +458,7 @@ Function Notation
 - `use_arrow_functions <./function_notation/use_arrow_functions.rst>`_ *(risky)*
 
   Anonymous functions with return as the only statement must use arrow functions.
-- `void_return <./function_notation/void_return.rst>`_ *(risky)*
+- `void_return <./function_notation/void_return.rst>`_ *(risky, configurable)*
 
   Add ``void`` return type to functions with missing or empty return statements, but priority is given to ``@return`` annotations.
 
@@ -726,7 +738,7 @@ PHPUnit
   Adds or removes @test annotations from tests, following configuration.
 - `php_unit_test_case_static_method_calls <./php_unit/php_unit_test_case_static_method_calls.rst>`_ *(risky, configurable)*
 
-  Calls to ``PHPUnit\Framework\TestCase`` static methods must all be of the same type, either ``$this->``, ``self::`` or ``static::``.
+  Calls to ``PHPUnit\Framework\TestCase`` static methods (like assertions) must all be of the same type, either ``$this->``, ``self::`` or ``static::``.
 - `php_unit_test_class_requires_covers <./php_unit/php_unit_test_class_requires_covers.rst>`_
 
   Adds a default ``@coversNothing`` annotation to PHPUnit test classes that have no ``@covers*`` annotation.
@@ -772,7 +784,7 @@ PHPDoc
   Fixes PHPDoc inline tags.
 - `phpdoc_line_span <./phpdoc/phpdoc_line_span.rst>`_ *(configurable)*
 
-  Changes doc blocks from single to multi line, or reversed. Works for class constants, properties and methods only.
+  Changes doc blocks from single to multi line, or reversed.
 - `phpdoc_list_type <./phpdoc/phpdoc_list_type.rst>`_ *(risky)*
 
   PHPDoc ``list`` type must be used instead of ``array`` without a key.
@@ -782,6 +794,9 @@ PHPDoc
 - `phpdoc_no_alias_tag <./phpdoc/phpdoc_no_alias_tag.rst>`_ *(configurable)*
 
   No alias PHPDoc tags should be used.
+- `phpdoc_no_duplicate_types <./phpdoc/phpdoc_no_duplicate_types.rst>`_
+
+  Removes duplicate PHPDoc types.
 - `phpdoc_no_empty_return <./phpdoc/phpdoc_no_empty_return.rst>`_
 
   ``@return void`` and ``@return null`` annotations must be removed from PHPDoc.
@@ -836,6 +851,9 @@ PHPDoc
 - `phpdoc_types <./phpdoc/phpdoc_types.rst>`_ *(configurable)*
 
   The correct case must be used for standard PHP types in PHPDoc.
+- `phpdoc_types_no_duplicates <./phpdoc/phpdoc_types_no_duplicates.rst>`_ *(deprecated)*
+
+  Removes duplicate PHPDoc types.
 - `phpdoc_types_order <./phpdoc/phpdoc_types_order.rst>`_ *(configurable)*
 
   Sorts PHPDoc types.
@@ -852,7 +870,7 @@ Return Notation
 - `no_useless_return <./return_notation/no_useless_return.rst>`_
 
   There should not be an empty ``return`` statement at the end of a function.
-- `return_assignment <./return_notation/return_assignment.rst>`_
+- `return_assignment <./return_notation/return_assignment.rst>`_ *(configurable)*
 
   Local, dynamic and directly referenced variables should not be assigned and directly returned by a function or method.
 - `simplified_null_return <./return_notation/simplified_null_return.rst>`_
@@ -883,7 +901,7 @@ Strict
 
 - `declare_strict_types <./strict/declare_strict_types.rst>`_ *(risky, configurable)*
 
-  Force strict types declaration in all files.
+  Force a strict types mode in all files.
 - `strict_comparison <./strict/strict_comparison.rst>`_ *(risky)*
 
   Comparisons should be strict.

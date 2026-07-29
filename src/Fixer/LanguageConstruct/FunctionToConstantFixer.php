@@ -90,15 +90,15 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
             'Replace core functions calls returning constants with the constants.',
             [
                 new CodeSample(
-                    "<?php\necho phpversion();\necho pi();\necho php_sapi_name();\nclass Foo\n{\n    public function Bar()\n    {\n        echo get_class();\n        echo get_called_class();\n    }\n}\n"
+                    "<?php\necho phpversion();\necho pi();\necho php_sapi_name();\nclass Foo\n{\n    public function Bar()\n    {\n        echo get_class();\n        echo get_called_class();\n    }\n}\n",
                 ),
                 new CodeSample(
                     "<?php\necho phpversion();\necho pi();\nclass Foo\n{\n    public function Bar()\n    {\n        echo get_class();\n        get_class(\$this);\n        echo get_called_class();\n    }\n}\n",
-                    ['functions' => ['get_called_class', 'get_class_this', 'phpversion']]
+                    ['functions' => ['get_called_class', 'get_class_this', 'phpversion']],
                 ),
             ],
             null,
-            'Risky when any of the configured functions to replace are overridden.'
+            'Risky when any of the configured functions to replace are overridden.',
         );
     }
 
@@ -128,6 +128,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
         $this->functionsFixMap = [];
 
         foreach ($this->configuration['functions'] as $key) {
+            \assert(isset(self::$availableFunctions[$key]));
             $this->functionsFixMap[$key] = self::$availableFunctions[$key];
         }
     }
@@ -147,7 +148,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
                 $index,
                 $candidate[0], // brace open
                 $candidate[1], // brace close
-                $candidate[2]  // replacement
+                $candidate[2],  // replacement
             );
         }
     }
@@ -228,9 +229,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
 
         // test if function call without parameters
         $braceOpenIndex = $tokens->getNextMeaningfulToken($index);
-        if (!$tokens[$braceOpenIndex]->equals('(')) {
-            return null;
-        }
+        \assert(\is_int($braceOpenIndex));
 
         $braceCloseIndex = $tokens->getNextMeaningfulToken($braceOpenIndex);
         if (!$tokens[$braceCloseIndex]->equals(')')) {
@@ -257,7 +256,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
         }
 
         $braceOpenIndex = $tokens->getNextMeaningfulToken($index);
-        $braceCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $braceOpenIndex);
+        $braceCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $braceOpenIndex);
 
         if ($braceCloseIndex === $tokens->getNextMeaningfulToken($braceOpenIndex)) { // no arguments passed
             if (isset($this->functionsFixMap['get_class'])) {
@@ -299,6 +298,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
      */
     private function getReplacementTokenClones(string $lowerContent, int $braceOpenIndex, int $braceCloseIndex): array
     {
+        \assert(isset($this->functionsFixMap[$lowerContent]));
         $clones = array_map(
             static fn (Token $token): Token => clone $token,
             $this->functionsFixMap[$lowerContent],

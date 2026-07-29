@@ -75,8 +75,6 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
         ],
     ];
 
-    private bool $modernizeStripos = false;
-
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -105,11 +103,11 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
                         if (stripos($haystack, $needle) === false) {}
 
                         PHP,
-                    ['modernize_stripos' => true]
+                    ['modernize_stripos' => true],
                 ),
             ],
             null,
-            'Risky if `strpos`, `stripos`, `str_starts_with`, `str_contains` or `strtolower` functions are overridden.'
+            'Risky if `strpos`, `stripos`, `str_starts_with`, `str_contains` or `strtolower` functions are overridden.',
         );
     }
 
@@ -134,13 +132,6 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
         return true;
     }
 
-    protected function configurePostNormalisation(): void
-    {
-        if (isset($this->configuration['modernize_stripos']) && true === $this->configuration['modernize_stripos']) {
-            $this->modernizeStripos = true;
-        }
-    }
-
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
@@ -157,7 +148,7 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
         $argumentsAnalyzer = new ArgumentsAnalyzer();
 
         $modernizeCandidates = [[\T_STRING, 'strpos']];
-        if ($this->modernizeStripos) {
+        if ($this->configuration['modernize_stripos']) {
             $modernizeCandidates[] = [\T_STRING, 'stripos'];
         }
 
@@ -169,7 +160,7 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
 
             // assert called with 2 arguments
             $openIndex = $tokens->getNextMeaningfulToken($index);
-            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openIndex);
             $arguments = $argumentsAnalyzer->getArguments($tokens, $openIndex, $closeIndex);
 
             if (2 !== \count($arguments)) {
@@ -236,13 +227,12 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
         $shouldAddNamespace = $tokens[$functionIndex - 1]->isGivenKind(\T_NS_SEPARATOR);
 
         $openIndex = $tokens->getNextMeaningfulToken($functionIndex);
-        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openIndex);
         $arguments = $argumentsAnalyzer->getArguments($tokens, $openIndex, $closeIndex);
 
         $firstArgumentIndexStart = array_key_first($arguments);
-        if (!isset($arguments[$firstArgumentIndexStart])) {
-            return;
-        }
+        \assert(isset($arguments[$firstArgumentIndexStart]));
+
         $firstArgumentIndexEnd = $arguments[$firstArgumentIndexStart] + 3 + ($shouldAddNamespace ? 1 : 0);
 
         $isSecondArgumentTokenWhiteSpace = $tokens[array_key_last($arguments)]->isGivenKind(\T_WHITESPACE);
@@ -254,9 +244,6 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
         }
 
         $secondArgumentIndexStart += 3 + ($shouldAddNamespace ? 1 : 0);
-        if (!isset($arguments[array_key_last($arguments)])) {
-            return;
-        }
         $secondArgumentIndexEnd = $arguments[array_key_last($arguments)] + 6 + ($shouldAddNamespace ? 1 : 0) + ($isSecondArgumentTokenWhiteSpace ? 1 : 0);
 
         if ($shouldAddNamespace) {
@@ -294,10 +281,7 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
         }
 
         $operandIndex = $tokens->getMeaningfulTokenSibling($operatorIndex, $direction);
-
-        if (null === $operandIndex) {
-            return null;
-        }
+        \assert(\is_int($operandIndex));
 
         $operand = $tokens[$operandIndex];
 

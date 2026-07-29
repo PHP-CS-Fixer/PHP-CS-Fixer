@@ -85,7 +85,7 @@ final class PhpUnitDedicateAssertInternalTypeFixer extends AbstractPhpUnitFixer 
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -100,11 +100,11 @@ final class PhpUnitDedicateAssertInternalTypeFixer extends AbstractPhpUnitFixer 
                         }
 
                         PHP,
-                    ['target' => PhpUnitTargetVersion::VERSION_7_5]
+                    ['target' => PhpUnitTargetVersion::VERSION_7_5],
                 ),
             ],
             null,
-            'Risky when PHPUnit methods are overridden or when project has PHPUnit incompatibilities.'
+            'Risky when PHPUnit methods are overridden or when project has PHPUnit incompatibilities.',
         );
     }
 
@@ -145,7 +145,7 @@ final class PhpUnitDedicateAssertInternalTypeFixer extends AbstractPhpUnitFixer 
             }
 
             $openingBraceIndex = $tokens->getNextTokenOfKind($index, ['{']);
-            $closingBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openingBraceIndex);
+            $closingBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $openingBraceIndex);
 
             $anonymousClassIndices[$closingBraceIndex] = $openingBraceIndex;
         }

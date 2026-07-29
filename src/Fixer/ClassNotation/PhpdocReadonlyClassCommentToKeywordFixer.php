@@ -33,7 +33,7 @@ final class PhpdocReadonlyClassCommentToKeywordFixer extends AbstractFixer
     /**
      * {@inheritdoc}
      *
-     * Must run before NoEmptyPhpdocFixer, NoExtraBlankLinesFixer, PhpdocAlignFixer.
+     * Must run before NoEmptyPhpdocFixer, NoExtraBlankLinesFixer, NoRedundantReadonlyPropertyFixer, PhpdocAlignFixer.
      * Must run after AlignMultilineCommentFixer, CommentToPhpdocFixer, PhpdocIndentFixer, PhpdocScalarFixer, PhpdocToCommentFixer, PhpdocTypesFixer.
      */
     public function getPriority(): int
@@ -63,11 +63,11 @@ final class PhpdocReadonlyClassCommentToKeywordFixer extends AbstractFixer
                             class C {
                             }\n
                         EOT,
-                    new VersionSpecification(8_02_00)
+                    new VersionSpecification(8_02_00),
                 ),
             ],
             null,
-            'If classes marked with `@readonly` annotation were extended anyway, applying this fixer may break the inheritance for their child classes.'
+            'If classes marked with `@readonly` annotation were extended anyway, applying this fixer may break the inheritance for their child classes.',
         );
     }
 

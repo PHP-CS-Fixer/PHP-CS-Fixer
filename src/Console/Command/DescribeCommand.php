@@ -71,12 +71,6 @@ final class DescribeCommand extends Command
     private const SET_ALIAS_TO_DESCRIBE_CONFIG = '@';
     private const SET_ALIAS_TO_DESCRIBE_RULES_WITHOUT_SET = '@-';
 
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultName = 'describe';
-
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultDescription = 'Describe rule / ruleset.';
-
     /**
      * @var ?list<string>
      */
@@ -91,7 +85,8 @@ final class DescribeCommand extends Command
 
     public function __construct(?FixerFactory $fixerFactory = null)
     {
-        parent::__construct();
+        parent::__construct('describe');
+        $this->setDescription('Describe rule / ruleset.');
 
         if (null === $fixerFactory) {
             $fixerFactory = new FixerFactory();
@@ -109,7 +104,7 @@ final class DescribeCommand extends Command
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
                 new InputOption('expand', '', InputOption::VALUE_NONE, 'Shall nested sets be expanded into nested rules.'),
                 new InputOption('format', '', InputOption::VALUE_REQUIRED, 'To output results in other formats (txt, tree).', 'txt', ['txt', 'tree']),
-            ]
+            ],
         );
     }
 
@@ -124,7 +119,7 @@ final class DescribeCommand extends Command
             new Config(),
             ['config' => $input->getOption('config')],
             getcwd(), // @phpstan-ignore argument.type
-            new ToolInfo()
+            new ToolInfo(),
         );
 
         $this->fixerFactory->registerCustomFixers($resolver->getConfig()->getCustomFixers());
@@ -150,7 +145,7 @@ final class DescribeCommand extends Command
             } else {
                 $name = $io->choice(
                     'Please select rule / set to describe',
-                    array_merge($this->getSetNames(), array_keys($this->getFixers()))
+                    array_merge($this->getSetNames(), array_keys($this->getFixers())),
                 );
             }
         }
@@ -184,7 +179,7 @@ final class DescribeCommand extends Command
             $this->describeRule($output, $name);
         } catch (DescribeNameNotFoundException $e) {
             $matcher = new WordMatcher(
-                'set' === $e->getType() ? $this->getSetNames() : array_keys($this->getFixers())
+                'set' === $e->getType() ? $this->getSetNames() : array_keys($this->getFixers()),
             );
 
             $alternative = $matcher->match($name);
@@ -195,7 +190,7 @@ final class DescribeCommand extends Command
                 '%s "%s" not found.%s',
                 ucfirst($e->getType()),
                 $name,
-                null === $alternative ? '' : ' Did you mean "'.$alternative.'"?'
+                null === $alternative ? '' : ' Did you mean "'.$alternative.'"?',
             ));
         }
 
@@ -294,7 +289,7 @@ final class DescribeCommand extends Command
                 if ($option->hasDefault()) {
                     $line .= \sprintf(
                         'defaults to <comment>%s</comment>',
-                        Utils::toString($option->getDefault())
+                        Utils::toString($option->getDefault()),
                     );
                 } else {
                     $line .= '<comment>required</comment>';
@@ -304,7 +299,7 @@ final class DescribeCommand extends Command
                     $line .= '. <error>DEPRECATED</error>: '.Preg::replace(
                         '/(`.+?`)/',
                         '<info>$1</info>',
-                        OutputFormatter::escape(lcfirst($option->getDeprecationMessage()))
+                        OutputFormatter::escape(lcfirst($option->getDeprecationMessage())),
                     );
                 }
 
@@ -345,8 +340,8 @@ final class DescribeCommand extends Command
                 \sprintf(
                     '<comment>   ---------- begin diff ----------</comment>%s%%s%s<comment>   ----------- end diff -----------</comment>',
                     \PHP_EOL,
-                    \PHP_EOL
-                )
+                    \PHP_EOL,
+                ),
             );
 
             foreach ($codeSamples as $index => $codeSample) {
@@ -427,13 +422,13 @@ final class DescribeCommand extends Command
                     'getName' => \sprintf('@ - %s', $resolver->getConfig()->getName()),
                     'getRules' => $resolver->getConfig()->getRules(),
                     'isRisky' => $resolver->getRiskyAllowed(),
-                ]
+                ],
             );
         } elseif (self::SET_ALIAS_TO_DESCRIBE_RULES_WITHOUT_SET === $name) {
             $rulesWithoutSet = array_filter(
                 $this->getFixers(),
                 static fn (string $name): bool => [] === FixerDocumentGenerator::getSetsOfRule($name),
-                \ARRAY_FILTER_USE_KEY
+                \ARRAY_FILTER_USE_KEY,
             );
 
             $aliasedRuleSetDefinition = $this->createRuleSetDefinition(
@@ -453,7 +448,7 @@ final class DescribeCommand extends Command
                         $rulesWithoutSet,
                         static fn (FixerInterface $fixer): bool => $fixer->isRisky(),
                     ),
-                ]
+                ],
             );
         }
 
@@ -530,8 +525,10 @@ final class DescribeCommand extends Command
             \assert(isset($rules[$rule]));
             $config = $rules[$rule];
             if (str_starts_with($rule, '@')) {
+                \assert(isset($ruleSetDefinitions[$rule]));
                 $child = $this->createTreeNode($ruleSetDefinitions[$rule], $ruleSetDefinitions, $fixers);
             } else {
+                \assert(isset($fixers[$rule]));
                 $fixer = $fixers[$rule];
                 $tags = DocumentationTagGenerator::analyseRule($fixer);
                 $extra = [] !== $tags
@@ -561,7 +558,7 @@ final class DescribeCommand extends Command
     {
         $io = new SymfonyStyle(
             new ArrayInput([]),
-            $output
+            $output,
         );
 
         $root = $this->createTreeNode($ruleSetDefinition, $ruleSetDefinitions, $fixers);
@@ -590,7 +587,7 @@ final class DescribeCommand extends Command
                         static fn (DocumentationTag $tag): string => "<error>{$tag->type}</error>",
                         $tags,
                     )),
-                    $this->replaceRstLinks($set->getDescription())
+                    $this->replaceRstLinks($set->getDescription()),
                 );
 
                 continue;
@@ -610,7 +607,7 @@ final class DescribeCommand extends Command
                     $tags,
                 )),
                 $definition->getSummary(),
-                true !== $config ? \sprintf("   <comment>| Configuration: %s</comment>\n", Utils::toString($config)) : ''
+                true !== $config ? \sprintf("   <comment>| Configuration: %s</comment>\n", Utils::toString($config)) : '',
             );
         }
 
@@ -687,9 +684,9 @@ final class DescribeCommand extends Command
             static fn (array $matches) => Preg::replaceCallback(
                 '/`(.*)<(.*)>`_/',
                 static fn (array $matches): string => $matches[1].'('.$matches[2].')',
-                $matches[1]
+                $matches[1],
             ),
-            $content
+            $content,
         );
     }
 

@@ -2,7 +2,7 @@
 Rule ``declare_strict_types``
 =============================
 
-Force strict types declaration in all files.
+Force a strict types mode in all files.
 
 Warnings
 --------
@@ -10,13 +10,13 @@ Warnings
 This rule is RISKY
 ~~~~~~~~~~~~~~~~~~
 
-Forcing strict types will stop non strict code from working.
+Enabling strict types will stop non strict code from working.
 
 This rule is CONFIGURABLE
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can configure this rule using the following option:
-``preserve_existing_declaration``.
+You can configure this rule using the following options:
+``preserve_existing_declaration``, ``strategy``.
 
 Configuration
 -------------
@@ -24,11 +24,24 @@ Configuration
 ``preserve_existing_declaration``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. warning:: This option is deprecated and will be removed in the next major version. Use ``strategy`` to configure behaviour.
+
 Whether existing strict_types=? should be preserved and not overridden.
 
 Allowed types: ``bool``
 
 Default value: ``false``
+
+``strategy``
+~~~~~~~~~~~~
+
+Whether existing strict_types=? should be enforced, removed (effectively turning
+strict mode off and using the engine into default type coercion mode), or added
+when missing.
+
+Allowed values: ``'add_when_missing'``, ``'enforce'`` and ``'remove'``
+
+Default value: ``'enforce'``
 
 Examples
 --------
@@ -49,7 +62,7 @@ Example #1
 Example #2
 ~~~~~~~~~~
 
-With configuration: ``['preserve_existing_declaration' => false]``.
+With configuration: ``['strategy' => 'enforce']``.
 
 .. code-block:: diff
 
@@ -60,6 +73,58 @@ With configuration: ``['preserve_existing_declaration' => false]``.
    +declare(strict_types=1);
 
 Example #3
+~~~~~~~~~~
+
+With configuration: ``['strategy' => 'add_when_missing']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -declare(Strict_Types=0);
+   +declare(strict_types=0);
+
+Example #4
+~~~~~~~~~~
+
+With configuration: ``['strategy' => 'remove']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -declare(strict_types=1);
+   +
+
+Example #5
+~~~~~~~~~~
+
+With configuration: ``['strategy' => 'remove']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -declare(strict_types=1, ticks=1);
+   +declare(ticks=1);
+
+Example #6
+~~~~~~~~~~
+
+With configuration: ``['preserve_existing_declaration' => false]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -declare(Strict_Types=0);
+   +declare(strict_types=1);
+
+Example #7
 ~~~~~~~~~~
 
 With configuration: ``['preserve_existing_declaration' => true]``.
@@ -91,6 +156,10 @@ The rule is part of the following rule sets:
 - `@PHP74Migration:risky <./../../ruleSets/PHP74MigrationRisky.rst>`_ *(deprecated)*
 - `@PHP80Migration:risky <./../../ruleSets/PHP80MigrationRisky.rst>`_ *(deprecated)*
 - `@PHP82Migration:risky <./../../ruleSets/PHP82MigrationRisky.rst>`_ *(deprecated)*
+- `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_
+- `@Symfony:risky <./../../ruleSets/SymfonyRisky.rst>`_ with config:
+
+  ``['strategy' => 'remove']``
 
 References
 ----------

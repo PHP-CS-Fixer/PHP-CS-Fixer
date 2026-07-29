@@ -34,7 +34,7 @@ final class ShortScalarCastFixer extends AbstractFixer
                 new CodeSample(
                     "<?php\n\$a = (boolean) \$b;\n\$a = (integer) \$b;\n\$a = (double) \$b;\n\n\$a = (binary) \$b;\n",
                 ),
-            ]
+            ],
         );
     }
 

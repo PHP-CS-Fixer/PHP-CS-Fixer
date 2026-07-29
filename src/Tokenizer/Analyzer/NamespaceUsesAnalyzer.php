@@ -123,7 +123,7 @@ final class NamespaceUsesAnalyzer
                         $startIndex,
                         $endIndex,
                         $chunkStart,
-                        $tokens->getPrevMeaningfulToken($groupQualifiedName['afterIndex'])
+                        $tokens->getPrevMeaningfulToken($groupQualifiedName['afterIndex']),
                     );
 
                     $groupIndex = $groupQualifiedName['afterIndex'];
@@ -145,7 +145,7 @@ final class NamespaceUsesAnalyzer
                         $startIndex,
                         $endIndex,
                         $multi ? $index : null,
-                        $multi ? $previousToken : null
+                        $multi ? $previousToken : null,
                     );
                 }
 

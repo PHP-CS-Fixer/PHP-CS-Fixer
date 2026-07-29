@@ -168,7 +168,7 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
 
                         throw  new  \Exception();
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -184,7 +184,7 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
                         'constructs_followed_by_a_single_space' => [
                             'yield_from',
                         ],
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -201,7 +201,7 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
                         'constructs_followed_by_a_single_space' => [
                             'use_lambda',
                         ],
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -214,7 +214,7 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
                         'constructs_followed_by_a_single_space' => [
                             'echo',
                         ],
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -227,9 +227,9 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
                         'constructs_followed_by_a_single_space' => [
                             'yield_from',
                         ],
-                    ]
+                    ],
                 ),
-            ]
+            ],
         );
     }
 
@@ -303,7 +303,7 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
                     $tokens[$index] = new Token([\T_YIELD_FROM, Preg::replace(
                         '/\s+/',
                         ' ',
-                        $token->getContent()
+                        $token->getContent(),
                     )]);
                 }
             }
@@ -330,7 +330,7 @@ final class SingleSpaceAroundConstructFixer extends AbstractFixer implements Con
 
             $whitespaceTokenIndex = $index + 1;
 
-            if ($tokens[$whitespaceTokenIndex]->equalsAny([',', ':', ';', ')', [CT::T_ARRAY_SQUARE_BRACE_CLOSE], [CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE]])) {
+            if ($tokens[$whitespaceTokenIndex]->equalsAny([',', ':', ';', ')', [CT::T_ARRAY_BRACKET_CLOSE], [CT::T_DESTRUCTURING_BRACKET_CLOSE]])) {
                 continue;
             }
 

@@ -75,7 +75,7 @@ final class PhpUnitMethodCasingFixer extends AbstractPhpUnitFixer implements Con
                             public function test_my_code() {}
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -86,7 +86,7 @@ final class PhpUnitMethodCasingFixer extends AbstractPhpUnitFixer implements Con
                         }
 
                         PHP,
-                    ['case' => self::SNAKE_CASE]
+                    ['case' => self::SNAKE_CASE],
                 ),
                 new VersionSpecificCodeSample(
                     <<<'PHP'
@@ -113,9 +113,9 @@ final class PhpUnitMethodCasingFixer extends AbstractPhpUnitFixer implements Con
 
                         PHP,
                     new VersionSpecification(8_00_00),
-                    ['case' => self::SNAKE_CASE]
+                    ['case' => self::SNAKE_CASE],
                 ),
-            ]
+            ],
         );
     }
 
@@ -250,7 +250,7 @@ final class PhpUnitMethodCasingFixer extends AbstractPhpUnitFixer implements Con
                 '%s%s%s',
                 $matches[1],
                 $this->updateMethodCasing($matches[2]),
-                $matches[3]
+                $matches[3],
             ), $lineContent);
 
             if ($newLineContent !== $lineContent) {

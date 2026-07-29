@@ -47,9 +47,9 @@ final class NoBlankLinesBeforeNamespaceFixer extends AbstractProxyFixer implemen
             'There should be no blank lines before a namespace declaration.',
             [
                 new CodeSample(
-                    "<?php\n\n\n\nnamespace Example;\n"
+                    "<?php\n\n\n\nnamespace Example;\n",
                 ),
-            ]
+            ],
         );
     }
 

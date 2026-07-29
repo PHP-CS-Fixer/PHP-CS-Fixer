@@ -12,6 +12,7 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
+use PhpCsFixer\AbstractFixer;
 use PhpCsFixer\Config;
 use PhpCsFixer\Future;
 
@@ -27,7 +28,7 @@ $config = require __DIR__.'/.php-cs-fixer.dist.php';
 Closure::bind(
     static function (Config $config): void { $config->name = 'PHP-LOWEST'.(Future::isFutureModeEnabled() ? ' (future mode)' : ''); },
     null,
-    Config::class
+    Config::class,
 )($config);
 
 $config->getFinder()->notPath([
@@ -43,7 +44,7 @@ $typesMap = [
     'T' => 'mixed',
     'TFixerInputConfig' => 'array',
     'TFixerComputedConfig' => 'array',
-    'TFixer' => '\PhpCsFixer\AbstractFixer',
+    'TFixer' => AbstractFixer::class,
     '_PhpTokenKind' => 'int|string',
     '_PhpTokenArray' => 'array{0: int, 1: string}',
     '_PhpTokenArrayPartial' => 'array{0: int, 1?: string}',

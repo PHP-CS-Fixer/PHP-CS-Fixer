@@ -67,7 +67,7 @@ final class PhpUnitMockFixer extends AbstractPhpUnitFixer implements Configurabl
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -82,11 +82,11 @@ final class PhpUnitMockFixer extends AbstractPhpUnitFixer implements Configurabl
                         }
 
                         PHP,
-                    ['target' => PhpUnitTargetVersion::VERSION_5_4]
+                    ['target' => PhpUnitTargetVersion::VERSION_5_4],
                 ),
             ],
             null,
-            'Risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.'
+            'Risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.',
         );
     }
 
@@ -115,7 +115,7 @@ final class PhpUnitMockFixer extends AbstractPhpUnitFixer implements Configurabl
                 $tokens[$index] = new Token([\T_STRING, 'createMock']);
             } elseif ($tokens[$index]->equals([\T_STRING, 'getMock'], false)) {
                 $openingParenthesis = $tokens->getNextMeaningfulToken($index);
-                $closingParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingParenthesis);
+                $closingParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openingParenthesis);
 
                 $argumentsCount = $argumentsAnalyzer->countArguments($tokens, $openingParenthesis, $closingParenthesis);
 

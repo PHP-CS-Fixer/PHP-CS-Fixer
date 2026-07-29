@@ -66,6 +66,22 @@ class Bar extends Foo
 // https://www.php.net/manual/en/migration83.new-features.php#migration83.new-features.core.readonly-modifier-improvements
 $a = new readonly class {};
 
+// https://wiki.php.net/rfc/typed_class_constants with no_unused_imports
+use Vendor\TypeA;
+use Vendor\TypeB;
+use Vendor\TypeC;
+use Vendor\TypeD;
+use Vendor\TypeE;
+use Vendor\TypeF;
+
+class TypedConst
+{
+    public const TypeA REGULAR = TheParentType::Foo;
+    public const ?TypeB NULLABLE = TheParentType::Foo;
+    public const TypeC|TypeD UNION = TheParentType::Foo;
+    public const TypeE&TypeF INTERSECTION = TheParentType::Foo;
+}
+
 --INPUT--
 <?php
 
@@ -114,3 +130,19 @@ class Bar extends Foo {
 $a   =    New     ReadOnly     CLASS
 {
 };
+
+// https://wiki.php.net/rfc/typed_class_constants with no_unused_imports
+use Vendor\TypeA;
+use Vendor\TypeB;
+use Vendor\TypeC;
+use Vendor\TypeD;
+use Vendor\TypeE;
+use Vendor\TypeF;
+use Vendor\TypeUnused;
+
+class TypedConst {
+    public const TypeA REGULAR = TheParentType::Foo;
+    public const ?TypeB NULLABLE = TheParentType::Foo;
+    public const TypeC|TypeD UNION = TheParentType::Foo;
+    public const TypeE&TypeF INTERSECTION = TheParentType::Foo;
+}

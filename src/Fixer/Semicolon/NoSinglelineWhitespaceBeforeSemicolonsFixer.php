@@ -31,7 +31,7 @@ final class NoSinglelineWhitespaceBeforeSemicolonsFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Single-line whitespace before closing semicolon are prohibited.',
-            [new CodeSample("<?php \$this->foo() ;\n")]
+            [new CodeSample("<?php \$this->foo() ;\n")],
         );
     }
 

@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Config;
+use PhpCsFixer\Config\NullRuleCustomisationPolicy;
 use PhpCsFixer\ConfigurationException\InvalidConfigurationException;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Command\FixCommand;
@@ -24,8 +25,11 @@ use PhpCsFixer\Fixer\ArrayNotation\NoWhitespaceBeforeCommaInArrayFixer;
 use PhpCsFixer\Fixer\ControlStructure\IncludeFixer;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
+use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleSet;
 use PhpCsFixer\ToolInfo;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
@@ -37,6 +41,7 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Config::class)]
 final class ConfigTest extends TestCase
 {
     public function testFutureMode(): void
@@ -61,7 +66,7 @@ final class ConfigTest extends TestCase
                 'config' => ConfigurationResolver::IGNORE_CONFIG_FILE,
             ],
             (string) getcwd(),
-            new ToolInfo()
+            new ToolInfo(),
         );
 
         self::assertSame(
@@ -69,7 +74,7 @@ final class ConfigTest extends TestCase
                 'cast_spaces' => true,
                 'statement_indentation' => true,
             ],
-            $configResolver->getRules()
+            $configResolver->getRules(),
         );
     }
 
@@ -83,7 +88,7 @@ final class ConfigTest extends TestCase
                 'config' => ConfigurationResolver::IGNORE_CONFIG_FILE,
             ],
             (string) getcwd(),
-            new ToolInfo()
+            new ToolInfo(),
         );
 
         self::assertSame(
@@ -93,7 +98,7 @@ final class ConfigTest extends TestCase
                 ],
                 'cast_spaces' => true,
             ],
-            $configResolver->getRules()
+            $configResolver->getRules(),
         );
     }
 
@@ -109,7 +114,7 @@ final class ConfigTest extends TestCase
                 'config' => ConfigurationResolver::IGNORE_CONFIG_FILE,
             ],
             (string) getcwd(),
-            new ToolInfo()
+            new ToolInfo(),
         );
         $configResolver->getRules();
     }
@@ -132,21 +137,24 @@ final class ConfigTest extends TestCase
             [
                 'decorated' => false,
                 'verbosity' => OutputInterface::VERBOSITY_VERY_VERBOSE,
-            ]
+            ],
         );
         self::assertStringMatchesFormat(
             \sprintf('%%ALoaded config custom_config_test from "%s".%%A', $customConfigFile),
-            $commandTester->getDisplay(true)
+            $commandTester->getDisplay(true),
         );
     }
 
     public function testThatFinderWorksWithDirSetOnConfig(): void
     {
         $config = new Config();
+        $finder = $config->getFinder();
+
+        \assert($finder instanceof Finder); // Config::getFinder() ensures only `iterable`
 
         $items = iterator_to_array(
-            $config->getFinder()->in(__DIR__.'/Fixtures/FinderDirectory'),
-            false
+            $finder->in(__DIR__.'/Fixtures/FinderDirectory'),
+            false,
         );
 
         self::assertCount(1, $items);
@@ -164,7 +172,7 @@ final class ConfigTest extends TestCase
 
         $items = iterator_to_array(
             $config->getFinder(),
-            false
+            false,
         );
 
         self::assertCount(1, $items);
@@ -180,7 +188,7 @@ final class ConfigTest extends TestCase
 
         $items = iterator_to_array(
             $config->getFinder(),
-            false
+            false,
         );
 
         self::assertCount(1, $items);
@@ -217,6 +225,7 @@ final class ConfigTest extends TestCase
      *
      * @dataProvider provideRegisterCustomFixersCases
      */
+    #[DataProvider('provideRegisterCustomFixersCases')]
     public function testRegisterCustomFixers(array $expected, iterable $suite): void
     {
         $config = new Config();
@@ -294,6 +303,15 @@ final class ConfigTest extends TestCase
 
         $config->setUnsupportedPhpVersionAllowed(true);
         self::assertTrue($config->getUnsupportedPhpVersionAllowed());
+
+        self::assertNull($config->getRuleCustomisationPolicy());
+
+        $ruleCustomisationPolicy = new NullRuleCustomisationPolicy();
+        $config->setRuleCustomisationPolicy($ruleCustomisationPolicy);
+        self::assertSame($ruleCustomisationPolicy, $config->getRuleCustomisationPolicy());
+
+        $config->setRuleCustomisationPolicy(null);
+        self::assertNull($config->getRuleCustomisationPolicy());
     }
 
     public function testConfigConstructorWithName(): void
@@ -308,8 +326,9 @@ final class ConfigTest extends TestCase
     public function testConfigWithDefaultParallelConfig(): void
     {
         $config = new Config();
+        $defaultParallelConfig = ParallelConfigFactory::detect();
 
-        self::assertSame(1, $config->getParallelConfig()->getMaxProcesses());
+        self::assertSame($defaultParallelConfig->getMaxProcesses(), $config->getParallelConfig()->getMaxProcesses());
     }
 
     public function testConfigWithExplicitParallelConfig(): void

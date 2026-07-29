@@ -43,7 +43,7 @@ final class SingleBlankLineBeforeNamespaceFixer extends AbstractProxyFixer imple
             [
                 new CodeSample("<?php  namespace A {}\n"),
                 new CodeSample("<?php\n\n\nnamespace A{}\n"),
-            ]
+            ],
         );
     }
 

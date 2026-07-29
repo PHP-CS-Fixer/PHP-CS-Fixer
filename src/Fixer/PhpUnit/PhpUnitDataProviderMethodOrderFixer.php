@@ -78,9 +78,9 @@ final class PhpUnitDataProviderMethodOrderFixer extends AbstractPhpUnitFixer imp
                         PHP,
                     [
                         'placement' => 'before',
-                    ]
+                    ],
                 ),
-            ]
+            ],
         );
     }
 
@@ -142,7 +142,7 @@ final class PhpUnitDataProviderMethodOrderFixer extends AbstractPhpUnitFixer imp
                             ? $sameProviderName
                             : $usageName,
                         $providerName,
-                        true
+                        true,
                     );
 
                     // honour multiple providers order for one test

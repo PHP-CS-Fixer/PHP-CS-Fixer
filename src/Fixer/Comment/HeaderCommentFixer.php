@@ -85,7 +85,7 @@ final class HeaderCommentFixer extends AbstractFixer implements ConfigurableFixe
                         PHP,
                     [
                         'header' => 'Made with love.',
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -102,7 +102,7 @@ final class HeaderCommentFixer extends AbstractFixer implements ConfigurableFixe
                         'comment_type' => self::HEADER_PHPDOC,
                         'location' => 'after_open',
                         'separate' => 'bottom',
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -118,7 +118,7 @@ final class HeaderCommentFixer extends AbstractFixer implements ConfigurableFixe
                         'header' => 'Made with love.',
                         'comment_type' => self::HEADER_COMMENT,
                         'location' => 'after_declare_strict',
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -139,7 +139,7 @@ final class HeaderCommentFixer extends AbstractFixer implements ConfigurableFixe
                         'validator' => '/Made with love(?P<EXTRA>.*)??/s',
                         'comment_type' => self::HEADER_COMMENT,
                         'location' => 'after_declare_strict',
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -157,9 +157,9 @@ final class HeaderCommentFixer extends AbstractFixer implements ConfigurableFixe
                         PHP,
                     [
                         'header' => '',
-                    ]
+                    ],
                 ),
-            ]
+            ],
         );
     }
 

@@ -46,9 +46,9 @@ final class SwitchCaseSpaceFixer extends AbstractFixer
                                     return 2;
                             }
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

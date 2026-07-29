@@ -14,7 +14,10 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
+use PhpCsFixer\Fixer\ClassNotation\StaticPrivateMethodFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -27,11 +30,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(StaticPrivateMethodFixer::class)]
 final class StaticPrivateMethodFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -532,6 +537,18 @@ final class StaticPrivateMethodFixerTest extends AbstractFixerTestCase
                     private function function_4() { return $this->function_5(); }
                     private function function_6() { return $this->function_7(); }
                 }
+                PHP,
+        ];
+
+        yield 'private constructor and abstract method' => [
+            <<<'PHP'
+                <?php
+                abstract class AbstractClass
+                {
+                    private function __construct() {}
+                    abstract protected static function abstractFunction();
+                }
+
                 PHP,
         ];
     }

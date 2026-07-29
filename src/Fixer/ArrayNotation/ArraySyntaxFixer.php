@@ -49,7 +49,7 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
     use ConfigurableFixerTrait;
 
     /**
-     * @var CT::T_ARRAY_SQUARE_BRACE_OPEN|T_ARRAY
+     * @var CT::T_ARRAY_BRACKET_OPEN|T_ARRAY
      */
     private $candidateTokenKind;
 
@@ -59,20 +59,20 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
             'PHP arrays should be declared using the configured syntax.',
             [
                 new CodeSample(
-                    "<?php\narray(1,2);\n"
+                    "<?php\narray(1,2);\n",
                 ),
                 new CodeSample(
                     "<?php\n[1,2];\n",
-                    ['syntax' => 'long']
+                    ['syntax' => 'long'],
                 ),
-            ]
+            ],
         );
     }
 
     /**
      * {@inheritdoc}
      *
-     * Must run before BinaryOperatorSpacesFixer, SingleSpaceAfterConstructFixer, SingleSpaceAroundConstructFixer, TernaryOperatorSpacesFixer.
+     * Must run before BinaryOperatorSpacesFixer, NoWhitespaceInEmptyArrayFixer, SingleSpaceAfterConstructFixer, SingleSpaceAroundConstructFixer, TernaryOperatorSpacesFixer.
      */
     public function getPriority(): int
     {
@@ -114,7 +114,7 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
 
     private function fixToLongArraySyntax(Tokens $tokens, int $index): void
     {
-        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
+        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $index);
 
         $tokens[$index] = new Token('(');
         $tokens[$closeIndex] = new Token(')');
@@ -125,16 +125,16 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
     private function fixToShortArraySyntax(Tokens $tokens, int $index): void
     {
         $openIndex = $tokens->getNextTokenOfKind($index, ['(']);
-        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openIndex);
 
-        $tokens[$openIndex] = new Token([CT::T_ARRAY_SQUARE_BRACE_OPEN, '[']);
-        $tokens[$closeIndex] = new Token([CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']']);
+        $tokens[$openIndex] = new Token([CT::T_ARRAY_BRACKET_OPEN, '[']);
+        $tokens[$closeIndex] = new Token([CT::T_ARRAY_BRACKET_CLOSE, ']']);
 
         $tokens->clearTokenAndMergeSurroundingWhitespace($index);
     }
 
     private function resolveCandidateTokenKind(): void
     {
-        $this->candidateTokenKind = 'long' === $this->configuration['syntax'] ? CT::T_ARRAY_SQUARE_BRACE_OPEN : \T_ARRAY;
+        $this->candidateTokenKind = 'long' === $this->configuration['syntax'] ? CT::T_ARRAY_BRACKET_OPEN : \T_ARRAY;
     }
 }

@@ -46,7 +46,7 @@ final class UseArrowFunctionsFixer extends AbstractFixer
                 ),
             ],
             null,
-            'Risky when using `isset()` on outside variables that are not imported with `use ()`.'
+            'Risky when using `isset()` on outside variables that are not imported with `use ()`.',
         );
     }
 
@@ -75,6 +75,12 @@ final class UseArrowFunctionsFixer extends AbstractFixer
         $analyzer = new TokensAnalyzer($tokens);
 
         for ($index = $tokens->count() - 1; $index > 0; --$index) {
+            if ($tokens[$index]->isGivenKind(CT::T_ATTRIBUTE_CLOSE)) {
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ATTRIBUTE, $index);
+
+                continue;
+            }
+
             if (!$tokens[$index]->isGivenKind(\T_FUNCTION) || !$analyzer->isLambda($index)) {
                 continue;
             }
@@ -87,7 +93,7 @@ final class UseArrowFunctionsFixer extends AbstractFixer
                 $parametersStart = $tokens->getNextMeaningfulToken($parametersStart);
             }
 
-            $parametersEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $parametersStart);
+            $parametersEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $parametersStart);
 
             // Find `use ()` start and end
             // Abort if it contains reference variables
@@ -154,8 +160,14 @@ final class UseArrowFunctionsFixer extends AbstractFixer
                 continue;
             }
 
-            // Transform the function to an arrow function
+            // Abort if closure has `use()` clause and return statement includes external files.
+            // Converting such closures to arrow functions changes behaviour as the used variables
+            // are no longer exposed to the included file.
+            if (null !== $useStart && $this->containsIncludeOrRequire($tokens, $return, $semicolon)) {
+                continue;
+            }
 
+            // Transform the function to an arrow function
             $this->transform($tokens, $index, $useStart, $useEnd, $braceOpen, $return, $semicolon, $braceClose);
         }
     }
@@ -180,5 +192,19 @@ final class UseArrowFunctionsFixer extends AbstractFixer
         }
 
         $tokens[$index] = new Token([\T_FN, 'fn']);
+    }
+
+    /**
+     * Check if the return statement contains include/include_once/require/require_once.
+     */
+    private function containsIncludeOrRequire(Tokens $tokens, int $start, int $end): bool
+    {
+        for ($i = $start; $i < $end; ++$i) {
+            if ($tokens[$i]->isGivenKind([\T_INCLUDE, \T_INCLUDE_ONCE, \T_REQUIRE, \T_REQUIRE_ONCE])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

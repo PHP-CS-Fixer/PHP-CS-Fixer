@@ -33,7 +33,7 @@ final class ObjectOperatorWithoutWhitespaceFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'There should not be space before or after object operators `->` and `?->`.',
-            [new CodeSample("<?php \$a  ->  b;\n")]
+            [new CodeSample("<?php \$a  ->  b;\n")],
         );
     }
 

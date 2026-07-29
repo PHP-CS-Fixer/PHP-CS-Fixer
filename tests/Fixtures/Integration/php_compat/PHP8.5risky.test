@@ -1,0 +1,31 @@
+--TEST--
+PHP 8.5 risky test.
+--RULESET--
+{
+    "@PhpCsFixer:risky": true,
+    "@PHP8x5Migration:risky": true,
+    "psr_autoloading": false
+}
+--REQUIREMENTS--
+{"php": 80500}
+--EXPECT--
+<?php declare(strict_types=1);
+
+// https://wiki.php.net/rfc/closures_in_const_expr
+class ClosuresInAttibutes
+{
+    // we do not want to convert into arrow functions in attributes
+    #[Attribute123(someName: static function (): int { return 1; })]
+    public string $foo;
+}
+
+--INPUT--
+<?php
+
+// https://wiki.php.net/rfc/closures_in_const_expr
+class ClosuresInAttibutes
+{
+    // we do not want to convert into arrow functions in attributes
+    #[Attribute123(someName: static function (): int { return 1; })]
+    public string $foo;
+}

@@ -140,7 +140,7 @@ final class SingleSpaceAfterConstructFixer extends AbstractProxyFixer implements
 
                         throw  new  \Exception();
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -153,7 +153,7 @@ final class SingleSpaceAfterConstructFixer extends AbstractProxyFixer implements
                         'constructs' => [
                             'echo',
                         ],
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -166,9 +166,9 @@ final class SingleSpaceAfterConstructFixer extends AbstractProxyFixer implements
                         'constructs' => [
                             'yield_from',
                         ],
-                    ]
+                    ],
                 ),
-            ]
+            ],
         );
     }
 

@@ -16,6 +16,9 @@ namespace PhpCsFixer\Tests\AutoReview;
 
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * @internal
@@ -27,6 +30,9 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversNothing]
+#[Group('auto-review')]
+#[Group('covers-nothing')]
 final class DuplicatedTestsTest extends TestCase
 {
     /**
@@ -34,6 +40,7 @@ final class DuplicatedTestsTest extends TestCase
      *
      * @param class-string $className
      */
+    #[DataProviderExternal(ProjectCodeTest::class, 'provideTestClassCases')]
     public function testThatTestMethodsAreNotDuplicatedBasedOnContent(string $className): void
     {
         $alreadyFoundMethods = [];
@@ -75,8 +82,8 @@ final class DuplicatedTestsTest extends TestCase
             \sprintf(
                 "Duplicated methods found in %s:\n - %s",
                 $className,
-                implode("\n - ", $duplicates)
-            )
+                implode("\n - ", $duplicates),
+            ),
         );
     }
 
@@ -85,6 +92,7 @@ final class DuplicatedTestsTest extends TestCase
      *
      * @param class-string $className
      */
+    #[DataProviderExternal(ProjectCodeTest::class, 'provideTestClassCases')]
     public function testThatTestMethodsAreNotDuplicatedBasedOnName(string $className): void
     {
         $alreadyFoundMethods = [];
@@ -104,7 +112,7 @@ final class DuplicatedTestsTest extends TestCase
                 $duplicates[] = \sprintf(
                     'Method "%s" must be shorter, call "%s".',
                     $method->getName(),
-                    $alreadyFoundMethod
+                    $alreadyFoundMethod,
                 );
             }
             $alreadyFoundMethods[] = $method->getName();
@@ -116,8 +124,8 @@ final class DuplicatedTestsTest extends TestCase
             \sprintf(
                 "Duplicated methods found in %s:\n - %s",
                 $className,
-                implode("\n - ", $duplicates)
-            )
+                implode("\n - ", $duplicates),
+            ),
         );
     }
 
@@ -143,7 +151,7 @@ final class DuplicatedTestsTest extends TestCase
                  *  - single line methods
                  *  - single line methods with configs
                  */
-                && 4 < (int) $method->getEndLine() - (int) $method->getStartLine()
+                && 4 < (int) $method->getEndLine() - (int) $method->getStartLine(),
             );
 
             usort(

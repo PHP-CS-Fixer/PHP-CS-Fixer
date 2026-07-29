@@ -67,9 +67,9 @@ final class PhpdocParamOrderFixer extends AbstractFixer
                          */
                         function m($a, array $b, Foo $c) {}
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 
@@ -111,7 +111,7 @@ final class PhpdocParamOrderFixer extends AbstractFixer
      */
     private function getFunctionParamNames(Tokens $tokens, int $paramBlockStart): array
     {
-        $paramBlockEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $paramBlockStart);
+        $paramBlockEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $paramBlockStart);
 
         $paramNames = [];
         for (
@@ -182,7 +182,7 @@ final class PhpdocParamOrderFixer extends AbstractFixer
 
         // Detect superfluous annotations
         $invalidParams = array_values(
-            array_diff_key($paramAnnotations, $validParams)
+            array_diff_key($paramAnnotations, $validParams),
         );
 
         // Append invalid parameters to the (ordered) valid ones

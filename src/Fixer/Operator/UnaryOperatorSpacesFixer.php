@@ -58,7 +58,7 @@ final class UnaryOperatorSpacesFixer extends AbstractFixer implements Configurab
                         function foo($a, ...   $b) { return (--   $a) * ($b   ++);}
 
                         PHP,
-                    ['only_dec_inc' => false]
+                    ['only_dec_inc' => false],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -66,9 +66,9 @@ final class UnaryOperatorSpacesFixer extends AbstractFixer implements Configurab
                         function foo($a, ...   $b) { return (--   $a) * ($b   ++);}
 
                         PHP,
-                    ['only_dec_inc' => true]
+                    ['only_dec_inc' => true],
                 ),
-            ]
+            ],
         );
     }
 

@@ -62,7 +62,7 @@ final class NoUnneededBracesFixer extends AbstractFixer implements ConfigurableF
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -72,9 +72,9 @@ final class NoUnneededBracesFixer extends AbstractFixer implements ConfigurableF
                         }
 
                         PHP,
-                    ['namespaces' => true]
+                    ['namespaces' => true],
                 ),
-            ]
+            ],
         );
     }
 
@@ -184,7 +184,7 @@ final class NoUnneededBracesFixer extends AbstractFixer implements ConfigurableF
             return; // `;`
         }
 
-        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
         $afterCloseIndex = $tokens->getNextMeaningfulToken($closeIndex);
 
         if (null !== $afterCloseIndex && (!$tokens[$afterCloseIndex]->isGivenKind(\T_CLOSE_TAG) || null !== $tokens->getNextMeaningfulToken($afterCloseIndex))) {

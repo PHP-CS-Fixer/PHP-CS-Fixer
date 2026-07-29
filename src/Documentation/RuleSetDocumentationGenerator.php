@@ -67,7 +67,7 @@ final class RuleSetDocumentationGenerator
                     "\n%s\n%s\n\n%s",
                     $tag->title,
                     $titleLine,
-                    null === $tag->description ? '' : RstUtils::toRst($tag->description, 0)
+                    null === $tag->description ? '' : RstUtils::toRst($tag->description, 0),
                 );
             },
             $tags,
@@ -93,14 +93,16 @@ final class RuleSetDocumentationGenerator
                 foreach ($rules as $rule => $config) {
                     if (str_starts_with($rule, '@')) {
                         $ruleSetPath = $this->locator->getRuleSetsDocumentationFilePath($rule);
+                        \assert(false !== strrpos($ruleSetPath, '/'));
                         $ruleSetPath = substr($ruleSetPath, strrpos($ruleSetPath, '/'));
 
                         $doc .= "\n- `{$rule} <.{$ruleSetPath}>`_";
                     } else {
+                        \assert(isset($fixerNames[$rule]));
                         $path = Preg::replace(
                             '#^'.preg_quote($this->locator->getFixersDocumentationDirectoryPath(), '#').'/#',
                             './../rules/',
-                            $this->locator->getFixerDocumentationFilePath($fixerNames[$rule])
+                            $this->locator->getFixerDocumentationFilePath($fixerNames[$rule]),
                         );
 
                         $doc .= "\n- `{$rule} <{$path}>`_";
@@ -143,6 +145,7 @@ final class RuleSetDocumentationGenerator
             RST;
 
         foreach ($setDefinitions as $path => $definition) {
+            \assert(false !== strrpos($path, '/'));
             $path = substr($path, strrpos($path, '/'));
 
             $attributes = [];

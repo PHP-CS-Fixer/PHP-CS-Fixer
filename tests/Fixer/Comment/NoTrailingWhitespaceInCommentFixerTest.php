@@ -14,7 +14,10 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Comment;
 
+use PhpCsFixer\Fixer\Comment\NoTrailingWhitespaceInCommentFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -27,11 +30,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NoTrailingWhitespaceInCommentFixer::class)]
 final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -139,7 +144,7 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
      * Summary
      *'.'
      * Description
-    */'
+    */',
             ),
             str_replace(
                 "\n",
@@ -149,7 +154,7 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
      * Summary
      * '.'
      * Description
-    */'
+    */',
             ),
         ];
 
@@ -162,7 +167,7 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
      * Summary
      *'.'
      * Description
-    */'
+    */',
             ),
             str_replace(
                 "\n",
@@ -172,7 +177,7 @@ final class NoTrailingWhitespaceInCommentFixerTest extends AbstractFixerTestCase
      * Summary
      * '.'
      * Description
-    */'
+    */',
             ),
         ];
     }

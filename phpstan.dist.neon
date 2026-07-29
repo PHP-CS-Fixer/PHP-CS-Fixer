@@ -10,6 +10,7 @@ parameters:
         - src
         - tests
         - php-cs-fixer
+        - .php-cs-fixer.dist.php
         - dev-tools/phpstan/src
     excludePaths:
         - tests/Fixtures
@@ -46,6 +47,12 @@ parameters:
                 - src/Fixer/Import/GlobalNamespaceImportFixer.php
                 - src/Fixer/LanguageConstruct/GetClassToClassKeywordFixer.php
 
+        # We allow own config to eat internal rules/sets
+        -
+            message: '/(on|of) internal class.*(Set|Fixer)/'
+            paths:
+                - .php-cs-fixer.dist.php
+
         # Types related to tokens collections are purposefully narrowed, because we expect only tokens there
         - '/^Parameter #1 \$array \(array<int, PhpCsFixer\\(Tokenizer|Doctrine\\Annotation)+\\Token>\) of method PhpCsFixer\\(Tokenizer|Doctrine\\Annotation)+\\Tokens::fromArray\(\) should be contravariant with parameter \$array \(array<int, mixed>\) of method SplFixedArray<PhpCsFixer\\(Tokenizer|Doctrine\\Annotation)+\\Token>::fromArray\(\)$/'
         - '/^Parameter .* of method PhpCsFixer\\Tokenizer\\Tokens::offsetSet\(\) should be contravariant with parameter .* of method .*::offsetSet\(\)$/'
@@ -56,19 +63,48 @@ parameters:
             message: '/^Offset int(<0, max>)?\|null might not exist on (\$this\()?PhpCsFixer\\Tokenizer\\Tokens\)?\.$/'
             identifier: offsetAccess.notFound
 
-        # Type for Command::$defaultName and ::$defaultDescription can not be specified because parent property also does not have a type
-        -
-            message: '/^Property PhpCsFixer\\Console\\(Internal\\)?Command\\\w+Command::\$default(?:Name|Description) has no type specified\.$/'
-            identifier: missingType.property
         -
             message: '/^Unused PhpCsFixer\\[a-zA-Z\\]+Interface::[a-zA-Z]+$/'
             path: src
-            count: 17
+            count: 19
 
         -
             message: '/^AnonymousClass/'
             path: tests/
             identifier: phpCsFixer.internalTypeInPublicApi
+
+        -
+            message: '/deprecated class PhpCsFixer\\Utils/'
+            identifier: staticMethod.deprecatedClass
+
+        -
+            path: tests/
+            identifier: classConstant.deprecatedClass
+
+        -
+            path: tests/
+            identifier: method.deprecated
+
+        -
+            path: tests/
+            identifier: method.deprecatedClass
+
+        -
+            path: tests/
+            identifier: new.deprecatedClass
+
+        -
+            path: tests/
+            identifier: staticMethod.deprecated
+
+        -
+            path: tests/
+            identifier: staticMethod.deprecatedClass
+
+        -
+            path: tests/
+            rawMessage: 'Version requirement will always evaluate to false.'
+            identifier: phpunit.attributeRequiresPhpVersion
     tipsOfTheDay: false
     symfony:
         consoleApplicationLoader: dev-tools/phpstan/console-application.php

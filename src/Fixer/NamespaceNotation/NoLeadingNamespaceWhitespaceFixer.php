@@ -46,9 +46,9 @@ final class NoLeadingNamespaceWhitespaceFixer extends AbstractFixer implements W
                          namespace Test8a;
                             namespace Test8b;
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

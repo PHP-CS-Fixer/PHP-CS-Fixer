@@ -34,9 +34,9 @@ final class CompactNullableTypeDeclarationFixer extends AbstractFixer
             'Remove extra spaces in a nullable type declaration.',
             [
                 new CodeSample(
-                    "<?php\nfunction sample(? string \$str): ? string\n{}\n"
+                    "<?php\nfunction sample(? string \$str): ? string\n{}\n",
                 ),
-            ]
+            ],
         );
     }
 

@@ -27,6 +27,8 @@ use PhpCsFixer\PharCheckerInterface;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfoInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -37,6 +39,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(SelfUpdateCommand::class)]
 final class SelfUpdateCommandTest extends TestCase
 {
     private ?vfsStreamDirectory $root = null;
@@ -69,6 +72,7 @@ final class SelfUpdateCommandTest extends TestCase
     /**
      * @dataProvider provideCommandNameCases
      */
+    #[DataProvider('provideCommandNameCases')]
     public function testCommandName(string $name): void
     {
         $command = new SelfUpdateCommand(
@@ -98,6 +102,7 @@ final class SelfUpdateCommandTest extends TestCase
      *
      * @dataProvider provideExecuteCases
      */
+    #[DataProvider('provideExecuteCases')]
     public function testExecute(
         string $latestVersion,
         ?string $latestMinorVersion,
@@ -234,6 +239,7 @@ final class SelfUpdateCommandTest extends TestCase
      *
      * @dataProvider provideExecuteWhenNotAbleToGetLatestVersionsCases
      */
+    #[DataProvider('provideExecuteWhenNotAbleToGetLatestVersionsCases')]
     public function testExecuteWhenNotAbleToGetLatestVersions(
         bool $latestMajorVersionSuccess,
         bool $latestMinorVersionSuccess,
@@ -257,7 +263,7 @@ final class SelfUpdateCommandTest extends TestCase
 
         self::assertDisplay(
             "\033[37;41mUnable to determine newest version: Foo.\033[39;49m\n",
-            $commandTester
+            $commandTester,
         );
         self::assertSame(1, $commandTester->getStatusCode());
     }
@@ -309,6 +315,7 @@ final class SelfUpdateCommandTest extends TestCase
      *
      * @dataProvider provideExecuteWhenNotInstalledAsPharCases
      */
+    #[DataProvider('provideExecuteWhenNotInstalledAsPharCases')]
     public function testExecuteWhenNotInstalledAsPhar(array $input, bool $decorated): void
     {
         $command = new SelfUpdateCommand(
@@ -321,7 +328,7 @@ final class SelfUpdateCommandTest extends TestCase
 
         self::assertDisplay(
             "\033[37;41mSelf-update is available only for PHAR version.\033[39;49m\n",
-            $commandTester
+            $commandTester,
         );
         self::assertSame(1, $commandTester->getStatusCode());
     }
@@ -375,7 +382,7 @@ final class SelfUpdateCommandTest extends TestCase
 
         self::assertSame(
             $expectedDisplay,
-            $commandTester->getDisplay(true)
+            $commandTester->getDisplay(true),
         );
     }
 
@@ -505,7 +512,7 @@ final class SelfUpdateCommandTest extends TestCase
                         {
                             throw new \LogicException('Not implemented.');
                         }
-                    }
+                    },
                 ))->compareVersions($versionA, $versionB);
             }
         };

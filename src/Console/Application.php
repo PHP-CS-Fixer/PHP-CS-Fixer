@@ -20,6 +20,7 @@ use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\Command\HelpCommand;
 use PhpCsFixer\Console\Command\InitCommand;
 use PhpCsFixer\Console\Command\ListFilesCommand;
+use PhpCsFixer\Console\Command\ListRulesCommand;
 use PhpCsFixer\Console\Command\ListSetsCommand;
 use PhpCsFixer\Console\Command\SelfUpdateCommand;
 use PhpCsFixer\Console\Command\WorkerCommand;
@@ -50,8 +51,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class Application extends BaseApplication
 {
     public const NAME = 'PHP CS Fixer';
-    public const VERSION = '3.91.4-DEV';
-    public const VERSION_CODENAME = 'Folding Bike';
+    public const VERSION = '3.95.18-DEV';
+    public const VERSION_CODENAME = 'Adalbertus';
 
     /**
      * @readonly
@@ -72,11 +73,12 @@ final class Application extends BaseApplication
         $this->add(new FixCommand($this->toolInfo));
         $this->add(new InitCommand());
         $this->add(new ListFilesCommand($this->toolInfo));
+        $this->add(new ListRulesCommand());
         $this->add(new ListSetsCommand());
         $this->add(new SelfUpdateCommand(
             new NewVersionChecker(new GithubClient()),
             $this->toolInfo,
-            new PharChecker()
+            new PharChecker(),
         ));
         $this->add(new WorkerCommand($this->toolInfo));
     }
@@ -88,7 +90,7 @@ final class Application extends BaseApplication
             return $this->addCommand($command);
         }
 
-        return parent::add($command);
+        return parent::add($command); // @phpstan-ignore-line
     }
 
     public static function getMajorVersion(): int
@@ -230,7 +232,7 @@ final class Application extends BaseApplication
                     'code' => $e->getCode(),
                     'trace' => $e->getTraceAsString(),
                 ],
-                \JSON_THROW_ON_ERROR
+                \JSON_THROW_ON_ERROR,
             ));
 
             return;

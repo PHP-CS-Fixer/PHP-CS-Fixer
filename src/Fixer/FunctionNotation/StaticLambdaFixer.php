@@ -32,9 +32,23 @@ final class StaticLambdaFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Lambdas not (indirectly) referencing `$this` must be declared `static`.',
-            [new CodeSample("<?php\n\$a = function () use (\$b)\n{   echo \$b;\n};\n")],
+            [
+                new CodeSample(
+                    <<<'PHP'
+                        <?php
+                        $a = function () {
+                            echo $b;
+                        };
+
+                        $b = (function () {
+                            \assert($this !== null); // approach you can use to instruct PHP CS Fixer to not convert this lambda to static, e.g. when you see "Cannot bind an instance to a static closure" error caused by lambda handling outside of your control
+                        })->bindTo(new stdClass());
+
+                        PHP,
+                ),
+            ],
             null,
-            'Risky when using `->bindTo` on lambdas without referencing to `$this`.'
+            'Risky when using `->bindTo` on lambdas without referencing to `$this`.',
         );
     }
 
@@ -75,13 +89,13 @@ final class StaticLambdaFixer extends AbstractFixer
             }
 
             $argumentsStartIndex = $tokens->getNextTokenOfKind($index, ['(']);
-            $argumentsEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $argumentsStartIndex);
+            $argumentsEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $argumentsStartIndex);
 
             // figure out where the lambda starts and ends
 
             if ($tokens[$index]->isGivenKind(\T_FUNCTION)) {
                 $lambdaOpenIndex = $tokens->getNextTokenOfKind($argumentsEndIndex, ['{']);
-                $lambdaEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $lambdaOpenIndex);
+                $lambdaEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $lambdaOpenIndex);
             } else { // T_FN
                 $lambdaOpenIndex = $tokens->getNextTokenOfKind($argumentsEndIndex, [[\T_DOUBLE_ARROW]]);
                 $lambdaEndIndex = $analyzer->getLastTokenIndexOfArrowFunction($index);
@@ -97,7 +111,7 @@ final class StaticLambdaFixer extends AbstractFixer
                 [
                     new Token([\T_STATIC, 'static']),
                     new Token([\T_WHITESPACE, ' ']),
-                ]
+                ],
             );
 
             $index -= 4; // fixed after a lambda, closes candidate is at least 4 tokens before that
@@ -131,11 +145,11 @@ final class StaticLambdaFixer extends AbstractFixer
                 if ($i <= $openBraceIndex && $this->hasPossibleReferenceToThis(
                     $tokens,
                     $i,
-                    $openBraceIndex
+                    $openBraceIndex,
                 )) {
                     return true;
                 }
-                $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $openBraceIndex);
+                $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $openBraceIndex);
 
                 continue;
             }

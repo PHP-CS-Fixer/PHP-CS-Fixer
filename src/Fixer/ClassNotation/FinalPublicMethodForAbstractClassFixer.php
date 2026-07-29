@@ -64,12 +64,12 @@ final class FinalPublicMethodForAbstractClassFixer extends AbstractFixer
                             {}
                         }
 
-                        PHP
+                        PHP,
                 ),
             ],
             'Enforce API encapsulation in an inheritance architecture. '
             .'If you want to override a method, use the Template method pattern.',
-            'Risky when overriding `public` methods of `abstract` classes.'
+            'Risky when overriding `public` methods of `abstract` classes.',
         );
     }
 
@@ -94,7 +94,7 @@ final class FinalPublicMethodForAbstractClassFixer extends AbstractFixer
             }
 
             $classOpen = $tokens->getNextTokenOfKind($classIndex, ['{']);
-            $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
+            $classClose = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $classOpen);
 
             $this->fixClass($tokens, $classOpen, $classClose);
         }
@@ -105,7 +105,7 @@ final class FinalPublicMethodForAbstractClassFixer extends AbstractFixer
         for ($index = $classCloseIndex - 1; $index > $classOpenIndex; --$index) {
             // skip method contents
             if ($tokens[$index]->equals('}')) {
-                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_BRACE, $index);
 
                 continue;
             }
@@ -157,7 +157,7 @@ final class FinalPublicMethodForAbstractClassFixer extends AbstractFixer
                 [
                     new Token([\T_FINAL, 'final']),
                     new Token([\T_WHITESPACE, ' ']),
-                ]
+                ],
             );
         }
     }

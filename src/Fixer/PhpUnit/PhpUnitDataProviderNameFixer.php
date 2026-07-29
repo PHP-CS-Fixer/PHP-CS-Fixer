@@ -83,7 +83,7 @@ final class PhpUnitDataProviderNameFixer extends AbstractPhpUnitFixer implements
                     [
                         'prefix' => 'data_',
                         'suffix' => '',
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -117,11 +117,11 @@ final class PhpUnitDataProviderNameFixer extends AbstractPhpUnitFixer implements
                     [
                         'prefix' => 'provides',
                         'suffix' => 'Data',
-                    ]
+                    ],
                 ),
             ],
             null,
-            'Fixer could be risky if one is calling data provider by name as function.'
+            'Fixer could be risky if one is calling data provider by name as function.',
         );
     }
 

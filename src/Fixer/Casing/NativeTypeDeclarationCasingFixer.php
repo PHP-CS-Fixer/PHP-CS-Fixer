@@ -95,13 +95,13 @@ final class NativeTypeDeclarationCasingFixer extends AbstractFixer
             'Native type declarations should be used in the correct case.',
             [
                 new CodeSample(
-                    "<?php\nclass Bar {\n    public function Foo(CALLABLE \$bar): INT\n    {\n        return 1;\n    }\n}\n"
+                    "<?php\nclass Bar {\n    public function Foo(CALLABLE \$bar): INT\n    {\n        return 1;\n    }\n}\n",
                 ),
                 new VersionSpecificCodeSample(
                     "<?php\nclass Foo\n{\n    const INT BAR = 1;\n}\n",
                     new VersionSpecification(8_03_00),
                 ),
-            ]
+            ],
         );
     }
 

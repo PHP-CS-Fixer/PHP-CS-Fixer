@@ -144,7 +144,7 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
         $doc = new DocBlock(
             $tokens[$docCommentIndex]->getContent(),
             $namespace,
-            $namespaceUses
+            $namespaceUses,
         );
 
         return $doc->getAnnotationsOfType($name);
@@ -163,7 +163,7 @@ abstract class AbstractPhpdocToTypeDeclarationFixer extends AbstractFixer implem
 
         $newTokens = array_merge(
             $newTokens,
-            $this->createTokensFromRawType($type)->toArray()
+            $this->createTokensFromRawType($type)->toArray(),
         );
 
         // 'scalar's, 'void', 'iterable' and 'object' must be unqualified

@@ -1,4 +1,4 @@
-name: Sphinx
+name: Lint
 
 on:
   pull_request:
@@ -18,15 +18,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  sphinx:
-    name: Sphinx reStructuredText validity
-    runs-on: ubuntu-latest
+  lint-sphinx:
+    name: Sphinx
+    runs-on: ubuntu-slim
     timeout-minutes: 1
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Cache pip
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-sphinx-lint

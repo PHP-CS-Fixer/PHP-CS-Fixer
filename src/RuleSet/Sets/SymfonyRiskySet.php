@@ -30,6 +30,9 @@ final class SymfonyRiskySet extends AbstractRuleSetDefinition
             '@PSR12:risky' => true,
             'array_push' => true,
             'combine_nested_dirname' => true,
+            'declare_strict_types' => [
+                'strategy' => 'remove',
+            ],
             'dir_constant' => true,
             'ereg_to_preg' => true,
             'error_suppression' => true,
@@ -43,6 +46,7 @@ final class SymfonyRiskySet extends AbstractRuleSetDefinition
             'is_null' => true,
             'logical_operators' => true,
             'long_to_shorthand_operator' => true,
+            'modern_serialization_methods' => true,
             'modernize_strpos' => true,
             'modernize_types_casting' => true,
             'native_constant_invocation' => ['strict' => false],
@@ -68,9 +72,13 @@ final class SymfonyRiskySet extends AbstractRuleSetDefinition
             'psr_autoloading' => true,
             'self_accessor' => true,
             'set_type_to_cast' => true,
+            'static_lambda' => true,
             'string_length_to_empty' => true,
             'string_line_ending' => true,
             'ternary_to_elvis_operator' => true,
+            'void_return' => [
+                'fix_lambda' => false,
+            ],
         ];
     }
 

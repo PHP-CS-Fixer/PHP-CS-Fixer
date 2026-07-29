@@ -24,6 +24,7 @@ use PhpCsFixer\Runner\Parallel\ProcessPool;
 use PhpCsFixer\Runner\RunnerConfig;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
+use PHPUnit\Framework\Attributes\CoversClass;
 use React\EventLoop\StreamSelectLoop;
 use React\Socket\ServerInterface;
 use Symfony\Component\Console\Application;
@@ -36,6 +37,7 @@ use Symfony\Component\Console\Input\ArrayInput;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ProcessPool::class)]
 final class ProcessPoolTest extends TestCase
 {
     public bool $serverClosed = false;
@@ -132,10 +134,10 @@ final class ProcessPoolTest extends TestCase
             new RunnerConfig(
                 true,
                 false,
-                ParallelConfigFactory::sequential()
+                ParallelConfigFactory::sequential(),
             ),
             $identifier,
-            10_000
+            10_000,
         );
     }
 
@@ -185,7 +187,7 @@ final class ProcessPoolTest extends TestCase
                 /** @phpstan-ignore-next-line */
                 public function emit($event, array $arguments = []): void {}
             },
-            $onServerClose
+            $onServerClose,
         );
     }
 }

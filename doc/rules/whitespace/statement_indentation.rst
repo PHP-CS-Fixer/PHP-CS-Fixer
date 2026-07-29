@@ -107,12 +107,12 @@ The rule is part of the following rule sets:
 - `@PER-CS2x0 <./../../ruleSets/PER-CS2x0.rst>`_
 - `@PER-CS3.0 <./../../ruleSets/PER-CS3.0.rst>`_ *(deprecated)*
 - `@PER-CS3x0 <./../../ruleSets/PER-CS3x0.rst>`_
-- `@PSR2 <./../../ruleSets/PSR2.rst>`_
-- `@PSR12 <./../../ruleSets/PSR12.rst>`_
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
 
   ``['stick_comment_to_next_continuous_control_statement' => true]``
 
+- `@PSR2 <./../../ruleSets/PSR2.rst>`_
+- `@PSR12 <./../../ruleSets/PSR12.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
   ``['stick_comment_to_next_continuous_control_statement' => true]``

@@ -36,9 +36,9 @@ final class NoAliasLanguageConstructCallFixer extends AbstractFixer
                         <?php
                         die;
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

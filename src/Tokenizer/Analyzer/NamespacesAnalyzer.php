@@ -45,7 +45,7 @@ final class NamespacesAnalyzer
             $shortName = end($declarationParts);
 
             if ($tokens[$declarationEndIndex]->equals('{')) {
-                $scopeEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $declarationEndIndex);
+                $scopeEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $declarationEndIndex);
             } else {
                 $scopeEndIndex = $tokens->getNextTokenOfKind($declarationEndIndex, [[\T_NAMESPACE]]);
                 if (null === $scopeEndIndex) {
@@ -60,7 +60,7 @@ final class NamespacesAnalyzer
                 $index,
                 $declarationEndIndex,
                 $index,
-                $scopeEndIndex
+                $scopeEndIndex,
             );
 
             // Continue the analysis after the end of this namespace to find the next one

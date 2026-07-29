@@ -123,7 +123,7 @@ final class ModifierKeywordsFixer extends AbstractFixer implements ConfigurableF
                         }
 
                         PHP,
-                    new VersionSpecification(8_02_00)
+                    new VersionSpecification(8_02_00),
                 ),
                 new VersionSpecificCodeSample(
                     <<<'PHP'
@@ -153,7 +153,7 @@ final class ModifierKeywordsFixer extends AbstractFixer implements ConfigurableF
                         }
 
                         PHP,
-                    new VersionSpecification(8_04_00)
+                    new VersionSpecification(8_04_00),
                 ),
                 new VersionSpecificCodeSample(
                     <<<'PHP'
@@ -165,7 +165,7 @@ final class ModifierKeywordsFixer extends AbstractFixer implements ConfigurableF
 
                         PHP,
                     new VersionSpecification(8_04_00),
-                    ['general_visibility_when_set_visibility_present' => 'omit']
+                    ['general_visibility_when_set_visibility_present' => 'omit'],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -176,9 +176,9 @@ final class ModifierKeywordsFixer extends AbstractFixer implements ConfigurableF
                         }
 
                         PHP,
-                    ['elements' => ['const']]
+                    ['elements' => ['const']],
                 ),
-            ]
+            ],
         );
     }
 
@@ -215,7 +215,7 @@ final class ModifierKeywordsFixer extends AbstractFixer implements ConfigurableF
             (new FixerOptionBuilder(
                 'general_visibility_when_set_visibility_present',
                 'How to handle the general visibility modifier of a property that also declares a set-visibility modifier:'
-                    .' `require` to always declare it, `omit` to drop the redundant `public`, `keep` to leave it as it is.'
+                    .' `require` to always declare it, `omit` to drop the redundant `public`, `keep` to leave it as it is.',
             ))
                 ->setAllowedValues(['keep', 'omit', 'require'])
                 ->setDefault('require')

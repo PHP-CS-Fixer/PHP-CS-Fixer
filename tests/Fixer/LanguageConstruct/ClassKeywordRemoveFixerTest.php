@@ -14,7 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\LanguageConstruct;
 
+use PhpCsFixer\Fixer\LanguageConstruct\ClassKeywordRemoveFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -27,11 +31,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ClassKeywordRemoveFixer::class)]
 final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -317,9 +323,10 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @requires PHP <8.0
+     * @requires PHP < 8.0.0
      */
-    public function testFixPrePHP80(): void
+    #[RequiresPhp('< 8.0.0')]
+    public function testFixPrePHP8x0(): void
     {
         $this->doTest(
             "<?php echo 'DateTime'
@@ -329,13 +336,14 @@ final class ClassKeywordRemoveFixerTest extends AbstractFixerTestCase
             '<?php echo \
 DateTime:: # a
  /* b */ class?>
-'
+',
         );
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[RequiresPhp('>= 8.0.0')]
     public function testNotFixPHP8(): void
     {
         $this->doTest(
@@ -346,7 +354,7 @@ DateTime:: # a
             '<?php
             echo Thing::class;
             echo $thing::class;
-            '
+            ',
         );
     }
 }

@@ -85,6 +85,8 @@ final class Preg
      *     )
      * ) $matches
      *
+     * @return 0|positive-int
+     *
      * @throws PregException
      */
     public static function matchAll(string $pattern, string $subject, ?array &$matches = null, int $flags = \PREG_PATTERN_ORDER, int $offset = 0): int
@@ -207,12 +209,12 @@ final class Preg
         $message = \sprintf(
             '(code: %d) %s',
             $code,
-            preg_replace('~preg_[a-z_]+[()]{2}: ~', '', $errorMessage)
+            preg_replace('~preg_[a-z_]+[()]{2}: ~', '', $errorMessage),
         );
 
         return new PregException(
             \sprintf('%s(): Invalid PCRE pattern "%s": %s (version: %s)', $method, $pattern, $message, \PCRE_VERSION),
-            $code
+            $code,
         );
     }
 }

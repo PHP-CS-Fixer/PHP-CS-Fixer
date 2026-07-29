@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\RuleSet\Sets;
 
-use PhpCsFixer\Fixer\PhpUnit\PhpUnitTargetVersion;
 use PhpCsFixer\RuleSet\AbstractMigrationSetDefinition;
 
 /**
@@ -28,9 +27,6 @@ final class PHPUnit11x0MigrationRiskySet extends AbstractMigrationSetDefinition
     {
         return [
             '@PHPUnit10x0Migration:risky' => true,
-            'php_unit_test_case_static_method_calls' => [
-                'target' => PhpUnitTargetVersion::VERSION_11_0,
-            ],
         ];
     }
 }

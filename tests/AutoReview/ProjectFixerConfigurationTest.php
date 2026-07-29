@@ -20,6 +20,8 @@ use PhpCsFixer\Fixer\InternalFixerInterface;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\ToolInfo;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * @internal
@@ -31,6 +33,9 @@ use PhpCsFixer\ToolInfo;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversNothing]
+#[Group('auto-review')]
+#[Group('covers-nothing')]
 final class ProjectFixerConfigurationTest extends TestCase
 {
     protected function tearDown(): void
@@ -44,7 +49,7 @@ final class ProjectFixerConfigurationTest extends TestCase
         \Closure::bind(
             static fn () => RuleSets::$customRuleSetDefinitions = [],
             null,
-            RuleSets::class
+            RuleSets::class,
         )();
     }
 
@@ -60,7 +65,7 @@ final class ProjectFixerConfigurationTest extends TestCase
             $config,
             [],
             __DIR__,
-            new ToolInfo()
+            new ToolInfo(),
         );
 
         $resolver->getFixers();

@@ -63,7 +63,7 @@ final class PhpUnitDataProviderStaticFixer extends AbstractPhpUnitFixer implemen
                             public function provideSomethingCases() {}
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -79,7 +79,7 @@ final class PhpUnitDataProviderStaticFixer extends AbstractPhpUnitFixer implemen
                         }
 
                         PHP,
-                    ['force' => true]
+                    ['force' => true],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -95,11 +95,11 @@ final class PhpUnitDataProviderStaticFixer extends AbstractPhpUnitFixer implemen
                         }
 
                         PHP,
-                    ['force' => false]
+                    ['force' => false],
                 ),
             ],
             null,
-            'Fixer could be risky if one is calling data provider function dynamically.'
+            'Fixer could be risky if one is calling data provider function dynamically.',
         );
     }
 
@@ -115,7 +115,7 @@ final class PhpUnitDataProviderStaticFixer extends AbstractPhpUnitFixer implemen
                 'force',
                 'Whether to make the data providers static even if they have a dynamic class call'
                 .' (may introduce fatal error "using $this when not in object context",'
-                .' and you may have to adjust the code manually by converting dynamic calls to static ones).'
+                .' and you may have to adjust the code manually by converting dynamic calls to static ones).',
             ))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
@@ -132,7 +132,7 @@ final class PhpUnitDataProviderStaticFixer extends AbstractPhpUnitFixer implemen
         foreach ($dataProviderAnalyzer->getDataProviders($tokens, $startIndex, $endIndex) as $dataProviderDefinitionIndex) {
             $methodStartIndex = $tokens->getNextTokenOfKind($dataProviderDefinitionIndex->getNameIndex(), ['{']);
             if (null !== $methodStartIndex) {
-                $methodEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $methodStartIndex);
+                $methodEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $methodStartIndex);
 
                 if (false === $this->configuration['force'] && null !== $tokens->findSequence([[\T_VARIABLE, '$this']], $methodStartIndex, $methodEndIndex)) {
                     continue;

@@ -51,12 +51,12 @@ final class PhpUnitSetUpTearDownVisibilityFixer extends AbstractPhpUnitFixer
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
             ],
             null,
             'This fixer may change functions named `setUp()` or `tearDown()` outside of PHPUnit tests, '
-            .'when a class is wrongly seen as a PHPUnit test.'
+            .'when a class is wrongly seen as a PHPUnit test.',
         );
     }
 
@@ -78,7 +78,7 @@ final class PhpUnitSetUpTearDownVisibilityFixer extends AbstractPhpUnitFixer
             }
 
             if ($tokens[$index]->equals('{')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
 
                 continue;
             }

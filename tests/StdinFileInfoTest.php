@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\StdinFileInfo;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @author ntzm
@@ -25,6 +26,7 @@ use PhpCsFixer\StdinFileInfo;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(StdinFileInfo::class)]
 final class StdinFileInfoTest extends TestCase
 {
     public function testToString(): void

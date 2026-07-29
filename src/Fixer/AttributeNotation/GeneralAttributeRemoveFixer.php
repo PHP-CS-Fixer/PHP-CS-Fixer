@@ -62,7 +62,7 @@ final class GeneralAttributeRemoveFixer extends AbstractFixer implements Configu
                         function foo() {}
 
                         PHP,
-                    ['attributes' => ['\A\B\Foo']]
+                    ['attributes' => ['\A\B\Foo']],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -74,9 +74,9 @@ final class GeneralAttributeRemoveFixer extends AbstractFixer implements Configu
                         function foo() {}
 
                         PHP,
-                    ['attributes' => ['\A\B\Foo', 'A\B\Bar']]
+                    ['attributes' => ['\A\B\Foo', 'A\B\Bar']],
                 ),
-            ]
+            ],
         );
     }
 
@@ -92,10 +92,6 @@ final class GeneralAttributeRemoveFixer extends AbstractFixer implements Configu
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        if (0 === \count($this->configuration['attributes'])) {
-            return;
-        }
-
         $index = 0;
 
         while (null !== $index = $tokens->getNextTokenOfKind($index, [[\T_ATTRIBUTE]])) {

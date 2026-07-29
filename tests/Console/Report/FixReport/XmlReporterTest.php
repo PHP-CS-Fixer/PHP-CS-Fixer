@@ -18,6 +18,7 @@ use PhpCsFixer\Console\Application;
 use PhpCsFixer\Console\Report\FixReport\ReporterInterface;
 use PhpCsFixer\Console\Report\FixReport\XmlReporter;
 use PhpCsFixer\PhpunitConstraintXmlMatchesXsd\Constraint\XmlMatchesXsd;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
@@ -30,6 +31,7 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(XmlReporter::class)]
 final class XmlReporterTest extends AbstractReporterTestCase
 {
     private static ?string $xsd = null;
@@ -197,6 +199,20 @@ final class XmlReporterTest extends AbstractReporterTestCase
               <time unit="s">
                 <total value="1.234"/>
               </time>
+              <memory value="2.5" unit="MB"/>
+            </report>
+            XML;
+    }
+
+    protected static function createDryRunWithNoTimeReport(): string
+    {
+        $about = Application::getAbout();
+
+        return <<<XML
+            <?xml version="1.0" encoding="UTF-8"?>
+            <report>
+              <about value="{$about}"/>
+              <files />
               <memory value="2.5" unit="MB"/>
             </report>
             XML;

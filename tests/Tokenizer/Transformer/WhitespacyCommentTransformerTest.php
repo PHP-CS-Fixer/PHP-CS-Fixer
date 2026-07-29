@@ -17,6 +17,9 @@ namespace PhpCsFixer\Tests\Tokenizer\Transformer;
 use PhpCsFixer\Tests\Test\AbstractTransformerTestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PhpCsFixer\Tokenizer\Transformer\WhitespacyCommentTransformer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @phpstan-import-type _PhpTokenArray from Token
@@ -29,6 +32,7 @@ use PhpCsFixer\Tokenizer\Tokens;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(WhitespacyCommentTransformer::class)]
 final class WhitespacyCommentTransformerTest extends AbstractTransformerTestCase
 {
     /**
@@ -36,6 +40,7 @@ final class WhitespacyCommentTransformerTest extends AbstractTransformerTestCase
      *
      * @dataProvider provideProcessCases
      */
+    #[DataProvider('provideProcessCases')]
     public function testProcess(string $source, array $expectedTokens): void
     {
         $tokens = Tokens::fromCode($source);

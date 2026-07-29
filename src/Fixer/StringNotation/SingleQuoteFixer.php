@@ -62,9 +62,9 @@ final class SingleQuoteFixer extends AbstractFixer implements ConfigurableFixerI
                 new CodeSample($codeSample),
                 new CodeSample(
                     $codeSample,
-                    ['strings_containing_single_quote_chars' => true]
+                    ['strings_containing_single_quote_chars' => true],
                 ),
-            ]
+            ],
         );
     }
 

@@ -24,6 +24,8 @@ Allowed types: ``list<string>``
 
 Default value: ``['param', 'throws', 'return']``
 
+Default value (future-mode): ``['param', 'return', 'throws']``
+
 Examples
 --------
 

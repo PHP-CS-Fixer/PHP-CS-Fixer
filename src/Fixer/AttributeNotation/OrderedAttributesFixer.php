@@ -140,7 +140,7 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
                     if (self::ORDER_CUSTOM === $value && [] === $options['order']) {
                         throw new InvalidFixerConfigurationException(
                             $fixerName,
-                            'The custom order strategy requires providing `order` option with a list of attributes\'s FQNs.'
+                            'The custom order strategy requires providing `order` option with a list of attributes\'s FQNs.',
                         );
                     }
 
@@ -244,13 +244,9 @@ final class OrderedAttributesFixer extends AbstractFixer implements Configurable
                 return $a['name'] <=> $b['name'];
             }
 
-            if (self::ORDER_CUSTOM === $sortAlgorithm) {
-                return
-                    ($this->configuration['order'][$a['name']] ?? \PHP_INT_MAX)
-                    <=> ($this->configuration['order'][$b['name']] ?? \PHP_INT_MAX);
-            }
-
-            throw new \InvalidArgumentException(\sprintf('Invalid sort algorithm "%s" provided.', $sortAlgorithm));
+            return
+                ($this->configuration['order'][$a['name']] ?? \PHP_INT_MAX)
+                <=> ($this->configuration['order'][$b['name']] ?? \PHP_INT_MAX);
         });
 
         return $elements;

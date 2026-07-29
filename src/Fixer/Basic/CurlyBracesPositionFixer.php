@@ -74,7 +74,7 @@ final class CurlyBracesPositionFixer extends AbstractProxyFixer implements Confi
             'Curly braces must be placed as configured.',
             $fixerDefinition->getCodeSamples(),
             $fixerDefinition->getDescription(),
-            $fixerDefinition->getRiskyDescription()
+            $fixerDefinition->getRiskyDescription(),
         );
     }
 

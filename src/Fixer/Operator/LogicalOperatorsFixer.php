@@ -40,11 +40,11 @@ final class LogicalOperatorsFixer extends AbstractFixer
                         if ($a == "foo" and ($b == "bar" or $c == "baz")) {
                         }
 
-                        PHP
+                        PHP,
                 ),
             ],
             null,
-            'Risky, because you must double-check if using and/or with lower precedence was intentional.'
+            'Risky, because you must double-check if using and/or with lower precedence was intentional.',
         );
     }
 

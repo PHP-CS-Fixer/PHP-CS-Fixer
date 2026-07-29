@@ -71,7 +71,7 @@ final class FixerConfigurationResolver implements FixerConfigurationResolverInte
                     Future::triggerDeprecation(new \RuntimeException(\sprintf(
                         'Option "%s" is deprecated, use "%s" instead.',
                         $alias,
-                        $name
+                        $name,
                     )));
 
                     $configuration[$name] = $configuration[$alias];

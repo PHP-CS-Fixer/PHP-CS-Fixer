@@ -17,6 +17,8 @@ namespace PhpCsFixer\Tests\FixerDefinition;
 use PhpCsFixer\FixerDefinition\VersionSpecificationInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Andreas Möller <am@localheinz.com>
@@ -27,6 +29,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(VersionSpecificCodeSample::class)]
 final class VersionSpecificCodeSampleTest extends TestCase
 {
     public function testConstructorSetsValues(): void
@@ -39,7 +42,7 @@ final class VersionSpecificCodeSampleTest extends TestCase
         $codeSample = new VersionSpecificCodeSample(
             $code,
             $this->createVersionSpecificationDouble(),
-            $configuration
+            $configuration,
         );
 
         self::assertSame($code, $codeSample->getCode());
@@ -50,7 +53,7 @@ final class VersionSpecificCodeSampleTest extends TestCase
     {
         $codeSample = new VersionSpecificCodeSample(
             '<php echo $foo;',
-            $this->createVersionSpecificationDouble()
+            $this->createVersionSpecificationDouble(),
         );
 
         self::assertNull($codeSample->getConfiguration());
@@ -59,11 +62,12 @@ final class VersionSpecificCodeSampleTest extends TestCase
     /**
      * @dataProvider provideIsSuitableForUsesVersionSpecificationCases
      */
+    #[DataProvider('provideIsSuitableForUsesVersionSpecificationCases')]
     public function testIsSuitableForUsesVersionSpecification(int $version, bool $isSatisfied): void
     {
         $codeSample = new VersionSpecificCodeSample(
             '<php echo $foo;',
-            $this->createVersionSpecificationDouble($isSatisfied)
+            $this->createVersionSpecificationDouble($isSatisfied),
         );
 
         self::assertSame($isSatisfied, $codeSample->isSuitableFor($version));

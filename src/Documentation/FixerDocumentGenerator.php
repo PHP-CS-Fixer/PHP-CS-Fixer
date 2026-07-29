@@ -21,9 +21,11 @@ use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerConfiguration\AliasedFixerOption;
 use PhpCsFixer\FixerConfiguration\AllowedValueSubset;
 use PhpCsFixer\FixerConfiguration\DeprecatedFixerOptionInterface;
+use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\FixerDefinition\CodeSampleInterface;
 use PhpCsFixer\FixerDefinition\FileSpecificCodeSampleInterface;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSampleInterface;
+use PhpCsFixer\Future;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\AutomaticRuleSetDefinitionInterface;
 use PhpCsFixer\RuleSet\DeprecatedRuleSetDefinitionInterface;
@@ -96,10 +98,10 @@ final class FixerDocumentGenerator
                     "\n%s\n%s\n\n%s",
                     $tag->title,
                     $titleLine,
-                    null === $tag->description ? '' : RstUtils::toRst($tag->description, 0)
+                    null === $tag->description ? '' : RstUtils::toRst($tag->description, 0),
                 );
             },
-            $tags
+            $tags,
         );
 
         if ([] !== $warnings) {
@@ -109,6 +111,8 @@ final class FixerDocumentGenerator
         }
 
         if ($fixer instanceof ConfigurableFixerInterface) {
+            $fixerInFutureMode = self::createFixerInFutureMode($fixer);
+
             $doc .= <<<'RST'
 
 
@@ -157,8 +161,16 @@ final class FixerDocumentGenerator
                 }
 
                 if ($option->hasDefault()) {
-                    $default = Utils::toString($option->getDefault());
-                    $optionInfo .= "\n\nDefault value: ``{$default}``";
+                    $optionInfo .= \sprintf("\n\nDefault value: ``%s``", Utils::toString($option->getDefault()));
+
+                    $optionInFutureMode = array_find(
+                        $fixerInFutureMode->getConfigurationDefinition()->getOptions(),
+                        static fn (FixerOptionInterface $opt): bool => $option->getName() === $opt->getName(),
+                    );
+                    \assert(null !== $optionInFutureMode); // if rule exist in v3, shall exist in future mode too, as it does not remove options
+                    if ($optionInFutureMode->getDefault() !== $option->getDefault()) {
+                        $optionInfo .= \sprintf("\n\nDefault value (future-mode): ``%s``", Utils::toString($optionInFutureMode->getDefault()));
+                    }
                 } else {
                     $optionInfo .= "\n\nThis option is required.";
                 }
@@ -188,7 +200,7 @@ final class FixerDocumentGenerator
                     } else {
                         $doc .= \sprintf(
                             "\n\nWith configuration: ``%s``.",
-                            Utils::toString($sample->getConfiguration())
+                            Utils::toString($sample->getConfiguration()),
                         );
                     }
                 }
@@ -212,6 +224,7 @@ final class FixerDocumentGenerator
 
             foreach ($ruleSetConfigs as $set => $config) {
                 $ruleSetPath = $this->locator->getRuleSetsDocumentationFilePath($set);
+                \assert(false !== strrpos($ruleSetPath, '/'));
                 $ruleSetPath = substr($ruleSetPath, strrpos($ruleSetPath, '/'));
 
                 \assert(isset($this->ruleSetDefinitions[$set]));
@@ -238,6 +251,7 @@ final class FixerDocumentGenerator
         $reflectionObject = new \ReflectionObject($fixer);
         $className = str_replace('\\', '\\\\', $reflectionObject->getName());
         $fileName = $reflectionObject->getFileName();
+        \assert(false !== $fileName);
         $fileName = str_replace('\\', '/', $fileName);
         $fileName = substr($fileName, (int) strrpos($fileName, '/src/Fixer/') + 1);
         $fileName = "`{$className} <./../../../{$fileName}>`_";
@@ -273,12 +287,18 @@ final class FixerDocumentGenerator
         static $ruleSetCache = null;
 
         if (null === $ruleSetCache) {
+            $definitionNames = array_keys(
+                array_filter(
+                    RuleSets::getSetDefinitions(),
+                    static fn (RuleSetDefinitionInterface $definition): bool => !$definition instanceof AutomaticRuleSetDefinitionInterface,
+                ),
+            );
             $ruleSetCache = array_combine(
-                RuleSets::getSetDefinitionNames(),
+                $definitionNames,
                 array_map(
                     static fn (string $name): RuleSet => new RuleSet([$name => true]),
-                    RuleSets::getSetDefinitionNames()
-                )
+                    $definitionNames,
+                ),
             );
         }
 
@@ -329,7 +349,7 @@ final class FixerDocumentGenerator
 
             $tags = array_map(
                 static fn (DocumentationTag $tag): string => $tag->type,
-                DocumentationTagGenerator::analyseRule($fixer)
+                DocumentationTagGenerator::analyseRule($fixer),
             );
 
             $attributes = 0 === \count($tags)
@@ -347,6 +367,24 @@ final class FixerDocumentGenerator
         }
 
         return "{$documentation}\n";
+    }
+
+    /**
+     * @template T of FixerInterface
+     *
+     * @param T $fixer
+     *
+     * @return T
+     */
+    private static function createFixerInFutureMode(FixerInterface $fixer): FixerInterface
+    {
+        $object = Future::runWithEnforcedFutureMode(
+            static fn () => (new \ReflectionObject($fixer))->newInstance(),
+        );
+
+        \assert($object instanceof $fixer);
+
+        return $object;
     }
 
     private function generateSampleDiff(FixerInterface $fixer, CodeSampleInterface $sample, int $sampleNumber, string $ruleName): string

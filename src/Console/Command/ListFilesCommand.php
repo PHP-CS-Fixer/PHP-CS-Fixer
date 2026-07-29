@@ -35,19 +35,14 @@ use Symfony\Component\Filesystem\Path;
 #[AsCommand(name: 'list-files', description: 'List all files being fixed by the given config.')]
 final class ListFilesCommand extends Command
 {
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultName = 'list-files';
-
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultDescription = 'List all files being fixed by the given config.';
-
     private ConfigInterface $defaultConfig;
 
     private ToolInfoInterface $toolInfo;
 
     public function __construct(ToolInfoInterface $toolInfo)
     {
-        parent::__construct();
+        parent::__construct('list-files');
+        $this->setDescription('List all files being fixed by the given config.');
 
         $this->defaultConfig = new Config();
         $this->toolInfo = $toolInfo;
@@ -58,7 +53,7 @@ final class ListFilesCommand extends Command
         $this->setDefinition(
             [
                 new InputOption('config', '', InputOption::VALUE_REQUIRED, 'The path to a .php-cs-fixer.php file.'),
-            ]
+            ],
         );
     }
 
@@ -75,7 +70,7 @@ final class ListFilesCommand extends Command
                 'config' => $passedConfig,
             ],
             $cwd,
-            $this->toolInfo
+            $this->toolInfo,
         );
 
         $finder = $resolver->getFinder();

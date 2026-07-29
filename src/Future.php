@@ -23,6 +23,8 @@ namespace PhpCsFixer;
  */
 final class Future
 {
+    private static bool $isFutureModeEnforced = false;
+
     /**
      * @var array<string, true>
      */
@@ -33,11 +35,25 @@ final class Future
         // cannot create instance
     }
 
+    /**
+     * @return mixed
+     */
+    public static function runWithEnforcedFutureMode(callable $callback)
+    {
+        try {
+            self::$isFutureModeEnforced = true;
+
+            return $callback();
+        } finally {
+            self::$isFutureModeEnforced = false;
+        }
+    }
+
     public static function isFutureModeEnabled(): bool
     {
-        return filter_var(
+        return self::$isFutureModeEnforced || filter_var(
             getenv('PHP_CS_FIXER_FUTURE_MODE'),
-            \FILTER_VALIDATE_BOOL
+            \FILTER_VALIDATE_BOOL,
         );
     }
 
@@ -47,7 +63,7 @@ final class Future
             throw new \RuntimeException(
                 'Your are using something deprecated, see previous exception. Aborting execution because `PHP_CS_FIXER_FUTURE_MODE` environment variable is set.',
                 0,
-                $futureException
+                $futureException,
             );
         }
 

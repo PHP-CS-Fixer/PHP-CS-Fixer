@@ -69,7 +69,7 @@ final class NullableTypeDeclarationFixer extends AbstractFixer implements Config
                         function bar(null|int $value, null|\Closure $callable): int|null {}
 
                         PHP,
-                    new VersionSpecification(8_00_00)
+                    new VersionSpecification(8_00_00),
                 ),
                 new VersionSpecificCodeSample(
                     <<<'PHP'
@@ -78,7 +78,7 @@ final class NullableTypeDeclarationFixer extends AbstractFixer implements Config
 
                         PHP,
                     new VersionSpecification(8_00_00),
-                    ['syntax' => self::OPTION_SYNTAX_UNION]
+                    ['syntax' => self::OPTION_SYNTAX_UNION],
                 ),
                 new VersionSpecificCodeSample(
                     <<<'PHP'
@@ -93,9 +93,9 @@ final class NullableTypeDeclarationFixer extends AbstractFixer implements Config
 
                         PHP,
                     new VersionSpecification(8_00_00),
-                    ['syntax' => self::OPTION_SYNTAX_QUESTION_MARK]
+                    ['syntax' => self::OPTION_SYNTAX_QUESTION_MARK],
                 ),
-            ]
+            ],
         );
     }
 
@@ -161,8 +161,8 @@ final class NullableTypeDeclarationFixer extends AbstractFixer implements Config
             static fn (array $element): string => 'method' === $element['type'] ? 'function' : $element['type'],
             array_filter(
                 $tokensAnalyzer->getClassyElements(),
-                static fn (array $element): bool => \in_array($element['type'], ['method', 'property'], true)
-            )
+                static fn (array $element): bool => \in_array($element['type'], ['method', 'property'], true),
+            ),
         );
 
         foreach ($tokens as $index => $token) {
@@ -279,7 +279,7 @@ final class NullableTypeDeclarationFixer extends AbstractFixer implements Config
         $tokens->overrideRange(
             $typeAnalysis->getStartIndex(),
             $typeAnalysis->getEndIndex(),
-            $this->createTypeDeclarationTokens($normalizedType, $isQuestionMarkSyntax)
+            $this->createTypeDeclarationTokens($normalizedType, $isQuestionMarkSyntax),
         );
 
         $prevStartIndex = $typeAnalysis->getStartIndex() - 1;

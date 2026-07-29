@@ -60,7 +60,7 @@ final class NoUnneededCurlyBracesFixer extends AbstractProxyFixer implements Con
             'Removes unneeded curly braces that are superfluous and aren\'t part of a control structure\'s body.',
             $fixerDefinition->getCodeSamples(),
             $fixerDefinition->getDescription(),
-            $fixerDefinition->getRiskyDescription()
+            $fixerDefinition->getRiskyDescription(),
         );
     }
 

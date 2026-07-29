@@ -52,13 +52,13 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer implements Configurab
             'Replace control structure alternative syntax to use braces.',
             [
                 new CodeSample(
-                    "<?php\nif(true):echo 't';else:echo 'f';endif;\n"
+                    "<?php\nif(true):echo 't';else:echo 'f';endif;\n",
                 ),
                 new CodeSample(
                     "<?php if (\$condition): ?>\nLorem ipsum.\n<?php endif; ?>\n",
-                    ['fix_non_monolithic_code' => true]
+                    ['fix_non_monolithic_code' => true],
                 ),
-            ]
+            ],
         );
     }
 
@@ -103,7 +103,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer implements Configurab
         $nextToken = $tokens[$nextIndex];
 
         return $nextToken->equals('(')
-            ? $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $nextIndex)
+            ? $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $nextIndex)
             : $structureTokenIndex; // return if next token is not opening parenthesis
     }
 
@@ -119,7 +119,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer implements Configurab
     {
         if ($token->isGivenKind([\T_IF, \T_FOREACH, \T_WHILE, \T_FOR, \T_SWITCH, \T_DECLARE])) {
             $openIndex = $tokens->getNextTokenOfKind($index, ['(']);
-            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openIndex);
             $afterParenthesisIndex = $tokens->getNextMeaningfulToken($closeIndex);
             $afterParenthesis = $tokens[$afterParenthesisIndex];
 
@@ -226,7 +226,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer implements Configurab
         $tokens->clearAt($index);
         $tokens->insertAt(
             $index,
-            $items
+            $items,
         );
 
         // increment the position of the colon by number of items inserted
@@ -241,7 +241,7 @@ final class NoAlternativeSyntaxFixer extends AbstractFixer implements Configurab
         $tokens->clearAt($colonIndex);
         $tokens->insertAt(
             $colonIndex,
-            $items
+            $items,
         );
     }
 }

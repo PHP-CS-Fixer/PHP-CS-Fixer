@@ -99,12 +99,12 @@ The rule is part of the following rule sets:
 
   ``['group_to_single_imports' => false]``
 
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@PSR2 <./../../ruleSets/PSR2.rst>`_
 - `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
 
   ``['group_to_single_imports' => false]``
 
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
 References

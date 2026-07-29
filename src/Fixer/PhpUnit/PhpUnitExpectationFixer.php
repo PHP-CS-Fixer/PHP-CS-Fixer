@@ -76,7 +76,7 @@ final class PhpUnitExpectationFixer extends AbstractPhpUnitFixer implements Conf
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -97,7 +97,7 @@ final class PhpUnitExpectationFixer extends AbstractPhpUnitFixer implements Conf
                         }
 
                         PHP,
-                    ['target' => PhpUnitTargetVersion::VERSION_8_4]
+                    ['target' => PhpUnitTargetVersion::VERSION_8_4],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -118,7 +118,7 @@ final class PhpUnitExpectationFixer extends AbstractPhpUnitFixer implements Conf
                         }
 
                         PHP,
-                    ['target' => PhpUnitTargetVersion::VERSION_5_6]
+                    ['target' => PhpUnitTargetVersion::VERSION_5_6],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -139,11 +139,11 @@ final class PhpUnitExpectationFixer extends AbstractPhpUnitFixer implements Conf
                         }
 
                         PHP,
-                    ['target' => PhpUnitTargetVersion::VERSION_5_2]
+                    ['target' => PhpUnitTargetVersion::VERSION_5_2],
                 ),
             ],
             null,
-            'Risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.'
+            'Risky when PHPUnit classes are overridden or not accessible, or when project has PHPUnit incompatibilities.',
         );
     }
 
@@ -207,6 +207,7 @@ final class PhpUnitExpectationFixer extends AbstractPhpUnitFixer implements Conf
         ];
 
         for ($index = $startIndex; $startIndex < $endIndex; ++$index) {
+            /** @var null|array{Token, Token, Token} $match */
             $match = $tokens->findSequence($oldMethodSequence, $index);
 
             if (null === $match) {
@@ -218,9 +219,10 @@ final class PhpUnitExpectationFixer extends AbstractPhpUnitFixer implements Conf
             if (!isset($this->methodMap[$tokens[$index]->getContent()])) {
                 continue;
             }
+            $newExpectedExceptionName = $this->methodMap[$tokens[$index]->getContent()];
 
             $openIndex = $tokens->getNextTokenOfKind($index, ['(']);
-            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openIndex);
             $commaIndex = $tokens->getPrevMeaningfulToken($closeIndex);
             if ($tokens[$commaIndex]->equals(',')) {
                 $tokens->removeTrailingWhitespace($commaIndex);
@@ -230,13 +232,14 @@ final class PhpUnitExpectationFixer extends AbstractPhpUnitFixer implements Conf
             $arguments = $argumentsAnalyzer->getArguments($tokens, $openIndex, $closeIndex);
             $argumentsCnt = \count($arguments);
 
-            $argumentsReplacements = ['expectException', $this->methodMap[$tokens[$index]->getContent()], 'expectExceptionCode'];
+            $argumentsReplacements = ['expectException', $newExpectedExceptionName, 'expectExceptionCode'];
 
             $indent = $this->whitespacesConfig->getLineEnding().WhitespacesAnalyzer::detectIndent($tokens, $thisIndex);
 
             $isMultilineWhitespace = false;
 
             for ($cnt = $argumentsCnt - 1; $cnt >= 1; --$cnt) {
+                \assert(isset(array_keys($arguments)[$cnt]));
                 $argStart = array_keys($arguments)[$cnt];
                 $argBefore = $tokens->getPrevMeaningfulToken($argStart);
 
@@ -291,7 +294,7 @@ final class PhpUnitExpectationFixer extends AbstractPhpUnitFixer implements Conf
 
             $methodName = 'expectException';
             if ('expectExceptionMessageRegExp' === $tokens[$index]->getContent()) {
-                $methodName = $this->methodMap[$tokens[$index]->getContent()];
+                $methodName = $newExpectedExceptionName;
             }
             $tokens[$index] = new Token([\T_STRING, $methodName]);
         }

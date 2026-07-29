@@ -51,17 +51,17 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
             'Concatenation should be spaced according to configuration.',
             [
                 new CodeSample(
-                    "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';\n"
+                    "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';\n",
                 ),
                 new CodeSample(
                     "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';\n",
-                    ['spacing' => 'none']
+                    ['spacing' => 'none'],
                 ),
                 new CodeSample(
                     "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';\n",
-                    ['spacing' => 'one']
+                    ['spacing' => 'one'],
                 ),
-            ]
+            ],
         );
     }
 
@@ -137,7 +137,7 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
         if (-1 !== $offset && 1 !== $offset) {
             throw new \InvalidArgumentException(\sprintf(
                 'Expected `-1|1` for "$offset", got "%s"',
-                $offset
+                $offset,
             ));
         }
 

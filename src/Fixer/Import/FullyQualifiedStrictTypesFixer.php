@@ -167,7 +167,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -181,7 +181,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
                         }
 
                         PHP,
-                    ['leading_backslash_in_global_namespace' => true]
+                    ['leading_backslash_in_global_namespace' => true],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -200,7 +200,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
                         }
 
                         PHP,
-                    ['leading_backslash_in_global_namespace' => true]
+                    ['leading_backslash_in_global_namespace' => true],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -222,9 +222,9 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
                         }
 
                         PHP,
-                    ['import_symbols' => true]
+                    ['import_symbols' => true],
                 ),
-            ]
+            ],
         );
     }
 
@@ -261,21 +261,21 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder(
                 'leading_backslash_in_global_namespace',
-                'Whether FQCN is prefixed with backslash when that FQCN is used in global namespace context.'
+                'Whether FQCN is prefixed with backslash when that FQCN is used in global namespace context.',
             ))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
             (new FixerOptionBuilder(
                 'import_symbols',
-                'Whether FQCNs should be automatically imported.'
+                'Whether FQCNs should be automatically imported.',
             ))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)
                 ->getOption(),
             (new FixerOptionBuilder(
                 'phpdoc_tags',
-                'Collection of PHPDoc annotation tags where FQCNs should be processed. As of now only simple tags with `@tag \F\Q\C\N` format are supported (no complex types).'
+                'Collection of PHPDoc annotation tags where FQCNs should be processed. As of now only simple tags with `@tag \F\Q\C\N` format are supported (no complex types).',
             ))
                 ->setAllowedTypes(['string[]'])
                 ->setDefault([
@@ -388,7 +388,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
                 }
             }
 
-            if ([] !== $this->symbolsForImport) {
+            if ([] !== $this->symbolsForImport) { // @phpstan-ignore-line notIdentical.alwaysFalse PHP started to complain, please fix me
                 if (null !== $lastUse) {
                     $atIndex = $lastUse->getEndIndex() + 1;
                 } elseif (0 !== $namespace->getEndIndex()) {
@@ -524,6 +524,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
             }
 
             if ($i > 0) {
+                \assert(false !== strrpos($tmp, '\\'));
                 $tmp = substr($tmp, 0, strrpos($tmp, '\\'));
             }
         }
@@ -605,6 +606,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
                         break;
                     }
 
+                    \assert(false !== strrpos($symbol, '\\'));
                     $symbol = substr($symbol, 0, strrpos($symbol, '\\'));
                 }
             }
@@ -675,6 +677,14 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
             return $matches[1].$matches[2].$matches[3].$this->fixPhpDocType($matches[4], $uses, $namespaceName);
         }, $phpDocContent);
 
+        if (\in_array('see', $allowedTags, true)) {
+            $phpDocContentNew = Preg::replaceCallback(
+                '/([*{]\h*)@see(\h+)('.self::REGEX_CLASS.')(::(?:\$\w+|\w+\(\)))(?!(?!\})\S)/',
+                fn ($matches) => $matches[1].'@see'.$matches[2].$this->fixPhpDocType($matches[3], $uses, $namespaceName).$matches[5],
+                $phpDocContentNew,
+            );
+        }
+
         if ($phpDocContentNew !== $phpDocContent) {
             $tokens[$index] = new Token([\T_DOC_COMMENT, $phpDocContentNew]);
         }
@@ -694,7 +704,6 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
                 return $type;
             }
 
-            /** @var non-empty-string $currentTypeValue */
             $shortTokens = $this->determineShortType($currentTypeValue, 'class', $uses, $namespaceName);
 
             if (null === $shortTokens) {
@@ -703,7 +712,7 @@ final class FullyQualifiedStrictTypesFixer extends AbstractFixer implements Conf
 
             $newTypeValue = implode('', array_map(
                 static fn (Token $token) => $token->getContent(),
-                $shortTokens
+                $shortTokens,
             ));
 
             return $currentTypeValue === $newTypeValue

@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\ComposerJsonReader;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author ntzm
@@ -25,6 +27,7 @@ use PhpCsFixer\ComposerJsonReader;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ComposerJsonReader::class)]
 final class ComposerJsonReaderTest extends TestCase
 {
     public function testCreateSingleton(): void
@@ -37,6 +40,7 @@ final class ComposerJsonReaderTest extends TestCase
     /**
      * @dataProvider provideGetPhpUnitCases
      */
+    #[DataProvider('provideGetPhpUnitCases')]
     public function testGetPhpUnit(?string $expected, string $inputJson): void
     {
         self::assertJson($inputJson);
@@ -46,7 +50,7 @@ final class ComposerJsonReaderTest extends TestCase
         \Closure::bind(
             static fn ($instance) => $instance->processJson($inputJson),
             null,
-            \get_class($instance)
+            \get_class($instance),
         )($instance);
 
         self::assertSame($expected, $instance->getPhpUnit());
@@ -144,6 +148,54 @@ final class ComposerJsonReaderTest extends TestCase
 }',
         ];
 
+        yield 'version with range separated by a space' => [
+            '9.1',
+            '{
+    "require": {},
+    "require-dev": { "phpunit/phpunit": ">=9.1 <9.6.25" }
+}',
+        ];
+
+        yield 'version with range separated by a comma' => [
+            '9.1',
+            '{
+    "require": {},
+    "require-dev": { "phpunit/phpunit": ">=9.1,<9.6.25" }
+}',
+        ];
+
+        yield 'version with range separated by a hyphen' => [
+            '9.1',
+            '{
+    "require": {},
+    "require-dev": { "phpunit/phpunit": "9.1-9.6.25" }
+}',
+        ];
+
+        yield 'version with range separated by a hyphen and asterisk' => [
+            '9.1',
+            '{
+    "require": {},
+    "require-dev": { "phpunit/phpunit": "9.1.*-9.6.*" }
+}',
+        ];
+
+        yield 'version with beta' => [
+            '9.1',
+            '{
+    "require": {},
+    "require-dev": { "phpunit/phpunit": "9.1-BETA.0" }
+}',
+        ];
+
+        yield 'version with v' => [
+            '9.1',
+            '{
+    "require": {},
+    "require-dev": { "phpunit/phpunit": "v9.1 || v10" }
+}',
+        ];
+
         yield 'version with <=' => [
             null, // not supported !
             '{
@@ -228,6 +280,7 @@ final class ComposerJsonReaderTest extends TestCase
     /**
      * @dataProvider provideGetPhpCases
      */
+    #[DataProvider('provideGetPhpCases')]
     public function testGetPhp(?string $expected, string $inputJson): void
     {
         self::assertJson($inputJson);
@@ -237,7 +290,7 @@ final class ComposerJsonReaderTest extends TestCase
         \Closure::bind(
             static fn ($instance) => $instance->processJson($inputJson),
             null,
-            \get_class($instance)
+            \get_class($instance),
         )($instance);
 
         self::assertSame($expected, $instance->getPhp());

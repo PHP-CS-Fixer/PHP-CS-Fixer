@@ -28,7 +28,6 @@ use PhpCsFixer\FixerDefinition\VersionSpecification;
 use PhpCsFixer\FixerDefinition\VersionSpecificCodeSample;
 use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\AttributeAnalyzer;
-use PhpCsFixer\Tokenizer\Analyzer\FullyQualifiedNameAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Processor\ImportProcessor;
 use PhpCsFixer\Tokenizer\Token;
@@ -119,8 +118,6 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
 
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
-        $fullyQualifiedNameAnalyzer = new FullyQualifiedNameAnalyzer($tokens);
-
         $classIndex = $tokens->getPrevTokenOfKind($startIndex, [[\T_CLASS]]);
         $docBlockIndex = $this->getDocBlockIndex($tokens, $classIndex);
         if ($tokens[$docBlockIndex]->isGivenKind(\T_DOC_COMMENT)) {
@@ -155,7 +152,7 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
                 /** @phpstan-ignore-next-line */
                 $tokensToInsert = self::{$this->fixingMap[$annotationName]}($tokens, $index, $annotation);
 
-                $presentAttributes[$annotationName] ??= self::isAttributeAlreadyPresent($fullyQualifiedNameAnalyzer, $tokens, $index, $tokensToInsert);
+                $presentAttributes[$annotationName] ??= self::isAttributeAlreadyPresent($tokens, $index, $tokensToInsert);
 
                 if ([] === $tokensToInsert) {
                     continue;
@@ -242,7 +239,6 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
      * @param list<Token> $tokensToInsert
      */
     private static function isAttributeAlreadyPresent(
-        FullyQualifiedNameAnalyzer $fullyQualifiedNameAnalyzer,
         Tokens $tokens,
         int $index,
         array $tokensToInsert
@@ -265,6 +261,10 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
                 $className = ltrim(AttributeAnalyzer::determineAttributeFullyQualifiedName($tokens, $attribute['name'], $attribute['start']), '\\');
 
                 if ($insertedClassName === $className) {
+                    return true;
+                }
+
+                if ('PHPUnit\Framework\Attributes\TestWithJson' === $insertedClassName && 'PHPUnit\Framework\Attributes\TestWith' === $className) {
                     return true;
                 }
             }
@@ -329,18 +329,49 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
         $matches = self::getMatches($annotation);
         \assert(isset($matches[1]));
 
-        if (str_starts_with($matches[1], '::')) {
-            return self::createAttributeTokens($tokens, $index, 'CoversFunction', self::createEscapedStringToken(substr($matches[1], 2)));
-        }
-        if (!str_contains($matches[1], '::')) {
+        $splitByDoubleColon = explode('::', $matches[1]);
+        $splitByDoubleColonCount = \count($splitByDoubleColon);
+        \assert(isset($splitByDoubleColon[0]));
+
+        if (1 === $splitByDoubleColonCount) {
+            // naive guessing if it's a Trait or Class, as we do not have access to codebase to make sure, but it's better than nothing
+            $isTrait = str_ends_with($splitByDoubleColon[0], 'Trait');
+
             return self::createAttributeTokens(
                 $tokens,
                 $index,
-                'CoversClass',
-                ...self::toClassConstant($matches[1]),
+                $isTrait ? 'CoversTrait' : 'CoversClass',
+                ...self::toClassConstant($splitByDoubleColon[0]),
             );
         }
 
+        if (2 === $splitByDoubleColonCount) {
+            \assert(isset($splitByDoubleColon[1]));
+            if ('' === $splitByDoubleColon[0]) {
+                return self::createAttributeTokens(
+                    $tokens,
+                    $index,
+                    'CoversFunction',
+                    self::createEscapedStringToken($splitByDoubleColon[1]),
+                );
+            }
+
+            if ('' !== $splitByDoubleColon[1]) {
+                return self::createAttributeTokens(
+                    $tokens,
+                    $index,
+                    'CoversMethod',
+                    ...self::toClassConstant($splitByDoubleColon[0]),
+                    ...[
+                        new Token(','),
+                        new Token([\T_WHITESPACE, ' ']),
+                        self::fixNameAndCreateEscapedStringToken($splitByDoubleColon[1]),
+                    ],
+                );
+            }
+        }
+
+        // unexpected format, do not attempt to fix
         return [];
     }
 
@@ -470,13 +501,13 @@ final class PhpUnitAttributesFixer extends AbstractPhpUnitFixer implements Confi
                 new Token([\T_WHITESPACE, ' ']),
                 self::createEscapedStringToken($method),
             ];
-        } elseif ('RequiresPhp' === $attributeName && isset($matches[3])) {
+        } elseif (\in_array($attributeName, ['RequiresPhp', 'RequiresPhpunit'], true) && isset($matches[3])) {
             $attributeTokens = [self::createEscapedStringToken($matches[2].' '.$matches[3])];
         } else {
             $attributeTokens = [self::createEscapedStringToken(self::fixVersionConstraint($matches[2]))];
         }
 
-        if (isset($matches[3]) && 'RequiresPhp' !== $attributeName) {
+        if (isset($matches[3]) && !\in_array($attributeName, ['RequiresPhp', 'RequiresPhpunit'], true)) {
             $attributeTokens[] = new Token(',');
             $attributeTokens[] = new Token([\T_WHITESPACE, ' ']);
             $attributeTokens[] = self::createEscapedStringToken(self::fixVersionConstraint($matches[3]));

@@ -66,8 +66,8 @@ final class JunitReporter implements ReporterInterface
                 'time',
                 \sprintf(
                     '%.3f',
-                    $reportSummary->getTime() / 1_000
-                )
+                    $reportSummary->getTime() / 1_000,
+                ),
             );
         }
 
@@ -102,7 +102,7 @@ final class JunitReporter implements ReporterInterface
                 $dom,
                 $file,
                 $fixResult,
-                $reportSummary->shouldAddAppliedFixers()
+                $reportSummary->shouldAddAppliedFixers(),
             );
             $testsuite->appendChild($testcase);
             $assertionsCount += (int) $testcase->getAttribute('assertions');

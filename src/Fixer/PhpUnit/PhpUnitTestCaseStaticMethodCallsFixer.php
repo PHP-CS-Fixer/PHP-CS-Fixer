@@ -87,6 +87,14 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         'assertArrayIsIdenticalToArrayOnlyConsideringListOfKeys' => true,
         'assertArrayNotHasKey' => true,
         'assertArraySubset' => true,
+        'assertArraysAreIdentical' => true,
+        'assertArraysAreIdenticalIgnoringOrder' => true,
+        'assertArraysHaveIdenticalValues' => true,
+        'assertArraysHaveIdenticalValuesIgnoringOrder' => true,
+        'assertArraysAreEqual' => true,
+        'assertArraysAreEqualIgnoringOrder' => true,
+        'assertArraysHaveEqualValues' => true,
+        'assertArraysHaveEqualValuesIgnoringOrder' => true,
         'assertAttributeContains' => true,
         'assertAttributeContainsOnly' => true,
         'assertAttributeCount' => true,
@@ -163,6 +171,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         'assertFileDoesNotExist' => true,
         'assertFileEquals' => true,
         'assertFileEqualsCanonicalizing' => true,
+        'assertFileEqualsFileIgnoringWhitespace' => true,
         'assertFileEqualsIgnoringCase' => true,
         'assertFileExists' => true,
         'assertFileIsNotReadable' => true,
@@ -173,6 +182,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         'assertFileMatchesFormatFile' => true,
         'assertFileNotEquals' => true,
         'assertFileNotEqualsCanonicalizing' => true,
+        'assertFileNotEqualsFileIgnoringWhitespace' => true,
         'assertFileNotEqualsIgnoringCase' => true,
         'assertFileNotExists' => true,
         'assertFileNotIsReadable' => true,
@@ -260,7 +270,9 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         'assertStringEqualsFile' => true,
         'assertStringEqualsFileCanonicalizing' => true,
         'assertStringEqualsFileIgnoringCase' => true,
+        'assertStringEqualsFileIgnoringWhitespace' => true,
         'assertStringEqualsStringIgnoringLineEndings' => true,
+        'assertStringEqualsStringIgnoringWhitespace' => true,
         'assertStringMatchesFormat' => true,
         'assertStringMatchesFormatFile' => true,
         'assertStringNotContainsString' => true,
@@ -268,6 +280,8 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         'assertStringNotEqualsFile' => true,
         'assertStringNotEqualsFileCanonicalizing' => true,
         'assertStringNotEqualsFileIgnoringCase' => true,
+        'assertStringNotEqualsFileIgnoringWhitespace' => true,
+        'assertStringNotEqualsStringIgnoringWhitespace' => true,
         'assertStringNotMatchesFormat' => true,
         'assertStringNotMatchesFormatFile' => true,
         'assertStringStartsNotWith' => true,
@@ -275,11 +289,17 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         'assertThat' => true,
         'assertTrue' => true,
         'assertXmlFileEqualsXmlFile' => true,
+        'assertXmlFileEqualsXmlFileConsideringComments' => true,
         'assertXmlFileNotEqualsXmlFile' => true,
+        'assertXmlFileNotEqualsXmlFileConsideringComments' => true,
         'assertXmlStringEqualsXmlFile' => true,
+        'assertXmlStringEqualsXmlFileConsideringComments' => true,
         'assertXmlStringEqualsXmlString' => true,
+        'assertXmlStringEqualsXmlStringConsideringComments' => true,
         'assertXmlStringNotEqualsXmlFile' => true,
+        'assertXmlStringNotEqualsXmlFileConsideringComments' => true,
         'assertXmlStringNotEqualsXmlString' => true,
+        'assertXmlStringNotEqualsXmlStringConsideringComments' => true,
         'attribute' => true,
         'attributeEqualTo' => true,
         'callback' => true,
@@ -359,6 +379,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         'stringContains' => true,
         'stringEndsWith' => true,
         'stringEqualsStringIgnoringLineEndings' => true,
+        'stringEqualsStringIgnoringWhitespace' => true,
         'stringStartsWith' => true,
 
         // TestCase methods
@@ -371,6 +392,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         'createConfiguredStub' => true,
         'createStubForIntersectionOfInterfaces' => true,
         'exactly' => true,
+        'getStubBuilder' => true,
         'never' => true,
         'once' => true,
         'onConsecutiveCalls' => true,
@@ -394,7 +416,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
     ];
 
     /**
-     * @var non-empty-array<string, non-empty-list<_PhpTokenArray>>
+     * @var non-empty-array<string, array{_PhpTokenArray, _PhpTokenArray}>
      */
     private array $conversionMap = [
         self::CALL_TYPE_THIS => [[\T_OBJECT_OPERATOR, '->'], [\T_VARIABLE, '$this']],
@@ -420,14 +442,14 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
             PHP;
 
         return new FixerDefinition(
-            'Calls to `PHPUnit\Framework\TestCase` static methods must all be of the same type, either `$this->`, `self::` or `static::`.',
+            'Calls to `PHPUnit\Framework\TestCase` static methods (like assertions) must all be of the same type, either `$this->`, `self::` or `static::`.',
             [
                 new CodeSample($codeSample),
                 new CodeSample($codeSample, ['call_type' => self::CALL_TYPE_THIS]),
                 new CodeSample($codeSample, ['methods' => ['assertTrue' => self::CALL_TYPE_THIS]]),
             ],
             null,
-            'Risky when PHPUnit methods are overridden or not accessible, or when project has PHPUnit incompatibilities.'
+            'Risky when PHPUnit methods are overridden or not accessible, or when project has PHPUnit incompatibilities.',
         );
     }
 
@@ -452,7 +474,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
             (new FixerOptionBuilder('call_type', 'The call type to use for referring to PHPUnit methods.'))
                 ->setAllowedTypes(['string'])
                 ->setAllowedValues(array_keys(self::ALLOWED_VALUES))
-                ->setDefault(self::CALL_TYPE_STATIC)
+                ->setDefault(Future::getV4OrV3(self::CALL_TYPE_THIS, self::CALL_TYPE_STATIC)) // vide https://github.com/sebastianbergmann/phpunit/issues/2104#issuecomment-192919598
                 ->getOption(),
             (new FixerOptionBuilder('methods', 'Dictionary of `method` => `call_type` values that differ from the default strategy.'))
                 ->setAllowedTypes(['array<string, string>'])
@@ -463,8 +485,8 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
                                 \sprintf(
                                     'Unexpected "methods" key, expected any of %s, got "%s".',
                                     Utils::naturalLanguageJoin(array_keys(self::METHODS)),
-                                    \gettype($method).'#'.$method
-                                )
+                                    \gettype($method).'#'.$method,
+                                ),
                             );
                         }
 
@@ -474,8 +496,8 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
                                     'Unexpected value for method "%s", expected any of %s, got "%s".',
                                     $method,
                                     Utils::naturalLanguageJoin(array_keys(self::ALLOWED_VALUES)),
-                                    \is_object($value) ? \get_class($value) : (null === $value ? 'null' : \gettype($value).'#'.$value)
-                                )
+                                    \is_object($value) ? \get_class($value) : (null === $value ? 'null' : \gettype($value).'#'.$value),
+                                ),
                             );
                         }
                     }
@@ -500,6 +522,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
     {
         $dynamicMethods = [];
         if (PhpUnitTargetVersion::fulfills($this->configuration['target'], PhpUnitTargetVersion::VERSION_11_0)) {
+            // not statc since v11
             $dynamicMethods = [
                 'any',
                 'atLeast',
@@ -512,6 +535,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
             ];
         }
         if (PhpUnitTargetVersion::VERSION_11_0 === $this->configuration['target']) {
+            // not static since v11, removed in v12
             $dynamicMethods[] = 'onConsecutiveCalls';
             $dynamicMethods[] = 'returnArgument';
             $dynamicMethods[] = 'returnCallback';
@@ -524,7 +548,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
             if (isset($this->configuration['methods'][$method])) {
                 throw new InvalidFixerConfigurationException(
                     $this->getName(),
-                    \sprintf('Configuration cannot contain method "%s" and target "%s", it is dynamic in that PHPUnit version.', $method, $this->configuration['target'])
+                    \sprintf('Configuration cannot contain method "%s" and target "%s", it is dynamic in that PHPUnit version.', $method, $this->configuration['target']),
                 );
             }
 
@@ -595,6 +619,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
                 continue;
             }
 
+            \assert(isset($this->conversionMap[$callType])); // for PHPStan
             $tokens[$operatorIndex] = new Token($this->conversionMap[$callType][0]);
             $tokens[$referenceIndex] = new Token($this->conversionMap[$callType][1]);
         }
@@ -603,6 +628,8 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
     private function needsConversion(Tokens $tokens, int $index, int $referenceIndex, string $callType): bool
     {
         $functionsAnalyzer = new FunctionsAnalyzer();
+
+        \assert(isset($this->conversionMap[$callType])); // for PHPStan
 
         return $functionsAnalyzer->isTheSameClassCall($tokens, $index)
             && !$tokens[$referenceIndex]->equals($this->conversionMap[$callType][1], false);
@@ -613,7 +640,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         $nextIndex = $tokens->getNextTokenOfKind($index, [';', '{']);
 
         return $tokens[$nextIndex]->equals('{')
-            ? $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nextIndex)
+            ? $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $nextIndex)
             : $nextIndex;
     }
 }

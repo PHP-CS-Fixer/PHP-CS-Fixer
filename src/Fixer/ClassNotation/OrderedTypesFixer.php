@@ -75,7 +75,7 @@ final class OrderedTypesFixer extends AbstractFixer implements ConfigurableFixer
                             throw $e;
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new VersionSpecificCodeSample(
                     <<<'PHP'
@@ -89,7 +89,7 @@ final class OrderedTypesFixer extends AbstractFixer implements ConfigurableFixer
                     new VersionSpecification(8_00_00),
                     [
                         'case_sensitive' => true,
-                    ]
+                    ],
                 ),
                 new VersionSpecificCodeSample(
                     <<<'PHP'
@@ -103,7 +103,7 @@ final class OrderedTypesFixer extends AbstractFixer implements ConfigurableFixer
 
                         PHP,
                     new VersionSpecification(8_01_00),
-                    ['null_adjustment' => 'always_last']
+                    ['null_adjustment' => 'always_last'],
                 ),
                 new VersionSpecificCodeSample(
                     <<<'PHP'
@@ -118,9 +118,9 @@ final class OrderedTypesFixer extends AbstractFixer implements ConfigurableFixer
                     [
                         'sort_algorithm' => 'none',
                         'null_adjustment' => 'always_last',
-                    ]
+                    ],
                 ),
-            ]
+            ],
         );
     }
 
@@ -152,8 +152,8 @@ final class OrderedTypesFixer extends AbstractFixer implements ConfigurableFixer
                 ->setDefault(
                     Future::getV4OrV3(
                         'always_last', // as recommended in https://github.com/php-fig/per-coding-style/blob/master/migration-3.0.md#section-25---keywords-and-types
-                        'always_first'
-                    )
+                        'always_first',
+                    ),
                 )
                 ->getOption(),
             (new FixerOptionBuilder('case_sensitive', 'Whether the sorting should be case sensitive.'))
@@ -198,8 +198,8 @@ final class OrderedTypesFixer extends AbstractFixer implements ConfigurableFixer
             static fn (array $element): string => $element['type'],
             array_filter(
                 $tokensAnalyzer->getClassyElements(),
-                static fn (array $element): bool => \in_array($element['type'], ['method', 'property'], true)
-            )
+                static fn (array $element): bool => \in_array($element['type'], ['method', 'property'], true),
+            ),
         );
 
         foreach ($tokens as $index => $token) {
@@ -324,7 +324,7 @@ final class OrderedTypesFixer extends AbstractFixer implements ConfigurableFixer
         $tokens->overrideRange(
             $typeAnalysis->getStartIndex(),
             $typeAnalysis->getEndIndex(),
-            $this->createTypeDeclarationTokens($sortedTypes, $glue)
+            $this->createTypeDeclarationTokens($sortedTypes, $glue),
         );
     }
 

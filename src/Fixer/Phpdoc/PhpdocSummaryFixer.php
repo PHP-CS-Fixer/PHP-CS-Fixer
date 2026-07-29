@@ -44,9 +44,9 @@ final class PhpdocSummaryFixer extends AbstractFixer implements WhitespacesAware
                          */
                         function foo () {}
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

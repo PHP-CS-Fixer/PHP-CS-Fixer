@@ -48,11 +48,11 @@ final class StringLineEndingFixer extends AbstractFixer implements WhitespacesAw
             'All multi-line strings must use correct line ending.',
             [
                 new CodeSample(
-                    "<?php \$a = 'my\r\nmulti\nline\r\nstring';\r\n"
+                    "<?php \$a = 'my\r\nmulti\nline\r\nstring';\r\n",
                 ),
             ],
             null,
-            'Changing the line endings of multi-line strings might affect string comparisons and outputs.'
+            'Changing the line endings of multi-line strings might affect string comparisons and outputs.',
         );
     }
 
@@ -70,7 +70,7 @@ final class StringLineEndingFixer extends AbstractFixer implements WhitespacesAw
                 Preg::replace(
                     '#\R#u',
                     $ending,
-                    $token->getContent()
+                    $token->getContent(),
                 ),
             ]);
         }

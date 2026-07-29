@@ -174,7 +174,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
                             public function __destruct() {}
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -186,7 +186,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
                         }
 
                         PHP,
-                    ['order' => ['method_private', 'method_public']]
+                    ['order' => ['method_private', 'method_public']],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -200,7 +200,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
                         }
 
                         PHP,
-                    ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA]
+                    ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -214,7 +214,7 @@ final class OrderedClassElementsFixer extends AbstractFixer implements Configura
                         }
 
                         PHP,
-                    ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA, 'case_sensitive' => true]
+                    ['order' => ['method_public'], 'sort_algorithm' => self::SORT_ALPHA, 'case_sensitive' => true],
                 ),
             ],
             'Accepts a subset of pre-defined element types, special element groups, and custom patterns.
@@ -225,7 +225,7 @@ Special element types: `[\''.implode('\', \'', array_keys(self::SPECIAL_TYPES)).
 
 Custom values:
 
-- `method:*`: specify a single method name (e.g. `method:__invoke`) to set the order of that specific method.'
+- `method:*`: specify a single method name (e.g. `method:__invoke`) to set the order of that specific method.',
         );
     }
 
@@ -379,6 +379,12 @@ Custom values:
             for ($i = $startIndex;; ++$i) {
                 $token = $tokens[$i];
 
+                if ($token->isGivenKind(FCT::T_ATTRIBUTE)) {
+                    $i = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ATTRIBUTE, $i);
+
+                    continue;
+                }
+
                 // class end
                 if ($token->equals('}')) {
                     return $elements;
@@ -496,12 +502,12 @@ Custom values:
         $index = $tokens->getNextTokenOfKind($index, ['(', '{', ';', [CT::T_PROPERTY_HOOK_BRACE_OPEN]]);
 
         if ($tokens[$index]->equals('(')) {
-            $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+            $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
             $index = $tokens->getNextTokenOfKind($index, ['{', ';']);
         }
 
         if ($tokens[$index]->equals('{')) {
-            $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+            $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
         }
 
         if ($tokens[$index]->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
@@ -554,6 +560,7 @@ Custom values:
                 $position = $this->typePosition[$type];
 
                 if ('phpunit' === $type) {
+                    \assert(\in_array($element['name'], ['setupbeforeclass', 'dosetupbeforeclass', 'teardownafterclass', 'doteardownafterclass', 'setup', 'dosetup', 'assertpreconditions', 'assertpostconditions', 'teardown', 'doteardown'], true));
                     $position += [
                         'setupbeforeclass' => 1,
                         'dosetupbeforeclass' => 2,
@@ -589,6 +596,8 @@ Custom values:
                 $type .= '_readonly';
             }
         }
+
+        \assert(isset($this->typePosition[$type]));
 
         return $this->typePosition[$type];
     }

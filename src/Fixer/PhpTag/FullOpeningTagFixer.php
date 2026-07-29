@@ -42,7 +42,7 @@ final class FullOpeningTagFixer extends AbstractFixer
 
                         echo "Hello!";
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -50,9 +50,9 @@ final class FullOpeningTagFixer extends AbstractFixer
 
                         echo "Hello!";
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

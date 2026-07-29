@@ -1,2 +1,2 @@
 .github/CODEOWNERS @keradus
-.github/workflows/self-approval.yml @keradus
+.github/workflows/maint_self-approval.yml @keradus

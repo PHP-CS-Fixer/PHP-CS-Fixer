@@ -99,11 +99,7 @@ final class DocLexer
 
     public function peek(): ?Token
     {
-        if (isset($this->tokens[$this->position + $this->peek])) {
-            return $this->tokens[$this->position + $this->peek++];
-        }
-
-        return null;
+        return $this->tokens[$this->position + $this->peek++] ?? null;
     }
 
     /**
@@ -141,7 +137,7 @@ final class DocLexer
             '/(%s)|%s/%s',
             implode(')|(', self::CATCHABLE_PATTERNS),
             implode('|', self::NON_CATCHABLE_PATTERNS),
-            'iu'
+            'iu',
         );
 
         $flags = \PREG_SPLIT_NO_EMPTY | \PREG_SPLIT_DELIM_CAPTURE | \PREG_SPLIT_OFFSET_CAPTURE;

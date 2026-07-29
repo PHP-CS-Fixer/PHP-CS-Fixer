@@ -22,8 +22,8 @@ use PhpCsFixer\Future;
  * Also, this class exposes PHPStan types. (hint: string in those types shall ideally not be empty - yet we are not there yet).
  *
  * @phpstan-type _PhpTokenKind int|string
- * @phpstan-type _PhpTokenArray array{0: int, 1: string}
- * @phpstan-type _PhpTokenArrayPartial array{0: int, 1?: string}
+ * @phpstan-type _PhpTokenArray array{0: int, 1: string, 2?: int}
+ * @phpstan-type _PhpTokenArrayPartial array{0: int, 1?: string, 2?: int}
  * @phpstan-type _PhpTokenPrototype _PhpTokenArray|string
  * @phpstan-type _PhpTokenPrototypePartial _PhpTokenArrayPartial|string
  *
@@ -59,16 +59,18 @@ final class Token
             if (!\is_int($token[0])) {
                 throw new \InvalidArgumentException(\sprintf(
                     'Id must be an int, got "%s".',
-                    get_debug_type($token[0])
+                    get_debug_type($token[0]),
                 ));
             }
 
             if (!\is_string($token[1])) {
                 throw new \InvalidArgumentException(\sprintf(
                     'Content must be a string, got "%s".',
-                    get_debug_type($token[1])
+                    get_debug_type($token[1]),
                 ));
             }
+
+            \assert(!isset($token[2]) || \is_int($token[2])); // only assertion as we do not use the value anywhere
 
             if ('' === $token[1]) {
                 throw new \InvalidArgumentException('Cannot set empty content for id-based Token.');
@@ -115,11 +117,11 @@ final class Token
     }
 
     /**
-     * Check if token is equals to given one.
+     * Check if token is equal to given one.
      *
      * If tokens are arrays, then only keys defined in parameter token are checked.
      *
-     * @param _PhpTokenPrototypePartial|Token $other         token or it's prototype
+     * @param _PhpTokenPrototypePartial|Token $other         token or its prototype
      * @param bool                            $caseSensitive perform a case sensitive comparison
      */
     public function equals($other, bool $caseSensitive = true): bool
@@ -132,51 +134,54 @@ final class Token
         }
 
         if ($other instanceof self) {
-            // Inlined getPrototype() on this very hot path.
             // We access the private properties of $other directly to save function call overhead.
-            // This is only possible because $other is of the same class as `self`.
-            if (!$other->isArray) {
-                $otherPrototype = $other->content;
-            } else {
-                $otherPrototype = [
-                    $other->id,
-                    $other->content,
-                ];
+            // This is only possible because $other is of the same class as `self`.Collapse comment
+
+            if ($this->isArray !== $other->isArray) {
+                return false;
             }
-        } else {
-            $otherPrototype = $other;
+
+            if (!$this->isArray) {
+                return $this->content === $other->content;
+            }
+
+            if ($this->id !== $other->id) {
+                return false;
+            }
+
+            return !$caseSensitive
+                ? 0 === strcasecmp($this->content, $other->content)
+                : $this->content === $other->content;
         }
 
-        if ($this->isArray !== \is_array($otherPrototype)) {
+        if ($this->isArray !== \is_array($other)) {
             return false;
         }
 
         if (!$this->isArray) {
-            return $this->content === $otherPrototype;
+            return $this->content === $other;
         }
 
-        if ($this->id !== $otherPrototype[0]) {
+        if ($this->id !== $other[0]) {
             return false;
         }
 
-        if (isset($otherPrototype[1])) {
+        if (isset($other[1])) {
             if ($caseSensitive) {
-                if ($this->content !== $otherPrototype[1]) {
+                if ($this->content !== $other[1]) {
                     return false;
                 }
-            } elseif (0 !== strcasecmp($this->content, $otherPrototype[1])) {
+            } elseif (0 !== strcasecmp($this->content, $other[1])) {
                 return false;
             }
         }
 
-        // detect unknown keys
-        unset($otherPrototype[0], $otherPrototype[1]);
-
-        return [] === $otherPrototype;
+        // detect and forbid unknown keys
+        return 2 === \count($other) || !isset($other[2]);
     }
 
     /**
-     * Check if token is equals to one of given.
+     * Check if token is equal to one of given.
      *
      * @param list<_PhpTokenPrototypePartial|Token> $others        array of tokens or token prototypes
      * @param bool                                  $caseSensitive perform a case sensitive comparison
@@ -206,7 +211,7 @@ final class Token
     {
         Future::triggerDeprecation(new \InvalidArgumentException(\sprintf(
             'Method "%s" is deprecated and will be removed in the next major version.',
-            __METHOD__
+            __METHOD__,
         )));
 
         if (\is_array($caseSensitive)) {
@@ -501,7 +506,7 @@ final class Token
                     'errorDescription' => 'Cannot encode Tokens to JSON.',
                     'rawErrorMessage' => $e->getMessage(),
                 ],
-                \JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT | \JSON_NUMERIC_CHECK
+                \JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT | \JSON_NUMERIC_CHECK,
             );
         }
     }

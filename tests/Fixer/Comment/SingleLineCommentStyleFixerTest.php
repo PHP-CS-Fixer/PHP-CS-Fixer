@@ -15,7 +15,10 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\Comment;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\Comment\SingleLineCommentStyleFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -30,13 +33,14 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(SingleLineCommentStyleFixer::class)]
 final class SingleLineCommentStyleFixerTest extends AbstractFixerTestCase
 {
     public function testInvalidConfiguration(): void
     {
         $this->expectException(InvalidFixerConfigurationException::class);
 
-        $this->fixer->configure(['abc']);
+        $this->fixer->configure(['abc']); // @phpstan-ignore argument.type
     }
 
     /**
@@ -44,6 +48,7 @@ final class SingleLineCommentStyleFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);

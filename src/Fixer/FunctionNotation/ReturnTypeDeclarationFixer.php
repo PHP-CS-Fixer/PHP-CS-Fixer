@@ -52,17 +52,17 @@ final class ReturnTypeDeclarationFixer extends AbstractFixer implements Configur
             'Adjust spacing around colon in return type declarations and backed enum types.',
             [
                 new CodeSample(
-                    "<?php\nfunction foo(int \$a):string {};\n"
+                    "<?php\nfunction foo(int \$a):string {};\n",
                 ),
                 new CodeSample(
                     "<?php\nfunction foo(int \$a):string {};\n",
-                    ['space_before' => 'none']
+                    ['space_before' => 'none'],
                 ),
                 new CodeSample(
                     "<?php\nfunction foo(int \$a):string {};\n",
-                    ['space_before' => 'one']
+                    ['space_before' => 'one'],
                 ),
-            ]
+            ],
         );
     }
 

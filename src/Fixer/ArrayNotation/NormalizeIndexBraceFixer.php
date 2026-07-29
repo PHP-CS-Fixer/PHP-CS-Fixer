@@ -36,22 +36,22 @@ final class NormalizeIndexBraceFixer extends AbstractFixer
             'Array index should always be written by using square braces.',
             [new VersionSpecificCodeSample(
                 "<?php\necho \$sample{\$index};\n",
-                new VersionSpecification(null, 8_04_00 - 1)
-            )]
+                new VersionSpecification(null, 8_04_00 - 1),
+            )],
         );
     }
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isTokenKindFound(CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN);
+        return $tokens->isTokenKindFound(CT::T_ARRAY_INDEX_BRACE_OPEN);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if ($token->isGivenKind(CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN)) {
+            if ($token->isGivenKind(CT::T_ARRAY_INDEX_BRACE_OPEN)) {
                 $tokens[$index] = new Token('[');
-            } elseif ($token->isGivenKind(CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE)) {
+            } elseif ($token->isGivenKind(CT::T_ARRAY_INDEX_BRACE_CLOSE)) {
                 $tokens[$index] = new Token(']');
             }
         }

@@ -82,7 +82,7 @@ final class ProcessLinter implements LinterInterface
      * This class is not intended to be serialized,
      * and cannot be deserialized (see __wakeup method).
      */
-    public function __sleep(): array
+    public function __serialize(): array
     {
         throw new \BadMethodCallException('Cannot serialize '.self::class);
     }
@@ -91,9 +91,11 @@ final class ProcessLinter implements LinterInterface
      * Disable the deserialization of the class to prevent attacker executing
      * code by leveraging the __destruct method.
      *
+     * @param array<string, mixed> $data
+     *
      * @see https://owasp.org/www-community/vulnerabilities/PHP_Object_Injection
      */
-    public function __wakeup(): void
+    public function __unserialize(array $data): void
     {
         throw new \BadMethodCallException('Cannot unserialize '.self::class);
     }

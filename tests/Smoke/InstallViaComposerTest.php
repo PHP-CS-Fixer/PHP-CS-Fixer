@@ -17,6 +17,9 @@ namespace PhpCsFixer\Tests\Smoke;
 use Keradus\CliExecutor\CommandExecutor;
 use PhpCsFixer\Console\Application;
 use PhpCsFixer\Preg;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Large;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -33,6 +36,9 @@ use Symfony\Component\Filesystem\Filesystem;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversNothing]
+#[Group('covers-nothing')]
+#[Large]
 final class InstallViaComposerTest extends AbstractSmokeTestCase
 {
     private ?Filesystem $fs;
@@ -202,13 +208,13 @@ final class InstallViaComposerTest extends AbstractSmokeTestCase
         try {
             file_put_contents(
                 $tmpPath.'/composer.json',
-                json_encode($initialComposerFileState, \JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT)
+                json_encode($initialComposerFileState, \JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT),
             );
         } catch (\JsonException $e) {
             throw new \InvalidArgumentException(
                 'Initial Composer file state could not be saved as composer.json',
                 $e->getCode(),
-                $e
+                $e,
             );
         }
 

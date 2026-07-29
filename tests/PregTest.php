@@ -16,6 +16,8 @@ namespace PhpCsFixer\Tests;
 
 use PhpCsFixer\Preg;
 use PhpCsFixer\PregException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Kuba Werłos <werlos@gmail.com>
@@ -26,6 +28,7 @@ use PhpCsFixer\PregException;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(Preg::class)]
 final class PregTest extends TestCase
 {
     public function testMatchFailing(): void
@@ -39,9 +42,10 @@ final class PregTest extends TestCase
     /**
      * @dataProvider provideCommonCases
      */
+    #[DataProvider('provideCommonCases')]
     public function testMatch(string $pattern, string $subject): void
     {
-        $expectedResult = 1 === preg_match($pattern, $subject, $expectedMatches);
+        $expectedResult = 1 === @preg_match($pattern, $subject, $expectedMatches);
         $actualResult = Preg::match($pattern, $subject, $actualMatches);
 
         self::assertSame($expectedResult, $actualResult);
@@ -53,6 +57,7 @@ final class PregTest extends TestCase
      *
      * @param null|class-string<\Throwable> $expectedException
      */
+    #[DataProvider('providePatternValidationCases')]
     public function testPatternValidation(string $pattern, ?bool $expected = null, ?string $expectedException = null, ?string $expectedMessage = null): void
     {
         $setup = function () use ($expectedException, $expectedMessage): bool {
@@ -95,6 +100,7 @@ final class PregTest extends TestCase
      *
      * @param null|class-string<\Throwable> $expectedException
      */
+    #[DataProvider('providePatternValidationCases')]
     public function testPatternsValidation(string $pattern, ?bool $expected = null, ?string $expectedException = null, ?string $expectedMessage = null): void
     {
         $setup = function () use ($expectedException, $expectedMessage): bool {
@@ -170,9 +176,10 @@ final class PregTest extends TestCase
     /**
      * @dataProvider provideCommonCases
      */
+    #[DataProvider('provideCommonCases')]
     public function testMatchAll(string $pattern, string $subject): void
     {
-        $expectedResult = preg_match_all($pattern, $subject, $expectedMatches);
+        $expectedResult = @preg_match_all($pattern, $subject, $expectedMatches);
         $actualResult = Preg::matchAll($pattern, $subject, $actualMatches);
 
         self::assertSame($expectedResult, $actualResult);
@@ -190,9 +197,10 @@ final class PregTest extends TestCase
     /**
      * @dataProvider provideCommonCases
      */
+    #[DataProvider('provideCommonCases')]
     public function testReplace(string $pattern, string $subject): void
     {
-        $expectedResult = preg_replace($pattern, 'foo', $subject);
+        $expectedResult = @preg_replace($pattern, 'foo', $subject);
         $actualResult = Preg::replace($pattern, 'foo', $subject);
 
         self::assertSame($expectedResult, $actualResult);
@@ -209,11 +217,12 @@ final class PregTest extends TestCase
     /**
      * @dataProvider provideCommonCases
      */
+    #[DataProvider('provideCommonCases')]
     public function testReplaceCallback(string $pattern, string $subject): void
     {
         $callback = static fn (array $x): string => implode('-', $x);
 
-        $expectedResult = preg_replace_callback($pattern, $callback, $subject);
+        $expectedResult = @preg_replace_callback($pattern, $callback, $subject);
         $actualResult = Preg::replaceCallback($pattern, $callback, $subject);
 
         self::assertSame($expectedResult, $actualResult);
@@ -230,9 +239,10 @@ final class PregTest extends TestCase
     /**
      * @dataProvider provideCommonCases
      */
+    #[DataProvider('provideCommonCases')]
     public function testSplit(string $pattern, string $subject): void
     {
-        $expectedResult = preg_split($pattern, $subject);
+        $expectedResult = @preg_split($pattern, $subject);
         $actualResult = Preg::split($pattern, $subject);
 
         self::assertSame($expectedResult, $actualResult);

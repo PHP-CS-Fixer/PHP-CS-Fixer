@@ -23,6 +23,8 @@ use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleSet;
 use PhpCsFixer\Tests\Test\CiReader;
 use PhpCsFixer\Tests\Test\TestCaseUtils;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @author Dariusz Rumiński <dariusz.ruminski@gmail.com>
@@ -33,6 +35,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(RuleSets::class)]
 final class RuleSetsTest extends TestCase
 {
     protected function setUp(): void
@@ -44,7 +47,7 @@ final class RuleSetsTest extends TestCase
         \Closure::bind(
             static function (): void { RuleSets::$customRuleSetDefinitions = []; },
             null,
-            RuleSets::class
+            RuleSets::class,
         )();
     }
 
@@ -52,7 +55,7 @@ final class RuleSetsTest extends TestCase
     {
         self::assertSame(
             array_keys(RuleSets::getSetDefinitions()),
-            RuleSets::getSetDefinitionNames()
+            RuleSets::getSetDefinitionNames(),
         );
     }
 
@@ -95,6 +98,7 @@ final class RuleSetsTest extends TestCase
     /**
      * @dataProvider provideSetDefinitionNameCases
      */
+    #[DataProvider('provideSetDefinitionNameCases')]
     public function testHasIntegrationTest(string $setDefinitionName): void
     {
         /** @TODO v4 remove deprecated sets */
@@ -167,13 +171,14 @@ Integration of %s.
 ';
         self::assertStringStartsWith(
             \sprintf($template, $setDefinitionName, $setDefinitionName),
-            (string) file_get_contents($file)
+            (string) file_get_contents($file),
         );
     }
 
     /**
      * @dataProvider provideSetDefinitionNameCases
      */
+    #[DataProvider('provideSetDefinitionNameCases')]
     public function testBuildInSetDefinitionNames(string $setName): void
     {
         self::assertStringStartsWith('@', $setName);
@@ -182,6 +187,7 @@ Integration of %s.
     /**
      * @dataProvider provideSetDefinitionNameCases
      */
+    #[DataProvider('provideSetDefinitionNameCases')]
     public function testSetDefinitionsAreSorted(string $setDefinitionName): void
     {
         \assert(\array_key_exists($setDefinitionName, RuleSets::getSetDefinitions()));
@@ -191,7 +197,7 @@ Integration of %s.
 
         self::assertSame($sortedSetDefinition, $setDefinition, \sprintf(
             'Failed to assert that the set definition for "%s" is sorted by key.',
-            $setDefinitionName
+            $setDefinitionName,
         ));
     }
 
@@ -209,7 +215,7 @@ Integration of %s.
     {
         $setDefinition = array_keys(RuleSets::getSetDefinitions());
         $sortedSetDefinition = $setDefinition;
-        natsort($sortedSetDefinition);
+        natcasesort($sortedSetDefinition);
 
         self::assertSame($sortedSetDefinition, $setDefinition);
     }
@@ -217,6 +223,7 @@ Integration of %s.
     /**
      * @dataProvider providePHPUnitMigrationTargetVersionsCases
      */
+    #[DataProvider('providePHPUnitMigrationTargetVersionsCases')]
     public function testPHPUnitMigrationTargetVersions(string $setName): void
     {
         $ruleSet = new RuleSet([$setName => true]);
@@ -276,7 +283,7 @@ Integration of %s.
 
                 $allowedVersionsForFixer = array_diff(
                     $allowedValues,
-                    [PhpUnitTargetVersion::VERSION_NEWEST]
+                    [PhpUnitTargetVersion::VERSION_NEWEST],
                 );
 
                 break;
@@ -290,7 +297,7 @@ Integration of %s.
         /** @var list<PhpUnitTargetVersion::VERSION_*> */
         $allowedVersionsForRuleset = array_filter(
             $allowedVersionsForFixer,
-            static fn (string $version): bool => version_compare($maximumVersionForRuleset, $version) >= 0
+            static fn (string $version): bool => version_compare($maximumVersionForRuleset, $version) >= 0,
         );
 
         self::assertTrue(\in_array($actualTargetVersion, $allowedVersionsForRuleset, true), \sprintf(
@@ -298,7 +305,7 @@ Integration of %s.
             $fixer->getName(),
             $setName,
             $actualTargetVersion,
-            implode('", "', $allowedVersionsForRuleset)
+            implode('", "', $allowedVersionsForRuleset),
         ));
 
         rsort($allowedVersionsForRuleset);
@@ -309,7 +316,7 @@ Integration of %s.
             $fixer->getName(),
             $setName,
             $actualTargetVersion,
-            $maximumAllowedVersionForRuleset
+            $maximumAllowedVersionForRuleset,
         ));
     }
 
@@ -346,7 +353,7 @@ Integration of %s.
             if (\is_array($value)) {
                 $this->doSort(
                     $data[$key],
-                    $path.('' !== $path ? '.' : '').$key
+                    $path.('' !== $path ? '.' : '').$key,
                 );
             }
         }

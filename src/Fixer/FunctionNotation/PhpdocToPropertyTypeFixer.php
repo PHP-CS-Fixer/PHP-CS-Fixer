@@ -82,7 +82,7 @@ final class PhpdocToPropertyTypeFixer extends AbstractPhpdocToTypeDeclarationFix
                         }
 
                         PHP,
-                    ['scalar_types' => false]
+                    ['scalar_types' => false],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -95,11 +95,11 @@ final class PhpdocToPropertyTypeFixer extends AbstractPhpdocToTypeDeclarationFix
                         }
 
                         PHP,
-                    ['union_types' => false]
+                    ['union_types' => false],
                 ),
             ],
             null,
-            'The `@var` annotation is mandatory for the fixer to make changes, signatures of properties without it (no docblock) will not be fixed. Manual actions might be required for newly typed properties that are read before initialization.'
+            'The `@var` annotation is mandatory for the fixer to make changes, signatures of properties without it (no docblock) will not be fixed. Manual actions might be required for newly typed properties that are read before initialization.',
         );
     }
 
@@ -163,14 +163,14 @@ final class PhpdocToPropertyTypeFixer extends AbstractPhpdocToTypeDeclarationFix
         $tokensToInsert = [];
 
         $index = $tokens->getNextTokenOfKind($index, ['{']);
-        $classEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+        $classEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
 
         for (; $index < $classEndIndex; ++$index) {
             if ($tokens[$index]->isGivenKind(\T_FUNCTION)) {
                 $index = $tokens->getNextTokenOfKind($index, ['{', ';']);
 
                 if ($tokens[$index]->equals('{')) {
-                    $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                    $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
                 }
 
                 continue;
@@ -189,7 +189,7 @@ final class PhpdocToPropertyTypeFixer extends AbstractPhpdocToTypeDeclarationFix
 
             $typeInfo = $this->resolveApplicableType(
                 $propertyIndices,
-                $this->getAnnotationsFromDocComment('var', $tokens, $docCommentIndex)
+                $this->getAnnotationsFromDocComment('var', $tokens, $docCommentIndex),
             );
 
             if (null === $typeInfo) {
@@ -213,7 +213,7 @@ final class PhpdocToPropertyTypeFixer extends AbstractPhpdocToTypeDeclarationFix
 
             $newTokens = array_merge(
                 $this->createTypeDeclarationTokens($propertyType, $isNullable),
-                [new Token([\T_WHITESPACE, ' '])]
+                [new Token([\T_WHITESPACE, ' '])],
             );
 
             $tokensToInsert[current($propertyIndices)] = $newTokens;

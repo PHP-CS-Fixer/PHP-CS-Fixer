@@ -39,7 +39,7 @@ final class SingleLineThrowFixer extends AbstractFixer
             'Throwing exception must be done in single line.',
             [
                 new CodeSample("<?php\nthrow new Exception(\n    'Error.',\n    500\n);\n"),
-            ]
+            ],
         );
     }
 
@@ -71,7 +71,7 @@ final class SingleLineThrowFixer extends AbstractFixer
                 $blockType = Tokens::detectBlockType($tokens[$endCandidateIndex]);
 
                 if (null !== $blockType) {
-                    if (Tokens::BLOCK_TYPE_CURLY_BRACE === $blockType['type'] || !$blockType['isStart']) {
+                    if (Tokens::BLOCK_TYPE_BRACE === $blockType['type'] || !$blockType['isStart']) {
                         break;
                     }
 

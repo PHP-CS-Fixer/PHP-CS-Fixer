@@ -33,13 +33,13 @@ final class CleanNamespaceFixer extends AbstractFixer
         foreach (['namespace Foo \ Bar;', 'echo foo /* comment */ \ bar();'] as $sample) {
             $samples[] = new VersionSpecificCodeSample(
                 "<?php\n".$sample."\n",
-                new VersionSpecification(null, 8_00_00 - 1)
+                new VersionSpecification(null, 8_00_00 - 1),
             );
         }
 
         return new FixerDefinition(
             'Namespace must not contain spacing, comments or PHPDoc.',
-            $samples
+            $samples,
         );
     }
 
@@ -68,7 +68,7 @@ final class CleanNamespaceFixer extends AbstractFixer
 
                 $index = $this->fixNamespace(
                     $tokens,
-                    $tokens[$previousIndex]->isGivenKind(\T_STRING) ? $previousIndex : $index
+                    $tokens[$previousIndex]->isGivenKind(\T_STRING) ? $previousIndex : $index,
                 );
             }
         }

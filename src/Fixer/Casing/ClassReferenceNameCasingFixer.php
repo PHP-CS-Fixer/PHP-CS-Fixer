@@ -52,7 +52,7 @@ final class ClassReferenceNameCasingFixer extends AbstractFixer
             'When referencing an internal class it must be written using the correct casing.',
             [
                 new CodeSample("<?php\nthrow new \\exception();\n"),
-            ]
+            ],
         );
     }
 
@@ -84,7 +84,10 @@ final class ClassReferenceNameCasingFixer extends AbstractFixer
         }
     }
 
-    private function getClassReference(Tokens $tokens, NamespaceAnalysis $namespace): \Generator
+    /**
+     * @return iterable<int>
+     */
+    private function getClassReference(Tokens $tokens, NamespaceAnalysis $namespace): iterable
     {
         static $blockKinds;
 
@@ -133,7 +136,7 @@ final class ClassReferenceNameCasingFixer extends AbstractFixer
                 continue;
             }
 
-            if (!$tokens[$prevIndex]->isGivenKind(\T_NEW) && $tokens[$nextIndex]->equalsAny(['(', ';', [\T_CLOSE_TAG]])) {
+            if (!$tokens[$prevIndex]->isGivenKind(\T_NEW) && $tokens[$nextIndex]->equalsAny(['(', ';', '=', [\T_CLOSE_TAG]])) {
                 continue;
             }
 

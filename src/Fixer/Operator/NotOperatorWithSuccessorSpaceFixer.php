@@ -40,9 +40,9 @@ final class NotOperatorWithSuccessorSpaceFixer extends AbstractFixer
                             echo "Help!";
                         }
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

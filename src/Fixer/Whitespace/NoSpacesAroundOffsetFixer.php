@@ -54,27 +54,27 @@ final class NoSpacesAroundOffsetFixer extends AbstractFixer implements Configura
                 new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];\n"),
                 new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];\n", ['positions' => ['inside']]),
                 new CodeSample("<?php\n\$sample = \$b [ 'a' ] [ 'b' ];\n", ['positions' => ['outside']]),
-            ]
+            ],
         );
     }
 
     public function isCandidate(Tokens $tokens): bool
     {
-        return $tokens->isAnyTokenKindsFound(['[', CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN]);
+        return $tokens->isAnyTokenKindsFound(['[', CT::T_ARRAY_INDEX_BRACE_OPEN]);
     }
 
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         foreach ($tokens as $index => $token) {
-            if (!$token->equalsAny(['[', [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN]])) {
+            if (!$token->equalsAny(['[', [CT::T_ARRAY_INDEX_BRACE_OPEN]])) {
                 continue;
             }
 
             if (\in_array('inside', $this->configuration['positions'], true)) {
                 if ($token->equals('[')) {
-                    $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE, $index);
+                    $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_BRACKET, $index);
                 } else {
-                    $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE, $index);
+                    $endIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_INDEX_BRACE, $index);
                 }
 
                 // remove space after opening `[` or `{`

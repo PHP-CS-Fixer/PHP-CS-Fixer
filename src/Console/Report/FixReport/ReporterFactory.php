@@ -44,7 +44,7 @@ final class ReporterFactory
                     '%s\%s%s',
                     __NAMESPACE__,
                     '' !== $relativeNamespace ? $relativeNamespace.'\\' : '',
-                    $file->getBasename('.php')
+                    $file->getBasename('.php'),
                 );
                 $builtInReporters[] = $class;
             }

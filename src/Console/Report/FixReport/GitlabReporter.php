@@ -89,9 +89,9 @@ final class GitlabReporter implements ReporterInterface
                             null !== $fixer
                                 ? \sprintf(
                                     'Check [docs](https://cs.symfony.com/doc/rules/%s.html) for more information.',
-                                    substr($this->documentationLocator->getFixerDocumentationFileRelativePath($fixer), 0, -4) // -4 to drop `.rst`
+                                    substr($this->documentationLocator->getFixerDocumentationFileRelativePath($fixer), 0, -4), // -4 to drop `.rst`
                                 )
-                                : 'Check performed with a custom rule.'
+                                : 'Check performed with a custom rule.',
                         ),
                     ],
                     'categories' => ['Style'],
@@ -99,7 +99,11 @@ final class GitlabReporter implements ReporterInterface
                     'severity' => 'minor',
                     'location' => [
                         'path' => $fileName,
-                        'lines' => self::getLines($this->diffParser->parse($change['diff'])),
+                        'lines' => self::getLines(
+                            array_values( // before PHPUnit 13, result of `->parse(...)` is array and not list
+                                $this->diffParser->parse($change['diff']),
+                            ),
+                        ),
                     ],
                 ];
             }

@@ -29,6 +29,7 @@ final class PhpCsFixerRiskySet extends AbstractRuleSetDefinition
             '@PER-CS:risky' => true,
             '@Symfony:risky' => true,
             'comment_to_phpdoc' => true,
+            'declare_strict_types' => true,
             'final_internal_class' => true,
             'get_class_to_class_keyword' => false,
             'modernize_strpos' => false,
@@ -56,9 +57,9 @@ final class PhpCsFixerRiskySet extends AbstractRuleSetDefinition
             'php_unit_data_provider_static' => ['force' => true],
             'php_unit_strict' => true,
             'php_unit_test_case_static_method_calls' => ['call_type' => 'self'],
-            'static_lambda' => true,
             'strict_comparison' => true,
             'strict_param' => true,
+            'void_return' => true, // override Symfony
             'yield_from_array_to_yields' => true,
         ];
     }

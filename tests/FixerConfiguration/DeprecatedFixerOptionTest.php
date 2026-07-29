@@ -18,6 +18,8 @@ use PhpCsFixer\FixerConfiguration\DeprecatedFixerOption;
 use PhpCsFixer\FixerConfiguration\FixerOption;
 use PhpCsFixer\FixerConfiguration\FixerOptionInterface;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -26,13 +28,14 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(DeprecatedFixerOption::class)]
 final class DeprecatedFixerOptionTest extends TestCase
 {
     public function testGetName(): void
     {
         $option = new DeprecatedFixerOption(
             new FixerOption('foo', 'Foo.'),
-            'deprecated'
+            'deprecated',
         );
 
         self::assertSame('foo', $option->getName());
@@ -42,7 +45,7 @@ final class DeprecatedFixerOptionTest extends TestCase
     {
         $option = new DeprecatedFixerOption(
             new FixerOption('foo', 'Foo.'),
-            'deprecated'
+            'deprecated',
         );
 
         self::assertSame('Foo.', $option->getDescription());
@@ -51,11 +54,12 @@ final class DeprecatedFixerOptionTest extends TestCase
     /**
      * @dataProvider provideHasDefaultCases
      */
+    #[DataProvider('provideHasDefaultCases')]
     public function testHasDefault(bool $isRequired): void
     {
         $option = new DeprecatedFixerOption(
             new FixerOption('foo', 'Foo.', $isRequired),
-            'deprecated'
+            'deprecated',
         );
 
         self::assertSame(!$isRequired, $option->hasDefault());
@@ -76,11 +80,12 @@ final class DeprecatedFixerOptionTest extends TestCase
      *
      * @dataProvider provideGetDefaultCases
      */
+    #[DataProvider('provideGetDefaultCases')]
     public function testGetDefault($default): void
     {
         $option = new DeprecatedFixerOption(
             new FixerOption('foo', 'Foo.', false, $default),
-            'deprecated'
+            'deprecated',
         );
 
         self::assertSame($default, $option->getDefault());
@@ -102,7 +107,7 @@ final class DeprecatedFixerOptionTest extends TestCase
 
         $option = new DeprecatedFixerOption(
             new FixerOption('foo', 'Foo.', true, null, $allowedTypes),
-            'deprecated'
+            'deprecated',
         );
 
         self::assertSame($allowedTypes, $option->getAllowedTypes());
@@ -114,7 +119,7 @@ final class DeprecatedFixerOptionTest extends TestCase
 
         $option = new DeprecatedFixerOption(
             new FixerOption('foo', 'Foo.', true, null, [], $allowedValues),
-            'deprecated'
+            'deprecated',
         );
 
         self::assertSame($allowedValues, $option->getAllowedValues());
@@ -126,7 +131,7 @@ final class DeprecatedFixerOptionTest extends TestCase
 
         $option = new DeprecatedFixerOption(
             $this->createFixerOptionDouble($normalizer),
-            'deprecated'
+            'deprecated',
         );
 
         self::assertSame($normalizer, $option->getNormalizer());
@@ -136,7 +141,7 @@ final class DeprecatedFixerOptionTest extends TestCase
     {
         $option = new DeprecatedFixerOption(
             new FixerOption('foo', 'Foo.'),
-            'Use option "bar" instead.'
+            'Use option "bar" instead.',
         );
 
         self::assertSame('Use option "bar" instead.', $option->getDeprecationMessage());

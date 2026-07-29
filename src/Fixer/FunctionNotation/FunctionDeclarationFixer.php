@@ -94,7 +94,7 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
                             return false;
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -102,7 +102,7 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
                         $f = function () {};
 
                         PHP,
-                    ['closure_function_spacing' => self::SPACING_NONE]
+                    ['closure_function_spacing' => self::SPACING_NONE],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -110,9 +110,9 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
                         $f = fn () => null;
 
                         PHP,
-                    ['closure_fn_spacing' => self::SPACING_NONE]
+                    ['closure_fn_spacing' => self::SPACING_NONE],
                 ),
-            ]
+            ],
         );
     }
 
@@ -144,7 +144,7 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
                 continue;
             }
 
-            $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startParenthesisIndex);
+            $endParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $startParenthesisIndex);
 
             if (false === $this->configuration['trailing_comma_single_line']
                 && !$tokens->isPartialCodeMultiline($index, $endParenthesisIndex)
@@ -180,7 +180,7 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
                 $tokens->ensureWhitespaceAtIndex($afterParenthesisIndex + 1, 0, ' ');
 
                 $useStartParenthesisIndex = $tokens->getNextTokenOfKind($afterParenthesisIndex, ['(']);
-                $useEndParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $useStartParenthesisIndex);
+                $useEndParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $useStartParenthesisIndex);
 
                 if (false === $this->configuration['trailing_comma_single_line']
                     && !$tokens->isPartialCodeMultiline($index, $useEndParenthesisIndex)
@@ -246,8 +246,8 @@ final class FunctionDeclarationFixer extends AbstractFixer implements Configurab
                 ->setDefault(
                     Future::getV4OrV3(
                         self::SPACING_NONE,
-                        self::SPACING_ONE
-                    )
+                        self::SPACING_ONE,
+                    ),
                 )
                 ->setAllowedValues(self::SUPPORTED_SPACINGS)
                 ->getOption(),

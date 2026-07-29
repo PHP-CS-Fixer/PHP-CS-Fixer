@@ -84,7 +84,7 @@ final class PhpdocReturnSelfReferenceFixer extends AbstractFixer implements Conf
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -109,9 +109,9 @@ final class PhpdocReturnSelfReferenceFixer extends AbstractFixer implements Conf
                         }
 
                         PHP,
-                    ['replacements' => ['this' => 'self']]
+                    ['replacements' => ['this' => 'self']],
                 ),
-            ]
+            ],
         );
     }
 
@@ -168,7 +168,7 @@ final class PhpdocReturnSelfReferenceFixer extends AbstractFixer implements Conf
                             throw new InvalidOptionsException(\sprintf(
                                 'Unknown key "%s", expected any of %s.',
                                 \gettype($from).'#'.$from,
-                                Utils::naturalLanguageJoin(array_keys($default))
+                                Utils::naturalLanguageJoin(array_keys($default)),
                             ));
                         }
 
@@ -176,7 +176,7 @@ final class PhpdocReturnSelfReferenceFixer extends AbstractFixer implements Conf
                             throw new InvalidOptionsException(\sprintf(
                                 'Unknown value "%s", expected any of %s.',
                                 \is_object($to) ? \get_class($to) : \gettype($to).(\is_resource($to) ? '' : '#'.$to),
-                                Utils::naturalLanguageJoin(self::TO_TYPES)
+                                Utils::naturalLanguageJoin(self::TO_TYPES),
                             ));
                         }
 

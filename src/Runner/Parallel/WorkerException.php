@@ -37,14 +37,15 @@ final class WorkerException extends \RuntimeException
      *     file: string,
      *     line: int,
      *     code: int,
-     *     trace: string
+     *     trace: string,
+     *     ...
      * } $data
      */
     public static function fromRaw(array $data): self
     {
         $exception = new self(
             \sprintf('[%s] %s', $data['class'], $data['message']),
-            $data['code']
+            $data['code'],
         );
         $exception->file = $data['file'];
         $exception->line = $data['line'];
@@ -53,7 +54,7 @@ final class WorkerException extends \RuntimeException
             $data['file'],
             $data['line'],
             \PHP_EOL,
-            $data['trace']
+            $data['trace'],
         );
 
         return $exception;

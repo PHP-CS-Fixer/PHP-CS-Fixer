@@ -53,7 +53,7 @@ final class PhpdocTagCasingFixer extends AbstractProxyFixer implements Configura
                 new CodeSample("<?php\n/**\n * @inheritdoc\n * @Foo\n */\n", [
                     'tags' => ['foo'],
                 ]),
-            ]
+            ],
         );
     }
 
@@ -75,6 +75,8 @@ final class PhpdocTagCasingFixer extends AbstractProxyFixer implements Configura
             $replacements[$tag] = $tag;
         }
 
+        \assert(isset($this->proxyFixers['general_phpdoc_tag_rename']));
+
         /** @var GeneralPhpdocTagRenameFixer $generalPhpdocTagRenameFixer */
         $generalPhpdocTagRenameFixer = $this->proxyFixers['general_phpdoc_tag_rename'];
 
@@ -89,7 +91,7 @@ final class PhpdocTagCasingFixer extends AbstractProxyFixer implements Configura
             throw new InvalidFixerConfigurationException(
                 $this->getName(),
                 Preg::replace('/^\[.+?\] /', '', $exception->getMessage()),
-                $exception
+                $exception,
             );
         }
     }

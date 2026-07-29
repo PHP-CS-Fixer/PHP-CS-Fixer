@@ -63,7 +63,7 @@ final class FileReader
             throw new \RuntimeException(\sprintf(
                 'Failed to read content from "%s".%s',
                 $realPath,
-                null !== $error ? ' '.$error['message'] : ''
+                null !== $error ? ' '.$error['message'] : '',
             ));
         }
 

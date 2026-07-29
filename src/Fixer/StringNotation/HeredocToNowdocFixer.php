@@ -40,9 +40,9 @@ final class HeredocToNowdocFixer extends AbstractFixer
                         Foo
                         TEST;
 
-                        EOF
+                        EOF,
                 ),
-            ]
+            ],
         );
     }
 

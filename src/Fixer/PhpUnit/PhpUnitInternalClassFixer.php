@@ -55,9 +55,9 @@ final class PhpUnitInternalClassFixer extends AbstractPhpUnitFixer implements Wh
                 new CodeSample("<?php\nclass MyTest extends TestCase {}\n"),
                 new CodeSample(
                     "<?php\nclass MyTest extends TestCase {}\nfinal class FinalTest extends TestCase {}\nabstract class AbstractTest extends TestCase {}\n",
-                    ['types' => ['final']]
+                    ['types' => ['final']],
                 ),
-            ]
+            ],
         );
     }
 

@@ -34,17 +34,12 @@ use Symfony\Component\Finder\Finder;
 #[AsCommand(name: 'documentation', description: 'Dumps the documentation of the project into its "/doc" directory.')]
 final class DocumentationCommand extends Command
 {
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultName = 'documentation';
-
-    /** @TODO PHP 8.0 - remove the property */
-    protected static $defaultDescription = 'Dumps the documentation of the project into its "/doc" directory.';
-
     private Filesystem $filesystem;
 
     public function __construct(Filesystem $filesystem)
     {
-        parent::__construct();
+        parent::__construct('documentation');
+        $this->setDescription('Dumps the documentation of the project into its "/doc" directory.');
         $this->filesystem = $filesystem;
     }
 
@@ -76,7 +71,7 @@ final class DocumentationCommand extends Command
             $docForFixerRelativePaths[] = $locator->getFixerDocumentationFileRelativePath($fixer);
             $this->filesystem->dumpFile(
                 $locator->getFixerDocumentationFilePath($fixer),
-                $fixerDocumentGenerator->generateFixerDocumentation($fixer)
+                $fixerDocumentGenerator->generateFixerDocumentation($fixer),
             );
         }
 
@@ -92,7 +87,7 @@ final class DocumentationCommand extends Command
 
         $this->filesystem->dumpFile(
             $locator->getFixersDocumentationIndexFilePath(),
-            $fixerDocumentGenerator->generateFixersDocumentationIndex($fixers)
+            $fixerDocumentGenerator->generateFixersDocumentationIndex($fixers),
         );
 
         // RuleSet docs.
@@ -113,7 +108,7 @@ final class DocumentationCommand extends Command
 
         $this->filesystem->dumpFile(
             $locator->getRuleSetsDocumentationIndexFilePath(),
-            $ruleSetDocumentationGenerator->generateRuleSetsDocumentationIndex($paths)
+            $ruleSetDocumentationGenerator->generateRuleSetsDocumentationIndex($paths),
         );
 
         $output->writeln('Docs updated.');

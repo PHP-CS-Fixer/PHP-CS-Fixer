@@ -14,7 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Operator;
 
+use PhpCsFixer\Fixer\Operator\NewExpressionParenthesesFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -29,6 +33,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(NewExpressionParenthesesFixer::class)]
 final class NewExpressionParenthesesFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -36,8 +41,10 @@ final class NewExpressionParenthesesFixerTest extends AbstractFixerTestCase
      *
      * @dataProvider provideFixCases
      *
-     * @requires PHP 8.4
+     * @requires PHP >= 8.4.0
      */
+    #[DataProvider('provideFixCases')]
+    #[RequiresPhp('>= 8.4.0')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);

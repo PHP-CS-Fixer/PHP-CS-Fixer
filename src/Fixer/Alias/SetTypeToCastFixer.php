@@ -39,11 +39,11 @@ final class SetTypeToCastFixer extends AbstractFunctionReferenceFixer
                         settype($bar, "string");
                         settype($bar, "null");
 
-                        PHP
+                        PHP,
                 ),
             ],
             null,
-            'Risky when the `settype` function is overridden or when used as the 2nd or 3rd expression in a `for` loop .'
+            'Risky when the `settype` function is overridden or when used as the 2nd or 3rd expression in a `for` loop .',
         );
     }
 
@@ -148,7 +148,7 @@ final class SetTypeToCastFixer extends AbstractFunctionReferenceFixer
                 $firstArgumentStart,
                 $commaIndex,
                 $secondArgumentStart,
-                $candidate[2]
+                $candidate[2],
             );
 
             if ('null' === $type) {
@@ -218,7 +218,7 @@ final class SetTypeToCastFixer extends AbstractFunctionReferenceFixer
                 $castToken,
                 new Token([\T_WHITESPACE, ' ']),
                 clone $argumentToken,
-            ]
+            ],
         );
 
         $tokens->removeTrailingWhitespace($functionNameIndex + 6); // 6 = number of inserted tokens -1 for offset correction
@@ -237,7 +237,7 @@ final class SetTypeToCastFixer extends AbstractFunctionReferenceFixer
                 new Token('='),
                 new Token([\T_WHITESPACE, ' ']),
                 new Token([\T_STRING, 'null']),
-            ]
+            ],
         );
 
         $tokens->removeTrailingWhitespace($functionNameIndex + 4); // 4 = number of inserted tokens -1 for offset correction

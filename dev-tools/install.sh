@@ -19,7 +19,7 @@ cd "$(dirname "$0")"
 
 mkdir -p bin
 
-VERSION_CB="v2.25.19"
+VERSION_CB="v2.26.9"
 VERSION_SC="v0.11.0"
 
 OS_KERNEL=$(uname -s | tr '[:upper:]' '[:lower:]')
@@ -40,9 +40,3 @@ if [ ! -x bin/shellcheck ]; then
     chmod u+x bin/shellcheck
 fi
 bin/shellcheck --version
-
-echo λλλ composer packages
-composer install -v
-composer info -D | sort
-
-printf '\033[0;32mDev-tools installation completed\033[0m\n'

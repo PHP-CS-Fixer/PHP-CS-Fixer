@@ -215,11 +215,11 @@ The rule is part of the following rule sets:
 
   ``['order' => ['use_trait']]``
 
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
 
   ``['order' => ['use_trait']]``
 
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 
   ``['order' => ['use_trait']]``

@@ -65,7 +65,7 @@ final class PhpdocToCommentFixer extends AbstractFixer implements ConfigurableFi
     /**
      * {@inheritdoc}
      *
-     * Must run before GeneralPhpdocAnnotationRemoveFixer, GeneralPhpdocTagRenameFixer, NoBlankLinesAfterPhpdocFixer, NoEmptyCommentFixer, NoEmptyPhpdocFixer, NoSuperfluousPhpdocTagsFixer, PhpdocAddMissingParamAnnotationFixer, PhpdocAlignFixer, PhpdocAnnotationWithoutDotFixer, PhpdocArrayTypeFixer, PhpdocIndentFixer, PhpdocInlineTagNormalizerFixer, PhpdocLineSpanFixer, PhpdocListTypeFixer, PhpdocNoAccessFixer, PhpdocNoAliasTagFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer, PhpdocNoUselessInheritdocFixer, PhpdocOrderByValueFixer, PhpdocOrderFixer, PhpdocParamOrderFixer, PhpdocReadonlyClassCommentToKeywordFixer, PhpdocReturnSelfReferenceFixer, PhpdocSeparationFixer, PhpdocSingleLineVarSpacingFixer, PhpdocSummaryFixer, PhpdocTagCasingFixer, PhpdocTagNoNamedArgumentsFixer, PhpdocTagTypeFixer, PhpdocToParamTypeFixer, PhpdocToPropertyTypeFixer, PhpdocToReturnTypeFixer, PhpdocTrimConsecutiveBlankLineSeparationFixer, PhpdocTrimFixer, PhpdocTypesOrderFixer, PhpdocVarAnnotationCorrectOrderFixer, PhpdocVarWithoutNameFixer, SingleLineCommentSpacingFixer, SingleLineCommentStyleFixer.
+     * Must run before GeneralPhpdocAnnotationRemoveFixer, GeneralPhpdocTagRenameFixer, NoBlankLinesAfterPhpdocFixer, NoEmptyCommentFixer, NoEmptyPhpdocFixer, NoSuperfluousPhpdocTagsFixer, PhpdocAddMissingParamAnnotationFixer, PhpdocAlignFixer, PhpdocAnnotationWithoutDotFixer, PhpdocArrayTypeFixer, PhpdocIndentFixer, PhpdocInlineTagNormalizerFixer, PhpdocLineSpanFixer, PhpdocListTypeFixer, PhpdocNoAccessFixer, PhpdocNoAliasTagFixer, PhpdocNoDuplicateTypesFixer, PhpdocNoEmptyReturnFixer, PhpdocNoPackageFixer, PhpdocNoUselessInheritdocFixer, PhpdocOrderByValueFixer, PhpdocOrderFixer, PhpdocParamOrderFixer, PhpdocReadonlyClassCommentToKeywordFixer, PhpdocReturnSelfReferenceFixer, PhpdocSeparationFixer, PhpdocSingleLineVarSpacingFixer, PhpdocSummaryFixer, PhpdocTagCasingFixer, PhpdocTagNoNamedArgumentsFixer, PhpdocTagTypeFixer, PhpdocToParamTypeFixer, PhpdocToPropertyTypeFixer, PhpdocToReturnTypeFixer, PhpdocTrimConsecutiveBlankLineSeparationFixer, PhpdocTrimFixer, PhpdocTypesNoDuplicatesFixer, PhpdocTypesOrderFixer, PhpdocVarAnnotationCorrectOrderFixer, PhpdocVarWithoutNameFixer, SingleLineCommentSpacingFixer, SingleLineCommentStyleFixer.
      * Must run after CommentToPhpdocFixer.
      */
     public function getPriority(): int
@@ -93,7 +93,7 @@ final class PhpdocToCommentFixer extends AbstractFixer implements ConfigurableFi
                             $sqlite->open($path);
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -111,7 +111,7 @@ final class PhpdocToCommentFixer extends AbstractFixer implements ConfigurableFi
                         }
 
                         PHP,
-                    ['ignored_tags' => ['todo']]
+                    ['ignored_tags' => ['todo']],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -129,9 +129,9 @@ final class PhpdocToCommentFixer extends AbstractFixer implements ConfigurableFi
                         }
 
                         PHP,
-                    ['allow_before_return_statement' => true]
+                    ['allow_before_return_statement' => true],
                 ),
-            ]
+            ],
         );
     }
 
@@ -139,7 +139,7 @@ final class PhpdocToCommentFixer extends AbstractFixer implements ConfigurableFi
     {
         $this->ignoredTags = array_map(
             static fn (string $tag): string => strtolower($tag),
-            $this->configuration['ignored_tags']
+            $this->configuration['ignored_tags'],
         );
 
         $this->allowBeforeReturnStatement = true === $this->configuration['allow_before_return_statement'];

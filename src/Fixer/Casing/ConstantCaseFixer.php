@@ -61,7 +61,7 @@ final class ConstantCaseFixer extends AbstractFixer implements ConfigurableFixer
             [
                 new CodeSample("<?php\n\$a = FALSE;\n\$b = True;\n\$c = nuLL;\n"),
                 new CodeSample("<?php\n\$a = FALSE;\n\$b = True;\n\$c = nuLL;\n", ['case' => 'upper']),
-            ]
+            ],
         );
     }
 

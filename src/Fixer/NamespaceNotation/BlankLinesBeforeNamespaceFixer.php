@@ -61,7 +61,7 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
                 new CodeSample("<?php\n\ndeclare(strict_types=1);\n\n\n\nnamespace A{}\n", ['max_line_breaks' => 2]),
                 new CodeSample("<?php\n\n/** Some comment */\nnamespace A{}\n", ['min_line_breaks' => 2]),
                 new CodeSample("<?php\n\nnamespace A{}\n", ['min_line_breaks' => 0, 'max_line_breaks' => 0]),
-            ]
+            ],
         );
     }
 
@@ -90,7 +90,7 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
                     if ($value < 0) {
                         throw new InvalidFixerConfigurationException(
                             (new self())->getName(),
-                            'Option `min_line_breaks` cannot be lower than 0.'
+                            'Option `min_line_breaks` cannot be lower than 0.',
                         );
                     }
 
@@ -104,14 +104,14 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
                     if ($value < 0) {
                         throw new InvalidFixerConfigurationException(
                             (new self())->getName(),
-                            'Option `max_line_breaks` cannot be lower than 0.'
+                            'Option `max_line_breaks` cannot be lower than 0.',
                         );
                     }
 
                     if ($value < $options['min_line_breaks']) {
                         throw new InvalidFixerConfigurationException(
                             (new self())->getName(),
-                            'Option `max_line_breaks` cannot have lower value than `min_line_breaks`.'
+                            'Option `max_line_breaks` cannot have lower value than `min_line_breaks`.',
                         );
                     }
 
@@ -131,7 +131,7 @@ final class BlankLinesBeforeNamespaceFixer extends AbstractFixer implements Whit
                     $tokens,
                     $index,
                     $this->configuration['min_line_breaks'],
-                    $this->configuration['max_line_breaks']
+                    $this->configuration['max_line_breaks'],
                 );
             }
         }

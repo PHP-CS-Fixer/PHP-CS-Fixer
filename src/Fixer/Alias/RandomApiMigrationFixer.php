@@ -52,10 +52,12 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
      * @var array<string, array<int, int>>
      */
     private const ARGUMENT_COUNTS = [
+        'mt_getrandmax' => [0],
         'getrandmax' => [0],
         'mt_rand' => [1, 2],
         'rand' => [0, 2],
         'srand' => [0, 1],
+        'mt_srand' => [0, 1],
         'random_int' => [0, 2],
     ];
 
@@ -67,15 +69,15 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
                 new CodeSample("<?php\n\$a = getrandmax();\n\$a = rand(\$b, \$c);\n\$a = srand();\n"),
                 new CodeSample(
                     "<?php\n\$a = getrandmax();\n\$a = rand(\$b, \$c);\n\$a = srand();\n",
-                    ['replacements' => ['getrandmax' => 'mt_getrandmax']]
+                    ['replacements' => ['getrandmax' => 'mt_getrandmax']],
                 ),
                 new CodeSample(
                     "<?php \$a = rand(\$b, \$c);\n",
-                    ['replacements' => ['rand' => 'random_int']]
+                    ['replacements' => ['rand' => 'random_int']],
                 ),
             ],
             null,
-            'Risky when the configured functions are overridden. Or when relying on the seed based generating of the numbers.'
+            'Risky when the configured functions are overridden. Or when relying on the seed based generating of the numbers.',
         );
     }
 
@@ -138,18 +140,26 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
                         if (!\array_key_exists($functionName, self::ARGUMENT_COUNTS)) {
                             throw new InvalidOptionsException(\sprintf(
                                 'Function "%s" is not handled by the fixer.',
-                                $functionName
+                                $functionName,
                             ));
                         }
                     }
 
                     return true;
                 }])
-                ->setDefault([
-                    'getrandmax' => 'mt_getrandmax',
-                    'rand' => Future::getV4OrV3('random_int', 'mt_rand'),
-                    'srand' => 'mt_srand',
-                ])
+                ->setDefault(Future::getV4OrV3(
+                    [
+                        'mt_getrandmax' => 'getrandmax',
+                        'mt_rand' => 'random_int',
+                        'mt_srand' => 'srand',
+                        'rand' => 'random_int',
+                    ],
+                    [
+                        'getrandmax' => 'mt_getrandmax',
+                        'rand' => 'mt_rand',
+                        'srand' => 'mt_srand',
+                    ],
+                ))
                 ->getOption(),
         ]);
     }

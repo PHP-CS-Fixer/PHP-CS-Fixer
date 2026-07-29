@@ -97,6 +97,7 @@ final class DocBlock implements \Stringable
         $total = \count($this->lines);
 
         for ($index = 0; $index < $total; ++$index) {
+            \assert(isset($this->lines[$index]));
             if ($this->lines[$index]->containsATag()) {
                 // get all the lines that make up the annotation
                 $lines = \array_slice($this->lines, $index, $this->findAnnotationLength($index), true);
@@ -128,6 +129,7 @@ final class DocBlock implements \Stringable
             return;
         }
 
+        \assert(isset($this->lines[0]));
         $lineContent = $this->getSingleLineDocBlockEntry($this->lines[0]);
 
         if ('' === $lineContent) {
@@ -155,7 +157,7 @@ final class DocBlock implements \Stringable
 
         $usefulLines = array_filter(
             $this->lines,
-            static fn (Line $line): bool => $line->containsUsefulContent()
+            static fn (Line $line): bool => $line->containsUsefulContent(),
         );
 
         if (1 < \count($usefulLines)) {

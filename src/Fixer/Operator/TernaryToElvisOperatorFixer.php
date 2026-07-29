@@ -47,7 +47,7 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
         '[',
         '{',
         '}',
-        [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN],
+        [CT::T_ARRAY_INDEX_BRACE_OPEN],
         [\T_AND_EQUAL],    // &=
         [\T_CONCAT_EQUAL], // .=
         [\T_DIV_EQUAL],    // /=
@@ -68,14 +68,14 @@ final class TernaryToElvisOperatorFixer extends AbstractFixer
             'Use the Elvis operator `?:` where possible.',
             [
                 new CodeSample(
-                    "<?php\n\$foo = \$foo ? \$foo : 1;\n"
+                    "<?php\n\$foo = \$foo ? \$foo : 1;\n",
                 ),
                 new CodeSample(
-                    "<?php \$foo = \$bar[a()] ? \$bar[a()] : 1; # \"risky\" sample, \"a()\" only gets called once after fixing\n"
+                    "<?php \$foo = \$bar[a()] ? \$bar[a()] : 1; # \"risky\" sample, \"a()\" only gets called once after fixing\n",
                 ),
             ],
             null,
-            'Risky when relying on functions called on both sides of the `?` operator.'
+            'Risky when relying on functions called on both sides of the `?` operator.',
         );
     }
 

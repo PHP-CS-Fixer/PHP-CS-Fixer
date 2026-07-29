@@ -34,7 +34,7 @@ class InvalidFixerConfigurationException extends InvalidConfigurationException
         parent::__construct(
             \sprintf('[%s] %s', $fixerName, $message),
             FixCommandExitStatusCalculator::EXIT_STATUS_FLAG_HAS_INVALID_FIXER_CONFIG,
-            $previous
+            $previous,
         );
 
         $this->fixerName = $fixerName;

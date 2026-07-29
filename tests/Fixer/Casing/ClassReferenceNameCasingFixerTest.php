@@ -14,7 +14,11 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Casing;
 
+use PhpCsFixer\Fixer\Casing\ClassReferenceNameCasingFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -25,11 +29,13 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ClassReferenceNameCasingFixer::class)]
 final class ClassReferenceNameCasingFixerTest extends AbstractFixerTestCase
 {
     /**
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -126,6 +132,10 @@ final class ClassReferenceNameCasingFixerTest extends AbstractFixerTestCase
 
         yield [
             '<?php const exception = "abc";',
+        ];
+
+        yield [
+            '<?php class Foo { const FIRST = 1, EXCEPTION = 2, ERROR = 3; }',
         ];
 
         yield [
@@ -256,8 +266,10 @@ use Sonata\\Exporter\\Writer\\EXCEPTION;
     /**
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testFix80(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -276,8 +288,10 @@ use Sonata\\Exporter\\Writer\\EXCEPTION;
     /**
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -306,6 +320,45 @@ use Sonata\\Exporter\\Writer\\EXCEPTION;
         yield 'multiple type catch without variable 3' => [
             '<?php try { foo(); } catch(\InvalidArgumentException|\LogicException) {}',
             '<?php try { foo(); } catch(\INVALIDARGUMENTEXCEPTION|\logicexception) {}',
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix83Cases
+     *
+     * @requires PHP >= 8.3.0
+     */
+    #[DataProvider('provideFix83Cases')]
+    #[RequiresPhp('>= 8.3.0')]
+    public function testFix83(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{0: string, 1?: string}>
+     */
+    public static function provideFix83Cases(): iterable
+    {
+        yield 'typed constant name matching internal class' => [
+            '<?php
+                class MessageType
+                {
+                    public const string ERROR = "ERROR";
+                }
+            ',
+        ];
+
+        yield 'nullable typed constant name matching internal class' => [
+            '<?php class Foo { public const ?int EXCEPTION = null; }',
+        ];
+
+        yield 'typed constant name matching internal class in multiple declaration' => [
+            '<?php class Foo { const string FIRST = "a", ERROR = "b"; }',
+        ];
+
+        yield 'class-typed constant name matching internal class' => [
+            '<?php class Foo { public const Bar ERROR = Bar::X; }',
         ];
     }
 }

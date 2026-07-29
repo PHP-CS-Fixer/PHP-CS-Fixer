@@ -30,7 +30,7 @@ final class NoUnsetCastFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'Variables must be set `null` instead of using `(unset)` casting.',
-            [new CodeSample("<?php\n\$a = (unset) \$b;\n")]
+            [new CodeSample("<?php\n\$a = (unset) \$b;\n")],
         );
     }
 

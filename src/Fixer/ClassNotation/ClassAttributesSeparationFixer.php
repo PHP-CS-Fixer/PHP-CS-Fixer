@@ -101,7 +101,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
 
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -113,7 +113,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
                         }
 
                         PHP,
-                    ['elements' => ['property' => self::SPACING_ONE]]
+                    ['elements' => ['property' => self::SPACING_ONE]],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -126,7 +126,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
                         }
 
                         PHP,
-                    ['elements' => ['const' => self::SPACING_ONE]]
+                    ['elements' => ['const' => self::SPACING_ONE]],
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -144,7 +144,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
                         }
 
                         PHP,
-                    ['elements' => ['const' => self::SPACING_ONLY_IF_META]]
+                    ['elements' => ['const' => self::SPACING_ONLY_IF_META]],
                 ),
                 new VersionSpecificCodeSample(
                     <<<'PHP'
@@ -165,9 +165,9 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
 
                         PHP,
                     new VersionSpecification(8_00_00),
-                    ['elements' => ['property' => self::SPACING_ONLY_IF_META]]
+                    ['elements' => ['property' => self::SPACING_ONLY_IF_META]],
                 ),
-            ]
+            ],
         );
     }
 
@@ -201,10 +201,6 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
         foreach ($this->getElementsByClass($tokens) as $class) {
             $elements = $class['elements'];
 
-            if (0 === \count($elements)) {
-                continue;
-            }
-
             if (isset($this->classElementTypes[$elements[0]['type']])) {
                 $this->fixSpaceBelowClassElement($tokens, $class);
             }
@@ -231,8 +227,8 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
                                 \sprintf(
                                     'Unexpected element type, expected any of %s, got "%s".',
                                     Utils::naturalLanguageJoin($supportedTypes),
-                                    \gettype($type).'#'.$type
-                                )
+                                    \gettype($type).'#'.$type,
+                                ),
                             );
                         }
 
@@ -244,8 +240,8 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
                                     'Unexpected spacing for element type "%s", expected any of %s, got "%s".',
                                     $spacing,
                                     Utils::naturalLanguageJoin($supportedSpacings),
-                                    \is_object($spacing) ? \get_class($spacing) : (null === $spacing ? 'null' : \gettype($spacing).'#'.$spacing)
-                                )
+                                    \is_object($spacing) ? \get_class($spacing) : (null === $spacing ? 'null' : \gettype($spacing).'#'.$spacing),
+                                ),
                             );
                         }
                     }
@@ -354,6 +350,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
     {
         \assert(isset($class['elements'][$elementIndex]));
         $type = $class['elements'][$elementIndex]['type'];
+        \assert(isset($this->classElementTypes[$type]));
         $spacing = $this->classElementTypes[$type];
 
         if (self::SPACING_ONE === $spacing) {
@@ -361,10 +358,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
         }
 
         if (self::SPACING_NONE === $spacing) {
-            if (!isset($class['elements'][$elementIndex + 1])) {
-                return 1;
-            }
-
+            \assert(isset($class['elements'][$elementIndex + 1]));
             $aboveElement = $class['elements'][$elementIndex + 1];
 
             if ($aboveElement['type'] !== $type) {
@@ -376,13 +370,10 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
             return $tokens[$aboveElementDocCandidateIndex]->isGivenKind([\T_DOC_COMMENT, CT::T_ATTRIBUTE_CLOSE]) ? 2 : 1;
         }
 
-        if (self::SPACING_ONLY_IF_META === $spacing) {
-            $aboveElementDocCandidateIndex = $tokens->getPrevNonWhitespace($class['elements'][$elementIndex]['start']);
+        // self::SPACING_ONLY_IF_META === $spacing
+        $aboveElementDocCandidateIndex = $tokens->getPrevNonWhitespace($class['elements'][$elementIndex]['start']);
 
-            return $tokens[$aboveElementDocCandidateIndex]->isGivenKind([\T_DOC_COMMENT, CT::T_ATTRIBUTE_CLOSE]) ? 2 : 1;
-        }
-
-        throw new \RuntimeException(\sprintf('Unknown spacing "%s".', $spacing));
+        return $tokens[$aboveElementDocCandidateIndex]->isGivenKind([\T_DOC_COMMENT, CT::T_ATTRIBUTE_CLOSE]) ? 2 : 1;
     }
 
     /**
@@ -435,21 +426,6 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
 
             return;
         }
-
-        // $numbOfWhiteTokens = > 1
-        $toReplaceCount = $lineBreakCount - $reqLineCount;
-
-        for ($i = $startIndex; $i < $endIndex && $toReplaceCount > 0; ++$i) {
-            $tokenLineCount = substr_count($tokens[$i]->getContent(), "\n");
-
-            if ($tokenLineCount > 0) {
-                $tokens[$i] = new Token([
-                    \T_WHITESPACE,
-                    Preg::replace('/\r\n|\n/', '', $tokens[$i]->getContent(), min($toReplaceCount, $tokenLineCount)),
-                ]);
-                $toReplaceCount -= $tokenLineCount;
-            }
-        }
     }
 
     private function getLineBreakCount(Tokens $tokens, int $startIndex, int $endIndex): int
@@ -487,11 +463,9 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
     }
 
     /**
-     * @TODO Introduce proper DTO instead of an array
-     *
-     * @return \Generator<_Class>
+     * @return iterable<_Class>
      */
-    private function getElementsByClass(Tokens $tokens): \Generator
+    private function getElementsByClass(Tokens $tokens): iterable
     {
         $tokensAnalyzer = new TokensAnalyzer($tokens);
         $class = null;
@@ -506,7 +480,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
 
                 $classIndex = $element['classIndex'];
                 $classOpen = $tokens->getNextTokenOfKind($classIndex, ['{']);
-                $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classOpen);
+                $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $classOpen);
                 $class = [
                     'index' => $element['classIndex'],
                     'open' => $classOpen,
@@ -559,7 +533,7 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
             if (true === $attributes['abstract']) {
                 $elementEndIndex = $tokens->getNextTokenOfKind($elementIndex, [';']);
             } else {
-                $elementEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $tokens->getNextTokenOfKind($elementIndex, ['{']));
+                $elementEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $tokens->getNextTokenOfKind($elementIndex, ['{']));
             }
         } elseif ('trait_import' === $elementType) {
             $elementEndIndex = $elementIndex;
@@ -569,9 +543,15 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
             } while ($tokens[$elementEndIndex]->isGivenKind([\T_STRING, \T_NS_SEPARATOR]) || $tokens[$elementEndIndex]->equals(','));
 
             if (!$tokens[$elementEndIndex]->equals(';')) {
-                $elementEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $tokens->getNextTokenOfKind($elementIndex, ['{']));
+                $elementEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $tokens->getNextTokenOfKind($elementIndex, ['{']));
             }
-        } else { // 'const', 'property', enum-'case', or 'method' of an interface
+        } elseif ('property' === $elementType) {
+            $elementEndIndex = $tokens->getNextTokenOfKind($elementIndex, [';', [CT::T_PROPERTY_HOOK_BRACE_OPEN]]);
+
+            if ($tokens[$elementEndIndex]->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
+                $elementEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PROPERTY_HOOK, $elementEndIndex);
+            }
+        } else { // 'const', enum-'case', 'promoted_property', or 'method' of an interface
             $elementEndIndex = $tokens->getNextTokenOfKind($elementIndex, [';', '{']);
         }
 

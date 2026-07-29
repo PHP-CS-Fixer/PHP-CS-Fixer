@@ -93,35 +93,35 @@ final class OrderedInterfacesFixer extends AbstractFixer implements Configurable
             'Orders the interfaces in an `implements` or `interface extends` clause.',
             [
                 new CodeSample(
-                    "<?php\n\nfinal class ExampleA implements Gamma, Alpha, Beta {}\n\ninterface ExampleB extends Gamma, Alpha, Beta {}\n"
+                    "<?php\n\nfinal class ExampleA implements Gamma, Alpha, Beta {}\n\ninterface ExampleB extends Gamma, Alpha, Beta {}\n",
                 ),
                 new CodeSample(
                     "<?php\n\nfinal class ExampleA implements Gamma, Alpha, Beta {}\n\ninterface ExampleB extends Gamma, Alpha, Beta {}\n",
-                    [self::OPTION_DIRECTION => self::DIRECTION_DESCEND]
+                    [self::OPTION_DIRECTION => self::DIRECTION_DESCEND],
                 ),
                 new CodeSample(
                     "<?php\n\nfinal class ExampleA implements MuchLonger, Short, Longer {}\n\ninterface ExampleB extends MuchLonger, Short, Longer {}\n",
-                    [self::OPTION_ORDER => self::ORDER_LENGTH]
+                    [self::OPTION_ORDER => self::ORDER_LENGTH],
                 ),
                 new CodeSample(
                     "<?php\n\nfinal class ExampleA implements MuchLonger, Short, Longer {}\n\ninterface ExampleB extends MuchLonger, Short, Longer {}\n",
                     [
                         self::OPTION_ORDER => self::ORDER_LENGTH,
                         self::OPTION_DIRECTION => self::DIRECTION_DESCEND,
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     "<?php\n\nfinal class ExampleA implements IgnorecaseB, IgNoReCaSeA, IgnoreCaseC {}\n\ninterface ExampleB extends IgnorecaseB, IgNoReCaSeA, IgnoreCaseC {}\n",
                     [
                         self::OPTION_ORDER => self::ORDER_ALPHA,
-                    ]
+                    ],
                 ),
                 new CodeSample(
                     "<?php\n\nfinal class ExampleA implements Casesensitivea, CaseSensitiveA, CasesensitiveA {}\n\ninterface ExampleB extends Casesensitivea, CaseSensitiveA, CasesensitiveA {}\n",
                     [
                         self::OPTION_ORDER => self::ORDER_ALPHA,
                         'case_sensitive' => true,
-                    ]
+                    ],
                 ),
             ],
         );

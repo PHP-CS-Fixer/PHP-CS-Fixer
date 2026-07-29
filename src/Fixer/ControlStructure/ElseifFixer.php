@@ -34,7 +34,7 @@ final class ElseifFixer extends AbstractFixer
     {
         return new FixerDefinition(
             'The keyword `elseif` should be used instead of `else if` so that all control keywords look like single words.',
-            [new CodeSample("<?php\nif (\$a) {\n} else if (\$b) {\n}\n")]
+            [new CodeSample("<?php\nif (\$a) {\n} else if (\$b) {\n}\n")],
         );
     }
 
@@ -73,7 +73,7 @@ final class ElseifFixer extends AbstractFixer
             }
 
             // if next meaningful token is T_IF, but uses an alternative syntax - this is not the case for fixing neither
-            $conditionEndBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $tokens->getNextMeaningfulToken($ifTokenIndex));
+            $conditionEndBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $tokens->getNextMeaningfulToken($ifTokenIndex));
             $afterConditionIndex = $tokens->getNextMeaningfulToken($conditionEndBraceIndex);
             if ($tokens[$afterConditionIndex]->equals(':')) {
                 continue;

@@ -41,7 +41,7 @@ final class NoNullPropertyInitializationFixer extends AbstractFixer
                             public ?string $baux;
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -50,9 +50,9 @@ final class NoNullPropertyInitializationFixer extends AbstractFixer
                             public static $foo = null;
                         }
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 
@@ -79,6 +79,8 @@ final class NoNullPropertyInitializationFixer extends AbstractFixer
             if (0 === $classLevel) {
                 continue;
             }
+
+            \assert(isset($inClass[$classLevel]));
 
             if ($tokens[$index]->equals('{')) {
                 ++$inClass[$classLevel];

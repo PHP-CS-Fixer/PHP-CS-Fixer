@@ -43,9 +43,9 @@ final class NoUselessNullsafeOperatorFixer extends AbstractFixer
                         }
 
                         PHP,
-                    new VersionSpecification(8_00_00)
+                    new VersionSpecification(8_00_00),
                 ),
-            ]
+            ],
         );
     }
 

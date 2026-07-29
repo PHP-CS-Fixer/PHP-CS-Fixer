@@ -2,8 +2,8 @@
 Rule ``php_unit_test_case_static_method_calls``
 ===============================================
 
-Calls to ``PHPUnit\Framework\TestCase`` static methods must all be of the same
-type, either ``$this->``, ``self::`` or ``static::``.
+Calls to ``PHPUnit\Framework\TestCase`` static methods (like assertions) must
+all be of the same type, either ``$this->``, ``self::`` or ``static::``.
 
 Warnings
 --------
@@ -32,6 +32,8 @@ Allowed values: ``'self'``, ``'static'`` and ``'this'``
 
 Default value: ``'static'``
 
+Default value (future-mode): ``'this'``
+
 ``methods``
 ~~~~~~~~~~~
 
@@ -50,6 +52,8 @@ Target version of PHPUnit.
 Allowed values: ``'10.0'``, ``'11.0'`` and ``'newest'``
 
 Default value: ``'10.0'``
+
+Default value (future-mode): ``'newest'``
 
 Examples
 --------
@@ -128,11 +132,7 @@ With configuration: ``['methods' => ['assertTrue' => 'this']]``.
 Rule sets
 ---------
 
-The rule is part of the following rule sets:
-
-- `@PHPUnit11x0Migration:risky <./../../ruleSets/PHPUnit11x0MigrationRisky.rst>`_ with config:
-
-  ``['target' => '11.0']``
+The rule is part of the following rule set:
 
 - `@PhpCsFixer:risky <./../../ruleSets/PhpCsFixerRisky.rst>`_ with config:
 

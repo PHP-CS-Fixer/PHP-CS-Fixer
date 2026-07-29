@@ -27,5 +27,8 @@ interface ParallelAwareConfigInterface extends ConfigInterface
 {
     public function getParallelConfig(): ParallelConfig;
 
+    /**
+     * @return $this
+     */
     public function setParallelConfig(ParallelConfig $config): ConfigInterface;
 }

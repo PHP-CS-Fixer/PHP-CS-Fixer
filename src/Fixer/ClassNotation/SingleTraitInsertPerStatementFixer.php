@@ -41,9 +41,9 @@ final class SingleTraitInsertPerStatementFixer extends AbstractFixer
                             use Foo, Bar;
                         }
 
-                        PHP
+                        PHP,
                 ),
-            ]
+            ],
         );
     }
 

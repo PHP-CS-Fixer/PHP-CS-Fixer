@@ -34,6 +34,8 @@ Allowed types: ``bool``
 
 Default value: ``false``
 
+Default value (future-mode): ``true``
+
 ``attribute_placement``
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -57,7 +59,7 @@ Default value: ``false``
 
 Defines how to handle function arguments lists that contain newlines.
 
-Allowed values: ``'ensure_fully_multiline'``, ``'ensure_single_line'`` and ``'ignore'``
+Allowed values: ``'ensure_fully_multiline'``, ``'ensure_single_line'``, ``'ensure_single_line_for_single_argument'`` and ``'ignore'``
 
 Default value: ``'ensure_fully_multiline'``
 
@@ -275,6 +277,29 @@ With configuration: ``['on_multiline' => 'ensure_fully_multiline', 'attribute_pl
 Example #11
 ~~~~~~~~~~~
 
+With configuration: ``['on_multiline' => 'ensure_single_line_for_single_argument']``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+   -function sample(
+   -    $a
+   -) {}
+   -sample(
+   -    1
+   -);
+   +function sample($a) {}
+   +sample(1);
+    sample(
+        1,
+        2
+    );
+
+Example #12
+~~~~~~~~~~~
+
 With configuration: ``['after_heredoc' => true]``.
 
 .. code-block:: diff
@@ -392,6 +417,10 @@ The rule is part of the following rule sets:
 
   ``['after_heredoc' => true]``
 
+- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
+
+  ``['after_heredoc' => true, 'on_multiline' => 'ensure_fully_multiline']``
+
 - `@PSR2 <./../../ruleSets/PSR2.rst>`_ with config:
 
   ``['after_heredoc' => false, 'attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline']``
@@ -399,10 +428,6 @@ The rule is part of the following rule sets:
 - `@PSR12 <./../../ruleSets/PSR12.rst>`_ with config:
 
   ``['after_heredoc' => false, 'attribute_placement' => 'ignore', 'on_multiline' => 'ensure_fully_multiline']``
-
-- `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_ with config:
-
-  ``['after_heredoc' => true, 'on_multiline' => 'ensure_fully_multiline']``
 
 - `@Symfony <./../../ruleSets/Symfony.rst>`_ with config:
 

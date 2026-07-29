@@ -2,11 +2,6 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
-    'rawMessage' => 'Method PhpCsFixer\\Config::getFinder() should return PhpCsFixer\\Finder but returns iterable<SplFileInfo>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Config.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Method PhpCsFixer\\Fixer\\ClassNotation\\NoPhp4ConstructorFixer::findFunction() should return array{nameIndex: int, startIndex: int, endIndex: int, bodyIndex: int, modifiers: list<int>}|null but returns array{nameIndex: int<0, max>, startIndex: int, endIndex: int|null, bodyIndex: int|null, modifiers: array<int, int>}.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/ClassNotation/NoPhp4ConstructorFixer.php',
@@ -22,11 +17,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Fixer/FunctionNotation/ImplodeCallFixer.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Method PhpCsFixer\\Fixer\\Import\\OrderedImportsFixer::getNewOrder() should return array<int, array{namespace: non-empty-string, startIndex: int, endIndex: int, importType: \'class\'|\'const\'|\'function\', group: bool}> but returns array<\'\'|int, array{namespace: non-empty-string, startIndex: int, endIndex: int, importType: \'class\'|\'const\'|\'function\', group: bool}>.',
-    'count' => 1,
-    'path' => __DIR__ . '/../../../src/Fixer/Import/OrderedImportsFixer.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Method PhpCsFixer\\Fixer\\Phpdoc\\PhpdocAlignFixer::getMatches() should return array{indent: string|null, tag: string|null, hint: string, var: string|null, static: string, desc?: string|null}|null but returns non-empty-array<string>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Fixer/Phpdoc/PhpdocAlignFixer.php',
@@ -34,11 +24,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
     'rawMessage' => 'Method PhpCsFixer\\Tokenizer\\Tokens::findGivenKind() should return array<int, array<int<0, max>, PhpCsFixer\\Tokenizer\\Token>|PhpCsFixer\\Tokenizer\\Token> but returns array<int, array<int, PhpCsFixer\\Tokenizer\\Token>|PhpCsFixer\\Tokenizer\\Token>.',
     'count' => 1,
-    'path' => __DIR__ . '/../../../src/Tokenizer/Tokens.php',
-];
-$ignoreErrors[] = [
-    'rawMessage' => 'Method PhpCsFixer\\Tokenizer\\Tokens::findOppositeBlockEdge() should return int<0, max> but returns int.',
-    'count' => 3,
     'path' => __DIR__ . '/../../../src/Tokenizer/Tokens.php',
 ];
 $ignoreErrors[] = [

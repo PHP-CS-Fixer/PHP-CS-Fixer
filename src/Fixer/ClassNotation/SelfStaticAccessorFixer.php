@@ -57,7 +57,7 @@ final class SelfStaticAccessorFixer extends AbstractFixer
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -70,7 +70,7 @@ final class SelfStaticAccessorFixer extends AbstractFixer
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -83,7 +83,7 @@ final class SelfStaticAccessorFixer extends AbstractFixer
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -95,7 +95,7 @@ final class SelfStaticAccessorFixer extends AbstractFixer
                             }
                         };
 
-                        PHP
+                        PHP,
                 ),
                 new VersionSpecificCodeSample(
                     <<<'PHP'
@@ -111,9 +111,9 @@ final class SelfStaticAccessorFixer extends AbstractFixer
                         }
 
                         PHP,
-                    new VersionSpecification(8_01_00)
+                    new VersionSpecification(8_01_00),
                 ),
-            ]
+            ],
         );
     }
 

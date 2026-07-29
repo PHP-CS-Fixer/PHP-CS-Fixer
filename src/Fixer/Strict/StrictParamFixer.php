@@ -36,7 +36,7 @@ final class StrictParamFixer extends AbstractFixer
             'Functions should be used with `$strict` param set to `true`.',
             [new CodeSample("<?php\n\$a = array_keys(\$b);\n\$a = array_search(\$b, \$c);\n\$a = base64_decode(\$b);\n\$a = in_array(\$b, \$c);\n\$a = mb_detect_encoding(\$b, \$c);\n")],
             'The functions "array_keys", "array_search", "base64_decode", "in_array" and "mb_detect_encoding" should be used with $strict param.',
-            'Risky when the fixed function is overridden or if the code relies on non-strict usage.'
+            'Risky when the fixed function is overridden or if the code relies on non-strict usage.',
         );
     }
 
@@ -99,7 +99,7 @@ final class StrictParamFixer extends AbstractFixer
     private function fixFunction(Tokens $tokens, int $functionIndex, array $functionParams): void
     {
         $startBraceIndex = $tokens->getNextTokenOfKind($functionIndex, ['(']);
-        $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startBraceIndex);
+        $endBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $startBraceIndex);
         $paramsQuantity = 0;
         $expectParam = true;
 
@@ -112,13 +112,13 @@ final class StrictParamFixer extends AbstractFixer
             }
 
             if ($token->equals('(')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
 
                 continue;
             }
 
-            if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
+            if ($token->isGivenKind(CT::T_ARRAY_BRACKET_OPEN)) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $index);
 
                 continue;
             }

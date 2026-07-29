@@ -18,6 +18,7 @@ use PhpCsFixer\Linter\LinterInterface;
 use PhpCsFixer\Linter\LintingResultInterface;
 use PhpCsFixer\Runner\FileCachingLintingFileIterator;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @internal
@@ -26,6 +27,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(FileCachingLintingFileIterator::class)]
 final class FileCachingLintingFileIteratorTest extends TestCase
 {
     public function testLintingEmpty(): void
@@ -34,7 +36,7 @@ final class FileCachingLintingFileIteratorTest extends TestCase
 
         $fileCachingLintingIterator = new FileCachingLintingFileIterator(
             $iterator,
-            $this->createLinterDouble()
+            $this->createLinterDouble(),
         );
 
         self::assertNull($fileCachingLintingIterator->current());
@@ -61,7 +63,7 @@ final class FileCachingLintingFileIteratorTest extends TestCase
 
         $fileCachingLintingIterator = new FileCachingLintingFileIterator(
             $iterator,
-            $this->createLinterDouble($lintingResult)
+            $this->createLinterDouble($lintingResult),
         );
 
         self::assertLintingIteratorIteration($fileCachingLintingIterator, $lintingResult, ...$files);

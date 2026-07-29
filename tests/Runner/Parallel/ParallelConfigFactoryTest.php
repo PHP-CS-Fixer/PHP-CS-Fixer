@@ -19,6 +19,8 @@ use Fidry\CpuCoreCounter\Finder\DummyCpuCoreFinder;
 use PhpCsFixer\Runner\Parallel\ParallelConfig;
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -27,6 +29,7 @@ use PhpCsFixer\Tests\TestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(ParallelConfigFactory::class)]
 final class ParallelConfigFactoryTest extends TestCase
 {
     protected function tearDown(): void
@@ -85,23 +88,24 @@ final class ParallelConfigFactoryTest extends TestCase
     }
 
     /**
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[RequiresPhp('>= 8.0.0')]
     public function testDetectConfigurationWithNamedArgs(): void
     {
         $this->mockCpuCount(7);
 
         // First argument omitted, second one provided via named argument
-        $config1 = \call_user_func_array([ParallelConfigFactory::class, 'detect'], ['processTimeout' => 300]);
+        $config1 = \call_user_func_array([ParallelConfigFactory::class, 'detect'], ['processTimeout' => 300]); // @phpstan-ignore argument.named
 
         self::assertSame(ParallelConfig::DEFAULT_FILES_PER_PROCESS, $config1->getFilesPerProcess());
         self::assertSame(300, $config1->getProcessTimeout());
 
         // Flipped order of arguments using named arguments syntax
         $config2 = \call_user_func_array([ParallelConfigFactory::class, 'detect'], [
-            'maxProcesses' => 1,
-            'processTimeout' => 300,
-            'filesPerProcess' => 5,
+            'maxProcesses' => 1, // @phpstan-ignore argument.named
+            'processTimeout' => 300, // @phpstan-ignore argument.named
+            'filesPerProcess' => 5, // @phpstan-ignore argument.named
         ]);
 
         self::assertSame(1, $config2->getMaxProcesses());
@@ -109,13 +113,13 @@ final class ParallelConfigFactoryTest extends TestCase
         self::assertSame(300, $config2->getProcessTimeout());
 
         // Only first argument provided, but via named argument
-        $config3 = \call_user_func_array([ParallelConfigFactory::class, 'detect'], ['filesPerProcess' => 7]);
+        $config3 = \call_user_func_array([ParallelConfigFactory::class, 'detect'], ['filesPerProcess' => 7]); // @phpstan-ignore argument.named
 
         self::assertSame(7, $config3->getFilesPerProcess());
         self::assertSame(ParallelConfig::DEFAULT_PROCESS_TIMEOUT, $config3->getProcessTimeout());
 
         // Only third argument provided, but via named argument
-        $config3 = \call_user_func_array([ParallelConfigFactory::class, 'detect'], ['maxProcesses' => 1]);
+        $config3 = \call_user_func_array([ParallelConfigFactory::class, 'detect'], ['maxProcesses' => 1]); // @phpstan-ignore argument.named
 
         self::assertSame(1, $config3->getMaxProcesses());
         self::assertSame(ParallelConfig::DEFAULT_FILES_PER_PROCESS, $config3->getFilesPerProcess());

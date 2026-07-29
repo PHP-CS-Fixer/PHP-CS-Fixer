@@ -21,6 +21,10 @@ Rules
 - `@PSR12:risky <./PSR12Risky.rst>`_
 - `array_push <./../rules/alias/array_push.rst>`_
 - `combine_nested_dirname <./../rules/function_notation/combine_nested_dirname.rst>`_
+- `declare_strict_types <./../rules/strict/declare_strict_types.rst>`_ with config:
+
+  ``['strategy' => 'remove']``
+
 - `dir_constant <./../rules/language_construct/dir_constant.rst>`_
 - `ereg_to_preg <./../rules/alias/ereg_to_preg.rst>`_
 - `error_suppression <./../rules/language_construct/error_suppression.rst>`_
@@ -35,6 +39,7 @@ Rules
 - `is_null <./../rules/language_construct/is_null.rst>`_
 - `logical_operators <./../rules/operator/logical_operators.rst>`_
 - `long_to_shorthand_operator <./../rules/operator/long_to_shorthand_operator.rst>`_
+- `modern_serialization_methods <./../rules/class_notation/modern_serialization_methods.rst>`_
 - `modernize_strpos <./../rules/alias/modernize_strpos.rst>`_
 - `modernize_types_casting <./../rules/cast_notation/modernize_types_casting.rst>`_
 - `native_constant_invocation <./../rules/constant_notation/native_constant_invocation.rst>`_ with config:
@@ -59,9 +64,14 @@ Rules
 - `psr_autoloading <./../rules/basic/psr_autoloading.rst>`_
 - `self_accessor <./../rules/class_notation/self_accessor.rst>`_
 - `set_type_to_cast <./../rules/alias/set_type_to_cast.rst>`_
+- `static_lambda <./../rules/function_notation/static_lambda.rst>`_
 - `string_length_to_empty <./../rules/string_notation/string_length_to_empty.rst>`_
 - `string_line_ending <./../rules/string_notation/string_line_ending.rst>`_
 - `ternary_to_elvis_operator <./../rules/operator/ternary_to_elvis_operator.rst>`_
+- `void_return <./../rules/function_notation/void_return.rst>`_ with config:
+
+  ``['fix_lambda' => false]``
+
 
 Disabled rules
 --------------

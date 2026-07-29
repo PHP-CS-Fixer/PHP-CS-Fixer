@@ -14,7 +14,12 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\DoctrineAnnotation;
 
+use PhpCsFixer\AbstractDoctrineAnnotationFixer;
+use PhpCsFixer\Doctrine\Annotation\DocLexer;
+use PhpCsFixer\Fixer\DoctrineAnnotation\DoctrineAnnotationSpacesFixer;
 use PhpCsFixer\Tests\AbstractDoctrineAnnotationFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -29,6 +34,9 @@ use PhpCsFixer\Tests\AbstractDoctrineAnnotationFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(AbstractDoctrineAnnotationFixer::class)]
+#[CoversClass(DocLexer::class)]
+#[CoversClass(DoctrineAnnotationSpacesFixer::class)]
 final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotationFixerTestCase
 {
     /**
@@ -36,6 +44,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -318,7 +327,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
                     'before_array_assignments_colon' => true,
                     'after_array_assignments_colon' => true,
                 ],
-            ]
+            ],
         );
 
         yield [
@@ -559,7 +568,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
                     'before_array_assignments_colon' => null,
                     'after_array_assignments_colon' => null,
                 ],
-            ]
+            ],
         );
 
         yield from self::createMultipleTestCase(
@@ -814,7 +823,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
                     'before_array_assignments_colon' => null,
                     'after_array_assignments_colon' => null,
                 ],
-            ]
+            ],
         );
 
         yield from self::createMultipleTestCase(
@@ -842,7 +851,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
                     'before_array_assignments_colon' => null,
                     'after_array_assignments_colon' => null,
                 ],
-            ]
+            ],
         );
 
         yield from self::createMultipleTestCase(
@@ -870,7 +879,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
                     'before_array_assignments_colon' => null,
                     'after_array_assignments_colon' => null,
                 ],
-            ]
+            ],
         );
 
         yield from self::createMultipleTestCase(
@@ -898,7 +907,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
                     'before_array_assignments_colon' => null,
                     'after_array_assignments_colon' => null,
                 ],
-            ]
+            ],
         );
 
         yield from self::createMultipleTestCase(
@@ -926,7 +935,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
                     'before_array_assignments_colon' => null,
                     'after_array_assignments_colon' => null,
                 ],
-            ]
+            ],
         );
 
         yield from self::createMultipleTestCase(
@@ -954,7 +963,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
                     'before_array_assignments_colon' => null,
                     'after_array_assignments_colon' => null,
                 ],
-            ]
+            ],
         );
 
         yield from self::createMultipleTestCase(
@@ -982,7 +991,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
                     'before_array_assignments_colon' => null,
                     'after_array_assignments_colon' => null,
                 ],
-            ]
+            ],
         );
 
         yield from self::createMultipleTestCase(
@@ -1010,7 +1019,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
                     'before_array_assignments_colon' => null,
                     'after_array_assignments_colon' => null,
                 ],
-            ]
+            ],
         );
 
         yield from self::createMultipleTestCase(
@@ -1038,7 +1047,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
                     'before_array_assignments_colon' => null,
                     'after_array_assignments_colon' => null,
                 ],
-            ]
+            ],
         );
 
         yield from self::createMultipleTestCase(
@@ -1066,7 +1075,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
                     'before_array_assignments_colon' => true,
                     'after_array_assignments_colon' => null,
                 ],
-            ]
+            ],
         );
 
         yield from self::createMultipleTestCase(
@@ -1094,7 +1103,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
                     'before_array_assignments_colon' => false,
                     'after_array_assignments_colon' => null,
                 ],
-            ]
+            ],
         );
 
         yield from self::createMultipleTestCase(
@@ -1122,7 +1131,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
                     'before_array_assignments_colon' => null,
                     'after_array_assignments_colon' => true,
                 ],
-            ]
+            ],
         );
 
         yield from self::createMultipleTestCase(
@@ -1150,7 +1159,7 @@ final class DoctrineAnnotationSpacesFixerTest extends AbstractDoctrineAnnotation
                     'before_array_assignments_colon' => null,
                     'after_array_assignments_colon' => false,
                 ],
-            ]
+            ],
         );
 
         $elements = [

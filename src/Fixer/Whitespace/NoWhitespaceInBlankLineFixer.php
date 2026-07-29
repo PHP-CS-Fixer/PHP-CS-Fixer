@@ -33,7 +33,7 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
     {
         return new FixerDefinition(
             'Remove trailing whitespace at the end of blank lines.',
-            [new CodeSample("<?php\n   \n\$a = 1;\n")]
+            [new CodeSample("<?php\n   \n\$a = 1;\n")],
         );
     }
 
@@ -82,6 +82,7 @@ final class NoWhitespaceInBlankLineFixer extends AbstractFixer implements Whites
             }
 
             for ($l = $lStart; $l < $lMax; ++$l) {
+                \assert(isset($lines[$l]));
                 $lines[$l] = Preg::replace('/^\h+$/', '', $lines[$l]);
             }
             $content = implode($this->whitespacesConfig->getLineEnding(), $lines);

@@ -26,6 +26,8 @@ Allowed values: a subset of ``['constant', 'function', 'property']``
 
 Default value: ``['function', 'property']``
 
+Default value (future-mode): ``['function', 'property', 'constant']``
+
 Examples
 --------
 

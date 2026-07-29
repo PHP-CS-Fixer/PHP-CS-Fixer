@@ -39,16 +39,16 @@ final class MultilineStringToHeredocFixer extends AbstractFixer
                         <?php
                         $a = 'line1
                         line2';
-                        EOD."\n"
+                        EOD."\n",
                 ),
                 new CodeSample(
                     <<<'EOD'
                         <?php
                         $a = "line1
                         {$obj->getName()}";
-                        EOD."\n"
+                        EOD."\n",
                 ),
-            ]
+            ],
         );
     }
 

@@ -80,7 +80,7 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
                         Foo
                         TEST;
 
-                        EOD
+                        EOD,
                 ),
                 new CodeSample(
                     <<<'EOD'
@@ -89,7 +89,7 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
                         TEST;
 
                         EOD,
-                    ['closing_marker' => 'EOF']
+                    ['closing_marker' => 'EOF'],
                 ),
                 new CodeSample(
                     <<<'EOD_'
@@ -98,9 +98,9 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
                         EOD;
 
                         EOD_,
-                    ['explicit_heredoc_style' => true]
+                    ['explicit_heredoc_style' => true],
                 ),
-            ]
+            ],
         );
     }
 
@@ -114,21 +114,21 @@ final class HeredocClosingMarkerFixer extends AbstractFixer implements Configura
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder(
                 'closing_marker',
-                'Preferred closing marker.'
+                'Preferred closing marker.',
             ))
                 ->setAllowedTypes(['string'])
                 ->setDefault('EOD')
                 ->getOption(),
             (new FixerOptionBuilder(
                 'reserved_closing_markers',
-                'Reserved closing markers to be kept unchanged.'
+                'Reserved closing markers to be kept unchanged.',
             ))
                 ->setAllowedTypes(['string[]'])
                 ->setDefault(self::RESERVED_CLOSING_MARKERS)
                 ->getOption(),
             (new FixerOptionBuilder(
                 'explicit_heredoc_style',
-                'Whether the closing marker should be wrapped in double quotes.'
+                'Whether the closing marker should be wrapped in double quotes.',
             ))
                 ->setAllowedTypes(['bool'])
                 ->setDefault(false)

@@ -1,10 +1,10 @@
 /.* export-ignore
-/src/**/Internal/ export-ignore
 /benchmark.sh export-ignore
 /box.json.dist export-ignore
 /CHANGELOG.md export-ignore
 /compose.override.dist.yaml export-ignore
 /compose.yaml export-ignore
+/composer-dependency-analyser.php export-ignore
 /CONTRIBUTING.md export-ignore
 /dev-tools/ export-ignore
 /doc/ export-ignore
@@ -12,8 +12,11 @@
 /Dockerfile export-ignore
 /feature-or-bug.rst export-ignore
 /infection.json5.dist export-ignore
+/logo.md export-ignore
+/logo.png export-ignore
 /phpstan.dist.neon export-ignore
 /phpunit.xml.dist export-ignore
+/src/**/Internal/ export-ignore
 /tests/ export-ignore
 /UPGRADE-v3.md export-ignore
 
@@ -21,8 +24,8 @@
 *.json  text whitespace=blank-at-eol,blank-at-eof,space-before-tab,tab-in-indent,tabwidth=4
 *.md    text whitespace=blank-at-eol,blank-at-eof
 *.php   text whitespace=blank-at-eol,blank-at-eof,space-before-tab,tab-in-indent,tabwidth=4 diff=php
+*.png   binary eol=unset
 *.rst   text whitespace=blank-at-eol,blank-at-eof
 *.yml   text whitespace=blank-at-eol,blank-at-eof,space-before-tab,tab-in-indent,tabwidth=4
-*.png   binary eol=unset
 
 /tests/Fixtures/**/* -text -filter

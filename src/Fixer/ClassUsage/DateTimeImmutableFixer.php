@@ -35,7 +35,7 @@ final class DateTimeImmutableFixer extends AbstractFixer
             'Class `DateTimeImmutable` should be used instead of `DateTime`.',
             [new CodeSample("<?php\nnew DateTime();\n")],
             null,
-            'Risky when the code relies on modifying `DateTime` objects or if any of the `date_create*` functions are overridden.'
+            'Risky when the code relies on modifying `DateTime` objects or if any of the `date_create*` functions are overridden.',
         );
     }
 

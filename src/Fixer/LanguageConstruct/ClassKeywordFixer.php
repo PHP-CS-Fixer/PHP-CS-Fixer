@@ -40,11 +40,11 @@ final class ClassKeywordFixer extends AbstractFixer implements ExperimentalFixer
                         $foo = 'PhpCsFixer\Tokenizer\Tokens';
                         $bar = "\PhpCsFixer\Tokenizer\Tokens";
 
-                        PHP
+                        PHP,
                 ),
             ],
             'This rule does not have an understanding of whether a class exists in the scope of the codebase or not, relying on run-time and autoloaded classes to determine it, which makes the rule useless when running on a single file out of codebase context.',
-            'Do not use it, unless you know what you are doing.'
+            'Do not use it, unless you know what you are doing.',
         );
     }
 

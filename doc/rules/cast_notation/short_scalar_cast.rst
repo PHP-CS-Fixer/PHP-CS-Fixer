@@ -54,8 +54,8 @@ The rule is part of the following rule sets:
 - `@PHP83Migration <./../../ruleSets/PHP83Migration.rst>`_ *(deprecated)*
 - `@PHP84Migration <./../../ruleSets/PHP84Migration.rst>`_ *(deprecated)*
 - `@PHP85Migration <./../../ruleSets/PHP85Migration.rst>`_ *(deprecated)*
-- `@PSR12 <./../../ruleSets/PSR12.rst>`_
 - `@PhpCsFixer <./../../ruleSets/PhpCsFixer.rst>`_
+- `@PSR12 <./../../ruleSets/PSR12.rst>`_
 - `@Symfony <./../../ruleSets/Symfony.rst>`_
 
 References

@@ -37,6 +37,9 @@ use PhpCsFixer\Tests\Fixtures\ExternalRuleSet\ExampleRuleSet;
 use PhpCsFixer\Tests\TestCase;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -49,11 +52,14 @@ use Symfony\Component\Console\Tester\CommandTester;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[Group('legacy')]
+#[CoversClass(DescribeCommand::class)]
 final class DescribeCommandTest extends TestCase
 {
     /**
      * @dataProvider provideExecuteOutputCases
      */
+    #[DataProvider('provideExecuteOutputCases')]
     public function testExecuteOutput(string $expected, bool $expectedIsRegEx, bool $decorated, FixerInterface $fixer): void
     {
         if ($fixer instanceof DeprecatedFixerInterface) {
@@ -240,7 +246,7 @@ Fixing examples:
                 ),
                 new VersionSpecificCodeSample(
                     "<?php echo 'BEFORE'.'-B';".\PHP_EOL,
-                    new VersionSpecification(20_00_00)
+                    new VersionSpecification(20_00_00),
                 ),
             ]),
         ];
@@ -259,11 +265,11 @@ Fixing examples cannot be demonstrated on the current PHP version.
             self::createFixerWithSamplesDouble([
                 new VersionSpecificCodeSample(
                     "<?php echo 'BEFORE';".\PHP_EOL,
-                    new VersionSpecification(20_00_00)
+                    new VersionSpecification(20_00_00),
                 ),
                 new VersionSpecificCodeSample(
                     "<?php echo 'BEFORE'.'-B';".\PHP_EOL,
-                    new VersionSpecification(20_00_00)
+                    new VersionSpecification(20_00_00),
                 ),
             ]),
         ];
@@ -416,7 +422,7 @@ $/s',
             ],
             [
                 'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
-            ]
+            ],
         );
 
         self::assertStringContainsString(str_replace("\0", '\\', \get_class($fixer)), $commandTester->getDisplay(true));
@@ -594,15 +600,15 @@ Purpose of example rule set description.
                     'Fixes stuff.',
                     [
                         new CodeSample(
-                            "<?php echo 'bad stuff and bad thing';\n"
+                            "<?php echo 'bad stuff and bad thing';\n",
                         ),
                         new CodeSample(
                             "<?php echo 'bad stuff and bad thing';\n",
-                            ['functions' => ['foo', 'bar']]
+                            ['functions' => ['foo', 'bar']],
                         ),
                     ],
                     'Replaces bad stuff with good stuff.',
-                    'Can break stuff.'
+                    'Can break stuff.',
                 );
             }
 
@@ -647,7 +653,7 @@ Purpose of example rule set description.
             ],
             [
                 'decorated' => $decorated,
-            ]
+            ],
         );
 
         return $commandTester;

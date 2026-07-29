@@ -112,6 +112,12 @@ final class ArgumentsAnalyzer
                 continue;
             }
 
+            if ($token->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PROPERTY_HOOK, $index);
+
+                continue;
+            }
+
             if (
                 $token->isComment()
                 || $token->isWhitespace()
@@ -122,6 +128,9 @@ final class ArgumentsAnalyzer
             }
 
             if ($token->isGivenKind(\T_VARIABLE)) {
+                if ($sawName) {
+                    continue;
+                }
                 $sawName = true;
                 $info['name_index'] = $index;
                 $info['name'] = $token->getContent();
@@ -150,7 +159,7 @@ final class ArgumentsAnalyzer
             $info['name'],
             $info['name_index'],
             $info['default'],
-            null !== $info['type'] ? new TypeAnalysis($info['type'], $info['type_index_start'], $info['type_index_end']) : null
+            null !== $info['type'] ? new TypeAnalysis($info['type'], $info['type_index_start'], $info['type_index_end']) : null,
         );
     }
 }

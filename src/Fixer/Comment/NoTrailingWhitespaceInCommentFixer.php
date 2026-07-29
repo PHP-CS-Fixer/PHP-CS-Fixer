@@ -36,7 +36,7 @@ final class NoTrailingWhitespaceInCommentFixer extends AbstractFixer
             [new CodeSample('<?php
 // This is '.'
 // a comment. '.'
-')]
+')],
         );
     }
 

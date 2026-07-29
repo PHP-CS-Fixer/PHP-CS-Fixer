@@ -18,6 +18,9 @@ use PhpCsFixer\Console\Command\FixCommand;
 use PhpCsFixer\Console\ConfigurationResolver;
 use PhpCsFixer\Console\Report\FixReport\ReporterFactory;
 use PhpCsFixer\ToolInfo;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -30,11 +33,14 @@ use Symfony\Component\Console\Tester\CommandTester;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversNothing]
+#[Group('covers-nothing')]
 final class TextDiffTest extends TestCase
 {
     /**
      * @dataProvider provideDiffReportingDecoratedCases
      */
+    #[DataProvider('provideDiffReportingDecoratedCases')]
     public function testDiffReportingDecorated(string $expected, string $format, bool $isDecorated): void
     {
         $command = new FixCommand(new ToolInfo());
@@ -53,7 +59,7 @@ final class TextDiffTest extends TestCase
                 'decorated' => $isDecorated,
                 'interactive' => false,
                 'verbosity' => OutputInterface::VERBOSITY_NORMAL,
-            ]
+            ],
         );
 
         if ($isDecorated !== $commandTester->getOutput()->isDecorated()) {
@@ -104,7 +110,7 @@ final class TextDiffTest extends TestCase
 
         self::assertSame(
             ['checkstyle', 'gitlab', 'json', 'junit', 'txt', 'xml'],
-            $formats
+            $formats,
         );
     }
 }

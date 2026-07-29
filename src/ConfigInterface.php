@@ -108,6 +108,8 @@ interface ConfigInterface
      * Name of custom fixer should follow `VendorName/rule_name` convention.
      *
      * @param iterable<FixerInterface> $fixers
+     *
+     * @return $this
      */
     public function registerCustomFixers(iterable $fixers): self;
 
@@ -115,25 +117,39 @@ interface ConfigInterface
      * Sets the path to the cache file.
      *
      * @param non-empty-string $cacheFile
+     *
+     * @return $this
      */
     public function setCacheFile(string $cacheFile): self;
 
     /**
      * @param iterable<\SplFileInfo> $finder
+     *
+     * @return $this
      */
     public function setFinder(iterable $finder): self;
 
+    /**
+     * @return $this
+     */
     public function setFormat(string $format): self;
 
+    /**
+     * @return $this
+     */
     public function setHideProgress(bool $hideProgress): self;
 
     /**
      * @param non-empty-string $indent
+     *
+     * @return $this
      */
     public function setIndent(string $indent): self;
 
     /**
      * @param non-empty-string $lineEnding
+     *
+     * @return $this
      */
     public function setLineEnding(string $lineEnding): self;
 
@@ -143,11 +159,15 @@ interface ConfigInterface
      * @deprecated
      *
      * @TODO 4.0 remove me
+     *
+     * @return $this
      */
     public function setPhpExecutable(?string $phpExecutable): self;
 
     /**
      * Set if it is allowed to run risky fixers.
+     *
+     * @return $this
      */
     public function setRiskyAllowed(bool $isRiskyAllowed): self;
 
@@ -160,8 +180,13 @@ interface ConfigInterface
      * (turn it on and contains configuration for FixerInterface::configure method).
      *
      * @param array<string, array<string, mixed>|bool> $rules
+     *
+     * @return $this
      */
     public function setRules(array $rules): self;
 
+    /**
+     * @return $this
+     */
     public function setUsingCache(bool $usingCache): self;
 }

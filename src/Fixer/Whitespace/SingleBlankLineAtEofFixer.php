@@ -40,7 +40,7 @@ final class SingleBlankLineAtEofFixer extends AbstractFixer implements Whitespac
             [
                 new CodeSample("<?php\n\$a = 1;"),
                 new CodeSample("<?php\n\$a = 1;\n\n"),
-            ]
+            ],
         );
     }
 

@@ -44,8 +44,8 @@ final class Utils
             Preg::replace(
                 '/(?<!^)(?<!_)((?=[\p{Lu}][^\p{Lu}])|(?<![\p{Lu}])(?=[\p{Lu}]))/',
                 '_',
-                $string
-            )
+                $string,
+            ),
         );
     }
 
@@ -62,7 +62,7 @@ final class Utils
 
         $str = strrchr(
             str_replace(["\r\n", "\r"], "\n", $token->getContent()),
-            "\n"
+            "\n",
         );
 
         if (false === $str) {
@@ -108,7 +108,7 @@ final class Utils
     }
 
     /**
-     * Sort fixers by their priorities.
+     * Sort fixers by their priorities, and by their names if priorities are equal. That is ensuring always deterministic order of fixers.
      *
      * @template T of list<FixerInterface>
      *
@@ -118,13 +118,15 @@ final class Utils
      */
     public static function sortFixers(array $fixers): array
     {
-        // Schwartzian transform is used to improve the efficiency and avoid
-        // `usort(): Array was modified by the user comparison function` warning for mocked objects.
-        return self::stableSort(
-            $fixers,
-            static fn (FixerInterface $fixer): int => $fixer->getPriority(),
-            static fn (int $a, int $b): int => $b <=> $a
-        );
+        usort($fixers, static function (FixerInterface $a, FixerInterface $b): int {
+            $cmpByPriority = $b->getPriority() <=> $a->getPriority();
+
+            return 0 !== $cmpByPriority
+                ? $cmpByPriority
+                : $a->getName() <=> $b->getName();
+        });
+
+        return $fixers; // @phpstan-ignore return.type (PHPStan cannot understand that the result will still be T template)
     }
 
     /**

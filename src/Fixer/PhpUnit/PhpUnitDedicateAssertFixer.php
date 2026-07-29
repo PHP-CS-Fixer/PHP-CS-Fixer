@@ -149,7 +149,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
                             }
                         }
 
-                        PHP
+                        PHP,
                 ),
                 new CodeSample(
                     <<<'PHP'
@@ -165,11 +165,11 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
                         }
 
                         PHP,
-                    ['target' => PhpUnitTargetVersion::VERSION_5_6]
+                    ['target' => PhpUnitTargetVersion::VERSION_5_6],
                 ),
             ],
             null,
-            'Fixer could be risky if one is overriding PHPUnit\'s native methods.'
+            'Fixer could be risky if one is overriding PHPUnit\'s native methods.',
         );
     }
 
@@ -255,7 +255,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
             if (\in_array(
                 $assertCall['loweredName'],
                 ['assertsame', 'assertnotsame', 'assertequals', 'assertnotequals'],
-                true
+                true,
             )) {
                 $this->fixAssertSameEquals($tokens, $assertCall);
             }
@@ -311,7 +311,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
             return;
         }
 
-        $testCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $testOpenIndex);
+        $testCloseIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $testOpenIndex);
         $assertCallCloseIndex = $tokens->getNextMeaningfulToken($testCloseIndex);
 
         if (!$tokens[$assertCallCloseIndex]->equalsAny([')', ','])) {
@@ -514,7 +514,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
             return;
         }
 
-        $countCallCloseBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $countCallOpenBraceIndex);
+        $countCallCloseBraceIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $countCallOpenBraceIndex);
         $afterCountCallCloseBraceIndex = $tokens->getNextMeaningfulToken($countCallCloseBraceIndex);
 
         if (!$tokens[$afterCountCallCloseBraceIndex]->equalsAny([')', ','])) {
@@ -526,7 +526,7 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
             $defaultNamespaceTokenIndex,
             $countCallIndex,
             $countCallOpenBraceIndex,
-            $countCallCloseBraceIndex
+            $countCallCloseBraceIndex,
         );
 
         $tokens[$assertCall['index']] = new Token([
@@ -559,13 +559,18 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
      */
     private function swapArguments(Tokens $tokens, array $argumentsIndices): void
     {
+        \assert(isset(array_keys($argumentsIndices)[0], array_keys($argumentsIndices)[1]));
         [$firstArgumentIndex, $secondArgumentIndex] = array_keys($argumentsIndices);
 
+        \assert(isset($argumentsIndices[$firstArgumentIndex], $argumentsIndices[$secondArgumentIndex]));
         $firstArgumentEndIndex = $argumentsIndices[$firstArgumentIndex];
         $secondArgumentEndIndex = $argumentsIndices[$secondArgumentIndex];
 
         $firstClone = $this->cloneAndClearTokens($tokens, $firstArgumentIndex, $firstArgumentEndIndex);
         $secondClone = $this->cloneAndClearTokens($tokens, $secondArgumentIndex, $secondArgumentEndIndex);
+
+        \assert([] !== $firstClone);
+        \assert([] !== $secondClone);
 
         if (!$firstClone[0]->isWhitespace()) {
             array_unshift($firstClone, new Token([\T_WHITESPACE, ' ']));

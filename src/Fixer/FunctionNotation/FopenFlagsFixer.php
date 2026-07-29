@@ -52,7 +52,7 @@ final class FopenFlagsFixer extends AbstractFopenFlagFixer implements Configurab
                 new CodeSample("<?php\n\$a = fopen(\$foo, 'rwt');\n", ['b_mode' => false]),
             ],
             null,
-            'Risky when the function `fopen` is overridden.'
+            'Risky when the function `fopen` is overridden.',
         );
     }
 

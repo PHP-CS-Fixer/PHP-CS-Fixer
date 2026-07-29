@@ -15,7 +15,11 @@ declare(strict_types=1);
 namespace PhpCsFixer\Tests\Fixer\ClassNotation;
 
 use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
+use PhpCsFixer\Fixer\ClassNotation\SingleClassElementPerStatementFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 
 /**
  * @internal
@@ -30,6 +34,7 @@ use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversClass(SingleClassElementPerStatementFixer::class)]
 final class SingleClassElementPerStatementFixerTest extends AbstractFixerTestCase
 {
     /**
@@ -37,6 +42,7 @@ final class SingleClassElementPerStatementFixerTest extends AbstractFixerTestCas
      *
      * @dataProvider provideFixCases
      */
+    #[DataProvider('provideFixCases')]
     public function testFix(string $expected, ?string $input = null, array $configuration = []): void
     {
         $this->fixer->configure($configuration);
@@ -653,6 +659,24 @@ echo Foo::A, Foo::B;
 ',
         ];
 
+        yield 'const with a comment before the name' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    const/* comment */ A = 1;
+                    const B = 2;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    const/* comment */ A = 1, B = 2;
+                }
+                PHP,
+        ];
+
         yield [
             '<?php
                     class Token {
@@ -845,8 +869,10 @@ echo Foo::A, Foo::B;
     /**
      * @dataProvider provideFix80Cases
      *
-     * @requires PHP 8.0
+     * @requires PHP >= 8.0.0
      */
+    #[DataProvider('provideFix80Cases')]
+    #[RequiresPhp('>= 8.0.0')]
     public function testFix80(string $expected, string $input): void
     {
         $this->doTest($expected, $input);
@@ -877,8 +903,10 @@ class Foo
     /**
      * @dataProvider provideFix81Cases
      *
-     * @requires PHP 8.1
+     * @requires PHP >= 8.1.0
      */
+    #[DataProvider('provideFix81Cases')]
+    #[RequiresPhp('>= 8.1.0')]
     public function testFix81(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -966,20 +994,40 @@ enum Foo: string {
 
 var_dump(Foo::A.Foo::B);",
         ];
+
+        yield [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    final const A = 1;
+                    final const B = 2;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    final const A = 1, B = 2;
+                }
+                PHP,
+        ];
     }
 
     /**
      * @dataProvider provideFix82Cases
      *
-     * @requires PHP 8.2
+     * @requires PHP >= 8.2.0
      */
+    #[DataProvider('provideFix82Cases')]
+    #[RequiresPhp('>= 8.2.0')]
     public function testFix82(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
     }
 
     /**
-     * @return iterable<int, array{string, string}>
+     * @return iterable<array{string, string}>
      */
     public static function provideFix82Cases(): iterable
     {
@@ -987,13 +1035,147 @@ var_dump(Foo::A.Foo::B);",
             '<?php trait Foo { public const Bar = 1; public const Baz = 1; }',
             '<?php trait Foo { public const Bar = 1, Baz = 1; }',
         ];
+
+        yield 'properties with DNF type' => [
+            <<<'PHP'
+                <?php
+                class C
+                {
+                    public (Foo&Bar)|Baz $a;
+                    public (Foo&Bar)|Baz $b;
+
+                    public Foo|(Bar&Baz) $c;
+                    public Foo|(Bar&Baz) $d;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class C
+                {
+                    public (Foo&Bar)|Baz $a, $b;
+
+                    public Foo|(Bar&Baz) $c, $d;
+                }
+                PHP,
+        ];
+    }
+
+    /**
+     * @dataProvider provideFix83Cases
+     *
+     * @requires PHP >= 8.3.0
+     */
+    #[DataProvider('provideFix83Cases')]
+    #[RequiresPhp('>= 8.3.0')]
+    public function testFix83(string $expected, ?string $input = null): void
+    {
+        $this->doTest($expected, $input);
+    }
+
+    /**
+     * @return iterable<string, array{string, 1?: string}>
+     */
+    public static function provideFix83Cases(): iterable
+    {
+        yield 'typed constants' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public const string A = "a";
+                    public const string B = "b";
+                    public const string C = "c";
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public const string A = "a", B = "b", C = "c";
+                }
+                PHP,
+        ];
+
+        yield 'typed constant with union type' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    protected const int|string A = 1;
+                    protected const int|string B = 2;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    protected const int|string A = 1, B = 2;
+                }
+                PHP,
+        ];
+
+        yield 'typed constant with nullable type' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    const ?int A = null;
+                    const ?int B = null;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    const ?int A = null, B = null;
+                }
+                PHP,
+        ];
+
+        yield 'typed constant with intersection type' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public const Bar&\Stringable A = X;
+                    public const Bar&\Stringable B = Y;
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public const Bar&\Stringable A = X, B = Y;
+                }
+                PHP,
+        ];
+
+        yield 'final typed constant' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    final public const string A = "a";
+                    final public const string B = "b";
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    final public const string A = "a", B = "b";
+                }
+                PHP,
+        ];
     }
 
     /**
      * @dataProvider provideFix84Cases
      *
-     * @requires PHP 8.4
+     * @requires PHP >= 8.4.0
      */
+    #[DataProvider('provideFix84Cases')]
+    #[RequiresPhp('>= 8.4.0')]
     public function testFix84(string $expected, ?string $input = null): void
     {
         $this->doTest($expected, $input);
@@ -1020,6 +1202,20 @@ var_dump(Foo::A.Foo::B);",
                     public public(set) int $a, $b;
                     public protected(set) int $c, $d;
                     public private(set) int $e, $f;
+                }
+                PHP,
+        ];
+
+        yield 'final property' => [
+            <<<'PHP'
+                <?php class Foo {
+                    final public int $a = 1;
+                    final public int $b = 2;
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo {
+                    final public int $a = 1, $b = 2;
                 }
                 PHP,
         ];

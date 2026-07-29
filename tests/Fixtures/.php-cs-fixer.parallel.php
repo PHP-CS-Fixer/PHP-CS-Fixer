@@ -5,5 +5,5 @@ return (new \PhpCsFixer\Config())
         \PhpCsFixer\Finder::create()
             ->in(__DIR__ . '/../../')
     )
-    ->setParallelConfig(\PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect()) // @TODO 4.0 no need to call this manually
+    ->setParallelConfig(new \PhpCsFixer\Runner\Parallel\ParallelConfig(10))
 ;

@@ -66,7 +66,7 @@ final class HeredocIndentationFixer extends AbstractFixer implements Configurabl
                             def
                         EOD;
 
-                        SAMPLE
+                        SAMPLE,
                 ),
                 new CodeSample(
                     <<<'SAMPLE'
@@ -77,9 +77,9 @@ final class HeredocIndentationFixer extends AbstractFixer implements Configurabl
                         EOD;
 
                         SAMPLE,
-                    ['indentation' => 'same_as_start']
+                    ['indentation' => 'same_as_start'],
                 ),
-            ]
+            ],
         );
     }
 
@@ -131,6 +131,7 @@ final class HeredocIndentationFixer extends AbstractFixer implements Configurabl
         }
 
         Preg::match('/^\h*/', $tokens[$end]->getContent(), $matches);
+        \assert(isset($matches[0]));
         $currentIndent = $matches[0];
         $currentIndentLength = \strlen($currentIndent);
 

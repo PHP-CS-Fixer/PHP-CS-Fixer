@@ -23,6 +23,9 @@ use PhpCsFixer\FixerFactory;
 use PhpCsFixer\Preg;
 use PhpCsFixer\RuleSet\RuleSets;
 use PhpCsFixer\Tests\TestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -35,11 +38,15 @@ use Symfony\Component\Finder\Finder;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise.
  */
+#[CoversNothing]
+#[Group('legacy')]
+#[Group('auto-review')]
 final class DocumentationTest extends TestCase
 {
     /**
      * @dataProvider provideFixerDocumentationFileIsUpToDateCases
      */
+    #[DataProvider('provideFixerDocumentationFileIsUpToDateCases')]
     public function testFixerDocumentationFileIsUpToDate(FixerInterface $fixer): void
     {
         if ('ordered_imports' === $fixer->getName()) {
@@ -96,7 +103,7 @@ final class DocumentationTest extends TestCase
 
                 return $matches['before'].$replacement.$matches['after'];
             },
-            $expected
+            $expected,
         );
 
         self::assertSame($expected, $actual);
@@ -119,7 +126,7 @@ final class DocumentationTest extends TestCase
 
         self::assertFileEqualsString(
             $generator->generateFixersDocumentationIndex(self::getFixers()),
-            $locator->getFixersDocumentationIndexFilePath()
+            $locator->getFixersDocumentationIndexFilePath(),
         );
     }
 
@@ -129,7 +136,7 @@ final class DocumentationTest extends TestCase
 
         self::assertCount(
             \count(self::getFixers()) + 1,
-            (new Finder())->files()->in($generator->getFixersDocumentationDirectoryPath())
+            (new Finder())->files()->in($generator->getFixersDocumentationDirectoryPath()),
         );
     }
 
@@ -148,7 +155,7 @@ final class DocumentationTest extends TestCase
             self::assertFileEqualsString(
                 $generator->generateRuleSetsDocumentation($definition, $fixers),
                 $path,
-                \sprintf('RuleSet documentation is generated (please see CONTRIBUTING.md), file "%s".', $path)
+                \sprintf('RuleSet documentation is generated (please see CONTRIBUTING.md), file "%s".', $path),
             );
         }
 
@@ -157,7 +164,7 @@ final class DocumentationTest extends TestCase
         self::assertFileEqualsString(
             $generator->generateRuleSetsDocumentationIndex($paths),
             $indexFilePath,
-            \sprintf('RuleSet documentation is generated (please CONTRIBUTING.md), file "%s".', $indexFilePath)
+            \sprintf('RuleSet documentation is generated (please CONTRIBUTING.md), file "%s".', $indexFilePath),
         );
     }
 
@@ -167,7 +174,7 @@ final class DocumentationTest extends TestCase
 
         self::assertCount(
             \count(RuleSets::getBuiltInSetDefinitions()) + 1,
-            (new Finder())->files()->in($generator->getRuleSetsDocumentationDirectoryPath())
+            (new Finder())->files()->in($generator->getRuleSetsDocumentationDirectoryPath()),
         );
     }
 
@@ -185,7 +192,7 @@ final class DocumentationTest extends TestCase
         self::assertStringContainsString(
             $minimumVersionInformation,
             (string) file_get_contents($installationDocPath),
-            \sprintf('Files %s needs to contain information "%s"', $installationDocPath, $minimumVersionInformation)
+            \sprintf('Files %s needs to contain information "%s"', $installationDocPath, $minimumVersionInformation),
         );
     }
 
