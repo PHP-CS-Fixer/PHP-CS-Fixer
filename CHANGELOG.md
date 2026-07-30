@@ -3,6 +3,14 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.18
+----------------------
+
+* CI: attach provenance and SBOM attestations to the released image (#9751)
+* deps: bump the phpstan group in /dev-tools with 2 updates (#9748)
+* deps: update dev-tools (#9754)
+* perf: Limit token search in `simplified_if_return` (#9747)
+
 Changelog for v3.95.17
 ----------------------
 
