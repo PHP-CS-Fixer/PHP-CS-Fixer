@@ -126,6 +126,6 @@ final class DirConstantFixer extends AbstractFunctionReferenceFixer
             // replace constant and remove function name
             $tokens[$fileCandidateLeftIndex] = new Token([\T_DIR, '__DIR__']);
             $tokens->clearTokenAndMergeSurroundingWhitespace($functionNameIndex);
-        } while (null !== $currIndex);
+        } while (true);
     }
 }

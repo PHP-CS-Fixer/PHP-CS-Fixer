@@ -159,7 +159,7 @@ final class ModernizeTypesCastingFixer extends AbstractFunctionReferenceFixer
 
                 // nested transformations support
                 $currIndex = $functionName;
-            } while (null !== $currIndex);
+            } while (true);
         }
     }
 }

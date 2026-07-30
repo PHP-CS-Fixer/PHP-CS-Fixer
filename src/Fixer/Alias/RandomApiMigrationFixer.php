@@ -126,7 +126,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
 
                     $currIndex += 6;
                 }
-            } while (null !== $currIndex);
+            } while (true);
         }
     }
 
