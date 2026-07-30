@@ -91,6 +91,7 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $slices = [];
+        $nextIfIndex = null;
 
         for ($ifIndex = $tokens->count() - 1; 0 <= $ifIndex; --$ifIndex) {
             if (!$tokens[$ifIndex]->isGivenKind([\T_IF, \T_ELSEIF])) {
@@ -106,7 +107,7 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
             $firstCandidateIndex = $tokens->getNextMeaningfulToken($endParenthesisIndex);
 
             foreach ($this->sequences as $sequenceSpec) {
-                $sequenceFound = $tokens->findSequence($sequenceSpec['sequence'], $firstCandidateIndex);
+                $sequenceFound = $tokens->findSequence($sequenceSpec['sequence'], $firstCandidateIndex, $nextIfIndex);
 
                 if (null === $sequenceFound) {
                     continue;
@@ -139,6 +140,9 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
 
                 $slices[$ifIndex] = $newTokens;
                 $tokens->clearAt($ifIndex);
+
+                // Limit the search to this branch by stopping at the next if/elseif.
+                $nextIfIndex = $ifIndex;
             }
         }
 
