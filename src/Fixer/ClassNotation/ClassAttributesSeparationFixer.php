@@ -545,7 +545,13 @@ final class ClassAttributesSeparationFixer extends AbstractFixer implements Conf
             if (!$tokens[$elementEndIndex]->equals(';')) {
                 $elementEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $tokens->getNextTokenOfKind($elementIndex, ['{']));
             }
-        } else { // 'const', 'property', enum-'case', or 'method' of an interface
+        } elseif ('property' === $elementType) {
+            $elementEndIndex = $tokens->getNextTokenOfKind($elementIndex, [';', [CT::T_PROPERTY_HOOK_BRACE_OPEN]]);
+
+            if ($tokens[$elementEndIndex]->isGivenKind(CT::T_PROPERTY_HOOK_BRACE_OPEN)) {
+                $elementEndIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PROPERTY_HOOK, $elementEndIndex);
+            }
+        } else { // 'const', enum-'case', 'promoted_property', or 'method' of an interface
             $elementEndIndex = $tokens->getNextTokenOfKind($elementIndex, [';', '{']);
         }
 

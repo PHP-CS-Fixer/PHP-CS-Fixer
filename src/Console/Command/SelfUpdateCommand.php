@@ -179,7 +179,13 @@ final class SelfUpdateCommand extends Command
             return 1;
         }
 
-        rename($tempFilename, $localFilename);
+        if ('\\' === \DIRECTORY_SEPARATOR) {
+            // On Windows rename() fails to overwrite the .phar file being executed, so we need to copy() and unlink() instead.
+            copy($tempFilename, $localFilename);
+            @unlink($tempFilename);
+        } else {
+            rename($tempFilename, $localFilename);
+        }
 
         $output->writeln(\sprintf('<info>PHP CS Fixer updated</info> (<comment>%s</comment> -> <comment>%s</comment>)', $currentVersion, $remoteTag));
 

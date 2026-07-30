@@ -80,7 +80,7 @@ final class ProjectCodeTest extends TestCase
     private static ?array $srcClassCases = null;
 
     /**
-     * @var null|array<string, array{class-string, string}>
+     * @var null|array<string, array{class-string<TestCase>, non-empty-string}>
      */
     private static ?array $dataProviderMethodCases = null;
 
@@ -1096,7 +1096,7 @@ final class ProjectCodeTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{string, string}>
+     * @return iterable<string, array{class-string<TestCase>, non-empty-string}>
      */
     public static function provideDataProviderMethodCases(): iterable
     {

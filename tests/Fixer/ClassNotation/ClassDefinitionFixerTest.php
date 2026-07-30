@@ -612,7 +612,7 @@ $a = new class implements
     }
 
     /**
-     * @param _ClassyDefinitionInfo $expected
+     * @param _ClassReferenceInfo $expected
      *
      * @dataProvider provideClassyInheritanceInfoCases
      */
@@ -698,7 +698,7 @@ namespace {
     }
 
     /**
-     * @param _ClassyDefinitionInfo $expected
+     * @param _ClassReferenceInfo $expected
      *
      * @dataProvider provideClassyInheritanceInfoPre80Cases
      *
@@ -901,7 +901,7 @@ namespace {
     }
 
     /**
-     * @param _ClassyDefinitionInfo $expected
+     * @param _ClassReferenceInfo $expected
      */
     private function doTestClassyInheritanceInfo(string $source, array $expected): void
     {

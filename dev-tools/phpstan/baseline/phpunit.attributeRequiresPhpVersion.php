@@ -2,9 +2,9 @@
 
 $ignoreErrors = [];
 $ignoreErrors[] = [
-    'rawMessage' => 'Negated boolean expression is always true.',
+    'rawMessage' => 'Version requirement is incomplete.',
     'count' => 1,
-    'path' => __DIR__ . '/../../../src/Tokenizer/Tokens.php',
+    'path' => __DIR__ . '/../../../tests/Fixer/Phpdoc/PhpdocTagNoNamedArgumentsFixerTest.php',
 ];
 
 return ['parameters' => ['ignoreErrors' => $ignoreErrors]];

@@ -2037,6 +2037,26 @@ class Foo
 }',
             ['elements' => ['property' => 'none']],
         ];
+
+        yield 'promoted property as last class element' => [
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public int $a = 1;
+
+                    public function __construct(public int $x) {}
+                }
+                PHP,
+            <<<'PHP'
+                <?php
+                class Foo
+                {
+                    public int $a = 1;
+                    public function __construct(public int $x) {}
+                }
+                PHP,
+        ];
     }
 
     /**
@@ -2310,6 +2330,18 @@ enum Cards: string
                     private int $a { set(int $a) {} }
                     private int $b { set(int $b) {} }
                 }
+                PHP,
+        ];
+
+        yield 'hooked property as last element before class closing brace' => [
+            <<<'PHP'
+                <?php class Foo {
+                    public string $bar { get => 'x'; }
+                }
+                PHP,
+            <<<'PHP'
+                <?php class Foo {
+                    public string $bar { get => 'x'; }}
                 PHP,
         ];
     }

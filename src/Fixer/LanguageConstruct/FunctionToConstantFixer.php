@@ -229,9 +229,7 @@ final class FunctionToConstantFixer extends AbstractFixer implements Configurabl
 
         // test if function call without parameters
         $braceOpenIndex = $tokens->getNextMeaningfulToken($index);
-        if (!$tokens[$braceOpenIndex]->equals('(')) {
-            return null;
-        }
+        \assert(\is_int($braceOpenIndex));
 
         $braceCloseIndex = $tokens->getNextMeaningfulToken($braceOpenIndex);
         if (!$tokens[$braceCloseIndex]->equals(')')) {

@@ -3,6 +3,62 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.17
+----------------------
+
+* perf: `Token::equals()` - Avoid building intermediary arrays (#9739)
+* perf: `Tokens::findSequence()` - improve looping logic (#9737)
+
+Changelog for v3.95.16
+----------------------
+
+* fix: `NoSuperfluousPhpdocTagsFixer` with multiple hidden params (#9736)
+* fix: `PowToExponentiationFixer` - do not produce two consecutive whitespace tokens (#9735)
+* chore: do not remove ParaUnit for PHPUnit v13, as they are now compatible (#9579)
+* CI: introduce `perf` as new PR type (#9742)
+* deps: update dev deps (#9743)
+* test: AbstractIntegrationTestCase - externalized FixerFactory creation (#9744)
+
+Changelog for v3.95.15
+----------------------
+
+* fix: self-update - fix "Access Denied" error when running on Windows (#9731)
+
+Changelog for v3.95.14
+----------------------
+
+* fix: `ClassAttributesSeparationFixer` - handle property with hooks as last class element (#9724)
+* fix: `SingleClassElementPerStatementFixer` - do not break PHP syntax when splitting properties with disjunctive normal form type (#9723)
+* fix: `TrailingCommaInMultilineFixer` - do not add trailing comma after first-class callable (#9722)
+* chore: add code coverage ignore annotations to parallel runner and worker (#9721)
+* chore: cleanup `FunctionToConstantFixer` (#9719)
+* test: HeaderCommentFixerTest - improve invalid configuration types (#9728)
+* test: `ClassDefinitionFixerTest` - improve PHPDocs (#9726)
+* test: `ConfigurationResolverTest` - fix types (#9725)
+* test: `GeneralAttributeRemoveFixerTest` - improve data provider types (#9727)
+* test: `ProjectCodeTest` - improve PHPDocs (#9730)
+* deps: allow to run PHPUnit v12 directly for project, without future-ready CI workarounds (#9580)
+* deps: bump shipmonk/dead-code-detector from 1.3.0 to 1.3.1 in /dev-tools in the shipmonk group across 1 directory (#9718)
+* deps: bump the phpstan group in /dev-tools with 2 updates (#9717)
+
+Changelog for v3.95.13
+----------------------
+
+* fix: `SelfAccessorFixer` - do not replace constant with same name as class in the middle of a static access chain (#9716)
+* fix: `SingleClassElementPerStatementFixer` - do not drop type of typed constants (#9706)
+
+Changelog for v3.95.12
+----------------------
+
+* fix: `BinaryOperatorSpacesFixer` - do not align nested array in yield with following yields (#9708)
+* chore: cleanup `RuleSetDocumentationGenerator` (#9705)
+* chore: unblock self-approval (#9699)
+* deps: bump crate-ci/typos from 1.47.2 to 1.48.0 in /.github/workflows in the all group across 1 directory (#9712)
+* deps: bump shipmonk/dead-code-detector from 1.2.1 to 1.3.0 in /dev-tools in the shipmonk group across 1 directory (#9711)
+* deps: bump the all group across 2 directories with 1 update (#9704)
+* deps: bump the phpstan group in /dev-tools with 2 updates (#9710)
+* deps: PHPUnit - PHP 8.6 compat changes (#9714)
+
 Changelog for v3.95.11
 ----------------------
 

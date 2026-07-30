@@ -157,7 +157,7 @@ final class PowToExponentiationFixer extends AbstractFunctionReferenceFixer
 
         // clean up the function call tokens prt. II
         $tokens->clearAt($openParenthesisIndex);
-        $tokens->clearAt($functionNameIndex);
+        $tokens->clearTokenAndMergeSurroundingWhitespace($functionNameIndex);
 
         $prevMeaningfulTokenIndex = $tokens->getPrevMeaningfulToken($functionNameIndex);
 
