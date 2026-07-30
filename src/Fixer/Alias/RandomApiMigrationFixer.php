@@ -92,7 +92,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
 
             $currIndex = 0;
 
-            do {
+            while (true) {
                 // try getting function reference and translate boundaries for humans
                 $boundaries = $this->find($functionIdentity, $tokens, $currIndex, $tokens->count() - 1);
 
@@ -126,7 +126,7 @@ final class RandomApiMigrationFixer extends AbstractFunctionReferenceFixer imple
 
                     $currIndex += 6;
                 }
-            } while (null !== $currIndex);
+            }
         }
     }
 
