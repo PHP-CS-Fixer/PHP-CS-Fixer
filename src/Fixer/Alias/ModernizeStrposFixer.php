@@ -160,7 +160,7 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
 
             // assert called with 2 arguments
             $openIndex = $tokens->getNextMeaningfulToken($index);
-            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+            $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openIndex);
             $arguments = $argumentsAnalyzer->getArguments($tokens, $openIndex, $closeIndex);
 
             if (2 !== \count($arguments)) {
@@ -227,7 +227,7 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
         $shouldAddNamespace = $tokens[$functionIndex - 1]->isGivenKind(\T_NS_SEPARATOR);
 
         $openIndex = $tokens->getNextMeaningfulToken($functionIndex);
-        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openIndex);
+        $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openIndex);
         $arguments = $argumentsAnalyzer->getArguments($tokens, $openIndex, $closeIndex);
 
         $firstArgumentIndexStart = array_key_first($arguments);

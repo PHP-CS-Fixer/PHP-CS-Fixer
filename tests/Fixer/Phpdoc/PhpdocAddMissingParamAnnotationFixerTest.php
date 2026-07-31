@@ -517,11 +517,11 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
     }
 
     /**
-     * @return iterable<int, array{string, string}>
+     * @return iterable<string, array{string, string}>
      */
     public static function provideFix80Cases(): iterable
     {
-        yield [
+        yield 'promoted properties' => [
             '<?php class Foo {
                 /**
                  * @param Bar $x
@@ -543,6 +543,49 @@ final class PhpdocAddMissingParamAnnotationFixerTest extends AbstractFixerTestCa
                     private null|Bar $z,
                 ) {}
             }',
+        ];
+
+        yield 'promoted properties with attributes' => [
+            '<?php class Foo {
+                /**
+                 * @param string $a
+                 * @param ?string $b
+                 * @param int $c
+                 */
+                public function __construct(
+                    #[SomeAttr]
+                    public string $a,
+                    #[AnotherAttr(\'value\')]
+                    public ?string $b,
+                    #[FirstAttr] #[SecondAttr] public int $c,
+                ) {}
+            }',
+            '<?php class Foo {
+                /**
+                 */
+                public function __construct(
+                    #[SomeAttr]
+                    public string $a,
+                    #[AnotherAttr(\'value\')]
+                    public ?string $b,
+                    #[FirstAttr] #[SecondAttr] public int $c,
+                ) {}
+            }',
+        ];
+
+        yield 'function arguments with attributes' => [
+            '<?php
+                /**
+                 * @param string $a
+                 * @param int $b
+                 */
+                function foo(#[SomeAttr] string $a, #[AnotherAttr(\'x\')] int $b) {}
+            ',
+            '<?php
+                /**
+                 */
+                function foo(#[SomeAttr] string $a, #[AnotherAttr(\'x\')] int $b) {}
+            ',
         ];
     }
 

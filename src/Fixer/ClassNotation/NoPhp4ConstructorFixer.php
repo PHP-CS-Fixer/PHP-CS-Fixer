@@ -81,6 +81,7 @@ final class NoPhp4ConstructorFixer extends AbstractFixer
         $numClasses = \count($classes);
 
         for ($i = 0; $i < $numClasses; ++$i) {
+            \assert(isset($classes[$i]));
             $index = $classes[$i];
 
             // is it an anonymous class definition?
@@ -105,11 +106,12 @@ final class NoPhp4ConstructorFixer extends AbstractFixer
                     }
 
                     // the index points to the { of a block-namespace
-                    $nspEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nspIndex);
+                    $nspEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $nspIndex);
 
                     if ($index < $nspEnd) {
                         // the class is inside a block namespace, skip other classes that might be in it
                         for ($j = $i + 1; $j < $numClasses; ++$j) {
+                            \assert(isset($classes[$j]));
                             if ($classes[$j] < $nspEnd) {
                                 ++$i;
                             }
@@ -124,7 +126,7 @@ final class NoPhp4ConstructorFixer extends AbstractFixer
             $classNameIndex = $tokens->getNextMeaningfulToken($index);
             $className = $tokens[$classNameIndex]->getContent();
             $classStart = $tokens->getNextTokenOfKind($classNameIndex, ['{']);
-            $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $classStart);
+            $classEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $classStart);
 
             $this->fixConstructor($tokens, $className, $classStart, $classEnd);
             $this->fixParent($tokens, $classStart, $classEnd);
@@ -220,6 +222,7 @@ final class NoPhp4ConstructorFixer extends AbstractFixer
             if (null !== $parentSeq) {
                 // we only need indices
                 $parentSeq = array_keys($parentSeq);
+                \assert(isset($parentSeq[2]));
 
                 // match either of the possibilities
                 if ($tokens[$parentSeq[0]]->equalsAny([[\T_STRING, 'parent'], [\T_STRING, $parentClass]], false)) {
@@ -241,6 +244,7 @@ final class NoPhp4ConstructorFixer extends AbstractFixer
                 if (null !== $parentSeq) {
                     // we only need indices
                     $parentSeq = array_keys($parentSeq);
+                    \assert(isset($parentSeq[1], $parentSeq[2]));
 
                     // replace call with parent::__construct()
                     $tokens[$parentSeq[0]] = new Token([
@@ -282,6 +286,7 @@ final class NoPhp4ConstructorFixer extends AbstractFixer
                 }
 
                 $callSeq = array_keys($callSeq);
+                \assert(isset($callSeq[1]));
 
                 $tokens[$callSeq[0]] = new Token([\T_STRING, 'parent']);
                 $tokens[$callSeq[1]] = new Token([\T_DOUBLE_COLON, '::']);
@@ -383,6 +388,7 @@ final class NoPhp4ConstructorFixer extends AbstractFixer
 
         // keep only the indices
         $function = array_keys($function);
+        \assert(isset($function[1], $function[2]));
 
         // find previous block, saving method modifiers for later use
         $possibleModifiers = [\T_PUBLIC, \T_PROTECTED, \T_PRIVATE, \T_STATIC, \T_ABSTRACT, \T_FINAL];
@@ -402,7 +408,7 @@ final class NoPhp4ConstructorFixer extends AbstractFixer
         } else {
             // find method body start and the end of the function definition
             $bodyStart = $tokens->getNextTokenOfKind($function[2], ['{']);
-            $funcEnd = null !== $bodyStart ? $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $bodyStart) : null;
+            $funcEnd = null !== $bodyStart ? $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $bodyStart) : null;
         }
 
         return [

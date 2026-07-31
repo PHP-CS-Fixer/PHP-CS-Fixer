@@ -190,6 +190,7 @@ final class PhpUnitConstructFixer extends AbstractPhpUnitFixer implements Config
             return null;
         }
 
+        \assert(isset($sequenceIndices[1]));
         $sequenceIndices[2] = $tokens->getNextMeaningfulToken($sequenceIndices[1]);
         $firstParameterToken = $tokens[$sequenceIndices[2]];
 
@@ -204,6 +205,7 @@ final class PhpUnitConstructFixer extends AbstractPhpUnitFixer implements Config
             return $sequenceIndices[3];
         }
 
+        \assert(isset($sequenceIndices[0], $map[strtolower($firstParameterToken->getContent())]));
         $tokens[$sequenceIndices[0]] = new Token([\T_STRING, $map[strtolower($firstParameterToken->getContent())]]);
         $tokens->clearRange($sequenceIndices[2], $tokens->getNextNonWhitespace($sequenceIndices[3]) - 1);
 

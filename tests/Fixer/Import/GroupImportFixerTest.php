@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Tests\Fixer\Import;
 
+use PhpCsFixer\ConfigurationException\InvalidFixerConfigurationException;
 use PhpCsFixer\Fixer\Import\GroupImportFixer;
 use PhpCsFixer\Tests\Test\AbstractFixerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -37,6 +38,41 @@ use PHPUnit\Framework\Attributes\RequiresPhp;
 #[CoversClass(GroupImportFixer::class)]
 final class GroupImportFixerTest extends AbstractFixerTestCase
 {
+    /**
+     * @param array<string, mixed> $wrongConfig
+     *
+     * @dataProvider provideInvalidConfigurationCases
+     */
+    #[DataProvider('provideInvalidConfigurationCases')]
+    public function testInvalidConfiguration(string $expectedMessage, array $wrongConfig): void
+    {
+        $this->expectException(InvalidFixerConfigurationException::class);
+        $this->expectExceptionMessage($expectedMessage);
+
+        $this->fixer->configure($wrongConfig); // @phpstan-ignore argument.type
+    }
+
+    /**
+     * @return iterable<string, array{string, array<string, mixed>}>
+     */
+    public static function provideInvalidConfigurationCases(): iterable
+    {
+        yield 'unknown option' => [
+            '[group_import] Invalid configuration: The option "foo" does not exist. Defined options are: "group_types".',
+            ['foo' => true],
+        ];
+
+        yield 'invalid option type' => [
+            '[group_import] Invalid configuration: The option "group_types" with value "classy" is expected to be of type "string[]", but is of type "string".',
+            ['group_types' => GroupImportFixer::GROUP_CLASSY],
+        ];
+
+        yield 'invalid group type value' => [
+            '[group_import] Invalid configuration: Invalid group type: bar, allowed types: "classy", "functions" and "constants".',
+            ['group_types' => [GroupImportFixer::GROUP_CLASSY, 'bar']],
+        ];
+    }
+
     /**
      * @dataProvider provideFixCases
      *

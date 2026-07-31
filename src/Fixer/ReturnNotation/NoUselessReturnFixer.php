@@ -71,7 +71,7 @@ final class NoUselessReturnFixer extends AbstractFixer
 
             $index = $tokens->getNextTokenOfKind($index, [';', '{']);
             if ($tokens[$index]->equals('{')) {
-                $this->fixFunction($tokens, $index, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index));
+                $this->fixFunction($tokens, $index, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index));
             }
         }
     }

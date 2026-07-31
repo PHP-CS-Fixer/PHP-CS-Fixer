@@ -206,6 +206,8 @@ final class GeneralPhpdocTagRenameFixer extends AbstractFixer implements Configu
                         $matches['tag'] = strtolower($matches['tag']);
                     }
 
+                    \assert(isset($replacements[$matches['tag']]));
+
                     return $replacements[$matches['tag']];
                 },
                 $token->getContent(),

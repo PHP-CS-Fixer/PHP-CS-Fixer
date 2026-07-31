@@ -153,6 +153,7 @@ final class NoEmptyCommentFixer extends AbstractFixer
     private function isEmptyComment(string $content): bool
     {
         $type = $this->getCommentType($content);
+        \assert(\in_array($type, [self::TYPE_HASH, self::TYPE_SLASH_ASTERISK, self::TYPE_DOUBLE_SLASH], true));
 
         return Preg::match([
             self::TYPE_HASH => '|^#\s*$|', // single line comment starting with '#'

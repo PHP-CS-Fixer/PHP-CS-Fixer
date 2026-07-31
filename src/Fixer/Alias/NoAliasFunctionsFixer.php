@@ -286,7 +286,7 @@ final class NoAliasFunctionsFixer extends AbstractFixer implements ConfigurableF
             if (\is_array($this->aliases[$tokenContent])) {
                 [$alias, $numberOfArguments] = $this->aliases[$tokenContent];
 
-                $count = $argumentsAnalyzer->countArguments($tokens, $openParenthesis, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis));
+                $count = $argumentsAnalyzer->countArguments($tokens, $openParenthesis, $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openParenthesis));
 
                 if ($numberOfArguments !== $count) {
                     continue;

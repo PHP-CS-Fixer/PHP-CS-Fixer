@@ -611,6 +611,12 @@ final class PhpUnitAttributesFixerTest extends AbstractFixerTestCase
             '@requires PHPUnit 11.1.1',
         );
 
+        yield 'handle RequiresPhpunit with less than' => self::createCase(
+            ['class', 'method'],
+            "#[RequiresPhpunit('< 13.0.0')]",
+            '@requires PHPUnit < 13.0.0',
+        );
+
         yield 'handle RequiresSetting' => self::createCase(
             ['class', 'method'],
             "#[RequiresSetting('date.timezone', 'Europe/London')]",

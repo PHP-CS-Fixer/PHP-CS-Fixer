@@ -321,6 +321,8 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
 
             // update
             foreach ($items as $j => $item) {
+                \assert(isset($item['desc']));
+
                 if (null === $item['tag']) {
                     if ('@' === $item['desc'][0]) {
                         $line = $item['indent'].' * '.$item['desc'];
@@ -413,12 +415,14 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
     {
         if (Preg::match($this->regex, $line, $matches)) {
             if (isset($matches['tag2']) && '' !== $matches['tag2']) {
+                \assert(isset($matches['hint2']));
                 $matches['tag'] = $matches['tag2'];
                 $matches['hint'] = $matches['hint2'];
                 $matches['var'] = '';
             }
 
             if (isset($matches['tag3']) && '' !== $matches['tag3']) {
+                \assert(isset($matches['hint3'], $matches['signature'], $matches['static']));
                 $matches['tag'] = $matches['tag3'];
                 $matches['hint'] = $matches['hint3'];
                 $matches['var'] = $matches['signature'];
@@ -471,6 +475,7 @@ final class PhpdocAlignFixer extends AbstractFixer implements ConfigurableFixerI
         // Find last tagged line:
         $item = null;
         for (; $index >= 0; --$index) {
+            \assert(isset($items[$index]));
             $item = $items[$index];
             if (null !== $item['tag']) {
                 break;

@@ -60,7 +60,7 @@ final class NoTrailingCommaInSinglelineFixer extends AbstractFixer implements Co
     {
         return
             $tokens->isTokenKindFound(',')
-            && $tokens->isAnyTokenKindsFound([')', CT::T_ARRAY_SQUARE_BRACE_CLOSE, CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, CT::T_GROUP_IMPORT_BRACE_CLOSE]);
+            && $tokens->isAnyTokenKindsFound([')', CT::T_ARRAY_BRACKET_CLOSE, CT::T_DESTRUCTURING_BRACKET_CLOSE, CT::T_GROUP_IMPORT_BRACE_CLOSE]);
     }
 
     /**
@@ -89,7 +89,7 @@ final class NoTrailingCommaInSinglelineFixer extends AbstractFixer implements Co
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
-            if (!$tokens[$index]->equals(')') && !$tokens[$index]->isGivenKind([CT::T_ARRAY_SQUARE_BRACE_CLOSE, CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, CT::T_GROUP_IMPORT_BRACE_CLOSE])) {
+            if (!$tokens[$index]->equals(')') && !$tokens[$index]->isGivenKind([CT::T_ARRAY_BRACKET_CLOSE, CT::T_DESTRUCTURING_BRACKET_CLOSE, CT::T_GROUP_IMPORT_BRACE_CLOSE])) {
                 continue;
             }
 
@@ -123,11 +123,11 @@ final class NoTrailingCommaInSinglelineFixer extends AbstractFixer implements Co
     {
         $elements = $this->configuration['elements'];
 
-        if ($tokens[$openIndex]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
+        if ($tokens[$openIndex]->isGivenKind(CT::T_ARRAY_BRACKET_OPEN)) {
             return \in_array('array', $elements, true);
         }
 
-        if ($tokens[$openIndex]->isGivenKind(CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN)) {
+        if ($tokens[$openIndex]->isGivenKind(CT::T_DESTRUCTURING_BRACKET_OPEN)) {
             return \in_array('array_destructuring', $elements, true);
         }
 
@@ -153,15 +153,15 @@ final class NoTrailingCommaInSinglelineFixer extends AbstractFixer implements Co
             return !AttributeAnalyzer::isAttribute($tokens, $beforeOpen) && \in_array('arguments', $elements, true);
         }
 
-        if ($tokens[$beforeOpen]->equalsAny([')', ']', [CT::T_DYNAMIC_VAR_BRACE_CLOSE], [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE]])) {
+        if ($tokens[$beforeOpen]->equalsAny([')', ']', [CT::T_DYNAMIC_VAR_BRACE_CLOSE], [CT::T_ARRAY_INDEX_BRACE_CLOSE]])) {
             $block = Tokens::detectBlockType($tokens[$beforeOpen]);
 
             return
                 (
-                    Tokens::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE === $block['type']
+                    Tokens::BLOCK_TYPE_INDEX_BRACE === $block['type']
                     || Tokens::BLOCK_TYPE_DYNAMIC_VAR_BRACE === $block['type']
-                    || Tokens::BLOCK_TYPE_INDEX_SQUARE_BRACE === $block['type']
-                    || Tokens::BLOCK_TYPE_PARENTHESIS_BRACE === $block['type']
+                    || Tokens::BLOCK_TYPE_INDEX_BRACKET === $block['type']
+                    || Tokens::BLOCK_TYPE_PARENTHESIS === $block['type']
                 ) && \in_array('arguments', $elements, true);
         }
 

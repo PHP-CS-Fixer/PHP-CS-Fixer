@@ -217,7 +217,7 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
             if ($token->isGivenKind(self::SYMBOL_KINDS)) {
                 $currentSymbol = $tokens[$tokens->getNextMeaningfulToken($index)]->getContent();
                 $currentSymbolEndIndex = $tokens->findBlockEnd(
-                    Tokens::BLOCK_TYPE_CURLY_BRACE,
+                    Tokens::BLOCK_TYPE_BRACE,
                     $tokens->getNextTokenOfKind($index, ['{']),
                 );
 
@@ -371,7 +371,7 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
         $docBlock = new DocBlock($content);
 
         $openingParenthesisIndex = $tokens->getNextTokenOfKind($element['index'], ['(']);
-        $closingParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openingParenthesisIndex);
+        $closingParenthesisIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openingParenthesisIndex);
 
         $argumentsInfo = $this->getArgumentsInfo(
             $tokens,
@@ -493,10 +493,15 @@ final class NoSuperfluousPhpdocTagsFixer extends AbstractFixer implements Config
         // virtualise "hidden params" as if they would be regular ones
         if (true === $this->configuration['allow_hidden_params']) {
             $paramsString = $tokens->generatePartialCode($start, $end);
-            Preg::matchAll('|/\*[^$]*(\$\w+)[^*]*\*/|', $paramsString, $matches);
+            Preg::matchAll('~/\*.*?\*/~s', $paramsString, $matches);
 
-            foreach ($matches[1] as $match) {
-                $argumentsInfo[$match] = self::NO_TYPE_INFO; // HINT: one could try to extract actual type for hidden param, for now we only indicate it's existence
+            foreach ($matches[0] as $comment) {
+                Preg::matchAll('~\$\w+~', $comment, $paramMatches);
+
+                /** @var non-empty-string $hiddenParam */
+                foreach ($paramMatches[0] as $hiddenParam) {
+                    $argumentsInfo[$hiddenParam] = self::NO_TYPE_INFO; // HINT: one could try to extract actual type for hidden param, for now we only indicate it's existence
+                }
             }
         }
 

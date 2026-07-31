@@ -57,7 +57,7 @@ final class PharTest extends AbstractSmokeTestCase
         self::$pharName = 'php-cs-fixer.phar';
 
         if (!file_exists(self::$pharCwd.'/'.self::$pharName)) {
-            self::fail('No phar file available.');
+            throw new \RuntimeException('No phar file available.');
         }
     }
 

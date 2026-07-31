@@ -577,7 +577,7 @@ class Foo
                 '$x',
                 7,
                 'staticfunction(,):void{}',
-                new TypeAnalysis('Closure', 5, 5),
+                new TypeAnalysis(\Closure::class, 5, 5),
             ),
         ];
 

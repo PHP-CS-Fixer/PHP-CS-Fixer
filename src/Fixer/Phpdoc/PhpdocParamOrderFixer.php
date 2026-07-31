@@ -111,7 +111,7 @@ final class PhpdocParamOrderFixer extends AbstractFixer
      */
     private function getFunctionParamNames(Tokens $tokens, int $paramBlockStart): array
     {
-        $paramBlockEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $paramBlockStart);
+        $paramBlockEnd = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $paramBlockStart);
 
         $paramNames = [];
         for (

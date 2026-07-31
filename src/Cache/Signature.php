@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace PhpCsFixer\Cache;
 
+use PhpCsFixer\Future;
+
 /**
  * @author Andreas Möller <am@localheinz.com>
  *
@@ -100,9 +102,20 @@ final class Signature implements SignatureInterface
      */
     private static function makeJsonEncodable(array $data): array
     {
-        array_walk_recursive($data, static function (&$item): void {
+        array_walk_recursive($data, static function (&$item, $key): void {
             if (\is_string($item) && false === mb_detect_encoding($item, 'utf-8', true)) {
                 $item = base64_encode($item);
+            } elseif (\is_object($item)) {
+                if ($item instanceof \JsonSerializable) {
+                    $item = \get_class($item).'#'.json_encode($item, \JSON_THROW_ON_ERROR);
+                } else {
+                    Future::triggerDeprecation(new \InvalidArgumentException(\sprintf(
+                        'Can not serialize cache signature, unhandled object under "%s" key: "%s" - implement "%s".',
+                        $key,
+                        \get_class($item),
+                        \JsonSerializable::class,
+                    )));
+                }
             }
         });
 

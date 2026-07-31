@@ -171,6 +171,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         'assertFileDoesNotExist' => true,
         'assertFileEquals' => true,
         'assertFileEqualsCanonicalizing' => true,
+        'assertFileEqualsFileIgnoringWhitespace' => true,
         'assertFileEqualsIgnoringCase' => true,
         'assertFileExists' => true,
         'assertFileIsNotReadable' => true,
@@ -181,6 +182,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         'assertFileMatchesFormatFile' => true,
         'assertFileNotEquals' => true,
         'assertFileNotEqualsCanonicalizing' => true,
+        'assertFileNotEqualsFileIgnoringWhitespace' => true,
         'assertFileNotEqualsIgnoringCase' => true,
         'assertFileNotExists' => true,
         'assertFileNotIsReadable' => true,
@@ -268,7 +270,9 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         'assertStringEqualsFile' => true,
         'assertStringEqualsFileCanonicalizing' => true,
         'assertStringEqualsFileIgnoringCase' => true,
+        'assertStringEqualsFileIgnoringWhitespace' => true,
         'assertStringEqualsStringIgnoringLineEndings' => true,
+        'assertStringEqualsStringIgnoringWhitespace' => true,
         'assertStringMatchesFormat' => true,
         'assertStringMatchesFormatFile' => true,
         'assertStringNotContainsString' => true,
@@ -276,6 +280,8 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         'assertStringNotEqualsFile' => true,
         'assertStringNotEqualsFileCanonicalizing' => true,
         'assertStringNotEqualsFileIgnoringCase' => true,
+        'assertStringNotEqualsFileIgnoringWhitespace' => true,
+        'assertStringNotEqualsStringIgnoringWhitespace' => true,
         'assertStringNotMatchesFormat' => true,
         'assertStringNotMatchesFormatFile' => true,
         'assertStringStartsNotWith' => true,
@@ -283,11 +289,17 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         'assertThat' => true,
         'assertTrue' => true,
         'assertXmlFileEqualsXmlFile' => true,
+        'assertXmlFileEqualsXmlFileConsideringComments' => true,
         'assertXmlFileNotEqualsXmlFile' => true,
+        'assertXmlFileNotEqualsXmlFileConsideringComments' => true,
         'assertXmlStringEqualsXmlFile' => true,
+        'assertXmlStringEqualsXmlFileConsideringComments' => true,
         'assertXmlStringEqualsXmlString' => true,
+        'assertXmlStringEqualsXmlStringConsideringComments' => true,
         'assertXmlStringNotEqualsXmlFile' => true,
+        'assertXmlStringNotEqualsXmlFileConsideringComments' => true,
         'assertXmlStringNotEqualsXmlString' => true,
+        'assertXmlStringNotEqualsXmlStringConsideringComments' => true,
         'attribute' => true,
         'attributeEqualTo' => true,
         'callback' => true,
@@ -367,6 +379,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         'stringContains' => true,
         'stringEndsWith' => true,
         'stringEqualsStringIgnoringLineEndings' => true,
+        'stringEqualsStringIgnoringWhitespace' => true,
         'stringStartsWith' => true,
 
         // TestCase methods
@@ -627,7 +640,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixer extends AbstractPhpUnitFixer i
         $nextIndex = $tokens->getNextTokenOfKind($index, [';', '{']);
 
         return $tokens[$nextIndex]->equals('{')
-            ? $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $nextIndex)
+            ? $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $nextIndex)
             : $nextIndex;
     }
 }
