@@ -836,10 +836,6 @@ final class BinaryOperatorSpacesFixer extends AbstractFixer implements Configura
                         if ($tokens->isPartialCodeMultiline($arrayStartIndex, $arrayEndIndex)) {
                             break;
                         }
-                        $i = $arrayEndIndex;
-                        $index = $i;
-
-                        continue;
                     }
 
                     ++$index;
