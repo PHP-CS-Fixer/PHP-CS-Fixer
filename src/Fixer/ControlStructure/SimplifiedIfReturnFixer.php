@@ -57,7 +57,6 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $slices = [];
-        $nextIfIndex = null;
 
         for ($ifIndex = $tokens->count() - 1; 0 <= $ifIndex; --$ifIndex) {
             $id = $tokens[$ifIndex]->getId();
@@ -96,11 +95,10 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
             $newTokens = [
                 new Token([\T_RETURN, 'return']),
                 new Token([\T_WHITESPACE, ' ']),
+                $match['isNegative']
+                    ? new Token('!')
+                    : new Token([\T_BOOL_CAST, '(bool)']),
             ];
-
-            $newTokens[] = $match['isNegative']
-                ? new Token('!')
-                : new Token([\T_BOOL_CAST, '(bool)']);
 
             $slices[$ifIndex] = $newTokens;
             $tokens->clearAt($ifIndex);
@@ -116,93 +114,85 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
      */
     private function matchReturnSequence(Tokens $tokens, int $start): ?array
     {
-        $count = $tokens->count();
+        $indices = [];
 
-        for ($return = $start; $return < $count; ++$return) {
-            $id = $tokens[$return]->getId();
+        if ($tokens[$start]->equals('{')) {
+            $indices[] = $start;
 
-            // Avoid scanning past another conditional because a valid
-            // continuation of the original pattern is no longer possible.
-            if (\T_IF === $id || \T_ELSEIF === $id) {
-                break;
+            $start = $tokens->getNextMeaningfulToken($start);
+
+            if (null === $start) {
+                return null;
             }
-
-            if (\T_RETURN !== $id) {
-                continue;
-            }
-
-            $bool1 = $tokens->getNextMeaningfulToken($return);
-            if (null === $bool1 || \T_STRING !== $tokens[$bool1]->getId()) {
-                continue;
-            }
-
-            $value1 = $tokens[$bool1]->getContent();
-            if ('true' !== $value1 && 'false' !== $value1) {
-                continue;
-            }
-
-            $semi1 = $tokens->getNextMeaningfulToken($bool1);
-            if (null === $semi1 || ';' !== $tokens[$semi1]->getContent()) {
-                continue;
-            }
-
-            $indices = [];
-
-            $prev = $tokens->getPrevMeaningfulToken($return);
-            if (null !== $prev && $tokens[$prev]->equals('{')) {
-                $indices[] = $prev;
-            }
-
-            $indices[] = $return;
-            $indices[] = $bool1;
-            $indices[] = $semi1;
-
-            $next = $tokens->getNextMeaningfulToken($semi1);
-            if (null === $next) {
-                continue;
-            }
-
-            if ($tokens[$next]->equals('}')) {
-                $indices[] = $next;
-
-                $next = $tokens->getNextMeaningfulToken($next);
-                if (null === $next) {
-                    continue;
-                }
-            }
-
-            if (\T_RETURN !== $tokens[$next]->getId()) {
-                continue;
-            }
-
-            $indices[] = $next;
-
-            $bool2 = $tokens->getNextMeaningfulToken($next);
-            if (null === $bool2 || \T_STRING !== $tokens[$bool2]->getId()) {
-                continue;
-            }
-
-            $value2 = $tokens[$bool2]->getContent();
-
-            if (('true' !== $value2 && 'false' !== $value2) || $value1 === $value2) {
-                continue;
-            }
-
-            $indices[] = $bool2;
-
-            $semi2 = $tokens->getNextMeaningfulToken($bool2);
-            if (null === $semi2 || ';' !== $tokens[$semi2]->getContent()) {
-                continue;
-            }
-
-            $indices[] = $semi2;
-
-            return [
-                'isNegative' => 'false' === $value1,
-                'indices' => $indices,
-            ];
         }
 
-        return null;
+        if (\T_RETURN !== $tokens[$start]->getId()) {
+            return null;
+        }
+
+        $indices[] = $start;
+
+        $bool1 = $tokens->getNextMeaningfulToken($start);
+        if (null === $bool1 || \T_STRING !== $tokens[$bool1]->getId()) {
+            return null;
+        }
+
+        $value1 = $tokens[$bool1]->getContent();
+        if ('true' !== $value1 && 'false' !== $value1) {
+            return null;
+        }
+
+        $semi1 = $tokens->getNextMeaningfulToken($bool1);
+        if (null === $semi1 || ';' !== $tokens[$semi1]->getContent()) {
+            return null;
+        }
+
+        $indices[] = $bool1;
+        $indices[] = $semi1;
+
+        $next = $tokens->getNextMeaningfulToken($semi1);
+        if (null === $next) {
+            return null;
+        }
+
+        if ($tokens[$next]->equals('}')) {
+            $indices[] = $next;
+
+            $next = $tokens->getNextMeaningfulToken($next);
+            if (null === $next) {
+                return null;
+            }
+        }
+
+        if (\T_RETURN !== $tokens[$next]->getId()) {
+            return null;
+        }
+
+        $indices[] = $next;
+
+        $bool2 = $tokens->getNextMeaningfulToken($next);
+        if (null === $bool2 || \T_STRING !== $tokens[$bool2]->getId()) {
+            return null;
+        }
+
+        $value2 = $tokens[$bool2]->getContent();
+
+        if (('true' !== $value2 && 'false' !== $value2) || $value1 === $value2) {
+            return null;
+        }
+
+        $indices[] = $bool2;
+
+        $semi2 = $tokens->getNextMeaningfulToken($bool2);
+        if (null === $semi2 || ';' !== $tokens[$semi2]->getContent()) {
+            return null;
+        }
+
+        $indices[] = $semi2;
+
+        return [
+            'isNegative' => 'false' === $value1,
+            'indices' => $indices,
+        ];
     }
 }
