@@ -11,8 +11,9 @@ Warnings
 This rule is RISKY
 ~~~~~~~~~~~~~~~~~~
 
-Risky if ``strpos``, ``stripos``, ``str_starts_with``, ``str_contains`` or
-``strtolower`` functions are overridden.
+Risky if ``strpos``, ``stripos``, ``mb_strpos``, ``mb_stripos``,
+``str_starts_with``, ``str_contains``, ``strtolower`` or ``mb_strtolower``
+functions are overridden.
 
 This rule is CONFIGURABLE
 ~~~~~~~~~~~~~~~~~~~~~~~~~
