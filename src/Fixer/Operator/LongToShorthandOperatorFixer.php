@@ -86,6 +86,11 @@ final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer impl
         );
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Must run before BinaryOperatorSpacesFixer, NoExtraBlankLinesFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer, StandardizeIncrementFixer.
+     */
     public function getPriority(): int
     {
         return 17;
@@ -101,11 +106,6 @@ final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer impl
         return $tokens->isAnyTokenKindsFound([...array_keys(self::OPERATORS), FCT::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG, FCT::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG]);
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * Must run before BinaryOperatorSpacesFixer, NoExtraBlankLinesFixer, NoSinglelineWhitespaceBeforeSemicolonsFixer, StandardizeIncrementFixer.
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
