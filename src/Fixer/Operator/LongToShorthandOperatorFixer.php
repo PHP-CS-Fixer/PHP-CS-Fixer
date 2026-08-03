@@ -145,7 +145,7 @@ final class LongToShorthandOperatorFixer extends AbstractShortOperatorFixer impl
         }
 
         for ($index = $assignRange['start']; $index <= $assignRange['end']; ++$index) {
-            if ($tokens[$index]->equals('[') || $tokens[$index]->isGivenKind(CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN)) {
+            if ($tokens[$index]->equals('[') || $tokens[$index]->isGivenKind(CT::T_ARRAY_INDEX_BRACE_OPEN)) {
                 return false;
             }
         }
