@@ -153,7 +153,7 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
             ['modernize_stripos' => true],
         ];
 
-        yield 'multibyute case insensitive leading namespace' => [
+        yield 'multibyte case insensitive leading namespace' => [
             '<?php if (\str_starts_with(\mb_strtolower($haystack5), \mb_strtolower($needle))  ) {}',
             '<?php if (\mb_stripos($haystack5, $needle) === 0) {}',
             ['modernize_stripos' => true],
