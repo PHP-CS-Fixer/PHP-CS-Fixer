@@ -142,9 +142,20 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
             '<?php if (\strpos($haystack5, $needle) === 0) {}',
         ];
 
+        yield 'multibyte leading namespace' => [
+            '<?php if (\str_starts_with($haystack5, $needle)  ) {}',
+            '<?php if (\mb_strpos($haystack5, $needle) === 0) {}',
+        ];
+
         yield 'case insensitive leading namespace' => [
             '<?php if (\str_starts_with(\strtolower($haystack5), \strtolower($needle))  ) {}',
             '<?php if (\stripos($haystack5, $needle) === 0) {}',
+            ['modernize_stripos' => true],
+        ];
+
+        yield 'multibyute case insensitive leading namespace' => [
+            '<?php if (\str_starts_with(\mb_strtolower($haystack5), \mb_strtolower($needle))  ) {}',
+            '<?php if (\mb_stripos($haystack5, $needle) === 0) {}',
             ['modernize_stripos' => true],
         ];
 
