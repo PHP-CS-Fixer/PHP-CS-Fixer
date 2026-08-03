@@ -1,7 +1,7 @@
 --TEST--
 Integration of fixers: long_to_shorthand_operator,standardize_increment.
 --RULESET--
-{"long_to_shorthand_operator": true, "standardize_increment": true}
+{"long_to_shorthand_operator": {"skip_offset_targets": false}, "standardize_increment": true}
 --EXPECT--
 <?php
 
