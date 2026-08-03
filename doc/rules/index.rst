@@ -599,7 +599,7 @@ Operator
 - `logical_operators <./operator/logical_operators.rst>`_ *(risky)*
 
   Use ``&&`` and ``||`` logical operators instead of ``and`` and ``or``.
-- `long_to_shorthand_operator <./operator/long_to_shorthand_operator.rst>`_ *(risky)*
+- `long_to_shorthand_operator <./operator/long_to_shorthand_operator.rst>`_ *(risky, configurable)*
 
   Shorthand notation for operators should be used if possible.
 - `new_expression_parentheses <./operator/new_expression_parentheses.rst>`_ *(configurable)*
