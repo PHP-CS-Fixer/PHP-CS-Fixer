@@ -637,7 +637,6 @@ $a# 5
         yield 'do not fix 6' => [
             self::generateTest('$this->test(); // $this->assertSame($b, %s($a));'),
         ];
-
     }
 
     private static function generateTest(string $content): string
