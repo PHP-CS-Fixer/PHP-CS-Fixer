@@ -101,10 +101,10 @@ With configuration: ``['modernize_stripos' => true]``.
    +if (!str_starts_with($haystack, $needle)  ) {}
    +if (str_contains($haystack, $needle)  ) {}
    +if (!str_contains($haystack, $needle)  ) {}
-   +if (str_starts_with(strtolower($haystack), strtolower($needle))  ) {}
-   +if (!str_starts_with(strtolower($haystack), strtolower($needle))  ) {}
-   +if (str_contains(strtolower($haystack), strtolower($needle))  ) {}
-   +if (!str_contains(strtolower($haystack), strtolower($needle))  ) {}
+   +if (str_starts_with(mb_strtolower($haystack), mb_strtolower($needle))  ) {}
+   +if (!str_starts_with(mb_strtolower($haystack), mb_strtolower($needle))  ) {}
+   +if (str_contains(mb_strtolower($haystack), mb_strtolower($needle))  ) {}
+   +if (!str_contains(mb_strtolower($haystack), mb_strtolower($needle))  ) {}
 
 Rule sets
 ---------
