@@ -390,6 +390,24 @@ $a#
             self::generateTest('self::assertTrue(is_resource($resource));'),
         ];
 
+        // These do not contain a "%s" placeholder, so running them once per function
+        // would just repeat the same case.
+        yield 'do not fix - assertSame with a single argument' => [
+            self::generateTest('$this->assertSame(1);'),
+        ];
+
+        yield 'do not fix - count inside an expression' => [
+            self::generateTest('$this->assertSame(2, count($array) - 1);'),
+        ];
+
+        yield 'do not fix - sizeof in other constructs' => [
+            self::generateTest('
+                    Foo::assertSame(1, sizeof($a));
+                    $this->assertSame(1, sizeof2(2));
+                    $this->assertSame(1, sizeof::foo);
+                '),
+        ];
+
         foreach (self::provideTestAssertCountCases() as $index => $case) {
             foreach (['count', 'sizeof'] as $function) {
                 yield $function.' - '.$index => array_map(
@@ -612,10 +630,6 @@ $a# 5
             self::generateTest('$this->assertSame(1.0, %s($a));'),
         ];
 
-        yield 'do not fix 4' => [
-            self::generateTest('$this->assertSame(1);'),
-        ];
-
         yield 'do not fix 5' => [
             self::generateTest('$this->assertSame(1, "%s");'),
         ];
@@ -624,17 +638,6 @@ $a# 5
             self::generateTest('$this->test(); // $this->assertSame($b, %s($a));'),
         ];
 
-        yield 'do not fix 7' => [
-            self::generateTest('$this->assertSame(2, count($array) - 1);'),
-        ];
-
-        yield 'do not fix 8' => [
-            self::generateTest('
-                    Foo::assertSame(1, sizeof($a));
-                    $this->assertSame(1, sizeof2(2));
-                    $this->assertSame(1, sizeof::foo);
-                '),
-        ];
     }
 
     private static function generateTest(string $content): string
