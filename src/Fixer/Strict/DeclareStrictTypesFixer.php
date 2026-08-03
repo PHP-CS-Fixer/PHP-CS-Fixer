@@ -178,7 +178,7 @@ final class DeclareStrictTypesFixer extends AbstractFixer implements Configurabl
     {
         foreach ($tokens->findGivenKind(\T_DECLARE) as $index => $token) {
             $openParenthesis = $tokens->getNextMeaningfulToken($index);
-            $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $openParenthesis);
+            $closeParenthesis = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openParenthesis);
 
             $strictTypesSequence = $tokens->findSequence([[\T_STRING, 'strict_types'], '=', [\T_LNUMBER]], $openParenthesis, $closeParenthesis, false);
             if (null === $strictTypesSequence) {

@@ -72,6 +72,39 @@ parameters:
             message: '/^AnonymousClass/'
             path: tests/
             identifier: phpCsFixer.internalTypeInPublicApi
+
+        -
+            message: '/deprecated class PhpCsFixer\\Utils/'
+            identifier: staticMethod.deprecatedClass
+
+        -
+            path: tests/
+            identifier: classConstant.deprecatedClass
+
+        -
+            path: tests/
+            identifier: method.deprecated
+
+        -
+            path: tests/
+            identifier: method.deprecatedClass
+
+        -
+            path: tests/
+            identifier: new.deprecatedClass
+
+        -
+            path: tests/
+            identifier: staticMethod.deprecated
+
+        -
+            path: tests/
+            identifier: staticMethod.deprecatedClass
+
+        -
+            path: tests/
+            rawMessage: 'Version requirement will always evaluate to false.'
+            identifier: phpunit.attributeRequiresPhpVersion
     tipsOfTheDay: false
     symfony:
         consoleApplicationLoader: dev-tools/phpstan/console-application.php

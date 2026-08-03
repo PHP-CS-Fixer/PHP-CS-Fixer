@@ -59,7 +59,7 @@ final class FunctionDeclarationFixerTest extends AbstractFixerTestCase
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches($exceptionMessage);
 
-        $this->fixer->configure($configuration);
+        $this->fixer->configure($configuration); // @phpstan-ignore argument.type
     }
 
     /**

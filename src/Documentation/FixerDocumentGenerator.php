@@ -224,6 +224,7 @@ final class FixerDocumentGenerator
 
             foreach ($ruleSetConfigs as $set => $config) {
                 $ruleSetPath = $this->locator->getRuleSetsDocumentationFilePath($set);
+                \assert(false !== strrpos($ruleSetPath, '/'));
                 $ruleSetPath = substr($ruleSetPath, strrpos($ruleSetPath, '/'));
 
                 \assert(isset($this->ruleSetDefinitions[$set]));
@@ -250,6 +251,7 @@ final class FixerDocumentGenerator
         $reflectionObject = new \ReflectionObject($fixer);
         $className = str_replace('\\', '\\\\', $reflectionObject->getName());
         $fileName = $reflectionObject->getFileName();
+        \assert(false !== $fileName);
         $fileName = str_replace('\\', '/', $fileName);
         $fileName = substr($fileName, (int) strrpos($fileName, '/src/Fixer/') + 1);
         $fileName = "`{$className} <./../../../{$fileName}>`_";

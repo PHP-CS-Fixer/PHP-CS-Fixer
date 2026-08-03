@@ -271,7 +271,7 @@ final class GeneralPhpdocTagRenameFixerTest extends AbstractFixerTestCase
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage($message);
 
-        $this->fixer->configure($config);
+        $this->fixer->configure($config); // @phpstan-ignore argument.type
     }
 
     /**

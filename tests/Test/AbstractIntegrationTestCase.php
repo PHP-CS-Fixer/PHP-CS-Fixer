@@ -357,14 +357,23 @@ abstract class AbstractIntegrationTestCase extends TestCase
     }
 
     /**
+     * Potential entry point to register custom fixers for integration tests, if needed.
+     */
+    protected static function createFixerFactory(): FixerFactory
+    {
+        return (new FixerFactory())
+            ->registerBuiltInFixers()
+        ;
+    }
+
+    /**
      * @return list<FixerInterface>
      */
     private static function createFixers(IntegrationCase $case): array
     {
         $config = $case->getConfig();
 
-        return (new FixerFactory())
-            ->registerBuiltInFixers()
+        return static::createFixerFactory()
             ->useRuleSet($case->getRuleset())
             ->setWhitespacesConfig(
                 new WhitespacesFixerConfig($config['indent'], $config['lineEnding']),

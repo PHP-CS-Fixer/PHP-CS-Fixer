@@ -12,13 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Check - file permissions
         run: ./dev-tools/check_file_permissions.sh
 
       - name: Cache dev-tools
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: dev-tools/bin/
           key: DevTools-${{ hashFiles('dev-tools/install.sh') }}

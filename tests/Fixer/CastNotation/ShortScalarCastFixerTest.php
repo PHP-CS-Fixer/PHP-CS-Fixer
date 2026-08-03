@@ -76,7 +76,7 @@ final class ShortScalarCastFixerTest extends AbstractFixerTestCase
     }
 
     /**
-     * @return iterable<int, array{string}>
+     * @return iterable<int, array{0: string, 1?: string}>
      */
     public static function provideFixPre80Cases(): iterable
     {

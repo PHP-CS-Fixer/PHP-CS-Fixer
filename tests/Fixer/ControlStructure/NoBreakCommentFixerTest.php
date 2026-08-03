@@ -176,7 +176,7 @@ switch ($foo) {
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches($expectedExceptionMessage);
 
-        $this->fixer->configure($configuration);
+        $this->fixer->configure($configuration); // @phpstan-ignore argument.type
     }
 
     /**
@@ -463,6 +463,53 @@ switch($a) { // pass the `is candidate` check
                         }
 
                     }
+                }
+                PHP,
+        ];
+
+        yield 'enum with documented cases and switch' => [
+            <<<'PHP'
+                <?php
+
+                enum MyEnumWithSwitch
+                {
+                    /**
+                     * This is the first case.
+                     */
+                    case OneCase;
+
+                    /**
+                     * This is the second case.
+                     */
+                    case SecondCase;
+
+                    /**
+                     * This is another case.
+                     */
+                    case AnotherCase;
+
+                    public function doSomething(): string
+                    {
+                        switch ($this) {
+                            case self::OneCase:
+                                break;
+
+                            default:
+                                break;
+                        }
+
+                        return 'Hello World';
+                    }
+
+                    /**
+                     * This is yet another case.
+                     */
+                    case YetAnotherCase;
+
+                    /**
+                     * This is one more case.
+                     */
+                    case OneMoreCase;
                 }
                 PHP,
         ];

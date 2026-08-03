@@ -41,7 +41,7 @@ final class AlignMultilineCommentFixerTest extends AbstractFixerTestCase
     {
         $this->expectException(InvalidFixerConfigurationException::class);
 
-        $this->fixer->configure(['a' => 1]);
+        $this->fixer->configure(['a' => 1]); // @phpstan-ignore argument.type
     }
 
     /**

@@ -75,7 +75,7 @@ final class PhpUnitTestCaseStaticMethodCallsFixerTest extends AbstractFixerTestC
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
 
-        $this->fixer->configure($configuration);
+        $this->fixer->configure($configuration); // @phpstan-ignore argument.type
     }
 
     /**

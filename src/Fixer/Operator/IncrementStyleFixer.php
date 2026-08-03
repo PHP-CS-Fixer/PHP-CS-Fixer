@@ -151,7 +151,7 @@ final class IncrementStyleFixer extends AbstractIncrementOperatorFixer implement
             '[',
             [CT::T_DYNAMIC_PROP_BRACE_OPEN],
             [CT::T_DYNAMIC_VAR_BRACE_OPEN],
-            [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN],
+            [CT::T_ARRAY_INDEX_BRACE_OPEN],
             [\T_NS_SEPARATOR],
             [\T_STATIC],
             [\T_STRING],

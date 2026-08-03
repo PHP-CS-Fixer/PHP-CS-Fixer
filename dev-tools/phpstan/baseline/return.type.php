@@ -27,11 +27,6 @@ $ignoreErrors[] = [
     'path' => __DIR__ . '/../../../src/Tokenizer/Tokens.php',
 ];
 $ignoreErrors[] = [
-    'rawMessage' => 'Method PhpCsFixer\\Tokenizer\\Tokens::findOppositeBlockEdge() should return int<0, max> but returns int.',
-    'count' => 3,
-    'path' => __DIR__ . '/../../../src/Tokenizer/Tokens.php',
-];
-$ignoreErrors[] = [
     'rawMessage' => 'Method PhpCsFixer\\Tokenizer\\Tokens::findSequence() should return non-empty-array<int<0, max>, PhpCsFixer\\Tokenizer\\Token>|null but returns non-empty-array<int, PhpCsFixer\\Tokenizer\\Token>.',
     'count' => 1,
     'path' => __DIR__ . '/../../../src/Tokenizer/Tokens.php',

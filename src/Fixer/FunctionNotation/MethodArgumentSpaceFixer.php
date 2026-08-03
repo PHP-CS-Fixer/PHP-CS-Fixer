@@ -186,7 +186,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
                 && !$meaningfulTokenBeforeParenthesis->isGivenKind(\T_LIST)
             ) {
                 if ('ensure_single_line_for_single_argument' === $this->configuration['on_multiline']) {
-                    $endFunctionIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                    $endFunctionIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
 
                     if (1 === $argumentsAnalyzer->countArguments($tokens, $index, $endFunctionIndex)) {
                         $this->ensureSingleLineForParentheses($tokens, $index, $endFunctionIndex);
@@ -240,7 +240,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
     {
         $isMultiline = false;
 
-        $endFunctionIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startFunctionIndex);
+        $endFunctionIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $startFunctionIndex);
         $firstWhitespaceIndex = $this->findWhitespaceIndexAfterParenthesis($tokens, $startFunctionIndex, $endFunctionIndex);
         $lastWhitespaceIndex = $this->findWhitespaceIndexAfterParenthesis($tokens, $endFunctionIndex, $startFunctionIndex);
 
@@ -266,19 +266,19 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
             $token = $tokens[$index];
 
             if ($token->equals(')')) {
-                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
 
                 continue;
             }
 
-            if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
-                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
+            if ($token->isGivenKind(CT::T_ARRAY_BRACKET_CLOSE)) {
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $index);
 
                 continue;
             }
 
             if ($token->equals('}')) {
-                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_BRACE, $index);
 
                 continue;
             }
@@ -361,7 +361,7 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
         }
 
         $indentation = $existingIndentation.$this->whitespacesConfig->getIndent();
-        $endFunctionIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $startFunctionIndex);
+        $endFunctionIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $startFunctionIndex);
 
         $wasWhitespaceBeforeEndFunctionAddedAsNewToken = $tokens->ensureWhitespaceAtIndex(
             $tokens[$endFunctionIndex - 1]->isWhitespace() ? $endFunctionIndex - 1 : $endFunctionIndex,
@@ -378,20 +378,20 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
 
             // skip nested method calls and arrays
             if ($token->equals(')')) {
-                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
 
                 continue;
             }
 
             // skip nested arrays
-            if ($token->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
-                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
+            if ($token->isGivenKind(CT::T_ARRAY_BRACKET_CLOSE)) {
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $index);
 
                 continue;
             }
 
             if ($token->equals('}')) {
-                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_BRACE, $index);
 
                 continue;
             }
@@ -543,19 +543,19 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
             }
 
             if ($tokens[$index]->equals('(')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
 
                 continue;
             }
 
-            if ($tokens[$index]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_OPEN)) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
+            if ($tokens[$index]->isGivenKind(CT::T_ARRAY_BRACKET_OPEN)) {
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $index);
 
                 continue;
             }
 
             if ($tokens[$index]->equals('{')) {
-                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                $index = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_BRACE, $index);
 
                 continue;
             }
@@ -579,19 +579,19 @@ final class MethodArgumentSpaceFixer extends AbstractFixer implements Configurab
 
         for ($index = $closeParenthesis - 1; $index > $openParenthesis; --$index) {
             if ($tokens[$index]->equals(')')) {
-                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS_BRACE, $index);
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_PARENTHESIS, $index);
 
                 continue;
             }
 
-            if ($tokens[$index]->isGivenKind(CT::T_ARRAY_SQUARE_BRACE_CLOSE)) {
-                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_SQUARE_BRACE, $index);
+            if ($tokens[$index]->isGivenKind(CT::T_ARRAY_BRACKET_CLOSE)) {
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_ARRAY_BRACKET, $index);
 
                 continue;
             }
 
             if ($tokens[$index]->equals('}')) {
-                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_CURLY_BRACE, $index);
+                $index = $tokens->findBlockStart(Tokens::BLOCK_TYPE_BRACE, $index);
 
                 continue;
             }

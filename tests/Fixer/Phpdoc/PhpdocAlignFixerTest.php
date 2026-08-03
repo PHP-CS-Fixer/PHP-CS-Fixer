@@ -1595,7 +1595,7 @@ function foo($typeless): void {}',
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage($expectedMessage);
 
-        $this->fixer->configure($config);
+        $this->fixer->configure($config); // @phpstan-ignore argument.type
     }
 
     /**

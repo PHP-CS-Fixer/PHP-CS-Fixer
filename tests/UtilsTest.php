@@ -221,20 +221,27 @@ final class UtilsTest extends TestCase
     public function testSortFixers(): void
     {
         $fixers = [
-            $this->createFixerDouble('f1', 0),
-            $this->createFixerDouble('f2', -10),
+            $this->createFixerDouble('f1_a', 0),
+            $this->createFixerDouble('F1_b', 0),
+            $this->createFixerDouble('f1_c', 0),
+            $this->createFixerDouble('fy', -10),
             $this->createFixerDouble('f3', 10),
-            $this->createFixerDouble('f4', -10),
+            $this->createFixerDouble('fx', -10),
         ];
 
         self::assertSame(
             [
-                $fixers[2],
-                $fixers[0],
-                $fixers[1],
-                $fixers[3],
+                'f3',
+                'F1_b',
+                'f1_a',
+                'f1_c',
+                'fx',
+                'fy',
             ],
-            Utils::sortFixers($fixers),
+            array_map(
+                static fn (FixerInterface $fixer): string => $fixer->getName(),
+                Utils::sortFixers($fixers),
+            ),
         );
     }
 

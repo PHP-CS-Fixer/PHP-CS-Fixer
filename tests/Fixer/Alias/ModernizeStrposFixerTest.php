@@ -51,7 +51,7 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage('[modernize_strpos] Invalid configuration: The option "invalid" does not exist. Defined options are: "modernize_stripos".');
 
-        $this->fixer->configure(['invalid' => true]);
+        $this->fixer->configure(['invalid' => true]); // @phpstan-ignore argument.type
     }
 
     /**

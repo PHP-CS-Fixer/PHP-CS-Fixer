@@ -103,6 +103,8 @@ final class PhpdocNoAliasTagFixer extends AbstractProxyFixer implements Configur
 
     protected function configurePostNormalisation(): void
     {
+        \assert(isset($this->proxyFixers['general_phpdoc_tag_rename']));
+
         /** @var GeneralPhpdocTagRenameFixer $generalPhpdocTagRenameFixer */
         $generalPhpdocTagRenameFixer = $this->proxyFixers['general_phpdoc_tag_rename'];
 

@@ -45,7 +45,7 @@ final class PregTest extends TestCase
     #[DataProvider('provideCommonCases')]
     public function testMatch(string $pattern, string $subject): void
     {
-        $expectedResult = 1 === preg_match($pattern, $subject, $expectedMatches);
+        $expectedResult = 1 === @preg_match($pattern, $subject, $expectedMatches);
         $actualResult = Preg::match($pattern, $subject, $actualMatches);
 
         self::assertSame($expectedResult, $actualResult);
@@ -179,7 +179,7 @@ final class PregTest extends TestCase
     #[DataProvider('provideCommonCases')]
     public function testMatchAll(string $pattern, string $subject): void
     {
-        $expectedResult = preg_match_all($pattern, $subject, $expectedMatches);
+        $expectedResult = @preg_match_all($pattern, $subject, $expectedMatches);
         $actualResult = Preg::matchAll($pattern, $subject, $actualMatches);
 
         self::assertSame($expectedResult, $actualResult);
@@ -200,7 +200,7 @@ final class PregTest extends TestCase
     #[DataProvider('provideCommonCases')]
     public function testReplace(string $pattern, string $subject): void
     {
-        $expectedResult = preg_replace($pattern, 'foo', $subject);
+        $expectedResult = @preg_replace($pattern, 'foo', $subject);
         $actualResult = Preg::replace($pattern, 'foo', $subject);
 
         self::assertSame($expectedResult, $actualResult);
@@ -222,7 +222,7 @@ final class PregTest extends TestCase
     {
         $callback = static fn (array $x): string => implode('-', $x);
 
-        $expectedResult = preg_replace_callback($pattern, $callback, $subject);
+        $expectedResult = @preg_replace_callback($pattern, $callback, $subject);
         $actualResult = Preg::replaceCallback($pattern, $callback, $subject);
 
         self::assertSame($expectedResult, $actualResult);
@@ -242,7 +242,7 @@ final class PregTest extends TestCase
     #[DataProvider('provideCommonCases')]
     public function testSplit(string $pattern, string $subject): void
     {
-        $expectedResult = preg_split($pattern, $subject);
+        $expectedResult = @preg_split($pattern, $subject);
         $actualResult = Preg::split($pattern, $subject);
 
         self::assertSame($expectedResult, $actualResult);

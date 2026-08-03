@@ -233,7 +233,7 @@ final class RunnerTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{0: ParallelConfig, 1: list<string>}>
+     * @return iterable<string, array{0: ParallelConfig, 1: list<string>, 2: 'parallel'|'sequential'}>
      */
     public static function provideRunnerUsesProperAnalysisModeCases(): iterable
     {

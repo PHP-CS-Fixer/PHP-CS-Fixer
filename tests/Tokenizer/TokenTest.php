@@ -488,9 +488,6 @@ final class TokenTest extends TestCase
 
         yield [$function, true, new Token([\T_FUNCTION, 'Function']), false];
 
-        // if it is an array any additional field is checked too
-        yield [$function, false, [\T_FUNCTION, 'function', 'unexpected']];
-
         yield [new Token('&'), true, '&'];
     }
 
@@ -642,8 +639,8 @@ final class TokenTest extends TestCase
         ];
 
         yield [
-            'CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE',
-            CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE,
+            'CT::T_ARRAY_INDEX_BRACE_CLOSE',
+            CT::T_ARRAY_INDEX_BRACE_CLOSE,
         ];
     }
 

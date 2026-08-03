@@ -44,7 +44,7 @@ final class ReturnTypeDeclarationFixerTest extends AbstractFixerTestCase
             '#^\[return_type_declaration\] Invalid configuration: The option "s" does not exist\. (Known|Defined) options are: "space_before"\.$#',
         );
 
-        $this->fixer->configure(['s' => 9_000]);
+        $this->fixer->configure(['s' => 9_000]); // @phpstan-ignore argument.type
     }
 
     /**

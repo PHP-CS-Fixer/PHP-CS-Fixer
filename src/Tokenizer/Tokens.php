@@ -53,20 +53,50 @@ use PhpCsFixer\Tokenizer\Analyzer\NamespacesAnalyzer;
  */
 class Tokens extends \SplFixedArray
 {
-    public const BLOCK_TYPE_PARENTHESIS_BRACE = 1;
-    public const BLOCK_TYPE_CURLY_BRACE = 2;
-    public const BLOCK_TYPE_INDEX_SQUARE_BRACE = 3;
-    public const BLOCK_TYPE_ARRAY_SQUARE_BRACE = 4;
+    /** @deprecated use BLOCK_TYPE_PARENTHESIS instead */
+    public const BLOCK_TYPE_PARENTHESIS_BRACE = self::BLOCK_TYPE_PARENTHESIS; // @phpstan-ignore shipmonk.deadConstant
+    public const BLOCK_TYPE_PARENTHESIS = 1;
+
+    /** @deprecated use BLOCK_TYPE_BRACE instead */
+    public const BLOCK_TYPE_CURLY_BRACE = self::BLOCK_TYPE_BRACE; // @phpstan-ignore shipmonk.deadConstant
+    public const BLOCK_TYPE_BRACE = 2;
+
+    /** @deprecated use BLOCK_TYPE_INDEX_BRACKET instead */
+    public const BLOCK_TYPE_INDEX_SQUARE_BRACE = self::BLOCK_TYPE_INDEX_BRACKET; // @phpstan-ignore shipmonk.deadConstant
+    public const BLOCK_TYPE_INDEX_BRACKET = 3;
+
+    /** @deprecated use BLOCK_TYPE_ARRAY_BRACKET instead */
+    public const BLOCK_TYPE_ARRAY_SQUARE_BRACE = self::BLOCK_TYPE_ARRAY_BRACKET; // @phpstan-ignore shipmonk.deadConstant
+    public const BLOCK_TYPE_ARRAY_BRACKET = 4;
+
     public const BLOCK_TYPE_DYNAMIC_PROP_BRACE = 5;
+
     public const BLOCK_TYPE_DYNAMIC_VAR_BRACE = 6;
-    public const BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE = 7;
+
+    /** @deprecated use BLOCK_TYPE_INDEX_BRACE instead */
+    public const BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE = self::BLOCK_TYPE_INDEX_BRACE; // @phpstan-ignore shipmonk.deadConstant
+    public const BLOCK_TYPE_INDEX_BRACE = 7;
+
     public const BLOCK_TYPE_GROUP_IMPORT_BRACE = 8;
-    public const BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE = 9;
-    public const BLOCK_TYPE_BRACE_CLASS_INSTANTIATION = 10;
+
+    /** @deprecated use BLOCK_TYPE_DESTRUCTURING_BRACKET instead */
+    public const BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE = self::BLOCK_TYPE_DESTRUCTURING_BRACKET; // @phpstan-ignore shipmonk.deadConstant
+    public const BLOCK_TYPE_DESTRUCTURING_BRACKET = 9;
+
+    /** @deprecated use BLOCK_TYPE_CLASS_INSTANTIATION_PARENTHESIS instead */
+    public const BLOCK_TYPE_BRACE_CLASS_INSTANTIATION = self::BLOCK_TYPE_CLASS_INSTANTIATION_PARENTHESIS; // @phpstan-ignore shipmonk.deadConstant
+    public const BLOCK_TYPE_CLASS_INSTANTIATION_PARENTHESIS = 10;
+
     public const BLOCK_TYPE_ATTRIBUTE = 11;
+
     public const BLOCK_TYPE_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS = 12;
-    public const BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE = 13;
+
+    /** @deprecated use BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_BRACE instead */
+    public const BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE = self::BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_BRACE; // @phpstan-ignore shipmonk.deadConstant
+    public const BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_BRACE = 13;
+
     public const BLOCK_TYPE_COMPLEX_STRING_VARIABLE = 14;
+
     public const BLOCK_TYPE_PROPERTY_HOOK = 15;
 
     /**
@@ -244,22 +274,23 @@ class Tokens extends \SplFixedArray
      */
     public static function getBlockEdgeDefinitions(): array
     {
+        // @FRS TODO sprawdzic spojnosc na koniec
         return [
-            self::BLOCK_TYPE_CURLY_BRACE => [
+            self::BLOCK_TYPE_BRACE => [
                 'start' => '{',
                 'end' => '}',
             ],
-            self::BLOCK_TYPE_PARENTHESIS_BRACE => [
+            self::BLOCK_TYPE_PARENTHESIS => [
                 'start' => '(',
                 'end' => ')',
             ],
-            self::BLOCK_TYPE_INDEX_SQUARE_BRACE => [
+            self::BLOCK_TYPE_INDEX_BRACKET => [
                 'start' => '[',
                 'end' => ']',
             ],
-            self::BLOCK_TYPE_ARRAY_SQUARE_BRACE => [
-                'start' => [CT::T_ARRAY_SQUARE_BRACE_OPEN, '['],
-                'end' => [CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']'],
+            self::BLOCK_TYPE_ARRAY_BRACKET => [
+                'start' => [CT::T_ARRAY_BRACKET_OPEN, '['],
+                'end' => [CT::T_ARRAY_BRACKET_CLOSE, ']'],
             ],
             self::BLOCK_TYPE_DYNAMIC_PROP_BRACE => [
                 'start' => [CT::T_DYNAMIC_PROP_BRACE_OPEN, '{'],
@@ -269,29 +300,29 @@ class Tokens extends \SplFixedArray
                 'start' => [CT::T_DYNAMIC_VAR_BRACE_OPEN, '{'],
                 'end' => [CT::T_DYNAMIC_VAR_BRACE_CLOSE, '}'],
             ],
-            self::BLOCK_TYPE_ARRAY_INDEX_CURLY_BRACE => [
-                'start' => [CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN, '{'],
-                'end' => [CT::T_ARRAY_INDEX_CURLY_BRACE_CLOSE, '}'],
+            self::BLOCK_TYPE_INDEX_BRACE => [
+                'start' => [CT::T_ARRAY_INDEX_BRACE_OPEN, '{'],
+                'end' => [CT::T_ARRAY_INDEX_BRACE_CLOSE, '}'],
             ],
             self::BLOCK_TYPE_GROUP_IMPORT_BRACE => [
                 'start' => [CT::T_GROUP_IMPORT_BRACE_OPEN, '{'],
                 'end' => [CT::T_GROUP_IMPORT_BRACE_CLOSE, '}'],
             ],
-            self::BLOCK_TYPE_DESTRUCTURING_SQUARE_BRACE => [
-                'start' => [CT::T_DESTRUCTURING_SQUARE_BRACE_OPEN, '['],
-                'end' => [CT::T_DESTRUCTURING_SQUARE_BRACE_CLOSE, ']'],
+            self::BLOCK_TYPE_DESTRUCTURING_BRACKET => [
+                'start' => [CT::T_DESTRUCTURING_BRACKET_OPEN, '['],
+                'end' => [CT::T_DESTRUCTURING_BRACKET_CLOSE, ']'],
             ],
-            self::BLOCK_TYPE_BRACE_CLASS_INSTANTIATION => [
-                'start' => [CT::T_BRACE_CLASS_INSTANTIATION_OPEN, '('],
-                'end' => [CT::T_BRACE_CLASS_INSTANTIATION_CLOSE, ')'],
+            self::BLOCK_TYPE_CLASS_INSTANTIATION_PARENTHESIS => [
+                'start' => [CT::T_CLASS_INSTANTIATION_PARENTHESIS_OPEN, '('],
+                'end' => [CT::T_CLASS_INSTANTIATION_PARENTHESIS_CLOSE, ')'],
             ],
             self::BLOCK_TYPE_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS => [
                 'start' => [CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_OPEN, '('],
                 'end' => [CT::T_DISJUNCTIVE_NORMAL_FORM_TYPE_PARENTHESIS_CLOSE, ')'],
             ],
-            self::BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE => [
-                'start' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_OPEN, '{'],
-                'end' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_CURLY_BRACE_CLOSE, '}'],
+            self::BLOCK_TYPE_DYNAMIC_CLASS_CONSTANT_FETCH_BRACE => [
+                'start' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_BRACE_OPEN, '{'],
+                'end' => [CT::T_DYNAMIC_CLASS_CONSTANT_FETCH_BRACE_CLOSE, '}'],
             ],
             self::BLOCK_TYPE_COMPLEX_STRING_VARIABLE => [
                 'start' => [\T_DOLLAR_OPEN_CURLY_BRACES, '${'],
@@ -904,17 +935,15 @@ class Tokens extends \SplFixedArray
         unset($sequence[$firstKey]);
 
         // begin searching for the first token in the sequence (start included)
-        $index = $start - 1;
-        while ($index <= $end) {
-            $index = $this->getNextTokenOfKind($index, [$firstToken], $firstCs);
+        for ($index = $start; $index <= $end; ++$index) {
+            $current = $this[$index];
 
-            // ensure we found a match and didn't get past the end index
-            if (null === $index || $index > $end) {
-                return null;
+            if (!$current->equals($firstToken, $firstCs)) {
+                continue;
             }
 
             // initialise the result array with the current index
-            $result = [$index => $this[$index]];
+            $result = [$index => $current];
 
             // advance cursor to the current position
             $currIdx = $index;
@@ -925,16 +954,18 @@ class Tokens extends \SplFixedArray
 
                 // ensure we didn't go too far
                 if (null === $currIdx || $currIdx > $end) {
-                    return null;
+                    continue 2;
                 }
 
-                if (!$this[$currIdx]->equals($token, self::isKeyCaseSensitive($caseSensitive, $key))) {
+                $current = $this[$currIdx];
+
+                if (!$current->equals($token, self::isKeyCaseSensitive($caseSensitive, $key))) {
                     // not a match, restart the outer loop
                     continue 2;
                 }
 
                 // append index to the result array
-                $result[$currIdx] = $this[$currIdx];
+                $result[$currIdx] = $current;
             }
 
             // do we have a complete match?
@@ -1426,10 +1457,14 @@ class Tokens extends \SplFixedArray
         }
 
         if ($findEnd && isset($this->blockStartCache[$searchIndex])) {
+            \assert($this->blockStartCache[$searchIndex] >= 0);
+
             return $this->blockStartCache[$searchIndex];
         }
 
         if (!$findEnd && isset($this->blockEndCache[$searchIndex])) {
+            \assert($this->blockEndCache[$searchIndex] >= 0);
+
             return $this->blockEndCache[$searchIndex];
         }
 
@@ -1473,6 +1508,8 @@ class Tokens extends \SplFixedArray
             throw new \UnexpectedValueException(\sprintf('Missing block "%s".', $findEnd ? 'end' : 'start'));
         }
 
+        \assert($index >= 0 && $startIndex >= 0);
+
         if ($startIndex < $index) {
             $this->blockStartCache[$startIndex] = $index;
             $this->blockEndCache[$index] = $startIndex;
@@ -1502,6 +1539,8 @@ class Tokens extends \SplFixedArray
         if (!self::hasCache($key)) {
             throw new \OutOfBoundsException(\sprintf('Unknown cache key: "%s".', $key));
         }
+
+        \assert(isset(self::$cache[$key]));
 
         return self::$cache[$key];
     }

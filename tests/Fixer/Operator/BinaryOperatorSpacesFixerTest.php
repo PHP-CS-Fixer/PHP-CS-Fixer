@@ -50,7 +50,7 @@ final class BinaryOperatorSpacesFixerTest extends AbstractFixerTestCase
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessageMatches($exceptionExpression);
 
-        $this->fixer->configure($config);
+        $this->fixer->configure($config); // @phpstan-ignore argument.type
     }
 
     /**
@@ -3425,6 +3425,36 @@ function test()
                     '=>' => null,
                 ],
             ],
+        ];
+
+        yield 'do not align nested array in yield with following yields' => [
+            <<<'PHP'
+                <?php
+
+                function provide()
+                {
+                    yield 'aaa' => [
+                        [
+                            [
+                                'attribute' => 1,
+                                'message'   => 'x',
+                            ],
+                            [
+                                'attribute' => 1,
+                                'message'   => 'x',
+                            ],
+                            [
+                                'attribute' => 1,
+                                'message'   => 'x',
+                            ],
+                        ],
+                    ];
+                    yield 'bbbbbbbbbbbbbbbbbbbbbbbbbbbb' => [];
+                    yield 'cccccccccccccccccccccccccccc' => [];
+                }
+                PHP,
+            null,
+            ['operators' => ['=>' => BinaryOperatorSpacesFixer::ALIGN_SINGLE_SPACE_MINIMAL_BY_SCOPE]],
         ];
     }
 

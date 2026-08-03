@@ -51,7 +51,7 @@ final class RandomApiMigrationFixerTest extends AbstractFixerTestCase
         $this->expectException(InvalidFixerConfigurationException::class);
         $this->expectExceptionMessage($message);
 
-        $this->fixer->configure($configuration);
+        $this->fixer->configure($configuration); // @phpstan-ignore argument.type
     }
 
     /**

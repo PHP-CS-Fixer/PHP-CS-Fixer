@@ -84,6 +84,7 @@ final class NoTrailingWhitespaceFixer extends AbstractFixer
             // fix only multiline whitespaces or singleline whitespaces at the end of file
             if ($linesSize > 1 || !isset($tokens[$index + 1])) {
                 if (!$tokens[$index - 1]->isGivenKind(\T_OPEN_TAG) || !Preg::match('/(.*)\R$/', $tokens[$index - 1]->getContent())) {
+                    \assert(isset($lines[0]));
                     $lines[0] = rtrim($lines[0], " \t");
                 }
 

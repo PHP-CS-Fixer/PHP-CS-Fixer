@@ -41,7 +41,7 @@ abstract class AbstractDoctrineAnnotationFixerTestCase extends AbstractFixerTest
     {
         $this->expectException(InvalidFixerConfigurationException::class);
 
-        $this->fixer->configure($configuration);
+        $this->fixer->configure($configuration); // @phpstan-ignore argument.type
     }
 
     /**

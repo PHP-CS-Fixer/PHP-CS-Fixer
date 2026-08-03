@@ -390,7 +390,7 @@ $a = new class{};',
             $this->expectDeprecation($deprecationMessage);
         }
 
-        $this->fixer->configure($config);
+        $this->fixer->configure($config); // @phpstan-ignore argument.type
     }
 
     /**
