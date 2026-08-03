@@ -4,8 +4,8 @@ Rule ``long_to_shorthand_operator``
 
 Shorthand notation for operators should be used if possible.
 
-Warning
--------
+Warnings
+--------
 
 This rule is RISKY
 ~~~~~~~~~~~~~~~~~~
@@ -13,11 +13,34 @@ This rule is RISKY
 Risky when applying for string offsets (e.g. ``<?php $text = "foo"; $text[0] =
 $text[0] & "\x7F";``).
 
+This rule is CONFIGURABLE
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can configure this rule using the following option: ``skip_offset_targets``.
+
+Configuration
+-------------
+
+``skip_offset_targets``
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Whether to leave assignments to an offset (e.g. ``$a[0] = $a[0] + 1;``)
+untouched. Shortening them is only safe when the offset belongs to an array or
+to an object implementing ``ArrayAccess``; if it is a string offset, PHP fails
+at runtime with "Cannot use assign-op operators with string offsets". The two
+cannot be told apart from the source, so offsets are skipped by default.
+
+Allowed types: ``bool``
+
+Default value: ``true``
+
 Examples
 --------
 
 Example #1
 ~~~~~~~~~~
+
+*Default* configuration.
 
 .. code-block:: diff
 
@@ -26,6 +49,22 @@ Example #1
     <?php
    -$i = $i + 10;
    +$i += 10;
+
+Example #2
+~~~~~~~~~~
+
+With configuration: ``['skip_offset_targets' => false]``.
+
+.. code-block:: diff
+
+   --- Original
+   +++ New
+    <?php
+    $text = "foo";
+   -$text[0] = $text[0] & "\x7F";
+   -$numbers[0] = $numbers[0] + 1;
+   +$text[0] &= "\x7F";
+   +$numbers[0] += 1;
 
 Rule sets
 ---------
