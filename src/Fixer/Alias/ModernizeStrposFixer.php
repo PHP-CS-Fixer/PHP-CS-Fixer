@@ -189,7 +189,8 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
 
             if (null !== $compareTokens) {
                 $isCaseInsensitive = $tokens[$index]->equalsAny([[\T_STRING, 'stripos'], [\T_STRING, 'mb_stripos']], false);
-                $this->fixCall($tokens, $index, $compareTokens, $isCaseInsensitive);
+                $isMultibyte = $tokens[$index]->equals([\T_STRING, 'mb_stripos'], false);
+                $this->fixCall($tokens, $index, $compareTokens, $isCaseInsensitive, $isMultibyte);
             }
         }
     }
@@ -197,7 +198,7 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
     /**
      * @param array{operator_index: int, operand_index: int} $operatorIndices
      */
-    private function fixCall(Tokens $tokens, int $functionIndex, array $operatorIndices, bool $isCaseInsensitive): void
+    private function fixCall(Tokens $tokens, int $functionIndex, array $operatorIndices, bool $isCaseInsensitive, bool $isMultibyte): void
     {
         foreach (self::REPLACEMENTS as $replacement) {
             if (!$tokens[$operatorIndices['operator_index']]->equals($replacement['operator'])) {
@@ -227,17 +228,18 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
             $tokens->insertAt($functionIndex, new Token($replacement['replacement']));
 
             if ($isCaseInsensitive) {
-                $this->wrapArgumentsWithStrToLower($tokens, $functionIndex);
+                $this->wrapArgumentsWithStrToLower($tokens, $functionIndex, $isMultibyte);
             }
 
             break;
         }
     }
 
-    private function wrapArgumentsWithStrToLower(Tokens $tokens, int $functionIndex): void
+    private function wrapArgumentsWithStrToLower(Tokens $tokens, int $functionIndex, bool $isMultibyte): void
     {
         $argumentsAnalyzer = new ArgumentsAnalyzer();
         $shouldAddNamespace = $tokens[$functionIndex - 1]->isGivenKind(\T_NS_SEPARATOR);
+        $lowercaseFunction = $isMultibyte ? 'mb_strtolower' : 'strtolower';
 
         $openIndex = $tokens->getNextMeaningfulToken($functionIndex);
         $closeIndex = $tokens->findBlockEnd(Tokens::BLOCK_TYPE_PARENTHESIS, $openIndex);
@@ -264,7 +266,7 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
             ++$firstArgumentIndexStart;
         }
 
-        $tokens->insertAt($firstArgumentIndexStart, [new Token([\T_STRING, 'strtolower']), new Token('(')]);
+        $tokens->insertAt($firstArgumentIndexStart, [new Token([\T_STRING, $lowercaseFunction]), new Token('(')]);
         $tokens->insertAt($firstArgumentIndexEnd, new Token(')'));
 
         if ($shouldAddNamespace) {
@@ -272,7 +274,7 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
             ++$secondArgumentIndexStart;
         }
 
-        $tokens->insertAt($secondArgumentIndexStart, [new Token([\T_STRING, 'strtolower']), new Token('(')]);
+        $tokens->insertAt($secondArgumentIndexStart, [new Token([\T_STRING, $lowercaseFunction]), new Token('(')]);
         $tokens->insertAt($secondArgumentIndexEnd, new Token(')'));
     }
 
