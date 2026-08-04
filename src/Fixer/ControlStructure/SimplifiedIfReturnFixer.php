@@ -61,7 +61,8 @@ final class SimplifiedIfReturnFixer extends AbstractFixer
         for ($ifIndex = $tokens->count() - 1; 0 <= $ifIndex; --$ifIndex) {
             $id = $tokens[$ifIndex]->getId();
 
-            // much faster to check the token type directly than via Token::isGivenKind().
+            // Use direct ID comparisons here; this loop runs for every token and profiling
+            // showed it to be measurably faster than Token::isGivenKind().
             if (\T_IF !== $id && \T_ELSEIF !== $id) {
                 continue;
             }
