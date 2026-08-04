@@ -2,8 +2,8 @@
 Rule ``modernize_strpos``
 =========================
 
-Replace ``strpos()`` and ``stripos()`` calls with ``str_starts_with()`` or
-``str_contains()`` if possible.
+Replace ``strpos()|mb_strpos()`` and ``stripos()|mb_stripos()`` calls with
+``str_starts_with()`` or ``str_contains()`` if possible.
 
 Warnings
 --------
