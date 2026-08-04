@@ -228,14 +228,14 @@ final class ModernizeStrposFixer extends AbstractFixer implements ConfigurableFi
             $tokens->insertAt($functionIndex, new Token($replacement['replacement']));
 
             if ($isCaseInsensitive) {
-                $this->wrapArgumentsWithStrToLower($tokens, $functionIndex, $isMultibyte);
+                $this->wrapArgumentsWithLowerCaseFunction($tokens, $functionIndex, $isMultibyte);
             }
 
             break;
         }
     }
 
-    private function wrapArgumentsWithStrToLower(Tokens $tokens, int $functionIndex, bool $isMultibyte): void
+    private function wrapArgumentsWithLowerCaseFunction(Tokens $tokens, int $functionIndex, bool $isMultibyte): void
     {
         $argumentsAnalyzer = new ArgumentsAnalyzer();
         $shouldAddNamespace = $tokens[$functionIndex - 1]->isGivenKind(\T_NS_SEPARATOR);
