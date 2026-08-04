@@ -375,8 +375,18 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
             '<?php if (a\strpos($haystack14, $needle) === 0) {}',
         ];
 
+        yield 'different namespace multibyte' => [
+            '<?php if (a\mb_strpos($haystack14, $needle) === 0) {}',
+        ];
+
         yield 'case insensitive different namespace' => [
             '<?php if (a\stripos($haystack14, $needle) === 0) {}',
+            null,
+            ['modernize_stripos' => true],
+        ];
+
+        yield 'case insensitive different namespace multibyte' => [
+            '<?php if (a\mb_stripos($haystack14, $needle) === 0) {}',
             null,
             ['modernize_stripos' => true],
         ];
@@ -385,8 +395,18 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
             '<?php if (0 === a\strpos($haystack14, $needle)) {}',
         ];
 
+        yield 'different namespace with yoda multibyte' => [
+            '<?php if (0 === a\mb_strpos($haystack14, $needle)) {}',
+        ];
+
         yield 'case insensitive different namespace with yoda' => [
             '<?php if (0 === a\stripos($haystack14, $needle)) {}',
+            null,
+            ['modernize_stripos' => true],
+        ];
+
+        yield 'case insensitive different namespace with yoda multibyte' => [
+            '<?php if (0 === a\mb_stripos($haystack14, $needle)) {}',
             null,
             ['modernize_stripos' => true],
         ];
