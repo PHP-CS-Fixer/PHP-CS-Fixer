@@ -357,6 +357,8 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
                 // if (false === strpos($haystack12, $needle)) {}
                 /** if (false === strpos($haystack13, $needle)) {} */
             ',
+            null,
+            ['modernize_stripos' => true],
         ];
 
         yield 'disabled stripos (default)' => [
@@ -375,6 +377,8 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
 
         yield 'case insensitive different namespace' => [
             '<?php if (a\stripos($haystack14, $needle) === 0) {}',
+            null,
+            ['modernize_stripos' => true],
         ];
 
         yield 'different namespace with yoda' => [
@@ -383,6 +387,8 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
 
         yield 'case insensitive different namespace with yoda' => [
             '<?php if (0 === a\stripos($haystack14, $needle)) {}',
+            null,
+            ['modernize_stripos' => true],
         ];
 
         yield 'non condition (hardcoded)' => [
@@ -391,6 +397,8 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
 
         yield 'case insensitive non condition (hardcoded)' => [
             '<?php $x = stripos(\'foo\', \'f\');',
+            null,
+            ['modernize_stripos' => true],
         ];
 
         yield 'non condition' => [
@@ -399,6 +407,8 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
 
         yield 'case insensitive non condition' => [
             '<?php $x = stripos($haystack15, $needle) ?>',
+            null,
+            ['modernize_stripos' => true],
         ];
 
         yield 'none zero int' => [
@@ -407,6 +417,8 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
 
         yield 'case insensitive none zero int' => [
             '<?php if (1 !== stripos($haystack16, $needle)) {}',
+            null,
+            ['modernize_stripos' => true],
         ];
 
         yield 'greater condition' => [
@@ -415,6 +427,8 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
 
         yield 'case insensitive greater condition' => [
             '<?php if (stripos($haystack17, $needle) > 0) {}',
+            null,
+            ['modernize_stripos' => true],
         ];
 
         yield 'lesser condition' => [
@@ -423,6 +437,8 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
 
         yield 'case insensitive lesser condition' => [
             '<?php if (0 < stripos($haystack18, $needle)) {}',
+            null,
+            ['modernize_stripos' => true],
         ];
 
         yield 'no argument' => [
@@ -431,6 +447,8 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
 
         yield 'case insensitive no argument' => [
             '<?php $z = stripos();',
+            null,
+            ['modernize_stripos' => true],
         ];
 
         yield 'one argument' => [
@@ -439,6 +457,8 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
 
         yield 'case insensitive one argument' => [
             '<?php if (0 === stripos($haystack1)) {}',
+            null,
+            ['modernize_stripos' => true],
         ];
 
         yield '3 arguments' => [
@@ -455,14 +475,20 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
 
         yield 'case insensitive 3 arguments' => [
             '<?php if (0 === stripos($haystack1, $a, $b)) {}',
+            null,
+            ['modernize_stripos' => true],
         ];
 
         yield 'multibyte case insensitive 3 arguments' => [
             '<?php if (0 === mb_stripos($haystack1, $a, $b)) {}',
+            null,
+            ['modernize_stripos' => true],
         ];
 
         yield 'multibyte case insensitive 4 arguments' => [
             '<?php if (0 === mb_stripos($haystack1, $a, $b, "UTF-8")) {}',
+            null,
+            ['modernize_stripos' => true],
         ];
 
         yield 'higher precedence 1' => [
@@ -471,6 +497,8 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
 
         yield 'case insensitive higher precedence 1' => [
             '<?php if (4 + 0 !== stripos($haystack9, $needle)) {}',
+            null,
+            ['modernize_stripos' => true],
         ];
 
         yield 'higher precedence 2' => [
@@ -479,6 +507,8 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
 
         yield 'case insensitive higher precedence 2' => [
             '<?php if (!false === stripos($haystack, $needle)) {}',
+            null,
+            ['modernize_stripos' => true],
         ];
 
         yield 'higher precedence 3' => [
@@ -487,6 +517,8 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
 
         yield 'case insensitive higher precedence 3' => [
             '<?php $a = stripos($haystack, $needle) === 0 + 1;',
+            null,
+            ['modernize_stripos' => true],
         ];
 
         yield 'higher precedence 4' => [
@@ -495,6 +527,8 @@ final class ModernizeStrposFixerTest extends AbstractFixerTestCase
 
         yield 'case insensitive higher precedence 4' => [
             '<?php $a = stripos($haystack, $needle) === 0 > $b;',
+            null,
+            ['modernize_stripos' => true],
         ];
     }
 }
