@@ -99,7 +99,11 @@ final class GitlabReporter implements ReporterInterface
                     'severity' => 'minor',
                     'location' => [
                         'path' => $fileName,
-                        'lines' => self::getLines($this->diffParser->parse($change['diff'])),
+                        'lines' => self::getLines(
+                            array_values( // before PHPUnit 13, result of `->parse(...)` is array and not list
+                                $this->diffParser->parse($change['diff']),
+                            ),
+                        ),
                     ],
                 ];
             }

@@ -3,6 +3,30 @@ CHANGELOG for PHP CS Fixer
 
 This file contains changelogs for stable releases only.
 
+Changelog for v3.95.18
+----------------------
+
+* CI: attach provenance and SBOM attestations to the released image (#9751)
+* deps: bump the phpstan group in /dev-tools with 2 updates (#9748)
+* deps: update dev-tools (#9754)
+* perf: Limit token search in `simplified_if_return` (#9747)
+
+Changelog for v3.95.17
+----------------------
+
+* perf: `Token::equals()` - Avoid building intermediary arrays (#9739)
+* perf: `Tokens::findSequence()` - improve looping logic (#9737)
+
+Changelog for v3.95.16
+----------------------
+
+* fix: `NoSuperfluousPhpdocTagsFixer` with multiple hidden params (#9736)
+* fix: `PowToExponentiationFixer` - do not produce two consecutive whitespace tokens (#9735)
+* chore: do not remove ParaUnit for PHPUnit v13, as they are now compatible (#9579)
+* CI: introduce `perf` as new PR type (#9742)
+* deps: update dev deps (#9743)
+* test: AbstractIntegrationTestCase - externalized FixerFactory creation (#9744)
+
 Changelog for v3.95.15
 ----------------------
 
