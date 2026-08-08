@@ -49,7 +49,7 @@ final class UseTransformer extends AbstractTransformer
     public function process(Tokens $tokens, Token $token, int $index): void
     {
         $id = $token->getId();
- 
+
         if (\T_USE === $id && $this->isUseForLambda($tokens, $index)) {
             $tokens[$index] = new Token([CT::T_USE_LAMBDA, $token->getContent()]);
 
