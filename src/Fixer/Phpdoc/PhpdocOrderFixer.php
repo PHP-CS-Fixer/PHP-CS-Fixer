@@ -202,16 +202,13 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
         $content = $doc->getContent();
         $firstLine = $doc->getLine(0);
         $lastLine = $doc->getLine(\count($doc->getLines()) - 1);
-        if (null === $firstLine || null === $lastLine) {
-            return $content;
-        }
 
         $lineEnding = $this->whitespacesConfig->getLineEnding();
 
-        if ($firstLine->isTheStart() && $firstLine->containsATag()) {
+        if (null !== $firstLine && $firstLine->isTheStart() && $firstLine->containsATag()) {
             $content = Preg::replace('/\A\/\*\*/', '/**'.$lineEnding.$indent.' *', $content);
         }
-        if ($lastLine->isTheEnd() && $lastLine->containsATag()) {
+        if (null !== $lastLine && $lastLine->isTheEnd() && $lastLine->containsATag()) {
             $content = Preg::replace('/\h*\*\/\z/', $lineEnding.$indent.' */', $content);
         }
 
