@@ -26,7 +26,6 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Future;
-use PhpCsFixer\Preg;
 use PhpCsFixer\Tokenizer\Analyzer\WhitespacesAnalyzer;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -150,14 +149,12 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
             }
 
             // assuming annotations are already grouped by tags
-            $content = $token->getContent();
-            $doc = new DocBlock($content);
-            if (!$this->hasConfiguredAnnotationOrder($doc)) {
-                $content = $this->expandAnnotationBoundaryLines(
-                    $doc,
-                    WhitespacesAnalyzer::detectIndent($tokens, $index),
-                );
-            }
+            $doc = new DocBlock($token->getContent());
+            $doc->separateAnnotationsFromBoundaries(
+                WhitespacesAnalyzer::detectIndent($tokens, $index),
+                $this->whitespacesConfig->getLineEnding(),
+            );
+            $content = $normalizedContent = $doc->getContent();
 
             // sort annotations
             $successors = $this->configurationOrder;
@@ -173,46 +170,10 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
             $content = $this->moveAnnotationsAfter($last, $predecessors, $content);
 
             // persist the content at the end
-            $tokens[$index] = new Token([\T_DOC_COMMENT, $content]);
-        }
-    }
-
-    private function hasConfiguredAnnotationOrder(DocBlock $doc): bool
-    {
-        $positions = array_flip($this->configurationOrder);
-        $previousPosition = -1;
-
-        foreach ($doc->getAnnotations() as $annotation) {
-            $position = $positions[$annotation->getTag()->getName()] ?? null;
-            if (null === $position) {
-                continue;
+            if ($content !== $normalizedContent) {
+                $tokens[$index] = new Token([\T_DOC_COMMENT, $content]);
             }
-            if ($position < $previousPosition) {
-                return false;
-            }
-
-            $previousPosition = $position;
         }
-
-        return true;
-    }
-
-    private function expandAnnotationBoundaryLines(DocBlock $doc, string $indent): string
-    {
-        $content = $doc->getContent();
-        $firstLine = $doc->getLine(0);
-        $lastLine = $doc->getLine(\count($doc->getLines()) - 1);
-
-        $lineEnding = $this->whitespacesConfig->getLineEnding();
-
-        if (null !== $firstLine && $firstLine->isTheStart() && $firstLine->containsATag()) {
-            $content = Preg::replace('/\A\/\*\*/', '/**'.$lineEnding.$indent.' *', $content);
-        }
-        if (null !== $lastLine && $lastLine->isTheEnd() && $lastLine->containsATag()) {
-            $content = Preg::replace('/\h*\*\/\z/', $lineEnding.$indent.' */', $content);
-        }
-
-        return $content;
     }
 
     /**
