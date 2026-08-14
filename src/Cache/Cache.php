@@ -74,6 +74,7 @@ final class Cache implements CacheInterface
                     'lineEnding' => $this->getSignature()->getLineEnding(),
                     'rules' => $this->getSignature()->getRules(),
                     'ruleCustomisationPolicyVersion' => $this->getSignature()->getRuleCustomisationPolicyVersion(),
+                    'extraFingerprints' => $this->getSignature()->getExtraFingerprints(),
                     'hashes' => $this->hashes,
                 ],
                 \JSON_THROW_ON_ERROR,
@@ -127,6 +128,7 @@ final class Cache implements CacheInterface
             $data['lineEnding'],
             $data['rules'],
             $data['ruleCustomisationPolicyVersion'] ?? NullRuleCustomisationPolicy::VERSION_FOR_CACHE,
+            $data['extraFingerprints'] ?? [],
         );
 
         $cache = new self($signature);
