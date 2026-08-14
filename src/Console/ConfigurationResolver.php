@@ -35,6 +35,7 @@ use PhpCsFixer\Differ\DifferInterface;
 use PhpCsFixer\Differ\NullDiffer;
 use PhpCsFixer\Differ\UnifiedDiffer;
 use PhpCsFixer\Finder;
+use PhpCsFixer\Fixer\CacheAwareFixerInterface;
 use PhpCsFixer\Fixer\DeprecatedFixerInterface;
 use PhpCsFixer\Fixer\FixerInterface;
 use PhpCsFixer\FixerFactory;
@@ -236,6 +237,14 @@ final class ConfigurationResolver
             if (null === $cacheFile) {
                 $this->cacheManager = new NullCacheManager();
             } else {
+                $extraFingerprints = [];
+
+                foreach ($this->getFixers() as $fixer) {
+                    if ($fixer instanceof CacheAwareFixerInterface) {
+                        $extraFingerprints[$fixer->getName()] = $fixer->getCacheFingerprint();
+                    }
+                }
+
                 $this->cacheManager = new FileCacheManager(
                     new FileHandler($cacheFile),
                     new Signature(
@@ -245,6 +254,7 @@ final class ConfigurationResolver
                         $this->getConfig()->getLineEnding(),
                         $this->getRules(),
                         $this->getRuleCustomisationPolicy()->getPolicyVersionForCache(),
+                        $extraFingerprints,
                     ),
                     $this->isDryRun(),
                     $this->getDirectory(),

@@ -255,6 +255,11 @@ final class CacheTest extends TestCase
                 return 'Policy Version';
             }
 
+            public function getExtraFingerprints(): array
+            {
+                return [];
+            }
+
             public function equals(SignatureInterface $signature): bool
             {
                 throw new \LogicException('Not implemented.');
