@@ -754,6 +754,38 @@ use Baz;
 /*baz*/',
         ];
 
+        yield 'with_match_in_comment_single_quoted' => [
+            '<?php
+use Foo;
+
+// use \'Foo\'
+',
+        ];
+
+        yield 'with_match_in_comment_double_quoted' => [
+            '<?php
+use Foo;
+
+// use "Foo"
+',
+        ];
+
+        yield 'with_match_in_comment_backtick_quoted' => [
+            '<?php
+use Foo;
+
+// use `Foo`
+',
+        ];
+
+        yield 'with_match_in_comment_and_::class' => [
+            '<?php
+use Foo;
+
+// use Foo::class
+',
+        ];
+
         yield 'with_same_namespace_import_and_unused_import' => [
             <<<'EOF'
                 <?php
