@@ -630,11 +630,11 @@ $a# 5
             self::generateTest('$this->assertSame(1.0, %s($a));'),
         ];
 
-        yield 'do not fix 5' => [
+        yield 'do not fix 4' => [
             self::generateTest('$this->assertSame(1, "%s");'),
         ];
 
-        yield 'do not fix 6' => [
+        yield 'do not fix 5' => [
             self::generateTest('$this->test(); // $this->assertSame($b, %s($a));'),
         ];
     }
