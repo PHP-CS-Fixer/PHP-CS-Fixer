@@ -758,7 +758,7 @@ use Baz;
             '<?php
 use Foo;
 
-// use \'Foo\'
+// todo: use \'Foo\' class to solve the problem
 ',
         ];
 
@@ -766,7 +766,7 @@ use Foo;
             '<?php
 use Foo;
 
-// use "Foo"
+// todo: use "Foo" class to solve the problem
 ',
         ];
 
@@ -774,7 +774,7 @@ use Foo;
             '<?php
 use Foo;
 
-// use `Foo`
+// todo: use `Foo` class to solve the problem
 ',
         ];
 
@@ -782,7 +782,7 @@ use Foo;
             '<?php
 use Foo;
 
-// use Foo::class
+// todo: use Foo::class to solve the problem
 ',
         ];
 
