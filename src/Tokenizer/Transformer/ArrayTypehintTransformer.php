@@ -35,7 +35,7 @@ final class ArrayTypehintTransformer extends AbstractTransformer
         return 5_00_00;
     }
 
-    public function process(Tokens $tokens, Token $token, int $index): void
+    public function processToken(Tokens $tokens, Token $token, int $index): void
     {
         if (!$token->isGivenKind(\T_ARRAY)) {
             return;

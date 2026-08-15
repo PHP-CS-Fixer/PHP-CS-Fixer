@@ -63,9 +63,7 @@ final class Transformers
     public function transform(Tokens $tokens): void
     {
         foreach ($this->items as $transformer) {
-            foreach ($tokens as $index => $token) {
-                $transformer->process($tokens, $token, $index);
-            }
+            $transformer->process($tokens);
         }
     }
 

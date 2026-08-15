@@ -45,7 +45,7 @@ final class BraceTransformer extends AbstractTransformer
         return 5_00_00;
     }
 
-    public function process(Tokens $tokens, Token $token, int $index): void
+    public function processToken(Tokens $tokens, Token $token, int $index): void
     {
         $this->transformIntoCurlyCloseBrace($tokens, $index);
         $this->transformIntoDollarCloseBrace($tokens, $index);

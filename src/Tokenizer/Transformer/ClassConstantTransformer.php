@@ -35,7 +35,7 @@ final class ClassConstantTransformer extends AbstractTransformer
         return 5_05_00;
     }
 
-    public function process(Tokens $tokens, Token $token, int $index): void
+    public function processToken(Tokens $tokens, Token $token, int $index): void
     {
         if (!$token->equalsAny([
             [\T_CLASS, 'class'],
