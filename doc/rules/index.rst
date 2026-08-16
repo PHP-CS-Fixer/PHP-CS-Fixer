@@ -599,9 +599,12 @@ Operator
 - `logical_operators <./operator/logical_operators.rst>`_ *(risky)*
 
   Use ``&&`` and ``||`` logical operators instead of ``and`` and ``or``.
-- `long_to_shorthand_operator <./operator/long_to_shorthand_operator.rst>`_ *(risky, configurable)*
+- `long_to_shorthand_operator <./operator/long_to_shorthand_operator.rst>`_
 
   Shorthand notation for operators should be used if possible.
+- `long_to_shorthand_operator_for_complex_targets <./operator/long_to_shorthand_operator_for_complex_targets.rst>`_ *(risky)*
+
+  Shorthand notation for operators should be used if possible, also for non-plain-variable assignment targets (member access, offsets, ...).
 - `new_expression_parentheses <./operator/new_expression_parentheses.rst>`_ *(configurable)*
 
   All ``new`` expressions with a further call must (not) be wrapped in parentheses.

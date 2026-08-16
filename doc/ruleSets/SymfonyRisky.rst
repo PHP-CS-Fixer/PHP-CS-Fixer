@@ -38,7 +38,7 @@ Rules
 - `implode_call <./../rules/function_notation/implode_call.rst>`_
 - `is_null <./../rules/language_construct/is_null.rst>`_
 - `logical_operators <./../rules/operator/logical_operators.rst>`_
-- `long_to_shorthand_operator <./../rules/operator/long_to_shorthand_operator.rst>`_
+- `long_to_shorthand_operator_for_complex_targets <./../rules/operator/long_to_shorthand_operator_for_complex_targets.rst>`_
 - `modern_serialization_methods <./../rules/class_notation/modern_serialization_methods.rst>`_
 - `modernize_strpos <./../rules/alias/modernize_strpos.rst>`_
 - `modernize_types_casting <./../rules/cast_notation/modernize_types_casting.rst>`_
