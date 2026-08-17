@@ -524,7 +524,7 @@ abstract class AbstractFixerTestCase extends TestCase
 
             self::assertSameSize(
                 $tokens,
-                array_unique(array_map(static fn (Token $token): string => spl_object_hash($token), $tokens->toArray())),
+                array_unique(array_map(static fn (Token $token): int => spl_object_id($token), $tokens->toArray())),
                 'Token items inside Tokens collection must be unique.',
             );
 
